@@ -14,12 +14,13 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav role="navigation">
+        <nav class="navbar navbar-default" role="navigation">
+          <a href="#" class="navbar-left"><img src="/images/panoptikum.io.png" width="80" height="80"></a>
+          <a class="navbar-brand" href="#">Panoptikum.io</a>
           <ul class="nav nav-pills pull-right">
             <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
           </ul>
         </nav>
-        <span class="logo"></span>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
