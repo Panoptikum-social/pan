@@ -14,13 +14,17 @@
   <body>
     <div class="container">
       <header class="header">
-        <nav class="navbar navbar-default" role="navigation">
-          <a href="#" class="navbar-left"><img src="/images/panoptikum.io.png" width="80" height="80"></a>
-          <a class="navbar-brand" href="#">Panoptikum.io</a>
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
+        <ol class="breadcrumb text-right">
+          <%= if @current_user do %>
+            <li>@<%= @current_user.username %></li>
+            <li><%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %></li>
+          <% else %>
+            <li><%= link "Register", to: user_path(@conn, :new) %></li>
+            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+          <% end %>
+        </ol>
+
+        <h1><img src="/images/panoptikum.io.png" width="80" height="80"> Panoptikum.io</h1>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
