@@ -15,5 +15,7 @@ defmodule Pan.User do
     model
     |> cast(params, ~w(name username email), [])
     |> validate_length(:username, min: 3, max: 30)
+    |> validate_length(:name, min: 3)
+    |> validate_length(:password, min: 5)
   end
 end
