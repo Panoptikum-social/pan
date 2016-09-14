@@ -16,7 +16,8 @@ defmodule Pan.Mixfile do
   def application do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :comeonin]]
+                    :phoenix_ecto, :postgrex, 
+                    :comeonin, :sweet_xml, :timex]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -30,7 +31,9 @@ defmodule Pan.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.9"},
      {:cowboy, "~> 1.0"},
-     {:comeonin, "~> 2.0"}]
+     {:comeonin, "~> 2.0"},
+     {:sweet_xml, "~> 0.6"},
+     {:timex, "~> 3.0"}]
   end
 
   defp aliases do
