@@ -1,0 +1,18 @@
+<h2>Show language</h2>
+
+<ul>
+
+  <li>
+    <strong>Shortcode:</strong>
+    <%= @language.shortcode %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @language.name %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: language_path(@conn, :edit, @language) %>
+<%= link "Back", to: language_path(@conn, :index) %>

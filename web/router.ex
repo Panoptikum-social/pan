@@ -20,5 +20,7 @@ defmodule Pan.Router do
     get "/", PageController, :index
     resources "/users",    UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    resources "/podcasts", PodcastController
+    resources "/languages", LanguageController
   end
 end

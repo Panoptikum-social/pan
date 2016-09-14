@@ -1,0 +1,78 @@
+<h2>Show podcast</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @podcast.title %>
+  </li>
+
+  <li>
+    <strong>Website:</strong>
+    <%= @podcast.website %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @podcast.description %>
+  </li>
+
+  <li>
+    <strong>Language:</strong>
+    <%= @podcast.language_id %>
+  </li>
+
+  <li>
+    <strong>Summary:</strong>
+    <%= @podcast.summary %>
+  </li>
+
+  <li>
+    <strong>Image title:</strong>
+    <%= @podcast.image_title %>
+  </li>
+
+  <li>
+    <strong>Image url:</strong>
+    <%= @podcast.image_url %>
+  </li>
+
+  <li>
+    <strong>Last build date:</strong>
+    <%= @podcast.last_build_date %>
+  </li>
+
+  <li>
+    <strong>Payment link title:</strong>
+    <%= @podcast.payment_link_title %>
+  </li>
+
+  <li>
+    <strong>Payment link url:</strong>
+    <%= @podcast.payment_link_url %>
+  </li>
+
+  <li>
+    <strong>Owner:</strong>
+    <%= @podcast.owner_id %>
+  </li>
+
+  <li>
+    <strong>Author:</strong>
+    <%= @podcast.author %>
+  </li>
+
+  <li>
+    <strong>Explicit:</strong>
+    <%= @podcast.explicit %>
+  </li>
+
+  <li>
+    <strong>Unique identifier:</strong>
+    <%= @podcast.unique_identifier %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %>
+<%= link "Back", to: podcast_path(@conn, :index) %>
