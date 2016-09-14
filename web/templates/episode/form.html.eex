@@ -1,0 +1,89 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :title, class: "control-label" %>
+    <%= text_input f, :title, class: "form-control" %>
+    <%= error_tag f, :title %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :link, class: "control-label" %>
+    <%= text_input f, :link, class: "form-control" %>
+    <%= error_tag f, :link %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :publishing_date, class: "control-label" %>
+    <%= datetime_select f, :publishing_date, class: "form-control" %>
+    <%= error_tag f, :publishing_date %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :guid, class: "control-label" %>
+    <%= text_input f, :guid, class: "form-control" %>
+    <%= error_tag f, :guid %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :description, class: "control-label" %>
+    <%= textarea f, :description, class: "form-control" %>
+    <%= error_tag f, :description %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :shownotes, class: "control-label" %>
+    <%= textarea f, :shownotes, class: "form-control" %>
+    <%= error_tag f, :shownotes %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :payment_link_title, class: "control-label" %>
+    <%= text_input f, :payment_link_title, class: "form-control" %>
+    <%= error_tag f, :payment_link_title %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :payment_link_url, class: "control-label" %>
+    <%= text_input f, :payment_link_url, class: "form-control" %>
+    <%= error_tag f, :payment_link_url %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :deep_link, class: "control-label" %>
+    <%= text_input f, :deep_link, class: "form-control" %>
+    <%= error_tag f, :deep_link %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :duration, class: "control-label" %>
+    <%= text_input f, :duration, class: "form-control" %>
+    <%= error_tag f, :duration %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :author, class: "control-label" %>
+    <%= text_input f, :author, class: "form-control" %>
+    <%= error_tag f, :author %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :subtitle, class: "control-label" %>
+    <%= text_input f, :subtitle, class: "form-control" %>
+    <%= error_tag f, :subtitle %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :summary, class: "control-label" %>
+    <%= textarea f, :summary, class: "form-control" %>
+    <%= error_tag f, :summary %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

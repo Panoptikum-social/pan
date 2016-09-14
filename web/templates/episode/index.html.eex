@@ -1,0 +1,52 @@
+<h2>Listing episodes</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Link</th>
+      <th>Publishing date</th>
+      <th>Guid</th>
+      <th>Description</th>
+      <th>Shownotes</th>
+      <th>Payment link title</th>
+      <th>Payment link url</th>
+      <th>Deep link</th>
+      <th>Duration</th>
+      <th>Author</th>
+      <th>Subtitle</th>
+      <th>Summary</th>
+      <th>Podcast</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for episode <- @episodes do %>
+    <tr>
+      <td><%= episode.title %></td>
+      <td><%= episode.link %></td>
+      <td><%= episode.publishing_date %></td>
+      <td><%= episode.guid %></td>
+      <td><%= episode.description %></td>
+      <td><%= episode.shownotes %></td>
+      <td><%= episode.payment_link_title %></td>
+      <td><%= episode.payment_link_url %></td>
+      <td><%= episode.deep_link %></td>
+      <td><%= episode.duration %></td>
+      <td><%= episode.author %></td>
+      <td><%= episode.subtitle %></td>
+      <td><%= episode.summary %></td>
+      <td><%= episode.podcast_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: episode_path(@conn, :show, episode), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: episode_path(@conn, :edit, episode), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: episode_path(@conn, :delete, episode), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New episode", to: episode_path(@conn, :new) %>

@@ -22,5 +22,12 @@ defmodule Pan.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     resources "/podcasts", PodcastController
     resources "/languages", LanguageController
+    resources "/feeds", FeedController
+    resources "/alternate_feeds", AlternateFeedController
+    resources "/contributers", ContributerController
+    resources "/episodes", EpisodeController
+    resources "/chapters", ChapterController
+    resources "/enclosures", EnclosureController
+    resources "/categories", CategoryController
   end
 end

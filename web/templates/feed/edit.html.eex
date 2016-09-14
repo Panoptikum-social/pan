@@ -1,0 +1,6 @@
+<h2>Edit feed</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: feed_path(@conn, :update, @feed) %>
+
+<%= link "Back", to: feed_path(@conn, :index) %>

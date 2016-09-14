@@ -16,6 +16,7 @@ defmodule Pan.Podcast do
     field :unique_identifier, Ecto.UUID
     belongs_to :language, Pan.Language
     belongs_to :owner, Pan.Owner
+    many_to_many :categories, Pan.Category, join_through: "categories_podcasts"
 
     timestamps
   end

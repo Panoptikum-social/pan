@@ -1,0 +1,42 @@
+<h2>Listing feeds</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Self link title</th>
+      <th>Self link url</th>
+      <th>Next page url</th>
+      <th>Prev page url</th>
+      <th>First page url</th>
+      <th>Last page url</th>
+      <th>Hub link url</th>
+      <th>Feed generator</th>
+      <th>Podcast</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for feed <- @feeds do %>
+    <tr>
+      <td><%= feed.self_link_title %></td>
+      <td><%= feed.self_link_url %></td>
+      <td><%= feed.next_page_url %></td>
+      <td><%= feed.prev_page_url %></td>
+      <td><%= feed.first_page_url %></td>
+      <td><%= feed.last_page_url %></td>
+      <td><%= feed.hub_link_url %></td>
+      <td><%= feed.feed_generator %></td>
+      <td><%= feed.podcast_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: feed_path(@conn, :show, feed), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: feed_path(@conn, :edit, feed), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: feed_path(@conn, :delete, feed), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New feed", to: feed_path(@conn, :new) %>

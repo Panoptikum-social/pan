@@ -1,0 +1,23 @@
+<h2>Show contributer</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @contributer.name %>
+  </li>
+
+  <li>
+    <strong>Uri:</strong>
+    <%= @contributer.uri %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @contributer.user_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: contributer_path(@conn, :edit, @contributer) %>
+<%= link "Back", to: contributer_path(@conn, :index) %>

@@ -5,7 +5,7 @@ defmodule Pan.Parser do
 
     {:ok, xml} = File.read "materials/freakshow.xml.orig"
 
-# Podcast
+    # podcast
     title = xml |> xpath(~x"//channel/title/text()"s)
     website = xml |> xpath(~x"//channel/link/text()"s)
     description = xml |> xpath(~x"//channel/description/text()"s)
@@ -28,7 +28,7 @@ defmodule Pan.Parser do
     author = xml |> xpath(~x"//channel/itunes:author/text()"s)
     explicit = xml |> xpath(~x"//channel/itunes:explicit/text()"s)
 
-# Feed
+    #feed
     self_link = xml
                 |> xpath(~x"//channel/atom:link[@rel='self']",
                          title: ~x"./@title"s,
@@ -39,26 +39,24 @@ defmodule Pan.Parser do
     last_page_url =  xml |> xpath(~x"//channel/atom:link[@rel='last']//@href"s)
     hub_link_url =   xml |> xpath(~x"//channel/atom:link[@rel='hub']//@href"s)
     feed_generator =  xml |> xpath(~x"//channel/generator/text()"s)
-# Alternate Feeds
+
     alternate_feeds = xml
                       |> xpath(~x"//channel/atom:link[@rel='alternate']"l,
                       title: ~x"./@title"s,
                       url: ~x"./@href"s)
 
-# Contributers
     contributers = xml
                    |> xpath(~x"//channel/atom:contributor"l,
                             name: ~x"./atom:name/text()"s,
                             uri: ~x"./atom:uri/text()"s)
 
-# Categories
+# categories
     categories = xml
                  |> xpath(~x"//channel/itunes:category"l,
                           title: ~x"./@text"s,
                           subtitle: ~x"./itunes:category/@text"s)
 
-
-# Episodes
+# episodes
     episodes =  xml
                 |> xpath(~x"//channel/item"l)
                 |> Enum.map fn (episode) ->
@@ -80,19 +78,16 @@ defmodule Pan.Parser do
                                      |> xpath(~x"./atom:link[@rel='payment']",
                                               title: ~x"./@title"s,
                                               url: ~x"./@href"s),
-# Contributers:
                        contributors:  episode
                                       |> xpath(~x"atom:contributor"l,
                                                name: ~x"./atom:name/text()"s,
                                                uri: ~x"./atom:uri/text()"s),
-# Chapters:
                        chapters: episode
                                  |> xpath(~x"psc:chapters/psc:chapter"l,
                                           start: ~x"./@start"s,
                                           title: ~x"./@title"s),
                        deep_link: episode
                                   |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
-# Enclosures
                        enclosure: episode
                                   |> xpath(~x"./enclosure"l,
                                            url: ~x"./@url"s,
@@ -114,14 +109,10 @@ defmodule Pan.Parser do
   end
 end
 
-# podcast has many feeds
-# podcast has_and_belongs_to_many listeners
-# podcast has_and_belongs_to_many fans
-# podcast belongs_to owner
-# feed has_many alternate_feeds
-# podcast has_many contributers
-# podcast has_many categories
-# podcast has_many episodes
-# episode has_many contributers
-# episode has_many chapters
-# episode has_many enclosures
+# podcast     has_and_belongs_to_many listeners
+# podcast     has_and_belongs_to_many fans
+
+# podcast     has_and_belongs_to_many categories
+# episode     has_and_belongs_to_many contributers
+# contributer has_and_belongs_to_many podcasts
+# contributer has_and_belongs_to_many episodes

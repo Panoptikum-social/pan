@@ -1,0 +1,23 @@
+<h2>Show alternate feed</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @alternate_feed.title %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @alternate_feed.url %>
+  </li>
+
+  <li>
+    <strong>Feed:</strong>
+    <%= @alternate_feed.feed_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: alternate_feed_path(@conn, :edit, @alternate_feed) %>
+<%= link "Back", to: alternate_feed_path(@conn, :index) %>

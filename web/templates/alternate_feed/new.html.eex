@@ -1,0 +1,6 @@
+<h2>New alternate feed</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: alternate_feed_path(@conn, :create) %>
+
+<%= link "Back", to: alternate_feed_path(@conn, :index) %>

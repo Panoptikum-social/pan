@@ -1,0 +1,33 @@
+<h2>Show enclosure</h2>
+
+<ul>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @enclosure.url %>
+  </li>
+
+  <li>
+    <strong>Length:</strong>
+    <%= @enclosure.length %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @enclosure.type %>
+  </li>
+
+  <li>
+    <strong>Guid:</strong>
+    <%= @enclosure.guid %>
+  </li>
+
+  <li>
+    <strong>Episode:</strong>
+    <%= @enclosure.episode_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: enclosure_path(@conn, :edit, @enclosure) %>
+<%= link "Back", to: enclosure_path(@conn, :index) %>

@@ -1,0 +1,78 @@
+<h2>Show episode</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @episode.title %>
+  </li>
+
+  <li>
+    <strong>Link:</strong>
+    <%= @episode.link %>
+  </li>
+
+  <li>
+    <strong>Publishing date:</strong>
+    <%= @episode.publishing_date %>
+  </li>
+
+  <li>
+    <strong>Guid:</strong>
+    <%= @episode.guid %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @episode.description %>
+  </li>
+
+  <li>
+    <strong>Shownotes:</strong>
+    <%= @episode.shownotes %>
+  </li>
+
+  <li>
+    <strong>Payment link title:</strong>
+    <%= @episode.payment_link_title %>
+  </li>
+
+  <li>
+    <strong>Payment link url:</strong>
+    <%= @episode.payment_link_url %>
+  </li>
+
+  <li>
+    <strong>Deep link:</strong>
+    <%= @episode.deep_link %>
+  </li>
+
+  <li>
+    <strong>Duration:</strong>
+    <%= @episode.duration %>
+  </li>
+
+  <li>
+    <strong>Author:</strong>
+    <%= @episode.author %>
+  </li>
+
+  <li>
+    <strong>Subtitle:</strong>
+    <%= @episode.subtitle %>
+  </li>
+
+  <li>
+    <strong>Summary:</strong>
+    <%= @episode.summary %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @episode.podcast_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: episode_path(@conn, :edit, @episode) %>
+<%= link "Back", to: episode_path(@conn, :index) %>

@@ -1,0 +1,30 @@
+<h2>Listing alternate feeds</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Url</th>
+      <th>Feed</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for alternate_feed <- @alternate_feeds do %>
+    <tr>
+      <td><%= alternate_feed.title %></td>
+      <td><%= alternate_feed.url %></td>
+      <td><%= alternate_feed.feed_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: alternate_feed_path(@conn, :show, alternate_feed), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: alternate_feed_path(@conn, :edit, alternate_feed), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: alternate_feed_path(@conn, :delete, alternate_feed), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New alternate feed", to: alternate_feed_path(@conn, :new) %>

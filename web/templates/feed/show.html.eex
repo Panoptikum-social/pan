@@ -1,0 +1,53 @@
+<h2>Show feed</h2>
+
+<ul>
+
+  <li>
+    <strong>Self link title:</strong>
+    <%= @feed.self_link_title %>
+  </li>
+
+  <li>
+    <strong>Self link url:</strong>
+    <%= @feed.self_link_url %>
+  </li>
+
+  <li>
+    <strong>Next page url:</strong>
+    <%= @feed.next_page_url %>
+  </li>
+
+  <li>
+    <strong>Prev page url:</strong>
+    <%= @feed.prev_page_url %>
+  </li>
+
+  <li>
+    <strong>First page url:</strong>
+    <%= @feed.first_page_url %>
+  </li>
+
+  <li>
+    <strong>Last page url:</strong>
+    <%= @feed.last_page_url %>
+  </li>
+
+  <li>
+    <strong>Hub link url:</strong>
+    <%= @feed.hub_link_url %>
+  </li>
+
+  <li>
+    <strong>Feed generator:</strong>
+    <%= @feed.feed_generator %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @feed.podcast_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: feed_path(@conn, :edit, @feed) %>
+<%= link "Back", to: feed_path(@conn, :index) %>
