@@ -5,6 +5,8 @@ defmodule Pan.Contributer do
     field :name, :string
     field :uri, :string
     belongs_to :user, Pan.User
+    many_to_many :episodes, Pan.Episode, join_through: "contributers_episodes"
+    many_to_many :podcasts, Pan.Podcast, join_through: "contributers_podcasts"
 
     timestamps
   end

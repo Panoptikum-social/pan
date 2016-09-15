@@ -7,7 +7,11 @@ defmodule Pan.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :email, :string
+    many_to_many :subscribed_podcasts, Pan.Podcast, join_through: "subscriptions"
+    many_to_many :followed_podcasts, Pan.Podcast, join_through: "followers_podcasts"
 
+    many_to_many :followers, Pan.User, join_through: "followers_users", join_keys: [user_id: :id, follower_id: :id]
+    many_to_many :heros, Pan.User, join_through: "followers_users", join_keys: [follower_id: :id, user_id: :id]
     timestamps
   end
 

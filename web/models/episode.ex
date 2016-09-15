@@ -16,6 +16,7 @@ defmodule Pan.Episode do
     field :subtitle, :string
     field :summary, :string
     belongs_to :podcast, Pan.Podcast
+    many_to_many :contributers, Pan.Contributer, join_through: "contributers_episodes"
 
     timestamps
   end

@@ -17,7 +17,9 @@ defmodule Pan.Podcast do
     belongs_to :language, Pan.Language
     belongs_to :owner, Pan.Owner
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts"
-
+    many_to_many :contributers, Pan.Contributer, join_through: "contributers_podcasts"
+    many_to_many :listeners, Pan.User, join_through: "subscriptions"
+    many_to_many :followers, Pan.User, join_through: "followers_podcasts"
     timestamps
   end
 

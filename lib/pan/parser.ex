@@ -18,7 +18,7 @@ defmodule Pan.Parser do
     last_build_date = xml |> xpath(~x"//channel/lastBuildDate/text()"s)
                       |> Timex.parse("{RFC1123}")
     payment_link = xml
-                   |> xpath(~x"//channel/atom:link[@rel='payment']"l,
+                   |> xpath(~x"//channel/atom:link[@rel='payment']"s,
                             title: ~x"./@title"s,
                             url: ~x"./@href"s)
     owner = xml
@@ -50,13 +50,11 @@ defmodule Pan.Parser do
                             name: ~x"./atom:name/text()"s,
                             uri: ~x"./atom:uri/text()"s)
 
-# categories
     categories = xml
                  |> xpath(~x"//channel/itunes:category"l,
                           title: ~x"./@text"s,
                           subtitle: ~x"./itunes:category/@text"s)
 
-# episodes
     episodes =  xml
                 |> xpath(~x"//channel/item"l)
                 |> Enum.map fn (episode) ->
@@ -108,11 +106,3 @@ defmodule Pan.Parser do
     File.close xml
   end
 end
-
-# podcast     has_and_belongs_to_many listeners
-# podcast     has_and_belongs_to_many fans
-
-# podcast     has_and_belongs_to_many categories
-# episode     has_and_belongs_to_many contributers
-# contributer has_and_belongs_to_many podcasts
-# contributer has_and_belongs_to_many episodes
