@@ -8,8 +8,17 @@
     <meta name="author" content="">
 
     <title>Hello Pan!</title>
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
-    <link rel="stylesheet" href="<%= static_path(@conn, "/css/font-awesome.min.css") %>">
+    <link rel="stylesheet" 
+          href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" 
+          href="<%= static_path(@conn, "/css/font-awesome.min.css") %>">
+    <link rel="stylesheet" 
+          href="<%= static_path(@conn, "/css/bootflat.min.css") %>">
+    <link rel="stylesheet" 
+          href="<%= static_path(@conn, "/css/overrides.css") %>">
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu' 
+          rel='stylesheet' 
+          type='text/css'>
   </head>
 
   <body>
@@ -18,7 +27,10 @@
         <ol class="breadcrumb text-right">
           <%= if @current_user do %>
             <li>@<%= @current_user.username %></li>
-            <li><%= link "Log out", to: session_path(@conn, :delete, @current_user), method: "delete" %></li>
+            <li>
+              <%= link "Log out", to: session_path(@conn, :delete, @current_user), 
+                                  method: "delete" %>
+            </li>
           <% else %>
             <li><%= link "Register", to: user_path(@conn, :new) %></li>
             <li><%= link "Log in", to: session_path(@conn, :new) %></li>
