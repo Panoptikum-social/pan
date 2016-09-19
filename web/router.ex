@@ -18,12 +18,15 @@ defmodule Pan.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/users",    UserController, only: [:index, :show, :new, :create]
+    resources "/users", UserController, only: [:new, :create]
+    get "/my_account", UserController, :my_show
+
     resources "/sessions", SessionController, only: [:new, :create, :delete]
   end
 
   scope "/admin", Pan do
     pipe_through [:browser, :authenticate_admin]
+    resources "/users", UserController
     resources "/podcasts", PodcastController
     resources "/languages", LanguageController
     resources "/feeds", FeedController

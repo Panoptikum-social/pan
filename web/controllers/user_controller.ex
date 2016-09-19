@@ -2,24 +2,32 @@ defmodule Pan.UserController do
   use Pan.Web, :controller
   plug :authenticate_user when action in [:index, :show]
 
-  def index(conn, _params) do
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+  def index(conn, _params, _user) do
     users = Repo.all(Pan.User)
     render conn, "index.html", users: users    
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}, _user) do
     user = Repo.get(Pan.User, id)
+    render conn, "show.html", user: user
+  end
+
+  def my_show(conn, _params, user) do
     render conn, "show.html", user: user
   end
 
   alias Pan.User
   
-  def new(conn, _params) do
+  def new(conn, _params, _user) do
     changeset = User.changeset(%User{})
     render conn, "new.html", changeset: changeset
   end
 
-  def create(conn, %{"user" => user_params}) do
+  def create(conn, %{"user" => user_params}, _user) do
     changeset = User.registration_changeset(%User{}, user_params)
     case Repo.insert(changeset) do
       {:ok, user} ->
