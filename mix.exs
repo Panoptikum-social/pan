@@ -34,7 +34,8 @@ defmodule Pan.Mixfile do
      {:cowboy, "~> 1.0"},
      {:comeonin, "~> 2.0"},
      {:sweet_xml, "~> 0.6"},
-     {:timex, "~> 3.0"}]
+     {:timex, "~> 3.0"},
+     {:font_awesome_phoenix, "~> 0.1"}]
   end
 
   defp aliases do

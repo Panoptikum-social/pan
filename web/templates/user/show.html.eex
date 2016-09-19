@@ -12,4 +12,22 @@
 
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
+
+  <dt>Admin</dt>
+  <dd>
+    <%= if @user.admin do %> 
+      <%= fa_icon("check-square-o") %>
+    <% else %>  
+      <%= fa_icon("square-o") %>
+    <% end %>
+  </dd>
+
+  <dt>Podcaster</dt>
+  <dd>
+    <%= if @user.podcaster do %>
+      <%= fa_icon("check-square-o") %>
+    <% else %>
+      <%= fa_icon("square-o") %>
+    <% end %>
+  </dd>
 </dl>

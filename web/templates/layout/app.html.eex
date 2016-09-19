@@ -9,6 +9,7 @@
 
     <title>Hello Pan!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/font-awesome.min.css") %>">
   </head>
 
   <body>

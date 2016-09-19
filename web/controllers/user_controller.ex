@@ -1,5 +1,7 @@
 defmodule Pan.UserController do
   use Pan.Web, :controller
+
+  plug :scrub_params, "user" when action in [:create, :update]
   plug :authenticate_user when action in [:index, :show]
 
   def action(conn, _) do
@@ -29,6 +31,7 @@ defmodule Pan.UserController do
 
   def create(conn, %{"user" => user_params}, _user) do
     changeset = User.registration_changeset(%User{}, user_params)
+
     case Repo.insert(changeset) do
       {:ok, user} ->
         conn
@@ -40,4 +43,32 @@ defmodule Pan.UserController do
     end
   end
 
+  def edit(conn, %{"id" => id}, _user) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user)
+    render(conn, "edit.html", user: user, changeset: changeset)
+  end
+
+  def update(conn, %{"id" => id, "user" => user_params}, _user) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+         conn
+         |> put_flash(:info, "User updated successfully.")
+         |> redirect(to: user_path(conn, :show, user))
+      {:error, changeset} ->
+         render(conn, "edit.html", user: user, changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}, _user) do
+    user = Repo.get!(User, id)
+    Repo.delete!(user)
+  
+    conn
+    |> put_flash(:info, "User deleted successfully.")
+    |> redirect(to: user_path(conn, :index))
+  end
  end

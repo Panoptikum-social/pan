@@ -21,7 +21,7 @@ defmodule Pan.User do
 
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, ~w(name username email), [])
+    |> cast(params, ~w(name username email admin podcaster), [])
     |> validate_length(:username, min: 3, max: 30)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
