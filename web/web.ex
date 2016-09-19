@@ -2,18 +2,6 @@ defmodule Pan.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
-
-  This can be used in your application as:
-
-      use Pan.Web, :controller
-      use Pan.Web, :view
-
-  The definitions below will be executed for every view,
-  controller, etc, so keep them short and clean, focused
-  on imports, uses and aliases.
-
-  Do NOT define functions inside the quoted expressions
-  below.
   """
 
   def model do
@@ -36,6 +24,7 @@ defmodule Pan.Web do
 
       import Pan.Router.Helpers
       import Pan.Gettext
+      import Pan.Auth, only: [authenticate_user: 2, authenticate_admin: 2]
     end
   end
 
@@ -58,6 +47,8 @@ defmodule Pan.Web do
   def router do
     quote do
       use Phoenix.Router
+
+      import Pan.Auth, only: [authenticate_user: 2, authenticate_admin: 2]
     end
   end
 

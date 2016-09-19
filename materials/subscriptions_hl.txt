@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version='1.0'>
+<head>
+<title>Player FM Feeds from Player4390335 FM</title>
+<dateCreated>September 16, 2016 22:51</dateCreated>
+<dateModified>September 16, 2016 22:51</dateModified>
+</head>
+<body>
+<outline text="AOKI&#39;S HOUSE" type="rss" xmlUrl="http://feeds.feedburner.com/aokishouse"  htmlUrl="http://steveaoki.com" />
+<outline text="Aua-uff-Code!" type="rss" xmlUrl="https://aua-uff-co.de/episodes.mp3.rss"  htmlUrl="https://aua-uff-co.de" />
+<outline text="Ballverliebt Fußball Podcast" type="rss" xmlUrl="http://ballverliebt.eu/feed/podcast/"  htmlUrl="http://ballverliebt.eu" />
+<outline text="Biertaucher Podcast" type="rss" xmlUrl="http://spielend-programmieren.at/biertaucher.xml"  htmlUrl="http://biertaucher.at" />
+<outline text="Business of Film | Craft Truck" type="rss" xmlUrl="http://www.crafttruck.com/category/business-of-film/feed/"  htmlUrl="http://www.crafttruck.com" />
+<outline text="Die Serienabfertigung" type="rss" xmlUrl="http://feeds.feedburner.com/serienabfertigung-podcast"  htmlUrl="http://serienabfertigung.de" />
+<outline text="DRAFT ZERO" type="rss" xmlUrl="http://draft-zero.com/feed/"  htmlUrl="http://draft-zero.com" />
+<outline text="EconPop Podcast" type="rss" xmlUrl="http://econpop.libsyn.com/rss"  htmlUrl="http://www.econstories.tv/" />
+<outline text="Flimmerfreunde" type="rss" xmlUrl="http://www.flimmerfreunde.de/?feed=podcast"  htmlUrl="http://www.flimmerfreunde.de" />
+<outline text="Flip the Truck" type="rss" xmlUrl="http://www.flipthetruck.com/feed/derfilmpodcast/"  htmlUrl="http://www.flipthetruck.com/podcast" />
+<outline text="Fortsetzung Folgt: Der Serien – Podcast." type="rss" xmlUrl="http://fortsetzungfolgt.net/?feed=podcast"  htmlUrl="http://fortsetzungfolgt.net" />
+<outline text="Fortsetzung.TV - der Podcast" type="rss" xmlUrl="http://fortsetzung.tv/feed/podcast/"  htmlUrl="http://fortsetzung.tv" />
+<outline text="Lichtspielplatz" type="rss" xmlUrl="http://feeds.feedburner.com/lichtspielplatz"  htmlUrl="http://www.wilsonsdachboden.com/search/label/Lichtspielplatz" />
+<outline text="Lieblings-Plätzchen" type="rss" xmlUrl="http://www.lieblings-plaetzchen.com/episodes.mp3.rss"  htmlUrl="http://www.lieblings-plaetzchen.com" />
+<outline text="Lust auf Zorn" type="rss" xmlUrl="http://lustaufzorn.libsyn.com/rss"  htmlUrl="http://lustaufzorn.libsyn.com" />
+<outline text="neuwal" type="rss" xmlUrl="http://feeds.feedburner.com/podwal"  htmlUrl="http://neuwal.com" />
+<outline text="On The Page: Screenwriting" type="rss" xmlUrl="http://onthepage.libsyn.com/rss"  htmlUrl="http://onthepage.libsyn.com" />
+<outline text="ScreenJunkies Knocking Dead" type="rss" xmlUrl="http://api.breakmedia.com/content/contentfeed/get?apiRequestJson=%7bid:2463,pageNumber:1,pageSize:52,responseType:%22itunespodcastrss%22%7d"  htmlUrl="http://www.screenjunkies.com" />
+<outline text="Scriptnotes Podcast" type="rss" xmlUrl="http://scriptnotes.net/rss"  htmlUrl="http://johnaugust.com/scriptnotes" />
+<outline text="Seriendialoge - DWDL" type="rss" xmlUrl="http://feeds.soundcloud.com/users/soundcloud:users:186101864/sounds.rss"  htmlUrl="http://www.dwdl.de/seriendialoge/" />
+<outline text="Serienjunkies.de" type="rss" xmlUrl="http://sjme.de/sjpodcast/itunes.xml"  htmlUrl="http://www.serienjunkies.de/podcast/index.html" />
+<outline text="Stichwort:Drehbuch - Der Podcast vom Verband Deutscher Drehbuchautoren (VDD)" type="rss" xmlUrl="http://www.stichwortdrehbuch.de/podcast/feed"  htmlUrl="http://www.stichwortdrehbuch.de/" />
+<outline text="The Showrunner" type="rss" xmlUrl="http://rainmaker.fm/series/showrunner/feed/"  htmlUrl="http://rainmaker.fm" />
+<outline text="The Vulture TV Podcast" type="rss" xmlUrl="http://feeds.feedburner.com/vulturetv"  htmlUrl="http://newyorkmagazine.slate.libsynpro.com/podcast" />
+<outline text="The West Wing History Class" type="rss" xmlUrl="http://westwinghistoryclass.libsyn.com/rss"  htmlUrl="http://westwinghistoryclass.libsyn.com/podcast" />
+<outline text="The West Wing Weekly" type="rss" xmlUrl="http://feeds.feedburner.com/westwingweekly"  htmlUrl="http://westwingweekly.com/" />
+<outline text="USA 2016: Road to The Whitehouse" type="rss" xmlUrl="http://www.usa2016.at/feed/podcast"  htmlUrl="http://www.usa2016.at/" />
+<outline text="Writers&#39; Bloc Podcast" type="rss" xmlUrl="http://feeds.soundcloud.com/users/soundcloud:users:24423170/sounds.rss"  htmlUrl="http://writersblocpodcast.com/" />
+<outline text="zurPolitik.com" type="rss" xmlUrl="http://zurpolitik.com/feed/podcast/"  htmlUrl="http://zurpolitik.com" />
+<outline text="Übermedien" type="rss" xmlUrl="https://feeds.soundcloud.com/users/soundcloud:users:191231473/sounds.rss"  htmlUrl="http://uebermedien.de" />
+</body>
+</opml>

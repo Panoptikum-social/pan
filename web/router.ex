@@ -20,6 +20,10 @@ defmodule Pan.Router do
     get "/", PageController, :index
     resources "/users",    UserController, only: [:index, :show, :new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+  end
+
+  scope "/admin", Pan do
+    pipe_through [:browser, :authenticate_admin]
     resources "/podcasts", PodcastController
     resources "/languages", LanguageController
     resources "/feeds", FeedController
