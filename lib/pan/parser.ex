@@ -8,6 +8,7 @@ defmodule Pan.Parser do
 
   @path_to_file "materials/freakshow.xml"
 
+
   def update() do
     path_to_file = @path_to_file
 
@@ -22,6 +23,7 @@ defmodule Pan.Parser do
     end
   end
 
+
   def find_or_create_owner(path_to_file) do
     {:ok, feed_owner} = parse_owner(path_to_file)
 
@@ -33,6 +35,7 @@ defmodule Pan.Parser do
           {:ok, user}
       end
   end
+
 
   def read_feed(path_to_file) do
     File.read(path_to_file)
@@ -46,21 +49,21 @@ defmodule Pan.Parser do
     website = xml |> xpath(~x"//channel/link/text()"s)
     description = xml |> xpath(~x"//channel/description/text()"s)
     summary = xml |> xpath(~x"//channel/itunes:summary/text()"s)
+    author = xml |> xpath(~x"//channel/itunes:author/text()"s)
+    explicit = xml |> xpath(~x"//channel/itunes:iexplicit/text()"s)
+
     image = xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
                                               url: ~x"./url/text()"s)
+    payment_link = xml |> xpath(~x"//channel/atom:link[@rel='payment']",
+                                title: ~x"./@title"s,
+                                url: ~x"./@href"s)
+
     {:ok, language} = xml
                       |> xpath(~x"//channel/language/text()"s)
                       |> find_language
     {:ok, last_build_date} = xml
                              |> xpath(~x"//channel/lastBuildDate/text()"s)
                              |> Timex.parse("{RFC1123}")
-    payment_link = xml
-                   |> xpath(~x"//channel/atom:link[@rel='payment']",
-                            title: ~x"./@title"s,
-                            url: ~x"./@href"s)
-    author = xml |> xpath(~x"//channel/itunes:author/text()"s)
-    explicit = xml |> xpath(~x"//channel/itunes:iexplicit/text()"s)
-
 
     podcast = %Podcast{title: title,
                        website: website,
@@ -80,9 +83,11 @@ defmodule Pan.Parser do
     {:ok, podcast}
   end
 
+
   def find_language(shortcode) do
     {:ok, Repo.get_by(Language, shortcode: shortcode)}
   end
+
 
   def parse_owner(path_to_file) do
     {:ok, xml} = read_feed(path_to_file)
@@ -95,6 +100,7 @@ defmodule Pan.Parser do
     File.close xml
     {:ok, %User{name: owner.name, email: owner.email, username: owner.email}}
   end
+
 
   def parse_feed(path_to_file) do
     {:ok, xml} = read_feed(path_to_file)
@@ -121,6 +127,7 @@ defmodule Pan.Parser do
     File.close xml
     {:ok, feed}
   end
+
 
   def parse_all_the_rest(path_to_file) do
     {:ok, xml} = read_feed(path_to_file)
