@@ -1,11 +1,28 @@
 defmodule Pan.Parser do
+  use Pan.Web, :controller
+  alias Pan.Feed
+  alias Pan.Podcast
+  import SweetXml
 
-  def parse do
-    import SweetXml
+  def update do
+    {:ok, feed} = parse_feed()
 
-    {:ok, xml} = File.read "materials/freakshow.xml.orig"
+    case Repo.get_by(Feed, self_link_url: feed.self_link_url) do
+      nil ->
+        IO.puts "not found"
+      feed ->
+        IO.puts "feed found"
+    end
+  end
+ 
+  def read_feed do
+    File.read "materials/freakshow.xml"
+  end
 
-    # podcast
+
+  def parse_podcast do
+    {:ok, xml} = read_feed()
+
     title = xml |> xpath(~x"//channel/title/text()"s)
     website = xml |> xpath(~x"//channel/link/text()"s)
     description = xml |> xpath(~x"//channel/description/text()"s)
@@ -28,17 +45,37 @@ defmodule Pan.Parser do
     author = xml |> xpath(~x"//channel/itunes:author/text()"s)
     explicit = xml |> xpath(~x"//channel/itunes:explicit/text()"s)
 
-    #feed
+    File.close xml
+  end
+
+  def parse_feed do
+    {:ok, xml} = read_feed()
+    
     self_link = xml
                 |> xpath(~x"//channel/atom:link[@rel='self']",
                          title: ~x"./@title"s,
                          url: ~x"./@href"s)
-    next_page_url =  xml |> xpath(~x"//channel/atom:link[@rel='next']//@href"s)
-    prev_page_url =  xml |> xpath(~x"//channel/atom:link[@rel='prev']//@href"s)
+    next_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='next']//@href"s)
+    prev_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='prev']//@href"s)
     first_page_url = xml |> xpath(~x"//channel/atom:link[@rel='first']//@href"s)
-    last_page_url =  xml |> xpath(~x"//channel/atom:link[@rel='last']//@href"s)
-    hub_link_url =   xml |> xpath(~x"//channel/atom:link[@rel='hub']//@href"s)
-    feed_generator =  xml |> xpath(~x"//channel/generator/text()"s)
+    last_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='last']//@href"s)
+    hub_link_url   = xml |> xpath(~x"//channel/atom:link[@rel='hub']//@href"s)
+    feed_generator = xml |> xpath(~x"//channel/generator/text()"s)
+
+    feed = %Feed{self_link_title: self_link.title,
+                 self_link_url:   self_link.url,
+                 next_page_url:   next_page_url,
+                 prev_page_url:   prev_page_url,
+                 first_page_url:  first_page_url,
+                 last_page_url:   last_page_url,
+                 hub_link_url:    hub_link_url,
+                 feed_generator:  feed_generator}
+    File.close xml                     
+    {:ok, feed}
+  end
+
+  def parse_all_the_rest do
+    {:ok, xml} = read_feed()
 
     alternate_feeds = xml
                       |> xpath(~x"//channel/atom:link[@rel='alternate']"l,
@@ -102,7 +139,6 @@ defmodule Pan.Parser do
                                 |> xpath(~x"./itunes:summary/text()"s)
                      }
                    end
-
     File.close xml
   end
 end
