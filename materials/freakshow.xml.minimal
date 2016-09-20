@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/~files/feed-premium.xsl"?>
+
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:bitlove="http://bitlove.org" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:psc="http://podlove.org/simple-chapters" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:feedpress="https://feed.press/xmlns" version="2.0">
+  <channel>
+    <feedpress:locale>en</feedpress:locale>
+    <title>Freak Show</title>
+    <link>http://freakshow.fm</link>
+    <description>Menschen! Technik! Sensationen!</description>
+    <lastBuildDate>Thu, 01 Sep 2016 00:31:01 +0000</lastBuildDate>
+    <image>
+      <url>http://freakshow.fm/wp-content/cache/podlove/88/f24a931ad4a10e394270edf037e877/freak-show_original.jpg</url>
+      <title>Freak Show</title>
+      <link>http://freakshow.fm</link>
+    </image>
+
+    <atom:link rel="self" type="application/rss+xml" title="Freak Show (MP3 Audio)" href="http://feeds.metaebene.me/freakshow/mp3"/>
+    <atom:link rel="alternate" type="application/rss+xml" title="Freak Show (MPEG-4 AAC Audio)" href="http://freakshow.fm/feed/m4a"/>
+    <atom:link rel="alternate" type="application/rss+xml" title="Freak Show (Ogg Vorbis Audio)" href="http://freakshow.fm/feed/oga"/>
+    <atom:link rel="alternate" type="application/rss+xml" title="Freak Show (Ogg Opus Audio)" href="http://freakshow.fm/feed/opus"/>
+
+    <atom:link rel="next" href="http://freakshow.fm/feed/mp3?paged=2"/>
+    <atom:link rel="first" href="http://freakshow.fm/feed/mp3"/>
+    <atom:link rel="last" href="http://freakshow.fm/feed/mp3?paged=7"/>
+    <language>de-DE</language>
+    <atom:link rel="hub" href="http://metaebene.superfeedr.com"/>
+    <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=timpritlove&amp;url=http%3A%2F%2Ffreakshow.fm%2F&amp;language=de_DE&amp;category=audio&amp;title=Freak+Show&amp;description=Menschen%21+Technik%21+Sensationen%21&amp;tags=podcast%2C+freakshow%2C+tim+pritlove%2C+metaebene" type="text/html"/>
+
+    <atom:contributor>
+      <atom:name>Tim Pritlove</atom:name>
+      <atom:uri>http://tim.pritlove.org/</atom:uri>
+    </atom:contributor>
+
+    <generator>Podlove Podcast Publisher v2.4.0.build166</generator>
+
+    <itunes:author>Metaebene Personal Media - Tim Pritlove</itunes:author>
+
+    <itunes:summary>Die muntere Talk Show um Leben mit Technik, das Netz und Technikkultur. Bisweilen Apple-lastig aber selten einseitig. Wir leben und lieben Technologie und reden darüber. Mit Tim, hukl, roddi, Clemens und Denis. Freak Show hieß irgendwann mal mobileMacs.</itunes:summary>
+
+    <itunes:category text="Technology">
+      <itunes:category text="Tech News"/>
+    </itunes:category>
+    <itunes:category text="Society &amp; Culture"/>
+    <itunes:category text="Technology">
+      <itunes:category text="Gadgets"/>
+    </itunes:category>
+
+    <itunes:owner>
+      <itunes:name>Tim Pritlove</itunes:name>
+      <itunes:email>freakshow@metaebene.me</itunes:email>
+    </itunes:owner>
+
+    <itunes:image href="http://freakshow.fm/wp-content/cache/podlove/88/f24a931ad4a10e394270edf037e877/freak-show_original.jpg"/>
+    <itunes:subtitle>Menschen! Technik! Sensationen!</itunes:subtitle>
+
+    <itunes:block>no</itunes:block>
+    <itunes:explicit>no</itunes:explicit>
+
+    <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=timpritlove&amp;language=de_DE&amp;url=http%3A%2F%2Ffreakshow.fm&amp;title=Freak+Show&amp;description=Menschen%21+Technik%21+Sensationen%21" type="text/html"/>
+
+
+    <item>
+      <title>FS182 Britzelpieps</title>
+      <link>http://freakshow.fm/fs182-britzelpieps</link>
+      <pubDate>Thu, 01 Sep 2016 00:31:01 +0000</pubDate>
+      <guid isPermaLink="false">podlove-2016-08-31t22:41:23+00:00-4bbf2e18b9aec8e</guid>
+      <description><![CDATA[Nach einer sechswöchigen Auszeit meldet sich das Team zurück aus zahlreichen Urlauben von denen wir auch wechselseitig berichten. Außerdem reden wir über neue Podcast Apps und wie sie eigentlich sein sollten, Bloggen, Fahrstühle und das Elend mit den Passwörtern.]]></description>
+
+      <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=timpritlove&amp;url=http%3A%2F%2Ffreakshow.fm%2Ffs182-britzelpieps&amp;language=de_DE&amp;category=audio&amp;title=FS182+Britzelpieps&amp;tags=podcast%2C+freakshow%2C+tim+pritlove%2C+metaebene" type="text/html"/>
+
+      <atom:link rel="http://podlove.org/deep-link" href="http://freakshow.fm/fs182-britzelpieps#"/>
+
+      <enclosure url="http://tracking.feedpress.it/link/13454/4302869/fs182-britzelpieps.mp3" length="152765073" type="audio/mpeg" bitlove:guid="http://freakshow.fm/podlove/file/4642"/>
+
+      <itunes:duration>04:13:51</itunes:duration>
+
+      <itunes:author>Metaebene Personal Media - Tim Pritlove</itunes:author>
+
+      <itunes:subtitle>Pokémon Go — Podcast Apps — Bloggen — Urlaub — Health Tracking — EMF — Windows — Kopfhörerbuchsen — Fahrstühle — Per Anhalter durch die Galaxis — Passwörter — Python — Emerging Technology</itunes:subtitle>
+
+      <itunes:summary>Nach einer sechswöchigen Auszeit meldet sich das Team zurück aus zahlreichen Urlauben von denen wir auch wechselseitig berichten. Außerdem reden wir über neue Podcast Apps und wie sie eigentlich sein sollten, Bloggen, Fahrstühle und das Elend mit den Passwörtern.</itunes:summary>
+
+
+      <content:encoded><![CDATA[
+<p><b>Shownotes</b> in HTML</p>
+]]></content:encoded>
+
+      <psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
+        <psc:chapter start="00:00:00.000" title="Intro"/>
+        <psc:chapter start="00:01:17.280" title="Pokémon Go"/>
+        <psc:chapter start="00:06:53.869" title="Begrüßung"/>
+        <psc:chapter start="00:13:54.880" title="Podcast Apps"/>
+        <psc:chapter start="00:26:55.250" title="Bloggen"/>
+        <psc:chapter start="00:35:03.392" title="Google As A Fetish"/>
+        <psc:chapter start="00:38:44.499" title="Cloud Hype"/>
+        <psc:chapter start="00:44:03.093" title="Urlaub in Norwegen"/>
+        <psc:chapter start="00:53:23.180" title="E-Autos in Norwegen"/>
+        <psc:chapter start="00:55:43.572" title="Health Tracking"/>
+        <psc:chapter start="01:04:36.102" title="Roddi und die Apple Watch"/>
+        <psc:chapter start="01:09:34.428" title="Urlaub in Schweden und der Schweiz"/>
+        <psc:chapter start="01:24:07.064" title="EMF Camp"/>
+        <psc:chapter start="01:40:20.741" title="Windows 10"/>
+        <psc:chapter start="01:46:53.450" title="iPhone ohne Kopfhörerbuchse"/>
+        <psc:chapter start="02:09:51.910" title="Noch mehr Urlaub in Schweden"/>
+        <psc:chapter start="02:14:52.429" title="Fahrstühle"/>
+        <psc:chapter start="02:29:55.347" title="Elevator Algorithm"/>
+        <psc:chapter start="02:36:34.639" title="Per Anhalter durch die Galaxis"/>
+        <psc:chapter start="02:46:31.251" title="Passwort vergessen"/>
+        <psc:chapter start="03:09:07.136" title="Alternativen zum Passwort"/>
+        <psc:chapter start="03:24:42.388" title="Ausstieg aus der Computertechnologie"/>
+        <psc:chapter start="03:28:46.145" title="Berufliche Neuorientierungen"/>
+        <psc:chapter start="03:43:48.501" title="Lernen mit Python"/>
+        <psc:chapter start="03:59:27.839" title="Emerging Technology Hype Cycle"/>
+        <psc:chapter start="04:04:48.173" title="Ausklang"/>
+      </psc:chapters>
+
+      <atom:link rel="payment" title="Flattr this!" href="https://flattr.com/submit/auto?user_id=timpritlove&amp;language=de_DE&amp;url=http%3A%2F%2Ffreakshow.fm%2Ffs182-britzelpieps&amp;title=FS182+Britzelpieps&amp;description=Nach+einer+sechsw%C3%B6chigen+Auszeit+meldet+sich+das+Team+zur%C3%BCck+aus+zahlreichen+Urlauben+von+denen+wir+auch+wechselseitig+berichten.+Au%C3%9Ferdem+reden+wir+%C3%BCber+neue+Podcast+Apps+und+wie+sie+eigentlich+sein+sollten%2C+Bloggen%2C+Fahrst%C3%BChle+und+das+Elend+mit+den+Passw%C3%B6rtern." type="text/html"/>
+
+      <atom:contributor>
+        <atom:name>Tim Pritlove</atom:name>
+        <atom:uri>http://tim.pritlove.org/</atom:uri>
+      </atom:contributor>
+    </item>
+
+  </channel>
+</rss>
