@@ -14,16 +14,23 @@ defmodule Pan.Podcast do
     field :author, :string
     field :explicit, :boolean, default: false
     field :unique_identifier, Ecto.UUID
+    timestamps
+
     belongs_to :language, Pan.Language
-    belongs_to :owner, Pan.Owner
+    belongs_to :owner, Pan.User
+
+    has_many :episodes, Pan.Episode
+    has_many :feeds, Pan.Feed
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts"
     many_to_many :contributers, Pan.Contributer, join_through: "contributers_podcasts"
     many_to_many :listeners, Pan.User, join_through: "subscriptions"
     many_to_many :followers, Pan.User, join_through: "followers_podcasts"
-    timestamps
+
   end
 
-  @required_fields ~w(title website description summary image_title image_url last_build_date payment_link_title payment_link_url author explicit unique_identifier)
+  @required_fields ~w(title website description summary image_title image_url
+                      last_build_date payment_link_title payment_link_url author explicit
+                      unique_identifier)
   @optional_fields ~w()
 
   @doc """

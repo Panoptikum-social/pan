@@ -4,8 +4,9 @@ defmodule Pan.Language do
   schema "languages" do
     field :shortcode, :string
     field :name, :string
-
     timestamps
+
+    has_many :podcasts, Pan.Podcast
   end
 
   @required_fields ~w(shortcode name)

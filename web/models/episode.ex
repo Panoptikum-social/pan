@@ -15,10 +15,13 @@ defmodule Pan.Episode do
     field :author, :string
     field :subtitle, :string
     field :summary, :string
-    belongs_to :podcast, Pan.Podcast
-    many_to_many :contributers, Pan.Contributer, join_through: "contributers_episodes"
-
     timestamps
+
+    belongs_to :podcast, Pan.Podcast
+
+    has_many :chapters, Pan.Chapter
+    has_many :enclosures, Pan.Enclosure
+    many_to_many :contributers, Pan.Contributer, join_through: "contributers_episodes"
   end
 
   @required_fields ~w(title link publishing_date guid description shownotes payment_link_title payment_link_url deep_link duration author subtitle summary)

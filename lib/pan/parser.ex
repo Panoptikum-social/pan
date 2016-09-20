@@ -2,55 +2,103 @@ defmodule Pan.Parser do
   use Pan.Web, :controller
   alias Pan.Feed
   alias Pan.Podcast
+  alias Pan.User
+  alias Pan.Language
   import SweetXml
 
-  def update do
-    {:ok, feed} = parse_feed()
+  @path_to_file "materials/freakshow.xml"
+
+  def update() do
+    path_to_file = @path_to_file
+
+    {:ok, feed} = parse_feed(path_to_file)
 
     case Repo.get_by(Feed, self_link_url: feed.self_link_url) do
       nil ->
-        IO.puts "not found"
+        {:ok, owner} = find_or_create_owner(path_to_file)
+
       feed ->
-        IO.puts "feed found"
+        IO.puts "feed found, do nothing"
     end
   end
- 
-  def read_feed do
-    File.read "materials/freakshow.xml"
+
+  def find_or_create_owner(path_to_file) do
+    {:ok, feed_owner} = parse_owner(path_to_file)
+
+    {:ok, owner} =
+      case Repo.get_by(User, email: feed_owner.email) do
+        nil ->
+           Repo.insert(feed_owner)
+        user ->
+          {:ok, user}
+      end
+  end
+
+  def read_feed(path_to_file) do
+    File.read(path_to_file)
   end
 
 
-  def parse_podcast do
-    {:ok, xml} = read_feed()
+  def parse_podcast(path_to_file) do
+    {:ok, xml} = read_feed(path_to_file)
 
     title = xml |> xpath(~x"//channel/title/text()"s)
     website = xml |> xpath(~x"//channel/link/text()"s)
     description = xml |> xpath(~x"//channel/description/text()"s)
-    language = xml |> xpath(~x"//channel/language/text()"s)
     summary = xml |> xpath(~x"//channel/itunes:summary/text()"s)
-    image = xml
-            |> xpath(~x"//channel/image",
-                     title: ~x"./title/text()"s,
-                     url: ~x"./url/text()"s)
-    last_build_date = xml |> xpath(~x"//channel/lastBuildDate/text()"s)
-                      |> Timex.parse("{RFC1123}")
+    image = xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
+                                              url: ~x"./url/text()"s)
+    {:ok, language} = xml
+                      |> xpath(~x"//channel/language/text()"s)
+                      |> find_language
+    {:ok, last_build_date} = xml
+                             |> xpath(~x"//channel/lastBuildDate/text()"s)
+                             |> Timex.parse("{RFC1123}")
     payment_link = xml
-                   |> xpath(~x"//channel/atom:link[@rel='payment']"s,
+                   |> xpath(~x"//channel/atom:link[@rel='payment']",
                             title: ~x"./@title"s,
                             url: ~x"./@href"s)
-    owner = xml
-            |> xpath(~x"//channel/itunes:owner",
-                     name: ~x"./itunes:name/text()"s,
-                     email: ~x"./itunes:email/text()"s)
     author = xml |> xpath(~x"//channel/itunes:author/text()"s)
-    explicit = xml |> xpath(~x"//channel/itunes:explicit/text()"s)
+    explicit = xml |> xpath(~x"//channel/itunes:iexplicit/text()"s)
 
+
+    podcast = %Podcast{title: title,
+                       website: website,
+                       description: description,
+                       language_id: language.id,
+                       summary: summary,
+                       image_title: image.title,
+                       image_url: image.url,
+                       last_build_date: last_build_date,
+                       payment_link_title: payment_link.title,
+                       payment_link_url: payment_link.url,
+                       author: author,
+                       explicit: false
+                       }
     File.close xml
+
+    {:ok, podcast}
   end
 
-  def parse_feed do
-    {:ok, xml} = read_feed()
-    
+  def find_language(shortcode) do
+    {:ok, Repo.get_by(Language, shortcode: shortcode)}
+  end
+
+  def parse_owner(path_to_file) do
+    {:ok, xml} = read_feed(path_to_file)
+
+    owner = xml
+        |> xpath(~x"//channel/itunes:owner",
+                 name: ~x"./itunes:name/text()"s,
+                 email: ~x"./itunes:email/text()"s)
+
+    File.close xml
+    {:ok, %User{name: owner.name, email: owner.email, username: owner.email}}
+  end
+
+  def parse_feed(path_to_file) do
+    {:ok, xml} = read_feed(path_to_file)
+
     self_link = xml
                 |> xpath(~x"//channel/atom:link[@rel='self']",
                          title: ~x"./@title"s,
@@ -70,12 +118,12 @@ defmodule Pan.Parser do
                  last_page_url:   last_page_url,
                  hub_link_url:    hub_link_url,
                  feed_generator:  feed_generator}
-    File.close xml                     
+    File.close xml
     {:ok, feed}
   end
 
-  def parse_all_the_rest do
-    {:ok, xml} = read_feed()
+  def parse_all_the_rest(path_to_file) do
+    {:ok, xml} = read_feed(path_to_file)
 
     alternate_feeds = xml
                       |> xpath(~x"//channel/atom:link[@rel='alternate']"l,
@@ -94,7 +142,7 @@ defmodule Pan.Parser do
 
     episodes =  xml
                 |> xpath(~x"//channel/item"l)
-                |> Enum.map fn (episode) ->
+                |> Enum.map( fn (episode) ->
                      %{
                        title: episode
                               |> xpath(~x"./title/text()"s),
@@ -138,7 +186,7 @@ defmodule Pan.Parser do
                        summary: episode
                                 |> xpath(~x"./itunes:summary/text()"s)
                      }
-                   end
+                   end )
     File.close xml
   end
 end

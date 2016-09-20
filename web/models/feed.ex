@@ -10,9 +10,10 @@ defmodule Pan.Feed do
     field :last_page_url, :string
     field :hub_link_url, :string
     field :feed_generator, :string
-    belongs_to :podcast, Pan.Podcast
-
     timestamps
+
+    belongs_to :podcast, Pan.Podcast
+    has_many :alternate_feeds, Pan.AlternateFeed
   end
 
   @required_fields ~w(self_link_title self_link_url next_page_url prev_page_url first_page_url last_page_url hub_link_url feed_generator)
