@@ -5,17 +5,10 @@
     <tr>
       <th>Title</th>
       <th>Website</th>
-      <th>Description</th>
       <th>Language</th>
-      <th>Summary</th>
-      <th>Image title</th>
-      <th>Image url</th>
+      <th>Image</th>
       <th>Last build date</th>
-      <th>Payment link title</th>
-      <th>Payment link url</th>
-      <th>Owner</th>
       <th>Author</th>
-      <th>Explicit</th>
       <th>Unique identifier</th>
 
       <th></th>
@@ -25,18 +18,11 @@
 <%= for podcast <- @podcasts do %>
     <tr>
       <td><%= podcast.title %></td>
-      <td><%= podcast.website %></td>
-      <td><%= podcast.description %></td>
+      <td><a href="<%= podcast.website %>"><%= podcast.website %></a></td>
       <td><%= podcast.language_id %></td>
-      <td><%= podcast.summary %></td>
-      <td><%= podcast.image_title %></td>
-      <td><%= podcast.image_url %></td>
+      <td><img src="<%= podcast.image_url %>" alt="<%= podcast.image_title%>" width="50"/></td>
       <td><%= podcast.last_build_date %></td>
-      <td><%= podcast.payment_link_title %></td>
-      <td><%= podcast.payment_link_url %></td>
-      <td><%= podcast.owner_id %></td>
       <td><%= podcast.author %></td>
-      <td><%= podcast.explicit %></td>
       <td><%= podcast.unique_identifier %></td>
 
       <td class="text-right">

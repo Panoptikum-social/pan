@@ -1,78 +1,49 @@
 <h2>Show podcast</h2>
 
-<ul>
+<dl class="dl-horizontal">
 
-  <li>
-    <strong>Title:</strong>
-    <%= @podcast.title %>
-  </li>
+  <dt>Title</dt>
+  <dd><%= @podcast.title %></dd>
 
-  <li>
-    <strong>Website:</strong>
-    <%= @podcast.website %>
-  </li>
+  <dt>Website</dt>
+  <dd><%= @podcast.website %></dd>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @podcast.description %>
-  </li>
+  <dt>Description</dt>
+  <dd><%= @podcast.description %></dd>
 
-  <li>
-    <strong>Language:</strong>
-    <%= @podcast.language_id %>
-  </li>
+  <dt>Language</dt>
+  <dd><%= @podcast.language_id %></dd>
 
-  <li>
-    <strong>Summary:</strong>
-    <%= @podcast.summary %>
-  </li>
+  <dt>Summary</dt>
+  <dd><%= @podcast.summary %></dd>
 
-  <li>
-    <strong>Image title:</strong>
-    <%= @podcast.image_title %>
-  </li>
+  <dt>Image title</dt>
+  <dd><%= @podcast.image_title %></dd>
 
-  <li>
-    <strong>Image url:</strong>
-    <%= @podcast.image_url %>
-  </li>
+  <dt>Image url</dt>
+  <dd><%= @podcast.image_url %></dd>
 
-  <li>
-    <strong>Last build date:</strong>
-    <%= @podcast.last_build_date %>
-  </li>
+  <dt>Last build date</dt>
+  <dd><%= @podcast.last_build_date %></dd>
 
-  <li>
-    <strong>Payment link title:</strong>
-    <%= @podcast.payment_link_title %>
-  </li>
+  <dt>Payment link title</dt>
+  <dd><%= @podcast.payment_link_title %></dd>
 
-  <li>
-    <strong>Payment link url:</strong>
-    <%= @podcast.payment_link_url %>
-  </li>
+  <dt>Payment link url</dt>
+  <dd><%= @podcast.payment_link_url %></dd>
 
-  <li>
-    <strong>Owner:</strong>
-    <%= @podcast.owner_id %>
-  </li>
+  <dt>Owner</dt>
+  <dd><%= @podcast.owner_id %></dd>
 
-  <li>
-    <strong>Author:</strong>
-    <%= @podcast.author %>
-  </li>
+  <dt>Author</dt>
+  <dd><%= @podcast.author %></dd>
 
-  <li>
-    <strong>Explicit:</strong>
-    <%= @podcast.explicit %>
-  </li>
+  <dt>Explicit</dt>
+  <dd><%= @podcast.explicit %></dd>
 
-  <li>
-    <strong>Unique identifier:</strong>
-    <%= @podcast.unique_identifier %>
-  </li>
+  <dt>Unique identifier</dt>
+  <dd><%= @podcast.unique_identifier %></dd>
+</dl>
 
-</ul>
-
-<%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %>
+<%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %> -
 <%= link "Back", to: podcast_path(@conn, :index) %>

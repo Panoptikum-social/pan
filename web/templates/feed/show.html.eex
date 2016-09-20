@@ -1,53 +1,34 @@
 <h2>Show feed</h2>
 
-<ul>
+<dl class="dl-horizontal">
 
-  <li>
-    <strong>Self link title:</strong>
-    <%= @feed.self_link_title %>
-  </li>
+  <dt>Self link title<dt>
+  <dd><%= @feed.self_link_title %></dd>
 
-  <li>
-    <strong>Self link url:</strong>
-    <%= @feed.self_link_url %>
-  </li>
+  <dt>Self link url</dt>
+  <dd><%= @feed.self_link_url %></dd>
 
-  <li>
-    <strong>Next page url:</strong>
-    <%= @feed.next_page_url %>
-  </li>
+  <dt>Next page url</dt>
+  <dd><%= @feed.next_page_url %></dd>
 
-  <li>
-    <strong>Prev page url:</strong>
-    <%= @feed.prev_page_url %>
-  </li>
+  <dt>Prev page url</dt>
+  <dd><%= @feed.prev_page_url %></dd>
 
-  <li>
-    <strong>First page url:</strong>
-    <%= @feed.first_page_url %>
-  </li>
+  <dt>First page url</dt>
+  <dd><%= @feed.first_page_url %></dd>
 
-  <li>
-    <strong>Last page url:</strong>
-    <%= @feed.last_page_url %>
-  </li>
+  <dt>Last page url</dt>
+  <dd><%= @feed.last_page_url %></dd>
 
-  <li>
-    <strong>Hub link url:</strong>
-    <%= @feed.hub_link_url %>
-  </li>
+  <dt>Hub link url</dt>
+  <dd><%= @feed.hub_link_url %></dd>
 
-  <li>
-    <strong>Feed generator:</strong>
-    <%= @feed.feed_generator %>
-  </li>
+  <dt>Feed generator</dt>
+  <dd><%= @feed.feed_generator %></dd>
 
-  <li>
-    <strong>Podcast:</strong>
-    <%= @feed.podcast_id %>
-  </li>
-
-</ul>
+  <dt>Podcast</dt>
+  <dd><%= @feed.podcast_id %></dd>
+</dl>
 
 <%= link "Edit", to: feed_path(@conn, :edit, @feed) %>
 <%= link "Back", to: feed_path(@conn, :index) %>
