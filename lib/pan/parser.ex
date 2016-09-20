@@ -18,6 +18,12 @@ defmodule Pan.Parser do
       nil ->
         {:ok, owner} = find_or_create_owner(path_to_file)
 
+        {:ok, podcast} = parse_podcast(path_to_file)
+        {:ok, podcast} = Repo.insert(%{podcast | owner_id: owner.id})
+
+        {:ok, feed} = parse_feed(path_to_file)
+        {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
+
       feed ->
         IO.puts "feed found, do nothing"
     end
@@ -50,7 +56,9 @@ defmodule Pan.Parser do
     description = xml |> xpath(~x"//channel/description/text()"s)
     summary = xml |> xpath(~x"//channel/itunes:summary/text()"s)
     author = xml |> xpath(~x"//channel/itunes:author/text()"s)
-    explicit = xml |> xpath(~x"//channel/itunes:iexplicit/text()"s)
+    explicit = xml 
+               |> xpath(~x"//channel/itunes:iexplicit/text()"s) 
+               |> boolify
 
     image = xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
                                               url: ~x"./url/text()"s)
@@ -61,9 +69,9 @@ defmodule Pan.Parser do
     {:ok, language} = xml
                       |> xpath(~x"//channel/language/text()"s)
                       |> find_language
-    {:ok, last_build_date} = xml
-                             |> xpath(~x"//channel/lastBuildDate/text()"s)
-                             |> Timex.parse("{RFC1123}")
+    last_build_date = xml
+                      |> xpath(~x"//channel/lastBuildDate/text()"s)
+                      |> to_ecto_datetime
 
     podcast = %Podcast{title: title,
                        website: website,
@@ -84,6 +92,24 @@ defmodule Pan.Parser do
   end
 
 
+  def to_ecto_datetime(feed_date) do
+    {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
+    # why can't I pipe here?
+    erltime = Timex.to_erl(datetime)
+    Ecto.DateTime.from_erl(erltime)
+  end
+
+
+  def boolify(explicit) do
+    case explicit do
+      "yes" ->
+        true
+      _ ->
+        false
+    end    
+  end
+
+
   def find_language(shortcode) do
     {:ok, Repo.get_by(Language, shortcode: shortcode)}
   end
@@ -98,7 +124,10 @@ defmodule Pan.Parser do
                  email: ~x"./itunes:email/text()"s)
 
     File.close xml
-    {:ok, %User{name: owner.name, email: owner.email, username: owner.email}}
+    {:ok, %User{name: owner.name, 
+                email: owner.email, 
+                username: owner.email, 
+                podcaster: true}}
   end
 
 
