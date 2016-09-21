@@ -27,8 +27,6 @@ defmodule Pan.Parser do
         {ok, episodes} = parse_episodes(xml)
         find_or_create_episodes(episodes, feed.podcast_id)
     end
-
-    File.close xml
   end
 
 
@@ -80,20 +78,27 @@ defmodule Pan.Parser do
   def create_categories(xml, podcast) do
     {:ok, categories} = parse_categories(xml)
 
-    for category <- categories do
+    for xml_category <- categories do
       category =
-        if category.subtitle == nil  do
-          Category.find_or_create(category)
+        if xml_category.subtitle == "" do
+          find_or_create(%Category{title: xml_category.title})
         else
-          parent = Category.find_or_create(%Category{title: category.title})
-          Category.find_or_create(%Category{title: category.subtitle,
-                                            parent_id: parent.id})
+          parent = find_or_create(%Category{title: xml_category.title})
+          find_or_create(%Category{title: xml_category.subtitle,
+                                   parent_id: parent.id})
         end
 
       associate(category, podcast)
     end
   end
 
+
+  def find_or_create(category) do
+    if !Repo.get_by(Category, title: category.title) do
+      Repo.insert(category)
+    end
+    Repo.get_by(Category, title: category.title)
+  end
 
   def associate(instance, podcast) do
     instance

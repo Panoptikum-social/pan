@@ -7,7 +7,9 @@ defmodule Pan.EpisodeController do
 
   def index(conn, _params) do
     episodes = Repo.all(Episode)
-    episodes = Repo.preload(episodes,:podcast)
+    unless episodes == nil do
+      episodes = Repo.preload(episodes,:podcast)
+    end
     render(conn, "index.html", episodes: episodes)
   end
 
