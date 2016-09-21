@@ -1,6 +1,6 @@
-<h2>New contributer</h2>
+<h2>New contributor</h2>
 
 <%= render "form.html", changeset: @changeset,
-                        action: contributer_path(@conn, :create) %>
+                        action: contributor_path(@conn, :create) %>
 
-<%= link "Back", to: contributer_path(@conn, :index) %>
+<%= link "Back", to: contributor_path(@conn, :index) %>

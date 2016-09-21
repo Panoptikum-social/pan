@@ -1,23 +1,23 @@
-<h2>Show contributer</h2>
+<h2>Show contributor</h2>
 
 <ul>
 
   <li>
     <strong>Name:</strong>
-    <%= @contributer.name %>
+    <%= @contributor.name %>
   </li>
 
   <li>
     <strong>Uri:</strong>
-    <%= @contributer.uri %>
+    <%= @contributor.uri %>
   </li>
 
   <li>
     <strong>User:</strong>
-    <%= @contributer.user_id %>
+    <%= @contributor.user_id %>
   </li>
 
 </ul>
 
-<%= link "Edit", to: contributer_path(@conn, :edit, @contributer) %>
-<%= link "Back", to: contributer_path(@conn, :index) %>
+<%= link "Edit", to: contributor_path(@conn, :edit, @contributor) %>
+<%= link "Back", to: contributor_path(@conn, :index) %>

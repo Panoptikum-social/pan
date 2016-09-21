@@ -1,5 +1,6 @@
 defmodule Pan.Category do
   use Pan.Web, :model
+  alias Pan.Repo
 
   schema "categories" do
     field :title, :string
@@ -21,5 +22,15 @@ defmodule Pan.Category do
   def changeset(model, params \\ :empty) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+
+  def find_or_create(category) do
+    query = from c in category,
+            where: c.title == ^category.title
+    if !Repo.one(query)  do
+      Repo.insert(category)
+    end
+    Repo.one(query)
   end
 end

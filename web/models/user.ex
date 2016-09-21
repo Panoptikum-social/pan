@@ -12,7 +12,7 @@ defmodule Pan.User do
     timestamps
 
     has_many :owned_podcasts, Pan.Podcast, foreign_key: "owner_id"
-    has_many :contributer_identities, Pan.Contributer
+    has_many :contributor_identities, Pan.Contributor
 
     many_to_many :subscribed_podcasts, Pan.Podcast, join_through: "subscriptions"
     many_to_many :followed_podcasts,   Pan.Podcast, join_through: "followers_podcasts"

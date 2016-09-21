@@ -6,6 +6,11 @@ defmodule Pan.Parser do
   alias Pan.Language
   alias Pan.Episode
   alias Pan.AlternateFeed
+  alias Pan.Contributor
+  alias Pan.Category
+  alias Pan.Chapter
+  alias Pan.Enclosure
+  alias Pan.Repo
   import SweetXml
 
   @path_to_file "materials/freakshow.xml"
@@ -46,16 +51,24 @@ defmodule Pan.Parser do
     {:ok, alternate_feeds} = parse_alternate_feeds(xml)
 
     for alternate_feed <- alternate_feeds do
-      {:ok, alternate_feed} = create_alternate_feed(alternate_feed, feed.id)
+      {:ok, _alternate_feed} = create_alternate_feed(alternate_feed, feed.id)
     end
   end
 
 
+  def create_alternate_feed(alternate_feed, feed_id) do
+    Repo.insert(
+      %AlternateFeed{title:    alternate_feed.title,
+                      url:     alternate_feed.url,
+                      feed_id: feed_id})
+  end
+
+
   def create_contributors(xml, podcast) do
-    {:ok, contributors} = parse_contributers(xml)
+    {:ok, contributors} = parse_contributors(xml)
 
     for contributor <- contributors do
-      if Repo.get_by(Contributor, uri: episode.uri) == nil do
+      if Repo.get_by(Contributor, uri: contributor.uri) == nil do
         {:ok, contributor} = create_contributor(contributor)
 
         associate(contributor, podcast)
@@ -67,13 +80,14 @@ defmodule Pan.Parser do
   def create_categories(xml, podcast) do
     {:ok, categories} = parse_categories(xml)
 
-    for category <- category do
+    for category <- categories do
       category =
         if category.subtitle == nil  do
           Category.find_or_create(category)
         else
-          parent = Category.find_or_create(%Category{title: title})
-          Category.find_or_create(%{category | parent_id: parent.id})
+          parent = Category.find_or_create(%Category{title: category.title})
+          Category.find_or_create(%Category{title: category.subtitle,
+                                            parent_id: parent.id})
         end
 
       associate(category, podcast)
@@ -90,40 +104,24 @@ defmodule Pan.Parser do
   end
 
 
-  def create_contributers(alternate_feed, feed_id) do
-    Repo.insert(
-      %Alternate_Feed{title:   contributor.title,
-                      url:     contributor.url,
-                      feed_id: feed_id})
-  end
-
-
-  def create_alternate_feed(alternate_feed, feed_id) do
-    Repo.insert(
-      %Alternate_Feed{title:   contributor.title,
-                      url:     contributor.url,
-                      feed_id: feed_id})
-  end
-
-
   def find_or_create_episodes(episodes, podcast_id) do
-    for episode <- episodes do
-      if (Repo.get_by(Episode, guid: episode.guid) == nil and
-          Repo.get_by(Episode, link: episode.link) == nil) do
+    for xml_episode <- episodes do
+      if (Repo.get_by(Episode, guid: xml_episode.guid) == nil and
+          Repo.get_by(Episode, link: xml_episode.link) == nil) do
 
-        {:ok, episode} = create_episode(episode, podcast_id)
+        {:ok, episode} = create_episode(xml_episode, podcast_id)
 
-        for chapter <- episode.chapters do
-          {:ok, chapter} = create_chapter(chapter, episode.id)
+        for chapter <- xml_episode.chapters do
+          {:ok, _chapter} = create_chapter(chapter, episode.id)
         end
 
-        for enclosure <- episode.enclosures do
-          {:ok, enclosure} = create_enclosure(enclosure, episode_id)
-        end
+      #  for enclosure <- xml_episode.enclosures do
+      #    {:ok, _enclosure} = create_enclosure(enclosure, episode.id)
+      #   end
 
-        for contributor <- episode.contributors do
-          {:ok, contributor} = find_or_create_episode_contributor(contributor, episode)
-        end
+      #   for contributor <- xml_episode.contributors do
+      #     {:ok, _contributor} = find_or_create_episode_contributor(contributor, episode)
+      #   end
       end
     end
   end
@@ -151,7 +149,7 @@ defmodule Pan.Parser do
 
   def create_enclosure(enclosure, episode_id) do
     Repo.insert(
-      %Chapter{url:        enclosure.url,
+      %Enclosure{url:        enclosure.url,
                length:     enclosure.length,
                type:       enclosure.type,
                guid:       enclosure.guid,
@@ -176,7 +174,7 @@ defmodule Pan.Parser do
                description:        episode.description,
                shownotes:          episode.shownotes,
                payment_link_title: episode.payment_link.title,
-               payment_link_url:   episode.payment_link.url,
+               payment_link_url:   String.slice(episode.payment_link.url, 0, 255),
                deep_link:          episode.deep_link,
                duration:           episode.duration,
                author:             episode.author,
@@ -196,6 +194,8 @@ defmodule Pan.Parser do
         user ->
           {:ok, user}
       end
+
+    {:ok, owner}
   end
 
 
@@ -233,7 +233,7 @@ defmodule Pan.Parser do
                        payment_link_title: payment_link.title,
                        payment_link_url: payment_link.url,
                        author: author,
-                       explicit: false
+                       explicit: explicit
                        }
     {:ok, podcast}
   end
@@ -360,12 +360,12 @@ defmodule Pan.Parser do
   end
 
 
-  def parse_contributers(xml) do
-    contributers = xml
+  def parse_contributors(xml) do
+    contributors = xml
                    |> xpath(~x"//channel/atom:contributor"l,
                             name: ~x"./atom:name/text()"s,
                             uri: ~x"./atom:uri/text()"s)
-    {:ok, contributers}
+    {:ok, contributors}
   end
 
 

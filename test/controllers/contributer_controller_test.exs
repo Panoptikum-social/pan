@@ -1,66 +1,66 @@
-defmodule Pan.ContributerControllerTest do
+defmodule Pan.ContributorControllerTest do
   use Pan.ConnCase
 
-  alias Pan.Contributer
+  alias Pan.Contributor
   @valid_attrs %{name: "some content", uri: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
-    conn = get conn, contributer_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing contributers"
+    conn = get conn, contributor_path(conn, :index)
+    assert html_response(conn, 200) =~ "Listing contributors"
   end
 
   test "renders form for new resources", %{conn: conn} do
-    conn = get conn, contributer_path(conn, :new)
-    assert html_response(conn, 200) =~ "New contributer"
+    conn = get conn, contributor_path(conn, :new)
+    assert html_response(conn, 200) =~ "New contributor"
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, contributer_path(conn, :create), contributer: @valid_attrs
-    assert redirected_to(conn) == contributer_path(conn, :index)
-    assert Repo.get_by(Contributer, @valid_attrs)
+    conn = post conn, contributor_path(conn, :create), contributor: @valid_attrs
+    assert redirected_to(conn) == contributor_path(conn, :index)
+    assert Repo.get_by(Contributor, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, contributer_path(conn, :create), contributer: @invalid_attrs
-    assert html_response(conn, 200) =~ "New contributer"
+    conn = post conn, contributor_path(conn, :create), contributor: @invalid_attrs
+    assert html_response(conn, 200) =~ "New contributor"
   end
 
   test "shows chosen resource", %{conn: conn} do
-    contributer = Repo.insert! %Contributer{}
-    conn = get conn, contributer_path(conn, :show, contributer)
-    assert html_response(conn, 200) =~ "Show contributer"
+    contributor = Repo.insert! %Contributor{}
+    conn = get conn, contributor_path(conn, :show, contributor)
+    assert html_response(conn, 200) =~ "Show contributor"
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
     assert_error_sent 404, fn ->
-      get conn, contributer_path(conn, :show, -1)
+      get conn, contributor_path(conn, :show, -1)
     end
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    contributer = Repo.insert! %Contributer{}
-    conn = get conn, contributer_path(conn, :edit, contributer)
-    assert html_response(conn, 200) =~ "Edit contributer"
+    contributor = Repo.insert! %Contributor{}
+    conn = get conn, contributor_path(conn, :edit, contributor)
+    assert html_response(conn, 200) =~ "Edit contributor"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    contributer = Repo.insert! %Contributer{}
-    conn = put conn, contributer_path(conn, :update, contributer), contributer: @valid_attrs
-    assert redirected_to(conn) == contributer_path(conn, :show, contributer)
-    assert Repo.get_by(Contributer, @valid_attrs)
+    contributor = Repo.insert! %Contributor{}
+    conn = put conn, contributor_path(conn, :update, contributor), contributor: @valid_attrs
+    assert redirected_to(conn) == contributor_path(conn, :show, contributor)
+    assert Repo.get_by(Contributor, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    contributer = Repo.insert! %Contributer{}
-    conn = put conn, contributer_path(conn, :update, contributer), contributer: @invalid_attrs
-    assert html_response(conn, 200) =~ "Edit contributer"
+    contributor = Repo.insert! %Contributor{}
+    conn = put conn, contributor_path(conn, :update, contributor), contributor: @invalid_attrs
+    assert html_response(conn, 200) =~ "Edit contributor"
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    contributer = Repo.insert! %Contributer{}
-    conn = delete conn, contributer_path(conn, :delete, contributer)
-    assert redirected_to(conn) == contributer_path(conn, :index)
-    refute Repo.get(Contributer, contributer.id)
+    contributor = Repo.insert! %Contributor{}
+    conn = delete conn, contributor_path(conn, :delete, contributor)
+    assert redirected_to(conn) == contributor_path(conn, :index)
+    refute Repo.get(Contributor, contributor.id)
   end
 end

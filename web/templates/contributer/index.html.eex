@@ -1,4 +1,4 @@
-<h2>Listing contributers</h2>
+<h2>Listing contributors</h2>
 
 <table class="table">
   <thead>
@@ -11,20 +11,20 @@
     </tr>
   </thead>
   <tbody>
-<%= for contributer <- @contributers do %>
+<%= for contributor <- @contributors do %>
     <tr>
-      <td><%= contributer.name %></td>
-      <td><%= contributer.uri %></td>
-      <td><%= contributer.user_id %></td>
+      <td><%= contributor.name %></td>
+      <td><%= contributor.uri %></td>
+      <td><%= contributor.user_id %></td>
 
       <td class="text-right">
-        <%= link "Show", to: contributer_path(@conn, :show, contributer), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: contributer_path(@conn, :edit, contributer), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: contributer_path(@conn, :delete, contributer), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: contributor_path(@conn, :show, contributor), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: contributor_path(@conn, :edit, contributor), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: contributor_path(@conn, :delete, contributor), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
 
-<%= link "New contributer", to: contributer_path(@conn, :new) %>
+<%= link "New contributor", to: contributor_path(@conn, :new) %>

@@ -1,12 +1,12 @@
-defmodule Pan.Contributer do
+defmodule Pan.Contributor do
   use Pan.Web, :model
 
-  schema "contributers" do
+  schema "contributors" do
     field :name, :string
     field :uri, :string
     belongs_to :user, Pan.User
-    many_to_many :episodes, Pan.Episode, join_through: "contributers_episodes"
-    many_to_many :podcasts, Pan.Podcast, join_through: "contributers_podcasts"
+    many_to_many :episodes, Pan.Episode, join_through: "contributors_episodes"
+    many_to_many :podcasts, Pan.Podcast, join_through: "contributors_podcasts"
 
     timestamps
   end

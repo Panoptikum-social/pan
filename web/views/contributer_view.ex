@@ -1,3 +1,3 @@
-defmodule Pan.ContributerView do
+defmodule Pan.ContributorView do
   use Pan.Web, :view
 end

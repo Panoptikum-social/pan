@@ -22,7 +22,7 @@ defmodule Pan.Podcast do
     has_many :episodes, Pan.Episode
     has_many :feeds, Pan.Feed
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts"
-    many_to_many :contributers, Pan.Contributer, join_through: "contributers_podcasts"
+    many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts"
     many_to_many :listeners, Pan.User, join_through: "subscriptions"
     many_to_many :followers, Pan.User, join_through: "followers_podcasts"
 

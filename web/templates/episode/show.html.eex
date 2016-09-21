@@ -1,77 +1,44 @@
 <h2>Show episode</h2>
 
-<ul>
+<dl class="dl-horizontal">
+  <dt>Title</dt>
+  <dd><%= @episode.title %></dd>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @episode.title %>
-  </li>
+  <dt>Link</dt>
+  <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
 
-  <li>
-    <strong>Link:</strong>
-    <%= @episode.link %>
-  </li>
+  <dt>Publishing date</dt>
+  <dd><%= @episode.publishing_date %></dd>
 
-  <li>
-    <strong>Publishing date:</strong>
-    <%= @episode.publishing_date %>
-  </li>
+  <dt>Guid</dt>
+  <dd><%= @episode.guid %></dd>
 
-  <li>
-    <strong>Guid:</strong>
-    <%= @episode.guid %>
-  </li>
+  <dt>Description</dt>
+  <dd><%= @episode.description %></dd>
 
-  <li>
-    <strong>Description:</strong>
-    <%= @episode.description %>
-  </li>
+  <dt>Shownotes</dt>
+  <dd><%= raw(@episode.shownotes) %></dd>
 
-  <li>
-    <strong>Shownotes:</strong>
-    <%= @episode.shownotes %>
-  </li>
+  <dt>Payment link</dt>
+  <dd><a href="<%= @episode.payment_link_url %>"><%= @episode.payment_link_title %></a></dd>
 
-  <li>
-    <strong>Payment link title:</strong>
-    <%= @episode.payment_link_title %>
-  </li>
+  <dt>Deep link</dt>
+  <dd><%= @episode.deep_link %></dd>
 
-  <li>
-    <strong>Payment link url:</strong>
-    <%= @episode.payment_link_url %>
-  </li>
+  <dt>Duration</dt>
+  <dd><%= @episode.duration %></dd>
 
-  <li>
-    <strong>Deep link:</strong>
-    <%= @episode.deep_link %>
-  </li>
+  <dt>Author</dt>
+  <dd><%= @episode.author %></dd>
 
-  <li>
-    <strong>Duration:</strong>
-    <%= @episode.duration %>
-  </li>
+  <dt>Subtitle</dt>
+  <dd><%= @episode.subtitle %></dd>
 
-  <li>
-    <strong>Author:</strong>
-    <%= @episode.author %>
-  </li>
+  <dt>Summary</dt>
+  <dd><%= @episode.summary %></dd>
 
-  <li>
-    <strong>Subtitle:</strong>
-    <%= @episode.subtitle %>
-  </li>
-
-  <li>
-    <strong>Summary:</strong>
-    <%= @episode.summary %>
-  </li>
-
-  <li>
-    <strong>Podcast:</strong>
-    <%= @episode.podcast_id %>
-  </li>
-
+  <dt>Podcast</dt>
+  <dd><%= @episode.podcast.title %></dd>
 </ul>
 
 <%= link "Edit", to: episode_path(@conn, :edit, @episode) %>

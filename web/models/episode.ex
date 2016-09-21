@@ -21,10 +21,12 @@ defmodule Pan.Episode do
 
     has_many :chapters, Pan.Chapter
     has_many :enclosures, Pan.Enclosure
-    many_to_many :contributers, Pan.Contributer, join_through: "contributers_episodes"
+    many_to_many :contributors, Pan.Contributor, join_through: "contributors_episodes"
   end
 
-  @required_fields ~w(title link publishing_date guid description shownotes payment_link_title payment_link_url deep_link duration author subtitle summary)
+  @required_fields ~w(title link publishing_date guid description
+                      shownotes payment_link_title payment_link_url deep_link duration
+                      author subtitle summary)
   @optional_fields ~w()
 
   @doc """

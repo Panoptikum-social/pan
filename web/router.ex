@@ -31,7 +31,7 @@ defmodule Pan.Router do
     resources "/languages", LanguageController
     resources "/feeds", FeedController
     resources "/alternate_feeds", AlternateFeedController
-    resources "/contributers", ContributerController
+    resources "/contributors", ContributorController
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
