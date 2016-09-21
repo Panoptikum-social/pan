@@ -1,6 +1,10 @@
 defmodule Pan.User do
   use Pan.Web, :model
 
+  @required_fields ~w(name username email)
+  @optional_fields ~w(admin podcaster)
+
+
   schema "users" do
     field :name, :string
     field :username, :string
@@ -24,7 +28,7 @@ defmodule Pan.User do
 
   def changeset(model, params \\ :empty) do
     model
-    |> cast(params, ~w(name username email admin podcaster), [])
+    |> cast(params, @required_fields, @optional_fields)
     |> validate_length(:username, min: 3, max: 30)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
