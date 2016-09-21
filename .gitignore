@@ -13,7 +13,9 @@ erl_crash.dump
 # Since we are building assets from web/static,
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
-/priv/static/
+
+# HAS: 20160921: seems not to work for me!
+# /priv/static/
 
 # The config/prod.secret.exs file by default contains sensitive
 # data and you should not commit it into version control.
