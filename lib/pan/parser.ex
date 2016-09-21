@@ -18,15 +18,18 @@ defmodule Pan.Parser do
 
   def update() do
     {:ok, xml} = File.read(@path_to_file)
-    {:ok, feed} = parse_feed(xml)
+    {:ok, xml_feed} = parse_feed(xml)
 
-    case Repo.get_by(Feed, self_link_url: feed.self_link_url) do
-      nil ->
-        create_podcast(xml)
-      feed ->
-        {ok, episodes} = parse_episodes(xml)
-        find_or_create_episodes(episodes, feed.podcast_id)
-    end
+    {:ok, feed} =
+      case Repo.get_by(Feed, self_link_url: xml_feed.self_link_url) do
+        nil ->
+          {:ok, feed} = create_podcast(xml)
+        feed ->
+          {:ok, feed}
+      end
+
+    {:ok, episodes} = parse_episodes(xml)
+    find_or_create_episodes(episodes, feed.podcast_id)
   end
 
 
@@ -42,6 +45,7 @@ defmodule Pan.Parser do
     create_alternate_feeds(xml, feed)
     create_contributors(xml, podcast)
     create_categories(xml, podcast)
+    {:ok, feed}
   end
 
 
@@ -68,7 +72,6 @@ defmodule Pan.Parser do
     for contributor <- contributors do
       if Repo.get_by(Contributor, uri: contributor.uri) == nil do
         {:ok, contributor} = create_contributor(contributor)
-
         associate(contributor, podcast)
       end
     end
@@ -117,23 +120,23 @@ defmodule Pan.Parser do
         {:ok, episode} = create_episode(xml_episode, podcast_id)
 
         for chapter <- xml_episode.chapters do
-          {:ok, _chapter} = create_chapter(chapter, episode.id)
+          create_chapter(chapter, episode.id)
         end
 
-      #  for enclosure <- xml_episode.enclosures do
-      #    {:ok, _enclosure} = create_enclosure(enclosure, episode.id)
-      #   end
+        for enclosure <- xml_episode.enclosures do
+          create_enclosure(enclosure, episode.id)
+         end
 
-      #   for contributor <- xml_episode.contributors do
-      #     {:ok, _contributor} = find_or_create_episode_contributor(contributor, episode)
-      #   end
+         for contributor <- xml_episode.contributors do
+           find_or_create_episode_contributor(contributor, episode)
+         end
       end
     end
   end
 
 
   def find_or_create_episode_contributor(contributor, episode) do
-    if (Repo.get_by(Contributor, uri: episode.uri) == nil) do
+    if (Repo.get_by(Contributor, uri: contributor.uri) == nil) do
       {:ok, contributor} = create_contributor(contributor)
 
       contributor
@@ -336,12 +339,12 @@ defmodule Pan.Parser do
                             title: ~x"./@title"s),
          deep_link: episode
                     |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
-         enclosure: episode
-                    |> xpath(~x"./enclosure"l,
-                             url: ~x"./@url"s,
-                             length: ~x"./@length"s,
-                             type: ~x"./@type"s,
-                             guid: ~x"./@bitlove:guid"s),
+         enclosures: episode
+                     |> xpath(~x"./enclosure"l,
+                              url: ~x"./@url"s,
+                              length: ~x"./@length"s,
+                              type: ~x"./@type"s,
+                              guid: ~x"./@bitlove:guid"s),
          duration: episode
                    |> xpath(~x"./itunes:duration/text()"s),
          author: episode
