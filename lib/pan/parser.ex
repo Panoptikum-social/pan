@@ -5,46 +5,189 @@ defmodule Pan.Parser do
   alias Pan.User
   alias Pan.Language
   alias Pan.Episode
+  alias Pan.AlternateFeed
   import SweetXml
 
   @path_to_file "materials/freakshow.xml"
 
 
   def update() do
-    path_to_file = @path_to_file
-
-    {:ok, feed} = parse_feed(path_to_file)
+    {:ok, xml} = File.read(@path_to_file)
+    {:ok, feed} = parse_feed(xml)
 
     case Repo.get_by(Feed, self_link_url: feed.self_link_url) do
       nil ->
-        {:ok, owner} = find_or_create_owner(path_to_file)
-
-        {:ok, podcast} = parse_podcast(path_to_file)
-        {:ok, podcast} = Repo.insert(%{podcast | owner_id: owner.id})
-
-        {:ok, feed} = parse_feed(path_to_file)
-        {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
-
+        create_podcast(xml)
       feed ->
-        IO.puts "feed found, lets read the episodes"
-        {ok, episodes} = parse_episodes(path_to_file)
+        {ok, episodes} = parse_episodes(xml)
+        find_or_create_episodes(episodes, feed.podcast_id)
+    end
 
-        for episode <- episodes do
-          case Repo.get_by(Episode, guid: episode.guid) do
-            nil ->
-              case Repo.get_by(Episode, link: episode.link) do
-                nil ->
-                  # No I would persist ...
-                  IO.puts episode.title
-              end
-          end
-        end
+    File.close xml
+  end
+
+
+  def create_podcast(xml) do
+    {:ok, owner} = find_or_create_owner(xml)
+
+    {:ok, podcast} = parse_podcast(xml)
+    {:ok, podcast} = Repo.insert(%{podcast | owner_id: owner.id})
+
+    {:ok, feed} = parse_feed(xml)
+    {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
+
+    create_alternate_feeds(xml, feed)
+    create_contributors(xml, podcast)
+    create_categories(xml, podcast)
+  end
+
+
+  def create_alternate_feeds(xml, feed) do
+    {:ok, alternate_feeds} = parse_alternate_feeds(xml)
+
+    for alternate_feed <- alternate_feeds do
+      {:ok, alternate_feed} = create_alternate_feed(alternate_feed, feed.id)
     end
   end
 
 
-  def find_or_create_owner(path_to_file) do
-    {:ok, feed_owner} = parse_owner(path_to_file)
+  def create_contributors(xml, podcast) do
+    {:ok, contributors} = parse_contributers(xml)
+
+    for contributor <- contributors do
+      if Repo.get_by(Contributor, uri: episode.uri) == nil do
+        {:ok, contributor} = create_contributor(contributor)
+
+        associate(contributor, podcast)
+      end
+    end
+  end
+
+
+  def create_categories(xml, podcast) do
+    {:ok, categories} = parse_categories(xml)
+
+    for category <- category do
+      category =
+        if category.subtitle == nil  do
+          Category.find_or_create(category)
+        else
+          parent = Category.find_or_create(%Category{title: title})
+          Category.find_or_create(%{category | parent_id: parent.id})
+        end
+
+      associate(category, podcast)
+    end
+  end
+
+
+  def associate(instance, podcast) do
+    instance
+    |> Repo.preload(:podcasts)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:podcasts, [podcast])
+    |> Repo.update!
+  end
+
+
+  def create_contributers(alternate_feed, feed_id) do
+    Repo.insert(
+      %Alternate_Feed{title:   contributor.title,
+                      url:     contributor.url,
+                      feed_id: feed_id})
+  end
+
+
+  def create_alternate_feed(alternate_feed, feed_id) do
+    Repo.insert(
+      %Alternate_Feed{title:   contributor.title,
+                      url:     contributor.url,
+                      feed_id: feed_id})
+  end
+
+
+  def find_or_create_episodes(episodes, podcast_id) do
+    for episode <- episodes do
+      if (Repo.get_by(Episode, guid: episode.guid) == nil and
+          Repo.get_by(Episode, link: episode.link) == nil) do
+
+        {:ok, episode} = create_episode(episode, podcast_id)
+
+        for chapter <- episode.chapters do
+          {:ok, chapter} = create_chapter(chapter, episode.id)
+        end
+
+        for enclosure <- episode.enclosures do
+          {:ok, enclosure} = create_enclosure(enclosure, episode_id)
+        end
+
+        for contributor <- episode.contributors do
+          {:ok, contributor} = find_or_create_episode_contributor(contributor, episode)
+        end
+      end
+    end
+  end
+
+
+  def find_or_create_episode_contributor(contributor, episode) do
+    if (Repo.get_by(Contributor, uri: episode.uri) == nil) do
+      {:ok, contributor} = create_contributor(contributor)
+
+      contributor
+      |> Repo.preload(:episodes)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:episodes, [episode])
+      |> Repo.update!
+    end
+  end
+
+
+  def create_contributor(contributor) do
+    Repo.insert(
+      %Contributor{name: contributor.name,
+                   uri:  contributor.uri})
+  end
+
+
+  def create_enclosure(enclosure, episode_id) do
+    Repo.insert(
+      %Chapter{url:        enclosure.url,
+               length:     enclosure.length,
+               type:       enclosure.type,
+               guid:       enclosure.guid,
+               episode_id: episode_id})
+  end
+
+
+  def create_chapter(chapter, episode_id) do
+    Repo.insert(
+      %Chapter{start:      chapter.start,
+               title:      chapter.title,
+               episode_id: episode_id})
+  end
+
+
+  def create_episode(episode, podcast_id) do
+    Repo.insert(
+      %Episode{title:              episode.title,
+               link:               episode.link,
+               publishing_date:    episode.publishing_date,
+               guid:               episode.guid,
+               description:        episode.description,
+               shownotes:          episode.shownotes,
+               payment_link_title: episode.payment_link.title,
+               payment_link_url:   episode.payment_link.url,
+               deep_link:          episode.deep_link,
+               duration:           episode.duration,
+               author:             episode.author,
+               subtitle:           episode.subtitle,
+               summary:            episode.summary,
+               podcast_id:         podcast_id})
+  end
+
+
+  def find_or_create_owner(xml) do
+    {:ok, feed_owner} = parse_owner(xml)
 
     {:ok, owner} =
       case Repo.get_by(User, email: feed_owner.email) do
@@ -56,14 +199,7 @@ defmodule Pan.Parser do
   end
 
 
-  def read_feed(path_to_file) do
-    File.read(path_to_file)
-  end
-
-
-  def parse_podcast(path_to_file) do
-    {:ok, xml} = read_feed(path_to_file)
-
+  def parse_podcast(xml) do
     title = xml |> xpath(~x"//channel/title/text()"s)
     website = xml |> xpath(~x"//channel/link/text()"s)
     description = xml |> xpath(~x"//channel/description/text()"s)
@@ -99,16 +235,15 @@ defmodule Pan.Parser do
                        author: author,
                        explicit: false
                        }
-    File.close xml
-
     {:ok, podcast}
   end
 
 
   def to_ecto_datetime(feed_date) do
     {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
-    # why can't I pipe here?
+
     erltime = Timex.to_erl(datetime)
+    # why can't I pipe here?
     Ecto.DateTime.from_erl(erltime)
   end
 
@@ -128,15 +263,12 @@ defmodule Pan.Parser do
   end
 
 
-  def parse_owner(path_to_file) do
-    {:ok, xml} = read_feed(path_to_file)
-
+  def parse_owner(xml) do
     owner = xml
-        |> xpath(~x"//channel/itunes:owner",
-                 name: ~x"./itunes:name/text()"s,
-                 email: ~x"./itunes:email/text()"s)
+            |> xpath(~x"//channel/itunes:owner",
+                     name: ~x"./itunes:name/text()"s,
+                     email: ~x"./itunes:email/text()"s)
 
-    File.close xml
     {:ok, %User{name: owner.name,
                 email: owner.email,
                 username: owner.email,
@@ -144,9 +276,7 @@ defmodule Pan.Parser do
   end
 
 
-  def parse_feed(path_to_file) do
-    {:ok, xml} = read_feed(path_to_file)
-
+  def parse_feed(xml) do
     self_link = xml
                 |> xpath(~x"//channel/atom:link[@rel='self']",
                          title: ~x"./@title"s,
@@ -166,84 +296,84 @@ defmodule Pan.Parser do
                  last_page_url:   last_page_url,
                  hub_link_url:    hub_link_url,
                  feed_generator:  feed_generator}
-    File.close xml
     {:ok, feed}
   end
 
-  def parse_episodes(path_to_file) do
-   {:ok, xml} = read_feed(path_to_file)
-
-   episodes = xml
-              |> xpath(~x"//channel/item"l)
-              |> Enum.map( fn (episode) ->
-                   %{
-                     title: episode
-                            |> xpath(~x"./title/text()"s),
-                     link:  episode
-                            |> xpath(~x"./link/text()"s),
-                     publishing_date: episode
-                                      |> xpath(~x"./pubDate/text()"s)
-                                      |> Timex.parse("{RFC1123}"),
-                     guid: episode
-                           |> xpath(~x"./guid/text()"s),
-                     description: episode
-                                  |> xpath(~x"./description/text()"s),
-                     shownotes: episode
-                                |> xpath(~x"./content:encoded/text()"s),
-                     payment_link: episode
-                                   |> xpath(~x"./atom:link[@rel='payment']",
-                                            title: ~x"./@title"s,
-                                            url: ~x"./@href"s),
-                     contributors:  episode
-                                    |> xpath(~x"atom:contributor"l,
-                                             name: ~x"./atom:name/text()"s,
-                                             uri: ~x"./atom:uri/text()"s),
-                     chapters: episode
-                               |> xpath(~x"psc:chapters/psc:chapter"l,
-                                        start: ~x"./@start"s,
-                                        title: ~x"./@title"s),
-                     deep_link: episode
-                                |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
-                     enclosure: episode
-                                |> xpath(~x"./enclosure"l,
-                                         url: ~x"./@url"s,
-                                         length: ~x"./@length"s,
-                                         type: ~x"./@type"s,
-                                         guid: ~x"./@bitlove:guid"s),
-                     duration: episode
-                               |> xpath(~x"./itunes:duration/text()"s),
-                     author: episode
-                             |> xpath(~x"./itunes:author/text()"s),
-                     subtitle: episode
-                               |> xpath(~x"./itunes:subtitle/text()"s),
-                     summary: episode
-                              |> xpath(~x"./itunes:summary/text()"s)
-                   }
-                 end )
-
-    File.close xml
+  def parse_episodes(xml) do
+   episodes =
+     xml
+     |> xpath(~x"//channel/item"l)
+     |> Enum.map( fn (episode) ->
+       %{title: episode
+                |> xpath(~x"./title/text()"s),
+         link:  episode
+                |> xpath(~x"./link/text()"s),
+         publishing_date: episode
+                          |> xpath(~x"./pubDate/text()"s)
+                          |> to_ecto_datetime,
+         guid: episode
+               |> xpath(~x"./guid/text()"s),
+         description: episode
+                      |> xpath(~x"./description/text()"s),
+         shownotes: episode
+                    |> xpath(~x"./content:encoded/text()"s),
+         payment_link: episode
+                       |> xpath(~x"./atom:link[@rel='payment']",
+                                title: ~x"./@title"s,
+                                url: ~x"./@href"s),
+         contributors:  episode
+                        |> xpath(~x"atom:contributor"l,
+                                 name: ~x"./atom:name/text()"s,
+                                 uri: ~x"./atom:uri/text()"s),
+         chapters: episode
+                   |> xpath(~x"psc:chapters/psc:chapter"l,
+                            start: ~x"./@start"s,
+                            title: ~x"./@title"s),
+         deep_link: episode
+                    |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
+         enclosure: episode
+                    |> xpath(~x"./enclosure"l,
+                             url: ~x"./@url"s,
+                             length: ~x"./@length"s,
+                             type: ~x"./@type"s,
+                             guid: ~x"./@bitlove:guid"s),
+         duration: episode
+                   |> xpath(~x"./itunes:duration/text()"s),
+         author: episode
+                 |> xpath(~x"./itunes:author/text()"s),
+         subtitle: episode
+                   |> xpath(~x"./itunes:subtitle/text()"s),
+         summary: episode
+                  |> xpath(~x"./itunes:summary/text()"s)
+       }
+     end)
     {:ok, episodes}
   end
 
-  def parse_all_the_rest(path_to_file) do
-    {:ok, xml} = read_feed(path_to_file)
 
+  def parse_alternate_feeds(xml) do
     alternate_feeds = xml
                       |> xpath(~x"//channel/atom:link[@rel='alternate']"l,
                       title: ~x"./@title"s,
                       url: ~x"./@href"s)
+    {:ok, alternate_feeds}
+  end
 
+
+  def parse_contributers(xml) do
     contributers = xml
                    |> xpath(~x"//channel/atom:contributor"l,
                             name: ~x"./atom:name/text()"s,
                             uri: ~x"./atom:uri/text()"s)
+    {:ok, contributers}
+  end
 
+
+  def parse_categories(xml) do
     categories = xml
                  |> xpath(~x"//channel/itunes:category"l,
                           title: ~x"./@text"s,
                           subtitle: ~x"./itunes:category/@text"s)
-
-
-    File.close xml
+    {:ok, categories}
   end
 end
