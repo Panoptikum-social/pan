@@ -38,7 +38,8 @@ defmodule Pan.UserController do
         |> Pan.Auth.login(user)
         |> put_flash(:info, "#{user.name} created!")
         |> redirect(to: user_path(conn, :index))
-      {:error, changeset} -> 
+      {:error, changeset} ->
+        IO.puts inspect(changeset)
         render(conn, "new.html", changeset: changeset)
     end
   end
