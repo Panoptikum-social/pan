@@ -1,11 +1,8 @@
 # Script for populating the database. You can run it as:
-#
 #     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Pan.Repo.insert!(%Pan.SomeModel{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+
+alias Pan.Repo
+alias Pan.Language
+
+Repo.get_by(Language, name: "DE") ||
+  Repo.insert!(%Language{shortcode: "de-DE", name: "DE"})
