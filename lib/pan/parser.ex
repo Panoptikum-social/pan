@@ -13,31 +13,59 @@ defmodule Pan.Parser do
   alias Pan.Repo
   import SweetXml
 
-  @path_to_file "materials/freakshow.xml"
+  @url "http://feeds.metaebene.me/freakshow/mp3"
+# @url "http://feeds.metaebene.me/freakshow/mp3"
+# @url "http://www.zeitsprung.fm/feed/mp3/"
 
 
-  def update() do
-    {:ok, xml} = File.read(@path_to_file)
-    {:ok, xml_feed} = parse_feed(xml)
+  def init do
+    download_feed_page(@url)
+  end
 
-    {:ok, feed} =
-      case Repo.get_by(Feed, self_link_url: xml_feed.self_link_url) do
-        nil ->
-          {:ok, feed} = create_podcast(xml)
-        feed ->
-          {:ok, feed}
-      end
+  def download_feed_page(url) do
+    %HTTPoison.Response{body: xml} = HTTPoison.get!(url)
+    {:ok, next_page_url} = update_from_feed(xml)
 
-    {:ok, episodes} = parse_episodes(xml)
-    find_or_create_episodes(episodes, feed.podcast_id)
+    if next_page_url != "" do
+      download_feed_page(next_page_url)
+    end
   end
 
 
-  def create_podcast(xml) do
+  def update_from_feed(xml) do
+    {:ok, xml_feed} = parse_feed(xml)
+
+    {:ok, feed} = find_or_create_feed(xml, xml_feed)
+
+    {:ok, episodes} = parse_episodes(xml)
+    find_or_create_episodes(episodes, feed.podcast_id)
+
+    {:ok, feed.next_page_url}
+  end
+
+
+  def find_or_create_feed(xml, xml_feed) do
+    case Repo.get_by(Feed, self_link_url: xml_feed.self_link_url) do
+      nil ->
+        find_or_create_podcast(xml)
+      feed ->
+        {:ok, feed}
+    end
+  end
+
+
+  def find_or_create_podcast(xml) do
     {:ok, owner} = find_or_create_owner(xml)
 
     {:ok, podcast} = parse_podcast(xml)
-    {:ok, podcast} = Repo.insert(%{podcast | owner_id: owner.id})
+
+    {:ok, podcast} =
+      case Repo.get_by(Podcast, title: podcast.title) do
+        nil ->
+          Repo.insert(%{podcast | owner_id: owner.id})
+        podcast ->
+          {:ok, podcast}
+      end
 
     {:ok, feed} = parse_feed(xml)
     {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
@@ -61,8 +89,8 @@ defmodule Pan.Parser do
   def create_alternate_feed(alternate_feed, feed_id) do
     Repo.insert(
       %AlternateFeed{title:    alternate_feed.title,
-                      url:     alternate_feed.url,
-                      feed_id: feed_id})
+                     url:     alternate_feed.url,
+                     feed_id: feed_id})
   end
 
 
@@ -102,6 +130,7 @@ defmodule Pan.Parser do
     end
     Repo.get_by(Category, title: category.title)
   end
+
 
   def associate(instance, podcast) do
     instance
