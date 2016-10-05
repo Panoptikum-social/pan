@@ -10,11 +10,12 @@ defmodule Pan.Parser do
   alias Pan.Chapter
   alias Pan.Enclosure
   alias Pan.Repo
-  alias Pan.Parser.Helpers
   alias Pan.Parser.PC
+  alias Pan.Parser.EP
+  alias Pan.Parser.FD
   import SweetXml
 
-  @url "https://www2.uibk.ac.at/downloads/c115/zeit/zeit_mp3.xml"
+  @url "http://medienportal.univie.ac.at/podcast/rss.xml"
 
 
   def init do
@@ -26,7 +27,7 @@ defmodule Pan.Parser do
 
     {:ok, xml} = fix_missing_xml_tag(xml)
 
-    {:ok, next_page_url} = update_from_feed(xml)
+    {:ok, next_page_url} = update_from_feed(xml, url)
 
     if next_page_url != "" do
       download_feed_page(next_page_url)
@@ -35,37 +36,40 @@ defmodule Pan.Parser do
 
 
   def fix_missing_xml_tag(xml) do
-    unless String.starts_with?(xml, ["<?xml"]) do
-      xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" <> xml
-    end
+    xml =
+      if String.starts_with?(xml, ["<?xml"]) do
+        xml
+      else
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" <> xml
+      end
 
     {:ok, xml}
   end
 
 
-  def update_from_feed(xml) do
-    {:ok, xml_feed} = parse_feed(xml)
+  def update_from_feed(xml, url) do
+    {:ok, xml_feed} = FD.parse(xml, url)
 
-    {:ok, feed} = find_or_create_feed(xml, xml_feed)
+    {:ok, feed} = find_or_create_feed(xml, xml_feed, url)
 
-    {:ok, episodes} = parse_episodes(xml)
+    {:ok, episodes} = EP.parse(xml)
     find_or_create_episodes(episodes, feed.podcast_id)
 
     {:ok, feed.next_page_url}
   end
 
 
-  def find_or_create_feed(xml, xml_feed) do
+  def find_or_create_feed(xml, xml_feed, url) do
     case Repo.get_by(Feed, self_link_url: xml_feed.self_link_url) do
       nil ->
-        find_or_create_podcast(xml)
+        find_or_create_podcast(xml, url)
       feed ->
         {:ok, feed}
     end
   end
 
 
-  def find_or_create_podcast(xml) do
+  def find_or_create_podcast(xml, url) do
     {:ok, owner} = find_or_create_owner(xml)
 
     {:ok, podcast} = PC.parse(xml)
@@ -78,7 +82,7 @@ defmodule Pan.Parser do
           {:ok, podcast}
       end
 
-    {:ok, feed} = parse_feed(xml)
+    {:ok, feed} = FD.parse(xml, url)
     {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
 
     create_alternate_feeds(xml, feed)
@@ -154,9 +158,7 @@ defmodule Pan.Parser do
 
   def find_or_create_episodes(episodes, podcast_id) do
     for xml_episode <- episodes do
-      if (Repo.get_by(Episode, guid: xml_episode.guid) == nil and
-          Repo.get_by(Episode, link: xml_episode.link) == nil) do
-
+      unless Repo.get_by(Episode, guid: xml_episode.guid, link: xml_episode.link) do
         {:ok, episode} = create_episode(xml_episode, podcast_id)
 
         for chapter <- xml_episode.chapters do
@@ -214,11 +216,18 @@ defmodule Pan.Parser do
 
 
   def create_episode(episode, podcast_id) do
+    guid =
+      if episode.guid == "" do
+        episode.link
+      else
+        episode.guid
+      end
+
     Repo.insert(
       %Episode{title:              episode.title,
                link:               episode.link,
                publishing_date:    episode.publishing_date,
-               guid:               episode.guid,
+               guid:               guid,
                description:        episode.description,
                shownotes:          episode.shownotes,
                payment_link_title: episode.payment_link.title,
@@ -233,105 +242,33 @@ defmodule Pan.Parser do
 
 
   def find_or_create_owner(xml) do
-    {:ok, feed_owner} = parse_owner(xml)
-
-    {:ok, owner} =
-      case Repo.get_by(User, email: feed_owner.email) do
-        nil ->
-           Repo.insert(feed_owner)
-        user ->
-          {:ok, user}
-      end
-
-    {:ok, owner}
+    user = case parse_owner(xml) do
+             {:ok, nil} ->
+               Repo.get_by(User, email: "jane@podcasterei.at")
+             {:ok, feed_owner} ->
+               unless Repo.get_by(User, email: feed_owner.email) do
+                 Repo.insert(feed_owner)
+               end
+               Repo.get_by(User, email: feed_owner.email)
+           end
+    {:ok, user}
   end
 
 
   def parse_owner(xml) do
-    owner = xml
-            |> xpath(~x"//channel/itunes:owner",
-                     name: ~x"./itunes:name/text()"s,
-                     email: ~x"./itunes:email/text()"s)
+    if xml |> xpath(~x"//channel/itunes:owner") do
+      owner = xml
+              |> xpath(~x"//channel/itunes:owner",
+                       name: ~x"./itunes:name/text()"s,
+                       email: ~x"./itunes:email/text()"s)
 
-    {:ok, %User{name: owner.name,
-                email: owner.email,
-                username: owner.email,
-                podcaster: true}}
-  end
-
-
-  def parse_feed(xml) do
-    self_link = xml |> xpath(~x"//channel/atom:link[@rel='self']",
-                             title: ~x"./@title"s,
-                             url: ~x"./@href"s)
-    next_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='next']//@href"s)
-    prev_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='prev']//@href"s)
-    first_page_url = xml |> xpath(~x"//channel/atom:link[@rel='first']//@href"s)
-    last_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='last']//@href"s)
-    hub_link_url   = xml |> xpath(~x"//channel/atom:link[@rel='hub']//@href"s)
-    feed_generator = xml |> xpath(~x"//channel/generator/text()"s)
-
-    feed = %Feed{self_link_title: self_link.title,
-                 self_link_url:   self_link.url,
-                 next_page_url:   next_page_url,
-                 prev_page_url:   prev_page_url,
-                 first_page_url:  first_page_url,
-                 last_page_url:   last_page_url,
-                 hub_link_url:    hub_link_url,
-                 feed_generator:  feed_generator}
-    {:ok, feed}
-  end
-
-
-  def parse_episodes(xml) do
-   episodes =
-     xml
-     |> xpath(~x"//channel/item"l)
-     |> Enum.map( fn (episode) ->
-       %{title: episode
-                |> xpath(~x"./title/text()"s),
-         link:  episode
-                |> xpath(~x"./link/text()"s),
-         publishing_date: episode
-                          |> xpath(~x"./pubDate/text()"s)
-                          |> Helpers.to_ecto_datetime,
-         guid: episode
-               |> xpath(~x"./guid/text()"s),
-         description: episode
-                      |> xpath(~x"./description/text()"s),
-         shownotes: episode
-                    |> xpath(~x"./content:encoded/text()"s),
-         payment_link: episode
-                       |> xpath(~x"./atom:link[@rel='payment']",
-                                title: ~x"./@title"s,
-                                url: ~x"./@href"s),
-         contributors:  episode
-                        |> xpath(~x"atom:contributor"l,
-                                 name: ~x"./atom:name/text()"s,
-                                 uri: ~x"./atom:uri/text()"s),
-         chapters: episode
-                   |> xpath(~x"psc:chapters/psc:chapter"l,
-                            start: ~x"./@start"s,
-                            title: ~x"./@title"s),
-         deep_link: episode
-                    |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
-         enclosures: episode
-                     |> xpath(~x"./enclosure"l,
-                              url: ~x"./@url"s,
-                              length: ~x"./@length"s,
-                              type: ~x"./@type"s,
-                              guid: ~x"./@bitlove:guid"s),
-         duration: episode
-                   |> xpath(~x"./itunes:duration/text()"s),
-         author: episode
-                 |> xpath(~x"./itunes:author/text()"s),
-         subtitle: episode
-                   |> xpath(~x"./itunes:subtitle/text()"s),
-         summary: episode
-                  |> xpath(~x"./itunes:summary/text()"s)
-       }
-     end)
-    {:ok, episodes}
+      {:ok, %User{name: owner.name,
+                  email: owner.email,
+                  username: owner.email,
+                  podcaster: true}}
+    else
+      {:ok, nil}
+    end
   end
 
 
