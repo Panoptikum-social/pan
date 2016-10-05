@@ -9,3 +9,6 @@ Repo.get_by(Language, shortcode: "de-DE") ||
 
 Repo.get_by(Language, shortcode: "de") ||
   Repo.insert!(%Language{shortcode: "de", name: "DE"})
+
+Repo.get_by(Language, shortcode: "de-at") ||
+  Repo.insert!(%Language{shortcode: "de-at", name: "DE"})

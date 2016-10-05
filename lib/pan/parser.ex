@@ -3,7 +3,6 @@ defmodule Pan.Parser do
   alias Pan.Feed
   alias Pan.Podcast
   alias Pan.User
-  alias Pan.Language
   alias Pan.Episode
   alias Pan.AlternateFeed
   alias Pan.Contributor
@@ -11,9 +10,11 @@ defmodule Pan.Parser do
   alias Pan.Chapter
   alias Pan.Enclosure
   alias Pan.Repo
+  alias Pan.Parser.Helpers
+  alias Pan.Parser.PC
   import SweetXml
 
-  @url "https://aua-uff-co.de/episodes.mp3.rss"
+  @url "https://www2.uibk.ac.at/downloads/c115/zeit/zeit_mp3.xml"
 
 
   def init do
@@ -21,12 +22,24 @@ defmodule Pan.Parser do
   end
 
   def download_feed_page(url) do
-    %HTTPoison.Response{body: xml} = HTTPoison.get!(url)
+    %HTTPoison.Response{body: xml} = HTTPoison.get!(url, [], [follow_redirect: true])
+
+    {:ok, xml} = fix_missing_xml_tag(xml)
+
     {:ok, next_page_url} = update_from_feed(xml)
 
     if next_page_url != "" do
       download_feed_page(next_page_url)
     end
+  end
+
+
+  def fix_missing_xml_tag(xml) do
+    unless String.starts_with?(xml, ["<?xml"]) do
+      xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" <> xml
+    end
+
+    {:ok, xml}
   end
 
 
@@ -55,7 +68,7 @@ defmodule Pan.Parser do
   def find_or_create_podcast(xml) do
     {:ok, owner} = find_or_create_owner(xml)
 
-    {:ok, podcast} = parse_podcast(xml)
+    {:ok, podcast} = PC.parse(xml)
 
     {:ok, podcast} =
       case Repo.get_by(Podcast, title: podcast.title) do
@@ -234,70 +247,6 @@ defmodule Pan.Parser do
   end
 
 
-  def parse_podcast(xml) do
-    title = xml |> xpath(~x"//channel/title/text()"s)
-    website = xml |> xpath(~x"//channel/link/text()"s)
-    description = xml |> xpath(~x"//channel/description/text()"s)
-    summary = xml |> xpath(~x"//channel/itunes:summary/text()"s)
-    author = xml |> xpath(~x"//channel/itunes:author/text()"s)
-    explicit = xml
-               |> xpath(~x"//channel/itunes:iexplicit/text()"s)
-               |> boolify
-
-    image = xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
-                                              url: ~x"./url/text()"s)
-    payment_link = xml |> xpath(~x"//channel/atom:link[@rel='payment']",
-                                title: ~x"./@title"s,
-                                url: ~x"./@href"s)
-
-    {:ok, language} = xml
-                      |> xpath(~x"//channel/language/text()"s)
-                      |> find_language
-    last_build_date = xml
-                      |> xpath(~x"//channel/lastBuildDate/text()"s)
-                      |> to_ecto_datetime
-
-    podcast = %Podcast{title: title,
-                       website: website,
-                       description: description,
-                       language_id: language.id,
-                       summary: summary,
-                       image_title: image.title,
-                       image_url: image.url,
-                       last_build_date: last_build_date,
-                       payment_link_title: payment_link.title,
-                       payment_link_url: String.slice(payment_link.url, 0, 255),
-                       author: author,
-                       explicit: explicit
-                       }
-    {:ok, podcast}
-  end
-
-
-  def to_ecto_datetime(feed_date) do
-    {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
-
-    erltime = Timex.to_erl(datetime)
-    # why can't I pipe here?
-    Ecto.DateTime.from_erl(erltime)
-  end
-
-
-  def boolify(explicit) do
-    case explicit do
-      "yes" ->
-        true
-      _ ->
-        false
-    end
-  end
-
-
-  def find_language(shortcode) do
-    {:ok, Repo.get_by(Language, shortcode: shortcode)}
-  end
-
-
   def parse_owner(xml) do
     owner = xml
             |> xpath(~x"//channel/itunes:owner",
@@ -312,10 +261,9 @@ defmodule Pan.Parser do
 
 
   def parse_feed(xml) do
-    self_link = xml
-                |> xpath(~x"//channel/atom:link[@rel='self']",
-                         title: ~x"./@title"s,
-                         url: ~x"./@href"s)
+    self_link = xml |> xpath(~x"//channel/atom:link[@rel='self']",
+                             title: ~x"./@title"s,
+                             url: ~x"./@href"s)
     next_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='next']//@href"s)
     prev_page_url  = xml |> xpath(~x"//channel/atom:link[@rel='prev']//@href"s)
     first_page_url = xml |> xpath(~x"//channel/atom:link[@rel='first']//@href"s)
@@ -334,6 +282,7 @@ defmodule Pan.Parser do
     {:ok, feed}
   end
 
+
   def parse_episodes(xml) do
    episodes =
      xml
@@ -345,7 +294,7 @@ defmodule Pan.Parser do
                 |> xpath(~x"./link/text()"s),
          publishing_date: episode
                           |> xpath(~x"./pubDate/text()"s)
-                          |> to_ecto_datetime,
+                          |> Helpers.to_ecto_datetime,
          guid: episode
                |> xpath(~x"./guid/text()"s),
          description: episode
