@@ -4,5 +4,8 @@
 alias Pan.Repo
 alias Pan.Language
 
-Repo.get_by(Language, name: "DE") ||
+Repo.get_by(Language, shortcode: "de-DE") ||
   Repo.insert!(%Language{shortcode: "de-DE", name: "DE"})
+
+Repo.get_by(Language, shortcode: "de") ||
+  Repo.insert!(%Language{shortcode: "de", name: "DE"})

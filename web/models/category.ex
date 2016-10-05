@@ -5,7 +5,8 @@ defmodule Pan.Category do
   schema "categories" do
     field :title, :string
     belongs_to :parent, Pan.Parent
-    many_to_many :podcasts, Pan.Podcast, join_through: "categories_podcasts"
+    many_to_many :podcasts, Pan.Podcast, join_through: "categories_podcasts",
+                                         on_replace: :delete
 
     timestamps
   end

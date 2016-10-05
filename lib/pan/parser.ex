@@ -13,9 +13,7 @@ defmodule Pan.Parser do
   alias Pan.Repo
   import SweetXml
 
-  @url "http://feeds.metaebene.me/freakshow/mp3"
-# @url "http://feeds.metaebene.me/freakshow/mp3"
-# @url "http://www.zeitsprung.fm/feed/mp3/"
+  @url "https://aua-uff-co.de/episodes.mp3.rss"
 
 
   def init do
@@ -268,7 +266,7 @@ defmodule Pan.Parser do
                        image_url: image.url,
                        last_build_date: last_build_date,
                        payment_link_title: payment_link.title,
-                       payment_link_url: payment_link.url,
+                       payment_link_url: String.slice(payment_link.url, 0, 255),
                        author: author,
                        explicit: explicit
                        }
