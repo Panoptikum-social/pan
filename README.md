@@ -3,7 +3,7 @@
 Panoptikum (or short Pan) is a webapplication written in [Phoenix](http://www.phoenixframework.org/)
 that represents a podcast discovery and community website.
 
-It is licencend under the AGPL license.
+It is licensed under the AGPL license.
 The project website with more information on the project can be found at https://www.panoptikum.io
 If you are interested and want to get in touch, write an email to [Stefan](mailto:stefan@panoptikum.io).
 
