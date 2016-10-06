@@ -8,37 +8,42 @@
     <meta name="author" content="">
 
     <title>Hello Pan!</title>
-    <link rel="stylesheet" 
+    <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/app.css") %>">
-    <link rel="stylesheet" 
+    <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/font-awesome.min.css") %>">
-    <link rel="stylesheet" 
+    <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/bootflat.min.css") %>">
-    <link rel="stylesheet" 
+    <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/overrides.css") %>">
-    <link href='https://fonts.googleapis.com/css?family=Ubuntu' 
-          rel='stylesheet' 
+    <link href='https://fonts.googleapis.com/css?family=Ubuntu'
+          rel='stylesheet'
           type='text/css'>
   </head>
 
   <body>
     <div class="container-fluid">
-      <header class="header">
-        <ol class="breadcrumb text-right">
-          <%= if @current_user do %>
-            <li>@<%= @current_user.username %></li>
-            <li>
-              <%= link "Log out", to: session_path(@conn, :delete, @current_user), 
-                                  method: "delete" %>
-            </li>
-          <% else %>
-            <li><%= link "Register", to: user_path(@conn, :new) %></li>
-            <li><%= link "Log in", to: session_path(@conn, :new) %></li>
-          <% end %>
-        </ol>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a href="#" class="navbar-left"><img src="/images/panoptikum.io.png" width="40" style="margin: 4px 10px 4px 0;"></a>
+            <a class="navbar-brand" href="#">Panoptikum.io</a>
+          </div>
 
-        <h1><img src="/images/panoptikum.io.png" width="80" height="80"> Panoptikum.io</h1>
-      </header>
+          <ul class="nav navbar-nav navbar-right">
+            <%= if @current_user do %>
+              <li>@<%= @current_user.username %></li>
+              <li>
+                <%= link "Log out", to: session_path(@conn, :delete, @current_user),
+                                    method: "delete" %>
+              </li>
+            <% else %>
+              <li><%= link "Register", to: user_path(@conn, :new) %></li>
+              <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+            <% end %>
+          </ul>
+        </div><!-- /.container-fluid -->
+      </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>

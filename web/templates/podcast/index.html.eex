@@ -9,7 +9,6 @@
       <th>Image</th>
       <th>Last build date</th>
       <th>Author</th>
-      <th>Unique identifier</th>
 
       <th></th>
     </tr>
@@ -23,7 +22,6 @@
       <td><img src="<%= podcast.image_url %>" alt="<%= podcast.image_title%>" width="50"/></td>
       <td><%= podcast.last_build_date %></td>
       <td><%= podcast.author %></td>
-      <td><%= podcast.unique_identifier %></td>
 
       <td class="text-right">
         <%= link "Show", to: podcast_path(@conn, :show, podcast), class: "btn btn-default btn-xs" %>
