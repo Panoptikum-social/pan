@@ -26,8 +26,8 @@
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <a href="#" class="navbar-left"><img src="/images/panoptikum.io.png" width="40" style="margin: 4px 10px 4px 0;"></a>
-            <a class="navbar-brand" href="#">Panoptikum.io</a>
+            <a href="/" class="navbar-left"><img src="/images/panoptikum.io.png" width="40" style="margin: 4px 10px 4px 0;"></a>
+            <a class="navbar-brand" href="/">Panoptikum.io</a>
           </div>
 
           <ul class="nav navbar-nav navbar-right">

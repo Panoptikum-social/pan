@@ -19,6 +19,7 @@ defmodule Pan.Router do
 
     get "/", PodcastFrontendController, :index
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
+    resources "/episodes", EpisodeFrontendController, only: [:show]
 
     resources "/users", UserController, only: [:new, :create]
     get "/my_account", UserController, :my_show

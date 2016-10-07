@@ -1,0 +1,79 @@
+
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @episode.title %>
+    <span class="pull-right">/ <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast) %></span></h3>
+  </div>
+  <div class="panel-body">
+    <p><%= @episode.subtitle %> </p>
+
+    <dl class="dl-horizontal">
+      <dt><label class="label label-success">Author</label></dt>
+      <dd><%= @episode.author %></dd>
+      <dt><label class="label">Support</label></dt>
+      <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
+      <dt><label class="label label-warning">Duration</label></dt>
+      <dd><%= @episode.duration %></dd>
+      <dt><label class="label label-info">Publishing date</label></dt>
+      <dd><%= @episode.publishing_date %></dd>
+      <dt><label class="label label-danger">Link</label></dt>
+      <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
+      <dt><label class="label label-primary">Deep link</label></dt>
+      <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>
+    </dl>
+
+    <div class="clearfix"></div>
+    <h3>Description</h3>
+    <p><%= @episode. description %></p>
+
+    <h3>Summary</h3>
+    <p><%= @episode.summary %></p>
+
+    <div class="row">
+      <div class="col-md-4">
+        <h3>Chapters</h3>
+        <dl class="dl-horizontal">
+          <%= for chapter <- @episode.chapters do %>
+            <dt><%= chapter.start %></dt>
+            <dd><%= chapter.title %></dd>
+          <% end %>
+        </dl>
+      </div>
+
+      <div class="col-md-4">
+        <h3>Enclosures</h3>
+        <dl>
+          <%= for enclosure <- @episode.enclosures do %>
+            <dt><label class="label label-primary">Link</label></dt>
+            <dd><%= link String.split(enclosure.url, "/")
+                         |> List.last, to: enclosure.url %></dd>
+            <dt><label class="label label-warning">Length</label></dt>
+            <dd><%= enclosure.length %></dd>
+            <dt><label class="label label-info">Type</label></dt>
+            <dd><%= enclosure.type %></dd>
+            <dt><label class="label">Guid</label></dt>
+            <dd><%= enclosure.guid %></dd>
+            <dt>- - - - -</dt>
+          <% end %>
+        </dl>
+      </div>
+
+      <div class="col-md-4">
+        <h3>Contributors</h3>
+        <dl class="dl-horizontal">
+          <%= for contributor <- @episode.contributors do %>
+            <dt><label class="label label-info">Name</label></dt>
+            <dd><%= contributor.name %></dd>
+            <dt><label class="label label-primary">Link</label></dt>
+            <dd><%= link contributor.url, to: contributor.url %></dd>
+            <dt>- - - - -</dt>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+
+    <h3>Shownotes</h3>
+    <p><%= raw(@episode.shownotes) %></p>
+
+  </div>
+</div>
