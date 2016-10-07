@@ -1,0 +1,69 @@
+<div class="panel panel-success">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= @podcast.title %>
+      <a class="pull-right" href="<%= @podcast.website %>"><%= @podcast.website %></a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <div class="pull-left" style="margin-right: 20px;">
+      <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
+    </div>
+
+    <p><%= @podcast.description %></p>
+    <p><%= @podcast.author %></p>
+    <p>Support: <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></p>
+    <p>Language: <%= @podcast.language.name %></p>
+    <p>last modified: <%= @podcast.last_build_date %> </p>
+    <p>Owner: <%= @podcast.owner.name %></p>
+    <p>Author: <%= @podcast.author %></p>
+    <p>Explicit: <%= @podcast.explicit %>
+
+    <div class="clearfix"></div>
+    <p><%= @podcast.summary %></p>
+  </div>
+</div>
+
+
+<%= for {episode, counter} <- Enum.with_index(@podcast.episodes) do %>
+  <%= if 0 == rem(counter, 2) do %>
+    <div class="row">
+  <% end %>
+
+    <div class="col-md-6">
+      <div class="panel <%= panel_cycle(counter) %>">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= episode.title %></h3>
+        </div>
+        <div class="panel-body">
+          <p><%= episode.subtitle %></p>
+
+          <dl class="dl-horizontal">
+            <dt><label class="label label-success">Author</label></dt>
+            <dd><%= episode.author %></dd>
+            <dt><label class="label">Support</label></dt>
+            <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
+            <dt><label class="label label-warning">Duration</label></dt>
+            <dd><%= episode.duration %></dd>
+            <dt><label class="label label-info">Publishing date</label></dt>
+            <dd><%= episode.publishing_date %></dd>
+            <dt><label class="label label-danger">Link</label></dt>
+            <dd><a href="<%= episode.link %>"><%= episode.link %></a></dd>
+            <dt><label class="label label-primary">Deep link</label></dt>
+            <dd><a href="<%= episode.deep_link %>"><%= episode.deep_link %></a></dd>
+          </dl>
+
+          <div class="clearfix"></div>
+          <h3>Description</h3>
+          <p><%= episode. description %></p>
+
+          <h3>Summary</h3>
+          <p><%= episode.summary %></p>
+        </div>
+      </div>
+    </div>
+  <%= if 1 == rem(counter, 2) do %>
+    </div>
+  <% end %>
+<% end %>
+

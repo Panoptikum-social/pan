@@ -9,7 +9,7 @@
         <div class="panel <%= panel_cycle(counter) %>">
           <div class="panel-heading">
             <h3 class="panel-title">
-              <%= link podcast.title, to: podcast_path(@conn, :show, podcast) %>
+              <%= link podcast.title, to: podcast_frontend_path(@conn, :show, podcast) %>
               <a class="pull-right" href="<%= podcast.website %>"><%= podcast.website %></a>
             </h3>
           </div>

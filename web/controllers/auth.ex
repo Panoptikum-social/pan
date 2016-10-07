@@ -12,7 +12,7 @@ defmodule Pan.Auth do
   end
 
   def login(conn, user) do
-    conn 
+    conn
     |> assign(:current_user, user)
     |> put_session(:user_id, user.id)
     |> configure_session(renew: true)
@@ -48,7 +48,7 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access that page.")
-      |> redirect(to: Helpers.page_path(conn, :index))
+      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
       |> halt()
     end
   end
@@ -60,7 +60,7 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be admin to access this page.")
-      |> redirect(to: Helpers.page_path(conn, :index))
+      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
       |> halt()
     end
   end
