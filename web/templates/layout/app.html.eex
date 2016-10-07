@@ -10,15 +10,10 @@
     <title>Hello Pan!</title>
     <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/app.css") %>">
-    <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css/font-awesome.min.css") %>">
-    <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css/bootflat.min.css") %>">
-    <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css/overrides.css") %>">
     <link href='https://fonts.googleapis.com/css?family=Ubuntu'
           rel='stylesheet'
           type='text/css'>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </head>
 
   <body>
@@ -53,6 +48,5 @@
       </main>
 
     </div> <!-- /container -->
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

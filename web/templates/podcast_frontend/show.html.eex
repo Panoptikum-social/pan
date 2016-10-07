@@ -6,63 +6,87 @@
     </h3>
   </div>
   <div class="panel-body">
-    <div class="pull-left" style="margin-right: 20px;">
-      <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
+    <div class="row">
+      <div class="col-md-2">
+        <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
+      </div>
+
+      <div class="col-md-3">
+        <p><%= @podcast.summary %></p>
+      </div>
+
+      <div class="col-md-5">
+        <dl class="dl-horizontal">
+          <dt><label class="label label-primary">Description</label></dt>
+          <dd><%= @podcast.description %></dd>
+          <dt><label class="label label-info">Author</label></dt>
+          <dd><%= @podcast.author %></dd>
+          <dt><label class="label label-warning">Support</label></dt>
+          <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
+          <dt><label class="label label-danger">Language</label></dt>
+          <dd><%= @podcast.language.name %></dd>
+          <dt><label class="label label-success">last modified</label></dt>
+          <dd><%= @podcast.last_build_date %></dd>
+          <dt><label class="label label-info">Owner</label></dt>
+          <dd><%= @podcast.owner.name %></dd>
+          <dt><label class="label">Explicit</label></dt>
+          <dd><%= @podcast.explicit %></dd>
+        </dl>
+      </div>
+
+      <div class="col-md-2">
+        <div id="qrcode"></div>
+        <script type="text/javascript">
+          new QRCode(document.getElementById("qrcode"), {
+                     text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
+                     width:  142,
+                     height: 142,
+                   });
+        </script>
+        <span class="small">scan to subscribe</span>
+      </div>
     </div>
-
-    <p><%= @podcast.description %></p>
-    <p><%= @podcast.author %></p>
-    <p>Support: <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></p>
-    <p>Language: <%= @podcast.language.name %></p>
-    <p>last modified: <%= @podcast.last_build_date %> </p>
-    <p>Owner: <%= @podcast.owner.name %></p>
-    <p>Author: <%= @podcast.author %></p>
-    <p>Explicit: <%= @podcast.explicit %>
-
-    <div class="clearfix"></div>
-    <p><%= @podcast.summary %></p>
   </div>
 </div>
-
 
 <%= for {episode, counter} <- Enum.with_index(@podcast.episodes) do %>
   <%= if 0 == rem(counter, 2) do %>
     <div class="row">
   <% end %>
 
-    <div class="col-md-6">
-      <div class="panel <%= panel_cycle(counter) %>">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-          <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %></h3>
-        </div>
-        <div class="panel-body">
-          <p><%= episode.subtitle %></p>
+  <div class="col-md-6">
+    <div class="panel <%= panel_cycle(counter) %>">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+        <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %></h3>
+      </div>
+      <div class="panel-body">
+        <p><%= episode.subtitle %></p>
 
-          <dl class="dl-horizontal">
-            <dt><label class="label label-success">Author</label></dt>
-            <dd><%= episode.author %></dd>
-            <dt><label class="label">Support</label></dt>
-            <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
-            <dt><label class="label label-warning">Duration</label></dt>
-            <dd><%= episode.duration %></dd>
-            <dt><label class="label label-info">Publishing date</label></dt>
-            <dd><%= episode.publishing_date %></dd>
-            <dt><label class="label label-danger">Link</label></dt>
-            <dd><a href="<%= episode.link %>"><%= episode.link %></a></dd>
-            <dt><label class="label label-primary">Deep link</label></dt>
-            <dd><a href="<%= episode.deep_link %>"><%= episode.deep_link %></a></dd>
-          </dl>
+        <dl class="dl-horizontal">
+          <dt><label class="label label-success">Author</label></dt>
+          <dd><%= episode.author %></dd>
+          <dt><label class="label">Support</label></dt>
+          <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
+          <dt><label class="label label-warning">Duration</label></dt>
+          <dd><%= episode.duration %></dd>
+          <dt><label class="label label-info">Publishing date</label></dt>
+          <dd><%= episode.publishing_date %></dd>
+          <dt><label class="label label-danger">Link</label></dt>
+          <dd><a href="<%= episode.link %>"><%= episode.link %></a></dd>
+          <dt><label class="label label-primary">Deep link</label></dt>
+          <dd><a href="<%= episode.deep_link %>"><%= episode.deep_link %></a></dd>
+        </dl>
 
-          <div class="clearfix"></div>
-          <h3>Description</h3>
-          <p><%= episode. description %></p>
+        <div class="clearfix"></div>
+        <h3>Description</h3>
+        <p><%= episode. description %></p>
 
-          <h3>Summary</h3>
-          <p><%= episode.summary %></p>
-        </div>
+        <h3>Summary</h3>
+        <p><%= episode.summary %></p>
       </div>
     </div>
+  </div>
   <%= if 1 == rem(counter, 2) do %>
     </div>
   <% end %>

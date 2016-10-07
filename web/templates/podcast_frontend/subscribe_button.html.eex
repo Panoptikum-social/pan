@@ -1,0 +1,27 @@
+<script class="podlove-subscribe-button"
+        src="https://cdn.podlove.org/subscribe-button/javascripts/app.js"
+        data-language="de"
+        data-size="small"
+        data-json-data="podcastData"
+        data-colors="red;green;blue"
+        data-buttonid="123abc">
+</script>
+
+<script>
+  window.podcastData = {
+    "title": "<%= @podcast.title %>",
+    "subtitle": "<%= @podcast.summary %>",
+    "description": "<%= @podcast.description %>",
+    "cover": "<%= @podcast.image_url %>",
+    "feeds": [
+    <%= for feed <- @podcast.feeds do %>
+      {
+        "type": "audio",
+        "format": "mp3",
+        "url": "<%= feed.self_link_url %>",
+        "variant": "high"
+      },
+    <% end %>
+    ]
+  }
+</script>
