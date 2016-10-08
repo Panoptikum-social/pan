@@ -2,7 +2,7 @@ use Mix.Config
 
 config :pan, Pan.Endpoint,
   http: [port: 8888],
-  url: [host: "alpha.panoptikum.io"],
+  url: [host: "alpha.panoptikum.io", port: 80],
   cache_static_manifest: "priv/static/manifest.json",
   server: true,
   root: ".",
