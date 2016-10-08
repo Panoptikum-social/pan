@@ -1,6 +1,6 @@
 defmodule Pan.Category do
   use Pan.Web, :model
-  alias Pan.Repo
+#  alias Pan.Repo
 
   schema "categories" do
     field :title, :string

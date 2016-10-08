@@ -1,7 +1,6 @@
 defmodule Pan.EpisodeFrontendController do
   use Pan.Web, :controller
 
-  alias Pan.Podcast
   alias Pan.Episode
   alias Pan.Chapter
 
