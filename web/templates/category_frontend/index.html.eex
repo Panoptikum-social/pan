@@ -1,0 +1,39 @@
+<%= for {category, counter} <- Enum.with_index(@categories) do %>
+  <%= if 0 == rem(counter, 3) do %>
+    <div class="row">
+  <% end %>
+
+    <div class="col-md-4">
+      <div class="panel <%= panel_cycle(counter) %>">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <%= category.title %>
+          </h3>
+        </div>
+        <div class="panel-body row">
+          <div class="col-md-6">
+            Podcasts
+            <ul class="list-unstyled">
+              <%= for podcast <- category.podcasts do %>
+                <li><%= link podcast.title, to: podcast_frontend_path(@conn, :show, podcast) %></li>
+              <% end %>
+            </ul>
+          </div>
+
+          <%= if category.children != [] do %>
+            <div class="col-md-6">
+              Subcategories
+              <ul class="list-unstyled">
+                <%= for subcategory <- category.children do %>
+                  <li><%= link subcategory.title, to: category_frontend_path(@conn, :show, subcategory) %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <%= if 2 == rem(counter, 3) do %>
+    </div>
+  <% end %>
+<% end %>

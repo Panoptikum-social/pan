@@ -17,7 +17,9 @@ defmodule Pan.Router do
   scope "/", Pan do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PodcastFrontendController, :index
+    get "/", CategoryFrontendController, :index
+    resources "/categories", CategoryFrontendController, only: [:index, :show]
+
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
 
