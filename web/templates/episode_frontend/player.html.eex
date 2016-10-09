@@ -14,33 +14,5 @@
 </audio>
 
 <script>
-  $('audio').podlovewebplayer({
-    "poster":              "<%= @episode.podcast.image_url %>",
-    "title":               "<%= @episode.title %>",
-    "subtitle":            "<%= @episode.description %>",
-    "alwaysShowHours":     true,
-    "startVolume":         0.8,
-    "width":               "auto",
-    "summaryVisible":      false,
-    "timecontrolsVisible": false,
-    "chaptersVisible":      true,
-    "sharebuttonsVisible": false,
-    "show":{ "title":    "<%= @episode.podcast.title %>",
-             "subtitle": "<%= @episode.podcast.summary %>",
-             "summary":  "<%= @episode.podcast.description %>",
-             "poster":   "<%= @episode.podcast.image_url %>",
-             "url":      "<%= @episode.link %>"},
-    "chapters":[<%= for chapter <- @episode.chapters do %>
-                 { "start": "<%= chapter.start %>",
-                   "title": "<%= chapter.title %>" },
-                <% end %>],
-    "downloads":[<%= for enclosure <- @episode.enclosures do %>
-                  { "assetTitle":"<%= String.split(enclosure.url, "/") |> List.last %>",
-                    "size": "<% enclosure.length %>",
-                    "downloadUrl":"<%= enclosure.url %>"}
-                 <% end %>],
-    "summary":   "<%= @episode.summary %>",
-    "duration":  "<%= @episode.duration %>",
-    "permalink": "<%= @episode.deep_link %>",
-    "activeTab": "chapters"})
+  $('audio').podlovewebplayer(<%= episodestruct(@episode) %>)
 </script>

@@ -38,7 +38,7 @@ defmodule Pan.Mixfile do
      {:timex, "~> 3.0"},
      {:font_awesome_phoenix, "~> 0.1"},
      {:httpoison, "~> 0.9.0"},
-     {:exrm, "~> 1.0" } ]
+     {:exrm, "~> 1.0" }]
   end
 
   defp aliases do
