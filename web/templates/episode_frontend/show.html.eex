@@ -29,12 +29,21 @@
     <h3>Summary</h3>
     <p><%= @episode.summary %></p>
 
+    <h3>Player</h3>
+    <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+    <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
+      <source src="audio.m4a" type="audio/m4a">
+    </audio>
+    <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
+    <script>$('audio').podlovewebplayer();</script>
+
     <div class="row">
       <div class="col-md-4">
         <h3>Chapters</h3>
         <dl class="dl-horizontal">
           <%= for chapter <- @episode.chapters do %>
-            <dt><%= chapter.start %></dt>
+            <dt><%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "#t=" <> chapter.start),
+                                        rel: "http://podlove.org/deep-link" %></dt>
             <dd><%= chapter.title %></dd>
           <% end %>
         </dl>

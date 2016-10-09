@@ -10,4 +10,13 @@ defmodule Pan.EpisodeFrontendController do
     episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
     render(conn, "show.html", episode: episode)
   end
+
+  def player(conn, %{"id" => id}) do
+    episode = Repo.get!(Episode, id)
+    episode = Repo.preload(episode, [:podcast, :enclosures, :contributors])
+    episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
+    conn
+    |> put_layout("minimal.html")
+    |> render("player.html", episode: episode )
+  end
 end

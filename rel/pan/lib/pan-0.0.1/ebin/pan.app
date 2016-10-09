@@ -6,6 +6,8 @@
                         'Elixir.Pan.AlternateFeedController',
                         'Elixir.Pan.AlternateFeedView','Elixir.Pan.Auth',
                         'Elixir.Pan.Category','Elixir.Pan.CategoryController',
+                        'Elixir.Pan.CategoryFrontendController',
+                        'Elixir.Pan.CategoryFrontendView',
                         'Elixir.Pan.CategoryView','Elixir.Pan.Chapter',
                         'Elixir.Pan.ChapterController',
                         'Elixir.Pan.ChapterView','Elixir.Pan.Contributor',
