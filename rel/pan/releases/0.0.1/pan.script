@@ -1,4 +1,4 @@
-%% script generated at {2016,10,8} {9,19,50}
+%% script generated at {2016,10,9} {9,13,48}
 {script,
     {"pan","0.0.1"},
     [{preLoaded,
@@ -605,7 +605,9 @@
          ['Elixir.Pan','Elixir.Pan.AlternateFeed',
           'Elixir.Pan.AlternateFeedController','Elixir.Pan.AlternateFeedView',
           'Elixir.Pan.Auth','Elixir.Pan.Category',
-          'Elixir.Pan.CategoryController','Elixir.Pan.CategoryView',
+          'Elixir.Pan.CategoryController',
+          'Elixir.Pan.CategoryFrontendController',
+          'Elixir.Pan.CategoryFrontendView','Elixir.Pan.CategoryView',
           'Elixir.Pan.Chapter','Elixir.Pan.ChapterController',
           'Elixir.Pan.ChapterView','Elixir.Pan.Contributor',
           'Elixir.Pan.ContributorController','Elixir.Pan.ContributorView',
@@ -1974,6 +1976,8 @@
                         'Elixir.Pan.AlternateFeedController',
                         'Elixir.Pan.AlternateFeedView','Elixir.Pan.Auth',
                         'Elixir.Pan.Category','Elixir.Pan.CategoryController',
+                        'Elixir.Pan.CategoryFrontendController',
+                        'Elixir.Pan.CategoryFrontendView',
                         'Elixir.Pan.CategoryView','Elixir.Pan.Chapter',
                         'Elixir.Pan.ChapterController',
                         'Elixir.Pan.ChapterView','Elixir.Pan.Contributor',

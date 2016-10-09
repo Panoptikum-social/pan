@@ -1,0 +1,46 @@
+
+<link rel="stylesheet" type="text/css" href="/podlove-web-player/css/pwp-light-gray.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/podlove-web-player/css/vendor/progress-polyfill.css" media="screen">
+
+<script type='text/javascript' src="/podlove-web-player/js/vendor/html5shiv.min.js"></script>
+<script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+<script type='text/javascript' src="/podlove-web-player/js/vendor/progress-polyfill.min.js"></script>
+<script type='text/javascript' src="/podlove-web-player/js/podlove-web-player.js"></script>
+
+<audio>
+  <%= for enclosure <- @episode.enclosures do %>
+    <source src=<%= enclosure.url%>" type="<%= enclosure.type %>"></source>
+  <% end %>
+</audio>
+
+<script>
+  $('audio').podlovewebplayer({
+    "poster":              "<%= @episode.podcast.image_url %>",
+    "title":               "<%= @episode.title %>",
+    "subtitle":            "<%= @episode.description %>",
+    "alwaysShowHours":     true,
+    "startVolume":         0.8,
+    "width":               "auto",
+    "summaryVisible":      false,
+    "timecontrolsVisible": false,
+    "chaptersVisible":      true,
+    "sharebuttonsVisible": false,
+    "show":{ "title":    "<%= @episode.podcast.title %>",
+             "subtitle": "<%= @episode.podcast.summary %>",
+             "summary":  "<%= @episode.podcast.description %>",
+             "poster":   "<%= @episode.podcast.image_url %>",
+             "url":      "<%= @episode.link %>"},
+    "chapters":[<%= for chapter <- @episode.chapters do %>
+                 { "start": "<%= chapter.start %>",
+                   "title": "<%= chapter.title %>" },
+                <% end %>],
+    "downloads":[<%= for enclosure <- @episode.enclosures do %>
+                  { "assetTitle":"<%= String.split(enclosure.url, "/") |> List.last %>",
+                    "size": "<% enclosure.length %>",
+                    "downloadUrl":"<%= enclosure.url %>"}
+                 <% end %>],
+    "summary":   "<%= @episode.summary %>",
+    "duration":  "<%= @episode.duration %>",
+    "permalink": "<%= @episode.deep_link %>",
+    "activeTab": "chapters"})
+</script>
