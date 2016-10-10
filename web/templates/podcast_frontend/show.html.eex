@@ -38,7 +38,7 @@
         <div id="qrcode"></div>
         <script type="text/javascript">
           new QRCode(document.getElementById("qrcode"), {
-                     text: "<%= podcast_frontend_path(@conn, :subscribe_button, @podcast) %>",
+                     text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
                      width:  142,
                      height: 142,
                    });
