@@ -8,14 +8,17 @@ defmodule Pan.Parser.EP do
      |> xpath(~x"//channel/item"l)
      |> Enum.map( fn (episode) ->
        %{title: episode
-                |> xpath(~x"./title/text()"s),
+                |> xpath(~x"./title/text()"s)
+                |>String.slice(0, 255),
          link:  episode
-                |> xpath(~x"./link/text()"s),
+                |> xpath(~x"./link/text()"s)
+                |>String.slice(0, 255),
          publishing_date: episode
                           |> xpath(~x"./pubDate/text()"s)
                           |> Helpers.to_ecto_datetime,
          guid: episode
-               |> xpath(~x"./guid/text()"s),
+               |> xpath(~x"./guid/text()"s)
+               |>String.slice(0, 255),
          description: episode
                       |> xpath(~x"./description/text()"s),
          shownotes: episode
@@ -30,7 +33,8 @@ defmodule Pan.Parser.EP do
                             start: ~x"./@start"s,
                             title: ~x"./@title"s),
          deep_link: episode
-                    |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s),
+                    |> xpath(~x"./atom:link[@rel='http://podlove.org/deep-link']/@href"s)
+                    |>String.slice(0, 255),
          enclosures: episode
                      |> xpath(~x"./enclosure"l,
                               url: ~x"./@url"s,
@@ -40,9 +44,11 @@ defmodule Pan.Parser.EP do
          duration: episode
                    |> xpath(~x"./itunes:duration/text()"s),
          author: episode
-                 |> xpath(~x"./itunes:author/text()"s),
+                 |> xpath(~x"./itunes:author/text()"s)
+                 |>String.slice(0, 255),
          subtitle: episode
-                   |> xpath(~x"./itunes:subtitle/text()"s),
+                   |> xpath(~x"./itunes:subtitle/text()"s)
+                   |>String.slice(0, 255),
          summary: episode
                   |> xpath(~x"./itunes:summary/text()"s)
        }

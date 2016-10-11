@@ -1,3 +1,9 @@
+<p class="text-right"><em>
+  <%= @catcount %> Categories with
+  <%= @podcount %> Podcasts and
+  <%= @epicount %> Episodes and counting...
+</em></p>
+
 <%= for {category, counter} <- Enum.with_index(@categories) do %>
   <%= if 0 == rem(counter, 3) do %>
     <div class="row">

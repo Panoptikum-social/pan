@@ -18,19 +18,22 @@ defmodule Pan.Parser do
   @url "http://gabelbissen.at/feed/gabelbissen/"
 
 
-  def init do
-    download_feed_page(@url)
+  def init() do
+    import_feed(@url)
   end
 
-  def download_feed_page(url) do
-    %HTTPoison.Response{body: xml} = HTTPoison.get!(url, [], [follow_redirect: true])
+  def import_feed(url) do
+    %HTTPoison.Response{body: xml} = HTTPoison.get!(url, [], [follow_redirect: true,
+                                                              connect_timeout: 20000,
+                                                              recv_timeout: 20000,
+                                                              timeout: 20000])
 
     {:ok, xml} = fix_missing_xml_tag(xml)
 
     {:ok, next_page_url} = update_from_feed(xml, url)
 
     if next_page_url != "" do
-      download_feed_page(next_page_url)
+      import_feed(next_page_url)
     end
   end
 
