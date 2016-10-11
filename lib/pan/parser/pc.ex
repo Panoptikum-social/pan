@@ -14,13 +14,30 @@ defmodule Pan.Parser.PC do
                |> xpath(~x"//channel/itunes:iexplicit/text()"s)
                |> Helpers.boolify
 
-    image = xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
-                                              url: ~x"./url/text()"s)
+    image =
+      cond do
+        xml |> xpath(~x"//channel/image") != nil ->
+          xml |> xpath(~x"//channel/image", title: ~x"./title/text()"s,
+                                            url: ~x"./url/text()"s)
+        xml |> xpath(~x"//channel/itunes:image") != nil ->
+          xml |> xpath(~x"//channel/itunes:image", title: ~x"./@href"s ,
+                                                   url: ~x"./@href"s)
+      end
+
+
+
     payment_link = parse_payment_link(xml)
 
-    {:ok, language} = xml
-                      |> xpath(~x"//channel/language/text()"s)
-                      |> Helpers.find_language
+    language_id =
+      if xml |> xpath(~x"//channel/language/text()"s) != "" do
+        {:ok, language} = xml
+                          |> xpath(~x"//channel/language/text()"s)
+                          |> Helpers.find_language
+        language.id
+      else
+        nil
+      end
+
     last_build_date = xml
                       |> xpath(~x"//channel/lastBuildDate/text()"s)
                       |> Helpers.to_ecto_datetime
@@ -28,7 +45,7 @@ defmodule Pan.Parser.PC do
     podcast = %Podcast{title: title,
                        website: website,
                        description: description,
-                       language_id: language.id,
+                       language_id: language_id,
                        summary: summary,
                        image_title: image.title,
                        image_url: image.url,

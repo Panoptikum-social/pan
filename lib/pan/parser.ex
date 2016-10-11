@@ -213,7 +213,7 @@ defmodule Pan.Parser do
   def create_chapter(chapter, episode_id) do
     Repo.insert(
       %Chapter{start:      chapter.start,
-               title:      chapter.title,
+               title:      String.slice(chapter.title, 0, 255),
                episode_id: episode_id})
   end
 
