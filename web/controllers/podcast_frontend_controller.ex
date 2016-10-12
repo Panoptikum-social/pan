@@ -13,7 +13,7 @@ defmodule Pan.PodcastFrontendController do
 
   def show(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-    podcast = Repo.preload(podcast, [:language, :owner])
+    podcast = Repo.preload(podcast, [:language, :owner, :feeds])
     podcast = Repo.preload(podcast, episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
     render(conn, "show.html", podcast: podcast)
   end

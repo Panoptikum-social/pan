@@ -36,6 +36,7 @@
 
       <div class="col-md-2">
         <div id="qrcode"></div>
+        <p class="small text-right">scan to subscribe</p>
         <script type="text/javascript">
           new QRCode(document.getElementById("qrcode"), {
                      text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
@@ -43,7 +44,36 @@
                      height: 142,
                    });
         </script>
-        <span class="small">scan to subscribe</span>
+
+        <p class="text-center">
+          <script class="podlove-subscribe-button"
+                  src="https://cdn.podlove.org/subscribe-button/javascripts/app.js"
+                  data-language="en"
+                  data-size="medium auto"
+                  data-json-data="podcastData"
+                  data-colors="ED5565"
+                  data-buttonid="123abc">
+          </script>
+        </p>
+
+        <script>
+          window.podcastData = {
+            "title": "<%= @podcast.title %>",
+            "subtitle": "<%= @podcast.summary %>",
+            "description": "<%= @podcast.description %>",
+            "cover": "<%= @podcast.image_url %>",
+            "feeds": [
+            <%= for feed <- @podcast.feeds do %>
+              {
+                "type": "audio",
+                "format": "mp3",
+                "url": "<%= feed.self_link_url %>",
+                "variant": "high"
+              },
+            <% end %>
+            ]
+          }
+        </script>
       </div>
     </div>
   </div>
