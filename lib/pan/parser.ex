@@ -15,7 +15,7 @@ defmodule Pan.Parser do
   alias Pan.Parser.FD
   import SweetXml
 
-  @url "http://gabelbissen.at/feed/gabelbissen/"
+  @url "http://www.lieblings-plaetzchen.com/episodes.mp3.rss"
 
 
   def init() do
