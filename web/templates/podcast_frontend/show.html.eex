@@ -12,7 +12,7 @@
       </div>
 
       <div class="col-md-3">
-        <p><%= @podcast.summary %></p>
+        <p><%= raw @podcast.summary %></p>
       </div>
 
       <div class="col-md-5">
@@ -110,7 +110,7 @@
 
         <div class="clearfix"></div>
         <h3>Description</h3>
-        <p><%= episode. description %></p>
+        <p><%= raw episode.description %></p>
 
         <h3>Summary</h3>
         <p><%= episode.summary %></p>

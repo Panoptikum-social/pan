@@ -24,7 +24,7 @@
 
     <div class="clearfix"></div>
     <h3>Description</h3>
-    <p><%= @episode. description %></p>
+    <p><%= raw @episode.description %></p>
 
     <h3>Summary</h3>
     <p><%= @episode.summary %></p>
