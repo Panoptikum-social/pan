@@ -115,6 +115,9 @@ h4, .h4 { font-size: 20px; }
 h5, .h5 { font-size: 17px; }
 h6, .h6 { font-size: 14px; }
 
+.navbar-text a {color: white; }
+.navbar-text {margin-left: 10px;}
+
 
 
 /*# sourceMappingURL=app.css.map*/
