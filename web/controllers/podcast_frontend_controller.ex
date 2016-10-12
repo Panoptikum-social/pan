@@ -7,6 +7,7 @@ defmodule Pan.PodcastFrontendController do
 
   def index(conn, _params) do
     podcasts = Repo.all(Podcast)
+    podcasts = Repo.preload(podcasts, [:categories])
     render(conn, "index.html", podcasts: podcasts)
   end
 

@@ -19,6 +19,12 @@
             </div>
 
           <dl class="dl-horizontal">
+            <dt><label class="label label-danger">Category</label></dt>
+            <dd>
+              <%= for category <- podcast.categories do %>
+                <%= category.title %>
+              <% end %>
+            </dd>
             <dt><label class="label label-info">Description</label></dt>
             <dd><%= podcast.description %></dd>
             <dt><label class="label label-success">Author</label></dt>

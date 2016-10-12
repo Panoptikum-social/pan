@@ -1,13 +1,12 @@
 defmodule Pan.Category do
   use Pan.Web, :model
-#  alias Pan.Repo
 
   schema "categories" do
     field :title, :string
 
     has_many :children, Pan.Category, foreign_key: :parent_id
 
-    belongs_to :parent, Pan.Parent
+    belongs_to :parent, Pan.Category
     many_to_many :podcasts, Pan.Podcast, join_through: "categories_podcasts",
                                          on_replace: :delete
 

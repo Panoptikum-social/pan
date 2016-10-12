@@ -151,10 +151,11 @@ defmodule Pan.Parser do
 
 
   def associate(instance, podcast) do
-    instance
-    |> Repo.preload(:podcasts)
+    category = Repo.preload(instance, :podcasts)
+
+    category
     |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:podcasts, [podcast])
+    |> Ecto.Changeset.put_assoc(:podcasts, [podcast | category.podcasts])
     |> Repo.update!
   end
 
