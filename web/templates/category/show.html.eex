@@ -7,13 +7,17 @@
 
 <%= if @category.parent do %>
   <h1>Parent</h1>
-  <%= render "_category.html", category: @category.parent, conn: @conn %>
+  <%= render "_category.html", category: @category.parent,
+                               no_children: true,
+                               conn: @conn %>
   <hr/>
 <% end %>
 
 <%= if @category.children != [] do %>
   <h1>Children</h1>
-  <%= render "_categories.html", categories: @category.children, conn: @conn %>
+  <%= render "_categories.html", categories: @category.children,
+                                 no_children: true,
+                                 conn: @conn %>
   <hr/>
 <% end %>
 
