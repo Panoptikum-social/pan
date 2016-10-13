@@ -1,0 +1,18 @@
+<h3>Latest episodes</h3>
+
+<div class="list-group col-md-4">
+  <%= for {episode, counter} <- Enum.with_index(@episodes) do %>
+    <div class="list-group-item <%= list_group_item_cycle(counter) %>">
+      <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %>
+    </div>
+    <div class="list-group-item">
+      <%= link [fa_icon("microphone"), " ", episode.podcast.title],
+               to: podcast_frontend_path(@conn, :show, episode.podcast) %><br/>
+      <%= fa_icon("calendar") %> <%= episode.publishing_date %><br/>
+      <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
+      <%= fa_icon("user") %> <%= episode.author %><br/>
+      <%= fa_icon("align-justify") %> <%= episode.subtitle %>
+      </p>
+    </div>
+  <% end %>
+</div>

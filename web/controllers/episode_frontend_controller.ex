@@ -19,4 +19,11 @@ defmodule Pan.EpisodeFrontendController do
     |> put_layout("minimal.html")
     |> render("player.html", episode: episode )
   end
+
+  def latest(conn, _params) do
+    episodes = Repo.all(from e in Episode, order_by: [desc: :publishing_date],
+                                           limit: 10)
+               |> Repo.preload(:podcast)
+    render(conn, "latest.html", episodes: episodes)
+  end
 end

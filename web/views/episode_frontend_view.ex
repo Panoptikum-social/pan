@@ -38,4 +38,9 @@ defmodule Pan.EpisodeFrontendView do
                                             size: enclosure.length,
                                             downloadUrl: enclosure.url} end)
   end
+
+  def list_group_item_cycle(counter) do
+    Enum.at(["list-group-item-info", "list-group-item-danger",
+             "list-group-item-warning", "list-group-item-primary", "list-group-item-success"], rem(counter, 5))
+  end
 end
