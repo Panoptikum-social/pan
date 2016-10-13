@@ -41,5 +41,14 @@
   <dd><%= @episode.podcast.title %></dd>
 </ul>
 
+<hr/>
+<%= render Pan.EnclosureView, "index.html", enclosures: @episode.enclosures, conn: @conn %>
+<hr/>
+<%= render Pan.ChapterView, "index.html", chapters: @episode.chapters, conn: @conn %>
+<hr/>
+<%= render Pan.PodcastView, "_podcast.html", podcast: @episode.podcast, conn: @conn %>
+<hr/>
+
+
 <%= link "Edit", to: episode_path(@conn, :edit, @episode) %>
 <%= link "Back", to: episode_path(@conn, :index) %>

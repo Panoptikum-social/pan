@@ -9,7 +9,7 @@
 
 <audio>
   <%= for enclosure <- @episode.enclosures do %>
-    <source src=<%= enclosure.url%>" type="<%= enclosure.type %>"></source>
+    <source src="<%= enclosure.url%>" type="<%= enclosure.type %>"></source>
   <% end %>
 </audio>
 

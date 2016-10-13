@@ -31,7 +31,7 @@ defmodule Pan.EpisodeController do
 
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-    episode = Repo.preload(episode,:podcast)
+              |> Repo.preload([:podcast, :enclosures, :chapters])
     render(conn, "show.html", episode: episode)
   end
 

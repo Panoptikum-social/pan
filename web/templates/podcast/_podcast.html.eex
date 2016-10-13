@@ -1,0 +1,48 @@
+<h2>Show podcast</h2>
+
+<dl class="dl-horizontal">
+
+  <dt>Title</dt>
+  <dd><%= @podcast.title %></dd>
+
+  <dt>Website</dt>
+  <dd><%= @podcast.website %></dd>
+
+  <dt>Description</dt>
+  <dd><%= @podcast.description %></dd>
+
+  <dt>Language</dt>
+  <dd><%= @podcast.language_id %></dd>
+
+  <dt>Summary</dt>
+  <dd><%= @podcast.summary %></dd>
+
+  <dt>Image title</dt>
+  <dd><%= @podcast.image_title %></dd>
+
+  <dt>Image url</dt>
+  <dd><%= @podcast.image_url %></dd>
+
+  <dt>Last build date</dt>
+  <dd><%= @podcast.last_build_date %></dd>
+
+  <dt>Payment link title</dt>
+  <dd><%= @podcast.payment_link_title %></dd>
+
+  <dt>Payment link url</dt>
+  <dd><%= @podcast.payment_link_url %></dd>
+
+  <dt>Owner</dt>
+  <dd><%= @podcast.owner_id %></dd>
+
+  <dt>Author</dt>
+  <dd><%= @podcast.author %></dd>
+
+  <dt>Explicit</dt>
+  <dd><%= @podcast.explicit %></dd>
+
+  <dt>Unique identifier</dt>
+  <dd><%= @podcast.unique_identifier %></dd>
+</dl>
+
+<%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

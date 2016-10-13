@@ -1,49 +1,15 @@
-<h2>Show podcast</h2>
-
-<dl class="dl-horizontal">
-
-  <dt>Title</dt>
-  <dd><%= @podcast.title %></dd>
-
-  <dt>Website</dt>
-  <dd><%= @podcast.website %></dd>
-
-  <dt>Description</dt>
-  <dd><%= @podcast.description %></dd>
-
-  <dt>Language</dt>
-  <dd><%= @podcast.language_id %></dd>
-
-  <dt>Summary</dt>
-  <dd><%= @podcast.summary %></dd>
-
-  <dt>Image title</dt>
-  <dd><%= @podcast.image_title %></dd>
-
-  <dt>Image url</dt>
-  <dd><%= @podcast.image_url %></dd>
-
-  <dt>Last build date</dt>
-  <dd><%= @podcast.last_build_date %></dd>
-
-  <dt>Payment link title</dt>
-  <dd><%= @podcast.payment_link_title %></dd>
-
-  <dt>Payment link url</dt>
-  <dd><%= @podcast.payment_link_url %></dd>
-
-  <dt>Owner</dt>
-  <dd><%= @podcast.owner_id %></dd>
-
-  <dt>Author</dt>
-  <dd><%= @podcast.author %></dd>
-
-  <dt>Explicit</dt>
-  <dd><%= @podcast.explicit %></dd>
-
-  <dt>Unique identifier</dt>
-  <dd><%= @podcast.unique_identifier %></dd>
-</dl>
+<%= render "show.html", podcast: @podcast, conn: @conn %>
+<hr/>
+<%= render Pan.FeedView, "index.html", feeds: @podcast.feeds, conn: @conn %>
+<hr/>
+<%= render Pan.EpisodeView, "index.html", episodes: @podcast.episodes, conn: @conn %>
+<hr/>
+<%= render Pan.CategoryView, "index.html", categories: @podcast.categories, conn: @conn %>
+<hr/>
+<%= render Pan.LanguageView, "show.html", language: @podcast.language, conn: @conn %>
+<hr/>
+<%= render Pan.UserView, "show.html", user: @podcast.owner, conn: @conn %>
+<hr/>
 
 <%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %> -
 <%= link "Back", to: podcast_path(@conn, :index) %>
