@@ -8,7 +8,7 @@ defmodule Pan.CategoryController do
   def index(conn, _params) do
     categories = Repo.all(from category in Category, where: is_nil(category.parent_id))
                  |> Repo.preload(:children)
-    render(conn, "index.html", categories: categories)
+    render(conn, "index.html", categories: categories, no_children: false)
   end
 
   def new(conn, _params) do
