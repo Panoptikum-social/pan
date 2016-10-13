@@ -1,18 +1,21 @@
 <h2>Show category</h2>
 
-<ul>
+<%= render "_category.html", category: @category, conn: @conn %>
+<hr/>
+<%= render Pan.PodcastView, "index.html", podcasts: @category.podcasts, conn: @conn %>
+<hr/>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @category.title %>
-  </li>
+<%= if @category.parent do %>
+  <h1>Parent</h1>
+  <%= render "_category.html", category: @category.parent, conn: @conn %>
+  <hr/>
+<% end %>
 
-  <li>
-    <strong>Parent:</strong>
-    <%= @category.parent_id %>
-  </li>
-
-</ul>
+<%= if @category.children != [] do %>
+  <h1>Children</h1>
+  <%= render "_categories.html", categories: @category.children, conn: @conn %>
+  <hr/>
+<% end %>
 
 <%= link "Edit", to: category_path(@conn, :edit, @category) %>
 <%= link "Back", to: category_path(@conn, :index) %>

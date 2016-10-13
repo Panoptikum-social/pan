@@ -1,0 +1,13 @@
+<ul>
+  <li>
+    <strong>Title:</strong>
+    <%= @category.title %>
+  </li>
+
+  <li>
+    <strong>Parent:</strong>
+    <%= @category.parent_id %>
+  </li>
+</ul>
+
+<%= link "Show", to: category_path(@conn, :show, @category) %>

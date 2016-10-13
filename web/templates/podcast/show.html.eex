@@ -1,10 +1,12 @@
-<%= render "show.html", podcast: @podcast, conn: @conn %>
+<%= render "_podcast.html", podcast: @podcast, conn: @conn %>
 <hr/>
 <%= render Pan.FeedView, "index.html", feeds: @podcast.feeds, conn: @conn %>
 <hr/>
 <%= render Pan.EpisodeView, "index.html", episodes: @podcast.episodes, conn: @conn %>
 <hr/>
-<%= render Pan.CategoryView, "index.html", categories: @podcast.categories, conn: @conn %>
+<%= render Pan.CategoryView, "index.html", categories: @podcast.categories,
+                                           no_children: true,
+                                           conn: @conn %>
 <hr/>
 <%= render Pan.LanguageView, "show.html", language: @podcast.language, conn: @conn %>
 <hr/>

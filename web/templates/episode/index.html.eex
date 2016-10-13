@@ -6,7 +6,6 @@
       <th>Podcast</th>
       <th>Title</th>
       <th>Publishing date</th>
-      <th>Description</th>
       <th>Duration</th>
       <th>Author</th>
       <th>Subtitle</th>
@@ -16,18 +15,18 @@
   <tbody>
 <%= for episode <- @episodes do %>
     <tr>
-      <td><%= episode.podcast.title %></td>
+      <td><%= link episode.podcast.id,
+                   to: podcast_path(@conn, :show, episode.podcast) %></td>
       <td><a href="<%= episode.link %>"><%= episode.title %></a></td>
       <td><%= episode.publishing_date %></td>
+      <td><%= episode.duration %></td>
+      <td><%= episode.author %></td>
       <td>
-        <%= String.slice(episode.description, 0, 255) %>
-        <%= if String.length(episode.description) > 255 do %>
+        <%= String.slice(episode.subtitle, 0, 100) %>
+        <%= if String.length(episode.subtitle) > 100 do %>
          ...
         <% end %>
       </td>
-      <td><%= episode.duration %></td>
-      <td><%= episode.author %></td>
-      <td><%= episode.subtitle %></td>
 
       <td class="text-right">
         <%= link "Show", to: episode_path(@conn, :show, episode), class: "btn btn-default btn-xs" %>
