@@ -37,6 +37,10 @@
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li><%= link "Categories", to: category_frontend_path(@conn, :index) %></li>
+              <li><%= link "Latest Episodes", to: episode_frontend_path(@conn, :latest) %></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right">
               <%= if @current_user do %>
                 <li>
