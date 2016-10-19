@@ -26,7 +26,7 @@ defmodule Pan.User do
                  join_through: "followers_users", join_keys: [follower_id: :id, user_id: :id]
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_length(:username, min: 3, max: 30)
