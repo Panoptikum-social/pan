@@ -21,8 +21,6 @@ defmodule Pan.Parser do
                                                               recv_timeout: 20000,
                                                               timeout: 20000])
 
-    {:ok, xml} = Pan.Parser.Helpers.fix_missing_xml_tag(xml)
-
     {:ok, next_page_url} = update_from_feed(xml, url)
 
     if next_page_url != "" do
@@ -68,27 +66,9 @@ defmodule Pan.Parser do
     {:ok, feed} = FD.parse(xml, url)
     {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
 
-    create_alternate_feeds(xml, feed)
     create_contributors(xml, podcast)
     create_categories(xml, podcast)
     {:ok, feed}
-  end
-
-
-  def create_alternate_feeds(xml, feed) do
-    {:ok, alternate_feeds} = parse_alternate_feeds(xml)
-
-    for alternate_feed <- alternate_feeds do
-      {:ok, _alternate_feed} = create_alternate_feed(alternate_feed, feed.id)
-    end
-  end
-
-
-  def create_alternate_feed(alternate_feed, feed_id) do
-    Repo.insert(
-      %AlternateFeed{title:    alternate_feed.title,
-                     url:     alternate_feed.url,
-                     feed_id: feed_id})
   end
 
 
@@ -97,7 +77,6 @@ defmodule Pan.Parser do
 
     for contributor <- contributors do
       if Repo.get_by(Contributor, uri: contributor.uri) == nil do
-        {:ok, contributor} = create_contributor(contributor)
         associate(contributor, podcast)
       end
     end
@@ -152,14 +131,15 @@ defmodule Pan.Parser do
         for enclosure <- xml_episode.enclosures do
           create_enclosure(enclosure, episode.id)
          end
-
-         for contributor <- xml_episode.contributors do
-           find_or_create_episode_contributor(contributor, episode)
-         end
       end
     end
   end
 
+  def create_contributor(contributor) do
+    Repo.insert(
+      %Contributor{name: contributor.name,
+                   uri:  contributor.uri})
+  end
 
   def find_or_create_episode_contributor(contributor, episode) do
     if (Repo.get_by(Contributor, uri: contributor.uri) == nil) do
@@ -171,13 +151,6 @@ defmodule Pan.Parser do
       |> Ecto.Changeset.put_assoc(:episodes, [episode])
       |> Repo.update!
     end
-  end
-
-
-  def create_contributor(contributor) do
-    Repo.insert(
-      %Contributor{name: contributor.name,
-                   uri:  contributor.uri})
   end
 
 
@@ -254,25 +227,6 @@ defmodule Pan.Parser do
       {:ok, nil}
     end
   end
-
-
-  def parse_alternate_feeds(xml) do
-    alternate_feeds = xml
-                      |> xpath(~x"//channel/atom:link[@rel='alternate']"l,
-                      title: ~x"./@title"s,
-                      url: ~x"./@href"s)
-    {:ok, alternate_feeds}
-  end
-
-
-  def parse_contributors(xml) do
-    contributors = xml
-                   |> xpath(~x"//channel/atom:contributor"l,
-                            name: ~x"./atom:name/text()"s,
-                            uri: ~x"./atom:uri/text()"s)
-    {:ok, contributors}
-  end
-
 
   def parse_categories(xml) do
     categories = xml

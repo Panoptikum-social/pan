@@ -24,6 +24,6 @@ defmodule Pan.Parser.BatchImporter do
 
   def mass_import() do
     stream = File.stream!("materials/feeds.xml", [:read, :utf8])
-    Enum.each(stream, fn(url) -> Pan.Parser.RssFeed.import(url) end)
+    Enum.each(stream, fn(url) -> Pan.Parser.RssFeed.download_and_parse(url) end)
   end
 end
