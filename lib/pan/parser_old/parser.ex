@@ -15,8 +15,15 @@ defmodule Pan.Parser do
   alias Pan.Parser.FD
   import SweetXml
 
-  @url "http://www.lieblings-plaetzchen.com/episodes.mp3.rss"
+  @url "http://freakshow.fm/feed/m4a"
 
+
+  def measure(function) do
+    function
+    |> :timer.tc
+    |> elem(0)
+    |> Kernel./(1_000_000)
+  end
 
   def init() do
     import_feed(@url)

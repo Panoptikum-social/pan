@@ -16,7 +16,6 @@ defmodule Pan.Podcast do
     field :unique_identifier, Ecto.UUID
     timestamps
 
-    belongs_to :language, Pan.Language
     belongs_to :owner, Pan.User
 
     has_many :episodes, Pan.Episode
@@ -25,7 +24,7 @@ defmodule Pan.Podcast do
     many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts"
     many_to_many :listeners, Pan.User, join_through: "subscriptions"
     many_to_many :followers, Pan.User, join_through: "followers_podcasts"
-
+    many_to_many :languages, Pan.Language, join_through: "languages_podcasts"
   end
 
   @required_fields ~w(title website description summary image_title image_url

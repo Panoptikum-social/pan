@@ -8,7 +8,7 @@
                                            no_children: true,
                                            conn: @conn %>
 <hr/>
-<%= render Pan.LanguageView, "show.html", language: @podcast.language, conn: @conn %>
+<%= render Pan.LanguageView, "index.html", languages: @podcast.languages, conn: @conn %>
 <hr/>
 <%= render Pan.UserView, "show.html", user: @podcast.owner, conn: @conn %>
 <hr/>

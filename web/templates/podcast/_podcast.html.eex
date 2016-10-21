@@ -11,9 +11,6 @@
   <dt>Description</dt>
   <dd><%= @podcast.description %></dd>
 
-  <dt>Language</dt>
-  <dd><%= @podcast.language_id %></dd>
-
   <dt>Summary</dt>
   <dd><%= @podcast.summary %></dd>
 

@@ -24,7 +24,11 @@
           <dt><label class="label label-warning">Support</label></dt>
           <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
           <dt><label class="label label-danger">Language</label></dt>
-          <dd><%= if @podcast.language do @podcast.language.name end %></dd>
+          <dd>
+            <%= for language <- @podcast.languages do
+                  language.name
+                end %>
+          </dd>
           <dt><label class="label label-success">last modified</label></dt>
           <dd><%= @podcast.last_build_date %></dd>
           <dt><label class="label label-info">Owner</label></dt>

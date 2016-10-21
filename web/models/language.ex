@@ -6,7 +6,7 @@ defmodule Pan.Language do
     field :name, :string
     timestamps
 
-    has_many :podcasts, Pan.Podcast
+    many_to_many :podcasts, Pan.Podcasts, join_through: "languages_podcasts"
   end
 
   @required_fields ~w(shortcode name)
