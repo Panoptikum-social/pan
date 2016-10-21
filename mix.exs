@@ -18,7 +18,7 @@ defmodule Pan.Mixfile do
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :gettext, :phoenix_ecto, :postgrex,
                     :comeonin, :sweet_xml, :timex, :httpoison,
-                    :font_awesome_phoenix]]
+                    :font_awesome_phoenix, :quinn]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -38,7 +38,8 @@ defmodule Pan.Mixfile do
      {:timex, "~> 3.0"},
      {:font_awesome_phoenix, "~> 0.1"},
      {:httpoison, "~> 0.9.0"},
-     {:exrm, "~> 1.0" }]
+     {:exrm, "~> 1.0" },
+     {:quinn, "~> 1.0.0"}]
   end
 
   defp aliases do

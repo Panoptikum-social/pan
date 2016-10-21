@@ -1,7 +1,5 @@
 defmodule Pan.Parser.Helpers do
-  alias Pan.Language
   use Pan.Web, :controller
-
 
   def boolify(explicit) do
     case explicit do
@@ -14,7 +12,7 @@ defmodule Pan.Parser.Helpers do
 
 
   def find_language(shortcode) do
-    {:ok, Repo.get_by(Language, shortcode: shortcode)}
+    {:ok, Repo.get_by(Pan.Language, shortcode: shortcode)}
   end
 
 
@@ -24,5 +22,17 @@ defmodule Pan.Parser.Helpers do
     erltime = Timex.to_erl(datetime)
     # why can't I pipe here?
     Ecto.DateTime.from_erl(erltime)
+  end
+
+
+  def fix_missing_xml_tag(xml) do
+    xml =
+      if String.starts_with?(xml, ["<?xml"]) do
+        xml
+      else
+        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" <> xml
+      end
+
+    {:ok, xml}
   end
 end

@@ -1,4 +1,4 @@
-defmodule Pan.Parser.Importer do
+defmodule Pan.Parser.BatchImporter do
   import SweetXml
 
   def print_generators() do
@@ -24,6 +24,6 @@ defmodule Pan.Parser.Importer do
 
   def mass_import() do
     stream = File.stream!("materials/feeds.xml", [:read, :utf8])
-    Enum.each(stream, fn(url) -> Pan.Parser.import_feed(url) end)
+    Enum.each(stream, fn(url) -> Pan.Parser.RssFeed.import(url) end)
   end
 end

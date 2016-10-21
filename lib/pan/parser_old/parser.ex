@@ -15,27 +15,13 @@ defmodule Pan.Parser do
   alias Pan.Parser.FD
   import SweetXml
 
-  @url "http://freakshow.fm/feed/m4a"
-
-
-  def measure(function) do
-    function
-    |> :timer.tc
-    |> elem(0)
-    |> Kernel./(1_000_000)
-  end
-
-  def init() do
-    import_feed(@url)
-  end
-
   def import_feed(url) do
     %HTTPoison.Response{body: xml} = HTTPoison.get!(url, [], [follow_redirect: true,
                                                               connect_timeout: 20000,
                                                               recv_timeout: 20000,
                                                               timeout: 20000])
 
-    {:ok, xml} = fix_missing_xml_tag(xml)
+    {:ok, xml} = Pan.Parser.Helpers.fix_missing_xml_tag(xml)
 
     {:ok, next_page_url} = update_from_feed(xml, url)
 
@@ -43,19 +29,6 @@ defmodule Pan.Parser do
       import_feed(next_page_url)
     end
   end
-
-
-  def fix_missing_xml_tag(xml) do
-    xml =
-      if String.starts_with?(xml, ["<?xml"]) do
-        xml
-      else
-        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" <> xml
-      end
-
-    {:ok, xml}
-  end
-
 
   def update_from_feed(xml, url) do
     {:ok, xml_feed} = FD.parse(xml, url)
