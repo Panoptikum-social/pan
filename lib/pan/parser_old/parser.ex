@@ -66,21 +66,18 @@ defmodule Pan.Parser do
     {:ok, feed} = FD.parse(xml, url)
     {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
 
-    create_contributors(xml, podcast)
     create_categories(xml, podcast)
     {:ok, feed}
   end
 
 
-  def create_contributors(xml, podcast) do
-    {:ok, contributors} = parse_contributors(xml)
-
-    for contributor <- contributors do
-      if Repo.get_by(Contributor, uri: contributor.uri) == nil do
-        associate(contributor, podcast)
-      end
-    end
-  end
+   def create_contributors(xml, podcast, contributors) do
+     for contributor <- contributors do
+       if Repo.get_by(Contributor, uri: contributor.uri) == nil do
+         associate(contributor, podcast)
+       end
+     end
+   end
 
 
   def create_categories(xml, podcast) do

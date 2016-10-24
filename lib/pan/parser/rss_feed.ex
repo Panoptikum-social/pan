@@ -16,19 +16,30 @@ defmodule Pan.Parser.RssFeed do
                   payment_link_url: ""}
                 |> parse(feed_as_map)
                 |> Pan.Podcast.changeset
+# not yet implemented: persisting data from the changeset
     changeset
   end
 
+
+# Actual feed parsing: Now the fun begins
   def parse(params, context \\ "tag", tags)
-  def parse(params, "image", []), do: params
+
+# We are done digging down
+  def parse(params, context, []), do: params
+
+  def parse(params, "contributor", [head | tail]) do
+    contributor_params = Pan.Parser.Analyzer.call(params, "contributor", [head[:name], head[:attr], head[:value]])
+    params = Map.merge(params, %{contributors: [contributor_params]})
+
+    parse(params, "contributor", tail)
+  end
 
   def parse(params, context, [head | tail]) do
     params = Pan.Parser.Analyzer.call(params, context, [head[:name], head[:attr], head[:value]])
     parse(params, context, tail)
-    params
   end
 
-
+# Convenience function for runtime measurement
   def measure_runtime(function) do
     function
     |> :timer.tc
