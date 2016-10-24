@@ -90,15 +90,15 @@ defmodule Pan.Parser.Analyzer do
   def call(params, "tag", [:language, _, [value]]) do
 #FIXME: We need a find_or_create_by here
     language = Pan.Repo.get_by(Pan.Language, shortcode: value)
-    Map.merge(params, %{languages: [language]})
+    Map.merge(params, %{languages: [language.id]})
   end
 
 
 # We expect several contributors
-  def call(params, "tag", [:"atom:contributor", _, value]), do: RssFeed.parse(params, "contributor", value)
+  def call(params, "tag", [:"atom:contributor", _, value]), do: RssFeed.parse(params, "contributor", value, UUID.uuid1())
 
-  def call(params, "contributor", [:"atom:name", _, [value]]), do: Map.merge(params, %{name: value})
-  def call(params, "contributor", [:"atom:uri",  _, [value]]), do: Map.merge(params, %{uri: value})
+  def call("contributor", [:"atom:name", _, [value]]), do: %{name: value}
+  def call("contributor", [:"atom:uri",  _, [value]]), do: %{uri: value}
 
 
 # We expect one owner
@@ -112,18 +112,23 @@ defmodule Pan.Parser.Analyzer do
 # Parsing categories infintely deep
   def call(params, "tag", [:"itunes:category", attr, []]), do: params
   def call(params, "tag", [:"itunes:category", attr, [value]]) do
-    category = Pan.Parser.Category.get_or_create_by(attr[:text], nil)
+    category = Pan.Parser.Category.get_or_create(attr[:text], nil)
     Map.merge(params, %{categories: [category.id]})
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
   def call(params, "category", [:"itunes:category", attr, []], parent_id), do: params
   def call(params, "category", [:"itunes:category", attr, [value]], parent_id) do
-    category = Pan.Parser.Category.get_or_create_by(attr[:text], parent_id)
+    category = Pan.Parser.Category.get_or_create(attr[:text], parent_id)
     Map.merge(params, %{categories: [category.id]})
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
+
+# Episodes
+  def call(params, "tag", [:item, _, value]), do: RssFeed.parse(params, "episode", value, UUID.uuid1())
+
+  def call(params, "episode", [:title, _, [value]]), do: Map.merge(params, %{title: value})
 
 
 

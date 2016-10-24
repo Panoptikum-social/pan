@@ -13,7 +13,8 @@ defmodule Pan.Parser.RssFeed do
     changeset = %{self_link_title: "Feed",
                   self_link_url: url,
                   payment_link_title: "",
-                  payment_link_url: ""}
+                  payment_link_url: "",
+                  contributors: %{}}
                 |> parse(feed_as_map)
                 |> Pan.Podcast.changeset
 # not yet implemented: persisting data from the changeset
@@ -26,13 +27,14 @@ defmodule Pan.Parser.RssFeed do
 
 # We are done digging down
   def parse(params, context, []), do: params
+  def parse(params, context, [], _), do: params
 
 
-  def parse(params, "contributor", [head | tail]) do
-    contributor_params = Pan.Parser.Analyzer.call(params, "contributor", [head[:name], head[:attr], head[:value]])
+  def parse(params, "contributor", [head | tail], guid) do
+    contributor_params = Pan.Parser.Analyzer.call("contributor", [head[:name], head[:attr], head[:value]])
 
-    Map.merge(params, %{contributors: [contributor_params]})
-    |> parse("contributor", tail)
+    Pan.Parser.Helpers.deep_merge(params, %{contributors: %{String.to_atom(guid) => contributor_params}})
+    |> parse("contributor", tail, guid)
   end
 
 
@@ -41,6 +43,14 @@ defmodule Pan.Parser.RssFeed do
 
     Map.merge(params, %{owner: owner_params})
     |> parse("owner", tail)
+  end
+
+
+  def parse(params, "episode", [head | tail], guid) do
+    episode_params = Pan.Parser.Analyzer.call(params, "episode", [head[:name], head[:attr], head[:value]])
+
+    Pan.Parser.Helpers.deep_merge(params, %{episodes: %{String.to_atom(guid) => episode_params}})
+    |> parse("episode", tail, guid)
   end
 
 

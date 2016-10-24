@@ -51,20 +51,20 @@ defmodule Pan.Parser do
 
 
   def find_or_create_podcast(xml, url) do
-    {:ok, owner} = find_or_create_owner(xml)
+#    {:ok, owner} = find_or_create_owner(xml)
 
-    {:ok, podcast} = PC.parse(xml)
+    # {:ok, podcast} = PC.parse(xml)
 
-    {:ok, podcast} =
-      case Repo.get_by(Podcast, title: podcast.title) do
-        nil ->
-          Repo.insert(%{podcast | owner_id: owner.id})
-        podcast ->
-          {:ok, podcast}
-      end
+    # {:ok, podcast} =
+    #   case Repo.get_by(Podcast, title: podcast.title) do
+    #     nil ->
+    #       Repo.insert(%{podcast | owner_id: owner.id})
+    #     podcast ->
+    #       {:ok, podcast}
+    #   end
 
-    {:ok, feed} = FD.parse(xml, url)
-    Repo.insert(%{feed | podcast_id: podcast.id})
+    # {:ok, feed} = FD.parse(xml, url)
+    # Repo.insert(%{feed | podcast_id: podcast.id})
   end
 
 
