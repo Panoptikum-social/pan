@@ -58,24 +58,25 @@ defmodule Pan.Parser.Analyzer do
   def call(params, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "self"  ->
-        Map.merge(params, %{feed: %{ self_link_title: attr[:title],
-                                     self_link_url:   attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ self_link_title: attr[:title],
+                                     self_link_url: attr[:href]}})
       "next"  ->
-        Map.merge(params, %{feed: %{ next_page_url:   attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ next_page_url: attr[:href]}})
       "prev"  ->
-        Map.merge(params, %{feed: %{ prev_page_url:   attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ prev_page_url: attr[:href]}})
       "first" ->
-        Map.merge(params, %{feed: %{ first_page_url:  attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ first_page_url: attr[:href]}})
       "last"  ->
-        Map.merge(params, %{feed: %{ last_page_url:   attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ last_page_url: attr[:href]}})
       "hub"   ->
-        Map.merge(params, %{feed: %{ hub_page_url:    attr[:href]}})
+        Helpers.deep_merge(params, %{feed: %{ hub_page_url: attr[:href]}})
       "alternate" ->
-        Map.merge(params, %{feed: %{alternate_feeds: [ %{title: attr[:title],
-                                                         url:   attr[:href]}]}})
+        uuid = String.to_atom(UUID.uuid1())
+        alternate_feed_params = %{uuid => %{title: attr[:title], url: attr[:href]}}
+        Helpers.deep_merge(params, %{feed: %{alternate_feeds: alternate_feed_params}})
       "payment" ->
-        Map.merge(params, %{payment_link_title: attr[:title],
-                            payment_link_url: String.slice(attr[:href], 0, 255)})
+        Helpers.deep_merge(params, %{payment_link_title: attr[:title],
+                                     payment_link_url: String.slice(attr[:href], 0, 255)})
     end
   end
 
@@ -95,7 +96,9 @@ defmodule Pan.Parser.Analyzer do
 
 
 # We expect several contributors
-  def call(params, "tag", [:"atom:contributor", _, value]), do: RssFeed.parse(params, "contributor", value, UUID.uuid1())
+  def call(params, "tag", [:"atom:contributor", _, value]) do
+    RssFeed.parse(params, "contributor", value, UUID.uuid1())
+  end
 
   def call("contributor", [:"atom:name", _, [value]]), do: %{name: value}
   def call("contributor", [:"atom:uri",  _, [value]]), do: %{uri: value}
@@ -128,16 +131,44 @@ defmodule Pan.Parser.Analyzer do
 # Episodes
   def call(params, "tag", [:item, _, value]), do: RssFeed.parse(params, "episode", value, UUID.uuid1())
 
-  def call(params, "episode", [:title, _, [value]]), do: Map.merge(params, %{title: value})
+  def call("episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+  def call("episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
+  def call("episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
+  def call("episode", [:description,       _, [value]]), do: %{description: value}
+  def call("episode", [:"content:encoded", _, [value]]), do: %{shownotes:   value}
+  def call("episode", [:"itunes:summary",  _, [value]]), do: %{summary:     value}
+  def call("episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle:    String.slice(value, 0, 255)}
+  def call("episode", [:"itunes:author",   _, [value]]), do: %{author:      String.slice(value, 0, 255)}
+  def call("episode", [:"itunes:duration", _, [value]]), do: %{duration:    value}
 
+  def call("episode", [:pubDate,           _, [value]]) do
+    %{publishing_date: Helpers.to_ecto_datetime(value)}
+  end
 
+  def call("episode", [:"atom:link", attr, _]) do
+    case attr[:rel] do
+      "http://podlove.org/deep-link" -> %{deep_link: String.slice(attr[:href], 0, 255)}
+      "payment" ->                      %{title: attr[:title], url: attr[:href]}
+    end
+  end
+
+  def call("episode", [:enclosure, attr, _]) do
+    enclosure_params = %{url: attr[:url], length: attr[:length], type: attr[:type], guid: attr[:"bitlove:guid"]}
+    uuid = String.to_atom(UUID.uuid1())
+    %{enclosures: %{uuid => enclosure_params}}
+  end
 
 # Print unknown tags to standard out
-  def call(_, context, [name, _, _]) do
-    IO.puts "=== name:"
-    IO.puts name
-    IO.puts "=== context:"
-    IO.puts context
+  def call(params, context, [name, attr, _]) do
+    IO.puts "===================================="
+    IO.inspect params
     IO.puts "======"
+    IO.puts "- name:"
+    IO.inspect name
+    IO.puts "- context:"
+    IO.inspect context
+    IO.puts "- attr:"
+    IO.inspect attr
+    IO.puts "===================================="
   end
 end

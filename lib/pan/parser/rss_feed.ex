@@ -26,8 +26,8 @@ defmodule Pan.Parser.RssFeed do
   def parse(params, context \\ "tag", tags)
 
 # We are done digging down
-  def parse(params, context, []), do: params
-  def parse(params, context, [], _), do: params
+  def parse(params, _, []), do: params
+  def parse(params, _, [], _), do: params
 
 
   def parse(params, "contributor", [head | tail], guid) do
@@ -47,7 +47,7 @@ defmodule Pan.Parser.RssFeed do
 
 
   def parse(params, "episode", [head | tail], guid) do
-    episode_params = Pan.Parser.Analyzer.call(params, "episode", [head[:name], head[:attr], head[:value]])
+    episode_params = Pan.Parser.Analyzer.call("episode", [head[:name], head[:attr], head[:value]])
 
     Pan.Parser.Helpers.deep_merge(params, %{episodes: %{String.to_atom(guid) => episode_params}})
     |> parse("episode", tail, guid)
