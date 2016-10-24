@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Analyzer do
   alias Pan.Parser.RssFeed
+  alias Pan.Parser.Helpers
 
 #wrappers to dive into
   def call(params, "tag", [:rss,     _, value]), do: RssFeed.parse(params, "tag", value)
@@ -11,26 +12,39 @@ defmodule Pan.Parser.Analyzer do
   def call(params, "tag", [:"itunes:author",  _, [value]]), do: Map.merge(params, %{author: value})
   def call(params, "tag", [:"itunes:summary", _, [value]]), do: Map.merge(params, %{summary: value})
   def call(params, "tag", [:link,             _, [value]]), do: Map.merge(params, %{website: value})
-  def call(params, "tag", [:description,      _, [value]]), do: Map.merge(params, %{description: value})
   def call(params, "tag", [:lastBuildDate,    _, [value]]) do
-    lastbuilddate = Pan.Parser.Helpers.to_ecto_datetime(value)
-    Map.merge(params, %{lastBuildDate: lastbuilddate})
+    Map.merge(params, %{lastBuildDate: Helpers.to_ecto_datetime(value)})
+  end
+  def call(params, "tag", [:"itunes:explicit",         _, [value]]) do
+    Map.merge(params, %{explicit: Helpers.boolify(value)})
   end
 
 
-# the podcast image: we take the itunes:image tag only into account, if there is no image tag
+# image with fallback to itunes:image
   def call(params, "tag", [:image, _, value]), do: RssFeed.parse(params, "image", value)
 
   def call(params, "image", [:title, _, [value]]), do: Map.merge(params, %{image_title: value})
   def call(params, "image", [:url,   _, [value]]), do: Map.merge(params, %{image_url: value})
   def call(params, "image", [:link,  _, _]), do: params
 
-  def call(params, "tag", [:"itunes:image"], attr, _) do
-    if params.changes.image_url do
-      params
-    else
-      Map.merge(params, %{image_url: attr[:href], image_title: attr[:href]})
-    end
+  def call(params, "tag", [:"itunes:image", attr, _]) do
+    unless params[:image_url], do: params = Map.merge(params, %{image_url: attr[:href],
+                                                                image_title: attr[:href]})
+    params
+  end
+
+  def call(params, "tag", [:"itunes:image", _, [value]]) do
+    unless params[:image_url], do: params = Map.merge(params, %{image_url: value})
+    params
+  end
+
+
+# Description with fallback to itunes:subtitle
+  def call(params, "tag", [:description,      _, [value]]), do: Map.merge(params, %{description: value})
+
+  def call(params, "tag", [:"itunes:subtitle", _, [value]]) do
+    unless params[:description], do: params = Map.merge(params, %{description: value})
+    params
   end
 
 
@@ -69,6 +83,7 @@ defmodule Pan.Parser.Analyzer do
 # tags to ignore
   def call(params, "tag", [:"feedpress:locale", _, _]), do: params
   def call(params, "tag", [:"fyyd:verify", _, _]), do: params
+  def call(params, "tag", [:"itunes:block", _, _]), do: params
 
 
 # We expect several language tags
@@ -86,20 +101,29 @@ defmodule Pan.Parser.Analyzer do
   def call(params, "contributor", [:"atom:uri",  _, [value]]), do: Map.merge(params, %{uri: value})
 
 
+# We expect one owner
+  def call(params, "tag", [:"itunes:owner", _, value]), do: RssFeed.parse(params, "owner", value)
+
+  def call(params, "owner", [:"itunes:name",   _, [value]]), do: Map.merge(params, %{name: value})
+  def call(params, "owner", [:"itunes:email",  _, [value]]), do: Map.merge(params, %{uri: value})
+
+
+
 # Parsing categories infintely deep
+  def call(params, "tag", [:"itunes:category", attr, []]), do: params
   def call(params, "tag", [:"itunes:category", attr, [value]]) do
     category = Pan.Parser.Category.get_or_create_by(attr[:text], nil)
-    params = Map.merge(params, %{categories: [category.id]})
-    call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
+    Map.merge(params, %{categories: [category.id]})
+    |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
-  def call(params, "tag", [:"itunes:category", attr, []]), do: params
 
+  def call(params, "category", [:"itunes:category", attr, []], parent_id), do: params
   def call(params, "category", [:"itunes:category", attr, [value]], parent_id) do
     category = Pan.Parser.Category.get_or_create_by(attr[:text], parent_id)
-    params = Map.merge(params, %{categories: [category.id]})
-    call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
+    Map.merge(params, %{categories: [category.id]})
+    |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
-  def call(params, "category", [:"itunes:category", attr, []], parent_id), do: params
+
 
 
 

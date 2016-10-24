@@ -164,35 +164,4 @@ defmodule Pan.Parser do
                summary:            episode.summary,
                podcast_id:         podcast_id})
   end
-
-
-  def find_or_create_owner(xml) do
-    user = case parse_owner(xml) do
-             {:ok, nil} ->
-               Repo.get_by(User, email: "jane@podcasterei.at")
-             {:ok, feed_owner} ->
-               unless Repo.get_by(User, email: feed_owner.email) do
-                 Repo.insert(feed_owner)
-               end
-               Repo.get_by(User, email: feed_owner.email)
-           end
-    {:ok, user}
-  end
-
-
-  def parse_owner(xml) do
-    if xml |> xpath(~x"//channel/itunes:owner") do
-      owner = xml
-              |> xpath(~x"//channel/itunes:owner",
-                       name: ~x"./itunes:name/text()"s,
-                       email: ~x"./itunes:email/text()"s)
-
-      {:ok, %User{name: owner.name,
-                  email: owner.email,
-                  username: owner.email,
-                  podcaster: true}}
-    else
-      {:ok, nil}
-    end
-  end
 end

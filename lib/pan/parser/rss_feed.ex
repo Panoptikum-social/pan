@@ -27,6 +27,7 @@ defmodule Pan.Parser.RssFeed do
 # We are done digging down
   def parse(params, context, []), do: params
 
+
   def parse(params, "contributor", [head | tail]) do
     contributor_params = Pan.Parser.Analyzer.call(params, "contributor", [head[:name], head[:attr], head[:value]])
 
@@ -34,10 +35,20 @@ defmodule Pan.Parser.RssFeed do
     |> parse("contributor", tail)
   end
 
+
+  def parse(params, "owner", [head | tail]) do
+    owner_params = Pan.Parser.Analyzer.call(params, "owner", [head[:name], head[:attr], head[:value]])
+
+    Map.merge(params, %{owner: owner_params})
+    |> parse("owner", tail)
+  end
+
+
   def parse(params, context, [head | tail]) do
     Pan.Parser.Analyzer.call(params, context, [head[:name], head[:attr], head[:value]])
     |> parse(context, tail)
   end
+
 
 # Convenience function for runtime measurement
   def measure_runtime(function) do

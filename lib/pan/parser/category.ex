@@ -5,19 +5,17 @@ defmodule Pan.Parser.Category do
 
 
   def get_or_create_by(title, nil) do
-    if !Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id)) do
-      Repo.insert(%Category{title: title})
-    end
+    category = Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id))
+    unless category, do: Repo.insert(%Category{title: title})
 
-    Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id))
+    category or Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id))
   end
 
 
   def get_or_create_by(title, parent_id) do
-    if !Repo.get_by(Category, title: title, parent_id: parent_id) do
-      Repo.insert(%Category{title: title, parent_id: parent_id})
-    end
+    category = Repo.get_by(Category, title: title, parent_id: parent_id)
+    unless catogory, do: Repo.insert(%Category{title: title, parent_id: parent_id})
 
-    Repo.get_by(Category, title: title, parent_id: parent_id)
+    category or Repo.get_by(Category, title: title, parent_id: parent_id)
   end
 end
