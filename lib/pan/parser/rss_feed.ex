@@ -29,14 +29,14 @@ defmodule Pan.Parser.RssFeed do
 
   def parse(params, "contributor", [head | tail]) do
     contributor_params = Pan.Parser.Analyzer.call(params, "contributor", [head[:name], head[:attr], head[:value]])
-    params = Map.merge(params, %{contributors: [contributor_params]})
 
-    parse(params, "contributor", tail)
+    Map.merge(params, %{contributors: [contributor_params]})
+    |> parse("contributor", tail)
   end
 
   def parse(params, context, [head | tail]) do
-    params = Pan.Parser.Analyzer.call(params, context, [head[:name], head[:attr], head[:value]])
-    parse(params, context, tail)
+    Pan.Parser.Analyzer.call(params, context, [head[:name], head[:attr], head[:value]])
+    |> parse(context, tail)
   end
 
 # Convenience function for runtime measurement

@@ -92,14 +92,15 @@ defmodule Pan.Parser.Analyzer do
     params = Map.merge(params, %{categories: [category.id]})
     call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
   end
+  def call(params, "tag", [:"itunes:category", attr, []]), do: params
 
   def call(params, "category", [:"itunes:category", attr, [value]], parent_id) do
     category = Pan.Parser.Category.get_or_create_by(attr[:text], parent_id)
     params = Map.merge(params, %{categories: [category.id]})
     call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
   end
-
   def call(params, "category", [:"itunes:category", attr, []], parent_id), do: params
+
 
 
 # Print unknown tags to standard out
