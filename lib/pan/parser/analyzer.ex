@@ -73,6 +73,7 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect several language tags
   def call(params, "tag", [:language, _, [value]]) do
+#FIXME: We need a find_or_create_by here
     language = Pan.Repo.get_by(Pan.Language, shortcode: value)
     Map.merge(params, %{languages: [language]})
   end
@@ -83,6 +84,22 @@ defmodule Pan.Parser.Analyzer do
 
   def call(params, "contributor", [:"atom:name", _, [value]]), do: Map.merge(params, %{name: value})
   def call(params, "contributor", [:"atom:uri",  _, [value]]), do: Map.merge(params, %{uri: value})
+
+
+# Parsing categories infintely deep
+  def call(params, "tag", [:"itunes:category", attr, [value]]) do
+    category = Pan.Parser.Category.get_or_create_by(attr[:text], nil)
+    params = Map.merge(params, %{categories: [category.id]})
+    call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
+  end
+
+  def call(params, "category", [:"itunes:category", attr, [value]], parent_id) do
+    category = Pan.Parser.Category.get_or_create_by(attr[:text], parent_id)
+    params = Map.merge(params, %{categories: [category.id]})
+    call(params, "category", [value[:name], value[:attr], value[:value]], category.id)
+  end
+
+  def call(params, "category", [:"itunes:category", attr, []], parent_id), do: params
 
 
 # Print unknown tags to standard out

@@ -1,11 +1,11 @@
-defmodule Pan.Parser.Cat do
+defmodule Pan.Parser.CategoryFix do
   use Pan.Web, :controller
   alias Pan.Repo
   alias Pan.Podcast
   alias Pan.Category
   import SweetXml
 
-  def fix() do
+  def call() do
     podcasts = Repo.all(Podcast)
     podcasts = Repo.preload(podcasts, [:feeds, :categories])
 

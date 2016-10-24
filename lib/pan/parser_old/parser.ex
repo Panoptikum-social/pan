@@ -64,10 +64,7 @@ defmodule Pan.Parser do
       end
 
     {:ok, feed} = FD.parse(xml, url)
-    {:ok, feed} = Repo.insert(%{feed | podcast_id: podcast.id})
-
-    create_categories(xml, podcast)
-    {:ok, feed}
+    Repo.insert(%{feed | podcast_id: podcast.id})
   end
 
 
@@ -78,32 +75,6 @@ defmodule Pan.Parser do
        end
      end
    end
-
-
-  def create_categories(xml, podcast) do
-    {:ok, categories} = parse_categories(xml)
-
-    for xml_category <- categories do
-      category =
-        if xml_category.subtitle == "" do
-          find_or_create(%Category{title: xml_category.title})
-        else
-          parent = find_or_create(%Category{title: xml_category.title})
-          find_or_create(%Category{title: xml_category.subtitle,
-                                   parent_id: parent.id})
-        end
-
-      associate(category, podcast)
-    end
-  end
-
-
-  def find_or_create(category) do
-    if !Repo.get_by(Category, title: category.title) do
-      Repo.insert(category)
-    end
-    Repo.get_by(Category, title: category.title)
-  end
 
 
   def associate(instance, podcast) do
@@ -223,13 +194,5 @@ defmodule Pan.Parser do
     else
       {:ok, nil}
     end
-  end
-
-  def parse_categories(xml) do
-    categories = xml
-                 |> xpath(~x"//channel/itunes:category"l,
-                          title: ~x"./@text"s,
-                          subtitle: ~x"./itunes:category/@text"s)
-    {:ok, categories}
   end
 end
