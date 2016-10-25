@@ -36,8 +36,8 @@ defmodule Pan.Parser.Analyzer do
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
-                           else: %{image_url: attr[:href],
-                                           image_title: attr[:href]}
+                        else: %{image_url: attr[:href],
+                                image_title: attr[:href]}
   end
 
   def call(map, "tag", [:"itunes:image", _, [value]]) do
