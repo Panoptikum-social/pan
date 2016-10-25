@@ -10,15 +10,10 @@ defmodule Pan.Parser.RssFeed do
     feed_as_xml = File.read! "materials/source.xml"
     feed_as_map = Quinn.parse(feed_as_xml)
 
-    changeset = %{self_link_title: "Feed",
-                  self_link_url: url,
-                  payment_link_title: "",
-                  payment_link_url: "",
-                  contributors: %{}}
-                |> parse(feed_as_map)
-                |> Pan.Podcast.changeset
-# not yet implemented: persisting data from the changeset
-    changeset
+    params = %{self_link_title: "Feed",
+               self_link_url: url}
+               |> parse(feed_as_map)
+    IO.inspect params
   end
 
 
@@ -47,10 +42,18 @@ defmodule Pan.Parser.RssFeed do
 
 
   def parse(params, "episode", [head | tail], guid) do
-    episode_params = Pan.Parser.Analyzer.call("episode", [head[:name], head[:attr], head[:value]])
+    episode_params = Pan.Parser.Analyzer.call(params, "episode", [head[:name], head[:attr], head[:value]], guid)
 
     Pan.Parser.Helpers.deep_merge(params, %{episodes: %{String.to_atom(guid) => episode_params}})
     |> parse("episode", tail, guid)
+  end
+
+
+  def parse(episode_params, "episode-contributor", [head | tail], contributor_uuid) do
+    contributor_params = Pan.Parser.Analyzer.call("episode-contributor", [head[:name], head[:attr], head[:value]])
+
+    Pan.Parser.Helpers.deep_merge(episode_params, %{contributors: %{contributor_uuid => contributor_params}})
+    |> parse("episode-contributor", tail, contributor_uuid)
   end
 
 

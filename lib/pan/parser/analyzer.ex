@@ -131,38 +131,51 @@ defmodule Pan.Parser.Analyzer do
 # Episodes
   def call(params, "tag", [:item, _, value]), do: RssFeed.parse(params, "episode", value, UUID.uuid1())
 
-  def call("episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
-  def call("episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
-  def call("episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
-  def call("episode", [:description,       _, [value]]), do: %{description: value}
-  def call("episode", [:"content:encoded", _, [value]]), do: %{shownotes:   value}
-  def call("episode", [:"itunes:summary",  _, [value]]), do: %{summary:     value}
-  def call("episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle:    String.slice(value, 0, 255)}
-  def call("episode", [:"itunes:author",   _, [value]]), do: %{author:      String.slice(value, 0, 255)}
-  def call("episode", [:"itunes:duration", _, [value]]), do: %{duration:    value}
+  def call(_, "episode", [:title,             _, [value]], _), do: %{title:       String.slice(value, 0, 255)}
+  def call(_, "episode", [:link,              _, [value]], _), do: %{link:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:guid,              _, [value]], _), do: %{guid:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:description,       _, [value]], _), do: %{description: value}
+  def call(_, "episode", [:"content:encoded", _, [value]], _), do: %{shownotes:   value}
+  def call(_, "episode", [:"itunes:summary",  _, [value]], _), do: %{summary:     value}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]], _), do: %{subtitle:    String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:author",   _, [value]], _), do: %{author:      String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:duration", _, [value]], _), do: %{duration:    value}
 
-  def call("episode", [:pubDate,           _, [value]]) do
+  def call(_, "episode", [:pubDate,           _, [value]], _) do
     %{publishing_date: Helpers.to_ecto_datetime(value)}
   end
 
-  def call("episode", [:"atom:link", attr, _]) do
+  def call(_, "episode", [:"atom:link", attr, _], _) do
     case attr[:rel] do
       "http://podlove.org/deep-link" -> %{deep_link: String.slice(attr[:href], 0, 255)}
       "payment" ->                      %{title: attr[:title], url: attr[:href]}
     end
   end
 
-  def call("episode", [:enclosure, attr, _]) do
+# Enclosures a.k.a. Audiofiles
+  def call(_, "episode", [:enclosure, attr, _], _) do
     enclosure_params = %{url: attr[:url], length: attr[:length], type: attr[:type], guid: attr[:"bitlove:guid"]}
     uuid = String.to_atom(UUID.uuid1())
     %{enclosures: %{uuid => enclosure_params}}
   end
 
+# Chapters
+  def call(params, "episode", [:"psc:chapters", _, value], guid), do: RssFeed.parse(params, "episode", value, guid)
+  def call(_, "episode", [:"psc:chapter", attr, _], _), do: %{start: attr[:start], title: attr[:title]}
+
+# Episode contributors
+  def call(_, "episode", [:"atom:contributor", _, value], _) do
+    contributor_uuid = String.to_atom(UUID.uuid1())
+    RssFeed.parse(%{contributors: %{contributor_uuid => %{}}}, "episode-contributor", value, contributor_uuid)
+  end
+
+  def call("episode-contributor", [:"atom:name", _ , [value]]), do: %{name: value}
+  def call("episode-contributor", [:"atom:uri", _ , [value]]),  do: %{uri: value}
+
+
 # Print unknown tags to standard out
   def call(params, context, [name, attr, _]) do
     IO.puts "===================================="
-    IO.inspect params
-    IO.puts "======"
     IO.puts "- name:"
     IO.inspect name
     IO.puts "- context:"
