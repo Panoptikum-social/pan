@@ -5,21 +5,15 @@ defmodule Pan.Parser.Analyzer do
 
 #wrappers to dive into
   def call(map, "tag", [:rss,     _, value]), do: RssFeed.parse(map, "tag", value)
-
   def call(map, "tag", [:channel, _, value]), do: RssFeed.parse(map, "tag", value)
 
 
 # simple tags to include in podcast
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
-
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
-
   def call(_, "tag", [:"itunes:summary",  _, [value]]), do: %{summary: value}
-
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
-
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
-
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
     %{lastBuildDate: Helpers.to_ecto_datetime(value)}
   end
@@ -27,11 +21,8 @@ defmodule Pan.Parser.Analyzer do
 
 # image with fallback to itunes:image
   def call(map, "tag", [:image, _, value]), do: RssFeed.parse(map, "image", value)
-
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
-
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: value}
-
   def call(map, "image", [:link,  _, _]), do: map
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
@@ -63,7 +54,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "self"  -> %{feed: %{ self_link_title: attr[:title],
-                                    self_link_url: attr[:href]}}
+                            self_link_url: attr[:href]}}
       "next"  -> %{feed: %{ next_page_url: attr[:href]}}
       "prev"  -> %{feed: %{ prev_page_url: attr[:href]}}
       "first" -> %{feed: %{ first_page_url: attr[:href]}}
@@ -81,10 +72,8 @@ defmodule Pan.Parser.Analyzer do
 
 # tags to ignore
   def call(map, "tag", [:"feedpress:locale", _, _]), do: map
-
-  def call(map, "tag", [:"fyyd:verify", _, _]),      do: map
-
-  def call(map, "tag", [:"itunes:block", _, _]),     do: map
+  def call(map, "tag", [:"fyyd:verify",      _, _]), do: map
+  def call(map, "tag", [:"itunes:block",     _, _]), do: map
 
 
 # We expect several language tags
@@ -101,21 +90,17 @@ defmodule Pan.Parser.Analyzer do
   end
 
   def call("contributor", [:"atom:name", _, [value]]), do: %{name: value}
-
   def call("contributor", [:"atom:uri",  _, [value]]), do: %{uri: value}
 
 
 # We expect one owner
   def call(map, "tag", [:"itunes:owner", _, value]), do: RssFeed.parse(map, "owner", value)
-
   def call(_, "owner", [:"itunes:name",   _, [value]]), do: %{name: value}
-
   def call(_, "owner", [:"itunes:email",  _, [value]]), do: %{uri: value}
 
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", _, []]), do: %{}
-
   def call(_, "tag", [:"itunes:category", attr, [value]]) do
     category = Pan.Parser.Category.get_or_create(attr[:text], nil)
     %{categories: [category.id]}
@@ -123,7 +108,6 @@ defmodule Pan.Parser.Analyzer do
   end
 
   def call(map, "category", [:"itunes:category", _, []], _), do: map
-
   def call(_, "category", [:"itunes:category", attr, [value]], parent_id) do
     category = Pan.Parser.Category.get_or_create(attr[:text], parent_id)
     %{categories: [category.id]}
