@@ -59,14 +59,7 @@ defmodule Pan.Parser.Persistor do
   end
 
 
-  def find_or_create_contributor(contributor_map) do
-    case Repo.get_by(Pan.Contributor, uri: contributor_map[:uri]) do
-      nil -> %Pan.Contributor()
-             |> Map.merge(contributor_map)
-             |> Repo.insert()
-      contributor -> {:ok, contributor}
-    end
-  end
+
 end
 
 
