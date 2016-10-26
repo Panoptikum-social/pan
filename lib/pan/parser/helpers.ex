@@ -41,7 +41,7 @@ defmodule Pan.Parser.Helpers do
     deep_merge(left, right)
   end
 
-  defp deep_resolve(_key, left, right) do
+  defp deep_resolve(_key, _left, right) do
     right
   end
 end

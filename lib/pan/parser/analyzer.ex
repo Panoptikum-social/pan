@@ -101,14 +101,14 @@ defmodule Pan.Parser.Analyzer do
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", _, []]), do: %{}
   def call(_, "tag", [:"itunes:category", attr, [value]]) do
-    category = Pan.Parser.Category.find_or_create(attr[:text], nil)
+    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
     %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
   def call(map, "category", [:"itunes:category", _, []], _), do: map
   def call(_, "category", [:"itunes:category", attr, [value]], parent_id) do
-    category = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
+    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
     %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
