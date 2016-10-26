@@ -4,7 +4,7 @@ defmodule Pan.Parser.Category do
   alias Pan.Category
 
 
-  def get_or_create(title, nil) do
+  def find_or_create(title, nil) do
     category = Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id))
     unless category, do: Repo.insert(%Category{title: title})
 
@@ -12,7 +12,7 @@ defmodule Pan.Parser.Category do
   end
 
 
-  def get_or_create(title, parent_id) do
+  def find_or_create(title, parent_id) do
     category = Repo.get_by(Category, title: title, parent_id: parent_id)
     unless category, do: Repo.insert(%Category{title: title, parent_id: parent_id})
 

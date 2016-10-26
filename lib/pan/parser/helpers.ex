@@ -11,11 +11,6 @@ defmodule Pan.Parser.Helpers do
   end
 
 
-  def find_language(shortcode) do
-    {:ok, Repo.get_by(Pan.Language, shortcode: shortcode)}
-  end
-
-
   def to_ecto_datetime(feed_date) do
     {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
 

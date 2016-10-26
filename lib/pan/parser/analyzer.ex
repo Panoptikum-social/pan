@@ -78,9 +78,8 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect several language tags
   def call(_, "tag", [:language, _, [value]]) do
-#FIXME: We need a find_or_create_by here
-    language = Pan.Repo.get_by(Pan.Language, shortcode: value)
-    %{languages: [language.id]}
+    uuid = String.to_atom(UUID.uuid1())
+    %{languages: %{uuid => %{shortcode: value}}}
   end
 
 
@@ -102,15 +101,15 @@ defmodule Pan.Parser.Analyzer do
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", _, []]), do: %{}
   def call(_, "tag", [:"itunes:category", attr, [value]]) do
-    category = Pan.Parser.Category.get_or_create(attr[:text], nil)
-    %{categories: [category.id]}
+    category = Pan.Parser.Category.find_or_create(attr[:text], nil)
+    %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
   def call(map, "category", [:"itunes:category", _, []], _), do: map
   def call(_, "category", [:"itunes:category", attr, [value]], parent_id) do
-    category = Pan.Parser.Category.get_or_create(attr[:text], parent_id)
-    %{categories: [category.id]}
+    category = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
+    %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
@@ -135,7 +134,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "http://podlove.org/deep-link" -> %{deep_link: String.slice(attr[:href], 0, 255)}
-      "payment" ->                      %{title: attr[:title], url: attr[:href]}
+      "payment" ->                      %{payment_link_title: attr[:title],
+                                          payment_link_url: String.slice(attr[:href], 0, 255)}
     end
   end
 
@@ -155,7 +155,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call("chapter", [:"psc:chapter", attr, _]) do
     chapter_uuid = String.to_atom(UUID.uuid1())
-    %{chapter_uuid => %{start: attr[:start], title: attr[:title]}}
+    %{chapter_uuid => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
   end
 
 
