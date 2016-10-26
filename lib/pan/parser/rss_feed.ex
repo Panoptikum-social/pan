@@ -1,5 +1,6 @@
 defmodule Pan.Parser.RssFeed do
-  use Pan.Web, :controller
+  alias Pan.Parser.Iterator
+  alias Pan.Parser.Persistor
 
 
   def demo() do
@@ -7,69 +8,13 @@ defmodule Pan.Parser.RssFeed do
   end
 
   def download_and_parse(url) do
-    feed_as_xml = File.read! "materials/source.xml"
-    feed_as_map = Quinn.parse(feed_as_xml)
+    feed_xml = File.read! "materials/source.xml"
+    feed_map = Quinn.parse(feed_xml)
 
     %{self_link_title: "Feed", self_link_url: url}
-    |> parse(feed_as_map)
+    |> Iterator.parse(feed_map)
+    |> Persistor.call()
   end
-
-
-# Actual feed parsing: Now the fun begins
-  def parse(map, context \\ "tag", tags)
-
-# We are done digging down
-  def parse(map, _, []), do: map
-  def parse(map, _, [], _), do: map
-
-
-  def parse(map, "contributor", [head | tail], guid) do
-    contributor_map = Pan.Parser.Analyzer.call("contributor", [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, %{contributors: %{String.to_atom(guid) => contributor_map}})
-    |> parse("contributor", tail, guid)
-  end
-
-
-  def parse(map, "owner", [head | tail]) do
-    owner_map = Pan.Parser.Analyzer.call(map, "owner", [head[:name], head[:attr], head[:value]])
-
-    Map.merge(map, %{owner: owner_map})
-    |> parse("owner", tail)
-  end
-
-
-  def parse(map, "episode", [head | tail], guid) do
-    episode_map = Pan.Parser.Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, %{episodes: %{String.to_atom(guid) => episode_map}})
-    |> parse("episode", tail, guid)
-  end
-
-
-  def parse(map, "chapter", [head | tail]) do
-    chapter_map = Pan.Parser.Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, %{chapters: chapter_map})
-    |> parse("chapter", tail)
-  end
-
-
-  def parse(map, "episode-contributor", [head | tail], contributor_uuid) do
-    contributor_map = Pan.Parser.Analyzer.call("episode-contributor", [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, %{contributors: %{contributor_uuid => contributor_map}})
-    |> parse("episode-contributor", tail, contributor_uuid)
-  end
-
-
-  def parse(map, context, [head | tail]) do
-    podcast_map = Pan.Parser.Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, podcast_map)
-    |> parse(context, tail)
-  end
-
 
 # Convenience function for runtime measurement
   def measure_runtime(function) do

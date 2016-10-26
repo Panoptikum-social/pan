@@ -4,7 +4,6 @@ defmodule Pan.Parser do
   alias Pan.Podcast
   alias Pan.User
   alias Pan.Episode
-  alias Pan.AlternateFeed
   alias Pan.Contributor
   alias Pan.Category
   alias Pan.Chapter
@@ -29,61 +28,10 @@ defmodule Pan.Parser do
   end
 
   def update_from_feed(xml, url) do
-    {:ok, xml_feed} = FD.parse(xml, url)
+    # {:ok, episodes} = EP.parse(xml)
+    # find_or_create_episodes(episodes, feed.podcast_id)
 
-    {:ok, feed} = find_or_create_feed(xml, xml_feed, url)
-
-    {:ok, episodes} = EP.parse(xml)
-    find_or_create_episodes(episodes, feed.podcast_id)
-
-    {:ok, feed.next_page_url}
-  end
-
-
-  def find_or_create_feed(xml, xml_feed, url) do
-    case Repo.get_by(Feed, self_link_url: xml_feed.self_link_url) do
-      nil ->
-        find_or_create_podcast(xml, url)
-      feed ->
-        {:ok, feed}
-    end
-  end
-
-
-  def find_or_create_podcast(xml, url) do
-#    {:ok, owner} = find_or_create_owner(xml)
-
-    # {:ok, podcast} = PC.parse(xml)
-
-    # {:ok, podcast} =
-    #   case Repo.get_by(Podcast, title: podcast.title) do
-    #     nil ->
-    #       Repo.insert(%{podcast | owner_id: owner.id})
-    #     podcast ->
-    #       {:ok, podcast}
-    #   end
-
-    # {:ok, feed} = FD.parse(xml, url)
-    # Repo.insert(%{feed | podcast_id: podcast.id})
-  end
-
-
-   def create_contributors(xml, podcast, contributors) do
-     for contributor <- contributors do
-       if Repo.get_by(Contributor, uri: contributor.uri) == nil do
-         associate(contributor, podcast)
-       end
-     end
-   end
-
-
-  def associate(instance, podcast) do
-    category = Repo.preload(instance, :podcasts)
-
-    category
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:podcasts, [podcast | category.podcasts])
-    |> Repo.update!
+    # {:ok, feed.next_page_url}
   end
 
 
@@ -103,11 +51,6 @@ defmodule Pan.Parser do
     end
   end
 
-  def create_contributor(contributor) do
-    Repo.insert(
-      %Contributor{name: contributor.name,
-                   uri:  contributor.uri})
-  end
 
   def find_or_create_episode_contributor(contributor, episode) do
     if (Repo.get_by(Contributor, uri: contributor.uri) == nil) do
