@@ -4,7 +4,8 @@ defmodule Pan.Parser.Episode do
   def find_or_create(episode_map, podcast_id) do
     Map.put_new(episode_map, :guid, episode_map[:link])
 
-    case Repo.get_by(Pan.Episode, guid: episode_map[:guid],
+    case Repo.get_by(Pan.Episode,
+#FIXME!                                  guid: episode_map[:guid],
                                   link: episode_map[:link]) do
       nil ->
         %Pan.Episode{podcast_id: podcast_id}

@@ -29,8 +29,10 @@
             <dd><%= podcast.description %></dd>
             <dt><label class="label label-success">Author</label></dt>
             <dd><%= podcast.author %></dd>
-            <dt><label class="label label-warning">Support</label></dt>
-            <dd><%= link podcast.payment_link_title, to: podcast.payment_link_url %></dd>
+            <%= if podcast.payment_link_url do %>
+              <dt><label class="label label-warning">Support</label></dt>
+              <dd><%= link podcast.payment_link_title, to: podcast.payment_link_url %></dd>
+            <% end %>
             <div class="clearfix"></div>
             <p><%= podcast.summary %></p>
           </div>

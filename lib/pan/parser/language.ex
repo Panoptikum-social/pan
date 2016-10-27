@@ -14,14 +14,16 @@ defmodule Pan.Parser.Language do
 
 
   def persist_many(languages_map, podcast) do
-    languages =
-      Enum.map languages_map, fn({_, language_map}) ->
-        elem(find_or_create(language_map), 1)
-      end
+    if languages_map do
+      languages =
+        Enum.map languages_map, fn({_, language_map}) ->
+          elem(find_or_create(language_map), 1)
+        end
 
-    Repo.preload(podcast, :languages)
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:languages, languages)
-    |> Repo.update!
+      Repo.preload(podcast, :languages)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:languages, languages)
+      |> Repo.update!
+    end
   end
 end

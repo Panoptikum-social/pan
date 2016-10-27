@@ -26,14 +26,16 @@ defmodule Pan.Parser.Category do
 
 
   def assign_many(categories_map, podcast) do
-    categories =
-      Enum.map categories_map, fn({id, _}) ->
-        Repo.get(Pan.Category, id)
-      end
+    if categories_map do
+      categories =
+        Enum.map categories_map, fn({id, _}) ->
+          Repo.get(Pan.Category, id)
+        end
 
-    Repo.preload(podcast, :categories)
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:categories, categories)
-    |> Repo.update!
+      Repo.preload(podcast, :categories)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:categories, categories)
+      |> Repo.update!
+    end
   end
 end

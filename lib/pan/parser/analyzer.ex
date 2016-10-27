@@ -10,7 +10,9 @@ defmodule Pan.Parser.Analyzer do
 
 # simple tags to include in podcast
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
+  def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
+  def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
   def call(_, "tag", [:"itunes:summary",  _, [value]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
@@ -40,8 +42,9 @@ defmodule Pan.Parser.Analyzer do
 # Description with fallback to itunes:subtitle
   def call(_, "tag", [:description, _, [value]]), do: %{description: value}
 
+  def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
   def call(map, "tag", [:"itunes:subtitle", _, [value]]) do
-    if map[:description], do: map,
+    if map[:description], do: %{},
                           else: %{description: value}
   end
 
@@ -69,12 +72,53 @@ defmodule Pan.Parser.Analyzer do
     end
   end
 
+  def call(_, "tag", [:"atom10:link", attr, _]) do
+    case attr[:rel] do
+      "self"  -> %{feed: %{ self_link_title: attr[:title],
+                            self_link_url: attr[:href]}}
+      "hub" -> %{}
+    end
+  end
+
 
 # tags to ignore
   def call(map, "tag", [:"feedpress:locale", _, _]), do: map
-  def call(map, "tag", [:"fyyd:verify",      _, _]), do: map
-  def call(map, "tag", [:"itunes:block",     _, _]), do: map
+  def call(map, "tag", [:"fyyd:verify", _, _]), do: map
+  def call(map, "tag", [:"itunes:block", _, _]), do: map
+  def call(map, "tag", [:"itunes:keywords", _, _]), do: map
+  def call(map, "tag", [:"media:thumbnail", _, _]), do: map
+  def call(map, "tag", [:"media:keywords", _, _]), do: map
+  def call(map, "tag", [:"media:category", _, _]), do: map
+  def call(map, "tag", [:category, _, _]), do: map
+  def call(map, "tag", [:site, _, _]), do: map
+  def call(map, "tag", [:docs, _, _]), do: map
+  def call(map, "tag", [:"feedburner:info", _, _]), do: map
+  def call(map, "tag", [:"media:credit", _, _]), do: map
+  def call(map, "tag", [:"media:copyright", _, _]), do: map
+  def call(map, "tag", [:"media:rating", _, _]), do: map
+  def call(map, "tag", [:"media:description", _, _]), do: map
+  def call(map, "tag", [:"copyright", _, _]), do: map
+  def call(map, "tag", [:"feedburner:feedFlare", _, _]), do: map
+  def call(map, "tag", [:"geo:lat", _, _]), do: map
+  def call(map, "tag", [:"geo:long", _, _]), do: map
+  def call(map, "tag", [:"creativeCommons:license", _, _]), do: map
+  def call(map, "tag", [:"feedburner:emailServiceId", _, _]), do: map
+  def call(map, "tag", [:"feedburner:feedburnerHostname", _, _]), do: map
+  def call(map, "tag", [:managingEditor, _, _]), do: map
+  def call(map, "tag", [:pubDate, _, _]), do: map
 
+
+  def call(_, "episode", [:"itunes:image", _, _]), do: %{}
+  def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
+  def call(_, "episode", [:"post-id", _, _]), do: %{}
+  def call(_, "episode", [:author, _, _]), do: %{}
+  def call(_, "episode", [:"itunes:explicit", _, _]), do: %{}
+  def call(_, "episode", [:category, _, _]), do: %{}
+  def call(_, "episode", [:"dc:creator", _, _]), do: %{}
+  def call(_, "episode", [:comments, _, _]), do: %{}
+  def call(_, "episode", [:"media:content", _, _]), do: %{}
+  def call(_, "episode", [:"feedburner:origLink", _, _]), do: %{}
+  def call(_, "episode", [:"feedburner:origEnclosureLink", _, _]), do: %{}
 
 # We expect several language tags
   def call(_, "tag", [:language, _, [value]]) do
@@ -94,22 +138,24 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one owner
   def call(map, "tag", [:"itunes:owner", _, value]), do: Iterator.parse(map, "owner", value)
+  def call(_, "owner", [:"itunes:name",   _, []]), do: %{}
   def call(_, "owner", [:"itunes:name",   _, [value]]), do: %{name: value}
+  def call(_, "owner", [:"itunes:email",  _, []]), do: %{}
   def call(_, "owner", [:"itunes:email",  _, [value]]), do: %{email: value}
 
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", _, []]), do: %{}
-  def call(_, "tag", [:"itunes:category", attr, [value]]) do
+  def call(_, "tag", [:"itunes:category", attr, value]) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
     %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
-  def call(map, "category", [:"itunes:category", _, []], _), do: map
-  def call(_, "category", [:"itunes:category", attr, [value]], parent_id) do
+  def call(map, "category", [nil, nil, nil], _), do: map
+  def call(map, "category", [:"itunes:category", attr, [value]], parent_id) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    %{categories: %{category.id => true}}
+    Map.merge %{categories: %{category.id => true}}
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
@@ -120,15 +166,17 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
   def call(_, "episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:description,       _, []]), do: %{}
   def call(_, "episode", [:description,       _, [value]]), do: %{description: value}
+  def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes:   HtmlSanitizeEx.basic_html_reduced(value)}
+  def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value]]), do: %{summary:     value}
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle:    String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:author",   _, []]), do: %{}
   def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author:      String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration:    value}
-# currently ignoring images on podcast level
-  def call(_, "episode", [:"itunes:image",    _, _]), do: %{}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
     %{publishing_date: Helpers.to_ecto_datetime(value)}

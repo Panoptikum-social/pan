@@ -14,14 +14,16 @@ defmodule Pan.Parser.Contributor do
 
 
   def persist_many(contributors_map, instance) do
-    contributors =
-      Enum.map contributors_map, fn({_, contributor_map}) ->
-        elem(find_or_create(contributor_map), 1)
-      end
+    if contributors_map do
+      contributors =
+        Enum.map contributors_map, fn({_, contributor_map}) ->
+          elem(find_or_create(contributor_map), 1)
+        end
 
-    Repo.preload(instance, :contributors)
-    |> Ecto.Changeset.change()
-    |> Ecto.Changeset.put_assoc(:contributors, contributors)
-    |> Repo.update!
+      Repo.preload(instance, :contributors)
+      |> Ecto.Changeset.change()
+      |> Ecto.Changeset.put_assoc(:contributors, contributors)
+      |> Repo.update!
+    end
   end
 end

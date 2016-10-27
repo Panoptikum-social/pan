@@ -18,7 +18,7 @@ defmodule Pan.Mixfile do
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :gettext, :phoenix_ecto, :postgrex,
                     :comeonin, :sweet_xml, :timex, :httpoison,
-                    :font_awesome_phoenix, :quinn, :uuid]]
+                    :font_awesome_phoenix, :quinn, :uuid ]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
