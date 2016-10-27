@@ -174,7 +174,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:description,       _, []]), do: %{}
   def call(_, "episode", [:description,       _, [value]]), do: %{description: value}
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
-  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes:   HtmlSanitizeEx.basic_html_reduced(value)}
+  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes:   HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value]]), do: %{summary:     value}
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
