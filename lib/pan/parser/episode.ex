@@ -21,8 +21,10 @@ defmodule Pan.Parser.Episode do
       plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
       {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
 
-      for {_, chapter_map} <- episode_map[:chapters] do
-        Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+      if episode_map[:chapters] do
+        for {_, chapter_map} <- episode_map[:chapters] do
+          Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+        end
       end
 
       for {_, enclosure_map} <- episode_map[:enclosures] do

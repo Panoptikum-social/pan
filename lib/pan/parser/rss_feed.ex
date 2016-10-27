@@ -3,16 +3,11 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Persistor
 
 
-  def demo() do
-    download_and_parse("http://freakshow.fm/feed/m4a")
-  end
-
   def download_and_parse(url) do
-    feed_xml = File.read! "materials/source.xml"
-#    %HTTPoison.Response{body: feed_as_xml} = HTTPoison.get!(url, [], [follow_redirect: true,
-#                                                                      connect_timeout: 20000,
-#                                                                      recv_timeout: 20000,
-#                                                                      timeout: 20000])
+    %HTTPoison.Response{body: feed_xml} = HTTPoison.get!(url, [], [follow_redirect: true,
+                                                                      connect_timeout: 20000,
+                                                                      recv_timeout: 20000,
+                                                                      timeout: 20000])
 
     feed_map = Quinn.parse(feed_xml)
 
@@ -23,7 +18,7 @@ defmodule Pan.Parser.RssFeed do
 
     next_page_url = map[:feed][:next_page_url]
     if next_page_url do
-#     download_and_parse(next_page_url)
+      download_and_parse(next_page_url)
     end
   end
 
