@@ -74,7 +74,7 @@
             <dt><label class="label label-info">Name</label></dt>
             <dd><%= contributor.name %></dd>
             <dt><label class="label label-primary">Link</label></dt>
-            <dd><%= link contributor.url, to: contributor.url %></dd>
+            <dd><%= link contributor.uri, to: contributor.uri %></dd>
             <dt>- - - - -</dt>
           <% end %>
         </dl>

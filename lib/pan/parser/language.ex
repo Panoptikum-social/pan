@@ -1,12 +1,14 @@
 defmodule Pan.Parser.Language do
   use Pan.Web, :controller
 
-  def find_or_create(shortcode) do
-    case Repo.get_by(Pan.Language, shortcode: shortcode) do
-      nil -> %Pan.Language{shortcode: shortcode,
-                           name: UUID.uuid1()}
-             |> Repo.insert
-      language -> {:ok, language}
+  def find_or_create(language_map) do
+    case Repo.get_by(Pan.Language, shortcode: language_map[:shortcode]) do
+      nil ->
+        %Pan.Language{shortcode: language_map[:shortcode],
+                      name: UUID.uuid1()}
+        |> Repo.insert
+      language ->
+        {:ok, language}
     end
   end
 

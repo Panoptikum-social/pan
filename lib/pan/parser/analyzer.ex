@@ -15,7 +15,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
-    %{lastBuildDate: Helpers.to_ecto_datetime(value)}
+    %{last_build_date: Helpers.to_ecto_datetime(value)}
   end
 
 
@@ -59,7 +59,7 @@ defmodule Pan.Parser.Analyzer do
       "prev"  -> %{feed: %{ prev_page_url: attr[:href]}}
       "first" -> %{feed: %{ first_page_url: attr[:href]}}
       "last"  -> %{feed: %{ last_page_url: attr[:href]}}
-      "hub"   -> %{feed: %{ hub_page_url: attr[:href]}}
+      "hub"   -> %{feed: %{ hub_link_url: attr[:href]}}
       "alternate" ->
         uuid = String.to_atom(UUID.uuid1())
         alternate_feed_map = %{uuid => %{title: attr[:title], url: attr[:href]}}

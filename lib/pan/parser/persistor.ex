@@ -3,7 +3,7 @@ defmodule Pan.Parser.Persistor do
 
   def call(map) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
-                                 :languages, :categories])
+                                 :languages, :categories, :owner])
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 

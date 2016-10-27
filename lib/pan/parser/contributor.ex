@@ -3,10 +3,12 @@ defmodule Pan.Parser.Contributor do
 
   def find_or_create(contributor_map) do
     case Repo.get_by(Pan.Contributor, uri: contributor_map[:uri]) do
-      nil -> %Pan.Contributor{}
-             |> Map.merge(contributor_map)
-             |> Repo.insert()
-      contributor -> {:ok, contributor}
+      nil ->
+        %Pan.Contributor{}
+        |> Map.merge(contributor_map)
+        |> Repo.insert()
+      contributor ->
+        {:ok, contributor}
     end
   end
 
