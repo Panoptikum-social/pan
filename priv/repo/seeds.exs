@@ -26,10 +26,13 @@ Repo.get_by(User, username: "unknown") ||
                      username: "unknown",
                      podcaster: true})
 
+admin_changeset = User.registration_changeset(%User{},
+                    %{name: "Admin",
+                      email: "admin@panoptikum.io",
+                      username: "admin",
+                      podcaster: true,
+                      admin: true,
+                      password: "changeme"})
+
 Repo.get_by(User, username: "admin") ||
-  Repo.insert!(%User{name: "Admin",
-                     email: "admin@panoptikum.io",
-                     username: "admin",
-                     podcaster: true,
-                     admin: true,
-                     password: "changeme"})
+  Repo.insert!(admin_changeset)
