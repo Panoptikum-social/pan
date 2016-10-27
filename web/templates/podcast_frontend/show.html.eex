@@ -21,8 +21,10 @@
           <dd><%= @podcast.description %></dd>
           <dt><label class="label label-info">Author</label></dt>
           <dd><%= @podcast.author %></dd>
-          <dt><label class="label label-warning">Support</label></dt>
-          <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
+          <%= if @podcast.payment_link_url do %>
+            <dt><label class="label label-warning">Support</label></dt>
+            <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
+          <% end %>
           <dt><label class="label label-danger">Language</label></dt>
           <dd>
             <%= for language <- @podcast.languages do
@@ -101,8 +103,10 @@
           <dt><label class="label label-success">Author</label></dt>
           <dd><%= episode.author %></dd>
           <dt><label class="label">Support</label></dt>
-          <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
-          <dt><label class="label label-warning">Duration</label></dt>
+          <%= if episode.payment_link_url do %>
+            <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
+            <dt><label class="label label-warning">Duration</label></dt>
+          <% end %>
           <dd><%= episode.duration %></dd>
           <dt><label class="label label-info">Publishing date</label></dt>
           <dd><%= episode.publishing_date %></dd>
