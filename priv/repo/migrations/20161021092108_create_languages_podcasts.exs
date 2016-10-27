@@ -9,10 +9,10 @@ defmodule Pan.Repo.Migrations.CreateLanguagesPodcasts do
   end
 
   def up do
+    drop index(:podcasts, [:language_id])
     alter table(:podcasts) do
       remove :language_id
     end
-    drop index(:podcasts, [:language_id])
   end
 
   def down do

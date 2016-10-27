@@ -25,3 +25,11 @@ Repo.get_by(User, name: "unknown") ||
                      email: "jane@podcasterei.at",
                      username: "unknown",
                      podcaster: true})
+
+Repo.get_by(User, name: "unknown") ||
+  Repo.insert!(%User{name: "admin",
+                     email: "admin@panoptikum.io",
+                     username: "unknown",
+                     podcaster: true,
+                     admin: true,
+                     password: "changeme"})
