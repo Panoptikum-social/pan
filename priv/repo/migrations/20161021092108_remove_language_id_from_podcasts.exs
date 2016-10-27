@@ -1,12 +1,5 @@
-defmodule Pan.Repo.Migrations.CreateLanguagesPodcasts do
+defmodule Pan.Repo.Migrations.RemoveLanguageIdFromPodcasts do
   use Ecto.Migration
-
-  def change do
-    create table(:languages_podcasts, primary_key: false) do
-      add :language_id, references(:languages)
-      add :podcast_id, references(:podcasts)
-    end
-  end
 
   def up do
     drop index(:podcasts, [:language_id])

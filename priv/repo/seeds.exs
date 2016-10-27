@@ -17,19 +17,19 @@ Repo.get_by(Language, shortcode: "de-at") ||
 Repo.get_by(Language, shortcode: "de-AT") ||
   Repo.insert!(%Language{shortcode: "de-AT", name: "DE"})
 
-Repo.get_by(Language, shortcode: "den-US") ||
+Repo.get_by(Language, shortcode: "en-US") ||
   Repo.insert!(%Language{shortcode: "en-US", name: "EN"})
 
-Repo.get_by(User, name: "unknown") ||
+Repo.get_by(User, username: "unknown") ||
   Repo.insert!(%User{name: "Jane Doe",
                      email: "jane@podcasterei.at",
                      username: "unknown",
                      podcaster: true})
 
-Repo.get_by(User, name: "unknown") ||
-  Repo.insert!(%User{name: "admin",
+Repo.get_by(User, username: "admin") ||
+  Repo.insert!(%User{name: "Admin",
                      email: "admin@panoptikum.io",
-                     username: "unknown",
+                     username: "admin",
                      podcaster: true,
                      admin: true,
                      password: "changeme"})
