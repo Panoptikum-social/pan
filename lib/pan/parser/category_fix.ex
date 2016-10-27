@@ -1,42 +1,24 @@
 defmodule Pan.Parser.CategoryFix do
-  use Pan.Web, :controller
-  alias Pan.Repo
-  alias Pan.Podcast
-  alias Pan.Category
-  import SweetXml
 
   def call() do
-    podcasts = Repo.all(Podcast)
-    podcasts = Repo.preload(podcasts, [:feeds, :categories])
+    podcasts = Pan.Repo.all(Pan.Podcast)
+    podcasts = Pan.Repo.preload(podcasts, [:feeds, :categories])
 
     for {podcast, counter} <- Enum.with_index(podcasts) do
     IO.puts "============" <> to_string(counter)
+
       for feed <- podcast.feeds do
         try do
-          %HTTPoison.Response{body: xml} = HTTPoison.get!(feed.self_link_url, [],
-                                                          [follow_redirect: true,
-                                                           connect_timeout: 20000,
-                                                           recv_timeout: 20000,
-                                                           timeout: 20000])
-          categories = xml
-                 |> xpath(~x"//channel/itunes:category"l,
-                          title: ~x"./@text"s,
-                          subtitle: ~x"./itunes:category/@text"s)
+          %HTTPoison.Response{body: feed_xml} =
+            HTTPoison.get!(feed.self_link_url,
+                           [{"User-Agent",
+                             "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
+                           [follow_redirect: true, connect_timeout: 20000, recv_timeout: 20000, timeout: 20000])
+          feed_map = Quinn.parse(feed_xml)
 
-          for xml_category <- categories do
-            category =
-              if xml_category.subtitle == "" do
-                Repo.get_by(Category, title: xml_category.title)
-              else
-                Repo.get_by(Category, title: xml_category.subtitle)
-              end
-              |> Repo.preload(:podcasts)
-
-            category
-            |> Ecto.Changeset.change()
-            |> Ecto.Changeset.put_assoc(:podcasts, [podcast | category.podcasts])
-            |> Repo.update!
-          end
+          map = Pan.Parser.Iterator.parse(%{}, feed_map)
+          podcast = Pan.Repo.preload(feed, :podcast).podcast
+          Pan.Parser.Category.assign_many(map[:categories], podcast)
         catch
           :exit, _ ->  IO.puts "ex"
           :timeout, _ -> IO.puts "t"

@@ -3,7 +3,7 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Persistor
 
   def demo do
-    download_and_parse("http://www.lieblings-plaetzchen.com/episodes.mp3.rss")
+    download_and_parse("http://lebensze.it/feed/aac128/")
   end
 
   def download_and_parse(url) do
@@ -12,7 +12,6 @@ defmodule Pan.Parser.RssFeed do
                      [{"User-Agent",
                        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
                      [follow_redirect: true, connect_timeout: 20000, recv_timeout: 20000, timeout: 20000])
-
 
     feed_map = Quinn.parse(feed_xml)
 

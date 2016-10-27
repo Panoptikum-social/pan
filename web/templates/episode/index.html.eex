@@ -23,7 +23,7 @@
       <td><%= episode.author %></td>
       <td>
         <%= String.slice(episode.subtitle, 0, 100) %>
-        <%= if String.length(episode.subtitle) > 100 do %>
+        <%= if episode.subtitle && String.length(episode.subtitle) > 100 do %>
          ...
         <% end %>
       </td>

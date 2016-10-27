@@ -146,16 +146,21 @@ defmodule Pan.Parser.Analyzer do
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", _, []]), do: %{}
-  def call(_, "tag", [:"itunes:category", attr, value]) do
+  def call(_, "tag", [:"itunes:category", attr, [value]]) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
-    %{categories: %{category.id => true}}
-    |> call("category", [value[:name], value[:attr], value[:value]], category.id)
+    map = %{categories: %{category.id => true}}
+    call(map, "category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
   def call(map, "category", [nil, nil, nil], _), do: map
+  def call(map, "category", [:"itunes:category", attr, []], parent_id) do
+    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
+    Helpers.deep_merge(map, %{categories: %{category.id => true}})
+  end
+
   def call(map, "category", [:"itunes:category", attr, [value]], parent_id) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    Map.merge %{categories: %{category.id => true}}
+    Helpers.deep_merge(map, %{categories: %{category.id => true}})
     |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
