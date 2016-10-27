@@ -2,7 +2,7 @@ defmodule Pan.Parser.User do
   use Pan.Web, :controller
 
   def find_or_create(owner_map) do
-    case Repo.get_by(Pan.User, email: owner_map[:email]) do
+    case Repo.get_by(Pan.User, username: owner_map[:name]) do
       nil ->
         %Pan.User{}
         |> Map.merge(owner_map)

@@ -40,7 +40,8 @@ defmodule Pan.Mixfile do
      {:httpoison, "~> 0.9.0"},
      {:exrm, "~> 1.0" },
      {:quinn, "~> 1.0.0"},
-     {:uuid, "~> 1.1"}]
+     {:uuid, "~> 1.1"},
+     {:html_sanitize_ex, "~> 1.0.0"}]
   end
 
   defp aliases do

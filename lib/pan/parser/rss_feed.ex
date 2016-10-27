@@ -2,6 +2,9 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Persistor
 
+  def demo do
+    download_and_parse("http://feeds.metaebene.me/freakshow/m4a")
+  end
 
   def download_and_parse(url) do
     %HTTPoison.Response{body: feed_xml} = HTTPoison.get!(url, [], [follow_redirect: true,
