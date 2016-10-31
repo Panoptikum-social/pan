@@ -45,5 +45,6 @@ defmodule Pan.Router do
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
     resources "/categories", CategoryController
+    resources "/backlog_feeds", FeedBacklogController
   end
 end

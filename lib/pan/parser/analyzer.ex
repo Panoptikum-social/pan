@@ -106,7 +106,9 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:"feedburner:feedburnerHostname", _, _]), do: map
   def call(map, "tag", [:managingEditor, _, _]), do: map
   def call(map, "tag", [:pubDate, _, _]), do: map
-
+  def call(map, "tag", [:"sy:updatePeriod", _, _]), do: map
+  def call(map, "tag", [:"sy:updateFrequency", _, _]), do: map
+  def call(map, "tag", [:"wfw:commentRss", _, _]), do: map
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
@@ -119,6 +121,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"media:content", _, _]), do: %{}
   def call(_, "episode", [:"feedburner:origLink", _, _]), do: %{}
   def call(_, "episode", [:"feedburner:origEnclosureLink", _, _]), do: %{}
+  def call(_, "episode", [:"wfw:commentRss", _, _]), do: %{}
+  def call(_, "episode", [:"slash:comments", _, _]), do: %{}
+
 
 # We expect several language tags
   def call(_, "tag", [:language, _, [value]]) do
@@ -145,27 +150,23 @@ defmodule Pan.Parser.Analyzer do
 
 
 # Parsing categories infintely deep
-  def call(_, "tag", [:"itunes:category", nil, []]), do: %{}
   def call(_, "tag", [:"itunes:category", attr, []]) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
     %{categories: %{category.id => true}}
   end
-  def call(_, "tag", [:"itunes:category", attr, [value]]) do
+  def call(_, "tag", [:"itunes:category", attr, value]) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
+    Iterator.parse(%{categories: %{category.id => true}}, "category", value, category.id)
+  end
+
+  def call("category", [:"itunes:category", attr, []], parent_id) do
+    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
     %{categories: %{category.id => true}}
-    |> call("category", [value[:name], value[:attr], value[:value]], category.id)
   end
 
-  def call(map, "category", [nil, nil, nil], _), do: map
-  def call(map, "category", [:"itunes:category", attr, []], parent_id) do
+  def call("category", [:"itunes:category", attr, value], parent_id) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    Helpers.deep_merge(map, %{categories: %{category.id => true}})
-  end
-
-  def call(map, "category", [:"itunes:category", attr, [value]], parent_id) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    Helpers.deep_merge(map, %{categories: %{category.id => true}})
-    |> call("category", [value[:name], value[:attr], value[:value]], category.id)
+    Iterator.parse(%{categories: %{category.id => true}}, "category", value, category.id)
   end
 
 

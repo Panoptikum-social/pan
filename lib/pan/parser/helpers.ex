@@ -52,4 +52,9 @@ defmodule Pan.Parser.Helpers do
       IO.puts url
     end
   end
+
+
+  def remove_comments(xml) do
+    Regex.replace(~r/<!--.*-->/r, xml, "")
+  end
 end

@@ -1,0 +1,32 @@
+<h2>Listing backlog feeds</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Url</th>
+      <th>Feed generator</th>
+      <th>In progress</th>
+      <th>User</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for feed_backlog <- @backlog_feeds do %>
+    <tr>
+      <td><%= feed_backlog.url %></td>
+      <td><%= feed_backlog.feed_generator %></td>
+      <td><%= feed_backlog.in_progress %></td>
+      <td><%= feed_backlog.user_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New feed backlog", to: feed_backlog_path(@conn, :new) %>
