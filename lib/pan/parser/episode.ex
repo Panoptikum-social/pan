@@ -35,4 +35,14 @@ defmodule Pan.Parser.Episode do
       Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)
     end
   end
+
+
+  def clean() do
+    episodes = Pan.Repo.all(Pan.Episode)
+    for episode <- episodes do
+      Pan.Episode.changeset(episode, %{description: HtmlSanitizeEx2.basic_html_reduced(episode.description),
+                                       summary:     HtmlSanitizeEx2.basic_html_reduced(episode.summary)})
+      |> Repo.update()
+    end
+  end
 end

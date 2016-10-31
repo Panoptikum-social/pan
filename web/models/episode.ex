@@ -25,9 +25,8 @@ defmodule Pan.Episode do
   end
 
   @required_fields ~w(title link publishing_date guid description
-                      shownotes payment_link_title payment_link_url deep_link duration
-                      author subtitle summary)
-  @optional_fields ~w()
+                      shownotes duration author)
+  @optional_fields ~w(payment_link_title payment_link_url deep_link subtitle summary)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
