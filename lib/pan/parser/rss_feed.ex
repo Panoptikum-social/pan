@@ -3,7 +3,7 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Persistor
 
   def demo do
-    download_and_parse("http://www.ohrenblicke.de/feed/podcast")
+    download_and_parse("https://rechtsbelehrung.com/feed/podcast/")
   end
 
   def download_and_parse(url) do

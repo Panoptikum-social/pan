@@ -25,7 +25,10 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:image, _, value]), do: Iterator.parse(map, "image", value)
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: value}
-  def call(map, "image", [:link,  _, _]), do: map
+  def call(map, "image", [:link,        _, _]), do: map
+  def call(map, "image", [:description, _, _]), do: map
+  def call(map, "image", [:width,       _, _]), do: map
+  def call(map, "image", [:height,      _, _]), do: map
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
@@ -109,6 +112,17 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:"sy:updatePeriod", _, _]), do: map
   def call(map, "tag", [:"sy:updateFrequency", _, _]), do: map
   def call(map, "tag", [:"wfw:commentRss", _, _]), do: map
+  def call(map, "tag", [:"rawvoice:subscribe", _, _]), do: map
+  def call(map, "tag", [:webMaster, _, _]), do: map
+  def call(map, "tag", [:ttl, _, _]), do: map
+  def call(map, "tag", [:"itunes:new-feed-url", _, _]), do: map
+  def call(map, "tag", [:"googleplay:description", _, _]), do: map
+  def call(map, "tag", [:"googleplay:email", _, _]), do: map
+  def call(map, "tag", [:"googleplay:category", _, _]), do: map
+  def call(map, "tag", [:"rawvoice:rating", _, _]), do: map
+  def call(map, "tag", [:"rawvoice:location", _, _]), do: map
+  def call(map, "tag", [:"rawvoice:frequency", _, _]), do: map
+
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
@@ -123,6 +137,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"feedburner:origEnclosureLink", _, _]), do: %{}
   def call(_, "episode", [:"wfw:commentRss", _, _]), do: %{}
   def call(_, "episode", [:"slash:comments", _, _]), do: %{}
+  def call(_, "episode", [:"itunes:block", _, _]), do: %{}
 
 
 # We expect several language tags

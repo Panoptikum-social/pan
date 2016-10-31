@@ -10,8 +10,10 @@
     <dl class="dl-horizontal">
       <dt><label class="label label-success">Author</label></dt>
       <dd><%= @episode.author %></dd>
-      <dt><label class="label">Support</label></dt>
-      <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
+      <%= if @episode.payment_link_url do %>
+        <dt><label class="label">Support</label></dt>
+        <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
+      <% end %>
       <dt><label class="label label-warning">Duration</label></dt>
       <dd><%= @episode.duration %></dd>
       <dt><label class="label label-info">Publishing date</label></dt>
