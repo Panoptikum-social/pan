@@ -43,6 +43,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # Description with fallback to itunes:subtitle
+def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "tag", [:description, _, [value]]), do: %{description: value}
 
   def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
@@ -59,13 +60,15 @@ defmodule Pan.Parser.Analyzer do
 # the links are a mixture of the two above
   def call(_, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
-      "self"  -> %{feed: %{ self_link_title: attr[:title],
+      "self"      -> %{feed: %{ self_link_title: attr[:title],
                             self_link_url: attr[:href]}}
-      "next"  -> %{feed: %{ next_page_url: attr[:href]}}
-      "prev"  -> %{feed: %{ prev_page_url: attr[:href]}}
-      "first" -> %{feed: %{ first_page_url: attr[:href]}}
-      "last"  -> %{feed: %{ last_page_url: attr[:href]}}
-      "hub"   -> %{feed: %{ hub_link_url: attr[:href]}}
+      "next"      -> %{feed: %{ next_page_url: attr[:href]}}
+      "prev"      -> %{feed: %{ prev_page_url: attr[:href]}}
+      "previous"  -> %{feed: %{ prev_page_url: attr[:href]}}
+      "first"     -> %{feed: %{ first_page_url: attr[:href]}}
+      "last"      -> %{feed: %{ last_page_url: attr[:href]}}
+      "hub"       -> %{feed: %{ hub_link_url: attr[:href]}}
+      "search"    -> %{}
       "alternate" ->
         uuid = String.to_atom(UUID.uuid1())
         alternate_feed_map = %{uuid => %{title: attr[:title], url: attr[:href]}}
@@ -74,6 +77,10 @@ defmodule Pan.Parser.Analyzer do
                      payment_link_url: String.slice(attr[:href], 0, 255)}
     end
   end
+
+  def call(_, "tag", [:"rawvoice:donate", attr, [value]]), do: %{payment_link_title: value,
+                                                                 payment_link_url: attr[:href]}
+
 
   def call(_, "tag", [:"atom10:link", attr, _]) do
     case attr[:rel] do
@@ -122,7 +129,11 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:"rawvoice:rating", _, _]), do: map
   def call(map, "tag", [:"rawvoice:location", _, _]), do: map
   def call(map, "tag", [:"rawvoice:frequency", _, _]), do: map
-
+  def call(map, "tag", [:"ppg:seriesDetails", _, _]), do: map
+  def call(map, "tag", [:"ppg:systemRef", _, _]), do: map
+  def call(map, "tag", [:"ppg:network", _, _]), do: map
+  def call(map, "tag", [:cloud, _, _]), do: map
+  def call(map, "tag", [:"googleplay:image", _, _]), do: map
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
@@ -138,6 +149,12 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"wfw:commentRss", _, _]), do: %{}
   def call(_, "episode", [:"slash:comments", _, _]), do: %{}
   def call(_, "episode", [:"itunes:block", _, _]), do: %{}
+  def call(_, "episode", [:"itunes:order", _, _]), do: %{}
+  def call(_, "episode", [:"ppg:canonical", _, _]), do: %{}
+  def call(_, "episode", [:"cba:productionDate", _, _]), do: %{}
+  def call(_, "episode", [:"cba:broadcastDate", _, _]), do: %{}
+  def call(_, "episode", [:"cba:containsCopyright", _, _]), do: %{}
+  def call(_, "episode", [:"media:thumbnail", _, _]), do: %{}
 
 
 # We expect several language tags
@@ -191,6 +208,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
   def call(_, "episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:guid,              _, _]), do: %{}
   def call(_, "episode", [:description,       _, []]), do: %{}
   def call(_, "episode", [:description,       _, [value]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}

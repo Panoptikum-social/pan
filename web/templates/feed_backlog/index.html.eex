@@ -23,6 +23,7 @@
         <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Import", to: feed_backlog_path(@conn, :import, feed_backlog), class: "btn btn-default btn-xs" %>
       </td>
     </tr>
 <% end %>

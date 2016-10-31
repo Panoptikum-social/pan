@@ -46,5 +46,6 @@ defmodule Pan.Router do
     resources "/enclosures", EnclosureController
     resources "/categories", CategoryController
     resources "/backlog_feeds", FeedBacklogController
+    get "/backlog_feeds/import/:id", FeedBacklogController, :import
   end
 end

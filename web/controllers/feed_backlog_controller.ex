@@ -4,7 +4,7 @@ defmodule Pan.FeedBacklogController do
   alias Pan.FeedBacklog
 
   def index(conn, _params) do
-    backlog_feeds = Repo.all(FeedBacklog)
+    backlog_feeds = Repo.all(from f in FeedBacklog, order_by: :url)
     render(conn, "index.html", backlog_feeds: backlog_feeds)
   end
 
@@ -60,6 +60,15 @@ defmodule Pan.FeedBacklogController do
 
     conn
     |> put_flash(:info, "Feed backlog deleted successfully.")
+    |> redirect(to: feed_backlog_path(conn, :index))
+  end
+
+  def import(conn, %{"id" => id}) do
+    feed_backlog = Repo.get!(FeedBacklog, id)
+    Pan.Parser.RssFeed.download_and_parse(feed_backlog.url)
+
+    conn
+    |> put_flash(:info, "Feed imported successfully.")
     |> redirect(to: feed_backlog_path(conn, :index))
   end
 end
