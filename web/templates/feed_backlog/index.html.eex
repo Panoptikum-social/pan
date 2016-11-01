@@ -1,6 +1,6 @@
 <h2>Listing <%= @feedcount %> backlog feeds</h2>
 
-<table class="table table-condensed">
+<table class="table table-condensed table-striped">
   <thead>
     <tr>
       <th>Url</th>

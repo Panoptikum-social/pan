@@ -4,37 +4,30 @@
   <%= @epicount %> Episodes and counting...
 </em></p>
 
-<%= for {category, counter} <- Enum.with_index(@categories) do %>
-  <%= if 0 == rem(counter, 3) do %>
-    <div class="row">
-  <% end %>
+<table class="table table-condensed">
+  <tbody>
+    <%= for {category, counter} <- Enum.with_index(@categories) do %>
+      <tr>
+        <td class="text-right" style="border: none !important;">
+          <span class="btn btn-xs <%= btn_cycle(counter) %>">
+          <%= link [fa_icon("folder-o"), " ", category.title],
+                   to: category_frontend_path(@conn, :show, category),
+                   style: "color: #" <> color_cycle(counter) %>
+          </span>
+        </td>
 
-    <div class="col-md-4">
-      <div class="panel <%= panel_cycle(counter) %>">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <%= fa_icon("folder-open-o") %> <%= category.title %>
-          </h3>
-        </div>
-        <div class="panel-body" style="line-height: 2;">
+        <td style="border: none !important;">
           <%= if category.children != [] do %>
             <%= for subcategory <- category.children do %>
-              <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                       to: category_frontend_path(@conn, :show, subcategory),
-                       class: "btn btn-xs" %>
+              <span class="btn btn-xs btn-normal">
+                <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                         to: category_frontend_path(@conn, :show, subcategory),
+                         style: "color: #fff" %>
+              </span>
             <% end %>
-            <br/>
           <% end %>
-
-          <%= for podcast <- category.podcasts do %>
-            <%= link [fa_icon("microphone"), " ", podcast.title],
-                     to: podcast_frontend_path(@conn, :show, podcast),
-                     class: "btn btn-default btn-xs" %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  <%= if 2 == rem(counter, 3) do %>
-    </div>
-  <% end %>
-<% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

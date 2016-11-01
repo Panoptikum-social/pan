@@ -4,18 +4,8 @@ defmodule Pan.Parser.Category do
   alias Pan.Category
 
 
-  def find_or_create(title, nil) do
-    case Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id)) do
-      nil ->
-        %Category{title: title}
-        |> Repo.insert()
-      category ->
-        {:ok, category}
-    end
-  end
-
   def find_or_create(title, parent_id) do
-    case Repo.get_by(Category, title: title, parent_id: parent_id) do
+    case get_category(title, parent_id) do
       nil ->
         %Category{title: title, parent_id: parent_id}
         |> Repo.insert()
@@ -23,6 +13,9 @@ defmodule Pan.Parser.Category do
         {:ok, category}
     end
   end
+
+  defp get_category(title, nil), do: Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id))
+  defp get_category(title, parent_id), do: Repo.get_by(Category, title: title, parent_id: parent_id)
 
 
   def assign_many(categories_map, podcast) do

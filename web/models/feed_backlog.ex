@@ -16,6 +16,6 @@ defmodule Pan.FeedBacklog do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:url, :feed_generator, :in_progress])
-    |> validate_required([:url, :feed_generator, :in_progress])
+    |> validate_required([:url, :in_progress])
   end
 end

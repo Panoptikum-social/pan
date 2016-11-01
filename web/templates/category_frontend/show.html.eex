@@ -4,23 +4,23 @@
       <%= @category.title %>
     </h3>
   </div>
-  <div class="panel-body" style="line-height: 2;">
+  <div class="panel-body" style="line-height: 2.5;">
     <%= if @category.children != [] do %>
       <%= for {subcategory, counter} <- Enum.with_index(@category.children) do %>
-        <%= if counter != 0 do %> - <% end %>
-
-        <%= link [fa_icon("microphone"), " ", subcategory.title],
+        <%= link [fa_icon("folder-o"), " ", subcategory.title],
                  to: category_frontend_path(@conn, :show, subcategory),
-                 class: "btn btn-xs" %></li>
+                 class: "btn btn-xs" %>
+        &nbsp; &nbsp; &nbsp;
       <% end %>
-      <br/>
+      <br/><br/>
     <% end %>
 
     <p>
       <%= for podcast <- @category.podcasts do %>
         <%= link [fa_icon("microphone"), " ", podcast.title],
                  to: podcast_frontend_path(@conn, :show, podcast),
-                 class: "btn btn-default btn-xs" %></li>
+                 class: "btn btn-default btn-xs" %>
+        &nbsp; &nbsp; &nbsp;
       <% end %>
     </p>
   </div>

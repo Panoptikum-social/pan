@@ -17,8 +17,8 @@ defmodule Pan.Parser.Enclosure do
                                url: url)
   end
   defp get_enclosure(episode_id, guid, url) do
-    Repo.get_by(Pan.Episode, episode_id: episode_id,
-                             guid: guid,
-                             url: url)
+    Repo.get_by(Pan.Enclosure, episode_id: episode_id,
+                               guid: guid,
+                               url: url)
   end
 end

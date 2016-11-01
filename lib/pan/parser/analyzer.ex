@@ -69,6 +69,7 @@ def call(_, "tag", [:description, _, []]), do: %{}
       "last"      -> %{feed: %{ last_page_url: attr[:href]}}
       "hub"       -> %{feed: %{ hub_link_url: attr[:href]}}
       "search"    -> %{}
+      "related"   -> %{}
       "alternate" ->
         uuid = String.to_atom(UUID.uuid1())
         alternate_feed_map = %{uuid => %{title: attr[:title], url: attr[:href]}}
@@ -137,6 +138,20 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(map, "tag", [:"googleplay:author", _, _]), do: map
   def call(map, "tag", [:"googleplay:explicit", _, _]), do: map
   def call(map, "tag", [:feed, _, _]), do: map
+  def call(map, "tag", [:webmaster, _, _]), do: map
+  def call(map, "tag", [:ilink, _, _]), do: map
+  def call(map, "tag", [:ffmpeg, _, _]), do: map
+  def call(map, "tag", [:domain, _, _]), do: map
+  def call(map, "tag", [:lame, _, _]), do: map
+  def call(map, "tag", [:broadcastlimit, _, _]), do: map
+  def call(map, "tag", [:"itunes:link", _, _]), do: map
+  def call(map, "tag", [:"channelExportDir", _, _]), do: map
+  def call(map, "tag", [:"atom:id", _, _]), do: map
+  def call(map, "tag", [:"openSearch:totalResults", _, _]), do: map
+  def call(map, "tag", [:"openSearch:startIndex", _, _]), do: map
+  def call(map, "tag", [:"openSearch:itemsPerPage", _, _]), do: map
+  def call(map, "tag", [:"html", _, _]), do: map
+
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
@@ -167,6 +182,13 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "episode", [:"media:description", _, _]), do: %{}
   def call(_, "episode", [:programid, _, _]), do: %{}
   def call(_, "episode", [:poddid, _, _]), do: %{}
+  def call(_, "episode", [:"dcterms:modified", _, _]), do: %{}
+  def call(_, "episode", [:"dcterms:created", _, _]), do: %{}
+  def call(_, "episode", [:toPubDate, _, _]), do: %{}
+  def call(_, "episode", [:audioId, _, _]), do: %{}
+  def call(_, "episode", [:"atom:updated", _, _]), do: %{}
+  def call(_, "episode", [:"thr:total", _, _]), do: %{}
+  def call(_, "episode", [:"ard:visibility", _, _]), do: %{}
 
 
 # We expect several language tags
@@ -196,6 +218,10 @@ def call(_, "tag", [:description, _, []]), do: %{}
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
     {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
+    %{categories: %{category.id => true}}
+  end
+  def call(_, "tag", [:"itunes:category", [], [value]]) do
+    {:ok, category} = Pan.Parser.Category.find_or_create(value, nil)
     %{categories: %{category.id => true}}
   end
   def call(_, "tag", [:"itunes:category", attr, value]) do
@@ -231,6 +257,7 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle:    String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:author",   _, []]), do: %{}
   def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author:      String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration:    value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
@@ -273,4 +300,25 @@ def call(_, "tag", [:description, _, []]), do: %{}
 
   def call("episode-contributor", [:"atom:name", _ , [value]]), do: %{name: value}
   def call("episode-contributor", [:"atom:uri",  _ , [value]]), do: %{uri: value}
+
+
+# Show debugging information for unknown tags on console
+  def call(_, mode, [tag, attr, value]) do
+    IO.puts "\n\e[96m === Tag unknown: ==="
+    IO.puts "Mode: " <> mode
+    IO.puts "Tag: " <> to_string(tag)
+    IO.puts "Attr: "
+    IO.inspect attr
+    IO.puts "Value: "
+    IO.inspect value
+    IO.puts " =================\e[0m"
+
+    case mode do
+      "episode" ->
+        IO.puts ~s/def call(_, "episode", [:"/ <> to_string(tag) <> ~s/", _, _]), do: %{}/
+      "tag" ->
+        IO.puts ~s/def call(map, "tag", [:"/ <> to_string(tag) <> ~s/", _, _]), do: map/
+    end
+    raise "Tag unknown"
+  end
 end
