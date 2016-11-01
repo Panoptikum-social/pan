@@ -134,6 +134,8 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(map, "tag", [:"ppg:network", _, _]), do: map
   def call(map, "tag", [:cloud, _, _]), do: map
   def call(map, "tag", [:"googleplay:image", _, _]), do: map
+  def call(map, "tag", [:"googleplay:author", _, _]), do: map
+  def call(map, "tag", [:"googleplay:explicit", _, _]), do: map
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
@@ -155,6 +157,15 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "episode", [:"cba:broadcastDate", _, _]), do: %{}
   def call(_, "episode", [:"cba:containsCopyright", _, _]), do: %{}
   def call(_, "episode", [:"media:thumbnail", _, _]), do: %{}
+  def call(_, "episode", [:"googleplay:description", _, _]), do: %{}
+  def call(_, "episode", [:"googleplay:image", _, _]), do: %{}
+  def call(_, "episode", [:"googleplay:explicit", _, _]), do: %{}
+  def call(_, "episode", [:"googleplay:block", _, _]), do: %{}
+  def call(_, "episode", [:image, _, _]), do: %{}
+  def call(_, "episode", [:source, _, _]), do: %{}
+  def call(_, "episode", [:"media:description", _, _]), do: %{}
+  def call(_, "episode", [:programid, _, _]), do: %{}
+  def call(_, "episode", [:poddid, _, _]), do: %{}
 
 
 # We expect several language tags

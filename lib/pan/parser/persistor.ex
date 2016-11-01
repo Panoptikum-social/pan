@@ -22,6 +22,9 @@ defmodule Pan.Parser.Persistor do
     Pan.Parser.Contributor.persist_many(map[:contributors], podcast)
     Pan.Parser.Language.persist_many(map[:languages], podcast)
     Pan.Parser.Category.assign_many(map[:categories], podcast)
-    Pan.Parser.Episode.persist_many(map[:episodes], podcast)
+
+    if map[:episodes] do
+      Pan.Parser.Episode.persist_many(map[:episodes], podcast)
+    end
   end
 end

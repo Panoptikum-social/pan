@@ -7,7 +7,10 @@ defmodule Pan.Parser.RssFeed do
   end
 
   def download_and_parse(url) do
+    url = String.strip(url)
     %HTTPoison.Response{body: feed_xml} = download(url)
+
+    IO.puts "\n\e[96m === URL: " <> url <> " ===\e[0m"
 
     feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                |> Quinn.parse()
@@ -27,7 +30,8 @@ defmodule Pan.Parser.RssFeed do
   def download(url) do
     HTTPoison.get!(url,
                [{"User-Agent",
-                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
+                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"},
+                {"content-type", "text/html,application/xhtml+xml,application/xml;charset=UTF-8"}],
                [follow_redirect: true, connect_timeout: 20000, recv_timeout: 20000, timeout: 20000])
   end
 

@@ -5,7 +5,9 @@ defmodule Pan.FeedBacklogController do
 
   def index(conn, _params) do
     backlog_feeds = Repo.all(from f in FeedBacklog, order_by: :url)
-    render(conn, "index.html", backlog_feeds: backlog_feeds)
+    feedcount = Repo.aggregate(FeedBacklog, :count, :id)
+
+    render(conn, "index.html", backlog_feeds: backlog_feeds, feedcount: feedcount)
   end
 
   def new(conn, _params) do
