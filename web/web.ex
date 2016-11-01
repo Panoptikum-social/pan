@@ -37,6 +37,7 @@ defmodule Pan.Web do
 
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
+      use Crutches
 
       import Pan.Router.Helpers
       import Pan.ErrorHelpers

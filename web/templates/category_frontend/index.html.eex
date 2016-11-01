@@ -4,30 +4,32 @@
   <%= @epicount %> Episodes and counting...
 </em></p>
 
-<table class="table table-condensed">
-  <tbody>
-    <%= for {category, counter} <- Enum.with_index(@categories) do %>
-      <tr>
-        <td class="text-right" style="border: none !important;">
-          <span class="btn btn-xs <%= btn_cycle(counter) %>">
-          <%= link [fa_icon("folder-o"), " ", category.title],
-                   to: category_frontend_path(@conn, :show, category),
-                   style: "color: #" <> color_cycle(counter) %>
-          </span>
-        </td>
+<div class="table-responsive">
+  <table class="table table-condensed">
+    <tbody>
+      <%= for {category, counter} <- Enum.with_index(@categories) do %>
+        <tr>
+          <td class="text-right" style="border: none !important;">
+            <span class="btn btn-xs <%= btn_cycle(counter) %>">
+            <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
+                     to: category_frontend_path(@conn, :show, category),
+                     style: "color: #" <> color_cycle(counter) %>
+            </span>
+          </td>
 
-        <td style="border: none !important;">
-          <%= if category.children != [] do %>
-            <%= for subcategory <- category.children do %>
-              <span class="btn btn-xs btn-normal">
-                <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                         to: category_frontend_path(@conn, :show, subcategory),
-                         style: "color: #fff" %>
-              </span>
+          <td style="border: none !important;">
+            <%= if category.children != [] do %>
+              <%= for subcategory <- category.children do %>
+                <span class="btn btn-xs btn-normal">
+                  <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                           to: category_frontend_path(@conn, :show, subcategory),
+                           style: "color: #fff" %>
+                </span>
+              <% end %>
             <% end %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
