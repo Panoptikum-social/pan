@@ -4,9 +4,7 @@ defmodule Pan.Parser.Episode do
   def find_or_create(episode_map, podcast_id) do
     Map.put_new(episode_map, :guid, episode_map[:link])
 
-    case Repo.get_by(Pan.Episode,
-#FIXME!                                  guid: episode_map[:guid],
-                                  link: episode_map[:link]) do
+    case get_episode(episode_map[:guid], episode_map[:link]) do
       nil ->
         %Pan.Episode{podcast_id: podcast_id}
         |> Map.merge(episode_map)
@@ -15,6 +13,9 @@ defmodule Pan.Parser.Episode do
         {:ok, episode}
     end
   end
+
+  defp get_episode(nil,  link), do: Repo.get_by(Pan.Episode, link: link)
+  defp get_episode(guid, link), do: Repo.get_by(Pan.Episode, guid: guid, link: link)
 
 
   def persist_many(episodes_map, podcast) do

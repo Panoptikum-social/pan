@@ -136,6 +136,7 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(map, "tag", [:"googleplay:image", _, _]), do: map
   def call(map, "tag", [:"googleplay:author", _, _]), do: map
   def call(map, "tag", [:"googleplay:explicit", _, _]), do: map
+  def call(map, "tag", [:feed, _, _]), do: map
 
   def call(_, "episode", [:"itunes:image", _, _]), do: %{}
   def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
