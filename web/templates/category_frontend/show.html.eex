@@ -1,7 +1,7 @@
 <div class="panel panel-success">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <%= link [fa_icon("folder-o"), " ", "Home"],
+      <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
                to: category_frontend_path(@conn, :index) %>
       /
       <%= if @category.parent do %>
@@ -14,7 +14,7 @@
   </div>
   <div class="panel-body" style="line-height: 2.5;">
     <%= if @category.children != [] do %>
-      <%= for {subcategory, counter} <- Enum.with_index(@category.children) do %>
+      <%= for subcategory <- @category.children do %>
         <%= link [fa_icon("folder-o"), " ", subcategory.title],
                  to: category_frontend_path(@conn, :show, subcategory),
                  class: "btn btn-xs" %>
