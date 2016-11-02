@@ -23,7 +23,7 @@ defmodule Pan.Podcast do
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts", on_delete: :delete_all
     many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts", on_delete: :delete_all
     many_to_many :listeners, Pan.User, join_through: "subscriptions", on_delete: :delete_all
-    many_to_many :followers, Pan.User, join_through: "followers_podcasts", on_delete: :delete_all
+    many_to_many :followers, Pan.User, join_through: "followers_podcasts", on_delete: :delete_all, on_replace: :delete
     many_to_many :languages, Pan.Language, join_through: "languages_podcasts", on_delete: :delete_all
   end
 
