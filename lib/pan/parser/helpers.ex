@@ -12,8 +12,10 @@ defmodule Pan.Parser.Helpers do
 
 
   def to_ecto_datetime(feed_date) do
-    feed_date = Regex.replace(~r/ (\d\d):(\d\d) /, feed_date, " \\1:\\2:00 ")
+    feed_date = feed_date
+                |> fix_time()
                 |> replace_long_month_names()
+                |> replace_long_week_days
 
     datetime =
       case Timex.parse(feed_date, "{RFC1123}") do
@@ -31,6 +33,11 @@ defmodule Pan.Parser.Helpers do
   end
 
 
+  def fix_time(datetime) do
+    datetime = Regex.replace(~r/ (\d\d):(\d\d) /, datetime, " \\1:\\2:00 ")
+    Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
+  end
+
   def replace_long_month_names(datetime) do
     datetime
     |> String.replace("January",   "Jan")
@@ -44,6 +51,11 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("October",   "Oct")
     |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
+  end
+
+  def replace_long_week_days(datetime) do
+    datetime
+    |> String.replace("Thurs",   "Thu")
   end
 
 

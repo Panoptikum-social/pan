@@ -1,8 +1,8 @@
 
 <div class="panel panel-success">
   <div class="panel-heading">
-    <h3 class="panel-title"><%= @episode.title %>
-    <span class="pull-right">/ <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast) %></span></h3>
+    <%= fa_icon("microphone") %> <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast), style: "color: #fff" %> /
+    <%= fa_icon("headphones") %> <%= @episode.title %>
   </div>
   <div class="panel-body">
     <p><%= @episode.subtitle %> </p>

@@ -9,6 +9,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # simple tags to include in podcast
+  def call(_, "tag", [:title,             _, []]), do: %{}
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
   def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
@@ -106,7 +107,8 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
-    :"managingeditor", :"ard:programInformation", :"dc:creator"
+    :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
+    :changefreq
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -115,7 +117,7 @@ defmodule Pan.Parser.Analyzer do
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
     :category, :"dc:creator", :comments, :"media:content", :"feedburner:origLink", :"itunes:image",
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block",
-    :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate",
+    :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment,
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
