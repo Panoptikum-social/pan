@@ -18,13 +18,13 @@ defmodule Pan.Podcast do
 
     belongs_to :owner, Pan.User
 
-    has_many :episodes, Pan.Episode
-    has_many :feeds, Pan.Feed
-    many_to_many :categories, Pan.Category, join_through: "categories_podcasts"
-    many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts"
-    many_to_many :listeners, Pan.User, join_through: "subscriptions"
-    many_to_many :followers, Pan.User, join_through: "followers_podcasts"
-    many_to_many :languages, Pan.Language, join_through: "languages_podcasts"
+    has_many :episodes, Pan.Episode, on_delete: :delete_all
+    has_many :feeds, Pan.Feed, on_delete: :delete_all
+    many_to_many :categories, Pan.Category, join_through: "categories_podcasts", on_delete: :delete_all
+    many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts", on_delete: :delete_all
+    many_to_many :listeners, Pan.User, join_through: "subscriptions", on_delete: :delete_all
+    many_to_many :followers, Pan.User, join_through: "followers_podcasts", on_delete: :delete_all
+    many_to_many :languages, Pan.Language, join_through: "languages_podcasts", on_delete: :delete_all
   end
 
   @required_fields ~w(title website description summary image_title image_url
@@ -42,6 +42,5 @@ defmodule Pan.Podcast do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:title)
-    |> unique_constraint(:website)
   end
 end

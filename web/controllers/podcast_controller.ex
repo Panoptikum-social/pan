@@ -58,6 +58,11 @@ defmodule Pan.PodcastController do
 
   def delete(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
+              |> Repo.preload(:episodes)
+
+    for episode <- podcast.episodes do
+      Repo.delete!(episode)
+    end
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).

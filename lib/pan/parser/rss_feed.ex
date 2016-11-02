@@ -13,8 +13,10 @@ defmodule Pan.Parser.RssFeed do
     IO.puts "\n\e[96m === URL: " <> url <> " ===\e[0m"
 
     feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-               |> Quinn.parse()
 
+    # IO.puts feed_map
+
+    feed_map = Quinn.parse(feed_map)
     map = %{feed: %{self_link_title: "Feed", self_link_url: url},
             title: Enum.at(String.split("http://www.derblindefleck.de/feed/", "/"), 2)}
           |> Iterator.parse(feed_map)
@@ -33,8 +35,7 @@ defmodule Pan.Parser.RssFeed do
   def download(url) do
     HTTPoison.get!(url,
                [{"User-Agent",
-                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"},
-                {"content-type", "text/html,application/xhtml+xml,application/xml;charset=UTF-8"}],
+                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
                [follow_redirect: true, connect_timeout: 20000, recv_timeout: 20000, timeout: 20000])
   end
 

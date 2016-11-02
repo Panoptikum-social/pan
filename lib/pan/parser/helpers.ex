@@ -34,8 +34,12 @@ defmodule Pan.Parser.Helpers do
 
 
   def fix_time(datetime) do
+    # add missing minutes
     datetime = Regex.replace(~r/ (\d\d):(\d\d) /, datetime, " \\1:\\2:00 ")
-    Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
+    # add missing leading 0 for hours
+    datetime = Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
+    # add missing dotw
+    datetime = Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
   end
 
   def replace_long_month_names(datetime) do

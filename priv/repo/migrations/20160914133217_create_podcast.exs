@@ -24,6 +24,5 @@ defmodule Pan.Repo.Migrations.CreatePodcast do
     create index(:podcasts, [:owner_id])
     create unique_index(:podcasts, [:title])
     create unique_index(:podcasts, [:website])
-
   end
 end

@@ -22,6 +22,5 @@ defmodule Pan.Repo.Migrations.CreateEpisode do
     end
     create index(:episodes, [:podcast_id])
     create unique_index(:episodes, [:guid])
-
   end
 end

@@ -121,7 +121,7 @@ defmodule Pan.Parser.Analyzer do
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
-    :"copyright", :"ard:programInformation", :"sc:chapters"
+    :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body"
   ], do: %{}
 
 

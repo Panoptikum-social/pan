@@ -25,9 +25,9 @@ defmodule Pan.Parser.Category do
           Repo.get(Pan.Category, id)
         end
 
-      Repo.preload(podcast, :categories)
-      |> Ecto.Changeset.change()
-      |> Ecto.Changeset.put_assoc(:categories, categories)
+      podcast = Repo.preload(podcast, :categories)
+      Ecto.Changeset.change(podcast)
+      |> Ecto.Changeset.put_assoc(:categories, podcast.categories ++ categories)
       |> Repo.update!
     end
   end

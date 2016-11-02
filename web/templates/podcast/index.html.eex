@@ -5,7 +5,6 @@
     <tr>
       <th>Title</th>
       <th>Website</th>
-      <th>Image</th>
       <th>Last build date</th>
       <th>Author</th>
 
@@ -17,7 +16,6 @@
     <tr>
       <td><%= podcast.title %></td>
       <td><a href="<%= podcast.website %>"><%= podcast.website %></a></td>
-      <td><img src="<%= podcast.image_url %>" alt="<%= podcast.image_title%>" width="50"/></td>
       <td><%= podcast.last_build_date %></td>
       <td><%= podcast.author %></td>
 
