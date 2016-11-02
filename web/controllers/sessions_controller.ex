@@ -13,7 +13,7 @@ defmodule Pan.SessionController do
         |> redirect(to: category_frontend_path(conn, :index))
       {:error, _reason, conn} ->
         conn
-        |> put_flash(:error, "Invalid username/passwerd combination!")
+        |> put_flash(:error, "Invalid username/password combination!")
         |> render("new.html")
     end
   end
