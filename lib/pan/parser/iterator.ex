@@ -59,9 +59,13 @@ defmodule Pan.Parser.Iterator do
 
 
   def parse(map, context, [head | tail]) do
-    podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
+    if is_map(head) do
+      podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
 
-    Helpers.deep_merge(map, podcast_map)
-    |> parse(context, tail)
+      Helpers.deep_merge(map, podcast_map)
+      |> parse(context, tail)
+    else
+      parse(map, context, tail)
+    end
   end
 end

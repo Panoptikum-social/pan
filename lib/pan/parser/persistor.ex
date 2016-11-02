@@ -26,5 +26,7 @@ defmodule Pan.Parser.Persistor do
     if map[:episodes] do
       Pan.Parser.Episode.persist_many(map[:episodes], podcast)
     end
+
+    podcast.id
   end
 end

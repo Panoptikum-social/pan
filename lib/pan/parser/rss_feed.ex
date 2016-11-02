@@ -18,12 +18,14 @@ defmodule Pan.Parser.RssFeed do
     map = %{feed: %{self_link_title: "Feed", self_link_url: url}}
           |> Iterator.parse(feed_map)
 
-    Persistor.call(map)
+    podcast_id = Persistor.call(map)
 
     next_page_url = map[:feed][:next_page_url]
     if next_page_url do
       download_and_parse(next_page_url)
     end
+
+    podcast_id
   end
 
 

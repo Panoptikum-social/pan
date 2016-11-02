@@ -43,7 +43,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # Description with fallback to itunes:subtitle
-def call(_, "tag", [:description, _, []]), do: %{}
+  def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "tag", [:description, _, [value]]), do: %{description: value}
 
   def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
@@ -93,103 +93,34 @@ def call(_, "tag", [:description, _, []]), do: %{}
 
 
 # tags to ignore
-  def call(map, "tag", [:"feedpress:locale", _, _]), do: map
-  def call(map, "tag", [:"fyyd:verify", _, _]), do: map
-  def call(map, "tag", [:"itunes:block", _, _]), do: map
-  def call(map, "tag", [:"itunes:keywords", _, _]), do: map
-  def call(map, "tag", [:"media:thumbnail", _, _]), do: map
-  def call(map, "tag", [:"media:keywords", _, _]), do: map
-  def call(map, "tag", [:"media:category", _, _]), do: map
-  def call(map, "tag", [:category, _, _]), do: map
-  def call(map, "tag", [:site, _, _]), do: map
-  def call(map, "tag", [:docs, _, _]), do: map
-  def call(map, "tag", [:"feedburner:info", _, _]), do: map
-  def call(map, "tag", [:"media:credit", _, _]), do: map
-  def call(map, "tag", [:"media:copyright", _, _]), do: map
-  def call(map, "tag", [:"media:rating", _, _]), do: map
-  def call(map, "tag", [:"media:description", _, _]), do: map
-  def call(map, "tag", [:"copyright", _, _]), do: map
-  def call(map, "tag", [:"feedburner:feedFlare", _, _]), do: map
-  def call(map, "tag", [:"geo:lat", _, _]), do: map
-  def call(map, "tag", [:"geo:long", _, _]), do: map
-  def call(map, "tag", [:"creativeCommons:license", _, _]), do: map
-  def call(map, "tag", [:"feedburner:emailServiceId", _, _]), do: map
-  def call(map, "tag", [:"feedburner:feedburnerHostname", _, _]), do: map
-  def call(map, "tag", [:managingEditor, _, _]), do: map
-  def call(map, "tag", [:pubDate, _, _]), do: map
-  def call(map, "tag", [:"sy:updatePeriod", _, _]), do: map
-  def call(map, "tag", [:"sy:updateFrequency", _, _]), do: map
-  def call(map, "tag", [:"wfw:commentRss", _, _]), do: map
-  def call(map, "tag", [:"rawvoice:subscribe", _, _]), do: map
-  def call(map, "tag", [:webMaster, _, _]), do: map
-  def call(map, "tag", [:ttl, _, _]), do: map
-  def call(map, "tag", [:"itunes:new-feed-url", _, _]), do: map
-  def call(map, "tag", [:"googleplay:description", _, _]), do: map
-  def call(map, "tag", [:"googleplay:email", _, _]), do: map
-  def call(map, "tag", [:"googleplay:category", _, _]), do: map
-  def call(map, "tag", [:"rawvoice:rating", _, _]), do: map
-  def call(map, "tag", [:"rawvoice:location", _, _]), do: map
-  def call(map, "tag", [:"rawvoice:frequency", _, _]), do: map
-  def call(map, "tag", [:"ppg:seriesDetails", _, _]), do: map
-  def call(map, "tag", [:"ppg:systemRef", _, _]), do: map
-  def call(map, "tag", [:"ppg:network", _, _]), do: map
-  def call(map, "tag", [:cloud, _, _]), do: map
-  def call(map, "tag", [:"googleplay:image", _, _]), do: map
-  def call(map, "tag", [:"googleplay:author", _, _]), do: map
-  def call(map, "tag", [:"googleplay:explicit", _, _]), do: map
-  def call(map, "tag", [:feed, _, _]), do: map
-  def call(map, "tag", [:webmaster, _, _]), do: map
-  def call(map, "tag", [:ilink, _, _]), do: map
-  def call(map, "tag", [:ffmpeg, _, _]), do: map
-  def call(map, "tag", [:domain, _, _]), do: map
-  def call(map, "tag", [:lame, _, _]), do: map
-  def call(map, "tag", [:broadcastlimit, _, _]), do: map
-  def call(map, "tag", [:"itunes:link", _, _]), do: map
-  def call(map, "tag", [:"channelExportDir", _, _]), do: map
-  def call(map, "tag", [:"atom:id", _, _]), do: map
-  def call(map, "tag", [:"openSearch:totalResults", _, _]), do: map
-  def call(map, "tag", [:"openSearch:startIndex", _, _]), do: map
-  def call(map, "tag", [:"openSearch:itemsPerPage", _, _]), do: map
-  def call(map, "tag", [:"html", _, _]), do: map
+  def call(map, "tag", [tag_atom, _, _]) when tag_atom in [
+    :"feedpress:locale", :"fyyd:verify", :"itunes:block", :"itunes:keywords", :"media:thumbnail",
+    :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info",
+    :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
+    :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license",
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :pubDate,
+    :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe",
+    :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
+    :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency",
+    :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image",
+    :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
+    :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id",
+    :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
+    :"managingeditor", :"ard:programInformation", :"dc:creator"
+  ], do: map
 
-
-  def call(_, "episode", [:"itunes:image", _, _]), do: %{}
-  def call(_, "episode", [:"itunes:keywords", _, _]), do: %{}
-  def call(_, "episode", [:"post-id", _, _]), do: %{}
-  def call(_, "episode", [:author, _, _]), do: %{}
-  def call(_, "episode", [:"itunes:explicit", _, _]), do: %{}
-  def call(_, "episode", [:category, _, _]), do: %{}
-  def call(_, "episode", [:"dc:creator", _, _]), do: %{}
-  def call(_, "episode", [:comments, _, _]), do: %{}
-  def call(_, "episode", [:"media:content", _, _]), do: %{}
-  def call(_, "episode", [:"feedburner:origLink", _, _]), do: %{}
-  def call(_, "episode", [:"feedburner:origEnclosureLink", _, _]), do: %{}
-  def call(_, "episode", [:"wfw:commentRss", _, _]), do: %{}
-  def call(_, "episode", [:"slash:comments", _, _]), do: %{}
-  def call(_, "episode", [:"itunes:block", _, _]), do: %{}
-  def call(_, "episode", [:"itunes:order", _, _]), do: %{}
-  def call(_, "episode", [:"ppg:canonical", _, _]), do: %{}
-  def call(_, "episode", [:"cba:productionDate", _, _]), do: %{}
-  def call(_, "episode", [:"cba:broadcastDate", _, _]), do: %{}
-  def call(_, "episode", [:"cba:containsCopyright", _, _]), do: %{}
-  def call(_, "episode", [:"media:thumbnail", _, _]), do: %{}
-  def call(_, "episode", [:"googleplay:description", _, _]), do: %{}
-  def call(_, "episode", [:"googleplay:image", _, _]), do: %{}
-  def call(_, "episode", [:"googleplay:explicit", _, _]), do: %{}
-  def call(_, "episode", [:"googleplay:block", _, _]), do: %{}
-  def call(_, "episode", [:image, _, _]), do: %{}
-  def call(_, "episode", [:source, _, _]), do: %{}
-  def call(_, "episode", [:"media:description", _, _]), do: %{}
-  def call(_, "episode", [:programid, _, _]), do: %{}
-  def call(_, "episode", [:poddid, _, _]), do: %{}
-  def call(_, "episode", [:"dcterms:modified", _, _]), do: %{}
-  def call(_, "episode", [:"dcterms:created", _, _]), do: %{}
-  def call(_, "episode", [:toPubDate, _, _]), do: %{}
-  def call(_, "episode", [:audioId, _, _]), do: %{}
-  def call(_, "episode", [:"atom:updated", _, _]), do: %{}
-  def call(_, "episode", [:"thr:total", _, _]), do: %{}
-  def call(_, "episode", [:"ard:visibility", _, _]), do: %{}
-  def call(_, "episode", [:"series:name", _, _]), do: %{}
+  def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
+    :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
+    :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
+    :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
+    :category, :"dc:creator", :comments, :"media:content", :"feedburner:origLink", :"itunes:image",
+    :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block",
+    :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate",
+    :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
+    :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
+    :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
+    :"copyright", :"ard:programInformation", :"sc:chapters"
+  ], do: %{}
 
 
 # We expect several language tags
@@ -307,19 +238,12 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, mode, [tag, attr, value]) do
     IO.puts "\n\e[96m === Tag unknown: ==="
     IO.puts "Mode: " <> mode
-    IO.puts "Tag: " <> to_string(tag)
+    IO.puts "Tag: " <> ~s/:"/ <> to_string(tag) <> ~s/"/
     IO.puts "Attr: "
     IO.inspect attr
     IO.puts "Value: "
     IO.inspect value
     IO.puts " =================\e[0m"
-
-    case mode do
-      "episode" ->
-        IO.puts ~s/def call(_, "episode", [:"/ <> to_string(tag) <> ~s/", _, _]), do: %{}/
-      "tag" ->
-        IO.puts ~s/def call(map, "tag", [:"/ <> to_string(tag) <> ~s/", _, _]), do: map/
-    end
     raise "Tag unknown"
   end
 end

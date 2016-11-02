@@ -2,7 +2,6 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <%= @podcast.title %>
-      <a class="pull-right" href="<%= @podcast.website %>"><%= @podcast.website %></a>
     </h3>
   </div>
   <div class="panel-body">
@@ -17,6 +16,8 @@
 
       <div class="col-md-5">
         <dl class="dl-horizontal">
+          <dt><label class="label label-danger">Website</label></dt>
+          <dd><%= link @podcast.website, to: @podcast.website %></dd>
           <dt><label class="label label-primary">Description</label></dt>
           <dd><%= @podcast.description %></dd>
           <dt><label class="label label-info">Author</label></dt>
@@ -37,6 +38,8 @@
           <dd><%= @podcast.owner.name %></dd>
           <dt><label class="label">Explicit</label></dt>
           <dd><%= @podcast.explicit %></dd>
+          <dt><label class="label label-info">Number of Episodes</label></dt>
+          <dd><%= Enum.count(@podcast.episodes) %></dd>
         </dl>
       </div>
 

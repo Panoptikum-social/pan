@@ -2,9 +2,9 @@ defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
 
   def find_or_create(episode_map, podcast_id) do
-    Map.put_new(episode_map, :guid, episode_map[:link])
+    episode_map = Map.put_new(episode_map, :guid, episode_map[:link])
 
-    case get_episode(episode_map[:guid], episode_map[:link]) do
+    case Repo.get_by(Pan.Episode, guid: episode_map[:guid]) do
       nil ->
         %Pan.Episode{podcast_id: podcast_id}
         |> Map.merge(episode_map)
@@ -13,9 +13,6 @@ defmodule Pan.Parser.Episode do
         {:ok, episode}
     end
   end
-
-  defp get_episode(nil,  link), do: Repo.get_by(Pan.Episode, link: link)
-  defp get_episode(guid, link), do: Repo.get_by(Pan.Episode, guid: guid, link: link)
 
 
   def persist_many(episodes_map, podcast) do
@@ -29,8 +26,10 @@ defmodule Pan.Parser.Episode do
         end
       end
 
-      for {_, enclosure_map} <- episode_map[:enclosures] do
-        Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+      if episode_map[:enclosures] do
+        for {_, enclosure_map} <- episode_map[:enclosures] do
+          Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+        end
       end
 
       Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)

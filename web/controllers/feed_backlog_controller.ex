@@ -10,10 +10,12 @@ defmodule Pan.FeedBacklogController do
     render(conn, "index.html", backlog_feeds: backlog_feeds, feedcount: feedcount)
   end
 
+
   def new(conn, _params) do
     changeset = FeedBacklog.changeset(%FeedBacklog{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"feed_backlog" => feed_backlog_params}) do
     changeset = FeedBacklog.changeset(%FeedBacklog{}, feed_backlog_params)
@@ -28,16 +30,19 @@ defmodule Pan.FeedBacklogController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
     render(conn, "show.html", feed_backlog: feed_backlog)
   end
+
 
   def edit(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
     changeset = FeedBacklog.changeset(feed_backlog)
     render(conn, "edit.html", feed_backlog: feed_backlog, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "feed_backlog" => feed_backlog_params}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
@@ -53,6 +58,7 @@ defmodule Pan.FeedBacklogController do
     end
   end
 
+
   def delete(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
 
@@ -65,12 +71,15 @@ defmodule Pan.FeedBacklogController do
     |> redirect(to: feed_backlog_path(conn, :index))
   end
 
+
   def import(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
-    Pan.Parser.RssFeed.download_and_parse(feed_backlog.url)
+    podcast_id = Pan.Parser.RssFeed.download_and_parse(feed_backlog.url)
+
+    podcast = Repo.get!(Pan.Podcast, podcast_id)
 
     conn
     |> put_flash(:info, "Feed imported successfully.")
-    |> redirect(to: feed_backlog_path(conn, :index))
+    |> redirect(to: podcast_frontend_path(conn, :show, podcast))
   end
 end

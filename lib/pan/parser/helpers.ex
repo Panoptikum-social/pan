@@ -12,8 +12,8 @@ defmodule Pan.Parser.Helpers do
 
 
   def to_ecto_datetime(feed_date) do
+    feed_date = Regex.replace(~r/ (\d\d):(\d\d) /, feed_date, " \\1:\\2:00 ")
     {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
-
     erltime = Timex.to_erl(datetime)
     # why can't I pipe here?
     Ecto.DateTime.from_erl(erltime)
@@ -55,6 +55,7 @@ defmodule Pan.Parser.Helpers do
 
 
   def remove_comments(xml) do
-    Regex.replace(~r/<!--.*-->/r, xml, "")
+    # r ... non-greedy, s ... . matches newlines as well
+    Regex.replace(~r/<!--.*-->/rs, xml, "")
   end
 end
