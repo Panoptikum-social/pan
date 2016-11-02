@@ -4,30 +4,61 @@
   <%= @epicount %> Episodes and counting...
 </em></p>
 
-<table class="table table-condensed">
-  <tbody>
-    <%= for {category, counter} <- Enum.with_index(@categories) do %>
-      <tr>
-        <td class="text-right" style="border: none !important;">
-          <span class="btn btn-xs <%= btn_cycle(counter) %>">
-          <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
-                   to: category_frontend_path(@conn, :show, category),
-                   style: "color: #" <> color_cycle(counter) %>
-          </span>
-        </td>
-
-        <td style="border: none !important;">
-          <%= if category.children != [] do %>
-            <%= for subcategory <- category.children do %>
-              <span class="btn btn-xs btn-normal">
-                <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                         to: category_frontend_path(@conn, :show, subcategory),
-                         style: "color: #fff" %>
+<div class="row">
+  <div class="col-md-9">
+    <table class="table table-condensed">
+      <tbody>
+        <%= for {category, counter} <- Enum.with_index(@categories) do %>
+          <tr>
+            <td class="text-right" style="border: none !important;">
+              <span class="btn btn-xs <%= btn_cycle(counter) %>">
+              <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
+                       to: category_frontend_path(@conn, :show, category),
+                       style: "color: #" <> color_cycle(counter) %>
               </span>
-            <% end %>
+            </td>
+
+            <td style="border: none !important;">
+              <%= if category.children != [] do %>
+                <%= for subcategory <- category.children do %>
+                  <span class="btn btn-xs btn-normal">
+                    <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                             to: category_frontend_path(@conn, :show, subcategory),
+                             style: "color: #fff" %>
+                  </span>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col-md-3">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">Latest Podcasts</h3>
+      </div>
+      <div class="panel-body">
+        <ol>
+          <%= for {podcast, counter} <- Enum.with_index(latest_podcasts()) do %>
+            <li>
+              <p>
+                <%= link [fa_icon("microphone"), " ", podcast.title],
+                         to: podcast_frontend_path(@conn, :show, podcast),
+                         class: "btn btn-default btn-xs",
+                         style: "color: #000" %><br/>
+                <span class="pull-right">
+                  <%= podcast.author %> /
+                  <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %>
+                </span> <br/>
+                <small><%= C.String.truncate(podcast.description, 150) %></small>
+              </p>
+            </li>
           <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

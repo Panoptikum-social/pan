@@ -189,6 +189,7 @@ def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "episode", [:"atom:updated", _, _]), do: %{}
   def call(_, "episode", [:"thr:total", _, _]), do: %{}
   def call(_, "episode", [:"ard:visibility", _, _]), do: %{}
+  def call(_, "episode", [:"series:name", _, _]), do: %{}
 
 
 # We expect several language tags
