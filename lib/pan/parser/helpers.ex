@@ -38,7 +38,7 @@ defmodule Pan.Parser.Helpers do
     datetime = Regex.replace(~r/ (\d\d):(\d\d) /, datetime, " \\1:\\2:00 ")
     # add missing leading 0 for hours
     datetime = Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
-    # add missing dotw
+    # add missing day of the week
     datetime = Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
   end
 

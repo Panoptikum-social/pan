@@ -18,7 +18,7 @@ defmodule Pan.Parser.RssFeed do
 
     feed_map = Quinn.parse(feed_map)
     map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-            title: Enum.at(String.split("http://www.derblindefleck.de/feed/", "/"), 2)}
+            title: Enum.at(String.split(url, "/"), 2)}
           |> Iterator.parse(feed_map)
 
     podcast_id = Persistor.call(map)

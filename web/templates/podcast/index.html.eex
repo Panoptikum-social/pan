@@ -5,6 +5,7 @@
     <tr>
       <th>Title</th>
       <th>Website</th>
+      <th># Episodes</th>
       <th>Last build date</th>
       <th>Author</th>
 
@@ -16,6 +17,7 @@
     <tr>
       <td><%= podcast.title %></td>
       <td><a href="<%= podcast.website %>"><%= podcast.website %></a></td>
+      <td><%= Enum.count(podcast.episodes) %>
       <td><%= podcast.last_build_date %></td>
       <td><%= podcast.author %></td>
 
