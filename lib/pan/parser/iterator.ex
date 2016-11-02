@@ -27,6 +27,7 @@ defmodule Pan.Parser.Iterator do
 
 
   def parse(map, "episode", [head | tail], guid) do
+    IO.inspect head
     episode_map = Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]])
 
     Helpers.deep_merge(map, %{episodes: %{String.to_atom(guid) => episode_map}})
@@ -60,11 +61,13 @@ defmodule Pan.Parser.Iterator do
 
   def parse(map, context, [head | tail]) do
     if is_map(head) do
+      IO.inspect head
       podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
 
       Helpers.deep_merge(map, podcast_map)
       |> parse(context, tail)
     else
+      IO.puts "!!!!!!!!!!!!!!!!!!!"
       parse(map, context, tail)
     end
   end

@@ -180,17 +180,17 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, _]), do: %{}
   def call(_, "episode", [:description,       _, []]), do: %{}
-  def call(_, "episode", [:description,       _, [value]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:description,       _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
-  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes:   HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
-  def call(_, "episode", [:"itunes:summary",  _, [value]]), do: %{summary:     HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle:    String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:author",   _, []]), do: %{}
-  def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author:      String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration:    value}
+  def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
     %{publishing_date: Helpers.to_ecto_datetime(value)}

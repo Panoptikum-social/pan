@@ -13,10 +13,37 @@ defmodule Pan.Parser.Helpers do
 
   def to_ecto_datetime(feed_date) do
     feed_date = Regex.replace(~r/ (\d\d):(\d\d) /, feed_date, " \\1:\\2:00 ")
-    {:ok, datetime} = Timex.parse(feed_date, "{RFC1123}")
+                |> replace_long_month_names()
+
+    datetime =
+      case Timex.parse(feed_date, "{RFC1123}") do
+        {:ok, datetime} ->
+          datetime
+        {:error, message} ->
+           IO.puts message
+           IO.puts feed_date
+           IO.puts "==============="
+           raise "Error in date parsing"
+      end
     erltime = Timex.to_erl(datetime)
     # why can't I pipe here?
     Ecto.DateTime.from_erl(erltime)
+  end
+
+
+  def replace_long_month_names(datetime) do
+    datetime
+    |> String.replace("January",   "Jan")
+    |> String.replace("February",  "Feb")
+    |> String.replace("March",     "Mar")
+    |> String.replace("April",     "Apr")
+    |> String.replace("June",      "Jun")
+    |> String.replace("July",      "Jul")
+    |> String.replace("August",    "Aug")
+    |> String.replace("September", "Sep")
+    |> String.replace("October",   "Oct")
+    |> String.replace("November",  "Nov")
+    |> String.replace("December",  "Dec")
   end
 
 
@@ -55,7 +82,7 @@ defmodule Pan.Parser.Helpers do
 
 
   def remove_comments(xml) do
-    # r ... non-greedy, s ... . matches newlines as well
-    Regex.replace(~r/<!--.*-->/rs, xml, "")
+    # U ... non-greedy, s ... . matches newlines as well
+    Regex.replace(~r/<!--.*-->/Us, xml, "")
   end
 end
