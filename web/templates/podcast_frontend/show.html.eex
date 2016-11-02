@@ -114,7 +114,7 @@
           <dt><label class="label label-info">Publishing date</label></dt>
           <dd><%= episode.publishing_date %></dd>
           <dt><label class="label label-danger">Link</label></dt>
-          <dd><a href="<%= episode.link %>"><%= episode.link %></a></dd>
+          <dd><a href="<%= episode.link %>"><%= C.String.truncate episode.link, 80 %></a></dd>
           <dt><label class="label label-primary">Deep link</label></dt>
           <dd><a href="<%= episode.deep_link %>"><%= episode.deep_link %></a></dd>
         </dl>
