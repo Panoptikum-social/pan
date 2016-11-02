@@ -22,8 +22,16 @@ defmodule Pan.CategoryFrontendView do
 
   def latest_podcasts do
     Repo.all(from p in Pan.Podcast, order_by: [desc: :inserted_at],
-                                               limit: 5)
+                                    limit: 5)
   end
+
+
+  def latest_episodes do
+    Repo.all(from e in Pan.Episode, order_by: [desc: :publishing_date],
+                                    limit: 5)
+    |> Repo.preload(:podcast)
+  end
+
 
   def list_group_item_cycle(counter) do
     Enum.at(["list-group-item-info", "list-group-item-danger",

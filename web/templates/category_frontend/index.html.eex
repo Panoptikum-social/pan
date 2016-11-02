@@ -5,7 +5,7 @@
 </em></p>
 
 <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-6">
     <table class="table table-condensed">
       <tbody>
         <%= for {category, counter} <- Enum.with_index(@categories) do %>
@@ -37,28 +37,51 @@
 
   <div class="col-md-3">
     <div class="panel panel-success">
-      <div class="panel-heading">
-        <h3 class="panel-title">Latest Podcasts</h3>
-      </div>
-      <div class="panel-body">
-        <ol>
-          <%= for {podcast, counter} <- Enum.with_index(latest_podcasts()) do %>
-            <li>
-              <p>
-                <%= link [fa_icon("microphone"), " ", podcast.title],
-                         to: podcast_frontend_path(@conn, :show, podcast),
-                         class: "btn btn-default btn-xs",
-                         style: "color: #000" %><br/>
-                <span class="pull-right">
-                  <%= podcast.author %> /
-                  <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %>
-                </span> <br/>
-                <small><%= C.String.truncate(podcast.description, 150) %></small>
-              </p>
-            </li>
-          <% end %>
-        </ol>
-      </div>
+      <div class="panel-heading">Latest Podcasts</div>
+      <ul class="list-group">
+        <%= for {podcast, counter} <- Enum.with_index(latest_podcasts()) do %>
+          <li class="list-group-item">
+            <%= link [fa_icon("microphone"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %>
+            <hr style="margin-top: -10px; visibility:hidden;" />
+            <%= fa_icon("user") %> <%= podcast.author %></br>
+            <%= fa_icon("calendar") %> <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %><br/>
+            <small><%= fa_icon("image") %> <%= C.String.truncate(podcast.description, 150) %></small>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="panel panel-success">
+      <div class="panel-heading">Latest Episodes</div>
+      <ul class="list-group">
+
+        <%= for {episode, counter} <- Enum.with_index(latest_episodes()) do %>
+          <li class="list-group-item">
+            <%= link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
+                        to: episode_frontend_path(@conn, :show, episode),
+                        class: "btn btn-primary btn-xs" %>
+            <hr style="margin-top: -10px; visibility:hidden;" />
+            <%= link [fa_icon("microphone"), " ", episode.podcast.title],
+                        to: podcast_frontend_path(@conn, :show, episode.podcast),
+                        class: "btn btn-default btn-xs",
+                        style: "color: #000;" %>
+            <hr style="margin-top: -10px; visibility:hidden;" />
+            <%= fa_icon("calendar") %> <%= Ecto.DateTime.to_date(episode.publishing_date) %><br/>
+            <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
+            <%= if episode.author do %>
+              <%= fa_icon("user") %> <%= episode.author %><br/>
+            <%= end %>
+            <%= if episode.subtitle do %>
+              <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
+            <%= end %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
 </div>
