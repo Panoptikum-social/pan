@@ -1,7 +1,15 @@
 <div class="panel panel-success">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <%= @category.title %>
+      <%= link [fa_icon("folder-o"), " ", "Home"],
+               to: category_frontend_path(@conn, :index) %>
+      /
+      <%= if @category.parent do %>
+        <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+                 to: category_frontend_path(@conn, :show, @category.parent) %>
+        /
+      <% end %>
+      <%= fa_icon("folder-open-o") %> <%= @category.title %>
     </h3>
   </div>
   <div class="panel-body" style="line-height: 2.5;">

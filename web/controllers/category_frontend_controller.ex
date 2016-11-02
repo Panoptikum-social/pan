@@ -6,8 +6,9 @@ defmodule Pan.CategoryFrontendController do
   alias Pan.Podcast
 
   def index(conn, _params) do
-    categories = Repo.all(from category in Category, where: is_nil(category.parent_id))
-                 |> Repo.preload([:podcasts, :children])
+    categories = Repo.all(from category in Category, order_by: :title,
+                                                     where: is_nil(category.parent_id))
+                 |> Repo.preload(children: from(c in Category, order_by: c.title))
 
     catcount = Repo.aggregate(Category, :count, :id)
     podcount = Repo.aggregate(Podcast, :count, :id)
@@ -19,9 +20,12 @@ defmodule Pan.CategoryFrontendController do
                                epicount: epicount)
   end
 
+
   def show(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
-               |> Repo.preload([:podcasts, :children])
+               |> Repo.preload([podcasts: from(p in Podcast, order_by: p.title),
+                                children: from(c in Category, order_by: c.title)])
+               |> Repo.preload(:parent)
     render(conn, "show.html", category: category)
   end
 end
