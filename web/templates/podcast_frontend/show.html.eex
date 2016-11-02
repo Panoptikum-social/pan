@@ -45,7 +45,7 @@
 
       <div class="col-md-2">
         <div id="qrcode"></div>
-        <p class="small text-right">scan to subscribe</p>
+        <p class="small text-left">scan to subscribe</p>
         <script type="text/javascript">
           new QRCode(document.getElementById("qrcode"), {
                      text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
