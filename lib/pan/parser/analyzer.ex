@@ -12,6 +12,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:title,             _, []]), do: %{}
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
   def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
+  def call(_, "tag", [:author,            _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
   def call(_, "tag", [:"itunes:summary",  _, [value]]), do: %{summary: value}
@@ -96,7 +97,7 @@ defmodule Pan.Parser.Analyzer do
 # tags to ignore
   def call(map, "tag", [tag_atom, _, _]) when tag_atom in [
     :"feedpress:locale", :"fyyd:verify", :"itunes:block", :"itunes:keywords", :"media:thumbnail",
-    :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info",
+    :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :pubDate,
@@ -108,7 +109,7 @@ defmodule Pan.Parser.Analyzer do
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
-    :changefreq
+    :changefreq, :"dc:title"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -209,7 +210,10 @@ defmodule Pan.Parser.Analyzer do
 
 # Enclosures a.k.a. Audiofiles
   def call(_, "episode", [:enclosure, attr, _]) do
-    enclosure_map = %{url: attr[:url], length: attr[:length], type: attr[:type], guid: attr[:"bitlove:guid"]}
+    enclosure_map = %{url:    String.slice(attr[:url], 0, 255),
+                      length: String.slice(attr[:length], 0, 255),
+                      type:   String.slice(attr[:type], 0, 255),
+                      guid:   String.slice(attr[:"bitlove:guid"], 0, 255)}
     uuid = String.to_atom(UUID.uuid1())
     %{enclosures: %{uuid => enclosure_map}}
   end
