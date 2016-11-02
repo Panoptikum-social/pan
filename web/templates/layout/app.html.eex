@@ -33,7 +33,7 @@
               <span class="icon-bar"></span>
             </button>
             <a href="/" class="navbar-brand"><img src="/images/panoptikum.io.png" width="40" style="margin-top: -10px;"></a>
-            <a class="navbar-brand" href="/">Panoptikum.io</a>
+            <a class="navbar-brand" href="https://panoptikum.io">Panoptikum.io</a>
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
@@ -48,6 +48,22 @@
                     @<%= @current_user.username %>
                   </p>
                 </li>
+
+                <%= if @current_user.admin do %>
+                  <li role="admin" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                      Administration <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><%= link "Categories",   to: category_path(@conn, :index) %></li>
+                      <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
+                      <li><%= link "Languages",    to: language_path(@conn, :index) %></li>
+                      <li><%= link "Podcasts",     to: podcast_path(@conn, :index) %></li>
+                      <li><%= link "Users",        to: user_path(@conn, :index) %></li>
+                    </ul>
+                  </li>
+                <% end %>
+
                 <li>
                   <span class="navbar-text">
                     <%= link "Log out", to: session_path(@conn, :delete, @current_user),
