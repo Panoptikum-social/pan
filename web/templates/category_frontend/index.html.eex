@@ -39,7 +39,7 @@
     <div class="panel panel-info">
       <div class="panel-heading">Latest Podcasts</div>
       <ul class="list-group">
-        <%= for {podcast, counter} <- Enum.with_index(latest_podcasts()) do %>
+        <%= for podcast <- latest_podcasts do %>
           <li class="list-group-item">
             <%= link [fa_icon("microphone"), " ", C.String.truncate(podcast.title, 50)],
                      to: podcast_frontend_path(@conn, :show, podcast),
@@ -62,7 +62,7 @@
       <div class="panel-heading">Latest Episodes</div>
       <ul class="list-group">
 
-        <%= for {episode, counter} <- Enum.with_index(latest_episodes()) do %>
+        <%= for episode <- latest_episodes do %>
           <li class="list-group-item">
             <%= link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
                         to: episode_frontend_path(@conn, :show, episode),

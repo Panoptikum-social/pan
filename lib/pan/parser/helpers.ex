@@ -39,7 +39,7 @@ defmodule Pan.Parser.Helpers do
     # add missing leading 0 for hours
     datetime = Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
     # add missing day of the week
-    datetime = Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
+    Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
   end
 
   def replace_long_month_names(datetime) do
