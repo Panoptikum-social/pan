@@ -16,8 +16,8 @@ defmodule Pan.Mixfile do
   def application do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
-                    :gettext, :phoenix_ecto, :postgrex,
-                    :comeonin, :sweet_xml, :timex, :httpoison,
+                    :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
+                    :comeonin, :sweet_xml, :timex,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :crutches ]]
   end
@@ -39,6 +39,7 @@ defmodule Pan.Mixfile do
      {:timex, "~> 3.0"},
      {:font_awesome_phoenix, "~> 0.1"},
      {:httpoison, "~> 0.9.0"},
+     {:httpotion, "~> 3.0.2"},
      {:exrm, "~> 1.0" },
      {:quinn, "~> 1.0.0"},
      {:uuid, "~> 1.1"},

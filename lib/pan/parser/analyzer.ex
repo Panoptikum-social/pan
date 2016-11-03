@@ -25,6 +25,7 @@ defmodule Pan.Parser.Analyzer do
 
 # image with fallback to itunes:image
   def call(map, "tag", [:image, _, value]), do: Iterator.parse(map, "image", value)
+  def call(_, "image", [:title, _, _]), do: %{}
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: value}
   def call(map, "image", [:link,        _, _]), do: map
@@ -66,6 +67,7 @@ defmodule Pan.Parser.Analyzer do
                             self_link_url: attr[:href]}}
       "next"      -> %{feed: %{ next_page_url: attr[:href]}}
       "prev"      -> %{feed: %{ prev_page_url: attr[:href]}}
+      "prev-archive" -> %{feed: %{ prev_page_url: attr[:href]}}
       "previous"  -> %{feed: %{ prev_page_url: attr[:href]}}
       "first"     -> %{feed: %{ first_page_url: attr[:href]}}
       "last"      -> %{feed: %{ last_page_url: attr[:href]}}
@@ -122,12 +124,14 @@ defmodule Pan.Parser.Analyzer do
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
-    :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body"
+    :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link"
   ], do: %{}
 
 
 # We expect several language tags
-  def call(_, "tag", [:language, _, [value]]) do
+  def call(_, "tag", [:language, _, _]), do: %{}
+  def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [:language, :"dc:language"] do
     uuid = String.to_atom(UUID.uuid1())
     %{languages: %{uuid => %{shortcode: value}}}
   end
@@ -220,11 +224,11 @@ defmodule Pan.Parser.Analyzer do
 
 
 # Chapters
-  def call(_, "episode", [:"psc:chapters", _, value]) do
+  def call(_, "episode", [tag_atom, _, value]) when tag_atom in [:"psc:chapters", :chapters] do
     Iterator.parse(%{}, "chapter", value)
   end
 
-  def call("chapter", [:"psc:chapter", attr, _]) do
+  def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
     chapter_uuid = String.to_atom(UUID.uuid1())
     %{chapter_uuid => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
   end

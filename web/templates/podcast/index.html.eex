@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Title</th>
       <th>Website</th>
       <th># Episodes</th>
@@ -15,6 +16,7 @@
   <tbody>
 <%= for podcast <- @podcasts do %>
     <tr>
+      <td><%= podcast.id %></td>
       <td><%= podcast.title %></td>
       <td><a href="<%= podcast.website %>"><%= podcast.website %></a></td>
       <td><%= Enum.count(podcast.episodes) %>

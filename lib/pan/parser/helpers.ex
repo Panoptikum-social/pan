@@ -53,6 +53,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
     |> String.replace("October",   "Oct")
+    |> String.replace(" Okt ",   " Oct ")
     |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
   end
@@ -60,8 +61,9 @@ defmodule Pan.Parser.Helpers do
   def replace_long_week_days(datetime) do
     datetime
     |> String.replace("Thurs",   "Thu")
+    |> String.replace("Mo,",   "Mon,")
+    |> String.replace("ٍ", "")
   end
-
 
   def fix_missing_xml_tag(xml) do
     xml =
@@ -100,5 +102,9 @@ defmodule Pan.Parser.Helpers do
   def remove_comments(xml) do
     # U ... non-greedy, s ... . matches newlines as well
     Regex.replace(~r/<!--.*-->/Us, xml, "")
+  end
+
+  def remove_extra_angle_brackets(xml) do
+    Regex.replace(~r/>>/Us, xml, ">")
   end
 end

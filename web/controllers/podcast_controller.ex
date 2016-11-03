@@ -6,7 +6,7 @@ defmodule Pan.PodcastController do
   plug :scrub_params, "podcast" when action in [:create, :update]
 
   def index(conn, _params) do
-    podcasts = Repo.all(Podcast)
+    podcasts = Repo.all(from p in Podcast, order_by: [desc: :id])
                |> Repo.preload(:episodes)
     render(conn, "index.html", podcasts: podcasts)
   end

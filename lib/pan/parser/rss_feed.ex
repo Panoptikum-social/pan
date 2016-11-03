@@ -8,13 +8,14 @@ defmodule Pan.Parser.RssFeed do
 
   def download_and_parse(url) do
     url = String.strip(url)
-    %HTTPoison.Response{body: feed_xml} = download(url)
+    %HTTPotion.Response{body: feed_xml} = download(url)
 
     IO.puts "\n\e[96m === URL: " <> url <> " ===\e[0m"
 
     feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+               |> Pan.Parser.Helpers.remove_extra_angle_brackets()
 
-    # IO.puts feed_map
+#    IO.puts feed_map
 
     feed_map = Quinn.parse(feed_map)
     map = %{feed: %{self_link_title: "Feed", self_link_url: url},
@@ -33,10 +34,9 @@ defmodule Pan.Parser.RssFeed do
 
 
   def download(url) do
-    HTTPoison.get!(url,
-               [{"User-Agent",
-                 "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
-               [follow_redirect: true, connect_timeout: 20000, recv_timeout: 20000, timeout: 20000])
+    HTTPotion.get url,
+      [timeout: 20000, follow_redirects: true]
+       #headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
   end
 
 # Convenience function for runtime measurement

@@ -8,14 +8,7 @@ defmodule Pan.Parser.Persistor do
 
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-    {:ok ,owner }  =
-      case map[:owner] do
-        nil ->
-          {:ok, Pan.Repo.get_by(Pan.User, username: "unknown")}
-        _ ->
-          Pan.Parser.User.find_or_create(map[:owner])
-      end
-
+    {:ok ,owner }  = Pan.Parser.User.find_or_create(map[:owner])
     {:ok, podcast} = Pan.Parser.Podcast.find_or_create(podcast_map, owner.id)
     {:ok, feed}    = Pan.Parser.Feed.find_or_create(feed_map, podcast.id)
 

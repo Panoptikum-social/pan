@@ -43,4 +43,10 @@ defmodule Pan.Parser.FeedBacklog do
       :error, _ -> nil
     end
   end
+
+  def delete_duplicates() do
+    for backlogfeed <- Repo.all(Pan.FeedBacklog) do
+      if Repo.get_by(Pan.Feed, self_link_url: backlogfeed.url), do: Repo.delete!(backlogfeed)
+    end
+  end
 end

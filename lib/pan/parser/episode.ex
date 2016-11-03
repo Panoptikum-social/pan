@@ -2,8 +2,6 @@ defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
 
   def find_or_create(episode_map, podcast_id) do
-    episode_map = Map.put_new(episode_map, :guid, episode_map[:link])
-
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
         %Pan.Episode{podcast_id: podcast_id}
@@ -17,7 +15,12 @@ defmodule Pan.Parser.Episode do
 
   def persist_many(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map do
+      first_enclosure = episode_map[:enclosures] |> Map.to_list |> List.first |> elem(1)
+      fallback_url = if episode_map[:link], do: episode_map[:link], else: first_enclosure[:url]
+
       plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
+                          |> Map.put_new(:guid, fallback_url)
+
       {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
 
       if episode_map[:chapters] do
