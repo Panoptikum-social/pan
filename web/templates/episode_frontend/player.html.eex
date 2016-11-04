@@ -14,5 +14,5 @@
 </audio>
 
 <script>
-  $('audio').podlovewebplayer(<%= episodestruct(@episode) %>)
+  $('audio').podlovewebplayer(<%= podlove_episodestruct(@episode) %>)
 </script>

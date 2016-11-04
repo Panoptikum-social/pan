@@ -8,8 +8,10 @@ defmodule Pan.EpisodeFrontendController do
     episode = Repo.get!(Episode, id)
     episode = Repo.preload(episode, [:podcast, :enclosures, :contributors])
     episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
-    render(conn, "show.html", episode: episode)
+    # options for player: "podlove", "podigee"
+    render(conn, "show.html", episode: episode, player: "podigee")
   end
+
 
   def player(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
@@ -19,6 +21,7 @@ defmodule Pan.EpisodeFrontendController do
     |> put_layout("minimal.html")
     |> render("player.html", episode: episode )
   end
+
 
   def latest(conn, _params) do
     episodes = Repo.all(from e in Episode, order_by: [desc: :publishing_date],

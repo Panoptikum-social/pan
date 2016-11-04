@@ -32,12 +32,24 @@
     <p><%= @episode.summary %></p>
 
     <h3>Player</h3>
-    <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
-    <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
-      <source src="audio.m4a" type="audio/m4a">
-    </audio>
-    <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
-    <script>$('audio').podlovewebplayer();</script>
+
+    <%= case @player do %>
+      <%= "podlove" -> %>
+        <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+        <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
+          <source src="audio.m4a" type="audio/m4a">
+        </audio>
+        <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
+        <script>$('audio').podlovewebplayer();</script>
+
+      <%= "podigee" -> %>
+        <script>
+          window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
+        </script>
+        <script class="podigee-podcast-player"
+                src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js"
+                data-configuration="playerConfiguration"></script>
+    <% end %>
 
     <div class="row">
       <div class="col-md-4">
@@ -85,6 +97,5 @@
 
     <h3>Shownotes</h3>
     <p><%= raw(@episode.shownotes) %></p>
-
   </div>
 </div>
