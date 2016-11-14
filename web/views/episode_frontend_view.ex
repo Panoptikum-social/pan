@@ -32,7 +32,7 @@ defmodule Pan.EpisodeFrontendView do
   def podigee_episodestruct(episode) do
     %{options: %{theme: "default",
                  startPanel: "ChapterMarks"},
-      extensions: %{Chaptermarks: %{},
+      extensions: %{ChapterMarks: %{},
                     EpisodeInfo: %{},
                     Playlist: %{}},
       title: episode.podcast.title,

@@ -33,6 +33,7 @@ defmodule Pan.Router do
     get "/my_account", UserController, :my_show
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
+    post "/search/", SearchFrontendController, :new
   end
 
   scope "/admin", Pan do
