@@ -2,7 +2,7 @@ defmodule Pan.SearchFrontendView do
   use Pan.Web, :view
 
   def highlight(result, searchstring) do
-    [left, right] =  String.split(String.downcase(result), String.downcase(searchstring), parts: 2)
+    [left, right] =  String.split(result, searchstring, parts: 2)
 
     left = left
            |> HtmlSanitizeEx.strip_tags
