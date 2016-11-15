@@ -1,4 +1,4 @@
-<div class="panel panel-success">
+<div class="panel panel-danger">
   <div class="panel-heading">Categories</div>
   <ul class="list-group">
 
@@ -13,7 +13,7 @@
   </ul>
 </div>
 
-<div class="panel panel-info">
+<div class="panel panel-primary">
   <div class="panel-heading">Podcasts</div>
   <ul class="list-group">
 

@@ -1,73 +1,76 @@
 defmodule Pan.SearchFrontendController do
   use Pan.Web, :controller
+  alias Pan.Podcast
+  alias Pan.Episode
+  alias Pan.Category
 
   def new(conn, %{"search" => search}) do
     searchstring = search["searchstring"]
 
-    categories = Repo.all(from category in Pan.Category,
-                          where: like(category.title, ^"%#{searchstring}%"))
+    categories = Repo.all(from c in Category,
+                          where: ilike(c.title, ^"%#{searchstring}%"))
 
-    podcasts = Repo.all(from podcast in Pan.Podcast,
-                        select: %{id: podcast.id,
-                                  title: podcast.title,
+    podcasts = Repo.all(from p in Podcast,
+                        select: %{id: p.id,
+                                  title: p.title,
                                   type: "Title",
-                                  match: podcast.title},
-                        where: like(podcast.title, ^"%#{searchstring}%"))
-            ++ Repo.all(from podcast in Pan.Podcast,
-                        select: %{id: podcast.id,
-                                  title: podcast.title,
+                                  match: p.title},
+                        where: ilike(p.title, ^"%#{searchstring}%"))
+            ++ Repo.all(from p in Podcast,
+                        select: %{id: p.id,
+                                  title: p.title,
                                   type: "Description",
-                                  match: podcast.description},
-                        where: like(podcast.description, ^"%#{searchstring}%"))
-            ++ Repo.all(from podcast in Pan.Podcast,
-                        select: %{id: podcast.id,
-                                  title: podcast.title,
+                                  match: p.description},
+                        where: ilike(p.description, ^"%#{searchstring}%"))
+            ++ Repo.all(from p in Podcast,
+                        select: %{id: p.id,
+                                  title: p.title,
                                   type: "Summary",
-                                  match: podcast.summary},
-                        where: like(podcast.summary, ^"%#{searchstring}%"))
-            ++ Repo.all(from podcast in Pan.Podcast,
-                        select: %{id: podcast.id,
-                                  title: podcast.title,
+                                  match: p.summary},
+                        where: ilike(p.summary, ^"%#{searchstring}%"))
+            ++ Repo.all(from p in Podcast,
+                        select: %{id: p.id,
+                                  title: p.title,
                                   type: "Author",
-                                  match: podcast.author},
-                        where: like(podcast.author, ^"%#{searchstring}%"))
+                                  match: p.author},
+                        where: ilike(p.author, ^"%#{searchstring}%"))
 
-    episodes = Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+    episodes = Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Title",
-                                  match: episode.title},
-                        where: like(episode.title, ^"%#{searchstring}%"))
-            ++ Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+                                  match: e.title},
+                        where: ilike(e.title, ^"%#{searchstring}%"))
+            ++ Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Subtitle",
-                                  match: episode.subtitle},
-                        where: like(episode.subtitle, ^"%#{searchstring}%"))
-            ++ Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+                                  match: e.subtitle},
+                        where: ilike(e.subtitle, ^"%#{searchstring}%"))
+            ++ Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Description",
-                                  match: episode.description},
-                        where: like(episode.description, ^"%#{searchstring}%"))
-            ++ Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+                                  match: e.description},
+                        where: ilike(e.description, ^"%#{searchstring}%"))
+            ++ Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Summary",
-                                  match: episode.summary},
-                        where: like(episode.summary, ^"%#{searchstring}%"))
-            ++ Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+                                  match: e.summary},
+                        where: ilike(e.summary, ^"%#{searchstring}%"))
+            ++ Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Author",
-                                  match: episode.author},
-                        where: like(episode.author, ^"%#{searchstring}%"))
-            ++ Repo.all(from episode in Pan.Episode,
-                        select: %{id: episode.id,
-                                  title: episode.title,
+                                  match: e.author},
+                        where: ilike(e.author, ^"%#{searchstring}%"))
+            ++ Repo.all(from e in Episode,
+                        select: %{id: e.id,
+                                  title: e.title,
                                   type: "Shownotes",
-                                  match: episode.shownotes},
-                        where: like(episode.shownotes, ^"%#{searchstring}%"))
+                                  match: e.shownotes},
+                        where: ilike(e.shownotes, ^"%#{searchstring}%"))
 
     render(conn, "new.html", searchstring: searchstring,
                              categories: categories,
