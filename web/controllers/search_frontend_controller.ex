@@ -40,37 +40,43 @@ defmodule Pan.SearchFrontendController do
                                   title: e.title,
                                   type: "Title",
                                   match: e.title},
-                        where: ilike(e.title, ^"%#{searchstring}%"))
+                        where: ilike(e.title, ^"%#{searchstring}%"),
+                        limit: 100)
             ++ Repo.all(from e in Episode,
                         select: %{id: e.id,
                                   title: e.title,
                                   type: "Subtitle",
                                   match: e.subtitle},
-                        where: ilike(e.subtitle, ^"%#{searchstring}%"))
+                        where: ilike(e.subtitle, ^"%#{searchstring}%"),
+                        limit: 100)
             ++ Repo.all(from e in Episode,
                         select: %{id: e.id,
                                   title: e.title,
                                   type: "Description",
                                   match: e.description},
-                        where: ilike(e.description, ^"%#{searchstring}%"))
+                        where: ilike(e.description, ^"%#{searchstring}%"),
+                        limit: 100)
             ++ Repo.all(from e in Episode,
                         select: %{id: e.id,
                                   title: e.title,
                                   type: "Summary",
                                   match: e.summary},
-                        where: ilike(e.summary, ^"%#{searchstring}%"))
+                        where: ilike(e.summary, ^"%#{searchstring}%"),
+                        limit: 100)
             ++ Repo.all(from e in Episode,
                         select: %{id: e.id,
                                   title: e.title,
                                   type: "Author",
                                   match: e.author},
-                        where: ilike(e.author, ^"%#{searchstring}%"))
+                        where: ilike(e.author, ^"%#{searchstring}%"),
+                        limit: 100)
             ++ Repo.all(from e in Episode,
                         select: %{id: e.id,
                                   title: e.title,
                                   type: "Shownotes",
                                   match: e.shownotes},
-                        where: ilike(e.shownotes, ^"%#{searchstring}%"))
+                        where: ilike(e.shownotes, ^"%#{searchstring}%"),
+                        limit: 100)
 
     render(conn, "new.html", searchstring: searchstring,
                              categories: categories,

@@ -6,7 +6,7 @@
       <li class="list-group-item">
         <%= link [fa_icon("folder-o"), " ", category.title],
                     to: category_frontend_path(@conn, :show, category),
-                    class: "btn btn-primary btn-xs" %>
+                    class: "btn btn-primary btn-xs" %></br>
         Title: <%= highlight(category.title, @searchstring) %>
       </li>
     <% end %>
