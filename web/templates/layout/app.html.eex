@@ -13,7 +13,6 @@
     <link href='https://fonts.googleapis.com/css?family=Ubuntu'
           rel='stylesheet'
           type='text/css'>
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </head>
 
   <body>
@@ -87,5 +86,11 @@
       </main>
 
     </div> <!-- /container -->
+    <%= if @current_user do %>
+      <%= content_tag :div, id: "user",
+                            data: ["user-id": @current_user.id] do %>
+      <% end %>
+    <% end %>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

@@ -1,10 +1,8 @@
 defmodule Pan.UserSocket do
   use Phoenix.Socket
 
-  ## Channels
-  # channel "rooms:*", Pan.RoomChannel
+  channel "users:*", Pan.UserChannel
 
-  ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll
 
