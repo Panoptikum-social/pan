@@ -121,4 +121,13 @@ h6, .h6 { font-size: 14px; }
 
 .list-group-item a {color: white; }
 
+/* Bootstrap Notifications */
+.notifications {position: fixed; z-index: 9999; }
+.notifications.top-right {right: 10px; top: 25px; }
+.notifications.top-left {left: 10px; top: 25px; }
+.notifications.bottom-left {left: 10px; bottom: 25px; }
+.notifications.bottom-right {right: 10px; bottom: 25px; }
+.notifications > div {position: relative; margin: 5px 0px; }
+.notifications > .alert {padding: 2px 10px 2px 10px; }
+
 /*# sourceMappingURL=app.css.map*/
