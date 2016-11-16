@@ -50,11 +50,24 @@
         <div id="qrcode"></div>
         <p class="small text-left">scan to subscribe</p>
         <script type="text/javascript">
-          new QRCode(document.getElementById("qrcode"), {
-                     text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
-                     width:  142,
-                     height: 142,
-                   });
+          function whenAvailable(name, callback) {
+              var interval = 10; // ms
+              window.setTimeout(function() {
+                  if (window[name]) {
+                      callback(window[name]);
+                  } else {
+                      window.setTimeout(arguments.callee, interval);
+                  }
+              }, interval);
+          }
+
+          whenAvailable("QRCode", function(t) {
+            new QRCode(document.getElementById("qrcode"), {
+                       text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
+                       width:  142,
+                       height: 142,
+                     });
+          });
         </script>
 
         <p class="text-center">

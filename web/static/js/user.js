@@ -12,7 +12,6 @@ let User = {
     let userChannel = socket.channel("users:" + userID)
     let podcastLink = document.getElementById("podcast-link")
     let podcastID = podcastLink.href.split("/").slice(-1)[0]
-
     userChannel.join()
       .receive("ok",    resp => console.log("joined the user channel", resp))
       .receive("error", resp => console.log("join failed", reason))
@@ -32,4 +31,5 @@ let User = {
     })
   }
 }
+
 export default User

@@ -11955,29 +11955,29 @@ var User = {
     var userChannel = socket.channel("users:" + userID);
     var podcastLink = document.getElementById("podcast-link");
     var podcastID = podcastLink.href.split("/").slice(-1)[0];
-
     userChannel.join().receive("ok", function (resp) {
       return console.log("joined the user channel", resp);
     }).receive("error", function (resp) {
       return console.log("join failed", reason);
     });
 
-    userChannel.on("new_like", function (resp) {
+    userChannel.on("like", function (resp) {
       $('.top-right').notify({
         message: {
-          html: "User <b>" + resp.user + "</b> liked the podcast <b>" + resp.podcast + "</b>"
+          html: "User <b>" + resp.enjoyer + "</b> liked the podcast <b>" + resp.podcast + "</b>"
         }
       }).show();
     });
 
     podcastLink.addEventListener("click", function (e) {
-      var payload = { user_id: userID, podcast_id: podcastID };
-      userChannel.push("new_like", payload).receive("error", function (e) {
+      var payload = { enjoyer_id: userID, podcast_id: podcastID };
+      userChannel.push("like", payload).receive("error", function (e) {
         return console.log(e);
       });
     });
   }
 };
+
 exports.default = User;
 });
 
