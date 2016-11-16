@@ -8,10 +8,7 @@
     <div class="row">
       <div class="col-md-2">
         <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
-        <%= if @current_user do %>
-          <%= link(if(likes?(@current_user, @podcast), do: "Unlike", else: "Like"),
-                   to: podcast_frontend_path(@conn, if(likes?(@current_user, @podcast), do: :unlike, else: :like), @podcast)) %>
-        <% end %>
+        <%= if @current_user, do: like_or_unlike(@conn, @current_user, @podcast) %>
       </div>
 
       <div class="col-md-3">
