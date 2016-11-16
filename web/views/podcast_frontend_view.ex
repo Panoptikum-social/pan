@@ -11,9 +11,9 @@ defmodule Pan.PodcastFrontendView do
     case Pan.Repo.get_by(Pan.Like, enjoyer_id: user.id,
                                    podcast_id: podcast.id) do
       nil ->
-        link "Like",   to: podcast_frontend_path(conn, :like,   podcast)
+        link "Like",   to: podcast_frontend_path(conn, :like,   podcast), id: "podcast-link"
       _   ->
-        link "Unlike", to: podcast_frontend_path(conn, :unlike, podcast)
+        link "Unlike", to: podcast_frontend_path(conn, :unlike, podcast), id: "podcast-link"
     end
   end
 end
