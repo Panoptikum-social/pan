@@ -14,20 +14,20 @@ let User = {
     let podcastID = podcastLink.href.split("/").slice(-1)[0]
 
     userChannel.join()
-      .receive("ok", resp => console.log("joined the user channel", resp))
+      .receive("ok",    resp => console.log("joined the user channel", resp))
       .receive("error", resp => console.log("join failed", reason))
 
-    userChannel.on("new_like", (resp) =>{
+    userChannel.on("like", (resp) =>{
       $('.top-right').notify({
         message: {
-          html: "User <b>" + resp.user + "</b> liked the podcast <b>" + resp.podcast + "</b>"
+          html: "User <b>" + resp.enjoyer + "</b> liked the podcast <b>" + resp.podcast + "</b>"
         }
       }).show();
     })
 
     podcastLink.addEventListener("click", e => {
-      let payload = {user_id: userID, podcast_id: podcastID}
-      userChannel.push("new_like", payload)
+      let payload = {enjoyer_id: userID, podcast_id: podcastID}
+      userChannel.push("like", payload)
                  .receive("error", e => console.log(e))
     })
   }

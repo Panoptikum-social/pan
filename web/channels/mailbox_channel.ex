@@ -1,9 +1,9 @@
-defmodule Pan.UserChannel do
+defmodule Pan.MailboxChannel do
   use Pan.Web, :channel
   alias Pan.Repo
   alias Pan.User
 
-  def join("users:" <> user_id, _params, socket) do
+  def join("mailboxes:" <> user_id, _params, socket) do
     {:ok, assign(socket, :user_id, String.to_integer(user_id))}
   end
 
