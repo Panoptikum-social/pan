@@ -1,6 +1,7 @@
 defmodule Pan.Router do
   use Pan.Web, :router
 
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
@@ -10,9 +11,11 @@ defmodule Pan.Router do
     plug Pan.Auth, repo: Pan.Repo
   end
 
+
   pipeline :api do
     plug :accepts, ["json"]
   end
+
 
   scope "/", Pan do
     pipe_through :browser # Use the default browser stack
@@ -22,9 +25,6 @@ defmodule Pan.Router do
 
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
-    get "/podcasts/like/:id", PodcastFrontendController, :like
-    get "/podcasts/unlike/:id", PodcastFrontendController, :unlike
-
     get "/episodes/latest", EpisodeFrontendController, :latest
     resources "/episodes", EpisodeFrontendController, only: [:show]
     get "/episodes/player/:id", EpisodeFrontendController, :player
@@ -34,10 +34,14 @@ defmodule Pan.Router do
     post "/search/", SearchFrontendController, :new
   end
 
+
   scope "/pan", Pan do
     pipe_through [:browser, :authenticate_user]
     get "/my_account", UserController, :my_show
+    get "/podcasts/like/:id", PodcastFrontendController, :like
+    get "/podcasts/unlike/:id", PodcastFrontendController, :unlike
   end
+
 
   scope "/admin", Pan do
     pipe_through [:browser, :authenticate_admin]

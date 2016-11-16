@@ -9,7 +9,8 @@
       <div class="col-md-2">
         <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
         <%= if @current_user do %>
-          <%= link(if(Enum.member?(@podcast.followers, @current_user), do: "Unlike", else: "Like"), to: podcast_frontend_path(@conn, if(Enum.member?(@podcast.followers, @current_user), do: :unlike, else: :like), @podcast)) %>
+          <%= link(if(likes?(@current_user, @podcast), do: "Unlike", else: "Like"),
+                   to: podcast_frontend_path(@conn, if(likes?(@current_user, @podcast), do: :unlike, else: :like), @podcast)) %>
         <% end %>
       </div>
 

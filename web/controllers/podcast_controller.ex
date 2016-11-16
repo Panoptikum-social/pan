@@ -11,10 +11,12 @@ defmodule Pan.PodcastController do
     render(conn, "index.html", podcasts: podcasts)
   end
 
+
   def new(conn, _params) do
     changeset = Podcast.changeset(%Podcast{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"podcast" => podcast_params}) do
     changeset = Podcast.changeset(%Podcast{}, podcast_params)
@@ -29,6 +31,7 @@ defmodule Pan.PodcastController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
               |> Repo.preload(episodes: :podcast)
@@ -37,11 +40,13 @@ defmodule Pan.PodcastController do
     render(conn, "show.html", podcast: podcast)
   end
 
+
   def edit(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
     changeset = Podcast.changeset(podcast)
     render(conn, "edit.html", podcast: podcast, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "podcast" => podcast_params}) do
     podcast = Repo.get!(Podcast, id)
@@ -56,6 +61,7 @@ defmodule Pan.PodcastController do
         render(conn, "edit.html", podcast: podcast, changeset: changeset)
     end
   end
+
 
   def delete(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
