@@ -1,0 +1,32 @@
+<h2>Listing follows</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Follower</th>
+      <th>Podcast</th>
+      <th>User</th>
+      <th>Category</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for follow <- @follows do %>
+    <tr>
+      <td><%= follow.follower_id %></td>
+      <td><%= follow.podcast_id %></td>
+      <td><%= follow.user_id %></td>
+      <td><%= follow.category_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: follow_path(@conn, :show, follow), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: follow_path(@conn, :edit, follow), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: follow_path(@conn, :delete, follow), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New follow", to: follow_path(@conn, :new) %>

@@ -30,10 +30,13 @@ defmodule Pan.Router do
     get "/episodes/player/:id", EpisodeFrontendController, :player
 
     resources "/users", UserController, only: [:new, :create]
-    get "/my_account", UserController, :my_show
-
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     post "/search/", SearchFrontendController, :new
+  end
+
+  scope "/pan", Pan do
+    pipe_through [:browser, :authenticate_user]
+    get "/my_account", UserController, :my_show
   end
 
   scope "/admin", Pan do
@@ -50,5 +53,7 @@ defmodule Pan.Router do
     resources "/categories", CategoryController
     resources "/backlog_feeds", FeedBacklogController
     get "/backlog_feeds/import/:id", FeedBacklogController, :import
+    resources "/likes", LikeController
+    resources "/follows", FollowController
   end
 end

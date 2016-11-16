@@ -1,0 +1,40 @@
+<h2>Listing likes</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Enjoyer</th>
+      <th>Podcast</th>
+      <th>Episode</th>
+      <th>Chapter</th>
+      <th>User</th>
+      <th>Category</th>
+      <th>Recommend to</th>
+      <th>Comment</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for like <- @likes do %>
+    <tr>
+      <td><%= like.enjoyer_id %></td>
+      <td><%= like.podcast_id %></td>
+      <td><%= like.episode_id %></td>
+      <td><%= like.chapter_id %></td>
+      <td><%= like.user_id %></td>
+      <td><%= like.category_id %></td>
+      <td><%= like.recommend_to_id %></td>
+      <td><%= like.comment %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: like_path(@conn, :show, like), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: like_path(@conn, :edit, like), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: like_path(@conn, :delete, like), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New like", to: like_path(@conn, :new) %>

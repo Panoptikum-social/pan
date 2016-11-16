@@ -19,11 +19,13 @@ defmodule Pan.User do
     has_many :contributor_identities, Pan.Contributor
 
     many_to_many :subscribed_podcasts, Pan.Podcast, join_through: "subscriptions"
-    many_to_many :followed_podcasts,   Pan.Podcast, join_through: "followers_podcasts"
-    many_to_many :followers, Pan.User,
-                 join_through: "followers_users", join_keys: [user_id: :id, follower_id: :id]
-    many_to_many :heros, Pan.User,
-                 join_through: "followers_users", join_keys: [follower_id: :id, user_id: :id]
+
+#    many_to_many :podcasts_user_follows, Pan.Podcast,
+#                 join_through: "followes", join_keys: [follower_id: :id, podcast_id: :id]
+#    many_to_many :followers, Pan.User,
+#                 join_through: "follows", join_keys: [user_id: :id, follower_id: :id]
+#    many_to_many :users_user_follows, Pan.User,
+#                 join_through: "follows", join_keys: [follower_id: :id, user_id: :id]
   end
 
   def changeset(model, params \\ %{}) do

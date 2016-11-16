@@ -1,0 +1,28 @@
+<h2>Show follow</h2>
+
+<ul>
+
+  <li>
+    <strong>Follower:</strong>
+    <%= @follow.follower_id %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @follow.podcast_id %>
+  </li>
+
+  <li>
+    <strong>User:</strong>
+    <%= @follow.user_id %>
+  </li>
+
+  <li>
+    <strong>Category:</strong>
+    <%= @follow.category_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: follow_path(@conn, :edit, @follow) %>
+<%= link "Back", to: follow_path(@conn, :index) %>

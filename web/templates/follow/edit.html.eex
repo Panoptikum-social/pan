@@ -1,0 +1,6 @@
+<h2>Edit follow</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: follow_path(@conn, :update, @follow) %>
+
+<%= link "Back", to: follow_path(@conn, :index) %>

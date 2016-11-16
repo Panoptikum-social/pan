@@ -10,7 +10,7 @@ defmodule Pan.UserController do
 
   def index(conn, _params, _user) do
     users = Repo.all(Pan.User)
-    render conn, "index.html", users: users    
+    render conn, "index.html", users: users
   end
 
   def show(conn, %{"id" => id}, _user) do
@@ -23,7 +23,7 @@ defmodule Pan.UserController do
   end
 
   alias Pan.User
-  
+
   def new(conn, _params, _user) do
     changeset = User.changeset(%User{})
     render conn, "new.html", changeset: changeset
@@ -67,7 +67,7 @@ defmodule Pan.UserController do
   def delete(conn, %{"id" => id}, _user) do
     user = Repo.get!(User, id)
     Repo.delete!(user)
-  
+
     conn
     |> put_flash(:info, "User deleted successfully.")
     |> redirect(to: user_path(conn, :index))
