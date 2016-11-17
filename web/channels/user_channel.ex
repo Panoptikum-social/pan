@@ -10,9 +10,8 @@ defmodule Pan.UserChannel do
 
   def handle_in("like", params, socket) do
     broadcast! socket, "like", %{
-      enjoyer: Repo.get!(User, String.to_integer(params["enjoyer_id"])).name,
-      podcast:    Repo.get!(Podcast, String.to_integer(params["podcast_id"])).title
-      # user:    Repo.get!(User, String.to_integer(params["user_id"])).name
+      enjoyer: Repo.get!(User, String.to_integer(socket.assigns[:current_user_id])).name,
+      user:    Repo.get!(User, String.to_integer(params["user_id"])).name
     }
 
     {:reply, :ok, socket}

@@ -20,6 +20,6 @@ import $ from "jquery"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
-import User from "./user"
+import Mailbox from "./mailbox"
 
-User.init(socket, document.getElementById("user"))
+Mailbox.init(socket)

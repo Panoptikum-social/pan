@@ -20,17 +20,15 @@ defmodule Pan.PodcastFrontendController do
 
 
   def like(conn, %{"id" => id}) do
-    %Like{enjoyer_id: conn.assigns.current_user.id, podcast_id: String.to_integer(id)}
-    |> Repo.insert
-
-    render(conn, "show.html", podcast: get_with_relations(id))
-  end
-
-
-  def unlike(conn, %{"id" => id}) do
-    Repo.get_by(Like, enjoyer_id: conn.assigns.current_user.id,
-                      podcast_id: String.to_integer(id))
-    |> Repo.delete!
+    case Repo.get_by(Like, enjoyer_id: conn.assigns.current_user.id,
+                           podcast_id: String.to_integer(id)) do
+      nil ->
+       %Like{enjoyer_id: conn.assigns.current_user.id, podcast_id: String.to_integer(id)}
+       |> Repo.insert
+      like ->
+        IO.inspect like
+        Repo.delete!(like)
+    end
 
     render(conn, "show.html", podcast: get_with_relations(id))
   end

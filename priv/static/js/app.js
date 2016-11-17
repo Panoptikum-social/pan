@@ -11887,9 +11887,9 @@ var _socket = require("./socket");
 
 var _socket2 = _interopRequireDefault(_socket);
 
-var _user = require("./user");
+var _mailbox = require("./mailbox");
 
-var _user2 = _interopRequireDefault(_user);
+var _mailbox2 = _interopRequireDefault(_mailbox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11911,7 +11911,52 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-_user2.default.init(_socket2.default, document.getElementById("user"));
+_mailbox2.default.init(_socket2.default);
+});
+
+;require.register("web/static/js/mailbox.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Mailbox = {
+  init: function init(socket) {
+    socket.connect();
+    this.onReady(socket);
+  },
+  onReady: function onReady(socket) {
+    var mailboxChannel = socket.channel("mailboxes:" + window.currentUserID);
+
+    mailboxChannel.join().receive("ok", function (resp) {
+      return console.log("joined the mailbox channel", resp);
+    }).receive("error", function (resp) {
+      return console.log("join failed", reason);
+    });
+
+    mailboxChannel.on("like", function (resp) {
+      $('.top-right').notify({
+        message: {
+          html: "User <b>" + resp.enjoyer + "</b> " + resp.action + "d the podcast <b>" + resp.podcast + "</b>"
+        }
+      }).show();
+    });
+
+    var podcastLink = document.querySelector("[data-type='podcast']");
+    var podcastID = podcastLink.getAttribute("href").split("/").slice(-1)[0];
+    var action = podcastLink.getAttribute("data-action");
+
+    podcastLink.addEventListener("click", function (e) {
+      var payload = { podcast_id: podcastID,
+        action: action };
+      mailboxChannel.push("like", payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  }
+};
+
+exports.default = Mailbox;
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {
@@ -11933,52 +11978,6 @@ var socket = new _phoenix.Socket("/socket", { params: { token: window.userToken 
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 exports.default = socket;
-});
-
-;require.register("web/static/js/user.js", function(exports, require, module) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var User = {
-  init: function init(socket, element) {
-    if (!element) {
-      return;
-    }
-    var userID = element.getAttribute("data-user-id");
-
-    socket.connect();
-    this.onReady(userID, socket);
-  },
-  onReady: function onReady(userID, socket) {
-    var userChannel = socket.channel("users:" + userID);
-    var podcastLink = document.getElementById("podcast-link");
-    var podcastID = podcastLink.href.split("/").slice(-1)[0];
-    userChannel.join().receive("ok", function (resp) {
-      return console.log("joined the user channel", resp);
-    }).receive("error", function (resp) {
-      return console.log("join failed", reason);
-    });
-
-    userChannel.on("like", function (resp) {
-      $('.top-right').notify({
-        message: {
-          html: "User <b>" + resp.enjoyer + "</b> liked the podcast <b>" + resp.podcast + "</b>"
-        }
-      }).show();
-    });
-
-    podcastLink.addEventListener("click", function (e) {
-      var payload = { enjoyer_id: userID, podcast_id: podcastID };
-      userChannel.push("like", payload).receive("error", function (e) {
-        return console.log(e);
-      });
-    });
-  }
-};
-
-exports.default = User;
 });
 
 ;require.alias("jquery/dist/jquery.js", "jquery");

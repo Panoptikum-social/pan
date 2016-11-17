@@ -88,11 +88,9 @@
       </main>
 
     </div> <!-- /container -->
-    <%= if @current_user do %>
-      <%= content_tag :div, id: "user",
-                            data: ["user-id": @current_user.id] do %>
-      <% end %>
-    <% end %>
+
+    <script>window.userToken = "<%= assigns[:user_token] %>"
+            window.currentUserID = "<%= assigns[:current_user].id %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

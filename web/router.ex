@@ -39,7 +39,6 @@ defmodule Pan.Router do
     pipe_through [:browser, :authenticate_user]
     get "/my_account", UserController, :my_show
     get "/podcasts/like/:id", PodcastFrontendController, :like
-    get "/podcasts/unlike/:id", PodcastFrontendController, :unlike
   end
 
 
