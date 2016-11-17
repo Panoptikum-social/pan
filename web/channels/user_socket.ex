@@ -1,8 +1,9 @@
 defmodule Pan.UserSocket do
   use Phoenix.Socket
 
-  channel "users:*",      Pan.UserChannel
+  channel "users:*",     Pan.UserChannel
   channel "mailboxes:*", Pan.MailboxChannel
+  channel "podcasts:*",  Pan.PodcastChannel
 
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll

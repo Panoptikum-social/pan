@@ -15,7 +15,7 @@
           type='text/css'>
   </head>
 
-  <body>
+  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
     <div class='notifications top-right'></div>
     <div class="container-fluid">
       <nav class="navbar navbar-default">
@@ -91,5 +91,6 @@
     <script>window.userToken = "<%= assigns[:user_token] %>"
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
   </body>
 </html>

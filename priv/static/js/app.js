@@ -11920,29 +11920,65 @@ _mailbox2.default.init(_socket2.default);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _podcast = require("./podcast");
+
+var _podcast2 = _interopRequireDefault(_podcast);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Mailbox = {
   init: function init(socket) {
-    socket.connect();
-    this.onReady(socket);
-  },
-  onReady: function onReady(socket) {
-    var _this = this;
+    var user_id = window.currentUserID;
 
-    var mailboxChannel = socket.channel("mailboxes:" + window.currentUserID);
+    if (user_id != "") {
+      socket.connect();
+      this.onReady(socket, user_id);
+    }
+
     var podcastButton = document.querySelector("[data-type='podcast']");
+    if (user_id != "" && podcastButton != "") {
+      _podcast2.default.onReady(socket, podcastButton);
+    }
+  },
+  onReady: function onReady(socket, user_id) {
+    var mailboxChannel = socket.channel("mailboxes:" + user_id);
 
     mailboxChannel.join().receive("ok", function (resp) {
       return console.log("joined the mailbox channel", resp);
     }).receive("error", function (resp) {
-      return console.log("join failed", reason);
+      return console.log("join of mailbox channel failed", reason);
+    });
+  }
+};
+
+exports.default = Mailbox;
+});
+
+;require.register("web/static/js/podcast.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Podcast = {
+  onReady: function onReady(socket, podcastButton) {
+    var _this = this;
+
+    var podcastChannel = socket.channel("podcasts:" + podcastButton.getAttribute("data-id"));
+
+    podcastChannel.join().receive("ok", function (resp) {
+      return console.log("joined the podcast channel", resp);
+    }).receive("error", function (resp) {
+      return console.log("join of podcast channel failed", reason);
     });
 
-    mailboxChannel.on("like", function (resp) {
+    podcastChannel.on("like", function (resp) {
       podcastButton.outerHTML = resp.button;
 
       //reregistering the event handler, because we have a new button
       podcastButton = document.querySelector("[data-type='podcast']");
-      _this.registerButton(mailboxChannel, podcastButton);
+      _this.registerButton(podcastChannel, podcastButton);
 
       $('.top-right').notify({
         type: resp.type,
@@ -11950,21 +11986,21 @@ var Mailbox = {
       }).show();
     });
 
-    this.registerButton(mailboxChannel, podcastButton);
+    this.registerButton(podcastChannel, podcastButton);
   },
-  registerButton: function registerButton(mailboxChannel, podcastButton) {
+  registerButton: function registerButton(podcastChannel, podcastButton) {
     podcastButton.addEventListener("click", function (e) {
       var payload = { podcast_id: podcastButton.getAttribute("data-id"),
         action: podcastButton.getAttribute("data-action") };
 
-      mailboxChannel.push("like", payload).receive("error", function (e) {
+      podcastChannel.push("like", payload).receive("error", function (e) {
         return console.log(e);
       });
     });
   }
 };
 
-exports.default = Mailbox;
+exports.default = Podcast;
 });
 
 ;require.register("web/static/js/socket.js", function(exports, require, module) {
