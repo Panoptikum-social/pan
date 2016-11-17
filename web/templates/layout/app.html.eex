@@ -45,7 +45,7 @@
               <%= if @current_user do %>
                 <li>
                   <p class="navbar-text">
-                    <%= link ["@", @current_user.username], to: user_path(@conn, :my_show) %>
+                    <%= link ["@", @current_user.username], to: user_frontend_path(@conn, :show) %>
                   </p>
                 </li>
 

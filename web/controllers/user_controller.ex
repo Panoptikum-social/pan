@@ -18,10 +18,6 @@ defmodule Pan.UserController do
     render conn, "show.html", user: user
   end
 
-  def my_show(conn, _params, user) do
-    render conn, "show.html", user: user
-  end
-
   alias Pan.User
 
   def new(conn, _params, _user) do
