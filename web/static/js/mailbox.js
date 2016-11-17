@@ -13,12 +13,10 @@ let Mailbox = {
 
     mailboxChannel.on("like", (resp) =>{
       $('.top-right').notify({
-        message: {
-          html: "User <b>" + resp.enjoyer + "</b> " + resp.action + "d the podcast <b>" + resp.podcast + "</b>"
-        }
+        type: resp.type,
+        message: { html: resp.content }
       }).show();
     })
-
 
     let podcastLink = document.querySelector("[data-type='podcast']")
     let podcastID = podcastLink.getAttribute("href").split("/").slice(-1)[0]

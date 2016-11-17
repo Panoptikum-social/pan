@@ -11936,9 +11936,8 @@ var Mailbox = {
 
     mailboxChannel.on("like", function (resp) {
       $('.top-right').notify({
-        message: {
-          html: "User <b>" + resp.enjoyer + "</b> " + resp.action + "d the podcast <b>" + resp.podcast + "</b>"
-        }
+        type: resp.type,
+        message: { html: resp.content }
       }).show();
     });
 

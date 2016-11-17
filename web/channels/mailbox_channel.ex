@@ -1,5 +1,6 @@
 defmodule Pan.MailboxChannel do
   use Pan.Web, :channel
+  alias Pan.Message
   alias Pan.Repo
   alias Pan.User
   alias Pan.Podcast
@@ -14,12 +15,21 @@ defmodule Pan.MailboxChannel do
   end
 
   def handle_in("like", params, socket) do
-    broadcast! socket, "like", %{
-      enjoyer: Repo.get!(User, socket.assigns[:current_user_id]).name,
-      podcast: Repo.get!(Podcast, String.to_integer(params["podcast_id"])).title,
-      action: params["action"]
-    }
+    [topic, subtopic] = String.split(socket.topic, ":")
+    username =      Repo.get!(User,    socket.assigns[:current_user_id]).name
+    podcast_title = Repo.get!(Podcast, String.to_integer(params["podcast_id"])).title
+    content = "User <b>" <> username <> "</b> " <> params["action"] <> "d the podcast <b>" <> podcast_title <> "</b>"
+    type = "warning"
 
+    %Message{topic: topic,
+             subtopic: subtopic,
+             event: "like",
+             content: content,
+             creator_id: socket.assigns[:current_user_id],
+             type: type}
+    |> Repo.insert
+
+    broadcast! socket, "like", %{content: content, type: type}
     {:reply, :ok, socket}
   end
 end

@@ -58,5 +58,6 @@ defmodule Pan.Router do
     get "/backlog_feeds/import/:id", FeedBacklogController, :import
     resources "/likes", LikeController
     resources "/follows", FollowController
+    resources "/messages", MessageController
   end
 end
