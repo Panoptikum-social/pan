@@ -46,8 +46,8 @@
        <ul class="list-group">
          <%= for message <- @messages do %>
            <li class="list-group-item message-<%= message.type %>">
-             <%= raw message.content %>
-             <span class="pull-right"><%= message.inserted_at %></span>
+             <i><%= message.creator.name %>:</i> <%= raw message.content %><br/>
+             <p class="text-right"><%= message.inserted_at %></p>
            </li>
          <% end %>
       </ul>

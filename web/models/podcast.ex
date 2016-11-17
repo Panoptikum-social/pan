@@ -1,5 +1,7 @@
 defmodule Pan.Podcast do
   use Pan.Web, :model
+  alias Pan.Repo
+  alias Pan.Like
 
   schema "podcasts" do
     field :title, :string
@@ -42,5 +44,16 @@ defmodule Pan.Podcast do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> unique_constraint(:title)
+  end
+
+  def like(podcast_id, user_id) do
+    case Repo.get_by(Like, enjoyer_id: user_id,
+                           podcast_id: podcast_id) do
+      nil ->
+        %Like{enjoyer_id: user_id, podcast_id: podcast_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
+    end
   end
 end

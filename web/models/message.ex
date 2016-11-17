@@ -7,7 +7,7 @@ defmodule Pan.Message do
     field :topic, :string
     field :subtopic, :string
     field :event, :string
-    belongs_to :creator, Pan.Creator
+    belongs_to :creator, Pan.User
 
     timestamps()
   end

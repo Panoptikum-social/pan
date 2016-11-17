@@ -19,21 +19,6 @@ defmodule Pan.PodcastFrontendController do
   end
 
 
-  def like(conn, %{"id" => id}) do
-    case Repo.get_by(Like, enjoyer_id: conn.assigns.current_user.id,
-                           podcast_id: String.to_integer(id)) do
-      nil ->
-       %Like{enjoyer_id: conn.assigns.current_user.id, podcast_id: String.to_integer(id)}
-       |> Repo.insert
-      like ->
-        IO.inspect like
-        Repo.delete!(like)
-    end
-
-    render(conn, "show.html", podcast: get_with_relations(id))
-  end
-
-
   def subscribe_button(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
     podcast = Repo.preload(podcast, :feeds)

@@ -11926,7 +11926,10 @@ var Mailbox = {
     this.onReady(socket);
   },
   onReady: function onReady(socket) {
+    var _this = this;
+
     var mailboxChannel = socket.channel("mailboxes:" + window.currentUserID);
+    var podcastButton = document.querySelector("[data-type='podcast']");
 
     mailboxChannel.join().receive("ok", function (resp) {
       return console.log("joined the mailbox channel", resp);
@@ -11935,19 +11938,25 @@ var Mailbox = {
     });
 
     mailboxChannel.on("like", function (resp) {
+      podcastButton.outerHTML = resp.button;
+
+      //reregistering the event handler, because we have a new button
+      podcastButton = document.querySelector("[data-type='podcast']");
+      _this.registerButton(mailboxChannel, podcastButton);
+
       $('.top-right').notify({
         type: resp.type,
         message: { html: resp.content }
       }).show();
     });
 
-    var podcastLink = document.querySelector("[data-type='podcast']");
-    var podcastID = podcastLink.getAttribute("href").split("/").slice(-1)[0];
-    var action = podcastLink.getAttribute("data-action");
+    this.registerButton(mailboxChannel, podcastButton);
+  },
+  registerButton: function registerButton(mailboxChannel, podcastButton) {
+    podcastButton.addEventListener("click", function (e) {
+      var payload = { podcast_id: podcastButton.getAttribute("data-id"),
+        action: podcastButton.getAttribute("data-action") };
 
-    podcastLink.addEventListener("click", function (e) {
-      var payload = { podcast_id: podcastID,
-        action: action };
       mailboxChannel.push("like", payload).receive("error", function (e) {
         return console.log(e);
       });
