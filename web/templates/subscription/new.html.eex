@@ -1,0 +1,6 @@
+<h2>New subscription</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: subscription_path(@conn, :create) %>
+
+<%= link "Back", to: subscription_path(@conn, :index) %>

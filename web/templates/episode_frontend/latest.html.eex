@@ -6,7 +6,7 @@
       <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %>
     </div>
     <div class="list-group-item">
-      <%= link [fa_icon("microphone"), " ", episode.podcast.title],
+      <%= link [fa_icon("podcast"), " ", episode.podcast.title],
                to: podcast_frontend_path(@conn, :show, episode.podcast) %><br/>
       <%= fa_icon("calendar") %> <%= episode.publishing_date %><br/>
       <%= fa_icon("clock-o") %> <%= episode.duration %><br/>

@@ -11936,9 +11936,10 @@ var Mailbox = {
       this.onReady(socket, user_id);
     }
 
-    var podcastButton = document.querySelector("[data-type='podcast']");
-    if (user_id != "" && podcastButton != "") {
-      _podcast2.default.onReady(socket, podcastButton);
+    var likeButton = document.querySelector("[data-type='podcast-like']");
+    if (user_id != "" && likeButton != "") {
+      var podcast_id = likeButton.getAttribute("data-id");
+      _podcast2.default.onReady(socket, podcast_id);
     }
   },
   onReady: function onReady(socket, user_id) {
@@ -11962,10 +11963,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var Podcast = {
-  onReady: function onReady(socket, podcastButton) {
+  onReady: function onReady(socket, podcast_id) {
     var _this = this;
 
-    var podcastChannel = socket.channel("podcasts:" + podcastButton.getAttribute("data-id"));
+    var podcastChannel = socket.channel("podcasts:" + podcast_id);
 
     podcastChannel.join().receive("ok", function (resp) {
       return console.log("joined the podcast channel", resp);
@@ -11974,26 +11975,58 @@ var Podcast = {
     });
 
     podcastChannel.on("like", function (resp) {
-      podcastButton.outerHTML = resp.button;
-
-      //reregistering the event handler, because we have a new button
-      podcastButton = document.querySelector("[data-type='podcast']");
-      _this.registerButton(podcastChannel, podcastButton);
-
-      $('.top-right').notify({
-        type: resp.type,
-        message: { html: resp.content }
-      }).show();
+      document.querySelector("[data-type='podcast-like']").outerHTML = resp.button;
+      _this.register_and_show_notify(podcastChannel, resp);
     });
 
-    this.registerButton(podcastChannel, podcastButton);
+    podcastChannel.on("subscribe", function (resp) {
+      document.querySelector("[data-type='podcast-subscribe']").outerHTML = resp.button;
+      _this.register_and_show_notify(resp);
+    });
+
+    podcastChannel.on("follow", function (resp) {
+      document.querySelector("[data-type='podcast-follow']").outerHTML = resp.button;
+      _this.register_and_show_notify(resp);
+    });
+
+    this.registerButtons(podcastChannel);
   },
-  registerButton: function registerButton(podcastChannel, podcastButton) {
-    podcastButton.addEventListener("click", function (e) {
-      var payload = { podcast_id: podcastButton.getAttribute("data-id"),
-        action: podcastButton.getAttribute("data-action") };
+  register_and_show_notify: function register_and_show_notify(podcastChannel, message) {
+    this.registerButtons(podcastChannel);
+
+    $('.top-right').notify({
+      type: message.type,
+      message: { html: message.content }
+    }).show();
+  },
+  registerButtons: function registerButtons(podcastChannel) {
+    var likeButton = document.querySelector("[data-type='podcast-like']");
+    likeButton.addEventListener("click", function (e) {
+      var payload = { podcast_id: likeButton.getAttribute("data-id"),
+        action: likeButton.getAttribute("data-action") };
 
       podcastChannel.push("like", payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+
+    var followButton = document.querySelector("[data-type='podcast-follow']");
+
+    followButton.addEventListener("click", function (e) {
+      var payload = { podcast_id: followButton.getAttribute("data-id"),
+        action: followButton.getAttribute("data-action") };
+
+      podcastChannel.push("follow", payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+
+    var subscribeButton = document.querySelector("[data-type='podcast-subscribe']");
+    subscribeButton.addEventListener("click", function (e) {
+      var payload = { podcast_id: subscribeButton.getAttribute("data-id"),
+        action: subscribeButton.getAttribute("data-action") };
+
+      podcastChannel.push("subscribe", payload).receive("error", function (e) {
         return console.log(e);
       });
     });

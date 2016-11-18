@@ -1,7 +1,7 @@
 
 <div class="panel panel-success">
   <div class="panel-heading">
-    <%= fa_icon("microphone") %> <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast), style: "color: #fff" %> /
+    <%= fa_icon("podcast") %> <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast), style: "color: #fff" %> /
     <%= fa_icon("headphones") %> <%= @episode.title %>
   </div>
   <div class="panel-body">

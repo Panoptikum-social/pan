@@ -1,9 +1,6 @@
 defmodule Pan.UserFrontendController do
   use Pan.Web, :controller
-
-  alias Pan.User
   alias Pan.Message
-
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

@@ -12,14 +12,14 @@ defmodule Pan.PodcastFrontendView do
                                    podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
-                             data: [type: "podcast",
+                             data: [type: "podcast-like",
                                     action: "like",
                                     id: podcast_id] do
           [fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
-                             data: [type: "podcast",
+                             data: [type: "podcast-like",
                              action: "unlike" ,
                              id: podcast_id] do
           [fa_icon("heart"), " Unlike"]
@@ -27,8 +27,59 @@ defmodule Pan.PodcastFrontendView do
     end
   end
 
-
-  def render("button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+  def render("like_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
     like_or_unlike(user_id, podcast_id)
+  end
+
+
+  def follow_or_unfollow(user_id, podcast_id) do
+    case Pan.Repo.get_by(Pan.Follow, follower_id: user_id,
+                                     podcast_id: podcast_id) do
+      nil ->
+        content_tag :button, class: "btn btn-primary",
+                             data: [type: "podcast-follow",
+                                    action: "follow",
+                                    id: podcast_id] do
+          [fa_icon("commenting-o"), " Follow"]
+        end
+      _   ->
+        content_tag :button, class: "btn btn-success",
+                             data: [type: "podcast-follow",
+                             action: "unfollow" ,
+                             id: podcast_id] do
+          [fa_icon("commenting"), " Unfollow"]
+        end
+    end
+  end
+
+
+  def render("follow_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+    follow_or_unfollow(user_id, podcast_id)
+  end
+
+
+  def subscribe_or_unsubscribe(user_id, podcast_id) do
+    case Pan.Repo.get_by(Pan.Subscription, user_id: user_id,
+                                           podcast_id: podcast_id) do
+      nil ->
+        content_tag :button, class: "btn btn-info",
+                             data: [type: "podcast-subscribe",
+                                    action: "subscribe",
+                                    id: podcast_id] do
+          [fa_icon("user-o"), " Subscribe"]
+        end
+      _   ->
+        content_tag :button, class: "btn btn-success",
+                             data: [type: "podcast-subscribe",
+                             action: "unsubscribe" ,
+                             id: podcast_id] do
+          [fa_icon("user"), " Unsubscribe"]
+        end
+    end
+  end
+
+
+  def render("subscribe_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+    subscribe_or_unsubscribe(user_id, podcast_id)
   end
 end

@@ -25,7 +25,7 @@
 
     <p>
       <%= for podcast <- @category.podcasts do %>
-        <%= link [fa_icon("microphone"), " ", podcast.title],
+        <%= link [fa_icon("podcast"), " ", podcast.title],
                  to: podcast_frontend_path(@conn, :show, podcast),
                  class: "btn btn-default btn-xs" %>
         &nbsp; &nbsp; &nbsp;

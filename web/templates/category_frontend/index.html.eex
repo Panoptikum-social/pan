@@ -59,7 +59,7 @@
       <ul class="list-group">
         <%= for podcast <- latest_podcasts do %>
           <li class="list-group-item">
-            <%= link [fa_icon("microphone"), " ", C.String.truncate(podcast.title, 50)],
+            <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
@@ -86,7 +86,7 @@
                         to: episode_frontend_path(@conn, :show, episode),
                         class: "btn btn-primary btn-xs" %>
             <hr style="margin-top: -10px; visibility:hidden;" />
-            <%= link [fa_icon("microphone"), " ", episode.podcast.title],
+            <%= link [fa_icon("podcast"), " ", episode.podcast.title],
                         to: podcast_frontend_path(@conn, :show, episode.podcast),
                         class: "btn btn-default btn-xs",
                         style: "color: #000;" %>

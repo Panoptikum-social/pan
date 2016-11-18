@@ -58,5 +58,6 @@ defmodule Pan.Router do
     resources "/likes", LikeController
     resources "/follows", FollowController
     resources "/messages", MessageController
+    resources "/subscriptions", SubscriptionController
   end
 end

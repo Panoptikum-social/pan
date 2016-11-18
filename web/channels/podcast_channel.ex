@@ -33,7 +33,7 @@ defmodule Pan.PodcastChannel do
       content: content,
       type: type,
       button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
-                                            "button.html",
+                                            "like_button.html",
                                             user_id: user_id,
                                             podcast_id: podcast_id)}
     {:reply, :ok, socket}

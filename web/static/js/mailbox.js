@@ -9,9 +9,10 @@ let Mailbox = {
       this.onReady(socket, user_id)
     }
 
-    let podcastButton = document.querySelector("[data-type='podcast']")
-    if(user_id != "" && podcastButton != "") {
-      Podcast.onReady(socket, podcastButton)
+    let likeButton = document.querySelector("[data-type='podcast-like']")
+    if(user_id != "" && likeButton != "") {
+      let podcast_id = likeButton.getAttribute("data-id")
+      Podcast.onReady(socket, podcast_id)
     }
   },
 

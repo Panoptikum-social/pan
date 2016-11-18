@@ -8,7 +8,11 @@
     <div class="row">
       <div class="col-md-2">
         <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
-        <%= if @current_user, do: like_or_unlike(@current_user.id, @podcast.id) %>
+        <%= if @current_user do %>
+          <%= like_or_unlike(@current_user.id, @podcast.id) %>
+          <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
+          <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
+        <% end %>
       </div>
 
       <div class="col-md-3">

@@ -37,7 +37,7 @@ defmodule Pan.Mixfile do
      {:comeonin, "~> 2.0"},
      {:sweet_xml, "~> 0.6"},
      {:timex, "~> 3.0"},
-     {:font_awesome_phoenix, "~> 0.1"},
+     {:font_awesome_phoenix, "~> 1.0"},
      {:httpoison, "~> 0.9.0"},
      {:httpotion, "~> 3.0.2"},
      {:exrm, "~> 1.0" },

@@ -19,7 +19,7 @@
 
     <%= for podcast <- @podcasts do %>
       <li class="list-group-item">
-        <%= link [fa_icon("microphone"), " ", podcast.title],
+        <%= link [fa_icon("podcast"), " ", podcast.title],
                  to: podcast_frontend_path(@conn, :show, podcast.id),
                  class: "btn btn-default btn-xs", style: "color: #000" %></br>
         <b><%= podcast.type %>:</b> <%= highlight(podcast.match, @searchstring) %>

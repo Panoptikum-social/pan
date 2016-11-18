@@ -1,10 +1,7 @@
 defmodule Pan.PodcastFrontendController do
   use Pan.Web, :controller
-
   alias Pan.Podcast
   alias Pan.Episode
-  alias Pan.Like
-
 
   def index(conn, _params) do
     podcasts = Repo.all(Podcast)
