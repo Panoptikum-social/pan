@@ -12,16 +12,18 @@ defmodule Pan.PodcastFrontendView do
                                    podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
-                             data: [type: "podcast-like",
+                             data: [type: "podcast",
+                                    event: "like",
                                     action: "like",
                                     id: podcast_id] do
           [fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
-                             data: [type: "podcast-like",
-                             action: "unlike" ,
-                             id: podcast_id] do
+                             data: [type: "podcast",
+                                    event: "like",
+                                    action: "unlike" ,
+                                    id: podcast_id] do
           [fa_icon("heart"), " Unlike"]
         end
     end
@@ -37,16 +39,18 @@ defmodule Pan.PodcastFrontendView do
                                      podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-primary",
-                             data: [type: "podcast-follow",
+                             data: [type: "podcast",
+                                    event: "follow",
                                     action: "follow",
                                     id: podcast_id] do
           [fa_icon("commenting-o"), " Follow"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
-                             data: [type: "podcast-follow",
-                             action: "unfollow" ,
-                             id: podcast_id] do
+                             data: [type: "podcast",
+                                    event: "follow",
+                                    action: "unfollow" ,
+                                    id: podcast_id] do
           [fa_icon("commenting"), " Unfollow"]
         end
     end
@@ -63,16 +67,18 @@ defmodule Pan.PodcastFrontendView do
                                            podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-info",
-                             data: [type: "podcast-subscribe",
+                             data: [type: "podcast",
                                     action: "subscribe",
+                                    event: "subscribe",
                                     id: podcast_id] do
           [fa_icon("user-o"), " Subscribe"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
-                             data: [type: "podcast-subscribe",
-                             action: "unsubscribe" ,
-                             id: podcast_id] do
+                             data: [type: "podcast",
+                                    action: "unsubscribe" ,
+                                    event: "subscribe",
+                                    id: podcast_id] do
           [fa_icon("user"), " Unsubscribe"]
         end
     end

@@ -6,8 +6,15 @@
   </div>
   <div class="panel-body">
     <div class="row">
-      <div class="col-md-2">
-        <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-5">
+            <img class=" thumbnail" src="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" width="150">
+          </div>
+          <div class="col-md-7">
+            <p><%= raw @podcast.summary %></p>
+          </div>
+        </div>
         <%= if @current_user do %>
           <%= like_or_unlike(@current_user.id, @podcast.id) %>
           <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
@@ -15,11 +22,7 @@
         <% end %>
       </div>
 
-      <div class="col-md-3">
-        <p><%= raw @podcast.summary %></p>
-      </div>
-
-      <div class="col-md-5">
+      <div class="col-md-6">
         <dl class="dl-horizontal">
           <%= if @podcast.website do %>
             <dt><label class="label label-danger">Website</label></dt>
