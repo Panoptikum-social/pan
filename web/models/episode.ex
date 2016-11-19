@@ -2,6 +2,7 @@ defmodule Pan.Episode do
   use Pan.Web, :model
   alias Pan.Repo
   alias Pan.Like
+  alias Pan.Episode
 
 
   schema "episodes" do
@@ -48,7 +49,9 @@ defmodule Pan.Episode do
     case Repo.get_by(Like, enjoyer_id: user_id,
                            episode_id: episode_id) do
       nil ->
-        %Like{enjoyer_id: user_id, episode_id: episode_id}
+        episode = Repo.get(Episode, episode_id)
+        %Like{enjoyer_id: user_id, episode_id: episode_id,
+              podcast_id: episode.podcast_id}
         |> Repo.insert
       like ->
         Repo.delete!(like)
