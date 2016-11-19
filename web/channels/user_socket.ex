@@ -3,8 +3,10 @@ defmodule Pan.UserSocket do
 
   channel "users:*",     Pan.UserChannel
   channel "mailboxes:*", Pan.MailboxChannel
+  channel "categories*", Pan.CategoryChannel
   channel "podcasts:*",  Pan.PodcastChannel
   channel "episodes*",   Pan.EpisodeChannel
+
 
   transport :websocket, Phoenix.Transports.WebSocket
   # transport :longpoll, Phoenix.Transports.LongPoll

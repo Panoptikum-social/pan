@@ -1,5 +1,7 @@
-import Podcast from "./podcast"
-import Episode from "./episode"
+import Category from "./category"
+import Podcast  from "./podcast"
+import Episode  from "./episode"
+
 
 let Mailbox = {
   init(socket){
@@ -8,6 +10,12 @@ let Mailbox = {
     if(user_id != "") {
       socket.connect()
       this.onReady(socket, user_id)
+    }
+
+    let categorylikeButton = document.querySelector("[data-type='category'][data-event='like']")
+    if(user_id != "" && categorylikeButton != null) {
+      let category_id = categorylikeButton.getAttribute("data-id")
+      Category.onReady(socket, category_id)
     }
 
     let podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']")

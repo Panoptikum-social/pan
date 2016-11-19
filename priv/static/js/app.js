@@ -11914,6 +11914,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _mailbox2.default.init(_socket2.default);
 });
 
+;require.register("web/static/js/category.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Category = {
+  onReady: function onReady(socket, category_id) {
+    var _this = this;
+
+    var categoryChannel = socket.channel("categories:" + category_id);
+
+    categoryChannel.join().receive("ok", function (response) {
+      console.log("joined category:" + category_id, response);
+    }).receive("error", function (response) {
+      console.log("join of category:" + category_id + " failed", reason);
+    });
+
+    Array.from(document.querySelectorAll("[data-type='category']")).forEach(function (button) {
+      var event = button.dataset.event;
+      _this.listen_to(event, categoryChannel);
+
+      categoryChannel.on(event, function (response) {
+        var button = document.querySelector("[data-type='category']" + "[data-event='" + event + "']");
+        button.outerHTML = response.button;
+        _this.listen_to(event, categoryChannel);
+        $('.top-right').notify({ type: response.type,
+          message: { html: response.content } }).show();
+      });
+    });
+  },
+  listen_to: function listen_to(event, categoryChannel) {
+    var button = document.querySelector("[data-type='category']" + "[data-event='" + event + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { category_id: button.dataset.id,
+        action: button.dataset.action };
+
+      categoryChannel.push(button.dataset.event, payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  }
+};
+
+exports.default = Category;
+});
+
 ;require.register("web/static/js/episode.js", function(exports, require, module) {
 "use strict";
 
@@ -11968,6 +12015,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _category = require("./category");
+
+var _category2 = _interopRequireDefault(_category);
+
 var _podcast = require("./podcast");
 
 var _podcast2 = _interopRequireDefault(_podcast);
@@ -11985,6 +12036,12 @@ var Mailbox = {
     if (user_id != "") {
       socket.connect();
       this.onReady(socket, user_id);
+    }
+
+    var categorylikeButton = document.querySelector("[data-type='category'][data-event='like']");
+    if (user_id != "" && categorylikeButton != null) {
+      var category_id = categorylikeButton.getAttribute("data-id");
+      _category2.default.onReady(socket, category_id);
     }
 
     var podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']");

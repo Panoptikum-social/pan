@@ -33,3 +33,8 @@
     </p>
   </div>
 </div>
+
+<%= if @current_user do %>
+  <%= like_or_unlike(@current_user.id, @category.id) %>
+  <%= follow_or_unfollow(@current_user.id, @category.id) %>
+<% end %>
