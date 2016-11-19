@@ -1,4 +1,5 @@
 import Podcast from "./podcast"
+import Episode from "./episode"
 
 let Mailbox = {
   init(socket){
@@ -9,10 +10,16 @@ let Mailbox = {
       this.onReady(socket, user_id)
     }
 
-    let likeButton = document.querySelector("[data-type='podcast'][data-event='like']")
-    if(user_id != "" && likeButton != "") {
-      let podcast_id = likeButton.getAttribute("data-id")
+    let podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']")
+    if(user_id != "" && podcastlikeButton != null) {
+      let podcast_id = podcastlikeButton.getAttribute("data-id")
       Podcast.onReady(socket, podcast_id)
+    }
+
+    let episodelikeButton = document.querySelector("[data-type='episode'][data-event='like']")
+    if(user_id != "" && episodelikeButton != null) {
+      let episode_id = episodelikeButton.getAttribute("data-id")
+      Episode.onReady(socket, episode_id)
     }
   },
 

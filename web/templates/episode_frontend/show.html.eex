@@ -24,6 +24,10 @@
       <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>
     </dl>
 
+    <%= if @current_user do %>
+      <%= like_or_unlike(@current_user.id, @episode.id) %>
+    <% end %>
+
     <div class="clearfix"></div>
     <h3>Description</h3>
     <p><%= raw @episode.description %></p>

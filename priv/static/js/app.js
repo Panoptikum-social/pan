@@ -11914,6 +11914,53 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _mailbox2.default.init(_socket2.default);
 });
 
+;require.register("web/static/js/episode.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Episode = {
+  onReady: function onReady(socket, episode_id) {
+    var _this = this;
+
+    var episodeChannel = socket.channel("episodes:" + episode_id);
+
+    episodeChannel.join().receive("ok", function (response) {
+      console.log("joined episode:" + episode_id, response);
+    }).receive("error", function (response) {
+      console.log("join of episode:" + episode_id + " failed", reason);
+    });
+
+    Array.from(document.querySelectorAll("[data-type='episode']")).forEach(function (button) {
+      var event = button.dataset.event;
+      _this.listen_to(event, episodeChannel);
+
+      episodeChannel.on(event, function (response) {
+        var button = document.querySelector("[data-type='episode']" + "[data-event='" + event + "']");
+        button.outerHTML = response.button;
+        _this.listen_to(event, episodeChannel);
+        $('.top-right').notify({ type: response.type,
+          message: { html: response.content } }).show();
+      });
+    });
+  },
+  listen_to: function listen_to(event, episodeChannel) {
+    var button = document.querySelector("[data-type='episode']" + "[data-event='" + event + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { episode_id: button.dataset.id,
+        action: button.dataset.action };
+
+      episodeChannel.push(button.dataset.event, payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  }
+};
+
+exports.default = Episode;
+});
+
 ;require.register("web/static/js/mailbox.js", function(exports, require, module) {
 "use strict";
 
@@ -11924,6 +11971,10 @@ Object.defineProperty(exports, "__esModule", {
 var _podcast = require("./podcast");
 
 var _podcast2 = _interopRequireDefault(_podcast);
+
+var _episode = require("./episode");
+
+var _episode2 = _interopRequireDefault(_episode);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11936,10 +11987,16 @@ var Mailbox = {
       this.onReady(socket, user_id);
     }
 
-    var likeButton = document.querySelector("[data-type='podcast'][data-event='like']");
-    if (user_id != "" && likeButton != "") {
-      var podcast_id = likeButton.getAttribute("data-id");
+    var podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']");
+    if (user_id != "" && podcastlikeButton != null) {
+      var podcast_id = podcastlikeButton.getAttribute("data-id");
       _podcast2.default.onReady(socket, podcast_id);
+    }
+
+    var episodelikeButton = document.querySelector("[data-type='episode'][data-event='like']");
+    if (user_id != "" && episodelikeButton != null) {
+      var episode_id = episodelikeButton.getAttribute("data-id");
+      _episode2.default.onReady(socket, episode_id);
     }
   },
   onReady: function onReady(socket, user_id) {

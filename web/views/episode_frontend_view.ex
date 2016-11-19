@@ -78,4 +78,31 @@ defmodule Pan.EpisodeFrontendView do
     Enum.at(["list-group-item-info", "list-group-item-danger",
              "list-group-item-warning", "list-group-item-primary", "list-group-item-success"], rem(counter, 5))
   end
+
+
+  def like_or_unlike(user_id, episode_id) do
+    case Pan.Repo.get_by(Pan.Like, enjoyer_id: user_id,
+                                   episode_id: episode_id) do
+      nil ->
+        content_tag :button, class: "btn btn-warning",
+                             data: [type: "episode",
+                                    event: "like",
+                                    action: "like",
+                                    id: episode_id] do
+          [fa_icon("heart-o"), " Like"]
+        end
+      _   ->
+        content_tag :button, class: "btn btn-success",
+                             data: [type: "episode",
+                                    event: "like",
+                                    action: "unlike" ,
+                                    id: episode_id] do
+          [fa_icon("heart"), " Unlike"]
+        end
+    end
+  end
+
+  def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
+    like_or_unlike(user_id, episode_id)
+  end
 end
