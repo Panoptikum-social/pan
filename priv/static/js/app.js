@@ -11969,37 +11969,32 @@ var Podcast = {
     var podcastChannel = socket.channel("podcasts:" + podcast_id);
 
     podcastChannel.join().receive("ok", function (response) {
-      return console.log("joined podcast:" + podcast_id, response);
+      console.log("joined podcast:" + podcast_id, response);
     }).receive("error", function (response) {
-      return console.log("join of podcast:" + podcast_id + " failed", reason);
+      console.log("join of podcast:" + podcast_id + " failed", reason);
     });
-
-    this.registerButtons(podcastChannel);
 
     Array.from(document.querySelectorAll("[data-type='podcast']")).forEach(function (button) {
       var event = button.dataset.event;
+      _this.listen_to(event, podcastChannel);
 
       podcastChannel.on(event, function (response) {
-        var button = document.querySelector("[data-type='podcast'][data-event='" + event + "']");
+        var button = document.querySelector("[data-type='podcast']" + "[data-event='" + event + "']");
         button.outerHTML = response.button;
-        _this.registerButtons(podcastChannel);
-
-        $('.top-right').notify({
-          type: response.type,
-          response: { html: response.content }
-        }).show();
+        _this.listen_to(event, podcastChannel);
+        $('.top-right').notify({ type: response.type,
+          message: { html: response.content } }).show();
       });
     });
   },
-  registerButtons: function registerButtons(podcastChannel) {
-    Array.from(document.querySelectorAll("[data-type='podcast']")).forEach(function (button) {
-      button.addEventListener("click", function (e) {
-        var payload = { podcast_id: button.dataset.id,
-          action: button.dataset.action };
+  listen_to: function listen_to(event, podcastChannel) {
+    var button = document.querySelector("[data-type='podcast']" + "[data-event='" + event + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { podcast_id: button.dataset.id,
+        action: button.dataset.action };
 
-        podcastChannel.push(button.dataset.event, payload).receive("error", function (e) {
-          return console.log(e);
-        });
+      podcastChannel.push(button.dataset.event, payload).receive("error", function (e) {
+        return console.log(e);
       });
     });
   }

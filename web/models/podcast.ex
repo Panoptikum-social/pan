@@ -2,6 +2,8 @@ defmodule Pan.Podcast do
   use Pan.Web, :model
   alias Pan.Repo
   alias Pan.Like
+  alias Pan.Follow
+  alias Pan.Subscription
 
   schema "podcasts" do
     field :title, :string
@@ -46,11 +48,36 @@ defmodule Pan.Podcast do
     |> unique_constraint(:title)
   end
 
+
   def like(podcast_id, user_id) do
     case Repo.get_by(Like, enjoyer_id: user_id,
                            podcast_id: podcast_id) do
       nil ->
         %Like{enjoyer_id: user_id, podcast_id: podcast_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
+    end
+  end
+
+
+  def follow(podcast_id, user_id) do
+    case Repo.get_by(Follow, follower_id: user_id,
+                             podcast_id: podcast_id) do
+      nil ->
+        %Follow{follower_id: user_id, podcast_id: podcast_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
+    end
+  end
+
+
+  def subscribe(podcast_id, user_id) do
+    case Repo.get_by(Subscription, user_id: user_id,
+                             podcast_id: podcast_id) do
+      nil ->
+        %Subscription{user_id: user_id, podcast_id: podcast_id}
         |> Repo.insert
       like ->
         Repo.delete!(like)
