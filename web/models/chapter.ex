@@ -1,5 +1,8 @@
 defmodule Pan.Chapter do
   use Pan.Web, :model
+  alias Pan.Repo
+  alias Pan.Like
+  alias Pan.Chapter
 
   schema "chapters" do
     field :start, :string
@@ -21,5 +24,22 @@ defmodule Pan.Chapter do
   def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
+  end
+
+
+  def like(chapter_id, user_id) do
+    case Repo.get_by(Like, enjoyer_id: user_id,
+                           chapter_id: chapter_id) do
+      nil ->
+        chapter = Repo.get(Chapter, chapter_id)
+                  |> Repo.preload(:episode)
+        %Like{enjoyer_id: user_id,
+              chapter_id: chapter_id,
+              episode_id: chapter.episode_id,
+              podcast_id: chapter.episode.podcast_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
+    end
   end
 end

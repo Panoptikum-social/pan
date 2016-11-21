@@ -50,6 +50,11 @@
           <dd><%= @podcast.explicit %></dd>
           <dt><label class="label label-info">Number of Episodes</label></dt>
           <dd><%= Enum.count(@podcast.episodes) %></dd>
+          <dt><label class="label label-warning">Categories</label></dt>
+          <%= for category <- @podcast.categories do %>
+            <dd><%= link category.title, to: category_frontend_path(@conn, :show, category) %></dd>
+          <% end %>
+
         </dl>
       </div>
 

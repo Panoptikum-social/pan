@@ -1,7 +1,6 @@
 defmodule Pan.CategoryChannel do
   use Pan.Web, :channel
   alias Pan.Repo
-  alias Pan.User
   alias Pan.Category
   alias Pan.Message
 

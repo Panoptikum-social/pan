@@ -4,7 +4,6 @@ defmodule Pan.Episode do
   alias Pan.Like
   alias Pan.Episode
 
-
   schema "episodes" do
     field :title, :string
     field :link, :string

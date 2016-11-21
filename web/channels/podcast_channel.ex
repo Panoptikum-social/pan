@@ -1,7 +1,6 @@
 defmodule Pan.PodcastChannel do
   use Pan.Web, :channel
   alias Pan.Repo
-  alias Pan.User
   alias Pan.Podcast
   alias Pan.Message
 

@@ -25,7 +25,7 @@ defmodule Pan.PodcastFrontendController do
 
   defp get_with_relations(id) do
     Repo.get!(Podcast, id)
-    |> Repo.preload([:languages, :owner, :feeds])
+    |> Repo.preload([:languages, :owner, :feeds, :categories])
     |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
   end
 end

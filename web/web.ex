@@ -62,6 +62,7 @@ defmodule Pan.Web do
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
       import Pan.Gettext
+      import Crutches.String, only: [truncate: 2]
     end
   end
 

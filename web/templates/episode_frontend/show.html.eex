@@ -56,18 +56,23 @@
     <% end %>
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-6">
         <h3>Chapters</h3>
         <dl class="dl-horizontal">
           <%= for chapter <- @episode.chapters do %>
-            <dt><%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "#t=" <> chapter.start),
-                                        rel: "http://podlove.org/deep-link" %></dt>
-            <dd><%= chapter.title %></dd>
+            <dt>
+              <%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "#t=" <> chapter.start),
+                                      rel: "http://podlove.org/deep-link" %>
+              <%= if @current_user do %>
+                <br/><%= like_or_unlike_chapter(@current_user.id, chapter.id) %>
+              <% end %>
+            </dt>
+            <dd><%= chapter.title %> </dd>
           <% end %>
         </dl>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h3>Enclosures</h3>
         <dl>
           <%= for enclosure <- @episode.enclosures do %>
@@ -85,7 +90,7 @@
         </dl>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-3">
         <h3>Contributors</h3>
         <dl class="dl-horizontal">
           <%= for contributor <- @episode.contributors do %>

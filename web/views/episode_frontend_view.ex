@@ -1,5 +1,7 @@
 defmodule Pan.EpisodeFrontendView do
   use Pan.Web, :view
+  alias Pan.Repo
+  alias Pan.Like
 
   def podlove_episodestruct(episode) do
     %{poster: episode.podcast.image_url,
@@ -81,8 +83,7 @@ defmodule Pan.EpisodeFrontendView do
 
 
   def like_or_unlike(user_id, episode_id) do
-    case Pan.Repo.get_by(Pan.Like, enjoyer_id: user_id,
-                                   episode_id: episode_id) do
+    case Like.find_by(user_id, episode_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
                              data: [type: "episode",
@@ -104,5 +105,32 @@ defmodule Pan.EpisodeFrontendView do
 
   def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
     like_or_unlike(user_id, episode_id)
+  end
+
+
+  def like_or_unlike_chapter(user_id, chapter_id) do
+    case Repo.get_by(Pan.Like, enjoyer_id: user_id,
+                               chapter_id: chapter_id) do
+      nil ->
+        content_tag :button, class: "btn btn-warning btn-xs",
+                             data: [type: "chapter",
+                                    event: "like-chapter",
+                                    action: "like",
+                                    id: chapter_id] do
+          [fa_icon("heart-o"), " Like"]
+        end
+      _   ->
+        content_tag :button, class: "btn btn-success btn-xs",
+                             data: [type: "chapter",
+                                    event: "like-chapter",
+                                    action: "unlike" ,
+                                    id: chapter_id] do
+          [fa_icon("heart"), " Unlike"]
+        end
+    end
+  end
+
+  def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
+    like_or_unlike_chapter(user_id, chapter_id)
   end
 end

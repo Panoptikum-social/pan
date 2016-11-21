@@ -11991,11 +11991,35 @@ var Episode = {
           message: { html: response.content } }).show();
       });
     });
+
+    Array.from(document.querySelectorAll("[data-type='chapter']")).forEach(function (button) {
+      var event = button.dataset.event;
+      _this.listen_to_chapter(episodeChannel, button.dataset.id);
+    });
+
+    episodeChannel.on("like-chapter", function (response) {
+      var button = document.querySelector("[data-type='chapter']" + "[data-event='like-chapter']" + "[data-id='" + response.chapter_id + "']");
+      button.outerHTML = response.button;
+      _this.listen_to_chapter(episodeChannel, response.chapter_id.toString());
+      $('.top-right').notify({ type: response.type,
+        message: { html: response.content } }).show();
+    });
   },
   listen_to: function listen_to(event, episodeChannel) {
     var button = document.querySelector("[data-type='episode']" + "[data-event='" + event + "']");
     button.addEventListener("click", function (e) {
       var payload = { episode_id: button.dataset.id,
+        action: button.dataset.action };
+
+      episodeChannel.push(button.dataset.event, payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  },
+  listen_to_chapter: function listen_to_chapter(episodeChannel, chapter_id) {
+    var button = document.querySelector("[data-type='chapter']" + "[data-event='like-chapter']" + "[data-id='" + chapter_id + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { chapter_id: chapter_id,
         action: button.dataset.action };
 
       episodeChannel.push(button.dataset.event, payload).receive("error", function (e) {
