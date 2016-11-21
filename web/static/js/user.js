@@ -17,8 +17,10 @@ let User = {
       userChannel.on(event, (response) =>{
         var button = document.querySelector("[data-type='user']" +
                                             "[data-event='" + event + "']")
-        button.outerHTML = response.button
-        this.listen_to(event, userChannel)
+        if (response.user_id == window.currentUserID){
+          button.outerHTML = response.button
+          this.listen_to(event, userChannel)
+        }
         $('.top-right').notify({type: response.type,
                                 message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
                                                  response.content } }).show()

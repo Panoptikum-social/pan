@@ -37,6 +37,7 @@ defmodule Pan.EpisodeChannel do
                                             "like_button.html",
                                             user_id: user_id,
                                             episode_id: episode_id),
+      user_id: user_id,
       user_name: user_name }
     {:reply, :ok, socket}
   end
@@ -71,6 +72,7 @@ defmodule Pan.EpisodeChannel do
                                             "like_chapter_button.html",
                                             user_id: user_id,
                                             chapter_id: chapter_id),
+      user_id: user_id,
       user_name: user_name,
       chapter_id: chapter_id}
     {:reply, :ok, socket}

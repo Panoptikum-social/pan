@@ -36,6 +36,7 @@ defmodule Pan.CategoryChannel do
                                             "like_button.html",
                                             user_id: user_id,
                                             category_id: category_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end
@@ -67,6 +68,7 @@ defmodule Pan.CategoryChannel do
                                             "follow_button.html",
                                             user_id: user_id,
                                             category_id: category_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end

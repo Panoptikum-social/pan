@@ -17,8 +17,10 @@ let Podcast = {
       podcastChannel.on(event, (response) =>{
         var button = document.querySelector("[data-type='podcast']" +
                                             "[data-event='" + event + "']")
-        button.outerHTML = response.button
-        this.listen_to(event, podcastChannel)
+        if (response.user_id == window.currentUserID){
+          button.outerHTML = response.button
+          this.listen_to(event, podcastChannel)
+        }
         $('.top-right').notify({type: response.type,
                                 message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
                                                  response.content } }).show()

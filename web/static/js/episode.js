@@ -17,8 +17,10 @@ let Episode = {
       episodeChannel.on(event, (response) =>{
         var button = document.querySelector("[data-type='episode']" +
                                             "[data-event='" + event + "']")
-        button.outerHTML = response.button
-        this.listen_to(event, episodeChannel)
+        if (response.user_id == window.currentUserID){
+          button.outerHTML = response.button
+          this.listen_to(event, episodeChannel)
+        }
         $('.top-right').notify({type: response.type,
                                 message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
                                                  response.content } }).show()
@@ -34,8 +36,10 @@ let Episode = {
       var button = document.querySelector("[data-type='chapter']" +
                                           "[data-event='like-chapter']" +
                                           "[data-id='" + response.chapter_id + "']")
-      button.outerHTML = response.button
-      this.listen_to_chapter(episodeChannel, response.chapter_id.toString())
+      if (response.user_id == window.currentUserID){
+        button.outerHTML = response.button
+        this.listen_to_chapter(episodeChannel, response.chapter_id.toString())
+      }
       $('.top-right').notify({type: response.type,
                               message: { html: "<i>" + response.user_name + ":</i>  &nbsp;" +
                                                response.content } }).show()

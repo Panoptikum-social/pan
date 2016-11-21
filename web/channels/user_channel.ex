@@ -36,6 +36,7 @@ defmodule Pan.UserChannel do
                                             "like_button.html",
                                             current_user_id: current_user_id,
                                             user_id: user_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end
@@ -67,6 +68,7 @@ defmodule Pan.UserChannel do
                                             "follow_button.html",
                                             current_user_id: current_user_id,
                                             user_id: user_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end

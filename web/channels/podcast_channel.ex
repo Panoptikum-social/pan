@@ -36,6 +36,7 @@ defmodule Pan.PodcastChannel do
                                             "like_button.html",
                                             user_id: user_id,
                                             podcast_id: podcast_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end
@@ -67,6 +68,7 @@ defmodule Pan.PodcastChannel do
                                             "follow_button.html",
                                             user_id: user_id,
                                             podcast_id: podcast_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end
@@ -98,6 +100,7 @@ defmodule Pan.PodcastChannel do
                                             "subscribe_button.html",
                                             user_id: user_id,
                                             podcast_id: podcast_id),
+      user_id: user_id,
       user_name: user_name}
     {:reply, :ok, socket}
   end
