@@ -44,7 +44,7 @@ defmodule Pan.EpisodeChannel do
     user_id = socket.assigns[:current_user_id]
     IO.inspect params["chapter_id"]
     chapter_id = String.to_integer(params["chapter_id"])
-    chapter_title = Repo.get!(Episode, chapter_id).title
+    chapter_title = Repo.get!(Chapter, chapter_id).title
                     |> Crutches.String.truncate(20)
     content = "I " <> params["action"] <> "d the chapter <b>" <>
               chapter_title <> "</b>"
