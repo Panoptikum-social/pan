@@ -12051,33 +12051,43 @@ var _episode = require("./episode");
 
 var _episode2 = _interopRequireDefault(_episode);
 
+var _user = require("./user");
+
+var _user2 = _interopRequireDefault(_user);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Mailbox = {
   init: function init(socket) {
-    var user_id = window.currentUserID;
+    var current_user_id = window.currentUserID;
 
-    if (user_id != "") {
+    if (current_user_id != "") {
       socket.connect();
-      this.onReady(socket, user_id);
+      this.onReady(socket, current_user_id);
     }
 
     var categorylikeButton = document.querySelector("[data-type='category'][data-event='like']");
-    if (user_id != "" && categorylikeButton != null) {
+    if (current_user_id != "" && categorylikeButton != null) {
       var category_id = categorylikeButton.getAttribute("data-id");
       _category2.default.onReady(socket, category_id);
     }
 
     var podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']");
-    if (user_id != "" && podcastlikeButton != null) {
+    if (current_user_id != "" && podcastlikeButton != null) {
       var podcast_id = podcastlikeButton.getAttribute("data-id");
       _podcast2.default.onReady(socket, podcast_id);
     }
 
     var episodelikeButton = document.querySelector("[data-type='episode'][data-event='like']");
-    if (user_id != "" && episodelikeButton != null) {
+    if (current_user_id != "" && episodelikeButton != null) {
       var episode_id = episodelikeButton.getAttribute("data-id");
       _episode2.default.onReady(socket, episode_id);
+    }
+
+    var userlikeButton = document.querySelector("[data-type='user'][data-event='like']");
+    if (current_user_id != "" && userlikeButton != null) {
+      var user_id = userlikeButton.getAttribute("data-id");
+      _user2.default.onReady(socket, user_id);
     }
   },
   onReady: function onReady(socket, user_id) {
@@ -12160,6 +12170,53 @@ var socket = new _phoenix.Socket("/socket", { params: { token: window.userToken 
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
 exports.default = socket;
+});
+
+;require.register("web/static/js/user.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var User = {
+  onReady: function onReady(socket, user_id) {
+    var _this = this;
+
+    var userChannel = socket.channel("users:" + user_id);
+
+    userChannel.join().receive("ok", function (response) {
+      console.log("joined user:" + user_id, response);
+    }).receive("error", function (response) {
+      console.log("join of user:" + user_id + " failed", reason);
+    });
+
+    Array.from(document.querySelectorAll("[data-type='user']")).forEach(function (button) {
+      var event = button.dataset.event;
+      _this.listen_to(event, userChannel);
+
+      userChannel.on(event, function (response) {
+        var button = document.querySelector("[data-type='user']" + "[data-event='" + event + "']");
+        button.outerHTML = response.button;
+        _this.listen_to(event, userChannel);
+        $('.top-right').notify({ type: response.type,
+          message: { html: response.content } }).show();
+      });
+    });
+  },
+  listen_to: function listen_to(event, userChannel) {
+    var button = document.querySelector("[data-type='user']" + "[data-event='" + event + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { user_id: button.dataset.id,
+        action: button.dataset.action };
+
+      userChannel.push(button.dataset.event, payload).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  }
+};
+
+exports.default = User;
 });
 
 ;require.alias("jquery/dist/jquery.js", "jquery");

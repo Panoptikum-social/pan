@@ -1,5 +1,12 @@
 <h1><%= @user.name %></h1>
 
+<%= if @current_user do %>
+  <p>
+    <%= like_or_unlike(@current_user.id, @user.id) %>
+    <%= follow_or_unfollow(@current_user.id, @user.id) %>
+  </p>
+<% end %>
+
 <div class="row">
   <div class="col-md-6">
     <div class="panel panel-success">

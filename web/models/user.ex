@@ -1,5 +1,8 @@
 defmodule Pan.User do
   use Pan.Web, :model
+  alias Pan.Like
+  alias Pan.Repo
+  alias Pan.Follow
 
   @required_fields ~w(name username email)
   @optional_fields ~w(admin podcaster)
@@ -50,6 +53,30 @@ defmodule Pan.User do
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
       _ ->
         changeset
+    end
+  end
+
+
+  def like(user_id, current_user_id) do
+    case Repo.get_by(Like, enjoyer_id: current_user_id,
+                           user_id: user_id) do
+      nil ->
+        %Like{enjoyer_id: current_user_id, user_id: user_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
+    end
+  end
+
+
+  def follow(user_id, current_user_id) do
+    case Repo.get_by(Follow, follower_id: current_user_id,
+                             user_id: user_id) do
+      nil ->
+        %Follow{follower_id: current_user_id, user_id: user_id}
+        |> Repo.insert
+      like ->
+        Repo.delete!(like)
     end
   end
 end
