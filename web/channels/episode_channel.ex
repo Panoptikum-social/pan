@@ -45,7 +45,7 @@ defmodule Pan.EpisodeChannel do
     IO.inspect params["chapter_id"]
     chapter_id = String.to_integer(params["chapter_id"])
     chapter_title = Repo.get!(Chapter, chapter_id).title
-                    |> Crutches.String.truncate(20)
+                    |> Crutches.String.truncate(40)
     content = "I " <> params["action"] <> "d the chapter <b>" <>
               chapter_title <> "</b>"
     type = "success"
