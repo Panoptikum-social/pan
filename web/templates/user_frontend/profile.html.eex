@@ -1,0 +1,56 @@
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">My Account</h3>
+      </div>
+      <div class="panel-body">
+        <dl class="dl-horizontal">
+          <dt>My user handle</dt>
+          <dd><%= @user.username %></dd>
+
+          <dt>My Name</dt>
+          <dd><%= @user.name %></dd>
+
+          <dt>My Email</dt>
+          <dd><%= @user.email %></dd>
+
+          <dt>Admin</dt>
+          <dd>
+            <%= if @user.admin do %>
+              I have admin priviliges.
+            <% else %>
+              I am not an admin on this system.
+            <% end %>
+          </dd>
+
+          <dt>Podcaster</dt>
+          <dd>
+            <%= if @user.podcaster do %>
+              I am a podcaster myself.
+            <% else %>
+              I am not a podcaster.
+            <% end %>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">My Messages</h3>
+      </div>
+       <ul class="list-group">
+         <%= for message <- @messages do %>
+           <li class="list-group-item message-<%= message.type %>">
+             <i><%= message.creator.name %>:</i> <%= raw message.content %><br/>
+             <p class="text-right"><%= message.inserted_at %></p>
+           </li>
+         <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

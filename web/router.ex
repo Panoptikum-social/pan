@@ -32,12 +32,13 @@ defmodule Pan.Router do
     resources "/users", UserController, only: [:new, :create]
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     post "/search/", SearchFrontendController, :new
+    resources "/podcasters", UserFrontendController, only: [:show, :index]
   end
 
 
   scope "/pan", Pan do
     pipe_through [:browser, :authenticate_user]
-    get "/my_account", UserFrontendController, :show
+    get "/my_account", UserFrontendController, :profile
   end
 
 

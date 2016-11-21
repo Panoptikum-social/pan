@@ -15,7 +15,7 @@ defmodule Pan.User do
     field :podcaster, :boolean
     timestamps
 
-    has_many :owned_podcasts, Pan.Podcast, foreign_key: "owner_id"
+    has_many :owned_podcasts, Pan.Podcast, foreign_key: :owner_id
     has_many :contributor_identities, Pan.Contributor
 
     many_to_many :subscribed_podcasts, Pan.Podcast, join_through: "subscriptions"

@@ -40,12 +40,13 @@
             <ul class="nav navbar-nav">
               <li><%= link "Categories", to: category_frontend_path(@conn, :index) %></li>
               <li><%= link "Latest Episodes", to: episode_frontend_path(@conn, :latest) %></li>
+              <li><%= link "Podcasters", to: user_frontend_path(@conn, :index) %></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <%= if @current_user do %>
                 <li>
                   <p class="navbar-text">
-                    <%= link ["@", @current_user.username], to: user_frontend_path(@conn, :show) %>
+                    <%= link ["@", @current_user.username], to: user_frontend_path(@conn, :profile) %>
                   </p>
                 </li>
 

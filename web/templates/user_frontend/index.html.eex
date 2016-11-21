@@ -1,0 +1,11 @@
+<h1>Podcasters</h1>
+
+<p style="line-height: 2.5;">
+  <%= for {user, counter} <- Enum.with_index(@users) do %>
+    <%= if user.owned_podcasts != [] and user.name != "Jane Doe" do %>
+      <%= link [fa_icon("user"), " ", user.name],
+          to: user_frontend_path(@conn, :show, user),
+          class: "btn btn-xs " <> Pan.CategoryFrontendView.btn_cycle(counter) %> &nbsp;
+    <% end %>
+  <% end %>
+</p>
