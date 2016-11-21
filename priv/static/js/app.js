@@ -11941,7 +11941,7 @@ var Category = {
         button.outerHTML = response.button;
         _this.listen_to(event, categoryChannel);
         $('.top-right').notify({ type: response.type,
-          message: { html: response.content } }).show();
+          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
       });
     });
   },
@@ -11988,7 +11988,7 @@ var Episode = {
         button.outerHTML = response.button;
         _this.listen_to(event, episodeChannel);
         $('.top-right').notify({ type: response.type,
-          message: { html: response.content } }).show();
+          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
       });
     });
 
@@ -12002,7 +12002,7 @@ var Episode = {
       button.outerHTML = response.button;
       _this.listen_to_chapter(episodeChannel, response.chapter_id.toString());
       $('.top-right').notify({ type: response.type,
-        message: { html: response.content } }).show();
+        message: { html: "<i>" + response.user_name + ":</i>  &nbsp;" + response.content } }).show();
     });
   },
   listen_to: function listen_to(event, episodeChannel) {
@@ -12078,9 +12078,9 @@ var Mailbox = {
       _podcast2.default.onReady(socket, podcast_id);
     }
 
-    var episodelikeButton = document.querySelector("[data-type='episode'][data-event='like']");
-    if (current_user_id != "" && episodelikeButton != null) {
-      var episode_id = episodelikeButton.getAttribute("data-id");
+    var episodeElement = document.querySelector("[data-type='episode']");
+    if (episodeElement != null) {
+      var episode_id = episodeElement.getAttribute("data-id");
       _episode2.default.onReady(socket, episode_id);
     }
 
@@ -12131,7 +12131,7 @@ var Podcast = {
         button.outerHTML = response.button;
         _this.listen_to(event, podcastChannel);
         $('.top-right').notify({ type: response.type,
-          message: { html: response.content } }).show();
+          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
       });
     });
   },
@@ -12199,7 +12199,7 @@ var User = {
         button.outerHTML = response.button;
         _this.listen_to(event, userChannel);
         $('.top-right').notify({ type: response.type,
-          message: { html: response.content } }).show();
+          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
       });
     });
   },

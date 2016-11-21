@@ -24,9 +24,9 @@ let Mailbox = {
       Podcast.onReady(socket, podcast_id)
     }
 
-    let episodelikeButton = document.querySelector("[data-type='episode'][data-event='like']")
-    if(current_user_id != "" && episodelikeButton != null) {
-      let episode_id = episodelikeButton.getAttribute("data-id")
+    let episodeElement = document.querySelector("[data-type='episode']")
+    if(episodeElement != null) {
+      let episode_id = episodeElement.getAttribute("data-id")
       Episode.onReady(socket, episode_id)
     }
 

@@ -4,6 +4,7 @@ defmodule Pan.EpisodeChannel do
   alias Pan.Episode
   alias Pan.Message
   alias Pan.Chapter
+  alias Pan.User
 
   def join("episodes:" <> episode_id, _params, socket) do
     {:ok, assign(socket, :episode_id, String.to_integer(episode_id))}
@@ -13,6 +14,7 @@ defmodule Pan.EpisodeChannel do
   def handle_in("like", params, socket) do
     [topic, subtopic] = String.split(socket.topic, ":")
     user_id = socket.assigns[:current_user_id]
+    user_name = Repo.get(User, user_id).name
     episode_id = String.to_integer(params["episode_id"])
     content = "I " <> params["action"] <> "d the episode <b>" <>
               Repo.get!(Episode, episode_id).title <> "</b>"
@@ -34,7 +36,8 @@ defmodule Pan.EpisodeChannel do
       button: Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
                                             "like_button.html",
                                             user_id: user_id,
-                                            episode_id: episode_id)}
+                                            episode_id: episode_id),
+      user_name: user_name }
     {:reply, :ok, socket}
   end
 
@@ -42,6 +45,7 @@ defmodule Pan.EpisodeChannel do
   def handle_in("like-chapter", params, socket) do
     [topic, subtopic] = String.split(socket.topic, ":")
     user_id = socket.assigns[:current_user_id]
+    user_name = Repo.get(User, user_id).name
     IO.inspect params["chapter_id"]
     chapter_id = String.to_integer(params["chapter_id"])
     chapter_title = Repo.get!(Chapter, chapter_id).title
@@ -67,6 +71,7 @@ defmodule Pan.EpisodeChannel do
                                             "like_chapter_button.html",
                                             user_id: user_id,
                                             chapter_id: chapter_id),
+      user_name: user_name,
       chapter_id: chapter_id}
     {:reply, :ok, socket}
   end

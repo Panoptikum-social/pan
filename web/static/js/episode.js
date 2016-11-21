@@ -20,7 +20,8 @@ let Episode = {
         button.outerHTML = response.button
         this.listen_to(event, episodeChannel)
         $('.top-right').notify({type: response.type,
-                                message: { html: response.content } }).show()
+                                message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
+                                                 response.content } }).show()
       })
     })
 
@@ -36,7 +37,8 @@ let Episode = {
       button.outerHTML = response.button
       this.listen_to_chapter(episodeChannel, response.chapter_id.toString())
       $('.top-right').notify({type: response.type,
-                              message: { html: response.content } }).show()
+                              message: { html: "<i>" + response.user_name + ":</i>  &nbsp;" +
+                                               response.content } }).show()
     })
   },
 

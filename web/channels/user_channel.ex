@@ -3,6 +3,7 @@ defmodule Pan.UserChannel do
   alias Pan.Repo
   alias Pan.User
   alias Pan.Message
+  alias Pan.User
 
   def join("users:" <> user_id, _params, socket) do
     {:ok, assign(socket, :user_id, String.to_integer(user_id))}
@@ -13,6 +14,7 @@ defmodule Pan.UserChannel do
     [topic, subtopic] = String.split(socket.topic, ":")
     current_user_id = socket.assigns[:current_user_id]
     user_id = String.to_integer(params["user_id"])
+    user_name = Repo.get(User, user_id).name
     content = "I " <> params["action"] <> "d the user <b>" <>
               Repo.get!(User, user_id).name <> "</b>"
     type = "success"
@@ -33,7 +35,8 @@ defmodule Pan.UserChannel do
       button: Phoenix.View.render_to_string(Pan.UserFrontendView,
                                             "like_button.html",
                                             current_user_id: current_user_id,
-                                            user_id: user_id)}
+                                            user_id: user_id),
+      user_name: user_name}
     {:reply, :ok, socket}
   end
 
@@ -42,6 +45,7 @@ defmodule Pan.UserChannel do
     [topic, subtopic] = String.split(socket.topic, ":")
     current_user_id = socket.assigns[:current_user_id]
     user_id = String.to_integer(params["user_id"])
+    user_name = Repo.get(User, user_id).name
     content = "I " <> params["action"] <> "ed the user <b>" <>
               Repo.get!(User, user_id).name <> "</b>"
     type = "success"
@@ -62,7 +66,8 @@ defmodule Pan.UserChannel do
       button: Phoenix.View.render_to_string(Pan.UserFrontendView,
                                             "follow_button.html",
                                             current_user_id: current_user_id,
-                                            user_id: user_id)}
+                                            user_id: user_id),
+      user_name: user_name}
     {:reply, :ok, socket}
   end
 

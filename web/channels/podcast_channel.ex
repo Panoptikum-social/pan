@@ -3,6 +3,7 @@ defmodule Pan.PodcastChannel do
   alias Pan.Repo
   alias Pan.Podcast
   alias Pan.Message
+  alias Pan.User
 
   def join("podcasts:" <> podcast_id, _params, socket) do
     {:ok, assign(socket, :podcast_id, String.to_integer(podcast_id))}
@@ -12,6 +13,7 @@ defmodule Pan.PodcastChannel do
   def handle_in("like", params, socket) do
     [topic, subtopic] = String.split(socket.topic, ":")
     user_id = socket.assigns[:current_user_id]
+    user_name = Repo.get(User, user_id).name
     podcast_id = String.to_integer(params["podcast_id"])
     content = "I " <> params["action"] <> "d the podcast <b>" <>
               Repo.get!(Podcast, podcast_id).title <> "</b>"
@@ -33,7 +35,8 @@ defmodule Pan.PodcastChannel do
       button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
                                             "like_button.html",
                                             user_id: user_id,
-                                            podcast_id: podcast_id)}
+                                            podcast_id: podcast_id),
+      user_name: user_name}
     {:reply, :ok, socket}
   end
 
@@ -41,6 +44,7 @@ defmodule Pan.PodcastChannel do
   def handle_in("follow", params, socket) do
     [topic, subtopic] = String.split(socket.topic, ":")
     user_id = socket.assigns[:current_user_id]
+    user_name = Repo.get(User, user_id).name
     podcast_id = String.to_integer(params["podcast_id"])
     content = "I " <> params["action"] <> "ed the podcast <b>" <>
               Repo.get!(Podcast, podcast_id).title <> "</b>"
@@ -62,7 +66,8 @@ defmodule Pan.PodcastChannel do
       button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
                                             "follow_button.html",
                                             user_id: user_id,
-                                            podcast_id: podcast_id)}
+                                            podcast_id: podcast_id),
+      user_name: user_name}
     {:reply, :ok, socket}
   end
 
@@ -70,6 +75,7 @@ defmodule Pan.PodcastChannel do
   def handle_in("subscribe", params, socket) do
     [topic, subtopic] = String.split(socket.topic, ":")
     user_id = socket.assigns[:current_user_id]
+    user_name = Repo.get(User, user_id).name
     podcast_id = String.to_integer(params["podcast_id"])
     content = "I " <> params["action"] <> "d the podcast <b>" <>
               Repo.get!(Podcast, podcast_id).title <> "</b>"
@@ -91,7 +97,8 @@ defmodule Pan.PodcastChannel do
       button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
                                             "subscribe_button.html",
                                             user_id: user_id,
-                                            podcast_id: podcast_id)}
+                                            podcast_id: podcast_id),
+      user_name: user_name}
     {:reply, :ok, socket}
   end
 end

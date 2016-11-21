@@ -20,7 +20,8 @@ let Podcast = {
         button.outerHTML = response.button
         this.listen_to(event, podcastChannel)
         $('.top-right').notify({type: response.type,
-                                message: { html: response.content } }).show()
+                                message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
+                                                 response.content } }).show()
       })
     })
   },
