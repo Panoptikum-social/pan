@@ -32,3 +32,5 @@ config :pan, ecto_repos: [Pan.Repo]
 
 # This should resolv HttPoison errors
 # config :ssl, protocol_version: :"tlsv1.2"
+
+config :scrivener_html, routes_helper: Pan.Router.Helpers

@@ -4,7 +4,6 @@ defmodule Pan.EpisodeChannel do
   alias Pan.Episode
   alias Pan.Message
   alias Pan.Chapter
-  alias Pan.User
 
   def join("episodes:" <> episode_id, _params, socket) do
     {:ok, assign(socket, :episode_id, String.to_integer(episode_id))}

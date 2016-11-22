@@ -19,7 +19,7 @@ defmodule Pan.Mixfile do
                     :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
                     :comeonin, :sweet_xml, :timex,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
-                    :crutches ]]
+                    :crutches,:scrivener_ecto, :scrivener_html ]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -44,7 +44,9 @@ defmodule Pan.Mixfile do
      {:quinn, "~> 1.0.0"},
      {:uuid, "~> 1.1"},
      {:html_sanitize_ex, "~> 1.0.0"},
-     {:crutches, "~> 1.0.0"}]
+     {:crutches, "~> 1.0.0"},
+     {:scrivener_ecto, "~> 1.0"},
+     {:scrivener_html, "~> 1.1"}]
   end
 
   defp aliases do

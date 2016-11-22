@@ -130,7 +130,7 @@ h6, .h6 { font-size: 14px; }
 .notifications > .alert {padding: 2px 10px 2px 10px; }
 
 .message-warning {background-color: #fffaed;}
-.message-success {background-color: #d2ebb7;}
+.message-success {background-color: #ddffdd;}
 .message-info {background-color: #d7f1fa;}
 .message-danger, .message-error {background-color: #ff8591;}
 
