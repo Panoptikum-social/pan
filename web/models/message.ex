@@ -25,8 +25,12 @@ defmodule Pan.Message do
 
 
   def persist_event(event) do
-    %Message{topic: event.topic, subtopic: event.subtopic, event: event.event,
-             content: event.content, creator_id: event.user_id, type: event.type}
+    %Message{topic: event.topic,
+             subtopic: event.subtopic,
+             event: event.event,
+             content: event.content,
+             creator_id: event.current_user_id,
+             type: event.type}
     |> Repo.insert
   end
 end

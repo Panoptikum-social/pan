@@ -11920,6 +11920,13 @@ _mailbox2.default.init(_socket2.default);
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Category = {
   onReady: function onReady(socket, category_id) {
     var _this = this;
@@ -11932,28 +11939,25 @@ var Category = {
       console.log("join of category:" + category_id + " failed", reason);
     });
 
-    Array.from(document.querySelectorAll("[data-type='category']")).forEach(function (button) {
-      var event = button.dataset.event;
-      _this.listen_to(event, categoryChannel);
+    categoryChannel.on("notification", function (response) {
+      return _notification2.default.popup(response);
+    });
 
-      categoryChannel.on(event, function (response) {
-        var button = document.querySelector("[data-type='category']" + "[data-event='" + event + "']");
-        if (response.user_id == window.currentUserID) {
-          button.outerHTML = response.button;
-          _this.listen_to(event, categoryChannel);
-        }
-        $('.top-right').notify({ type: response.type,
-          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
-      });
+    Array.from(document.querySelectorAll("[data-type='category']")).forEach(function (button) {
+      _this.listen_to(button.dataset.event, categoryChannel);
     });
   },
   listen_to: function listen_to(event, categoryChannel) {
+    var _this2 = this;
+
     var button = document.querySelector("[data-type='category']" + "[data-event='" + event + "']");
     button.addEventListener("click", function (e) {
-      var payload = { category_id: button.dataset.id,
-        action: button.dataset.action };
+      var payload = { category_id: button.dataset.id, action: button.dataset.action };
 
-      categoryChannel.push(button.dataset.event, payload).receive("error", function (e) {
+      categoryChannel.push(button.dataset.event, payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this2.listen_to(button.dataset.event, episodeChannel);
+      }).receive("error", function (e) {
         return console.log(e);
       });
     });
@@ -11969,6 +11973,13 @@ exports.default = Category;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Episode = {
   onReady: function onReady(socket, episode_id) {
     var _this = this;
@@ -12108,16 +12119,31 @@ var Mailbox = {
     });
 
     mailboxChannel.on("notification", function (response) {
-      var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content };
-      if (window.lastMessage != message.html) {
-        $('.top-right').notify({ type: response.type, message: message }).show();
-        window.lastMessage = message.html;
-      }
+      return Mailbox.popup(response);
     });
   }
 };
 
 exports.default = Mailbox;
+});
+
+;require.register("web/static/js/notification.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var Notification = {
+  popup: function popup(response) {
+    var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content };
+    if (window.lastMessage != message.html) {
+      $('.top-right').notify({ type: response.type, message: message }).show();
+      window.lastMessage = message.html;
+    }
+  }
+};
+
+exports.default = Notification;
 });
 
 ;require.register("web/static/js/podcast.js", function(exports, require, module) {
@@ -12126,6 +12152,13 @@ exports.default = Mailbox;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var Podcast = {
   onReady: function onReady(socket, podcast_id) {
     var _this = this;
@@ -12139,11 +12172,7 @@ var Podcast = {
     });
 
     podcastChannel.on("notification", function (response) {
-      var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content };
-      if (window.lastMessage != message.html) {
-        $('.top-right').notify({ type: response.type, message: message }).show();
-        window.lastMessage = message.html;
-      }
+      return _notification2.default.popup(response);
     });
 
     Array.from(document.querySelectorAll("[data-type='podcast']")).forEach(function (button) {
@@ -12196,6 +12225,13 @@ exports.default = socket;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var User = {
   onReady: function onReady(socket, user_id) {
     var _this = this;
@@ -12208,28 +12244,25 @@ var User = {
       console.log("join of user:" + user_id + " failed", reason);
     });
 
-    Array.from(document.querySelectorAll("[data-type='user']")).forEach(function (button) {
-      var event = button.dataset.event;
-      _this.listen_to(event, userChannel);
+    userChannel.on("notification", function (response) {
+      return _notification2.default.popup(response);
+    });
 
-      userChannel.on(event, function (response) {
-        var button = document.querySelector("[data-type='user']" + "[data-event='" + event + "']");
-        if (response.user_id == window.currentUserID) {
-          button.outerHTML = response.button;
-          _this.listen_to(event, userChannel);
-        }
-        $('.top-right').notify({ type: response.type,
-          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
-      });
+    Array.from(document.querySelectorAll("[data-type='user']")).forEach(function (button) {
+      _this.listen_to(button.dataset.event, userChannel);
     });
   },
   listen_to: function listen_to(event, userChannel) {
+    var _this2 = this;
+
     var button = document.querySelector("[data-type='user']" + "[data-event='" + event + "']");
     button.addEventListener("click", function (e) {
-      var payload = { user_id: button.dataset.id,
-        action: button.dataset.action };
+      var payload = { user_id: button.dataset.id, action: button.dataset.action };
 
-      userChannel.push(button.dataset.event, payload).receive("error", function (e) {
+      userChannel.push(button.dataset.event, payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this2.listen_to(button.dataset.event, userChannel);
+      }).receive("error", function (e) {
         return console.log(e);
       });
     });

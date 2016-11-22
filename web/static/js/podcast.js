@@ -1,3 +1,5 @@
+import Notification from "./notification"
+
 let Podcast = {
   onReady(socket, podcast_id){
     let podcastChannel = socket.channel("podcasts:" + podcast_id)
@@ -10,13 +12,7 @@ let Podcast = {
         console.log("join of podcast:" + podcast_id + " failed", reason)
       })
 
-    podcastChannel.on("notification", (response) =>{
-      var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content }
-      if(window.lastMessage != message.html){
-        $('.top-right').notify({type: response.type, message: message }).show()
-        window.lastMessage = message.html
-      }
-    })
+    podcastChannel.on("notification", (response) => Notification.popup(response) )
 
     Array.from(document.querySelectorAll("[data-type='podcast']")).forEach(button => {
       this.listen_to(button.dataset.event, podcastChannel)

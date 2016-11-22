@@ -3,7 +3,6 @@ defmodule Pan.CategoryChannel do
   alias Pan.Repo
   alias Pan.Category
   alias Pan.Message
-  alias Pan.User
 
   def join("categories:" <> category_id, _params, socket) do
     {:ok, assign(socket, :category_id, String.to_integer(category_id))}
@@ -11,65 +10,49 @@ defmodule Pan.CategoryChannel do
 
 
   def handle_in("like", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    category_id = String.to_integer(params["category_id"])
-    content = "I " <> params["action"] <> "d the category <b>" <>
-              Repo.get!(Category, category_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      category_id:     String.to_integer(params["category_id"]),
+      type:            "success",
+      event:           "like"
+    }
+    e = %{e | content: "I " <> params["action"] <> "d the category <b>" <>
+                       Repo.get!(Category, e.category_id).title <> "</b>"}
 
-    Category.like(category_id, user_id)
+    Category.like(e.category_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "like",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "like", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.CategoryFrontendView,
-                                            "like_button.html",
-                                            user_id: user_id,
-                                            category_id: category_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.CategoryFrontendView,
+                                           "like_button.html",
+                                           user_id: e.current_user_id,
+                                           podcast_id: e.podcast_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 
 
   def handle_in("follow", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    category_id = String.to_integer(params["category_id"])
-    content = "I " <> params["action"] <> "ed the category <b>" <>
-              Repo.get!(Category, category_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      category_id:     String.to_integer(params["category_id"]),
+      type:            "success",
+      event:           "follow"
+    }
+    e = %{e | content: "I " <> params["action"] <> "ed the category <b>" <>
+                       Repo.get!(Category, e.category_id).title <> "</b>"}
 
-    Category.follow(category_id, user_id)
+    Category.follow(e.category_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "follow",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "follow", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.CategoryFrontendView,
-                                            "follow_button.html",
-                                            user_id: user_id,
-                                            category_id: category_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.CategoryFrontendView,
+                                           "follow_button.html",
+                                           user_id: e.current_user_id,
+                                           podcast_id: e.podcast_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 end

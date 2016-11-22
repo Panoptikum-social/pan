@@ -1,3 +1,5 @@
+import Notification from "./notification"
+
 let Category = {
   onReady(socket, category_id){
     let categoryChannel = socket.channel("categories:" + category_id)
@@ -10,21 +12,10 @@ let Category = {
         console.log("join of category:" + category_id + " failed", reason)
       })
 
-    Array.from(document.querySelectorAll("[data-type='category']")).forEach(button => {
-      let event = button.dataset.event
-      this.listen_to(event, categoryChannel)
+    categoryChannel.on("notification", (response) => Notification.popup(response) )
 
-      categoryChannel.on(event, (response) =>{
-        var button = document.querySelector("[data-type='category']" +
-                                            "[data-event='" + event + "']")
-        if (response.user_id == window.currentUserID){
-          button.outerHTML = response.button
-          this.listen_to(event, categoryChannel)
-        }
-        $('.top-right').notify({type: response.type,
-                                message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
-                                                 response.content } }).show()
-      })
+    Array.from(document.querySelectorAll("[data-type='category']")).forEach(button => {
+      this.listen_to(button.dataset.event, categoryChannel)
     })
   },
 
@@ -33,10 +24,13 @@ let Category = {
     var button = document.querySelector("[data-type='category']" +
                                         "[data-event='" + event + "']")
     button.addEventListener("click", e => {
-      let payload = {category_id: button.dataset.id,
-                     action: button.dataset.action}
+      let payload = {category_id: button.dataset.id, action: button.dataset.action}
 
       categoryChannel.push(button.dataset.event, payload)
+                    .receive("ok", (response) => {
+        button.outerHTML = response.button
+        this.listen_to(button.dataset.event, episodeChannel)
+      })
                     .receive("error", e => console.log(e))
     })
   }

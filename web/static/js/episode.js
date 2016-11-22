@@ -1,3 +1,5 @@
+import Notification from "./notification"
+
 let Episode = {
   onReady(socket, episode_id){
     let episodeChannel = socket.channel("episodes:" + episode_id)

@@ -11,66 +11,49 @@ defmodule Pan.UserChannel do
 
 
   def handle_in("like", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    current_user_id = socket.assigns[:current_user_id]
-    user_id = String.to_integer(params["user_id"])
-    user_name = Repo.get(User, user_id).name
-    content = "I " <> params["action"] <> "d the user <b>" <>
-              Repo.get!(User, user_id).name <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      user_id:         String.to_integer(params["user_id"]),
+      type:            "success",
+      event:           "like"
+    }
+    e = %{e | content: "I " <> params["action"] <> "d the user <b>" <>
+                       Repo.get!(User, e.user_id).name <> "</b>"}
 
-    User.like(user_id, current_user_id)
+    User.like(e.user_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "like",
-             content: content,
-             creator_id: current_user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "like", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.UserFrontendView,
-                                            "like_button.html",
-                                            current_user_id: current_user_id,
-                                            user_id: user_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.UserFrontendView,
+                                           "like_button.html",
+                                           current_user_id: e.current_user_id,
+                                           user_id: e.user_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 
 
   def handle_in("follow", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    current_user_id = socket.assigns[:current_user_id]
-    user_id = String.to_integer(params["user_id"])
-    user_name = Repo.get(User, user_id).name
-    content = "I " <> params["action"] <> "ed the user <b>" <>
-              Repo.get!(User, user_id).name <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      user_id:         String.to_integer(params["user_id"]),
+      type:            "success",
+      event:           "follow"
+    }
+    e = %{e | content: "I " <> params["action"] <> "ed the user <b>" <>
+                       Repo.get!(User, e.user_id).name <> "</b>"}
 
-    User.follow(user_id, current_user_id)
+    User.follow(e.user_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "follow",
-             content: content,
-             creator_id: current_user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "follow", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.UserFrontendView,
-                                            "follow_button.html",
-                                            current_user_id: current_user_id,
-                                            user_id: user_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.UserFrontendView,
+                                           "follow_button.html",
+                                           current_user_id: e.current_user_id,
+                                           user_id: e.user_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
-
 end

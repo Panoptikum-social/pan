@@ -1,7 +1,7 @@
-import Category from "./category"
-import Podcast  from "./podcast"
-import Episode  from "./episode"
-import User     from "./user"
+import Category     from "./category"
+import Podcast      from "./podcast"
+import Episode      from "./episode"
+import User         from "./user"
 window.lastMessage = "unset"
 
 let Mailbox = {
@@ -46,14 +46,8 @@ let Mailbox = {
       .receive("ok",    resp => console.log("joined mailbox:" + user_id, resp))
       .receive("error", resp => console.log("join of mailbox:"  + user_id + " failed", reason))
 
-    mailboxChannel.on("notification", (response) =>{
-      var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content }
-      if(window.lastMessage != message.html){
-        $('.top-right').notify({type: response.type, message: message }).show()
-        window.lastMessage = message.html
-      }
-    })
-  },
+    mailboxChannel.on("notification", (response) => Mailbox.popup(response) )
+  }
 }
 
 export default Mailbox

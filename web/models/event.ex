@@ -5,19 +5,22 @@ defmodule Event do
   alias Pan.Endpoint
   alias Pan.User
 
-  defstruct topic:      "",
-            subtopic:   "",
-            user_id:    0,
-            podcast_id: 0,
-            content:    "",
-            type:       "",
-            event:      ""
+  defstruct topic:           "",
+            subtopic:        "",
+            current_user_id: 0,
+            user_id:         0,
+            podcast_id:      0,
+            category_id:     0,
+            episode_id:      0,
+            content:         "",
+            type:            "",
+            event:           ""
 
 
   def notify_subscribers(event) do
     notification = %{content: event.content,
                      type: event.type,
-                     user_name: Repo.get(User, event.user_id).name}
+                     user_name: Repo.get(User, event.current_user_id).name}
 
     follower_mailboxes = Podcast.follower_mailboxes(event.podcast_id)
 
