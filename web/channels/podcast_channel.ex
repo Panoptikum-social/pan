@@ -11,97 +11,75 @@ defmodule Pan.PodcastChannel do
 
 
   def handle_in("like", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    podcast_id = String.to_integer(params["podcast_id"])
-    content = "I " <> params["action"] <> "d the podcast <b>" <>
-              Repo.get!(Podcast, podcast_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:      String.split(socket.topic, ":") |> List.first,
+      subtopic:   String.split(socket.topic, ":") |> List.last,
+      user_id:    socket.assigns[:current_user_id],
+      podcast_id: String.to_integer(params["podcast_id"]),
+      type:       "success",
+      event:      "like"
+    }
+    e = %{e | content: "I " <> params["action"] <> "d the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
 
-    Podcast.like(podcast_id, user_id)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "like",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
+    Podcast.like(e.podcast_id, e.user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    broadcast! socket, "like", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
-                                            "like_button.html",
-                                            user_id: user_id,
-                                            podcast_id: podcast_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.PodcastFrontendView,
+                                           "like_button.html",
+                                           user_id: e.user_id,
+                                           podcast_id: e.podcast_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 
 
   def handle_in("follow", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    podcast_id = String.to_integer(params["podcast_id"])
-    content = "I " <> params["action"] <> "ed the podcast <b>" <>
-              Repo.get!(Podcast, podcast_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:      String.split(socket.topic, ":") |> List.first,
+      subtopic:   String.split(socket.topic, ":") |> List.last,
+      user_id:    socket.assigns[:current_user_id],
+      podcast_id: String.to_integer(params["podcast_id"]),
+      type:       "success",
+      event:      "follow"
+    }
+    e = %{e | content: "I " <> params["action"] <> "ed the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
 
-    Podcast.follow(podcast_id, user_id)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "follow",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
+    Podcast.follow(e.podcast_id, e.user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    broadcast! socket, "follow", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
-                                            "follow_button.html",
-                                            user_id: user_id,
-                                            podcast_id: podcast_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.PodcastFrontendView,
+                                           "follow_button.html",
+                                           user_id: e.user_id,
+                                           podcast_id: e.podcast_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 
 
   def handle_in("subscribe", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    podcast_id = String.to_integer(params["podcast_id"])
-    content = "I " <> params["action"] <> "d the podcast <b>" <>
-              Repo.get!(Podcast, podcast_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:      String.split(socket.topic, ":") |> List.first,
+      subtopic:   String.split(socket.topic, ":") |> List.last,
+      user_id:    socket.assigns[:current_user_id],
+      podcast_id: String.to_integer(params["podcast_id"]),
+      type:       "success",
+      event:      "subscribe"
+    }
+    e = %{e | content: "I " <> params["action"] <> "d the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
 
-    Podcast.subscribe(podcast_id, user_id)
+    Podcast.subscribe(e.podcast_id, e.user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "subscribe",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "subscribe", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.PodcastFrontendView,
-                                            "subscribe_button.html",
-                                            user_id: user_id,
-                                            podcast_id: podcast_id),
-      user_id: user_id,
-      user_name: user_name}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.PodcastFrontendView,
+                                           "subscribe_button.html",
+                                           user_id: e.user_id,
+                                           podcast_id: e.podcast_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 end
