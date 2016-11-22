@@ -12,41 +12,18 @@ let Episode = {
         console.log("join of episode:" + episode_id + " failed", reason)
       })
 
-    Array.from(document.querySelectorAll("[data-type='episode']")).forEach(button => {
-      let event = button.dataset.event
-      this.listen_to(event, episodeChannel)
+    episodeChannel.on("notification", (response) => Notification.popup(response) )
 
-      episodeChannel.on(event, (response) =>{
-        var button = document.querySelector("[data-type='episode']" +
-                                            "[data-event='" + event + "']")
-        if (response.user_id == window.currentUserID){
-          button.outerHTML = response.button
-          this.listen_to(event, episodeChannel)
-        }
-        $('.top-right').notify({type: response.type,
-                                message: { html: "<i>" + response.user_name + ":</i> &nbsp;" +
-                                                 response.content } }).show()
-      })
+    Array.from(document.querySelectorAll("[data-type='episode']")).forEach(button => {
+      this.listen_to(button.dataset.event, episodeChannel)
     })
 
     Array.from(document.querySelectorAll("[data-type='chapter']")).forEach(button => {
       let event = button.dataset.event
       this.listen_to_chapter(episodeChannel, button.dataset.id)
     })
-
-    episodeChannel.on("like-chapter", (response) =>{
-      var button = document.querySelector("[data-type='chapter']" +
-                                          "[data-event='like-chapter']" +
-                                          "[data-id='" + response.chapter_id + "']")
-      if (response.user_id == window.currentUserID){
-        button.outerHTML = response.button
-        this.listen_to_chapter(episodeChannel, response.chapter_id.toString())
-      }
-      $('.top-right').notify({type: response.type,
-                              message: { html: "<i>" + response.user_name + ":</i>  &nbsp;" +
-                                               response.content } }).show()
-    })
   },
+
 
   listen_to(event, episodeChannel) {
     var button = document.querySelector("[data-type='episode']" +
@@ -56,6 +33,10 @@ let Episode = {
                      action: button.dataset.action}
 
       episodeChannel.push(button.dataset.event, payload)
+                    .receive("ok", (response) => {
+        button.outerHTML = response.button
+        this.listen_to(button.dataset.event, episodeChannel)
+      })
                     .receive("error", e => console.log(e))
     })
   },
@@ -69,7 +50,11 @@ let Episode = {
       let payload = {chapter_id: chapter_id,
                      action: button.dataset.action}
 
-      episodeChannel.push(button.dataset.event, payload)
+      episodeChannel.push("like-chapter", payload)
+                    .receive("ok", (response) => {
+        button.outerHTML = response.button
+        this.listen_to_chapter(episodeChannel, chapter_id)
+      })
                     .receive("error", e => console.log(e))
     })
   }

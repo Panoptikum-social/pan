@@ -50,8 +50,7 @@ defmodule Pan.Podcast do
 
 
   def like(podcast_id, user_id) do
-    case Repo.get_by(Like, enjoyer_id: user_id,
-                           podcast_id: podcast_id) do
+    case Like.find_podcast_like(user_id, podcast_id) do
       nil ->
         %Like{enjoyer_id: user_id, podcast_id: podcast_id}
         |> Repo.insert

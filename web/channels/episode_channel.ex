@@ -12,69 +12,51 @@ defmodule Pan.EpisodeChannel do
 
 
   def handle_in("like", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    episode_id = String.to_integer(params["episode_id"])
-    content = "I " <> params["action"] <> "d the episode <b>" <>
-              Repo.get!(Episode, episode_id).title <> "</b>"
-    type = "success"
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      episode_id:      String.to_integer(params["episode_id"]),
+      type:            "success",
+      event:           "like"
+    }
+    e = %{e | content: "I " <> params["action"] <> "d the episode <b>" <>
+                       Repo.get!(Episode, e.episode_id).title <> "</b>"}
 
-    Episode.like(episode_id, user_id)
+    Episode.like(e.episode_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "like",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "like", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
-                                            "like_button.html",
-                                            user_id: user_id,
-                                            episode_id: episode_id),
-      user_id: user_id,
-      user_name: user_name }
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
+                                           "like_button.html",
+                                           user_id: e.current_user_id,
+                                           episode_id: e.episode_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 
 
   def handle_in("like-chapter", params, socket) do
-    [topic, subtopic] = String.split(socket.topic, ":")
-    user_id = socket.assigns[:current_user_id]
-    user_name = Repo.get(User, user_id).name
-    IO.inspect params["chapter_id"]
-    chapter_id = String.to_integer(params["chapter_id"])
-    chapter_title = Repo.get!(Chapter, chapter_id).title
+    e = %Event{
+      topic:           String.split(socket.topic, ":") |> List.first,
+      subtopic:        String.split(socket.topic, ":") |> List.last,
+      current_user_id: socket.assigns[:current_user_id],
+      chapter_id:      String.to_integer(params["chapter_id"]),
+      type:            "success",
+      event:           "like-chapter"
+    }
+    chapter_title = Repo.get!(Chapter, e.chapter_id).title
                     |> Crutches.String.truncate(40)
-    content = "I " <> params["action"] <> "d the chapter <b>" <>
-              chapter_title <> "</b>"
-    type = "success"
+    e = %{e | content: "I " <> params["action"] <> "d the episode <b>" <>
+                       chapter_title <> "</b>"}
 
-    Chapter.like(chapter_id, user_id)
+    Chapter.like(e.chapter_id, e.current_user_id)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
-    %Message{topic: topic,
-             subtopic: subtopic,
-             event: "like-chapter",
-             content: content,
-             creator_id: user_id,
-             type: type}
-    |> Repo.insert
-
-    broadcast! socket, "like-chapter", %{
-      content: content,
-      type: type,
-      button: Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
-                                            "like_chapter_button.html",
-                                            user_id: user_id,
-                                            chapter_id: chapter_id),
-      user_id: user_id,
-      user_name: user_name,
-      chapter_id: chapter_id}
-    {:reply, :ok, socket}
+    button = Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
+                                           "like_chapter_button.html",
+                                           user_id: e.current_user_id,
+                                           chapter_id: e.chapter_id)
+    {:reply, {:ok, %{button: button}}, socket}
   end
 end

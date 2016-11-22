@@ -83,7 +83,7 @@ defmodule Pan.EpisodeFrontendView do
 
 
   def like_or_unlike(user_id, episode_id) do
-    case Like.find_by(user_id, episode_id) do
+    case Like.find_episode_like(user_id, episode_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
                              data: [type: "episode",

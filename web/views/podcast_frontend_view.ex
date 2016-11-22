@@ -1,5 +1,6 @@
 defmodule Pan.PodcastFrontendView do
   use Pan.Web, :view
+  alias Pan.Like
 
   def panel_cycle(counter) do
     Enum.at(["panel-default", "panel-info", "panel-danger",
@@ -8,8 +9,7 @@ defmodule Pan.PodcastFrontendView do
 
 
   def like_or_unlike(user_id, podcast_id) do
-    case Pan.Repo.get_by(Pan.Like, enjoyer_id: user_id,
-                                   podcast_id: podcast_id) do
+    case Like.find_podcast_like(user_id, podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
                              data: [type: "podcast",

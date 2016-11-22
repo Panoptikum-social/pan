@@ -11992,54 +11992,47 @@ var Episode = {
       console.log("join of episode:" + episode_id + " failed", reason);
     });
 
-    Array.from(document.querySelectorAll("[data-type='episode']")).forEach(function (button) {
-      var event = button.dataset.event;
-      _this.listen_to(event, episodeChannel);
+    episodeChannel.on("notification", function (response) {
+      return _notification2.default.popup(response);
+    });
 
-      episodeChannel.on(event, function (response) {
-        var button = document.querySelector("[data-type='episode']" + "[data-event='" + event + "']");
-        if (response.user_id == window.currentUserID) {
-          button.outerHTML = response.button;
-          _this.listen_to(event, episodeChannel);
-        }
-        $('.top-right').notify({ type: response.type,
-          message: { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content } }).show();
-      });
+    Array.from(document.querySelectorAll("[data-type='episode']")).forEach(function (button) {
+      _this.listen_to(button.dataset.event, episodeChannel);
     });
 
     Array.from(document.querySelectorAll("[data-type='chapter']")).forEach(function (button) {
       var event = button.dataset.event;
       _this.listen_to_chapter(episodeChannel, button.dataset.id);
     });
-
-    episodeChannel.on("like-chapter", function (response) {
-      var button = document.querySelector("[data-type='chapter']" + "[data-event='like-chapter']" + "[data-id='" + response.chapter_id + "']");
-      if (response.user_id == window.currentUserID) {
-        button.outerHTML = response.button;
-        _this.listen_to_chapter(episodeChannel, response.chapter_id.toString());
-      }
-      $('.top-right').notify({ type: response.type,
-        message: { html: "<i>" + response.user_name + ":</i>  &nbsp;" + response.content } }).show();
-    });
   },
   listen_to: function listen_to(event, episodeChannel) {
+    var _this2 = this;
+
     var button = document.querySelector("[data-type='episode']" + "[data-event='" + event + "']");
     button.addEventListener("click", function (e) {
       var payload = { episode_id: button.dataset.id,
         action: button.dataset.action };
 
-      episodeChannel.push(button.dataset.event, payload).receive("error", function (e) {
+      episodeChannel.push(button.dataset.event, payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this2.listen_to(button.dataset.event, episodeChannel);
+      }).receive("error", function (e) {
         return console.log(e);
       });
     });
   },
   listen_to_chapter: function listen_to_chapter(episodeChannel, chapter_id) {
+    var _this3 = this;
+
     var button = document.querySelector("[data-type='chapter']" + "[data-event='like-chapter']" + "[data-id='" + chapter_id + "']");
     button.addEventListener("click", function (e) {
       var payload = { chapter_id: chapter_id,
         action: button.dataset.action };
 
-      episodeChannel.push(button.dataset.event, payload).receive("error", function (e) {
+      episodeChannel.push("like-chapter", payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this3.listen_to_chapter(episodeChannel, chapter_id);
+      }).receive("error", function (e) {
         return console.log(e);
       });
     });
@@ -12055,6 +12048,10 @@ exports.default = Episode;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
 
 var _category = require("./category");
 
@@ -12119,7 +12116,7 @@ var Mailbox = {
     });
 
     mailboxChannel.on("notification", function (response) {
-      return Mailbox.popup(response);
+      return _notification2.default.popup(response);
     });
   }
 };

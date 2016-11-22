@@ -53,4 +53,11 @@ defmodule Pan.Category do
         Repo.delete!(like)
     end
   end
+
+
+  def follower_mailboxes(category_id) do
+    Repo.all(from l in Follow, where: l.category_id == ^category_id,
+                               select: [:follower_id])
+    |> Enum.map(fn(user) ->  "mailboxes:" <> Integer.to_string(user.follower_id) end)
+  end
 end

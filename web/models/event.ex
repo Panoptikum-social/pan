@@ -4,6 +4,7 @@ defmodule Event do
   alias Pan.Podcast
   alias Pan.Endpoint
   alias Pan.User
+  alias Pan.Category
 
   defstruct topic:           "",
             subtopic:        "",
@@ -12,6 +13,7 @@ defmodule Event do
             podcast_id:      0,
             category_id:     0,
             episode_id:      0,
+            chapter_id:      0,
             content:         "",
             type:            "",
             event:           ""
@@ -22,9 +24,10 @@ defmodule Event do
                      type: event.type,
                      user_name: Repo.get(User, event.current_user_id).name}
 
-    follower_mailboxes = Podcast.follower_mailboxes(event.podcast_id)
-
-    topics = [event.topic <> ":" <> event.subtopic | follower_mailboxes]
+    topics = [event.topic <> ":" <> event.subtopic] ++
+             User.follower_mailboxes(event.current_user_id) ++
+             Podcast.follower_mailboxes(event.podcast_id) ++
+             Category.follower_mailboxes(event.category_id)
 
     for topic <- topics do
       Endpoint.broadcast topic, "notification", notification

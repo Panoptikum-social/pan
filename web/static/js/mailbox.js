@@ -1,3 +1,4 @@
+import Notification from "./notification"
 import Category     from "./category"
 import Podcast      from "./podcast"
 import Episode      from "./episode"
@@ -46,7 +47,7 @@ let Mailbox = {
       .receive("ok",    resp => console.log("joined mailbox:" + user_id, resp))
       .receive("error", resp => console.log("join of mailbox:"  + user_id + " failed", reason))
 
-    mailboxChannel.on("notification", (response) => Mailbox.popup(response) )
+    mailboxChannel.on("notification", (response) => Notification.popup(response) )
   }
 }
 
