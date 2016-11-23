@@ -11,6 +11,9 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
+
+import Turbolinks from "turbolinks";
+
 import "phoenix_html"
 import $ from "jquery"
 
@@ -23,3 +26,4 @@ import socket from "./socket"
 import Mailbox from "./mailbox"
 
 Mailbox.init(socket)
+Turbolinks.start();
