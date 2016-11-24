@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <p>Hello!</p>
+    <%= render @view_module, @view_template, assigns %>
+    <p>- The Panoptikum Team.</p>
+  </body>
+</html>

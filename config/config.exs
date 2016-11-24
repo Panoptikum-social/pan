@@ -30,7 +30,15 @@ config :phoenix, :generators,
 
 config :pan, ecto_repos: [Pan.Repo]
 
-# This should resolv HttPoison errors
-# config :ssl, protocol_version: :"tlsv1.2"
 
 config :scrivener_html, routes_helper: Pan.Router.Helpers
+
+config :pan, Pan.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: "localhost",
+  port: 25,
+  username: false,
+  password: false,
+  tls: :if_available, # can be `:always` or `:never`
+  ssl: false, # can be `true`
+  retries: 1

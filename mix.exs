@@ -19,34 +19,36 @@ defmodule Pan.Mixfile do
                     :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
                     :comeonin, :sweet_xml, :timex,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
-                    :crutches,:scrivener_ecto, :scrivener_html ]]
+                    :crutches,:scrivener_ecto, :scrivener_html, :bamboo ]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:phoenix, "~> 1.2.0"},
-     {:phoenix_pubsub, "~> 1.0"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 3.0-rc"},
-     {:phoenix_html, "~> 2.4"},
-     {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:gettext, "~> 0.9"},
-     {:cowboy, "~> 1.0"},
-     {:comeonin, "~> 2.0"},
-     {:sweet_xml, "~> 0.6"},
-     {:timex, "~> 3.0"},
-     {:font_awesome_phoenix, "~> 1.0"},
-     {:httpoison, "~> 0.9.0"},
-     {:httpotion, "~> 3.0.2"},
-     {:exrm, "~> 1.0" },
-     {:quinn, "~> 1.0.0"},
-     {:uuid, "~> 1.1"},
-     {:html_sanitize_ex, "~> 1.0.0"},
-     {:crutches, "~> 1.0.0"},
-     {:scrivener_ecto, "~> 1.0"},
-     {:scrivener_html, "~> 1.1"}]
+    [{:phoenix, "~> 1.2.0"}, # wWeb framework
+     {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
+     {:postgrex, ">= 0.0.0"}, # database adapter
+     {:phoenix_ecto, "~> 3.0-rc"}, # ORM (yes!)
+     {:phoenix_html, "~> 2.4"}, # view layer
+     {:phoenix_live_reload, "~> 1.0", only: :dev}, # live browser page reload on code changes
+     {:gettext, "~> 0.9"}, # i18n and l10n
+     {:cowboy, "~> 1.0"}, # web server
+     {:comeonin, "~> 2.0"}, # password hashing library
+     {:sweet_xml, "~> 0.6"}, # XML parser
+     {:timex, "~> 3.0"}, # time conversion
+     {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
+     {:httpoison, "~> 0.9.0"}, # http client
+     {:httpotion, "~> 3.0.2"}, # http client (another one!)
+     {:exrm, "~> 1.0" }, # release manager
+     {:quinn, "~> 1.0.0"}, # XML parser (another one)
+     {:uuid, "~> 1.1"}, # UUID creation
+     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
+     {:crutches, "~> 1.0.0"}, # ActionSupport like view helpers
+     {:scrivener_ecto, "~> 1.0"}, # pagination
+     {:scrivener_html, "~> 1.1"}, # pagination view helper
+     {:bamboo, "~> 0.7"}, # mailing
+     {:bamboo_smtp, "~> 1.2.1"}] # mailing smtp adapter
   end
 
   defp aliases do
