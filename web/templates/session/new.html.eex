@@ -9,3 +9,6 @@
   </div>
   <%= submit "Log in", class: "btn btn-primary" %>
 <% end %>
+
+
+<%= link "Forgot password", to: user_path(@conn, :forgot_password) %>

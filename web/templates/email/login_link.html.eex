@@ -1,0 +1,5 @@
+<p>
+  You can now login using this
+  <%= link "Login link", to: Pan.Router.Helpers.session_url(Pan.Endpoint, :login_via_token,
+                                                            token: @token)  %>
+</p>

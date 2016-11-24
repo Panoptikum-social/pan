@@ -47,6 +47,15 @@ defmodule Pan.User do
     |> put_pass_hash()
   end
 
+
+  def request_login_changeset(model, params) do
+    model
+    |> changeset(params)
+    |> cast(params, ~w(email), [])
+    |> validate_length(:email, min: 5, max: 100)
+  end
+
+
   def put_pass_hash(changeset) do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->

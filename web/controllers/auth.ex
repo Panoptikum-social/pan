@@ -1,5 +1,7 @@
 defmodule Pan.Auth do
   import Plug.Conn
+  alias Pan.Repo
+  alias Pan.User
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -42,15 +44,28 @@ defmodule Pan.Auth do
 
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
-  def login_by_username_and_pass(conn, username, given_pass, opts) do
-    repo = Keyword.fetch!(opts, :repo)
-    user = repo.get_by(Pan.User, username: username)
+  def login_by_username_and_pass(conn, username, given_pass) do
+    user = Repo.get_by(User, username: username)
 
     cond do
       user && checkpw(given_pass, user.password_hash) ->
         {:ok, login(conn, user)}
       user ->
         {:error, :unauthorized, conn}
+      true ->
+        dummy_checkpw()
+        {:error, :not_found, conn}
+    end
+  end
+
+
+  def login_by_token(conn, token) do
+    case Phoenix.Token.verify(Pan.Endpoint, "user", token, max_age: 60*5) do
+      {:ok, user_id} ->
+        user = Repo.get!(User, user_id)
+        {:ok, login(conn, user)}
+      {:error, :expired} ->
+        {:error, :expired}
       true ->
         dummy_checkpw()
         {:error, :not_found, conn}

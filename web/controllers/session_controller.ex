@@ -6,7 +6,7 @@ defmodule Pan.SessionController do
   end
 
   def create(conn, %{"session" =>  %{"username" => user, "password" => pass}}) do
-    case Pan.Auth.login_by_username_and_pass(conn, user, pass, repo: Repo) do
+    case Pan.Auth.login_by_username_and_pass(conn, user, pass) do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "Welcome back!")
@@ -17,6 +17,25 @@ defmodule Pan.SessionController do
         |> render("new.html")
     end
   end
+
+
+  def login_via_token(conn, %{"token" => token}) do
+    case Pan.Auth.login_by_token(conn, token) do
+      {:ok, conn} ->
+        conn
+        |> put_flash(:info, "Don't forget to reset your password in your profile!")
+        |> redirect(to: category_frontend_path(conn, :index))
+      {:error, :expired} ->
+        conn
+        |> put_flash(:error, "The token has expired already!")
+        |> render("new.html")
+      {:error, _reason, conn} ->
+        conn
+        |> put_flash(:error, "Invalid token!")
+        |> render("new.html")
+    end
+  end
+
 
   def delete(conn, _) do
     conn
