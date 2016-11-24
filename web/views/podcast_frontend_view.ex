@@ -1,6 +1,8 @@
 defmodule Pan.PodcastFrontendView do
   use Pan.Web, :view
   alias Pan.Like
+  alias Pan.Repo
+  alias Pan.Podcast
 
   def panel_cycle(counter) do
     Enum.at(["panel-default", "panel-info", "panel-danger",
@@ -16,7 +18,7 @@ defmodule Pan.PodcastFrontendView do
                                     event: "like",
                                     action: "like",
                                     id: podcast_id] do
-          [fa_icon("heart-o"), " Like"]
+          [Podcast.likes(podcast_id), " ", fa_icon("heart-o"), " ",  " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -24,7 +26,7 @@ defmodule Pan.PodcastFrontendView do
                                     event: "like",
                                     action: "unlike" ,
                                     id: podcast_id] do
-          [fa_icon("heart"), " Unlike"]
+          [Podcast.likes(podcast_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
@@ -35,15 +37,15 @@ defmodule Pan.PodcastFrontendView do
 
 
   def follow_or_unfollow(user_id, podcast_id) do
-    case Pan.Repo.get_by(Pan.Follow, follower_id: user_id,
-                                     podcast_id: podcast_id) do
+    case Repo.get_by(Pan.Follow, follower_id: user_id,
+                                 podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-primary",
                              data: [type: "podcast",
                                     event: "follow",
                                     action: "follow",
                                     id: podcast_id] do
-          [fa_icon("commenting-o"), " Follow"]
+          [Podcast.follows(podcast_id), " ", fa_icon("commenting-o"), " Follow"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -51,7 +53,7 @@ defmodule Pan.PodcastFrontendView do
                                     event: "follow",
                                     action: "unfollow" ,
                                     id: podcast_id] do
-          [fa_icon("commenting"), " Unfollow"]
+          [Podcast.follows(podcast_id), " ", fa_icon("commenting"), " Unfollow"]
         end
     end
   end
@@ -63,15 +65,15 @@ defmodule Pan.PodcastFrontendView do
 
 
   def subscribe_or_unsubscribe(user_id, podcast_id) do
-    case Pan.Repo.get_by(Pan.Subscription, user_id: user_id,
-                                           podcast_id: podcast_id) do
+    case Repo.get_by(Pan.Subscription, user_id: user_id,
+                                       podcast_id: podcast_id) do
       nil ->
         content_tag :button, class: "btn btn-info",
                              data: [type: "podcast",
                                     action: "subscribe",
                                     event: "subscribe",
                                     id: podcast_id] do
-          [fa_icon("user-o"), " Subscribe"]
+          [Podcast.subscriptions(podcast_id), " ", fa_icon("user-o"), " Subscribe"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -79,7 +81,7 @@ defmodule Pan.PodcastFrontendView do
                                     action: "unsubscribe" ,
                                     event: "subscribe",
                                     id: podcast_id] do
-          [fa_icon("user"), " Unsubscribe"]
+          [Podcast.subscriptions(podcast_id), " ", fa_icon("user"), " Unsubscribe"]
         end
     end
   end

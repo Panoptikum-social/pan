@@ -28,7 +28,7 @@ defmodule Pan.CategoryChannel do
     button = Phoenix.View.render_to_string(Pan.CategoryFrontendView,
                                            "like_button.html",
                                            user_id: e.current_user_id,
-                                           podcast_id: e.podcast_id)
+                                           category_id: e.category_id)
     {:reply, {:ok, %{button: button}}, socket}
   end
 
@@ -52,7 +52,7 @@ defmodule Pan.CategoryChannel do
     button = Phoenix.View.render_to_string(Pan.CategoryFrontendView,
                                            "follow_button.html",
                                            user_id: e.current_user_id,
-                                           podcast_id: e.podcast_id)
+                                           category_id: e.category_id)
     {:reply, {:ok, %{button: button}}, socket}
   end
 end

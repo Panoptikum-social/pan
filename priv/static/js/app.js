@@ -11973,7 +11973,7 @@ var Category = {
 
       categoryChannel.push(button.dataset.event, payload).receive("ok", function (response) {
         button.outerHTML = response.button;
-        _this2.listen_to(button.dataset.event, episodeChannel);
+        _this2.listen_to(button.dataset.event, categoryChannel);
       }).receive("error", function (e) {
         return console.log(e);
       });

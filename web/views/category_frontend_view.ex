@@ -1,6 +1,8 @@
 defmodule Pan.CategoryFrontendView do
   use Pan.Web, :view
   use Pan.Web, :controller
+  alias Pan.Category
+
 
   def panel_cycle(counter) do
     Enum.at(["panel-default", "panel-info", "panel-danger",
@@ -48,7 +50,7 @@ defmodule Pan.CategoryFrontendView do
                                     event: "like",
                                     action: "like",
                                     id: category_id] do
-          [fa_icon("heart-o"), " Like"]
+          [Category.likes(category_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -56,7 +58,7 @@ defmodule Pan.CategoryFrontendView do
                                     event: "like",
                                     action: "unlike" ,
                                     id: category_id] do
-          [fa_icon("heart"), " Unlike"]
+          [Category.likes(category_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
@@ -75,7 +77,7 @@ defmodule Pan.CategoryFrontendView do
                                     event: "follow",
                                     action: "follow",
                                     id: category_id] do
-          [fa_icon("commenting-o"), " Follow"]
+          [Category.follows(category_id), " ", fa_icon("commenting-o"), " Follow"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -83,7 +85,7 @@ defmodule Pan.CategoryFrontendView do
                                     event: "follow",
                                     action: "unfollow" ,
                                     id: category_id] do
-          [fa_icon("commenting"), " Unfollow"]
+          [Category.follows(category_id), " ", fa_icon("commenting"), " Unfollow"]
         end
     end
   end

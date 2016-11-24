@@ -4,6 +4,7 @@ defmodule Pan.UserFrontendView do
   alias Pan.Repo
   alias Pan.Follow
   alias Pan.Like
+  alias Pan.User
 
 
   def like_or_unlike(enjoyer_id, user_id) do
@@ -15,7 +16,7 @@ defmodule Pan.UserFrontendView do
                                     event: "like",
                                     action: "like",
                                     id: user_id] do
-          [fa_icon("heart-o"), " Like"]
+          [User.likes(user_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -23,7 +24,7 @@ defmodule Pan.UserFrontendView do
                                     event: "like",
                                     action: "unlike" ,
                                     id: user_id] do
-          [fa_icon("heart"), " Unlike"]
+          [User.likes(user_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
@@ -42,7 +43,7 @@ defmodule Pan.UserFrontendView do
                                     event: "follow",
                                     action: "follow",
                                     id: user_id] do
-          [fa_icon("commenting-o"), " Follow"]
+          [User.follows(user_id), " ", fa_icon("commenting-o"), " Follow"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -50,7 +51,7 @@ defmodule Pan.UserFrontendView do
                                     event: "follow",
                                     action: "unfollow" ,
                                     id: user_id] do
-          [fa_icon("commenting"), " Unfollow"]
+          [User.follows(user_id), " ", fa_icon("commenting"), " Unfollow"]
         end
     end
   end

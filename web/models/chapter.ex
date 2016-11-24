@@ -42,4 +42,11 @@ defmodule Pan.Chapter do
         Repo.delete!(like)
     end
   end
+
+
+  def likes(id) do
+    from(l in Like, where: l.chapter_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
 end

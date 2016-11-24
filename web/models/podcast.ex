@@ -89,4 +89,23 @@ defmodule Pan.Podcast do
                                select: [:follower_id])
     |> Enum.map(fn(user) ->  "mailboxes:" <> Integer.to_string(user.follower_id) end)
   end
+
+
+  def likes(id) do
+    from(l in Like, where: l.podcast_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
+
+  def follows(id) do
+    from(f in Follow, where: f.podcast_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
+
+  def subscriptions(id) do
+    from(s in Subscription, where: s.podcast_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
 end

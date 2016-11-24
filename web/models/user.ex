@@ -95,4 +95,27 @@ defmodule Pan.User do
                                select: [:follower_id])
     |> Enum.map(fn(user) ->  "mailboxes:" <> Integer.to_string(user.follower_id) end)
   end
+
+
+  def likes(id) do
+    from(l in Like, where: l.user_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
+
+  def follows(id) do
+    from(f in Follow, where: f.user_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
+
+  def popularity(id) do
+    followers = from(f in Follow, where: f.user_id == ^id)
+    |> Repo.aggregate(:count, :id)
+
+    likes = from(l in Like, where: l.user_id == ^id)
+    |> Repo.aggregate(:count, :id)
+
+    Integer.to_string(followers + likes)
+  end
 end

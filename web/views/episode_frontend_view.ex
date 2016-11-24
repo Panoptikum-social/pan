@@ -2,6 +2,9 @@ defmodule Pan.EpisodeFrontendView do
   use Pan.Web, :view
   alias Pan.Repo
   alias Pan.Like
+  alias Pan.Episode
+  alias Pan.Chapter
+
 
   def podlove_episodestruct(episode) do
     %{poster: episode.podcast.image_url,
@@ -90,7 +93,7 @@ defmodule Pan.EpisodeFrontendView do
                                     event: "like",
                                     action: "like",
                                     id: episode_id] do
-          [fa_icon("heart-o"), " Like"]
+          [Episode.likes(episode_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -98,7 +101,7 @@ defmodule Pan.EpisodeFrontendView do
                                     event: "like",
                                     action: "unlike" ,
                                     id: episode_id] do
-          [fa_icon("heart"), " Unlike"]
+          [Episode.likes(episode_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
@@ -117,7 +120,7 @@ defmodule Pan.EpisodeFrontendView do
                                     event: "like-chapter",
                                     action: "like",
                                     id: chapter_id] do
-          [fa_icon("heart-o"), " Like"]
+          [Chapter.likes(chapter_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success btn-xs",
@@ -125,7 +128,7 @@ defmodule Pan.EpisodeFrontendView do
                                     event: "like-chapter",
                                     action: "unlike" ,
                                     id: chapter_id] do
-          [fa_icon("heart"), " Unlike"]
+          [Chapter.likes(chapter_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end

@@ -60,4 +60,18 @@ defmodule Pan.Category do
                                select: [:follower_id])
     |> Enum.map(fn(user) ->  "mailboxes:" <> Integer.to_string(user.follower_id) end)
   end
+
+
+  def likes(id) do
+    from(l in Like, where: l.category_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
+
+
+  def follows(id) do
+    from(l in Follow, where: l.category_id == ^id)
+    |> Repo.aggregate(:count, :id)
+    |> Integer.to_string
+  end
 end

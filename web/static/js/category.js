@@ -29,7 +29,7 @@ let Category = {
       categoryChannel.push(button.dataset.event, payload)
                     .receive("ok", (response) => {
         button.outerHTML = response.button
-        this.listen_to(button.dataset.event, episodeChannel)
+        this.listen_to(button.dataset.event, categoryChannel)
       })
                     .receive("error", e => console.log(e))
     })
