@@ -85,4 +85,27 @@
       </div>
     </div>
   </div>
+
+
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Messages created by <%= @user.name %></h3>
+      </div>
+      <div class="panel-body">
+        <%= pagination_links @conn, @messages, [Integer.to_string(@user.id)],
+                     path: &user_frontend_path/4,
+                     action: :show,
+                     view_style: :bootstrap %>
+        <ul class="list-group">
+          <%= for message <- @messages.entries do %>
+            <li class="list-group-item message-<%= message.type %>">
+              <i><%= message.creator.name %>:</i> <%= raw message.content %>
+              <span class="pull-right"><%= message.inserted_at %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

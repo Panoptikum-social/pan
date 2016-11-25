@@ -31,10 +31,7 @@ defmodule Pan.UserFrontendController do
 
     render conn, "profile.html", user: user,
                                  messages: messages,
-                                 page_number: messages.page_number,
-                                 page_size: messages.page_size,
-                                 total_pages: messages.total_pages,
-                                 total_entries: messages.total_entries
+                                 page_number: messages.page_number
   end
 
 
@@ -45,7 +42,8 @@ defmodule Pan.UserFrontendController do
   end
 
 
-  def show(conn, %{"id" => id}, _user) do
+  def show(conn, params, _user) do
+    id = String.to_integer(params["id"])
     user = Repo.one(from u in Pan.User, where: u.id == ^id and u.podcaster == true)
            |> Repo.preload([:podcasts_i_own,
                             :users_i_like,
@@ -56,6 +54,17 @@ defmodule Pan.UserFrontendController do
                                                      order_by: [desc: :inserted_at])
                             |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
 
-    render conn, "show.html", user: user, podcast_related_likes: podcast_related_likes
-  end
+    query = from m in Message,
+            where: m.creator_id == ^id,
+            order_by: [desc: :inserted_at],
+            preload: [:creator]
+
+    messages = query
+               |> Ecto.Queryable.to_query
+               |> Repo.paginate(params)
+
+    render conn, "show.html", user: user,
+                              podcast_related_likes: podcast_related_likes,
+                              messages: messages
+   end
 end

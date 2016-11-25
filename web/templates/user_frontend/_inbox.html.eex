@@ -1,0 +1,12 @@
+<%= pagination_links @conn, @messages,
+                     path: &user_frontend_path/3,
+                     action: :profile,
+                     view_style: :bootstrap %>
+<ul class="list-group">
+  <%= for message <- @messages.entries do %>
+    <li class="list-group-item message-<%= message.type %>">
+      <i><%= message.creator.name %>:</i> <%= raw message.content %>
+      <span class="pull-right"><%= message.inserted_at %></span>
+    </li>
+  <% end %>
+</ul>
