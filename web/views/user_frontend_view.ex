@@ -61,4 +61,31 @@ defmodule Pan.UserFrontendView do
     follow_or_unfollow(current_user_id, user_id)
   end
 
+
+  def podcast_button(conn, podcast) do
+    link [fa_icon("podcast"), " ", podcast.title],
+         to: podcast_frontend_path(conn, :show, podcast),
+         class: "btn btn-default btn-xs",
+         style: "color: #000"
+  end
+
+
+  def episode_button(conn, episode) do
+    link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
+         to: episode_frontend_path(conn, :show, episode),
+         class: "btn btn-primary btn-xs",
+         style: "color: #fff"
+  end
+
+
+  def chapter_label(chapter) do
+    [fa_icon("indent"), " ", chapter.title]
+  end
+
+
+  def format_date(date) do
+    {:ok, {date, _}} = Ecto.DateTime.dump(date)
+    Timex.to_date(date)
+    |> Timex.format!( "%e.%m.%Y", :strftime)
+  end
 end

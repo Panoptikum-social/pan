@@ -18,18 +18,20 @@ defmodule Pan.User do
     field :podcaster, :boolean
     timestamps
 
-    has_many :owned_podcasts, Pan.Podcast, foreign_key: :owner_id
+    has_many :podcasts_i_own, Pan.Podcast,
+                              foreign_key: :owner_id
+    many_to_many :podcasts_i_subscribed, Pan.Podcast,
+                                         join_through: "subscriptions"
     has_many :contributor_identities, Pan.Contributor
 
-    many_to_many :subscribed_podcasts, Pan.Podcast, join_through: "subscriptions"
-
-#    many_to_many :podcasts_user_follows, Pan.Podcast,
-#                 join_through: "followes", join_keys: [follower_id: :id, podcast_id: :id]
-#    many_to_many :followers, Pan.User,
-#                 join_through: "follows", join_keys: [user_id: :id, follower_id: :id]
-#    many_to_many :users_user_follows, Pan.User,
-#                 join_through: "follows", join_keys: [follower_id: :id, user_id: :id]
+    many_to_many :users_i_like, Pan.User,
+                                join_through: "likes",
+                                join_keys: [enjoyer_id: :id, user_id: :id]
+    many_to_many :categories_i_like, Pan.Category,
+                                     join_through: "likes",
+                                     join_keys: [enjoyer_id: :id, category_id: :id]
   end
+
 
   def changeset(model, params \\ %{}) do
     model
@@ -38,6 +40,7 @@ defmodule Pan.User do
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
   end
+
 
   def registration_changeset(model, params) do
     model
@@ -103,11 +106,13 @@ defmodule Pan.User do
     |> Integer.to_string
   end
 
+
   def follows(id) do
     from(f in Follow, where: f.user_id == ^id)
     |> Repo.aggregate(:count, :id)
     |> Integer.to_string
   end
+
 
   def popularity(id) do
     followers = from(f in Follow, where: f.user_id == ^id)
@@ -117,5 +122,41 @@ defmodule Pan.User do
     |> Repo.aggregate(:count, :id)
 
     Integer.to_string(followers + likes)
+  end
+
+
+  def subscribed_user_ids(user_id) do
+    case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
+                                           not is_nil(f.user_id),
+                                    select: f.user_id) do
+      [] ->
+        ["0"]
+      array ->
+        Enum.map(array, fn(id) ->  Integer.to_string(id) end)
+    end
+  end
+
+
+  def subscribed_category_ids(user_id) do
+    case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
+                                           not is_nil(f.category_id),
+                                    select: f.category_id) do
+      [] ->
+        ["0"]
+      array ->
+        Enum.map(array, fn(id) ->  Integer.to_string(id) end)
+    end
+  end
+
+
+  def subscribed_podcast_ids(user_id) do
+    case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
+                                           not is_nil(f.podcast_id),
+                                    select: f.podcast_id) do
+      [] ->
+        ["0"]
+      array ->
+        Enum.map(array, fn(id) ->  Integer.to_string(id) end)
+    end
   end
 end

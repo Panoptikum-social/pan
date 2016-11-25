@@ -8,15 +8,77 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-6">
-    <div class="panel panel-success">
+  <%= if @user.podcasts_i_own != [] do %>
+    <div class="col-md-6">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h3 class="panel-title">Podcasts by <%= @user.name %></h3>
+        </div>
+        <div class="panel-body">
+          <%= for podcast <- @user.podcasts_i_own do %>
+            <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %> &nbsp;
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+    <div class="panel panel-danger">
       <div class="panel-heading">
-        <h3 class="panel-title">Podcasts</h3>
+        <h3 class="panel-title">Podcast, <%= @user.name %> likes</h3>
       </div>
       <div class="panel-body">
-        <%= for podcast <- @user.owned_podcasts do %>
-          <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
-                   to: podcast_frontend_path(@conn, :show, podcast),
+        <%= for like <- @podcast_related_likes do %>
+          <p>
+            <%= cond do %>
+              <% like.chapter_id != nil -> %>
+                <%= format_date(like.inserted_at) %>: &nbsp;
+                <%= podcast_button(@conn, like.chapter.episode.podcast) %> /
+                <%= episode_button(@conn, like.chapter.episode) %> /
+                <%= chapter_label(like.chapter) %>
+              <% like.episode_id != nil -> %>
+                <%= format_date(like.inserted_at) %>: &nbsp;
+                <%= podcast_button(@conn, like.episode.podcast) %> /
+                <%= episode_button(@conn, like.episode) %>
+              <% like.podcast_id != nil -> %>
+                <%= format_date(like.inserted_at) %>: &nbsp;
+                <%= podcast_button(@conn, like.podcast) %>
+            <% end %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">Persons, <%= @user.name %> likes</h3>
+      </div>
+      <div class="panel-body">
+        <%= for user <- @user.users_i_like do %>
+          <%= link [fa_icon("user"), " ", user.name],
+                   to: user_frontend_path(@conn, :show, user),
+                   class: "btn btn-default btn-xs",
+                   style: "color: #000" %> &nbsp;
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Categories, <%= @user.name %> likes</h3>
+      </div>
+      <div class="panel-body">
+        <%= for category <- @user.categories_i_like do %>
+          <%= link [fa_icon("folder"), " ", category.title],
+                   to: category_frontend_path(@conn, :show, category),
                    class: "btn btn-default btn-xs",
                    style: "color: #000" %> &nbsp;
         <% end %>

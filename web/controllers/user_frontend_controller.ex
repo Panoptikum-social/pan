@@ -2,6 +2,8 @@ defmodule Pan.UserFrontendController do
   use Pan.Web, :controller
   alias Pan.Message
   alias Pan.Follow
+  alias Pan.User
+  alias Pan.Like
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -11,30 +13,9 @@ defmodule Pan.UserFrontendController do
   def profile(conn, params, user) do
     user_id = Integer.to_string(user.id)
 
-    subscribed_user_ids =
-      case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
-                                             not is_nil(f.user_id),
-                                      select: f.user_id) do
-        [] -> ["0"]
-        array -> Enum.map(array, fn(id) ->  Integer.to_string(id) end)
-      end
-
-    subscribed_category_ids =
-      case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
-                                             not is_nil(f.category_id),
-                                      select: f.category_id) do
-        [] -> ["0"]
-        array -> Enum.map(array, fn(id) ->  Integer.to_string(id) end)
-    end
-
-    subscribed_podcast_ids =
-      case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
-                                             not is_nil(f.podcast_id),
-                                      select: f.podcast_id) do
-        [] -> ["0"]
-        array -> Enum.map(array, fn(id) ->  Integer.to_string(id) end)
-      end
-
+    subscribed_user_ids = User.subscribed_user_ids(user_id)
+    subscribed_category_ids = User.subscribed_category_ids(user_id)
+    subscribed_podcast_ids = User.subscribed_podcast_ids(user_id)
 
     query = from m in Message,
             where: (m.topic == "mailboxes" and m.subtopic == ^user_id) or
@@ -48,11 +29,12 @@ defmodule Pan.UserFrontendController do
                |> Ecto.Queryable.to_query
                |> Repo.paginate(params)
 
-    render conn, "profile.html", user: user, messages: messages,
-                                             page_number: messages.page_number,
-                                             page_size: messages.page_size,
-                                             total_pages: messages.total_pages,
-                                             total_entries: messages.total_entries
+    render conn, "profile.html", user: user,
+                                 messages: messages,
+                                 page_number: messages.page_number,
+                                 page_size: messages.page_size,
+                                 total_pages: messages.total_pages,
+                                 total_entries: messages.total_entries
   end
 
 
@@ -65,7 +47,15 @@ defmodule Pan.UserFrontendController do
 
   def show(conn, %{"id" => id}, _user) do
     user = Repo.one(from u in Pan.User, where: u.id == ^id and u.podcaster == true)
-           |> Repo.preload(:owned_podcasts)
-    render conn, "show.html", user: user
+           |> Repo.preload([:podcasts_i_own,
+                            :users_i_like,
+                            :categories_i_like])
+
+    podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
+                                                            and not is_nil(l.podcast_id),
+                                                     order_by: [desc: :inserted_at])
+                            |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+
+    render conn, "show.html", user: user, podcast_related_likes: podcast_related_likes
   end
 end

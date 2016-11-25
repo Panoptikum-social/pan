@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Helpers do
   use Pan.Web, :controller
+  use Timex
 
   def boolify(explicit) do
     case explicit do
