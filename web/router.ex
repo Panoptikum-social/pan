@@ -67,5 +67,6 @@ defmodule Pan.Router do
     resources "/follows", FollowController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
+    resources "/opmls", OPMLController
   end
 end

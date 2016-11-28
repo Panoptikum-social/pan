@@ -1,0 +1,32 @@
+<h2>Listing opmls</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Content type</th>
+      <th>Filename</th>
+      <th>Path</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for opml <- @opmls do %>
+    <tr>
+      <td><%= opml.user_id %></td>
+      <td><%= opml.content_type %></td>
+      <td><%= opml.filename %></td>
+      <td><%= opml.path %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: opml_path(@conn, :show, opml), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: opml_path(@conn, :edit, opml), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: opml_path(@conn, :delete, opml), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New opml", to: opml_path(@conn, :new) %>

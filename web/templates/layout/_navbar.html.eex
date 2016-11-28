@@ -43,6 +43,7 @@
             <li><%= link "Languages",    to: language_path(@conn, :index) %></li>
             <li><%= link "Podcasts",     to: podcast_path(@conn, :index) %></li>
             <li><%= link "Users",        to: user_path(@conn, :index) %></li>
+            <li><%= link "Opml",         to: opml_path(@conn, :index) %></li>
           </ul>
         </li>
       <% end %>
