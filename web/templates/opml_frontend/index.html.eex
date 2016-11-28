@@ -1,0 +1,31 @@
+<h2>My OPML files</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Content type</th>
+      <th>Filename</th>
+      <th>Upload date</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for opml <- @opmls do %>
+    <tr>
+      <td><%= opml.content_type %></td>
+      <td><%= opml.filename %></td>
+      <td><%= opml.inserted_at %></td>
+
+      <td class="text-right">
+        <%= link "Delete", to: opml_frontend_path(@conn, :delete, opml),
+                           method: :delete,
+                           data: [confirm: "Are you sure?"],
+                           class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New opml", to: opml_frontend_path(@conn, :new) %>

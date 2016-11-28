@@ -46,6 +46,7 @@ defmodule Pan.Router do
     get "/my_account", UserFrontendController, :profile
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
+    resources "/opmls", OPMLFrontendController, only: [:new, :create, :index, :delete]
   end
 
 

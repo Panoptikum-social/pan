@@ -29,6 +29,7 @@
         <ul class="dropdown-menu">
           <li><%= link "Profile",         to: user_frontend_path(@conn, :profile)%></li>
           <li><%= link "Change Password", to: user_frontend_path(@conn, :edit)%></li>
+          <li><%= link "My OPMLs",        to: opml_frontend_path(@conn, :index)%></li>
         </ul>
       </li>
 
