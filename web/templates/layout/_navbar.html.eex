@@ -1,0 +1,61 @@
+<div class="navbar-header">
+  <button type="button"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#navbar"
+          aria-expanded="false"
+          aria-controls="navbar">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a href="/" class="navbar-brand"><img src="/images/panoptikum.io.png" width="40" style="margin-top: -10px;"></a>
+  <a class="navbar-brand" href="https://panoptikum.io">Panoptikum.io</a>
+</div>
+
+<div id="navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
+    <li><%= link "Categories", to: category_frontend_path(@conn, :index) %></li>
+    <li><%= link "Latest Episodes", to: episode_frontend_path(@conn, :latest) %></li>
+    <li><%= link "Podcasters", to: user_frontend_path(@conn, :index) %></li>
+  </ul>
+  <ul class="nav navbar-nav navbar-right">
+    <%= if @current_user do %>
+      <li role="user" class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          @<%= @current_user.username %><span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><%= link "Profile",         to: user_frontend_path(@conn, :profile)%></li>
+          <li><%= link "Change Password", to: user_frontend_path(@conn, :edit)%></li>
+        </ul>
+      </li>
+
+      <%= if @current_user.admin do %>
+        <li role="admin" class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            Administration <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><%= link "Categories",   to: category_path(@conn, :index) %></li>
+            <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
+            <li><%= link "Languages",    to: language_path(@conn, :index) %></li>
+            <li><%= link "Podcasts",     to: podcast_path(@conn, :index) %></li>
+            <li><%= link "Users",        to: user_path(@conn, :index) %></li>
+          </ul>
+        </li>
+      <% end %>
+
+      <li>
+        <span class="navbar-text">
+          <%= link "Log out", to: session_path(@conn, :delete, @current_user),
+                              method: "delete" %>
+        </span>
+      </li>
+    <% else %>
+      <li><%= link "Register", to: user_path(@conn, :new) %></li>
+      <li><%= link "Log in", to: session_path(@conn, :new) %></li>
+    <% end %>
+  </ul>
+</div>

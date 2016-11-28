@@ -8,18 +8,22 @@
   <% end %>
 
   <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
     <%= text_input f, :name, placeholder: "Name", class: "form-control" %>
     <%= error_tag f, :name %>
   </div>
   <div class="form-group">
+    <%= label f, :username, class: "control-label" %>
     <%= text_input f, :username, placeholder: "Username", class: "form-control" %>
     <%= error_tag f, :username %>
   </div>
   <div class="form-group">
+    <%= label f, :email, class: "control-label" %>
     <%= email_input f, :email, placeholder: "Email", class: "form-control" %>
     <%= error_tag f, :email %>
   </div>
   <div class="form-group">
+    <%= label f, :password, class: "control-label" %>
     <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
     <%= error_tag f, :password %>
   </div>

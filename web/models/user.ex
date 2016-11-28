@@ -12,6 +12,7 @@ defmodule Pan.User do
     field :name, :string
     field :username, :string
     field :password, :string, virtual: true
+    field :password_confirmation, :string, virtual: true
     field :password_hash, :string
     field :email, :string
     field :admin, :boolean
@@ -46,6 +47,17 @@ defmodule Pan.User do
     model
     |> changeset(params)
     |> cast(params, ~w(password), [])
+    |> validate_length(:password, min: 6, max: 100)
+    |> put_pass_hash()
+  end
+
+
+  def password_update_changeset(model, params) do
+    model
+    |> changeset(params)
+    |> cast(params, ~w(password), [])
+    |> cast(params, ~w(password_confirmation), [])
+    |> validate_confirmation(:password)
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
   end

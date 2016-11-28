@@ -23,8 +23,8 @@ defmodule Pan.SessionController do
     case Pan.Auth.login_by_token(conn, token) do
       {:ok, conn} ->
         conn
-        |> put_flash(:info, "Don't forget to reset your password in your profile!")
-        |> redirect(to: category_frontend_path(conn, :index))
+        |> put_flash(:info, "Welcome back, please set your new password!")
+        |> redirect(to: user_frontend_path(conn, :edit))
       {:error, :expired} ->
         conn
         |> put_flash(:error, "The token has expired already!")

@@ -44,6 +44,8 @@ defmodule Pan.Router do
   scope "/pan", Pan do
     pipe_through [:browser, :authenticate_user]
     get "/my_account", UserFrontendController, :profile
+    get "/edit", UserFrontendController, :edit
+    put "/update", UserFrontendController, :update
   end
 
 

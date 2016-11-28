@@ -1,7 +1,6 @@
 defmodule Pan.UserFrontendController do
   use Pan.Web, :controller
   alias Pan.Message
-  alias Pan.Follow
   alias Pan.User
   alias Pan.Like
 
@@ -67,4 +66,25 @@ defmodule Pan.UserFrontendController do
                               podcast_related_likes: podcast_related_likes,
                               messages: messages
    end
+
+
+   def edit(conn, params, user) do
+    changeset = User.changeset(user)
+    render(conn, "edit.html", user: user, changeset: changeset)
+  end
+
+
+  def update(conn, %{"user" => user_params}, user) do
+    changeset = User.password_update_changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+         conn
+         |> put_flash(:info, "Password updated successfully.")
+         |> redirect(to: user_path(conn, :show, user))
+      {:error, changeset} ->
+
+         render(conn, "edit.html", user: user, changeset: changeset)
+    end
+  end
 end
