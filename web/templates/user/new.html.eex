@@ -27,5 +27,10 @@
     <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
     <%= error_tag f, :password %>
   </div>
+  <div class="form-group">
+    <%= label f, :password_confirmation, class: "control-label" %>
+    <%= password_input f, :password_confirmation, placeholder: "Password Confirmation", class: "form-control" %>
+    <%= error_tag f, :password_confirmation %>
+  </div>
   <%= submit "Create User", class: "btn btn-primary" %>
 <% end %>

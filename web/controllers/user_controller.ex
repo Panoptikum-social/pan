@@ -36,8 +36,8 @@ defmodule Pan.UserController do
       {:ok, user} ->
         conn
         |> Pan.Auth.login(user)
-        |> put_flash(:info, "#{user.name} created!")
-        |> redirect(to: user_path(conn, :index))
+        |> put_flash(:info, "Your account @#{user.name} has been created!")
+        |> redirect(to: category_frontend_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
