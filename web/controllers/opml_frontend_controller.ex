@@ -52,4 +52,14 @@ defmodule Pan.OPMLFrontendController do
     |> put_flash(:info, "Opml deleted successfully.")
     |> redirect(to: opml_frontend_path(conn, :index))
   end
+
+
+  def import(conn, %{"id" => id}, user) do
+    opml = Repo.one(from o in OPML, where: o.id == ^id and o.user_id == ^user.id)
+
+    Pan.OPMLParser.OPML.parse(opml.path, user.id)
+    conn
+    |> put_flash(:info, "Opml imported successfully.")
+    |> redirect(to: opml_frontend_path(conn, :index))
+  end
 end

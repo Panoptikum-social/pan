@@ -18,10 +18,13 @@
       <td><%= opml.inserted_at %></td>
 
       <td class="text-right">
-        <%= link "Delete", to: opml_frontend_path(@conn, :delete, opml),
+        <%= link [fa_icon("cogs"), " Parse"], to: opml_frontend_path(@conn, :import, opml),
+                           class: "btn btn-info" %> &nbsp;
+
+        <%= link [fa_icon("trash"), " Delete"], to: opml_frontend_path(@conn, :delete, opml),
                            method: :delete,
                            data: [confirm: "Are you sure?"],
-                           class: "btn btn-danger btn-xs" %>
+                           class: "btn btn-danger" %>
       </td>
     </tr>
 <% end %>

@@ -47,6 +47,7 @@ defmodule Pan.Router do
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
     resources "/opmls", OPMLFrontendController, only: [:new, :create, :index, :delete]
+    get "/opmls/import/:id", OPMLFrontendController, :import
   end
 
 

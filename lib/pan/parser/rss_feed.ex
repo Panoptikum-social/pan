@@ -14,10 +14,7 @@ defmodule Pan.Parser.RssFeed do
 
     feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-
-    IO.puts feed_map
-
-    feed_map = Quinn.parse(feed_map)
+               |> Quinn.parse()
     map = %{feed: %{self_link_title: "Feed", self_link_url: url},
             title: Enum.at(String.split(url, "/"), 2)}
           |> Iterator.parse(feed_map)
