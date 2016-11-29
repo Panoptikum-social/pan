@@ -31,4 +31,4 @@
   </tbody>
 </table>
 
-<%= link "New opml", to: opml_frontend_path(@conn, :new) %>
+<%= link "New OPML", to: opml_frontend_path(@conn, :new) %>

@@ -1,3 +1,3 @@
-defmodule Pan.OPMLView do
+defmodule Pan.OpmlView do
   use Pan.Web, :view
 end

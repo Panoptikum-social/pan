@@ -1,5 +1,5 @@
-defmodule Pan.OPMLParser.Analyzer do
-  alias Pan.OPMLParser.Iterator
+defmodule Pan.OpmlParser.Analyzer do
+  alias Pan.OpmlParser.Iterator
   alias Pan.Parser.Helpers
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge
 
@@ -13,7 +13,7 @@ defmodule Pan.OPMLParser.Analyzer do
   def call([:outline, attr, value], user_id) do
     case attr[:type] do
       "rss" ->
-        Pan.OPMLParser.FeedBacklog.find_or_create(attr[:xmlUrl], user_id)
+        Pan.OpmlParser.FeedBacklog.find_or_create(attr[:xmlUrl], user_id)
       nil ->
         Iterator.parse(value, user_id)
     end

@@ -46,8 +46,8 @@ defmodule Pan.Router do
     get "/my_account", UserFrontendController, :profile
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
-    resources "/opmls", OPMLFrontendController, only: [:new, :create, :index, :delete]
-    get "/opmls/import/:id", OPMLFrontendController, :import
+    resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
+    get "/opmls/import/:id", OpmlFrontendController, :import
   end
 
 
@@ -69,6 +69,6 @@ defmodule Pan.Router do
     resources "/follows", FollowController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
-    resources "/opmls", OPMLController
+    resources "/opmls", OpmlController
   end
 end

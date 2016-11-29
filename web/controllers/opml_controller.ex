@@ -1,29 +1,33 @@
-defmodule Pan.OPMLController do
+defmodule Pan.OpmlController do
   use Pan.Web, :controller
 
-  alias Pan.OPML
+  alias Pan.Opml
 
   def index(conn, _params) do
-    opmls = Repo.all(OPML)
+    opmls = Repo.all(Opml)
     render(conn, "index.html", opmls: opmls)
   end
 
 
   def new(conn, _params) do
-    changeset = OPML.changeset(%OPML{})
+    changeset = Opml.changeset(%Opml{})
     render(conn, "new.html", changeset: changeset)
   end
 
 
   def create(conn, %{"opml" => opml_params}) do
     user = conn.assigns.current_user
-    if upload = opml_params["file"] do
-      File.mkdir_p("uploads/opml/#{user.id}")
-      destination_path = "uploads/opml/#{user.id}/#{upload.filename}"
-      File.cp(upload.path, destination_path)
-    end
+    destination_path =
+      if upload = opml_params["file"] do
+        File.mkdir_p("uploads/opml/#{user.id}")
+        path = "uploads/opml/#{user.id}/#{upload.filename}"
+        File.cp(upload.path, path)
+        path
+      else
+        ""
+      end
 
-    changeset = OPML.changeset(%OPML{content_type: upload.content_type,
+    changeset = Opml.changeset(%Opml{content_type: upload.content_type,
                                      filename: upload.filename,
                                      path: destination_path,
                                      user_id: user.id})
@@ -40,21 +44,21 @@ defmodule Pan.OPMLController do
 
 
   def show(conn, %{"id" => id}) do
-    opml = Repo.get!(OPML, id)
+    opml = Repo.get!(Opml, id)
     render(conn, "show.html", opml: opml)
   end
 
 
   def edit(conn, %{"id" => id}) do
-    opml = Repo.get!(OPML, id)
-    changeset = OPML.changeset(opml)
+    opml = Repo.get!(Opml, id)
+    changeset = Opml.changeset(opml)
     render(conn, "edit.html", opml: opml, changeset: changeset)
   end
 
 
   def update(conn, %{"id" => id, "opml" => opml_params}) do
-    opml = Repo.get!(OPML, id)
-    changeset = OPML.changeset(opml, opml_params)
+    opml = Repo.get!(Opml, id)
+    changeset = Opml.changeset(opml, opml_params)
 
     case Repo.update(changeset) do
       {:ok, opml} ->
@@ -67,7 +71,7 @@ defmodule Pan.OPMLController do
   end
 
   def delete(conn, %{"id" => id}) do
-    opml = Repo.get!(OPML, id)
+    opml = Repo.get!(Opml, id)
 
     File.rm(opml.path)
     Repo.delete!(opml)

@@ -1,4 +1,4 @@
-defmodule Pan.OPML do
+defmodule Pan.Opml do
   use Pan.Web, :model
 
   schema "opmls" do

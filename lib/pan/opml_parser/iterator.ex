@@ -1,6 +1,5 @@
-defmodule Pan.OPMLParser.Iterator do
-  alias Pan.OPMLParser.Analyzer
-  alias Pan.OPMLParser.Helpers
+defmodule Pan.OpmlParser.Iterator do
+  alias Pan.OpmlParser.Analyzer
 
 # We are done digging down
   def parse([], _user_id), do: nil

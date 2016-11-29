@@ -1,4 +1,4 @@
-defmodule Pan.OPMLParser.FeedBacklog do
+defmodule Pan.OpmlParser.FeedBacklog do
   use Pan.Web, :controller
 
   def find_or_create(url, user_id) do
