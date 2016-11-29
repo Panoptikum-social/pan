@@ -20,11 +20,15 @@ defmodule Pan.OpmlFrontendController do
 
 
   def create(conn, %{"opml" => opml_params}, user) do
-    if upload = opml_params["file"] do
-      File.mkdir_p("uploads/opml/#{user.id}")
-      destination_path = "uploads/opml/#{user.id}/#{upload.filename}"
-      File.cp(upload.path, destination_path)
-    end
+    destination_path =
+      if upload = opml_params["file"] do
+        File.mkdir_p("uploads/opml/#{user.id}")
+        path = "uploads/opml/#{user.id}/#{upload.filename}"
+        File.cp(upload.path, path)
+        path
+      else
+        ""
+      end
 
     changeset = Opml.changeset(%Opml{content_type: upload.content_type,
                                      filename: upload.filename,

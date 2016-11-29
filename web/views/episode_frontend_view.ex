@@ -106,11 +106,6 @@ defmodule Pan.EpisodeFrontendView do
     end
   end
 
-  def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
-    like_or_unlike(user_id, episode_id)
-  end
-
-
   def like_or_unlike_chapter(user_id, chapter_id) do
     case Repo.get_by(Pan.Like, enjoyer_id: user_id,
                                chapter_id: chapter_id) do
@@ -132,6 +127,12 @@ defmodule Pan.EpisodeFrontendView do
         end
     end
   end
+
+
+  def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
+    like_or_unlike(user_id, episode_id)
+  end
+
 
   def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
     like_or_unlike_chapter(user_id, chapter_id)

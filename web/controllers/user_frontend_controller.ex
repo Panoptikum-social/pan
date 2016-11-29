@@ -68,7 +68,7 @@ defmodule Pan.UserFrontendController do
    end
 
 
-   def edit(conn, params, user) do
+   def edit(conn, _params, user) do
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end

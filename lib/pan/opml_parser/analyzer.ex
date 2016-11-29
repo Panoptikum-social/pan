@@ -1,6 +1,6 @@
 defmodule Pan.OpmlParser.Analyzer do
   alias Pan.OpmlParser.Iterator
-  alias Pan.Parser.Helpers
+
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge
 
 #wrappers to dive into
