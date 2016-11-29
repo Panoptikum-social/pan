@@ -14,6 +14,8 @@ defmodule Pan.OpmlParser.Analyzer do
     case attr[:type] do
       "rss" ->
         Pan.OpmlParser.FeedBacklog.find_or_create(attr[:xmlUrl], user_id)
+      "atom" ->
+        nil
       nil ->
         Iterator.parse(value, user_id)
     end
