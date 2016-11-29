@@ -30,4 +30,9 @@
   </tbody>
 </table>
 
+<p>
+  <%= link "Create Subscriptions", to: feed_backlog_path(@conn, :subscribe),
+                                   class: "btn btn-warning" %>
+</p>
+
 <%= link "New feed backlog", to: feed_backlog_path(@conn, :new) %>

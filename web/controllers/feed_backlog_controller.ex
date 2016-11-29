@@ -1,7 +1,9 @@
 defmodule Pan.FeedBacklogController do
   use Pan.Web, :controller
-
+  alias Pan.Feed
+  alias Pan.AlternateFeed
   alias Pan.FeedBacklog
+  alias Pan.Subscription
 
   def index(conn, _params) do
     backlog_feeds = Repo.all(FeedBacklog)
@@ -81,5 +83,34 @@ defmodule Pan.FeedBacklogController do
     conn
     |> put_flash(:info, "Feed imported successfully.")
     |> redirect(to: podcast_frontend_path(conn, :show, podcast))
+  end
+
+
+  def subscribe(conn, _params) do
+    for backlog_feed <- Repo.all(FeedBacklog) do
+      feeds = Repo.all(from f in Feed, where: f.self_link_url == ^backlog_feed.url,
+                                       preload: :podcast)
+      feed = case feeds do
+        [] ->
+          alternate_feeds = Repo.all(from f in AlternateFeed, where: f.url == ^backlog_feed.url,
+                                                              preload: [feed: :podcast])
+          case alternate_feeds do
+            [] ->
+              nil
+            alternate_feeds ->
+              List.first(alternate_feeds).feed
+            end
+        feeds ->
+          List.first(feeds)
+      end
+
+      if feed do
+        Subscription.find_or_create(backlog_feed.user_id, feed.podcast.id)
+        Repo.delete!(backlog_feed)
+      end
+    end
+
+    conn
+    |> redirect(to: feed_backlog_path(conn, :index))
   end
 end

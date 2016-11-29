@@ -15,16 +15,36 @@
           <h3 class="panel-title">Podcasts by <%= @user.name %></h3>
         </div>
         <div class="panel-body">
-          <%= for podcast <- @user.podcasts_i_own do %>
+          <p style="line-height: 200%;">
+            <%= for podcast <- @user.podcasts_i_own do %>
+              <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
+                       to: podcast_frontend_path(@conn, :show, podcast),
+                       class: "btn btn-default btn-xs",
+                       style: "color: #000" %> &nbsp;
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Podcasts, <%= @user.name %> has subscribed to</h3>
+      </div>
+      <div class="panel-body">
+       <p style="line-height: 200%;">
+          <%= for podcast <- @user.podcasts_i_subscribed do %>
             <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %> &nbsp;
           <% end %>
-        </div>
+        </p>
       </div>
     </div>
-  <% end %>
+  </div>
 
   <div class="col-md-12">
     <div class="panel panel-danger">
@@ -60,12 +80,14 @@
         <h3 class="panel-title">Persons, <%= @user.name %> likes</h3>
       </div>
       <div class="panel-body">
-        <%= for user <- @user.users_i_like do %>
-          <%= link [fa_icon("user"), " ", user.name],
-                   to: user_frontend_path(@conn, :show, user),
-                   class: "btn btn-default btn-xs",
-                   style: "color: #000" %> &nbsp;
-        <% end %>
+        <p style="line-height: 200%;">
+          <%= for user <- @user.users_i_like do %>
+            <%= link [fa_icon("user"), " ", user.name],
+                     to: user_frontend_path(@conn, :show, user),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %> &nbsp;
+          <% end %>
+        </p>
       </div>
     </div>
   </div>
@@ -76,16 +98,17 @@
         <h3 class="panel-title">Categories, <%= @user.name %> likes</h3>
       </div>
       <div class="panel-body">
-        <%= for category <- @user.categories_i_like do %>
-          <%= link [fa_icon("folder"), " ", category.title],
-                   to: category_frontend_path(@conn, :show, category),
-                   class: "btn btn-default btn-xs",
-                   style: "color: #000" %> &nbsp;
-        <% end %>
+        <p style="line-height: 200%;">
+          <%= for category <- @user.categories_i_like do %>
+            <%= link [fa_icon("folder"), " ", category.title],
+                     to: category_frontend_path(@conn, :show, category),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %> &nbsp;
+          <% end %>
+        </p>
       </div>
     </div>
   </div>
-
 
   <div class="col-md-12">
     <div class="panel panel-primary">

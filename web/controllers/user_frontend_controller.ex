@@ -46,7 +46,8 @@ defmodule Pan.UserFrontendController do
     user = Repo.one(from u in Pan.User, where: u.id == ^id and u.podcaster == true)
            |> Repo.preload([:podcasts_i_own,
                             :users_i_like,
-                            :categories_i_like])
+                            :categories_i_like,
+                            :podcasts_i_subscribed])
 
     podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
                                                             and not is_nil(l.podcast_id),
