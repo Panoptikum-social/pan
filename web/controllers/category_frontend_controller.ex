@@ -4,6 +4,7 @@ defmodule Pan.CategoryFrontendController do
   alias Pan.Category
   alias Pan.Episode
   alias Pan.Podcast
+  alias Pan.Subscription
 
   def index(conn, _params) do
     categories = Repo.all(from category in Category, order_by: :title,
@@ -14,10 +15,17 @@ defmodule Pan.CategoryFrontendController do
     podcount = Repo.aggregate(Podcast, :count, :id)
     epicount = Repo.aggregate(Episode, :count, :id)
 
+    popular_podcasts = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
+                                                        group_by: p.id,
+                                                        select: [count(s.podcast_id), p.id, p.title],
+                                                        order_by: [desc: count(s.podcast_id)],
+                                                        limit: 10)
+
     render(conn, "index.html", categories: categories,
                                catcount: catcount,
                                podcount: podcount,
-                               epicount: epicount)
+                               epicount: epicount,
+                               popular_podcasts: popular_podcasts)
   end
 
 
