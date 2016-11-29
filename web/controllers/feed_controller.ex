@@ -2,8 +2,10 @@ defmodule Pan.FeedController do
   use Pan.Web, :controller
 
   alias Pan.Feed
+  alias Pan.AlternateFeed
 
   plug :scrub_params, "feed" when action in [:create, :update]
+
 
   def index(conn, _params) do
     feeds = Repo.all(Feed)
@@ -11,10 +13,12 @@ defmodule Pan.FeedController do
     render(conn, "index.html", feeds: feeds)
   end
 
+
   def new(conn, _params) do
     changeset = Feed.changeset(%Feed{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"feed" => feed_params}) do
     changeset = Feed.changeset(%Feed{}, feed_params)
@@ -29,19 +33,34 @@ defmodule Pan.FeedController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     feed = Repo.get!(Feed, id)
     render(conn, "show.html", feed: feed)
   end
 
+
   def edit(conn, %{"id" => id}) do
     feed = Repo.get!(Feed, id)
+           |> Repo.preload(:alternate_feeds)
     changeset = Feed.changeset(feed)
+                |> Ecto.Changeset.put_assoc(:alternate_feeds, [%AlternateFeed{} | feed.alternate_feeds])
     render(conn, "edit.html", feed: feed, changeset: changeset)
   end
 
+
   def update(conn, %{"id" => id, "feed" => feed_params}) do
     feed = Repo.get!(Feed, id)
+           |> Repo.preload(:alternate_feeds)
+
+    feed_params =
+      if feed_params["alternate_feeds"]["0"]["title"] == nil and feed_params["alternate_feeds"]["0"]["url"] == nil do
+        {_, feed_params} = Kernel.pop_in(feed_params["alternate_feeds"]["0"])
+        feed_params
+      else
+        feed_params
+      end
+
     changeset = Feed.changeset(feed, feed_params)
 
     case Repo.update(changeset) do
@@ -53,6 +72,7 @@ defmodule Pan.FeedController do
         render(conn, "edit.html", feed: feed, changeset: changeset)
     end
   end
+
 
   def delete(conn, %{"id" => id}) do
     feed = Repo.get!(Feed, id)

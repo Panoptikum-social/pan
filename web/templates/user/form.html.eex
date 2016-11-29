@@ -21,13 +21,13 @@
     <%= label f, :email, class: "control-label" %>
     <%= email_input f, :email, class: "form-control" %>
     <%= error_tag f, :email %>
-  
+
   </div>
   <div class="form-group">
     <%= label f, :admin, class: "control-label" %>
     <%= checkbox f, :admin, class: "form-control" %>
     <%= error_tag f, :admin %>
-  
+
   </div>
   <div class="form-group">
     <%= label f, :podcaster, class: "control-label" %>
