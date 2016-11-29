@@ -20,6 +20,8 @@
       <td><%= opml.path %></td>
 
       <td class="text-right">
+        <%= link [fa_icon("cogs"), " Parse"], to: opml_path(@conn, :import, opml),
+                           class: "btn btn-info btn-xs" %> &nbsp;
         <%= link "Show", to: opml_path(@conn, :show, opml), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: opml_path(@conn, :edit, opml), class: "btn btn-default btn-xs" %>
         <%= link "Delete", to: opml_path(@conn, :delete, opml), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>

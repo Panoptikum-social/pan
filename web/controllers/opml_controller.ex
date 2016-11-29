@@ -80,4 +80,14 @@ defmodule Pan.OpmlController do
     |> put_flash(:info, "Opml deleted successfully.")
     |> redirect(to: opml_path(conn, :index))
   end
+
+
+  def import(conn, %{"id" => id}) do
+    opml = Repo.get!(Opml, id)
+
+    Pan.OpmlParser.Opml.parse(opml.path, opml.user_id)
+    conn
+    |> put_flash(:info, "Opml imported successfully.")
+    |> redirect(to: opml_frontend_path(conn, :index))
+  end
 end

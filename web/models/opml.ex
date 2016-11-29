@@ -15,7 +15,7 @@ defmodule Pan.Opml do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:content_type, :filename, :path])
+    |> cast(params, [:content_type, :filename, :path, :user_id])
     |> validate_required([:content_type, :filename, :path])
   end
 end

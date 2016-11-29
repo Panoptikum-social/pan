@@ -71,5 +71,6 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/opmls", OpmlController
+    get "/opmls/import/:id", OpmlController, :import
   end
 end
