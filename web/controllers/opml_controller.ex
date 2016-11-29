@@ -19,8 +19,8 @@ defmodule Pan.OpmlController do
     user = conn.assigns.current_user
     destination_path =
       if upload = opml_params["file"] do
-        File.mkdir_p("uploads/opml/#{user.id}")
-        path = "uploads/opml/#{user.id}/#{upload.filename}"
+        File.mkdir_p("/var/phoenix/pan-uploads/opml/#{user.id}")
+        path = "/var/phoenix/pan-uploads/opml/#{user.id}/#{upload.filename}"
         File.cp(upload.path, path)
         path
       else
