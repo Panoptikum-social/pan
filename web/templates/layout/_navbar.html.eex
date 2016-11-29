@@ -23,7 +23,9 @@
   <ul class="nav navbar-nav navbar-right">
     <%= if @current_user do %>
       <li role="user" class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <a class="dropdown-toggle" href="#" role="button"
+           aria-haspopup="true" aria-expanded="false"
+           data-toggle="dropdown" data-no-turbolink="true">
           @<%= @current_user.username %><span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -35,7 +37,9 @@
 
       <%= if @current_user.admin do %>
         <li role="admin" class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <a class="dropdown-toggle" href="#" role="button"
+             aria-haspopup="true" aria-expanded="false"
+             data-toggle="dropdown" data-no-turbolink="true">
             Administration <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
