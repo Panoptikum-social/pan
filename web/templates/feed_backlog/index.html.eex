@@ -17,7 +17,7 @@
       <td>
         <%= feed_backlog.url %><br/>
 
-        <%= if feed = best_matching_feed(feed_backlog.url) do %>
+        <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
           <%= link [ fa_icon("feed"), " Create alternate feed"],
                    to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
                                                                         url: feed_backlog.url,

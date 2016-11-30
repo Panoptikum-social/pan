@@ -36,7 +36,16 @@ defmodule Pan.Feed do
   end
 
 
-  def best_matching_feed(url) do
+  def clean_and_best_matching(url) do
+    url
+    |> String.split("/", parts: 3)
+    |> List.last
+    |> String.replace("feeds.feedburner.com/", "")
+    |> best_matching
+  end
+
+
+  def best_matching(url) do
     # IO.puts("==========" <> url <> "========")
     cond do
       feed = Repo.all(from f in Feed, where: ilike(f.self_link_url, ^"%#{url}%"),
@@ -60,7 +69,7 @@ defmodule Pan.Feed do
         |> String.split("/", parts: 2)
         |> List.last
         |> String.reverse
-        |> best_matching_feed
+        |> best_matching
 
       true ->
         nil
