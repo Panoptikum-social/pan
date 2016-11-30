@@ -111,7 +111,7 @@ defmodule Pan.Parser.Analyzer do
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
-    :changefreq, :"dc:title"
+    :changefreq, :"dc:title", :"feedburner:browserFriendly"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -125,7 +125,8 @@ defmodule Pan.Parser.Analyzer do
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
-    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp,
+    :"media:keywords", :"media:rights"
   ], do: %{}
 
 

@@ -63,6 +63,7 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace("Thurs",   "Thu")
     |> String.replace("Mo,",   "Mon,")
+    |> String.replace("Son,",   "Sun,")
     |> String.replace("ٍ", "")
   end
 

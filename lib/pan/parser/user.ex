@@ -6,7 +6,9 @@ defmodule Pan.Parser.User do
       user_map = Map.put_new(user_map, :name, "unknown")
                  |> Map.put_new(:username, user_map[:email])
 
-      case Repo.get_by(Pan.User, email: user_map[:email]) do
+      case Repo.all(Pan.User, email: user_map[:email],
+                              limit: 1)
+           |> List.first do
         nil ->
           %Pan.User{}
           |> Map.merge(user_map)

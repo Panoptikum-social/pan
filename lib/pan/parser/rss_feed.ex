@@ -6,7 +6,7 @@ defmodule Pan.Parser.RssFeed do
     download_and_parse("https://rechtsbelehrung.com/feed/podcast/")
   end
 
-  def download_and_parse(url) do
+  def download_and_parse(url, pagecount \\ 1) do
     url = String.strip(url)
     %HTTPotion.Response{body: feed_xml} = download(url)
 
@@ -22,8 +22,9 @@ defmodule Pan.Parser.RssFeed do
     podcast_id = Persistor.call(map)
 
     next_page_url = map[:feed][:next_page_url]
-    if next_page_url do
-      download_and_parse(next_page_url)
+    pagecount = pagecount + 1
+    if next_page_url and pagecount < 100 do
+      download_and_parse(next_page_url, pagecount)
     end
 
     podcast_id
