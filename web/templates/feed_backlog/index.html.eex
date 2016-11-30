@@ -14,7 +14,18 @@
   <tbody>
 <%= for feed_backlog <- @backlog_feeds do %>
     <tr>
-      <td><%= feed_backlog.url %></td>
+      <td>
+        <%= feed_backlog.url %><br/>
+
+        <%= if feed = best_matching_feed(feed_backlog.url) do %>
+          <%= link [ fa_icon("feed"), " Create alternate feed"],
+                   to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
+                                                                        url: feed_backlog.url,
+                                                                        backlog_id: feed_backlog.id),
+                   method: :post,
+                   class: "btn btn-info btn-xs" %> for <%= feed.self_link_url %>
+        <% end %>
+      </td>
       <td><%= feed_backlog.feed_generator %></td>
       <td><%= feed_backlog.in_progress %></td>
       <td><%= feed_backlog.user_id %></td>
@@ -22,7 +33,9 @@
       <td class="text-right">
         <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), class: "btn btn-default btn-xs" %>
         <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete,
+                                                                                data: [confirm: "Are you sure?"],
+                                                                                class: "btn btn-danger btn-xs" %>
         <%= link "Import", to: feed_backlog_path(@conn, :import, feed_backlog), class: "btn btn-default btn-xs" %>
       </td>
     </tr>

@@ -58,6 +58,7 @@ defmodule Pan.Router do
     resources "/languages", LanguageController
     resources "/feeds", FeedController
     resources "/alternate_feeds", AlternateFeedController
+    post "create_from_backlog", AlternateFeedController, :create_from_backlog
     resources "/contributors", ContributorController
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController

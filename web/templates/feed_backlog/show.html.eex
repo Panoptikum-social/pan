@@ -22,7 +22,20 @@
     <%= @feed_backlog.user_id %>
   </li>
 
+  <%= if @best_matching_feed do %>
+    <li>
+      <strong>Best matching feed:</strong><br/>
+      <%= @best_matching_feed.self_link_title %><br/>
+      <%= link [ fa_icon("feed"), " Create alternate feed"],
+               to: alternate_feed_path(@conn, :create_from_backlog, feed_id: @best_matching_feed.id,
+                                                                    url: @feed_backlog.url,
+                                                                    backlog_id: @feed_backlog.id),
+               method: :post,
+               class: "btn btn-info" %> for <%= @best_matching_feed.self_link_url %>
+    </li>
+  <% end %>
+
 </ul>
 
-<%= link "Edit", to: feed_backlog_path(@conn, :edit, @feed_backlog) %>
+<%= link "Edit", to: feed_backlog_path(@conn, :edit, @feed_backlog) %> &nbsp;
 <%= link "Back", to: feed_backlog_path(@conn, :index) %>

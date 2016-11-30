@@ -35,7 +35,13 @@ defmodule Pan.FeedBacklogController do
 
   def show(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
-    render(conn, "show.html", feed_backlog: feed_backlog)
+    best_matching_feed = feed_backlog.url
+                         |> String.split("/", parts: 3)
+                         |> List.last
+                         |> Feed.best_matching_feed()
+
+    render(conn, "show.html", feed_backlog: feed_backlog,
+                              best_matching_feed: best_matching_feed)
   end
 
 
