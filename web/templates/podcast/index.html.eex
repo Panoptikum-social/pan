@@ -6,7 +6,6 @@
       <th>ID</th>
       <th>Title</th>
       <th>Website</th>
-      <th># Episodes</th>
       <th>Last build date</th>
       <th>Author</th>
 
@@ -19,7 +18,6 @@
       <td><%= podcast.id %></td>
       <td><%= podcast.title %></td>
       <td><%= if podcast.website do %><a href="<%= podcast.website %>"><%= C.String.truncate(podcast.website, 50)%> <% end %></a></td>
-      <td><%= Enum.count(podcast.episodes) %>
       <td><%= podcast.last_build_date %></td>
       <td><%= podcast.author %></td>
 
