@@ -125,7 +125,7 @@ defmodule Pan.Parser.Analyzer do
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point",
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
-    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link"
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp
   ], do: %{}
 
 

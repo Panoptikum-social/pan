@@ -15,7 +15,7 @@
 <%= for feed_backlog <- @backlog_feeds do %>
     <tr>
       <td>
-        <%= feed_backlog.url %><br/>
+        <%= link feed_backlog.url, to: feed_backlog.url, target: "_blank" %><br/>
 
         <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
           <%= link [ fa_icon("feed"), " Create alternate feed"],
