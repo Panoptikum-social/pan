@@ -53,6 +53,13 @@
     <%= error_tag f, :feed_generator %>
   </div>
 
+
+  <div class="form-group">
+    <%= label f, :podcast_id, class: "control-label" %>
+    <%= text_input f, :podcast_id, class: "form-control" %>
+    <%= error_tag f, :podcast_id %>
+  </div>
+
   <%= inputs_for f, :alternate_feeds, fn i -> %>
     <h4><%= label f, :alternate_feed, class: "control-label" %></h4>
 

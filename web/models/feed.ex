@@ -21,7 +21,7 @@ defmodule Pan.Feed do
   end
 
   @required_fields ~w(self_link_url )
-  @optional_fields ~w(self_link_title next_page_url prev_page_url first_page_url last_page_url hub_link_url feed_generator)
+  @optional_fields ~w(self_link_title next_page_url prev_page_url first_page_url last_page_url hub_link_url feed_generator podcast_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
