@@ -13,7 +13,7 @@ defmodule Pan.Feed do
     timestamps
 
     belongs_to :podcast, Pan.Podcast
-    has_many :alternate_feeds, Pan.AlternateFeed
+    has_many :alternate_feeds, Pan.AlternateFeed, on_delete: :delete_all
   end
 
   @required_fields ~w(self_link_url )
