@@ -25,7 +25,8 @@
       <li role="user" class="dropdown">
         <a class="dropdown-toggle" href="#" role="button"
            aria-haspopup="true" aria-expanded="false"
-           data-toggle="dropdown">
+           data-toggle="dropdown"
+           data-turbolinks="false">
           @<%= @current_user.username %><span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -39,7 +40,8 @@
         <li role="admin" class="dropdown">
           <a class="dropdown-toggle" href="#" role="button"
              aria-haspopup="true" aria-expanded="false"
-             data-toggle="dropdown">
+             data-toggle="dropdown"
+             data-turbolinks="false">
             Administration <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
