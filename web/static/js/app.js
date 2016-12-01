@@ -25,6 +25,8 @@ import $ from "jquery"
 import socket from "./socket"
 import Mailbox from "./mailbox"
 
-Mailbox.init(socket)
+document.addEventListener("turbolinks:load", function() {
+  Mailbox.init(socket)
+})
 
 Turbolinks.start();
