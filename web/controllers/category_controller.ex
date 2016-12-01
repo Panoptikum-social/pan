@@ -1,12 +1,16 @@
 defmodule Pan.CategoryController do
   use Pan.Web, :controller
-
   alias Pan.Category
+  alias Pan.Follow
+  alias Pan.Podcast
+  alias Pan.Like
+  alias Pan.Repo
 
   plug :scrub_params, "category" when action in [:create, :update]
 
   def index(conn, _params) do
-    categories = Repo.all(from category in Category, where: is_nil(category.parent_id))
+    categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
+                                                     order_by: :title)
                  |> Repo.preload(:children)
     render(conn, "index.html", categories: categories, no_children: false)
   end
@@ -77,13 +81,36 @@ defmodule Pan.CategoryController do
 
   def merge(conn, _params) do
     categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
+                                                     order_by: :title,
                                                      preload: [children: :children])
 
     render(conn, "merge.html", categories: categories)
   end
 
-  def execute_merge(conn, %{"from" => from_id, "to" => to_id}) do
-    IO.puts from_id
-    IO.puts to_id
+
+  def execute_merge(conn, %{"from" => from, "to" => to}) do
+    from_id = String.to_integer(from)
+    to_id   = String.to_integer(to)
+
+    from(f in Follow, where: f.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    from(l in Like, where: l.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    from(r in "categories_podcasts", where: r.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    from(c in Category, where: c.parent_id == ^from_id)
+    |> Repo.update_all(set: [parent_id: to_id])
+
+    Repo.get!(Category, from_id)
+    |> Repo.delete!
+
+    categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
+                                                     order_by: :title,
+                                                     preload: [children: :children])
+
+    render(conn, "merge.html", categories: categories)
   end
 end
