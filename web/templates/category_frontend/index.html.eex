@@ -5,9 +5,9 @@
 </em></p>
 
 <div class="row">
-  <div class="col-md-6" style="columns:         3 200px;
-                               -moz-columns:    3 200px;
-                               -webkit-columns: 3 200px;
+  <div class="col-md-6" style="columns:         4 180px;
+                               -moz-columns:    4 180px;
+                               -webkit-columns: 4 180px;
                                line-height: 350%;">
     <%= for {category, counter} <- Enum.with_index(@categories) do %>
       <div style="display: inline-block;">
