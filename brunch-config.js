@@ -58,6 +58,6 @@ exports.config = {
     globals: {
       $: 'jquery',
       jQuery: 'jquery'
-    }
+    },
   }
 };

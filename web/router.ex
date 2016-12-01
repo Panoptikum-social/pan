@@ -63,6 +63,8 @@ defmodule Pan.Router do
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
+    get "/categories/merge", CategoryController, :merge
+    get "/categories/execute_merge", CategoryController, :execute_merge
     resources "/categories", CategoryController
     get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
     resources "/backlog_feeds", FeedBacklogController

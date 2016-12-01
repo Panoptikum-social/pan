@@ -11,10 +11,12 @@ defmodule Pan.CategoryController do
     render(conn, "index.html", categories: categories, no_children: false)
   end
 
+
   def new(conn, _params) do
     changeset = Category.changeset(%Category{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"category" => category_params}) do
     changeset = Category.changeset(%Category{}, category_params)
@@ -29,6 +31,7 @@ defmodule Pan.CategoryController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
                |> Repo.preload([:podcasts, :parent])
@@ -36,11 +39,13 @@ defmodule Pan.CategoryController do
     render(conn, "show.html", category: category)
   end
 
+
   def edit(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
     changeset = Category.changeset(category)
     render(conn, "edit.html", category: category, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "category" => category_params}) do
     category = Repo.get!(Category, id)
@@ -56,6 +61,7 @@ defmodule Pan.CategoryController do
     end
   end
 
+
   def delete(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
 
@@ -66,5 +72,18 @@ defmodule Pan.CategoryController do
     conn
     |> put_flash(:info, "Category deleted successfully.")
     |> redirect(to: category_path(conn, :index))
+  end
+
+
+  def merge(conn, _params) do
+    categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
+                                                     preload: [children: :children])
+
+    render(conn, "merge.html", categories: categories)
+  end
+
+  def execute_merge(conn, %{"from" => from_id, "to" => to_id}) do
+    IO.puts from_id
+    IO.puts to_id
   end
 end
