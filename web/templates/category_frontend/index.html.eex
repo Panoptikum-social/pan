@@ -38,18 +38,16 @@
   <div class="col-md-3">
     <div class="panel panel-danger">
       <div class="panel-heading">Search</div>
+      <div class="panel-body">
         <%= form_for @conn, search_frontend_path(@conn, :new), [as: :search], fn f -> %>
           <div class="form-group">
-            <%= label f, :searchstring, class: "control-label" %>
             <%= text_input f, :searchstring, class: "form-control" %>
-            <%= error_tag f, :searchstring %>
           </div>
-
           <div class="form-group">
             <%= submit "Submit", class: "btn btn-primary" %>
           </div>
         <% end %>
-        <br/>
+      </div>
     </div>
 
     <br/>
