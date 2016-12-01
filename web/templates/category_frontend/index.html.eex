@@ -28,8 +28,9 @@
             <% end %>
           </p>
         <% end %>
-      <hr style="margin: 0px;"/>
+        <hr style="margin: 0px;"/>
       </div>
+      <br/>
     <% end %>
   </div>
 
