@@ -5,34 +5,31 @@
 </em></p>
 
 <div class="row">
-  <div class="col-md-6">
-    <table class="table table-condensed">
-      <tbody>
-        <%= for {category, counter} <- Enum.with_index(@categories) do %>
-          <tr>
-            <td class="text-right" style="border: none !important;">
-              <span class="btn btn-xs <%= btn_cycle(counter) %>">
-              <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
-                       to: category_frontend_path(@conn, :show, category),
-                       style: "color: #" <> color_cycle(counter) %>
-              </span>
-            </td>
+  <div class="col-md-6" style="columns:         3 250px;
+                               -moz-columns:    3 250px;
+                               -webkit-columns: 3 250px;
+                               line-height: 350%;">
+    <%= for {category, counter} <- Enum.with_index(@categories) do %>
+      <div style="display: inline-block;">
+        <span class="btn btn-sm <%= btn_cycle(counter) %>">
+        <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
+                 to: category_frontend_path(@conn, :show, category),
+                 style: "color: #" <> color_cycle(counter) %>
+        </span><br/>
 
-            <td style="border: none !important;">
-              <%= if category.children != [] do %>
-                <%= for subcategory <- category.children do %>
-                  <span class="btn btn-xs btn-normal">
-                    <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                             to: category_frontend_path(@conn, :show, subcategory),
-                             style: "color: #fff" %>
-                  </span>
-                <% end %>
-              <% end %>
-            </td>
-          </tr>
+        <%= if category.children != [] do %>
+          <p style="line-height: 200%;"">
+            <%= for subcategory <- category.children do %>
+              <span class="btn btn-xs btn-default">
+                <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                         to: category_frontend_path(@conn, :show, subcategory),
+                         style: "color: #555" %>
+              </span>
+            <% end %>
+          </p>
         <% end %>
-      </tbody>
-    </table>
+      </div> <br/>
+    <% end %>
   </div>
 
   <div class="col-md-3">
