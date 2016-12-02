@@ -4,84 +4,34 @@ defmodule Pan.SearchFrontendController do
   alias Pan.Episode
   alias Pan.Category
 
-  def new(conn, %{"search" => search}) do
-    searchstring = search["searchstring"]
+  def new(conn, params) do
+    sqlfrag = "%" <> params["search"]["searchstring"] <> "%"
 
     categories = Repo.all(from c in Category,
-                          where: ilike(c.title, ^"%#{searchstring}%"))
+                          where: ilike(c.title, ^sqlfrag))
 
-    podcasts = Repo.all(from p in Podcast,
-                        select: %{id: p.id,
-                                  title: p.title,
-                                  type: "Title",
-                                  match: p.title},
-                        where: ilike(p.title, ^"%#{searchstring}%"))
-            ++ Repo.all(from p in Podcast,
-                        select: %{id: p.id,
-                                  title: p.title,
-                                  type: "Description",
-                                  match: p.description},
-                        where: ilike(p.description, ^"%#{searchstring}%"))
-            ++ Repo.all(from p in Podcast,
-                        select: %{id: p.id,
-                                  title: p.title,
-                                  type: "Summary",
-                                  match: p.summary},
-                        where: ilike(p.summary, ^"%#{searchstring}%"))
-            ++ Repo.all(from p in Podcast,
-                        select: %{id: p.id,
-                                  title: p.title,
-                                  type: "Author",
-                                  match: p.author},
-                        where: ilike(p.author, ^"%#{searchstring}%"))
+    query = from p in Podcast,
+            where: ilike(p.title,       ^sqlfrag) or
+                   ilike(p.description, ^sqlfrag) or
+                   ilike(p.summary,     ^sqlfrag) or
+                   ilike(p.author,      ^sqlfrag)
+    podcasts = Ecto.Queryable.to_query(query)
+               |> Repo.paginate(params)
 
-    episodes = Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Title",
-                                  match: e.title},
-                        where: ilike(e.title, ^"%#{searchstring}%"),
-                        limit: 100)
-            ++ Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Subtitle",
-                                  match: e.subtitle},
-                        where: ilike(e.subtitle, ^"%#{searchstring}%"),
-                        limit: 100)
-            ++ Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Description",
-                                  match: e.description},
-                        where: ilike(e.description, ^"%#{searchstring}%"),
-                        limit: 100)
-            ++ Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Summary",
-                                  match: e.summary},
-                        where: ilike(e.summary, ^"%#{searchstring}%"),
-                        limit: 100)
-            ++ Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Author",
-                                  match: e.author},
-                        where: ilike(e.author, ^"%#{searchstring}%"),
-                        limit: 100)
-            ++ Repo.all(from e in Episode,
-                        select: %{id: e.id,
-                                  title: e.title,
-                                  type: "Shownotes",
-                                  match: e.shownotes},
-                        where: ilike(e.shownotes, ^"%#{searchstring}%"),
-                        limit: 100)
 
-    render(conn, "new.html", searchstring: searchstring,
+    query = from e in Episode,
+            where: ilike(e.title,       ^sqlfrag) or
+                   ilike(e.subtitle,    ^sqlfrag) or
+                   ilike(e.description, ^sqlfrag) or
+                   ilike(e.summary,     ^sqlfrag) or
+                   ilike(e.author,      ^sqlfrag) or
+                   ilike(e.shownotes,   ^sqlfrag)
+    episodes = Ecto.Queryable.to_query(query)
+               |> Repo.paginate(params)
+
+    render(conn, "new.html", searchstring: params["search"]["searchstring"],
                              categories: categories,
                              podcasts: podcasts,
                              episodes: episodes)
   end
 end
-

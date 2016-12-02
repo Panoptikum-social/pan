@@ -3,48 +3,65 @@
   history.replaceState(currentState, "page 3", "/categories");
 </script>
 
-<div class="panel panel-danger">
-  <div class="panel-heading">Categories</div>
-  <ul class="list-group">
-
-    <%= for category <- @categories do %>
-      <li class="list-group-item">
+<%= if @categories do %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">Categories</div>
+    <div class="panel-body">
+      <%= for category <- @categories do %>
         <%= link [fa_icon("folder-o"), " ", category.title],
-                    to: category_frontend_path(@conn, :show, category),
-                    class: "btn btn-primary btn-xs" %></br>
-        Title: <%= highlight(category.title, @searchstring) %>
-      </li>
-    <% end %>
-  </ul>
-</div>
+                 to: category_frontend_path(@conn, :show, category),
+                 class: "btn btn-primary btn-xs" %> &nbsp;
+      <% end %>
+    </div>
+  </div>
+<% end %>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">Podcasts</div>
-  <ul class="list-group">
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-primary">
+      <div class="panel-heading">Podcasts</div>
+      <div class="panel-body">
+        <%= pagination_links @conn, @podcasts,
+                       path: &search_frontend_path/3,
+                       action: :new,
+                       search: %{searchstring: @searchstring},
+                       view_style: :bootstrap %>
+      </div>
+      <ul class="list-group">
 
-    <%= for podcast <- @podcasts do %>
-      <li class="list-group-item">
-        <%= link [fa_icon("podcast"), " ", podcast.title],
-                 to: podcast_frontend_path(@conn, :show, podcast.id),
-                 class: "btn btn-default btn-xs", style: "color: #000" %></br>
-        <b><%= podcast.type %>:</b> <%= highlight(podcast.match, @searchstring) %>
-      </li>
-    <% end %>
-  </ul>
-</div>
+        <%= for podcast <- @podcasts.entries do %>
+          <li class="list-group-item" style="line-height: 150%;">
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast.id),
+                     class: "btn btn-default btn-xs", style: "color: #000" %></br>
+            <%= podcast_hits(podcast, @searchstring) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 
-<div class="panel panel-warning">
-  <div class="panel-heading">Episodes</div>
-  <ul class="list-group">
+  <div class="col-md-6">
+    <div class="panel panel-warning">
+      <div class="panel-heading">Episodes</div>
+      <div class="panel-body">
+        <%= pagination_links @conn, @episodes,
+                       path: &search_frontend_path/3,
+                       action: :new,
+                       search: %{searchstring: @searchstring},
+                       view_style: :bootstrap %>
+      </div>
+      <ul class="list-group">
 
-    <%= for episode <- @episodes do %>
-      <li class="list-group-item">
-        <%= link [fa_icon("headphones"), " ", episode.title],
-                 to: episode_frontend_path(@conn, :show, episode.id),
-                 class: "btn btn-default btn-xs", style: "color: #000" %></br>
-        <b><%= episode.type %>:</b> <%= highlight(episode.match, @searchstring) %>
-      </li>
-    <% end %>
-  </ul>
-</div>
+        <%= for episode <- @episodes.entries do %>
+          <li class="list-group-item" style="line-height: 150%;">
+            <%= link [fa_icon("headphones"), " ", episode.title],
+                     to: episode_frontend_path(@conn, :show, episode.id),
+                     class: "btn btn-default btn-xs", style: "color: #000" %></br>
+            <%= episode_hits(episode, @searchstring) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </div>

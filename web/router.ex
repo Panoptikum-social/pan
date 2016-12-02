@@ -36,7 +36,8 @@ defmodule Pan.Router do
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     get "/login_via_token", SessionController, :login_via_token
 
-    post "/search/", SearchFrontendController, :new
+    post "/search", SearchFrontendController, :new
+    get "/search", SearchFrontendController, :new
     resources "/podcasters", UserFrontendController, only: [:show, :index]
   end
 
