@@ -6,6 +6,7 @@ defmodule Pan.SearchFrontendController do
 
   def new(conn, params) do
     sqlfrag = "%" <> params["search"]["searchstring"] <> "%"
+    page = if params["page"] != nil, do: String.to_integer(params["page"]), else: 1
 
     categories = Repo.all(from c in Category,
                           where: ilike(c.title, ^sqlfrag))
@@ -16,7 +17,7 @@ defmodule Pan.SearchFrontendController do
                    ilike(p.summary,     ^sqlfrag) or
                    ilike(p.author,      ^sqlfrag)
     podcasts = Ecto.Queryable.to_query(query)
-               |> Repo.paginate(params)
+               |> Repo.paginate(page: page, page_size: 10)
 
 
     query = from e in Episode,
@@ -27,7 +28,7 @@ defmodule Pan.SearchFrontendController do
                    ilike(e.author,      ^sqlfrag) or
                    ilike(e.shownotes,   ^sqlfrag)
     episodes = Ecto.Queryable.to_query(query)
-               |> Repo.paginate(params)
+               |> Repo.paginate(page: page, page_size: 10)
 
     render(conn, "new.html", searchstring: params["search"]["searchstring"],
                              categories: categories,

@@ -1,26 +1,27 @@
 <script>
   var currentState = history.state;
-  history.replaceState(currentState, "page 3", "/categories");
+  history.replaceState(currentState, "page 3", "/search?search[searchstring]=<%= @searchstring %>" +
+                                               "&page=<%= @podcasts.page_number %>");
 </script>
-
-<%= if @categories do %>
-  <div class="panel panel-danger">
-    <div class="panel-heading">Categories</div>
-    <div class="panel-body">
-      <%= for category <- @categories do %>
-        <%= link [fa_icon("folder-o"), " ", category.title],
-                 to: category_frontend_path(@conn, :show, category),
-                 class: "btn btn-primary btn-xs" %> &nbsp;
-      <% end %>
-    </div>
-  </div>
-<% end %>
 
 <div class="row">
   <div class="col-md-6">
+    <%= if @categories do %>
+      <div class="panel panel-danger">
+        <div class="panel-heading">Categories</div>
+        <div class="panel-body">
+          <%= for category <- @categories do %>
+            <%= link [fa_icon("folder-o"), " ", category.title],
+                     to: category_frontend_path(@conn, :show, category),
+                     class: "btn btn-primary btn-xs" %> &nbsp;
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
     <div class="panel panel-primary">
-      <div class="panel-heading">Podcasts</div>
-      <div class="panel-body">
+      <div class="panel-heading"><%= Enum.count(@podcasts.entries) %> Podcasts out of <%= @podcasts.total_entries %></div>
+      <div class="panel-body" style="margin-top: -20px; margin-bottom: -50px;">
         <%= pagination_links @conn, @podcasts,
                        path: &search_frontend_path/3,
                        action: :new,
@@ -43,8 +44,8 @@
 
   <div class="col-md-6">
     <div class="panel panel-warning">
-      <div class="panel-heading">Episodes</div>
-      <div class="panel-body">
+      <div class="panel-heading"><%= Enum.count(@episodes.entries) %> Episodes out of <%= @episodes.total_entries %></div>
+      <div class="panel-body" style="margin-top: -20px; margin-bottom: -50px;">
         <%= pagination_links @conn, @episodes,
                        path: &search_frontend_path/3,
                        action: :new,
