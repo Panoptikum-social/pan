@@ -18,8 +18,8 @@ defmodule Pan.CategoryChannel do
       type:            "success",
       event:           "like"
     }
-    e = %{e | content: "I " <> params["action"] <> "d the category <b>" <>
-                       Repo.get!(Category, e.category_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "d the category <b>" <>
+                       Repo.get!(Category, e.category_id).title <> "</b> »"}
 
     Category.like(e.category_id, e.current_user_id)
     Message.persist_event(e)
@@ -42,8 +42,8 @@ defmodule Pan.CategoryChannel do
       type:            "success",
       event:           "follow"
     }
-    e = %{e | content: "I " <> params["action"] <> "ed the category <b>" <>
-                       Repo.get!(Category, e.category_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "ed the category <b>" <>
+                       Repo.get!(Category, e.category_id).title <> "</b> »"}
 
     Category.follow(e.category_id, e.current_user_id)
     Message.persist_event(e)

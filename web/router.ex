@@ -25,9 +25,12 @@ defmodule Pan.Router do
 
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
+
     get "/episodes/latest", EpisodeFrontendController, :latest
     resources "/episodes", EpisodeFrontendController, only: [:show]
     get "/episodes/player/:id", EpisodeFrontendController, :player
+
+    resources "/podcasters", UserFrontendController, only: [:show, :index]
 
     resources "/users", UserController, only: [:new, :create]
     get "/forgot_password", UserController, :forgot_password
@@ -38,7 +41,6 @@ defmodule Pan.Router do
 
     post "/search", SearchFrontendController, :new
     get "/search", SearchFrontendController, :new
-    resources "/podcasters", UserFrontendController, only: [:show, :index]
 
     get "/random", RecommendationFrontendController, :random
   end
@@ -46,9 +48,13 @@ defmodule Pan.Router do
 
   scope "/pan", Pan do
     pipe_through [:browser, :authenticate_user]
+
+    post "/users/like_all_subscribed", UserFrontendController, :like_all_subscribed
+    get "/my_podcasts", UserFrontendController, :my_podcasts
     get "/my_account", UserFrontendController, :profile
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
+
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/import/:id", OpmlFrontendController, :import
   end

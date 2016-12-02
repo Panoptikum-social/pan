@@ -3,6 +3,9 @@ defmodule Pan.UserFrontendController do
   alias Pan.Message
   alias Pan.User
   alias Pan.Like
+  alias Pan.Subscription
+  alias Pan.Podcast
+
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -18,9 +21,9 @@ defmodule Pan.UserFrontendController do
 
     query = from m in Message,
             where: (m.topic == "mailboxes" and m.subtopic == ^user_id) or
-                   (m.topic == "users" and m.subtopic in ^subscribed_user_ids) or
-                   (m.topic == "podcasts" and m.subtopic in ^subscribed_podcast_ids) or
-                   (m.topic == "category" and m.subtopic in ^subscribed_category_ids),
+                   (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
+                   (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
+                   (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
             order_by: [desc: :inserted_at],
             preload: [:creator]
 
@@ -31,6 +34,14 @@ defmodule Pan.UserFrontendController do
     render conn, "profile.html", user: user,
                                  messages: messages,
                                  page_number: messages.page_number
+  end
+
+
+  def my_podcasts(conn, _params, user) do
+    user = Repo.get(User, user.id)
+           |> Repo.preload([:podcasts_i_subscribed, :podcasts_i_like, :podcasts_i_follow])
+
+    render conn, "my_podcasts.html", user: user
   end
 
 
@@ -87,5 +98,39 @@ defmodule Pan.UserFrontendController do
 
          render(conn, "edit.html", user: user, changeset: changeset)
     end
+  end
+
+
+  def like_all_subscribed(conn, _params, user) do
+    subscribed_podcast_ids = Repo.all(from s in Subscription,
+                                      where: s.user_id == ^user.id,
+                                      select: s.podcast_id)
+    liked_ids = Repo.all(from l in Like,
+                         where: l.enjoyer_id == ^user.id and
+                                not is_nil(l.podcast_id),
+                         select: l.podcast_id)
+
+    for id <- subscribed_podcast_ids do
+      unless Enum.member?(liked_ids, id) do
+        e = %Event{
+          topic:           "podcast",
+          subtopic:        Integer.to_string(id),
+          current_user_id: user.id,
+          podcast_id:      id,
+          type:            "success",
+          event:           "like"
+        }
+        e = %{e | content: "« liked the podcast <b>" <>
+                           Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
+
+        Podcast.like(e.podcast_id, e.current_user_id)
+        Message.persist_event(e)
+        Event.notify_subscribers(e)
+      end
+    end
+
+    conn
+    |> put_flash(:info, "Liked all podcasts you had subscribed to.")
+    |> redirect(to: user_frontend_path(conn, :my_podcasts))
   end
 end

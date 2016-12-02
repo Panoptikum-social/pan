@@ -1,0 +1,9 @@
+<%= if @current_user do %>
+  <p>
+    <%= like_or_unlike(@current_user.id, @podcast.id) %>
+    <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
+    <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
+  </p>
+<%= else %>
+  <p>Log in to like, follow and subscribe!</p>
+<% end %>

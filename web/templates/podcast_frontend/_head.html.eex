@@ -15,15 +15,8 @@
             <p><%= raw @podcast.summary %></p>
           </div>
         </div>
-        <%= if @current_user do %>
-          <p>
-            <%= like_or_unlike(@current_user.id, @podcast.id) %>
-            <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
-            <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
-          </p>
-        <%= else %>
-          <p>Log in to like, follow and subscribe!</p>
-        <% end %>
+        <%= render "_like_follow_unsubscribe_buttons.html",
+                   current_user: @current_user, podcast: @podcast, conn: @conn %>
       </div>
 
       <div class="col-md-6">
@@ -86,35 +79,8 @@
           });
         </script>
 
-        <p class="text-center">
-          <script class="podlove-subscribe-button"
-                  src="https://cdn.podlove.org/subscribe-button/javascripts/app.js"
-                  data-language="en"
-                  data-size="medium auto"
-                  data-json-data="podcastData"
-                  data-colors="ED5565"
-                  data-buttonid="123abc">
-          </script>
-        </p>
-
-        <script>
-          window.podcastData = {
-            "title": "<%= @podcast.title %>",
-            "subtitle": "<%= @podcast.summary %>",
-            "description": "<%= @podcast.description %>",
-            "cover": "<%= @podcast.image_url %>",
-            "feeds": [
-            <%= for feed <- @podcast.feeds do %>
-              {
-                "type": "audio",
-                "format": "mp3",
-                "url": "<%= feed.self_link_url %>",
-                "variant": "high"
-              },
-            <% end %>
-            ]
-          }
-        </script>
+        <%= render "_subscribe_button.html",
+                   podcast: @podcast, conn: @conn %>
       </div>
     </div>
   </div>

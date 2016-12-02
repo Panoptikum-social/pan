@@ -12107,10 +12107,12 @@ var Mailbox = {
       _category2.default.onReady(socket, category_id);
     }
 
-    var podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']");
-    if (current_user_id != "" && podcastlikeButton != null) {
-      var podcast_id = podcastlikeButton.getAttribute("data-id");
-      _podcast2.default.onReady(socket, podcast_id);
+    var podcastlikeButtons = document.querySelectorAll("[data-type='podcast'][data-event='like']");
+    if (current_user_id != "" && podcastlikeButtons != []) {
+      Array.from(podcastlikeButtons).forEach(function (button) {
+        var podcast_id = button.getAttribute("data-id");
+        _podcast2.default.onReady(socket, podcast_id);
+      });
     }
 
     var episodeElement = document.querySelector("[data-type='episode']");

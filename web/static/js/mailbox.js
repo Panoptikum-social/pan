@@ -20,10 +20,12 @@ let Mailbox = {
       Category.onReady(socket, category_id)
     }
 
-    let podcastlikeButton = document.querySelector("[data-type='podcast'][data-event='like']")
-    if(current_user_id != "" && podcastlikeButton != null) {
-      let podcast_id = podcastlikeButton.getAttribute("data-id")
-      Podcast.onReady(socket, podcast_id)
+    let podcastlikeButtons = document.querySelectorAll("[data-type='podcast'][data-event='like']")
+    if(current_user_id != "" && podcastlikeButtons != []) {
+      Array.from(podcastlikeButtons).forEach(button => {
+        let podcast_id = button.getAttribute("data-id")
+        Podcast.onReady(socket, podcast_id)
+      })
     }
 
     let episodeElement = document.querySelector("[data-type='episode']")

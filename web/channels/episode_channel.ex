@@ -19,8 +19,8 @@ defmodule Pan.EpisodeChannel do
       type:            "success",
       event:           "like"
     }
-    e = %{e | content: "I " <> params["action"] <> "d the episode <b>" <>
-                       Repo.get!(Episode, e.episode_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "d the episode <b>" <>
+                       Repo.get!(Episode, e.episode_id).title <> "</b> »"}
 
     Episode.like(e.episode_id, e.current_user_id)
     Message.persist_event(e)
@@ -45,7 +45,7 @@ defmodule Pan.EpisodeChannel do
     }
     chapter_title = Repo.get!(Chapter, e.chapter_id).title
                     |> Crutches.String.truncate(40)
-    e = %{e | content: "I " <> params["action"] <> "d the episode <b>" <>
+    e = %{e | content: "« " <> params["action"] <> "d the episode <b> »" <>
                        chapter_title <> "</b>"}
 
     Chapter.like(e.chapter_id, e.current_user_id)

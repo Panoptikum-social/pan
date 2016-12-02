@@ -19,8 +19,8 @@ defmodule Pan.UserChannel do
       type:            "success",
       event:           "like"
     }
-    e = %{e | content: "I " <> params["action"] <> "d the user <b>" <>
-                       Repo.get!(User, e.user_id).name <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "d the user <b>" <>
+                       Repo.get!(User, e.user_id).name <> "</b> »"}
 
     User.like(e.user_id, e.current_user_id)
     Message.persist_event(e)
@@ -43,8 +43,8 @@ defmodule Pan.UserChannel do
       type:            "success",
       event:           "follow"
     }
-    e = %{e | content: "I " <> params["action"] <> "ed the user <b>" <>
-                       Repo.get!(User, e.user_id).name <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "ed the user <b>" <>
+                       Repo.get!(User, e.user_id).name <> "</b> »"}
 
     User.follow(e.user_id, e.current_user_id)
     Message.persist_event(e)

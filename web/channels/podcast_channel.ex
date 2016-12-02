@@ -18,8 +18,8 @@ defmodule Pan.PodcastChannel do
       type:            "success",
       event:           "like"
     }
-    e = %{e | content: "I " <> params["action"] <> "d the podcast <b>" <>
-                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "d the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
 
 
     Podcast.like(e.podcast_id, e.current_user_id)
@@ -43,8 +43,8 @@ defmodule Pan.PodcastChannel do
       type:            "success",
       event:           "follow"
     }
-    e = %{e | content: "I " <> params["action"] <> "ed the podcast <b>" <>
-                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "ed the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
 
 
     Podcast.follow(e.podcast_id, e.current_user_id)
@@ -68,8 +68,8 @@ defmodule Pan.PodcastChannel do
       type:            "success",
       event:           "subscribe"
     }
-    e = %{e | content: "I " <> params["action"] <> "d the podcast <b>" <>
-                       Repo.get!(Podcast, e.podcast_id).title <> "</b>"}
+    e = %{e | content: "« " <> params["action"] <> "d the podcast <b>" <>
+                       Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
 
     Podcast.subscribe(e.podcast_id, e.current_user_id)
     Message.persist_event(e)
