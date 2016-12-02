@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <%= if @categories do %>
+    <%= if @categories != [] do %>
       <div class="panel panel-danger">
         <div class="panel-heading">Categories</div>
         <div class="panel-body">
