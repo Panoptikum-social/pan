@@ -19,6 +19,7 @@
     <li><%= link "Categories", to: category_frontend_path(@conn, :index) %></li>
     <li><%= link "Latest Episodes", to: episode_frontend_path(@conn, :latest) %></li>
     <li><%= link "Podcasters", to: user_frontend_path(@conn, :index) %></li>
+    <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(@conn, :random) %></li>
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <%= if @current_user do %>

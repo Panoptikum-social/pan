@@ -39,6 +39,8 @@ defmodule Pan.Router do
     post "/search", SearchFrontendController, :new
     get "/search", SearchFrontendController, :new
     resources "/podcasters", UserFrontendController, only: [:show, :index]
+
+    get "/random", RecommendationFrontendController, :random
   end
 
 
