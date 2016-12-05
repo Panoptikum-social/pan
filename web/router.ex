@@ -52,6 +52,7 @@ defmodule Pan.Router do
     pipe_through [:browser, :authenticate_user]
 
     post "/users/like_all_subscribed", UserFrontendController, :like_all_subscribed
+    post "/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed
     get "/my_podcasts", UserFrontendController, :my_podcasts
     get "/my_profile", UserFrontendController, :my_profile
     get "/my_messages", UserFrontendController, :my_messages

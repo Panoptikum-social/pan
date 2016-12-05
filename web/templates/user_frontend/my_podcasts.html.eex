@@ -13,13 +13,18 @@
 <%= link [fa_icon("heart"), " Like all subscribed"],
          to: user_frontend_path(@conn, :like_all_subscribed),
          class: "btn btn-primary",
+         method: :post %> &nbsp;
+
+<%= link [fa_icon("heart"), " Follow all subscribed"],
+         to: user_frontend_path(@conn, :follow_all_subscribed),
+         class: "btn btn-info",
          method: :post %>
 
 
 <h3>Podcasts I like</h3>
 
 <p style="line-height: 200%;">
-  <%= for podcast <- @user.podcasts_i_like do %>
+  <%= for podcast <- @podcasts_i_like do %>
     <%= link [fa_icon("podcast"), " ", podcast.title],
              to: podcast_frontend_path(@conn, :show, podcast),
              class: "btn btn-default btn-xs",

@@ -3,6 +3,7 @@ defmodule Pan.UserFrontendController do
   alias Pan.Message
   alias Pan.User
   alias Pan.Like
+  alias Pan.Follow
   alias Pan.Subscription
   alias Pan.Podcast
 
@@ -44,9 +45,16 @@ defmodule Pan.UserFrontendController do
 
   def my_podcasts(conn, _params, user) do
     user = Repo.get(User, user.id)
-           |> Repo.preload([:podcasts_i_subscribed, :podcasts_i_like, :podcasts_i_follow])
+           |> Repo.preload([:podcasts_i_subscribed, :podcasts_i_follow])
 
-    render conn, "my_podcasts.html", user: user
+    podcast_ids = Repo.all(from l in Like, where: l.enjoyer_id == ^user.id and
+                                                  is_nil(l.chapter_id) and
+                                                  is_nil(l.episode_id) and
+                                                  not is_nil(l.podcast_id),
+                                           select: l.podcast_id)
+    podcasts_i_like = Repo.all(from p in Podcast, where: p.id in ^podcast_ids)
+
+    render(conn, "my_podcasts.html", user: user, podcasts_i_like: podcasts_i_like)
   end
 
 
@@ -112,7 +120,9 @@ defmodule Pan.UserFrontendController do
                                       select: s.podcast_id)
     liked_ids = Repo.all(from l in Like,
                          where: l.enjoyer_id == ^user.id and
-                                not is_nil(l.podcast_id),
+                                not is_nil(l.podcast_id) and
+                                is_nil(l.chapter_id) and
+                                is_nil(l.episode_id),
                          select: l.podcast_id)
 
     for id <- subscribed_podcast_ids do
@@ -136,6 +146,40 @@ defmodule Pan.UserFrontendController do
 
     conn
     |> put_flash(:info, "Liked all podcasts you had subscribed to.")
+    |> redirect(to: user_frontend_path(conn, :my_podcasts))
+  end
+
+
+  def follow_all_subscribed(conn, _params, user) do
+    subscribed_podcast_ids = Repo.all(from s in Subscription,
+                                      where: s.user_id == ^user.id,
+                                      select: s.podcast_id)
+    followed_ids = Repo.all(from f in Follow,
+                         where: f.follower_id == ^user.id and
+                                not is_nil(f.podcast_id),
+                         select: f.podcast_id)
+
+    for id <- subscribed_podcast_ids do
+      unless Enum.member?(followed_ids, id) do
+        e = %Event{
+          topic:           "podcast",
+          subtopic:        Integer.to_string(id),
+          current_user_id: user.id,
+          podcast_id:      id,
+          type:            "success",
+          event:           "follow"
+        }
+        e = %{e | content: "« followed the podcast <b>" <>
+                           Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
+
+        Podcast.follow(e.podcast_id, e.current_user_id)
+        Message.persist_event(e)
+        Event.notify_subscribers(e)
+      end
+    end
+
+    conn
+    |> put_flash(:info, "Followed all podcasts you had subscribed to.")
     |> redirect(to: user_frontend_path(conn, :my_podcasts))
   end
 end

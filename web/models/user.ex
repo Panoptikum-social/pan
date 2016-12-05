@@ -29,9 +29,6 @@ defmodule Pan.User do
     many_to_many :users_i_like, Pan.User,
                                 join_through: "likes",
                                 join_keys: [enjoyer_id: :id, user_id: :id]
-    many_to_many :podcasts_i_like, Pan.Podcast,
-                                join_through: "likes",
-                                join_keys: [enjoyer_id: :id, podcast_id: :id]
     many_to_many :podcasts_i_follow, Pan.Podcast,
                                 join_through: "follows",
                                 join_keys: [follower_id: :id, podcast_id: :id]
