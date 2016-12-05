@@ -40,7 +40,7 @@ defmodule Pan.AlternateFeedController do
         conn
         |> put_flash(:info, "Alternate feed created successfully.")
         |> redirect(to: feed_backlog_path(conn, :index))
-      {:error, changeset} ->
+      {:error, _changeset} ->
         conn
         |> put_flash(:error, "Could not create alternate feed.")
         |> redirect(to: feed_backlog_path(conn, :show, String.to_integer(backlog_id)))

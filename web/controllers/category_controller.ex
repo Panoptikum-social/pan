@@ -2,7 +2,6 @@ defmodule Pan.CategoryController do
   use Pan.Web, :controller
   alias Pan.Category
   alias Pan.Follow
-  alias Pan.Podcast
   alias Pan.Like
   alias Pan.Repo
 

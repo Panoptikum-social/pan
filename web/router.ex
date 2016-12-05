@@ -23,6 +23,7 @@ defmodule Pan.Router do
     get "/", CategoryFrontendController, :index
     resources "/categories", CategoryFrontendController, only: [:index, :show]
 
+    get "/podcasts/buttons", PodcastFrontendController, :button_index
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
 
@@ -51,7 +52,8 @@ defmodule Pan.Router do
 
     post "/users/like_all_subscribed", UserFrontendController, :like_all_subscribed
     get "/my_podcasts", UserFrontendController, :my_podcasts
-    get "/my_account", UserFrontendController, :profile
+    get "/my_profile", UserFrontendController, :my_profile
+    get "/my_messages", UserFrontendController, :my_messages
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
 

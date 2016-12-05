@@ -12,7 +12,12 @@ defmodule Pan.UserFrontendController do
   end
 
 
-  def profile(conn, params, user) do
+  def my_profile(conn, _params, user) do
+    render conn, "my_profile.html", user: user
+  end
+
+
+  def my_messages(conn, params, user) do
     user_id = Integer.to_string(user.id)
 
     subscribed_user_ids = User.subscribed_user_ids(user_id)
@@ -31,9 +36,9 @@ defmodule Pan.UserFrontendController do
                |> Ecto.Queryable.to_query
                |> Repo.paginate(params)
 
-    render conn, "profile.html", user: user,
-                                 messages: messages,
-                                 page_number: messages.page_number
+    render conn, "my_messages.html", user: user,
+                                     messages: messages,
+                                     page_number: messages.page_number
   end
 
 

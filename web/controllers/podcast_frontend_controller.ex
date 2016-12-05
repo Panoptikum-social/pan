@@ -9,6 +9,11 @@ defmodule Pan.PodcastFrontendController do
     render(conn, "index.html", podcasts: podcasts)
   end
 
+  def button_index(conn, _params) do
+    podcasts = Repo.all(Podcast)
+    render(conn, "button_index.html", podcasts: podcasts)
+  end
+
 
   def show(conn, %{"id" => id}) do
     podcast = get_with_relations id
