@@ -66,6 +66,8 @@ defmodule Pan.Auth do
         {:ok, login(conn, user)}
       {:error, :expired} ->
         {:error, :expired}
+      {:error, :invalid} ->
+        {:error, :invalid}
       true ->
         dummy_checkpw()
         {:error, :not_found, conn}

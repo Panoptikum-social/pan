@@ -9,4 +9,13 @@ defmodule Pan.Email do
     |> put_html_layout({Pan.LayoutView, "email.html"})
     |> render("login_link.html", token: token)
   end
+
+  def email_confirmation_link_html_email(token, email_address) do
+    new_email()
+    |> to(email_address)
+    |> from("noreply@panoptikum.io")
+    |> subject("Panoptikum - Email Confirmation")
+    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> render("email_confirmation_link.html", token: token)
+  end
 end

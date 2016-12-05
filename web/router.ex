@@ -39,6 +39,7 @@ defmodule Pan.Router do
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
     get "/login_via_token", SessionController, :login_via_token
+    get "/confirm_email", SessionController, :confirm_email
 
     post "/search", SearchFrontendController, :new
     get "/search", SearchFrontendController, :new

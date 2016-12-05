@@ -17,6 +17,7 @@ defmodule Pan.User do
     field :email, :string
     field :admin, :boolean
     field :podcaster, :boolean
+    field :email_confirmed, :boolean
     timestamps
 
     has_many :podcasts_i_own, Pan.Podcast,
