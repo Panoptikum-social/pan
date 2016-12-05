@@ -64,10 +64,8 @@
 <div class="row">
   <div class="col-md-4">
     <div class="panel panel-danger">
-      <div class="panel-heading">Recommendations</div>
+      <div class="panel-heading">Listeners of the podcasts you listen to, also listen to</div>
       <div class="panel-body">
-        <p>Listeners of the podcasts you listen to, also listen to:</p>
-
         <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
@@ -85,10 +83,8 @@
 
   <div class="col-md-4">
     <div class="panel panel-danger">
-      <div class="panel-heading">Recommendations</div>
+      <div class="panel-heading">Users, who like the same podcasts as you, also like</div>
       <div class="panel-body">
-        <p>Users, who like the same podcasts as you, also like:</p>
-
         <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
