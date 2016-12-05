@@ -62,7 +62,8 @@ defmodule Pan.UserFrontendController do
                            |> List.delete(user.id)
 
     recommendations = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
-                                                       where: s.user_id in ^other_subscriber_ids,
+                                                       where: s.user_id in ^other_subscriber_ids and
+                                                              not s.podcast_id in ^podcasts_subscribed_ids,
                                                        group_by: p.id,
                                                        select: [count(s.podcast_id), p.id, p.title],
                                                        order_by: [desc: count(s.podcast_id)],
@@ -78,7 +79,8 @@ defmodule Pan.UserFrontendController do
     also_liked = Repo.all(from l in Like, join: p in assoc(l, :podcast),
                                           where: l.enjoyer_id in ^users_also_liking and
                                                  is_nil(l.chapter_id) and
-                                                 is_nil(l.episode_id),
+                                                 is_nil(l.episode_id) and
+                                                 not l.podcast_id in ^podcast_ids,
                                           group_by: p.id,
                                           select: [count(l.podcast_id), p.id, p.title],
                                           order_by: [desc: count(l.podcast_id)],
