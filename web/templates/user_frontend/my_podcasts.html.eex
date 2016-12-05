@@ -1,46 +1,62 @@
-<h3>Subscriptions</h3>
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">Subscriptions</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @user.podcasts_i_subscribed do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
 
-<p style="line-height: 200%;">
-  <%= for podcast <- @user.podcasts_i_subscribed do %>
-    <%= link [fa_icon("podcast"), " ", podcast.title],
-             to: podcast_frontend_path(@conn, :show, podcast),
-             class: "btn btn-default btn-xs",
-             style: "color: #666;" %>
-  <% end %>
-  &nbsp; &nbsp; &nbsp;
-</p>
+        <%= link [fa_icon("heart"), " Like all subscribed"],
+                 to: user_frontend_path(@conn, :like_all_subscribed),
+                 class: "btn btn-primary",
+                 method: :post %> &nbsp;
 
-<%= link [fa_icon("heart"), " Like all subscribed"],
-         to: user_frontend_path(@conn, :like_all_subscribed),
-         class: "btn btn-primary",
-         method: :post %> &nbsp;
+        <%= link [fa_icon("heart"), " Follow all subscribed"],
+                 to: user_frontend_path(@conn, :follow_all_subscribed),
+                 class: "btn btn-info",
+                 method: :post %>
+      </div>
+    </div>
+  </div>
 
-<%= link [fa_icon("heart"), " Follow all subscribed"],
-         to: user_frontend_path(@conn, :follow_all_subscribed),
-         class: "btn btn-info",
-         method: :post %>
+  <div class="col-md-4">
+    <div class="panel panel-success">
+      <div class="panel-heading">Podcasts I like</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @podcasts_i_like do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
 
-
-<h3>Podcasts I like</h3>
-
-<p style="line-height: 200%;">
-  <%= for podcast <- @podcasts_i_like do %>
-    <%= link [fa_icon("podcast"), " ", podcast.title],
-             to: podcast_frontend_path(@conn, :show, podcast),
-             class: "btn btn-default btn-xs",
-             style: "color: #666;" %>
-  <% end %>
-  &nbsp; &nbsp; &nbsp;
-</p>
-
-<h3>Podcasts I follow</h3>
-
-<p style="line-height: 200%;">
-  <%= for podcast <- @user.podcasts_i_follow do %>
-    <%= link [fa_icon("podcast"), " ", podcast.title],
-             to: podcast_frontend_path(@conn, :show, podcast),
-             class: "btn btn-default btn-xs",
-             style: "color: #666;" %>
-  <% end %>
-  &nbsp; &nbsp; &nbsp;
-</p>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">Podcasts I follow</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @user.podcasts_i_follow do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
