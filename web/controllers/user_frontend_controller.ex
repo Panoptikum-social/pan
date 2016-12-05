@@ -58,6 +58,8 @@ defmodule Pan.UserFrontendController do
                                                                select: s.podcast_id)
     other_subscriber_ids = Repo.all(from s in Subscription, where: s.podcast_id in ^podcasts_subscribed_ids,
                                                             select: s.user_id)
+                           |> Enum.uniq
+                           |> List.delete(user.id)
 
     recommendations = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
                                                        where: s.user_id in ^other_subscriber_ids,
@@ -69,18 +71,18 @@ defmodule Pan.UserFrontendController do
     users_also_liking = Repo.all(from l in Like, where: l.podcast_id in ^podcast_ids and
                                                        is_nil(l.chapter_id) and
                                                        is_nil(l.episode_id),
-                                                select: l.user_id)
+                                                select: l.enjoyer_id)
+                        |> Enum.uniq
+                        |> List.delete(user.id)
 
     also_liked = Repo.all(from l in Like, join: p in assoc(l, :podcast),
-                                          where: l.user_id in ^users_also_liking and
+                                          where: l.enjoyer_id in ^users_also_liking and
                                                  is_nil(l.chapter_id) and
                                                  is_nil(l.episode_id),
                                           group_by: p.id,
                                           select: [count(l.podcast_id), p.id, p.title],
                                           order_by: [desc: count(l.podcast_id)],
                                           limit: 10)
-
-
 
     render(conn, "my_podcasts.html", user: user,
                                      podcasts_i_like: podcasts_i_like,
