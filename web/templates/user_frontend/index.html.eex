@@ -5,7 +5,7 @@
     <%= if user.podcasts_i_own != [] and user.name != "Jane Doe" do %>
       <%= link [fa_icon("user"), " ", user.name],
           to: user_frontend_path(@conn, :show, user),
-          class: "btn btn-xs " <> Pan.CategoryFrontendView.btn_cycle(counter) %> &nbsp;
+          class: "btn btn-xs " <> Pan.PodcastFrontendView.btn_cycle(counter) %> &nbsp;
     <% end %>
   <% end %>
 </p>

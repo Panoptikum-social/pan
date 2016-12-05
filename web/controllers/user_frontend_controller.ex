@@ -54,7 +54,38 @@ defmodule Pan.UserFrontendController do
                                            select: l.podcast_id)
     podcasts_i_like = Repo.all(from p in Podcast, where: p.id in ^podcast_ids)
 
-    render(conn, "my_podcasts.html", user: user, podcasts_i_like: podcasts_i_like)
+    podcasts_subscribed_ids = Repo.all(from s in Subscription, where: s.user_id == ^user.id,
+                                                               select: s.podcast_id)
+    other_subscriber_ids = Repo.all(from s in Subscription, where: s.podcast_id in ^podcasts_subscribed_ids,
+                                                            select: s.user_id)
+
+    recommendations = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
+                                                       where: s.user_id in ^other_subscriber_ids,
+                                                       group_by: p.id,
+                                                       select: [count(s.podcast_id), p.id, p.title],
+                                                       order_by: [desc: count(s.podcast_id)],
+                                                       limit: 10)
+
+    users_also_liking = Repo.all(from l in Like, where: l.podcast_id in ^podcast_ids and
+                                                       is_nil(l.chapter_id) and
+                                                       is_nil(l.episode_id),
+                                                select: l.user_id)
+
+    also_liked = Repo.all(from l in Like, join: p in assoc(l, :podcast),
+                                          where: l.user_id in ^users_also_liking and
+                                                 is_nil(l.chapter_id) and
+                                                 is_nil(l.episode_id),
+                                          group_by: p.id,
+                                          select: [count(l.podcast_id), p.id, p.title],
+                                          order_by: [desc: count(l.podcast_id)],
+                                          limit: 10)
+
+
+
+    render(conn, "my_podcasts.html", user: user,
+                                     podcasts_i_like: podcasts_i_like,
+                                     recommendations: recommendations,
+                                     also_liked: also_liked)
   end
 
 
