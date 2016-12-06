@@ -1,4 +1,10 @@
-<%= render "_head.html", podcast: @podcast, current_user: @current_user, conn: @conn %>
+<%= render "_head.html", podcast: @podcast,
+                         current_user: @current_user,
+                         changeset: @changeset,
+                         conn: @conn %>
+
+<%= render "_recommendations.html", podcast: @podcast,
+                                    conn: @conn %>
 
 <%= for {episode, counter} <- Enum.with_index(@podcast.episodes) do %>
   <%= if 0 == rem(counter, 2) do %>

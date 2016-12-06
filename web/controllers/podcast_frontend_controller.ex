@@ -2,6 +2,7 @@ defmodule Pan.PodcastFrontendController do
   use Pan.Web, :controller
   alias Pan.Podcast
   alias Pan.Episode
+  alias Pan.Recommendation
 
   def index(conn, _params) do
     podcasts = Repo.all(Podcast)
@@ -16,8 +17,9 @@ defmodule Pan.PodcastFrontendController do
 
 
   def show(conn, %{"id" => id}) do
+    changeset = Recommendation.changeset(%Recommendation{})
     podcast = get_with_relations id
-    render(conn, "show.html", podcast: podcast)
+    render(conn, "show.html", podcast: podcast, changeset: changeset)
   end
 
 
@@ -30,7 +32,7 @@ defmodule Pan.PodcastFrontendController do
 
   defp get_with_relations(id) do
     Repo.get!(Podcast, id)
-    |> Repo.preload([:languages, :owner, :feeds, :categories])
+    |> Repo.preload([:languages, :owner, :feeds, :categories, recommendations: :user])
     |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
   end
 end

@@ -25,6 +25,7 @@ defmodule Pan.Podcast do
     has_many :episodes, Pan.Episode, on_delete: :delete_all
     has_many :feeds, Pan.Feed, on_delete: :delete_all
     has_many :subscriptions, Pan.Subscription
+    has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts", on_delete: :delete_all
     many_to_many :contributors, Pan.Contributor, join_through: "contributors_podcasts", on_delete: :delete_all
     many_to_many :listeners, Pan.User, join_through: "subscriptions", on_delete: :delete_all

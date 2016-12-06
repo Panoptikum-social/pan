@@ -5,14 +5,12 @@ defmodule Pan.Like do
 
 
   schema "likes" do
-    field :comment, :string
     belongs_to :enjoyer, Pan.User
     belongs_to :podcast, Pan.Podcast
     belongs_to :episode, Pan.Episode
     belongs_to :chapter, Pan.Chapter
     belongs_to :user, Pan.User
     belongs_to :category, Pan.Category
-    belongs_to :recommend_to, Pan.User
 
     timestamps()
   end

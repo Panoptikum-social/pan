@@ -1,14 +1,12 @@
-<p class="text-center">
     <script class="podlove-subscribe-button"
             src="https://cdn.podlove.org/subscribe-button/javascripts/app.js"
             data-language="de"
-            data-size="big auto"
+            data-size="medium"
             data-json-data="podcastData"
             data-colors="ED5565"
             data-buttonid="123abc"
             data-format="cover">
     </script>
-</p>
 
 <script>
   window.podcastData = {

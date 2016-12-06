@@ -3,6 +3,7 @@ defmodule Pan.RecommendationFrontendController do
   alias Pan.Podcast
   alias Pan.Episode
   alias Pan.Category
+  alias Pan.Recommendation
 
   def random(conn, _params) do
     category = Repo.all(Category)
@@ -23,5 +24,18 @@ defmodule Pan.RecommendationFrontendController do
                                 podcast: podcast,
                                 episode: episode,
                                 player: "podigee")
+  end
+
+
+  def create(conn, %{"recommendation" => recommendation_params}) do
+    recommendation_params = Map.put(recommendation_params, "user_id", conn.assigns.current_user.id)
+    changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
+    podcast_id = String.to_integer(recommendation_params["podcast_id"])
+
+    Repo.insert(changeset)
+
+    conn
+    |> put_flash(:info, "Your recommendation has been added.")
+    |> redirect(to: podcast_frontend_path(conn, :show, podcast_id))
   end
 end

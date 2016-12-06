@@ -1,0 +1,13 @@
+<%= if @podcast.recommendations != [] do %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">Recommendations</div>
+    <ul class="list-group">
+      <%= for recommendation <- @podcast.recommendations do %>
+        <li class="list-group-item">
+          <b><%= recommendation.user.name %>:</b> <%= recommendation.comment %>
+          <span class="pull-right"><%= recommendation.inserted_at %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
