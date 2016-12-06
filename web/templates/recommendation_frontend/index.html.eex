@@ -31,6 +31,7 @@
                      changeset: @changeset,
                      conn: @conn,
                      podcast_id: podcast.id %>
+          <hr/>
         <% end %>
       </div>
     </div>
