@@ -22,8 +22,7 @@ defmodule Pan.Like do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:comment])
-    |> validate_required([:comment])
+    |> cast(params, [])
   end
 
 
