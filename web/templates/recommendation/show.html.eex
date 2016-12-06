@@ -1,0 +1,33 @@
+<h2>Show recommendation</h2>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @recommendation.user_id %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @recommendation.comment %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @recommendation.podcast_id %>
+  </li>
+
+  <li>
+    <strong>Episode:</strong>
+    <%= @recommendation.episode_id %>
+  </li>
+
+  <li>
+    <strong>Chapter:</strong>
+    <%= @recommendation.chapter_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: recommendation_path(@conn, :edit, @recommendation) %>
+<%= link "Back", to: recommendation_path(@conn, :index) %>

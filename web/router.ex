@@ -88,5 +88,6 @@ defmodule Pan.Router do
     resources "/subscriptions", SubscriptionController
     resources "/opmls", OpmlController
     get "/opmls/import/:id", OpmlController, :import
+    resources "/recommendations", RecommendationController
   end
 end
