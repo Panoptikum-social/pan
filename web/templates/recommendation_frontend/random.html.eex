@@ -1,19 +1,20 @@
-We randomly chose the category:<br/><br/>
+Fortuna opted for the category:<br/><br/>
 
 <%= render Pan.CategoryFrontendView, "show.html",
            category: @category,
            current_user: @current_user,
            conn: @conn %>
-<br/><hr/><br/><br/>
+<br/><br/>
 
 
-In this we randomly chose the podcast:<br/><br/>
+... and there she opted for the podcast:<br/><br/>
 
 <%= render Pan.PodcastFrontendView, "_head.html",
            podcast: @podcast,
            current_user: @current_user,
+           changeset: @changeset,
            conn: @conn %>
-<br/><hr/><br/><br/>
+<br/><br/>
 
 
 ... and the random episode:<br/><br/>

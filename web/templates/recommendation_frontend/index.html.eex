@@ -1,0 +1,41 @@
+<%= if @podcast_recommendations != [] do %>
+  <div class="panel panel-default">
+    <div class="panel-heading">Your Podcast Recommendations</div>
+    <ul class="list-group">
+      <%= for recommendation <- @podcast_recommendations do %>
+        <li class="list-group-item">
+          <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
+              to: podcast_frontend_path(@conn, :show, recommendation.podcast),
+              class: "btn btn-default btn-xs",
+              style: "color: #666;" %> &nbsp; &nbsp;
+          <%= recommendation.comment %>
+          <span class="pull-right"><%= recommendation.inserted_at %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+  <div class="panel panel-info">
+    <div class="panel-heading">Unrecommended Podcasts</div>
+    <div class="panel-body">
+      <%= for podcast <- @unrecommended_podcasts do %>
+        <div class="row">
+          <div class="col-md-2">
+            <br/> <br/>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                to: podcast_frontend_path(@conn, :show, podcast),
+                class: "btn btn-default",
+                style: "color: #666;" %> &nbsp; &nbsp;
+          </div>
+          <div class="col-md-10">
+            <%= render Pan.PodcastFrontendView, "_recommend_form.html",
+                       current_user: @current_user,
+                       changeset: @changeset,
+                       conn: @conn,
+                       podcast_id: podcast.id %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
