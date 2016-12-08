@@ -141,7 +141,7 @@ defmodule Pan.UserFrontendController do
       {:ok, user} ->
          conn
          |> put_flash(:info, "Password updated successfully.")
-         |> redirect(to: user_path(conn, :show, user))
+         |> redirect(to: user_frontend_path(conn, :my_profile))
       {:error, changeset} ->
 
          render(conn, "edit.html", user: user, changeset: changeset)
