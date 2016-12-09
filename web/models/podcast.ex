@@ -35,7 +35,7 @@ defmodule Pan.Podcast do
 
 
   @required_fields ~w(title website last_build_date  explicit)
-  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url description summary author)
+  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url description summary author owner_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

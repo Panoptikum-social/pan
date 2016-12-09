@@ -100,6 +100,7 @@ defmodule Pan.Router do
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
     get "/podcasts/touch/:id/", PodcastController, :touch
     get "/podcasts/delta_import/:id/", PodcastController, :delta_import
+    get "/podcasts/fix_owner/:id/", PodcastController, :fix_owner
     resources "/podcasts", PodcastController
   end
 end

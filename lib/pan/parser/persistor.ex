@@ -44,4 +44,15 @@ defmodule Pan.Parser.Persistor do
         |> Repo.update()
     end
   end
+
+
+def fix_owner(map, podcast_id) do
+    podcast = Repo.get!(Pan.Podcast, podcast_id)
+    map = Map.put_new(map, :last_build_date, Ecto.DateTime.utc)
+
+    {:ok, owner }  = Pan.Parser.User.find_or_create(map[:owner])
+
+    Pan.Podcast.changeset(podcast, %{owner_id: owner.id })
+    |> Repo.update()
+  end
 end

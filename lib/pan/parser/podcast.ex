@@ -30,4 +30,17 @@ defmodule Pan.Parser.Podcast do
         {:error, message}
     end
   end
+
+
+  def fix_owner(id) do
+    feed = Repo.get_by(Feed, podcast_id: id)
+
+    case RssFeed.import_to_map(feed.self_link_url) do
+      {:ok, map}->
+        Persistor.fix_owner(map, id)
+        {:ok, "Podcast importet successfully"}
+      {:error, message} ->
+        {:error, message}
+    end
+  end
 end

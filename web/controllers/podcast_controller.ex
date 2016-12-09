@@ -92,6 +92,15 @@ defmodule Pan.PodcastController do
   end
 
 
+  def fix_owner(conn, %{"id" => id}) do
+    Pan.Parser.Podcast.fix_owner(id)
+
+    conn
+    |> put_flash(:info, "Owner fixed successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
     podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])

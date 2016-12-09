@@ -6,8 +6,8 @@ defmodule Pan.Parser.User do
       user_map = Map.put_new(user_map, :name, "unknown")
                  |> Map.put_new(:username, user_map[:email])
 
-      case Repo.all(Pan.User, email: user_map[:email],
-                              limit: 1)
+      case Repo.all(from u in Pan.User, where: u.email == ^user_map[:email],
+                                        limit: 1)
            |> List.first do
         nil ->
           %Pan.User{}
