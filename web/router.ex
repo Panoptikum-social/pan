@@ -97,6 +97,8 @@ defmodule Pan.Router do
     get "/opmls/import/:id", OpmlController, :import
     resources "/opmls", OpmlController
 
+    get "/podcasts/delta_import_all", PodcastController, :delta_import_all
+    get "/podcasts/touch/:id/", PodcastController, :touch
     get "/podcasts/delta_import/:id/", PodcastController, :delta_import
     resources "/podcasts", PodcastController
   end

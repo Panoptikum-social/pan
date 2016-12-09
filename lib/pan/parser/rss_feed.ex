@@ -6,19 +6,9 @@ defmodule Pan.Parser.RssFeed do
     initial_import("https://rechtsbelehrung.com/feed/podcast/")
   end
 
+
   def initial_import(url, pagecount \\ 1) do
-    url = String.strip(url)
-    %HTTPotion.Response{body: feed_xml} = download(url)
-
-    # IO.puts "\n\e[96m === initial import for URL: " <> url <> " ===\e[0m"
-
-    feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-               |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-               |> Quinn.parse()
-    map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-            title: Enum.at(String.split(url, "/"), 2)}
-          |> Iterator.parse(feed_map)
-
+    {:ok, map} = import_to_map(url)
     podcast_id = Persistor.initial_import(map)
 
     next_page_url = map[:feed][:next_page_url]
@@ -28,6 +18,27 @@ defmodule Pan.Parser.RssFeed do
     end
 
     podcast_id
+  end
+
+
+  def import_to_map(url) do
+    url = String.strip(url)
+
+    IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
+
+    case download(url) do
+      %HTTPotion.Response{body: feed_xml} ->
+        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                   |> Quinn.parse()
+        map = %{feed: %{self_link_title: "Feed", self_link_url: url},
+                        title: Enum.at(String.split(url, "/"), 2)}
+              |> Iterator.parse(feed_map)
+        {:ok, map}
+
+      %HTTPotion.ErrorResponse{message: "econnrefused"} ->
+        {:error, "connection refused"}
+    end
   end
 
 

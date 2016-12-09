@@ -1,5 +1,7 @@
 defmodule Pan.Parser.Persistor do
   use Pan.Web, :controller
+  alias Pan.Repo
+
 
   def initial_import(map) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
@@ -22,5 +24,24 @@ defmodule Pan.Parser.Persistor do
     end
 
     podcast.id
+  end
+
+
+  def delta_import(map, podcast_id) do
+    podcast = Repo.get!(Pan.Podcast, podcast_id)
+    map = Map.put_new(map, :last_build_date, Ecto.DateTime.utc)
+
+    case map[:last_build_date] == podcast.last_build_date do
+      true ->
+        Pan.Podcast.changeset(podcast)
+        |> Repo.update([force: true])
+      false ->
+        if map[:episodes] do
+          Pan.Parser.Episode.insert_newbies(map[:episodes], podcast)
+        end
+
+        Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date] })
+        |> Repo.update()
+    end
   end
 end

@@ -7,7 +7,7 @@ defmodule Pan.PodcastController do
   plug :scrub_params, "podcast" when action in [:create, :update]
 
   def index(conn, _params) do
-    podcasts = Repo.all(from p in Podcast, order_by: [desc: :id])
+    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
                |> Repo.preload(:feeds)
     render(conn, "index.html", podcasts: podcasts)
   end
@@ -88,6 +88,42 @@ defmodule Pan.PodcastController do
 
     conn
     |> put_flash(:info, "Podcast updated successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
+  def delta_import_all(conn, _params) do
+    current_user = conn.assigns.current_user
+    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
+
+    for podcast <- podcasts do
+      notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
+        {:ok, _} ->
+          %{content: "Updated Podcast " <> podcast.title,
+            type: "success",
+            user_name: current_user.name}
+
+        {:error, message} ->
+          %{content: "Error:" <> message <> " / updating podcast" <> podcast.title,
+            type: "danger",
+            user_name: current_user.name}
+      end
+      Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id), "notification", notification
+    end
+
+    conn
+    |> put_flash(:info, "Podcast updated successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
+  def touch(conn, %{"id" => id}) do
+    Repo.get!(Podcast, id)
+    |> Pan.Podcast.changeset
+    |> Repo.update([force: true])
+
+    conn
+    |> put_flash(:info, "Podcast touched.")
     |> redirect(to: podcast_path(conn, :index))
   end
 end

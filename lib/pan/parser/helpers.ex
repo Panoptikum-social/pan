@@ -55,15 +55,22 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("September", "Sep")
     |> String.replace("October",   "Oct")
     |> String.replace(" Okt ",   " Oct ")
+    |> String.replace(" Dez ",   " Dec ")
     |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
   end
 
   def replace_long_week_days(datetime) do
     datetime
-    |> String.replace("Thurs",   "Thu")
-    |> String.replace("Mo,",   "Mon,")
-    |> String.replace("Son,",   "Sun,")
+    |> String.replace("Thurs","Thu")
+    |> String.replace("Mo,",  "Mon,")
+    |> String.replace("Di,",  "Tue,")
+    |> String.replace("Mi,",  "Wed,")
+    |> String.replace("Do,",  "Thu,")
+    |> String.replace("Fr,",  "Fri,")
+    |> String.replace("Sa,",  "Sat,")
+    |> String.replace("So,", "Sun,")
+    |> String.replace("Son,", "Sun,")
     |> String.replace("ٍ", "")
   end
 
