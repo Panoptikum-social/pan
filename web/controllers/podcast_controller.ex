@@ -8,7 +8,7 @@ defmodule Pan.PodcastController do
 
   def index(conn, _params) do
     podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
-               |> Repo.preload(:feeds)
+               |> Repo.preload([:feeds, :owner])
     render(conn, "index.html", podcasts: podcasts)
   end
 

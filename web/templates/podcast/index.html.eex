@@ -12,7 +12,7 @@
       <th>Website</th>
       <th>updated_at</th>
       <th>Last build date</th>
-      <th>Author</th>
+      <th>Owner</th>
 
       <th></th>
     </tr>
@@ -25,7 +25,7 @@
         <td><%= if podcast.website do %><a href="<%= podcast.website %>"><%= C.String.truncate(podcast.website, 50)%> <% end %></a></td>
         <td><%= podcast.updated_at %></td>
         <td><%= podcast.last_build_date %></td>
-        <td><%= if podcast.author, do: C.String.truncate(podcast.author, 50) %></td>
+        <td><%= if podcast.owner, do: C.String.truncate(podcast.owner.username, 50) %></td>
 
         <td class="text-right">
           <%= link "Touch", to: podcast_path(@conn, :touch, podcast),
