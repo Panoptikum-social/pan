@@ -20,9 +20,17 @@
       <td><%= feed.podcast.title %></td>
 
       <td class="text-right">
-        <%= link "Show", to: feed_path(@conn, :show, feed), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: feed_path(@conn, :edit, feed), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: feed_path(@conn, :delete, feed), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <%= link "Make primary", to: feed_path(@conn, :make_only, feed),
+                         class: "btn btn-warning btn-xs",
+                         method: :post %>
+        <%= link "Show", to: feed_path(@conn, :show, feed),
+                         class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: feed_path(@conn, :edit, feed),
+                         class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: feed_path(@conn, :delete, feed),
+                           method: :delete,
+                           data: [confirm: "Are you sure?"],
+                           class: "btn btn-danger btn-xs" %>
       </td>
     </tr>
 <% end %>

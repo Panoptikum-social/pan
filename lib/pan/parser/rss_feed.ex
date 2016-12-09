@@ -3,14 +3,14 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Persistor
 
   def demo do
-    download_and_parse("https://rechtsbelehrung.com/feed/podcast/")
+    initial_import("https://rechtsbelehrung.com/feed/podcast/")
   end
 
-  def download_and_parse(url, pagecount \\ 1) do
+  def initial_import(url, pagecount \\ 1) do
     url = String.strip(url)
     %HTTPotion.Response{body: feed_xml} = download(url)
 
-    IO.puts "\n\e[96m === URL: " <> url <> " ===\e[0m"
+    # IO.puts "\n\e[96m === initial import for URL: " <> url <> " ===\e[0m"
 
     feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                |> Pan.Parser.Helpers.remove_extra_angle_brackets()
@@ -19,12 +19,12 @@ defmodule Pan.Parser.RssFeed do
             title: Enum.at(String.split(url, "/"), 2)}
           |> Iterator.parse(feed_map)
 
-    podcast_id = Persistor.call(map)
+    podcast_id = Persistor.initial_import(map)
 
     next_page_url = map[:feed][:next_page_url]
     pagecount = pagecount + 1
     if next_page_url != nil and pagecount < 100 do
-      download_and_parse(next_page_url, pagecount)
+      initial_import(next_page_url, pagecount)
     end
 
     podcast_id

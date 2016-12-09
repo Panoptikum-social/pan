@@ -69,27 +69,35 @@ defmodule Pan.Router do
   scope "/admin", Pan do
     pipe_through [:browser, :authenticate_admin]
     resources "/users", UserController
-    resources "/podcasts", PodcastController
     resources "/languages", LanguageController
-    resources "/feeds", FeedController
-    resources "/alternate_feeds", AlternateFeedController
-    post "create_from_backlog", AlternateFeedController, :create_from_backlog
     resources "/contributors", ContributorController
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
-    get "/categories/merge", CategoryController, :merge
-    get "/categories/execute_merge", CategoryController, :execute_merge
-    resources "/categories", CategoryController
-    get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
-    resources "/backlog_feeds", FeedBacklogController
-    get "/backlog_feeds/import/:id", FeedBacklogController, :import
     resources "/likes", LikeController
     resources "/follows", FollowController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
-    resources "/opmls", OpmlController
-    get "/opmls/import/:id", OpmlController, :import
     resources "/recommendations", RecommendationController
+
+    post "/feeds/make_only/:id", FeedController, :make_only
+    resources "/feeds", FeedController
+
+    post "/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog
+    resources "/alternate_feeds", AlternateFeedController
+
+    get "/categories/merge", CategoryController, :merge
+    get "/categories/execute_merge", CategoryController, :execute_merge
+    resources "/categories", CategoryController
+
+    get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
+    get "/backlog_feeds/import/:id", FeedBacklogController, :import
+    resources "/backlog_feeds", FeedBacklogController
+
+    get "/opmls/import/:id", OpmlController, :import
+    resources "/opmls", OpmlController
+
+    get "/podcasts/delta_import/:id/", PodcastController, :delta_import
+    resources "/podcasts", PodcastController
   end
 end

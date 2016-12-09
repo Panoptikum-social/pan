@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Persistor do
   use Pan.Web, :controller
 
-  def call(map) do
+  def initial_import(map) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
                                  :languages, :categories, :owner])
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])

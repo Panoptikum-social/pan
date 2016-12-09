@@ -79,7 +79,7 @@ defmodule Pan.FeedBacklogController do
 
   def import(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
-    podcast_id = Pan.Parser.RssFeed.download_and_parse(feed_backlog.url)
+    podcast_id = Pan.Parser.RssFeed.initial_import(feed_backlog.url)
 
     podcast = Repo.get!(Pan.Podcast, podcast_id)
 

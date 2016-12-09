@@ -8,6 +8,7 @@ defmodule Pan.PodcastController do
 
   def index(conn, _params) do
     podcasts = Repo.all(from p in Podcast, order_by: [desc: :id])
+               |> Repo.preload(:feeds)
     render(conn, "index.html", podcasts: podcasts)
   end
 
@@ -78,6 +79,15 @@ defmodule Pan.PodcastController do
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
+  def delta_import(conn, %{"id" => id}) do
+    Pan.Parser.Podcast.delta_import(id)
+
+    conn
+    |> put_flash(:info, "Podcast updated successfully.")
     |> redirect(to: podcast_path(conn, :index))
   end
 end
