@@ -4,7 +4,14 @@
   <%= for user <- @users do %>
     <tr>
       <td><b><%= user.name %></b> (<%= user.id %>)</td>
-      <td><%= link "View", to: user_path(@conn, :show, user.id) %></td>
+      <td>
+        <%= link "Delete", to: user_path(@conn, :delete, user),
+                     method: :delete,
+                     data: [confirm: "Are you sure?"],
+                     class: "btn btn-danger btn-xs" %>
+        <%= link "Show", to: user_path(@conn, :show, user.id),
+                         class: "btn btn-default btn-xs" %>
+        </td>
     </tr>
   <% end %>
 </table>

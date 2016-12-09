@@ -12,6 +12,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :owner_id, class: "control-label" %>
+    <%= text_input f, :owner_id, class: "form-control" %>
+    <%= error_tag f, :owner_id %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :website, class: "control-label" %>
     <%= text_input f, :website, class: "form-control" %>
     <%= error_tag f, :website %>
