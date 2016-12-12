@@ -7,6 +7,20 @@
     </div>
   <% end %>
 
+  <%= if {"has already been taken", []} == @changeset.errors[:email] do %>
+
+    <div class="alert alert-warning alert-dismissable">
+    <h4>Welcome Podcaster!</h4>
+
+    <p>Maybe you are surprised, that there is already a user account with this email address.<br/>
+    This is valid for all email adresses, that we parsed from podcast feeds as itunes owners.<br/>
+    In this case, please
+    <%= link "Request a login link", to: user_path(@conn, :forgot_password),
+                                     class: "alert-link" %>
+    via email to claim your account and set your password.</p>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= label f, :name, class: "control-label" %>
     <%= text_input f, :name, placeholder: "Name", class: "form-control" %>
