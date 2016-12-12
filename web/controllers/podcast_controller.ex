@@ -67,10 +67,14 @@ defmodule Pan.PodcastController do
 
   def delete(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-              |> Repo.preload(:episodes)
+              |> Repo.preload([:episodes, :feeds])
 
     for episode <- podcast.episodes do
       Repo.delete!(episode)
+    end
+
+    for feed <- podcast.feeds do
+      Repo.delete_all(from a in Pan.AlternateFeed, where: a.feed_id == ^feed.id)
     end
 
     # Here we use delete! (with a bang) because we expect

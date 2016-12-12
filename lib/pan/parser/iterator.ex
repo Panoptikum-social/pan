@@ -42,11 +42,11 @@ defmodule Pan.Parser.Iterator do
   end
 
 
-  def parse(map, "category", [head | tail], category_id) do
-    category_map = Analyzer.call("category", [head[:name], head[:attr], head[:value]], category_id)
+  def parse(map, "category", [head | tail], category_title) do
+    category_map = Analyzer.call("category", [head[:name], head[:attr], head[:value]], category_title)
 
     Helpers.deep_merge(map, category_map)
-    |> parse("category", tail, category_id)
+    |> parse("category", tail, category_title)
   end
 
 

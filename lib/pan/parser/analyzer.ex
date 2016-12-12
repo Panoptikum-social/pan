@@ -157,26 +157,21 @@ defmodule Pan.Parser.Analyzer do
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
-    %{categories: %{category.id => true}}
+    %{categories: %{UUID.uuid1() => %{title: attr[:text], parent: nil}}}
   end
   def call(_, "tag", [:"itunes:category", [], [value]]) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(value, nil)
-    %{categories: %{category.id => true}}
+    %{categories: %{UUID.uuid1() => %{title: value, parent: nil}}}
   end
   def call(_, "tag", [:"itunes:category", attr, value]) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], nil)
-    Iterator.parse(%{categories: %{category.id => true}}, "category", value, category.id)
+    Iterator.parse(%{categories: %{UUID.uuid1() => %{title: attr[:text], parent: nil}}}, "category", value, attr[:text])
   end
 
-  def call("category", [:"itunes:category", attr, []], parent_id) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    %{categories: %{category.id => true}}
+  def call("category", [:"itunes:category", attr, []], parent_title) do
+    %{categories: %{UUID.uuid1() => %{title: attr[:text], parent: parent_title}}}
   end
 
-  def call("category", [:"itunes:category", attr, value], parent_id) do
-    {:ok, category} = Pan.Parser.Category.find_or_create(attr[:text], parent_id)
-    Iterator.parse(%{categories: %{category.id => true}}, "category", value, category.id)
+  def call("category", [:"itunes:category", attr, value], parent_title) do
+    Iterator.parse(%{categories: %{UUID.uuid1() => %{title: attr[:text], parent: parent_title}}}, "category", value, attr[:text])
   end
 
 
