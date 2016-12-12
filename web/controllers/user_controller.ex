@@ -108,9 +108,6 @@ defmodule Pan.UserController do
     from(c in Pan.Contributor, where: c.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
 
-    from(a in "contributors_episodes", where: a.contributor_id == ^from_id)
-    |> Repo.update_all(set: [contributor_id: into_id])
-
     from(f in Pan.FeedBacklog, where: f.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
 
@@ -140,9 +137,6 @@ defmodule Pan.UserController do
 
     from(p in Pan.Podcast, where: p.owner_id == ^from_id)
     |> Repo.update_all(set: [owner_id: into_id])
-
-    from(a in "contributors_podcasts", where: a.contributor_id == ^from_id)
-    |> Repo.update_all(set: [contributor_id: into_id])
 
     Repo.get!(User, from_id)
     |> Repo.delete!
