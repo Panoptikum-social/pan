@@ -12,7 +12,7 @@ defmodule Pan.UserController do
 
 
   def index(conn, _params, _user) do
-    users = Repo.all(Pan.User)
+    users = Repo.all(from u in Pan.User, order_by: :username)
     render conn, "index.html", users: users
   end
 
@@ -93,5 +93,60 @@ defmodule Pan.UserController do
         |> Pan.Mailer.deliver_now()
     end
     render(conn, "login_link_sent.html")
+  end
+
+
+  def merge(conn, _params, _user) do
+    render(conn, "merge.html")
+  end
+
+
+  def execute_merge(conn, %{"users" => %{"from" => from, "into" => into}}, _user) do
+    from_id = String.to_integer(from)
+    into_id   = String.to_integer(into)
+
+    from(c in Pan.Contributor, where: c.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(a in "contributors_episodes", where: a.contributor_id == ^from_id)
+    |> Repo.update_all(set: [contributor_id: into_id])
+
+    from(f in Pan.FeedBacklog, where: f.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(f in Pan.Follow, where: f.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(f in Pan.Follow, where: f.follower_id == ^from_id)
+    |> Repo.update_all(set: [follower_id: into_id])
+
+    from(l in Pan.Like, where: l.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(l in Pan.Like, where: l.enjoyer_id == ^from_id)
+    |> Repo.update_all(set: [enjoyer_id: into_id])
+
+    from(m in Pan.Message, where: m.creator_id == ^from_id)
+    |> Repo.update_all(set: [creator_id: into_id])
+
+    from(o in Pan.Opml, where: o.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(s in Pan.Subscription, where: s.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(r in Pan.Recommendation, where: r.user_id == ^from_id)
+    |> Repo.update_all(set: [user_id: into_id])
+
+    from(p in Pan.Podcast, where: p.owner_id == ^from_id)
+    |> Repo.update_all(set: [owner_id: into_id])
+
+    from(a in "contributors_podcasts", where: a.contributor_id == ^from_id)
+    |> Repo.update_all(set: [contributor_id: into_id])
+
+    Repo.get!(User, from_id)
+    |> Repo.delete!
+
+    render(conn, "merge.html")
   end
 end

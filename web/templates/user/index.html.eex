@@ -1,17 +1,39 @@
 <h1>Listing Users</h1>
 
+<%= link "Merge users", to: user_path(@conn, :merge) %>
+
 <table class="table">
-  <%= for user <- @users do %>
+  <thead>
     <tr>
-      <td><b><%= user.name %></b> (<%= user.id %>)</td>
-      <td>
-        <%= link "Delete", to: user_path(@conn, :delete, user),
-                     method: :delete,
-                     data: [confirm: "Are you sure?"],
-                     class: "btn btn-danger btn-xs" %>
-        <%= link "Show", to: user_path(@conn, :show, user.id),
-                         class: "btn btn-default btn-xs" %>
-        </td>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>email confirmed</th>
+      <th>Podcaster</th>
+      <th>Admin</th>
+      <th></th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <%= for user <- @users do %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><%= user.name %></td>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= user.email_confirmed %></td>
+        <td><%= user.podcaster %></td>
+        <td><%= user.admin %></td>
+        <td>
+          <%= link "Delete", to: user_path(@conn, :delete, user),
+                       method: :delete,
+                       data: [confirm: "Are you sure?"],
+                       class: "btn btn-danger btn-xs" %>
+          <%= link "Show", to: user_path(@conn, :show, user.id),
+                           class: "btn btn-default btn-xs" %>
+          </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

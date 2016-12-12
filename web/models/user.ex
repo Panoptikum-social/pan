@@ -42,6 +42,8 @@ defmodule Pan.User do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> validate_length(:username, min: 3, max: 30)
+    |> unique_constraint(:username)
+    |> unique_constraint(:email)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
   end
@@ -53,6 +55,8 @@ defmodule Pan.User do
     |> cast(params, ~w(password), [])
     |> cast(params, ~w(password_confirmation), [])
     |> validate_confirmation(:password)
+    |> unique_constraint(:username)
+    |> unique_constraint(:email)
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
   end

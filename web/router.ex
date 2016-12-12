@@ -68,7 +68,6 @@ defmodule Pan.Router do
 
   scope "/admin", Pan do
     pipe_through [:browser, :authenticate_admin]
-    resources "/users", UserController
     resources "/languages", LanguageController
     resources "/contributors", ContributorController
     resources "/episodes", EpisodeController
@@ -79,6 +78,10 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+
+    get "/users/merge", UserController, :merge
+    post "/users/execute_merge", UserController, :execute_merge
+    resources "/users", UserController
 
     post "/feeds/make_only/:id", FeedController, :make_only
     resources "/feeds", FeedController
