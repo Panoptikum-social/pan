@@ -33,14 +33,15 @@ defmodule Pan.Parser.Persistor do
 
     case map[:last_build_date] == podcast.last_build_date do
       true ->
-        Pan.Podcast.changeset(podcast)
-        |> Repo.update([force: true])
+        Pan.Podcast.changeset(podcast, %{ update_paused: false })
+        |> Repo.update()
       false ->
         if map[:episodes] do
           Pan.Parser.Episode.insert_newbies(map[:episodes], podcast)
         end
 
-        Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date] })
+        Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date],
+                                          update_paused: false })
         |> Repo.update()
     end
   end

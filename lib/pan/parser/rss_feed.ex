@@ -26,16 +26,28 @@ defmodule Pan.Parser.RssFeed do
 
     IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
 
-    case download(url) do
+    download_and_error_handling(url)
+  end
+
+
+  def download_and_error_handling(url, option \\ nil) do
+    case download(url, option) do
       %HTTPotion.ErrorResponse{message: "econnrefused"} ->
         {:error, "connection refused"}
 
       %HTTPotion.Response{status_code: 500} ->
         {:error, "internal server error"}
 
-      %HTTPotion.Response{body: feed_xml} ->
-#        IO.inspect download(url)
-#        IO.puts "=========================="
+      %HTTPotion.Response{status_code: 504} ->
+        {:error, "gateway time-out"}
+
+      %HTTPotion.Response{status_code: 404} ->
+        {:error, "feed not found"}
+
+      %HTTPotion.Response{status_code: 403} ->
+        download_and_error_handling(url, "no_headers")
+
+      %HTTPotion.Response{status_code: 200, body: feed_xml} ->
         feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
                    |> Quinn.parse()
@@ -44,14 +56,24 @@ defmodule Pan.Parser.RssFeed do
               |> Iterator.parse(feed_map)
         {:ok, map}
 
+
+      %HTTPotion.Response{status_code: code} ->
+        IO.inspect download(url)
+        IO.puts "=========================="
+        raise "status_code unknown" <> code
     end
   end
 
 
-  def download(url) do
-    HTTPotion.get url,
-      [timeout: 20000, follow_redirects: true,
-       headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
+  def download(url, option \\ nil) do
+    case option do
+      "no_headers" ->
+        HTTPotion.get url, [timeout: 20000, follow_redirects: true]
+      nil ->
+        HTTPotion.get url,
+          [timeout: 20000, follow_redirects: true,
+          headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
+    end
   end
 
 # Convenience function for runtime measurement

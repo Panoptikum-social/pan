@@ -96,10 +96,14 @@ defmodule Pan.PodcastController do
 
 
   def delta_import(conn, %{"id" => id}) do
-    Pan.Parser.Podcast.delta_import(id)
-
-    conn
-    |> put_flash(:info, "Podcast updated successfully.")
+    case Pan.Parser.Podcast.delta_import(id) do
+      {:ok, message} ->
+        conn
+        |> put_flash(:info, message)
+      {:error, message} ->
+        conn
+        |> put_flash(:error, message)
+    end
     |> redirect(to: podcast_path(conn, :index))
   end
 

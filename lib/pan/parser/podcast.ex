@@ -27,6 +27,10 @@ defmodule Pan.Parser.Podcast do
         Persistor.delta_import(map, id)
         {:ok, "Podcast importet successfully"}
       {:error, message} ->
+        # we update the timestamp in case of known server errors
+        Repo.get!(Pan.Podcast, id)
+        |> Pan.Podcast.changeset()
+        |> Repo.update([force: true])
         {:error, message}
     end
   end
