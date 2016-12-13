@@ -17,6 +17,7 @@ defmodule Pan.Podcast do
     field :payment_link_url, :string
     field :author, :string
     field :explicit, :boolean, default: false
+    field :update_paused, :boolean, default: false
     field :unique_identifier, Ecto.UUID
     timestamps
 
@@ -35,7 +36,7 @@ defmodule Pan.Podcast do
 
 
   @required_fields ~w(title website last_build_date  explicit)
-  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url description summary author owner_id)
+  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url description summary author owner_id update_paused)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

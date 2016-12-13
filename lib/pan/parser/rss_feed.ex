@@ -27,7 +27,15 @@ defmodule Pan.Parser.RssFeed do
     IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
 
     case download(url) do
+      %HTTPotion.ErrorResponse{message: "econnrefused"} ->
+        {:error, "connection refused"}
+
+      %HTTPotion.Response{status_code: 500} ->
+        {:error, "internal server error"}
+
       %HTTPotion.Response{body: feed_xml} ->
+#        IO.inspect download(url)
+#        IO.puts "=========================="
         feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
                    |> Quinn.parse()
@@ -36,8 +44,6 @@ defmodule Pan.Parser.RssFeed do
               |> Iterator.parse(feed_map)
         {:ok, map}
 
-      %HTTPotion.ErrorResponse{message: "econnrefused"} ->
-        {:error, "connection refused"}
     end
   end
 

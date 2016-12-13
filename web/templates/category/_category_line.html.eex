@@ -3,7 +3,7 @@
     <%= if @indent do %>
       &mdash;&mdash;&nbsp; &nbsp;
     <% end %>
-    <%= link @category.title, to: category_path(@conn, :show, @category) %> (<%= length(@category.podcasts) %>)
+    <%= link @category.title, to: category_path(@conn, :show, @category) %>
   </td>
 
   <td class="text-right">

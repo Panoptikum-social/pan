@@ -13,6 +13,14 @@ defmodule Pan.PodcastController do
   end
 
 
+  def factory(conn, _params) do
+    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at],
+                                           where: p.update_paused == true)
+               |> Repo.preload([:feeds, :owner])
+    render(conn, "factory.html", podcasts: podcasts)
+  end
+
+
   def new(conn, _params) do
     changeset = Podcast.changeset(%Podcast{})
     render(conn, "new.html", changeset: changeset)

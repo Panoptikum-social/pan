@@ -2,7 +2,7 @@
 <hr/>
 <%= render Pan.FeedView, "index.html", feeds: @podcast.feeds, conn: @conn %>
 <hr/>
-<%= render Pan.EpisodeView, "index.html", episodes: @podcast.episodes, conn: @conn %>
+<%= render Pan.EpisodeView, "_episodes.html", episodes: @podcast.episodes, conn: @conn %>
 <hr/>
 <%= render Pan.CategoryView, "index.html", categories: @podcast.categories,
                                            no_children: true,
