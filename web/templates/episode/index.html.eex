@@ -38,4 +38,6 @@
   </tbody>
 </table>
 
+<%= pagination_links @episodes %>
+
 <%= link "New episode", to: episode_path(@conn, :new) %>

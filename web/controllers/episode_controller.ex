@@ -5,9 +5,10 @@ defmodule Pan.EpisodeController do
 
   plug :scrub_params, "episode" when action in [:create, :update]
 
-  def index(conn, _params) do
-    episodes = Repo.all(Episode)
-    episodes = Repo.preload(episodes,:podcast)
+  def index(conn, params) do
+    episodes = from(e in Episode, preload: [:podcast])
+               |> Repo.paginate(params)
+
     render(conn, "index.html", episodes: episodes)
   end
 
