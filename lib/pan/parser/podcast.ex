@@ -25,14 +25,20 @@ defmodule Pan.Parser.Podcast do
     case RssFeed.import_to_map(feed.self_link_url) do
       {:ok, map}->
         Persistor.delta_import(map, id)
+        unpause(id)
         {:ok, "Podcast importet successfully"}
+
       {:error, message} ->
-        # we update the timestamp in case of known server errors
-        Repo.get!(Pan.Podcast, id)
-        |> Pan.Podcast.changeset()
-        |> Repo.update([force: true])
+        unpause(id)
         {:error, message}
     end
+  end
+
+
+  def unpause(id) do
+    Repo.get!(Pan.Podcast, id)
+    |> Pan.Podcast.changeset(%{ update_paused: false })
+    |> Repo.update([force: true])
   end
 
 

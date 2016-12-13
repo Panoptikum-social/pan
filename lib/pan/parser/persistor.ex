@@ -31,18 +31,13 @@ defmodule Pan.Parser.Persistor do
     podcast = Repo.get!(Pan.Podcast, podcast_id)
     map = Map.put_new(map, :last_build_date, Ecto.DateTime.utc)
 
-    case map[:last_build_date] == podcast.last_build_date do
-      true ->
-        Pan.Podcast.changeset(podcast, %{ update_paused: false })
-        |> Repo.update()
-      false ->
-        if map[:episodes] do
-          Pan.Parser.Episode.insert_newbies(map[:episodes], podcast)
-        end
+    unless map[:last_build_date] == podcast.last_build_date do
+      if map[:episodes] do
+        Pan.Parser.Episode.insert_newbies(map[:episodes], podcast)
+      end
 
-        Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date],
-                                          update_paused: false })
-        |> Repo.update()
+      Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date] })
+      |> Repo.update()
     end
   end
 

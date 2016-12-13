@@ -48,6 +48,9 @@ defmodule Pan.Parser.RssFeed do
         download_and_error_handling(url, "no_headers")
 
       %HTTPotion.Response{status_code: 200, body: feed_xml} ->
+        # IO.inspect download(url)
+        # IO.puts "=========================="
+
         feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
                    |> Quinn.parse()
