@@ -82,6 +82,7 @@
           }
 
           whenAvailable("QRCode", function(t) {
+            document.getElementById("qrcode").innerHTML = ""
             new QRCode(document.getElementById("qrcode"), {
                        text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
                        width:  142,
