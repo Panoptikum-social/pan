@@ -51,14 +51,18 @@ defmodule Pan.Parser.RssFeed do
         # IO.inspect download(url)
         # IO.puts "=========================="
 
-        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-                   |> Quinn.parse()
-        map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-                        title: Enum.at(String.split(url, "/"), 2)}
-              |> Iterator.parse(feed_map)
-        {:ok, map}
-
+        if String.starts_with?(feed_xml, "<html") or
+           String.starts_with?(feed_xml, "<!DOCTYPE html>") do
+          {:error, "This is an HTML file, not a feed!"}
+        else
+          feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+                     |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                     |> Quinn.parse()
+          map = %{feed: %{self_link_title: "Feed", self_link_url: url},
+                          title: Enum.at(String.split(url, "/"), 2)}
+                |> Iterator.parse(feed_map)
+          {:ok, map}
+        end
 
       %HTTPotion.Response{status_code: code} ->
         IO.inspect download(url)
