@@ -11,7 +11,7 @@ defmodule Pan.PodcastController do
                |> Repo.preload([:feeds, :owner])
 
     query = from p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
-                                      is_nil(p.update_paused)
+                                      (is_nil(p.update_paused) or p.update_paused == false)
     stale = Repo.aggregate(query, :count, :id)
 
     render(conn, "index.html", podcasts: podcasts, stale: stale)
@@ -125,7 +125,7 @@ defmodule Pan.PodcastController do
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
     podcasts = Repo.all(from p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                                  is_nil(p.update_paused),
+                                                  (is_nil(p.update_paused) or p.update_paused == false),
                                            order_by: [asc: :updated_at])
 
     for podcast <- podcasts do
