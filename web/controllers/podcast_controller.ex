@@ -14,7 +14,10 @@ defmodule Pan.PodcastController do
                                       (is_nil(p.update_paused) or p.update_paused == false)
     stale = Repo.aggregate(query, :count, :id)
 
-    render(conn, "index.html", podcasts: podcasts, stale: stale)
+    query = from p in Podcast, where: p.update_paused == true
+    paused = Repo.aggregate(query, :count, :id)
+
+    render(conn, "index.html", podcasts: podcasts, stale: stale, paused: paused)
   end
 
 

@@ -1,4 +1,4 @@
-<h2>Listing <%= Enum.count(@podcasts) %> podcasts (<%= @stale %> of them stale)</h2>
+<h2>Listing <%= Enum.count(@podcasts) %> podcasts (<%= @stale %> stale, <%= @paused %> paused)</h2>
 <p class="text-right">
   <%= link "Delta import all podcasts", to: podcast_path(@conn, :delta_import_all),
                                         class: "btn btn-info" %>
