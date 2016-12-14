@@ -9,7 +9,12 @@ defmodule Pan.PodcastController do
   def index(conn, _params) do
     podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
                |> Repo.preload([:feeds, :owner])
-    render(conn, "index.html", podcasts: podcasts)
+
+    query = from p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
+                                      is_nil(p.update_paused)
+    stale = Repo.aggregate(query, :count, :id)
+
+    render(conn, "index.html", podcasts: podcasts, stale: stale)
   end
 
 
@@ -119,7 +124,9 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
+    podcasts = Repo.all(from p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                                  is_nil(p.update_paused),
+                                           order_by: [asc: :updated_at])
 
     for podcast <- podcasts do
       notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
@@ -150,5 +157,13 @@ defmodule Pan.PodcastController do
     conn
     |> put_flash(:info, "Podcast touched.")
     |> redirect(to: podcast_path(conn, :index))
+  end
+
+
+  defp ten_hours_ago do
+    Timex.now()
+    |> Timex.shift(hours: -10)
+    |> Timex.to_erl()
+    |> Ecto.DateTime.from_erl()
   end
 end
