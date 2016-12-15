@@ -5,6 +5,7 @@ defmodule Pan.RecommendationFrontendController do
   alias Pan.Category
   alias Pan.Recommendation
   alias Pan.Subscription
+  alias Pan.Message
 
 
   def action(conn, _) do
@@ -64,8 +65,23 @@ defmodule Pan.RecommendationFrontendController do
     recommendation_params = Map.put(recommendation_params, "user_id", user.id)
     changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
     podcast_id = String.to_integer(recommendation_params["podcast_id"])
+    comment = recommendation_params["comment"]
+
+    e = %Event{
+      topic:           "podcasts",
+      subtopic:        recommendation_params["podcast_id"],
+      current_user_id: user.id,
+      podcast_id:      podcast_id,
+      type:            "success",
+      event:           "recommend",
+      content:         comment
+    }
+    e = %{e | content: "« recommended <b>" <>
+                       Repo.get!(Podcast, podcast_id).title <> " »</b> " <> comment }
 
     Repo.insert(changeset)
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
 
     conn
     |> put_flash(:info, "Your recommendation has been added.")
