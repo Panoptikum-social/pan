@@ -3,13 +3,16 @@ defmodule Pan.EpisodeFrontendController do
 
   alias Pan.Episode
   alias Pan.Chapter
+  alias Pan.Recommendation
 
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-    episode = Repo.preload(episode, [:podcast, :enclosures, :contributors])
+    episode = Repo.preload(episode, [:podcast, :enclosures, :contributors, recommendations: :user])
     episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
+
+    changeset = Recommendation.changeset(%Recommendation{})
     # options for player: "podlove", "podigee"
-    render(conn, "show.html", episode: episode, player: "podigee")
+    render(conn, "show.html", episode: episode, player: "podigee", changeset: changeset)
   end
 
 

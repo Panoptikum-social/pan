@@ -64,20 +64,50 @@ defmodule Pan.RecommendationFrontendController do
   def create(conn, %{"recommendation" => recommendation_params}, user) do
     recommendation_params = Map.put(recommendation_params, "user_id", user.id)
     changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
-    podcast_id = String.to_integer(recommendation_params["podcast_id"])
+
+    cond do
+      podcast_id_param = recommendation_params["podcast_id"] ->
+        podcast_id = String.to_integer(podcast_id_param)
+        episode_id = nil
+        topic = "podcasts"
+        subtopic = podcast_id_param
+        notification_text = "Podcast <b>" <> Repo.get!(Podcast, podcast_id).title <> "</b>"
+      episode_id_param = recommendation_params["episode_id"] ->
+        episode_id = String.to_integer(episode_id_param)
+        episode = Repo.get!(Episode, episode_id)
+                  |> Repo.preload(:podcast)
+        podcast_id = episode.podcast.id
+        topic = "podcasts"
+        subtopic = Integer.to_string(episode.podcast.id)
+        notification_text = "Episode <b>" <> episode.title <> "</b> from <b>" <> episode.podcast.title <> "</b>"
+      chapter_id_param = recommendation_params["chapter_id"] ->
+        chapter_id = String.to_integer(chapter_id_param)
+        chapter = Repo.get!(Chapter, chapter_id)
+                  |> Repo.preload([episode: :podcast])
+        episode_id = chapter.episode.id
+        podcast_id = chapter.episode.podcast.id
+        topic = "podcasts"
+        subtopic = Integer.to_string(chapter.episode.podcast.id)
+        notification_text = "Chapter <b>" <> chapter.title <> "</b> in <b>" <>
+                            chapter.episode.titile <> "</b> from <b>" <>
+                            chapter.episode.podcast.title <> "</b>"
+    end
+
     comment = recommendation_params["comment"]
 
     e = %Event{
-      topic:           "podcasts",
-      subtopic:        recommendation_params["podcast_id"],
+      topic:           topic,
+      subtopic:        subtopic,
       current_user_id: user.id,
       podcast_id:      podcast_id,
+      episode_id:      episode_id,
+      chapter_id:      chapter_id,
       type:            "success",
       event:           "recommend",
       content:         comment
     }
-    e = %{e | content: "« recommended <b>" <>
-                       Repo.get!(Podcast, podcast_id).title <> " »</b> " <> comment }
+    e = %{e | content: "« recommended " <>
+                       notification_text <> " » " <> comment }
 
     Repo.insert(changeset)
     Message.persist_event(e)

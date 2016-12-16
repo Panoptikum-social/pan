@@ -1,7 +1,7 @@
-<%= render "_head.html", podcast: @podcast,
-                         current_user: @current_user,
-                         changeset: @changeset,
-                         conn: @conn %>
+<%= render "_header.html", podcast: @podcast,
+                           current_user: @current_user,
+                           changeset: @changeset,
+                           conn: @conn %>
 
 <%= render "_recommendations.html", podcast: @podcast,
                                     conn: @conn %>

@@ -7,7 +7,7 @@
       <pclass="help-block"><span id='remaining'>255</span> characters left</p>
     </div>
 
-    <%= hidden_input f, :podcast_id, value: @podcast.id  %>
+    <%= hidden_input f, :episode_id, value: @episode.id  %>
 
     <div class="form-group">
       <%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %>

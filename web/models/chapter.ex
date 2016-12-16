@@ -7,6 +7,8 @@ defmodule Pan.Chapter do
   schema "chapters" do
     field :start, :string
     field :title, :string
+
+    has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
     belongs_to :episode, Pan.Episode
 
     timestamps
