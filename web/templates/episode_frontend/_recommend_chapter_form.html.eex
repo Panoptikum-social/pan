@@ -4,8 +4,9 @@
 
       <div class="form-group">
         <%= label f, "Your recommendation:", class: "control-label" %>
-        <%= text_input f, :comment, class: "form-control", maxlength: 255  %>
-        <pclass="help-block"><span id='remaining'>255</span> characters left</p>
+        <%= text_input f, :comment, class: "form-control", maxlength: 255,
+                                    data: [chapter: @chapter.id ]  %>
+        <p class="help-block"><span id='remaining<%=@chapter.id %>'>255</span> characters left</p>
       </div>
 
       <%= hidden_input f, :chapter_id, value: @chapter.id  %>
@@ -18,7 +19,7 @@
 <% end %>
 
 <script>
-  $('#recommendation_comment').keyup(function(){
-      $("#remaining").html((255 - this.value.length));
+  $('[data-chapter="<%=@chapter.id %>"]').keyup(function(){
+      $("#remaining<%=@chapter.id %>").html((255 - this.value.length));
   })
 </script>
