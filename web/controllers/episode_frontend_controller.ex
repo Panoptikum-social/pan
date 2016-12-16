@@ -8,7 +8,8 @@ defmodule Pan.EpisodeFrontendController do
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
     episode = Repo.preload(episode, [:podcast, :enclosures, :contributors, recommendations: :user])
-    episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
+    episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start,
+                                                                       preload: [recommendations: :user]))
 
     changeset = Recommendation.changeset(%Recommendation{})
     # options for player: "podlove", "podigee"
@@ -20,9 +21,11 @@ defmodule Pan.EpisodeFrontendController do
     episode = Repo.get!(Episode, id)
     episode = Repo.preload(episode, [:podcast, :enclosures, :contributors])
     episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
+
+    # options for player: "podlove", "podigee"
     conn
     |> put_layout("minimal.html")
-    |> render("player.html", episode: episode )
+    |> render("player.html", episode: episode, player: "podigee" )
   end
 
 

@@ -28,10 +28,10 @@
     <% end %>
 
     <%= render "_recommend_form.html",
-           current_user: @current_user,
-           changeset: @changeset,
-           conn: @conn,
-           episode: @episode %>
+               current_user: @current_user,
+               changeset: @changeset,
+               conn: @conn,
+               episode: @episode %>
 
     <h3>Description</h3>
     <p><%= raw @episode.description %></p>

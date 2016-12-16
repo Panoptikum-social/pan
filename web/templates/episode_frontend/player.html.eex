@@ -1,18 +1,28 @@
+<%= case @player do %>
+  <%= "podlove" -> %>
+    <link rel="stylesheet" type="text/css" href="/podlove-web-player/css/pwp-light-gray.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="/podlove-web-player/css/vendor/progress-polyfill.css" media="screen">
 
-<link rel="stylesheet" type="text/css" href="/podlove-web-player/css/pwp-light-gray.css" media="screen">
-<link rel="stylesheet" type="text/css" href="/podlove-web-player/css/vendor/progress-polyfill.css" media="screen">
+    <script type='text/javascript' src="/podlove-web-player/js/vendor/html5shiv.min.js"></script>
+    <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+    <script type='text/javascript' src="/podlove-web-player/js/vendor/progress-polyfill.min.js"></script>
+    <script type='text/javascript' src="/podlove-web-player/js/podlove-web-player.js"></script>
 
-<script type='text/javascript' src="/podlove-web-player/js/vendor/html5shiv.min.js"></script>
-<script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
-<script type='text/javascript' src="/podlove-web-player/js/vendor/progress-polyfill.min.js"></script>
-<script type='text/javascript' src="/podlove-web-player/js/podlove-web-player.js"></script>
+    <audio>
+      <%= for enclosure <- @episode.enclosures do %>
+        <source src="<%= enclosure.url%>" type="<%= enclosure.type %>"></source>
+      <% end %>
+    </audio>
 
-<audio>
-  <%= for enclosure <- @episode.enclosures do %>
-    <source src="<%= enclosure.url%>" type="<%= enclosure.type %>"></source>
-  <% end %>
-</audio>
+    <script>
+      $('audio').podlovewebplayer(<%= podlove_episodestruct(@episode) %>)
+    </script>
 
-<script>
-  $('audio').podlovewebplayer(<%= podlove_episodestruct(@episode) %>)
-</script>
+  <%= "podigee" -> %>
+    <script>
+      window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
+    </script>
+    <script class="podigee-podcast-player"
+            src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js"
+            data-configuration="playerConfiguration"></script>
+<% end %>

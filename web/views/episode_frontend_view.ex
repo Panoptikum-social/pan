@@ -36,17 +36,21 @@ defmodule Pan.EpisodeFrontendView do
 
   def podigee_episodestruct(episode) do
     %{options: %{theme: "default",
-                 startPanel: "ChapterMarks"},
+                 startPanel: "ChapterMarks",
+                 sslProxy: "https://cdn.podigee.com/ssl-proxy/"},
       extensions: %{ChapterMarks: %{},
                     EpisodeInfo: %{},
-                    Playlist: %{}},
-      title: episode.podcast.title,
+                    Playlist: %{},
+                    Share: %{},
+                    Transcript: %{},
+                    Waveform: %{}},
+      title: escape_javascript(episode.podcast.title),
       episode: %{media: enclosuremap(episode.enclosures),
                  coverUrl: episode.podcast.image_url,
-                 title: episode.title,
-                 subtitle: episode.subtitle,
+                 title: escape_javascript(episode.title),
+                 subtitle: escape_javascript(episode.subtitle),
                  url: episode.deep_link,
-                 description: episode.description,
+                 description: escape_javascript(episode.description),
                  chaptermarks: chapterlist(episode.chapters)
                }
     }
@@ -61,8 +65,8 @@ defmodule Pan.EpisodeFrontendView do
 
 
   defp chapterlist(chapters) do
-    Enum.map(chapters, fn(chapter) -> %{start: chapter.start,
-                                        title: chapter.title} end)
+    Enum.map(chapters, fn(chapter) -> %{ start: escape_javascript(chapter.start),
+                                         title: escape_javascript(chapter.title) } end)
   end
 
 
@@ -106,11 +110,12 @@ defmodule Pan.EpisodeFrontendView do
     end
   end
 
+
   def like_or_unlike_chapter(user_id, chapter_id) do
     case Repo.get_by(Pan.Like, enjoyer_id: user_id,
                                chapter_id: chapter_id) do
       nil ->
-        content_tag :button, class: "btn btn-warning btn-xs",
+        content_tag :button, class: "btn btn-warning",
                              data: [type: "chapter",
                                     event: "like-chapter",
                                     action: "like",
@@ -118,7 +123,7 @@ defmodule Pan.EpisodeFrontendView do
           [Chapter.likes(chapter_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
-        content_tag :button, class: "btn btn-success btn-xs",
+        content_tag :button, class: "btn btn-success",
                              data: [type: "chapter",
                                     event: "like-chapter",
                                     action: "unlike" ,
@@ -136,5 +141,12 @@ defmodule Pan.EpisodeFrontendView do
 
   def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
     like_or_unlike_chapter(user_id, chapter_id)
+  end
+
+
+  def seconds(time) do
+    [hours, minutes, seconds_string] = String.split(time, ":")
+    { seconds, _ } = Integer.parse(seconds_string)
+    Integer.to_string(String.to_integer(hours) * 3600 + String.to_integer(minutes) * 60 + seconds)
   end
 end

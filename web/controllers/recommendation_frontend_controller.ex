@@ -3,6 +3,7 @@ defmodule Pan.RecommendationFrontendController do
   alias Pan.Podcast
   alias Pan.Episode
   alias Pan.Category
+  alias Pan.Chapter
   alias Pan.Recommendation
   alias Pan.Subscription
   alias Pan.Message
@@ -89,7 +90,7 @@ defmodule Pan.RecommendationFrontendController do
         topic = "podcasts"
         subtopic = Integer.to_string(chapter.episode.podcast.id)
         notification_text = "Chapter <b>" <> chapter.title <> "</b> in <b>" <>
-                            chapter.episode.titile <> "</b> from <b>" <>
+                            chapter.episode.title <> "</b> from <b>" <>
                             chapter.episode.podcast.title <> "</b>"
     end
 

@@ -16,8 +16,6 @@ h6, .h6 { font-size: 14px; }
 .navbar-text a {color: white; }
 .navbar-text {margin-left: 10px;}
 
-.list-group-item a {color: white; }
-
 /* Bootstrap Notifications */
 .notifications {position: fixed; z-index: 9999; }
 .notifications.top-right {right: 10px; top: 25px; }
