@@ -1,8 +1,14 @@
 <h3>Chapters</h3>
 
+<div class="row">
+  <div class="col-md-8 col-md-offset-4">
+    <b>Your recommendation:</b>
+  </div>
+</div>
+
 <%= for chapter <- @episode.chapters do %>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
       <%= case @player do %>
         <%= "podlove" -> %>
           <%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "#t=" <> chapter.start),
@@ -11,15 +17,15 @@
           <%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "/#t=" <> seconds(chapter.start)),
                                   rel: "http://podlove.org/deep-link" %>
       <% end %>
-
-
-      &nbsp; - &nbsp; <%= chapter.title %>
-
+      <br/>
       <%= if @current_user do %>
-        <br/><br/><%= like_or_unlike_chapter(@current_user.id, chapter.id) %>
+        <%= like_or_unlike_chapter(@current_user.id, chapter.id) %>
       <% end %>
+      <%= chapter.title %>
     </div>
-    <div class="col-md-6">
+
+
+    <div class="col-md-8">
       <%= render "_recommend_chapter_form.html",
                  current_user: @current_user,
                  changeset: @changeset,

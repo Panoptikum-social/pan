@@ -115,7 +115,7 @@ defmodule Pan.EpisodeFrontendView do
     case Repo.get_by(Pan.Like, enjoyer_id: user_id,
                                chapter_id: chapter_id) do
       nil ->
-        content_tag :button, class: "btn btn-warning",
+        content_tag :button, class: "btn btn-warning btn-xs",
                              data: [type: "chapter",
                                     event: "like-chapter",
                                     action: "like",
@@ -123,7 +123,7 @@ defmodule Pan.EpisodeFrontendView do
           [Chapter.likes(chapter_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
-        content_tag :button, class: "btn btn-success",
+        content_tag :button, class: "btn btn-success btn-xs",
                              data: [type: "chapter",
                                     event: "like-chapter",
                                     action: "unlike" ,

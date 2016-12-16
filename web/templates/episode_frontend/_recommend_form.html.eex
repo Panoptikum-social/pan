@@ -4,7 +4,7 @@
     <div class="form-group">
       <%= label f, "Your recommendation:", class: "control-label" %>
       <%= text_input f, :comment, class: "form-control", maxlength: 255  %>
-      <pclass="help-block"><span id='remaining'>255</span> characters left</p>
+      <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
     </div>
 
     <%= hidden_input f, :episode_id, value: @episode.id  %>
