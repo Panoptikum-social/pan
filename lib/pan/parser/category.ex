@@ -14,7 +14,7 @@ defmodule Pan.Parser.Category do
   end
 
   def find_or_create(title, parent_title) do
-    {:ok, parent} = find_or_create(title, nil)
+    {:ok, parent} = find_or_create(parent_title, nil)
 
     case Repo.one(from c in Category, where: c.title == ^title and c.parent_id == ^parent.id) do
       nil ->
