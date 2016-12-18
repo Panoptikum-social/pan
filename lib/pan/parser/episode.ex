@@ -15,7 +15,9 @@ defmodule Pan.Parser.Episode do
 
   def persist_many(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map do
-      first_enclosure = episode_map[:enclosures] |> Map.to_list |> List.first |> elem(1)
+      if episode_map[:enclosures] do
+        first_enclosure = episode_map[:enclosures] |> Map.to_list |> List.first |> elem(1)
+      end
       fallback_url = if episode_map[:link], do: episode_map[:link], else: first_enclosure[:url]
 
       plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
