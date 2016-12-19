@@ -45,14 +45,16 @@ defmodule Pan.UserFrontendController do
 
   def my_podcasts(conn, _params, user) do
     user = Repo.get(User, user.id)
-           |> Repo.preload([:podcasts_i_subscribed, :podcasts_i_follow])
+           |> Repo.preload(podcasts_i_subscribed: from(p in Podcast, order_by: p.title))
+           |> Repo.preload(podcasts_i_follow: from(p in Podcast, order_by: p.title))
 
     podcast_ids = Repo.all(from l in Like, where: l.enjoyer_id == ^user.id and
                                                   is_nil(l.chapter_id) and
                                                   is_nil(l.episode_id) and
                                                   not is_nil(l.podcast_id),
                                            select: l.podcast_id)
-    podcasts_i_like = Repo.all(from p in Podcast, where: p.id in ^podcast_ids)
+    podcasts_i_like = Repo.all(from p in Podcast, where: p.id in ^podcast_ids,
+                                                  order_by: :title)
 
     podcasts_subscribed_ids = Repo.all(from s in Subscription, where: s.user_id == ^user.id,
                                                                select: s.podcast_id)
