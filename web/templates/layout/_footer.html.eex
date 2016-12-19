@@ -1,0 +1,37 @@
+<div class="footer">
+  <div class="container-fluid">
+    <div class="clearfix">
+      <div class="footer-logo"><a href="/"><img src="/images/panoptikum.io.png" width="30"/>Panoptikum</a></div>
+      <dl class="footer-nav">
+        <dt class="nav-title">META</dt>
+        <dd class="nav-item"><a href="https://panoptikum.io/code_of_conduct">Code of Conduct</a></dd>
+        <dd class="nav-item"><a href="https://panoptikum.io/complaints">Complaints</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/community/">Community</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/imprint.html">Imprint</a></dd>
+      </dl>
+      <dl class="footer-nav">
+        <dt class="nav-title">ABOUT</dt>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/blog.html">Blog</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/">About</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/talks/">Talks</a></dd>
+      </dl>
+      <dl class="footer-nav">
+        <dt class="nav-title">DEMO</dt>
+        <dd class="nav-item"><a href="/random">Random</a></dd>
+        <dd class="nav-item"><a href="/podcasters">Podcasters</a></dd>
+        <dd class="nav-item"><a href="/podcasts">The huge podcast list</a></dd>
+        <dd class="nav-item"><a href="/podcasts/buttons">Podcast Buttons</a></dd>
+      </dl>
+      <dl class="footer-nav">
+        <dt class="nav-title">SUPPORTED BY</dt>
+        <dd class="nav-item"><a href="https://www.informatom.com/">Stefan a.k.a. Informatom</a></dd>
+        <dd class="nav-item"><a href="https://www.waldgruber.at/">Community Manager Sonja</a></dd>
+        <dd class="nav-item"><a href="https://www.mittenin.at/">Mittenin.at</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/vienna-beamers/">Vienna Beamers</a></dd>
+      </dl>
+    </div>
+    <div class="footer-copyright text-center">
+      Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
+    </div>
+  </div>
+</div>

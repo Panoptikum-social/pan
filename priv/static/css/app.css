@@ -236,6 +236,7 @@ body{font-family:'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;color:#
 
 body {
   font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin-bottom: 0px;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -253,18 +254,26 @@ h6, .h6 { font-size: 14px; }
 .navbar-text {margin-left: 10px;}
 
 /* Bootstrap Notifications */
-.notifications {position: fixed; z-index: 9999; }
-.notifications.top-right {right: 10px; top: 25px; }
-.notifications.top-left {left: 10px; top: 25px; }
-.notifications.bottom-left {left: 10px; bottom: 25px; }
-.notifications.bottom-right {right: 10px; bottom: 25px; }
-.notifications > div {position: relative; margin: 5px 0px; }
-.notifications > .alert {padding: 2px 10px 2px 10px; }
+.notifications { position: fixed; z-index: 9999; }
+.notifications.top-right { right: 10px; top: 25px; }
+.notifications.top-left { left: 10px; top: 25px; }
+.notifications.bottom-left { left: 10px; bottom: 25px; }
+.notifications.bottom-right { right: 10px; bottom: 25px; }
+.notifications > div { position: relative; margin: 5px 0px; }
+.notifications > .alert { padding: 2px 10px 2px 10px; }
 
-.message-warning {background-color: #fffaed;}
-.message-success {background-color: #ddffdd;}
-.message-info {background-color: #d7f1fa;}
-.message-danger, .message-error {background-color: #ff8591;}
+.message-warning { background-color: #fffaed;}
+.message-success { background-color: #ddffdd;}
+.message-info { background-color: #d7f1fa;}
+.message-danger, .message-error { background-color: #ff8591;}
 
+.list-group-item-info > a,
+.list-group-item-danger > a,
+.list-group-item-warning > a,
+.list-group-item-primary > a,
+.list-group-item-success > a { color: #fff;}
+
+.footer { padding: 40px;
+          padding-bottom: 20px; }
 
 /*# sourceMappingURL=app.css.map*/
