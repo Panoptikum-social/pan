@@ -1,7 +1,7 @@
 <div class="footer">
   <div class="container-fluid">
     <div class="clearfix">
-      <div class="footer-logo"><a href="/"><img src="/images/panoptikum.io.png" width="30"/>Panoptikum</a></div>
+      <div class="footer-logo"><a href="/"><img src="/images/panoptikum.io.png" width="30"/>Panoptikum.io</a></div>
       <dl class="footer-nav">
         <dt class="nav-title">META</dt>
         <dd class="nav-item"><a href="https://panoptikum.io/code_of_conduct">Code of Conduct</a></dd>
