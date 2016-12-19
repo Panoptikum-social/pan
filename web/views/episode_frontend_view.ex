@@ -44,13 +44,13 @@ defmodule Pan.EpisodeFrontendView do
                     Share: %{},
                     Transcript: %{},
                     Waveform: %{}},
-      title: escape_javascript(episode.podcast.title),
+      title: ej(episode.podcast.title),
       episode: %{media: enclosuremap(episode.enclosures),
                  coverUrl: episode.podcast.image_url,
-                 title: escape_javascript(episode.title),
-                 subtitle: escape_javascript(episode.subtitle),
+                 title: ej(episode.title),
+                 subtitle: ej(episode.subtitle),
                  url: episode.deep_link,
-                 description: escape_javascript(episode.description),
+                 description: ej(episode.description),
                  chaptermarks: chapterlist(episode.chapters)
                }
     }
@@ -59,14 +59,18 @@ defmodule Pan.EpisodeFrontendView do
   end
 
 
+  def ej(nil), do: ""
+  def ej(string), do: escape_javascript(string)
+
+
   defp filetype (enclosure) do
     enclosure.url |> String.split(".") |> List.last |> String.to_atom
   end
 
 
   defp chapterlist(chapters) do
-    Enum.map(chapters, fn(chapter) -> %{ start: escape_javascript(chapter.start),
-                                         title: escape_javascript(chapter.title) } end)
+    Enum.map(chapters, fn(chapter) -> %{ start: ej(chapter.start),
+                                         title: ej(chapter.title) } end)
   end
 
 
