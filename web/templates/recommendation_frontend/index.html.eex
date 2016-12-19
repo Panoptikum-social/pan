@@ -30,7 +30,7 @@
                      current_user: @current_user,
                      changeset: @changeset,
                      conn: @conn,
-                     podcast_id: podcast.id %>
+                     podcast: podcast %>
           <hr/>
         <% end %>
       </div>
