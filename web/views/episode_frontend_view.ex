@@ -149,4 +149,8 @@ defmodule Pan.EpisodeFrontendView do
     { seconds, _ } = Integer.parse(seconds_string)
     Integer.to_string(String.to_integer(hours) * 3600 + String.to_integer(minutes) * 60 + seconds)
   end
+
+  def complain_link() do
+    link "Complain", to: "https://panoptikum.io/complaints", style: "color: #fff;"
+  end
 end

@@ -1,34 +1,45 @@
 <h2>Listing recommendations</h2>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Comment</th>
-      <th>Podcast</th>
-      <th>Episode</th>
-      <th>Chapter</th>
+<%= pagination_links @conn, @recommendations %>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for recommendation <- @recommendations do %>
-    <tr>
-      <td><%= recommendation.user_id %></td>
-      <td><%= recommendation.comment %></td>
-      <td><%= recommendation.podcast_id %></td>
-      <td><%= recommendation.episode_id %></td>
-      <td><%= recommendation.chapter_id %></td>
+<ul class="list-group">
+  <%= for recommendation <- @recommendations do %>
+    <li class="list-group-item">
+      (<%= recommendation.inserted_at %>) &nbsp;
+      <%= link recommendation.user.name, to: user_path(@conn, :show, recommendation.user) %>: &nbsp;
 
-      <td class="text-right">
-        <%= link "Show", to: recommendation_path(@conn, :show, recommendation), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: recommendation_path(@conn, :edit, recommendation), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: recommendation_path(@conn, :delete, recommendation), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
+      <%= if recommendation.podcast do %>
+        <%= link recommendation.podcast.title, to: podcast_path(@conn, :show, recommendation.podcast) %>
+      <% end %>
+
+      <%= if recommendation.episode do %>
+        <%= link recommendation.episode.title, to: episode_path(@conn, :show, recommendation.episode) %> /
+        <%= link recommendation.episode.podcast.title, to: episode_path(@conn, :show, recommendation.episode.podcast) %>
+      <% end %>
+
+      <%= if recommendation.chapter_id do %>
+        <%= recommendation.chapter.start %> /
+        <%= link recommendation.chapter.episode.title, to: episode_path(@conn, :show, recommendation.chapter.episode) %> /
+        <%= link recommendation.chapter.episode.podcast.title, to: episode_path(@conn, :show, recommendation.chapter.episode.podcast) %>
+      <% end %>
+
+      <br/>
+      <%= recommendation.comment %>
+
+      <span class="pull-right">
+        <%= link "Show", to: recommendation_path(@conn, :show, recommendation),
+                         class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: recommendation_path(@conn, :edit, recommendation),
+        class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: recommendation_path(@conn, :delete, recommendation),
+                           method: :delete,
+                           data: [confirm: "Are you sure?"],
+                           class: "btn btn-danger btn-xs" %>
+      </span>
     </tr>
-<% end %>
-  </tbody>
-</table>
+  <% end %>
+</ul>
+
+<%= pagination_links @conn, @recommendations %>
 
 <%= link "New recommendation", to: recommendation_path(@conn, :new) %>

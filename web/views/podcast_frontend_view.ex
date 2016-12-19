@@ -99,4 +99,9 @@ defmodule Pan.PodcastFrontendView do
   def render("subscribe_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
     subscribe_or_unsubscribe(user_id, podcast_id)
   end
+
+
+  def complain_link() do
+    Pan.EpisodeFrontendView.complain_link()
+  end
 end

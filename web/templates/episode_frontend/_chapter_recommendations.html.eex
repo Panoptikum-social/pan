@@ -1,6 +1,8 @@
 <%= if @chapter.recommendations != [] do %>
-  <div class="panel panel-danger">
-    <div class="panel-heading">Recommendations</div>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Recommendations  <span class="pull-right"><%= complain_link %></span>
+    </div>
     <ul class="list-group">
       <%= for recommendation <- @chapter.recommendations do %>
         <li class="list-group-item">
