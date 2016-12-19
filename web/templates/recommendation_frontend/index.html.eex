@@ -20,20 +20,37 @@
   <div class="col-md-7">
     <div class="panel panel-info">
       <div class="panel-heading">Unrecommended Podcasts</div>
-      <div class="panel-body">
+      <ul class="list-group">
         <%= for podcast <- @unrecommended_podcasts do %>
-          <%= link [fa_icon("podcast"), " ", podcast.title],
-                   to: podcast_frontend_path(@conn, :show, podcast),
-                   class: "btn btn-default",
-                   style: "color: #666;" %> &nbsp; &nbsp;
-          <%= render Pan.PodcastFrontendView, "_recommend_form.html",
-                     current_user: @current_user,
-                     changeset: @changeset,
-                     conn: @conn,
-                     podcast: podcast %>
-          <hr/>
+          <li class="list-group-item">
+            <%= form_for @changeset,
+                         recommendation_frontend_path(@conn, :index), [style: "margin-top: 0px;
+                                                                               margin-bottom: 0px;"],
+                         fn f -> %>
+
+              <div class="row">
+                <div class="col-xs-10">
+                  <%= label f, "Your recommendation", class: "control-label" %> for : &nbsp; <%= podcast.title %>
+                  <small class="text-muted pull-right" id='remaining<%= podcast.id %>'>255</small>
+                  <%= hidden_input f, :podcast_id, value: podcast.id  %>
+                  <%= text_input f, :comment, class: "form-control", maxlength: 255,
+                                              data: [chapter: podcast.id ] %>
+                </div>
+
+                <div class="col-xs-2">
+                  <p><br/><%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %></p>
+                </div>
+              </div>
+            <% end %>
+
+            <script>
+              $('[data-chapter="<%= podcast.id %>"]').keyup(function(){
+                  $("#remaining<%= podcast.id %>").html((255 - this.value.length));
+              })
+            </script>
+          </li>
         <% end %>
-      </div>
+      </ul>
     </div>
   </div>
 </div>

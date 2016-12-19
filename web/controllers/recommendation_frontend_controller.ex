@@ -19,6 +19,7 @@ defmodule Pan.RecommendationFrontendController do
                                                                         not is_nil(r.podcast_id) and
                                                                         is_nil(r.episode_id) and
                                                                         is_nil(r.chapter_id),
+                                                                 order_by: [desc: :inserted_at],
                                                                  preload: :podcast)
 
     subscribed_podcast_ids = Repo.all(from s in Subscription, where: s.user_id == ^user.id,

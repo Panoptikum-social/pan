@@ -4,8 +4,6 @@ defmodule Pan.RecommendationController do
   alias Pan.Recommendation
 
   def index(conn, params) do
-    recommendations = Repo.all(Recommendation)
-
     query = from r in Recommendation,
             order_by: [desc: :inserted_at],
             preload: [:podcast, [episode: :podcast], [chapter: [episode: :podcast]], :user]
