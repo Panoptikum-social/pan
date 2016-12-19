@@ -29,7 +29,7 @@
                          fn f -> %>
 
               <div class="row">
-                <div class="col-xs-10">
+                <div class="col-md-10">
                   <%= label f, "Your recommendation", class: "control-label" %> for : &nbsp; <%= podcast.title %>
                   <small class="text-muted pull-right" id='remaining<%= podcast.id %>'>255</small>
                   <%= hidden_input f, :podcast_id, value: podcast.id  %>
@@ -37,7 +37,7 @@
                                               data: [chapter: podcast.id ] %>
                 </div>
 
-                <div class="col-xs-2">
+                <div class="col-md-2">
                   <p><br/><%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %></p>
                 </div>
               </div>
