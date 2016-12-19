@@ -6,6 +6,7 @@
       <th>User</th>
       <th>Content type</th>
       <th>Filename</th>
+      <th>inserted at</th>
       <th>Path</th>
 
       <th></th>
@@ -14,9 +15,10 @@
   <tbody>
 <%= for opml <- @opmls do %>
     <tr>
-      <td><%= opml.user_id %></td>
+      <td><%= link opml.user.name, to: user_path(@conn, :show, opml.user) %></td>
       <td><%= opml.content_type %></td>
       <td><%= opml.filename %></td>
+      <td><%= opml.inserted_at %></td>
       <td><%= opml.path %></td>
 
       <td class="text-right">
