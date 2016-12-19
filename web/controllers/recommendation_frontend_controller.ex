@@ -39,19 +39,20 @@ defmodule Pan.RecommendationFrontendController do
 
 
   def random(conn, _params, _user) do
-    category = Repo.all(Category)
+    podcast = Repo.all(Podcast)
                |> Enum.random
+               |> Repo.preload(:categories)
 
-    category = Repo.get(Category, category.id)
+    category = Repo.get(Category, List.first(podcast.categories).id)
                |> Repo.preload([:parent, :children, :podcasts])
 
-    podcast = Enum.random(category.podcasts)
     podcast = Repo.get(Podcast, podcast.id)
               |> Repo.preload([:episodes, :languages, :owner, :categories, :feeds])
 
     episode = Enum.random(podcast.episodes)
     episode = Repo.get(Episode, episode.id)
-              |> Repo.preload([:podcast, :enclosures, :chapters, :contributors])
+              |> Repo.preload([:podcast, :enclosures, [chapters: :recommendations],
+                               :contributors, :recommendations])
 
     changeset = Recommendation.changeset(%Recommendation{})
 

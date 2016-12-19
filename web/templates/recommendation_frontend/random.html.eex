@@ -9,7 +9,7 @@ Fortuna opted for the category:<br/><br/>
 
 ... and there she opted for the podcast:<br/><br/>
 
-<%= render Pan.PodcastFrontendView, "_head.html",
+<%= render Pan.PodcastFrontendView, "_header.html",
            podcast: @podcast,
            current_user: @current_user,
            changeset: @changeset,
@@ -23,4 +23,5 @@ Fortuna opted for the category:<br/><br/>
            episode: @episode,
            current_user: @current_user,
            player: @player,
+           changeset: @changeset,
            conn: @conn %>
