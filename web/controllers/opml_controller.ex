@@ -4,8 +4,8 @@ defmodule Pan.OpmlController do
   alias Pan.Opml
 
   def index(conn, _params) do
-    opmls = Repo.all(Opml, order: [desc: :inserted_at])
-            |> Repo.preload(:user)
+    opmls = Repo.all(from o in Opml, order_by: [desc: :inserted_at],
+                                     preload: :user)
     render(conn, "index.html", opmls: opmls)
   end
 
