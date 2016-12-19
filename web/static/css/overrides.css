@@ -1,6 +1,7 @@
 body {
   font-family: 'Ubuntu', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -38,4 +39,35 @@ h6, .h6 { font-size: 14px; }
 .list-group-item-success > a { color: #fff;}
 
 .footer { padding: 40px;
-          padding-bottom: 30px; }
+          padding-bottom: 30px;
+          margin-top: 30px; }
+
+.navbar-default .navbar-nav>li>a,
+.navbar-default .btn-link,
+.navbar-default .navbar-text,
+.navbar-default .navbar-link {
+  color: #aab2bd;
+}
+
+.navbar-default .navbar-brand {
+  font-weight: 700;
+  font-size: 20px;
+  color: #e6e9ed;
+}
+
+.navbar-default {
+  padding: 15px;
+  margin-left: -25px;
+  margin-right: -25px;
+}
+
+.navbar-inverse {
+  background-color: #434a54;
+}
+
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:focus,
+.navbar-inverse .navbar-nav>.open>a:hover,
+.dropdown-menu{
+  background-color: #333;
+}

@@ -22,7 +22,7 @@
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
     <div class='notifications top-right'></div>
     <div class="container-fluid">
-      <nav class="navbar navbar-default">
+      <nav class="navbar navbar-default navbar-inverse">
         <div class="container-fluid">
           <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
         </div><!-- /.container-fluid -->
