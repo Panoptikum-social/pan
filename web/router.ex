@@ -56,8 +56,11 @@ defmodule Pan.Router do
     get "/my_podcasts", UserFrontendController, :my_podcasts
     get "/my_profile", UserFrontendController, :my_profile
     get "/my_messages", UserFrontendController, :my_messages
+
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
+    get "/edit_password", UserFrontendController, :edit_password
+    put "/update_password", UserFrontendController, :update_password
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/import/:id", OpmlFrontendController, :import

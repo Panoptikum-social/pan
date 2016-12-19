@@ -38,7 +38,7 @@ defmodule Pan.SessionController do
       {:ok, conn} ->
         conn
         |> put_flash(:info, "Welcome back, please set your new password!")
-        |> redirect(to: user_frontend_path(conn, :edit))
+        |> redirect(to: user_frontend_path(conn, :edit_password))
       {:error, :expired} ->
         conn
         |> put_flash(:error, "The token has expired already!")

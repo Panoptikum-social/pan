@@ -130,13 +130,34 @@ defmodule Pan.UserFrontendController do
    end
 
 
-   def edit(conn, _params, user) do
+  def edit(conn, _params, user) do
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
 
 
+  def edit_password(conn, _params, user) do
+    changeset = User.changeset(user)
+    render(conn, "edit_password.html", user: user, changeset: changeset)
+  end
+
+
   def update(conn, %{"user" => user_params}, user) do
+    changeset = User.self_change_changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+         conn
+         |> put_flash(:info, "Account updated successfully.")
+         |> redirect(to: user_frontend_path(conn, :my_profile))
+      {:error, changeset} ->
+
+         render(conn, "edit.html", user: user, changeset: changeset)
+    end
+  end
+
+
+  def update_password(conn, %{"user" => user_params}, user) do
     changeset = User.password_update_changeset(user, user_params)
 
     case Repo.update(changeset) do
@@ -146,7 +167,7 @@ defmodule Pan.UserFrontendController do
          |> redirect(to: user_frontend_path(conn, :my_profile))
       {:error, changeset} ->
 
-         render(conn, "edit.html", user: user, changeset: changeset)
+         render(conn, "edit_password.html", user: user, changeset: changeset)
     end
   end
 

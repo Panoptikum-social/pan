@@ -8,14 +8,12 @@
   <dt>My Email</dt>
   <dd><%= @user.email %></dd>
 
-  <dt>Admin</dt>
-  <dd>
-    <%= if @user.admin do %>
+  <%= if @user.admin do %>
+    <dt>Admin</dt>
+    <dd>
       I have admin priviliges.
-    <% else %>
-      I am not an admin on this system.
-    <% end %>
-  </dd>
+    </dd>
+  <% end %>
 
   <dt>Podcaster</dt>
   <dd>
@@ -26,3 +24,6 @@
     <% end %>
   </dd>
 </dl>
+
+
+<%= link "Edit your data", to: user_frontend_path(@conn, :edit) %>
