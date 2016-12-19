@@ -50,12 +50,13 @@ defmodule Pan.User do
 
   def self_change_changeset(model, params \\ %{}) do
     model
-    |> cast(params, [], ~w(podcaster email name username))
+    |> cast(params, ~w(podcaster email name username), ~w(podcaster))
+    |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
-    |> validate_length(:name, min: 3, max: 100)
+
   end
 
 
