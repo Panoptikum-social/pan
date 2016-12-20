@@ -30,8 +30,15 @@ defmodule Pan.CategoryFrontendView do
 
   def latest_episodes do
     Repo.all(from e in Pan.Episode, order_by: [desc: :publishing_date],
-                                    limit: 5)
-    |> Repo.preload(:podcast)
+                                    limit: 5,
+                                    preload: [:podcast])
+  end
+
+
+  def latest_recommendations do
+    Repo.all(from e in Pan.Recommendation, order_by: [desc: :inserted_at],
+                                           limit: 10,
+                                           preload: [:user, :podcast, episode: :podcast, chapter: [episode: :podcast]])
   end
 
 
@@ -63,11 +70,6 @@ defmodule Pan.CategoryFrontendView do
     end
   end
 
-  def render("like_button.html", %{user_id: user_id, category_id: category_id}) do
-    like_or_unlike(user_id, category_id)
-  end
-
-
   def follow_or_unfollow(user_id, category_id) do
     case Pan.Repo.get_by(Pan.Follow, follower_id: user_id,
                                      category_id: category_id) do
@@ -90,6 +92,9 @@ defmodule Pan.CategoryFrontendView do
     end
   end
 
+  def render("like_button.html", %{user_id: user_id, category_id: category_id}) do
+    like_or_unlike(user_id, category_id)
+  end
 
   def render("follow_button.html", %{user_id: user_id, category_id: category_id}) do
     follow_or_unfollow(user_id, category_id)

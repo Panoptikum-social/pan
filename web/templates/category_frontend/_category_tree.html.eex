@@ -1,0 +1,23 @@
+<%= for {category, counter} <- Enum.with_index(@categories) do %>
+  <div style="display: inline-block;">
+    <span class="btn btn-sm <%= btn_cycle(counter) %>">
+    <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
+             to: category_frontend_path(@conn, :show, category),
+             style: "color: #" <> color_cycle(counter) %>
+    </span><br/>
+
+    <%= if category.children != [] do %>
+      <p style="line-height: 200%;"">
+        <%= for subcategory <- category.children do %>
+          <span class="btn btn-xs btn-default">
+            <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                     to: category_frontend_path(@conn, :show, subcategory),
+                     style: "color: #555" %>
+          </span>
+        <% end %>
+      </p>
+    <% end %>
+    <hr style="margin: 0px;"/>
+  </div>
+  <br/>
+<% end %>

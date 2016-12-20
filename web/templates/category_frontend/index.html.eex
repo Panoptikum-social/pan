@@ -9,116 +9,20 @@
                                -moz-columns:    4 150px;
                                -webkit-columns: 4 150px;
                                line-height: 350%;">
-    <%= for {category, counter} <- Enum.with_index(@categories) do %>
-      <div style="display: inline-block;">
-        <span class="btn btn-sm <%= btn_cycle(counter) %>">
-        <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
-                 to: category_frontend_path(@conn, :show, category),
-                 style: "color: #" <> color_cycle(counter) %>
-        </span><br/>
-
-        <%= if category.children != [] do %>
-          <p style="line-height: 200%;"">
-            <%= for subcategory <- category.children do %>
-              <span class="btn btn-xs btn-default">
-                <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                         to: category_frontend_path(@conn, :show, subcategory),
-                         style: "color: #555" %>
-              </span>
-            <% end %>
-          </p>
-        <% end %>
-        <hr style="margin: 0px;"/>
-      </div>
-      <br/>
-    <% end %>
+    <%= Pan.CategoryFrontendView.render "_category_tree.html", categories: @categories, conn: @conn  %>
   </div>
 
   <div class="col-md-4">
-    <div class="panel panel-danger">
-      <div class="panel-heading">Search</div>
-      <div class="panel-body">
-        <%= form_for @conn, search_frontend_path(@conn, :new), [as: :search], fn f -> %>
-          <div class="form-group">
-            <%= text_input f, :searchstring, class: "form-control" %>
-          </div>
-          <div class="form-group">
-            <%= submit "Submit", class: "btn btn-primary" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-
+    <%= Pan.CategoryFrontendView.render "_search.html", categories: @categories, conn: @conn  %>
     <br/>
-
-    <div class="panel panel-success">
-      <div class="panel-heading">Latest Episodes</div>
-      <ul class="list-group">
-
-        <%= for episode <- latest_episodes do %>
-          <li class="list-group-item">
-            <%= link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
-                        to: episode_frontend_path(@conn, :show, episode),
-                        class: "btn btn-primary btn-xs" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-            <%= link [fa_icon("podcast"), " ", episode.podcast.title],
-                        to: podcast_frontend_path(@conn, :show, episode.podcast),
-                        class: "btn btn-default btn-xs",
-                        style: "color: #000;" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-            <%= fa_icon("calendar") %> <%= Ecto.DateTime.to_date(episode.publishing_date) %><br/>
-            <%= if episode.duration do %>
-              <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
-            <%= end %>
-            <%= if episode.author do %>
-              <%= fa_icon("user") %> <%= episode.author %><br/>
-            <%= end %>
-            <%= if episode.subtitle do %>
-              <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
-            <%= end %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <%= Pan.CategoryFrontendView.render "_latest_recommendations.html", latest_recommendations: latest_recommendations, conn: @conn  %>
+    <br/>
+    <%= Pan.CategoryFrontendView.render "_latest_episodes.html", latest_episodes: latest_episodes, conn: @conn  %>
   </div>
 
   <div class="col-md-4">
-    <div class="panel panel-info">
-      <div class="panel-heading">Top 10 subscribed Podcasts</div>
-      <ul class="list-group">
-        <%= for {[count, id, title], rank} <- Enum.with_index(@popular_podcasts) do %>
-          <li class="list-group-item">
-            <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(title, 50)],
-                     to: podcast_frontend_path(@conn, :show, id),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %>
-            <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-
+    <%= Pan.CategoryFrontendView.render "_popular.html", popular_podcasts: @popular_podcasts, conn: @conn  %>
     </br>
-
-    <div class="panel panel-info">
-      <div class="panel-heading">Latest Podcasts</div>
-      <ul class="list-group">
-        <%= for podcast <- latest_podcasts do %>
-          <li class="list-group-item">
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
-                     to: podcast_frontend_path(@conn, :show, podcast),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-            <%= fa_icon("user") %> <%= podcast.author %></br>
-            <%= fa_icon("calendar") %> <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %><br/>
-            <%= if podcast.description do %>
-              <small><%= fa_icon("image") %> <%= C.String.truncate(podcast.description, 150) %></small>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
+    <%= Pan.CategoryFrontendView.render "_latest_podcasts.html", latest_podcasts: latest_podcasts, conn: @conn  %>
   </div>
 </div>

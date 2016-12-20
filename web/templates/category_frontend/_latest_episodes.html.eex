@@ -1,0 +1,39 @@
+<div class="panel panel-success">
+  <div class="panel-heading">Latest Episodes</div>
+  <div id="latest_episodes">
+    <ul class="list-unstyled">
+      <%= for episode <- latest_episodes do %>
+        <li>
+          <%= link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
+                      to: episode_frontend_path(@conn, :show, episode),
+                      class: "btn btn-primary btn-xs" %>
+          <hr style="margin-top: -10px; visibility:hidden;" />
+          <%= link [fa_icon("podcast"), " ", episode.podcast.title],
+                      to: podcast_frontend_path(@conn, :show, episode.podcast),
+                      class: "btn btn-default btn-xs",
+                      style: "color: #000;" %>
+          <hr style="margin-top: -10px; visibility:hidden;" />
+          <%= fa_icon("calendar") %> <%= Ecto.DateTime.to_date(episode.publishing_date) %><br/>
+          <%= if episode.duration do %>
+            <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
+          <%= end %>
+          <%= if episode.author do %>
+            <%= fa_icon("user") %> <%= episode.author %><br/>
+          <%= end %>
+          <%= if episode.subtitle do %>
+            <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
+          <%= end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
+
+<script>
+  $(function() {
+    $('#latest_episodes').vTicker('init', {
+    padding: 15,
+    pause: 5000,
+    speed: 1500});
+  });
+</script>
