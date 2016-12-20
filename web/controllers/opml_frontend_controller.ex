@@ -53,7 +53,7 @@ defmodule Pan.OpmlFrontendController do
     Repo.delete!(opml)
 
     conn
-    |> put_flash(:info, "Opml deleted successfully.")
+    |> put_flash(:info, "OPML deleted successfully.")
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 
@@ -63,7 +63,12 @@ defmodule Pan.OpmlFrontendController do
 
     Pan.OpmlParser.Opml.parse(opml.path, user.id)
     conn
-    |> put_flash(:info, "Opml imported successfully.")
+    |> put_flash(:info, Phoenix.HTML.raw(
+                          "<span class='h3'>Thank you!</span><br/> The OPML was imported into the" <>
+                          " feed backlog successfully.<br/> We will parse the feeds as soon as" <>
+                          " possible and assign you as listener to the corresponding podcasts."
+                        )
+       )
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 end

@@ -36,7 +36,7 @@ defmodule Pan.OpmlController do
     case Repo.insert(changeset) do
       {:ok, _opml} ->
         conn
-        |> put_flash(:info, "Opml created successfully.")
+        |> put_flash(:info, "OPML created successfully.")
         |> redirect(to: opml_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -64,7 +64,7 @@ defmodule Pan.OpmlController do
     case Repo.update(changeset) do
       {:ok, opml} ->
         conn
-        |> put_flash(:info, "Opml updated successfully.")
+        |> put_flash(:info, "OPML updated successfully.")
         |> redirect(to: opml_path(conn, :show, opml))
       {:error, changeset} ->
         render(conn, "edit.html", opml: opml, changeset: changeset)
@@ -78,7 +78,7 @@ defmodule Pan.OpmlController do
     Repo.delete!(opml)
 
     conn
-    |> put_flash(:info, "Opml deleted successfully.")
+    |> put_flash(:info, "OPML deleted successfully.")
     |> redirect(to: opml_path(conn, :index))
   end
 
@@ -88,7 +88,7 @@ defmodule Pan.OpmlController do
 
     Pan.OpmlParser.Opml.parse(opml.path, opml.user_id)
     conn
-    |> put_flash(:info, "Opml imported successfully.")
+    |> put_flash(:info, "OPML imported successfully.")
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 end
