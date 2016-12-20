@@ -29,10 +29,14 @@ defmodule Pan.EpisodeFrontendController do
   end
 
 
-  def latest(conn, _params) do
-    episodes = Repo.all(from e in Episode, order_by: [desc: :publishing_date],
-                                           limit: 10)
-               |> Repo.preload(:podcast)
-    render(conn, "latest.html", episodes: episodes)
+  def index(conn, params) do
+    query = from(e in Episode, order_by: [desc: :publishing_date],
+                               preload: [:podcast])
+
+    episodes = query
+               |> Ecto.Queryable.to_query
+               |> Repo.paginate(params)
+
+    render(conn, "index.html", episodes: episodes)
   end
 end

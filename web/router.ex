@@ -27,8 +27,7 @@ defmodule Pan.Router do
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
 
-    get "/episodes/latest", EpisodeFrontendController, :latest
-    resources "/episodes", EpisodeFrontendController, only: [:show]
+    resources "/episodes", EpisodeFrontendController, only: [:show, :index]
     get "/episodes/player/:id", EpisodeFrontendController, :player
 
     resources "/podcasters", UserFrontendController, only: [:show, :index]

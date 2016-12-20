@@ -1,5 +1,10 @@
 <div class="panel panel-success">
-  <div class="panel-heading">Latest Episodes</div>
+  <div class="panel-heading">
+    Latest Episodes
+    <span class="pull-right">
+      <%= link "more ...", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
+    </span>
+  </div>
   <div id="latest_episodes">
     <ul class="list-unstyled">
       <%= for episode <- latest_episodes do %>
