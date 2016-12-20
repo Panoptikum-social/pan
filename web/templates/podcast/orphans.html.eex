@@ -1,0 +1,45 @@
+<h2>Listing <%= Enum.count(@podcasts) %> podcasts without categories</h2>
+<p class="text-right">
+  <%= link "Delta import all podcasts", to: podcast_path(@conn, :delta_import_all),
+                                        class: "btn btn-info" %>
+</p>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Website</th>
+      <th>updated_at</th>
+      <th>Last build date</th>
+      <th>Update Paused</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for podcast <- @podcasts do %>
+      <tr>
+        <td><%= podcast.id %></td>
+        <td><%= podcast.title %></td>
+        <td><%= if podcast.website do %><a href="<%= podcast.website %>"><%= C.String.truncate(podcast.website, 50)%> <% end %></a></td>
+        <td><%= podcast.updated_at %></td>
+        <td><%= podcast.last_build_date %></td>
+        <td><%= podcast.update_paused %></td>
+
+        <td class="text-right">
+          <%= link "Show", to: podcast_path(@conn, :show, podcast),
+                           class: "btn btn-default btn-xs" %>
+          <%= link "Edit", to: podcast_path(@conn, :edit, podcast),
+                           class: "btn btn-default btn-xs" %>
+          <%= link "Delete", to: podcast_path(@conn, :delete, podcast),
+                             method: :delete,
+                             data: [confirm: "Are you sure?"],
+                             class: "btn btn-danger btn-xs" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link "New podcast", to: podcast_path(@conn, :new) %>

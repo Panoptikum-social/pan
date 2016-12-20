@@ -6,6 +6,16 @@ defmodule Pan.PodcastController do
 
   plug :scrub_params, "podcast" when action in [:create, :update]
 
+  def orphans(conn, _params) do
+    podcast_ids = Repo.all(from a in "categories_podcasts", group_by: a.podcast_id,
+                                                            select: a.podcast_id)
+
+    podcasts = Repo.all(from p in Podcast, where: not p.id in ^podcast_ids)
+
+    render(conn, "orphans.html", podcasts: podcasts)
+  end
+
+
   def index(conn, _params) do
     podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
                |> Repo.preload([:feeds, :owner])
