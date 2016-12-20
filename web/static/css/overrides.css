@@ -58,7 +58,8 @@ h6, .h6 { font-size: 14px; }
 .navbar-default {
   padding: 15px;
   margin-left: -25px;
-  margin-right: -25px;
+  margin-right: -15px;
+  padding-right: 0px;
 }
 
 .navbar-inverse {
