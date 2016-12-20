@@ -34,7 +34,7 @@
           <li><%= link "Change Password", to: user_frontend_path(@conn, :edit_password)%>       </li>
           <li><%= link "My Messages", to: user_frontend_path(@conn, :my_messages)%></li>
           <li><%= link "My Podcasts", to: user_frontend_path(@conn, :my_podcasts)%></li>
-          <li><%= link "My Recommendations", to: recommendation_frontend_path(@conn, :index)%></li>
+          <li><%= link "My Recommendations", to: recommendation_frontend_path(@conn, :my_recommendations)%></li>
           <li><%= link "My OPMLs",    to: opml_frontend_path(@conn, :index)%>      </li>
         </ul>
       </li>

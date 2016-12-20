@@ -44,6 +44,7 @@ defmodule Pan.Router do
     get "/search", SearchFrontendController, :new
 
     get "/random", RecommendationFrontendController, :random
+    resources "/recommendations", RecommendationFrontendController, only: [:index]
   end
 
 
@@ -64,7 +65,9 @@ defmodule Pan.Router do
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/import/:id", OpmlFrontendController, :import
 
-    resources "/recommendations", RecommendationFrontendController, only: [:create, :index]
+
+   get "/my_recommendations", RecommendationFrontendController, :my_recommendations
+   resources "/recommendations", RecommendationFrontendController, only: [:create]
   end
 
 

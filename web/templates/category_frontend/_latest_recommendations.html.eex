@@ -1,48 +1,51 @@
 <div  class="panel panel-success">
-  <div class="panel-heading">Latest Recommendations</div>
+  <div class="panel-heading">
+    <%= link "Latest Recommendations", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
+    <span class="pull-right">
+      <%= link "more ...", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
+    </span>
+  </div>
   <div id="latest_recommendations">
     <ul class="list-unstyled">
       <%= for recommendation <- latest_recommendations do %>
         <li>
-          <%= if recommendation.podcast do %>
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.podcast.title, 50)],
-                     to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-          <% end %>
+          <p style="line-height: 200%;">
+            <%= if recommendation.podcast do %>
+              <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.podcast.title, 40)],
+                       to: podcast_frontend_path(@conn, :show, recommendation.podcast),
+                       class: "btn btn-default btn-xs",
+                       style: "color: #000" %>
+            <% end %>
 
-          <%= if recommendation.episode do %>
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.episode.podcast.title, 40)],
-                     to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %> &nbsp;
-            <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.episode.title, 40)],
-                      to: episode_frontend_path(@conn, :show, recommendation.episode),
-                      class: "btn btn-primary btn-xs" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-          <% end %>
+            <%= if recommendation.episode do %>
+              <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.episode.podcast.title, 40)],
+                       to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
+                       class: "btn btn-default btn-xs",
+                       style: "color: #000" %> &nbsp;
+              <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.episode.title, 40)],
+                        to: episode_frontend_path(@conn, :show, recommendation.episode),
+                        class: "btn btn-primary btn-xs" %>
+            <% end %>
 
-          <%= if recommendation.chapter_id do %>
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.chapter.episode.podcast.title, 40)],
-                     to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %> &nbsp;
-            <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.chapter.episode.title, 40)],
-                      to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
-                      class: "btn btn-primary btn-xs" %>
-            <hr style="margin-top: -10px; visibility:hidden;" />
-            <%= fa_icon("indent") %> <%= recommendation.chapter.title %><br/>
-          <% end %>
+            <%= if recommendation.chapter_id do %>
+              <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.chapter.episode.podcast.title, 40)],
+                       to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
+                       class: "btn btn-default btn-xs",
+                       style: "color: #000" %> &nbsp;
+              <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.chapter.episode.title, 40)],
+                        to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
+                        class: "btn btn-primary btn-xs" %><br/>
+              <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
+            <% end %>
+          </p>
 
-          <%= fa_icon("user") %> <%= recommendation.user.name %> &nbsp;
-          <span class="pull-right">
-            <%= fa_icon("calendar") %>
-            <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>
-          </span>
-          <br/>
-
-          <%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+          <p><%= fa_icon("user") %> <%= recommendation.user.name %>
+            <span class="pull-right">
+              <%= fa_icon("calendar") %>
+              <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>
+            </span>
+            <br/><%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+          </p>
         </li>
       <% end %>
     </ul>

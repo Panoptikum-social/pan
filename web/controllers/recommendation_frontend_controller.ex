@@ -15,7 +15,18 @@ defmodule Pan.RecommendationFrontendController do
   end
 
 
-  def index(conn,_params, user) do
+  def index(conn, params, _) do
+    recommendations = from(p in Recommendation, order_by: [desc: :inserted_at],
+                                                preload: [:user, :podcast, episode: :podcast,
+                                                          chapter: [episode: :podcast]])
+                      |> Ecto.Queryable.to_query
+                      |> Repo.paginate(params)
+
+    render(conn, "index.html", recommendations: recommendations)
+  end
+
+
+  def my_recommendations(conn,_params, user) do
     podcast_recommendations = Repo.all(from r in Recommendation, where: r.user_id == ^user.id and
                                                                         not is_nil(r.podcast_id) and
                                                                         is_nil(r.episode_id) and
@@ -33,9 +44,9 @@ defmodule Pan.RecommendationFrontendController do
 
     changeset = Recommendation.changeset(%Recommendation{})
 
-    render(conn, "index.html", podcast_recommendations: podcast_recommendations,
-                               unrecommended_podcasts: unrecommended_podcasts,
-                               changeset: changeset)
+    render(conn, "my_recommendations.html", podcast_recommendations: podcast_recommendations,
+                                            unrecommended_podcasts: unrecommended_podcasts,
+                                            changeset: changeset)
   end
 
 

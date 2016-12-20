@@ -1,56 +1,64 @@
-<div class="row">
-  <div class="col-md-5">
-    <div class="panel panel-default">
-      <div class="panel-heading">Your Podcast Recommendations</div>
-      <ul class="list-group">
-        <%= for recommendation <- @podcast_recommendations do %>
+<h1>Latest Recommendations</h1>
+
+<%= pagination_links @conn, @recommendations, path: &recommendation_frontend_path/3 %>
+
+<%= for {recommendation, counter} <- Enum.with_index(@recommendations) do %>
+  <%= if 0 == rem(counter, 3) do %>
+    <div class="row">
+  <% end %>
+
+    <div class="col-md-4">
+      <div class="panel <%= Pan.PodcastFrontendView.panel_cycle(counter)%>">
+        <div class="panel-heading">
+          <%= fa_icon("user") %> <%= recommendation.user.name %>
+          <span class="pull-right">
+            <%= fa_icon("calendar") %>
+            <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>
+          </span>
+        </div>
+
+        <ul class="list-group">
           <li class="list-group-item">
-            <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
-                to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                class: "btn btn-default btn-xs",
-                style: "color: #666;" %>
-            <span class="pull-right"><%= recommendation.inserted_at %></span>
-            <br/>
-            <%= recommendation.comment %>
+            <p style="line-height: 200%;">
+              <%= if recommendation.podcast do %>
+                <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.podcast.title, 40)],
+                         to: podcast_frontend_path(@conn, :show, recommendation.podcast),
+                         class: "btn btn-default btn-xs",
+                         style: "color: #000" %>
+              <% end %>
+
+              <%= if recommendation.episode do %>
+                <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.episode.podcast.title, 40)],
+                         to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
+                         class: "btn btn-default btn-xs",
+                         style: "color: #000" %> &nbsp;
+                <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.episode.title, 40)],
+                          to: episode_frontend_path(@conn, :show, recommendation.episode),
+                          class: "btn btn-primary btn-xs" %>
+              <% end %>
+
+              <%= if recommendation.chapter_id do %>
+                <%= link [fa_icon("podcast"), " ", C.String.truncate(recommendation.chapter.episode.podcast.title, 40)],
+                         to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
+                         class: "btn btn-default btn-xs",
+                         style: "color: #000" %> &nbsp;
+                <%= link [fa_icon("headphones"), " ", C.String.truncate(recommendation.chapter.episode.title, 40)],
+                          to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
+                          class: "btn btn-primary btn-xs" %><br/>
+                <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
+              <% end %>
+            </p>
+
+            <p><%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+            </p>
           </li>
-        <% end %>
-      </ul>
+        </ul>
+      </div>
     </div>
-  </div>
-  <div class="col-md-7">
-    <div class="panel panel-info">
-      <div class="panel-heading">Unrecommended Podcasts</div>
-      <ul class="list-group">
-        <%= for podcast <- @unrecommended_podcasts do %>
-          <li class="list-group-item">
-            <%= form_for @changeset,
-                         recommendation_frontend_path(@conn, :index), [style: "margin-top: 0px;
-                                                                               margin-bottom: 0px;"],
-                         fn f -> %>
 
-              <div class="row">
-                <div class="col-md-10">
-                  <%= label f, "Your recommendation", class: "control-label" %> for : &nbsp; <%= podcast.title %>
-                  <small class="text-muted pull-right" id='remaining<%= podcast.id %>'>255</small>
-                  <%= hidden_input f, :podcast_id, value: podcast.id  %>
-                  <%= text_input f, :comment, class: "form-control", maxlength: 255,
-                                              data: [chapter: podcast.id ] %>
-                </div>
-
-                <div class="col-md-2">
-                  <p><br/><%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %></p>
-                </div>
-              </div>
-            <% end %>
-
-            <script>
-              $('[data-chapter="<%= podcast.id %>"]').keyup(function(){
-                  $("#remaining<%= podcast.id %>").html((255 - this.value.length));
-              })
-            </script>
-          </li>
-        <% end %>
-      </ul>
+  <%= if 2 == rem(counter, 3) do %>
     </div>
-  </div>
-</div>
+  <% end %>
+<% end %>
+
+<%= pagination_links @conn, @recommendations, path: &recommendation_frontend_path/3 %>
