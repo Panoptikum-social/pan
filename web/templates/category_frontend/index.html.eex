@@ -5,14 +5,14 @@
 </em></p>
 
 <div class="row">
-  <div class="col-md-4" style="columns:         4 150px;
+  <div class="col-md-6" style="columns:         4 150px;
                                -moz-columns:    4 150px;
                                -webkit-columns: 4 150px;
                                line-height: 350%;">
     <%= Pan.CategoryFrontendView.render "_category_tree.html", categories: @categories, conn: @conn  %>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <%= Pan.CategoryFrontendView.render "_search.html", categories: @categories, conn: @conn  %>
     <br/>
     <%= Pan.CategoryFrontendView.render "_latest_recommendations.html", latest_recommendations: latest_recommendations, conn: @conn  %>
@@ -20,7 +20,7 @@
     <%= Pan.CategoryFrontendView.render "_latest_episodes.html", latest_episodes: latest_episodes, conn: @conn  %>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <%= Pan.CategoryFrontendView.render "_popular.html", popular_podcasts: @popular_podcasts, conn: @conn  %>
     </br>
     <%= Pan.CategoryFrontendView.render "_latest_podcasts.html", latest_podcasts: latest_podcasts, conn: @conn  %>

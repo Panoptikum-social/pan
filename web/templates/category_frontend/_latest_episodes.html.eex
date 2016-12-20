@@ -33,7 +33,7 @@
   $(function() {
     $('#latest_episodes').vTicker('init', {
     padding: 15,
-    pause: 5000,
-    speed: 1500});
+    pause: 6000,
+    speed: 2000});
   });
 </script>
