@@ -72,3 +72,5 @@ h6, .h6 { font-size: 14px; }
 .dropdown-menu{
   background-color: #333;
 }
+
+li.list-group-item.node-category_tree { padding: 5px; }

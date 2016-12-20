@@ -13,4 +13,14 @@ defmodule Pan.CategoryView do
     |> Poison.encode!
     |> raw
   end
+
+
+  def podcast_list(podcasts) do
+    Enum.map(podcasts, fn(podcast) ->
+      %{ title:  escape_javascript(podcast.title || " "),
+         author: escape_javascript(podcast.author || " ")}
+    end)
+    |> Poison.encode!
+    |> raw
+  end
 end

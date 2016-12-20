@@ -1,5 +1,8 @@
 <h2>Listing categories</h2>
 
+<%= link "Merge Categories", to: category_path(@conn, :merge) %> -
+<%= link "Assign Podcasts to Categories", to: category_path(@conn, :assign_podcasts) %>
+
 <%= render "_categories.html", categories: @categories,
                                no_children: @no_children,
                                conn: @conn  %>

@@ -1,6 +1,7 @@
 defmodule Pan.CategoryController do
   use Pan.Web, :controller
   alias Pan.Category
+  alias Pan.Podcast
   alias Pan.Follow
   alias Pan.Like
   alias Pan.Repo
@@ -86,6 +87,17 @@ defmodule Pan.CategoryController do
 
     render(conn, "merge.html", categories: categories)
   end
+
+
+  def assign_podcasts(conn, _params) do
+    categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
+                                                     order_by: :title,
+                                                     preload: [children: :children])
+    podcasts = Repo.all(Podcast, order_by: :title)
+
+    render(conn, "assign_podcasts.html", categories: categories, podcasts: podcasts)
+  end
+
 
 
   def execute_merge(conn, %{"from" => from, "to" => to}) do
