@@ -5,10 +5,10 @@
                         [as: :search, style: "margin: 5px;"],
                         fn f -> %>
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-9">
           <%= text_input f, :searchstring, class: "form-control" %>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-3">
           <%= submit "Submit", class: "btn btn-primary btn-sm" %>
         </div>
       <% end %>
