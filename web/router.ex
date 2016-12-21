@@ -102,7 +102,7 @@ defmodule Pan.Router do
     resources "/alternate_feeds", AlternateFeedController
 
     get "/categories/assign_podcasts", CategoryController, :assign_podcasts
-    get "/categories/execute_assign", CategoryController, :execute_assign
+    post "/categories/execute_assign", CategoryController, :execute_assign
     get "/categories/merge", CategoryController, :merge
     get "/categories/execute_merge", CategoryController, :execute_merge
     resources "/categories", CategoryController

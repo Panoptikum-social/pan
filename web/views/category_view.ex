@@ -24,6 +24,7 @@ defmodule Pan.CategoryView do
 
   def podcast_json(podcast) do
     %{ title:  escape_javascript(podcast.title || " "),
-       author: escape_javascript(podcast.author || " ")}
+       author: escape_javascript(podcast.author || " "),
+       id: podcast.id }
   end
 end
