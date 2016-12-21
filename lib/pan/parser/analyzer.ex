@@ -15,7 +15,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:author,            _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
-  def call(_, "tag", [:"itunes:summary",  _, [value]]), do: %{summary: value}
+  def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
@@ -181,6 +181,7 @@ defmodule Pan.Parser.Analyzer do
 # Episodes
   def call(map, "tag", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
+  def call(_, "episode", [:title,             _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
   def call(_, "episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
