@@ -1,42 +1,77 @@
 <h2>Assigning podcasts to categories</h2>
 
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-3">
     <div id="category_tree" class="tree"></div>
-
-    <script>
-      //bootstrap-treeview:  https://github.com/jonmiles/bootstrap-treeview
-      var treedata = <%= category_tree(@categories) %>
-      $('#category_tree').treeview({data: treedata});
-
-     function merge_selected(){
-      var from_id = $("#tree1").treeview('getSelected')[0].categoryId
-      window.location = "<%= category_url(@conn, :execute_assign) %>?from=" + from_id
-     }
-    </script>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-8">
 
-    <table id="podcasttable" class="table table-striped table-bordered dataTable" cellspacing="0" width="100%">
+    <table id="assigned_podcasts"
+           class="table table-striped table-condensed table-bordered dataTable"
+           cellspacing="0"
+           width="100%">
     </table>
-    <script>
-      $(document).ready(function() {
-        $('#podcasttable').DataTable({
-          data: <%= podcast_list(@podcasts) %>,
-          columns: [
-            { data: 'title', title: "Title" },
-            { data: 'author', title: "Author" }
-          ],
-          select: true
-        });
-      });
-    </script>
+
+    <hr/>
+
+    <table id="unassigned_podcasts"
+           class="table table-striped table-condensed table-bordered table-dataTable"
+           cellspacing="0"
+           width="100%">
+    </table>
 
     <a class="btn btn-primary" onclick="merge_selected()">
       <%= fa_icon "podcast" %>
       <%= fa_icon "arrow-right " %>
       <%= fa_icon "folder-open-o" %>
-      Assign Podcasts
+      <%= fa_icon "arrow-right " %>
+      <%= fa_icon "podcast" %> &nbsp;
+      Update Assignments
     </a>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    //bootstrap-treeview:  https://github.com/jonmiles/bootstrap-treeview
+    var treedata = <%= category_tree(@categories) %>
+
+    $('#category_tree').treeview({
+      data: treedata,
+      onNodeSelected: function(event, data) {
+        categoryID = $('#category_tree').treeview('getSelected')[0].categoryId
+        $.ajax({
+          url: "/api/categories/" + categoryID + "/get_podcasts",
+          success: function (data) {
+            $('#assigned_podcasts').dataTable().fnClearTable();
+            if (data["podcasts_assigned"].length > 0) {
+              $('#assigned_podcasts').dataTable().fnAddData(data["podcasts_assigned"]);
+            }
+            $('#unassigned_podcasts').dataTable().fnClearTable();
+            $('#unassigned_podcasts').dataTable().fnAddData(data["podcasts_unassigned"]);
+          }
+        });
+      }
+    });
+
+    $('#assigned_podcasts').DataTable({
+      data: [{ title: "select category on the left",
+               author: "to load podcasts assigned" }],
+      columns: [
+        { data: 'title', title: "Title of podcasts assigned" },
+        { data: 'author', title: "Author" }
+      ],
+      select: true
+    });
+
+    $('#unassigned_podcasts').DataTable({
+      data: [{ title: "select category on the left",
+               author: "to load the other podcasts" }],
+      columns: [
+        { data: 'title', title: "Title of unassigned podcasts" },
+        { data: 'author', title: "Author" }
+      ],
+      select: true
+    });
+  });
+</script>

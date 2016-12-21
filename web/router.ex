@@ -17,6 +17,13 @@ defmodule Pan.Router do
   end
 
 
+  scope "/api", Pan do
+    pipe_through :api
+
+    get "/categories/:id/get_podcasts", CategoryController, :get_podcasts
+  end
+
+
   scope "/", Pan do
     pipe_through :browser # Use the default browser stack
 

@@ -125,4 +125,17 @@ defmodule Pan.CategoryController do
 
     render(conn, "merge.html", categories: categories)
   end
+
+
+  def get_podcasts(conn, %{"id" => id}) do
+    category = Repo.get!(Category, id)
+               |> Repo.preload(:podcasts)
+
+    podcast_ids = Enum.map(category.podcasts, fn(podcast) -> podcast.id end)
+
+    podcasts_unassigned = Repo.all(from p in Podcast, where: not p.id in ^podcast_ids)
+
+    render conn, "get_podcasts.json", podcasts_assigned: category.podcasts,
+                                      podcasts_unassigned: podcasts_unassigned
+  end
 end

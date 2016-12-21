@@ -15,12 +15,15 @@ defmodule Pan.CategoryView do
   end
 
 
-  def podcast_list(podcasts) do
-    Enum.map(podcasts, fn(podcast) ->
-      %{ title:  escape_javascript(podcast.title || " "),
-         author: escape_javascript(podcast.author || " ")}
-    end)
-    |> Poison.encode!
-    |> raw
+  def render("get_podcasts.json", %{ podcasts_assigned: podcasts_assigned,
+                                     podcasts_unassigned: podcasts_unassigned }) do
+    %{ podcasts_assigned: Enum.map(podcasts_assigned, &podcast_json/1),
+       podcasts_unassigned: Enum.map(podcasts_unassigned, &podcast_json/1 ) }
+  end
+
+
+  def podcast_json(podcast) do
+    %{ title:  escape_javascript(podcast.title || " "),
+       author: escape_javascript(podcast.author || " ")}
   end
 end
