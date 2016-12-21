@@ -2,7 +2,11 @@
 
 <%= render "_category.html", category: @category, conn: @conn %>
 <hr/>
-<%= render Pan.PodcastView, "index.html", podcasts: @category.podcasts, conn: @conn %>
+<%= render Pan.PodcastView, "index.html",
+                            podcasts: @category.podcasts,
+                            paused: "unknown",
+                            stale: "unknown",
+                            conn: @conn %>
 <hr/>
 
 <%= if @category.parent do %>

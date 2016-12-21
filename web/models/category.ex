@@ -17,7 +17,7 @@ defmodule Pan.Category do
   end
 
   @required_fields ~w(title)
-  @optional_fields ~w()
+  @optional_fields ~w(parent_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
