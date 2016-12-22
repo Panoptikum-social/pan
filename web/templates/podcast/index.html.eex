@@ -2,7 +2,8 @@
 <span class="pull-right">
   <%= link "Delta import all podcasts", to: podcast_path(@conn, :delta_import_all),
                                         class: "btn btn-info" %>
-  <%= link "Factory", to: podcast_path(@conn, :factory), class: "btn btn-warning" %>
+  <%= link [fa_icon("link"), " Factory"], to: podcast_path(@conn, :factory) %> -
+  <%= link [fa_icon("link"), " Orphans"], to: podcast_path(@conn, :orphans) %>
 </span>
 
 <%= pagination_links @podcasts %>

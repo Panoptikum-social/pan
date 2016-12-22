@@ -148,7 +148,7 @@ defmodule Pan.UserFrontendController do
     changeset = User.self_change_changeset(user, user_params)
 
     case Repo.update(changeset) do
-      {:ok, user} ->
+      {:ok, _user} ->
          conn
          |> put_flash(:info, "Account updated successfully.")
          |> redirect(to: user_frontend_path(conn, :my_profile))
@@ -163,7 +163,7 @@ defmodule Pan.UserFrontendController do
     changeset = User.password_update_changeset(user, user_params)
 
     case Repo.update(changeset) do
-      {:ok, user} ->
+      {:ok, _user} ->
          conn
          |> put_flash(:info, "Password updated successfully.")
          |> redirect(to: user_frontend_path(conn, :my_profile))
