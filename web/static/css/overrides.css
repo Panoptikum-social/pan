@@ -75,4 +75,5 @@ h6, .h6 { font-size: 14px; }
 
 li.list-group-item.node-category_tree { padding: 5px; }
 
-a {color: #00c997;}
+a {color: #00c997; }
+a:hover { text-decoration: underline; }
