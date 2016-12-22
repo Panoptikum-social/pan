@@ -45,45 +45,54 @@ defmodule Pan.UserFrontendController do
            |> Repo.preload(podcasts_i_subscribed: from(p in Podcast, order_by: p.title))
            |> Repo.preload(podcasts_i_follow: from(p in Podcast, order_by: p.title))
 
-    podcast_ids = Repo.all(from l in Like, where: l.enjoyer_id == ^user.id and
-                                                  is_nil(l.chapter_id) and
-                                                  is_nil(l.episode_id) and
-                                                  not is_nil(l.podcast_id),
-                                           select: l.podcast_id)
-    podcasts_i_like = Repo.all(from p in Podcast, where: p.id in ^podcast_ids,
-                                                  order_by: :title)
+    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
+                                         is_nil(l.chapter_id) and
+                                         is_nil(l.episode_id) and
+                                         not is_nil(l.podcast_id),
+                                  select: l.podcast_id)
+                  |> Repo.all()
 
-    podcasts_subscribed_ids = Repo.all(from s in Subscription, where: s.user_id == ^user.id,
-                                                               select: s.podcast_id)
-    other_subscriber_ids = Repo.all(from s in Subscription, where: s.podcast_id in ^podcasts_subscribed_ids,
-                                                            select: s.user_id)
+    podcasts_i_like = from(p in Podcast, where: p.id in ^podcast_ids,
+                                         order_by: :title)
+                      |> Repo.all()
+
+    podcasts_subscribed_ids = from(s in Subscription, where: s.user_id == ^user.id,
+                                                      select: s.podcast_id)
+                              |> Repo.all()
+
+    other_subscriber_ids = from(s in Subscription, where: s.podcast_id in ^podcasts_subscribed_ids,
+                                                   select: s.user_id)
+                           |> Repo.all()
                            |> Enum.uniq
                            |> List.delete(user.id)
 
-    recommendations = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
-                                                       where: s.user_id in ^other_subscriber_ids and
-                                                              not s.podcast_id in ^podcasts_subscribed_ids,
-                                                       group_by: p.id,
-                                                       select: [count(s.podcast_id), p.id, p.title],
-                                                       order_by: [desc: count(s.podcast_id)],
-                                                       limit: 10)
+    recommendations = from(s in Subscription, join: p in assoc(s, :podcast),
+                                              where: s.user_id in ^other_subscriber_ids and
+                                                     not s.podcast_id in ^podcasts_subscribed_ids,
+                                              group_by: p.id,
+                                              select: [count(s.podcast_id), p.id, p.title],
+                                              order_by: [desc: count(s.podcast_id)],
+                                              limit: 10)
+                      |> Repo.all()
 
-    users_also_liking = Repo.all(from l in Like, where: l.podcast_id in ^podcast_ids and
-                                                       is_nil(l.chapter_id) and
-                                                       is_nil(l.episode_id),
-                                                select: l.enjoyer_id)
+    users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_ids and
+                                               is_nil(l.chapter_id) and
+                                               is_nil(l.episode_id),
+                                        select: l.enjoyer_id)
+                        |> Repo.all()
                         |> Enum.uniq
                         |> List.delete(user.id)
 
-    also_liked = Repo.all(from l in Like, join: p in assoc(l, :podcast),
-                                          where: l.enjoyer_id in ^users_also_liking and
-                                                 is_nil(l.chapter_id) and
-                                                 is_nil(l.episode_id) and
-                                                 not l.podcast_id in ^podcast_ids,
-                                          group_by: p.id,
-                                          select: [count(l.podcast_id), p.id, p.title],
-                                          order_by: [desc: count(l.podcast_id)],
-                                          limit: 10)
+    also_liked = from(l in Like, join: p in assoc(l, :podcast),
+                                 where: l.enjoyer_id in ^users_also_liking and
+                                        is_nil(l.chapter_id) and
+                                        is_nil(l.episode_id) and
+                                        not l.podcast_id in ^podcast_ids,
+                                 group_by: p.id,
+                                 select: [count(l.podcast_id), p.id, p.title],
+                                 order_by: [desc: count(l.podcast_id)],
+                                 limit: 10)
+                 |> Repo.all()
 
     render(conn, "my_podcasts.html", user: user,
                                      podcasts_i_like: podcasts_i_like,
