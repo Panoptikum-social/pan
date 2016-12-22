@@ -23,21 +23,23 @@ defmodule Pan.Parser.Episode do
       plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
                           |> Map.put_new(:guid, fallback_url)
 
-      {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
+      if episode_map[:guid] do
+        {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
 
-      if episode_map[:chapters] do
-        for {_, chapter_map} <- episode_map[:chapters] do
-          Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+        if episode_map[:chapters] do
+          for {_, chapter_map} <- episode_map[:chapters] do
+            Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+          end
         end
-      end
 
-      if episode_map[:enclosures] do
-        for {_, enclosure_map} <- episode_map[:enclosures] do
-          Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+        if episode_map[:enclosures] do
+          for {_, enclosure_map} <- episode_map[:enclosures] do
+            Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+          end
         end
-      end
 
-      Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)
+        Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)
+      end
     end
   end
 
