@@ -7,10 +7,12 @@ defmodule Pan.PodcastController do
   plug :scrub_params, "podcast" when action in [:create, :update]
 
   def orphans(conn, _params) do
-    podcast_ids = Repo.all(from a in "categories_podcasts", group_by: a.podcast_id,
-                                                            select: a.podcast_id)
+    podcast_ids = from(a in "categories_podcasts", group_by: a.podcast_id,
+                                                   select: a.podcast_id)
+                  |> Repo.all
 
-    podcasts = Repo.all(from p in Podcast, where: not p.id in ^podcast_ids)
+    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
+               |> Repo.all
 
     render(conn, "orphans.html", podcasts: podcasts)
   end
@@ -34,9 +36,11 @@ defmodule Pan.PodcastController do
 
 
   def factory(conn, _params) do
-    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at],
-                                           where: p.update_paused == true)
+    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
+                                  where: p.update_paused == true)
+               |> Repo.all()
                |> Repo.preload([:feeds, :owner])
+
     render(conn, "factory.html", podcasts: podcasts)
   end
 
@@ -139,9 +143,10 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    podcasts = Repo.all(from p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                                  (is_nil(p.update_paused) or p.update_paused == false),
-                                           order_by: [asc: :updated_at])
+    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                         (is_nil(p.update_paused) or p.update_paused == false),
+                                  order_by: [asc: :updated_at])
+               |> Repo.all()
 
     for podcast <- podcasts do
       notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
@@ -155,7 +160,9 @@ defmodule Pan.PodcastController do
             type: "danger",
             user_name: current_user.name}
       end
-      Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id), "notification", notification
+
+      Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
+                             "notification", notification
     end
 
     conn
