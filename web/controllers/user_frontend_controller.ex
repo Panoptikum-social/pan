@@ -25,16 +25,13 @@ defmodule Pan.UserFrontendController do
     subscribed_category_ids = User.subscribed_category_ids(user_id)
     subscribed_podcast_ids = User.subscribed_podcast_ids(user_id)
 
-    query = from m in Message,
-            where: (m.topic == "mailboxes" and m.subtopic == ^user_id) or
-                   (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
-                   (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
-                   (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
-            order_by: [desc: :inserted_at],
-            preload: [:creator]
-
-    messages = query
-               |> Ecto.Queryable.to_query
+    messages = from(m in Message,
+               where: (m.topic == "mailboxes" and m.subtopic == ^user_id) or
+                      (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
+                      (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
+                      (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
+               order_by: [desc: :inserted_at],
+               preload: [:creator])
                |> Repo.paginate(params)
 
     render conn, "my_messages.html", user: user,
@@ -115,13 +112,9 @@ defmodule Pan.UserFrontendController do
                                                      order_by: [desc: :inserted_at])
                             |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
 
-    query = from m in Message,
-            where: m.creator_id == ^id,
-            order_by: [desc: :inserted_at],
-            preload: [:creator]
-
-    messages = query
-               |> Ecto.Queryable.to_query
+    messages = from(m in Message, where: m.creator_id == ^id,
+                                  order_by: [desc: :inserted_at],
+                                  preload: [:creator])
                |> Repo.paginate(params)
 
     render conn, "show.html", user: user,

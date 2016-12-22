@@ -5,11 +5,8 @@ defmodule Pan.PodcastFrontendController do
   alias Pan.Recommendation
 
   def index(conn, params) do
-    query = from p in Podcast, order_by: [desc: :inserted_at],
-                               preload: [:categories]
-
-    podcasts = query
-               |> Ecto.Queryable.to_query
+    podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
+                                  preload: [:categories])
                |> Repo.paginate(params)
 
     render(conn, "index.html", podcasts: podcasts)

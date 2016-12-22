@@ -4,22 +4,20 @@ defmodule Pan.RecommendationController do
   alias Pan.Recommendation
 
   def index(conn, params) do
-    query = from r in Recommendation,
-            order_by: [desc: :inserted_at],
-            preload: [:podcast, [episode: :podcast], [chapter: [episode: :podcast]], :user]
-
-    recommendations = query
-                      |> Ecto.Queryable.to_query
+    recommendations = from(r in Recommendation, order_by: [desc: :inserted_at],
+                                                preload: [:podcast, [episode: :podcast],
+                                                          [chapter: [episode: :podcast]], :user])
                       |> Repo.paginate(params)
-
 
     render(conn, "index.html", recommendations: recommendations)
   end
+
 
   def new(conn, _params) do
     changeset = Recommendation.changeset(%Recommendation{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"recommendation" => recommendation_params}) do
     changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
@@ -34,16 +32,19 @@ defmodule Pan.RecommendationController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     recommendation = Repo.get!(Recommendation, id)
     render(conn, "show.html", recommendation: recommendation)
   end
+
 
   def edit(conn, %{"id" => id}) do
     recommendation = Repo.get!(Recommendation, id)
     changeset = Recommendation.changeset(recommendation)
     render(conn, "edit.html", recommendation: recommendation, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "recommendation" => recommendation_params}) do
     recommendation = Repo.get!(Recommendation, id)
@@ -58,6 +59,7 @@ defmodule Pan.RecommendationController do
         render(conn, "edit.html", recommendation: recommendation, changeset: changeset)
     end
   end
+
 
   def delete(conn, %{"id" => id}) do
     recommendation = Repo.get!(Recommendation, id)

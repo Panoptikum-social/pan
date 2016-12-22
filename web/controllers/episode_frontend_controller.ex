@@ -19,8 +19,8 @@ defmodule Pan.EpisodeFrontendController do
 
   def player(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-    episode = Repo.preload(episode, [:podcast, :enclosures, :contributors])
-    episode = Repo.preload(episode, chapters: from(chapter in Chapter, order_by: chapter.start))
+              |> Repo.preload([:podcast, :enclosures, :contributors])
+              |> Repo.preload(chapters: from(chapter in Chapter, order_by: chapter.start))
 
     # options for player: "podlove", "podigee"
     conn
@@ -30,11 +30,8 @@ defmodule Pan.EpisodeFrontendController do
 
 
   def index(conn, params) do
-    query = from(e in Episode, order_by: [desc: :publishing_date],
+    episodes = from(e in Episode, order_by: [desc: :publishing_date],
                                preload: [:podcast])
-
-    episodes = query
-               |> Ecto.Queryable.to_query
                |> Repo.paginate(params)
 
     render(conn, "index.html", episodes: episodes)

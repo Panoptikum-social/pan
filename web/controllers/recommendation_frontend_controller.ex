@@ -19,7 +19,6 @@ defmodule Pan.RecommendationFrontendController do
     recommendations = from(p in Recommendation, order_by: [desc: :inserted_at],
                                                 preload: [:user, :podcast, episode: :podcast,
                                                           chapter: [episode: :podcast]])
-                      |> Ecto.Queryable.to_query
                       |> Repo.paginate(params)
 
     render(conn, "index.html", recommendations: recommendations)
