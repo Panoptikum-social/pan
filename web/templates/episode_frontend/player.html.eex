@@ -23,6 +23,8 @@
       window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
     </script>
     <script class="podigee-podcast-player"
-            src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js"
+            src="https://podigee.github.io/podigee-podcast-player/build/javascripts/podigee-podcast-player.js"
             data-configuration="playerConfiguration"></script>
 <% end %>
+
+<%#= src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js" %>
