@@ -16,16 +16,18 @@ defmodule Pan.PodcastController do
   end
 
 
-  def index(conn, _params) do
-    podcasts = Repo.all(from p in Podcast, order_by: [asc: :updated_at])
-               |> Repo.preload([:feeds, :owner])
+  def index(conn, params) do
+    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
+                                  preload: [:feeds, :owner])
+               |> Repo.paginate(params)
 
-    query = from p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
-                                      (is_nil(p.update_paused) or p.update_paused == false)
-    stale = Repo.aggregate(query, :count, :id)
 
-    query = from p in Podcast, where: p.update_paused == true
-    paused = Repo.aggregate(query, :count, :id)
+    stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
+                                      (is_nil(p.update_paused) or p.update_paused == false))
+            |> Repo.aggregate(:count, :id)
+
+    paused = from(p in Podcast, where: p.update_paused == true)
+             |> Repo.aggregate(:count, :id)
 
     render(conn, "index.html", podcasts: podcasts, stale: stale, paused: paused)
   end

@@ -1,9 +1,11 @@
 <h2>Listing <%= Enum.count(@podcasts) %> podcasts (<%= @stale %> stale, <%= @paused %> paused)</h2>
-<p class="text-right">
+<span class="pull-right">
   <%= link "Delta import all podcasts", to: podcast_path(@conn, :delta_import_all),
                                         class: "btn btn-info" %>
   <%= link "Factory", to: podcast_path(@conn, :factory), class: "btn btn-warning" %>
-</p>
+</span>
+
+<%= pagination_links @podcasts %>
 
 <table class="table">
   <thead>
@@ -44,5 +46,7 @@
     <% end %>
   </tbody>
 </table>
+
+<%= pagination_links @podcasts %>
 
 <%= link "New podcast", to: podcast_path(@conn, :new) %>
