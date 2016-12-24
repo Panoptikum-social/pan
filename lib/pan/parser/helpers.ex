@@ -116,5 +116,6 @@ defmodule Pan.Parser.Helpers do
 
   def remove_extra_angle_brackets(xml) do
     Regex.replace(~r/>>/Us, xml, ">")
+    Regex.replace(~r//Us, xml, "")
   end
 end

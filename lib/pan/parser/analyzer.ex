@@ -112,7 +112,7 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
-    :"podcastRF:originStation", :"itunes:explicit"
+    :"podcastRF:originStation", :"itunes:explicit", :meta
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
