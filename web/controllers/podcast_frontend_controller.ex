@@ -31,7 +31,6 @@ defmodule Pan.PodcastFrontendController do
     podcast = Repo.preload(podcast, :feeds)
 
     conn
-    |> put_layout(false)
     |> render("_subscribe_button.html", podcast: podcast)
   end
 
