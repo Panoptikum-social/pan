@@ -66,6 +66,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Mo,",  "Mon,")
     |> String.replace("mån,", "Mon,")
     |> String.replace("Di,",  "Tue,")
+    |> String.replace("tor,",  "Tue,")
     |> String.replace("Mi,",  "Wed,")
     |> String.replace("Do,",  "Thu,")
     |> String.replace("Fr,",  "Fri,")

@@ -19,12 +19,25 @@
     </script>
 
   <%= "podigee" -> %>
+    <script type="text/javascript" src="//cdn.embed.ly/player-0.0.12.min.js"></script>
     <script>
       window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
     </script>
-    <script class="podigee-podcast-player"
-            src="https://podigee.github.io/podigee-podcast-player/build/javascripts/podigee-podcast-player.js"
+    <script id="player" class="podigee-podcast-player"
+            src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js"
             data-configuration="playerConfiguration"></script>
+
+    <script>
+    // demo function, outputs the current time of the player
+      function time() {
+        iframe = document.querySelectorAll(".podigee-podcast-player")[0]
+        player = new playerjs.Player(iframe);
+        player.on('ready', function(){
+          player.getCurrentTime(function(value) {alert(value) })
+        })
+      }
+    </script>        
 <% end %>
 
 <%#= src="https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js" %>
+<%#= src="https://podigee.github.io/podigee-podcast-player/build/javascripts/podigee-podcast-player.js" %>

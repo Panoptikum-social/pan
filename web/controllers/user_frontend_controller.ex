@@ -132,6 +132,32 @@ defmodule Pan.UserFrontendController do
    end
 
 
+  def persona(conn, params, _user) do
+    pid = Regex.run(~r/\[(.*)\]/, params["pid"], capture: :all_but_first)
+          |> List.first
+
+    user = Repo.one(from u in Pan.User, where: u.username == ^pid and u.podcaster == true)
+           |> Repo.preload([:podcasts_i_own,
+                            :users_i_like,
+                            :categories_i_like,
+                            :podcasts_i_subscribed])
+
+    podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^user.id
+                                                            and not is_nil(l.podcast_id),
+                                                     order_by: [desc: :inserted_at])
+                            |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+
+    messages = from(m in Message, where: m.creator_id == ^user.id,
+                                  order_by: [desc: :inserted_at],
+                                  preload: [:creator])
+               |> Repo.paginate(params)
+
+    render conn, "show.html", user: user,
+                              podcast_related_likes: podcast_related_likes,
+                              messages: messages
+   end
+
+
   def edit(conn, _params, user) do
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
