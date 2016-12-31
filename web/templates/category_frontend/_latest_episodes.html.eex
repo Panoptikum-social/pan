@@ -18,7 +18,7 @@
                       class: "btn btn-default btn-xs",
                       style: "color: #000;" %>
           <hr style="margin-top: -10px; visibility:hidden;" />
-          <%= if episode.publishing_date %>
+          <%= if episode.publishing_date do %>
             <%= fa_icon("calendar") %> <%= Ecto.DateTime.to_date(episode.publishing_date) %><br/>
           <% end %>
           <%= if episode.duration do %>
