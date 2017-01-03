@@ -1,4 +1,4 @@
-<div class="panel panel-success">
+<div class="panel panel-warning">
   <div class="panel-heading">
     <%= link "Latest Episodes", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">

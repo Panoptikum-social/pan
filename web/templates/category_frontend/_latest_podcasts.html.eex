@@ -1,8 +1,8 @@
-<div class="panel panel-info">
+<div class="panel panel-default">
   <div class="panel-heading">
-    <%= link "Latest Podcasts", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
+    <%= link "Latest Podcasts", to: podcast_frontend_path(@conn, :index), style: "color: #555" %>
     <span class="pull-right">
-      <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
+      <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #555" %>
     </span>
   </div>
   <div id="latest_podcasts">
