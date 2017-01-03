@@ -112,7 +112,7 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
-    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:date"
+    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -129,7 +129,7 @@ defmodule Pan.Parser.Analyzer do
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp,
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
-    :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier"
+    :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier", :"georss:featurename"
   ], do: %{}
 
 
