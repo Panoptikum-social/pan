@@ -8,13 +8,22 @@ defmodule Pan.PodcastController do
 
   def orphans(conn, _params) do
     podcast_ids = from(a in "categories_podcasts", group_by: a.podcast_id,
-                                                   select: a.podcast_id)
+                                                   select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
-               |> Repo.all
+    unassigned_podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
+                          |> Repo.all
 
-    render(conn, "orphans.html", podcasts: podcasts)
+    podcast_ids = from(e in Episode, group_by: e.podcast_id,
+                                     select:   e.podcast_id)
+                  |> Repo.all
+
+    podcasts_without_episodes = from(p in Podcast, where: not p.id in ^podcast_ids)
+                                |> Repo.all
+
+
+    render(conn, "orphans.html", unassigned_podcasts: unassigned_podcasts,
+                                 podcasts_without_episodes: podcasts_without_episodes)
   end
 
 
