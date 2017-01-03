@@ -1,16 +1,41 @@
-<h2>Listing <%= Enum.count(@podcasts) %> podcasts (<%= @stale %> stale, <%= @paused %> paused)</h2>
 <span class="pull-right">
   <%= link "Delta import all podcasts", to: podcast_path(@conn, :delta_import_all),
                                         class: "btn btn-info" %>
   <%= link [fa_icon("link"), " Factory"], to: podcast_path(@conn, :factory) %> -
   <%= link [fa_icon("link"), " Orphans"], to: podcast_path(@conn, :orphans) %>
 </span>
+<h2>Podcasts (<%= @stale %> stale, <%= @paused %> paused)</h2>
 
-<%= pagination_links @podcasts %>
+<table id="podcasts"
+       class="table table-striped table-condensed table-bordered dataTable"
+       cellspacing="0"
+       width="100%">
+</table>
 
-<%= render "_podcast_table.html", podcasts: @podcasts,
-                                  conn: @conn %>
-
-<%= pagination_links @podcasts %>
-
-<%= link "New podcast", to: podcast_path(@conn, :new) %>
+<script>
+  $(document).ready(function() {
+    //bootstrap-treeview:  https://github.com/jonmiles/bootstrap-treeview
+    $('#podcasts').DataTable({
+      serverSide: false,
+      data: <%= podcasts_json(@podcasts) %>,
+      columns: [
+        { data: 'id',            title: "ID"},
+        { data: 'title',         title: "Title" },
+        { data: 'author',        title: "Author" },
+        { data: 'update_paused', title: "Update paused"},
+        { data: 'website',       title: "Website"},
+        { data: 'id',            title: "Links",
+          "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).html("<a href=<%= podcast_path(@conn, :index) %>/" + oData.id + ">Show</a>");
+          }
+        },
+        { data: 'feed',          title: "Feed",
+          "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+            $(nTd).html("<a href=<%= feed_path(@conn, :index) %>/" + oData.feed + "/edit>Edit</a>");
+          }
+        }
+      ],
+      select: true
+    })
+  })
+</script>

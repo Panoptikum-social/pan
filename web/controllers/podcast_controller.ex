@@ -30,7 +30,7 @@ defmodule Pan.PodcastController do
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   preload: [:feeds, :owner])
-               |> Repo.paginate(params)
+               |> Repo.all
 
 
     stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
