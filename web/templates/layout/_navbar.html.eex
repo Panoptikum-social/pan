@@ -11,12 +11,12 @@
     <span class="icon-bar"></span>
   </button>
   <a href="/" class="navbar-brand"><img src="/images/panoptikum.io.png" width="40" style="margin-top: -10px;"></a>
-  <a class="navbar-brand" href="https://panoptikum.io">Panoptikum.io</a>
+  <a class="navbar-brand" href="/">Panoptikum.io</a>
 </div>
 
 <div id="navbar" class="navbar-collapse collapse">
   <ul class="nav navbar-nav">
-    <li><%= link "Categories", to: category_frontend_path(@conn, :index) %></li>
+    <li><%= link "Home", to: category_frontend_path(@conn, :index) %></li>
     <li><%= link "Podcasters", to: user_frontend_path(@conn, :index) %></li>
     <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(@conn, :random) %></li>
   </ul>
