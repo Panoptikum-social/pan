@@ -22,6 +22,7 @@ defmodule Pan.SearchFrontendController do
                                          ilike(e.summary,     ^sqlfrag) or
                                          ilike(e.author,      ^sqlfrag) or
                                          ilike(e.shownotes,   ^sqlfrag))
+               |> Repo.preload(:podcast)
                |> Repo.paginate(page: page, page_size: 10)
 
     render(conn, "new.html", searchstring: params["search"]["searchstring"],
