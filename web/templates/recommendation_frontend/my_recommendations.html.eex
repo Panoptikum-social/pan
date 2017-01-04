@@ -24,7 +24,7 @@
         <%= for podcast <- @unrecommended_podcasts do %>
           <li class="list-group-item">
             <%= form_for @changeset,
-                         recommendation_frontend_path(@conn, :index), [style: "margin-top: 0px;
+                         recommendation_frontend_path(@conn, :create), [style: "margin-top: 0px;
                                                                                margin-bottom: 0px;"],
                          fn f -> %>
 
