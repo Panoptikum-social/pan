@@ -17,6 +17,7 @@ defmodule Pan.Podcast do
     field :payment_link_url, :string
     field :author, :string
     field :explicit, :boolean, default: false
+    field :blocked, :boolean, default: false
     field :update_paused, :boolean, default: false
     field :unique_identifier, Ecto.UUID
     timestamps
