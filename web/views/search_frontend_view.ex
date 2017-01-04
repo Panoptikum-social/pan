@@ -3,22 +3,32 @@ defmodule Pan.SearchFrontendView do
   import Scrivener.HTML
 
   def podcast_hits(podcast, searchstring) do
-    hit([Title: podcast.title,
-         Author: podcast.author,
-         Description: podcast.description,
-         Summary: podcast.summary], searchstring, "")
-    |> raw
+    if podcast.blocked == true do
+      "This podcast may not be published here."
+      |> raw
+    else
+      hit([Title: podcast.title,
+           Author: podcast.author,
+           Description: podcast.description,
+           Summary: podcast.summary], searchstring, "")
+      |> raw
+    end
   end
 
 
   def episode_hits(episode, searchstring) do
-    hit([Title: episode.title,
-         Subtitle: episode.subtitle,
-         Description: episode.description,
-         Summary: episode.summary,
-         Author: episode.author,
-         Shownotes: episode.shownotes], searchstring, "")
-    |> raw
+    if episode.podcast.blocked == true do
+      "This episode may not be published here."
+      |> raw
+    else
+      hit([Title: episode.title,
+           Subtitle: episode.subtitle,
+           Description: episode.description,
+           Summary: episode.summary,
+           Author: episode.author,
+           Shownotes: episode.shownotes], searchstring, "")
+      |> raw
+    end
   end
 
 
