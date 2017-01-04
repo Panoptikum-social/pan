@@ -12,11 +12,16 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :blocked, class: "control-label" %>
+    <%= checkbox f, :blocked, class: "form-control" %>
+    <%= error_tag f, :blocked %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :update_paused, class: "control-label" %>
     <%= checkbox f, :update_paused, class: "form-control" %>
     <%= error_tag f, :update_paused %>
   </div>
-
 
   <div class="form-group">
     <%= label f, :owner_id, class: "control-label" %>
