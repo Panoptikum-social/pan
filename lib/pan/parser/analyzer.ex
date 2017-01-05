@@ -13,9 +13,11 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
   def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
   def call(_, "tag", [:author,            _, [value]]), do: %{author: value}
+  def call(_, "tag", [:"googleplay:author", _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
   def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
   def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
+  def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
@@ -112,14 +114,14 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
-    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights"
+    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
     :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
-    :category, :"dc:creator", :comments, :"media:content", :"feedburner:origLink", :"itunes:image",
+    :category, :"dc:creator", :comments, :"feedburner:origLink", :"itunes:image",
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block",
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment,
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
@@ -129,7 +131,8 @@ defmodule Pan.Parser.Analyzer do
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp,
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
-    :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier", :"georss:featurename"
+    :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier", :"georss:featurename",
+    :"georss:box", :"gd:extendedProperty", :"media:content"
   ], do: %{}
 
 
@@ -196,10 +199,14 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:author",   _, []]), do: %{}
   def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"googleplay:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
+    %{publishing_date: Helpers.to_ecto_datetime(value)}
+  end
+  def call(_, "episode", [:"dc:date",         _, [value]]) do
     %{publishing_date: Helpers.to_ecto_datetime(value)}
   end
 
@@ -222,7 +229,6 @@ defmodule Pan.Parser.Analyzer do
     %{enclosures: %{uuid => enclosure_map}}
   end
 
-
 # Chapters
   def call(_, "episode", [tag_atom, _, value]) when tag_atom in [:"psc:chapters", :chapters] do
     Iterator.parse(%{}, "chapter", value)
@@ -238,6 +244,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:contributor", _, value]) do
     contributor_uuid = String.to_atom(UUID.uuid1())
     Iterator.parse(%{contributors: %{contributor_uuid => %{}}}, "episode-contributor", value, contributor_uuid)
+  end
+  def call(_, "episode", [:"dc:contributor", _, [value]]) do
+    contributor_uuid = String.to_atom(UUID.uuid1())
+    %{contributors: %{contributor_uuid => %{name: value, uri: value}}}
   end
 
   def call("episode-contributor", [:"atom:name", _ , [value]]), do: %{name: value}

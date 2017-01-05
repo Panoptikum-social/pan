@@ -18,19 +18,26 @@ defmodule Pan.Parser.Helpers do
                 |> replace_long_month_names()
                 |> replace_long_week_days
 
-    datetime =
-      case Timex.parse(feed_date, "{RFC1123}") do
-        {:ok, datetime} ->
-          datetime
-        {:error, message} ->
-           IO.puts message
-           IO.puts feed_date
-           IO.puts "==============="
-           raise "Error in date parsing"
-      end
+    datetime = try_format(feed_date, "{RFC1123}") ||
+               try_format(feed_date, "{ISO:Extended}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D}")
+
+    unless datetime do
+      IO.puts feed_date
+      IO.puts "==============="
+      raise "Error in date parsing"
+    end
+
     erltime = Timex.to_erl(datetime)
     # why can't I pipe here?
     Ecto.DateTime.from_erl(erltime)
+  end
+
+  def try_format(feed_date, format) do
+    case Timex.parse(feed_date, format) do
+      {:ok, datetime} -> datetime
+      {:error, _} -> nil
+    end
   end
 
 
@@ -40,7 +47,7 @@ defmodule Pan.Parser.Helpers do
     # add missing leading 0 for hours
     datetime = Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
     # add missing day of the week
-    Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
+    # Regex.replace(~r/^(\d)/, datetime, "Mon, \\1")
   end
 
   def replace_long_month_names(datetime) do
@@ -62,18 +69,23 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_week_days(datetime) do
     datetime
+    |> String.replace("Wedn", "Wed")
     |> String.replace("Thurs","Thu")
+    |> String.replace("Thur","Thu")
     |> String.replace("Mo,",  "Mon,")
     |> String.replace("mån,", "Mon,")
     |> String.replace("Di,",  "Tue,")
-    |> String.replace("tor,",  "Tue,")
+    |> String.replace("tor,", "Tue,")
     |> String.replace("Mi,",  "Wed,")
     |> String.replace("Do,",  "Thu,")
     |> String.replace("Fr,",  "Fri,")
     |> String.replace("Sa,",  "Sat,")
-    |> String.replace("So,", "Sun,")
+    |> String.replace("So,",  "Sun,")
     |> String.replace("Son,", "Sun,")
     |> String.replace("ٍ", "")
+    |> String.replace("NZDT", "+1300")
+    |> String.replace("NZST", "+1200")
+    |> String.replace("-0001", "2016")
   end
 
   def fix_missing_xml_tag(xml) do
