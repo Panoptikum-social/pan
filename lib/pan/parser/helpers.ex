@@ -20,7 +20,8 @@ defmodule Pan.Parser.Helpers do
 
     datetime = try_format(feed_date, "{RFC1123}") ||
                try_format(feed_date, "{ISO:Extended}") ||
-               try_format(feed_date, "{YYYY}-{0M}-{0D}")
+               try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}")
 
     unless datetime do
       IO.puts feed_date

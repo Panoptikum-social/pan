@@ -23,6 +23,12 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
     %{last_build_date: Helpers.to_ecto_datetime(value)}
   end
+  def call(_, "tag", [:"dc:date", _, [value]]) do
+    %{last_build_date: Helpers.to_ecto_datetime(value)}
+  end
+  def call(_, "tag", [:pubDate, _, [value]]) do
+    %{last_build_date: Helpers.to_ecto_datetime(value)}
+  end
 
 
 # image with fallback to itunes:image
@@ -59,6 +65,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # simple tags to include into nested structure
+  def call(_, "tag", [:generator, _, []]), do: %{}
   def call(_, "tag", [:generator, _, [value]]), do: %{feed: %{ feed_generator: value}}
 
 
@@ -66,6 +73,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "self"      -> %{feed: %{ self_link_title: attr[:title],
+                            self_link_url: attr[:href]}}
+      "current"   -> %{feed: %{ self_link_title: attr[:title],
                             self_link_url: attr[:href]}}
       "next"      -> %{feed: %{ next_page_url: attr[:href]}}
       "prev"      -> %{feed: %{ prev_page_url: attr[:href]}}
@@ -104,7 +113,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license",
-    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :pubDate,
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor,
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe",
     :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency",
@@ -212,9 +221,13 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"atom:link", attr, _]) do
     case attr[:rel] do
-      "http://podlove.org/deep-link" -> %{deep_link: String.slice(attr[:href], 0, 255)}
-      "payment" ->                      %{payment_link_title: attr[:title],
-                                          payment_link_url: String.slice(attr[:href], 0, 255)}
+      "http://podlove.org/deep-link" ->
+        %{deep_link: String.slice(attr[:href], 0, 255)}
+      "payment" ->
+        %{payment_link_title: attr[:title],
+          payment_link_url: String.slice(attr[:href], 0, 255)}
+      "alternate" ->
+        %{}
     end
   end
 

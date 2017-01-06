@@ -13,7 +13,7 @@ defmodule Pan.Parser.RssFeed do
 
     next_page_url = map[:feed][:next_page_url]
     pagecount = pagecount + 1
-    if next_page_url != nil and pagecount < 100 do
+    if next_page_url != nil and pagecount < 26 do
       initial_import(next_page_url, pagecount)
     end
 
