@@ -52,7 +52,7 @@ defmodule Pan.Router do
 
     get "/random", RecommendationFrontendController, :random
     resources "/recommendations", RecommendationFrontendController, only: [:index]
-    get ":pid", UserFrontendController, :persona
+    get "/:pid", UserFrontendController, :persona
   end
 
 

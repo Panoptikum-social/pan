@@ -1,6 +1,5 @@
 defmodule Pan.PodcastView do
   use Pan.Web, :view
-  import Scrivener.HTML
 
   def podcasts_json(podcasts) do
     Enum.map(podcasts, &podcast_json/1)

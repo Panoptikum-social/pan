@@ -19,11 +19,12 @@ defmodule Pan.Parser.Iterator do
 
 
   def parse(map, "owner", [head | tail]) do
-    if is_map(head) do
-      owner_map = Analyzer.call(map, "owner", [head[:name], head[:attr], head[:value]])
-    else
-      owner_map = %{email: head}
-    end
+    owner_map =
+      if is_map(head) do
+        Analyzer.call(map, "owner", [head[:name], head[:attr], head[:value]])
+      else
+        %{email: head}
+      end
 
     Helpers.deep_merge(map, %{owner: owner_map})
     |> parse("owner", tail)

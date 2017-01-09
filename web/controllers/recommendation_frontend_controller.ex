@@ -79,49 +79,52 @@ defmodule Pan.RecommendationFrontendController do
     recommendation_params = Map.put(recommendation_params, "user_id", user.id)
     changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
 
+    e =
     cond do
       podcast_id_param = recommendation_params["podcast_id"] ->
         podcast_id = String.to_integer(podcast_id_param)
-        episode_id = nil
-        topic = "podcasts"
-        subtopic = podcast_id_param
-        notification_text = "Podcast <b>" <> Repo.get!(Podcast, podcast_id).title <> "</b>"
+
+        %Event{topic:      "podcasts",
+               subtopic:   podcast_id_param,
+               podcast_id: podcast_id,
+               episode_id: nil,
+               chapter_id: nil,
+               notification_text: "Podcast <b>" <> Repo.get!(Podcast, podcast_id).title <> "</b>"}
+
       episode_id_param = recommendation_params["episode_id"] ->
         episode_id = String.to_integer(episode_id_param)
         episode = Repo.get!(Episode, episode_id)
                   |> Repo.preload(:podcast)
-        podcast_id = episode.podcast.id
-        topic = "podcasts"
-        subtopic = Integer.to_string(episode.podcast.id)
-        notification_text = "Episode <b>" <> episode.title <> "</b> from <b>" <> episode.podcast.title <> "</b>"
+
+        %Event{topic: "podcasts",
+               subtopic: Integer.to_string(episode.podcast.id),
+               podcast_id: episode.podcast.id,
+               episode_id: episode_id,
+               chapter_id: nil,
+               notification_text: "Episode <b>" <> episode.title <>
+                                  "</b> from <b>" <> episode.podcast.title <> "</b>"}
+
       chapter_id_param = recommendation_params["chapter_id"] ->
         chapter_id = String.to_integer(chapter_id_param)
         chapter = Repo.get!(Chapter, chapter_id)
                   |> Repo.preload([episode: :podcast])
-        episode_id = chapter.episode.id
-        podcast_id = chapter.episode.podcast.id
-        topic = "podcasts"
-        subtopic = Integer.to_string(chapter.episode.podcast.id)
-        notification_text = "Chapter <b>" <> chapter.title <> "</b> in <b>" <>
-                            chapter.episode.title <> "</b> from <b>" <>
-                            chapter.episode.podcast.title <> "</b>"
+
+        %Event{topic:      "podcasts",
+               subtopic:   Integer.to_string(chapter.episode.podcast.id),
+               podcast_id: chapter.episode.podcast.id,
+               episode_id: chapter.episode.id,
+               chapter_id: chapter_id,
+               notification_text: "Chapter <b>" <> chapter.title <> "</b> in <b>" <>
+                                  chapter.episode.title <> "</b> from <b>" <>
+                                  chapter.episode.podcast.title <> "</b>"}
     end
 
-    comment = recommendation_params["comment"]
-
-    e = %Event{
-      topic:           topic,
-      subtopic:        subtopic,
-      current_user_id: user.id,
-      podcast_id:      podcast_id,
-      episode_id:      episode_id,
-      chapter_id:      chapter_id,
-      type:            "success",
-      event:           "recommend",
-      content:         comment
-    }
-    e = %{e | content: C.String.truncate("« recommended " <>
-                       notification_text <> " » " <> comment, 255) }
+    e = %{e | current_user_id: user.id,
+              type:            "success",
+              event:           "recommend",
+              content:         C.String.truncate("« recommended " <>
+                               e.notification_text <> " » " <>
+                               recommendation_params["comment"], 255) }
 
     Repo.insert(changeset)
     Message.persist_event(e)

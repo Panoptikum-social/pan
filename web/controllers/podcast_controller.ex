@@ -27,7 +27,7 @@ defmodule Pan.PodcastController do
   end
 
 
-  def index(conn, params) do
+  def index(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   preload: [:feeds, :owner])
                |> Repo.all
@@ -152,7 +152,7 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
                                          (is_nil(p.update_paused) or p.update_paused == false),
                                   order_by: [asc: :updated_at])
                |> Repo.all()

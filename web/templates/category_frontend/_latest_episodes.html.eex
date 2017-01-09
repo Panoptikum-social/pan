@@ -7,7 +7,7 @@
   </div>
   <div id="latest_episodes">
     <ul class="list-unstyled">
-      <%= for episode <- latest_episodes do %>
+      <%= for episode <- latest_episodes() do %>
         <li>
           <%= link [fa_icon("headphones"), " ", C.String.truncate(episode.title, 40)],
                       to: episode_frontend_path(@conn, :show, episode),

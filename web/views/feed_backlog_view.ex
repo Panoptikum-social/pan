@@ -6,6 +6,6 @@ defmodule Pan.FeedBacklogView do
     url
     |> String.split("/", parts: 3)
     |> List.last
-    |> Feed.best_matching_feed()
+    |> Feed.clean_and_best_matching()
   end
 end

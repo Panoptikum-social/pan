@@ -1,7 +1,7 @@
 <%= if @episode.recommendations != [] do %>
   <div class="panel panel-info">
     <div class="panel-heading">
-      Recommendations <span class="pull-right"><%= complain_link %></span>
+      Recommendations <span class="pull-right"><%= complain_link() %></span>
     </div>
     <ul class="list-group">
       <%= for recommendation <- @episode.recommendations do %>

@@ -61,7 +61,7 @@ defmodule Pan.Parser.Category do
 
           map = Pan.Parser.Iterator.parse(%{}, feed_map)
           podcast = Pan.Repo.preload(feed, :podcast).podcast
-          Pan.Parser.Category.assign_many(map[:categories], podcast)
+          Pan.Parser.Category.persist_many(map[:categories], podcast)
         catch
           :exit, _ ->  IO.puts "ex"
           :timeout, _ -> IO.puts "t"

@@ -16,7 +16,8 @@ defmodule Event do
             chapter_id:      0,
             content:         "",
             type:            "",
-            event:           ""
+            event:           "",
+            notification_text: ""
 
 
   def notify_subscribers(event) do
