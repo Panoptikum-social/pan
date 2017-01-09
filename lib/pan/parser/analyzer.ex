@@ -26,6 +26,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"dc:date", _, [value]]) do
     %{last_build_date: Helpers.to_ecto_datetime(value)}
   end
+  def call(_, "tag", [:pubDate, _, []]), do: %{}
   def call(_, "tag", [:pubDate, _, [value]]) do
     %{last_build_date: Helpers.to_ecto_datetime(value)}
   end
@@ -192,6 +193,7 @@ defmodule Pan.Parser.Analyzer do
 
 # Episodes
   def call(map, "tag", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
+  def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
   def call(_, "episode", [:title,             _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}

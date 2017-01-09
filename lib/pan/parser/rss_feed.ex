@@ -38,6 +38,9 @@ defmodule Pan.Parser.RssFeed do
       %HTTPotion.Response{status_code: 500} ->
         {:error, "internal server error"}
 
+      %HTTPotion.Response{status_code: 503} ->
+        {:error, "service unavailable"}
+
       %HTTPotion.Response{status_code: 504} ->
         {:error, "gateway time-out"}
 
@@ -52,8 +55,9 @@ defmodule Pan.Parser.RssFeed do
         # IO.puts "=========================="
 
         if String.starts_with?(feed_xml, "<html") or
-           String.starts_with?(feed_xml, "<!DOCTYPE html>") do
-          {:error, "This is an HTML file, not a feed!"}
+           String.starts_with?(feed_xml, "<!DOCTYPE html>") or
+           String.starts_with?(feed_xml, "<?php") do
+          {:error, "This is an HTML/PHP file, not a feed!"}
         else
           feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                      |> Pan.Parser.Helpers.remove_extra_angle_brackets()

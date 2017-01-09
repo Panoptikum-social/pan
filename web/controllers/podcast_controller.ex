@@ -137,7 +137,7 @@ defmodule Pan.PodcastController do
         conn
         |> put_flash(:error, message)
     end
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: podcast_path(conn, :factory))
   end
 
 
@@ -158,7 +158,8 @@ defmodule Pan.PodcastController do
                |> Repo.all()
 
     for podcast <- podcasts do
-      Task.async(fn -> delta_import_one(podcast, current_user) end)
+      # Task.async(fn -> delta_import_one(podcast, current_user) end)
+      delta_import_one(podcast, current_user)
     end
 
     conn

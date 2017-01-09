@@ -18,10 +18,13 @@ defmodule Pan.Parser.Helpers do
                 |> replace_long_month_names()
                 |> replace_long_week_days
 
+    # Formatters reference:
+    # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
     datetime = try_format(feed_date, "{RFC1123}") ||
                try_format(feed_date, "{ISO:Extended}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
-               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}")
+               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
+               try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}")
 
     unless datetime do
       IO.puts feed_date
@@ -128,7 +131,7 @@ defmodule Pan.Parser.Helpers do
   end
 
   def remove_extra_angle_brackets(xml) do
-    Regex.replace(~r/>>/Us, xml, ">")
+    xml = Regex.replace(~r/>>/Us, xml, ">")
     Regex.replace(~r//Us, xml, "")
   end
 end
