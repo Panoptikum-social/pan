@@ -45,7 +45,7 @@ defmodule Pan.Auth do
   import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   def login_by_username_and_pass(conn, username, given_pass) do
-    user = Repo.get_by(User, username: username)
+    user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)
 
     cond do
       user && checkpw(given_pass, user.password_hash) ->
