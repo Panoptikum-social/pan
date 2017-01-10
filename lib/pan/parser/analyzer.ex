@@ -124,7 +124,7 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
-    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays
+    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -142,7 +142,8 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
     :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier", :"georss:featurename",
-    :"georss:box", :"gd:extendedProperty", :"media:content"
+    :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
+    :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate"
   ], do: %{}
 
 
@@ -267,6 +268,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call("episode-contributor", [:"atom:name", _ , [value]]), do: %{name: value}
   def call("episode-contributor", [:"atom:uri",  _ , [value]]), do: %{uri: value}
+  def call("episode-contributor", [:"atom:email",  _ , [value]]), do: %{email: value}
 
 
 # Show debugging information for unknown tags on console

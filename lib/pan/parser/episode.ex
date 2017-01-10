@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
+  alias Pan.Parser.Helpers
 
   def find_or_create(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
@@ -22,12 +23,18 @@ defmodule Pan.Parser.Episode do
         else
           %{url: ""}
         end
-      fallback_url = if episode_map[:link], do: episode_map[:link], else: first_enclosure[:url]
+
+      fallback_url =
+        if episode_map[:link] != nil do
+          episode_map[:link]
+        else
+          first_enclosure[:url]
+        end
 
       plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
                           |> Map.put_new(:guid, fallback_url)
 
-      if episode_map[:guid] do
+      if plain_episode_map[:guid] do
         {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
 
         if episode_map[:chapters] do

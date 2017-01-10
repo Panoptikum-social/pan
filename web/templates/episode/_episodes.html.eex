@@ -1,3 +1,5 @@
+<% last_episode_title = "unknown" %>
+
 <table class="table">
   <thead>
     <tr>
@@ -15,7 +17,16 @@
         <tr>
           <td><%= link episode.podcast.id,
                        to: podcast_path(@conn, :show, episode.podcast) %></td>
-          <td><a href="<%= episode.link %>"><%= episode.title %></a></td>
+          <td>
+            <%= if episode.title == last_episode_title do %>
+              <span class="label label-warning">
+                <a href="<%= episode.link %>"><%= episode.title %></a>
+              </span>
+            <%= else %>
+              <a href="<%= episode.link %>"><%= episode.title %></a>
+            <% end %>
+            <% last_episode_title = episode.title %>
+          </td>
           <td><%= episode.publishing_date %></td>
           <td><%= episode.duration %></td>
           <td><%= episode.author %></td>

@@ -12,6 +12,13 @@ defmodule Pan.Parser.Helpers do
   end
 
 
+  def inspect(argument) do
+    IO.puts "\n\e[33m === Debugger <<<\e[0m"
+    IO.inspect argument
+    IO.puts "\n\e[33m >>> Debugger ===\e[0m"
+  end
+
+
   def to_ecto_datetime(feed_date) do
     feed_date = feed_date
                 |> fix_time()
