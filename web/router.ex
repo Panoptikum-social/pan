@@ -17,10 +17,22 @@ defmodule Pan.Router do
   end
 
 
+  pipeline :bot do
+    plug :accepts, ["json"]
+  end
+
+
   scope "/api", Pan do
     pipe_through :api
 
     get "/categories/:id/get_podcasts", CategoryController, :get_podcasts
+  end
+
+
+  scope "/bot", Pan do
+    pipe_through :bot
+
+    get "/webhook", BotController, :webhook
   end
 
 
