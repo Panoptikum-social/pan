@@ -9,8 +9,6 @@
       <th>Chapter</th>
       <th>User</th>
       <th>Category</th>
-      <th>Recommend to</th>
-      <th>Comment</th>
 
       <th></th>
     </tr>
@@ -24,8 +22,6 @@
       <td><%= like.chapter_id %></td>
       <td><%= like.user_id %></td>
       <td><%= like.category_id %></td>
-      <td><%= like.recommend_to_id %></td>
-      <td><%= like.comment %></td>
 
       <td class="text-right">
         <%= link "Show", to: like_path(@conn, :show, like), class: "btn btn-default btn-xs" %>

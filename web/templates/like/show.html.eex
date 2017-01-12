@@ -31,17 +31,6 @@
     <strong>Category:</strong>
     <%= @like.category_id %>
   </li>
-
-  <li>
-    <strong>Recommend to:</strong>
-    <%= @like.recommend_to_id %>
-  </li>
-
-  <li>
-    <strong>Comment:</strong>
-    <%= @like.comment %>
-  </li>
-
 </ul>
 
 <%= link "Edit", to: like_path(@conn, :edit, @like) %>
