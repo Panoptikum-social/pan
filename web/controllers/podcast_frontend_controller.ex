@@ -6,6 +6,7 @@ defmodule Pan.PodcastFrontendController do
 
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
+                                  where: is_nil(p.blocked) or p.blocked == false,
                                   preload: [:categories])
                |> Repo.paginate(params)
 

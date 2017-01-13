@@ -30,8 +30,10 @@ defmodule Pan.EpisodeFrontendController do
 
 
   def index(conn, params) do
-    episodes = from(e in Episode, order_by: [desc: :publishing_date],
-                               preload: [:podcast])
+    episodes = from(e in Episode, join: p in assoc(e, :podcast),
+                                  where: is_nil(p.blocked) or p.blocked == false,
+                                  order_by: [desc: :publishing_date],
+                                  preload: [:podcast])
                |> Repo.paginate(params)
 
     render(conn, "index.html", episodes: episodes)
