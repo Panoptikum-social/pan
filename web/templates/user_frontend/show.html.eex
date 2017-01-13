@@ -28,7 +28,7 @@
     </div>
   <% end %>
 
-  <%= if @current_user.share_subscriptions == true do %>
+  <%= if @user.share_subscriptions == true do %>
     <div class="col-md-6">
       <div class="panel panel-primary">
         <div class="panel-heading">
