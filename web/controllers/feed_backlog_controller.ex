@@ -109,7 +109,7 @@ defmodule Pan.FeedBacklogController do
       end
 
       if feed do
-        Subscription.find_or_create(backlog_feed.user_id, feed.podcast.id)
+        Subscription.get_or_insert(backlog_feed.user_id, feed.podcast.id)
         Repo.delete!(backlog_feed)
       end
     end

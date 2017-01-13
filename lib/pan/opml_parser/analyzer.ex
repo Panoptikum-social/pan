@@ -13,7 +13,7 @@ defmodule Pan.OpmlParser.Analyzer do
   def call([:outline, attr, value], user_id) do
     case attr[:type] do
       "rss" ->
-        Pan.OpmlParser.FeedBacklog.find_or_create(attr[:xmlUrl], user_id)
+        Pan.OpmlParser.FeedBacklog.get_or_insert(attr[:xmlUrl], user_id)
       "atom" ->
         nil
       nil ->

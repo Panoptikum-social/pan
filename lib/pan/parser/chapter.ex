@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Chapter do
   use Pan.Web, :controller
 
-  def find_or_create(chapter_map, episode_id) do
+  def get_or_insert(chapter_map, episode_id) do
     case Repo.get_by(Pan.Chapter, episode_id: episode_id,
                                   start:      chapter_map[:start]) do
       nil ->

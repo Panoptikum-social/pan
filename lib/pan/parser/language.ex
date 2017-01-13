@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Language do
   use Pan.Web, :controller
 
-  def find_or_create(language_map) do
+  def get_or_insert(language_map) do
     case Repo.get_by(Pan.Language, shortcode: language_map[:shortcode]) do
       nil ->
         %Pan.Language{shortcode: language_map[:shortcode],
@@ -17,7 +17,7 @@ defmodule Pan.Parser.Language do
     if languages_map do
       languages =
         Enum.map languages_map, fn({_, language_map}) ->
-          elem(find_or_create(language_map), 1)
+          elem(get_or_insert(language_map), 1)
         end
 
       Repo.preload(podcast, :languages)

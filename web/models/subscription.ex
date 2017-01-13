@@ -20,7 +20,7 @@ defmodule Pan.Subscription do
   end
 
 
-  def find_or_create(user_id, podcast_id) do
+  def get_or_insert(user_id, podcast_id) do
     case Repo.get_by(Subscription, user_id:    user_id,
                                    podcast_id: podcast_id) do
       nil ->

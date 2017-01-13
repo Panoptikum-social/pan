@@ -2,7 +2,7 @@ defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
   alias Pan.Parser.Helpers
 
-  def find_or_create(episode_map, podcast_id) do
+  def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
         %Pan.Episode{podcast_id: podcast_id}
@@ -35,17 +35,17 @@ defmodule Pan.Parser.Episode do
                           |> Map.put_new(:guid, fallback_url)
 
       if plain_episode_map[:guid] do
-        {:ok, episode} = find_or_create(plain_episode_map, podcast.id)
+        {:ok, episode} = get_or_insert(plain_episode_map, podcast.id)
 
         if episode_map[:chapters] do
           for {_, chapter_map} <- episode_map[:chapters] do
-            Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+            Pan.Parser.Chapter.get_or_insert(chapter_map, episode.id)
           end
         end
 
         if episode_map[:enclosures] do
           for {_, enclosure_map} <- episode_map[:enclosures] do
-            Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+            Pan.Parser.Enclosure.get_or_insert(enclosure_map, episode.id)
           end
         end
 
@@ -68,13 +68,13 @@ defmodule Pan.Parser.Episode do
           {:ok, episode} ->
             if episode_map[:chapters] do
               for {_, chapter_map} <- episode_map[:chapters] do
-                Pan.Parser.Chapter.find_or_create(chapter_map, episode.id)
+                Pan.Parser.Chapter.get_or_insert(chapter_map, episode.id)
               end
             end
 
             if episode_map[:enclosures] do
               for {_, enclosure_map} <- episode_map[:enclosures] do
-                Pan.Parser.Enclosure.find_or_create(enclosure_map, episode.id)
+                Pan.Parser.Enclosure.get_or_insert(enclosure_map, episode.id)
               end
             end
 

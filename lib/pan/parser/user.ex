@@ -1,7 +1,7 @@
 defmodule Pan.Parser.User do
   use Pan.Web, :controller
 
-  def find_or_create(user_map) do
+  def get_or_insert(user_map) do
     if user_map[:email] do
       user_map = Map.put_new(user_map, :name, "unknown")
                  |> Map.put_new(:username, user_map[:email])

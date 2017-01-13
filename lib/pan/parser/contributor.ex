@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Contributor do
   use Pan.Web, :controller
 
-  def find_or_create(contributor_map) do
+  def get_or_insert(contributor_map) do
     case Repo.get_by(Pan.Contributor, uri: contributor_map[:uri]) do
       nil ->
         %Pan.Contributor{}
@@ -17,7 +17,7 @@ defmodule Pan.Parser.Contributor do
     if contributors_map do
       contributors =
         Enum.map contributors_map, fn({_, contributor_map}) ->
-          elem(find_or_create(contributor_map), 1)
+          elem(get_or_insert(contributor_map), 1)
         end
 
       Repo.preload(instance, :contributors)

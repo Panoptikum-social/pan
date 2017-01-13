@@ -4,7 +4,7 @@ defmodule Pan.Parser.Category do
   alias Pan.Category
 
 
-  def find_or_create(title, nil) do
+  def get_or_insert(title, nil) do
     case Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id)) do
       nil ->
         Repo.insert(%Category{title: title})
@@ -13,8 +13,8 @@ defmodule Pan.Parser.Category do
     end
   end
 
-  def find_or_create(title, parent_title) do
-    {:ok, parent} = find_or_create(parent_title, nil)
+  def get_or_insert(title, parent_title) do
+    {:ok, parent} = get_or_insert(parent_title, nil)
 
     case Repo.one(from c in Category, where: c.title == ^title and c.parent_id == ^parent.id) do
       nil ->
@@ -30,7 +30,7 @@ defmodule Pan.Parser.Category do
     if categories_map do
       categories =
         Enum.map categories_map, fn({_, category_map}) ->
-          {:ok, category} = find_or_create(category_map[:title], category_map[:parent])
+          {:ok, category} = get_or_insert(category_map[:title], category_map[:parent])
           category
         end
 

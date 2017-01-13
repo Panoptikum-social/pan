@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Feed do
   use Pan.Web, :controller
 
-  def find_or_create(feed_map, podcast_id) do
+  def get_or_insert(feed_map, podcast_id) do
     case Repo.get_by(Pan.Feed, podcast_id: podcast_id) do
       nil ->
         %Pan.Feed{podcast_id: podcast_id}

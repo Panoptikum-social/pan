@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Enclosure do
   use Pan.Web, :controller
 
-  def find_or_create(enclosure_map, episode_id) do
+  def get_or_insert(enclosure_map, episode_id) do
     case get_enclosure(episode_id, enclosure_map[:guid], enclosure_map[:url]) do
       nil ->
         %Pan.Enclosure{episode_id: episode_id}

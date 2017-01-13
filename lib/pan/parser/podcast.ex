@@ -7,7 +7,7 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Feed
 
 
-  def find_or_create(podcast_map, owner_id) do
+  def get_or_insert(podcast_map, owner_id) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
         %Podcast{owner_id: owner_id}
