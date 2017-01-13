@@ -3,15 +3,19 @@ defmodule Pan.MessageController do
 
   alias Pan.Message
 
-  def index(conn, _params) do
-    messages = Repo.all(Message)
+  def index(conn, params) do
+    messages = from(Message, preload: :creator)
+               |> Repo.paginate(params)
+
     render(conn, "index.html", messages: messages)
   end
+
 
   def new(conn, _params) do
     changeset = Message.changeset(%Message{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"message" => message_params}) do
     changeset = Message.changeset(%Message{}, message_params)
@@ -26,16 +30,19 @@ defmodule Pan.MessageController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     message = Repo.get!(Message, id)
     render(conn, "show.html", message: message)
   end
+
 
   def edit(conn, %{"id" => id}) do
     message = Repo.get!(Message, id)
     changeset = Message.changeset(message)
     render(conn, "edit.html", message: message, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "message" => message_params}) do
     message = Repo.get!(Message, id)
@@ -50,6 +57,7 @@ defmodule Pan.MessageController do
         render(conn, "edit.html", message: message, changeset: changeset)
     end
   end
+
 
   def delete(conn, %{"id" => id}) do
     message = Repo.get!(Message, id)

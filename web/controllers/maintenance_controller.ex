@@ -4,6 +4,7 @@ defmodule Pan.MaintenanceController do
   alias Pan.Subscription
   alias Pan.ContributorPodcast
   alias Pan.ContributorEpisode
+  alias Pan.Message
 
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],
@@ -20,7 +21,6 @@ defmodule Pan.MaintenanceController do
                                     category_id: category_id})
     end
 
-
     duplicates = from(a in Subscription, group_by: [a.user_id, a.podcast_id],
                                          select: [a.user_id, a.podcast_id, count(a.podcast_id)],
                                          having: count(a.podcast_id) > 1)
@@ -34,7 +34,6 @@ defmodule Pan.MaintenanceController do
       Repo.insert!(%Subscription{podcast_id: podcast_id,
                                  user_id: user_id})
     end
-
 
     duplicates = from(a in ContributorPodcast, group_by: [a.contributor_id, a.podcast_id],
                                                select: [a.contributor_id, a.podcast_id, count(a.podcast_id)],
@@ -65,5 +64,13 @@ defmodule Pan.MaintenanceController do
     end
 
     render(conn, "remove_duplicates.html", %{})
+  end
+
+
+  def message_cleanup(conn, _params) do
+    from(m in Message, where: m.event in ["follow", "subscribe"])
+    |> Repo.delete_all()
+
+    render(conn, "message_cleanup.html", %{})
   end
 end

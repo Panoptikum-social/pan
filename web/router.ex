@@ -124,5 +124,6 @@ defmodule Pan.Router do
     resources "/podcasts", PodcastController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
+    get "/maintenance/message_cleanup", MaintenanceController, :message_cleanup
   end
 end

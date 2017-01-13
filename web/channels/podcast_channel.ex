@@ -48,8 +48,8 @@ defmodule Pan.PodcastChannel do
 
 
     Podcast.follow(e.podcast_id, e.current_user_id)
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+    # Message.persist_event(e)
+    # Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(Pan.PodcastFrontendView,
                                            "follow_button.html",
@@ -72,8 +72,8 @@ defmodule Pan.PodcastChannel do
                        Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
 
     Podcast.subscribe(e.podcast_id, e.current_user_id)
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+    # Message.persist_event(e)
+    # Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(Pan.PodcastFrontendView,
                                            "subscribe_button.html",
