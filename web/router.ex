@@ -122,5 +122,7 @@ defmodule Pan.Router do
     get "/podcasts/orphans/", PodcastController, :orphans
     get "/podcasts/factory/", PodcastController, :factory
     resources "/podcasts", PodcastController
+
+    get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
   end
 end

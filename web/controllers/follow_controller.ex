@@ -3,8 +3,8 @@ defmodule Pan.FollowController do
 
   alias Pan.Follow
 
-  def index(conn, _params) do
-    follows = Repo.all(Follow)
+  def index(conn, params) do
+    follows = Repo.paginate(Follow, params)
     render(conn, "index.html", follows: follows)
   end
 

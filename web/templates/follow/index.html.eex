@@ -29,4 +29,6 @@
   </tbody>
 </table>
 
+<%= pagination_links @follows %>
+
 <%= link "New follow", to: follow_path(@conn, :new) %>

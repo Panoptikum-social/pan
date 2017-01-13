@@ -1,6 +1,6 @@
 <h2>Listing subscriptions</h2>
 
-<table class="table">
+<table class="table table-condensed table-striped">
   <thead>
     <tr>
       <th>User</th>
@@ -24,5 +24,7 @@
 <% end %>
   </tbody>
 </table>
+
+<%= pagination_links @subscriptions %>
 
 <%= link "New subscription", to: subscription_path(@conn, :new) %>
