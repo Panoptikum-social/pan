@@ -27,6 +27,8 @@ import Mailbox from "./mailbox"
 
 document.addEventListener("turbolinks:load", function() {
   Mailbox.init(socket)
+  $(".toshow").show()
+  $(".tohide").hide()
 })
 
 Turbolinks.start();

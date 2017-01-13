@@ -77,3 +77,8 @@ li.list-group-item.node-category_tree { padding: 5px; }
 
 a {color: #00c997; }
 a:hover { text-decoration: underline; }
+
+input.drop[type=checkbox]{ display: none; }
+ul.drop{ display: none; }
+input.drop[type=checkbox]:checked ~ li>ul.drop { display: block }
+input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }

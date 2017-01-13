@@ -11916,6 +11916,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 document.addEventListener("turbolinks:load", function () {
   _mailbox2.default.init(_socket2.default);
+  (0, _jquery2.default)(".toshow").show();
+  (0, _jquery2.default)(".tohide").hide();
 }); // Brunch automatically concatenates all files in your
 // watched paths. Those paths can be configured at
 // config.paths.watched in "brunch-config.js".
