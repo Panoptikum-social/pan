@@ -17,16 +17,23 @@
     <%= for message <- @messages.entries do %>
       <tr>
         <td><span class="label label-<%= message.type %>"><%= message.type %></span></td>
-        <td><%= message.creator.name %></td>
+        <td><nobr><%= message.creator.name %></nobr></td>
         <td><%= raw message.content %></td>
-        <td><%= message.inserted_at %></td>
+        <td><nobr><%= message.inserted_at %></nobr></td>
         <td><%= message.topic %></td>
         <td><%= message.subtopic %></td>
         <td><%= message.event %></td>
         <td class="text-right">
-          <%= link "Show", to: message_path(@conn, :show, message), class: "btn btn-default btn-xs" %>
-          <%= link "Edit", to: message_path(@conn, :edit, message), class: "btn btn-default btn-xs" %>
-          <%= link "Delete", to: message_path(@conn, :delete, message), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <nobr>
+            <%= link "Show", to: message_path(@conn, :show, message),
+                             class: "btn btn-default btn-xs" %>
+            <%= link "Edit", to: message_path(@conn, :edit, message),
+                             class: "btn btn-default btn-xs" %>
+            <%= link "Delete", to: message_path(@conn, :delete, message),
+                               method: :delete,
+                               data: [confirm: "Are you sure?"],
+                               class: "btn btn-danger btn-xs" %>
+          </nobr>
         </td>
       </tr>
     <% end %>
