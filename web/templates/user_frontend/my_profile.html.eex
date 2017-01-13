@@ -23,6 +23,23 @@
       I am not a podcaster.
     <% end %>
   </dd>
+
+  <dt>Privacy</dt>
+  <dd>
+    <%= if @user.share_follows do %>
+      I do currently share my followings.
+    <% else %>
+      I do not share my followings.
+    <% end %>
+  </dd>
+
+  <dd>
+    <%= if @user.share_subscriptions do %>
+      I do currently share my subscriptions.
+    <% else %>
+      I do not share my subscriptions.
+    <% end %>
+  </dd>
 </dl>
 
 

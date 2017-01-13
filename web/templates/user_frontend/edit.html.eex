@@ -27,8 +27,20 @@
 
   <div class="form-group">
     <%= label f, :podcaster, class: "control-label" %>
-    <%= checkbox f, :podcaster, placeholder: "Podcaster", class: "form-control" %>
+    <%= checkbox f, :podcaster, class: "form-control" %>
     <%= error_tag f, :podcaster %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :i_want_to_share_my_followings, class: "control-label" %>
+    <%= checkbox f, :share_follows, class: "form-control" %>
+    <%= error_tag f, :share_follows %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :i_want_to_share_my_subscriptions, class: "control-label" %>
+    <%= checkbox f, :share_subscriptions, class: "form-control" %>
+    <%= error_tag f, :share_subscriptions %>
   </div>
 
 

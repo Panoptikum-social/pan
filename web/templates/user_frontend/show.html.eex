@@ -28,23 +28,25 @@
     </div>
   <% end %>
 
-  <div class="col-md-6">
-    <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Podcasts, <%= @user.name %> has subscribed to</h3>
-      </div>
-      <div class="panel-body">
-       <p style="line-height: 200%;">
-          <%= for podcast <- @user.podcasts_i_subscribed do %>
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
-                     to: podcast_frontend_path(@conn, :show, podcast),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %> &nbsp;
-          <% end %>
-        </p>
+  <%= if @current_user.share_subscriptions == true do %>
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Podcasts, <%= @user.name %> has subscribed to</h3>
+        </div>
+        <div class="panel-body">
+         <p style="line-height: 200%;">
+            <%= for podcast <- @user.podcasts_i_subscribed do %>
+              <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
+                       to: podcast_frontend_path(@conn, :show, podcast),
+                       class: "btn btn-default btn-xs",
+                       style: "color: #000" %> &nbsp;
+            <% end %>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="col-md-12">
     <div class="panel panel-danger">

@@ -5,7 +5,7 @@ defmodule Pan.User do
   alias Pan.Follow
 
   @required_fields ~w(name username email)
-  @optional_fields ~w(admin podcaster)
+  @optional_fields ~w(admin podcaster share_subscriptions share_follows)
 
   schema "users" do
     field :name, :string
@@ -17,6 +17,8 @@ defmodule Pan.User do
     field :admin, :boolean
     field :podcaster, :boolean
     field :email_confirmed, :boolean
+    field :share_subscriptions, :boolean, default: false
+    field :share_follows, :boolean, default: false
     timestamps
 
     has_many :podcasts_i_own, Pan.Podcast,
@@ -50,7 +52,7 @@ defmodule Pan.User do
 
   def self_change_changeset(model, params \\ %{}) do
     model
-    |> cast(params, ~w(podcaster email name username), ~w(podcaster))
+    |> cast(params, ~w(podcaster email name username), ~w(podcaster share_follows share_subscriptions))
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
     |> validate_length(:username, min: 3, max: 30)
