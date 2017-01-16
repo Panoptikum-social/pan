@@ -1,0 +1,6 @@
+<h2>New manifestation</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: manifestation_path(@conn, :create) %>
+
+<%= link "Back", to: manifestation_path(@conn, :index) %>

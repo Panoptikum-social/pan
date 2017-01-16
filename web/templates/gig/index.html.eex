@@ -1,0 +1,38 @@
+<h2>Listing gigs</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Episode</th>
+      <th>From in s</th>
+      <th>Until in s</th>
+      <th>Comment</th>
+      <th>Publishing date</th>
+      <th>Role</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for gig <- @gigs do %>
+    <tr>
+      <td><%= gig.persona_id %></td>
+      <td><%= gig.episode_id %></td>
+      <td><%= gig.from_in_s %></td>
+      <td><%= gig.until_in_s %></td>
+      <td><%= gig.comment %></td>
+      <td><%= gig.publishing_date %></td>
+      <td><%= gig.role %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: gig_path(@conn, :show, gig), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: gig_path(@conn, :edit, gig), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: gig_path(@conn, :delete, gig), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New gig", to: gig_path(@conn, :new) %>

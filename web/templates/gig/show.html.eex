@@ -1,0 +1,43 @@
+<h2>Show gig</h2>
+
+<ul>
+
+  <li>
+    <strong>Persona:</strong>
+    <%= @gig.persona_id %>
+  </li>
+
+  <li>
+    <strong>Episode:</strong>
+    <%= @gig.episode_id %>
+  </li>
+
+  <li>
+    <strong>From in s:</strong>
+    <%= @gig.from_in_s %>
+  </li>
+
+  <li>
+    <strong>Until in s:</strong>
+    <%= @gig.until_in_s %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @gig.comment %>
+  </li>
+
+  <li>
+    <strong>Publishing date:</strong>
+    <%= @gig.publishing_date %>
+  </li>
+
+  <li>
+    <strong>Role:</strong>
+    <%= @gig.role %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: gig_path(@conn, :edit, @gig) %>
+<%= link "Back", to: gig_path(@conn, :index) %>

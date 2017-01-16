@@ -1,0 +1,6 @@
+<h2>Edit gig</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: gig_path(@conn, :update, @gig) %>
+
+<%= link "Back", to: gig_path(@conn, :index) %>

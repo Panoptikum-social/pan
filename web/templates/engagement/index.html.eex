@@ -1,0 +1,36 @@
+<h2>Listing engagements</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Podcast</th>
+      <th>From</th>
+      <th>Until</th>
+      <th>Comment</th>
+      <th>Role</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for engagement <- @engagements do %>
+    <tr>
+      <td><%= engagement.persona_id %></td>
+      <td><%= engagement.podcast_id %></td>
+      <td><%= engagement.from %></td>
+      <td><%= engagement.until %></td>
+      <td><%= engagement.comment %></td>
+      <td><%= engagement.role %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: engagement_path(@conn, :show, engagement), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: engagement_path(@conn, :edit, engagement), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: engagement_path(@conn, :delete, engagement), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New engagement", to: engagement_path(@conn, :new) %>

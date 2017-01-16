@@ -1,0 +1,28 @@
+<h2>Listing manifestations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>User</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for manifestation <- @manifestations do %>
+    <tr>
+      <td><%= manifestation.persona_id %></td>
+      <td><%= manifestation.user_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: manifestation_path(@conn, :show, manifestation), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: manifestation_path(@conn, :edit, manifestation), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: manifestation_path(@conn, :delete, manifestation), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New manifestation", to: manifestation_path(@conn, :new) %>

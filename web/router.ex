@@ -83,11 +83,14 @@ defmodule Pan.Router do
     pipe_through [:browser, :authenticate_admin]
     resources "/languages", LanguageController
     resources "/contributors", ContributorController
+    resources "/engagements", EngagementController
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
+    resources "/gigs", GigController
     resources "/likes", LikeController
     resources "/follows", FollowController
+    resources "/manifestations", ManifestationController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController

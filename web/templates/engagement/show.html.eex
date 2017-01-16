@@ -1,0 +1,38 @@
+<h2>Show engagement</h2>
+
+<ul>
+
+  <li>
+    <strong>Persona:</strong>
+    <%= @engagement.persona_id %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @engagement.podcast_id %>
+  </li>
+
+  <li>
+    <strong>From:</strong>
+    <%= @engagement.from %>
+  </li>
+
+  <li>
+    <strong>Until:</strong>
+    <%= @engagement.until %>
+  </li>
+
+  <li>
+    <strong>Comment:</strong>
+    <%= @engagement.comment %>
+  </li>
+
+  <li>
+    <strong>Role:</strong>
+    <%= @engagement.role %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: engagement_path(@conn, :edit, @engagement) %>
+<%= link "Back", to: engagement_path(@conn, :index) %>
