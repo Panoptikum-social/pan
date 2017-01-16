@@ -1,0 +1,38 @@
+<h2>Listing personas</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Pid</th>
+      <th>Name</th>
+      <th>Uri</th>
+      <th>Email</th>
+      <th>Description</th>
+      <th>Image url</th>
+      <th>Image title</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for persona <- @personas do %>
+    <tr>
+      <td><%= persona.pid %></td>
+      <td><%= persona.name %></td>
+      <td><%= persona.uri %></td>
+      <td><%= persona.email %></td>
+      <td><%= persona.description %></td>
+      <td><%= persona.image_url %></td>
+      <td><%= persona.image_title %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: persona_path(@conn, :show, persona), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: persona_path(@conn, :delete, persona), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New persona", to: persona_path(@conn, :new) %>
