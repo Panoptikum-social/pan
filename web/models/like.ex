@@ -3,6 +3,7 @@ defmodule Pan.Like do
   alias Pan.Like
   alias Pan.Repo
 
+  @optional_fields ~w(user_id persona_id)
 
   schema "likes" do
     belongs_to :enjoyer, Pan.User
@@ -21,7 +22,7 @@ defmodule Pan.Like do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [])
+    |> cast(params, [], @optional_fields)
   end
 
 

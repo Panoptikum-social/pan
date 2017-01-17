@@ -95,6 +95,7 @@ defmodule Pan.Router do
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
 
+    get "/personas/test", PersonaController, :test
     get "/personas/transfer", PersonaController, :transfer
     resources "/personas", PersonaController
 
