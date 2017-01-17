@@ -2,6 +2,9 @@ defmodule Pan.PersonaController do
   use Pan.Web, :controller
 
   alias Pan.Persona
+  alias Pan.Gig
+  alias Pan.Contributor
+  alias Pan.Engagement
 
   def index(conn, _params) do
     personas = Repo.all(Persona)
@@ -61,5 +64,78 @@ defmodule Pan.PersonaController do
     conn
     |> put_flash(:info, "Persona deleted successfully.")
     |> redirect(to: persona_path(conn, :index))
+  end
+
+
+  def import(conn, _params) do
+    # contributors = from(contributor in Contributor, preload: [:episodes, :podcasts])
+    #                |> Repo.all()
+
+    # for contributor <- contributors do
+    #   {:ok, persona} = %Persona{name: contributor.name,
+    #                             uri:  contributor.uri,
+    #                             pid:  UUID.uuid5(:url, contributor.uri)}
+    #                    |> Repo.insert()
+
+    #   for episode <- contributor.episodes do
+    #     %Gig{persona_id: persona.id,
+    #          episode_id: episode.id,
+    #          role: "contributor",
+    #          publishing_date: episode.publishing_date}
+    #     |> Repo.insert()
+    #   end
+
+    #   for podcast <- contributor.podcasts do
+    #     %Engagement{persona_id: persona.id,
+    #                 podcast_id: podcast.id,
+    #                 role: "contributor"}
+    #     |> Repo.insert()
+    #   end
+    # end
+
+    # Repo.delete_all(Pan.ContributorEpisode)
+    # Repo.delete_all(Pan.ContributorPodcast)
+    # Repo.delete_all(Contributor)
+
+    podcasts = from(p in Pan.Podcast, where: not is_nil(p.owner_id),
+                                      preload: [:owner])
+               |> Repo.all()
+
+    for podcast <- podcasts do
+      {:ok, persona} =
+        case Repo.get_by(Pan.Persona, pid: UUID.uuid5(:url, podcast.owner.email)) do
+          nil ->
+            %Pan.Persona{name:  podcast.owner.name,
+                         email: podcast.owner.email,
+                         uri:   podcast.owner.email,
+                         pid:   UUID.uuid5(:url, podcast.owner.email)}
+            |> Repo.insert()
+          persona ->
+            Pan.Persona.changeset(persona, %{email: podcast.owner.email})
+            |> Repo.update()
+
+            {:ok, persona}
+        end
+
+      %Engagement{persona_id: persona.id,
+                  podcast_id: podcast.id,
+                  role: "owner"}
+      |> Repo.insert()
+
+      Pan.Podcast.changeset(podcast, %{owner_id: nil})
+      |> Repo.update()
+    end
+
+    users = Repo.all(from u in Pan.User, where: is_nil(u.password_hash))
+
+    for user <- users do
+      try do
+        Repo.delete(user)
+      rescue
+        Ecto.ConstraintError -> "Error!"
+      end
+    end
+
+    render(conn, "import.html")
   end
 end

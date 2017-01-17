@@ -26,7 +26,7 @@ defmodule Pan.Episode do
     has_many :enclosures, Pan.Enclosure, on_delete: :delete_all
     has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
 
-    many_to_many :contributors, Pan.Contributor, join_through: "contributors_episodes", on_delete: :delete_all
+    many_to_many :contributors, Pan.Persona, join_through: "gigs", on_delete: :delete_all
   end
 
   @required_fields ~w(title link publishing_date description

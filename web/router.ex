@@ -94,6 +94,8 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+
+    get "/personas/import", PersonaController, :import
     resources "/personas", PersonaController
 
     get "/users/merge", UserController, :merge

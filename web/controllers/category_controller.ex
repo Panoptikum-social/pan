@@ -9,8 +9,9 @@ defmodule Pan.CategoryController do
   plug :scrub_params, "category" when action in [:create, :update]
 
   def index(conn, _params) do
-    categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
-                                                     order_by: :title)
+    categories = from(category in Category, where: is_nil(category.parent_id),
+                                            order_by: :title)
+                 |> Repo.all()
                  |> Repo.preload([children: :podcasts])
                  |> Repo.preload(:podcasts)
     render(conn, "index.html", categories: categories, no_children: false)
