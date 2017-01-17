@@ -135,9 +135,6 @@ defmodule Pan.UserController do
     from(r in Pan.Recommendation, where: r.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
 
-    from(p in Pan.Podcast, where: p.owner_id == ^from_id)
-    |> Repo.update_all(set: [owner_id: into_id])
-
     Repo.get!(User, from_id)
     |> Repo.delete!
 

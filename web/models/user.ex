@@ -21,8 +21,6 @@ defmodule Pan.User do
     field :share_follows, :boolean, default: false
     timestamps
 
-    has_many :podcasts_i_own, Pan.Podcast,
-                              foreign_key: :owner_id
     many_to_many :podcasts_i_subscribed, Pan.Podcast,
                                          join_through: "subscriptions"
     has_many :contributor_identities, Pan.Contributor

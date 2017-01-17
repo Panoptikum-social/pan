@@ -10,8 +10,6 @@
 <hr/>
 <%= render Pan.LanguageView, "index.html", languages: @podcast.languages, conn: @conn %>
 <hr/>
-<%= render Pan.UserView, "show.html", user: @podcast.owner, conn: @conn %>
-<hr/>
 
 <%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %> -
 <%= link "Back", to: podcast_path(@conn, :index) %>

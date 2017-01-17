@@ -4,6 +4,7 @@ defmodule Pan.Podcast do
   alias Pan.Like
   alias Pan.Follow
   alias Pan.Subscription
+  alias Pan.Engagement
 
   schema "podcasts" do
     field :title, :string
@@ -27,6 +28,7 @@ defmodule Pan.Podcast do
     has_many :episodes, Pan.Episode, on_delete: :delete_all
     has_many :feeds, Pan.Feed, on_delete: :delete_all
     has_many :subscriptions, Pan.Subscription
+    has_many :engagements, Pan.Engagement
     has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts", on_delete: :delete_all
     many_to_many :contributors, Pan.Persona, join_through: "engagements", on_delete: :delete_all

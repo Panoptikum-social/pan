@@ -58,7 +58,7 @@ defmodule Pan.RecommendationFrontendController do
                |> Repo.preload([:parent, :children, :podcasts])
 
     podcast = Repo.get(Podcast, podcast.id)
-              |> Repo.preload([:episodes, :languages, :owner, :categories, :feeds])
+              |> Repo.preload([:episodes, :languages, :categories, :feeds])
 
     episode = Enum.random(podcast.episodes)
     episode = Repo.get(Episode, episode.id)

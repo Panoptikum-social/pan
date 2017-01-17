@@ -30,7 +30,9 @@
   <dd><%= @podcast.payment_link_url %></dd>
 
   <dt>Owner</dt>
-  <dd><%= @podcast.owner_id %></dd>
+  <%= for owner <- @podcast.owners do %>
+    <dd><%= owner.id %></dd>
+  <% end %>
 
   <dt>Author</dt>
   <dd><%= @podcast.author %></dd>

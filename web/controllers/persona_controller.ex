@@ -9,7 +9,6 @@ defmodule Pan.PersonaController do
   alias Pan.Follow
   alias Pan.Manifestation
   alias Pan.User
-  alias Pan.Parser.Helpers
 
   def index(conn, _params) do
     personas = Repo.all(Persona)

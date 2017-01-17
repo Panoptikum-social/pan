@@ -40,7 +40,7 @@ defmodule Pan.CategoryController do
 
   def show(conn, %{"id" => id}) do
     category = Repo.get!(Category, id)
-               |> Repo.preload(podcasts: :owner)
+               |> Repo.preload(:podcasts)
                |> Repo.preload(:parent)
                |> Repo.preload(children: :children)
 

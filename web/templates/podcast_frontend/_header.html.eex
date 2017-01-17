@@ -46,7 +46,9 @@
               <dt><label class="label label-success">last modified</label></dt>
               <dd><%= @podcast.last_build_date %></dd>
               <dt><label class="label label-info">Owner</label></dt>
-              <dd><%= @podcast.owner.name %></dd>
+              <%= for engagement <- @podcast.engagements do %>
+                <dd><%= engagement.persona.name %></dd>
+              <% end %>
               <dt><label class="label">Explicit</label></dt>
               <dd><%= @podcast.explicit %></dd>
               <dt><label class="label label-info">Number of Episodes</label></dt>

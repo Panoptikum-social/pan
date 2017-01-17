@@ -34,8 +34,6 @@
                              data: [confirm: "Are you sure?"],
                              class: "btn btn-danger btn-xs" %>
           <br/>
-          <%= link "Fix owner", to: podcast_path(@conn, :fix_owner, podcast),
-                            class: "btn btn-warning btn-xs" %>
           <%= link "Touch", to: podcast_path(@conn, :touch, podcast),
                             class: "btn btn-normal btn-xs" %>
           <%= link "Delta import", to: podcast_path(@conn, :delta_import, podcast),

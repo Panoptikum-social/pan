@@ -111,8 +111,7 @@ defmodule Pan.UserFrontendController do
   def show(conn, params, _user) do
     id = String.to_integer(params["id"])
     user = Repo.one(from u in Pan.User, where: u.id == ^id and u.podcaster == true)
-           |> Repo.preload([:podcasts_i_own,
-                            :users_i_like,
+           |> Repo.preload([:users_i_like,
                             :categories_i_like,
                             :podcasts_i_subscribed])
 
@@ -137,8 +136,7 @@ defmodule Pan.UserFrontendController do
           |> List.first
 
     user = Repo.one(from u in Pan.User, where: u.username == ^pid and u.podcaster == true)
-           |> Repo.preload([:podcasts_i_own,
-                            :users_i_like,
+           |> Repo.preload([:users_i_like,
                             :categories_i_like,
                             :podcasts_i_subscribed])
 

@@ -2,7 +2,7 @@
 
 <p style="line-height: 2.5;">
   <%= for {user, counter} <- Enum.with_index(@users) do %>
-    <%= if user.podcasts_i_own != [] and user.name != "Jane Doe" do %>
+    <%= if user.podcaster == true and user.name != "Jane Doe" do %>
       <%= link [fa_icon("user"), " ", user.name],
           to: user_frontend_path(@conn, :show, user),
           class: "btn btn-xs " <> Pan.PodcastFrontendView.btn_cycle(counter) %> &nbsp;
