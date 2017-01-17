@@ -151,7 +151,6 @@ defmodule Pan.PersonaController do
       for follow <- follows do
         follow = Follow.changeset(follow, %{user_id: nil, persona_id: persona.id})
                  |> Repo.update()
-        Helpers.inspect follow
       end
 
       Pan.Podcast.changeset(podcast, %{owner_id: nil})

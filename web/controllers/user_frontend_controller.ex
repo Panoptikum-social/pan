@@ -102,15 +102,14 @@ defmodule Pan.UserFrontendController do
 
 
   def index(conn, _params, _user) do
-    users = Repo.all(from u in Pan.User, order_by: :name,
-                                         where: u.podcaster == true)
+    users = Repo.all(from u in Pan.User, order_by: :name)
     render conn, "index.html", users: users
   end
 
 
   def show(conn, params, _user) do
     id = String.to_integer(params["id"])
-    user = Repo.one(from u in Pan.User, where: u.id == ^id and u.podcaster == true)
+    user = Repo.one(from u in Pan.User, where: u.id == ^id)
            |> Repo.preload([:users_i_like,
                             :categories_i_like,
                             :podcasts_i_subscribed])

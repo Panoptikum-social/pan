@@ -37,7 +37,7 @@ defmodule Pan.Router do
     resources "/episodes", EpisodeFrontendController, only: [:show, :index]
     get "/episodes/player/:id", EpisodeFrontendController, :player
 
-    resources "/podcasters", UserFrontendController, only: [:show, :index]
+    resources "/users", UserFrontendController, only: [:show, :index]
 
     resources "/users", UserController, only: [:new, :create]
     get "/forgot_password", UserController, :forgot_password
