@@ -31,7 +31,7 @@ let User = {
         button.outerHTML = response.button
         this.listen_to(button.dataset.event, userChannel)
       })
-                 .receive("error", e => console.log(e))
+          .receive("error", e => console.log(e))
     })
   }
 }

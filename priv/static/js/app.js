@@ -12128,6 +12128,12 @@ var Mailbox = {
       var user_id = userlikeButton.getAttribute("data-id");
       _user2.default.onReady(socket, user_id);
     }
+
+    var personalikeButton = document.querySelector("[data-type='persona'][data-event='like']");
+    if (current_user_id != "" && personalikeButton != null) {
+      var persona_id = userlikeButton.getAttribute("data-id");
+      Persona.onReady(socket, persona_id);
+    }
   },
   onReady: function onReady(socket, user_id) {
     var mailboxChannel = socket.channel("mailboxes:" + user_id);
@@ -12164,6 +12170,59 @@ var Notification = {
 };
 
 exports.default = Notification;
+});
+
+;require.register("web/static/js/persona.js", function(exports, require, module) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _notification = require("./notification");
+
+var _notification2 = _interopRequireDefault(_notification);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Persona = {
+  onReady: function onReady(socket, persona_id) {
+    var _this = this;
+
+    var personaChannel = socket.channel("personas:" + persona_id);
+
+    personaChannel.join().receive("ok", function (response) {
+      console.log("joined persona:" + persona_id, response);
+    }).receive("error", function (response) {
+      console.log("join of persona:" + persona_id + " failed", reason);
+    });
+
+    personaChannel.on("notification", function (response) {
+      return _notification2.default.popup(response);
+    });
+
+    Array.from(document.querySelectorAll("[data-type='persona']")).forEach(function (button) {
+      _this.listen_to(button.dataset.event, personaChannel);
+    });
+  },
+  listen_to: function listen_to(event, personaChannel) {
+    var _this2 = this;
+
+    var button = document.querySelector("[data-type='persona']" + "[data-event='" + event + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { persona_id: button.dataset.id, action: button.dataset.action };
+
+      personaChannel.push(button.dataset.event, payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this2.listen_to(button.dataset.event, personaChannel);
+      }).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  }
+};
+
+exports.default = Persona;
 });
 
 ;require.register("web/static/js/podcast.js", function(exports, require, module) {

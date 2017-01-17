@@ -171,6 +171,18 @@ defmodule Pan.User do
   end
 
 
+  def subscribed_persona_ids(user_id) do
+    case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
+                                           not is_nil(f.persona_id),
+                                    select: f.persona_id) do
+      [] ->
+        ["0"]
+      array ->
+        Enum.map(array, fn(id) ->  Integer.to_string(id) end)
+    end
+  end
+
+
   def subscribed_category_ids(user_id) do
     case Repo.all(from f in Follow, where: f.follower_id == ^user_id and
                                            not is_nil(f.category_id),

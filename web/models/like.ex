@@ -10,6 +10,7 @@ defmodule Pan.Like do
     belongs_to :episode, Pan.Episode
     belongs_to :chapter, Pan.Chapter
     belongs_to :user, Pan.User
+    belongs_to :persona, Pan.Persona
     belongs_to :category, Pan.Category
 
     timestamps()

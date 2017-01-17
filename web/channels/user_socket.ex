@@ -1,11 +1,12 @@
 defmodule Pan.UserSocket do
   use Phoenix.Socket
 
-  channel "users:*",     Pan.UserChannel
-  channel "mailboxes:*", Pan.MailboxChannel
-  channel "categories*", Pan.CategoryChannel
-  channel "podcasts:*",  Pan.PodcastChannel
-  channel "episodes*",   Pan.EpisodeChannel
+  channel "users:*",      Pan.UserChannel
+  channel "personas:*",   Pan.PersonaChannel
+  channel "mailboxes:*",  Pan.MailboxChannel
+  channel "categories:*", Pan.CategoryChannel
+  channel "podcasts:*",   Pan.PodcastChannel
+  channel "episodes:*",   Pan.EpisodeChannel
 
 
   transport :websocket, Phoenix.Transports.WebSocket

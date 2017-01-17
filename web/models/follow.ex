@@ -5,6 +5,7 @@ defmodule Pan.Follow do
     belongs_to :follower, Pan.User
     belongs_to :podcast, Pan.Podcast
     belongs_to :user, Pan.User
+    belongs_to :persona, Pan.Persona
     belongs_to :category, Pan.Category
 
     timestamps()

@@ -39,6 +39,12 @@ let Mailbox = {
       let user_id = userlikeButton.getAttribute("data-id")
       User.onReady(socket, user_id)
     }
+
+    let personalikeButton = document.querySelector("[data-type='persona'][data-event='like']")
+    if(current_user_id != "" && personalikeButton != null) {
+      let persona_id = userlikeButton.getAttribute("data-id")
+      Persona.onReady(socket, persona_id)
+    }
   },
 
 

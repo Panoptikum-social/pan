@@ -6,15 +6,18 @@ defmodule Pan.PersonaController do
   alias Pan.Contributor
   alias Pan.Engagement
 
+
   def index(conn, _params) do
     personas = Repo.all(Persona)
     render(conn, "index.html", personas: personas)
   end
 
+
   def new(conn, _params) do
     changeset = Persona.changeset(%Persona{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"persona" => persona_params}) do
     changeset = Persona.changeset(%Persona{}, persona_params)
@@ -29,16 +32,19 @@ defmodule Pan.PersonaController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     persona = Repo.get!(Persona, id)
     render(conn, "show.html", persona: persona)
   end
+
 
   def edit(conn, %{"id" => id}) do
     persona = Repo.get!(Persona, id)
     changeset = Persona.changeset(persona)
     render(conn, "edit.html", persona: persona, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "persona" => persona_params}) do
     persona = Repo.get!(Persona, id)
@@ -54,6 +60,7 @@ defmodule Pan.PersonaController do
     end
   end
 
+
   def delete(conn, %{"id" => id}) do
     persona = Repo.get!(Persona, id)
 
@@ -67,7 +74,7 @@ defmodule Pan.PersonaController do
   end
 
 
-  def import(conn, _params) do
+  def transfer(conn, _params) do
     # contributors = from(contributor in Contributor, preload: [:episodes, :podcasts])
     #                |> Repo.all()
 
@@ -97,34 +104,34 @@ defmodule Pan.PersonaController do
     # Repo.delete_all(Pan.ContributorPodcast)
     # Repo.delete_all(Contributor)
 
-    podcasts = from(p in Pan.Podcast, where: not is_nil(p.owner_id),
-                                      preload: [:owner])
-               |> Repo.all()
+    # podcasts = from(p in Pan.Podcast, where: not is_nil(p.owner_id),
+    #                                   preload: [:owner])
+    #            |> Repo.all()
 
-    for podcast <- podcasts do
-      {:ok, persona} =
-        case Repo.get_by(Pan.Persona, pid: UUID.uuid5(:url, podcast.owner.email)) do
-          nil ->
-            %Pan.Persona{name:  podcast.owner.name,
-                         email: podcast.owner.email,
-                         uri:   podcast.owner.email,
-                         pid:   UUID.uuid5(:url, podcast.owner.email)}
-            |> Repo.insert()
-          persona ->
-            Pan.Persona.changeset(persona, %{email: podcast.owner.email})
-            |> Repo.update()
+    # for podcast <- podcasts do
+    #   {:ok, persona} =
+    #     case Repo.get_by(Pan.Persona, pid: UUID.uuid5(:url, podcast.owner.email)) do
+    #       nil ->
+    #         %Pan.Persona{name:  podcast.owner.name,
+    #                      email: podcast.owner.email,
+    #                      uri:   podcast.owner.email,
+    #                      pid:   UUID.uuid5(:url, podcast.owner.email)}
+    #         |> Repo.insert()
+    #       persona ->
+    #         Pan.Persona.changeset(persona, %{email: podcast.owner.email})
+    #         |> Repo.update()
 
-            {:ok, persona}
-        end
+    #         {:ok, persona}
+    #     end
 
-      %Engagement{persona_id: persona.id,
-                  podcast_id: podcast.id,
-                  role: "owner"}
-      |> Repo.insert()
+    #   %Engagement{persona_id: persona.id,
+    #               podcast_id: podcast.id,
+    #               role: "owner"}
+    #   |> Repo.insert()
 
-      Pan.Podcast.changeset(podcast, %{owner_id: nil})
-      |> Repo.update()
-    end
+    #   Pan.Podcast.changeset(podcast, %{owner_id: nil})
+    #   |> Repo.update()
+    # end
 
     users = Repo.all(from u in Pan.User, where: is_nil(u.password_hash))
 
