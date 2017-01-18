@@ -2,28 +2,28 @@ defmodule Pan.Parser.Contributor do
   use Pan.Web, :controller
 
 
-  def persist_many(contributors_map, podcast = %Podcast{}) do
+  def persist_many(contributors_map, podcast = %Pan.Podcast{}) do
     if contributors_map do
       for {_, contributor_map} <- contributors_map do
         {:ok, contributor} = Persona.get_or_insert(contributor_map)
 
-        %Engagement{persona_id: contributor.id,
-                    podcast_id: podcast.id,
-                    role: "contributor"}
+        %Pan.Engagement{persona_id: contributor.id,
+                        podcast_id: podcast.id,
+                        role: "contributor"}
         |> Repo.insert()
       end
     end
   end
 
 
-  def persist_many(contributors_map, episode = %Episode{}) do
+  def persist_many(contributors_map, episode = %Pan.Episode{}) do
     if contributors_map do
       for {_, contributor_map} <- contributors_map do
         {:ok, contributor} = Persona.get_or_insert(contributor_map)
 
-        %Gig{persona_id: contributor.id,
-             episode_id: episode.id,
-             role: "contributor"}
+        %Pan.Gig{persona_id: contributor.id,
+                 episode_id: episode.id,
+                 role: "contributor"}
         |> Repo.insert()
       end
     end

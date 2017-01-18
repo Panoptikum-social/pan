@@ -5,7 +5,7 @@ defmodule Pan.Parser.Owner do
   def get_or_insert(owner_map, podcast_id) do
     {:ok, owner} = Persona.get_or_insert(owner_map)
 
-    %Engagement{persona_id: owner.id,
+    %Pan.Engagement{persona_id: owner.id,
                 podcast_id: podcast_id,
                 role: "owner"}
     |> Repo.insert()
