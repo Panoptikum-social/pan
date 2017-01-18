@@ -1,29 +1,31 @@
 defmodule Pan.Parser.Contributor do
   use Pan.Web, :controller
 
-  def get_or_insert(contributor_map) do
-    case Repo.get_by(Pan.Contributor, uri: contributor_map[:uri]) do
-      nil ->
-        %Pan.Contributor{}
-        |> Map.merge(contributor_map)
+
+  def persist_many(contributors_map, podcast = %Podcast{}) do
+    if contributors_map do
+      for {_, contributor_map} <- contributors_map do
+        {:ok, contributor} = Persona.get_or_insert(contributor_map)
+
+        %Engagement{persona_id: contributor.id,
+                    podcast_id: podcast.id,
+                    role: "contributor"}
         |> Repo.insert()
-      contributor ->
-        {:ok, contributor}
+      end
     end
   end
 
 
-  def persist_many(contributors_map, instance) do
+  def persist_many(contributors_map, episode = %Episode{}) do
     if contributors_map do
-      contributors =
-        Enum.map contributors_map, fn({_, contributor_map}) ->
-          elem(get_or_insert(contributor_map), 1)
-        end
+      for {_, contributor_map} <- contributors_map do
+        {:ok, contributor} = Persona.get_or_insert(contributor_map)
 
-      Repo.preload(instance, :contributors)
-      |> Ecto.Changeset.change()
-      |> Ecto.Changeset.put_assoc(:contributors, contributors)
-      |> Repo.update!
+        %Gig{persona_id: contributor.id,
+             episode_id: episode.id,
+             role: "contributor"}
+        |> Repo.insert()
+      end
     end
   end
 end

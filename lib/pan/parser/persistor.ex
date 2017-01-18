@@ -9,15 +9,15 @@ defmodule Pan.Parser.Persistor do
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-
-    {:ok ,owner }  = Pan.Parser.User.get_or_insert(map[:owner])
-    {:ok, podcast} = Pan.Parser.Podcast.get_or_insert(podcast_map, owner.id)
+    {:ok, podcast} = Pan.Parser.Podcast.get_or_insert(podcast_map)
     {:ok, feed}    = Pan.Parser.Feed.get_or_insert(feed_map, podcast.id)
 
     Pan.Parser.Category.persist_many(map[:categories], podcast)
     Pan.Parser.AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
-    Pan.Parser.Contributor.persist_many(map[:contributors], podcast)
     Pan.Parser.Language.persist_many(map[:languages], podcast)
+
+    Pan.Parser.Owner.persist(map[:owner], podcast.id)
+    Pan.Parser.Contributor.persist_many(map[:contributors], podcast)
 
     if map[:episodes] do
       Pan.Parser.Episode.persist_many(map[:episodes], podcast)
@@ -39,16 +39,5 @@ defmodule Pan.Parser.Persistor do
       Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date] })
       |> Repo.update()
     end
-  end
-
-
-def fix_owner(map, podcast_id) do
-    podcast = Repo.get!(Pan.Podcast, podcast_id)
-    map = Map.put_new(map, :last_build_date, Ecto.DateTime.utc)
-
-    {:ok, owner }  = Pan.Parser.User.get_or_insert(map[:owner])
-
-    Pan.Podcast.changeset(podcast, %{owner_id: owner.id })
-    |> Repo.update()
   end
 end

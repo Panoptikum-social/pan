@@ -160,16 +160,18 @@ defmodule Pan.Parser.Analyzer do
     Iterator.parse(map, "contributor", value, UUID.uuid1())
   end
 
-  def call("contributor", [:"atom:name", _, [value]]), do: %{name: value}
-  def call("contributor", [:"atom:uri",  _, [value]]), do: %{uri: value}
+  def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}
+  def call("contributor", [:"atom:uri",        _, [value]]), do: %{uri:  value}
+  def call("contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:  value}
 
 
 # We expect one owner
-  def call(map, "tag", [:"itunes:owner", _, value]), do: Iterator.parse(map, "owner", value)
-  def call(_, "owner", [:"itunes:name",   _, []]), do: %{}
-  def call(_, "owner", [:"itunes:name",   _, [value]]), do: %{name: value}
-  def call(_, "owner", [:"itunes:email",  _, []]), do: %{}
-  def call(_, "owner", [:"itunes:email",  _, [value]]), do: %{email: value}
+  def call(map, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(map, "owner", value)
+  def call(_, "owner", [:"itunes:name",     _, []]), do: %{}
+  def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: value}
+  def call(_, "owner", [:"itunes:email",    _, []]), do: %{}
+  def call(_, "owner", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call(_, "owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 
 # Parsing categories infintely deep
@@ -266,9 +268,10 @@ defmodule Pan.Parser.Analyzer do
     %{contributors: %{contributor_uuid => %{name: value, uri: value}}}
   end
 
-  def call("episode-contributor", [:"atom:name", _ , [value]]), do: %{name: value}
-  def call("episode-contributor", [:"atom:uri",  _ , [value]]), do: %{uri: value}
-  def call("episode-contributor", [:"atom:email",  _ , [value]]), do: %{email: value}
+  def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
+  def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
+  def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
+  def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 
 
 # Show debugging information for unknown tags on console

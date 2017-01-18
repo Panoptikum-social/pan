@@ -1,6 +1,9 @@
 defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
   alias Pan.Parser.Helpers
+  alias Pan.Parser.Contributor
+  alias Pan.Parser.Chapter
+  alias Pan.Parser.Enclosure
 
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
@@ -19,7 +22,10 @@ defmodule Pan.Parser.Episode do
 
       first_enclosure =
         if episode_map[:enclosures] do
-          episode_map[:enclosures] |> Map.to_list |> List.first |> elem(1)
+          episode_map[:enclosures]
+          |> Map.to_list
+          |> List.first
+          |> elem(1)
         else
           %{url: ""}
         end
@@ -39,17 +45,17 @@ defmodule Pan.Parser.Episode do
 
         if episode_map[:chapters] do
           for {_, chapter_map} <- episode_map[:chapters] do
-            Pan.Parser.Chapter.get_or_insert(chapter_map, episode.id)
+            Chapter.get_or_insert(chapter_map, episode.id)
           end
         end
 
         if episode_map[:enclosures] do
           for {_, enclosure_map} <- episode_map[:enclosures] do
-            Pan.Parser.Enclosure.get_or_insert(enclosure_map, episode.id)
+            Enclosure.get_or_insert(enclosure_map, episode.id)
           end
         end
 
-        Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)
+        Contributor.persist_many(episode_map[:contributors], episode)
       end
     end
   end
@@ -68,18 +74,18 @@ defmodule Pan.Parser.Episode do
           {:ok, episode} ->
             if episode_map[:chapters] do
               for {_, chapter_map} <- episode_map[:chapters] do
-                Pan.Parser.Chapter.get_or_insert(chapter_map, episode.id)
+                Chapter.get_or_insert(chapter_map, episode.id)
               end
             end
 
             if episode_map[:enclosures] do
               for {_, enclosure_map} <- episode_map[:enclosures] do
-                Pan.Parser.Enclosure.get_or_insert(enclosure_map, episode.id)
+                Enclosure.get_or_insert(enclosure_map, episode.id)
               end
             end
 
-            Pan.Parser.Contributor.persist_many(episode_map[:contributors], episode)
-             IO.puts "\n\e[33m === new Episode:  " <> episode.title <> " ===\e[0m"
+            Contributor.persist_many(episode_map[:contributors], episode)
+            IO.puts "\n\e[33m === new Episode:  " <> episode.title <> " ===\e[0m"
 
           {:exists, _episode} ->
             # IO.puts "\n\e[92m === Episode exists:  " <> episode.title <> " ===\e[0m"
@@ -105,6 +111,7 @@ defmodule Pan.Parser.Episode do
 
   def clean() do
     episodes = Pan.Repo.all(Pan.Episode)
+
     for episode <- episodes do
       Pan.Episode.changeset(episode, %{description: HtmlSanitizeEx2.basic_html_reduced(episode.description),
                                        summary:     HtmlSanitizeEx2.basic_html_reduced(episode.summary)})

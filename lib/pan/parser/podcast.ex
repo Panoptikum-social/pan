@@ -7,10 +7,10 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Feed
 
 
-  def get_or_insert(podcast_map, owner_id) do
+  def get_or_insert(podcast_map) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
-        %Podcast{owner_id: owner_id}
+        %Podcast{}
         |> Map.merge(podcast_map)
         |> Repo.insert()
       podcast ->
@@ -47,8 +47,8 @@ defmodule Pan.Parser.Podcast do
 
     case RssFeed.import_to_map(feed.self_link_url) do
       {:ok, map}->
-        Persistor.fix_owner(map, id)
-        {:ok, "Podcast importet successfully"}
+        Pan.Parser.Owner.persist(map[:owner], id)
+        {:ok, "Updated owner successfully"}
       {:error, message} ->
         {:error, message}
     end
