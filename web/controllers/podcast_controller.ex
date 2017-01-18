@@ -46,9 +46,9 @@ defmodule Pan.PodcastController do
 
   def factory(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  where: p.update_paused == true)
+                                  where: p.update_paused == true,
+                                  preload: [:feeds])
                |> Repo.all()
-               |> Repo.preload([:feeds, :owner])
 
     render(conn, "factory.html", podcasts: podcasts)
   end
@@ -79,7 +79,7 @@ defmodule Pan.PodcastController do
               |> Repo.preload(episodes: from(e in Episode, order_by: e.title))
               |> Repo.preload(episodes: :podcast)
               |> Repo.preload(feeds: :podcast)
-              |> Repo.preload([:languages, :categories, :owners])
+              |> Repo.preload([:languages, :categories, :contributors])
 
     render(conn, "show.html", podcast: podcast)
   end
@@ -109,18 +109,27 @@ defmodule Pan.PodcastController do
 
   def delete(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-              |> Repo.preload([:episodes, :feeds])
+              |> Repo.preload(episodes: :chapters)
+              |> Repo.preload(:feeds)
 
     for episode <- podcast.episodes do
-      Repo.delete!(episode)
+      for chapter <- episode.chapters do
+        Repo.delete_all(from l in Pan.Like,           where: l.chapter_id == ^chapter.id)
+        Repo.delete_all(from r in Pan.Recommendation, where: r.chapter_id == ^chapter.id)
+      end
+      Repo.delete_all(from c in Pan.Chapter,   where: c.episode_id == ^episode.id)
+      Repo.delete_all(from e in Pan.Enclosure, where: e.episode_id == ^episode.id)
+      Repo.delete_all(from g in Pan.Gig,       where: g.episode_id == ^episode.id)
     end
 
     for feed <- podcast.feeds do
       Repo.delete_all(from a in Pan.AlternateFeed, where: a.feed_id == ^feed.id)
     end
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
+    Repo.delete_all(from l in Pan.Like,    where: l.podcast_id == ^podcast.id)
+    Repo.delete_all(from f in Pan.Follow,  where: f.podcast_id == ^podcast.id)
+    Repo.delete_all(from e in Pan.Episode, where: e.podcast_id == ^podcast.id)
+
     Repo.delete!(podcast)
 
     conn

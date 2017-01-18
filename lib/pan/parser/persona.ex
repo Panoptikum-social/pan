@@ -2,12 +2,19 @@ defmodule Pan.Parser.Persona do
   use Pan.Web, :controller
 
   def get_or_insert(persona_map) do
-    persona_map
-    |> Map.put_new(:pid, UUID.uuid5(:url, persona_map[:uri]))
-    |> Map.put_new(:pid, UUID.uuid5(:url, persona_map[:email]))
-    |> Map.put_new(:pid, UUID.uuid5(:url, persona_map[:name]))
+    # The idea is to set the pid to be imported as strong as possible
+    # That is panoptikum:pid > uri > email > name; but if the pid in
+    # the database does not fit, we still fall back to weaker matches,
+    # but not on the name, as names are no unique identifiers.
 
-    case Repo.get_by(Pan.Persona, pid: persona_map[:pid]) do
+    persona_map = Map.put_new(persona_map, :pid,
+                              UUID.uuid5(:url, persona_map[:uri] ||
+                                               persona_map[:email] ||
+                                               persona_map[:name]))
+
+    case Repo.get_by(Pan.Persona, pid:   persona_map[:pid]) ||
+         Repo.get_by(Pan.Persona, uri:   persona_map[:uri] || "") ||
+         Repo.get_by(Pan.Persona, email: persona_map[:email] || "") do
       nil ->
         %Pan.Persona{}
         |> Map.merge(persona_map)

@@ -29,9 +29,9 @@
   <dt>Payment link url</dt>
   <dd><%= @podcast.payment_link_url %></dd>
 
-  <dt>Owner</dt>
-  <%= for owner <- @podcast.owners do %>
-    <dd><%= owner.id %></dd>
+  <dt>Contributors</dt>
+  <%= for owner <- @podcast.contributors do %>
+    <dd><%= owner.name %></dd>
   <% end %>
 
   <dt>Author</dt>

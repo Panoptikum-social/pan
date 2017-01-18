@@ -1,0 +1,9 @@
+<h1>Podcasters, Personas and Groups</h1>
+
+<p style="line-height: 2.5;">
+  <%= for {persona, counter} <- Enum.with_index(@personas) do %>
+    <%= link [fa_icon("user-o"), " ", persona.name],
+        to: persona_frontend_path(@conn, :show, persona),
+        class: "btn btn-xs " <> Pan.PodcastFrontendView.btn_cycle(counter) %> &nbsp;
+  <% end %>
+</p>

@@ -1,0 +1,98 @@
+<h1><%= @persona.name %></h1>
+
+<%= if @current_user do %>
+  <p>
+    <%= like_or_unlike(@current_user.id, @persona.id) %>
+    <%= follow_or_unfollow(@current_user.id, @persona.id) %>
+  </p>
+<% end %>
+
+<div class="row">
+  <%= if @persona.gigs != [] do %>
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Gigs, <%= @persona.name %> has been engaged in</h3>
+        </div>
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Episode</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for gig <- @persona.gigs do %>
+              <tr>
+                <td><%= format_date(gig.publishing_date) %></td>
+                <td><%= link [fa_icon("headphones"), " ", C.String.truncate(gig.episode.title, 40)],
+                            to: episode_frontend_path(@conn, :show, gig.episode),
+                            class: "btn btn-primary btn-xs" %></td>
+                <td><span class="label label-success"><%= gig.role %></span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <%= if @persona.engagements != [] do %>
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Engagements, <%= @persona.name %> has entered</h3>
+        </div>
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Podcast</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= for engagement <- @persona.engagements do %>
+              <tr>
+                <td> <%= link [fa_icon("podcast"), " ", C.String.truncate(engagement.podcast.title, 50)],
+                               to: podcast_frontend_path(@conn, :show, engagement.podcast),
+                               class: "btn btn-default btn-xs",
+                               style: "color: #000" %></td>
+                <td><span class="label label-success"><%= engagement.role %></span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%= if @messages.total_entries > 0 do %>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Messages created by <%= @persona.name %></h3>
+        </div>
+        <div class="panel-body">
+          <%= pagination_links @conn, @messages, [Integer.to_string(@persona.id)],
+                       path: &persona_frontend_path/4,
+                       action: :show,
+                       view_style: :bootstrap %>
+          <ul class="list-group">
+            <%= for message <- @messages.entries do %>
+              <li class="list-group-item message-<%= message.type %>">
+                <i>
+                  <%= if message.creator, do: message.creator.name, else: message.persona.name %>:
+                </i>
+                <%= raw message.content %>
+                <span class="pull-right"><%= message.inserted_at %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -38,6 +38,7 @@ defmodule Pan.Router do
     get "/episodes/player/:id", EpisodeFrontendController, :player
 
     resources "/users", UserFrontendController, only: [:show, :index, :new, :create]
+    resources "/personas", PersonaFrontendController, only: [:show, :index]
 
     get "/forgot_password", UserController, :forgot_password
     post "/request_login_link", UserController, :request_login_link

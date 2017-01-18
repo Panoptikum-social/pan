@@ -16,7 +16,7 @@ defmodule Pan.Parser.Persistor do
     Pan.Parser.AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
     Pan.Parser.Language.persist_many(map[:languages], podcast)
 
-    Pan.Parser.Owner.persist(map[:owner], podcast.id)
+    Pan.Parser.Owner.get_or_insert(map[:owner], podcast.id)
     Pan.Parser.Contributor.persist_many(map[:contributors], podcast)
 
     if map[:episodes] do

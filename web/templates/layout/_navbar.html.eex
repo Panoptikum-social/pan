@@ -17,6 +17,7 @@
 <div id="navbar" class="navbar-collapse collapse">
   <ul class="nav navbar-nav">
     <li><%= link "Home", to: category_frontend_path(@conn, :index) %></li>
+    <li><%= link "Podcasters", to: persona_frontend_path(@conn, :index) %></li>
     <li><%= link "Users", to: user_frontend_path(@conn, :index) %></li>
     <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(@conn, :random) %></li>
   </ul>

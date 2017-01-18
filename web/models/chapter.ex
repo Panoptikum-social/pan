@@ -9,6 +9,7 @@ defmodule Pan.Chapter do
     field :title, :string
 
     has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
+    has_many :likes, Pan.Like, on_delete: :delete_all
     belongs_to :episode, Pan.Episode
 
     timestamps

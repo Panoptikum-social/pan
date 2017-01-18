@@ -11,5 +11,10 @@
 <%= render Pan.LanguageView, "index.html", languages: @podcast.languages, conn: @conn %>
 <hr/>
 
-<%= link "Edit", to: podcast_path(@conn, :edit, @podcast) %> -
+<%= link "Edit", to: podcast_path(@conn, :edit, @podcast),
+                     class: "btn btn-warning btn-xs" %> &nbsp;
+<%= link "Delete", to: podcast_path(@conn, :delete, @podcast),
+                   method: :delete,
+                   data: [confirm: "Are you sure?"],
+                   class: "btn btn-danger btn-xs" %> &nbsp;
 <%= link "Back", to: podcast_path(@conn, :index) %>

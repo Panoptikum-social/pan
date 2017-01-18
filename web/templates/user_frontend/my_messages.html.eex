@@ -15,7 +15,7 @@
     <%= for message <- @messages.entries do %>
       <tr>
         <td class="hidden-xs hidden-sm"><span class="label label-<%= message.type %>"><%= message.type %></span></td>
-        <td><%= message.creator.name %></td>
+        <td><%= if message.creator, do: message.creator.name, else: message.persona.name %></td>
         <td><%= raw message.content %></td>
         <td class="hidden-xs"><%= message.inserted_at %></td>
       </tr>

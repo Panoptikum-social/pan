@@ -13,6 +13,11 @@
   </li>
 
   <li>
+    <strong>Persona:</strong>
+    <%= @message.persona_id %>
+  </li>
+
+  <li>
     <strong>Type:</strong>
     <%= @message.type %>
   </li>

@@ -13,6 +13,9 @@ defmodule Pan.Persona do
     field :image_url, :string
     field :image_title, :string
 
+    has_many :engagements, Pan.Engagement
+    has_many :gigs, Pan.Gig
+
     timestamps()
   end
 

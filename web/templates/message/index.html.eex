@@ -5,6 +5,7 @@
   <tr>
     <th>Type</td>
     <th>Creator</td>
+    <th>Persona</td>
     <th>Content</td>
     <th>Date</td>
     <th>Topic</th>
@@ -17,7 +18,8 @@
     <%= for message <- @messages.entries do %>
       <tr>
         <td><span class="label label-<%= message.type %>"><%= message.type %></span></td>
-        <td><nobr><%= message.creator.name %></nobr></td>
+        <td><nobr><%= if message.creator, do: message.creator.name %></nobr></td>
+        <td><nobr><%= if message.persona, do: message.persona.name %></nobr></td>
         <td><%= raw message.content %></td>
         <td><nobr><%= message.inserted_at %></nobr></td>
         <td><%= message.topic %></td>

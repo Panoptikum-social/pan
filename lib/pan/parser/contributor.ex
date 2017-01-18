@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Contributor do
   use Pan.Web, :controller
+  alias Pan.Parser.Persona
 
 
   def persist_many(contributors_map, podcast = %Pan.Podcast{}) do
@@ -23,7 +24,8 @@ defmodule Pan.Parser.Contributor do
 
         %Pan.Gig{persona_id: contributor.id,
                  episode_id: episode.id,
-                 role: "contributor"}
+                 role: "contributor",
+                 publishing_date: episode.publishing_date}
         |> Repo.insert()
       end
     end
