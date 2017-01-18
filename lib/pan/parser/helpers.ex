@@ -44,6 +44,7 @@ defmodule Pan.Parser.Helpers do
     Ecto.DateTime.from_erl(erltime)
   end
 
+
   def try_format(feed_date, format) do
     case Timex.parse(feed_date, format) do
       {:ok, datetime} -> datetime
@@ -59,6 +60,7 @@ defmodule Pan.Parser.Helpers do
     # add missing leading 0 for hours
     Regex.replace(~r/ (\d):/, datetime, " 0\\1:")
   end
+
 
   def replace_long_month_names(datetime) do
     datetime
@@ -76,6 +78,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
   end
+
 
   def replace_long_week_days(datetime) do
     datetime
@@ -97,6 +100,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("NZST", "+1200")
     |> String.replace("-0001", "2016")
   end
+
 
   def fix_missing_xml_tag(xml) do
     xml =
@@ -123,6 +127,7 @@ defmodule Pan.Parser.Helpers do
     right
   end
 
+
 # export feed urls
   def feed_urls do
     urls = Repo.all(from f in Pan.Feed, select: [f.self_link_url])
@@ -136,6 +141,7 @@ defmodule Pan.Parser.Helpers do
     # U ... non-greedy, s ... . matches newlines as well
     Regex.replace(~r/<!--.*-->/Us, xml, "")
   end
+
 
   def remove_extra_angle_brackets(xml) do
     xml = Regex.replace(~r/>>/Us, xml, ">")
