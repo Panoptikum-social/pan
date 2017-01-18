@@ -87,7 +87,7 @@
         </span>
       </li>
     <% else %>
-      <li><%= link "Register", to: user_path(@conn, :new) %></li>
+      <li><%= link "Register", to: user_frontend_path(@conn, :new) %></li>
       <li><%= link "Log in", to: session_path(@conn, :new) %></li>
     <% end %>
   </ul>

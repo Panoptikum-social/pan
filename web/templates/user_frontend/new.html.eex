@@ -1,6 +1,6 @@
 <h1>Create a new User</h1>
 
-<%= form_for @changeset, user_path(@conn, :create), fn f -> %>
+<%= form_for @changeset, user_frontend_path(@conn, :create), fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>An error occured. Please check the errors below!</p>
@@ -10,14 +10,14 @@
   <%= if {"has already been taken", []} == @changeset.errors[:email] do %>
 
     <div class="alert alert-warning alert-dismissable">
-    <h4>Welcome Podcaster!</h4>
+      <h4>Welcome back!</h4>
 
-    <p>Maybe you are surprised, that there is already a user account with this email address.<br/>
-    This is valid for all email adresses, that we parsed from podcast feeds as itunes owners.<br/>
-    In this case, please
-    <%= link "Request a login link", to: user_path(@conn, :forgot_password),
-                                     class: "alert-link" %>
-    via email to claim your account and set your password.</p>
+      <p>There is already a user account with this email address.<br/>
+        Please
+        <%= link "Request a login link", to: user_path(@conn, :forgot_password),
+                                         class: "alert-link" %>
+        via email to login to your existing account and reset your password.
+      </p>
     </div>
   <% end %>
 

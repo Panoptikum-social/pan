@@ -8,8 +8,103 @@ defmodule Pan.UserFrontendController do
   alias Pan.Podcast
 
 
+  plug :scrub_params, "user" when action in [:create, :update]
+
+
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+
+  def index(conn, _params, _user) do
+    users = Repo.all(from u in Pan.User, order_by: :name)
+    render conn, "index.html", users: users
+  end
+
+
+  def new(conn, _params, _user) do
+    changeset = User.changeset(%User{})
+    render conn, "new.html", changeset: changeset
+  end
+
+
+  def create(conn, %{"user" => user_params}, _user) do
+    changeset = User.registration_changeset(%User{}, user_params)
+
+    case Repo.insert(changeset) do
+      {:ok, user} ->
+        conn
+        |> Pan.Auth.login(user)
+        |> put_flash(:info, "Your account @#{user.name} has been created!")
+        |> redirect(to: category_frontend_path(conn, :index))
+      {:error, changeset} ->
+        render(conn, "new.html", changeset: changeset)
+    end
+  end
+
+
+  def show(conn, params, _user) do
+    id = String.to_integer(params["id"])
+    user = Repo.one(from u in Pan.User, where: u.id == ^id)
+           |> Repo.preload([:users_i_like,
+                            :categories_i_like,
+                            :podcasts_i_subscribed])
+
+    podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
+                                                            and not is_nil(l.podcast_id),
+                                                     order_by: [desc: :inserted_at])
+                            |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+
+    messages = from(m in Message, where: m.creator_id == ^id,
+                                  order_by: [desc: :inserted_at],
+                                  preload: [:creator])
+               |> Repo.paginate(params)
+
+    render conn, "show.html", user: user,
+                              podcast_related_likes: podcast_related_likes,
+                              messages: messages
+  end
+
+
+  def edit(conn, _params, user) do
+    changeset = User.changeset(user)
+    render(conn, "edit.html", user: user, changeset: changeset)
+  end
+
+
+  def update(conn, %{"user" => user_params}, user) do
+    changeset = User.self_change_changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, _user} ->
+         conn
+         |> put_flash(:info, "Account updated successfully.")
+         |> redirect(to: user_frontend_path(conn, :my_profile))
+      {:error, changeset} ->
+
+         render(conn, "edit.html", user: user, changeset: changeset)
+    end
+  end
+
+
+  def edit_password(conn, _params, user) do
+    changeset = User.changeset(user)
+    render(conn, "edit_password.html", user: user, changeset: changeset)
+  end
+
+
+  def update_password(conn, %{"user" => user_params}, user) do
+    changeset = User.password_update_changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, _user} ->
+         conn
+         |> put_flash(:info, "Password updated successfully.")
+         |> redirect(to: user_frontend_path(conn, :my_profile))
+      {:error, changeset} ->
+
+         render(conn, "edit_password.html", user: user, changeset: changeset)
+    end
   end
 
 
@@ -101,35 +196,6 @@ defmodule Pan.UserFrontendController do
   end
 
 
-  def index(conn, _params, _user) do
-    users = Repo.all(from u in Pan.User, order_by: :name)
-    render conn, "index.html", users: users
-  end
-
-
-  def show(conn, params, _user) do
-    id = String.to_integer(params["id"])
-    user = Repo.one(from u in Pan.User, where: u.id == ^id)
-           |> Repo.preload([:users_i_like,
-                            :categories_i_like,
-                            :podcasts_i_subscribed])
-
-    podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
-                                                            and not is_nil(l.podcast_id),
-                                                     order_by: [desc: :inserted_at])
-                            |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
-
-    messages = from(m in Message, where: m.creator_id == ^id,
-                                  order_by: [desc: :inserted_at],
-                                  preload: [:creator])
-               |> Repo.paginate(params)
-
-    render conn, "show.html", user: user,
-                              podcast_related_likes: podcast_related_likes,
-                              messages: messages
-   end
-
-
   def persona(conn, params, _user) do
     pid = Regex.run(~r/\[(.*)\]/, params["pid"], capture: :all_but_first)
           |> List.first
@@ -152,48 +218,6 @@ defmodule Pan.UserFrontendController do
     render conn, "show.html", user: user,
                               podcast_related_likes: podcast_related_likes,
                               messages: messages
-   end
-
-
-  def edit(conn, _params, user) do
-    changeset = User.changeset(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
-  end
-
-
-  def edit_password(conn, _params, user) do
-    changeset = User.changeset(user)
-    render(conn, "edit_password.html", user: user, changeset: changeset)
-  end
-
-
-  def update(conn, %{"user" => user_params}, user) do
-    changeset = User.self_change_changeset(user, user_params)
-
-    case Repo.update(changeset) do
-      {:ok, _user} ->
-         conn
-         |> put_flash(:info, "Account updated successfully.")
-         |> redirect(to: user_frontend_path(conn, :my_profile))
-      {:error, changeset} ->
-
-         render(conn, "edit.html", user: user, changeset: changeset)
-    end
-  end
-
-
-  def update_password(conn, %{"user" => user_params}, user) do
-    changeset = User.password_update_changeset(user, user_params)
-
-    case Repo.update(changeset) do
-      {:ok, _user} ->
-         conn
-         |> put_flash(:info, "Password updated successfully.")
-         |> redirect(to: user_frontend_path(conn, :my_profile))
-      {:error, changeset} ->
-
-         render(conn, "edit_password.html", user: user, changeset: changeset)
-    end
   end
 
 

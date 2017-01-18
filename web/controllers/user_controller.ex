@@ -2,7 +2,6 @@ defmodule Pan.UserController do
   use Pan.Web, :controller
   alias Pan.User
 
-  plug :scrub_params, "user" when action in [:create, :update]
   plug :authenticate_user when action in [:index, :show]
 
 
@@ -20,27 +19,6 @@ defmodule Pan.UserController do
   def show(conn, %{"id" => id}, _user) do
     user = Repo.get(Pan.User, id)
     render conn, "show.html", user: user
-  end
-
-
-  def new(conn, _params, _user) do
-    changeset = User.changeset(%User{})
-    render conn, "new.html", changeset: changeset
-  end
-
-
-  def create(conn, %{"user" => user_params}, _user) do
-    changeset = User.registration_changeset(%User{}, user_params)
-
-    case Repo.insert(changeset) do
-      {:ok, user} ->
-        conn
-        |> Pan.Auth.login(user)
-        |> put_flash(:info, "Your account @#{user.name} has been created!")
-        |> redirect(to: category_frontend_path(conn, :index))
-      {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
   end
 
 
