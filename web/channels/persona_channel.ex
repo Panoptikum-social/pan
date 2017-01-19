@@ -1,4 +1,4 @@
-defmodule Pan.UserChannel do
+defmodule Pan.PersonaChannel do
   use Pan.Web, :channel
   alias Pan.User
   alias Pan.Repo
@@ -22,7 +22,7 @@ defmodule Pan.UserChannel do
     e = %{e | content: "« " <> params["action"] <> "d the persona <b>" <>
                        Repo.get!(Persona, e.persona_id).name <> "</b> »"}
 
-    User.like(e.persona_id, e.current_user_id)
+    Persona.like(e.persona_id, e.current_user_id)
     Message.persist_event(e)
     Event.notify_subscribers(e)
 
@@ -46,7 +46,7 @@ defmodule Pan.UserChannel do
     e = %{e | content: "« " <> params["action"] <> "ed the persona <b>" <>
                        Repo.get!(Persona, e.persona_id).name <> "</b> »"}
 
-    User.follow(e.persona_id, e.current_user_id)
+    Persona.follow(e.persona_id, e.current_user_id)
     Message.persist_event(e)
     Event.notify_subscribers(e)
 

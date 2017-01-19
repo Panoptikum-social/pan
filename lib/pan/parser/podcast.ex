@@ -47,7 +47,7 @@ defmodule Pan.Parser.Podcast do
 
     case RssFeed.import_to_map(feed.self_link_url) do
       {:ok, map}->
-        Pan.Parser.Owner.persist(map[:owner], id)
+        Pan.Parser.Owner.get_or_insert(map[:owner], id)
         {:ok, "Updated owner successfully"}
       {:error, message} ->
         {:error, message}

@@ -12090,6 +12090,10 @@ var _user = require("./user");
 
 var _user2 = _interopRequireDefault(_user);
 
+var _persona = require("./persona");
+
+var _persona2 = _interopRequireDefault(_persona);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 window.lastMessage = "unset";
@@ -12131,8 +12135,8 @@ var Mailbox = {
 
     var personalikeButton = document.querySelector("[data-type='persona'][data-event='like']");
     if (current_user_id != "" && personalikeButton != null) {
-      var persona_id = userlikeButton.getAttribute("data-id");
-      Persona.onReady(socket, persona_id);
+      var persona_id = personalikeButton.getAttribute("data-id");
+      _persona2.default.onReady(socket, persona_id);
     }
   },
   onReady: function onReady(socket, user_id) {

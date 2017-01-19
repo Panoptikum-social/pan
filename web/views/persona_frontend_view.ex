@@ -17,7 +17,7 @@ defmodule Pan.PersonaFrontendView do
                                     event: "like",
                                     action: "like",
                                     id: persona_id] do
-          [User.likes(persona_id), " ", fa_icon("heart-o"), " Like"]
+          [Persona.likes(persona_id), " ", fa_icon("heart-o"), " Like"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -25,7 +25,7 @@ defmodule Pan.PersonaFrontendView do
                                     event: "like",
                                     action: "unlike" ,
                                     id: persona_id] do
-          [User.likes(persona_id), " ", fa_icon("heart"), " Unlike"]
+          [Persona.likes(persona_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
@@ -44,7 +44,7 @@ defmodule Pan.PersonaFrontendView do
                                     event: "follow",
                                     action: "follow",
                                     id: persona_id] do
-          [User.follows(persona_id), " ", fa_icon("commenting-o"), " Follow"]
+          [Persona.follows(persona_id), " ", fa_icon("commenting-o"), " Follow"]
         end
       _   ->
         content_tag :button, class: "btn btn-success",
@@ -52,7 +52,7 @@ defmodule Pan.PersonaFrontendView do
                                     event: "follow",
                                     action: "unfollow" ,
                                     id: persona_id] do
-          [User.follows(persona_id), " ", fa_icon("commenting"), " Unfollow"]
+          [Persona.follows(persona_id), " ", fa_icon("commenting"), " Unfollow"]
         end
     end
   end

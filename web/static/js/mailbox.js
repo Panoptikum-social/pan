@@ -3,6 +3,7 @@ import Category     from "./category"
 import Podcast      from "./podcast"
 import Episode      from "./episode"
 import User         from "./user"
+import Persona      from "./persona"
 window.lastMessage = "unset"
 
 let Mailbox = {
@@ -42,7 +43,7 @@ let Mailbox = {
 
     let personalikeButton = document.querySelector("[data-type='persona'][data-event='like']")
     if(current_user_id != "" && personalikeButton != null) {
-      let persona_id = userlikeButton.getAttribute("data-id")
+      let persona_id = personalikeButton.getAttribute("data-id")
       Persona.onReady(socket, persona_id)
     }
   },
