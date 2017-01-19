@@ -24,8 +24,8 @@ defmodule Pan.Persona do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title])
-    |> validate_required([:pid, :name, :uri, :email, :description, :image_url, :image_title])
+    |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title], [])
+    |> validate_required([:pid, :name, :uri])
   end
 
 
