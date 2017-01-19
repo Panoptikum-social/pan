@@ -13,12 +13,30 @@ defmodule Pan.PersonaFrontendController do
 
   def show(conn, params) do
     id = String.to_integer(params["id"])
+
     persona = Repo.get!(Persona, id)
               |> Repo.preload(gigs: from(g in Gig, order_by: [desc: :publishing_date],
                                                    preload: :episode))
               |> Repo.preload(engagements: :podcast)
 
     messages = from(m in Message, where: m.persona_id == ^id,
+                                  order_by: [desc: :inserted_at],
+                                  preload: [:persona])
+               |> Repo.paginate(params)
+
+    render(conn, "show.html", persona: persona, messages: messages)
+  end
+
+
+  def persona(conn, params) do
+    pid = params["pid"]
+
+    persona = Repo.one(from p in Pan.Persona, where: p.pid == ^pid)
+              |> Repo.preload(gigs: from(g in Gig, order_by: [desc: :publishing_date],
+                                                   preload: :episode))
+              |> Repo.preload(engagements: :podcast)
+
+    messages = from(m in Message, where: m.persona_id == ^persona.id,
                                   order_by: [desc: :inserted_at],
                                   preload: [:persona])
                |> Repo.paginate(params)
