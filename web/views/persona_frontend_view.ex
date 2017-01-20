@@ -4,9 +4,7 @@ defmodule Pan.PersonaFrontendView do
   alias Pan.Repo
   alias Pan.Follow
   alias Pan.Like
-  alias Pan.User
   alias Pan.Persona
-
 
   def like_or_unlike(enjoyer_id, persona_id) do
     case Repo.get_by(Like, enjoyer_id: enjoyer_id,

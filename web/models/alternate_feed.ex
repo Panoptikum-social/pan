@@ -6,7 +6,7 @@ defmodule Pan.AlternateFeed do
     field :url, :string
     belongs_to :feed, Pan.Feed
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(title url)

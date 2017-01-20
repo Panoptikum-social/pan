@@ -1,6 +1,5 @@
 defmodule Pan.PersonaChannel do
   use Pan.Web, :channel
-  alias Pan.User
   alias Pan.Repo
   alias Pan.Persona
   alias Pan.Message

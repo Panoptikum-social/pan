@@ -18,7 +18,7 @@ defmodule Pan.Episode do
     field :author, :string
     field :subtitle, :string
     field :summary, :string
-    timestamps
+    timestamps()
 
     belongs_to :podcast, Pan.Podcast
 

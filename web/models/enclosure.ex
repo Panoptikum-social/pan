@@ -8,7 +8,7 @@ defmodule Pan.Enclosure do
     field :guid, :string
     belongs_to :episode, Pan.Episode
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(url length type guid)

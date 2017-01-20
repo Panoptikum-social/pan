@@ -1,6 +1,5 @@
 defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
-  alias Pan.Parser.Helpers
   alias Pan.Parser.Contributor
   alias Pan.Parser.Chapter
   alias Pan.Parser.Enclosure

@@ -5,7 +5,6 @@ defmodule Pan.PodcastFrontendView do
   alias Pan.Repo
   alias Pan.Podcast
 
-
   def panel_cycle(counter) do
     Enum.at(["panel-default", "panel-info", "panel-danger",
              "panel-warning", "panel-primary", "panel-success"], rem(counter, 6))

@@ -14,7 +14,7 @@ defmodule Pan.Feed do
     field :last_page_url, :string
     field :hub_link_url, :string
     field :feed_generator, :string
-    timestamps
+    timestamps()
 
     belongs_to :podcast, Pan.Podcast
     has_many :alternate_feeds, Pan.AlternateFeed, on_delete: :delete_all

@@ -12,7 +12,7 @@ defmodule Pan.Chapter do
     has_many :likes, Pan.Like, on_delete: :delete_all
     belongs_to :episode, Pan.Episode
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(start title)

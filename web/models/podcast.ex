@@ -4,7 +4,6 @@ defmodule Pan.Podcast do
   alias Pan.Like
   alias Pan.Follow
   alias Pan.Subscription
-  alias Pan.Engagement
 
   schema "podcasts" do
     field :title, :string
@@ -21,7 +20,7 @@ defmodule Pan.Podcast do
     field :blocked, :boolean, default: false
     field :update_paused, :boolean, default: false
     field :unique_identifier, Ecto.UUID
-    timestamps
+    timestamps()
 
     belongs_to :owner, Pan.User
 

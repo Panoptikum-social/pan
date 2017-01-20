@@ -13,7 +13,7 @@ defmodule Pan.Category do
     many_to_many :podcasts, Pan.Podcast, join_through: "categories_podcasts",
                                          on_replace: :delete
 
-    timestamps
+    timestamps()
   end
 
   @required_fields ~w(title)

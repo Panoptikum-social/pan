@@ -40,9 +40,4 @@ defmodule Pan.PodcastFrontendController do
     conn
     |> render("_subscribe_button.html", podcast: podcast)
   end
-
-
-  defp get_with_relations(id) do
-
-  end
 end

@@ -4,7 +4,7 @@ defmodule Pan.Language do
   schema "languages" do
     field :shortcode, :string
     field :name, :string
-    timestamps
+    timestamps()
 
     many_to_many :podcasts, Pan.Podcast, join_through: "languages_podcasts"
   end

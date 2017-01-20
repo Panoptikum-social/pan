@@ -19,11 +19,10 @@ defmodule Pan.User do
     field :email_confirmed, :boolean
     field :share_subscriptions, :boolean, default: false
     field :share_follows, :boolean, default: false
-    timestamps
+    timestamps()
 
     many_to_many :podcasts_i_subscribed, Pan.Podcast,
                                          join_through: "subscriptions"
-    has_many :contributor_identities, Pan.Contributor
 
     many_to_many :users_i_like, Pan.User,
                                 join_through: "likes",

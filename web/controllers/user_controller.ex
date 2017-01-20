@@ -83,7 +83,7 @@ defmodule Pan.UserController do
     from_id = String.to_integer(from)
     into_id   = String.to_integer(into)
 
-    from(c in Pan.Contributor, where: c.user_id == ^from_id)
+    from(c in Pan.Manifestation, where: c.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
 
     from(f in Pan.FeedBacklog, where: f.user_id == ^from_id)
