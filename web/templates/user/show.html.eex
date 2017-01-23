@@ -1,23 +1,29 @@
 <h1>Showing User</h1>
 
 <dl class="dl-horizontal">
-  <dt>Id</dt> 
+  <dt>Id</dt>
   <dd><%= @user.id %></dd>
-  
-  <dt>Username</dt> 
+
+  <dt>Username</dt>
   <dd><%= @user.username %></dd>
-  
+
   <dt>Name</dt>
   <dd><%= @user.name %></dd>
 
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
 
+  <dt>Inserted at</dt>
+  <dd><%= @user.inserted_at %></dd>
+
+  <dt>Updated at</dt>
+  <dd><%= @user.updated_at %></dd>
+
   <dt>Admin</dt>
   <dd>
-    <%= if @user.admin do %> 
+    <%= if @user.admin do %>
       <%= fa_icon("check-square-o") %>
-    <% else %>  
+    <% else %>
       <%= fa_icon("square-o") %>
     <% end %>
   </dd>

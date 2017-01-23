@@ -3,7 +3,6 @@
                           class: "btn btn-primary" %>
 </p>
 
-
 <h1>Listing Users</h1>
 
 <table id="datatable" class="table table-striped table-condensed table-bordered">
@@ -34,12 +33,14 @@
         <td><nobr><%= if user.password_hash == nil, do: false %></nobr></td>
 
         <td><nobr>
+          <%= link "Show", to: user_path(@conn, :show, user.id),
+                           class: "btn btn-default btn-xs" %>
+          <%= link "Edit", to: user_path(@conn, :edit, user.id),
+                           class: "btn btn-warning btn-xs" %>
           <%= link "Delete", to: user_path(@conn, :delete, user),
                        method: :delete,
                        data: [confirm: "Are you sure?"],
                        class: "btn btn-danger btn-xs" %>
-          <%= link "Show", to: user_path(@conn, :show, user.id),
-                           class: "btn btn-default btn-xs" %>
           </nobr></td>
       </tr>
     <% end %>
