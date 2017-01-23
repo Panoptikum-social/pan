@@ -33,6 +33,10 @@ defmodule Pan.UserFrontendController do
 
     case Repo.insert(changeset) do
       {:ok, user} ->
+        Phoenix.Token.sign(Pan.Endpoint, "user", user.id)
+        |> Pan.Email.email_confirmation_link_html_email(user.email)
+        |> Pan.Mailer.deliver_now()
+
         conn
         |> Pan.Auth.login(user)
         |> put_flash(:info, "Your account @#{user.name} has been created!")
