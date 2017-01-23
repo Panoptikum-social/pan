@@ -1,6 +1,11 @@
+<p class="pull-right">
+  <%= link "Create Subscriptions", to: feed_backlog_path(@conn, :subscribe),
+                                   class: "btn btn-info" %>
+</p>
+
 <h2>Listing <%= @feedcount %> backlog feeds</h2>
 
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped table-bordered">
   <thead>
     <tr>
       <th>Url</th>
@@ -43,9 +48,10 @@
   </tbody>
 </table>
 
-<p>
-  <%= link "Create Subscriptions", to: feed_backlog_path(@conn, :subscribe),
-                                   class: "btn btn-warning" %>
-</p>
+<script>
+  $(document).ready(function() {
+      $('#datatable').DataTable();
+  } );
+</script>
 
 <%= link "New feed backlog", to: feed_backlog_path(@conn, :new) %>
