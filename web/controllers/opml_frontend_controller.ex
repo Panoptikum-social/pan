@@ -46,6 +46,13 @@ defmodule Pan.OpmlFrontendController do
   end
 
 
+  def create(conn, _, user) do
+    conn
+    |> put_flash(:info, "No file selected!")
+    |> redirect(to: opml_frontend_path(conn, :new))
+  end
+
+
   def delete(conn, %{"id" => id}, user) do
     opml = Repo.one(from o in Opml, where: o.id == ^id and o.user_id == ^user.id)
 
