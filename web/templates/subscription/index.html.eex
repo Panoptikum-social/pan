@@ -1,6 +1,6 @@
 <h2>Listing subscriptions</h2>
 
-<table class="table table-condensed table-striped">
+<table class="table table-bordered table-condensed table-striped">
   <thead>
     <tr>
       <th>User</th>

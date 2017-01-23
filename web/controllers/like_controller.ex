@@ -3,8 +3,9 @@ defmodule Pan.LikeController do
 
   alias Pan.Like
 
-  def index(conn, _params) do
-    likes = Repo.all(Like)
+  def index(conn, params) do
+    likes = from(Like)
+            |> Repo.paginate(params)
     render(conn, "index.html", likes: likes)
   end
 

@@ -1,6 +1,6 @@
 <h2>Listing likes</h2>
 
-<table class="table">
+<table class="table table-bordered table-condensed table-striped">
   <thead>
     <tr>
       <th>Enjoyer</th>
@@ -32,5 +32,7 @@
 <% end %>
   </tbody>
 </table>
+
+<%= pagination_links @conn, @likes %>
 
 <%= link "New like", to: like_path(@conn, :new) %>

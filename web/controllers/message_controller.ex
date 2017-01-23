@@ -4,7 +4,7 @@ defmodule Pan.MessageController do
   alias Pan.Message
 
   def index(conn, params) do
-    messages = from(Message, preload: :creator)
+    messages = from(Message, preload: [:creator, :persona])
                |> Repo.paginate(params)
 
     render(conn, "index.html", messages: messages)

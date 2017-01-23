@@ -1,6 +1,6 @@
 <h2>Listing languages</h2>
 
-<table class="table">
+<table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
       <th>Shortcode</th>
@@ -25,4 +25,10 @@
   </tbody>
 </table>
 
-<%= link "New language", to: language_path(@conn, :new) %>
+<script>
+  $(document).ready(function() {
+      $('#datatable').DataTable();
+  } );
+</script>
+
+<%= link "New language", to: language_path(@conn, :new) %>s
