@@ -120,6 +120,7 @@ defmodule Pan.Router do
     resources "/opmls", OpmlController
 
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
+    get "/podcasts/:id/pause", PodcastController, :pause
     get "/podcasts/touch/:id/", PodcastController, :touch
     get "/podcasts/delta_import/:id/", PodcastController, :delta_import
     get "/podcasts/fix_owner/:id/", PodcastController, :fix_owner

@@ -206,6 +206,16 @@ defmodule Pan.PodcastController do
   end
 
 
+  def pause(conn, %{"id" => id}) do
+    from(p in Podcast, where: p.id == ^id)
+    |> Repo.update_all(set: [update_paused: true])
+
+    conn
+    |> put_flash(:info, "Podcast paused.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
   defp ten_hours_ago do
     Timex.now()
     |> Timex.shift(hours: -10)

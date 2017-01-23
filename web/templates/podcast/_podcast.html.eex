@@ -42,6 +42,9 @@
 
   <dt>Unique identifier</dt>
   <dd><%= @podcast.unique_identifier %></dd>
+
+  <dt>Update paused</dt>
+  <dd><%= @podcast.update_paused %></dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

@@ -26,12 +26,15 @@
         { data: 'website',       title: "Website"},
         { data: 'id',            title: "Links",
           "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-            $(nTd).html("<a href=<%= podcast_path(@conn, :index) %>/" + oData.id + ">Show</a>");
+            $(nTd).html("<nobr>" +
+                        "<a href='<%= podcast_path(@conn, :index) %>/" + oData.id + "'>Show</a> - " +
+                        "<a href='<%= podcast_path(@conn, :index) %>/" + oData.id + "/pause'>Pause</a>" +
+                        "</nobr>");
           }
         },
         { data: 'feed',          title: "Feed",
           "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-            $(nTd).html("<a href=<%= feed_path(@conn, :index) %>/" + oData.feed + "/edit>Edit</a>");
+            $(nTd).html("<a href='<%= feed_path(@conn, :index) %>/" + oData.feed + "/edit'>Edit</a>");
           }
         }
       ],

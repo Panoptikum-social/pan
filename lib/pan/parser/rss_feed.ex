@@ -35,6 +35,9 @@ defmodule Pan.Parser.RssFeed do
       %HTTPotion.ErrorResponse{message: "econnrefused"} ->
         {:error, "connection refused"}
 
+      %HTTPotion.ErrorResponse{message: "req_timedout"} ->
+        {:error, "request timed out"}
+
       %HTTPotion.Response{status_code: 500} ->
         {:error, "internal server error"}
 

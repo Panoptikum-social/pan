@@ -15,7 +15,7 @@
     <%= for feed <- @feeds do %>
       <tr>
         <td><%= feed.self_link_title %></td>
-        <td><%= feed.self_link_url %></td>
+        <td><%= link feed.self_link_url, to: feed.self_link_url %></td>
         <td><%= feed.feed_generator %></td>
         <td><%= feed.podcast.title %></td>
 
