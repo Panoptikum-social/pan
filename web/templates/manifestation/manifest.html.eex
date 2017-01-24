@@ -1,3 +1,13 @@
+<p class="text-center">
+  <a class="btn btn-primary" onclick="toggle_manifestation()">
+    <%= fa_icon "user" %>
+    <%= fa_icon "arrow-leftright " %>
+    <%= fa_icon "arrow-right " %>
+    <%= fa_icon "user-o" %> &nbsp;
+    Toggle Manifestation
+  </a>
+</p>
+
 <div class="row">
   <div class="col-md-6">
     <h1>Users</h1>
@@ -34,7 +44,9 @@
       </tbody>
     </table>
 
+
     <h4>Manifestations</h4>
+
     <div id="userManifestations"></div>
   </div>
 
@@ -54,50 +66,95 @@
         </tr>
       </thead>
       <tbody>
-    <%= for persona <- @personas do %>
-        <tr>
-          <td><%= persona.id %></td>
-          <td><nobr><%= C.String.truncate(persona.pid, 13) %></nobr></td>
-          <td width="50%"><%= persona.name %></td>
-          <td><%= persona.uri %></td>
-          <td><%= persona.email %></td>
+        <%= for persona <- @personas do %>
+            <tr>
+              <td><%= persona.id %></td>
+              <td><nobr><%= C.String.truncate(persona.pid, 13) %></nobr></td>
+              <td width="50%"><%= persona.name %></td>
+              <td><%= persona.uri %></td>
+              <td><%= persona.email %></td>
 
-          <td class="text-right">
-            <nobr>
-              <%= link "Show", to: persona_path(@conn, :show, persona), class: "btn btn-default btn-xs" %>
-              <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-warning btn-xs" %>
-            </nobr>
-          </td>
-        </tr>
-    <% end %>
+              <td class="text-right">
+                <nobr>
+                  <%= link "Show", to: persona_path(@conn, :show, persona), class: "btn btn-default btn-xs" %>
+                  <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-warning btn-xs" %>
+                </nobr>
+              </td>
+            </tr>
+        <% end %>
       </tbody>
     </table>
+
+
+    <h4>Manifestations</h4>
+
+    <div id="personaManifestations"></div>
   </div>
 </div>
 
 <script>
   $(document).ready(function() {
-    var usertable = $('#users').DataTable({
-                      select: "single"
-                    });
+    var usertable = $('#users').DataTable({select: "single"});
 
     usertable
-      .on( 'select', function ( e, dt, type, indexes ) {
-        var rowData = usertable.rows( indexes ).data().toArray();
+      .on( 'select', function (e, dt, type, indexes) {
+        var rowData = usertable.rows(indexes).data().toArray();
+        get_manifestations_by_user(rowData[0][0])
+      })
 
-        $.ajax({
-          type: "GET",
-          url: "<%= manifestation_url(@conn, :index) %>" + '/get/' + rowData[0][0],
-          headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
-          success: function(data) {
-            $('#userManifestations')[0].innerHTML = data
-          }
-        })
-      } )
+    var personatable = $('#personas').DataTable({select: "single"});
+
+    personatable
+      .on( 'select', function (e, dt, type, indexes) {
+        var rowData = personatable.rows(indexes).data().toArray();
+        get_manifestations_by_persona(rowData[0][0])
+      })
+  })
 
 
-    $('#personas').DataTable({
-      select: "single"
-    });
-  });
+  function get_manifestations_by_user(user_id) {
+    $.ajax({
+      type: "GET",
+      url: "<%= manifestation_url(@conn, :index) %>" + '/get_by_user/' + user_id,
+      headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
+      success: function(data) {
+        $('#userManifestations')[0].innerHTML = data
+      }
+    })
+  }
+
+
+  function get_manifestations_by_persona(persona_id) {
+    $.ajax({
+      type: "GET",
+      url: "<%= manifestation_url(@conn, :index) %>" + '/get_by_persona/' + persona_id,
+      headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
+      success: function(data) {
+        $('#personaManifestations')[0].innerHTML = data
+      }
+    })
+  }
+
+
+  function toggle_manifestation() {
+    var user_id = $('#users').DataTable()
+                             .rows({ selected: true })
+                             .data()
+                             .toArray()[0][0]
+    var persona_id =  $('#personas').DataTable()
+                                    .rows({ selected: true })
+                                    .data()
+                                    .toArray()[0][0]
+    $.ajax({
+      type: "POST",
+      url: "<%= manifestation_url(@conn, :toggle) %>",
+      data: { user_id: user_id,
+              persona_id: persona_id},
+      headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
+      success: function(data) {
+        get_manifestations_by_user(user_id)
+        get_manifestations_by_persona(persona_id)
+      }
+    })
+  }
 </script>

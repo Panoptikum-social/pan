@@ -129,8 +129,10 @@ defmodule Pan.Router do
     get "/podcasts/factory", PodcastController, :factory
     resources "/podcasts", PodcastController
 
+    post "/manifestations/toggle", ManifestationController, :toggle
     get "/manifestations/manifest", ManifestationController, :manifest
-    get "/manifestations/get/:id", ManifestationController, :get
+    get "/manifestations/get_by_user/:id", ManifestationController, :get_by_user
+    get "/manifestations/get_by_persona/:id", ManifestationController, :get_by_persona
     resources "/manifestations", ManifestationController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
