@@ -89,7 +89,6 @@ defmodule Pan.Router do
     resources "/gigs", GigController
     resources "/likes", LikeController
     resources "/follows", FollowController
-    resources "/manifestations", ManifestationController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
@@ -129,6 +128,10 @@ defmodule Pan.Router do
     get "/podcasts/orphans", PodcastController, :orphans
     get "/podcasts/factory", PodcastController, :factory
     resources "/podcasts", PodcastController
+
+    get "/manifestations/manifest", ManifestationController, :manifest
+    get "/manifestations/get/:id", ManifestationController, :get
+    resources "/manifestations", ManifestationController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
     get "/maintenance/message_cleanup", MaintenanceController, :message_cleanup

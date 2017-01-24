@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-md-6">
+    <h1>Users</h1>
+
+    <table id="users" class="table table-striped table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Podcaster</th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for user <- @users do %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.username %></td>
+            <td><%= user.email %></td>
+            <td><%= user.podcaster %></td>
+
+            <td><nobr>
+              <%= link "Show", to: user_path(@conn, :show, user.id),
+                               class: "btn btn-default btn-xs" %>
+              <%= link "Edit", to: user_path(@conn, :edit, user.id),
+                               class: "btn btn-warning btn-xs" %>
+              </nobr></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <h4>Manifestations</h4>
+    <div id="userManifestations"></div>
+  </div>
+
+  <div class="col-md-6">
+    <h2>Personas</h2>
+
+    <table id="personas" class="table table-striped table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Pid</th>
+          <th>Name</th>
+          <th>Uri</th>
+          <th>Email</th>
+
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+    <%= for persona <- @personas do %>
+        <tr>
+          <td><%= persona.id %></td>
+          <td><nobr><%= C.String.truncate(persona.pid, 13) %></nobr></td>
+          <td width="50%"><%= persona.name %></td>
+          <td><%= persona.uri %></td>
+          <td><%= persona.email %></td>
+
+          <td class="text-right">
+            <nobr>
+              <%= link "Show", to: persona_path(@conn, :show, persona), class: "btn btn-default btn-xs" %>
+              <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-warning btn-xs" %>
+            </nobr>
+          </td>
+        </tr>
+    <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var usertable = $('#users').DataTable({
+                      select: "single"
+                    });
+
+    usertable
+      .on( 'select', function ( e, dt, type, indexes ) {
+        var rowData = usertable.rows( indexes ).data().toArray();
+
+        $.ajax({
+          type: "GET",
+          url: "<%= manifestation_url(@conn, :index) %>" + '/get/' + rowData[0][0],
+          headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
+          success: function(data) {
+            $('#userManifestations')[0].innerHTML = data
+          }
+        })
+      } )
+
+
+    $('#personas').DataTable({
+      select: "single"
+    });
+  });
+</script>

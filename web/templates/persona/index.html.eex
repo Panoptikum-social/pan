@@ -28,7 +28,7 @@
       <td class="text-right">
         <nobr>
           <%= link "Show", to: persona_path(@conn, :show, persona), class: "btn btn-default btn-xs" %>
-          <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-default btn-xs" %>
+          <%= link "Edit", to: persona_path(@conn, :edit, persona), class: "btn btn-warning btn-xs" %>
           <%= link "Delete", to: persona_path(@conn, :delete, persona),
                              method: :delete,
                              data: [confirm: "Are you sure?"],

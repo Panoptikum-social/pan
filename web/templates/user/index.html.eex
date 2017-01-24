@@ -1,6 +1,8 @@
 <p class="pull-right">
   <%= link "Merge users", to: user_path(@conn, :merge),
                           class: "btn btn-primary" %>
+  <%= link "Manifest users", to: manifestation_path(@conn, :manifest),
+                             class: "btn btn-primary" %>
 </p>
 
 <h1>Listing Users</h1>
