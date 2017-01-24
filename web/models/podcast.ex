@@ -19,6 +19,7 @@ defmodule Pan.Podcast do
     field :explicit, :boolean, default: false
     field :blocked, :boolean, default: false
     field :update_paused, :boolean, default: false
+    field :retired, :boolean, default: false
     field :unique_identifier, Ecto.UUID
     timestamps()
 
@@ -29,16 +30,22 @@ defmodule Pan.Podcast do
     has_many :subscriptions, Pan.Subscription
     has_many :engagements, Pan.Engagement
     has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
-    many_to_many :categories, Pan.Category, join_through: "categories_podcasts", on_delete: :delete_all
-    many_to_many :contributors, Pan.Persona, join_through: "engagements", on_delete: :delete_all
-    many_to_many :listeners, Pan.User, join_through: "subscriptions", on_delete: :delete_all
-    many_to_many :followers, Pan.User, join_through: "likes", join_keys: [podcast_id: :id, enjoyer_id: :id]
-    many_to_many :languages, Pan.Language, join_through: "languages_podcasts", on_delete: :delete_all
+    many_to_many :categories, Pan.Category, join_through: "categories_podcasts",
+                                            on_delete: :delete_all
+    many_to_many :contributors, Pan.Persona, join_through: "engagements",
+                                             on_delete: :delete_all
+    many_to_many :listeners, Pan.User, join_through: "subscriptions",
+                                       on_delete: :delete_all
+    many_to_many :followers, Pan.User, join_through: "likes",
+                                       join_keys: [podcast_id: :id, enjoyer_id: :id]
+    many_to_many :languages, Pan.Language, join_through: "languages_podcasts",
+                                           on_delete: :delete_all
   end
 
 
   @required_fields ~w(title website last_build_date  explicit)
-  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url description summary author owner_id update_paused blocked)
+  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url
+                      description summary author owner_id update_paused blocked retired)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

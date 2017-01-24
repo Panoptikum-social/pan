@@ -39,19 +39,23 @@ defmodule Pan.Parser.RssFeed do
         {:error, "request timed out"}
 
       %HTTPotion.Response{status_code: 500} ->
-        {:error, "internal server error"}
+        {:error, "500: internal server error"}
 
       %HTTPotion.Response{status_code: 503} ->
-        {:error, "service unavailable"}
+        {:error, "503: service unavailable"}
 
       %HTTPotion.Response{status_code: 504} ->
-        {:error, "gateway time-out"}
+        {:error, "504: gateway time-out"}
 
       %HTTPotion.Response{status_code: 404} ->
-        {:error, "feed not found"}
+        {:error, "404: feed not found"}
 
       %HTTPotion.Response{status_code: 403} ->
-        download_and_error_handling(url, "no_headers")
+        if option == "no_headers" do
+          {:error, "403: forbidden"}
+        else
+         download_and_error_handling(url, "no_headers")
+        end
 
       %HTTPotion.Response{status_code: 200, body: feed_xml} ->
         # IO.inspect download(url)

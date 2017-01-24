@@ -46,7 +46,7 @@ defmodule Pan.OpmlFrontendController do
   end
 
 
-  def create(conn, _, user) do
+  def create(conn, _, _user) do
     conn
     |> put_flash(:info, "No file selected!")
     |> redirect(to: opml_frontend_path(conn, :new))

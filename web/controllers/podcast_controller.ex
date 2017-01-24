@@ -34,19 +34,28 @@ defmodule Pan.PodcastController do
 
 
     stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
-                                      (is_nil(p.update_paused) or p.update_paused == false))
+                                      (is_nil(p.update_paused) or p.update_paused == false) and
+                                      (is_nil(p.retired) or p.retired == false))
             |> Repo.aggregate(:count, :id)
 
-    paused = from(p in Podcast, where: p.update_paused == true)
+    paused = from(p in Podcast, where: (p.update_paused == true) and
+                                       (is_nil(p.retired) or p.retired == false))
              |> Repo.aggregate(:count, :id)
 
-    render(conn, "index.html", podcasts: podcasts, stale: stale, paused: paused)
+    retired = from(p in Podcast, where: p.retired == true)
+              |> Repo.aggregate(:count, :id)
+
+    render(conn, "index.html", podcasts: podcasts,
+                               stale: stale,
+                               paused: paused,
+                               retired: retired)
   end
 
 
   def factory(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  where: p.update_paused == true,
+                                  where: p.update_paused == true and
+                                         (is_nil(p.retired) or p.retired == false),
                                   preload: [:feeds])
                |> Repo.all()
 
@@ -163,7 +172,8 @@ defmodule Pan.PodcastController do
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
     podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
-                                         (is_nil(p.update_paused) or p.update_paused == false),
+                                         (is_nil(p.update_paused) or p.update_paused == false) and
+                                         (is_nil(p.retired) or p.retired == false),
                                   order_by: [asc: :updated_at])
                |> Repo.all()
 

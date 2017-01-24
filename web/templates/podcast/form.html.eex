@@ -24,6 +24,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :retired, class: "control-label" %>
+    <%= checkbox f, :retired, class: "form-control" %>
+    <%= error_tag f, :retired %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :website, class: "control-label" %>
     <%= text_input f, :website, class: "form-control" %>
     <%= error_tag f, :website %>
