@@ -63,6 +63,7 @@ defmodule Pan.Parser.RssFeed do
 
         if String.starts_with?(feed_xml, "<html") or
            String.starts_with?(feed_xml, "<!DOCTYPE html>") or
+           String.starts_with?(feed_xml, "<!DOCTYPE HTML") or
            String.starts_with?(feed_xml, "<?php") do
           {:error, "This is an HTML/PHP file, not a feed!"}
         else
