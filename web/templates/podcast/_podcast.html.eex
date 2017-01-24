@@ -45,6 +45,9 @@
 
   <dt>Update paused</dt>
   <dd><%= @podcast.update_paused %></dd>
+
+  <dt>Retired</dt>
+  <dd><%= @podcast.retired %></dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

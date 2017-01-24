@@ -226,6 +226,31 @@ defmodule Pan.PodcastController do
   end
 
 
+  def retirement(conn, _params) do
+    candidates = from(p in Podcast, order_by: [asc: :last_build_date],
+                                    where: p.last_build_date < ago(1, "year") and
+                                           (is_nil(p.retired) or p.retired == false))
+                 |> Repo.all
+                 |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
+
+    retired = from(p in Podcast, where: p.retired == true)
+              |> Repo.all
+
+    render(conn, "retirement.html", candidates: candidates,
+                                    retired: retired)
+  end
+
+
+  def retire(conn, %{"id" => id}) do
+    from(p in Podcast, where: p.id == ^id)
+    |> Repo.update_all(set: [retired: true])
+
+    conn
+    |> put_flash(:info, "Podcast retired.")
+    |> redirect(to: podcast_path(conn, :retirement))
+  end
+
+
   defp ten_hours_ago do
     Timex.now()
     |> Timex.shift(hours: -10)

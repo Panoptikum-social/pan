@@ -121,11 +121,13 @@ defmodule Pan.Router do
 
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
     get "/podcasts/:id/pause", PodcastController, :pause
-    get "/podcasts/touch/:id/", PodcastController, :touch
-    get "/podcasts/delta_import/:id/", PodcastController, :delta_import
-    get "/podcasts/fix_owner/:id/", PodcastController, :fix_owner
-    get "/podcasts/orphans/", PodcastController, :orphans
-    get "/podcasts/factory/", PodcastController, :factory
+    get "/podcasts/touch/:id", PodcastController, :touch
+    get "/podcasts/delta_import/:id", PodcastController, :delta_import
+    get "/podcasts/fix_owner/:id", PodcastController, :fix_owner
+    get "/podcasts/retire/:id", PodcastController, :retire
+    get "/podcasts/retirement", PodcastController, :retirement
+    get "/podcasts/orphans", PodcastController, :orphans
+    get "/podcasts/factory", PodcastController, :factory
     resources "/podcasts", PodcastController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
