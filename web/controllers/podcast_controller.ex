@@ -227,11 +227,17 @@ defmodule Pan.PodcastController do
 
 
   def retirement(conn, _params) do
-    candidates = from(p in Podcast, order_by: [asc: :last_build_date],
-                                    where: p.last_build_date < ago(1, "year") and
-                                           (is_nil(p.retired) or p.retired == false))
-                 |> Repo.all
-                 |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
+    candidates = from(p in Podcast, where: is_nil(p.retired) or p.retired == false,
+                                    join: e in assoc(p, :episodes),
+                                    group_by: [p.id],
+                                    having: max(e.publishing_date) < ago(1, "year"),
+                                    select: %{id: p.id,
+                                              title: p.title,
+                                              author: p.author,
+                                              last_build_date: p.last_build_date,
+                                              last_episode_date: max(e.publishing_date)},
+                                    order_by: max(e.publishing_date))
+                 |> Repo.all()
 
     retired = from(p in Podcast, where: p.retired == true)
               |> Repo.all
