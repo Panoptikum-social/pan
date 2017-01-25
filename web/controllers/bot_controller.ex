@@ -11,12 +11,40 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
+    sqlfrag = "%" <> message <> "%"
+    podcast_ids = from(p in Pan.Podcast, where: ilike(p.title, ^sqlfrag),
+                                      select: p.id)
+                |> Repo.all()
+
+    users_also_liking = from(l in Pan.Like, where: l.podcast_id in ^podcast_ids and
+                                               is_nil(l.chapter_id) and
+                                               is_nil(l.episode_id),
+                                        select: l.enjoyer_id)
+                        |> Repo.all()
+                        |> Enum.uniq
+    also_liked = from(l in Pan.Like, join: p in assoc(l, :podcast),
+                                 where: l.enjoyer_id in ^users_also_liking and
+                                        is_nil(l.chapter_id) and
+                                        is_nil(l.episode_id) and
+                                        not(l.podcast_id in ^podcast_ids),
+                                 group_by: p.id,
+                                 select: [count(l.podcast_id), p.id, p.title],
+                                 order_by: [desc: count(l.podcast_id)],
+                                 limit: 10)
+                 |> Repo.all()
+    reply = case also_liked do
+      [[_, _, title] | _] ->
+        title
+      [] ->
+        "No matches found"
+    end
+
     data = %{
       recipient: %{
         id: sender_id
       },
       message: %{
-        text: message
+        text: reply
       }
     }
     |> Poison.encode!
