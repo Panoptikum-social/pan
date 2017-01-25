@@ -3,20 +3,19 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Podcast</th>
+      <th>Id</th>
+      <th>Guid</th>
       <th>Title</th>
       <th>Publishing date</th>
-      <th>Duration</th>
       <th>Author</th>
-      <th>Subtitle</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
     <%= for episode <- @episodes do %>
         <tr>
-          <td><%= link episode.podcast.id,
-                       to: podcast_path(@conn, :show, episode.podcast) %></td>
+          <td><%= episode.id %></td>
+          <td><%= episode.guid %></td>
           <td>
             <%= if episode.title == last_episode_title do %>
               <span class="label label-warning">
@@ -28,14 +27,7 @@
             <% last_episode_title = episode.title %>
           </td>
           <td><%= episode.publishing_date %></td>
-          <td><%= episode.duration %></td>
           <td><%= episode.author %></td>
-          <td>
-            <%= String.slice(episode.subtitle, 0, 100) %>
-            <%= if episode.subtitle && String.length(episode.subtitle) > 100 do %>
-             ...
-            <% end %>
-          </td>
 
           <td class="text-right">
             <%= link "Edit", to: episode_path(@conn, :edit, episode), class: "btn btn-default btn-xs" %>

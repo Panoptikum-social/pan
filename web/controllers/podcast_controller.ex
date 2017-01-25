@@ -85,7 +85,7 @@ defmodule Pan.PodcastController do
 
   def show(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-              |> Repo.preload(episodes: from(e in Episode, order_by: e.title))
+              |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date]))
               |> Repo.preload(episodes: :podcast)
               |> Repo.preload(feeds: :podcast)
               |> Repo.preload([:languages, :categories, :contributors])
@@ -186,6 +186,7 @@ defmodule Pan.PodcastController do
     |> put_flash(:info, "Podcasts updated successfully.")
     |> redirect(to: podcast_path(conn, :index))
   end
+
 
   defp delta_import_one(podcast, current_user) do
     notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
