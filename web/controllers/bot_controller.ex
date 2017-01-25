@@ -33,4 +33,10 @@ defmodule Pan.BotController do
     |> put_status(200)
     |> text("ok")
   end
+
+  def message(conn, _params) do
+    conn
+    |> put_status(200)
+    |> text("ok")
+  end
 end
