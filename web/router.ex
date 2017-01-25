@@ -33,6 +33,7 @@ defmodule Pan.Router do
     pipe_through :bot
 
     get "/webhook", BotController, :webhook
+    post "/webhook", BotController, :message
   end
 
 
