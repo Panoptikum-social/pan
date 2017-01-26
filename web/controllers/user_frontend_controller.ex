@@ -114,7 +114,7 @@ defmodule Pan.UserFrontendController do
 
   def my_profile(conn, _params, user) do
     user = from(u in User, where: u.id == ^user.id,
-                           preload: [:personas])
+                           preload: [personas: :redirect])
            |> Repo.one()
 
     render conn, "my_profile.html", user: user

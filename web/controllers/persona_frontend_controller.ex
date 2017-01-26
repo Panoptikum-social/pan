@@ -47,7 +47,7 @@ defmodule Pan.PersonaFrontendController do
                                       preload: [:persona])
                    |> Repo.paginate(params)
 
-        render(conn, "show.html", persona: persona, messages: messages)
+        render(conn, "persona.html", persona: persona, messages: messages)
       redirect_id ->
         persona = Repo.get!(Persona, redirect_id)
         redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
@@ -92,6 +92,47 @@ defmodule Pan.PersonaFrontendController do
           {:error, changeset} ->
             render(conn, "edit.html", persona: persona, changeset: changeset)
         end
+    end
+  end
+
+
+  def redirect(conn, %{"id" => id, "target_id" => target_id}, user) do
+    id = String.to_integer(id)
+    target_id = String.to_integer(target_id)
+
+    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                           select: m.persona_id)
+                  |> Repo.all()
+
+    if (id in persona_ids and target_id in persona_ids) do
+      from(p in Persona, where: p.id == ^id)
+      |> Repo.update_all(set: [redirect_id: target_id])
+
+      conn
+      |> put_flash(:info, "Persona redirected successfully.")
+      |> redirect(to: user_frontend_path(conn, :my_profile))
+    else
+      render(conn, "not_allowed.html")
+    end
+  end
+
+
+  def cancel_redirect(conn, %{"id" => id}, user) do
+    id = String.to_integer(id)
+
+    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                           select: m.persona_id)
+                  |> Repo.all()
+
+    if (id in persona_ids) do
+      from(p in Persona, where: p.id == ^id)
+      |> Repo.update_all(set: [redirect_id: nil])
+
+      conn
+      |> put_flash(:info, "Redirect cancelled successfully.")
+      |> redirect(to: user_frontend_path(conn, :my_profile))
+    else
+      render(conn, "not_allowed.html")
     end
   end
 end

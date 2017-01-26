@@ -90,7 +90,7 @@
           </dl>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-2">
           <%= if persona.image_url do %>
             <object data="<%= persona.image_url %>"
                     alt="<%= persona.image_title%>"
@@ -111,6 +111,34 @@
 
           <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
                            class: "btn btn-warning" %>
+        </div>
+
+        <div class="col-md-4">
+          <h4>Redirection</h4>
+
+          <%= if persona.redirect do %>
+            <p>
+              This persona is redirected to
+              <%= link persona.redirect.name, to: persona_frontend_path(@conn, :persona, persona.redirect.pid) %>.
+            </p>
+            <p>
+              <%= link [fa_icon("unlink"), " Cancel redirection"],
+                       to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
+                       class: "btn btn-warning btn-sm" %>
+            </p>
+          <% else %>
+            <p>This persona is not redirected.</p>
+            <p>Create a redirect to:</p>
+
+            <%= for target_persona <- @user.personas do %>
+              <%= if target_persona.id != persona.id do %>
+                <%= link [fa_icon("arrow-right"), " ", target_persona.name],
+                         to: persona_frontend_path(@conn, :redirect, persona.id,
+                                                   target_id: target_persona.id),
+                         class: "btn btn-danger btn-sm" %><br/>
+              <% end %>
+            <% end %>
+          <% end %>
         </div>
       </div>
     </div>
