@@ -1,11 +1,13 @@
+<h1>My Profile</h1>
+
 <dl class="dl-horizontal">
-  <dt>My user handle</dt>
+  <dt>User Name</dt>
   <dd><%= @user.username %></dd>
 
-  <dt>My Name</dt>
+  <dt>Full Name</dt>
   <dd><%= @user.name %></dd>
 
-  <dt>My Email</dt>
+  <dt>Email</dt>
   <dd><%= @user.email %></dd>
 
   <%= if @user.admin do %>
@@ -42,5 +44,75 @@
   </dd>
 </dl>
 
+<%= link "Edit your data", to: user_frontend_path(@conn, :edit),
+                           class: "btn btn-warning" %>
 
-<%= link "Edit your data", to: user_frontend_path(@conn, :edit) %>
+<h2>Personas</h2>
+
+<p>
+  Your personas are your different identities when you are podcasting.<br/>
+  You might be podcasting in the name of an organisation, a group or use an alias, when you appear
+  contributing to a podcast.<br/>
+  We call all these different identities personas.
+</p>
+
+<%= for persona <- @user.personas do %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= persona.name %>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="dl-horizontal">
+            <dt>Pid</dt>
+            <dd><%= persona.pid %></dd>
+
+            <dt>name</dt>
+            <dd><%= persona.name %></dd>
+
+            <dt>uri</dt>
+            <dd><%= persona.uri %></dd>
+
+            <dt>email</dt>
+            <dd><%= persona.email %></dd>
+
+            <dt>description</dt>
+            <dd><%= persona.description %></dd>
+
+            <dt>image_url</dt>
+            <dd><%= persona.image_url %></dd>
+
+            <dt>image_title</dt>
+            <dd><%= persona.image_title %></dd>
+          </dl>
+        </div>
+
+        <div class="col-md-6">
+          <%= if persona.image_url do %>
+            <object data="<%= persona.image_url %>"
+                    alt="<%= persona.image_title%>"
+                    type="image/png"
+                    width="150"
+                    class="thumbnail">
+              <img src="/images/missing-image.png"
+                   alt="missing image"
+                   width="150"
+                   class="thumbnail" />
+            </object>
+          <% else %>
+              <img src="/images/missing-image.png"
+                   alt="missing image"
+                   width="150"
+                   class="thumbnail" />
+          <% end %>
+
+          <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
+                           class: "btn btn-warning" %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

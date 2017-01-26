@@ -11,8 +11,15 @@
           <div class="col-md-5">
             <div class="row">
               <div class="col-md-5">
-                <object data="<%= @podcast.image_url %>" alt="<%= @podcast.image_title%>" type="image/png" width="150">
-                  <img class=" thumbnail" src="/images/missing-image.png" alt="missing image" width="150">
+                <object data="<%= @podcast.image_url %>"
+                        alt="<%= @podcast.image_title%>"
+                        type="image/png"
+                        width="150"
+                        class="thumbnail">
+                  <img src="/images/missing-image.png"
+                       alt="missing image"
+                       width="150"
+                       class="thumbnail" />
                 </object>
               </div>
               <div class="col-md-7">

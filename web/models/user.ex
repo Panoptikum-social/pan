@@ -21,6 +21,10 @@ defmodule Pan.User do
     field :share_follows, :boolean, default: false
     timestamps()
 
+    has_many :manifestations, Pan.Manifestation
+    many_to_many :personas, Pan.Persona,
+                            join_through: "manifestations"
+
     many_to_many :podcasts_i_subscribed, Pan.Podcast,
                                          join_through: "subscriptions"
 

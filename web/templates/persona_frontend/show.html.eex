@@ -1,11 +1,56 @@
-<h1><%= @persona.name %></h1>
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <%= @persona.name %>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-6">
+        <dl class="dl-horizontal">
+          <dt>Pid</dt>
+          <dd><%= @persona.pid %></dd>
 
-<%= if @current_user do %>
-  <p>
-    <%= like_or_unlike(@current_user.id, @persona.id) %>
-    <%= follow_or_unfollow(@current_user.id, @persona.id) %>
-  </p>
-<% end %>
+          <dt>Name</dt>
+          <dd><%= @persona.name %></dd>
+
+          <%= if @persona.uri do %>
+            <dt>Uri</dt>
+            <dd><%= @persona.uri %></dd>
+          <% end %>
+
+          <%= if @persona.description do %>
+            <dt>Description</dt>
+            <dd><%= @persona.description %></dd>
+          <% end %>
+        </dl>
+      </div>
+
+      <div class="col-md-6">
+        <%= if @persona.image_url do %>
+          <object data="<%= @persona.image_url %>"
+                  alt="<%= @persona.image_title%>"
+                  type="image/png"
+                  width="150"
+                  class="thumbnail">
+            <img src="/images/missing-image.png"
+                 alt="missing image"
+                 width="150"
+                 class="thumbnail" />
+          </object>
+        <% end %>
+      </div>
+    </div>
+
+    <%= if @current_user do %>
+      <p>
+        <%= like_or_unlike(@current_user.id, @persona.id) %>
+        <%= follow_or_unfollow(@current_user.id, @persona.id) %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
 
 <div class="row">
   <%= if @persona.gigs != [] do %>

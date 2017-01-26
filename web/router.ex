@@ -70,12 +70,13 @@ defmodule Pan.Router do
     get "/edit_password", UserFrontendController, :edit_password
     put "/update_password", UserFrontendController, :update_password
 
+    resources "/personas", PersonaFrontendController, only: [:edit, :update]
+
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/import/:id", OpmlFrontendController, :import
 
-
-   get "/my_recommendations", RecommendationFrontendController, :my_recommendations
-   resources "/recommendations", RecommendationFrontendController, only: [:create]
+    get "/my_recommendations", RecommendationFrontendController, :my_recommendations
+    resources "/recommendations", RecommendationFrontendController, only: [:create]
   end
 
 
