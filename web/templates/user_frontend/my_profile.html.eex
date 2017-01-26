@@ -118,24 +118,30 @@
 
           <%= if persona.redirect do %>
             <p>
-              This persona is redirected to
-              <%= link persona.redirect.name, to: persona_frontend_path(@conn, :persona, persona.redirect.pid) %>.
+              <p>This persona is redirected to:<p/>
+              <%= link [fa_icon("user"), " ", persona.redirect.name],
+                        to: persona_frontend_path(@conn, :persona, persona.redirect.pid),
+                        class: "btn btn-default btn-xs" %> (<%= persona.redirect.pid %>).
             </p>
             <p>
               <%= link [fa_icon("unlink"), " Cancel redirection"],
                        to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
-                       class: "btn btn-warning btn-sm" %>
+                       class: "btn btn-warning btn-xs" %>
             </p>
           <% else %>
-            <p>This persona is not redirected.</p>
-            <p>Create a redirect to:</p>
+            <p>
+              This persona is not redirected.<br/>
+              Create a redirection to:
+            </p>
 
             <%= for target_persona <- @user.personas do %>
               <%= if target_persona.id != persona.id do %>
-                <%= link [fa_icon("arrow-right"), " ", target_persona.name],
-                         to: persona_frontend_path(@conn, :redirect, persona.id,
-                                                   target_id: target_persona.id),
-                         class: "btn btn-danger btn-sm" %><br/>
+                <p>
+                  <%= link [fa_icon("arrow-right"), " ", target_persona.name],
+                           to: persona_frontend_path(@conn, :redirect, persona.id,
+                                                     target_id: target_persona.id),
+                           class: "btn btn-danger btn-xs" %> (<%= target_persona.pid %>)
+                </p>
               <% end %>
             <% end %>
           <% end %>
