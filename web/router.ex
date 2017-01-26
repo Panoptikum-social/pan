@@ -136,7 +136,8 @@ defmodule Pan.Router do
     resources "/manifestations", ManifestationController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
-    get "/maintenance/remove_duplicate_episodes", MaintenanceController, :remove_duplicate_episodes
+    get "/maintenance/remove_duplicate_chapters", MaintenanceController, :remove_duplicate_chapters
+    get "/maintenance/remove_duplicate_enclosures", MaintenanceController, :remove_duplicate_enclosures
     get "/maintenance/message_cleanup", MaintenanceController, :message_cleanup
   end
 end

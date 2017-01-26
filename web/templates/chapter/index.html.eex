@@ -27,4 +27,6 @@
   </tbody>
 </table>
 
+<%= pagination_links @chapters %>
+
 <%= link "New chapter", to: chapter_path(@conn, :new) %>

@@ -5,8 +5,9 @@ defmodule Pan.ChapterController do
 
   plug :scrub_params, "chapter" when action in [:create, :update]
 
-  def index(conn, _params) do
-    chapters = Repo.all(Chapter)
+  def index(conn, params) do
+    chapters = from(Chapter)
+               |> Repo.paginate(params)
     render(conn, "index.html", chapters: chapters)
   end
 

@@ -5,8 +5,9 @@ defmodule Pan.EnclosureController do
 
   plug :scrub_params, "enclosure" when action in [:create, :update]
 
-  def index(conn, _params) do
-    enclosures = Repo.all(Enclosure)
+  def index(conn, params) do
+    enclosures = from(Enclosure)
+               |> Repo.paginate(params)
     render(conn, "index.html", enclosures: enclosures)
   end
 

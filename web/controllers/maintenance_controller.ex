@@ -50,35 +50,47 @@ defmodule Pan.MaintenanceController do
   end
 
 
-  def remove_duplicate_episodes(conn, _params) do
-    duplicates = from(e in Episode, group_by: [e.title, e.podcast_id],
-                                    select: [e.title, e.podcast_id, count(e.podcast_id)],
-                                    having: count(e.podcast_id) > 1)
+  def remove_duplicate_chapters(conn, _params) do
+    duplicates = from(c in Chapter, group_by: [c.start, c.episode_id],
+                                    select: [c.start, c.episode_id, count(c.episode_id)],
+                                    having: count(c.episode_id) > 1)
                  |> Repo.all()
 
-    for [title, podcast_id, count] <- duplicates do
+    for [start, episode_id, count] <- duplicates do
       one_less = count - 1
 
-      episode_ids = from(e in Episode, where: e.title == ^title and
-                                              e.podcast_id == ^podcast_id,
+      chapter_ids = from(c in Chapter, where: c.start == ^start and
+                                              c.episode_id == ^episode_id,
                                        limit: ^one_less,
-                                       order_by: [asc: e.publishing_date],
-                                       select: e.id)
+                                       order_by: [asc: c.inserted_at],
+                                       select: c.id)
                     |> Repo.all()
 
-      from(e in Enclosure, where: e.episode_id in ^episode_ids)
+      from(c in Chapter, where: c.id in ^chapter_ids)
       |> Repo.delete_all()
+    end
 
-      from(g in Gig, where: g.episode_id in ^episode_ids)
-      |> Repo.delete_all()
+    render(conn, "remove_duplicate_episodes.html")
+  end
 
-      from(c in Chapter, where: c.episode_id in ^episode_ids)
-      |> Repo.delete_all()
 
-      from(l in Like, where: l.episode_id in ^episode_ids)
-      |> Repo.delete_all()
+  def remove_duplicate_enclosures(conn, _params) do
+    duplicates = from(e in Enclosure, group_by: [e.url, e.episode_id],
+                                      select: [e.url, e.episode_id, count(e.episode_id)],
+                                      having: count(e.episode_id) > 1)
+                 |> Repo.all()
 
-      from(e in Episode, where: e.id in ^episode_ids)
+    for [url, episode_id, count] <- duplicates do
+      one_less = count - 1
+
+      enclosure_ids = from(e in Enclosure, where: e.url == ^url and
+                                                  e.episode_id == ^episode_id,
+                                           limit: ^one_less,
+                                           order_by: [asc: e.inserted_at],
+                                           select: e.id)
+                    |> Repo.all()
+
+      from(e in Enclosure, where: e.id in ^enclosure_ids)
       |> Repo.delete_all()
     end
 

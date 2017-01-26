@@ -22,13 +22,17 @@
       <td><%= enclosure.episode_id %></td>
 
       <td class="text-right">
-        <%= link "Show", to: enclosure_path(@conn, :show, enclosure), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: enclosure_path(@conn, :edit, enclosure), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: enclosure_path(@conn, :delete, enclosure), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        <nobr>
+          <%= link "Show", to: enclosure_path(@conn, :show, enclosure), class: "btn btn-default btn-xs" %>
+          <%= link "Edit", to: enclosure_path(@conn, :edit, enclosure), class: "btn btn-default btn-xs" %>
+          <%= link "Delete", to: enclosure_path(@conn, :delete, enclosure), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        </nobr>
       </td>
     </tr>
 <% end %>
   </tbody>
 </table>
+
+<%= pagination_links @enclosures %>
 
 <%= link "New enclosure", to: enclosure_path(@conn, :new) %>
