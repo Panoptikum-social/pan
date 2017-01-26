@@ -74,7 +74,7 @@ defmodule Pan.Parser.Episode do
         plain_episode_map = Map.drop(episode_map, [:chapters, :enclosures, :contributors])
                             |> Map.put_new(:guid, fallback_url)
 
-        case is_new_then_persist(plain_episode_map, podcast.id) do
+        case get_or_insert(plain_episode_map, podcast.id) do
           {:ok, episode} ->
             if episode_map[:chapters] do
               for {_, chapter_map} <- episode_map[:chapters] do
@@ -98,19 +98,6 @@ defmodule Pan.Parser.Episode do
       end
     end
   end
-
-
-  def is_new_then_persist(episode_map, podcast_id) do
-    case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
-      nil ->
-        %Pan.Episode{podcast_id: podcast_id}
-        |> Map.merge(episode_map)
-        |> Repo.insert()
-      episode ->
-        {:exists, episode}
-    end
-  end
-
 
 
   def clean() do

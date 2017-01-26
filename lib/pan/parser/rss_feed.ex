@@ -41,6 +41,9 @@ defmodule Pan.Parser.RssFeed do
       %HTTPotion.Response{status_code: 500} ->
         {:error, "500: internal server error"}
 
+      %HTTPotion.Response{status_code: 502} ->
+        {:error, "502: bad gateway"}
+
       %HTTPotion.Response{status_code: 503} ->
         {:error, "503: service unavailable"}
 
