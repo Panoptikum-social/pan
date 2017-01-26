@@ -50,30 +50,6 @@ defmodule Pan.MaintenanceController do
   end
 
 
-  def remove_duplicate_chapters(conn, _params) do
-    duplicates = from(c in Chapter, group_by: [c.start, c.episode_id],
-                                    select: [c.start, c.episode_id, count(c.episode_id)],
-                                    having: count(c.episode_id) > 1)
-                 |> Repo.all()
-
-    for [start, episode_id, count] <- duplicates do
-      one_less = count - 1
-
-      chapter_ids = from(c in Chapter, where: c.start == ^start and
-                                              c.episode_id == ^episode_id,
-                                       limit: ^one_less,
-                                       order_by: [asc: c.inserted_at],
-                                       select: c.id)
-                    |> Repo.all()
-
-      from(c in Chapter, where: c.id in ^chapter_ids)
-      |> Repo.delete_all()
-    end
-
-    render(conn, "remove_duplicate_episodes.html")
-  end
-
-
   def remove_duplicate_enclosures(conn, _params) do
     duplicates = from(e in Enclosure, group_by: [e.url, e.episode_id],
                                       select: [e.url, e.episode_id, count(e.episode_id)],
