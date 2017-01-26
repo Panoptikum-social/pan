@@ -12,25 +12,23 @@ defmodule Pan.PersonaFrontendController do
 
 
   def index(conn, _params, _user) do
-    personas = Repo.all(from p in Pan.Persona, order_by: :name)
+    personas = Repo.all(from p in Pan.Persona, order_by: :name,
+                                               where: is_nil(p.redirect_id))
     render(conn, "index.html", personas: personas)
   end
 
 
   def show(conn, params, _user) do
     id = String.to_integer(params["id"])
-
     persona = Repo.get!(Persona, id)
-              |> Repo.preload(gigs: from(g in Gig, order_by: [desc: :publishing_date],
-                                                   preload: :episode))
-              |> Repo.preload(engagements: :podcast)
 
-    messages = from(m in Message, where: m.persona_id == ^id,
-                                  order_by: [desc: :inserted_at],
-                                  preload: [:persona])
-               |> Repo.paginate(params)
-
-    render(conn, "show.html", persona: persona, messages: messages)
+    case persona.redirect_id do
+      nil ->
+        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
+      redirect_id ->
+        persona = Repo.get!(Persona, redirect_id)
+        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
+    end
   end
 
 
@@ -42,12 +40,18 @@ defmodule Pan.PersonaFrontendController do
                                                    preload: :episode))
               |> Repo.preload(engagements: :podcast)
 
-    messages = from(m in Message, where: m.persona_id == ^persona.id,
-                                  order_by: [desc: :inserted_at],
-                                  preload: [:persona])
-               |> Repo.paginate(params)
+    case persona.redirect_id do
+      nil ->
+        messages = from(m in Message, where: m.persona_id == ^persona.id,
+                                      order_by: [desc: :inserted_at],
+                                      preload: [:persona])
+                   |> Repo.paginate(params)
 
-    render(conn, "show.html", persona: persona, messages: messages)
+        render(conn, "show.html", persona: persona, messages: messages)
+      redirect_id ->
+        persona = Repo.get!(Persona, redirect_id)
+        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
+    end
   end
 
 
@@ -81,7 +85,7 @@ defmodule Pan.PersonaFrontendController do
         changeset = Persona.changeset(persona, persona_params)
 
         case Repo.update(changeset) do
-          {:ok, persona} ->
+          {:ok, _persona} ->
             conn
             |> put_flash(:info, "Persona updated successfully.")
             |> redirect(to: user_frontend_path(conn, :my_profile))

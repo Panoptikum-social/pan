@@ -1,3 +1,8 @@
+<script>
+  window.history.replaceState('Object', '<%= @persona.name %>',
+                                        '<%= persona_frontend_path(@conn, :persona, @persona.pid) %>');
+</script>
+
 <div class="panel panel-info">
   <div class="panel-heading">
     <h3 class="panel-title">

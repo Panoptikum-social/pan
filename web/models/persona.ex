@@ -4,6 +4,9 @@ defmodule Pan.Persona do
   alias Pan.Repo
   alias Pan.Follow
 
+  @required_fields ~w(pid name uri)
+  @optional_fields ~w(email description image_url image_title redirect_id)
+
   schema "personas" do
     field :pid, :string
     field :name, :string
@@ -13,6 +16,7 @@ defmodule Pan.Persona do
     field :image_url, :string
     field :image_title, :string
 
+    belongs_to :redirect, Pan.Persona
     has_many :engagements, Pan.Engagement
     has_many :gigs, Pan.Gig
 
@@ -24,7 +28,7 @@ defmodule Pan.Persona do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:pid, :name, :uri], [:email, :description, :image_url, :image_title])
+    |> cast(params, @required_fields, @optional_fields)
     |> validate_required([:pid, :name, :uri])
   end
 
