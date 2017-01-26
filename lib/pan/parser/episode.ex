@@ -13,10 +13,10 @@ defmodule Pan.Parser.Episode do
             |> Map.merge(episode_map)
             |> Repo.insert()
           episode ->
-            {:ok, episode}
+            {:exists, episode}
         end
       episode ->
-        {:ok, episode}
+        {:exists, episode}
     end
   end
 
@@ -45,21 +45,24 @@ defmodule Pan.Parser.Episode do
                           |> Map.put_new(:guid, fallback_url)
 
       if plain_episode_map[:guid] do
-        {:ok, episode} = get_or_insert(plain_episode_map, podcast.id)
+        case get_or_insert(plain_episode_map, podcast.id) do
+          {:ok, episode} ->
+            if episode_map[:chapters] do
+              for {_, chapter_map} <- episode_map[:chapters] do
+                Chapter.get_or_insert(chapter_map, episode.id)
+              end
+            end
 
-        if episode_map[:chapters] do
-          for {_, chapter_map} <- episode_map[:chapters] do
-            Chapter.get_or_insert(chapter_map, episode.id)
-          end
+            if episode_map[:enclosures] do
+              for {_, enclosure_map} <- episode_map[:enclosures] do
+                Enclosure.get_or_insert(enclosure_map, episode.id)
+              end
+            end
+
+            Contributor.persist_many(episode_map[:contributors], episode)
+          {:exists, episode} ->
+            true
         end
-
-        if episode_map[:enclosures] do
-          for {_, enclosure_map} <- episode_map[:enclosures] do
-            Enclosure.get_or_insert(enclosure_map, episode.id)
-          end
-        end
-
-        Contributor.persist_many(episode_map[:contributors], episode)
       end
     end
   end
@@ -92,7 +95,6 @@ defmodule Pan.Parser.Episode do
             IO.puts "\n\e[33m === new Episode:  " <> episode.title <> " ===\e[0m"
 
           {:exists, _episode} ->
-            # IO.puts "\n\e[92m === Episode exists:  " <> episode.title <> " ===\e[0m"
             true
         end
       end
