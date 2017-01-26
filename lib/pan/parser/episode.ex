@@ -7,9 +7,14 @@ defmodule Pan.Parser.Episode do
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        %Pan.Episode{podcast_id: podcast_id}
-        |> Map.merge(episode_map)
-        |> Repo.insert()
+        case Repo.get_by(Pan.Episode, title: episode_map[:title], podcast_id: podcast_id) do
+          nil ->
+            %Pan.Episode{podcast_id: podcast_id}
+            |> Map.merge(episode_map)
+            |> Repo.insert()
+          episode ->
+            {:ok, episode}
+        end
       episode ->
         {:ok, episode}
     end
