@@ -3,11 +3,7 @@ defmodule Pan.MaintenanceController do
   alias Pan.CategoryPodcast
   alias Pan.Subscription
   alias Pan.Message
-  alias Pan.Episode
   alias Pan.Enclosure
-  alias Pan.Gig
-  alias Pan.Chapter
-  alias Pan.Like
 
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],

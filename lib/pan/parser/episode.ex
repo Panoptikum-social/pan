@@ -60,7 +60,7 @@ defmodule Pan.Parser.Episode do
             end
 
             Contributor.persist_many(episode_map[:contributors], episode)
-          {:exists, episode} ->
+          {:exists, _episode} ->
             true
         end
       end

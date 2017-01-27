@@ -95,6 +95,7 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+    resources "/delegations", DelegationController
 
     resources "/personas", PersonaController
 

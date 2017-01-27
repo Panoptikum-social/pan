@@ -1,0 +1,28 @@
+<h2>Listing delegations</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Delegate</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for delegation <- @delegations do %>
+    <tr>
+      <td><%= delegation.persona_id %></td>
+      <td><%= delegation.delegate_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: delegation_path(@conn, :show, delegation), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: delegation_path(@conn, :edit, delegation), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: delegation_path(@conn, :delete, delegation), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New delegation", to: delegation_path(@conn, :new) %>
