@@ -8,7 +8,7 @@ defmodule Pan.PodcastFrontendController do
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
                                   where: is_nil(p.blocked) or p.blocked == false,
-                                  preload: [:categories])
+                                  preload: :categories)
                |> Repo.paginate(params)
 
     render(conn, "index.html", podcasts: podcasts)
@@ -35,7 +35,7 @@ defmodule Pan.PodcastFrontendController do
 
   def subscribe_button(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-    podcast = Repo.preload(podcast, :feeds)
+              |> Repo.preload(:feeds)
 
     conn
     |> render("_subscribe_button.html", podcast: podcast)

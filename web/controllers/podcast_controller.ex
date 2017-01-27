@@ -29,7 +29,7 @@ defmodule Pan.PodcastController do
 
   def index(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  preload: [:feeds])
+                                  preload: :feeds)
                |> Repo.all
 
 
@@ -56,7 +56,7 @@ defmodule Pan.PodcastController do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   where: p.update_paused == true and
                                          (is_nil(p.retired) or p.retired == false),
-                                  preload: [:feeds])
+                                  preload: :feeds)
                |> Repo.all()
 
     render(conn, "factory.html", podcasts: podcasts)

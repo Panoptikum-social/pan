@@ -70,6 +70,7 @@ defmodule Pan.Router do
     get "/edit_password", UserFrontendController, :edit_password
     put "/update_password", UserFrontendController, :update_password
 
+    get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
     get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
     get "/personas/:id/redirect", PersonaFrontendController, :redirect
     resources "/personas", PersonaFrontendController, only: [:edit, :update]

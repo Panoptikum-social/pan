@@ -4,6 +4,7 @@ defmodule Pan.PersonaFrontendController do
   alias Pan.Message
   alias Pan.Manifestation
   alias Pan.Gig
+  alias Pan.Delegation
 
 
   def action(conn, _) do
@@ -44,7 +45,7 @@ defmodule Pan.PersonaFrontendController do
       nil ->
         messages = from(m in Message, where: m.persona_id == ^persona.id,
                                       order_by: [desc: :inserted_at],
-                                      preload: [:persona])
+                                      preload: :persona)
                    |> Repo.paginate(params)
 
         render(conn, "persona.html", persona: persona, messages: messages)
@@ -131,6 +132,39 @@ defmodule Pan.PersonaFrontendController do
       conn
       |> put_flash(:info, "Redirect cancelled successfully.")
       |> redirect(to: user_frontend_path(conn, :my_profile))
+    else
+      render(conn, "not_allowed.html")
+    end
+  end
+
+
+  def toggle_delegation(conn, %{"id" => id, "delegate_id" => delegate_id}, user) do
+    id = String.to_integer(id)
+    delegate_id = String.to_integer(delegate_id)
+
+    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                           select: m.persona_id)
+                  |> Repo.all()
+
+    if (id in persona_ids and delegate_id in persona_ids) do
+      case Repo.get_by(Delegation, persona_id: id,
+                                   delegate_id: delegate_id) do
+        nil ->
+          %Delegation{persona_id: id,
+                      delegate_id: delegate_id}
+          |> Repo.insert
+
+          conn
+          |> put_flash(:info, "Persona delegated successfully.")
+          |> redirect(to: user_frontend_path(conn, :my_profile))
+
+        delegation ->
+          Repo.delete!(delegation)
+
+          conn
+          |> put_flash(:info, "Delegation deleted successfully.")
+          |> redirect(to: user_frontend_path(conn, :my_profile))
+      end
     else
       render(conn, "not_allowed.html")
     end

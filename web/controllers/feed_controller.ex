@@ -9,7 +9,7 @@ defmodule Pan.FeedController do
 
   def index(conn, _params) do
     feeds = Repo.all(Feed)
-    feeds = Repo.preload(feeds,:podcast)
+            |> Repo.preload(:podcast)
     render(conn, "index.html", feeds: feeds)
   end
 

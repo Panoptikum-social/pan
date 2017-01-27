@@ -6,6 +6,7 @@ defmodule Pan.UserFrontendController do
   alias Pan.Follow
   alias Pan.Subscription
   alias Pan.Podcast
+  alias Pan.Persona
 
 
   plug :scrub_params, "user" when action in [:create, :update]
@@ -49,10 +50,8 @@ defmodule Pan.UserFrontendController do
 
   def show(conn, params, _user) do
     id = String.to_integer(params["id"])
-    user = Repo.one(from u in Pan.User, where: u.id == ^id)
-           |> Repo.preload([:users_i_like,
-                            :categories_i_like,
-                            :podcasts_i_subscribed])
+    user = Repo.get!(User, id)
+           |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
 
     podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
                                                             and not is_nil(l.podcast_id),
@@ -61,7 +60,7 @@ defmodule Pan.UserFrontendController do
 
     messages = from(m in Message, where: m.creator_id == ^id,
                                   order_by: [desc: :inserted_at],
-                                  preload: [:creator])
+                                  preload: :creator)
                |> Repo.paginate(params)
 
     render conn, "show.html", user: user,
@@ -113,10 +112,9 @@ defmodule Pan.UserFrontendController do
 
 
   def my_profile(conn, _params, user) do
-    user = from(u in User, where: u.id == ^user.id,
-                           preload: [personas: :redirect])
-           |> Repo.one()
-
+    user = Repo.get!(User, user.id)
+           |> Repo.preload(personas: from(Persona, order_by: :name,
+                                                   preload: [:delegates, :redirect]))
     render conn, "my_profile.html", user: user
   end
 
@@ -134,7 +132,7 @@ defmodule Pan.UserFrontendController do
                       (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
                       (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
                order_by: [desc: :inserted_at],
-               preload: [:creator])
+               preload: :creator)
                |> Repo.paginate(params)
 
     render conn, "my_messages.html", user: user,

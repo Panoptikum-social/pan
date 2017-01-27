@@ -20,6 +20,9 @@ defmodule Pan.Persona do
     has_many :engagements, Pan.Engagement
     has_many :gigs, Pan.Gig
 
+    many_to_many :delegates, Pan.Persona,
+                             join_through: "delegations",
+                             join_keys: [persona_id: :id, delegate_id: :id]
     timestamps()
   end
 
