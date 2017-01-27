@@ -58,7 +58,7 @@
 
 
 <div class="row">
-  <%= if @persona.gigs != [] do %>
+  <%= if @gigs != [] do %>
     <div class="col-md-6">
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -73,7 +73,7 @@
             </tr>
           </thead>
           <tbody>
-            <%= for gig <- @persona.gigs do %>
+            <%= for gig <- @gigs do %>
               <tr>
                 <td><%= format_date(gig.publishing_date) %></td>
                 <td><%= link [fa_icon("headphones"), " ", C.String.truncate(gig.episode.title, 40)],
@@ -88,7 +88,7 @@
     </div>
   <% end %>
 
-  <%= if @persona.engagements != [] do %>
+  <%= if @engagements != [] do %>
     <div class="col-md-6">
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -102,7 +102,7 @@
             </tr>
           </thead>
           <tbody>
-            <%= for engagement <- @persona.engagements do %>
+            <%= for engagement <- @engagements do %>
               <tr>
                 <td> <%= link [fa_icon("podcast"), " ", C.String.truncate(engagement.podcast.title, 50)],
                                to: podcast_frontend_path(@conn, :show, engagement.podcast),

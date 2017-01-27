@@ -5,6 +5,7 @@ defmodule Pan.PersonaFrontendController do
   alias Pan.Manifestation
   alias Pan.Gig
   alias Pan.Delegation
+  alias Pan.Engagement
 
 
   def action(conn, _) do
@@ -35,20 +36,33 @@ defmodule Pan.PersonaFrontendController do
 
   def persona(conn, params, _user) do
     pid = params["pid"]
-
     persona = Repo.one(from p in Persona, where: p.pid == ^pid)
-              |> Repo.preload(gigs: from(g in Gig, order_by: [desc: :publishing_date],
-                                                   preload: :episode))
-              |> Repo.preload(engagements: :podcast)
+
+    delegator_ids = from(d in Delegation, where: d.delegate_id == ^persona.id,
+                                          select: d.persona_id)
+                    |> Repo.all
+    persona_ids = [persona.id | delegator_ids]
+
+    gigs = from(g in Gig, where: g.persona_id in ^persona_ids,
+                          order_by: [desc: :publishing_date],
+                          preload: :episode)
+           |> Repo.all()
+
+    engagements = from(e in Engagement, where: e.persona_id in ^persona_ids,
+                                        preload: :podcast)
+                  |> Repo.all()
 
     case persona.redirect_id do
       nil ->
-        messages = from(m in Message, where: m.persona_id == ^persona.id,
+        messages = from(m in Message, where: m.persona_id in ^persona_ids,
                                       order_by: [desc: :inserted_at],
                                       preload: :persona)
                    |> Repo.paginate(params)
 
-        render(conn, "persona.html", persona: persona, messages: messages)
+        render(conn, "persona.html", persona: persona,
+                                     messages: messages,
+                                     gigs: gigs,
+                                     engagements: engagements)
       redirect_id ->
         persona = Repo.get!(Persona, redirect_id)
         redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
