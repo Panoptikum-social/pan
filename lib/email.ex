@@ -18,4 +18,13 @@ defmodule Pan.Email do
     |> put_html_layout({Pan.LayoutView, "email.html"})
     |> render("email_confirmation_link.html", token: token)
   end
+
+  def confirm_persona_claim_link_html_email(token, user, email_address) do
+    new_email()
+    |> to(email_address)
+    |> from(user.email)
+    |> subject("Panoptikum - Persona manifestation confirmation request")
+    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> render("confirm_persona_claim_link.html", token: token, user: user)
+  end
 end

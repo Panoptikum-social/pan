@@ -1,0 +1,23 @@
+<p>
+  The User with the full name <b><%= @user.name %></b> in <a href="https://panoptikum.io">Panoptikum.io</a>
+  would like to have access to manifest her/himself to the persona with your email address.
+</p>
+<p>
+  The user's user name is <b><%= @user.username %></b> with the email address
+  <a href="mailto:<%= @user.email %>"><%= @user.email %></a>.
+</p>
+<p>
+  You could ...
+  <ul>
+    <li> ignore this mail, if you don't want to provide access.</li>
+    <li> reply to this email, if you have questions to that user, before you want to provide access.</li>
+    <li>
+      check out the user's
+      <%= link "public profile", to: Pan.Router.Helpers.user_frontend_url(Pan.Endpoint, :show, @user) %>
+      in Panoptikum before.
+    </li>
+    <li>
+      grant access to your persona within the next 48 hours by clicking on this link:
+      <%= link "Grant Access", to: Pan.Router.Helpers.persona_frontend_url(Pan.Endpoint, :grant_access, @user, token: @token) %>
+    </li>
+</p>

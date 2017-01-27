@@ -1,6 +1,10 @@
 <script>
-  window.history.replaceState('Object', '<%= @persona.name %>',
-                                        '<%= persona_frontend_path(@conn, :persona, @persona.pid) %>');
+  $(document).ready(function() {
+    $('[data-toggle="popover"]').popover()
+
+    window.history.replaceState('Object', '<%= @persona.name %>',
+                                          '<%= persona_frontend_path(@conn, :persona, @persona.pid) %>')
+  })
 </script>
 
 <div class="panel panel-info">
@@ -145,4 +149,22 @@
       </div>
     </div>
   </div>
+<% end %>
+
+<%= if @current_user && @current_user.podcaster == true  && @current_user.email_confirmed && @persona.email != nil do %>
+  <%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
+                    class: "btn btn-normal",
+                    data: [confirm: "Are you sure?"] %>
+
+  <button class="btn btn-primary btn-sm"
+          data-toggle="popover"
+          data-placement="right"
+          data-title="Personas"
+          data-html="true"
+          data-content="You can send an email to the owner of this persona and ask her for permission
+                        to add you as a manifestation of this persona.<br/>
+                        Your name, username and email address will be sent alongside in the email
+                        to give the owner a chance to get in contact with you.">
+    <%= fa_icon "info-circle" %> Help
+  </button>
 <% end %>

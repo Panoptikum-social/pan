@@ -6,7 +6,7 @@ defmodule Pan.PersonaFrontendController do
   alias Pan.Gig
   alias Pan.Delegation
   alias Pan.Engagement
-
+  alias Pan.Manifestation
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -181,6 +181,50 @@ defmodule Pan.PersonaFrontendController do
       end
     else
       render(conn, "not_allowed.html")
+    end
+  end
+
+
+  def claim(conn, %{"id" => id}, user) do
+    email = Repo.get(Persona, id).email
+
+    Phoenix.Token.sign(Pan.Endpoint, "persona", id)
+    |> Pan.Email.confirm_persona_claim_link_html_email(user, email)
+    |> Pan.Mailer.deliver_now()
+
+    render(conn, "email_sent.html")
+  end
+
+
+  def grant_access(conn, %{"id" => id, "token" => token}, _user) do
+    user_id = String.to_integer(id)
+
+    case Pan.Auth.grant_access_by_token(conn, token) do
+      {:ok, persona_id} ->
+        case Repo.get_by(Manifestation, user_id: user_id,
+                                        persona_id: persona_id) do
+          nil ->
+            %Manifestation{user_id: user_id,
+                           persona_id: persona_id}
+            |> Repo.insert
+
+            conn
+            |> put_flash(:info, "Access has been granted successfully!")
+            |> render("grant_access.html")
+
+          delegation ->
+            conn
+            |> put_flash(:info, "Access was already in place!")
+            |> render("grant_access.html")
+        end
+      {:error, :expired} ->
+        conn
+        |> put_flash(:error, "The token has expired already!")
+        |> render("grant_access.html")
+      {:error, :invalid} ->
+        conn
+        |> put_flash(:error, "Invalid token!")
+        |> render("grant_access.html")
     end
   end
 end

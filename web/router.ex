@@ -38,6 +38,8 @@ defmodule Pan.Router do
     get "/episodes/player/:id", EpisodeFrontendController, :player
 
     resources "/users", UserFrontendController, only: [:show, :index, :new, :create]
+
+    get "/:id/grant_access", PersonaFrontendController, :grant_access
     resources "/personas", PersonaFrontendController, only: [:show, :index]
 
     get "/forgot_password", UserController, :forgot_password
@@ -70,6 +72,7 @@ defmodule Pan.Router do
     get "/edit_password", UserFrontendController, :edit_password
     put "/update_password", UserFrontendController, :update_password
 
+    get "/personas/:id/claim", PersonaFrontendController, :claim
     get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
     get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
     get "/personas/:id/redirect", PersonaFrontendController, :redirect

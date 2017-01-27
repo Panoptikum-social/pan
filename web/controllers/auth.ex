@@ -75,6 +75,20 @@ defmodule Pan.Auth do
   end
 
 
+  def grant_access_by_token(conn, token) do
+    case Phoenix.Token.verify(Pan.Endpoint, "persona", token, max_age: 60*60*48) do
+      {:ok, persona_id} ->
+        {:ok, String.to_integer(persona_id)}
+      {:error, :expired} ->
+        {:error, :expired}
+      {:error, :invalid} ->
+        {:error, :invalid}
+      true ->
+        {:error, :invalid}
+    end
+  end
+
+
   import Phoenix.Controller
   alias Pan.Router.Helpers
 
