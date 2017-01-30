@@ -6,6 +6,17 @@ defmodule Pan.PersonaFrontendView do
   alias Pan.Like
   alias Pan.Persona
 
+
+  def pro(user) do
+    user.pro_until && Ecto.DateTime.compare(user.pro_until, now()) == :gt
+  end
+
+  def now() do
+    Timex.now()
+    |> Timex.to_erl()
+    |> Ecto.DateTime.from_erl()
+  end
+
   def like_or_unlike(enjoyer_id, persona_id) do
     case Repo.get_by(Like, enjoyer_id: enjoyer_id,
                            persona_id: persona_id) do

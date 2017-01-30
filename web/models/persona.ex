@@ -35,6 +35,12 @@ defmodule Pan.Persona do
     |> validate_required([:pid, :name, :uri])
   end
 
+  def user_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, ["name", "uri"], ["email"])
+    |> validate_required([:pid, :name, :uri])
+  end
+
 
   def like(persona_id, current_user_id) do
     case Repo.get_by(Like, enjoyer_id: current_user_id,

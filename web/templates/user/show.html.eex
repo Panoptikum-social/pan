@@ -36,4 +36,7 @@
       <%= fa_icon("square-o") %>
     <% end %>
   </dd>
+
+  <dt>Pro until</dt>
+  <dd><%= @user.pro_until %></dd>
 </dl>

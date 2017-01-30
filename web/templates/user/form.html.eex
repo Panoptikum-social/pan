@@ -21,19 +21,33 @@
     <%= label f, :email, class: "control-label" %>
     <%= email_input f, :email, class: "form-control" %>
     <%= error_tag f, :email %>
-
   </div>
+
   <div class="form-group">
     <%= label f, :admin, class: "control-label" %>
     <%= checkbox f, :admin, class: "form-control" %>
     <%= error_tag f, :admin %>
-
   </div>
+
   <div class="form-group">
     <%= label f, :podcaster, class: "control-label" %>
     <%= checkbox f, :podcaster, class: "form-control" %>
     <%= error_tag f, :podcaster %>
   </div>
+
+  <div class="form-group">
+    <%= label f, :pro_until, class: "control-label" %>
+
+    <span class="form-control">
+    <%= datetime_select f, :pro_until, builder: fn b -> %>
+      Date: <%= b.(:day, [prompt: ""]) %> / <%= b.(:month, [prompt: ""]) %> / <%= b.(:year, [prompt: "", options: 2017..2027]) %>
+      Time: <%= b.(:hour, [prompt: ""]) %> : <%= b.(:minute, [prompt: ""]) %>
+    <% end %>
+
+    </span>
+    <%= error_tag f, :pro_until %>
+  </div>
+
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

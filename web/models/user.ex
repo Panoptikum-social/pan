@@ -5,7 +5,7 @@ defmodule Pan.User do
   alias Pan.Follow
 
   @required_fields ~w(name username email)
-  @optional_fields ~w(admin podcaster share_subscriptions share_follows)
+  @optional_fields ~w(admin podcaster share_subscriptions share_follows pro_until)
 
   schema "users" do
     field :name, :string
@@ -19,6 +19,7 @@ defmodule Pan.User do
     field :email_confirmed, :boolean
     field :share_subscriptions, :boolean, default: false
     field :share_follows, :boolean, default: false
+    field :pro_until, Ecto.DateTime
     timestamps()
 
     has_many :manifestations, Pan.Manifestation

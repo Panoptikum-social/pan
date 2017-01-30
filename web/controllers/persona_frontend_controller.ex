@@ -99,7 +99,12 @@ defmodule Pan.PersonaFrontendController do
         render(conn, "not_allowed.html")
       manifestation ->
         persona = manifestation.persona
-        changeset = Persona.changeset(persona, persona_params)
+
+        if user.pro_until && user.pro_until > Pan.PersonaFrontendView.now() do
+          changeset = Persona.changeset(persona, persona_params)
+        else
+          changeset = Persona.user_changeset(persona, persona_params)
+        end
 
         case Repo.update(changeset) do
           {:ok, _persona} ->
