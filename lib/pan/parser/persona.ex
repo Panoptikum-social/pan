@@ -13,6 +13,7 @@ defmodule Pan.Parser.Persona do
                                                persona_map[:name]))
 
     case Repo.get_by(Pan.Persona, pid:   persona_map[:pid]) ||
+         Repo.get_by(Pan.Persona, pid:   persona_map[:uri] || "") ||
          Repo.get_by(Pan.Persona, uri:   persona_map[:uri] || "") ||
          Repo.get_by(Pan.Persona, email: persona_map[:email] || "") do
       nil ->

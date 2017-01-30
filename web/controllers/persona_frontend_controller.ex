@@ -52,6 +52,8 @@ defmodule Pan.PersonaFrontendController do
                                         preload: :podcast)
                   |> Repo.all()
 
+                  IO.inspect gigs
+
     case persona.redirect_id do
       nil ->
         messages = from(m in Message, where: m.persona_id in ^persona_ids,

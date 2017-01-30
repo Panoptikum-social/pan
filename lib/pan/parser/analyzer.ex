@@ -171,6 +171,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: value}
   def call(_, "owner", [:"itunes:email",    _, []]), do: %{}
   def call(_, "owner", [:"itunes:email",    _, [value]]), do: %{email: value}
+# FIXME: HAS20170130 shwould be pulled out of itunes owner
   def call(_, "owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 
@@ -271,6 +272,7 @@ defmodule Pan.Parser.Analyzer do
   def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
   def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
+# FIXME: HAS20170130 shwould be pulled out of itunes owner
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 
 
