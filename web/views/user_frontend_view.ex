@@ -8,7 +8,7 @@ defmodule Pan.UserFrontendView do
 
 
   def pro(user) do
-    user.pro_until && Ecto.DateTime.compare(user.pro_until, now()) == :gt
+    user.pro_until != nil && Ecto.DateTime.compare(user.pro_until, now()) == :gt
   end
 
 

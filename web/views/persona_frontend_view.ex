@@ -8,7 +8,7 @@ defmodule Pan.PersonaFrontendView do
 
 
   def pro(user) do
-    user.pro_until && Ecto.DateTime.compare(user.pro_until, now()) == :gt
+    Pan.UserFrontendView.pro(user)
   end
 
   def now() do
