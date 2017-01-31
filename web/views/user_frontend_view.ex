@@ -12,6 +12,15 @@ defmodule Pan.UserFrontendView do
   end
 
 
+  def disabled(user) do
+    if user.pro_until == nil || Ecto.DateTime.compare(user.pro_until, now()) == :lt do
+      "disabled"
+    else
+      ""
+    end
+  end
+
+
   def now() do
     Timex.now()
     |> Timex.to_erl()

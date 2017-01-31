@@ -100,11 +100,12 @@ defmodule Pan.PersonaFrontendController do
       manifestation ->
         persona = manifestation.persona
 
-        if user.pro_until && user.pro_until > Pan.PersonaFrontendView.now() do
-          changeset = Persona.changeset(persona, persona_params)
-        else
-          changeset = Persona.user_changeset(persona, persona_params)
-        end
+        changeset =
+          if user.pro_until && user.pro_until > Pan.PersonaFrontendView.now() do
+            Persona.changeset(persona, persona_params)
+          else
+            Persona.user_changeset(persona, persona_params)
+          end
 
         case Repo.update(changeset) do
           {:ok, _persona} ->
@@ -219,7 +220,7 @@ defmodule Pan.PersonaFrontendController do
             |> put_flash(:info, "Access has been granted successfully!")
             |> render("grant_access.html")
 
-          delegation ->
+          _delegation ->
             conn
             |> put_flash(:info, "Access was already in place!")
             |> render("grant_access.html")

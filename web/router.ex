@@ -73,9 +73,6 @@ defmodule Pan.Router do
     put "/update_password", UserFrontendController, :update_password
 
     delete "/personas/:id/claim", PersonaFrontendController, :claim
-    get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
-    get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
-    get "/personas/:id/redirect", PersonaFrontendController, :redirect
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
@@ -83,6 +80,15 @@ defmodule Pan.Router do
 
     get "/my_recommendations", RecommendationFrontendController, :my_recommendations
     resources "/recommendations", RecommendationFrontendController, only: [:create]
+  end
+
+
+  scope "/pro", Pan do
+    pipe_through [:browser, :authenticate_pro]
+
+    get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
+    get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
+    get "/personas/:id/redirect", PersonaFrontendController, :redirect
   end
 
 

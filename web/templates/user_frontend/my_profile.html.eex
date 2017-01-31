@@ -8,7 +8,7 @@
 
 <%= unless pro(@current_user) do %>
   <div class="alert alert-info">
-    <strong>Info!</strong> Buttons greyed out can be updated with pro accounts only.
+    <strong>Info!</strong> Disabled buttons can be used with a pro account only.
   </div>
 <% end %>
 
@@ -157,7 +157,7 @@
 
                   <%= link [fa_icon("user-o"), " ", delegate_persona.name],
                              to: persona_frontend_path(@conn, :persona, delegate_persona),
-                             class: "btn btn-default btn-xs" %>
+                             class: "btn btn-default btn-xs"%>
 
                   <br/>  &nbsp; &nbsp; &nbsp;
                   <label class="label label-default">
@@ -167,8 +167,7 @@
                   <%= link [fa_icon("unlink"), " cancel"],
                            to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                      delegate_id: delegate_persona.id),
-                           class: "btn btn-warning btn-xs",
-                           disabled: not pro(@current_user) %>
+                           class: "btn btn-warning btn-xs " <> disabled(@current_user) %>
                 </li>
               <% end %>
             <% end %>
@@ -189,8 +188,7 @@
                     <%= link [fa_icon("link"), " delegate"],
                              to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                        delegate_id: delegate_persona.id),
-                             class: "btn btn-info btn-xs",
-                             disabled: not pro(@current_user) %>
+                             class: "btn btn-info btn-xs " <> disabled(@current_user) %>
                   </li>
                 <% end %>
               <% end %>
@@ -224,8 +222,7 @@
 
                 <%= link [fa_icon("unlink"), " cancel"],
                          to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
-                         class: "btn btn-warning btn-xs",
-                         disabled: not pro(@current_user) %>
+                         class: "btn btn-warning btn-xs " <> disabled(@current_user) %>
               </li>
             <% else %>
               <li class="list-group-item">
@@ -246,8 +243,7 @@
                     <%= link [fa_icon("arrow-right"), " redirect"],
                              to: persona_frontend_path(@conn, :redirect, persona.id,
                                                        target_id: target_persona.id),
-                             class: "btn btn-danger btn-xs",
-                             disabled: not pro(@current_user) %>
+                             class: "btn btn-danger btn-xs " <> disabled(@current_user) %>
 
                   </li>
                 <% end %>

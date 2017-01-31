@@ -104,6 +104,22 @@ defmodule Pan.Auth do
   end
 
 
+  def authenticate_pro(conn, opts) do
+    authenticate_user(conn, opts)
+    current_user = conn.assigns.current_user
+
+    if current_user.pro_until != nil &&
+       Ecto.DateTime.compare(current_user.pro_until, Pan.UserFrontendView.now()) == :gt do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You must have a pro account to access that page.")
+      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
+      |> halt()
+    end
+  end
+
+
   def authenticate_admin(conn, opts) do
     authenticate_user(conn, opts)
     if conn.assigns.current_user.admin do
