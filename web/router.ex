@@ -135,6 +135,7 @@ defmodule Pan.Router do
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
     get "/podcasts/:id/pause", PodcastController, :pause
     get "/podcasts/:id/touch", PodcastController, :touch
+    get "/podcasts/:id/contributor_import", PodcastController, :contributor_import
     get "/podcasts/:id/delta_import", PodcastController, :delta_import
     get "/podcasts/:id/fix_owner", PodcastController, :fix_owner
     get "/podcasts/:id/retire", PodcastController, :retire

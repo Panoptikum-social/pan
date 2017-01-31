@@ -35,6 +35,21 @@ defmodule Pan.Parser.Podcast do
   end
 
 
+  def contributor_import(id) do
+    feed = Repo.get_by(Feed, podcast_id: id)
+
+    case RssFeed.import_to_map(feed.self_link_url) do
+      {:ok, map}->
+        Persistor.contributor_import(map, id)
+        {:ok, "Contributors importet successfully"}
+
+      {:error, message} ->
+        unpause(id)
+        {:error, message}
+    end
+  end
+
+
   def unpause(id) do
     Repo.get!(Pan.Podcast, id)
     |> Pan.Podcast.changeset(%{ update_paused: false })

@@ -40,4 +40,13 @@ defmodule Pan.Parser.Persistor do
       |> Repo.update()
     end
   end
+
+
+  def contributor_import(map, podcast_id) do
+    podcast = Repo.get!(Pan.Podcast, podcast_id)
+
+    if map[:episodes] do
+      Pan.Parser.Episode.insert_contributors(map[:episodes], podcast)
+    end
+  end
 end

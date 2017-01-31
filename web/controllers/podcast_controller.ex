@@ -156,7 +156,20 @@ defmodule Pan.PodcastController do
         conn
         |> put_flash(:error, message)
     end
-    |> redirect(to: podcast_path(conn, :factory))
+    |> redirect(to: podcast_path(conn, :show, id))
+  end
+
+
+  def contributor_import(conn, %{"id" => id}) do
+    case Pan.Parser.Podcast.contributor_import(id) do
+      {:ok, message} ->
+        conn
+        |> put_flash(:info, message)
+      {:error, message} ->
+        conn
+        |> put_flash(:error, message)
+    end
+    |> redirect(to: podcast_path(conn, :show, id))
   end
 
 
