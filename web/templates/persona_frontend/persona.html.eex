@@ -42,11 +42,15 @@
                   type="image/png"
                   width="150"
                   class="thumbnail">
-            <img src="/images/missing-image.png"
+            <img src="/images/missing-persona.png"
                  alt="missing image"
-                 width="150"
-                 class="thumbnail" />
+                 width="150" />
           </object>
+        <% else %>
+          <img src="/images/missing-persona.png"
+               alt="missing image"
+               width="150"
+               class="thumbnail" />
         <% end %>
       </div>
     </div>
