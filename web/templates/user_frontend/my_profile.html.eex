@@ -155,7 +155,7 @@
                   <%= fa_icon("link") %>
 
                   <%= link [fa_icon("user-o"), " ", delegate_persona.name],
-                             to: persona_frontend_path(@conn, :persona, delegate_persona),
+                             to: persona_frontend_path(@conn, :show, delegate_persona),
                              class: "btn btn-default btn-xs"%>
 
                   <br/>  &nbsp; &nbsp; &nbsp;
@@ -177,7 +177,7 @@
                   <li class="list-group-item">
                     <%= fa_icon("unlink") %>
                     <%= link [fa_icon("user-o"), " ", delegate_persona.name],
-                             to: persona_frontend_path(@conn, :persona, delegate_persona),
+                             to: persona_frontend_path(@conn, :show, delegate_persona),
                              class: "btn btn-default btn-xs" %>
                     <br/>  &nbsp; &nbsp; &nbsp;
                     <label class="label label-default">
