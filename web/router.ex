@@ -32,27 +32,27 @@ defmodule Pan.Router do
 
     get "/podcasts/buttons", PodcastFrontendController, :button_index
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
-    get "/podcasts/subscribe_button/:id", PodcastFrontendController, :subscribe_button
+    get "/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button
 
     resources "/episodes", EpisodeFrontendController, only: [:show, :index]
-    get "/episodes/player/:id", EpisodeFrontendController, :player
+    get "/episodes/:id/player", EpisodeFrontendController, :player
 
     resources "/users", UserFrontendController, only: [:show, :index, :new, :create]
 
-    get "/:id/grant_access", PersonaFrontendController, :grant_access
+    get "/personas/:id/grant_access", PersonaFrontendController, :grant_access
     resources "/personas", PersonaFrontendController, only: [:show, :index]
 
     get "/forgot_password", UserController, :forgot_password
     post "/request_login_link", UserController, :request_login_link
 
     resources "/sessions", SessionController, only: [:new, :create, :delete]
-    get "/login_via_token", SessionController, :login_via_token
-    get "/confirm_email", SessionController, :confirm_email
+    get "/sessions/login_via_token", SessionController, :login_via_token
+    get "/sessions/confirm_email", SessionController, :confirm_email
 
     post "/search", SearchFrontendController, :new
     get "/search", SearchFrontendController, :new
 
-    get "/random", RecommendationFrontendController, :random
+    get "/recommendations/random", RecommendationFrontendController, :random
     resources "/recommendations", RecommendationFrontendController, only: [:index]
     get "/:pid", PersonaFrontendController, :persona
   end
@@ -76,7 +76,7 @@ defmodule Pan.Router do
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
-    get "/opmls/import/:id", OpmlFrontendController, :import
+    get "/opmls/:id/import", OpmlFrontendController, :import
 
     get "/my_recommendations", RecommendationFrontendController, :my_recommendations
     resources "/recommendations", RecommendationFrontendController, only: [:create]
@@ -113,7 +113,7 @@ defmodule Pan.Router do
     post "/users/execute_merge", UserController, :execute_merge
     resources "/users", UserController
 
-    post "/feeds/make_only/:id", FeedController, :make_only
+    post "/feeds/:id/make_only", FeedController, :make_only
     resources "/feeds", FeedController
 
     post "/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog
@@ -126,18 +126,18 @@ defmodule Pan.Router do
     resources "/categories", CategoryController
 
     get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
-    get "/backlog_feeds/import/:id", FeedBacklogController, :import
+    get "/backlog_feeds/:id/import", FeedBacklogController, :import
     resources "/backlog_feeds", FeedBacklogController
 
-    get "/opmls/import/:id", OpmlController, :import
+    get "/opmls/:id/import", OpmlController, :import
     resources "/opmls", OpmlController
 
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
     get "/podcasts/:id/pause", PodcastController, :pause
-    get "/podcasts/touch/:id", PodcastController, :touch
-    get "/podcasts/delta_import/:id", PodcastController, :delta_import
-    get "/podcasts/fix_owner/:id", PodcastController, :fix_owner
-    get "/podcasts/retire/:id", PodcastController, :retire
+    get "/podcasts/:id/touch", PodcastController, :touch
+    get "/podcasts/:id/delta_import", PodcastController, :delta_import
+    get "/podcasts/:id/fix_owner", PodcastController, :fix_owner
+    get "/podcasts/:id/retire", PodcastController, :retire
     get "/podcasts/retirement", PodcastController, :retirement
     get "/podcasts/orphans", PodcastController, :orphans
     get "/podcasts/factory", PodcastController, :factory
@@ -145,8 +145,8 @@ defmodule Pan.Router do
 
     post "/manifestations/toggle", ManifestationController, :toggle
     get "/manifestations/manifest", ManifestationController, :manifest
-    get "/manifestations/get_by_user/:id", ManifestationController, :get_by_user
-    get "/manifestations/get_by_persona/:id", ManifestationController, :get_by_persona
+    get "/manifestations/:id/get_by_user", ManifestationController, :get_by_user
+    get "/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona
     resources "/manifestations", ManifestationController
 
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates

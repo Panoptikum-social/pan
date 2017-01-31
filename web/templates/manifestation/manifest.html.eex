@@ -115,7 +115,7 @@
   function get_manifestations_by_user(user_id) {
     $.ajax({
       type: "GET",
-      url: "<%= manifestation_url(@conn, :index) %>" + '/get_by_user/' + user_id,
+      url: "<%= manifestation_url(@conn, :index) %>/" + user_id + '/get_by_user',
       headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
       success: function(data) {
         $('#userManifestations')[0].innerHTML = data
@@ -127,7 +127,7 @@
   function get_manifestations_by_persona(persona_id) {
     $.ajax({
       type: "GET",
-      url: "<%= manifestation_url(@conn, :index) %>" + '/get_by_persona/' + persona_id,
+      url: "<%= manifestation_url(@conn, :index) %>/" + persona_id + '/get_by_persona',
       headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
       success: function(data) {
         $('#personaManifestations')[0].innerHTML = data
