@@ -39,13 +39,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :description, class: "control-label" %>
-    <%= text_input f, :description, class: "form-control",
-                                    disabled: not pro(@current_user) %>
-    <%= error_tag f, :description %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :image_url, class: "control-label" %>
     <%= text_input f, :image_url, class: "form-control",
                                   disabled: not pro(@current_user)%>
@@ -58,6 +51,28 @@
                                     disabled: not pro(@current_user) %>
     <%= error_tag f, :image_title %>
   </div>
+
+
+  <div class="form-group">
+    <%= label f, :description_header, class: "control-label" %>
+    <%= text_input f, :description, class: "form-control",
+                                    disabled: not pro(@current_user) %>
+    <%= error_tag f, :description %>
+  </div>
+
+
+  <div class="form-group">
+    <%= label f, :description, class: "control-label" %>
+    <%= textarea f, :long_description, class: "form-control",
+                                         id: "simplemde",
+                                         disabled: not pro(@current_user) %>
+    <%= error_tag f, :long_description %>
+  </div>
+  <%= if pro(@current_user) do %>
+    <script>
+      var simplemde = new SimpleMDE({ element: document.getElementById("simplemde") })
+    </script>
+  <%= end %>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

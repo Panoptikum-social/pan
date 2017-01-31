@@ -12,6 +12,7 @@
   "crutches": {:hex, :crutches, "1.0.0", "34675f0c88f25a3a6d2a77912194beaece9bf835f9f2f5627027b4a19125aaa6", [:mix], []},
   "db_connection": {:hex, :db_connection, "1.0.0-rc.5", "1d9ab6e01387bdf2de7a16c56866971f7c2f75aea7c69cae2a0346e4b537ae0d", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: true]}, {:sbroker, "~> 1.0.0-beta.3", [hex: :sbroker, optional: true]}]},
   "decimal": {:hex, :decimal, "1.1.2", "79a769d4657b2d537b51ef3c02d29ab7141d2b486b516c109642d453ee08e00c", [:mix], []},
+  "earmark": {:hex, :earmark, "1.1.0", "8c2bf85d725050a92042bc1edf362621004d43ca6241c756f39612084e95487f", [:mix], []},
   "ecto": {:hex, :ecto, "2.0.5", "7f4c79ac41ffba1a4c032b69d7045489f0069c256de606523c65d9f8188e502d", [:mix], [{:db_connection, "~> 1.0-rc.4", [hex: :db_connection, optional: true]}, {:decimal, "~> 1.1.2 or ~> 1.2", [hex: :decimal, optional: false]}, {:mariaex, "~> 0.7.7", [hex: :mariaex, optional: true]}, {:poison, "~> 1.5 or ~> 2.0", [hex: :poison, optional: true]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: false]}, {:postgrex, "~> 0.12.0", [hex: :postgrex, optional: true]}, {:sbroker, "~> 1.0-beta", [hex: :sbroker, optional: true]}]},
   "erlware_commons": {:hex, :erlware_commons, "0.21.0", "a04433071ad7d112edefc75ac77719dd3e6753e697ac09428fc83d7564b80b15", [:rebar3], [{:cf, "0.2.1", [hex: :cf, optional: false]}]},
   "exml": {:hex, :exml, "0.1.0", "515c47e88e15322b5ab4a7aade8a866253d30e2b95263c3b6015eee8e5e32014", [:mix], []},

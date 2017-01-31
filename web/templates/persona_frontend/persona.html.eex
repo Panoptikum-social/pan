@@ -27,11 +27,6 @@
             <dt>Uri</dt>
             <dd><%= @persona.uri %></dd>
           <% end %>
-
-          <%= if @persona.description do %>
-            <dt>Description</dt>
-            <dd><%= @persona.description %></dd>
-          <% end %>
         </dl>
       </div>
 
@@ -64,6 +59,16 @@
   </div>
 </div>
 
+<%= if @persona.description do %>
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <h3 class="panel-title"><%= @persona.description %></h3>
+    </div>
+    <div class="panel-body">
+      <%= markdown(@persona.long_description) %>
+    </div>
+  </div>
+<% end %>
 
 <div class="row">
   <%= if @gigs != [] do %>

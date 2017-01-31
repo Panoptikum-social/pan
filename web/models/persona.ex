@@ -5,7 +5,7 @@ defmodule Pan.Persona do
   alias Pan.Follow
 
   @required_fields ~w(pid name uri)
-  @optional_fields ~w(email description image_url image_title redirect_id)
+  @optional_fields ~w(email description image_url image_title redirect_id long_description)
 
   schema "personas" do
     field :pid, :string
@@ -13,6 +13,7 @@ defmodule Pan.Persona do
     field :uri, :string
     field :email, :string
     field :description, :string
+    field :long_description, :string
     field :image_url, :string
     field :image_title, :string
 

@@ -7,15 +7,25 @@ defmodule Pan.PersonaFrontendView do
   alias Pan.Persona
 
 
+  def markdown(content) do
+    content
+    |> Earmark.as_html!()
+    |> HtmlSanitizeEx.html5()
+    |> raw()
+  end
+
+
   def pro(user) do
     Pan.UserFrontendView.pro(user)
   end
+
 
   def now() do
     Timex.now()
     |> Timex.to_erl()
     |> Ecto.DateTime.from_erl()
   end
+
 
   def like_or_unlike(enjoyer_id, persona_id) do
     case Repo.get_by(Like, enjoyer_id: enjoyer_id,

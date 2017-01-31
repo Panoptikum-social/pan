@@ -17,7 +17,7 @@ defmodule Pan.Mixfile do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
-                    :comeonin, :sweet_xml, :timex,
+                    :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :crutches,:scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp]]
   end
@@ -48,7 +48,8 @@ defmodule Pan.Mixfile do
      {:scrivener_ecto, "~> 1.0"}, # pagination
      {:scrivener_html, "~> 1.1"}, # pagination view helper
      {:bamboo, "~> 0.7"}, # mailing
-     {:bamboo_smtp, "~> 1.2.1"}] # mailing smtp adapter
+     {:bamboo_smtp, "~> 1.2.1"}, # mailing smtp adapter
+     {:earmark, "~> 1.1.0"}] # Markdown parser
   end
 
   defp aliases do
