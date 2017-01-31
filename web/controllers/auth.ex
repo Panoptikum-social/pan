@@ -75,7 +75,7 @@ defmodule Pan.Auth do
   end
 
 
-  def grant_access_by_token(conn, token) do
+  def grant_access_by_token(_conn, token) do
     case Phoenix.Token.verify(Pan.Endpoint, "persona", token, max_age: 60*60*48) do
       {:ok, persona_id} ->
         {:ok, String.to_integer(persona_id)}
