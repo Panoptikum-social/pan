@@ -212,7 +212,7 @@
               <li class="list-group-item">
                 <%= fa_icon("arrow-right") %>
                 <%= link [fa_icon("user-o"), " ", persona.redirect.name],
-                          to: persona_frontend_path(@conn, :persona, persona.redirect.pid),
+                          to: persona_frontend_path(@conn, :show, persona.redirect.pid),
                           class: "btn btn-default btn-xs" %>
                 <br/>  &nbsp; &nbsp; &nbsp;
                 <label class="label label-default">
@@ -233,7 +233,7 @@
                   <li class="list-group-item">
                     <%= fa_icon("unlink") %>
                     <%= link [fa_icon("user-o"), " ", target_persona.name],
-                              to: persona_frontend_path(@conn, :persona, target_persona.id),
+                              to: persona_frontend_path(@conn, :show, target_persona.id),
                               class: "btn btn-default btn-xs" %>
                     <br/>  &nbsp; &nbsp; &nbsp;
                     <label class="label label-default">
