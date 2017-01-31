@@ -16,10 +16,10 @@
                         type="image/png"
                         width="150"
                         class="thumbnail">
-                  <img src="/images/missing-image.png"
+                  <img src="/images/missing-podcast.png"
                        alt="missing image"
                        width="150"
-                       class="thumbnail" />
+                       />
                 </object>
               </div>
               <div class="col-md-7">

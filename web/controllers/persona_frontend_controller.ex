@@ -101,7 +101,7 @@ defmodule Pan.PersonaFrontendController do
         persona = manifestation.persona
 
         changeset =
-          if user.pro_until && user.pro_until > Pan.PersonaFrontendView.now() do
+          if user.pro_until && Ecto.DateTime.compare(user.pro_until, Pan.PersonaFrontendView.now()) do
             Persona.changeset(persona, persona_params)
           else
             Persona.user_changeset(persona, persona_params)
