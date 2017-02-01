@@ -7,16 +7,6 @@ defmodule Pan.Parser.Iterator do
 
 # We are done digging down
   def parse(map, _, []), do: map
-  def parse(map, _, [], _), do: map
-
-
-  def parse(map, "contributor", [head | tail], guid) do
-    contributor_map = Analyzer.call("contributor", [head[:name], head[:attr], head[:value]])
-
-    Pan.Parser.Helpers.deep_merge(map, %{contributors: %{String.to_atom(guid) => contributor_map}})
-    |> parse("contributor", tail, guid)
-  end
-
 
   def parse(map, "owner", [head | tail]) do
     owner_map =
@@ -31,6 +21,36 @@ defmodule Pan.Parser.Iterator do
   end
 
 
+  def parse(map, "chapter", [head | tail]) do
+    chapter_map = Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
+
+    Helpers.deep_merge(map, %{chapters: chapter_map})
+    |> parse("chapter", tail)
+  end
+
+
+  def parse(map, context, [head | tail]) do
+    if is_map(head) do
+      podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
+
+      Helpers.deep_merge(map, podcast_map)
+      |> parse(context, tail)
+    else
+      parse(map, context, tail)
+    end
+  end
+
+# We are done digging down
+  def parse(map, _, [], _), do: map
+
+  def parse(map, "contributor", [head | tail], guid) do
+    contributor_map = Analyzer.call("contributor", [head[:name], head[:attr], head[:value]])
+
+    Pan.Parser.Helpers.deep_merge(map, %{contributors: %{String.to_atom(guid) => contributor_map}})
+    |> parse("contributor", tail, guid)
+  end
+
+
   def parse(map, "episode", [head | tail], guid) do
     if is_map(head) do
       episode_map = Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]])
@@ -40,14 +60,6 @@ defmodule Pan.Parser.Iterator do
     else
       parse(map, "episode", tail, guid)
     end
-  end
-
-
-  def parse(map, "chapter", [head | tail]) do
-    chapter_map = Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
-
-    Helpers.deep_merge(map, %{chapters: chapter_map})
-    |> parse("chapter", tail)
   end
 
 
@@ -64,17 +76,5 @@ defmodule Pan.Parser.Iterator do
 
     Helpers.deep_merge(map, %{contributors: %{contributor_uuid => contributor_map}})
     |> parse("episode-contributor", tail, contributor_uuid)
-  end
-
-
-  def parse(map, context, [head | tail]) do
-    if is_map(head) do
-      podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
-
-      Helpers.deep_merge(map, podcast_map)
-      |> parse(context, tail)
-    else
-      parse(map, context, tail)
-    end
   end
 end

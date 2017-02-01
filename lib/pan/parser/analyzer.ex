@@ -155,16 +155,6 @@ defmodule Pan.Parser.Analyzer do
   end
 
 
-# We expect several contributors
-  def call(map, "tag", [:"atom:contributor", _, value]) do
-    Iterator.parse(map, "contributor", value, UUID.uuid1())
-  end
-
-  def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}
-  def call("contributor", [:"atom:uri",        _, [value]]), do: %{uri:  value}
-  def call("contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:  value}
-
-
 # We expect one owner
   def call(map, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(map, "owner", value)
   def call(_, "owner", [:"itunes:name",     _, []]), do: %{}
@@ -248,14 +238,16 @@ defmodule Pan.Parser.Analyzer do
     %{enclosures: %{uuid => enclosure_map}}
   end
 
+
 # Chapters
   def call(_, "episode", [tag_atom, _, value]) when tag_atom in [:"psc:chapters", :chapters] do
     Iterator.parse(%{}, "chapter", value)
   end
 
-  def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
-    chapter_uuid = String.to_atom(UUID.uuid1())
-    %{chapter_uuid => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
+
+# We expect several contributors
+  def call(map, "tag", [:"atom:contributor", _, value]) do
+    Iterator.parse(map, "contributor", value, UUID.uuid1())
   end
 
 
@@ -268,12 +260,6 @@ defmodule Pan.Parser.Analyzer do
     contributor_uuid = String.to_atom(UUID.uuid1())
     %{contributors: %{contributor_uuid => %{name: value, uri: value}}}
   end
-
-  def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
-  def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
-  def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
-# FIXME: HAS20170130 shwould be pulled out of itunes owner
-  def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 
 
 # Show debugging information for unknown tags on console
@@ -288,4 +274,22 @@ defmodule Pan.Parser.Analyzer do
     IO.puts " =================\e[0m"
     raise "Tag unknown"
   end
+
+
+# Now the namespaces:
+  def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
+    chapter_uuid = String.to_atom(UUID.uuid1())
+    %{chapter_uuid => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
+  end
+
+  def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}
+  def call("contributor", [:"atom:uri",        _, [value]]), do: %{uri:  value}
+  def call("contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:  value}
+
+
+  def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
+  def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
+  def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
+# FIXME: HAS20170130 shwould be pulled out of itunes owner
+  def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 end

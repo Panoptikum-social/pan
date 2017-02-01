@@ -1,5 +1,3 @@
-<% last_episode_title = "unknown" %>
-
 <table class="table">
   <thead>
     <tr>
@@ -13,27 +11,21 @@
   </thead>
   <tbody>
     <%= for episode <- @episodes do %>
-        <tr>
-          <td><%= episode.id %></td>
-          <td><%= episode.guid %></td>
-          <td>
-            <%= if episode.title == last_episode_title do %>
-              <span class="label label-warning">
-                <%= link episode.title, to: episode_path(@conn, :show, episode), class: "btn btn-default btn-xs" %>
-              </span>
-            <%= else %>
-              <%= link episode.title, to: episode_path(@conn, :show, episode), class: "btn btn-default btn-xs" %>
-            <% end %>
-            <% last_episode_title = episode.title %>
-          </td>
-          <td><%= episode.publishing_date %></td>
-          <td><%= episode.author %></td>
+      <tr>
+        <td><%= episode.id %></td>
+        <td><%= episode.guid %></td>
+        <td>
+          <%= link episode.title, to: episode_path(@conn, :show, episode),
+                                  class: "btn btn-default btn-xs" %>
+        </td>
+        <td><%= episode.publishing_date %></td>
+        <td><%= episode.author %></td>
 
-          <td class="text-right">
-            <%= link "Edit", to: episode_path(@conn, :edit, episode), class: "btn btn-default btn-xs" %>
-            <%= link "Delete", to: episode_path(@conn, :delete, episode), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-          </td>
-        </tr>
+        <td class="text-right">
+          <%= link "Edit", to: episode_path(@conn, :edit, episode), class: "btn btn-default btn-xs" %>
+          <%= link "Delete", to: episode_path(@conn, :delete, episode), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>

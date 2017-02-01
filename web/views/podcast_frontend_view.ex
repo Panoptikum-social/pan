@@ -19,6 +19,19 @@ defmodule Pan.PodcastFrontendView do
   end
 
 
+  def render("like_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+    like_or_unlike(user_id, podcast_id)
+  end
+
+  def render("follow_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+    follow_or_unfollow(user_id, podcast_id)
+  end
+
+  def render("subscribe_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
+    subscribe_or_unsubscribe(user_id, podcast_id)
+  end
+
+
   def like_or_unlike(user_id, podcast_id) do
     case Like.find_podcast_like(user_id, podcast_id) do
       nil ->
@@ -38,11 +51,6 @@ defmodule Pan.PodcastFrontendView do
           [Podcast.likes(podcast_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
-  end
-
-
-  def render("like_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
-    like_or_unlike(user_id, podcast_id)
   end
 
 
@@ -69,11 +77,6 @@ defmodule Pan.PodcastFrontendView do
   end
 
 
-  def render("follow_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
-    follow_or_unfollow(user_id, podcast_id)
-  end
-
-
   def subscribe_or_unsubscribe(user_id, podcast_id) do
     case Repo.get_by(Pan.Subscription, user_id: user_id,
                                        podcast_id: podcast_id) do
@@ -94,11 +97,6 @@ defmodule Pan.PodcastFrontendView do
           [Podcast.subscriptions(podcast_id), " ", fa_icon("user"), " Unsubscribe"]
         end
     end
-  end
-
-
-  def render("subscribe_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
-    subscribe_or_unsubscribe(user_id, podcast_id)
   end
 
 

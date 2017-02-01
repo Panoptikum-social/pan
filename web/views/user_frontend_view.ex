@@ -50,10 +50,6 @@ defmodule Pan.UserFrontendView do
     end
   end
 
-  def render("like_button.html", %{current_user_id: current_user_id, user_id: user_id}) do
-    like_or_unlike(current_user_id, user_id)
-  end
-
 
   def follow_or_unfollow(follower_id, user_id) do
     case Repo.get_by(Follow, follower_id: follower_id,
@@ -77,6 +73,10 @@ defmodule Pan.UserFrontendView do
     end
   end
 
+
+  def render("like_button.html", %{current_user_id: current_user_id, user_id: user_id}) do
+    like_or_unlike(current_user_id, user_id)
+  end
 
   def render("follow_button.html", %{current_user_id: current_user_id, user_id: user_id}) do
     follow_or_unfollow(current_user_id, user_id)

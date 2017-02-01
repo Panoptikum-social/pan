@@ -1,5 +1,4 @@
 defmodule Event do
-  use Pan.Web, :channel
   alias Pan.Repo
   alias Pan.Podcast
   alias Pan.Endpoint

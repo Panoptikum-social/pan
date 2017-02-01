@@ -47,8 +47,8 @@ defmodule Pan.Mixfile do
      {:crutches, "~> 1.0.0"}, # ActionSupport like view helpers
      {:scrivener_ecto, "~> 1.0"}, # pagination
      {:scrivener_html, "~> 1.1"}, # pagination view helper
-     {:bamboo, "~> 0.7"}, # mailing
-     {:bamboo_smtp, "~> 1.2.1"}, # mailing smtp adapter
+     {:bamboo, "~> 0.8"}, # mailing
+     {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter
      {:earmark, "~> 1.1.0"}] # Markdown parser
   end
 

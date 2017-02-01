@@ -143,7 +143,6 @@ defmodule Pan.EpisodeFrontendView do
     like_or_unlike(user_id, episode_id)
   end
 
-
   def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
     like_or_unlike_chapter(user_id, chapter_id)
   end
@@ -154,6 +153,7 @@ defmodule Pan.EpisodeFrontendView do
     { seconds, _ } = Integer.parse(seconds_string)
     Integer.to_string(String.to_integer(hours) * 3600 + String.to_integer(minutes) * 60 + seconds)
   end
+
 
   def complain_link() do
     link "Complain", to: "https://panoptikum.io/complaints", style: "color: #fff;"
