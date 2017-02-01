@@ -64,11 +64,8 @@ defmodule Pan.Parser.RssFeed do
         # IO.inspect download(url)
         # IO.puts "=========================="
 
-        if String.starts_with?(feed_xml, "<html") or
-           String.starts_with?(feed_xml, "<!DOCTYPE html>") or
-           String.starts_with?(feed_xml, "<!DOCTYPE HTML") or
-           String.starts_with?(feed_xml, "<?php") do
-          {:error, "This is an HTML/PHP file, not a feed!"}
+        if !String.contains?(feed_xml, "<rss") do
+          {:error, "This is not an rss feed!"}
         else
           feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                      |> Pan.Parser.Helpers.remove_extra_angle_brackets()
