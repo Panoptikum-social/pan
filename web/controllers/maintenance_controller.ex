@@ -3,7 +3,7 @@ defmodule Pan.MaintenanceController do
   alias Pan.CategoryPodcast
   alias Pan.Subscription
   alias Pan.Message
-  alias Pan.Enclosure
+  alias Pan.Gig
 
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],
@@ -46,26 +46,27 @@ defmodule Pan.MaintenanceController do
   end
 
 
-  def remove_duplicate_enclosures(conn, _params) do
-    duplicates = from(e in Enclosure, group_by: [e.url, e.episode_id],
-                                      select: [e.url, e.episode_id, count(e.episode_id)],
-                                      having: count(e.episode_id) > 1)
+  def remove_duplicate_gigs(conn, _params) do
+    duplicates = from(g in Gig, group_by: [g.role, g.episode_id, g.persona_id,],
+                                select: [g.role, g.episode_id, g.persona_id, count(g.persona_id)],
+                                having: count(g.persona_id) > 1)
                  |> Repo.all()
 
-    for [url, episode_id, count] <- duplicates do
+    for [role, episode_id, persona_id, count] <- duplicates do
       one_less = count - 1
 
-      enclosure_ids = from(e in Enclosure, where: e.url == ^url and
-                                                  e.episode_id == ^episode_id,
-                                           limit: ^one_less,
-                                           order_by: [asc: e.inserted_at],
-                                           select: e.id)
+      gig_ids = from(g in Gig, where: g.role == ^role and
+                                      g.episode_id == ^episode_id and
+                                      g.persona_id == ^persona_id,
+                               limit: ^one_less,
+                               order_by: [asc: g.inserted_at],
+                               select: g.id)
                     |> Repo.all()
 
-      from(e in Enclosure, where: e.id in ^enclosure_ids)
+      from(g in Gig, where: g.id in ^gig_ids)
       |> Repo.delete_all()
     end
 
-    render(conn, "remove_duplicate_episodes.html")
+    render(conn, "remove_duplicates.html")
   end
 end
