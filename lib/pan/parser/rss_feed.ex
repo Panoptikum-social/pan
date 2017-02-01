@@ -38,6 +38,13 @@ defmodule Pan.Parser.RssFeed do
       %HTTPotion.ErrorResponse{message: "req_timedout"} ->
         {:error, "request timed out"}
 
+      %HTTPotion.ErrorResponse{message: "{:tls_alert, 'handshake failure'}"} ->
+        if option == "no_headers" do
+          {:error, "tls_alert: handshake failure"}
+        else
+         download_and_error_handling(url, "no_headers")
+        end
+
       %HTTPotion.Response{status_code: 500} ->
         {:error, "500: internal server error"}
 
