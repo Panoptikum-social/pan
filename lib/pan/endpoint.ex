@@ -11,7 +11,8 @@ defmodule Pan.Endpoint do
   # .well-known is for Let's Encrypt
   plug Plug.Static,
     at: "/", from: :pan, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt podlove-web-player .well-known)
+    only: ~w(css fonts images js favicon.ico robots.txt
+             podlove-web-player podlove-subscribe-button .well-known)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

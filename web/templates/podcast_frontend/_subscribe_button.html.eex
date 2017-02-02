@@ -1,6 +1,6 @@
 <div>
     <script class="podlove-subscribe-button"
-            src="https://cdn.podlove.org/subscribe-button/javascripts/app.js"
+            src="/podlove-subscribe-button/javascripts/app.js"
             data-language="de"
             data-size="medium"
             data-json-data="podcastData"
