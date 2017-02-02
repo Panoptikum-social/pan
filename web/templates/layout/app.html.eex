@@ -11,9 +11,6 @@
     <title>Panoptikum</title>
     <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/app.css") %>">
-    <link href='https://fonts.googleapis.com/css?family=Ubuntu'
-          rel='stylesheet'
-          type='text/css'>
     <link rel="icon" sizes="192x192" href="/images/icon.png">
     <script>window.userToken = "<%= assigns[:user_token] %>"
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
