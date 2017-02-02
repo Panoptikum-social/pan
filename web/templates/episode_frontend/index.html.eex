@@ -2,36 +2,34 @@
 
 <%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>
 
-<%= for {episode, counter} <- Enum.with_index(@episodes) do %>
-  <%= if 0 == rem(counter, 3) do %>
-    <div class="row">
-  <% end %>
+<%= for group <- Enum.chunk(@episodes, 3) do %>
+  <div class="row">
+    <%= for episode <- group do %>
 
-  <div class="col-md-4">
-    <div class="panel <%= Pan.PodcastFrontendView.panel_cycle(counter) %>">
-      <div class="panel-heading">
-        <h3 class="panel-title">
-          <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %>
-          <span class="pull-right">
-            <%= link "listen ...", to: episode_frontend_path(@conn, :show, episode),
-                                   style: "color: #fff;" %>
-          </span>
-        </h3>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %>
+              <span class="pull-right">
+                <%= link "listen ...", to: episode_frontend_path(@conn, :show, episode),
+                                       style: "color: #fff;" %>
+              </span>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <%= link [fa_icon("podcast"), " ", episode.podcast.title],
+                     to: podcast_frontend_path(@conn, :show, episode.podcast) %><br/>
+            <%= fa_icon("calendar") %> <%= episode.publishing_date %><br/>
+            <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
+            <%= fa_icon("user") %> <%= episode.author %><br/>
+            <%= fa_icon("align-justify") %> <%= episode.subtitle %>
+          </div>
+        </div>
       </div>
-      <div class="panel-body">
-        <%= link [fa_icon("podcast"), " ", episode.podcast.title],
-                 to: podcast_frontend_path(@conn, :show, episode.podcast) %><br/>
-        <%= fa_icon("calendar") %> <%= episode.publishing_date %><br/>
-        <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
-        <%= fa_icon("user") %> <%= episode.author %><br/>
-        <%= fa_icon("align-justify") %> <%= episode.subtitle %>
-      </div>
-    </div>
+
+    <% end %>
   </div>
-
-  <%= if 2 == rem(counter, 3) do %>
-    </div>
-  <% end %>
 <% end %>
 
 <%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>

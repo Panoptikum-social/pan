@@ -6,53 +6,25 @@
                              changeset: @changeset,
                              conn: @conn %>
 
-  <%= render "_recommendations.html", podcast: @podcast,
-                                      conn: @conn %>
+  <%= render "_recommendations.html", podcast: @podcast, conn: @conn %>
 
-  <%= for {episode, counter} <- Enum.with_index(@podcast.episodes) do %>
-    <%= if 0 == rem(counter, 2) do %>
-      <div class="row">
-    <% end %>
-
-    <div class="col-md-6">
-      <div class="panel <%= panel_cycle(counter) %>">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-          <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %></h3>
+  <%= for group <- Enum.chunk(@podcast.episodes, 3) do %>
+    <div class="row">
+      <%= for {episode, counter} <- Enum.with_index(group) do %>
+        <div class="col-lg-4 hidden-md hidden-sm hidden-xs">
+          <%= render "_episode.html", episode: episode, counter: counter, conn: @conn %>
         </div>
-        <div class="panel-body">
-          <p><%= episode.subtitle %></p>
-
-          <dl class="dl-horizontal">
-            <dt><label class="label label-success">Author</label></dt>
-            <dd><%= episode.author %></dd>
-            <dt><label class="label">Support</label></dt>
-            <%= if episode.payment_link_url do %>
-              <dd><%= link episode.payment_link_title, to: episode.payment_link_url %></dd>
-              <dt><label class="label label-warning">Duration</label></dt>
-            <% end %>
-            <dd><%= episode.duration %></dd>
-            <dt><label class="label label-info">Publishing date</label></dt>
-            <dd><%= episode.publishing_date %></dd>
-            <%= if episode.link do %>
-              <dt><label class="label label-danger">Link</label></dt>
-              <dd><a href="<%= episode.link %>"><%= C.String.truncate episode.link, 80 %></a></dd>
-            <% end %>
-            <dt><label class="label label-primary">Deep link</label></dt>
-            <dd><a href="<%= episode.deep_link %>"><%= episode.deep_link %></a></dd>
-          </dl>
-
-          <div class="clearfix"></div>
-          <h3>Description</h3>
-          <p><%= raw episode.description %></p>
-
-          <h3>Summary</h3>
-          <p><%= episode.summary %></p>
-        </div>
-      </div>
+      <% end %>
     </div>
-    <%= if 1 == rem(counter, 2) do %>
-      </div>
-    <% end %>
+  <% end %>
+
+  <%= for group <- Enum.chunk(@podcast.episodes, 2) do %>
+    <div class="row">
+      <%= for {episode, counter} <- Enum.with_index(group) do %>
+        <div class="col-md-6 hidden-lg">
+          <%= render "_episode.html", episode: episode, counter: counter, conn: @conn %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
 <% end %>

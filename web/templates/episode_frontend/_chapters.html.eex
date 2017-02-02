@@ -1,40 +1,51 @@
-<h3>Chapters</h3>
+<%= if @episode.chapters != [] do %>
+  <h3>Chapters</h3>
 
-<%= if @current_user do %>
-  <div class="row">
-    <div class="col-md-8 col-md-offset-4">
-      <b>Your recommendation:</b>
+  <%= if @current_user do %>
+    <div class="row">
+      <div class="col-md-8 col-md-offset-4">
+        <b>Your recommendation:</b>
+      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
-<%= for chapter <- @episode.chapters do %>
-  <div class="row">
-    <div class="col-md-4">
-      <%= case @player do %>
-        <%= "podlove" -> %>
-          <%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "#t=" <> chapter.start),
-                                  rel: "http://podlove.org/deep-link" %>
-        <%= "podigee" -> %>
-          <%= link chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "/#t=" <> seconds(chapter.start)),
-                                  rel: "http://podlove.org/deep-link" %>
-      <% end %>
-      <br/>
-      <%= if @current_user do %>
-        <%= like_or_unlike_chapter(@current_user.id, chapter.id) %>
-      <% end %>
-      <%= chapter.title %>
-    </div>
+  <%= if @current_user do %>
+    <%= for chapter <- @episode.chapters do %>
+      <div class="row">
+        <div class="col-md-4">
+          <%= render "_chapter_deep_link.html", player: @player,
+                                                episode: @episode,
+                                                chapter: chapter,
+                                                conn: @conn %>
+          <br/>
+          <%= like_or_unlike_chapter(@current_user.id, chapter.id) %>
+          <%= chapter.title %>
+        </div>
 
 
-    <div class="col-md-8">
-      <%= render "_recommend_chapter_form.html",
-                 current_user: @current_user,
-                 changeset: @changeset,
-                 conn: @conn,
-                 chapter: chapter %>
-    </div>
-  </div>
-  <%= render "_chapter_recommendations.html", chapter: chapter,
-                                              conn: @conn %>
+        <div class="col-md-8">
+          <%= render "_recommend_chapter_form.html", current_user: @current_user,
+                                                     changeset: @changeset,
+                                                     conn: @conn,
+                                                     chapter: chapter %>
+        </div>
+      </div>
+      <%= render "_chapter_recommendations.html", chapter: chapter,
+                                                  conn: @conn %>
+    <% end %>
+  <% else %>
+    <%= for group <- Enum.chunk(@episode.chapters, 4) do %>
+      <div class="row">
+        <%= for chapter <- group do %>
+          <div class="col-md-3">
+            <%= render "_chapter_deep_link.html", player: @player,
+                                                  episode: @episode,
+                                                  chapter: chapter,
+                                                  conn: @conn %> &nbsp;
+            <%= chapter.title %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
 <% end %>
