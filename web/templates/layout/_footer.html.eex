@@ -5,17 +5,17 @@
       <dl class="footer-nav">
         <dt class="nav-title">META</dt>
         <dd class="nav-item"><a href="https://panoptikum.io/code_of_conduct">Code of Conduct</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/privacy/">Privacy</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/privacy">Privacy</a></dd>
         <dd class="nav-item"><a href="https://panoptikum.io/complaints">Complaints</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/community/">Community</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/imprint.html">Imprint</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/community">Community</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/imprint">Imprint</a></dd>
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">ABOUT</dt>
         <dd class="nav-item"><a href="https://www.panoptikum.io/blog">Blog</a></dd>
         <dd class="nav-item"><a href="https://www.panoptikum.io/">Rationale</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/talks/">Talks</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/community/">FAQ</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/talks">Talks</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/community">FAQ</a></dd>
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">DEMO</dt>
@@ -27,10 +27,10 @@
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">SUPPORTED BY</dt>
-        <dd class="nav-item"><a href="https://www.informatom.com/">Stefan a.k.a. Informatom</a></dd>
-        <dd class="nav-item"><a href="https://www.waldgruber.at/">Community Manager Sonja</a></dd>
-        <dd class="nav-item"><a href="https://www.mittenin.at/">Mittenin.at</a></dd>
-        <dd class="nav-item"><a href="https://www.panoptikum.io/vienna-beamers/">Vienna Beamers</a></dd>
+        <dd class="nav-item"><a href="https://www.informatom.com">Stefan a.k.a. Informatom</a></dd>
+        <dd class="nav-item"><a href="https://www.waldgruber.at">Community Manager Sonja</a></dd>
+        <dd class="nav-item"><a href="https://www.mittenin.at">Mittenin.at</a></dd>
+        <dd class="nav-item"><a href="https://www.panoptikum.io/vienna-beamers">Vienna Beamers</a></dd>
       </dl>
     </div>
     <div class="footer-copyright text-center">
