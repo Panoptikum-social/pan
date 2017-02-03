@@ -2,7 +2,7 @@
 
 <%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>
 
-<%= for group <- Enum.chunk(@episodes, 3) do %>
+<%= for group <- Enum.chunk(@episodes, 3, 3, []) do %>
   <div class="row">
     <%= for episode <- group do %>
 

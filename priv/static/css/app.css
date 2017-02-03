@@ -341,6 +341,14 @@ ul.drop{ display: none; }
 input.drop[type=checkbox]:checked ~ li>ul.drop { display: block }
 input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
 
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+}
 /**
  * simplemde v1.11.2
  * Copyright Next Step Webs, Inc.

@@ -14,23 +14,31 @@
   </div>
   <div class="panel-body" style="line-height: 2.5;">
     <%= if @category.children != [] do %>
-      <%= for subcategory <- @category.children do %>
-        <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                 to: category_frontend_path(@conn, :show, subcategory),
-                 class: "btn btn-xs" %>
-        &nbsp; &nbsp; &nbsp;
+      <%= for group <- Enum.chunk(@category.children, 6, 6, []) do %>
+        <div class="row">
+          <%= for subcategory <- group do %>
+            <div class="col-md-2">
+              <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                       to: category_frontend_path(@conn, :show, subcategory),
+                       class: "btn btn-xs btn-light-gray truncate" %>
+            </div>
+          <% end %>
+        </div>
       <% end %>
-      <br/><br/>
+    <hr/>
     <% end %>
 
-    <p>
-      <%= for podcast <- @category.podcasts do %>
-        <%= link [fa_icon("podcast"), " ", podcast.title],
-                 to: podcast_frontend_path(@conn, :show, podcast),
-                 class: "btn btn-default btn-xs" %>
-        &nbsp; &nbsp; &nbsp;
-      <% end %>
-    </p>
+    <%= for group <- Enum.chunk(@category.podcasts, 6, 6, []) do %>
+      <div class="row">
+        <%= for podcast <- group do %>
+          <div class="col-md-2">
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs truncate" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
 

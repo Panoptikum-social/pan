@@ -8,11 +8,9 @@
     <%= if category.children != [] do %>
       <p style="line-height: 200%;"">
         <%= for subcategory <- category.children do %>
-          <span class="btn btn-xs btn-default">
-            <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                     to: category_frontend_path(@conn, :show, subcategory),
-                     style: "color: #555" %>
-          </span>
+          <%= link [fa_icon("folder-o"), " ", subcategory.title],
+                   to: category_frontend_path(@conn, :show, subcategory),
+                   class: "btn btn-xs btn-light-gray" %>
         <% end %>
       </p>
     <% end %>

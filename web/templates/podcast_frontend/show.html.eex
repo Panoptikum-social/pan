@@ -8,7 +8,7 @@
 
   <%= render "_recommendations.html", podcast: @podcast, conn: @conn %>
 
-  <%= for group <- Enum.chunk(@podcast.episodes, 3) do %>
+  <%= for group <- Enum.chunk(@podcast.episodes, 3, 3, []) do %>
     <div class="row">
       <%= for {episode, counter} <- Enum.with_index(group) do %>
         <div class="col-lg-4 hidden-md hidden-sm hidden-xs">
@@ -18,7 +18,7 @@
     </div>
   <% end %>
 
-  <%= for group <- Enum.chunk(@podcast.episodes, 2) do %>
+  <%= for group <- Enum.chunk(@podcast.episodes, 2, 2, []) do %>
     <div class="row">
       <%= for {episode, counter} <- Enum.with_index(group) do %>
         <div class="col-md-6 hidden-lg">

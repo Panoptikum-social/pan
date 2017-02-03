@@ -1,9 +1,44 @@
 <h1>Podcasters, Personas and Groups</h1>
 
-<p style="line-height: 2.5;">
-  <%= for {persona, counter} <- Enum.with_index(@personas) do %>
-    <%= link [fa_icon("user-o"), " ", persona.name],
-        to: persona_frontend_path(@conn, :show, persona),
-        class: "btn btn-xs " <> btn_cycle(counter) %> &nbsp;
-  <% end %>
-</p>
+<% grouped_personas = Enum.group_by(@personas, fn p -> (p.name |> String.first() |> String.upcase()) end) %>
+<% letters = Map.keys(grouped_personas) |> Enum.sort %>
+
+<div class="panel">
+  <ul class="nav nav-tabs" role="tablist">
+    <%= for letter <- letters do %>
+      <li role="personas" class=<%= if List.first(to_charlist(letter)) == 65, do: "active" %>>
+        <a href="#<%= to_charlist(letter) |> List.first() %>"
+           aria-controls="<%= to_charlist(letter) |> List.first %>"
+           role="tab"
+           data-toggle="tab">
+          <%= letter %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <%= for letter <- letters do %>
+
+      <div role="tabpanel" class="tab-pane fade <%= if List.first(to_charlist(letter)) == 65, do: 'in active' %>"
+                           id="<%= to_charlist(letter) |> List.first %>">
+        <%= for {group, outer} <- Enum.chunk(grouped_personas[letter], 8, 8, []) |> Enum.with_index() do %>
+          <div class="row" style="line-height: 2.5;">
+            <%= for {grouptwo, middle} <- Enum.chunk(group, 4, 4, []) |> Enum.with_index() do %>
+              <div class="col-lg-6 col-md-12">
+                <%= for {persona, inner} <- Enum.with_index(grouptwo) do %>
+                  <div class="col-md-3 col-sm-6">
+                   <%= link [fa_icon("user-o"), " ", persona.name],
+                            to: persona_frontend_path(@conn, :show, persona),
+                            class: "btn btn-xs truncate " <> btn_cycle(outer * 8 + middle * 4 + inner) %>
+
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
