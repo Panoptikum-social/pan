@@ -7,7 +7,7 @@
   </div>
   <div id="latest_recommendations">
     <ul class="list-unstyled">
-      <%= for recommendation <- latest_recommendations() do %>
+      <%= for recommendation <- Pan.Recommendation.latest() do %>
         <li>
           <p style="line-height: 200%;">
             <%= if recommendation.podcast do %>

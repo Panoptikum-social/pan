@@ -45,6 +45,7 @@ defmodule Pan.Web do
       import Pan.ErrorHelpers
       import Pan.Gettext
       import FontAwesomePhoenix.HTML
+      import Pan.ViewHelpers
     end
   end
 

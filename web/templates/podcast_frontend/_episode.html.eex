@@ -1,4 +1,4 @@
-<div class="panel <%= panel_cycle(@counter) %>">
+<div class="panel panel-primary">
   <div class="panel-heading">
     <h3 class="panel-title">
     <%= link @episode.title, to: episode_frontend_path(@conn, :show, @episode) %></h3>

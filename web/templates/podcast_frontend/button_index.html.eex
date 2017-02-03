@@ -2,7 +2,7 @@
   <%= for {podcast, index} <- Enum.with_index(@podcasts) do %>
     <%= link [fa_icon("podcast"), " ", podcast.title],
              to: podcast_frontend_path(@conn, :show, podcast),
-             class: "btn btn-xs #{btn_cycle(index)}" %>
+             class: "btn btn-xs " <> btn_cycle(index) %>
     &nbsp; &nbsp; &nbsp;
   <% end %>
 </p>

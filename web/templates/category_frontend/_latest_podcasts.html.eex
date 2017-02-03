@@ -7,7 +7,7 @@
   </div>
   <div id="latest_podcasts">
       <ul class="list-unstyled">
-      <%= for podcast <- latest_podcasts() do %>
+      <%= for podcast <- Pan.Podcast.latest() do %>
         <li class="list-group-item">
           <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
                    to: podcast_frontend_path(@conn, :show, podcast),

@@ -6,19 +6,6 @@ defmodule Pan.PodcastFrontendView do
   alias Pan.Podcast
 
 
-  def panel_cycle(counter) do
-    Enum.at(["panel-default", "panel-info", "panel-danger",
-             "panel-warning", "panel-primary", "panel-success"], rem(counter, 6))
-  end
-
-
-  def btn_cycle(counter) do
-    Enum.at(["btn-default", "btn-light-gray", "btn-medium-gray", "btn-dark-gray",
-             "btn-success", "btn-info", "btn-primary", "btn-blue-jeans", "btn-lavender",
-             "btn-pink-rose", "btn-danger", "btn-bittersweet", "btn-warning", ], rem(counter, 13))
-  end
-
-
   def render("like_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
     like_or_unlike(user_id, podcast_id)
   end

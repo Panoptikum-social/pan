@@ -1,10 +1,9 @@
 <%= for {category, counter} <- Enum.with_index(@categories) do %>
   <div style="display: inline-block;">
-    <span class="btn btn-sm <%= btn_cycle(counter) %>">
     <%= link [fa_icon("folder-o"), " ", C.String.truncate(category.title, 22)],
              to: category_frontend_path(@conn, :show, category),
-             style: "color: #" <> color_cycle(counter) %>
-    </span><br/>
+             class: "btn btn-sm " <> btn_cycle(counter) %>
+    <br/>
 
     <%= if category.children != [] do %>
       <p style="line-height: 200%;"">

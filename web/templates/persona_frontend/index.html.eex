@@ -4,6 +4,6 @@
   <%= for {persona, counter} <- Enum.with_index(@personas) do %>
     <%= link [fa_icon("user-o"), " ", persona.name],
         to: persona_frontend_path(@conn, :show, persona),
-        class: "btn btn-xs " <> Pan.PodcastFrontendView.btn_cycle(counter) %> &nbsp;
+        class: "btn btn-xs " <> btn_cycle(counter) %> &nbsp;
   <% end %>
 </p>

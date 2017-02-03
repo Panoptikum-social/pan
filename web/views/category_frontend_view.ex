@@ -1,45 +1,9 @@
 defmodule Pan.CategoryFrontendView do
   use Pan.Web, :view
-  use Pan.Web, :controller
   alias Pan.Category
-
-
-  def panel_cycle(counter) do
-    Enum.at(["panel-default", "panel-info", "panel-danger",
-             "panel-warning", "panel-primary", "panel-success"], rem(counter, 6))
-  end
-
-
-  def btn_cycle(counter) do
-    Enum.at(["btn-normal", "btn-info", "btn-danger",
-             "btn-warning", "btn-primary", "btn-success"], rem(counter, 6))
-  end
-
-
-  def color_cycle(counter) do
-    Enum.at(["fff", "fff", "fff",
-             "fff", "fff", "fff"], rem(counter, 6))
-  end
-
-
-  def latest_podcasts do
-    Repo.all(from p in Pan.Podcast, order_by: [desc: :inserted_at],
-                                    limit: 5)
-  end
-
-
-  def latest_episodes do
-    Repo.all(from e in Pan.Episode, order_by: [desc: :publishing_date],
-                                    limit: 5,
-                                    preload: [:podcast])
-  end
-
-
-  def latest_recommendations do
-    Repo.all(from e in Pan.Recommendation, order_by: [desc: :inserted_at],
-                                           limit: 10,
-                                           preload: [:user, :podcast, episode: :podcast, chapter: [episode: :podcast]])
-  end
+  alias Pan.Repo
+  alias Pan.Like
+  alias Pan.Follow
 
 
   def list_group_item_cycle(counter) do
@@ -49,7 +13,7 @@ defmodule Pan.CategoryFrontendView do
 
 
   def like_or_unlike(user_id, category_id) do
-    case Pan.Repo.get_by(Pan.Like, enjoyer_id: user_id,
+    case Repo.get_by(Like, enjoyer_id: user_id,
                                    category_id: category_id) do
       nil ->
         content_tag :button, class: "btn btn-warning",
@@ -70,8 +34,9 @@ defmodule Pan.CategoryFrontendView do
     end
   end
 
+
   def follow_or_unfollow(user_id, category_id) do
-    case Pan.Repo.get_by(Pan.Follow, follower_id: user_id,
+    case Repo.get_by(Follow, follower_id: user_id,
                                      category_id: category_id) do
       nil ->
         content_tag :button, class: "btn btn-primary",
@@ -92,9 +57,11 @@ defmodule Pan.CategoryFrontendView do
     end
   end
 
+
   def render("like_button.html", %{user_id: user_id, category_id: category_id}) do
     like_or_unlike(user_id, category_id)
   end
+
 
   def render("follow_button.html", %{user_id: user_id, category_id: category_id}) do
     follow_or_unfollow(user_id, category_id)

@@ -64,4 +64,12 @@ defmodule Pan.Episode do
     |> Repo.aggregate(:count, :id)
     |> Integer.to_string
   end
+
+
+  def latest do
+    from(Pan.Episode, order_by: [desc: :publishing_date],
+                      limit: 5,
+                      preload: [:podcast])
+    |> Repo.all()
+  end
 end

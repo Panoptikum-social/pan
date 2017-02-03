@@ -4,6 +4,7 @@ defmodule Pan.Podcast do
   alias Pan.Like
   alias Pan.Follow
   alias Pan.Subscription
+  alias Pan.Podcast
 
   schema "podcasts" do
     field :title, :string
@@ -118,5 +119,12 @@ defmodule Pan.Podcast do
     from(s in Subscription, where: s.podcast_id == ^id)
     |> Repo.aggregate(:count, :id)
     |> Integer.to_string
+  end
+
+
+  def latest do
+    from(Podcast, order_by: [desc: :inserted_at],
+                  limit: 5)
+    |> Repo.all()
   end
 end
