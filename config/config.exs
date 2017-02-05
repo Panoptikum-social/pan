@@ -12,7 +12,8 @@ config :pan, Pan.Endpoint,
   secret_key_base: "p+SVheqFHkj2Z89dxUo/PoRR696q9G+mY9IPIbpm1bBHL1BJOawyku/GKnhT6RAs",
   render_errors: [accepts: ~w(html json)],
   pubsub: [name: Pan.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+           adapter: Phoenix.PubSub.PG2],
+  http: [compress: true]
 
 # Configures Elixir's Logger
 config :logger, :console,
