@@ -9,7 +9,8 @@ config :pan, Pan.Endpoint,
   server: true,
   root: ".",
   version: Mix.Project.config[:version],
-  force_ssl: [hsts: true]
+  force_ssl: [hsts: true],
+  http: [compress: true]
 
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true
