@@ -55,11 +55,11 @@ defmodule Pan.SearchFrontendView do
     left = left
            |> HtmlSanitizeEx.strip_tags
            |> String.reverse
-           |> C.String.truncate(50)
+           |> truncate(50)
            |> String.reverse
     right = right
             |> HtmlSanitizeEx.strip_tags
-            |> C.String.truncate(50)
+            |> truncate(50)
 
     left <> "<b><span class='bg-success'>" <> match <> "</span></b>" <> right
   end

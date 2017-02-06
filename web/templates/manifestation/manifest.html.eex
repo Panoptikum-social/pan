@@ -69,7 +69,7 @@
         <%= for persona <- @personas do %>
             <tr>
               <td><%= persona.id %></td>
-              <td><nobr><%= C.String.truncate(persona.pid, 13) %></nobr></td>
+              <td><nobr><%= truncate(persona.pid, 13) %></nobr></td>
               <td width="50%"><%= persona.name %></td>
               <td><%= persona.uri %></td>
               <td><%= persona.email %></td>

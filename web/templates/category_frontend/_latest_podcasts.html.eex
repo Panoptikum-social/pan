@@ -9,7 +9,7 @@
       <ul class="list-unstyled">
       <%= for podcast <- Pan.Podcast.latest() do %>
         <li class="list-group-item">
-          <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
+          <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
                    to: podcast_frontend_path(@conn, :show, podcast),
                    class: "btn btn-default btn-xs",
                    style: "color: #000" %>
@@ -17,7 +17,7 @@
           <%= fa_icon("user") %> <%= podcast.author %></br>
           <%= fa_icon("calendar") %> <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %><br/>
           <%= if podcast.description do %>
-            <small><%= fa_icon("image") %> <%= C.String.truncate(podcast.description, 150) %></small>
+            <small><%= fa_icon("image") %> <%= truncate(podcast.description, 150) %></small>
           <% end %>
         </li>
       <% end %>

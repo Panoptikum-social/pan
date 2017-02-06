@@ -69,7 +69,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(title, 50)],
+            <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
@@ -88,7 +88,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", C.String.truncate(title, 50)],
+            <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>

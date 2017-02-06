@@ -89,7 +89,7 @@
             <%= for gig <- @gigs do %>
               <tr>
                 <td><%= format_date(gig.publishing_date) %></td>
-                <td><%= link [fa_icon("headphones"), " ", C.String.truncate(gig.episode.title, 40)],
+                <td><%= link [fa_icon("headphones"), " ", truncate(gig.episode.title, 40)],
                             to: episode_frontend_path(@conn, :show, gig.episode),
                             class: "btn btn-primary btn-xs" %></td>
                 <td><span class="label label-success"><%= gig.role %></span></td>
@@ -117,7 +117,7 @@
           <tbody>
             <%= for engagement <- @engagements do %>
               <tr>
-                <td> <%= link [fa_icon("podcast"), " ", C.String.truncate(engagement.podcast.title, 50)],
+                <td> <%= link [fa_icon("podcast"), " ", truncate(engagement.podcast.title, 50)],
                                to: podcast_frontend_path(@conn, :show, engagement.podcast),
                                class: "btn btn-default btn-xs",
                                style: "color: #000" %></td>

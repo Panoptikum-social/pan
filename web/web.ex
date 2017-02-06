@@ -39,7 +39,6 @@ defmodule Pan.Web do
 
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
-      use Crutches
 
       import Pan.Router.Helpers
       import Pan.ErrorHelpers
@@ -67,7 +66,6 @@ defmodule Pan.Web do
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
       import Pan.Gettext
-      import Crutches.String, only: [truncate: 2]
     end
   end
 

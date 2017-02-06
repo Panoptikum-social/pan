@@ -32,9 +32,11 @@
       <div class="row">
         <%= for podcast <- group do %>
           <div class="col-md-2">
+            <span class="truncate">
             <%= link [fa_icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs truncate" %>
+            </span>
           </div>
         <% end %>
       </div>

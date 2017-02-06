@@ -19,7 +19,7 @@
       <dd><%= @episode.publishing_date %></dd>
       <%= if @episode.link do %>
         <dt><label class="label label-danger">Link</label></dt>
-        <dd><a href="<%= @episode.link %>"><%= C.String.truncate @episode.link, 80 %></a></dd>
+        <dd><a href="<%= @episode.link %>"><%= truncate @episode.link, 80 %></a></dd>
       <% end %>
       <dt><label class="label label-primary">Deep link</label></dt>
       <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>

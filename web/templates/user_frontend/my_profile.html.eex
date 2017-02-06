@@ -105,7 +105,7 @@
             <dd><%= persona.description %></dd>
 
             <dt>image_url</dt>
-            <dd><%= if persona.image_url, do: C.String.truncate(persona.image_url, 40) %></dd>
+            <dd><%= if persona.image_url, do: truncate(persona.image_url, 40) %></dd>
 
             <dt>image_title</dt>
             <dd><%= persona.image_title %></dd>

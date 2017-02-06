@@ -17,7 +17,7 @@
         <div class="panel-body">
          <p style="line-height: 200%;">
             <%= for podcast <- @user.podcasts_i_subscribed do %>
-              <%= link [fa_icon("podcast"), " ", C.String.truncate(podcast.title, 50)],
+              <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
                        to: podcast_frontend_path(@conn, :show, podcast),
                        class: "btn btn-default btn-xs",
                        style: "color: #000" %> &nbsp;

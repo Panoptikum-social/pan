@@ -1,6 +1,5 @@
 defmodule Pan.RecommendationFrontendController do
   use Pan.Web, :controller
-  use Crutches
   alias Pan.Podcast
   alias Pan.Episode
   alias Pan.Category
@@ -122,9 +121,9 @@ defmodule Pan.RecommendationFrontendController do
     e = %{e | current_user_id: user.id,
               type:            "success",
               event:           "recommend",
-              content:         C.String.truncate("« recommended " <>
-                               e.notification_text <> " » " <>
-                               recommendation_params["comment"], 255) }
+              content:         Pan.ViewHelpers.truncate("« recommended " <>
+                                                        e.notification_text <> " » " <>
+                                                        recommendation_params["comment"], 255) }
 
     Repo.insert(changeset)
     Message.persist_event(e)

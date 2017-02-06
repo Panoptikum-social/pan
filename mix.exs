@@ -19,7 +19,7 @@ defmodule Pan.Mixfile do
                     :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
-                    :crutches,:scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp]]
+                    :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -44,7 +44,6 @@ defmodule Pan.Mixfile do
      {:quinn, "~> 1.0.0"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
      {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
-     {:crutches, "~> 1.0.0"}, # ActionSupport like view helpers
      {:scrivener_ecto, "~> 1.0"}, # pagination
      {:scrivener_html, "~> 1.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
