@@ -40,4 +40,12 @@ defmodule Pan.PodcastFrontendController do
     conn
     |> render("_subscribe_button.html", podcast: podcast)
   end
+
+
+  def feeds(conn, %{"id" => id}) do
+    podcast =  Repo.get(Podcast, id)
+               |> Repo.preload([feeds: :alternate_feeds])
+
+    render(conn, "feeds.html", podcast: podcast)
+  end
 end

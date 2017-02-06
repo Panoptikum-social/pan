@@ -62,6 +62,8 @@
               <dd><%= @podcast.explicit %></dd>
               <dt><label class="label label-info">Number of Episodes</label></dt>
               <dd><%= Enum.count(@podcast.episodes) %></dd>
+              <dt><label class="label label-success"><%= fa_icon("feed") %> Rss-Feeds</label></dt>
+              <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
               <dt><label class="label label-warning">Categories</label></dt>
               <%= for category <- @podcast.categories do %>
                 <dd><%= link category.title, to: category_frontend_path(@conn, :show, category) %></dd>
@@ -79,7 +81,6 @@
 
       <div class="col-md-2">
         <div id="qrcode"></div>
-        <p class="small text-left">scan to subscribe</p>
         <script type="text/javascript">
           function whenAvailable(name, callback) {
               var interval = 10; // ms
@@ -101,6 +102,8 @@
                      });
           });
         </script>
+
+        <hr/>
 
         <%= render "_subscribe_button.html",
                    podcast: @podcast, conn: @conn %>
