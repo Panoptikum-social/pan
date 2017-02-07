@@ -141,7 +141,7 @@ defmodule Pan.Parser.Analyzer do
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp,
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
-    :"media:title",:"media:credit", :link, :"dc:subject", :"dc:identifier", :"georss:featurename",
+    :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate"
   ], do: %{}
@@ -191,6 +191,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:title,             _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+  def call(_, "episode", [:link,              _, []]), do: %{}
   def call(_, "episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid,              _, _]), do: %{}

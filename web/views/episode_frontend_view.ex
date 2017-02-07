@@ -50,8 +50,11 @@ defmodule Pan.EpisodeFrontendView do
                  coverUrl: episode.podcast.image_url,
                  title: ej(episode.title),
                  subtitle: ej(episode.subtitle),
-                 url: episode.deep_link,
-                 description: ej(episode.description),
+                 url: episode.deep_link || episode.link,
+                 description: episode.description
+                              |> HtmlSanitizeEx.strip_tags
+                              |>truncate(1000)
+                              |> ej(),
                  chaptermarks: chapterlist(episode.chapters)
                }
     }

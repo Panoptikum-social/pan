@@ -54,9 +54,14 @@
               </dd>
               <dt><label class="label label-success">last modified</label></dt>
               <dd><%= @podcast.last_build_date %></dd>
-              <dt><label class="label label-info">Owner</label></dt>
-              <%= for engagement <- @podcast.engagements do %>
-                <dd><%= engagement.persona.name %></dd>
+              <dt><label class="label label-info">Contributors</label></dt>
+              <%= for {engagement, index} <- Enum.with_index(@podcast.engagements) do %>
+                <dd>
+                  <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+                           to: persona_frontend_path(@conn, :show, engagement.persona),
+                           class: "btn btn-xs truncate " <> btn_cycle(index) %>
+                  <span class="label label-success"><%= engagement.role %></span>
+                </dd>
               <% end %>
               <dt><label class="label">Explicit</label></dt>
               <dd><%= @podcast.explicit %></dd>

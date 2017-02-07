@@ -86,7 +86,7 @@
 
 
     <%= if @categories != [] do %>
-      <div class="panel panel-danger">
+      <div class="panel panel-default">
         <div class="panel-heading">Categories</div>
         <div class="panel-body" style="line-height: 200%;">
           <%= for category <- @categories do %>

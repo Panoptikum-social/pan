@@ -7,7 +7,7 @@ defmodule Pan.EpisodeFrontendController do
 
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-              |> Repo.preload([:podcast, :enclosures, :contributors, recommendations: :user])
+              |> Repo.preload([:podcast, :enclosures, gigs: :persona, recommendations: :user])
               |> Repo.preload(chapters: from(chapter in Chapter, order_by: chapter.start,
                                                                  preload: [recommendations: :user]))
 

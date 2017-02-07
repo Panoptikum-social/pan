@@ -4,24 +4,50 @@
     <%= fa_icon("headphones") %> <%= @episode.title %>
   </div>
   <div class="panel-body">
-    <p><%= @episode.subtitle %> </p>
+    <div class="row">
+      <div class="col-md-6">
+        <p><%= @episode.subtitle %> </p>
 
-    <dl class="dl-horizontal">
-      <dt><label class="label label-success">Author</label></dt>
-      <dd><%= @episode.author %></dd>
-      <%= if @episode.payment_link_url do %>
-        <dt><label class="label">Support</label></dt>
-        <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
-      <% end %>
-      <dt><label class="label label-warning">Duration</label></dt>
-      <dd><%= @episode.duration %></dd>
-      <dt><label class="label label-info">Publishing date</label></dt>
-      <dd><%= @episode.publishing_date %></dd>
-      <dt><label class="label label-danger">Link</label></dt>
-      <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
-      <dt><label class="label label-primary">Deep link</label></dt>
-      <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>
-    </dl>
+        <dl class="dl-horizontal">
+          <dt><label class="label label-success">Author</label></dt>
+          <dd><%= @episode.author %></dd>
+          <%= if @episode.payment_link_url do %>
+            <dt><label class="label">Support</label></dt>
+            <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
+          <% end %>
+          <dt><label class="label label-warning">Duration</label></dt>
+          <dd><%= @episode.duration %></dd>
+          <dt><label class="label label-info">Publishing date</label></dt>
+          <dd><%= @episode.publishing_date %></dd>
+          <dt><label class="label label-danger">Link</label></dt>
+          <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
+          <dt><label class="label label-primary">Deep link</label></dt>
+          <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>
+          <dt><label class="label label-info">Contributors</label></dt>
+          <%= for {gig, index} <- Enum.with_index(@episode.gigs) do %>
+            <dd style="line-height: 200%;">
+              <%= link [fa_icon("user-o"), " ", gig.persona.name],
+                       to: persona_frontend_path(@conn, :show, gig.persona),
+                       class: "btn btn-xs truncate " <> btn_cycle(index) %>
+              <span class="label label-success"><%= gig.role %></span>
+            </dd>
+          <% end %>
+        </dl>
+      </div>
+      <div class="col-md-6">
+        <h3>Enclosures</h3>
+        <dl class="dl-horizontal">
+          <%= for enclosure <- @episode.enclosures do %>
+            <dt><label class="label label-primary"><%= enclosure.type %></label></dt>
+            <dd>
+              <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
+              (<%= round(String.to_integer(enclosure.length) / 1024) %> kB)
+            </dd>
+          <% end %>
+        </dl>
+      </div>
+    </div>
+
 
     <%= if @current_user do %>
       <%= like_or_unlike(@current_user.id, @episode.id) %>
@@ -35,12 +61,12 @@
 
     <%= if @episode.description do %>
       <h3>Description</h3>
-      <p><%= raw @episode.description %></p>
+      <p><%= truncate(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
     <% end %>
 
     <%= if @episode.summary && @episode.summary != @episode.description do %>
       <h3>Summary</h3>
-      <p><%= @episode.summary %></p>
+      <p><%= truncate(@episode.summary, 1000) %></p>
     <% end %>
   </div>
 </div>

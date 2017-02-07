@@ -47,9 +47,9 @@
 </ul>
 
 <hr/>
-<%= render Pan.EnclosureView, "index.html", enclosures: @episode.enclosures, conn: @conn %>
+<%= render "_enclosures.html", enclosures: @episode.enclosures, conn: @conn %>
 <hr/>
-<%= render Pan.ChapterView, "index.html", chapters: @episode.chapters, conn: @conn %>
+<%= render "_chapters.html", chapters: @episode.chapters, conn: @conn %>
 <hr/>
 <%= render Pan.PodcastView, "_podcast.html", podcast: @episode.podcast, conn: @conn %>
 <hr/>

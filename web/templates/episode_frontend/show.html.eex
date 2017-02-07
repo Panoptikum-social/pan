@@ -9,70 +9,38 @@
   <%= render "_recommendations.html", episode: @episode,
                                       conn: @conn %>
 
-  <h3>Player</h3>
+  <div class="row">
+    <div class="col-md-5">
+      <%= case @player do %>
+        <%= "podlove" -> %>
+          <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+          <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
+            <source src="audio.m4a" type="audio/m4a">
+          </audio>
+          <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
+          <script>$('audio').podlovewebplayer();</script>
 
-  <%= case @player do %>
-    <%= "podlove" -> %>
-      <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
-      <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
-        <source src="audio.m4a" type="audio/m4a">
-      </audio>
-      <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
-      <script>$('audio').podlovewebplayer();</script>
-
-    <%= "podigee" -> %>
-      <script>
-        window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
-      </script>
-      <script class="podigee-podcast-player"
-              src="/podigee-podcast-player/javascripts/podigee-podcast-player.js"
-              data-configuration="playerConfiguration"></script>
-  <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
-  <% end %>
+        <%= "podigee" -> %>
+          <script>
+            window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
+          </script>
+          <script class="podigee-podcast-player"
+                  src="/podigee-podcast-player/javascripts/podigee-podcast-player.js"
+                  data-configuration="playerConfiguration"></script>
+      <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
+      <% end %>
+    </div>
+    <div class="col-md-7">
+      <%= if @episode.shownotes do %>
+        <h3>Shownotes</h3>
+        <p><%= raw(@episode.shownotes) %></p>
+      <% end %>
+    </div>
+  </div>
 
   <%= render "_chapters.html", episode: @episode,
                                current_user: @current_user,
                                changeset: @changeset,
                                player: @player,
                                conn: @conn %>
-
-  <div class="row">
-    <div class="col-md-6">
-      <h3>Enclosures</h3>
-      <dl>
-        <%= for enclosure <- @episode.enclosures do %>
-          <dt><label class="label label-primary">Link</label></dt>
-          <dd><%= link String.split(enclosure.url, "/")
-                       |> List.last, to: enclosure.url %></dd>
-          <dt><label class="label label-warning">Length</label></dt>
-          <dd><%= enclosure.length %></dd>
-          <dt><label class="label label-info">Type</label></dt>
-          <dd><%= enclosure.type %></dd>
-          <dt><label class="label">Guid</label></dt>
-          <dd><%= enclosure.guid %></dd>
-          <dt>- - - - -</dt>
-        <% end %>
-      </dl>
-    </div>
-
-    <%= if @episode.contributors != [] do %>
-      <div class="col-md-6">
-        <h3>Contributors</h3>
-        <dl class="dl-horizontal">
-          <%= for contributor <- @episode.contributors do %>
-            <dt><label class="label label-info">Name</label></dt>
-            <dd><%= contributor.name %></dd>
-            <dt><label class="label label-primary">Link</label></dt>
-            <dd><%= link contributor.uri, to: contributor.uri %></dd>
-            <dt>- - - - -</dt>
-          <% end %>
-        </dl>
-      </div>
-    <% end %>
-  </div>
-
-  <%= if @episode.shownotes do %>
-    <h3>Shownotes</h3>
-    <p><%= raw(@episode.shownotes) %></p>
-  <% end %>
 <% end %>
