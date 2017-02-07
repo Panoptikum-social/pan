@@ -31,7 +31,6 @@
                    <%= link [fa_icon("user-o"), " ", persona.name],
                             to: persona_frontend_path(@conn, :show, persona),
                             class: "btn btn-xs truncate " <> btn_cycle(outer * 8 + middle * 4 + inner) %>
-
                   </div>
                 <% end %>
               </div>
