@@ -62,7 +62,7 @@ defmodule Pan.RecommendationFrontendController do
     episode = Enum.random(podcast.episodes)
     episode = Repo.get(Episode, episode.id)
               |> Repo.preload([:podcast, :enclosures, [chapters: :recommendations],
-                               :contributors, :recommendations])
+                               :contributors, :recommendations, :gigs])
 
     changeset = Recommendation.changeset(%Recommendation{})
 
