@@ -8,10 +8,12 @@ defmodule Pan.PersonaFrontendView do
 
 
   def markdown(content) do
-    content
-    |> Earmark.as_html!()
-    |> HtmlSanitizeEx.html5()
-    |> raw()
+    if content
+      content
+      |> Earmark.as_html!()
+      |> HtmlSanitizeEx.html5()
+      |> raw()
+    end
   end
 
 

@@ -59,7 +59,7 @@
   </div>
 </div>
 
-<%= if @persona.description do %>
+<%= if @persona.description || @persona.long_description do %>
   <div class="panel panel-success">
     <div class="panel-heading">
       <h3 class="panel-title"><%= @persona.description %></h3>
