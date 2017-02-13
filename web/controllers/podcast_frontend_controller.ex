@@ -26,7 +26,6 @@ defmodule Pan.PodcastFrontendController do
     podcast =  Repo.get(Podcast, id)
                |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
                |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
-               |> Repo.preload(engagements: from(e in Engagement, where: e.role == "owner"))
                |> Repo.preload([engagements: :persona])
 
     render(conn, "show.html", podcast: podcast, changeset: changeset)
