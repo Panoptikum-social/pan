@@ -69,4 +69,10 @@ defmodule Pan.MaintenanceController do
 
     render(conn, "remove_duplicates.html")
   end
+
+
+  def convert_authors(conn, _params) do
+
+    render(conn, "done.html")
+  end
 end

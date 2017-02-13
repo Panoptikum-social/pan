@@ -41,7 +41,10 @@
             <dt><label class="label label-primary"><%= enclosure.type %></label></dt>
             <dd>
               <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
-              (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
+
+              <%= if enclosure.length do %>
+                (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
+              <% end %>
             </dd>
           <% end %>
         </dl>
