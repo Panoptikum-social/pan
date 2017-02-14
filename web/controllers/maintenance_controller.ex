@@ -88,133 +88,15 @@ defmodule Pan.MaintenanceController do
     |> Repo.delete_all()
 
 
-    # convert podcast authors
     podcasts = Repo.all(Podcast)
-
     for podcast <- podcasts do
-      if podcast.author do
-        persona_id = from(e in Engagement, where: e.podcast_id == ^podcast.id and
-                                                  e.role == "owner",
-                                         select: e.persona_id,
-                                         limit: 1)
-                     |> Repo.all()
-                     |> List.first()
-        persona =
-          if persona_id do
-            Repo.get!(Persona, persona_id)
-          else
-            %Persona{}
-          end
-
-        if podcast.author == persona.name do
-          case Repo.get_by(Engagement, persona_id: persona.id,
-                                       podcast_id: podcast.id,
-                                       role: "author") do
-            nil ->
-              %Engagement{podcast_id: podcast.id,
-                          persona_id: persona.id,
-                          role: "author"}
-              |> Repo.insert()
-            engagement ->
-              {:ok, engagement}
-          end
-        else
-          persona_map = %{ uri: UUID.uuid5(:url, podcast.author),
-                           name: podcast.author,
-                           email: persona.email,
-                           pid: UUID.uuid5(:url, podcast.author)}
-
-          {:ok, persona} =
-            case Repo.get_by(Pan.Persona, pid:   persona_map[:pid]) ||
-                 Repo.get_by(Pan.Persona, pid:   persona_map[:uri]) ||
-                 Repo.get_by(Pan.Persona, uri:   persona_map[:uri]) do
-              nil ->
-                %Pan.Persona{}
-                |> Map.merge(persona_map)
-                |> Repo.insert()
-              persona ->
-                {:ok, persona}
-            end
-
-          case Repo.get_by(Engagement, persona_id: persona.id,
-                                       podcast_id: podcast.id,
-                                       role: "author") do
-            nil ->
-              %Engagement{podcast_id: podcast.id,
-                          persona_id: persona.id,
-                          role: "author"}
-              |> Repo.insert()
-            engagement ->
-              {:ok, engagement}
-          end
-        end
-      end
+      Pan.Parser.Author.get_or_insert_into_podcast(podcast.author, podcast.id)
     end
 
-    # convert episode authors
     episodes = Repo.all(Episode)
                |> Repo.preload(:podcast)
-
     for episode <- episodes do
-      if episode.author do
-        persona_id = from(e in Engagement, where: e.podcast_id == ^episode.podcast.id and
-                                                  e.role == "owner",
-                                         select: e.persona_id,
-                                         limit: 1)
-                     |> Repo.all()
-                     |> List.first()
-        persona =
-          if persona_id do
-            Repo.get!(Persona, persona_id)
-          else
-            %Persona{}
-          end
-
-        if episode.author == persona.name do
-          case Repo.get_by(Gig, persona_id: persona.id,
-                                episode_id: episode.id,
-                                role: "author") do
-            nil ->
-              %Gig{episode_id: episode.id,
-                   persona_id: persona.id,
-                   role: "author",
-                   publishing_date: episode.publishing_date}
-              |> Repo.insert()
-            gig ->
-              {:ok, gig}
-          end
-        else
-          persona_map = %{ uri: UUID.uuid5(:url, episode.author),
-                           name: episode.author,
-                           email: persona.email,
-                           pid: UUID.uuid5(:url, episode.author)}
-
-          {:ok, persona} =
-            case Repo.get_by(Pan.Persona, pid: persona_map[:pid]) ||
-                 Repo.get_by(Pan.Persona, pid: persona_map[:uri]) ||
-                 Repo.get_by(Pan.Persona, uri: persona_map[:uri]) do
-              nil ->
-                %Pan.Persona{}
-                |> Map.merge(persona_map)
-                |> Repo.insert()
-              persona ->
-                {:ok, persona}
-            end
-
-          case Repo.get_by(Gig, persona_id: persona.id,
-                                episode_id: episode.id,
-                                role: "author") do
-            nil ->
-              %Gig{episode_id: episode.id,
-                   persona_id: persona.id,
-                   role: "author",
-                   publishing_date: episode.publishing_date}
-              |> Repo.insert()
-            gig ->
-              {:ok, gig}
-          end
-        end
-      end
+      Pan.Parser.Author.get_or_insert_into_episode(episode.author, episode, episode.podcast)
     end
 
     render(conn, "done.html")

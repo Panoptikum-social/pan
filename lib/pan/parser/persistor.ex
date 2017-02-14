@@ -5,11 +5,14 @@ defmodule Pan.Parser.Persistor do
 
   def initial_import(map) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
-                                 :languages, :categories, :owner, :categories])
+                                 :languages, :categories, :owner, :categories,
+                                 :author])
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
     {:ok, podcast} = Pan.Parser.Podcast.get_or_insert(podcast_map)
+    Pan.Parser.Author.get_or_insert_into_podcast(map[:author], podcast.id)
+
     {:ok, feed}    = Pan.Parser.Feed.get_or_insert(feed_map, podcast.id)
 
     Pan.Parser.Category.persist_many(map[:categories], podcast)
@@ -33,7 +36,7 @@ defmodule Pan.Parser.Persistor do
 
     unless map[:last_build_date] == podcast.last_build_date do
       if map[:episodes] do
-        Pan.Parser.Episode.insert_newbies(map[:episodes], podcast)
+        Pan.Parser.Episode.persist_many(map[:episodes], podcast)
       end
 
       Pan.Podcast.changeset(podcast, %{ last_build_date: map[:last_build_date] })
