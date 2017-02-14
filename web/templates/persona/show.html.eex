@@ -23,8 +23,14 @@
   </li>
 
   <li>
-    <strong>Description:</strong>
+    <strong>Description Title:</strong>
     <%= @persona.description %>
+  </li>
+
+
+  <li>
+    <strong>Long Description:</strong>
+    <%= Pan.PersonaFrontendView.markdown(@persona.long_description) %>
   </li>
 
   <li>
