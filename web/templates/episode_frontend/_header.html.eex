@@ -40,7 +40,7 @@
             <dd>
               <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
 
-              <%= if enclosure.length do %>
+              <%= if enclosure.length > 0 do %>
                 (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
               <% end %>
             </dd>
