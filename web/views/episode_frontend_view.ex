@@ -11,7 +11,7 @@ defmodule Pan.EpisodeFrontendView do
     persona = Episode.author(episode)
     if persona do
       link [fa_icon("user-o"), " ", persona.name],
-           to: persona_frontend_path(conn, :show, persona),
+           to: persona_frontend_path(conn, :show, persona.id),
            class: "btn btn-xs truncate btn-bittersweet"
     else
       [fa_icon("user-o"), " Unknown"]

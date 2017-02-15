@@ -122,8 +122,18 @@ defmodule Pan.Podcast do
 
 
   def latest do
-    from(Podcast, order_by: [desc: :inserted_at],
-                  limit: 5)
+    from(p in Podcast, order_by: [desc: :inserted_at],
+                       where: is_nil(p.blocked) or p.blocked == false,
+                       join: e in assoc(p, :engagements),
+                       where: e.role == "author",
+                       join: persona in assoc(e, :persona),
+                       select: %{id: p.title,
+                                 title: p.title,
+                                 inserted_at: p.inserted_at,
+                                 description: p.description,
+                                 author_id: persona.id,
+                                 author_name: persona.name},
+                       limit: 5)
     |> Repo.all()
   end
 

@@ -1,6 +1,6 @@
 defmodule Pan.CategoryView do
   use Pan.Web, :view
-  alias Pan.Podcast
+
 
   def category_tree(categories) do
     Enum.map(categories, fn(category) ->

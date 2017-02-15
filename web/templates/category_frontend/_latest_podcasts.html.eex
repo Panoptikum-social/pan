@@ -11,10 +11,18 @@
         <li class="list-group-item">
           <span style="line-height: 200%">
             <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
-                     to: podcast_frontend_path(@conn, :show, podcast),
+                     to: podcast_frontend_path(@conn, :show, podcast.id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %><br/>
-            <%= Pan.PodcastFrontendView.author_button(@conn, podcast) %></br>
+
+            <%= if podcast.author_name do %>
+              <%= link [fa_icon("user-o"), " ", podcast.author_name],
+                   to: persona_frontend_path(@conn, :show, podcast.author_id),
+                   class: "btn btn-xs truncate btn-bittersweet" %>
+            <%= else %>
+              <%= fa_icon("user-o") %> Unknown
+            <% end %><br/>
+
             <%= fa_icon("calendar") %> <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %><br/>
           </span>
           <%= if podcast.description do %>

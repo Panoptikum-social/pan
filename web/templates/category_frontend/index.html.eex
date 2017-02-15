@@ -1,9 +1,3 @@
-<p class="text-right"><em>
-  <%= @catcount %> Categories with
-  <%= @podcount %> Podcasts and
-  <%= @epicount %> Episodes and counting...
-</em></p>
-
 <div class="row">
   <div class="col-md-6" style="columns:         4 150px;
                                -moz-columns:    4 150px;
@@ -13,8 +7,7 @@
   </div>
 
   <div class="col-md-3">
-    <%= render "_search.html", categories: @categories,
-                               conn: @conn  %><br/>
+    <%= render "_search.html", conn: @conn  %><br/>
     <%= render "_latest_recommendations.html", conn: @conn  %><br/>
     <%= render "_latest_episodes.html", conn: @conn  %>
   </div>

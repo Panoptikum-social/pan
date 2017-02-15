@@ -68,17 +68,19 @@ defmodule Pan.Episode do
 
 
   def latest do
-    from(Pan.Episode, order_by: [desc: :publishing_date],
-                      limit: 5,
-                      preload: [:podcast])
+    from(e in Pan.Episode, order_by: [desc: :publishing_date],
+                           join: p in assoc(e, :podcast),
+                           where: is_nil(p.blocked) or p.blocked == false,
+                           preload: :podcast,
+                           limit: 5)
     |> Repo.all()
   end
 
 
   def author(episode) do
     gig = from(Gig, where: [role: "author",
-                           episode_id: ^episode.id],
-                           preload: :persona)
+                            episode_id: ^episode.id],
+                    preload: :persona)
     |> Repo.one()
 
     if gig, do: gig.persona
