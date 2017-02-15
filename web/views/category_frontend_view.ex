@@ -4,6 +4,8 @@ defmodule Pan.CategoryFrontendView do
   alias Pan.Repo
   alias Pan.Like
   alias Pan.Follow
+  alias Pan.Episode
+  alias Pan.Podcast
 
 
   def list_group_item_cycle(counter) do

@@ -28,9 +28,6 @@
   <dt>Duration</dt>
   <dd><%= @episode.duration %></dd>
 
-  <dt>Author</dt>
-  <dd><%= @episode.author %></dd>
-
   <dt>Contributors</dt>
   <%= for contributor <- @episode.contributors do %>
     <dd><%= contributor.name %></dd>

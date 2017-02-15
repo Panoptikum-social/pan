@@ -3,6 +3,7 @@ defmodule Pan.Episode do
   alias Pan.Repo
   alias Pan.Like
   alias Pan.Episode
+  alias Pan.Gig
 
   schema "episodes" do
     field :title, :string
@@ -15,7 +16,6 @@ defmodule Pan.Episode do
     field :payment_link_url, :string
     field :deep_link, :string
     field :duration, :string
-    field :author, :string
     field :subtitle, :string
     field :summary, :string
     timestamps()
@@ -31,7 +31,7 @@ defmodule Pan.Episode do
   end
 
   @required_fields ~w(title link publishing_date description
-                      shownotes duration author)
+                      shownotes duration)
   @optional_fields ~w(payment_link_title payment_link_url deep_link subtitle summary guid)
 
   @doc """
@@ -72,5 +72,15 @@ defmodule Pan.Episode do
                       limit: 5,
                       preload: [:podcast])
     |> Repo.all()
+  end
+
+
+  def author(episode) do
+    gig = from(Gig, where: [role: "author",
+                           episode_id: ^episode.id],
+                           preload: :persona)
+    |> Repo.one()
+
+    if gig, do: gig.persona
   end
 end

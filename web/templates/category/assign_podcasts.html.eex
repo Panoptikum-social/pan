@@ -46,25 +46,23 @@
 
     $('#assigned_podcasts').DataTable({
       serverSide: false,
-      data: [{ title: "Select category first, then select podcasts to remove",
-               author: "<kbd>CTRL</kbd> + Click to select several!",
-               id: 0 }],
+      data: [{ id: 0,
+               title: "Select category first, then select podcasts to remove." <>
+                      " <kbd>CTRL</kbd> + Click to select several!"],
       columns: [
-        { data: 'title', title: "Title of podcasts assigned" },
-        { data: 'author', title: "Author" },
-        { data: 'id', title: "ID"}
+        { data: 'id', title: "ID"},
+        { data: 'title', title: "Title of podcasts assigned" }
       ],
       select: true
     })
 
     $('#unassigned_podcasts').DataTable({
       serverSide: false,
-      data: [{ title: "Select category first, then select podcasts to add",
-               author: "<kbd>CTRL</kbd> + Click to select several!",
-               id: 0 }],
+      data: [{ id: 0,
+               title: "Select category first, then select podcasts to add." <>
+                      " <kbd>CTRL</kbd> + Click to select several!" }],
       columns: [
         { data: 'title', title: "Title of unassigned podcasts" },
-        { data: 'author', title: "Author" },
         { data: 'id', title: "ID"}
       ],
       select: true

@@ -34,9 +34,6 @@
     <dd><%= owner.name %></dd>
   <% end %>
 
-  <dt>Author</dt>
-  <dd><%= @podcast.author %></dd>
-
   <dt>Explicit</dt>
   <dd><%= @podcast.explicit %></dd>
 

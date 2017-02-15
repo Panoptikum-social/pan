@@ -3,7 +3,6 @@ defmodule Pan.PodcastFrontendController do
   alias Pan.Podcast
   alias Pan.Episode
   alias Pan.Recommendation
-  alias Pan.Engagement
 
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],

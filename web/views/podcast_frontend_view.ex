@@ -6,6 +6,18 @@ defmodule Pan.PodcastFrontendView do
   alias Pan.Podcast
 
 
+  def author_button(conn, episode) do
+    persona = Podcast.author(episode)
+    if persona do
+      link [fa_icon("user-o"), " ", persona.name],
+           to: persona_frontend_path(conn, :show, persona),
+           class: "btn btn-xs truncate btn-bittersweet"
+    else
+      [fa_icon("user-o"), " Unknown"]
+    end
+  end
+
+
   def render("like_button.html", %{user_id: user_id, podcast_id: podcast_id}) do
     like_or_unlike(user_id, podcast_id)
   end

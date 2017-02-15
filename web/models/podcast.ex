@@ -5,6 +5,7 @@ defmodule Pan.Podcast do
   alias Pan.Follow
   alias Pan.Subscription
   alias Pan.Podcast
+  alias Pan.Engagement
 
   schema "podcasts" do
     field :title, :string
@@ -16,7 +17,6 @@ defmodule Pan.Podcast do
     field :last_build_date, Ecto.DateTime
     field :payment_link_title, :string
     field :payment_link_url, :string
-    field :author, :string
     field :explicit, :boolean, default: false
     field :blocked, :boolean, default: false
     field :update_paused, :boolean, default: false
@@ -24,12 +24,11 @@ defmodule Pan.Podcast do
     field :unique_identifier, Ecto.UUID
     timestamps()
 
-    belongs_to :owner, Pan.User
-
     has_many :episodes, Pan.Episode, on_delete: :delete_all
     has_many :feeds, Pan.Feed, on_delete: :delete_all
     has_many :subscriptions, Pan.Subscription
     has_many :engagements, Pan.Engagement
+
     has_many :recommendations, Pan.Recommendation, on_delete: :delete_all
     many_to_many :categories, Pan.Category, join_through: "categories_podcasts",
                                             on_delete: :delete_all
@@ -46,7 +45,7 @@ defmodule Pan.Podcast do
 
   @required_fields ~w(title website last_build_date  explicit)
   @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url
-                      description summary author owner_id update_paused blocked retired)
+                      description summary update_paused blocked retired)
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -126,5 +125,20 @@ defmodule Pan.Podcast do
     from(Podcast, order_by: [desc: :inserted_at],
                   limit: 5)
     |> Repo.all()
+  end
+
+
+  def author(podcast) do
+    engagement = from(Engagement, where: [role: "author",
+                                  podcast_id: ^podcast.id],
+                                  preload: :persona)
+    |> Repo.one()
+
+    if engagement, do: engagement.persona
+  end
+
+  def author_name(podcast) do
+    author = author(podcast)
+    if author, do: author.name
   end
 end

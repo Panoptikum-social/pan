@@ -247,7 +247,6 @@ defmodule Pan.PodcastController do
                                     having: max(e.publishing_date) < ago(1, "year"),
                                     select: %{id: p.id,
                                               title: p.title,
-                                              author: p.author,
                                               last_build_date: p.last_build_date,
                                               last_episode_date: max(e.publishing_date)},
                                     order_by: max(e.publishing_date))

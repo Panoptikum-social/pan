@@ -7,6 +7,18 @@ defmodule Pan.EpisodeFrontendView do
   alias Pan.Chapter
 
 
+  def author_button(conn, episode) do
+    persona = Episode.author(episode)
+    if persona do
+      link [fa_icon("user-o"), " ", persona.name],
+           to: persona_frontend_path(conn, :show, persona),
+           class: "btn btn-xs truncate btn-bittersweet"
+    else
+      [fa_icon("user-o"), " Unknown"]
+    end
+  end
+
+
   def podlove_episodestruct(episode) do
     %{poster: episode.podcast.image_url,
       title: episode.title,

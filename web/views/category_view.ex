@@ -1,5 +1,6 @@
 defmodule Pan.CategoryView do
   use Pan.Web, :view
+  alias Pan.Podcast
 
   def category_tree(categories) do
     Enum.map(categories, fn(category) ->
@@ -24,7 +25,6 @@ defmodule Pan.CategoryView do
 
   def podcast_json(podcast) do
     %{ title:  escape_javascript(podcast.title || " "),
-       author: escape_javascript(podcast.author || " "),
        id: podcast.id }
   end
 end

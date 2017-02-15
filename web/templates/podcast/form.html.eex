@@ -78,12 +78,6 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :author, class: "control-label" %>
-    <%= text_input f, :author, class: "form-control" %>
-    <%= error_tag f, :author %>
-  </div>
-
-  <div class="form-group">
     <%= label f, :explicit, class: "control-label" %>
     <%= checkbox f, :explicit, class: "form-control" %>
     <%= error_tag f, :explicit %>

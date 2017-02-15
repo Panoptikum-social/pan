@@ -17,7 +17,7 @@
       <tr>
         <td><%= podcast.id %></td>
         <td><%= podcast.title %></td>
-        <td><%= podcast.author %></td>
+        <td><%= Pan.PodcastFrontendView.author_button(@conn, podcast) %></td>
         <td><%= podcast.last_build_date %></td>
         <td><%= podcast.last_episode_date %></td>
 
@@ -55,7 +55,7 @@
       <tr>
         <td><%= podcast.id %></td>
         <td><%= podcast.title %></td>
-        <td><%= podcast.author %></td>
+        <td><%= Pan.PodcastFrontendView.author_button(@conn, podcast) %></td>
 
         <td>
           <nobr>

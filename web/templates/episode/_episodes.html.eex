@@ -18,12 +18,18 @@
           <%= link episode.title, to: episode_path(@conn, :show, episode),
                                   class: "btn btn-default btn-xs" %>
         </td>
-        <td><%= episode.publishing_date %></td>
-        <td><%= episode.author %></td>
+        <td><nobr><%= episode.publishing_date %></nobr></td>
+        <td><%= Pan.EpisodeFrontendView.author_button(@conn, episode) %></td>
 
         <td class="text-right">
-          <%= link "Edit", to: episode_path(@conn, :edit, episode), class: "btn btn-default btn-xs" %>
-          <%= link "Delete", to: episode_path(@conn, :delete, episode), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+          <nobr>
+            <%= link "Edit", to: episode_path(@conn, :edit, episode),
+                             class: "btn btn-default btn-xs" %>
+            <%= link "Delete", to: episode_path(@conn, :delete, episode),
+                               method: :delete,
+                               data: [confirm: "Are you sure?"],
+                               class: "btn btn-danger btn-xs" %>
+          </nobr>
         </td>
       </tr>
     <% end %>

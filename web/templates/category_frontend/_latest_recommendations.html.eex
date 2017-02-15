@@ -39,7 +39,10 @@
             <% end %>
           </p>
 
-          <p><%= fa_icon("user") %> <%= recommendation.user.name %>
+          <p><%= link [fa_icon("user"), " ", recommendation.user.name],
+                        to: user_frontend_path(@conn, :show, recommendation.user),
+                        class: "btn btn-xs truncate btn-danger" %>
+
             <span class="pull-right">
               <%= fa_icon("calendar") %>
               <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>

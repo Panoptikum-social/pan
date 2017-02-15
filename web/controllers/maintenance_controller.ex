@@ -4,11 +4,6 @@ defmodule Pan.MaintenanceController do
   alias Pan.Subscription
   alias Pan.Message
   alias Pan.Gig
-  alias Pan.Engagement
-  alias Pan.Podcast
-  alias Pan.Persona
-  alias Pan.Gig
-  alias Pan.Episode
 
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],
@@ -73,32 +68,5 @@ defmodule Pan.MaintenanceController do
     end
 
     render(conn, "remove_duplicates.html")
-  end
-
-
-  def convert_authors(conn, _params) do
-    # eliminate Jane Doe
-    from(e in Engagement, where: e.persona_id == 191)
-    |> Repo.delete_all()
-
-    from(g in Gig, where: g.persona_id == 191)
-    |> Repo.delete_all()
-
-    from(p in Persona, where: p.id == 191)
-    |> Repo.delete_all()
-
-
-    podcasts = Repo.all(Podcast)
-    for podcast <- podcasts do
-      Pan.Parser.Author.get_or_insert_into_podcast(podcast.author, podcast.id)
-    end
-
-    episodes = Repo.all(Episode)
-               |> Repo.preload(:podcast)
-    for episode <- episodes do
-      Pan.Parser.Author.get_or_insert_into_episode(episode.author, episode, episode.podcast)
-    end
-
-    render(conn, "done.html")
   end
 end

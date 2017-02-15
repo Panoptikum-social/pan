@@ -35,7 +35,7 @@
                 </ul>
 
                 <h5>Author</h5>
-                <%= podcast.author %>
+                <%= author_button(@conn, podcast) %>
 
                 <%= if podcast.payment_link_url do %>
                     <h5>Support</h5>

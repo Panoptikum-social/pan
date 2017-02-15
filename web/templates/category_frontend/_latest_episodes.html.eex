@@ -24,9 +24,7 @@
           <%= if episode.duration do %>
             <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
           <%= end %>
-          <%= if episode.author do %>
-            <%= fa_icon("user") %> <%= episode.author %><br/>
-          <%= end %>
+          <%= Pan.EpisodeFrontendView.author_button(@conn, episode) %><br/>
           <%= if episode.subtitle do %>
             <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
           <%= end %>
