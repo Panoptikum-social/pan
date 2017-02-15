@@ -22,15 +22,13 @@ defmodule Pan.SearchFrontendController do
 
     podcasts = from(p in Podcast, where: ilike(p.title,       ^sqlfrag) or
                                          ilike(p.description, ^sqlfrag) or
-                                         ilike(p.summary,     ^sqlfrag) or
-                                         ilike(p.author,      ^sqlfrag))
+                                         ilike(p.summary,     ^sqlfrag))
                |> Repo.paginate(page: page, page_size: 10)
 
     episodes = from(e in Episode, where: ilike(e.title,       ^sqlfrag) or
                                          ilike(e.subtitle,    ^sqlfrag) or
                                          ilike(e.description, ^sqlfrag) or
                                          ilike(e.summary,     ^sqlfrag) or
-                                         ilike(e.author,      ^sqlfrag) or
                                          ilike(e.shownotes,   ^sqlfrag),
                                   preload: :podcast)
                |> Repo.paginate(page: page, page_size: 10)

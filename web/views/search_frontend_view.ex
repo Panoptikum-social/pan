@@ -8,7 +8,6 @@ defmodule Pan.SearchFrontendView do
       |> raw
     else
       hit([Title: podcast.title,
-           Author: podcast.author,
            Description: podcast.description,
            Summary: podcast.summary], searchstring, "")
       |> raw
@@ -25,7 +24,6 @@ defmodule Pan.SearchFrontendView do
            Subtitle: episode.subtitle,
            Description: episode.description,
            Summary: episode.summary,
-           Author: episode.author,
            Shownotes: episode.shownotes], searchstring, "")
       |> raw
     end
