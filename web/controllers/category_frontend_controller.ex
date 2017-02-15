@@ -2,7 +2,6 @@ defmodule Pan.CategoryFrontendController do
   use Pan.Web, :controller
 
   alias Pan.Category
-  alias Pan.Episode
   alias Pan.Podcast
   alias Pan.Subscription
 

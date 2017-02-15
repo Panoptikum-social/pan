@@ -19,7 +19,8 @@ defmodule Pan.Mixfile do
                     :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
-                    :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp]]
+                    :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
+                    :con_cache]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -47,7 +48,8 @@ defmodule Pan.Mixfile do
      {:scrivener_ecto, "~> 1.0"}, # pagination
      {:scrivener_html, "~> 1.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
-     {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter
+     {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter,
+     {:con_cache, "~> 0.12.0"}, # key/value cache
      {:earmark, "~> 1.1.0"}] # Markdown parser
   end
 
