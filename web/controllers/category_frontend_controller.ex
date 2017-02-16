@@ -6,15 +6,20 @@ defmodule Pan.CategoryFrontendController do
   alias Pan.Subscription
 
   def index(conn, _params) do
-    categories = Repo.all(from category in Category, order_by: :title,
-                                                     where: is_nil(category.parent_id))
-                 |> Repo.preload(children: from(c in Category, order_by: c.title))
+    categories = ConCache.get_or_store(:slow_cache, :categories, fn() ->
+                   Repo.all(from category in Category, order_by: :title,
+                                                       where: is_nil(category.parent_id))
+                   |> Repo.preload(children: from(c in Category, order_by: c.title))
+                 end)
 
-    popular_podcasts = Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
-                                                        group_by: p.id,
-                                                        select: [count(s.podcast_id), p.id, p.title],
-                                                        order_by: [desc: count(s.podcast_id)],
-                                                        limit: 10)
+
+    popular_podcasts = ConCache.get_or_store(:slow_cache, :popular_podcasts, fn() ->
+                         Repo.all(from s in Subscription, join: p in assoc(s, :podcast),
+                                                          group_by: p.id,
+                                                          select: [count(s.podcast_id), p.id, p.title],
+                                                          order_by: [desc: count(s.podcast_id)],
+                                                          limit: 10)
+                 end)
 
     render(conn, "index.html", popular_podcasts: popular_podcasts,
                                categories: categories)

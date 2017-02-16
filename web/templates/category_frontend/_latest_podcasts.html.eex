@@ -7,7 +7,7 @@
   </div>
   <div id="latest_podcasts">
       <ul class="list-unstyled">
-      <%= for podcast <- ConCache.get_or_store(:pan_cache, :latest_podcasts, fn() -> Pan.Podcast.latest() end) do %>
+      <%= for podcast <- ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() -> Pan.Podcast.latest() end) do %>
         <li class="list-group-item">
           <span style="line-height: 200%">
             <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],

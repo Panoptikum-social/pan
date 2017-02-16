@@ -7,9 +7,12 @@ defmodule Pan do
     children = [
       supervisor(Pan.Endpoint, []),
       supervisor(Pan.Repo, []),
-      supervisor(ConCache, [[ttl_check: :timer.seconds(5),
-                             ttl: :timer.seconds(60)],
-                            [name: :pan_cache]])
+      supervisor(ConCache, [[ttl_check: :timer.seconds(10),
+                             ttl: :timer.seconds(600)],
+                            [name: :slow_cache]],[id: :slow_cache]),
+      supervisor(ConCache, [[ttl_check: :timer.seconds(10),
+                             ttl: :timer.seconds(600)],
+                            [name: :fast_cache]],[id: :fast_cache]),
     ]
 
     opts = [strategy: :one_for_one, name: Pan.Supervisor]

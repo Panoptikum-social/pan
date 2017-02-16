@@ -7,7 +7,7 @@
   </div>
   <div id="latest_recommendations">
     <ul class="list-unstyled">
-      <%= for recommendation <- ConCache.get_or_store(:pan_cache, :latest_recommendations, fn() ->
+      <%= for recommendation <- ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
                                                         Pan.Recommendation.latest()
                                                       end) do %>
         <li>
