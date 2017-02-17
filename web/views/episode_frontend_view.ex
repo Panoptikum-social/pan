@@ -75,10 +75,6 @@ defmodule Pan.EpisodeFrontendView do
   end
 
 
-  def ej(nil), do: ""
-  def ej(string), do: escape_javascript(string)
-
-
   defp filetype (enclosure) do
     enclosure.url |> String.split(".") |> List.last |> String.to_atom
   end

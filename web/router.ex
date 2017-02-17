@@ -112,6 +112,7 @@ defmodule Pan.Router do
 
     get "/users/merge", UserController, :merge
     post "/users/execute_merge", UserController, :execute_merge
+    get "/users/datatable", UserController, :datatable
     resources "/users", UserController
 
     post "/feeds/:id/make_only", FeedController, :make_only
@@ -133,6 +134,7 @@ defmodule Pan.Router do
     get "/opmls/:id/import", OpmlController, :import
     resources "/opmls", OpmlController
 
+    get "/podcasts/datatable", PodcastController, :datatable
     get "/podcasts/delta_import_all", PodcastController, :delta_import_all
     get "/podcasts/:id/pause", PodcastController, :pause
     get "/podcasts/:id/touch", PodcastController, :touch

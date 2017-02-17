@@ -1,9 +1,14 @@
 defmodule Pan.ViewHelpers do
+  import Phoenix.HTML
+  import Phoenix.HTML.Link
+  alias Pan.Endpoint
+
   def btn_cycle(counter) do
     Enum.at(["btn-default", "btn-light-gray", "btn-medium-gray", "btn-dark-gray",
              "btn-success", "btn-info", "btn-primary", "btn-blue-jeans", "btn-lavender",
              "btn-pink-rose", "btn-danger", "btn-bittersweet", "btn-warning", ], rem(counter, 13))
   end
+
 
   def truncate(string, len) do
     length = len - 3
@@ -12,5 +17,27 @@ defmodule Pan.ViewHelpers do
     else
       string
     end
+  end
+
+
+  def ej(nil), do: ""
+  def ej(string), do: escape_javascript(string)
+
+
+  def my_safe_to_string({:safe, string}), do: safe_to_string({:safe, string})
+  def my_safe_to_string(string), do: string
+
+
+  def datatable_actions(record, path) do
+    [ link("Show", to: path.(Endpoint, :show, record.id),
+                   class: "btn btn-default btn-xs"), " ",
+      link("Edit", to: path.(Endpoint, :edit, record.id),
+                   class: "btn btn-warning btn-xs"), " ",
+      link("Delete", to: path.(Endpoint, :delete, record),
+                     method: :delete,
+                     data: [confirm: "Are you sure?"],
+                     class: "btn btn-danger btn-xs")]
+    |> Enum.map(&my_safe_to_string/1)
+    |> Enum.join()
   end
 end

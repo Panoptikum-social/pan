@@ -11,9 +11,9 @@
 
     <script>
       window.podcastData = {
-        "title": "<%= escape_javascript(@podcast.title || "") %>",
-        "subtitle": "<%= escape_javascript(@podcast.summary || "") %>",
-        "description": "<%= escape_javascript(@podcast.description || "") %>",
+        "title": "<%= ej(@podcast.title || "") %>",
+        "subtitle": "<%= ej(@podcast.summary || "") %>",
+        "description": "<%= ej(@podcast.description || "") %>",
         "cover": "<%= @podcast.image_url %>",
         "feeds": [
         <%= for feed <- @podcast.feeds do %>

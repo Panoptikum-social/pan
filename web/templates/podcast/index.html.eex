@@ -20,34 +20,30 @@
       <th>Author</th>
       <th>Update paused</th>
       <th>Website</th>
-
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-    <%= for podcast <- @podcasts do %>
-      <tr>
-        <td><%= podcast.id %></td>
-        <td><nobr><%= podcast.title %></nobr></td>
-        <td><%= Pan.PodcastFrontendView.author_button(@conn, podcast) %></td>
-        <td><%= podcast.update_paused %></td>
-        <td><%= podcast.website %></td>
-
-        <td><nobr>
-          <%= link "Show", to: podcast_path(@conn, :show, podcast.id),
-                           class: "btn btn-default btn-xs" %>
-          <%= link "Edit", to: podcast_path(@conn, :edit, podcast.id),
-                           class: "btn btn-warning btn-xs" %>
-          <%= link "Pause", to: podcast_path(@conn, :pause, podcast.id),
-                           class: "btn btn-info btn-xs" %>
-          </nobr></td>
-      </tr>
-    <% end %>
-  </tbody>
 </table>
 
-<script>
-  $(document).ready(function() {
-      $('#datatable').DataTable();
-  });
+<script data-turbolinks-eval="false">
+  document.addEventListener("turbolinks:before-cache", function() {
+    $('#datatable').DataTable().destroy()
+  })
+
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/podcasts/datatable',
+        dataSrc: 'podcasts',
+      },
+      columns: [
+        { data: 'id' },
+        { data: 'title' },
+        { data: 'author' },
+        { data: 'update_paused' },
+        { data: 'website' },
+        { data: 'actions' }
+      ]
+    })
+  })
 </script>

@@ -24,7 +24,7 @@ defmodule Pan.CategoryView do
 
 
   def podcast_json(podcast) do
-    %{ title:  escape_javascript(podcast.title || " "),
+    %{ title:  ej(podcast.title || " "),
        id: podcast.id }
   end
 end

@@ -11,8 +11,13 @@ defmodule Pan.UserController do
 
 
   def index(conn, _params, _user) do
-    users = Repo.all(from u in Pan.User, order_by: :username)
-    render conn, "index.html", users: users
+    render conn, "index.html"
+  end
+
+
+  def datatable(conn, _params, _user) do
+    users = Repo.all(User)
+    render conn, "datatable.json", users: users
   end
 
 

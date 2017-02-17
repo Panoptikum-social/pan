@@ -6,8 +6,8 @@ defmodule Pan.PodcastFrontendView do
   alias Pan.Podcast
 
 
-  def author_button(conn, episode) do
-    persona = Podcast.author(episode)
+  def author_button(conn, podcast) do
+    persona = Podcast.author(podcast)
     if persona do
       link [fa_icon("user-o"), " ", persona.name],
            to: persona_frontend_path(conn, :show, persona),

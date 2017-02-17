@@ -28,11 +28,6 @@ defmodule Pan.PodcastController do
 
 
   def index(conn, _params) do
-    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  preload: :feeds)
-               |> Repo.all
-
-
     stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
                                       (is_nil(p.update_paused) or p.update_paused == false) and
                                       (is_nil(p.retired) or p.retired == false))
@@ -45,10 +40,23 @@ defmodule Pan.PodcastController do
     retired = from(p in Podcast, where: p.retired == true)
               |> Repo.aggregate(:count, :id)
 
-    render(conn, "index.html", podcasts: podcasts,
-                               stale: stale,
-                               paused: paused,
-                               retired: retired)
+    render(conn, "index.html", stale: stale,
+                                paused: paused,
+                                retired: retired)
+  end
+
+  def datatable(conn, _params) do
+    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
+                                  join: e in assoc(p, :engagements),
+                                  where: e.role == "author",
+                                  join: persona in assoc(e, :persona),
+                                  select: %{id: p.id,
+                                            title: p.title,
+                                            author_name: persona.name,
+                                            update_paused: p.update_paused,
+                                            website: p.website})
+               |> Repo.all
+    render conn, "datatable.json", podcasts: podcasts
   end
 
 
