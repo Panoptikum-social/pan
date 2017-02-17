@@ -100,15 +100,16 @@ defmodule Pan.Router do
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
-    resources "/gigs", GigController
     resources "/likes", LikeController
     resources "/follows", FollowController
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
     resources "/delegations", DelegationController
-
     resources "/personas", PersonaController
+
+    get "/gigs/datatable", GigController, :datatable
+    resources "/gigs", GigController
 
     get "/users/merge", UserController, :merge
     post "/users/execute_merge", UserController, :execute_merge

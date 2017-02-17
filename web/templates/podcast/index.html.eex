@@ -34,7 +34,7 @@
     $('#datatable').DataTable({
       ajax: {
         url: '/admin/podcasts/datatable',
-        dataSrc: 'podcasts',
+        dataSrc: 'podcasts'
       },
       columns: [
         { data: 'id' },

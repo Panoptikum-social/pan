@@ -4,8 +4,73 @@ defmodule Pan.GigController do
   alias Pan.Gig
 
   def index(conn, _params) do
-    gigs = Repo.all(Gig)
-    render(conn, "index.html", gigs: gigs)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, params) do
+    search = params["search"]["value"]
+    searchfrag = "%" <> params["search"]["value"] <> "%"
+
+    limit = String.to_integer(params["length"])
+    offset = String.to_integer(params["start"])
+    draw = String.to_integer(params["draw"])
+
+    columns = params["columns"]
+
+    order_by = Enum.map(params["order"], fn({_key, value}) ->
+                 column_number = value["column"]
+                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+               end)
+
+    records_total = Repo.aggregate(Gig, :count, :id)
+
+    records_filtered =
+      if search != "" do
+        from(g in Gig, join: p in assoc(g, :persona),
+                       join: e in assoc(g, :episode),
+                       where: ilike(g.comment, ^searchfrag) or
+                              ilike(g.role, ^searchfrag) or
+                              ilike(p.name, ^searchfrag) or
+                              ilike(e.title, ^searchfrag))
+             |> Repo.aggregate(:count, :id)
+      else
+        from(g in Gig)
+        |> Repo.aggregate(:count, :id)
+      end
+
+
+    gigs = from(g in Gig, limit: ^limit,
+                          offset: ^offset,
+                          order_by: ^order_by,
+                          join: p in assoc(g, :persona),
+                          join: e in assoc(g, :episode),
+                          select: %{ id:              g.id,
+                                     persona_id:      g.persona_id,
+                                     persona_name:    p.name,
+                                     episode_id:      g.episode_id,
+                                     episode_title:   e.title,
+                                     from_in_s:       g.from_in_s,
+                                     until_in_s:      g.until_in_s,
+                                     comment:         g.comment,
+                                     publishing_date: g.publishing_date,
+                                     role:            g.role })
+
+    gigs = if search != "" do
+             from(g in gigs, join: p in assoc(g, :persona),
+                             join: e in assoc(g, :episode),
+                             where: ilike(g.comment, ^searchfrag) or
+                                    ilike(g.role, ^searchfrag) or
+                                    ilike(p.name, ^searchfrag) or
+                                    ilike(e.title, ^searchfrag))
+             |> Repo.all
+           else
+             Repo.all(gigs)
+           end
+
+    render(conn, "datatable.json", gigs: gigs,
+                                   draw: draw,
+                                   records_total: records_total,
+                                   records_filtered: records_filtered)
   end
 
   def new(conn, _params) do

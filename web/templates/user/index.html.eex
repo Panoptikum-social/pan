@@ -24,23 +24,27 @@
 </table>
 
 <script>
-  $(document).ready(function() {
-      $('#datatable').DataTable({
-        ajax: {
-          url: '/admin/users/datatable',
-          dataSrc: 'users',
-        },
-        columns: [
-          { data: 'id' },
-          { data: 'name' },
-          { data: 'username' },
-          { data: 'email' },
-          { data: 'email_confirmed' },
-          { data: 'podcaster' },
-          { data: 'admin' },
-          { data: 'password_hash' },
-          { data: 'actions' }
-        ]
-      });
-  } );
+  document.addEventListener("turbolinks:load", function() {
+    if (wrapper = $('#datatable_wrapper')[0]) {
+      wrapper.outerHTML = $('#datatable')[0].outerHTML
+    }
+
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/users/datatable',
+        dataSrc: 'users'
+      },
+      columns: [
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'username' },
+        { data: 'email' },
+        { data: 'email_confirmed' },
+        { data: 'podcaster' },
+        { data: 'admin' },
+        { data: 'password_hash' },
+        { data: 'actions' }
+      ]
+    })
+  })
 </script>

@@ -28,15 +28,17 @@ defmodule Pan.ViewHelpers do
   def my_safe_to_string(string), do: string
 
 
-  def datatable_actions(record, path) do
-    [ link("Show", to: path.(Endpoint, :show, record.id),
+  def datatable_actions(record_id, path) do
+    [ "<nobr>",
+      link("Show", to: path.(Endpoint, :show, record_id),
                    class: "btn btn-default btn-xs"), " ",
-      link("Edit", to: path.(Endpoint, :edit, record.id),
+      link("Edit", to: path.(Endpoint, :edit, record_id),
                    class: "btn btn-warning btn-xs"), " ",
-      link("Delete", to: path.(Endpoint, :delete, record),
+      link("Delete", to: path.(Endpoint, :delete, record_id),
                      method: :delete,
                      data: [confirm: "Are you sure?"],
-                     class: "btn btn-danger btn-xs")]
+                     class: "btn btn-danger btn-xs"),
+      "</nobr>"]
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
   end
