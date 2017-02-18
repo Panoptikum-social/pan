@@ -38,6 +38,9 @@ defmodule Pan.Parser.RssFeed do
       %HTTPotion.ErrorResponse{message: "req_timedout"} ->
         {:error, "request timed out"}
 
+      %HTTPotion.ErrorResponse{message: "nxdomain"} ->
+        {:error, "dns name not resolved"}
+
       %HTTPotion.ErrorResponse{message: "{:tls_alert, 'handshake failure'}"} ->
         if option == "no_headers" do
           {:error, "tls_alert: handshake failure"}

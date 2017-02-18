@@ -143,7 +143,8 @@ defmodule Pan.Parser.Analyzer do
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
-    :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate"
+    :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
+    :"geo:long", :"rawvoice:isHD"
   ], do: %{}
 
 
