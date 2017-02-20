@@ -1,6 +1,5 @@
 defmodule Pan.PodcastView do
   use Pan.Web, :view
-  alias Pan.Podcast
   alias Pan.Endpoint
 
   def render("datatable.json", %{ podcasts: podcasts }) do
