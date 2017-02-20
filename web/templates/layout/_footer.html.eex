@@ -19,8 +19,8 @@
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">DEMO</dt>
-        <dd class="nav-item"><a href="/random">Random</a></dd>
-        <dd class="nav-item"><a href="/podcasters">Podcasters</a></dd>
+        <dd class="nav-item"><a href="/recommendations/random">Random</a></dd>
+        <dd class="nav-item"><a href="/personas">Podcasters + Personas</a></dd>
         <dd class="nav-item"><a href="/podcasts">New podcasts</a></dd>
         <dd class="nav-item"><a href="/episodes">New episodes</a></dd>
         <dd class="nav-item"><a href="/podcasts/buttons">Podcast Buttons</a></dd>
