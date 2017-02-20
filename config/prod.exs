@@ -2,9 +2,9 @@ use Mix.Config
 
 config :pan, Pan.Endpoint,
   https: [port: 8888,
-          keyfile: "/etc/letsencrypt/live/beta.panoptikum.io/privkey.pem",
-          certfile: "/etc/letsencrypt/live/beta.panoptikum.io/cert.pem"],
-  url: [host: "beta.panoptikum.io", port: 443],
+          keyfile: "/etc/letsencrypt/live/panoptikum.io/privkey.pem",
+          certfile: "/etc/letsencrypt/live/panoptikum.io/cert.pem"],
+  url: [host: "panoptikum.io", port: 443],
 
   cache_static_manifest: "priv/static/manifest.json",
   server: true,
