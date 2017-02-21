@@ -154,7 +154,6 @@ defmodule Pan.Router do
     get "/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona
     resources "/manifestations", ManifestationController
 
-    get "/maintenance/trigger_import", MaintenanceController, :trigger_import
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
     get "/maintenance/remove_duplicate_gigs", MaintenanceController, :remove_duplicate_gigs
     get "/maintenance/message_cleanup", MaintenanceController, :message_cleanup

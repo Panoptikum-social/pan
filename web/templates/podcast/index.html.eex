@@ -1,6 +1,4 @@
 <p class="pull-right">
-  <%= link "Experimental Import", to: maintenance_path(@conn, :trigger_import),
-                               class: "btn btn-warning" %>
   <%= link "Episode import", to: podcast_path(@conn, :delta_import_all),
                                class: "btn btn-info" %>
   <%= link "Factory", to: podcast_path(@conn, :factory),

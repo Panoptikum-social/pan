@@ -20,14 +20,14 @@ defmodule Pan.Mixfile do
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
-                    :con_cache]]
+                    :con_cache, :timelier]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:phoenix, "~> 1.2.0"}, # wWeb framework
+    [{:phoenix, "~> 1.2.0"}, # web framework
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
      {:postgrex, ">= 0.0.0"}, # database adapter
      {:phoenix_ecto, "~> 3.0-rc"}, # ORM (yes!)
@@ -50,7 +50,9 @@ defmodule Pan.Mixfile do
      {:bamboo, "~> 0.8"}, # mailing
      {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter,
      {:con_cache, "~> 0.12.0"}, # key/value cache
-     {:earmark, "~> 1.1.0"}] # Markdown parser
+     {:earmark, "~> 1.1.0"}, # Markdown parser
+     {:timelier, "~> 0.9.2"} # Cron like agent
+    ]
   end
 
   defp aliases do

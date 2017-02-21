@@ -151,4 +151,64 @@ defmodule Pan.Podcast do
     author = author(podcast)
     if author, do: author.name
   end
+
+
+  def import_stale_podcasts() do
+    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+
+    newest_podcast = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                               (is_nil(p.update_paused) or p.update_paused == false) and
+                                               (is_nil(p.retired) or p.retired == false),
+                                        limit: 1,
+                                        order_by: [desc: :updated_at])
+                     |> Repo.one()
+
+
+    newest_plus_one_sec = newest_podcast.updated_at
+                          |> Ecto.DateTime.to_erl()
+                          |> Timex.to_datetime("Etc/UTC")
+                          |> Timex.shift(seconds: 1)
+                          |> Timex.to_erl()
+                          |> Ecto.DateTime.from_erl()
+
+
+    from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                              (is_nil(p.update_paused) or p.update_paused == false) and
+                              (is_nil(p.retired) or p.retired == false),
+                       limit: 1,
+                       order_by: [asc: :updated_at])
+    |> Repo.one()
+    |> Podcast.changeset(%{updated_at: newest_plus_one_sec})
+    |> Repo.update()
+
+    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+
+    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                         (is_nil(p.update_paused) or p.update_paused == false) and
+                                         (is_nil(p.retired) or p.retired == false),
+                                  order_by: [asc: :updated_at])
+               |> Repo.all()
+
+    for podcast <- podcasts do
+      Pan.Parser.Podcast.delta_import(podcast.id)
+    end
+  end
+
+
+  def delta_import_one(podcast, current_user) do
+    notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
+      {:ok, _} ->
+        %{content: "Updated Podcast " <> podcast.title,
+          type: "success",
+          user_name: current_user.name}
+
+      {:error, message} ->
+        %{content: "Error:" <> message <> " / updating podcast" <> podcast.title,
+          type: "danger",
+          user_name: current_user.name}
+    end
+
+    Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
+                           "notification", notification
+  end
 end

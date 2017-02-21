@@ -204,30 +204,12 @@ defmodule Pan.PodcastController do
 
     for podcast <- podcasts do
       # Task.async(fn -> delta_import_one(podcast, current_user) end)
-      delta_import_one(podcast, current_user)
+      Podcast.delta_import_one(podcast, current_user)
     end
 
     conn
     |> put_flash(:info, "Podcasts updated successfully.")
     |> redirect(to: podcast_path(conn, :index))
-  end
-
-
-  defp delta_import_one(podcast, current_user) do
-    notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
-      {:ok, _} ->
-        %{content: "Updated Podcast " <> podcast.title,
-          type: "success",
-          user_name: current_user.name}
-
-      {:error, message} ->
-        %{content: "Error:" <> message <> " / updating podcast" <> podcast.title,
-          type: "danger",
-          user_name: current_user.name}
-    end
-
-    Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
-                           "notification", notification
   end
 
 

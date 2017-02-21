@@ -31,7 +31,6 @@ config :phoenix, :generators,
 
 config :pan, ecto_repos: [Pan.Repo]
 
-
 config :scrivener_html, routes_helper: Pan.Router.Helpers
 
 config :pan, Pan.Mailer,
