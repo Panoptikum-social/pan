@@ -28,7 +28,9 @@ defmodule Pan.PodcastController do
 
 
   def index(conn, _params) do
-    stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
+    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+
+    stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                       (is_nil(p.update_paused) or p.update_paused == false) and
                                       (is_nil(p.retired) or p.retired == false))
             |> Repo.aggregate(:count, :id)
@@ -192,7 +194,9 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago() and
+    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+
+    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                          (is_nil(p.update_paused) or p.update_paused == false) and
                                          (is_nil(p.retired) or p.retired == false),
                                   order_by: [asc: :updated_at])
@@ -275,13 +279,5 @@ defmodule Pan.PodcastController do
     conn
     |> put_flash(:info, "Podcast retired.")
     |> redirect(to: podcast_path(conn, :retirement))
-  end
-
-
-  defp ten_hours_ago do
-    Timex.now()
-    |> Timex.shift(hours: -10)
-    |> Timex.to_erl()
-    |> Ecto.DateTime.from_erl()
   end
 end

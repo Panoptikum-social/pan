@@ -4,6 +4,47 @@ defmodule Pan.MaintenanceController do
   alias Pan.Subscription
   alias Pan.Message
   alias Pan.Gig
+  alias Pan.Podcast
+
+
+  def trigger_import(conn, params) do
+    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+
+    newest_podcast = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                               (is_nil(p.update_paused) or p.update_paused == false) and
+                                               (is_nil(p.retired) or p.retired == false),
+                                        limit: 1,
+                                        order_by: [desc: :updated_at])
+                     |> Repo.one()
+
+
+    newest_plus_one_sec = newest_podcast.updated_at
+                          |> Ecto.DateTime.to_erl()
+                          |> Timex.to_datetime("Etc/UTC")
+                          |> Timex.shift(seconds: 1)
+                          |> Timex.to_erl()
+                          |> Ecto.DateTime.from_erl()
+
+
+    from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                              (is_nil(p.update_paused) or p.update_paused == false) and
+                              (is_nil(p.retired) or p.retired == false),
+                       limit: 1,
+                       order_by: [asc: :updated_at])
+    |> Repo.one()
+    |> Podcast.changeset(%{updated_at: newest_plus_one_sec})
+    |> Repo.update()
+
+
+    Task.async(fn ->
+      Pan.PodcastController.delta_import_all(conn, params)
+    end)
+
+    conn
+    |> put_flash(:info, "Podcasts import started.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
 
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],
