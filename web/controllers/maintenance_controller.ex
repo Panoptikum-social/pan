@@ -6,6 +6,19 @@ defmodule Pan.MaintenanceController do
   alias Pan.Gig
 
 
+  def vienna_beamers(conn, _params) do
+    redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
+  end
+
+  def blog_2016(conn, %{"month" => month, "day" => day, "file" => file}) do
+    redirect(conn, external: "https://blog.panoptikum.io/2016/" <> month <> "/" <> day <> "/" <> file)
+  end
+
+  def blog_2017(conn, %{"month" => month, "day" => day, "file" => file}) do
+    redirect(conn, external: "https://blog.panoptikum.io/2017/" <> month <> "/" <> day <> "/" <> file)
+  end
+
+
   def remove_duplicates(conn, _params) do
     duplicates = from(a in CategoryPodcast, group_by: [a.category_id, a.podcast_id],
                                             select: [a.category_id, a.podcast_id, count(a.podcast_id)],

@@ -55,6 +55,10 @@ defmodule Pan.Router do
 
     get "/recommendations/random", RecommendationFrontendController, :random
     resources "/recommendations", RecommendationFrontendController, only: [:index]
+
+    get "/vienna-beamers", MaintenanceController, :vienna_beamers
+    get "/2016/:month/:day/:file", MaintenanceController, :blog_2016
+    get "/2017/:month/:day/:file", MaintenanceController, :blog_2017
     get "/:pid", PersonaFrontendController, :persona
   end
 
