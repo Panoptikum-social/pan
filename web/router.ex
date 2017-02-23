@@ -105,8 +105,10 @@ defmodule Pan.Router do
     resources "/likes", LikeController
     resources "/follows", FollowController
     resources "/messages", MessageController
-    resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+
+    get "/subscriptions/datatable", SubscriptionController, :datatable
+    resources "/subscriptions", SubscriptionController
 
     get "/engagements/datatable", EngagementController, :datatable
     resources "/engagements", EngagementController

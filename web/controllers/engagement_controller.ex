@@ -3,10 +3,10 @@ defmodule Pan.EngagementController do
 
   alias Pan.Engagement
 
-
   def index(conn, _params) do
     render(conn, "index.html")
   end
+
 
   def datatable(conn, _params) do
     engagements = from(Engagement, preload: [:persona, :podcast])
@@ -14,10 +14,12 @@ defmodule Pan.EngagementController do
     render conn, "datatable.json", engagements: engagements
   end
 
+
   def new(conn, _params) do
     changeset = Engagement.changeset(%Engagement{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"engagement" => engagement_params}) do
     changeset = Engagement.changeset(%Engagement{}, engagement_params)
@@ -32,16 +34,19 @@ defmodule Pan.EngagementController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)
     render(conn, "show.html", engagement: engagement)
   end
+
 
   def edit(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)
     changeset = Engagement.changeset(engagement)
     render(conn, "edit.html", engagement: engagement, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "engagement" => engagement_params}) do
     engagement = Repo.get!(Engagement, id)
@@ -56,6 +61,7 @@ defmodule Pan.EngagementController do
         render(conn, "edit.html", engagement: engagement, changeset: changeset)
     end
   end
+
 
   def delete(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)

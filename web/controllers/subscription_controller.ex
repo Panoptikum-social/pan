@@ -4,10 +4,15 @@ defmodule Pan.SubscriptionController do
   alias Pan.Subscription
 
 
-  def index(conn, params) do
-    subscriptions = Repo.paginate(Subscription, params)
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
 
-    render(conn, "index.html", subscriptions: subscriptions)
+
+  def datatable(conn, _params) do
+    subscriptions = from(Subscription, preload: [:user, :podcast])
+                  |> Repo.all()
+    render conn, "datatable.json", subscriptions: subscriptions
   end
 
 
