@@ -1,38 +1,51 @@
 <h2>Listing likes</h2>
 
-<table class="table table-bordered table-condensed table-striped">
+<table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>Enjoyer</th>
-      <th>Podcast</th>
-      <th>Episode</th>
-      <th>Chapter</th>
-      <th>User</th>
-      <th>Category</th>
-
-      <th></th>
+      <th>Id</th>
+      <th>Enjoyer: Id</th>
+      <th>Enjoyer: Name</th>
+      <th>Podcast: Id</th>
+      <th>Podcast: Title</th>
+      <th>Episode: Id</th>
+      <th>Episode: Title</th>
+      <th>Chapter: Id</th>
+      <th>Chapter: Title</th>
+      <th>User: Id</th>
+      <th>User: Name</th>
+      <th>Category: Id</th>
+      <th>Category: Title</th>
+      <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-<%= for like <- @likes do %>
-    <tr>
-      <td><%= like.enjoyer_id %></td>
-      <td><%= like.podcast_id %></td>
-      <td><%= like.episode_id %></td>
-      <td><%= like.chapter_id %></td>
-      <td><%= like.user_id %></td>
-      <td><%= like.category_id %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: like_path(@conn, :show, like), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: like_path(@conn, :edit, like), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: like_path(@conn, :delete, like), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
 </table>
 
-<%= pagination_links @conn, @likes %>
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/likes/datatable',
+        dataSrc: 'likes'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'enjoyer_id'},
+        {data: 'enjoyer_name'},
+        {data: 'podcast_id'},
+        {data: 'podcast_title'},
+        {data: 'episode_id'},
+        {data: 'episode_title'},
+        {data: 'chapter_id'},
+        {data: 'chapter_title'},
+        {data: 'user_id'},
+        {data: 'user_name'},
+        {data: 'category_id'},
+        {data: 'category_title'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
 
 <%= link "New like", to: like_path(@conn, :new) %>

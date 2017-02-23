@@ -3,10 +3,14 @@ defmodule Pan.LikeController do
 
   alias Pan.Like
 
-  def index(conn, params) do
-    likes = from(Like)
-            |> Repo.paginate(params)
-    render(conn, "index.html", likes: likes)
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    likes = from(Like, preload: [:enjoyer, :podcast, :episode, :chapter, :user, :category])
+              |> Repo.all()
+    render conn, "datatable.json", likes: likes
   end
 
   def new(conn, _params) do
