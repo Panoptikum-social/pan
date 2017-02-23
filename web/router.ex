@@ -138,6 +138,7 @@ defmodule Pan.Router do
     get "/backlog_feeds/:id/import", FeedBacklogController, :import
     resources "/backlog_feeds", FeedBacklogController
 
+    get "/opmls/datatable", OpmlController, :datatable
     get "/opmls/:id/import", OpmlController, :import
     resources "/opmls", OpmlController
 

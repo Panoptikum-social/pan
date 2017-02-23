@@ -4,9 +4,13 @@ defmodule Pan.OpmlController do
   alias Pan.Opml
 
   def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
     opmls = Repo.all(from o in Opml, order_by: [desc: :inserted_at],
                                      preload: :user)
-    render(conn, "index.html", opmls: opmls)
+    render conn, "datatable.json", opmls: opmls
   end
 
 
