@@ -1,45 +1,47 @@
-<h2>Listing recommendations</h2>
+<h2>Recommendations</h2>
 
-<%= pagination_links @conn, @recommendations %>
+<table id="datatable" class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Inserted at</th>
+      <th>User: Id</th>
+      <th>User: Name</th>
+      <th>Podcast: Id</th>
+      <th>Podcast: Title</th>
+      <th>Episode: Id</th>
+      <th>Episode: Title</th>
+      <th>Chapter: Id</th>
+      <th>Chapter: Start</th>
+      <th>Comment</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+</table>
 
-<ul class="list-group">
-  <%= for recommendation <- @recommendations do %>
-    <li class="list-group-item">
-      (<%= recommendation.inserted_at %>) &nbsp;
-      <%= link recommendation.user.name, to: user_path(@conn, :show, recommendation.user) %>: &nbsp;
-
-      <%= if recommendation.podcast do %>
-        <%= link recommendation.podcast.title, to: podcast_path(@conn, :show, recommendation.podcast) %>
-      <% end %>
-
-      <%= if recommendation.episode do %>
-        <%= link recommendation.episode.title, to: episode_path(@conn, :show, recommendation.episode) %> /
-        <%= link recommendation.episode.podcast.title, to: episode_path(@conn, :show, recommendation.episode.podcast) %>
-      <% end %>
-
-      <%= if recommendation.chapter_id do %>
-        <%= recommendation.chapter.start %> /
-        <%= link recommendation.chapter.episode.title, to: episode_path(@conn, :show, recommendation.chapter.episode) %> /
-        <%= link recommendation.chapter.episode.podcast.title, to: episode_path(@conn, :show, recommendation.chapter.episode.podcast) %>
-      <% end %>
-
-      <br/>
-      <%= recommendation.comment %>
-
-      <span class="pull-right">
-        <%= link "Show", to: recommendation_path(@conn, :show, recommendation),
-                         class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: recommendation_path(@conn, :edit, recommendation),
-        class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: recommendation_path(@conn, :delete, recommendation),
-                           method: :delete,
-                           data: [confirm: "Are you sure?"],
-                           class: "btn btn-danger btn-xs" %>
-      </span>
-    </li>
-  <% end %>
-</ul>
-
-<%= pagination_links @conn, @recommendations %>
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/recommendations/datatable',
+        dataSrc: 'recommendations'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'inserted_at'},
+        {data: 'user_id'},
+        {data: 'user_name'},
+        {data: 'podcast_id'},
+        {data: 'podcast_title'},
+        {data: 'episode_id'},
+        {data: 'episode_title'},
+        {data: 'chapter_id'},
+        {data: 'chapter_title'},
+        {data: 'comment'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
 
 <%= link "New recommendation", to: recommendation_path(@conn, :new) %>

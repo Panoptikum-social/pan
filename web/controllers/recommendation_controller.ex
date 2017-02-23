@@ -1,15 +1,16 @@
 defmodule Pan.RecommendationController do
   use Pan.Web, :controller
-
   alias Pan.Recommendation
 
-  def index(conn, params) do
-    recommendations = from(r in Recommendation, order_by: [desc: :inserted_at],
-                                                preload: [:podcast, [episode: :podcast],
-                                                          [chapter: [episode: :podcast]], :user])
-                      |> Repo.paginate(params)
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
 
-    render(conn, "index.html", recommendations: recommendations)
+
+  def datatable(conn, _params) do
+    recommendations = from(Recommendation, preload: [:user, :podcast, :episode, :chapter])
+                      |> Repo.all()
+    render conn, "datatable.json", recommendations: recommendations
   end
 
 
