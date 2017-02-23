@@ -20,12 +20,12 @@ defmodule Pan.OpmlView do
 
   def opml_actions(record, path) do
     ["<nobr>",
+     link("Parse", to: path.(Endpoint, :import, record.id),
+                   class: "btn btn-info btn-xs"), " ",
      link("Show", to: path.(Endpoint, :show, record.id),
                   class: "btn btn-default btn-xs"), " ",
      link("Edit", to: path.(Endpoint, :edit, record.id),
                   class: "btn btn-warning btn-xs"), " ",
-     link("Parse", to: path.(Endpoint, :import, record.id),
-                   class: "btn btn-info btn-xs"), " ",
      link("Delete", to: path.(Endpoint, :delete, record.id),
                     method: :delete,
                     data: [confirm: "Are you sure?"],
