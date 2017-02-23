@@ -44,16 +44,16 @@ defmodule Pan.GigController do
                           order_by: ^order_by,
                           join: p in assoc(g, :persona),
                           join: e in assoc(g, :episode),
-                          select: %{ id:              g.id,
-                                     persona_id:      g.persona_id,
-                                     persona_name:    p.name,
-                                     episode_id:      g.episode_id,
-                                     episode_title:   e.title,
-                                     from_in_s:       g.from_in_s,
-                                     until_in_s:      g.until_in_s,
-                                     comment:         g.comment,
-                                     publishing_date: g.publishing_date,
-                                     role:            g.role })
+                          select: %{id:              g.id,
+                                    persona_id:      g.persona_id,
+                                    persona_name:    p.name,
+                                    episode_id:      g.episode_id,
+                                    episode_title:   e.title,
+                                    from_in_s:       g.from_in_s,
+                                    until_in_s:      g.until_in_s,
+                                    comment:         g.comment,
+                                    publishing_date: g.publishing_date,
+                                    role:            g.role})
 
     gigs = if search != "" do
              from(g in gigs, join: p in assoc(g, :persona),

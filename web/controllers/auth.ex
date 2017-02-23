@@ -60,7 +60,7 @@ defmodule Pan.Auth do
 
 
   def login_by_token(conn, token) do
-    case Phoenix.Token.verify(Pan.Endpoint, "user", token, max_age: 60*5) do
+    case Phoenix.Token.verify(Pan.Endpoint, "user", token, max_age: 60 * 5) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
         {:ok, login(conn, user)}
@@ -76,7 +76,7 @@ defmodule Pan.Auth do
 
 
   def grant_access_by_token(_conn, token) do
-    case Phoenix.Token.verify(Pan.Endpoint, "persona", token, max_age: 60*60*48) do
+    case Phoenix.Token.verify(Pan.Endpoint, "persona", token, max_age: 60 * 60 * 48) do
       {:ok, persona_id} ->
         {:ok, String.to_integer(persona_id)}
       {:error, :expired} ->

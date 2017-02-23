@@ -65,7 +65,7 @@ defmodule Pan.EpisodeFrontendView do
                  url: episode.deep_link || episode.link,
                  description: episode.description
                               |> HtmlSanitizeEx.strip_tags
-                              |>truncate(1000)
+                              |> truncate(1000)
                               |> ej(),
                  chaptermarks: chapterlist(episode.chapters)
                }
@@ -81,27 +81,33 @@ defmodule Pan.EpisodeFrontendView do
 
 
   defp chapterlist(chapters) do
-    Enum.map(chapters, fn(chapter) -> %{ start: ej(chapter.start),
-                                         title: ej(chapter.title) } end)
+    Enum.map chapters, fn(chapter) ->
+      %{start: ej(chapter.start), title: ej(chapter.title)}
+    end
   end
 
 
   defp enclosuremap(enclosures) do
-    Enum.map(enclosures, fn(enclosure) -> %{filetype(enclosure) => enclosure.url} end)
+    Enum.map enclosures, fn(enclosure) ->
+      %{filetype(enclosure) => enclosure.url}
+    end
     |> List.first
   end
 
 
   def downloadlist(enclosures) do
-    Enum.map(enclosures, fn(enclosure) -> %{assetTitle: String.split(enclosure.url, "/") |> List.last,
-                                            size: enclosure.length,
-                                            downloadUrl: enclosure.url} end)
+    Enum.map enclosures, fn(enclosure) ->
+      %{assetTitle: String.split(enclosure.url, "/") |> List.last,
+        size: enclosure.length,
+        downloadUrl: enclosure.url}
+    end
   end
 
 
   def list_group_item_cycle(counter) do
     Enum.at(["list-group-item-info", "list-group-item-danger",
-             "list-group-item-warning", "list-group-item-primary", "list-group-item-success"], rem(counter, 5))
+             "list-group-item-warning", "list-group-item-primary",
+             "list-group-item-success"], rem(counter, 5))
   end
 
 
@@ -161,7 +167,7 @@ defmodule Pan.EpisodeFrontendView do
 
   def seconds(time) do
     [hours, minutes, seconds_string] = String.split(time, ":")
-    { seconds, _ } = Integer.parse(seconds_string)
+    {seconds, _} = Integer.parse(seconds_string)
     Integer.to_string(String.to_integer(hours) * 3600 + String.to_integer(minutes) * 60 + seconds)
   end
 

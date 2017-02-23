@@ -4,11 +4,12 @@ defmodule Pan.CategoryView do
 
   def category_tree(categories) do
     Enum.map(categories, fn(category) ->
-      %{ categoryId: category.id,
-         text: category.title,
-         nodes: Enum.map(category.children, fn(category) -> %{text: category.title,
-                                                              categoryId: category.id} end),
-         state: %{ expanded: false }
+      %{categoryId: category.id,
+        text: category.title,
+        nodes: Enum.map(category.children, fn(category) ->
+                 %{text: category.title, categoryId: category.id}
+               end),
+         state: %{expanded: false}
       }
     end)
     |> Poison.encode!
@@ -16,15 +17,14 @@ defmodule Pan.CategoryView do
   end
 
 
-  def render("get_podcasts.json", %{ podcasts_assigned: podcasts_assigned,
-                                     podcasts_unassigned: podcasts_unassigned }) do
-    %{ podcasts_assigned: Enum.map(podcasts_assigned, &podcast_json/1),
-       podcasts_unassigned: Enum.map(podcasts_unassigned, &podcast_json/1 ) }
+  def render("get_podcasts.json", %{podcasts_assigned: podcasts_assigned,
+                                    podcasts_unassigned: podcasts_unassigned}) do
+    %{podcasts_assigned: Enum.map(podcasts_assigned, &podcast_json/1),
+      podcasts_unassigned: Enum.map(podcasts_unassigned, &podcast_json/1)}
   end
 
 
   def podcast_json(podcast) do
-    %{ title:  ej(podcast.title || " "),
-       id: podcast.id }
+    %{title:  ej(podcast.title || " "), id: podcast.id}
   end
 end

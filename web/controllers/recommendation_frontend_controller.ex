@@ -123,7 +123,7 @@ defmodule Pan.RecommendationFrontendController do
               event:           "recommend",
               content:         Pan.ViewHelpers.truncate("« recommended " <>
                                                         e.notification_text <> " » " <>
-                                                        recommendation_params["comment"], 255) }
+                                                        recommendation_params["comment"], 255)}
 
     Repo.insert(changeset)
     Message.persist_event(e)
@@ -135,7 +135,7 @@ defmodule Pan.RecommendationFrontendController do
   end
 
 
-  defp redirect_to_back( conn) do
+  defp redirect_to_back(conn) do
     path =
       conn
       |> Plug.Conn.get_req_header("referer")

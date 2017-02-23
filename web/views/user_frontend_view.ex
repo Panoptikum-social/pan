@@ -107,6 +107,6 @@ defmodule Pan.UserFrontendView do
   def format_date(date) do
     {:ok, {date, _}} = Ecto.DateTime.dump(date)
     Timex.to_date(date)
-    |> Timex.format!( "%e.%m.%Y", :strftime)
+    |> Timex.format!("%e.%m.%Y", :strftime)
   end
 end

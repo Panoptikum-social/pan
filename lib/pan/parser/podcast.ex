@@ -23,7 +23,7 @@ defmodule Pan.Parser.Podcast do
     feed = Repo.get_by(Feed, podcast_id: id)
 
     case RssFeed.import_to_map(feed.self_link_url) do
-      {:ok, map}->
+      {:ok, map} ->
         Persistor.delta_import(map, id)
         unpause(id)
         {:ok, "Podcast importet successfully"}
@@ -39,7 +39,7 @@ defmodule Pan.Parser.Podcast do
     feed = Repo.get_by(Feed, podcast_id: id)
 
     case RssFeed.import_to_map(feed.self_link_url) do
-      {:ok, map}->
+      {:ok, map} ->
         Persistor.contributor_import(map, id)
         {:ok, "Contributors importet successfully"}
 
@@ -52,7 +52,7 @@ defmodule Pan.Parser.Podcast do
 
   def unpause(id) do
     Repo.get!(Pan.Podcast, id)
-    |> Pan.Podcast.changeset(%{ update_paused: false })
+    |> Pan.Podcast.changeset(%{update_paused: false})
     |> Repo.update([force: true])
   end
 
@@ -61,7 +61,7 @@ defmodule Pan.Parser.Podcast do
     feed = Repo.get_by(Feed, podcast_id: id)
 
     case RssFeed.import_to_map(feed.self_link_url) do
-      {:ok, map}->
+      {:ok, map} ->
         Pan.Parser.Owner.get_or_insert(map[:owner], id)
         {:ok, "Updated owner successfully"}
       {:error, message} ->

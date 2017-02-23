@@ -25,7 +25,7 @@ defmodule Pan.EpisodeFrontendController do
     # options for player: "podlove", "podigee"
     conn
     |> put_layout("minimal.html")
-    |> render("player.html", episode: episode, player: "podigee" )
+    |> render("player.html", episode: episode, player: "podigee")
   end
 
 

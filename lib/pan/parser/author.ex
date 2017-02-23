@@ -18,10 +18,10 @@ defmodule Pan.Parser.Author do
       if author == persona.name do
         get_or_insert_engagement_as_author(persona.id, podcast_id)
       else
-        persona_map = %{ uri: UUID.uuid5(:url, author),
-                         name: author,
-                         email: persona.email,
-                         pid: UUID.uuid5(:url, author)}
+        persona_map = %{uri: UUID.uuid5(:url, author),
+                        name: author,
+                        email: persona.email,
+                        pid: UUID.uuid5(:url, author)}
 
         {:ok, persona} = case Repo.get_by(Persona, pid: persona_map[:pid]) ||
                               Repo.get_by(Persona, pid: persona_map[:uri]) ||
@@ -69,10 +69,10 @@ defmodule Pan.Parser.Author do
       if author == persona.name do
         get_or_insert_gig_as_author(persona.id, episode)
       else
-        persona_map = %{ uri: UUID.uuid5(:url, episode.author),
-                         name: episode.author,
-                         email: persona.email,
-                         pid: UUID.uuid5(:url, episode.author)}
+        persona_map = %{uri: UUID.uuid5(:url, episode.author),
+                        name: episode.author,
+                        email: persona.email,
+                        pid: UUID.uuid5(:url, episode.author)}
 
         {:ok, persona} =
           case Repo.get_by(Persona, pid: persona_map[:pid]) ||

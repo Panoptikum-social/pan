@@ -67,23 +67,23 @@ defmodule Pan.Parser.Analyzer do
 
 # simple tags to include into nested structure
   def call(_, "tag", [:generator, _, []]), do: %{}
-  def call(_, "tag", [:generator, _, [value]]), do: %{feed: %{ feed_generator: value}}
+  def call(_, "tag", [:generator, _, [value]]), do: %{feed: %{feed_generator: value}}
 
 
 # the links are a mixture of the two above
   def call(_, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
-      "self"      -> %{feed: %{ self_link_title: attr[:title],
+      "self"      -> %{feed: %{self_link_title: attr[:title],
                             self_link_url: attr[:href]}}
-      "current"   -> %{feed: %{ self_link_title: attr[:title],
+      "current"   -> %{feed: %{self_link_title: attr[:title],
                             self_link_url: attr[:href]}}
-      "next"      -> %{feed: %{ next_page_url: attr[:href]}}
-      "prev"      -> %{feed: %{ prev_page_url: attr[:href]}}
-      "prev-archive" -> %{feed: %{ prev_page_url: attr[:href]}}
-      "previous"  -> %{feed: %{ prev_page_url: attr[:href]}}
-      "first"     -> %{feed: %{ first_page_url: attr[:href]}}
-      "last"      -> %{feed: %{ last_page_url: attr[:href]}}
-      "hub"       -> %{feed: %{ hub_link_url: attr[:href]}}
+      "next"      -> %{feed: %{next_page_url: attr[:href]}}
+      "prev"      -> %{feed: %{prev_page_url: attr[:href]}}
+      "prev-archive" -> %{feed: %{prev_page_url: attr[:href]}}
+      "previous"  -> %{feed: %{prev_page_url: attr[:href]}}
+      "first"     -> %{feed: %{first_page_url: attr[:href]}}
+      "last"      -> %{feed: %{last_page_url: attr[:href]}}
+      "hub"       -> %{feed: %{hub_link_url: attr[:href]}}
       "search"    -> %{}
       "related"   -> %{}
       "alternate" ->
@@ -101,8 +101,8 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "tag", [:"atom10:link", attr, _]) do
     case attr[:rel] do
-      "self"  -> %{feed: %{ self_link_title: attr[:title],
-                            self_link_url: attr[:href]}}
+      "self"  -> %{feed: %{self_link_title: attr[:title],
+                           self_link_url:   attr[:href]}}
       "hub" -> %{}
     end
   end

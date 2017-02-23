@@ -29,16 +29,16 @@ defmodule Pan.ViewHelpers do
 
 
   def datatable_actions(record_id, path) do
-    [ "<nobr>",
-      link("Show", to: path.(Endpoint, :show, record_id),
-                   class: "btn btn-default btn-xs"), " ",
-      link("Edit", to: path.(Endpoint, :edit, record_id),
-                   class: "btn btn-warning btn-xs"), " ",
-      link("Delete", to: path.(Endpoint, :delete, record_id),
-                     method: :delete,
-                     data: [confirm: "Are you sure?"],
-                     class: "btn btn-danger btn-xs"),
-      "</nobr>"]
+    ["<nobr>",
+     link("Show", to: path.(Endpoint, :show, record_id),
+                  class: "btn btn-default btn-xs"), " ",
+     link("Edit", to: path.(Endpoint, :edit, record_id),
+                  class: "btn btn-warning btn-xs"), " ",
+     link("Delete", to: path.(Endpoint, :delete, record_id),
+                    method: :delete,
+                    data: [confirm: "Are you sure?"],
+                    class: "btn btn-danger btn-xs"),
+     "</nobr>"]
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
   end
