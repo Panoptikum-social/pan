@@ -3,8 +3,12 @@ defmodule Pan.PersonaController do
   alias Pan.Persona
 
   def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
     personas = Repo.all(Persona)
-    render(conn, "index.html", personas: personas)
+    render conn, "datatable.json", personas: personas
   end
 
 

@@ -109,6 +109,8 @@ defmodule Pan.Router do
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
     resources "/delegations", DelegationController
+
+    get "/personas/datatable", PersonaController, :datatable
     resources "/personas", PersonaController
 
     get "/languages/datatable", LanguageController, :datatable

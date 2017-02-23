@@ -20,10 +20,6 @@
 
 <script>
   document.addEventListener("turbolinks:load", function() {
-    if (wrapper = $('#datatable_wrapper')[0]) {
-      wrapper.outerHTML = $('#datatable')[0].outerHTML
-    }
-
     $('#datatable').DataTable({
       serverSide: true,
       ajax: { url: '<%= gig_path(@conn, :datatable) %>'},
