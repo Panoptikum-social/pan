@@ -99,7 +99,6 @@ defmodule Pan.Router do
 
   scope "/admin", Pan do
     pipe_through [:browser, :authenticate_admin]
-    resources "/engagements", EngagementController
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
@@ -108,6 +107,9 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+
+    get "/engagements/datatable", EngagementController, :datatable
+    resources "/engagements", EngagementController
 
     get "/delegations/datatable", DelegationController, :datatable
     resources "/delegations", DelegationController

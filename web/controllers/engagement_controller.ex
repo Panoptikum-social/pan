@@ -3,9 +3,15 @@ defmodule Pan.EngagementController do
 
   alias Pan.Engagement
 
+
   def index(conn, _params) do
-    engagements = Repo.all(Engagement)
-    render(conn, "index.html", engagements: engagements)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    engagements = from(Engagement, preload: [:persona, :podcast])
+                  |> Repo.all()
+    render conn, "datatable.json", engagements: engagements
   end
 
   def new(conn, _params) do
