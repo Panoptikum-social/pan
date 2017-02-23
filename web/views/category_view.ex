@@ -22,15 +22,11 @@ defmodule Pan.CategoryView do
     %{podcasts_assigned: Enum.map(podcasts_assigned, &podcast_json/1),
       podcasts_unassigned: Enum.map(podcasts_unassigned, &podcast_json/1)}
   end
-
+  def render("datatable.json", %{categories: categories}),
+    do: %{categories: Enum.map(categories, &category_json/1)}
 
   def podcast_json(podcast) do
     %{title:  ej(podcast.title || " "), id: podcast.id}
-  end
-
-
-  def render("datatable.json", %{categories: categories}) do
-    %{categories: Enum.map(categories, &category_json/1)}
   end
 
   def category_json(category) do
