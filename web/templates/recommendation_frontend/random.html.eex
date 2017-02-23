@@ -1,27 +1,28 @@
-Fortuna opted for the category:<br/><br/>
-
-<%= render Pan.CategoryFrontendView, "show.html",
-           category: @category,
-           current_user: @current_user,
-           conn: @conn %>
+<i>Fortuna opted for the following episode</i>
 <br/><br/>
-
-
-... and there she opted for the podcast:<br/><br/>
-
-<%= render Pan.PodcastFrontendView, "_header.html",
-           podcast: @podcast,
-           current_user: @current_user,
-           changeset: @changeset,
-           conn: @conn %>
-<br/><br/>
-
-
-... and the random episode:<br/><br/>
 
 <%= render Pan.EpisodeFrontendView, "show.html",
            episode: @episode,
            current_user: @current_user,
            player: @player,
            changeset: @changeset,
+           conn: @conn %>
+
+<br/><br/>
+<i>... from the podcast</i>
+<br/><br/>
+
+<%= render Pan.PodcastFrontendView, "_header.html",
+           podcast: @podcast,
+           current_user: @current_user,
+           changeset: @changeset,
+           conn: @conn %>
+
+<br/><br/>
+<i>... in the category</i>
+<br/></br>
+
+<%= render Pan.CategoryFrontendView, "show.html",
+           category: @category,
+           current_user: @current_user,
            conn: @conn %>
