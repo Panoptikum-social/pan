@@ -9,12 +9,14 @@ defmodule Pan.CategoryController do
   plug :scrub_params, "category" when action in [:create, :update]
 
   def index(conn, _params) do
-    categories = from(category in Category, where: is_nil(category.parent_id),
-                                            order_by: :title)
+    render(conn, "index.html")
+  end
+
+
+  def datatable(conn, _params) do
+    categories = from(Category, preload: :parent)
                  |> Repo.all()
-                 |> Repo.preload([children: :podcasts])
-                 |> Repo.preload(:podcasts)
-    render(conn, "index.html", categories: categories, no_children: false)
+    render conn, "datatable.json", categories: categories
   end
 
 

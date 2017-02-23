@@ -3,8 +3,34 @@
 <%= link "Merge Categories", to: category_path(@conn, :merge) %> -
 <%= link "Assign Podcasts to Categories", to: category_path(@conn, :assign_podcasts) %>
 
-<%= render "_categories.html", categories: @categories,
-                               no_children: @no_children,
-                               conn: @conn  %>
+<table id="datatable" class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Parent: Id</th>
+      <th>Parent: Title</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/categories/datatable',
+        dataSrc: 'categories'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'title'},
+        {data: 'parent_id'},
+        {data: 'parent_title'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
 
 <%= link "New category", to: category_path(@conn, :new) %>

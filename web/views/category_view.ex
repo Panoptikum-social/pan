@@ -27,4 +27,17 @@ defmodule Pan.CategoryView do
   def podcast_json(podcast) do
     %{title:  ej(podcast.title || " "), id: podcast.id}
   end
+
+
+  def render("datatable.json", %{categories: categories}) do
+    %{categories: Enum.map(categories, &category_json/1)}
+  end
+
+  def category_json(category) do
+    %{id:            category.id,
+      title:         category.title,
+      parent_id:     category.parent_id,
+      parent_title:  category.parent && category.parent.title,
+      actions:       datatable_actions(category, &category_path/3)}
+  end
 end
