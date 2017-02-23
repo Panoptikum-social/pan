@@ -1,11 +1,9 @@
 defmodule Pan.SubscriptionView do
   use Pan.Web, :view
 
-
   def render("datatable.json", %{subscriptions: subscriptions}) do
     %{subscriptions: Enum.map(subscriptions, &subscription_json/1)}
   end
-
 
   def subscription_json(subscription) do
     %{id:            subscription.id,

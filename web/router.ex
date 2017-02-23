@@ -103,9 +103,11 @@ defmodule Pan.Router do
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
     resources "/likes", LikeController
-    resources "/follows", FollowController
     resources "/messages", MessageController
     resources "/recommendations", RecommendationController
+
+    get "/follows/datatable", FollowController, :datatable
+    resources "/follows", FollowController
 
     get "/subscriptions/datatable", SubscriptionController, :datatable
     resources "/subscriptions", SubscriptionController

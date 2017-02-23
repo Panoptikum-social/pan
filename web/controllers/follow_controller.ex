@@ -3,9 +3,14 @@ defmodule Pan.FollowController do
 
   alias Pan.Follow
 
-  def index(conn, params) do
-    follows = Repo.paginate(Follow, params)
-    render(conn, "index.html", follows: follows)
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    follows = from(Follow, preload: [:follower, :podcast, :user, :category])
+              |> Repo.all()
+    render conn, "datatable.json", follows: follows
   end
 
   def new(conn, _params) do

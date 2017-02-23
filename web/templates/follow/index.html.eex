@@ -1,34 +1,43 @@
 <h2>Listing follows</h2>
 
-<table class="table table-bordered table-condensed table-striped">
+<table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>Follower</th>
-      <th>Podcast</th>
-      <th>User</th>
-      <th>Category</th>
-
-      <th></th>
+      <th>Id</th>
+      <th>Follower: Id</th>
+      <th>Follower: Name</th>
+      <th>Podcast: Id</th>
+      <th>Podcast: Title</th>
+      <th>User: Id</th>
+      <th>User: Name</th>
+      <th>Category: Id</th>
+      <th>Category: Title</th>
+      <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-<%= for follow <- @follows do %>
-    <tr>
-      <td><%= follow.follower_id %></td>
-      <td><%= follow.podcast_id %></td>
-      <td><%= follow.user_id %></td>
-      <td><%= follow.category_id %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: follow_path(@conn, :show, follow), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: follow_path(@conn, :edit, follow), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: follow_path(@conn, :delete, follow), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
 </table>
 
-<%= pagination_links @follows %>
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/follows/datatable',
+        dataSrc: 'follows'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'follower_id'},
+        {data: 'follower_name'},
+        {data: 'podcast_id'},
+        {data: 'podcast_title'},
+        {data: 'user_id'},
+        {data: 'user_name'},
+        {data: 'category_id'},
+        {data: 'category_title'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
 
 <%= link "New follow", to: follow_path(@conn, :new) %>
