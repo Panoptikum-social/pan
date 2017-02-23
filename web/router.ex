@@ -102,7 +102,11 @@ defmodule Pan.Router do
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
+
+    get "/messages/datatable", MessageController, :datatable
     resources "/messages", MessageController
+
+    get "/recommendations/datatable", RecommendationController, :datatable
     resources "/recommendations", RecommendationController
 
     get "/likes/datatable", LikeController, :datatable

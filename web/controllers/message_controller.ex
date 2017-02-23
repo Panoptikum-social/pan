@@ -3,11 +3,14 @@ defmodule Pan.MessageController do
 
   alias Pan.Message
 
-  def index(conn, params) do
-    messages = from(Message, preload: [:creator, :persona])
-               |> Repo.paginate(params)
+  def index(conn, _params) do
+    render(conn, "index.html")
+  end
 
-    render(conn, "index.html", messages: messages)
+  def datatable(conn, _params) do
+    messages = from(Message, preload: [:creator, :persona])
+               |> Repo.all()
+    render conn, "datatable.json", messages: messages
   end
 
 

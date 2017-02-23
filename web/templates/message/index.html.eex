@@ -1,11 +1,14 @@
 <h2>Listing messages</h2>
 
-<table class="table table-striped table-condensed table-hover table-bordered">
+<table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
   <tr>
+    <th>Id</th>
     <th>Type</td>
-    <th>Creator</td>
-    <th>Persona</td>
+    <th>Creator: Id</th>
+    <th>Creator: Name</td>
+    <th>Persona: Id</td>
+    <th>Persona: Name</td>
     <th>Content</td>
     <th>Date</td>
     <th>Topic</th>
@@ -14,35 +17,31 @@
     <th>Actions</th>
   </tr>
   </thead>
-  <tbody>
-    <%= for message <- @messages.entries do %>
-      <tr>
-        <td><span class="label label-<%= message.type %>"><%= message.type %></span></td>
-        <td><nobr><%= if message.creator, do: message.creator.name %></nobr></td>
-        <td><nobr><%= if message.persona, do: message.persona.name %></nobr></td>
-        <td><%= raw message.content %></td>
-        <td><nobr><%= message.inserted_at %></nobr></td>
-        <td><%= message.topic %></td>
-        <td><%= message.subtopic %></td>
-        <td><%= message.event %></td>
-        <td class="text-right">
-          <nobr>
-            <%= link "Show", to: message_path(@conn, :show, message),
-                             class: "btn btn-default btn-xs" %>
-            <%= link "Edit", to: message_path(@conn, :edit, message),
-                             class: "btn btn-default btn-xs" %>
-            <%= link "Delete", to: message_path(@conn, :delete, message),
-                               method: :delete,
-                               data: [confirm: "Are you sure?"],
-                               class: "btn btn-danger btn-xs" %>
-          </nobr>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
 </table>
 
-<%= pagination_links @conn, @messages,
-                     view_style: :bootstrap %>
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/messages/datatable',
+        dataSrc: 'messages'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'type'},
+        {data: 'creator_id'},
+        {data: 'creator_name'},
+        {data: 'persona_id'},
+        {data: 'persona_name'},
+        {data: 'content'},
+        {data: 'date'},
+        {data: 'topic'},
+        {data: 'subtopic'},
+        {data: 'event'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
 
 <%= link "New message", to: message_path(@conn, :new) %>
