@@ -74,7 +74,7 @@ defmodule Pan.Parser.RssFeed do
         # IO.inspect download(url)
         # IO.puts "=========================="
 
-        if !String.contains?(feed_xml, "<rss") do
+        unless String.contains?(feed_xml, "<rss") do
           {:error, "This is not an rss feed!"}
         else
           feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
@@ -97,10 +97,10 @@ defmodule Pan.Parser.RssFeed do
   def download(url, option \\ nil) do
     case option do
       "no_headers" ->
-        HTTPotion.get url, [timeout: 20000, follow_redirects: true]
+        HTTPotion.get url, [timeout: 20_000, follow_redirects: true]
       nil ->
         HTTPotion.get url,
-          [timeout: 20000, follow_redirects: true,
+          [timeout: 20_000, follow_redirects: true,
           headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
     end
   end

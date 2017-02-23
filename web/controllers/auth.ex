@@ -1,5 +1,7 @@
 defmodule Pan.Auth do
   import Plug.Conn
+  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+
   alias Pan.Repo
   alias Pan.User
 
@@ -41,8 +43,6 @@ defmodule Pan.Auth do
     configure_session(conn, drop: true)
   end
 
-
-  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   def login_by_username_and_pass(conn, username, given_pass) do
     user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)

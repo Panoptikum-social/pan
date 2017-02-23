@@ -130,7 +130,7 @@ defmodule Pan.PersonaFrontendController do
                                            select: m.persona_id)
                   |> Repo.all()
 
-    if (id in persona_ids and target_id in persona_ids) do
+    if id in persona_ids and target_id in persona_ids do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: target_id])
 
@@ -150,7 +150,7 @@ defmodule Pan.PersonaFrontendController do
                                            select: m.persona_id)
                   |> Repo.all()
 
-    if (id in persona_ids) do
+    if id in persona_ids do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: nil])
 
@@ -171,7 +171,7 @@ defmodule Pan.PersonaFrontendController do
                                            select: m.persona_id)
                   |> Repo.all()
 
-    if (id in persona_ids and delegate_id in persona_ids) do
+    if id in persona_ids and delegate_id in persona_ids do
       case Repo.get_by(Delegation, persona_id: id,
                                    delegate_id: delegate_id) do
         nil ->
@@ -199,7 +199,8 @@ defmodule Pan.PersonaFrontendController do
   def claim(conn, %{"id" => id}, user) do
     email = Repo.get(Persona, id).email
 
-    Phoenix.Token.sign(Pan.Endpoint, "persona", id)
+    Pan.Endpoint
+    |> Phoenix.Token.sign("persona", id)
     |> Pan.Email.confirm_persona_claim_link_html_email(user, email)
     |> Pan.Mailer.deliver_now()
 
