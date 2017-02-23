@@ -81,26 +81,26 @@ defmodule Pan.EpisodeFrontendView do
 
 
   defp chapterlist(chapters) do
-    Enum.map chapters, fn(chapter) ->
+    Enum.map(chapters, fn(chapter) ->
       %{start: ej(chapter.start), title: ej(chapter.title)}
-    end
+    end)
   end
 
 
   defp enclosuremap(enclosures) do
-    Enum.map enclosures, fn(enclosure) ->
+    Enum.map(enclosures, fn(enclosure) ->
       %{filetype(enclosure) => enclosure.url}
-    end
+    end)
     |> List.first
   end
 
 
   def downloadlist(enclosures) do
-    Enum.map enclosures, fn(enclosure) ->
+    Enum.map(enclosures, fn(enclosure) ->
       %{assetTitle: String.split(enclosure.url, "/") |> List.last,
         size: enclosure.length,
         downloadUrl: enclosure.url}
-    end
+    end)
   end
 
 
