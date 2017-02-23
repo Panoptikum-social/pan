@@ -3,32 +3,33 @@
 <table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
+      <th>Id</th>
       <th>Shortcode</th>
       <th>Name</th>
-
-      <th></th>
+      <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-<%= for language <- @languages do %>
-    <tr>
-      <td><%= language.shortcode %></td>
-      <td><%= language.name %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: language_path(@conn, :show, language), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: language_path(@conn, :edit, language), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: language_path(@conn, :delete, language), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
 </table>
 
 <script>
-  $(document).ready(function() {
-      $('#datatable').DataTable();
-  } );
+  document.addEventListener("turbolinks:load", function() {
+    if (wrapper = $('#datatable_wrapper')[0]) {
+      wrapper.outerHTML = $('#datatable')[0].outerHTML
+    }
+
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/languages/datatable',
+        dataSrc: 'languages'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'shortcode'},
+        {data: 'name'},
+        {data: 'actions'}
+      ]
+    })
+  })
 </script>
 
 <%= link "New language", to: language_path(@conn, :new) %>s

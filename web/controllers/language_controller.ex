@@ -6,8 +6,12 @@ defmodule Pan.LanguageController do
   plug :scrub_params, "language" when action in [:create, :update]
 
   def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
     languages = Repo.all(Language)
-    render(conn, "index.html", languages: languages)
+    render conn, "datatable.json", languages: languages
   end
 
   def new(conn, _params) do
