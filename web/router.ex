@@ -108,6 +108,8 @@ defmodule Pan.Router do
     resources "/messages", MessageController
     resources "/subscriptions", SubscriptionController
     resources "/recommendations", RecommendationController
+
+    get "/delegations/datatable", DelegationController, :datatable
     resources "/delegations", DelegationController
 
     get "/personas/datatable", PersonaController, :datatable
@@ -157,6 +159,7 @@ defmodule Pan.Router do
     get "/podcasts/factory", PodcastController, :factory
     resources "/podcasts", PodcastController
 
+    get "/manifestations/datatable", ManifestationController, :datatable
     post "/manifestations/toggle", ManifestationController, :toggle
     get "/manifestations/manifest", ManifestationController, :manifest
     get "/manifestations/:id/get_by_user", ManifestationController, :get_by_user

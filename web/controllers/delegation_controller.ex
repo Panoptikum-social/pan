@@ -4,8 +4,13 @@ defmodule Pan.DelegationController do
   alias Pan.Delegation
 
   def index(conn, _params) do
-    delegations = Repo.all(Delegation)
-    render(conn, "index.html", delegations: delegations)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    delegations = from(Delegation, preload: [:persona, :delegate])
+                     |> Repo.all()
+    render conn, "datatable.json", delegations: delegations
   end
 
   def new(conn, _params) do

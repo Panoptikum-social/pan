@@ -6,8 +6,13 @@ defmodule Pan.ManifestationController do
 
 
   def index(conn, _params) do
-    manifestations = Repo.all(Manifestation)
-    render(conn, "index.html", manifestations: manifestations)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    manifestations = from(Manifestation, preload: [:user, :persona])
+                     |> Repo.all()
+    render conn, "datatable.json", manifestations: manifestations
   end
 
 
