@@ -23,7 +23,9 @@
               <%= fa_icon("user-o") %> Unknown
             <% end %><br/>
 
-            <%= fa_icon("calendar") %> <%= podcast.inserted_at && Ecto.DateTime.to_date(podcast.inserted_at) %><br/>
+            <%= fa_icon("calendar") %>
+            <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
+            <br/>
           </span>
           <%= if podcast.description do %>
             <small><%= fa_icon("image") %> <%= truncate(podcast.description, 150) %></small>

@@ -101,7 +101,8 @@ defmodule Pan.Parser.RssFeed do
       nil ->
         HTTPotion.get url,
           [timeout: 20_000, follow_redirects: true,
-          headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
+          headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML," <>
+                                  " like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
     end
   end
 

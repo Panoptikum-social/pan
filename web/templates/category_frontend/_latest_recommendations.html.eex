@@ -47,7 +47,8 @@
 
             <span class="pull-right">
               <%= fa_icon("calendar") %>
-              <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>
+
+              <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
             </span>
             <br/><%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
           </p>

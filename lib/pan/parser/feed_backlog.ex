@@ -27,10 +27,10 @@ defmodule Pan.Parser.FeedBacklog do
 
   def get_generator(url) do
     try do
-      %HTTPoison.Response{body: feed_xml} = HTTPoison.get!(url,
-        [{"User-Agent",
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"}],
-        [follow_redirect: true, connect_timeout: 20_000, recv_timeout: 20_000, timeout: 20_000])
+      %HTTPotion.Response{body: feed_xml} =
+        HTTPoiton.get(url, [timeout: 20_000, follow_redirects: true,
+          headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " <>
+                    "(KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]])
 
       feed_map = Quinn.parse(feed_xml)
       Quinn.find(feed_map, [:channel, :generator]).value

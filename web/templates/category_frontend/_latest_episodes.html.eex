@@ -19,7 +19,7 @@
                       style: "color: #000;" %>
           <hr style="margin-top: -10px; visibility:hidden;" />
           <%= if episode.publishing_date do %>
-            <%= fa_icon("calendar") %> <%= Ecto.DateTime.to_date(episode.publishing_date) %><br/>
+            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate}") %><br/>
           <% end %>
           <%= if episode.duration do %>
             <%= fa_icon("clock-o") %> <%= episode.duration %><br/>

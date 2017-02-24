@@ -1,8 +1,0 @@
-run_erl [12350] Sat Oct  8 09:27:29 2016
-Args before exec of shell:
-run_erl [12350] Sat Oct  8 09:27:29 2016
-argv[0] = sh
-run_erl [12350] Sat Oct  8 09:27:29 2016
-argv[1] = -c
-run_erl [12350] Sat Oct  8 09:27:29 2016
-argv[2] = exec "/home/stefan/phoenix/pan/rel/pan/bin/pan" "console"

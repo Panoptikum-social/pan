@@ -16,7 +16,7 @@ defmodule Pan.Mixfile do
   def application do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
-                    :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
+                    :gettext, :phoenix_ecto, :postgrex, :httpotion,
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
@@ -30,7 +30,7 @@ defmodule Pan.Mixfile do
     [{:phoenix, "~> 1.2.0"}, # web framework
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
      {:postgrex, ">= 0.0.0"}, # database adapter
-     {:phoenix_ecto, "~> 3.0-rc"}, # ORM (yes!)
+     {:phoenix_ecto, "~> 3.0"}, # ORM (yes!)
      {:phoenix_html, "~> 2.4"}, # view layer
      {:phoenix_live_reload, "~> 1.0", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
@@ -39,8 +39,7 @@ defmodule Pan.Mixfile do
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.1.8"}, # time conversion
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
-     {:httpoison, "~> 0.9.0"}, # http client
-     {:httpotion, "~> 3.0.2"}, # http client (another one!)
+     {:httpotion, "~> 3.0.2"}, # http client
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.0"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation

@@ -12,7 +12,7 @@
             <%= fa_icon("user") %> <%= recommendation.user.name %>
             <span class="pull-right">
               <%= fa_icon("calendar") %>
-              <%= recommendation.inserted_at && Ecto.DateTime.to_date(recommendation.inserted_at) %>
+              <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
             </span>
           </div>
 
