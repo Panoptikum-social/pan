@@ -1,9 +1,6 @@
 defmodule Pan.Delegation do
   use Pan.Web, :model
 
-  @required_fields ~w(persona_id delegate_id)
-  @optional_fields ~w()
-
   schema "delegations" do
     belongs_to :persona, Pan.Persona
     belongs_to :delegate, Pan.Persona
@@ -11,12 +8,10 @@ defmodule Pan.Delegation do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
+
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> cast(params, [:persona_id, :delegate_id])
+    |> validate_required([:persona_id, :delegate_id])
   end
 end

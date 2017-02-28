@@ -3,9 +3,6 @@ defmodule Pan.Subscription do
   alias Pan.Subscription
   alias Pan.Repo
 
-  @required_fields ~w()
-  @optional_fields ~w()
-
   schema "subscriptions" do
     belongs_to :user, Pan.User
     belongs_to :podcast, Pan.Podcast
@@ -13,13 +10,11 @@ defmodule Pan.Subscription do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
+
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> cast(params, [:user_id, :podcast_id])
+    |> validate_required([:user_id, :podcast_id])
   end
 
 

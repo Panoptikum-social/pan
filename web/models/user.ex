@@ -4,9 +4,6 @@ defmodule Pan.User do
   alias Pan.Repo
   alias Pan.Follow
 
-  @required_fields ~w(name username email)
-  @optional_fields ~w(admin podcaster share_subscriptions share_follows pro_until)
-
   schema "users" do
     field :name, :string
     field :username, :string
@@ -41,10 +38,11 @@ defmodule Pan.User do
   end
 
 
-  def changeset(model, params \\ %{}) do
-    model
-    |> cast(params, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:name, :username, :email, :admin, :podcaster, :share_subscriptions,
+                     :share_follows, :pro_until])
+    |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -52,27 +50,23 @@ defmodule Pan.User do
     |> validate_length(:email, min: 5, max: 100)
   end
 
-
-  def self_change_changeset(model, params \\ %{}) do
-    model
-    |> cast(params, ~w(podcaster email name username share_follows share_subscriptions))
-    |> validate_required(~w(email name username))
+  def self_change_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:podcaster, :email, :name, :username, :share_follows, :share_subscriptions])
+    |> validate_required([:email, :name, :username])
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
-
   end
 
-
-  def registration_changeset(model, params) do
-    model
-    |> cast(params, ~w(name username email podcaster share_subscriptions share_follows
-                       password password_confirmation))
-    |> validate_required(@required_fields)
+  def registration_changeset(struct, params) do
+    struct
+    |> cast(params, [:name, :username, :email, :podcaster, :share_subscriptions, :share_follows,
+                     :password, :password_confirmation])
+    |> validate_required([:name, :username, :email, :password, :password_confirmation])
     |> validate_length(:username, min: 3, max: 30)
-    |> validate_required(~w(password password_confirmation))
     |> validate_confirmation(:password)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -82,21 +76,19 @@ defmodule Pan.User do
     |> put_pass_hash()
   end
 
-
-  def password_update_changeset(model, params) do
-    model
-    |> cast(params, ~w(password password_confirmation))
-    |> validate_required(~w(password password_confirmation))
+  def password_update_changeset(struct, params) do
+    struct
+    |> cast(params, [:password, :password_confirmation])
+    |> validate_required([:password, :password_confirmation])
     |> validate_confirmation(:password)
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
   end
 
-
-  def request_login_changeset(model, params) do
-    model
-    |> cast(params, ~w(email))
-    |> validate_required(~w(email))
+  def request_login_changeset(struct, params) do
+    struct
+    |> cast(params, [:email])
+    |> validate_required([:email])
     |> validate_length(:email, min: 5, max: 100)
   end
 

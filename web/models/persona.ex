@@ -4,9 +4,6 @@ defmodule Pan.Persona do
   alias Pan.Repo
   alias Pan.Follow
 
-  @required_fields ~w(pid name uri)
-  @optional_fields ~w(email description image_url image_title redirect_id long_description)
-
   schema "personas" do
     field :pid, :string
     field :name, :string
@@ -27,19 +24,18 @@ defmodule Pan.Persona do
     timestamps()
   end
 
-  @doc """
-  Builds a changeset based on the `struct` and `params`.
-  """
+
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title,
+                     :redirect_id, :long_description])
+    |> validate_required([:pid, :name, :uri])
   end
 
   def user_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, ["name", "uri"])
-    |> validate_required(@required_fields)
+    |> cast(params, [:name, :uri])
+    |> validate_required([:pid, :name, :uri])
   end
 
 
