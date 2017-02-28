@@ -154,7 +154,8 @@ defmodule Pan.Podcast do
 
 
   def import_stale_podcasts() do
-    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+    ten_hours_ago = Timex.now()
+                    |> Timex.shift(hours: -10)
 
     newest_podcast = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                                (is_nil(p.update_paused) or p.update_paused == false) and
@@ -181,7 +182,8 @@ defmodule Pan.Podcast do
     |> Podcast.changeset(%{updated_at: newest_plus_one_sec})
     |> Repo.update()
 
-    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+    ten_hours_ago = Timex.now()
+                    |> Timex.shift(hours: -10)
 
     podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                          (is_nil(p.update_paused) or p.update_paused == false) and

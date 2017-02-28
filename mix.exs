@@ -51,7 +51,7 @@ defmodule Pan.Mixfile do
      {:con_cache, "~> 0.12.0"}, # key/value cache
      {:earmark, "~> 1.1.0"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent
-     {:credo, "~> 0.5", only: [:dev, :test]} # Code analysis
+     {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
     ]
   end
 

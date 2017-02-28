@@ -28,7 +28,8 @@ defmodule Pan.PodcastController do
 
 
   def index(conn, _params) do
-    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+    ten_hours_ago = Timex.now()
+                    |> Timex.shift(hours: -10)
 
     stale = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                       (is_nil(p.update_paused) or p.update_paused == false) and
@@ -194,7 +195,8 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    ten_hours_ago = Pan.Parser.Helpers.ten_hours_ago()
+    ten_hours_ago = Timex.now()
+                    |> Timex.shift(hours: -10)
 
     podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                                          (is_nil(p.update_paused) or p.update_paused == false) and

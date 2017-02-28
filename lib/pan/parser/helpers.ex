@@ -147,12 +147,4 @@ defmodule Pan.Parser.Helpers do
     xml = Regex.replace(~r/>>/Us, xml, ">")
     Regex.replace(~r//Us, xml, "")
   end
-
-
-  def ten_hours_ago do
-    Timex.now()
-    |> Timex.shift(hours: -10)
-    |> Timex.to_erl()
-    |> Ecto.DateTime.from_erl()
-  end
 end
