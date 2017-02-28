@@ -16,6 +16,10 @@ config :pan, Pan.Endpoint,
   http: [compress: true]
 
 # Configures Elixir's Logger
+config :logger,
+  backends: [:console,
+             {Logger.Backends.ExceptionNotification, :exeception_notification}]
+
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

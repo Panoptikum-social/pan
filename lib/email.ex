@@ -10,6 +10,7 @@ defmodule Pan.Email do
     |> render("login_link.html", token: token)
   end
 
+
   def email_confirmation_link_html_email(token, email_address) do
     new_email()
     |> to(email_address)
@@ -19,6 +20,7 @@ defmodule Pan.Email do
     |> render("email_confirmation_link.html", token: token)
   end
 
+
   def confirm_persona_claim_link_html_email(token, user, email_address) do
     new_email()
     |> to(email_address)
@@ -26,5 +28,14 @@ defmodule Pan.Email do
     |> subject("Panoptikum - Persona manifestation confirmation request")
     |> put_html_layout({Pan.LayoutView, "email.html"})
     |> render("confirm_persona_claim_link.html", token: token, user: user)
+  end
+
+
+  def error_notification(from, to, mail_body) do
+    new_email()
+    |> to(to)
+    |> from(from)
+    |> subject("Panoptikum - Error Notification")
+    |> text_body(mail_body)
   end
 end
