@@ -1,6 +1,9 @@
 defmodule Pan.Enclosure do
   use Pan.Web, :model
 
+  @required_fields ~w(url length type guid)
+  @optional_fields ~w()
+
   schema "enclosures" do
     field :url, :string
     field :length, :string
@@ -11,9 +14,6 @@ defmodule Pan.Enclosure do
     timestamps()
   end
 
-  @required_fields ~w(url length type guid)
-  @optional_fields ~w()
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -22,6 +22,7 @@ defmodule Pan.Enclosure do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

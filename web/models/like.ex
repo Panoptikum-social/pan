@@ -3,6 +3,7 @@ defmodule Pan.Like do
   alias Pan.Like
   alias Pan.Repo
 
+  @required_fields ~w()
   @optional_fields ~w(user_id persona_id)
 
   schema "likes" do
@@ -22,7 +23,8 @@ defmodule Pan.Like do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [], @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
 

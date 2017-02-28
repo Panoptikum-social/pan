@@ -4,6 +4,9 @@ defmodule Pan.Chapter do
   alias Pan.Like
   alias Pan.Chapter
 
+  @required_fields ~w(start title)
+  @optional_fields ~w()
+
   schema "chapters" do
     field :start, :string
     field :title, :string
@@ -15,9 +18,6 @@ defmodule Pan.Chapter do
     timestamps()
   end
 
-  @required_fields ~w(start title)
-  @optional_fields ~w()
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -26,7 +26,8 @@ defmodule Pan.Chapter do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
 

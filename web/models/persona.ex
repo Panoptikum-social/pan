@@ -32,14 +32,14 @@ defmodule Pan.Persona do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, @required_fields, @optional_fields)
-    |> validate_required([:pid, :name, :uri])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
   def user_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, ["name", "uri"], ["email"])
-    |> validate_required([:pid, :name, :uri])
+    |> cast(params, ["name", "uri"])
+    |> validate_required(@required_fields)
   end
 
 

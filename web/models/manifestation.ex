@@ -1,6 +1,7 @@
 defmodule Pan.Manifestation do
   use Pan.Web, :model
 
+  @required_fields ~w()
   @optional_fields ~w(user_id persona_id)
 
   schema "manifestations" do
@@ -15,6 +16,7 @@ defmodule Pan.Manifestation do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [], @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

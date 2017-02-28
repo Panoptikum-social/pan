@@ -5,6 +5,10 @@ defmodule Pan.Episode do
   alias Pan.Episode
   alias Pan.Gig
 
+  @required_fields ~w(title link publishing_date description
+                      shownotes duration)
+  @optional_fields ~w(payment_link_title payment_link_url deep_link subtitle summary guid)
+
   schema "episodes" do
     field :title, :string
     field :link, :string
@@ -30,10 +34,6 @@ defmodule Pan.Episode do
     many_to_many :contributors, Pan.Persona, join_through: "gigs", on_delete: :delete_all
   end
 
-  @required_fields ~w(title link publishing_date description
-                      shownotes duration)
-  @optional_fields ~w(payment_link_title payment_link_url deep_link subtitle summary guid)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -42,7 +42,8 @@ defmodule Pan.Episode do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:guid)
   end
 

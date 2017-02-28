@@ -1,6 +1,9 @@
 defmodule Pan.AlternateFeed do
   use Pan.Web, :model
 
+  @required_fields ~w(title url)
+  @optional_fields ~w()
+
   schema "alternate_feeds" do
     field :title, :string
     field :url, :string
@@ -8,9 +11,6 @@ defmodule Pan.AlternateFeed do
 
     timestamps()
   end
-
-  @required_fields ~w(title url)
-  @optional_fields ~w()
 
   @doc """
   Creates a changeset based on the `model` and `params`.
@@ -20,6 +20,7 @@ defmodule Pan.AlternateFeed do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

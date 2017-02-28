@@ -3,6 +3,9 @@ defmodule Pan.Message do
   alias Pan.Message
   alias Pan.Repo
 
+  @required_fields ~w(content type topic subtopic event)
+  @optional_fields ~w()
+
   schema "messages" do
     field :content, :string
     field :type, :string
@@ -20,8 +23,8 @@ defmodule Pan.Message do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:content, :type, :topic, :subtopic, :event])
-    |> validate_required([:content, :type, :topic, :subtopic, :event])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
 

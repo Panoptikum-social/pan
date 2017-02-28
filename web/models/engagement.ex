@@ -1,6 +1,9 @@
 defmodule Pan.Engagement do
   use Pan.Web, :model
 
+  @required_fields ~w(from until comment role)
+  @optional_fields ~w()
+
   schema "engagements" do
     field :from, Ecto.Date
     field :until, Ecto.Date
@@ -17,7 +20,7 @@ defmodule Pan.Engagement do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:from, :until, :comment, :role])
-    |> validate_required([:from, :until, :comment, :role])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

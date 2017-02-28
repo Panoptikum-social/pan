@@ -4,6 +4,9 @@ defmodule Pan.Category do
   alias Pan.Like
   alias Pan.Follow
 
+  @required_fields ~w(title)
+  @optional_fields ~w(parent_id)
+
   schema "categories" do
     field :title, :string
 
@@ -16,9 +19,6 @@ defmodule Pan.Category do
     timestamps()
   end
 
-  @required_fields ~w(title)
-  @optional_fields ~w(parent_id)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -27,7 +27,8 @@ defmodule Pan.Category do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 
 

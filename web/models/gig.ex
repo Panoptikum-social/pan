@@ -1,6 +1,9 @@
 defmodule Pan.Gig do
   use Pan.Web, :model
 
+  @required_fields ~w(publishing_date role)
+  @optional_fields ~w(from_in_s until_in_s comment)
+
   schema "gigs" do
     field :from_in_s, :integer
     field :until_in_s, :integer
@@ -18,7 +21,7 @@ defmodule Pan.Gig do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:publishing_date, :role], [:from_in_s, :until_in_s, :comment])
-    |> validate_required([:publishing_date, :role])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

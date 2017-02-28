@@ -7,6 +7,10 @@ defmodule Pan.Podcast do
   alias Pan.Podcast
   alias Pan.Engagement
 
+  @required_fields ~w(title website last_build_date  explicit)
+  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url
+                      description summary update_paused blocked retired updated_at)
+
   schema "podcasts" do
     field :title, :string
     field :website, :string
@@ -42,11 +46,6 @@ defmodule Pan.Podcast do
                                            on_delete: :delete_all
   end
 
-
-  @required_fields ~w(title website last_build_date  explicit)
-  @optional_fields ~w(payment_link_title payment_link_url unique_identifier image_title image_url
-                      description summary update_paused blocked retired updated_at)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -55,7 +54,8 @@ defmodule Pan.Podcast do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:title)
   end
 

@@ -1,6 +1,9 @@
 defmodule Pan.FeedBacklog do
   use Pan.Web, :model
 
+  @required_fields ~w(url in_progress)
+  @optional_fields ~w(feed_generator)
+
   schema "backlog_feeds" do
     field :url, :string
     field :feed_generator, :string
@@ -15,7 +18,7 @@ defmodule Pan.FeedBacklog do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:url, :feed_generator, :in_progress])
-    |> validate_required([:url, :in_progress])
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

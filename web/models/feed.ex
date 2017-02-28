@@ -5,6 +5,10 @@ defmodule Pan.Feed do
   alias Pan.Repo
   alias Pan.Podcast
 
+  @required_fields ~w(self_link_url )
+  @optional_fields ~w(self_link_title next_page_url prev_page_url first_page_url last_page_url
+                      hub_link_url feed_generator podcast_id)
+
   schema "feeds" do
     field :self_link_title, :string
     field :self_link_url, :string
@@ -20,10 +24,6 @@ defmodule Pan.Feed do
     has_many :alternate_feeds, Pan.AlternateFeed, on_delete: :delete_all
   end
 
-  @required_fields ~w(self_link_url )
-  @optional_fields ~w(self_link_title next_page_url prev_page_url first_page_url last_page_url
-                      hub_link_url feed_generator podcast_id)
-
   @doc """
   Creates a changeset based on the `model` and `params`.
 
@@ -32,7 +32,8 @@ defmodule Pan.Feed do
   """
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> cast_assoc(:alternate_feeds)
   end
 

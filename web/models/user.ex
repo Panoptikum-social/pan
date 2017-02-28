@@ -43,7 +43,8 @@ defmodule Pan.User do
 
   def changeset(model, params \\ %{}) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -54,7 +55,8 @@ defmodule Pan.User do
 
   def self_change_changeset(model, params \\ %{}) do
     model
-    |> cast(params, ~w(podcaster email name username), ~w(podcaster share_follows share_subscriptions))
+    |> cast(params, ~w(podcaster email name username share_follows share_subscriptions))
+    |> validate_required(~w(email name username))
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
     |> validate_length(:username, min: 3, max: 30)
@@ -66,9 +68,11 @@ defmodule Pan.User do
 
   def registration_changeset(model, params) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(params, ~w(name username email podcaster share_subscriptions share_follows
+                       password password_confirmation))
+    |> validate_required(@required_fields)
     |> validate_length(:username, min: 3, max: 30)
-    |> cast(params, ~w(password password_confirmation), [])
+    |> validate_required(~w(password password_confirmation))
     |> validate_confirmation(:password)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -81,7 +85,8 @@ defmodule Pan.User do
 
   def password_update_changeset(model, params) do
     model
-    |> cast(params, ~w(password password_confirmation), [])
+    |> cast(params, ~w(password password_confirmation))
+    |> validate_required(~w(password password_confirmation))
     |> validate_confirmation(:password)
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
@@ -90,7 +95,8 @@ defmodule Pan.User do
 
   def request_login_changeset(model, params) do
     model
-    |> cast(params, ~w(email), [])
+    |> cast(params, ~w(email))
+    |> validate_required(~w(email))
     |> validate_length(:email, min: 5, max: 100)
   end
 
