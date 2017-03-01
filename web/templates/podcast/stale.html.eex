@@ -1,0 +1,37 @@
+<p class="pull-right">
+  <%= link "Factory", to: podcast_path(@conn, :factory),
+                                          class: "btn btn-primary" %>
+</p>
+
+
+<h2>Stale podcasts</h2>
+
+<table id="datatable" class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Update paused</th>
+      <th>Website</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  document.addEventListener("turbolinks:load", function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/podcasts/datatable_stale',
+        dataSrc: 'podcasts'
+      },
+      columns: [
+        { data: 'id' },
+        { data: 'title' },
+        { data: 'update_paused' },
+        { data: 'website' },
+        { data: 'actions' }
+      ]
+    })
+  })
+</script>

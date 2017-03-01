@@ -2,11 +2,15 @@
   <%= link "Episode import", to: podcast_path(@conn, :delta_import_all),
                              class: "btn btn-info" %>
   <%= link "Factory", to: podcast_path(@conn, :factory),
-                                          class: "btn btn-primary" %>
+                      class: "btn btn-primary" %>
   <%= link "Orphans", to: podcast_path(@conn, :orphans),
-                                          class: "btn btn-primary" %>
+                      class: "btn btn-primary" %>
   <%= link "Retirement", to: podcast_path(@conn, :retirement),
-                                          class: "btn btn-primary" %>
+                         class: "btn btn-primary" %>
+  <%= link "Stale", to: podcast_path(@conn, :stale),
+                    class: "btn btn-primary",
+                    data: [turbolinks: false] %>
+
 </p>
 
 

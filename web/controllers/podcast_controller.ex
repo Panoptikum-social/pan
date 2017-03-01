@@ -48,6 +48,7 @@ defmodule Pan.PodcastController do
                                 retired: retired)
   end
 
+
   def datatable(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   join: e in assoc(p, :engagements),
@@ -60,6 +61,29 @@ defmodule Pan.PodcastController do
                                             website: p.website})
                |> Repo.all
     render conn, "datatable.json", podcasts: podcasts
+  end
+
+
+  def stale(conn, _params) do
+    render(conn, "stale.html")
+  end
+
+
+  def datatable_stale(conn, _params) do
+    ten_hours_ago = Timex.now()
+                    |> Timex.shift(hours: -10)
+
+
+    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
+                                  where: p.updated_at <= ^ten_hours_ago and
+                                         (is_nil(p.update_paused) or p.update_paused == false) and
+                                         (is_nil(p.retired) or p.retired == false),
+                                  select: %{id: p.id,
+                                            title: p.title,
+                                            update_paused: p.update_paused,
+                                            website: p.website})
+               |> Repo.all
+    render conn, "datatable_stale.json", podcasts: podcasts
   end
 
 

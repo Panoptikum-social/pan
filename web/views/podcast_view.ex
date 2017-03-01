@@ -6,11 +6,23 @@ defmodule Pan.PodcastView do
     %{podcasts: Enum.map(podcasts, &podcast_json/1)}
   end
 
+  def render("datatable_stale.json", %{podcasts: podcasts}) do
+    %{podcasts: Enum.map(podcasts, &podcast_stale_json/1)}
+  end
+
 
   def podcast_json(podcast) do
     %{id:            podcast.id,
       title:         podcast.title,
       author:        truncate(podcast.author_name, 100),
+      update_paused: podcast.update_paused,
+      website:       podcast.website,
+      actions:       podcast_actions(podcast, &podcast_path/3)}
+  end
+
+  def podcast_stale_json(podcast) do
+    %{id:            podcast.id,
+      title:         podcast.title,
       update_paused: podcast.update_paused,
       website:       podcast.website,
       actions:       podcast_actions(podcast, &podcast_path/3)}
