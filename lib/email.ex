@@ -31,7 +31,7 @@ defmodule Pan.Email do
   end
 
 
-  def error_notification(from, to, mail_body) do
+  def error_notification(mail_body, from, to) do
     {:ok, hostname} = :inet.gethostname
 
     new_email()
