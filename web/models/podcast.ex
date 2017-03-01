@@ -157,27 +157,28 @@ defmodule Pan.Podcast do
                                         order_by: [desc: :updated_at])
                      |> Repo.one()
 
+    if newest_podcast do
+      from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                (is_nil(p.update_paused) or p.update_paused == false) and
+                                (is_nil(p.retired) or p.retired == false),
+                         limit: 1,
+                         order_by: [asc: :updated_at])
+      |> Repo.one()
+      |> Podcast.changeset(%{updated_at: Timex.shift(newest_podcast.updated_at, seconds: 1)})
+      |> Repo.update()
 
-    from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                              (is_nil(p.update_paused) or p.update_paused == false) and
-                              (is_nil(p.retired) or p.retired == false),
-                       limit: 1,
-                       order_by: [asc: :updated_at])
-    |> Repo.one()
-    |> Podcast.changeset(%{updated_at: Timex.shift(newest_podcast.updated_at, seconds: 1)})
-    |> Repo.update()
+      ten_hours_ago = Timex.now()
+                      |> Timex.shift(hours: -10)
 
-    ten_hours_ago = Timex.now()
-                    |> Timex.shift(hours: -10)
+      podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+                                           (is_nil(p.update_paused) or p.update_paused == false) and
+                                           (is_nil(p.retired) or p.retired == false),
+                                    order_by: [asc: :updated_at])
+                 |> Repo.all()
 
-    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                         (is_nil(p.update_paused) or p.update_paused == false) and
-                                         (is_nil(p.retired) or p.retired == false),
-                                  order_by: [asc: :updated_at])
-               |> Repo.all()
-
-    for podcast <- podcasts do
-      Pan.Parser.Podcast.delta_import(podcast.id)
+      for podcast <- podcasts do
+        Pan.Parser.Podcast.delta_import(podcast.id)
+      end
     end
   end
 
