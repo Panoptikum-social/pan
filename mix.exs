@@ -34,7 +34,7 @@ defmodule Pan.Mixfile do
      {:phoenix_html, "~> 2.4"}, # view layer
      {:phoenix_live_reload, "~> 1.0", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
-     {:cowboy, "~> 1.0"}, # web server
+     {:cowboy, "1.0.4"}, # web server forced into 1.0.4 because [ not handled properly in 1.1.x
      {:comeonin, "~> 2.0"}, # password hashing library
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.1.8"}, # time conversion
