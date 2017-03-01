@@ -158,21 +158,13 @@ defmodule Pan.Podcast do
                      |> Repo.one()
 
 
-    newest_plus_one_sec = newest_podcast.updated_at
-                          |> Ecto.DateTime.to_erl()
-                          |> Timex.to_datetime("Etc/UTC")
-                          |> Timex.shift(seconds: 1)
-                          |> Timex.to_erl()
-                          |> Ecto.DateTime.from_erl()
-
-
     from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
                               (is_nil(p.update_paused) or p.update_paused == false) and
                               (is_nil(p.retired) or p.retired == false),
                        limit: 1,
                        order_by: [asc: :updated_at])
     |> Repo.one()
-    |> Podcast.changeset(%{updated_at: newest_plus_one_sec})
+    |> Podcast.changeset(%{updated_at: Timex.shift(newest_podcast.updated_at, seconds: 1)})
     |> Repo.update()
 
     ten_hours_ago = Timex.now()
