@@ -120,7 +120,7 @@ defmodule Pan.Podcast do
                        join: e in assoc(p, :engagements),
                        where: e.role == "author",
                        join: persona in assoc(e, :persona),
-                       select: %{id: p.title,
+                       select: %{id: p.id,
                                  title: p.title,
                                  inserted_at: p.inserted_at,
                                  description: p.description,
