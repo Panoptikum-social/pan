@@ -165,10 +165,24 @@ defmodule Pan.EpisodeFrontendView do
   end
 
 
-  def seconds(time) do
-    [hours, minutes, seconds_string] = String.split(time, ":")
+  def seconds(time), do: String.split(time, ":") |> splitseconds()
+  def to_i(string), do: String.to_integer(string)
+  def to_s(integer), do: Integer.to_string(integer)
+
+  def splitseconds([hours, minutes, seconds, _milliseconds]) do
+    (to_i(hours) * 3600 + to_i(minutes) * 60 + to_i(seconds))
+    |> to_s()
+  end
+
+  def splitseconds([hours, minutes, seconds_string]) do
     {seconds, _} = Integer.parse(seconds_string)
-    Integer.to_string(String.to_integer(hours) * 3600 + String.to_integer(minutes) * 60 + seconds)
+    (to_i(hours) * 3600 + to_i(minutes) * 60 + seconds)
+    |> to_s()
+  end
+
+  def splitseconds([hours, minutes]) do
+    (to_i(hours) * 3600 + to_i(minutes) * 60)
+    |> to_s()
   end
 
 

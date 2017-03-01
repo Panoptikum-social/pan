@@ -32,10 +32,12 @@ defmodule Pan.Email do
 
 
   def error_notification(from, to, mail_body) do
+    {:ok, hostname} = :inet.gethostname
+
     new_email()
     |> to(to)
     |> from(from)
-    |> subject("Panoptikum - Error Notification")
+    |> subject("Panoptikum - #{hostname} - Error Notification")
     |> text_body(mail_body)
   end
 end
