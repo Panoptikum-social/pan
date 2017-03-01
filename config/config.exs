@@ -9,10 +9,6 @@ config :pan, Pan.Endpoint,
            adapter: Phoenix.PubSub.PG2],
   http: [compress: true]
 
-config :logger,
-  backends: [:console,
-             {Logger.Backends.ExceptionNotification, :exeception_notification}]
-
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]

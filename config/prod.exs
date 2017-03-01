@@ -8,6 +8,9 @@ config :pan, Pan.Endpoint,
   root: ".",
   version: Mix.Project.config[:version]
 
+config :logger,
+  backends: [:console,
+             {Logger.Backends.ExceptionNotification, :exeception_notification}]
 
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true
