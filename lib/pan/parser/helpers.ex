@@ -32,14 +32,15 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{ISO:Extended}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
-               try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}")
+               try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}")
 
-    unless datetime do
+    if datetime do
+      Timex.to_naive_datetime(datetime)
+    else
       Logger.error "Error in date parsing: " <> feed_date
       raise "Error in date parsing"
     end
-
-    Timex.to_naive_datetime(datetime)
   end
 
 
