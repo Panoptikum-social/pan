@@ -5,26 +5,20 @@ defmodule Pan.UserFrontendView do
   alias Pan.Follow
   alias Pan.Like
   alias Pan.User
+  import NaiveDateTime
 
 
   def pro(user) do
-    user.pro_until != nil && Ecto.DateTime.compare(user.pro_until, now()) == :gt
+    user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
   end
 
 
   def disabled(user) do
-    if user.pro_until == nil || Ecto.DateTime.compare(user.pro_until, now()) == :lt do
+    if user.pro_until == nil || compare(user.pro_until, utc_now()) == :lt do
       "disabled"
     else
       ""
     end
-  end
-
-
-  def now() do
-    Timex.now()
-    |> Timex.to_erl()
-    |> Ecto.DateTime.from_erl()
   end
 
 

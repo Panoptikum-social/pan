@@ -109,7 +109,7 @@ defmodule Pan.Auth do
     current_user = conn.assigns.current_user
 
     if current_user.pro_until != nil &&
-       Ecto.DateTime.compare(current_user.pro_until, Pan.UserFrontendView.now()) == :gt do
+       NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
       conn
     else
       conn

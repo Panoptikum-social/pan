@@ -14,7 +14,7 @@ defmodule Pan.MessageView do
       persona_id:   message.persona_id,
       persona_name: message.persona && message.persona.name,
       content:      message.content,
-      date:         "<nobr>" <> Ecto.DateTime.to_string(message.inserted_at) <> "</nobr>",
+      date:         "<nobr>" <> Timex.format!(message.inserted_at, "{YYYY}-{0M}-{0D} {h24}:{m}:{s}") <> "</nobr>",
       topic:        message.topic,
       subtopic:     message.subtopic,
       event:        message.event,

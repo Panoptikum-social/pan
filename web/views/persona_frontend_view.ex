@@ -22,13 +22,6 @@ defmodule Pan.PersonaFrontendView do
   end
 
 
-  def now() do
-    Timex.now()
-    |> Timex.to_erl()
-    |> Ecto.DateTime.from_erl()
-  end
-
-
   def like_or_unlike(enjoyer_id, persona_id) do
     case Repo.get_by(Like, enjoyer_id: enjoyer_id,
                            persona_id: persona_id) do

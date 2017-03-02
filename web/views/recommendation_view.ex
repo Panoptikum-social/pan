@@ -7,7 +7,7 @@ defmodule Pan.RecommendationView do
 
   def recommendation_json(recommendation) do
     %{id:            recommendation.id,
-      inserted_at:   "<nobr>" <> Ecto.DateTime.to_string(recommendation.inserted_at) <> "</nobr>",
+      inserted_at:   "<nobr>" <> Timex.format!(recommendation.inserted_at, "{YYYY}-{0M}-{0D} {h24}:{m}:{s}") <> "</nobr>",
       user_id:       recommendation.user_id,
       user_name:     recommendation.user.name,
       podcast_id:    recommendation.podcast_id,

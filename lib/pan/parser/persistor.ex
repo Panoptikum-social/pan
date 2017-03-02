@@ -32,7 +32,7 @@ defmodule Pan.Parser.Persistor do
 
   def delta_import(map, podcast_id) do
     podcast = Repo.get!(Pan.Podcast, podcast_id)
-    map = Map.put_new(map, :last_build_date, Ecto.DateTime.utc)
+    map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
 
     unless map[:last_build_date] == podcast.last_build_date do
       if map[:episodes] do
