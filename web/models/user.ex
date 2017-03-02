@@ -16,7 +16,7 @@ defmodule Pan.User do
     field :email_confirmed, :boolean
     field :share_subscriptions, :boolean, default: false
     field :share_follows, :boolean, default: false
-    field :pro_until, Ecto.DateTime
+    field :pro_until, :naive_datetime
     timestamps()
 
     has_many :manifestations, Pan.Manifestation

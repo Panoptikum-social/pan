@@ -21,14 +21,14 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
-    %{last_build_date: Helpers.to_ecto_datetime(value)}
+    %{last_build_date: Helpers.to_naive_datetime(value)}
   end
   def call(_, "tag", [:"dc:date", _, [value]]) do
-    %{last_build_date: Helpers.to_ecto_datetime(value)}
+    %{last_build_date: Helpers.to_naive_datetime(value)}
   end
   def call(_, "tag", [:pubDate, _, []]), do: %{}
   def call(_, "tag", [:pubDate, _, [value]]) do
-    %{last_build_date: Helpers.to_ecto_datetime(value)}
+    %{last_build_date: Helpers.to_naive_datetime(value)}
   end
 
 
@@ -211,10 +211,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
-    %{publishing_date: Helpers.to_ecto_datetime(value)}
+    %{publishing_date: Helpers.to_naive_datetime(value)}
   end
   def call(_, "episode", [:"dc:date",         _, [value]]) do
-    %{publishing_date: Helpers.to_ecto_datetime(value)}
+    %{publishing_date: Helpers.to_naive_datetime(value)}
   end
 
   def call(_, "episode", [:"atom:link", attr, _]) do

@@ -5,7 +5,7 @@ defmodule Pan.Gig do
     field :from_in_s, :integer
     field :until_in_s, :integer
     field :comment, :string
-    field :publishing_date, Ecto.DateTime
+    field :publishing_date, :naive_datetime
     field :role, :string
     belongs_to :persona, Pan.Persona
     belongs_to :episode, Pan.Episode

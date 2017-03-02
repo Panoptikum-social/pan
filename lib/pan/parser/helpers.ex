@@ -1,6 +1,7 @@
 defmodule Pan.Parser.Helpers do
   use Pan.Web, :controller
   use Timex
+  require Logger
 
   def boolify(explicit) do
     case explicit do
@@ -19,7 +20,7 @@ defmodule Pan.Parser.Helpers do
   end
 
 
-  def to_ecto_datetime(feed_date) do
+  def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> fix_time()
                 |> replace_long_month_names()
@@ -34,14 +35,11 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}")
 
     unless datetime do
-      IO.puts feed_date
-      IO.puts "==============="
+      Logger.error "Error in date parsing: " <> feed_date
       raise "Error in date parsing"
     end
 
-    erltime = Timex.to_erl(datetime)
-    # why can't I pipe here?
-    Ecto.DateTime.from_erl(erltime)
+    Timex.to_naive_datetime(datetime)
   end
 
 

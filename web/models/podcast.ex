@@ -14,7 +14,7 @@ defmodule Pan.Podcast do
     field :summary, :string
     field :image_title, :string
     field :image_url, :string
-    field :last_build_date, Ecto.DateTime
+    field :last_build_date, :naive_datetime
     field :payment_link_title, :string
     field :payment_link_url, :string
     field :explicit, :boolean, default: false

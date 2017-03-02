@@ -8,7 +8,7 @@ defmodule Pan.Episode do
   schema "episodes" do
     field :title, :string
     field :link, :string
-    field :publishing_date, Ecto.DateTime
+    field :publishing_date, :naive_datetime
     field :guid, :string
     field :description, :string
     field :shownotes, :string
