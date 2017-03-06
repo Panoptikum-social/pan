@@ -23,57 +23,33 @@ defmodule Pan.Parser.RssFeed do
 
   def import_to_map(url) do
     url = String.strip(url)
-
     IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
 
-    download_and_error_handling(url)
+    download(url)
   end
 
 
-  def download_and_error_handling(url, option \\ nil) do
-    case download(url, option) do
-      %HTTPotion.ErrorResponse{message: "econnrefused"} ->
-        {:error, "connection refused"}
-
-      %HTTPotion.ErrorResponse{message: "req_timedout"} ->
-        {:error, "request timed out"}
-
-      %HTTPotion.ErrorResponse{message: "nxdomain"} ->
-        {:error, "dns name not resolved"}
-
-      %HTTPotion.ErrorResponse{message: "{:tls_alert, 'handshake failure'}"} ->
-        if option == "no_headers" do
-          {:error, "tls_alert: handshake failure"}
-        else
-         download_and_error_handling(url, "no_headers")
-        end
-
-      %HTTPotion.Response{status_code: 500} ->
+  def download(url, option \\ nil) do
+    case get(url, option) do
+      {:ok, %HTTPoison.Response{status_code: 500}} ->
         {:error, "500: internal server error"}
-
-      %HTTPotion.Response{status_code: 502} ->
+      {:ok, %HTTPoison.Response{status_code: 502}} ->
         {:error, "502: bad gateway"}
-
-      %HTTPotion.Response{status_code: 503} ->
+      {:ok, %HTTPoison.Response{status_code: 503}} ->
         {:error, "503: service unavailable"}
-
-      %HTTPotion.Response{status_code: 504} ->
+      {:ok, %HTTPoison.Response{status_code: 504}} ->
         {:error, "504: gateway time-out"}
-
-      %HTTPotion.Response{status_code: 404} ->
+      {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, "404: feed not found"}
 
-      %HTTPotion.Response{status_code: 403} ->
+      {:ok, %HTTPoison.Response{status_code: 403}} ->
         if option == "no_headers" do
           {:error, "403: forbidden"}
         else
-         download_and_error_handling(url, "no_headers")
+         download(url, "no_headers")
         end
 
-      %HTTPotion.Response{status_code: 200, body: feed_xml} ->
-        # IO.inspect download(url)
-        # IO.puts "=========================="
-
+      {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} ->
         unless String.contains?(feed_xml, "<rss") do
           {:error, "This is not an rss feed!"}
         else
@@ -86,25 +62,30 @@ defmodule Pan.Parser.RssFeed do
           {:ok, map}
         end
 
-      %HTTPotion.Response{status_code: code} ->
-        IO.inspect download(url)
+      {:ok, %HTTPoison.Response{status_code: code}} ->
+        IO.inspect get(url)
         IO.puts "=========================="
         raise "status_code unknown" <> code
     end
   end
 
-
-  def download(url, option \\ nil) do
+  def get(url, option \\ nil) do
     case option do
       "no_headers" ->
-        HTTPotion.get url, [timeout: 20_000, follow_redirects: true]
+        HTTPoison.get(url, [],
+                           [connect_timeout: 20_000, recv_timeout: 20_000, follow_redirects: true,
+                            max_redirect: 5, timeout: 20_000, hackney: [:insecure],
+                            ssl: [{:versions, [:'tlsv1.2']}]])
       nil ->
-        HTTPotion.get url,
-          [timeout: 20_000, follow_redirects: true,
-          headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML," <>
-                                  " like Gecko) Chrome/49.0.2623.75 Safari/537.36"]]
+        HTTPoison.get(url, [{"User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " <>
+                                           "(KHTML, like Gecko) " <>
+                                           "Chrome/49.0.2623.75 Safari/537.36"}],
+                           [follow_redirect: true, max_redirect: 5, connect_timeout: 20_000,
+                            recv_timeout: 20_000, timeout: 20_000, hackney: [:insecure],
+                            ssl: [{:versions, [:'tlsv1.2']}]])
     end
   end
+
 
 # Convenience function for runtime measurement
   def measure_runtime(function) do
