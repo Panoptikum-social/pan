@@ -41,6 +41,7 @@ defmodule Pan.Mixfile do
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
      {:httpotion, "~> 3.0.2"}, # http client
      {:httpoison, "~> 0.11.1"}, # another http client
+     {:hackney, "1.7.1"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.0"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation

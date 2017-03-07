@@ -3,6 +3,7 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Repo
   alias Pan.Parser.RssFeed
   alias Pan.Parser.Persistor
+  alias Pan.Parser.AlternateFeed
   alias Pan.Podcast
   alias Pan.Feed
 
@@ -27,6 +28,14 @@ defmodule Pan.Parser.Podcast do
         Persistor.delta_import(map, id)
         unpause(id)
         {:ok, "Podcast importet successfully"}
+
+      {:redirect, redirect_target} ->
+        AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url})
+
+        Feed.changeset(feed, %{self_link_url: redirect_target})
+        |> Repo.update([force: true])
+        # Now that we have updated Feed and alternate feed, let's try again
+        delta_import(id)
 
       {:error, message} ->
         unpause(id)

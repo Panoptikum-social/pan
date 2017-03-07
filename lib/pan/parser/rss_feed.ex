@@ -25,22 +25,35 @@ defmodule Pan.Parser.RssFeed do
     url = String.strip(url)
     IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
 
-    download(url)
+    case download(url) do
+      {:ok, feed_xml} ->
+
+       feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+                  |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                  |> Quinn.parse()
+
+        map = %{feed: %{self_link_title: "Feed", self_link_url: url},
+                        title: Enum.at(String.split(url, "/"), 2)}
+              |> Iterator.parse(feed_map)
+        {:ok, map}
+
+      {:redirect, redirect_target} -> {:redirect, redirect_target}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
 
   def download(url, option \\ nil) do
     case get(url, option) do
-      {:ok, %HTTPoison.Response{status_code: 500}} ->
-        {:error, "500: internal server error"}
-      {:ok, %HTTPoison.Response{status_code: 502}} ->
-        {:error, "502: bad gateway"}
-      {:ok, %HTTPoison.Response{status_code: 503}} ->
-        {:error, "503: service unavailable"}
-      {:ok, %HTTPoison.Response{status_code: 504}} ->
-        {:error, "504: gateway time-out"}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "404: feed not found"}
+      {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
+      {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
+      {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
+      {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
+      {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
+
+      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 307, headers: headers}} -> redirect(url, headers)
 
       {:ok, %HTTPoison.Response{status_code: 403}} ->
         if option == "no_headers" do
@@ -53,37 +66,38 @@ defmodule Pan.Parser.RssFeed do
         unless String.contains?(feed_xml, "<rss") do
           {:error, "This is not an rss feed!"}
         else
-          feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-                     |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-                     |> Quinn.parse()
-          map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-                          title: Enum.at(String.split(url, "/"), 2)}
-                |> Iterator.parse(feed_map)
-          {:ok, map}
+          {:ok, feed_xml}
         end
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
         IO.inspect get(url)
-        IO.puts "=========================="
-        raise "status_code unknown" <> code
+        raise "status_code unknown" <> Integer.to_string(code)
     end
   end
 
-  def get(url, option \\ nil) do
-    case option do
-      "no_headers" ->
-        HTTPoison.get(url, [],
-                           [connect_timeout: 20_000, recv_timeout: 20_000, follow_redirects: true,
-                            max_redirect: 5, timeout: 20_000, hackney: [:insecure],
-                            ssl: [{:versions, [:'tlsv1.2']}]])
-      nil ->
-        HTTPoison.get(url, [{"User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " <>
-                                           "(KHTML, like Gecko) " <>
-                                           "Chrome/49.0.2623.75 Safari/537.36"}],
-                           [follow_redirect: true, max_redirect: 5, connect_timeout: 20_000,
-                            recv_timeout: 20_000, timeout: 20_000, hackney: [:insecure],
-                            ssl: [{:versions, [:'tlsv1.2']}]])
+
+  def redirect(url, headers) do
+    redirect_target = headers
+                      |> Enum.into(%{})
+                      |> Map.fetch!("Location")
+    if redirect_target == url do
+      {:error, "redirects to itself"}
+    else
+      {:redirect, redirect_target}
     end
+  end
+
+
+  def get(url, option \\ nil) do
+    options = [recv_timeout: 10_000, timeout: 10_000,
+               hackney: [:insecure], ssl: [{:versions, [:'tlsv1.2']}]]
+
+    headers = case option do
+      "no_headers" -> []
+      _ -> ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+    end
+
+    HTTPoison.get(url, headers, options)
   end
 
 
