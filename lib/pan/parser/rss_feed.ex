@@ -94,7 +94,7 @@ defmodule Pan.Parser.RssFeed do
       "no_headers" -> []
       _ -> ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
     end
-    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]]
+    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
     HTTPoison.get(url, headers, options)
   end
 
