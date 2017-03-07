@@ -209,6 +209,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"googleplay:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
+  def call(_, "episode", [:duration, _, []]), do: %{}
+  def call(_, "episode", [:duration, _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
     %{publishing_date: Helpers.to_naive_datetime(value)}
