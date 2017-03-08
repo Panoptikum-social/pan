@@ -45,16 +45,21 @@ defmodule Pan.Parser.RssFeed do
 
   def download(url, option \\ nil) do
     case get(url, option) do
+      {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}
+      {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} -> {:error, "Host unreachable"}
+
       {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
       {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
       {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
       {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
-      {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 307, headers: headers}} -> redirect(url, headers)
+
+      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
+        download(url, "old_tls")
 
       {:ok, %HTTPoison.Response{status_code: 403}} ->
         if option == "no_headers" do
@@ -91,10 +96,19 @@ defmodule Pan.Parser.RssFeed do
 
   def get(url, option \\ nil) do
     headers = case option do
-      "no_headers" -> []
-      _ -> ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+      "no_headers" ->
+        []
+      _ ->
+        ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
     end
-    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
+
+    options = case option do
+      "old_tls" ->
+        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
+      _ ->
+        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
+         ssl: [{:versions, [:'tlsv1.2']}]]
+    end
     HTTPoison.get(url, headers, options)
   end
 
