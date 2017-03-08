@@ -52,7 +52,8 @@ defmodule Pan.Mixfile do
      {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter,
      {:con_cache, "~> 0.12.0"}, # key/value cache
      {:earmark, "~> 1.1.0"}, # Markdown parser
-     {:timelier, "~> 0.9.2"}, # Cron like agent
+     {:timelier, "~> 0.9.2"}, # Cron like agent,
+     {:tzdata, "~> 0.5.11"}, # mailing
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
     ]
   end
