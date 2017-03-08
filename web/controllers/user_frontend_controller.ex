@@ -49,23 +49,27 @@ defmodule Pan.UserFrontendController do
 
 
   def show(conn, params, _user) do
-    id = String.to_integer(params["id"])
-    user = Repo.get!(User, id)
-           |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
+    case Integer.parse(params["id"]) do
+      :error ->
+        render conn, "nan.html"
+      {id, _} ->
+        user = Repo.get!(User, id)
+               |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
 
-    podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
-                                                            and not is_nil(l.podcast_id),
-                                                     order_by: [desc: :inserted_at])
-                            |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+        podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
+                                                                and not is_nil(l.podcast_id),
+                                                         order_by: [desc: :inserted_at])
+                                |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
 
-    messages = from(m in Message, where: m.creator_id == ^id,
-                                  order_by: [desc: :inserted_at],
-                                  preload: :creator)
-               |> Repo.paginate(params)
+        messages = from(m in Message, where: m.creator_id == ^id,
+                                      order_by: [desc: :inserted_at],
+                                      preload: :creator)
+                   |> Repo.paginate(params)
 
-    render conn, "show.html", user: user,
-                              podcast_related_likes: podcast_related_likes,
-                              messages: messages
+        render conn, "show.html", user: user,
+                                  podcast_related_likes: podcast_related_likes,
+                                  messages: messages
+    end
   end
 
 

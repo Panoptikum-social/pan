@@ -191,7 +191,7 @@ defmodule Pan.Podcast do
           user_name: current_user.name}
 
       {:error, message} ->
-        %{content: "Error:" <> message <> " / updating podcast" <> podcast.title,
+        %{content: "Error:" <> message <> " / " <> podcast.title,
           type: "danger",
           user_name: current_user.name}
     end
