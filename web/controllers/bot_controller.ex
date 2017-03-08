@@ -1,6 +1,7 @@
 defmodule Pan.BotController do
   use Pan.Web, :controller
   alias Pan.Podcast
+  alias Pan.Episode
 
   # To test using ngrok, call:
   #   $ ngrok http 4000
@@ -19,6 +20,7 @@ defmodule Pan.BotController do
                                          ilike(p.author,      ^sqlfrag),
                                   limit: 5)
                   |> Repo.all()
+                  |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
     data = %{
       recipient: %{
         id: sender_id
@@ -42,7 +44,7 @@ defmodule Pan.BotController do
 
     body = %{
       setting_type: "domain_whitelisting",
-      whitelisted_domains: ["https://20ba4076.ngrok.io"],
+      whitelisted_domains: ["https://86924beb.ngrok.io", "https://panoptikum.io/"],
       domain_action_type: "add"
     }
     |> Poison.encode!
@@ -64,27 +66,35 @@ defmodule Pan.BotController do
   end
 
   defp podcast_json(conn, podcast) do
+    [episode | _rest] = podcast.episodes
     %{
       title: podcast.title,
       image_url: podcast.image_url,
       subtitle: podcast.description,
       default_action: %{
         type: "web_url",
-        url: "https://20ba4076.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+        url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
         messenger_extensions: true,
         webview_height_ratio: "tall",
-        fallback_url: "https://20ba4076.ngrok.io" <> podcast_frontend_path(conn, :show, podcast)
+        fallback_url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast)
       },
       buttons: [
         %{
           type: "web_url",
-          url: "https://20ba4076.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+          url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
           title: "In Panoptikum"
         },
         %{
           type: "web_url",
-          url: "https://20ba4076.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+          url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
           title: "View Website"
+        },
+        %{
+          type: "web_url",
+          url: "https://86924beb.ngrok.io" <> episode_frontend_path(conn, :player, episode),
+          messenger_extensions: true,
+          webview_height_ratio: "tall",
+          title: "Play latest episode"
         }
       ]
     }
