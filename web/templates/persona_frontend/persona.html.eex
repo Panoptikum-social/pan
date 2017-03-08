@@ -1,9 +1,6 @@
 <script>
-  $(document).ready(function() {
+  $(function() {
     $('[data-toggle="popover"]').popover()
-
-    window.history.replaceState('Object', '<%= @persona.name %>',
-                                          '<%= persona_frontend_path(@conn, :persona, @persona.pid) %>')
   })
 </script>
 

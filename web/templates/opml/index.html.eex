@@ -15,7 +15,7 @@
 </table>
 
 <script>
-  document.addEventListener("turbolinks:load", function() {
+  $(function() {
     $('#datatable').DataTable({
       ajax: {
         url: '/admin/opmls/datatable',

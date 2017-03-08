@@ -35,7 +35,7 @@
 </div>
 
 <script>
-  $(document).ready(function() {
+  $(function() {
     //bootstrap-treeview:  https://github.com/jonmiles/bootstrap-treeview
     var treedata = <%= category_tree(@categories) %>
 

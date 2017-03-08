@@ -49,7 +49,7 @@
 </table>
 
 <script>
-  $(document).ready(function() {
+  $(function() {
       $('#datatable').DataTable();
   } );
 </script>

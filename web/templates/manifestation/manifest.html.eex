@@ -93,7 +93,7 @@
 </div>
 
 <script>
-  $(document).ready(function() {
+  $(function() {
     var usertable = $('#users').DataTable({select: "single"});
 
     usertable

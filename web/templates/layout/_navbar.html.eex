@@ -41,8 +41,7 @@
       <li role="user" class="dropdown toshow" style="display: none">
         <a class="dropdown-toggle" href="#" role="button"
            aria-haspopup="true" aria-expanded="false"
-           data-toggle="dropdown"
-           data-turbolinks="false">
+           data-toggle="dropdown">
           @<%= @current_user.username %><span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
@@ -59,43 +58,26 @@
         <li role="admin" class="dropdown">
           <a class="dropdown-toggle" href="#" role="button"
              aria-haspopup="true" aria-expanded="false"
-             data-toggle="dropdown"
-             data-turbolinks="false">
+             data-toggle="dropdown">
             Admin <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><%= link "Categories", to: category_path(@conn, :index),
-                                       data: [turbolinks: false] %></li>
-            <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index),
-                                         data: [turbolinks: false] %></li>
-            <li><%= link "Languages", to: language_path(@conn, :index),
-                                      data: [turbolinks: false] %></li>
-            <li><%= link "Podcasts", to: podcast_path(@conn, :index),
-                                     data: [turbolinks: false] %></li>
-            <li><%= link "Users", to: user_path(@conn, :index),
-                                  data: [turbolinks: false] %></li>
-            <li><%= link "OPMLs", to: opml_path(@conn, :index),
-                                  data: [turbolinks: false] %></li>
-            <li><%= link "Messages", to: message_path(@conn, :index),
-                                     data: [turbolinks: false] %></li>
-            <li><%= link "Likes", to: like_path(@conn, :index),
-                                  data: [turbolinks: false] %></li>
-            <li><%= link "Follows", to: follow_path(@conn, :index),
-                                    data: [turbolinks: false] %></li>
-            <li><%= link "Subscriptions", to: subscription_path(@conn, :index),
-                                          data: [turbolinks: false] %></li>
-            <li><%= link "Recommendations", to: recommendation_path(@conn, :index),
-                                            data: [turbolinks: false] %></li>
-            <li><%= link "Personas", to: persona_path(@conn, :index),
-                                     data: [turbolinks: false] %></li>
-            <li><%= link "Gigs", to: gig_path(@conn, :index),
-                                 data: [turbolinks: false] %></li>
-            <li><%= link "Engagements", to: engagement_path(@conn, :index),
-                                        data: [turbolinks: false] %></li>
-            <li><%= link "Manifestations", to: manifestation_path(@conn, :index),
-                                           data: [turbolinks: false] %></li>
-            <li><%= link "Delegations", to: delegation_path(@conn, :index),
-                                        data: [turbolinks: false] %></li>
+            <li><%= link "Categories", to: category_path(@conn, :index) %></li>
+            <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
+            <li><%= link "Languages", to: language_path(@conn, :index) %></li>
+            <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
+            <li><%= link "Users", to: user_path(@conn, :index) %></li>
+            <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
+            <li><%= link "Messages", to: message_path(@conn, :index) %></li>
+            <li><%= link "Likes", to: like_path(@conn, :index) %></li>
+            <li><%= link "Follows", to: follow_path(@conn, :index) %></li>
+            <li><%= link "Subscriptions", to: subscription_path(@conn, :index) %></li>
+            <li><%= link "Recommendations", to: recommendation_path(@conn, :index) %></li>
+            <li><%= link "Personas", to: persona_path(@conn, :index) %></li>
+            <li><%= link "Gigs", to: gig_path(@conn, :index) %></li>
+            <li><%= link "Engagements", to: engagement_path(@conn, :index) %></li>
+            <li><%= link "Manifestations", to: manifestation_path(@conn, :index) %></li>
+            <li><%= link "Delegations", to: delegation_path(@conn, :index) %></li>
           </ul>
         </li>
       <% end %>

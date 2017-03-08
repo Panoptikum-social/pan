@@ -6,8 +6,7 @@
   <%= link "Retirement", to: podcast_path(@conn, :retirement),
                          class: "btn btn-primary" %>
   <%= link "Stale", to: podcast_path(@conn, :stale),
-                    class: "btn btn-primary",
-                    data: [turbolinks: false] %>
+                    class: "btn btn-primary" %>
 
 </p>
 
@@ -28,7 +27,7 @@
 </table>
 
 <script>
-  document.addEventListener("turbolinks:load", function() {
+  $(function() {
     $('#datatable').DataTable({
       ajax: {
         url: '/admin/podcasts/datatable',

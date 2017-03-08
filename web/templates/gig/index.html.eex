@@ -19,7 +19,7 @@
 </table>
 
 <script>
-  document.addEventListener("turbolinks:load", function() {
+  $(function() {
     $('#datatable').DataTable({
       serverSide: true,
       ajax: { url: '<%= gig_path(@conn, :datatable) %>'},
