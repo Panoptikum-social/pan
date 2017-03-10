@@ -50,12 +50,13 @@ defmodule Pan.Parser.Category do
     for {podcast, counter} <- Enum.with_index(podcasts) do
     IO.puts "============" <> to_string(counter)
 
+    headers = ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
+               ssl: [{:versions, [:'tlsv1.2']}]]
+
       for feed <- podcast.feeds do
         try do
-          %HTTPotion.Response{body: feed_xml} =
-            HTTPotion.get(feed.self_link_url, [timeout: 20_000, follow_redirects: true,
-              headers: ["User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " <>
-                                      "(KHTML, like Gecko) Chrome/49.0.2623.75 Safari/537.36"]])
+          %HTTPoison.Response{body: feed_xml} = HTTPoison.get!(feed.self_link_url, headers, options)
           feed_map = Quinn.parse(feed_xml)
 
           map = Pan.Parser.Iterator.parse(%{}, feed_map)

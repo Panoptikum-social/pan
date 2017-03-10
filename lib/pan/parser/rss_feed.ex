@@ -47,6 +47,7 @@ defmodule Pan.Parser.RssFeed do
     case get(url, option) do
       {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}
       {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} -> {:error, "Host unreachable"}
+      {:error, %HTTPoison.Error{id: nil, reason: :nxdomain}} -> {:error, "Domain not resolveable"}
 
       {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
       {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}

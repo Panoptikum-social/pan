@@ -16,7 +16,7 @@ defmodule Pan.Mixfile do
   def application do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
-                    :gettext, :phoenix_ecto, :postgrex, :httpotion, :httpoison,
+                    :gettext, :phoenix_ecto, :postgrex, :httpoison,
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
@@ -39,8 +39,7 @@ defmodule Pan.Mixfile do
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.1.8"}, # time conversion
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
-     {:httpotion, "~> 3.0.2"}, # http client
-     {:httpoison, "~> 0.11.1"}, # another http client
+     {:httpoison, "~> 0.11.1"}, # http client
      {:hackney, "1.7.1"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.0"}, # XML parser (another one)
