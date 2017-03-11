@@ -48,7 +48,7 @@ defmodule Pan.Podcast do
     |> cast(params, [:title, :website, :last_build_date, :explicit, :payment_link_title,
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
                      :summary, :update_paused, :blocked, :retired, :updated_at])
-    |> validate_required([:title, :website, :last_build_date, :explicit])
+    |> validate_required([:title, :website, :last_build_date])
     |> unique_constraint(:title)
   end
 

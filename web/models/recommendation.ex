@@ -16,8 +16,8 @@ defmodule Pan.Recommendation do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:comment])
-    |> validate_required([:comment, :podcast_id, :episode_id, :chapter_id, :user_id])
+    |> cast(params, [:comment, :podcast_id, :episode_id, :chapter_id, :user_id])
+    |> validate_required([:comment])
   end
 
 

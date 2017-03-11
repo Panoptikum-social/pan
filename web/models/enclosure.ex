@@ -15,6 +15,6 @@ defmodule Pan.Enclosure do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:url, :length, :type, :guid])
-    |> validate_required([:url, :length, :type, :guid])
+    |> validate_required([:url, :type, :guid])
   end
 end
