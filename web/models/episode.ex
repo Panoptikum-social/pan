@@ -64,7 +64,8 @@ defmodule Pan.Episode do
   def latest do
     from(e in Pan.Episode, order_by: [desc: :publishing_date],
                            join: p in assoc(e, :podcast),
-                           where: is_nil(p.blocked) or p.blocked == false,
+                           where: (is_nil(p.blocked) or p.blocked == false) and
+                                  e.publishing_date < ^NaiveDateTime.utc_now(),
                            preload: :podcast,
                            limit: 5)
     |> Repo.all()

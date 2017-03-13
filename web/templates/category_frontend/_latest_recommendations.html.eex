@@ -11,7 +11,7 @@
                                                         Pan.Recommendation.latest()
                                                       end) do %>
         <li>
-          <p style="line-height: 200%;">
+          <p>
             <%= if recommendation.podcast do %>
               <%= link [fa_icon("podcast"), " ", truncate(recommendation.podcast.title, 40)],
                        to: podcast_frontend_path(@conn, :show, recommendation.podcast),
@@ -41,7 +41,7 @@
             <% end %>
           </p>
 
-          <p><%= link [fa_icon("user"), " ", recommendation.user.name],
+          <p style="line-height: 150%;"><%= link [fa_icon("user"), " ", recommendation.user.name],
                         to: user_frontend_path(@conn, :show, recommendation.user),
                         class: "btn btn-xs truncate btn-danger" %>
 
@@ -50,7 +50,9 @@
 
               <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
             </span>
-            <br/><%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+          </p>
+          <p>
+            <%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
           </p>
         </li>
       <% end %>

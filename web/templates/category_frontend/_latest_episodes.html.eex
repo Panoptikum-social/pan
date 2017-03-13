@@ -9,26 +9,26 @@
     <ul class="list-unstyled">
       <%= for episode <- ConCache.get_or_store(:slow_cache, :latest_episodes, fn() -> Pan.Episode.latest() end) do %>
         <li>
-          <%= link [fa_icon("headphones"), " ", truncate(episode.title, 40)],
+          <%= link [fa_icon("headphones"), " ", episode.title],
                       to: episode_frontend_path(@conn, :show, episode.id),
-                      class: "btn btn-primary btn-xs" %>
-          <hr style="margin-top: -10px; visibility:hidden;" />
+                      class: "btn btn-primary btn-xs truncate" %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
           <%= link [fa_icon("podcast"), " ", episode.podcast.title],
                       to: podcast_frontend_path(@conn, :show, episode.podcast_id),
                       class: "btn btn-default btn-xs",
                       style: "color: #000;" %>
-          <hr style="margin-top: -10px; visibility:hidden;" />
-          <%= if episode.publishing_date do %>
-            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate}") %><br/>
-          <% end %>
-          <%= if episode.duration do %>
-            <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
-          <%= end %>
-
+          <hr style="margin-top: -15px; visibility:hidden;" />
           <%= ConCache.get_or_store(:slow_cache,
                                     String.to_atom("episode"<> Integer.to_string(episode.id)),
                                     fn() -> Pan.EpisodeFrontendView.author_button(@conn, episode) end) %>
-          <br/>
+          <hr style="margin-top: -15px; visibility:hidden;" />
+          <%= if episode.publishing_date do %>
+            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate}") %>
+          <% end %>
+          <%= if episode.duration do %>
+            , <%= fa_icon("clock-o") %> <%= episode.duration %>
+          <%= end %><br/>
+
           <%= if episode.subtitle do %>
             <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
           <%= end %>
