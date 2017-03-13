@@ -11907,7 +11907,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 
-_mailbox2.default.init(_socket2.default);
+(0, _jquery2.default)(function () {
+  _mailbox2.default.init(_socket2.default);
+});
 
 (0, _jquery2.default)(".toshow").show();
 (0, _jquery2.default)(".tohide").hide();
