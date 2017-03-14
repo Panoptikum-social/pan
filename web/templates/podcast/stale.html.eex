@@ -14,6 +14,8 @@
       <th>ID</th>
       <th>Title</th>
       <th>Update paused</th>
+      <th>Updated at</th>
+      <th>Feed url</th>
       <th>Website</th>
       <th>Actions</th>
     </tr>
@@ -31,6 +33,8 @@
         { data: 'id' },
         { data: 'title' },
         { data: 'update_paused' },
+        { data: 'updated_at' },
+        { data: 'feed_url' },
         { data: 'website' },
         { data: 'actions' }
       ]

@@ -75,12 +75,15 @@ defmodule Pan.PodcastController do
 
 
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
+                                  join: f in assoc(p, :feeds),
                                   where: p.updated_at <= ^ten_hours_ago and
                                          (is_nil(p.update_paused) or p.update_paused == false) and
                                          (is_nil(p.retired) or p.retired == false),
                                   select: %{id: p.id,
                                             title: p.title,
                                             update_paused: p.update_paused,
+                                            updated_at: p.updated_at,
+                                            feed_url: f.self_link_url,
                                             website: p.website})
                |> Repo.all
     render conn, "datatable_stale.json", podcasts: podcasts

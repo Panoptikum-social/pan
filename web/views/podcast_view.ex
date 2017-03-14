@@ -24,6 +24,8 @@ defmodule Pan.PodcastView do
     %{id:            podcast.id,
       title:         podcast.title,
       update_paused: podcast.update_paused,
+      updated_at:    podcast.updated_at,
+      feed_url:      podcast.feed_url,
       website:       podcast.website,
       actions:       podcast_actions(podcast, &podcast_path/3)}
   end
