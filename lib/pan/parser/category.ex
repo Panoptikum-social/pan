@@ -33,6 +33,7 @@ defmodule Pan.Parser.Category do
           {:ok, category} = get_or_insert(category_map[:title], category_map[:parent])
           category
         end
+      categories = Enum.uniq(categories)
 
       podcast = Repo.preload(podcast, :categories)
 

@@ -12,10 +12,14 @@ defmodule Pan.ViewHelpers do
 
   def truncate(string, len) do
     length = len - 3
-    if String.length(string) > length do
-      String.slice(string, 0, length) <> "..."
+    if string do
+      if String.length(string) > length do
+        String.slice(string, 0, length) <> "..."
+      else
+        string
+      end
     else
-      string
+      ""
     end
   end
 
