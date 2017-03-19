@@ -134,8 +134,10 @@ defmodule Pan.Podcast do
   def author(podcast) do
     engagement = from(Engagement, where: [role: "author",
                                   podcast_id: ^podcast.id],
-                                  preload: :persona)
-    |> Repo.one()
+                                  preload: :persona,
+                                  limit: 1)
+    |> Repo.all()
+    |> List.first()
 
     if engagement, do: engagement.persona
   end
