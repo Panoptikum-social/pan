@@ -22,6 +22,8 @@ defmodule Pan.ModelCase do
       import Ecto.Changeset
       import Ecto.Query
       import Pan.ModelCase
+
+      import Pan.TestHelpers
     end
   end
 

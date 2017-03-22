@@ -7,7 +7,11 @@ defmodule Pan.SubscriptionTest do
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
-    changeset = Subscription.changeset(%Subscription{}, @valid_attrs)
+    podcast = insert_podcast()
+    user = insert_user()
+    changeset = Subscription.changeset(%Subscription{},
+                                       Map.merge(@valid_attrs, %{user_id: user.id,
+                                                                 podcast_id: podcast.id}))
     assert changeset.valid?
   end
 

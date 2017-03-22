@@ -20,6 +20,7 @@ defmodule Pan.Like do
     struct
     |> cast(params, [:user_id, :persona_id, :enjoyer_id, :podcast_id, :episode_id,
                      :chapter_id, :category_id])
+    |> validate_required([:enjoyer_id])
   end
 
 
