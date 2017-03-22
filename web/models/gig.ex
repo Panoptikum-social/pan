@@ -16,7 +16,8 @@ defmodule Pan.Gig do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:publishing_date, :role, :from_in_s, :until_in_s, :comment])
+    |> cast(params, [:publishing_date, :role, :from_in_s, :until_in_s, :comment,
+                     :episode_id, :persona_id])
     |> validate_required([:publishing_date, :role])
   end
 end

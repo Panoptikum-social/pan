@@ -71,6 +71,16 @@ defmodule Pan.TestHelpers do
     |> Repo.insert!()
   end
 
+  def insert_episode(attrs \\ %{}) do
+    changes = Map.merge(%{title: "Episode Title",
+                          link: "https://panoptikum.io",
+                          publishing_date: ~N[2010-04-17 12:13:14]}, attrs)
+
+    %Pan.Episode{}
+    |> Pan.Episode.changeset(changes)
+    |> Repo.insert!()
+  end
+
 
   def insert_persona(attrs \\ %{}) do
     changes = Map.merge(%{pid: "persona pid",

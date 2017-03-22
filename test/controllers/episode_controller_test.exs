@@ -3,17 +3,30 @@ defmodule Pan.EpisodeControllerTest do
 
   setup do
     admin = insert_admin_user()
+    podcast = insert_podcast()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn}
+    {:ok, conn: conn, podcast_id: podcast.id}
   end
 
   alias Pan.Episode
-  @valid_attrs %{author: "some content", deep_link: "some content", description: "some content", duration: "some content", guid: "some content", link: "some content", payment_link_title: "some content", payment_link_url: "some content", publishing_date: "2010-04-17 14:00:00", shownotes: "some content", subtitle: "some content", summary: "some content", title: "some content"}
+  @valid_attrs %{deep_link: "some content",
+                 description: "some content",
+                 duration: "some content",
+                 guid: "some content",
+                 link: "some content",
+                 payment_link_title: "some content",
+                 payment_link_url: "some content",
+                 publishing_date: ~N[2010-04-17 12:13:14],
+                 shownotes: "some content",
+                 subtitle: "some content",
+                 summary: "some content",
+                 title: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, episode_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing episodes"
+    assert html_response(conn, 200) =~ "Listing"
+    assert html_response(conn, 200) =~ "episodes"
   end
 
   test "renders form for new resources", %{conn: conn} do
@@ -21,8 +34,9 @@ defmodule Pan.EpisodeControllerTest do
     assert html_response(conn, 200) =~ "New episode"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, episode_path(conn, :create), episode: @valid_attrs
+  test "creates resource and redirects when data is valid", %{conn: conn,
+                                                              podcast_id: podcast_id} do
+    conn = post conn, episode_path(conn, :create), episode: Map.merge(@valid_attrs, %{podcast_id: podcast_id})
     assert redirected_to(conn) == episode_path(conn, :index)
     assert Repo.get_by(Episode, @valid_attrs)
   end
@@ -32,8 +46,9 @@ defmodule Pan.EpisodeControllerTest do
     assert html_response(conn, 200) =~ "New episode"
   end
 
-  test "shows chosen resource", %{conn: conn} do
-    episode = Repo.insert! %Episode{}
+  test "shows chosen resource", %{conn: conn,
+                                  podcast_id: podcast_id} do
+    episode = Repo.insert! Map.merge(%Episode{podcast_id: podcast_id}, @valid_attrs)
     conn = get conn, episode_path(conn, :show, episode)
     assert html_response(conn, 200) =~ "Show episode"
   end
