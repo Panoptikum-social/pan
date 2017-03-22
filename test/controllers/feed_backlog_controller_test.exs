@@ -8,12 +8,14 @@ defmodule Pan.FeedBacklogControllerTest do
   end
 
   alias Pan.FeedBacklog
-  @valid_attrs %{feed_generator: "some content", in_progress: true, url: "some content"}
+  @valid_attrs %{feed_generator: "some content",
+                 in_progress: true,
+                 url: "http://panopkikum.io/dir/file.rss"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, feed_backlog_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing backlog feeds"
+    assert html_response(conn, 200) =~ "backlog feeds"
   end
 
   test "renders form for new resources", %{conn: conn} do
@@ -33,7 +35,7 @@ defmodule Pan.FeedBacklogControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    feed_backlog = Repo.insert! %FeedBacklog{}
+    feed_backlog = Repo.insert! Map.merge(%FeedBacklog{}, @valid_attrs)
     conn = get conn, feed_backlog_path(conn, :show, feed_backlog)
     assert html_response(conn, 200) =~ "Show feed backlog"
   end
