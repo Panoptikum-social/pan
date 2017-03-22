@@ -3,12 +3,12 @@ defmodule Pan.OpmlControllerTest do
 
   setup do
     admin = insert_admin_user()
+    user = insert_user()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn}
+    {:ok, conn: conn, user_id: user.id}
   end
 
   alias Pan.Opml
-  @valid_attrs %{content_type: "some content", filename: "some content", path: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -21,10 +21,16 @@ defmodule Pan.OpmlControllerTest do
     assert html_response(conn, 200) =~ "New opml"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, opml_path(conn, :create), opml: @valid_attrs
+  test "creates resource and redirects when data is valid", %{conn: conn, user_id: user_id} do
+    conn = post conn, opml_path(conn, :create), opml: %{file: %Plug.Upload{path: "test/fixtures/opml.xml",
+                                                                           filename: "opml.xml",
+                                                                           content_type: "application/xml"},
+                                                        user_id: user_id}
+
     assert redirected_to(conn) == opml_path(conn, :index)
-    assert Repo.get_by(Opml, @valid_attrs)
+    assert Repo.get_by(Opml, %{filename: "opml.xml",
+                               content_type: "application/xml",
+                               user_id: user_id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -50,11 +56,21 @@ defmodule Pan.OpmlControllerTest do
     assert html_response(conn, 200) =~ "Edit opml"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    opml = Repo.insert! %Opml{}
-    conn = put conn, opml_path(conn, :update, opml), opml: @valid_attrs
+  test "updates chosen resource and redirects when data is valid", %{conn: conn,
+                                                                     user_id: user_id} do
+    opml = Repo.insert! %Opml{path: "test/fixtures/opml.xml",
+                              filename: "opml.xml",
+                              content_type: "application/xml",
+                              user_id: user_id}
+    conn = put conn, opml_path(conn, :update, opml), opml: %{file: %Plug.Upload{path: "test/fixtures/opml.xml",
+                                                                                filename: "opml.xml",
+                                                                                content_type: "application/xml"},
+                                                             user_id: user_id}
+
     assert redirected_to(conn) == opml_path(conn, :show, opml)
-    assert Repo.get_by(Opml, @valid_attrs)
+    assert Repo.get_by(Opml, %{filename: "opml.xml",
+                               content_type: "application/xml",
+                               user_id: user_id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
@@ -63,8 +79,11 @@ defmodule Pan.OpmlControllerTest do
     assert html_response(conn, 200) =~ "Edit opml"
   end
 
-  test "deletes chosen resource", %{conn: conn} do
-    opml = Repo.insert! %Opml{}
+  test "deletes chosen resource", %{conn: conn, user_id: user_id} do
+    opml = Repo.insert! %Opml{path: "test/fixtures/opml.xml",
+                              filename: "opml.xml",
+                              content_type: "application/xml",
+                              user_id: user_id}
     conn = delete conn, opml_path(conn, :delete, opml)
     assert redirected_to(conn) == opml_path(conn, :index)
     refute Repo.get(Opml, opml.id)

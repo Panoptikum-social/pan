@@ -21,21 +21,28 @@ defmodule Pan.OpmlController do
 
 
   def create(conn, %{"opml" => opml_params}) do
-    user = conn.assigns.current_user
     destination_path =
       if upload = opml_params["file"] do
-        File.mkdir_p("/var/phoenix/pan-uploads/opml/#{user.id}")
-        path = "/var/phoenix/pan-uploads/opml/#{user.id}/#{upload.filename}"
+        File.mkdir_p("/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}")
+        path = "/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}/#{upload.filename}"
         File.cp(upload.path, path)
         path
       else
         ""
       end
 
-    changeset = Opml.changeset(%Opml{content_type: upload.content_type,
-                                     filename: upload.filename,
-                                     path: destination_path,
-                                     user_id: user.id})
+    changeset =
+      if upload do
+        Opml.changeset(%Opml{content_type: upload.content_type,
+                             filename: upload.filename,
+                             path: destination_path,
+                             user_id: opml_params["user_id"]})
+      else
+        Opml.changeset(%Opml{content_type: nil,
+                             filename: nil,
+                             path: destination_path,
+                             user_id: opml_params["user_id"]})
+      end
 
     case Repo.insert(changeset) do
       {:ok, _opml} ->
