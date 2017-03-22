@@ -4,7 +4,7 @@ defmodule Pan.ConnCase do
   tests that require setting up a connection.
 
   Such tests rely on `Phoenix.ConnTest` and also
-  imports other functionality to make it easier
+  import other functionality to make it easier
   to build and query models.
 
   Finally, if the test case interacts with the database,
@@ -23,9 +23,10 @@ defmodule Pan.ConnCase do
       alias Pan.Repo
       import Ecto
       import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
+      import Ecto.Query
 
       import Pan.Router.Helpers
+      import Pan.TestHelpers
 
       # The default endpoint for testing
       @endpoint Pan.Endpoint
@@ -33,12 +34,12 @@ defmodule Pan.ConnCase do
   end
 
   setup tags do
-   :ok = Ecto.Adapters.SQL.Sandbox.checkout(Pan.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Pan.Repo)
 
-   unless tags[:async] do
-     Ecto.Adapters.SQL.Sandbox.mode(Pan.Repo, {:shared, self()})
-   end
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(Pan.Repo, {:shared, self()})
+    end
 
-   {:ok, conn: Phoenix.ConnTest.build_conn()}
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end
