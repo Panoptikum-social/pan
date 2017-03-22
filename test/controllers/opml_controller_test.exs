@@ -1,7 +1,7 @@
-defmodule Pan.OPMLControllerTest do
+defmodule Pan.OpmlControllerTest do
   use Pan.ConnCase
 
-  alias Pan.OPML
+  alias Pan.Opml
   @valid_attrs %{content_type: "some content", filename: "some content", path: "some content"}
   @invalid_attrs %{}
 
@@ -18,7 +18,7 @@ defmodule Pan.OPMLControllerTest do
   test "creates resource and redirects when data is valid", %{conn: conn} do
     conn = post conn, opml_path(conn, :create), opml: @valid_attrs
     assert redirected_to(conn) == opml_path(conn, :index)
-    assert Repo.get_by(OPML, @valid_attrs)
+    assert Repo.get_by(Opml, @valid_attrs)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -27,7 +27,7 @@ defmodule Pan.OPMLControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    opml = Repo.insert! %OPML{}
+    opml = Repo.insert! %Opml{}
     conn = get conn, opml_path(conn, :show, opml)
     assert html_response(conn, 200) =~ "Show opml"
   end
@@ -39,28 +39,28 @@ defmodule Pan.OPMLControllerTest do
   end
 
   test "renders form for editing chosen resource", %{conn: conn} do
-    opml = Repo.insert! %OPML{}
+    opml = Repo.insert! %Opml{}
     conn = get conn, opml_path(conn, :edit, opml)
     assert html_response(conn, 200) =~ "Edit opml"
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
-    opml = Repo.insert! %OPML{}
+    opml = Repo.insert! %Opml{}
     conn = put conn, opml_path(conn, :update, opml), opml: @valid_attrs
     assert redirected_to(conn) == opml_path(conn, :show, opml)
-    assert Repo.get_by(OPML, @valid_attrs)
+    assert Repo.get_by(Opml, @valid_attrs)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-    opml = Repo.insert! %OPML{}
+    opml = Repo.insert! %Opml{}
     conn = put conn, opml_path(conn, :update, opml), opml: @invalid_attrs
     assert html_response(conn, 200) =~ "Edit opml"
   end
 
   test "deletes chosen resource", %{conn: conn} do
-    opml = Repo.insert! %OPML{}
+    opml = Repo.insert! %Opml{}
     conn = delete conn, opml_path(conn, :delete, opml)
     assert redirected_to(conn) == opml_path(conn, :index)
-    refute Repo.get(OPML, opml.id)
+    refute Repo.get(Opml, opml.id)
   end
 end
