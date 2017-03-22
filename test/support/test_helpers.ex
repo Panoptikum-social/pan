@@ -18,7 +18,24 @@ defmodule Pan.TestHelpers do
   end
 
 
-  def insert_admin(attrs \\ %{}) do
+  def insert_podcaster(attrs \\ %{}) do
+    changes = Map.merge(%{
+      name: "Jane Podcaster",
+      username: "jpodcaster" ,
+      email: "jane.podcasterdoe@panoptikum.io",
+      password: "supersecret",
+      password_confirmation: "supersecret",
+      admin: false,
+      podcaster: true
+    }, attrs)
+
+    %Pan.User{}
+    |> Pan.User.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
+  def insert_admin_user(attrs \\ %{}) do
     changes = Map.merge(%{
       name: "Jane Admin",
       username: "jadmin" ,
@@ -30,7 +47,7 @@ defmodule Pan.TestHelpers do
     }, attrs)
 
     %Pan.User{}
-    |> Pan.User.registration_changeset(changes)
+    |> Pan.User.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -40,6 +57,28 @@ defmodule Pan.TestHelpers do
 
     %Pan.Category{}
     |> Pan.Category.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
+  def insert_podcast(attrs \\ %{}) do
+    changes = Map.merge(%{title: "Podcast Title",
+                          website: "https://panoptikum.io",
+                          last_build_date: ~N[2010-04-17 12:13:14]}, attrs)
+
+    %Pan.Podcast{}
+    |> Pan.Podcast.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
+  def insert_persona(attrs \\ %{}) do
+    changes = Map.merge(%{pid: "persona pid",
+                          name: "persona name",
+                          uri: "persona uri"}, attrs)
+
+    %Pan.Persona{}
+    |> Pan.Persona.changeset(changes)
     |> Repo.insert!()
   end
 end

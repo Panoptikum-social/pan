@@ -1,6 +1,12 @@
 defmodule Pan.PersonaControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Persona
   @valid_attrs %{description: "some content", email: "some content", image_title: "some content", image_url: "some content", name: "some content", pid: "some content", uri: "some content"}
   @invalid_attrs %{}

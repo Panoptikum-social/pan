@@ -1,6 +1,12 @@
 defmodule Pan.GigControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Gig
   @valid_attrs %{comment: "some content", from_in_s: 42, publishing_date: %{day: 17, hour: 14, min: 0, month: 4, sec: 0, year: 2010}, role: "some content", until_in_s: 42}
   @invalid_attrs %{}

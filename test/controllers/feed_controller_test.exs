@@ -1,6 +1,12 @@
 defmodule Pan.FeedControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Feed
   @valid_attrs %{feed_generator: "some content", first_page_url: "some content", hub_link_url: "some content", last_page_url: "some content", next_page_url: "some content", prev_page_url: "some content", self_link_title: "some content", self_link_url: "some content"}
   @invalid_attrs %{}

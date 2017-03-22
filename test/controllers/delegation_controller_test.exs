@@ -1,8 +1,17 @@
 defmodule Pan.DelegationControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    persona = insert_persona()
+    delegate = insert_persona(%{pid:  "delegate pid",
+                                name: "delegate name",
+                                uri:  "delegate uri"})
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn, persona_id: persona.id, delegate_id: delegate.id}
+  end
+
   alias Pan.Delegation
-  @valid_attrs %{}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -15,10 +24,14 @@ defmodule Pan.DelegationControllerTest do
     assert html_response(conn, 200) =~ "New delegation"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, delegation_path(conn, :create), delegation: @valid_attrs
+  test "creates resource and redirects when data is valid", %{conn: conn,
+                                                              persona_id: persona_id,
+                                                              delegate_id: delegate_id} do
+    conn = post conn, delegation_path(conn, :create), delegation: %{persona_id: persona_id,
+                                                                    delegate_id: delegate_id}
     assert redirected_to(conn) == delegation_path(conn, :index)
-    assert Repo.get_by(Delegation, @valid_attrs)
+    assert Repo.get_by(Delegation, %{persona_id: persona_id,
+                                     delegate_id: delegate_id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -44,11 +57,15 @@ defmodule Pan.DelegationControllerTest do
     assert html_response(conn, 200) =~ "Edit delegation"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+  test "updates chosen resource and redirects when data is valid", %{conn: conn,
+                                                                     persona_id: persona_id,
+                                                                     delegate_id: delegate_id} do
     delegation = Repo.insert! %Delegation{}
-    conn = put conn, delegation_path(conn, :update, delegation), delegation: @valid_attrs
+    conn = put conn, delegation_path(conn, :update, delegation), delegation: %{persona_id: persona_id,
+                                                                               delegate_id: delegate_id}
     assert redirected_to(conn) == delegation_path(conn, :show, delegation)
-    assert Repo.get_by(Delegation, @valid_attrs)
+    assert Repo.get_by(Delegation, %{persona_id: persona_id,
+                                     delegate_id: delegate_id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

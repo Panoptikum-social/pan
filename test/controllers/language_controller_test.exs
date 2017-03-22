@@ -1,6 +1,12 @@
 defmodule Pan.LanguageControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Language
   @valid_attrs %{name: "some content", shortcode: "some content"}
   @invalid_attrs %{}

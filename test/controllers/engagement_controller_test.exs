@@ -1,6 +1,12 @@
 defmodule Pan.EngagementControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Engagement
   @valid_attrs %{comment: "some content", from: %{day: 17, month: 4, year: 2010}, role: "some content", until: %{day: 17, month: 4, year: 2010}}
   @invalid_attrs %{}

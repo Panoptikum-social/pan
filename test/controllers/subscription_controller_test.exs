@@ -1,8 +1,15 @@
 defmodule Pan.SubscriptionControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    user = insert_user()
+    podcast = insert_podcast()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn, user_id: user.id, podcast_id: podcast.id}
+  end
+
   alias Pan.Subscription
-  @valid_attrs %{}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -15,10 +22,15 @@ defmodule Pan.SubscriptionControllerTest do
     assert html_response(conn, 200) =~ "New subscription"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, subscription_path(conn, :create), subscription: @valid_attrs
+  test "creates resource and redirects when data is valid", %{conn: conn,
+                                                              user_id: user_id,
+                                                              podcast_id: podcast_id} do
+    conn = post conn, subscription_path(conn, :create),
+                      subscription: %{user_id: user_id,
+                                      podcast_id: podcast_id}
     assert redirected_to(conn) == subscription_path(conn, :index)
-    assert Repo.get_by(Subscription, @valid_attrs)
+    assert Repo.get_by(Subscription, %{user_id: user_id,
+                                       podcast_id: podcast_id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -44,11 +56,16 @@ defmodule Pan.SubscriptionControllerTest do
     assert html_response(conn, 200) =~ "Edit subscription"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+  test "updates chosen resource and redirects when data is valid", %{conn: conn,
+                                                                     user_id: user_id,
+                                                                     podcast_id: podcast_id} do
     subscription = Repo.insert! %Subscription{}
-    conn = put conn, subscription_path(conn, :update, subscription), subscription: @valid_attrs
+    conn = put conn, subscription_path(conn, :update, subscription),
+                     subscription: %{user_id: user_id,
+                                     podcast_id: podcast_id}
     assert redirected_to(conn) == subscription_path(conn, :show, subscription)
-    assert Repo.get_by(Subscription, @valid_attrs)
+    assert Repo.get_by(Subscription, %{user_id: user_id,
+                                       podcast_id: podcast_id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

@@ -1,6 +1,12 @@
 defmodule Pan.ChapterControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Chapter
   @valid_attrs %{start: "some content", title: "some content"}
   @invalid_attrs %{}

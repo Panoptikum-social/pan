@@ -1,6 +1,12 @@
 defmodule Pan.OpmlControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Opml
   @valid_attrs %{content_type: "some content", filename: "some content", path: "some content"}
   @invalid_attrs %{}

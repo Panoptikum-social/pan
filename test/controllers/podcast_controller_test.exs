@@ -1,6 +1,12 @@
 defmodule Pan.PodcastControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Podcast
   @valid_attrs %{author: "some content", description: "some content", explicit: true, image_title: "some content", image_url: "some content", last_build_date: "2010-04-17 14:00:00", payment_link_title: "some content", payment_link_url: "some content", summary: "some content", title: "some content", unique_identifier: "7488a646-e31f-11e4-aace-600308960662", website: "some content"}
   @invalid_attrs %{}

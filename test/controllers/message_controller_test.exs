@@ -1,6 +1,12 @@
 defmodule Pan.MessageControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Message
   @valid_attrs %{content: "some content", event: "some content", subtopic: "some content", topic: "some content", type: "some content"}
   @invalid_attrs %{}

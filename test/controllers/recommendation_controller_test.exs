@@ -1,6 +1,12 @@
 defmodule Pan.RecommendationControllerTest do
   use Pan.ConnCase
 
+  setup do
+    admin = insert_admin_user()
+    conn = assign(build_conn(), :current_user, admin)
+    {:ok, conn: conn}
+  end
+
   alias Pan.Recommendation
   @valid_attrs %{comment: "some content"}
   @invalid_attrs %{}
