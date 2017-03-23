@@ -104,11 +104,9 @@ defmodule Pan.Auth do
   end
 
 
-  def authenticate_pro(conn, opts) do
-    authenticate_user(conn, opts)
+  def authenticate_pro(conn, _opts) do
     current_user = conn.assigns.current_user
-
-    if current_user.pro_until != nil &&
+    if current_user && current_user.pro_until != nil &&
        NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
       conn
     else
@@ -120,13 +118,13 @@ defmodule Pan.Auth do
   end
 
 
-  def authenticate_admin(conn, opts) do
-    authenticate_user(conn, opts)
-    if conn.assigns.current_user.admin do
+  def authenticate_admin(conn, _opts) do
+    current_user = conn.assigns.current_user
+    if current_user && current_user.admin do
       conn
     else
       conn
-      |> put_flash(:error, "You must be admin to access this page.")
+      |> put_flash(:error, "You must be logged in to access this page.")
       |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
       |> halt()
     end
