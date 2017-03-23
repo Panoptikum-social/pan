@@ -15,5 +15,6 @@ defmodule Pan.Follow do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:user_id, :persona_id, :follower_id, :podcast_id, :category_id])
+    |> validate_required([:follower_id])
   end
 end
