@@ -53,7 +53,10 @@ defmodule Pan.TestHelpers do
 
 
   def insert_category(attrs \\ %{}) do
-    changes = Map.merge(%{title: "Category Title"}, attrs)
+    changes = Map.merge(%{
+      title: "Category Title",
+      parent_id: nil
+    }, attrs)
 
     %Pan.Category{}
     |> Pan.Category.changeset(changes)

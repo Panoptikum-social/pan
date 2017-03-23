@@ -8,7 +8,13 @@ defmodule Pan.PersonaControllerTest do
   end
 
   alias Pan.Persona
-  @valid_attrs %{description: "some content", email: "some content", image_title: "some content", image_url: "some content", name: "some content", pid: "some content", uri: "some content"}
+  @valid_attrs %{description: "some content",
+                 email: "some content",
+                 image_title: "some content",
+                 image_url: "some content",
+                 name: "some content",
+                 pid: "some content",
+                 uri: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do

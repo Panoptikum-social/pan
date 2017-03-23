@@ -3,10 +3,8 @@ defmodule Pan.GigControllerTest do
 
   setup do
     admin = insert_admin_user()
-    episode = insert_episode()
-    persona = insert_persona()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn, persona_id: persona.id, episode_id: episode.id}
+    {:ok, conn: conn}
   end
 
   alias Pan.Gig
@@ -27,14 +25,17 @@ defmodule Pan.GigControllerTest do
     assert html_response(conn, 200) =~ "New gig"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn,
-                                                              episode_id: episode_id,
-                                                              persona_id: persona_id} do
-    conn = post conn, gig_path(conn, :create), gig: Map.merge(@valid_attrs, %{episode_id: episode_id,
-                                                                              persona_id: persona_id})
+  test "creates resource and redirects when data is valid", %{conn: conn} do
+    podcast = insert_podcast()
+    episode = insert_episode(%{podcast_id: podcast.id})
+    persona = insert_persona()
+
+    conn = post conn, gig_path(conn, :create),
+                      gig: Map.merge(@valid_attrs, %{episode_id: episode.id,
+                                                     persona_id: persona.id})
     assert redirected_to(conn) == gig_path(conn, :index)
-    assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode_id,
-                                                      persona_id: persona_id}))
+    assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode.id,
+                                                      persona_id: persona.id}))
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -60,15 +61,18 @@ defmodule Pan.GigControllerTest do
     assert html_response(conn, 200) =~ "Edit gig"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn,
-                                                                     episode_id: episode_id,
-                                                                     persona_id: persona_id} do
+  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    podcast = insert_podcast()
+    episode = insert_episode(%{podcast_id: podcast.id})
+    persona = insert_persona()
+
     gig = Repo.insert! %Gig{}
-    conn = put conn, gig_path(conn, :update, gig), gig: Map.merge(@valid_attrs, %{episode_id: episode_id,
-                                                                                  persona_id: persona_id})
+    conn = put conn, gig_path(conn, :update, gig),
+                     gig: Map.merge(@valid_attrs, %{episode_id: episode.id,
+                                                    persona_id: persona.id})
     assert redirected_to(conn) == gig_path(conn, :show, gig)
-    assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode_id,
-                                                      persona_id: persona_id}))
+    assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode.id,
+                                                      persona_id: persona.id}))
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

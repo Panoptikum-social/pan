@@ -8,7 +8,6 @@ defmodule Pan.LikeControllerTest do
   end
 
   alias Pan.Like
-  @valid_attrs %{comment: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do
@@ -22,9 +21,15 @@ defmodule Pan.LikeControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, like_path(conn, :create), like: @valid_attrs
+    enjoyer = insert_user()
+    podcast = insert_podcast()
+
+    conn = post conn, like_path(conn, :create),
+                      like: %{enjoyer_id: enjoyer.id,
+                              podcast_id: podcast.id}
     assert redirected_to(conn) == like_path(conn, :index)
-    assert Repo.get_by(Like, @valid_attrs)
+    assert Repo.get_by(Like, %{enjoyer_id: enjoyer.id,
+                               podcast_id: podcast.id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -51,10 +56,16 @@ defmodule Pan.LikeControllerTest do
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    enjoyer = insert_user()
+    podcast = insert_podcast()
+
     like = Repo.insert! %Like{}
-    conn = put conn, like_path(conn, :update, like), like: @valid_attrs
+    conn = put conn, like_path(conn, :update, like),
+                     like: %{enjoyer_id: enjoyer.id,
+                             podcast_id: podcast.id}
     assert redirected_to(conn) == like_path(conn, :show, like)
-    assert Repo.get_by(Like, @valid_attrs)
+    assert Repo.get_by(Like, %{enjoyer_id: enjoyer.id,
+                               podcast_id: podcast.id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

@@ -13,7 +13,7 @@ defmodule Pan.RecommendationControllerTest do
 
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, recommendation_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing recommendations"
+    assert html_response(conn, 200) =~ "Recommendations"
   end
 
   test "renders form for new resources", %{conn: conn} do

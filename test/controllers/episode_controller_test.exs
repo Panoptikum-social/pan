@@ -3,9 +3,8 @@ defmodule Pan.EpisodeControllerTest do
 
   setup do
     admin = insert_admin_user()
-    podcast = insert_podcast()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn, podcast_id: podcast.id}
+    {:ok, conn: conn}
   end
 
   alias Pan.Episode
@@ -34,11 +33,13 @@ defmodule Pan.EpisodeControllerTest do
     assert html_response(conn, 200) =~ "New episode"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn,
-                                                              podcast_id: podcast_id} do
-    conn = post conn, episode_path(conn, :create), episode: Map.merge(@valid_attrs, %{podcast_id: podcast_id})
+  test "creates resource and redirects when data is valid", %{conn: conn} do
+    podcast = insert_podcast()
+
+    conn = post conn, episode_path(conn, :create),
+                      episode: Map.merge(@valid_attrs, %{podcast_id: podcast.id})
     assert redirected_to(conn) == episode_path(conn, :index)
-    assert Repo.get_by(Episode, @valid_attrs)
+    assert Repo.get_by(Episode, Map.merge(@valid_attrs, %{podcast_id: podcast.id}))
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -46,9 +47,13 @@ defmodule Pan.EpisodeControllerTest do
     assert html_response(conn, 200) =~ "New episode"
   end
 
-  test "shows chosen resource", %{conn: conn,
-                                  podcast_id: podcast_id} do
-    episode = Repo.insert! Map.merge(%Episode{podcast_id: podcast_id}, @valid_attrs)
+  test "shows chosen resource", %{conn: conn} do
+    podcast = insert_podcast()
+
+    episode = %Episode{podcast_id: podcast.id}
+              |> Map.merge(@valid_attrs)
+              |> Repo.insert!()
+
     conn = get conn, episode_path(conn, :show, episode)
     assert html_response(conn, 200) =~ "Show episode"
   end
@@ -66,10 +71,13 @@ defmodule Pan.EpisodeControllerTest do
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    podcast = insert_podcast()
+
     episode = Repo.insert! %Episode{}
-    conn = put conn, episode_path(conn, :update, episode), episode: @valid_attrs
+    conn = put conn, episode_path(conn, :update, episode),
+                     episode: Map.merge(@valid_attrs, %{podcast_id: podcast.id})
     assert redirected_to(conn) == episode_path(conn, :show, episode)
-    assert Repo.get_by(Episode, @valid_attrs)
+    assert Repo.get_by(Episode, Map.merge(@valid_attrs, %{podcast_id: podcast.id}))
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

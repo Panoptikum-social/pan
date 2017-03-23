@@ -3,10 +3,8 @@ defmodule Pan.ManifestationControllerTest do
 
   setup do
     admin = insert_admin_user()
-    user = insert_user()
-    persona = insert_persona()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn, user_id: user.id, persona_id: persona.id}
+    {:ok, conn: conn}
   end
 
   alias Pan.Manifestation
@@ -22,14 +20,16 @@ defmodule Pan.ManifestationControllerTest do
     assert html_response(conn, 200) =~ "New manifestation"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn,
-                                                              user_id: user_id,
-                                                              persona_id: persona_id} do
-    conn = post conn, manifestation_path(conn, :create), manifestation: %{user_id: user_id,
-                                                                          persona_id: persona_id}
+  test "creates resource and redirects when data is valid", %{conn: conn} do
+    user = insert_user()
+    persona = insert_persona()
+
+    conn = post conn, manifestation_path(conn, :create),
+                      manifestation: %{user_id: user.id,
+                                       persona_id: persona.id}
     assert redirected_to(conn) == manifestation_path(conn, :index)
-    assert Repo.get_by(Manifestation, %{user_id: user_id,
-                                        persona_id: persona_id})
+    assert Repo.get_by(Manifestation, %{user_id: user.id,
+                                        persona_id: persona.id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -55,15 +55,17 @@ defmodule Pan.ManifestationControllerTest do
     assert html_response(conn, 200) =~ "Edit manifestation"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn,
-                                                                     user_id: user_id,
-                                                                     persona_id: persona_id} do
+  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    user = insert_user()
+    persona = insert_persona()
+
     manifestation = Repo.insert! %Manifestation{}
-    conn = put conn, manifestation_path(conn, :update, manifestation), manifestation: %{user_id: user_id,
-                                                                                        persona_id: persona_id}
+    conn = put conn, manifestation_path(conn, :update, manifestation),
+                     manifestation: %{user_id: user.id,
+                                      persona_id: persona.id}
     assert redirected_to(conn) == manifestation_path(conn, :show, manifestation)
-    assert Repo.get_by(Manifestation, %{user_id: user_id,
-                                        persona_id: persona_id})
+    assert Repo.get_by(Manifestation, %{user_id: user.id,
+                                        persona_id: persona.id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

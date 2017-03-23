@@ -3,10 +3,8 @@ defmodule Pan.SubscriptionControllerTest do
 
   setup do
     admin = insert_admin_user()
-    user = insert_user()
-    podcast = insert_podcast()
     conn = assign(build_conn(), :current_user, admin)
-    {:ok, conn: conn, user_id: user.id, podcast_id: podcast.id}
+    {:ok, conn: conn}
   end
 
   alias Pan.Subscription
@@ -22,15 +20,16 @@ defmodule Pan.SubscriptionControllerTest do
     assert html_response(conn, 200) =~ "New subscription"
   end
 
-  test "creates resource and redirects when data is valid", %{conn: conn,
-                                                              user_id: user_id,
-                                                              podcast_id: podcast_id} do
+  test "creates resource and redirects when data is valid", %{conn: conn} do
+    user = insert_user()
+    podcast = insert_podcast()
+
     conn = post conn, subscription_path(conn, :create),
-                      subscription: %{user_id: user_id,
-                                      podcast_id: podcast_id}
+                      subscription: %{user_id: user.id,
+                                      podcast_id: podcast.id}
     assert redirected_to(conn) == subscription_path(conn, :index)
-    assert Repo.get_by(Subscription, %{user_id: user_id,
-                                       podcast_id: podcast_id})
+    assert Repo.get_by(Subscription, %{user_id: user.id,
+                                       podcast_id: podcast.id})
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
@@ -56,16 +55,17 @@ defmodule Pan.SubscriptionControllerTest do
     assert html_response(conn, 200) =~ "Edit subscription"
   end
 
-  test "updates chosen resource and redirects when data is valid", %{conn: conn,
-                                                                     user_id: user_id,
-                                                                     podcast_id: podcast_id} do
+  test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    user = insert_user()
+    podcast = insert_podcast()
+
     subscription = Repo.insert! %Subscription{}
     conn = put conn, subscription_path(conn, :update, subscription),
-                     subscription: %{user_id: user_id,
-                                     podcast_id: podcast_id}
+                     subscription: %{user_id: user.id,
+                                     podcast_id: podcast.id}
     assert redirected_to(conn) == subscription_path(conn, :show, subscription)
-    assert Repo.get_by(Subscription, %{user_id: user_id,
-                                       podcast_id: podcast_id})
+    assert Repo.get_by(Subscription, %{user_id: user.id,
+                                       podcast_id: podcast.id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do

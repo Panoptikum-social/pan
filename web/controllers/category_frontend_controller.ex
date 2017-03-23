@@ -13,7 +13,6 @@ defmodule Pan.CategoryFrontendController do
                    |> Repo.preload(children: from(cat in Category, order_by: cat.title))
                  end)
 
-
     popular_podcasts = ConCache.get_or_store(:slow_cache, :popular_podcasts, fn() ->
                          (from s in Subscription, join: p in assoc(s, :podcast),
                                                   group_by: p.id,

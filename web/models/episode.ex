@@ -35,8 +35,8 @@ defmodule Pan.Episode do
     struct
     |> cast(params, [:title, :link, :publishing_date, :description, :shownotes, :duration,
                      :payment_link_title, :payment_link_url, :deep_link, :subtitle, :summary,
-                     :guid])
-    |> validate_required([:title, :link, :publishing_date])
+                     :guid, :podcast_id])
+    |> validate_required([:title, :link, :publishing_date, :podcast_id])
     |> unique_constraint(:guid)
   end
 

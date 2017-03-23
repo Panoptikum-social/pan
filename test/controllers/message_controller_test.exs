@@ -8,7 +8,11 @@ defmodule Pan.MessageControllerTest do
   end
 
   alias Pan.Message
-  @valid_attrs %{content: "some content", event: "some content", subtopic: "some content", topic: "some content", type: "some content"}
+  @valid_attrs %{content: "some content",
+                 event: "some content",
+                 subtopic: "some content",
+                 topic: "some content",
+                 type: "some content"}
   @invalid_attrs %{}
 
   test "lists all entries on index", %{conn: conn} do

@@ -22,7 +22,12 @@ defmodule Pan.FollowControllerTest do
   end
 
   test "creates resource and redirects when data is valid", %{conn: conn} do
-    conn = post conn, follow_path(conn, :create), follow: @valid_attrs
+    follower = insert_user()
+    podcast = insert_podcast()
+
+    conn = post conn, follow_path(conn, :create),
+                      follow: %{follower_id: follower.id,
+                                podcast_id: podcast.id}
     assert redirected_to(conn) == follow_path(conn, :index)
     assert Repo.get_by(Follow, @valid_attrs)
   end
@@ -51,10 +56,16 @@ defmodule Pan.FollowControllerTest do
   end
 
   test "updates chosen resource and redirects when data is valid", %{conn: conn} do
+    follower = insert_user()
+    podcast = insert_podcast()
+
     follow = Repo.insert! %Follow{}
-    conn = put conn, follow_path(conn, :update, follow), follow: @valid_attrs
+    conn = put conn, follow_path(conn, :update, follow),
+                     follow: %{follower_id: follower.id,
+                               podcast_id: podcast.id}
     assert redirected_to(conn) == follow_path(conn, :show, follow)
-    assert Repo.get_by(Follow, @valid_attrs)
+    assert Repo.get_by(Follow, %{follower_id: follower.id,
+                                 podcast_id: podcast.id})
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
