@@ -48,7 +48,7 @@
       serverSide: false,
       data: [{ id: 0,
                title: "Select category first, then select podcasts to remove." +
-                      " <kbd>CTRL</kbd> + Click to select several!"],
+                      " <kbd>CTRL</kbd> + Click to select several!" }],
       columns: [
         { data: 'id', title: "ID"},
         { data: 'title', title: "Title of podcasts assigned" }
