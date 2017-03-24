@@ -6,7 +6,8 @@ defmodule Pan.FeedBacklogController do
   alias Pan.Subscription
 
   def index(conn, _params) do
-    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at])
+    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
+                                           limit: 50)
                     |> Repo.all
     feedcount = Repo.aggregate(FeedBacklog, :count, :id)
 
