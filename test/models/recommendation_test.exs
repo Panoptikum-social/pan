@@ -3,7 +3,7 @@ defmodule Pan.RecommendationTest do
 
   alias Pan.Recommendation
 
-  @valid_attrs %{comment: "some content"}
+  @valid_attrs %{comment: "Recommendation comment"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

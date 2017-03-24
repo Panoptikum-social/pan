@@ -3,7 +3,7 @@ defmodule Pan.LikeTest do
 
   alias Pan.Like
 
-  @valid_attrs %{comment: "some content"}
+  @valid_attrs %{comment: "Like comment"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

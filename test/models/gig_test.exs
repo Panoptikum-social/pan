@@ -3,10 +3,10 @@ defmodule Pan.GigTest do
 
   alias Pan.Gig
 
-  @valid_attrs %{comment: "some content",
+  @valid_attrs %{comment: "Gig comment",
                  from_in_s: 42,
                  publishing_date: "2010-04-17 14:00:00",
-                 role: "some content",
+                 role: "contributor",
                  until_in_s: 42}
   @invalid_attrs %{}
 

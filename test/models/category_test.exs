@@ -3,7 +3,7 @@ defmodule Pan.CategoryTest do
 
   alias Pan.Category
 
-  @valid_attrs %{title: "some content"}
+  @valid_attrs %{title: "Category title"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

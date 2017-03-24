@@ -3,7 +3,8 @@ defmodule Pan.ChapterTest do
 
   alias Pan.Chapter
 
-  @valid_attrs %{start: "some content", title: "some content"}
+  @valid_attrs %{start: "01:02:03.456",
+                 title: "Chatter title"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

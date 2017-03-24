@@ -3,19 +3,19 @@ defmodule Pan.EpisodeTest do
 
   alias Pan.Episode
 
-  @valid_attrs %{author: "some content",
-                 deep_link: "some content",
-                 description: "some content",
+  @valid_attrs %{author: "Episode author",
+                 deep_link: "https://panoptikum.io/path/episode/deeplink",
+                 description: "Description text",
                  duration: "some content",
-                 guid: "some content",
-                 link: "some content",
-                 payment_link_title: "some content",
-                 payment_link_url: "some content",
+                 guid: "episode-guid-a1b2c3d4",
+                 link: "https://panoptikum.io/path/episode",
+                 payment_link_title: "Episode payment link title",
+                 payment_link_url: "https://panoptikum.io/path/episode/payment",
                  publishing_date: "2010-04-17 14:00:00",
-                 shownotes: "some content",
-                 subtitle: "some content",
-                 summary: "some content",
-                 title: "some content"}
+                 shownotes: "Episode shownotes",
+                 subtitle: "Episode subtitle",
+                 summary: "Episode summary",
+                 title: "Episode title"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

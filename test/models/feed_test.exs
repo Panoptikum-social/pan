@@ -3,14 +3,14 @@ defmodule Pan.FeedTest do
 
   alias Pan.Feed
 
-  @valid_attrs %{feed_generator: "some content",
-                 first_page_url: "some content",
-                 hub_link_url: "some content",
-                 last_page_url: "some content",
-                 next_page_url: "some content",
-                 prev_page_url: "some content",
-                 self_link_title: "some content",
-                 self_link_url: "some content"}
+  @valid_attrs %{feed_generator: "Feed generator",
+                 first_page_url: "https://panoptikum.io/feed/first_page",
+                 hub_link_url: "https://panoptikum.io/feed/hub_link",
+                 last_page_url: "https://panoptikum.io/feed/last_page",
+                 next_page_url: "https://panoptikum.io/feed/next_page",
+                 prev_page_url: "https://panoptikum.io/feed/prev_page",
+                 self_link_title: "Feed self link title",
+                 self_link_url: "https://panoptikum.io/feed/self_link"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

@@ -3,7 +3,9 @@ defmodule Pan.FeedBacklogTest do
 
   alias Pan.FeedBacklog
 
-  @valid_attrs %{feed_generator: "some content", in_progress: true, url: "some content"}
+  @valid_attrs %{feed_generator: "Feed generator",
+                 in_progress: true,
+                 url: "https://panoptikum.io/feed_backlog"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

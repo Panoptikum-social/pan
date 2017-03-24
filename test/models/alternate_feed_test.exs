@@ -3,7 +3,8 @@ defmodule Pan.AlternateFeedTest do
 
   alias Pan.AlternateFeed
 
-  @valid_attrs %{title: "some content", url: "some content"}
+  @valid_attrs %{title: "Alternate feed title",
+                 url: "http://panoptikum.io/alternate_feed"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do
