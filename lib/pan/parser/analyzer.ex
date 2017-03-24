@@ -43,7 +43,7 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "image", [:height,      _, _]), do: map
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
-    if map[:image_url], do: map,
+    if map[:image_url], dopodcast:type: map,
                         else: %{image_url: attr[:href],
                                 image_title: attr[:href]}
   end
@@ -144,7 +144,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
-    :"geo:long", :"rawvoice:isHD", :pubDateShort
+    :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type"
   ], do: %{}
 
 
