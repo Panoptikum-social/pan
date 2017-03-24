@@ -47,7 +47,7 @@
     $('#assigned_podcasts').DataTable({
       serverSide: false,
       data: [{ id: 0,
-               title: "Select category first, then select podcasts to remove." <>
+               title: "Select category first, then select podcasts to remove." +
                       " <kbd>CTRL</kbd> + Click to select several!"],
       columns: [
         { data: 'id', title: "ID"},
@@ -59,7 +59,7 @@
     $('#unassigned_podcasts').DataTable({
       serverSide: false,
       data: [{ id: 0,
-               title: "Select category first, then select podcasts to add." <>
+               title: "Select category first, then select podcasts to add." +
                       " <kbd>CTRL</kbd> + Click to select several!" }],
       columns: [
         { data: 'title', title: "Title of unassigned podcasts" },
