@@ -40,21 +40,25 @@ defmodule Pan.Feed do
 
 
   def best_matching(url) do
-    # IO.puts("==========" <> url <> "========")
     cond do
-      feed = Repo.all(from f in Feed, where: ilike(f.self_link_url, ^"%#{url}%"),
-                                       limit: 1)
-             |> List.first ->
+      feed = from(f in Feed, where: ilike(f.self_link_url, ^"%#{url}%"),
+                             limit: 1)
+             |> Repo.all()
+             |> List.first() ->
         feed
 
-      alternate_feed = Repo.all(from a in AlternateFeed, where: ilike(a.url, ^"%#{url}%"),
-                                                         preload: :feed,
-                                                         limit: 1)
-                       |> List.first ->
+      alternate_feed = from(a in AlternateFeed, where: ilike(a.url, ^"%#{url}%"),
+                                                preload: :feed,
+                                                limit: 1)
+                       |> Repo.all()
+                       |> List.first() ->
         alternate_feed.feed
 
-      podcast = Repo.one(from p in Podcast, where: ilike(p.website, ^"%#{url}%"),
-                                            preload: :feeds) ->
+      podcast = from(p in Podcast, where: ilike(p.website, ^"%#{url}%"),
+                                   preload: :feeds,
+                                   limit: 1)
+                |> Repo.all()
+                |> List.first() ->
         List.first(podcast.feeds)
 
       String.contains?(url, "/") ->
