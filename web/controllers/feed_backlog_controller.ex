@@ -81,13 +81,17 @@ defmodule Pan.FeedBacklogController do
 
   def import(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
-    podcast_id = Pan.Parser.RssFeed.initial_import(feed_backlog.url)
 
-    podcast = Repo.get!(Pan.Podcast, podcast_id)
-
-    conn
-    |> put_flash(:info, "Feed imported successfully.")
-    |> redirect(to: podcast_frontend_path(conn, :show, podcast))
+    case Pan.Parser.RssFeed.initial_import(feed_backlog.url) do
+      {:ok, podcast_id} ->
+        conn
+        |> put_flash(:info, "Feed imported successfully.")
+        |> redirect(to: podcast_frontend_path(conn, :show, podcast_id))
+      {:error, "Connection timeout"} ->
+        conn
+        |> put_flash(:error, "Connection timeout.")
+        |> redirect(to: feed_backlog_path(conn, :index))
+    end
   end
 
 

@@ -144,7 +144,8 @@ defmodule Pan.Parser.Analyzer do
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
-    :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description"
+    :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description",
+    :"podfm:nodownload", :"podfm:downloadCount"
   ], do: %{}
 
 

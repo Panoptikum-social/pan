@@ -20,7 +20,10 @@ defmodule Pan.Parser.RssFeed do
           initial_import(next_page_url, pagecount)
         end
 
-        podcast_id
+        {:ok, podcast_id}
+
+      {:error, "Connection timeout"} ->
+        {:error, "Connection timeout"}
 
       {:redirect, redirect_target} ->
         initial_import(redirect_target, pagecount)
@@ -34,9 +37,9 @@ defmodule Pan.Parser.RssFeed do
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-
        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                  |> String.trim()
                   |> Quinn.parse()
 
         map = %{feed: %{self_link_title: "Feed", self_link_url: url},
@@ -44,8 +47,10 @@ defmodule Pan.Parser.RssFeed do
               |> Iterator.parse(feed_map)
         {:ok, map}
 
-      {:redirect, redirect_target} -> {:redirect, redirect_target}
-      {:error, reason} -> {:error, reason}
+      {:redirect, redirect_target} ->
+        {:redirect, redirect_target}
+      {:error, reason} ->
+        {:error, reason}
     end
   end
 

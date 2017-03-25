@@ -12,6 +12,15 @@ defmodule Pan.Parser.Persona do
                                                persona_map[:email] ||
                                                persona_map[:name]))
 
+    persona_map = Map.put_new(persona_map, :name, persona_map[:email]
+                                                  |> String.split("@")
+                                                  |> List.first()
+                                                  |> String.split(".")
+                                                  |> Stream.map(&String.capitalize/1)
+                                                  |> Enum.join(" "))
+
+    persona_map = Map.put_new(persona_map, :uri,  persona_map[:email])
+
     case Repo.get_by(Pan.Persona, pid:   persona_map[:pid]) ||
          Repo.get_by(Pan.Persona, pid:   persona_map[:uri] || "") ||
          Repo.get_by(Pan.Persona, uri:   persona_map[:uri] || "") ||
