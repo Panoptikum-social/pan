@@ -1,4 +1,6 @@
 <p class="pull-right">
+  <%= link "Import all", to: feed_backlog_path(@conn, :import_all),
+                         class: "btn btn-danger" %>
   <%= link "Create Subscriptions", to: feed_backlog_path(@conn, :subscribe),
                                    class: "btn btn-info" %>
 </p>

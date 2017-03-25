@@ -4,6 +4,7 @@ defmodule Pan.FeedBacklogController do
   alias Pan.AlternateFeed
   alias Pan.FeedBacklog
   alias Pan.Subscription
+  require Logger
 
   def index(conn, _params) do
     backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
@@ -92,6 +93,24 @@ defmodule Pan.FeedBacklogController do
         |> put_flash(:error, "Connection timeout.")
         |> redirect(to: feed_backlog_path(conn, :index))
     end
+  end
+
+
+  def import_all(conn, _params) do
+    for backlog_feed <- Repo.all(FeedBacklog) do
+      try do
+        Pan.Parser.RssFeed.initial_import(backlog_feed.url)
+      rescue
+        CaseClauseError ->
+          Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="
+        RuntimeError ->
+          Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="
+      end
+    end
+
+    conn
+      |> put_flash(:info, "Feeds imported successfully.")
+      |> redirect(to: feed_backlog_path(conn, :index))
   end
 
 

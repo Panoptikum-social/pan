@@ -152,6 +152,7 @@ defmodule Pan.Router do
     resources "/categories", CategoryController
 
     get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
+    get "/backlog_feeds/import_all", FeedBacklogController, :import_all
     get "/backlog_feeds/:id/import", FeedBacklogController, :import
     resources "/backlog_feeds", FeedBacklogController
 
