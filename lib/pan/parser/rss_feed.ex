@@ -12,7 +12,7 @@ defmodule Pan.Parser.RssFeed do
   def initial_import(url, pagecount \\ 1) do
     case import_to_map(url) do
       {:ok, map} ->
-        podcast_id = Persistor.initial_import(map)
+        podcast_id = Persistor.initial_import(map, url)
         next_page_url = map[:feed][:next_page_url]
         pagecount = pagecount + 1
 

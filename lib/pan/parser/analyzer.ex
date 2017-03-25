@@ -159,6 +159,7 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one owner
   def call(map, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(map, "owner", value)
+  def call(map, "tag", [:"itunes:email",    _, value]), do: Iterator.parse(map, "owner", value)
   def call(_, "owner", [:"itunes:name",     _, []]), do: %{}
   def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: value}
   def call(_, "owner", [:"itunes:email",    _, []]), do: %{}

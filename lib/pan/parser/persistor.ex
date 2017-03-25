@@ -3,7 +3,7 @@ defmodule Pan.Parser.Persistor do
   alias Pan.Repo
 
 
-  def initial_import(map) do
+  def initial_import(map, url \\ nil) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
                                  :languages, :categories, :owner, :categories,
                                  :author])
@@ -17,6 +17,12 @@ defmodule Pan.Parser.Persistor do
 
     Pan.Parser.Category.persist_many(map[:categories], podcast)
     Pan.Parser.AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
+
+    if url && feed.self_link_url != url do
+      %{String.to_atom(UUID.uuid1()) => %{title: url, url: url}}
+      |> Pan.Parser.AlternateFeed.get_or_insert_many(feed.id)
+    end
+
     Pan.Parser.Language.persist_many(map[:languages], podcast)
 
     if map[:owner] do
