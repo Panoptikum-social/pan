@@ -86,6 +86,7 @@ defmodule Pan.Parser.Analyzer do
       "hub"       -> %{feed: %{hub_link_url: attr[:href]}}
       "search"    -> %{}
       "related"   -> %{}
+      "via"       -> %{}
       "alternate" ->
         uuid = String.to_atom(UUID.uuid1())
         alternate_feed_map = %{uuid => %{title: attr[:title], url: attr[:href]}}
@@ -125,7 +126,8 @@ defmodule Pan.Parser.Analyzer do
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
-    :"sc:totalAvailable", :skipHours
+    :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
+    :"manageEditor"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -146,7 +148,8 @@ defmodule Pan.Parser.Analyzer do
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description",
-    :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed"
+    :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
+    :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm"
   ], do: %{}
 
 
@@ -193,25 +196,34 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
   def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
-  def call(_, "episode", [:title,             _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title,             _, [value]]), do: %{title:       String.slice(value, 0, 255)}
-  def call(_, "episode", [:link,              _, []]), do: %{}
-  def call(_, "episode", [:link,              _, [value]]), do: %{link:        String.slice(value, 0, 255)}
-  def call(_, "episode", [:guid,              _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
-  def call(_, "episode", [:guid,              _, _]), do: %{}
-  def call(_, "episode", [:description,       _, []]), do: %{}
-  def call(_, "episode", [:description,       _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
+  def call(_, "episode", [:title, _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
+  def call(_, "episode", [:"itunes:title", _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+
+  def call(_, "episode", [:link, _, []]), do: %{}
+  def call(_, "episode", [:link, _, [value]]), do: %{link:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:guid, _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:guid, _, _]), do: %{}
+
+  def call(_, "episode", [:description, _, []]), do: %{}
+  def call(_, "episode", [:description, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:description", _, []]), do: %{}
   def call(_, "episode", [:"itunes:description", _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
+
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
-  def call(_, "episode", [:"itunes:author",   _, []]), do: %{}
-  def call(_, "episode", [:"itunes:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
-  def call(_, "episode", [:"googleplay:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
+
+  def call(_, "episode", [:"itunes:author", _, []]), do: %{}
+  def call(_, "episode", [:"itunes:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"googleplay:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
+
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
   def call(_, "episode", [:duration, _, []]), do: %{}
