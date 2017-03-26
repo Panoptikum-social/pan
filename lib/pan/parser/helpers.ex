@@ -34,6 +34,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{RFC1123} {Zname}")
 
     if datetime do
@@ -73,8 +74,10 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
     |> String.replace("October",   "Oct")
-    |> String.replace(" Okt ",   " Oct ")
-    |> String.replace(" Dez ",   " Dec ")
+    |> String.replace(" Okt ",     " Oct ")
+    |> String.replace(" Dez ",     " Dec ")
+    |> String.replace(" Febr ",    " Feb ")
+    |> String.replace(" Noc ",    " Nov ")
     |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
   end

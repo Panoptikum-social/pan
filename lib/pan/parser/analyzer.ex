@@ -124,7 +124,8 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
-    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a
+    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
+    :"sc:totalAvailable", :skipHours
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -145,7 +146,7 @@ defmodule Pan.Parser.Analyzer do
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description",
-    :"podfm:nodownload", :"podfm:downloadCount"
+    :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed"
   ], do: %{}
 
 
@@ -200,6 +201,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:guid,              _, _]), do: %{}
   def call(_, "episode", [:description,       _, []]), do: %{}
   def call(_, "episode", [:description,       _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"itunes:description", _, []]), do: %{}
+  def call(_, "episode", [:"itunes:description", _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
