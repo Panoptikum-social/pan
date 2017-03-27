@@ -149,7 +149,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description",
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
-    :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm",
+    :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword"
   ], do: %{}
 

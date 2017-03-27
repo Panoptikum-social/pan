@@ -115,8 +115,17 @@ defmodule Pan.CategoryController do
     from(l in Like, where: l.category_id == ^from_id)
     |> Repo.update_all(set: [category_id: to_id])
 
-    from(r in "categories_podcasts", where: r.category_id == ^from_id)
+    already_in_to_ids = from(r in "categories_podcasts", where: r.category_id == ^to_id,
+                                                         select: [r.podcast_id])
+                        |> Repo.all()
+
+    from(r in "categories_podcasts", where: r.category_id == ^from_id and
+                                            not r.podcast_id in ^already_in_to_ids)
     |> Repo.update_all(set: [category_id: to_id])
+
+    from(r in "categories_podcasts", where: r.category_id == ^from_id and
+                                            r.podcast_id in ^already_in_to_ids)
+    |> Repo.delete_all()
 
     from(c in Category, where: c.parent_id == ^from_id)
     |> Repo.update_all(set: [parent_id: to_id])
