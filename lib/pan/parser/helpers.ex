@@ -22,6 +22,7 @@ defmodule Pan.Parser.Helpers do
 
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
+                |> String.replace("  ", " ")
                 |> fix_time()
                 |> replace_long_month_names()
                 |> replace_long_week_days
@@ -35,8 +36,13 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{RFC1123} {Zname}")
 
     if datetime do
@@ -77,10 +83,12 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("September", "Sep")
     |> String.replace("October",   "Oct")
     |> String.replace(" Okt ",     " Oct ")
+    |> String.replace(" oct ",     " Oct ")
     |> String.replace(" Dez ",     " Dec ")
     |> String.replace(" Febr ",    " Feb ")
     |> String.replace(" Noc ",    " Nov ")
     |> String.replace(" Set ",    " Sep ")
+    |> String.replace(" Sept ",    " Sep ")
     |> String.replace(" Dic ",    " Dec ")
     |> String.replace(" dec ",    " Dec ")
     |> String.replace("November",  "Nov")
@@ -90,13 +98,15 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_week_days(datetime) do
     datetime
-    |> String.replace("Wedn", "Wed")
-    |> String.replace("Thurs","Thu")
-    |> String.replace("Thur","Thu")
+    |> String.replace("Wedn,", "Wed,")
+    |> String.replace("Thurs,","Thu,")
+    |> String.replace("Thur,","Thu,")
     |> String.replace("Mo,",  "Mon,")
     |> String.replace("mån,", "Mon,")
     |> String.replace("Di,",  "Tue,")
     |> String.replace("Tus,",  "Tue,")
+    |> String.replace("Tues,",  "Tue,")
+    |> String.replace("Weds,",  "Wed,")
     |> String.replace("tor,", "Tue,")
     |> String.replace("Mi,",  "Wed,")
     |> String.replace("Do,",  "Thu,")
@@ -108,7 +118,9 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("ٍ", "")
     |> String.replace("NZDT", "+1300")
     |> String.replace("NZST", "+1200")
+    |> String.replace("AEST", "EST")
     |> String.replace("-0001", "2016")
+    |> String.replace("KST", "+0900")
   end
 
 

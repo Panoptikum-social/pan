@@ -150,7 +150,7 @@ defmodule Pan.Parser.Analyzer do
     :"geo:long", :"rawvoice:isHD", :pubDateShort, :"podcast:type", :"podcast:description",
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm",
-    :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description"
+    :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword"
   ], do: %{}
 
 

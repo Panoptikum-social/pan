@@ -1,4 +1,6 @@
 defmodule Pan.Parser.Download do
+  require Logger
+
   def download(url, option \\ nil) do
     case get(url, option) do
       {:error, %HTTPoison.Error{id: nil, reason: :timeout}} ->
@@ -64,7 +66,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
         IO.inspect get(url)
-        raise "status_code unknown " <> Integer.to_string(code)
+        Logger.error "status_code unknown " <> Integer.to_string(code)
     end
   end
 
