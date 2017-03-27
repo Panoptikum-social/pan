@@ -127,7 +127,7 @@ defmodule Pan.Parser.Analyzer do
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
-    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago"
+    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -214,6 +214,8 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:shownotes, _, []]), do: %{}
+  def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}

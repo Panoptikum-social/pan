@@ -31,18 +31,19 @@ defmodule Pan.Parser.Helpers do
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
     datetime = try_format(feed_date, "{RFC1123}") ||
                try_format(feed_date, "{ISO:Extended}") ||
-               try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}")
 
     if datetime do

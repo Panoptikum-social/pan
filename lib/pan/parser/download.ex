@@ -3,52 +3,16 @@ defmodule Pan.Parser.Download do
 
   def download(url, option \\ nil) do
     case get(url, option) do
-      {:error, %HTTPoison.Error{id: nil, reason: :timeout}} ->
-        {:error, "Timeout"}
-      {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} ->
-        {:error, "Host unreachable"}
-      {:error, %HTTPoison.Error{id: nil, reason: :nxdomain}} ->
-        {:error, "Domain not resolveable"}
-      {:error, %HTTPoison.Error{id: nil, reason: :connect_timeout}} ->
-        {:error, "Connection timeout"}
-      {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}} ->
-        {:error, "Connection refused"}
+      {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
+      {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
+      {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
+      {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
+      {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
+      {:ok, %HTTPoison.Response{status_code: 429}} -> {:error, "429: To many requests"}
 
-
-      {:ok, %HTTPoison.Response{status_code: 500}} ->
-        {:error, "500: internal server error"}
-      {:ok, %HTTPoison.Response{status_code: 502}} ->
-        {:error, "502: bad gateway"}
-      {:ok, %HTTPoison.Response{status_code: 503}} ->
-        {:error, "503: service unavailable"}
-      {:ok, %HTTPoison.Response{status_code: 504}} ->
-        {:error, "504: gateway time-out"}
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "404: feed not found"}
-      {:ok, %HTTPoison.Response{status_code: 429}} ->
-        {:error, "429: To many requests"}
-
-
-      {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
-        if option == "set_tls_version" do
-          {:error, "Does not work with old tls as well!"}
-        else
-          download(url, "set_tls_version")
-        end
-
-      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
-        if option == "set_tls_version" do
-          {:error, "Does not work with old tls as well!"}
-        else
-          download(url, "set_tls_version")
-        end
-
-      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} ->
-        redirect(url, headers)
-      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} ->
-        redirect(url, headers)
-      {:ok, %HTTPoison.Response{status_code: 307, headers: headers}} ->
-        redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 307, headers: headers}} -> redirect(url, headers)
 
       {:ok, %HTTPoison.Response{status_code: 403}} ->
         if option == "no_headers" do
@@ -67,6 +31,28 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: code}} ->
         IO.inspect get(url)
         Logger.error "status_code unknown " <> Integer.to_string(code)
+
+      {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}
+      {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} -> {:error, "Host unreachable"}
+      {:error, %HTTPoison.Error{id: nil, reason: :nxdomain}} -> {:error, "Domain not resolveable"}
+      {:error, %HTTPoison.Error{id: nil, reason: :connect_timeout}} -> {:error, "Connection timeout"}
+      {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}} -> {:error, "Connection refused"}
+
+      {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
+        if option == "set_tls_version" do
+          {:error, "Does not work with old tls as well!"}
+        else
+          download(url, "set_tls_version")
+        end
+
+      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
+        if option == "set_tls_version" do
+          {:error, "Does not work with old tls as well!"}
+        else
+          download(url, "set_tls_version")
+        end
+
+      {:error, reason} -> {:error, reason}
     end
   end
 
