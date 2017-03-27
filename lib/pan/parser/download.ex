@@ -23,6 +23,9 @@ defmodule Pan.Parser.Download do
         {:error, "504: gateway time-out"}
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, "404: feed not found"}
+      {:ok, %HTTPoison.Response{status_code: 429}} ->
+        {:error, "429: To many requests"}
+
 
       {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
         if option == "set_tls_version" do
@@ -61,7 +64,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
         IO.inspect get(url)
-        raise "status_code unknown" <> Integer.to_string(code)
+        raise "status_code unknown " <> Integer.to_string(code)
     end
   end
 

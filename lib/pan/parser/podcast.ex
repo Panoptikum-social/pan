@@ -6,6 +6,7 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Parser.AlternateFeed
   alias Pan.Podcast
   alias Pan.Feed
+  require Logger
 
 
   def get_or_insert(podcast_map) do
@@ -22,6 +23,10 @@ defmodule Pan.Parser.Podcast do
 
   def delta_import(id) do
     feed = Repo.get_by(Feed, podcast_id: id)
+
+    unless feed do
+      Logger.error "Podcast " <> Integer.to_string(id) <> " has no feed"
+    end
 
     case RssFeed.import_to_map(feed.self_link_url) do
       {:ok, map} ->
