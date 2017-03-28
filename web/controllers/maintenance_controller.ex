@@ -2,8 +2,8 @@ defmodule Pan.MaintenanceController do
   use Pan.Web, :controller
   alias Pan.CategoryPodcast
   alias Pan.Subscription
-  alias Pan.Message
   alias Pan.Gig
+  alias Pan.Episode
 
 
   def vienna_beamers(conn, _params) do
@@ -48,15 +48,7 @@ defmodule Pan.MaintenanceController do
                                  user_id: user_id})
     end
 
-    render(conn, "remove_duplicates.html", %{})
-  end
-
-
-  def message_cleanup(conn, _params) do
-    from(m in Message, where: m.event in ["follow", "subscribe"])
-    |> Repo.delete_all()
-
-    render(conn, "message_cleanup.html", %{})
+    render(conn, "done.html", %{})
   end
 
 
@@ -81,6 +73,27 @@ defmodule Pan.MaintenanceController do
       |> Repo.delete_all()
     end
 
-    render(conn, "remove_duplicates.html")
+    render(conn, "done.html", %{})
+  end
+
+
+  def fix_gigs(conn, _params) do
+    episodes = from(e in Episode, where: is_nil(e.publishing_date))
+               |> Repo.all()
+
+    for episode <- episodes do
+      Episode.changeset(episode, %{publishing_date: episode.inserted_at})
+      |> Repo.update()
+    end
+
+    gigs = from(g in Gig, where: is_nil(g.publishing_date))
+           |> Repo.all()
+
+    for gig <- gigs do
+      Gig.changeset(gig, %{publishing_date: gig.inserted_at})
+      |> Repo.update()
+    end
+
+    render(conn, "done.html", %{})
   end
 end

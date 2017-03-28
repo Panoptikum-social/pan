@@ -85,7 +85,7 @@
           <tbody>
             <%= for gig <- @gigs do %>
               <tr>
-                <td><%= format_date(gig.publishing_date) %></td>
+                <td><%= if gig.publishing_date, do: format_date(gig.publishing_date) %></td>
                 <td><%= link [fa_icon("headphones"), " ", truncate(gig.episode.title, 40)],
                             to: episode_frontend_path(@conn, :show, gig.episode),
                             class: "btn btn-primary btn-xs" %></td>
