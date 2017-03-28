@@ -7,29 +7,31 @@ defmodule Pan.SearchFrontendController do
   alias Pan.Persona
 
   def new(conn, params) do
-    sqlfrag = "%" <> params["search"]["searchstring"] <> "%"
+    frag = params["search"]["searchstring"]
+           |> String.split(" ")
+           |> Enum.map(fn(word) -> "%" <> word <> "%" end)
 
     page = if params["page"] != nil, do: String.to_integer(params["page"]), else: 1
 
-    users = Repo.all(from u in User, where: ilike(u.name, ^sqlfrag) or
-                                            ilike(u.username, ^sqlfrag))
+    users = Repo.all(from u in User, where: fragment("(? ILIKE ALL (?))", u.name, ^frag) or
+                                            fragment("(? ILIKE ALL (?))", u.username, ^frag))
 
-    personas = Repo.all(from p in Persona, where: ilike(p.pid, ^sqlfrag) or
-                                                  ilike(p.name, ^sqlfrag) or
-                                                  ilike(p.uri, ^sqlfrag))
+    personas = Repo.all(from p in Persona, where: fragment("(? ILIKE ALL (?))", p.pid, ^frag) or
+                                                  fragment("(? ILIKE ALL (?))", p.name, ^frag) or
+                                                  fragment("(? ILIKE ALL (?))", p.uri, ^frag))
 
-    categories = Repo.all(from c in Category, where: ilike(c.title, ^sqlfrag))
+    categories = Repo.all(from c in Category, where: fragment("(? ILIKE ALL (?))", c.title, ^frag))
 
-    podcasts = from(p in Podcast, where: ilike(p.title,       ^sqlfrag) or
-                                         ilike(p.description, ^sqlfrag) or
-                                         ilike(p.summary,     ^sqlfrag))
+    podcasts = from(p in Podcast, where: fragment("(? ILIKE ALL (?))", p.title, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", p.description, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", p.summary, ^frag))
                |> Repo.paginate(page: page, page_size: 10)
 
-    episodes = from(e in Episode, where: ilike(e.title,       ^sqlfrag) or
-                                         ilike(e.subtitle,    ^sqlfrag) or
-                                         ilike(e.description, ^sqlfrag) or
-                                         ilike(e.summary,     ^sqlfrag) or
-                                         ilike(e.shownotes,   ^sqlfrag),
+    episodes = from(e in Episode, where: fragment("(? ILIKE ALL (?))", e.title, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", e.subtitle, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", e.description, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", e.summary, ^frag) or
+                                         fragment("(? ILIKE ALL (?))", e.shownotes, ^frag),
                                   preload: :podcast)
                |> Repo.paginate(page: page, page_size: 10)
 
