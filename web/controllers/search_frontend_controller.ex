@@ -12,7 +12,7 @@ defmodule Pan.SearchFrontendController do
 
     page = round((from - 1) / size)
 
-    query = search [index: "/panoptikum_" <> Atom.to_string(Mix.env)] do
+    query = search [index: "/panoptikum_" <> Application.get_env(:pan, :environment)] do
       query do
         match "_all", params["search"]["searchstring"]
       end

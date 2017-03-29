@@ -71,7 +71,7 @@ defmodule Pan.Category do
 
   def update_search_index(id) do
     category = Repo.get(Category, id)
-    put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/categories/" <> Integer.to_string(id),
+    put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories/" <> Integer.to_string(id),
         [title: category.title,
          url: category_frontend_path(Pan.Endpoint, :show, id)])
   end

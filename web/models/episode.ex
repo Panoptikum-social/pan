@@ -86,7 +86,7 @@ defmodule Pan.Episode do
     episode = Repo.get(Episode, id)
               |> Repo.preload(:podcast)
     unless episode.podcast.blocked == true do
-      put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/episodes/" <> Integer.to_string(id),
+      put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/episodes/" <> Integer.to_string(id),
           [title:       episode.title,
            subtitle:    episode.subtitle,
            description: episode.description,

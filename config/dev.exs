@@ -41,3 +41,5 @@ config :pan, Pan.Repo,
   database: "pan_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :pan, :environment, "dev"

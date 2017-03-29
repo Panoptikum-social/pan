@@ -206,7 +206,7 @@ defmodule Pan.Podcast do
   def update_search_index(id) do
     podcast = Repo.get(Podcast, id)
     unless podcast.blocked == true do
-      put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/podcasts/" <> Integer.to_string(id),
+      put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(id),
           [title:       podcast.title,
            description: podcast.description,
            summary:     podcast.summary,

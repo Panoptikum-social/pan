@@ -86,7 +86,7 @@ defmodule Pan.Persona do
 
   def update_search_index(id) do
     persona = Repo.get(Persona, id)
-    put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/personas/" <> Integer.to_string(id),
+    put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
         [name: persona.name,
          pid: persona.pid,
          uri: persona.uri,

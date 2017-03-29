@@ -18,4 +18,6 @@ config :phoenix, :serve_endpoints, true
 config :timelier, crontab: [{{[42],:any,:any,:any,:any},
                             {Pan.Podcast,:import_stale_podcasts, []}}]
 
+config :pan, :environment, "prod"
+
 import_config "prod.secret.exs"

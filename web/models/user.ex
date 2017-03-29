@@ -210,7 +210,7 @@ defmodule Pan.User do
 
   def update_search_index(id) do
     user = Repo.get(User, id)
-    put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/users/" <> Integer.to_string(id),
+    put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/users/" <> Integer.to_string(id),
         [name: user.name,
          username: user.username,
          url: user_frontend_path(Pan.Endpoint, :show, id)])
