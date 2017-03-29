@@ -36,9 +36,9 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
@@ -84,6 +84,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
     |> String.replace("October",   "Oct")
+    |> String.replace(" Mär ",     " Mar ")
     |> String.replace(" Okt ",     " Oct ")
     |> String.replace(" oct ",     " Oct ")
     |> String.replace(" Dez ",     " Dec ")
