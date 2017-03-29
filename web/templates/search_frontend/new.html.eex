@@ -1,101 +1,29 @@
 <script>
   var currentState = history.state;
   history.replaceState(currentState, "page 3", "/search?search[searchstring]=<%= @searchstring %>" +
-                                               "&page=<%= @podcasts.page_number %>");
+                                               "&page=<%= @page %>");
 </script>
 
-<div class="row">
-  <div class="col-md-4">
-    <div class="panel panel-primary">
-      <div class="panel-heading"><%= Enum.count(@podcasts.entries) %> Podcasts out of <%= @podcasts.total_entries %></div>
-      <div class="panel-body" style="margin-top: -20px; margin-bottom: -50px;">
-        <%= pagination_links @conn, @podcasts,
-                       path: &search_frontend_path/3,
-                       action: :new,
-                       search: %{searchstring: @searchstring},
-                       view_style: :bootstrap %>
-      </div>
-      <ul class="list-group">
 
-        <%= for podcast <- @podcasts.entries do %>
-          <li class="list-group-item" style="line-height: 150%;">
-            <%= link [fa_icon("podcast"), " ", podcast.title],
-                     to: podcast_frontend_path(@conn, :show, podcast.id),
-                     class: "btn btn-default btn-xs", style: "color: #000" %></br>
-            <%= podcast_hits(podcast, @searchstring) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <div class="panel panel-warning">
-      <div class="panel-heading"><%= Enum.count(@episodes.entries) %> Episodes out of <%= @episodes.total_entries %></div>
-      <div class="panel-body" style="margin-top: -20px; margin-bottom: -50px;">
-        <%= pagination_links @conn, @episodes,
-                       path: &search_frontend_path/3,
-                       action: :new,
-                       search: %{searchstring: @searchstring},
-                       view_style: :bootstrap %>
-      </div>
-      <ul class="list-group">
-
-        <%= for episode <- @episodes.entries do %>
-          <li class="list-group-item" style="line-height: 150%;">
-            <%= link [fa_icon("headphones"), " ", episode.title],
-                     to: episode_frontend_path(@conn, :show, episode.id),
-                     class: "btn btn-default btn-xs", style: "color: #000" %></br>
-            <%= episode_hits(episode, @searchstring) %>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-
-  <div class="col-md-4">
-    <%= render Pan.CategoryFrontendView, "_search.html", categories: @categories,
-                               conn: @conn  %><br/>
-
-    <%= if @personas != [] do %>
-      <div class="panel panel-info">
-        <div class="panel-heading">Personas</div>
-        <div class="panel-body" style="line-height: 200%;"">
-          <%= for {persona, index} <- Enum.with_index(@personas) do %>
-            <%= link [fa_icon("user-o"), " ", persona.name],
-                     to: persona_frontend_path(@conn, :show, persona),
-                     class: "btn btn-xs truncate " <> btn_cycle(index) %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-
-
-    <%= if @users != [] do %>
-      <div class="panel panel-warning">
-        <div class="panel-heading">Users</div>
-        <div class="panel-body" style="line-height: 200%;"">
-          <%= for {user, index} <- Enum.with_index(@users) do %>
-            <%= link [fa_icon("user"), " ", user.name],
-                     to: user_frontend_path(@conn, :show, user),
-                     class: "btn btn-xs truncate " <> btn_cycle(index) %>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-
-
-    <%= if @categories != [] do %>
-      <div class="panel panel-default">
-        <div class="panel-heading">Categories</div>
-        <div class="panel-body" style="line-height: 200%;">
-          <%= for category <- @categories do %>
-            <%= link [fa_icon("folder-o"), " ", category.title],
-                     to: category_frontend_path(@conn, :show, category),
-                     class: "btn btn-primary btn-xs" %> &nbsp;
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  </div>
+<div class="pull-right">
+  <%= render Pan.CategoryFrontendView, "_search.html", conn: @conn %><br/>
 </div>
+
+<%= if @hits.total > 0 do %>
+  Showing <%= @size %> results <%= @from + 1 %> to <%= @from + @size %> out of
+  <%= @hits.total %> (<%= @took / 1000 %> Seconds)
+
+  <div style= "margin-bottom: -30px;">
+    <%= pagination_links(%Scrivener.Page{total_pages: round(@hits.total / @size), page_number: @page},
+                         "search[searchstring]": @searchstring) %>
+  </div>
+
+  <%= for hit <- @hits.hits do %>
+    <%= hit_widget(hit, @searchstring) %>
+  <% end %>
+
+  <%= pagination_links(%Scrivener.Page{total_pages: round(@hits.total / @size), page_number: @page},
+                       "search[searchstring]": @searchstring) %>
+<% else %>
+  Sorry, nothing found.
+<% end %>

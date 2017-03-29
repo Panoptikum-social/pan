@@ -1,0 +1,1 @@
+<h3>Category: <%= link @category.title, to: @category.url %></h3>

@@ -31,6 +31,8 @@ config :pan, Pan.Mailer,
   ssl: false,
   retries: 1
 
+config :tirexs, :uri, "http://127.0.0.1:9200"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

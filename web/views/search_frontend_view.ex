@@ -2,31 +2,34 @@ defmodule Pan.SearchFrontendView do
   use Pan.Web, :view
   import Scrivener.HTML
 
-  def podcast_hits(podcast, searchstring) do
-    if podcast.blocked == true do
-      "This podcast may not be published here."
-      |> raw
-    else
-      hit([Title: podcast.title,
-           Description: podcast.description,
-           Summary: podcast.summary], searchstring, "")
-      |> raw
+  def hit_widget(hit, searchstring) do
+    %{_source: fields, _type: type} = hit
+
+    case type do
+      "episodes"   -> render("episode.html", episode: fields, searchstring: searchstring)
+      "podcasts"   -> render("podcast.html", podcast: fields, searchstring: searchstring)
+      "personas"   -> render("persona.html", persona: fields)
+      "users"      -> render("user.html", user: fields)
+      "categories" -> render("category.html", category: fields)
     end
   end
 
 
-  def episode_hits(episode, searchstring) do
-    if episode.podcast.blocked == true do
-      "This episode may not be published here."
-      |> raw
-    else
-      hit([Title: episode.title,
-           Subtitle: episode.subtitle,
-           Description: episode.description,
-           Summary: episode.summary,
-           Shownotes: episode.shownotes], searchstring, "")
-      |> raw
-    end
+  def podcast_hit(podcast, searchstring) do
+    hit([Title:       podcast[:title],
+         Description: podcast[:description],
+         Summary:     podcast[:summary]], searchstring, "")
+    |> raw()
+  end
+
+
+  def episode_hit(episode, searchstring) do
+    hit([Title:       episode[:title],
+         Subtitle:    episode[:subtitle],
+         Description: episode[:description],
+         Summary:     episode[:summary],
+         Shownotes:   episode[:shownotes]], searchstring, "")
+    |> raw
   end
 
 
@@ -35,7 +38,7 @@ defmodule Pan.SearchFrontendView do
 
     case content != nil and String.match?(content, ~r/#{searchstring}/i) do
       true ->
-        hit(tail, searchstring, output <> "<b>" <> Atom.to_string(type) <> ":</b> " <>
+        hit(tail, searchstring, output <> "<i>" <> Atom.to_string(type) <> ":</i> " <>
                                 highlight(content, searchstring) <> "<br/>")
       false ->
         hit(tail, searchstring, output)
@@ -53,12 +56,12 @@ defmodule Pan.SearchFrontendView do
     left = left
            |> HtmlSanitizeEx.strip_tags
            |> String.reverse
-           |> truncate(50)
+           |> truncate(60)
            |> String.reverse
     right = right
             |> HtmlSanitizeEx.strip_tags
-            |> truncate(50)
+            |> truncate(60)
 
-    left <> "<b><span class='bg-success'>" <> match <> "</span></b>" <> right
+    left <> "<b>" <> match <> "</b>" <> right
   end
 end

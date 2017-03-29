@@ -3,6 +3,7 @@ defmodule Pan.Category do
   alias Pan.Repo
   alias Pan.Like
   alias Pan.Follow
+  alias Pan.Category
 
   schema "categories" do
     field :title, :string
@@ -66,5 +67,12 @@ defmodule Pan.Category do
     from(l in Follow, where: l.category_id == ^id)
     |> Repo.aggregate(:count, :id)
     |> Integer.to_string
+  end
+
+  def update_search_index(id) do
+    category = Repo.get(Category, id)
+    put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/categories/" <> Integer.to_string(id),
+        [title: category.title,
+         url: category_frontend_path(Pan.Endpoint, :show, id)])
   end
 end

@@ -11,6 +11,8 @@ defmodule Pan.Web do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2]
+      import Pan.Router.Helpers
+      import Tirexs.HTTP
     end
   end
 

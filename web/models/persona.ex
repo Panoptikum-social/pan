@@ -3,6 +3,7 @@ defmodule Pan.Persona do
   alias Pan.Like
   alias Pan.Repo
   alias Pan.Follow
+  alias Pan.Persona
 
   schema "personas" do
     field :pid, :string
@@ -81,5 +82,14 @@ defmodule Pan.Persona do
     from(f in Follow, where: f.persona_id == ^id)
     |> Repo.aggregate(:count, :id)
     |> Integer.to_string
+  end
+
+  def update_search_index(id) do
+    persona = Repo.get(Persona, id)
+    put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/personas/" <> Integer.to_string(id),
+        [name: persona.name,
+         pid: persona.pid,
+         uri: persona.uri,
+         url: persona_frontend_path(Pan.Endpoint, :show, id)])
   end
 end

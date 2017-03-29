@@ -20,7 +20,7 @@ defmodule Pan.Mixfile do
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
-                    :con_cache, :timelier, :tzdata]]
+                    :con_cache, :timelier, :tzdata, :tirexs]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -53,6 +53,7 @@ defmodule Pan.Mixfile do
      {:earmark, "~> 1.1.0"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent,
      {:tzdata, "~> 0.5.11"}, # mailing
+     {:tirexs, "~> 0.8"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
     ]
   end

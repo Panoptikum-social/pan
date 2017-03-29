@@ -183,6 +183,7 @@ defmodule Pan.Router do
     resources "/manifestations", ManifestationController
 
     get "/maintenance/fix_gigs", MaintenanceController, :fix_gigs
+    get "/maintenance/reindex", MaintenanceController, :elasticsearch_reindex
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
     get "/maintenance/remove_duplicate_gigs", MaintenanceController, :remove_duplicate_gigs
   end

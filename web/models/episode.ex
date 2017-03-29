@@ -80,4 +80,19 @@ defmodule Pan.Episode do
 
     if gig, do: gig.persona
   end
+
+
+  def update_search_index(id) do
+    episode = Repo.get(Episode, id)
+              |> Repo.preload(:podcast)
+    unless episode.podcast.blocked == true do
+      put("/panoptikum_" <> Atom.to_string(Mix.env) <> "/episodes/" <> Integer.to_string(id),
+          [title:       episode.title,
+           subtitle:    episode.subtitle,
+           description: episode.description,
+           summary:     episode.summary,
+           shownotes:   episode.shownotes,
+           url:         episode_frontend_path(Pan.Endpoint, :show, id)])
+    end
+  end
 end

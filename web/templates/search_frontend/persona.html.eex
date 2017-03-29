@@ -1,0 +1,10 @@
+<h3 style="margin-bottom: 5px">
+  <%= fa_icon("user-o") %> Persona &nbsp;
+  <%= link @persona.name, to: @persona.url,
+                          style: "color:#1a0dab" %>
+</h3>
+
+<p class="small">
+  <%= link "https://panoptikum.io" <> @persona.url, to: @persona.url,
+                                                    style: "color:#006621" %><br/>
+</p>
