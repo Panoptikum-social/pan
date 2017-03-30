@@ -4,26 +4,29 @@
                                                "&page=<%= @page %>");
 </script>
 
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <div class="pull-right">
+      <%= render Pan.CategoryFrontendView, "_search.html", conn: @conn %><br/>
+    </div>
 
-<div class="pull-right">
-  <%= render Pan.CategoryFrontendView, "_search.html", conn: @conn %><br/>
-</div>
+    <%= if @total > 0 do %>
+      Showing <%= @size %> results <%= @from + 1 %> to <%= @from + @size %> out of
+      <%= @total %> (<%= @took / 1000 %> Seconds)
 
-<%= if @hits.total > 0 do %>
-  Showing <%= @size %> results <%= @from + 1 %> to <%= @from + @size %> out of
-  <%= @hits.total %> (<%= @took / 1000 %> Seconds)
+      <div style= "margin-bottom: -30px;">
+        <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size), page_number: @page},
+                             "search[searchstring]": @searchstring) %>
+      </div>
 
-  <div style= "margin-bottom: -30px;">
-    <%= pagination_links(%Scrivener.Page{total_pages: round(@hits.total / @size), page_number: @page},
-                         "search[searchstring]": @searchstring) %>
+      <%= for hit <- @hits.hits do %>
+        <%= hit_widget(hit, @searchstring) %>
+      <% end %>
+
+      <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size), page_number: @page},
+                           "search[searchstring]": @searchstring) %>
+    <% else %>
+      Sorry, nothing found.
+    <% end %>
   </div>
-
-  <%= for hit <- @hits.hits do %>
-    <%= hit_widget(hit, @searchstring) %>
-  <% end %>
-
-  <%= pagination_links(%Scrivener.Page{total_pages: round(@hits.total / @size), page_number: @page},
-                       "search[searchstring]": @searchstring) %>
-<% else %>
-  Sorry, nothing found.
-<% end %>
+</div>

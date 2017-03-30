@@ -9,3 +9,8 @@
                                                     style: "color:#006621" %><br/>
   <%= episode_hit(@episode, @searchstring) %>
 </p>
+
+<%= link [fa_icon("podcast"), " ", truncate(@podcast_title, 50)],
+                 to: @podcast_url,
+                 class: "btn btn-default btn-xs",
+                 style: "color: #000" %>

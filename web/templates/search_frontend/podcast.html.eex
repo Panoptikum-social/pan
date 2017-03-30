@@ -10,3 +10,10 @@
                                                     style: "color:#006621" %><br/>
   <%= podcast_hit(@podcast, @searchstring) %>
 </p>
+
+<%= for {category, index} <- Enum.with_index(@categories) do %>
+  <%= if index > 0, do: "·" %>
+  <%= link [fa_icon("folder-o"), " ", category.title],
+           to: category_frontend_path(Pan.Endpoint, :show, category),
+           class: "btn btn-xs btn-light-gray" %>
+<% end %>

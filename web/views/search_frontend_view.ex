@@ -1,16 +1,35 @@
 defmodule Pan.SearchFrontendView do
   use Pan.Web, :view
+  alias Pan.Repo
+  alias Pan.Episode
+  alias Pan.Podcast
   import Scrivener.HTML
 
   def hit_widget(hit, searchstring) do
     %{_source: fields, _type: type} = hit
 
     case type do
-      "episodes"   -> render("episode.html", episode: fields, searchstring: searchstring)
-      "podcasts"   -> render("podcast.html", podcast: fields, searchstring: searchstring)
-      "personas"   -> render("persona.html", persona: fields)
-      "users"      -> render("user.html", user: fields)
-      "categories" -> render("category.html", category: fields)
+      "episodes"   ->
+        episode = Repo.get!(Episode, hit._id)
+                  |> Repo.preload(:podcast)
+
+        render("episode.html", episode: fields,
+                               searchstring: searchstring,
+                               podcast_title: episode.podcast.title,
+                               podcast_url: podcast_frontend_url(Pan.Endpoint, :show, episode.podcast.id))
+      "podcasts"   ->
+        podcast = Repo.get!(Podcast, hit._id)
+                  |> Repo.preload(:categories)
+
+        render("podcast.html", podcast: fields,
+                               searchstring: searchstring,
+                               categories: podcast.categories)
+      "personas"   ->
+        render("persona.html", persona: fields)
+      "users"      ->
+        render("user.html", user: fields)
+      "categories" ->
+        render("category.html", category: fields)
     end
   end
 
