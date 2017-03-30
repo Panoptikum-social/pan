@@ -7,8 +7,7 @@ defmodule Pan.Search do
   alias Pan.Podcast
 
   alias Pan.Repo
-  import Ecto
-  import Ecto.Query, only: [from: 1, from: 2]
+  import Ecto.Query, only: [from: 2]
 
   def push(hours) do
     hours_ago = Timex.now()
