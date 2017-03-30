@@ -86,10 +86,28 @@ defmodule Pan.Persona do
 
   def update_search_index(id) do
     persona = Repo.get(Persona, id)
-    put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
-        [name: persona.name,
-         pid: persona.pid,
-         uri: persona.uri,
-         url: persona_frontend_path(Pan.Endpoint, :show, id)])
+
+    if persona.redirect_id do
+      delete("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id))
+    else
+      put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
+          [name:             persona.name,
+           pid:              persona.pid,
+           uri:              persona.uri,
+           description:      persona.description,
+           long_description: persona.long_description,
+           image_url:        persona.image_url,
+           image_title:      persona.image_title,
+           url:              persona_frontend_path(Pan.Endpoint, :show, id)])
+
+    end
+  end
+
+  def update_search_all() do
+    persona_ids = Repo.all(from p in Persona, select: p.id)
+
+    for persona_id <- persona_ids do
+      update_search_index(persona_id)
+    end
   end
 end

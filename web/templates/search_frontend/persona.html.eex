@@ -8,3 +8,22 @@
   <%= link "https://panoptikum.io" <> @persona.url, to: @persona.url,
                                                     style: "color:#006621" %><br/>
 </p>
+
+<%= if @persona.image_url && @persona.image_url != "" do %>
+  <div class="row">
+    <div class="col-md-2">
+      <object data="<%= @persona.image_url %>"
+              alt="<%= @persona.image_title%>"
+              type="image/png"
+              width="100"
+              class="thumbnail">
+        <img src="/images/missing-persona.png"
+             alt="missing image"
+             width="100" />
+      </object>
+    </div>
+    <div class="col-md-10">
+      <%= truncate(@persona.long_description, 750) %>
+    </div>
+  </div>
+<% end %>
