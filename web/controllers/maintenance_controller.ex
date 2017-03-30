@@ -4,10 +4,6 @@ defmodule Pan.MaintenanceController do
   alias Pan.Subscription
   alias Pan.Gig
   alias Pan.Episode
-  alias Pan.Category
-  alias Pan.User
-  alias Pan.Persona
-  alias Pan.Podcast
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
@@ -96,41 +92,6 @@ defmodule Pan.MaintenanceController do
       Gig.changeset(gig, %{publishing_date: gig.inserted_at})
       |> Repo.update()
     end
-
-    render(conn, "done.html", %{})
-  end
-
-
-  def elasticsearch_reindex(conn, _params) do
-    from(c in Category, select: c.id)
-    |> Repo.all()
-    |> Enum.map(fn(id) ->
-         Category.update_search_index(id)
-       end)
-
-    from(u in User, select: u.id)
-    |> Repo.all()
-    |> Enum.map(fn(id) ->
-         User.update_search_index(id)
-       end)
-
-    from(p in Persona, select: p.id)
-    |> Repo.all()
-    |> Enum.map(fn(id) ->
-         Persona.update_search_index(id)
-       end)
-
-    from(p in Podcast, select: p.id)
-    |> Repo.all()
-    |> Enum.map(fn(id) ->
-         Podcast.update_search_index(id)
-       end)
-
-    from(e in Episode, select: e.id)
-    |> Repo.all()
-    |> Enum.map(fn(id) ->
-         Episode.update_search_index(id)
-       end)
 
     render(conn, "done.html", %{})
   end
