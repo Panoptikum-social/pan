@@ -18,7 +18,7 @@ config :phoenix, :serve_endpoints, true
 config :timelier, crontab: [{{[42],:any,:any,:any,:any},
                             {Pan.Podcast,:import_stale_podcasts, []}}]
 config :timelier, crontab: [{{[48],:any,:any,:any,:any},
-                            {Pan.Search,:push, [1]}}]
+                            {Pan.Search,:push, [2]}}]
 
 config :pan, :environment, "prod"
 
