@@ -88,7 +88,10 @@ defmodule Pan.Persona do
     persona = Repo.get(Persona, id)
 
     if persona.redirect_id do
-      delete("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id))
+      # delete!("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id))
+      # while timexs is broken we go directly for httpc:
+      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id)
+      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
     else
       put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
           [name:             persona.name,
