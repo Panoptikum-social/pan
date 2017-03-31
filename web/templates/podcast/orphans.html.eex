@@ -1,3 +1,8 @@
+<p class="pull-right">
+  <%= link "Assign all to 'Unsorted'", to: podcast_path(@conn, :assign_to_unsorted),
+                                       class: "btn btn-warning" %>
+</p>
+
 <h2>Listing <%= Enum.count(@unassigned_podcasts) %> podcasts without categories</h2>
 
 <table class="table">

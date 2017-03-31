@@ -1,7 +1,7 @@
 defmodule Pan.PodcastController do
   use Pan.Web, :controller
   alias Pan.Episode
-
+  alias Pan.Category
   alias Pan.Podcast
 
   plug :scrub_params, "podcast" when action in [:create, :update]
@@ -24,6 +24,27 @@ defmodule Pan.PodcastController do
 
     render(conn, "orphans.html", unassigned_podcasts: unassigned_podcasts,
                                  podcasts_without_episodes: podcasts_without_episodes)
+  end
+
+
+  def assign_to_unsorted(conn, _params) do
+    podcast_ids = from(a in "categories_podcasts", group_by: a.podcast_id,
+                                                   select:   a.podcast_id)
+                  |> Repo.all
+
+    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
+              |> Repo.all
+
+    category = Repo.get_by(Category, title: "Unsorted")
+               |> Repo.preload(:podcasts)
+
+    Ecto.Changeset.change(category)
+    |> Ecto.Changeset.put_assoc(:podcasts, category.podcasts ++ podcasts)
+    |> Repo.update!
+
+    conn
+    |> put_flash(:info, "Podcasts assigned successfully.")
+    |> redirect(to: podcast_path(conn, :orphans))
   end
 
 

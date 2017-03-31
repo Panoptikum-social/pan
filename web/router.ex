@@ -133,9 +133,9 @@ defmodule Pan.Router do
     get "/gigs/datatable", GigController, :datatable
     resources "/gigs", GigController
 
-    get "/users/merge", UserController, :merge
+    get  "/users/merge", UserController, :merge
     post "/users/execute_merge", UserController, :execute_merge
-    get "/users/datatable", UserController, :datatable
+    get  "/users/datatable", UserController, :datatable
     resources "/users", UserController
 
     post "/feeds/:id/make_only", FeedController, :make_only
@@ -144,11 +144,11 @@ defmodule Pan.Router do
     post "/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog
     resources "/alternate_feeds", AlternateFeedController
 
-    get "/categories/datatable", CategoryController, :datatable
-    get "/categories/assign_podcasts", CategoryController, :assign_podcasts
+    get  "/categories/datatable", CategoryController, :datatable
+    get  "/categories/assign_podcasts", CategoryController, :assign_podcasts
     post "/categories/execute_assign", CategoryController, :execute_assign
-    get "/categories/merge", CategoryController, :merge
-    get "/categories/execute_merge", CategoryController, :execute_merge
+    get  "/categories/merge", CategoryController, :merge
+    get  "/categories/execute_merge", CategoryController, :execute_merge
     resources "/categories", CategoryController
 
     get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
@@ -172,6 +172,7 @@ defmodule Pan.Router do
     get "/podcasts/retirement", PodcastController, :retirement
     get "/podcasts/stale", PodcastController, :stale
     get "/podcasts/orphans", PodcastController, :orphans
+    get "/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted
     get "/podcasts/factory", PodcastController, :factory
     resources "/podcasts", PodcastController
 
