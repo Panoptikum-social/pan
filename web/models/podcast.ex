@@ -6,6 +6,7 @@ defmodule Pan.Podcast do
   alias Pan.Subscription
   alias Pan.Podcast
   alias Pan.Engagement
+  alias Pan.Episode
 
   schema "podcasts" do
     field :title, :string
@@ -20,6 +21,8 @@ defmodule Pan.Podcast do
     field :explicit, :boolean, default: false
     field :blocked, :boolean, default: false
     field :update_paused, :boolean, default: false
+    field :update_intervall, :integer
+    field :next_update, :naive_datetime
     field :retired, :boolean, default: false
     field :unique_identifier, Ecto.UUID
     timestamps()
@@ -47,7 +50,8 @@ defmodule Pan.Podcast do
     struct
     |> cast(params, [:title, :website, :last_build_date, :explicit, :payment_link_title,
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
-                     :summary, :update_paused, :blocked, :retired, :updated_at])
+                     :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
+                     :next_update])
     |> validate_required([:title, :website, :last_build_date])
     |> unique_constraint(:title)
   end
@@ -211,6 +215,38 @@ defmodule Pan.Podcast do
            description: podcast.description,
            summary:     podcast.summary,
            url:         podcast_frontend_path(Pan.Endpoint, :show, id)])
+    end
+  end
+
+
+  def derive_intervall(id) do
+    last_update = from(e in Episode, where: e.podcast_id == ^id,
+                                     order_by: [desc: :updated_at],
+                                     limit: 1,
+                                     select: e.updated_at)
+                  |> Repo.all()
+                  |> List.first()
+
+    hours = Timex.diff(Timex.now(), Timex.to_datetime(last_update), :hours)
+
+    # approximate solution for u_i*(u_i+1)/2 = hours
+    update_intervall = round(:math.sqrt(8 * hours) / 2)
+    next_update = Timex.now()
+                  |> Timex.shift(hours: update_intervall)
+
+    Repo.get(Podcast, id)
+    |> Podcast.changeset(%{update_intervall: update_intervall,
+                           next_update:      next_update})
+    |> Repo.update()
+  end
+
+
+  def derive_all_intervalls() do
+    podcast_ids = from(p in Podcast, select: p.id)
+                  |> Repo.all()
+
+    for podcast_id <- podcast_ids do
+      derive_intervall(podcast_id)
     end
   end
 end

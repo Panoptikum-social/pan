@@ -21,13 +21,18 @@ defmodule Pan.PodcastView do
   end
 
   def podcast_stale_json(podcast) do
-    %{id:            podcast.id,
-      title:         podcast.title,
-      update_paused: podcast.update_paused,
-      updated_at:    podcast.updated_at,
-      feed_url:      podcast.feed_url,
-      website:       podcast.website,
-      actions:       podcast_actions(podcast, &podcast_path/3)}
+    %{id:               podcast.id,
+      title:            podcast.title,
+      update_paused:    podcast.update_paused,
+      updated_at:       Timex.format!(podcast.updated_at,
+                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+      update_intervall: podcast.update_intervall,
+      next_update:      podcast.next_update &&
+                        Timex.format!(podcast.next_update,
+                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+      feed_url:         podcast.feed_url,
+      website:          podcast.website,
+      actions:          podcast_actions(podcast, &podcast_path/3)}
   end
 
 

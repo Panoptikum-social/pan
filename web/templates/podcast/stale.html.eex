@@ -15,6 +15,8 @@
       <th>Title</th>
       <th>Update paused</th>
       <th>Updated at</th>
+      <th>Update intervall</th>
+      <th>Next update</th>
       <th>Feed url</th>
       <th>Website</th>
       <th>Actions</th>
@@ -34,6 +36,8 @@
         { data: 'title' },
         { data: 'update_paused' },
         { data: 'updated_at' },
+        { data: 'update_intervall' },
+        { data: 'next_update' },
         { data: 'feed_url' },
         { data: 'website' },
         { data: 'actions' }
