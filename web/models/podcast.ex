@@ -52,7 +52,7 @@ defmodule Pan.Podcast do
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
                      :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
                      :next_update])
-    |> validate_required([:title, :website, :last_build_date])
+    |> validate_required([:title])
     |> unique_constraint(:title)
   end
 
@@ -221,15 +221,18 @@ defmodule Pan.Podcast do
     next_update = Timex.now()
                   |> Timex.shift(hours: update_intervall)
 
-    Repo.get(Podcast, id)
+    changeset = Repo.get(Podcast, id)
     |> Podcast.changeset(%{update_intervall: update_intervall,
                            next_update:      next_update})
     |> Repo.update()
+
+    IO.inspect changeset
   end
 
 
   def derive_all_intervalls() do
-    podcast_ids = from(p in Podcast, select: p.id)
+    podcast_ids = from(p in Podcast, where: is_nil(p.update_intervall),
+                                     select: p.id)
                   |> Repo.all()
 
     for podcast_id <- podcast_ids do
