@@ -239,4 +239,17 @@ defmodule Pan.Podcast do
       derive_intervall(podcast_id)
     end
   end
+
+
+  def unretire_all() do
+    podcast_ids = from(p in Podcast, where: p.retired == true,
+                                     select: p.id)
+                  |> Repo.all()
+
+    for podcast_id <- podcast_ids do
+      Repo.get(Podcast, podcast_id)
+      |> Podcast.changeset(%{retired: false})
+      |> Repo.update()
+    end
+  end
 end
