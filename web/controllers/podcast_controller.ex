@@ -79,6 +79,9 @@ defmodule Pan.PodcastController do
                                             title: p.title,
                                             author_name: persona.name,
                                             update_paused: p.update_paused,
+                                            updated_at: p.updated_at,
+                                            update_intervall: p.update_intervall,
+                                            next_update: p.next_update,
                                             website: p.website})
                |> Repo.all
     render conn, "datatable.json", podcasts: podcasts

@@ -20,6 +20,9 @@
       <th>Title</th>
       <th>Author</th>
       <th>Update paused</th>
+      <th>Updated at</th>
+      <th>Update intervall</th>
+      <th>Next update</th>
       <th>Website</th>
       <th>Actions</th>
     </tr>
@@ -38,6 +41,9 @@
         { data: 'title' },
         { data: 'author' },
         { data: 'update_paused' },
+        { data: 'updated_at' },
+        { data: 'update_intervall' },
+        { data: 'next_update' },
         { data: 'website' },
         { data: 'actions' }
       ]

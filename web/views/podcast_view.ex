@@ -16,6 +16,12 @@ defmodule Pan.PodcastView do
       title:         podcast.title,
       author:        truncate(podcast.author_name, 100),
       update_paused: podcast.update_paused,
+      updated_at:       Timex.format!(podcast.updated_at,
+                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+      update_intervall: podcast.update_intervall,
+      next_update:      podcast.next_update &&
+                        Timex.format!(podcast.next_update,
+                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
       website:       podcast.website,
       actions:       podcast_actions(podcast, &podcast_path/3)}
   end
