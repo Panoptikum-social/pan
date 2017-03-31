@@ -91,13 +91,9 @@ defmodule Pan.PodcastController do
 
 
   def datatable_stale(conn, _params) do
-    ten_hours_ago = Timex.now()
-                    |> Timex.shift(hours: -10)
-
-
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   join: f in assoc(p, :feeds),
-                                  where: #p.updated_at <= p.next_update and
+                                  where: p.next_update <= ^Timex.now() and
                                          (is_nil(p.update_paused) or p.update_paused == false) and
                                          (is_nil(p.retired) or p.retired == false),
                                   select: %{id: p.id,

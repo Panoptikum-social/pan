@@ -2,11 +2,7 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Persistor
   alias Pan.Parser.Download
-
-
-  def demo do
-    initial_import("https://rechtsbelehrung.com/feed/podcast/")
-  end
+  require Logger
 
 
   def initial_import(url, pagecount \\ 1) do
@@ -33,7 +29,7 @@ defmodule Pan.Parser.RssFeed do
 
   def import_to_map(url) do
     url = String.strip(url)
-    IO.puts "\n\e[96m === Download from: " <> url <> " ===\e[0m"
+    Logger.info "\n\e[96m === Download from: " <> url <> " ===\e[0m"
 
     case Download.download(url) do
       {:ok, feed_xml} ->
@@ -49,6 +45,7 @@ defmodule Pan.Parser.RssFeed do
 
       {:redirect, redirect_target} ->
         {:redirect, redirect_target}
+
       {:error, reason} ->
         {:error, reason}
     end

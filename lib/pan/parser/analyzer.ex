@@ -1,6 +1,8 @@
 defmodule Pan.Parser.Analyzer do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Helpers
+  require Logger
+
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge
 
 #wrappers to dive into
@@ -293,14 +295,12 @@ defmodule Pan.Parser.Analyzer do
 
 # Show debugging information for unknown tags on console
   def call(_, mode, [tag, attr, value]) do
-    IO.puts "\n\e[96m === Tag unknown: ==="
-    IO.puts "Mode: " <> mode
-    IO.puts "Tag: " <> ~s/:"/ <> to_string(tag) <> ~s/"/
-    IO.puts "Attr: "
-    IO.inspect attr
-    IO.puts "Value: "
-    IO.inspect value
-    IO.puts " =================\e[0m"
+    Logger.error "\n\e[96m === Tag unknown: ==="
+    Logger.error "Mode: "  <> mode
+    Logger.error "Tag: "   <> ~s/:"/ <> to_string(tag) <> ~s/"/
+    Logger.error "Attr: "  <> to_string(attr)
+    Logger.error "Value: " <> to_string(value)
+    Logger.error " =================\e[0m"
     raise "Tag unknown"
   end
 

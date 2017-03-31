@@ -153,62 +153,49 @@ defmodule Pan.Podcast do
 
 
   def import_stale_podcasts() do
-    ten_hours_ago = Timex.now()
-                    |> Timex.shift(hours: -10)
+    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                         (is_nil(p.update_paused) or p.update_paused == false) and
+                                         (is_nil(p.retired) or p.retired == false),
+                                  order_by: [asc: :updated_at])
+               |> Repo.all()
 
-    newest_podcast = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                               (is_nil(p.update_paused) or p.update_paused == false) and
-                                               (is_nil(p.retired) or p.retired == false),
-                                        limit: 1,
-                                        order_by: [desc: :updated_at])
-                     |> Repo.one()
-
-    if newest_podcast do
-      from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                (is_nil(p.update_paused) or p.update_paused == false) and
-                                (is_nil(p.retired) or p.retired == false),
-                         limit: 1,
-                         order_by: [asc: :updated_at])
-      |> Repo.one()
-      |> Podcast.changeset(%{updated_at: Timex.shift(newest_podcast.updated_at, seconds: 1)})
-      |> Repo.update()
-
-      ten_hours_ago = Timex.now()
-                      |> Timex.shift(hours: -10)
-
-      podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
-                                           (is_nil(p.update_paused) or p.update_paused == false) and
-                                           (is_nil(p.retired) or p.retired == false),
-                                    order_by: [asc: :updated_at])
-                 |> Repo.all()
-
-      for podcast <- podcasts do
-        Pan.Parser.Podcast.delta_import(podcast.id)
-      end
+    for podcast <- podcasts do
+      delta_import_one(podcast, nil)
     end
   end
 
 
-  def delta_import_one(podcast, current_user) do
+  def delta_import_one(podcast, current_user \\ nil) do
+    podcast = Repo.get(Podcast, podcast.id)
+    next_update = Timex.now()
+                  |> Timex.shift(hours: podcast.update_intervall + 1)
+
+    Podcast.changeset(podcast, %{update_intervall: podcast.update_intervall + 1,
+                                 next_update:      next_update})
+    |> Repo.update()
+
     notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
       {:ok, _} ->
         %{content: "Updated Podcast " <> podcast.title,
           type: "success",
-          user_name: current_user.name}
+          user_name: current_user && current_user.name}
 
       {:error, message} ->
         %{content: "Error:" <> message <> " / " <> podcast.title,
           type: "danger",
-          user_name: current_user.name}
+          user_name: current_user && current_user.name}
     end
 
-    Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
-                           "notification", notification
+    if current_user do
+      Pan.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
+                             "notification", notification
+    end
   end
 
 
   def update_search_index(id) do
     podcast = Repo.get(Podcast, id)
+
     unless podcast.blocked == true do
       put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(id),
           [title:       podcast.title,

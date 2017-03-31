@@ -4,12 +4,18 @@ defmodule Pan.Parser.Episode do
   alias Pan.Parser.Chapter
   alias Pan.Parser.Enclosure
   alias Pan.Parser.Author
+  require Logger
 
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
         case Repo.get_by(Pan.Episode, title: episode_map[:title], podcast_id: podcast_id) do
           nil ->
+            Repo.get(Pan.Podcast, podcast_id)
+            |> Pan.Podcast.changeset(%{update_intervall: 1,
+                                       next_update: Timex.shift(Timex.now(), hours: 1)})
+            |> Repo.update()
+
             %Pan.Episode{podcast_id: podcast_id}
             |> Map.merge(episode_map)
             |> Repo.insert()
@@ -63,7 +69,7 @@ defmodule Pan.Parser.Episode do
 
             Contributor.persist_many(episode_map[:contributors], episode)
             Author.get_or_insert_into_episode(episode_map[:author], episode, podcast)
-            IO.puts "\n\e[33m === new episode:  " <> episode.title <> " ===\e[0m"
+            Logger.info "\n\e[33m === Importing new episode:  " <> episode.title <> " ===\e[0m"
           {:exists, _episode} ->
             true
         end
@@ -84,7 +90,7 @@ defmodule Pan.Parser.Episode do
         case get(plain_episode_map, podcast.id) do
           {:exists, episode} ->
             Contributor.persist_many(episode_map[:contributors], episode)
-            IO.puts "\n\e[33m === Updating contributors for episode:  " <> episode.title <> " ===\e[0m"
+            Logger.info "\n\e[33m === Updating contributors for episode:  " <> episode.title <> " ===\e[0m"
 
           {:error, "not_found"} ->
             true

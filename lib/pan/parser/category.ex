@@ -48,12 +48,10 @@ defmodule Pan.Parser.Category do
     podcasts = Pan.Repo.all(Pan.Podcast)
     podcasts = Pan.Repo.preload(podcasts, [:feeds, :categories])
 
-    for {podcast, counter} <- Enum.with_index(podcasts) do
-    IO.puts "============" <> to_string(counter)
-
-    headers = ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
-    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
-               ssl: [{:versions, [:'tlsv1.2']}]]
+    for podcast <- podcasts do
+      headers = ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+      options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
+                 ssl: [{:versions, [:'tlsv1.2']}]]
 
       for feed <- podcast.feeds do
         try do
@@ -64,9 +62,9 @@ defmodule Pan.Parser.Category do
           podcast = Pan.Repo.preload(feed, :podcast).podcast
           Pan.Parser.Category.persist_many(map[:categories], podcast)
         catch
-          :exit, _ ->  IO.puts "ex"
-          :timeout, _ -> IO.puts "t"
-          :error, _ -> IO.puts "er"
+          :exit, _    -> :noop
+          :timeout, _ -> :noop
+          :error, _   -> :noop
         end
       end
     end

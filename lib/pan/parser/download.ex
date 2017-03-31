@@ -29,7 +29,6 @@ defmodule Pan.Parser.Download do
         end
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
-        IO.inspect get(url)
         Logger.error "status_code unknown " <> Integer.to_string(code)
 
       {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}

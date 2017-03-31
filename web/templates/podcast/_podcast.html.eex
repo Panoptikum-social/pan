@@ -23,6 +23,18 @@
   <dt>Last build date</dt>
   <dd><%= @podcast.last_build_date %></dd>
 
+  <dt>Updated at</dt>
+  <dd><%= @podcast.updated_at %></dd>
+
+  <dt>Update intervall</dt>
+  <dd><%= @podcast.update_intervall %></dd>
+
+  <dt>Next update</dt>
+  <dd><%= @podcast.next_update %></dd>
+
+  <dt>Inserted at</dt>
+  <dd><%= @podcast.inserted_at %></dd>
+
   <dt>Payment link title</dt>
   <dd><%= @podcast.payment_link_title %></dd>
 
