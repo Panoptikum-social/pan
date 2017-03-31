@@ -244,10 +244,8 @@ defmodule Pan.PodcastController do
 
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
-    ten_hours_ago = Timex.now()
-                    |> Timex.shift(hours: -10)
 
-    podcasts = from(p in Podcast, where: p.updated_at <= ^ten_hours_ago and
+    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                          (is_nil(p.update_paused) or p.update_paused == false) and
                                          (is_nil(p.retired) or p.retired == false),
                                   order_by: [asc: :updated_at])
