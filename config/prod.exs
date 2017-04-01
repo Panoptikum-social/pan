@@ -8,16 +8,15 @@ config :pan, Pan.Endpoint,
   root: ".",
   version: Mix.Project.config[:version]
 
-config :logger,
-  backends: [:console,
-             {Logger.Backends.ExceptionNotification, :exeception_notification}]
+config :logger, backends:
+  [:console, {Logger.Backends.ExceptionNotification, :exeception_notification}]
 
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true
 
 config :timelier, crontab: [
-  {{[42],:any,:any,:any,:any}, {Pan.Podcast,:import_stale_podcasts, []}},
-  {{[48],:any,:any,:any,:any}, {Pan.Search,:push, [2]}}
+  {{[42], :any, :any, :any, :any}, {Pan.Podcast, :import_stale_podcasts, []}},
+  {{[48], :any, :any, :any, :any}, {Pan.Search,  :push, [2]}}
 ]
 
 config :pan, :environment, "prod"
