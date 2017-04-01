@@ -49,9 +49,6 @@ defmodule Pan.PodcastController do
 
 
   def index(conn, _params) do
-    ten_hours_ago = Timex.now()
-                    |> Timex.shift(hours: -10)
-
     stale = from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                       (is_nil(p.update_paused) or p.update_paused == false) and
                                       (is_nil(p.retired) or p.retired == false))
