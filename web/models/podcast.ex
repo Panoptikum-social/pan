@@ -7,6 +7,7 @@ defmodule Pan.Podcast do
   alias Pan.Podcast
   alias Pan.Engagement
   alias Pan.Episode
+  require Logger
 
   schema "podcasts" do
     field :title, :string
@@ -158,10 +159,12 @@ defmodule Pan.Podcast do
                                          (is_nil(p.retired) or p.retired == false),
                                   order_by: [asc: :next_update])
                |> Repo.all()
+    Logger.info "=== Started importing " <> to_string(length(podcasts)) <> " podcasts ==="
 
     for podcast <- podcasts do
       delta_import_one(podcast, nil)
     end
+    Logger.info "=== Import job finished ==="
   end
 
 
