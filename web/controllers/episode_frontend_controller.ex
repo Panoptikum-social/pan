@@ -32,7 +32,7 @@ defmodule Pan.EpisodeFrontendController do
   def index(conn, params) do
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
                                   where: (is_nil(p.blocked) or p.blocked == false) and
-                                         not is_nil(e.publishing_date),
+                                   e.publishing_date < ^NaiveDateTime.utc_now(),
                                   order_by: [desc: :publishing_date],
                                   preload: [:podcast])
                |> Repo.paginate(params)
