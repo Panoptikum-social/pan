@@ -56,4 +56,10 @@ defmodule Pan.PodcastFrontendControllerTest do
     assert html_response(conn, 200) =~ feed.self_link_url
     assert html_response(conn, 200) =~ feed.self_link_title
   end
+
+  test "renders page not found when id is nonexistent for feeds", %{conn: conn} do
+    assert_error_sent 404, fn ->
+      get conn, podcast_frontend_path(conn, :feeds, -1)
+    end
+  end
 end
