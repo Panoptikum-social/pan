@@ -19,10 +19,15 @@ defmodule Pan.PodcastControllerTest do
                    summary: "some content",
                    title: "some content",
                    unique_identifier: "7488a646-e31f-11e4-aace-600308960662",
-                   website: "some content"}
+                   website: "some content",
+                   update_intervall: 1,
+                   next_update: "2010-04-17 14:00:00"}
     @invalid_attrs %{}
 
     test "lists all entries on index", %{conn: conn} do
+      podcast = insert_podcast()
+      insert_episode(%{podcast_id: podcast.id})
+
       conn = get conn, podcast_path(conn, :index)
       assert html_response(conn, 200) =~ "Podcasts"
     end

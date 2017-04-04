@@ -14,7 +14,9 @@ defmodule Pan.PodcastTest do
                  summary: "Podcast summary",
                  title: "Podcast title",
                  unique_identifier: "7488a646-e31f-11e4-aace-600308960662",
-                 website: "https://panoptikum.io/podcast/site"}
+                 website: "https://panoptikum.io/podcast/site",
+                 update_intervall: 1,
+                 next_update: "2010-04-17 14:00:00"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

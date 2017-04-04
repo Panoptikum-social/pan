@@ -53,7 +53,7 @@ defmodule Pan.Podcast do
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
                      :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
                      :next_update])
-    |> validate_required([:title])
+    |> validate_required([:title, :update_intervall, :next_update])
     |> unique_constraint(:title)
   end
 

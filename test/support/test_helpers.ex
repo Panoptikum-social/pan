@@ -65,9 +65,13 @@ defmodule Pan.TestHelpers do
 
 
   def insert_podcast(attrs \\ %{}) do
-    changes = Map.merge(%{title: "Podcast Title",
-                          website: "https://panoptikum.io",
-                          last_build_date: ~N[2010-04-17 12:13:14]}, attrs)
+    changes = Map.merge(%{
+      title: "Podcast Title",
+      website: "https://panoptikum.io",
+      last_build_date: ~N[2010-04-17 12:13:14],
+      update_intervall: 1,
+      next_update: "2010-04-17 14:00:00"
+    }, attrs)
 
     %Pan.Podcast{}
     |> Pan.Podcast.changeset(changes)

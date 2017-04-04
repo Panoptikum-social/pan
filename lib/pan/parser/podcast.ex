@@ -12,7 +12,8 @@ defmodule Pan.Parser.Podcast do
   def get_or_insert(podcast_map) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
-        %Podcast{}
+        %Podcast{update_intervall: 1,
+                 next_update: "2010-04-17 14:00:00"}
         |> Map.merge(podcast_map)
         |> Repo.insert()
       podcast ->
