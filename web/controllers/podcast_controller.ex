@@ -61,9 +61,15 @@ defmodule Pan.PodcastController do
     retired = from(p in Podcast, where: p.retired == true)
               |> Repo.aggregate(:count, :id)
 
-    render(conn, "index.html", stale: stale,
-                                paused: paused,
-                                retired: retired)
+    average = from(p in Podcast)
+              |> Repo.aggregate(:avg, :update_intervall)
+              |> Decimal.round(2)
+
+    total = Repo.aggregate(Podcast, :count, :id)
+    episodes_total = Repo.aggregate(Episode, :count, :id)
+
+    render(conn, "index.html", stale: stale, paused: paused, retired: retired, average: average,
+                               total: total, episodes_total: episodes_total)
   end
 
 

@@ -129,14 +129,15 @@ defmodule Pan.Parser.Analyzer do
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
-    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta"
+    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta",
+    :"blogChannel:blogRoll"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
     :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
-    :category, :"dc:creator", :comments, :"feedburner:origLink", :"itunes:image",
+    :category, :"dc:creator", :comments, :"feedburner:origLink", :"itunes:image", :"dc:modifieddate",
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block",
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment,
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
@@ -147,12 +148,13 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
-    :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark",
+    :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark", :"media:player",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
-    :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description",
+    :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating",
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
-    :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword"
+    :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
+    :"media:group", :"rawvoice:donate"
   ], do: %{}
 
 
@@ -216,6 +218,8 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:content, _, []]), do: %{}
+  def call(_, "episode", [:content, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:shownotes, _, []]), do: %{}
   def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
 
