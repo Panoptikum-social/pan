@@ -22,7 +22,7 @@ defmodule Pan.PodcastFrontendController do
 
   def show(conn, %{"id" => id}) do
     changeset = Recommendation.changeset(%Recommendation{})
-    podcast =  Repo.get(Podcast, id)
+    podcast =  Repo.get!(Podcast, id)
                |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
                |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
                |> Repo.preload([engagements: :persona])
@@ -41,7 +41,7 @@ defmodule Pan.PodcastFrontendController do
 
 
   def feeds(conn, %{"id" => id}) do
-    podcast =  Repo.get(Podcast, id)
+    podcast =  Repo.get!(Podcast, id)
                |> Repo.preload([feeds: :alternate_feeds])
 
     render(conn, "feeds.html", podcast: podcast)

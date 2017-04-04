@@ -5,15 +5,15 @@ defmodule Pan.CategoryFrontendControllerTest do
     insert_category()
 
     conn = get conn, category_frontend_path(conn, :index)
-    # FIXME! issues with con cache
-    # assert html_response(conn, 200) =~ "Category Title"
+    # FIXME! issues with con cache, when all tests are run
+    # assert html_response(conn, 200) =~ category.title
     assert html_response(conn, 200) =~ "Search"
   end
 
   test "shows chosen resource", %{conn: conn} do
     category = insert_category()
     conn = get conn, category_frontend_path(conn, :show, category)
-    assert html_response(conn, 200) =~ "Category Title"
+    assert html_response(conn, 200) =~ category.title
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do

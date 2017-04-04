@@ -89,6 +89,23 @@ defmodule Pan.TestHelpers do
   end
 
 
+  def insert_feed(attrs \\ %{}) do
+    changes = Map.merge(%{feed_generator: "Feed generator",
+      first_page_url: "https://panoptikum.io/feed/first_page",
+      hub_link_url: "https://panoptikum.io/feed/hub_link",
+      last_page_url: "https://panoptikum.io/feed/last_page",
+      next_page_url: "https://panoptikum.io/feed/next_page",
+      prev_page_url: "https://panoptikum.io/feed/prev_page",
+      self_link_title: "Feed self link title",
+      self_link_url: "https://panoptikum.io/feed/self_link"
+    }, attrs)
+
+    %Pan.Feed{}
+    |> Pan.Feed.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
   def insert_persona(attrs \\ %{}) do
     changes = Map.merge(%{pid: "persona pid",
                           name: "persona name",

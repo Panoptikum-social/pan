@@ -1,4 +1,4 @@
-<%= if @podcast.blocked == true do %>
+<%= if @podcast && @podcast.blocked == true do %>
   This podcast may not be published here, sorry.
 <%= else %>
   <%= render "_header.html", podcast: @podcast,
