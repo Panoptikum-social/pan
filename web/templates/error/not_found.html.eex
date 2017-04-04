@@ -13,7 +13,7 @@
           href="<%= static_path(@conn, "/css/app.css") %>">
     <link rel="icon" sizes="192x192" href="/images/icon.png">
     <script>window.userToken = "<%= assigns[:user_token] %>"
-            window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
+            window.currentUserID = "<%= if assigns[:current_user], do: assigns[:current_user] %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </head>
 
@@ -48,83 +48,10 @@
               <li><%= link "Users", to: user_frontend_path(@conn, :index) %></li>
               <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(@conn, :random) %></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <%= if @current_user do %>
-                <input type="checkbox" id="checkbox_toggle" class="drop">
-                <li class="dropdown drop tohide">
-                  <label for="checkbox_toggle" class="navbar-text">@<%= @current_user.username %> <span class="caret"></span></label>
-                  <ul class="drop dropdown-menu">
-                    <li><%= link "My Profile",  to: user_frontend_path(@conn, :my_profile)%>    </li>
-                    <li><%= link "Change Password", to: user_frontend_path(@conn, :edit_password)%>       </li>
-                    <li><%= link "My Messages", to: user_frontend_path(@conn, :my_messages)%></li>
-                    <li><%= link "My Podcasts", to: user_frontend_path(@conn, :my_podcasts)%></li>
-                    <li><%= link "My Recommendations", to: recommendation_frontend_path(@conn, :my_recommendations)%></li>
-                    <li><%= link "My OPMLs",    to: opml_frontend_path(@conn, :index)%>      </li>
-                  </ul>
-                </li>
-
-                <li role="user" class="dropdown toshow" style="display: none">
-                  <a class="dropdown-toggle" href="#" role="button"
-                     aria-haspopup="true" aria-expanded="false"
-                     data-toggle="dropdown">
-                    @<%= @current_user.username %><span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li><%= link "My Profile",  to: user_frontend_path(@conn, :my_profile)%>    </li>
-                    <li><%= link "Change Password", to: user_frontend_path(@conn, :edit_password)%>       </li>
-                    <li><%= link "My Messages", to: user_frontend_path(@conn, :my_messages)%></li>
-                    <li><%= link "My Podcasts", to: user_frontend_path(@conn, :my_podcasts)%></li>
-                    <li><%= link "My Recommendations", to: recommendation_frontend_path(@conn, :my_recommendations)%></li>
-                    <li><%= link "My OPMLs",    to: opml_frontend_path(@conn, :index)%>      </li>
-                  </ul>
-                </li>
-
-                <%= if @current_user.admin do %>
-                  <li role="admin" class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button"
-                       aria-haspopup="true" aria-expanded="false"
-                       data-toggle="dropdown">
-                      Admin <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li><%= link "Categories", to: category_path(@conn, :index) %></li>
-                      <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
-                      <li><%= link "Languages", to: language_path(@conn, :index) %></li>
-                      <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
-                      <li><%= link "Users", to: user_path(@conn, :index) %></li>
-                      <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
-                      <li><%= link "Messages", to: message_path(@conn, :index) %></li>
-                      <li><%= link "Likes", to: like_path(@conn, :index) %></li>
-                      <li><%= link "Follows", to: follow_path(@conn, :index) %></li>
-                      <li><%= link "Subscriptions", to: subscription_path(@conn, :index) %></li>
-                      <li><%= link "Recommendations", to: recommendation_path(@conn, :index) %></li>
-                      <li><%= link "Personas", to: persona_path(@conn, :index) %></li>
-                      <li><%= link "Gigs", to: gig_path(@conn, :index) %></li>
-                      <li><%= link "Engagements", to: engagement_path(@conn, :index) %></li>
-                      <li><%= link "Manifestations", to: manifestation_path(@conn, :index) %></li>
-                      <li><%= link "Delegations", to: delegation_path(@conn, :index) %></li>
-                    </ul>
-                  </li>
-                <% end %>
-
-                <li>
-                  <span class="navbar-text">
-                    <%= link "Log out", to: session_path(@conn, :delete, @current_user),
-                                        method: "delete" %>
-                  </span>
-                </li>
-              <% else %>
-                <li><%= link "Register", to: user_frontend_path(@conn, :new) %></li>
-                <li><%= link "Log in", to: session_path(@conn, :new) %></li>
-              <% end %>
-            </ul>
           </div>
 
         </div><!-- /.container-fluid -->
       </nav>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <main role="main">
         This page could not be found! <br/><br/>
