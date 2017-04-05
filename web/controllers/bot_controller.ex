@@ -16,8 +16,7 @@ defmodule Pan.BotController do
     sqlfrag = "%" <> message <> "%"
     podcasts = from(p in Podcast, where: ilike(p.title,       ^sqlfrag) or
                                          ilike(p.description, ^sqlfrag) or
-                                         ilike(p.summary,     ^sqlfrag) or
-                                         ilike(p.author,      ^sqlfrag),
+                                         ilike(p.summary,     ^sqlfrag),
                                   limit: 5)
                   |> Repo.all()
                   |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
