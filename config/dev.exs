@@ -43,3 +43,4 @@ config :pan, Pan.Repo,
   pool_size: 10
 
 config :pan, :environment, "dev"
+import_config "dev.secret.exs"
