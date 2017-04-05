@@ -29,7 +29,7 @@ defmodule Pan.Parser.Download do
         end
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
-        Logger.error "status_code unknown " <> Integer.to_string(code)
+        Logger.error "status_code unknown #{inspect code}"
 
       {:error, %HTTPoison.Error{id: nil, reason: :timeout}} -> {:error, "Timeout"}
       {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} -> {:error, "Host unreachable"}

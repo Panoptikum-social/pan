@@ -13,7 +13,7 @@ defmodule Pan.Parser.Podcast do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
         %Podcast{update_intervall: 1,
-                 next_update: "2010-04-17 14:00:00"}
+                 next_update: Timex.shift(Timex.now(), hours: 1)}
         |> Map.merge(podcast_map)
         |> Repo.insert()
       podcast ->
@@ -26,7 +26,7 @@ defmodule Pan.Parser.Podcast do
     feed = Repo.get_by(Feed, podcast_id: id)
 
     unless feed do
-      Logger.error "Podcast " <> Integer.to_string(id) <> " has no feed"
+      Logger.error "=== Podcast #{inspect id} has no feed! ==="
     end
 
     case RssFeed.import_to_map(feed.self_link_url) do

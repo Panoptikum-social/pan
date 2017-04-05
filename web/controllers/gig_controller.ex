@@ -9,7 +9,7 @@ defmodule Pan.GigController do
 
   def datatable(conn, params) do
     search = params["search"]["value"]
-    searchfrag = "%" <> params["search"]["value"] <> "%"
+    searchfrag = "%#{params["search"]["value"]}%"
 
     limit = String.to_integer(params["length"])
     offset = String.to_integer(params["start"])

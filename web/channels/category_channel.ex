@@ -18,7 +18,7 @@ defmodule Pan.CategoryChannel do
       type:            "success",
       event:           "like"
     }
-    e = %{e | content: "« " <> params["action"] <> "d the category <b>" <>
+    e = %{e | content: "« #{params["action"]}d the category <b>" <>
                        Repo.get!(Category, e.category_id).title <> "</b> »"}
 
     Category.like(e.category_id, e.current_user_id)

@@ -29,11 +29,10 @@ defmodule Pan.OpmlParser.Analyzer do
 
 
   def call([tag, attr, value], _user_id) do
-    Logger.error "\n\e[96m === Tag unknown: ==="
-    Logger.error "Tag: " <> ~s/:"/ <> to_string(tag) <> ~s/"/
-    Logger.error "Attr: " <> to_string(attr)
-    Logger.error "Value: " <> to_string(value)
-    Logger.error "=================\e[0m"
+    Logger.error "=== Tag unknown: ==="
+    Logger.error ~s(Tag: :"#{tag}")
+    Logger.error "Attr: #{inspect attr}"
+    Logger.error "Value: #{inspect value}"
     raise "Tag unknown"
   end
 end

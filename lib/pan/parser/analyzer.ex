@@ -44,6 +44,12 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "image", [:width,       _, _]), do: map
   def call(map, "image", [:height,      _, _]), do: map
 
+  def call(map, "image", [:"itunes:image", attr, _]) do
+    if map[:image_url], do: map,
+                        else: %{image_url: attr[:href],
+                                image_title: attr[:href]}
+  end
+
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
                         else: %{image_url: attr[:href],
@@ -100,6 +106,8 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "tag", [:"rawvoice:donate", attr, [value]]), do: %{payment_link_title: value,
                                                                  payment_link_url: attr[:href]}
+  def call(_, "tag", [:"rawvoice:donate", attr, []]), do: %{payment_link_title: attr[:href],
+                                                            payment_link_url: attr[:href]}
 
 
   def call(_, "tag", [:"atom10:link", attr, _]) do
@@ -154,7 +162,7 @@ defmodule Pan.Parser.Analyzer do
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
-    :"media:group", :"rawvoice:donate"
+    :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type"
   ], do: %{}
 
 
@@ -299,12 +307,11 @@ defmodule Pan.Parser.Analyzer do
 
 # Show debugging information for unknown tags on console
   def call(_, mode, [tag, attr, value]) do
-    Logger.error "\n\e[96m === Tag unknown: ==="
-    Logger.error "Mode: "  <> mode
-    Logger.error "Tag: "   <> ~s/:"/ <> to_string(tag) <> ~s/"/
-    Logger.error "Attr: "  <> to_string(attr)
-    Logger.error "Value: " <> to_string(value)
-    Logger.error " =================\e[0m"
+    Logger.error "=== Tag unknown: ==="
+    Logger.error "Mode: #{mode}"
+    Logger.error ~s(Tag: :"#{tag}")
+    Logger.error "Attr: #{inspect attr}"
+    Logger.error "Value: #{inspect value}"
     raise "Tag unknown"
   end
 

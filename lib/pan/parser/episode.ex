@@ -69,7 +69,7 @@ defmodule Pan.Parser.Episode do
 
             Contributor.persist_many(episode_map[:contributors], episode)
             Author.get_or_insert_into_episode(episode_map[:author], episode, podcast)
-            Logger.info "\n\e[33m === Importing new episode:  " <> episode.title <> " ===\e[0m"
+            Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
           {:exists, _episode} ->
             true
         end
@@ -90,7 +90,7 @@ defmodule Pan.Parser.Episode do
         case get(plain_episode_map, podcast.id) do
           {:exists, episode} ->
             Contributor.persist_many(episode_map[:contributors], episode)
-            Logger.info "\n\e[33m === Updating contributors for episode:  " <> episode.title <> " ===\e[0m"
+            Logger.info "\n\e[33m === Updating contributors for episode: #{episode.title} ===\e[0m"
 
           {:error, "not_found"} ->
             true

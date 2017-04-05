@@ -13,7 +13,7 @@ defmodule Pan.Search do
     hours_ago = Timex.now()
                 |> Timex.shift(hours: -1 * hours)
 
-    Logger.info("=== Indexing categories (since " <>  DateTime.to_string(hours_ago) <>") ===")
+    Logger.info("=== Indexing categories (since #{inspect hours_ago}) ===")
     from(c in Category, where: c.updated_at >= ^hours_ago,
                         select: c.id)
     |> Repo.all()
