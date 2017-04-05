@@ -43,7 +43,7 @@ defmodule Pan.BotController do
 
     body = %{
       setting_type: "domain_whitelisting",
-      whitelisted_domains: ["https://86924beb.ngrok.io", "https://panoptikum.io/"],
+      whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
       domain_action_type: "add"
     }
     |> Poison.encode!
@@ -66,31 +66,32 @@ defmodule Pan.BotController do
 
   defp podcast_json(conn, podcast) do
     [episode | _rest] = podcast.episodes
+    host = Application.get_env(:pan, :bot)[:host]
     %{
       title: podcast.title,
       image_url: podcast.image_url,
       subtitle: podcast.description,
       default_action: %{
         type: "web_url",
-        url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+        url: host <> podcast_frontend_path(conn, :show, podcast),
         messenger_extensions: true,
         webview_height_ratio: "tall",
-        fallback_url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast)
+        fallback_url: host <> podcast_frontend_path(conn, :show, podcast)
       },
       buttons: [
         %{
           type: "web_url",
-          url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+          url: host <> podcast_frontend_path(conn, :show, podcast),
           title: "In Panoptikum"
         },
         %{
           type: "web_url",
-          url: "https://86924beb.ngrok.io" <> podcast_frontend_path(conn, :show, podcast),
+          url: host <> podcast_frontend_path(conn, :show, podcast),
           title: "View Website"
         },
         %{
           type: "web_url",
-          url: "https://86924beb.ngrok.io" <> episode_frontend_path(conn, :player, episode),
+          url: host <> episode_frontend_path(conn, :player, episode),
           messenger_extensions: true,
           webview_height_ratio: "tall",
           title: "Play latest episode"
