@@ -48,10 +48,10 @@ defmodule Pan.BotController do
     }
     |> Poison.encode!
     "https://graph.facebook.com/v2.6/me/thread_settings?#{params}"
-    |> HTTPotion.post([body: body,  headers: ["Content-Type": "application/json"]])
+    |> HTTPoison.post(body, ["Content-Type": "application/json"])
 
     "https://graph.facebook.com/v2.6/me/messages?#{params}"
-    |> HTTPotion.post([body: data,  headers: ["Content-Type": "application/json"]])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
 
     conn
     |> put_status(200)
