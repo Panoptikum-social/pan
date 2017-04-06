@@ -8,6 +8,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
       {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
+      {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}
       {:ok, %HTTPoison.Response{status_code: 429}} -> {:error, "429: To many requests"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)

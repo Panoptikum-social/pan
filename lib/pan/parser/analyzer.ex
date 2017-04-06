@@ -134,11 +134,11 @@ defmodule Pan.Parser.Analyzer do
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
-    :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner",
+    :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta",
-    :"blogChannel:blogRoll"
+    :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -162,7 +162,8 @@ defmodule Pan.Parser.Analyzer do
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
-    :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type"
+    :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type",
+    :"itunes:length", :"podcast:name", :"blip:user", :"username"
   ], do: %{}
 
 
@@ -218,6 +219,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:link, _, [value]]), do: %{link:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid, _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
   def call(_, "episode", [:guid, _, _]), do: %{}
+  def call(_, "episode", [:contentId, _, [value]]), do: %{guid:   String.slice(value, 0, 255)}
 
   def call(_, "episode", [:description, _, []]), do: %{}
   def call(_, "episode", [:description, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
