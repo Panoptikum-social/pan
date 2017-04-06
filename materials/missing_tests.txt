@@ -1,4 +1,4 @@
-* recommendation_frontend_controller.ex : message creation & event sending
+* opml_frontend_controller.ex
 
 ----
 
@@ -7,7 +7,6 @@
 * session_controller
 * user_controller
 
-* opml_frontend_controller.ex
 * persona_frontend_controller.ex
 * search_frontend_controller.ex
 * user_frontend_controller.ex
@@ -15,3 +14,4 @@
 ---
 
 * category_frontend_controller.ex FIXME! #8
+* recommendation_frontend_controller.ex : message creation & event sending
