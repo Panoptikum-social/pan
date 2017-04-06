@@ -1,4 +1,4 @@
-* recommendation_frontend_controller.ex
+* recommendation_frontend_controller.ex : message creation & event sending
 
 ----
 

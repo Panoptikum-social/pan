@@ -1,6 +1,7 @@
 defmodule Pan.RecommendationFrontendControllerTest do
   use Pan.ConnCase
   alias Pan.Recommendation
+  alias Pan.Message
 
   test "lists all entries on index", %{conn: conn} do
     user = insert_user()
@@ -22,8 +23,8 @@ defmodule Pan.RecommendationFrontendControllerTest do
                                  username: "auser" ,
                                  email: "another.user@panoptikum.io"})
     another_recommendation = insert_recommendation(%{user_id: another_user.id,
-                                                      podcast_id: podcast.id,
-                                                      comment: "a different comment text"})
+                                                     podcast_id: podcast.id,
+                                                     comment: "a different comment text"})
     conn = assign(conn, :current_user, user)
 
     conn = get conn, recommendation_frontend_path(conn, :my_recommendations)
@@ -45,7 +46,7 @@ defmodule Pan.RecommendationFrontendControllerTest do
   end
 
 
-  test "can create a podcast recommendation and redirects back", %{conn: conn} do
+  test "can create a podcast recommendation, a message and redirects back", %{conn: conn} do
     user = insert_user()
     podcast = insert_podcast()
 
@@ -59,9 +60,14 @@ defmodule Pan.RecommendationFrontendControllerTest do
     assert Repo.get_by(Recommendation, %{podcast_id: podcast.id,
                                          user_id: user.id,
                                          comment: "recommendation comment"})
+    assert Repo.get_by(Message, %{topic: "podcasts",
+                                  subtopic: Integer.to_string(podcast.id),
+                                  event: "recommend",
+                                  type: "success",
+                                  creator_id: user.id})
   end
 
-  test "can create an episode recommendation and redirects back", %{conn: conn} do
+  test "can create an episode recommendation, a message and redirects back", %{conn: conn} do
     user = insert_user()
     podcast = insert_podcast()
     episode = insert_episode(%{podcast_id: podcast.id})
@@ -76,9 +82,14 @@ defmodule Pan.RecommendationFrontendControllerTest do
     assert Repo.get_by(Recommendation, %{episode_id: episode.id,
                                          user_id: user.id,
                                          comment: "recommendation comment"})
+    assert Repo.get_by(Message, %{topic: "podcasts",
+                                  subtopic: Integer.to_string(podcast.id),
+                                  event: "recommend",
+                                  type: "success",
+                                  creator_id: user.id})
   end
 
-  test "can create an chapter recommendation and redirects back", %{conn: conn} do
+  test "can create an chapter recommendation, a message and redirects back", %{conn: conn} do
     user = insert_user()
     podcast = insert_podcast()
     episode = insert_episode(%{podcast_id: podcast.id})
@@ -94,5 +105,10 @@ defmodule Pan.RecommendationFrontendControllerTest do
     assert Repo.get_by(Recommendation, %{chapter_id: chapter.id,
                                          user_id: user.id,
                                          comment: "recommendation comment"})
+    assert Repo.get_by(Message, %{topic: "podcasts",
+                                  subtopic: Integer.to_string(podcast.id),
+                                  event: "recommend",
+                                  type: "success",
+                                  creator_id: user.id})
   end
 end
