@@ -12,8 +12,6 @@
     <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/app.css") %>">
     <link rel="icon" sizes="192x192" href="/images/icon.png">
-    <script>window.userToken = "<%= assigns[:user_token] %>"
-            window.currentUserID = "<%= if assigns[:current_user], do: assigns[:current_user] %>"</script>
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </head>
 
