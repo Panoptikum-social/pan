@@ -18,7 +18,7 @@ defmodule Pan.Chapter do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:start, :title])
+    |> cast(params, [:start, :title, :episode_id])
     |> validate_required([:start, :title])
   end
 

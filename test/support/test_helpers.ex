@@ -78,6 +78,7 @@ defmodule Pan.TestHelpers do
     |> Repo.insert!()
   end
 
+
   def insert_episode(attrs \\ %{}) do
     changes = Map.merge(%{title: "Episode Title",
                           link: "https://panoptikum.io",
@@ -85,6 +86,16 @@ defmodule Pan.TestHelpers do
 
     %Pan.Episode{}
     |> Pan.Episode.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
+  def insert_chapter(attrs \\ %{}) do
+    changes = Map.merge(%{start: "01:02:03.456",
+                          title: "Chatter title"}, attrs)
+
+    %Pan.Chapter{}
+    |> Pan.Chapter.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -114,5 +125,26 @@ defmodule Pan.TestHelpers do
     %Pan.Persona{}
     |> Pan.Persona.changeset(changes)
     |> Repo.insert!()
+  end
+
+
+  def insert_recommendation(attrs \\ %{}) do
+    changes = Map.merge(%{pid: "persona pid",
+                          name: "persona name",
+                          uri: "persona uri"}, attrs)
+
+    %Pan.Recommendation{comment: "recommendation comment text"}
+    |> Pan.Recommendation.changeset(changes)
+    |> Repo.insert!()
+  end
+
+
+  def assign_podcast_to_category(podcast, category) do
+    podcast = Repo.preload(podcast, :categories)
+
+    podcast
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:categories, podcast.categories ++ [category])
+    |> Repo.update!
   end
 end
