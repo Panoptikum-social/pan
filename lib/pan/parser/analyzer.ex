@@ -137,7 +137,7 @@ defmodule Pan.Parser.Analyzer do
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
-    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta",
+    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent"
   ], do: map
 
@@ -154,7 +154,7 @@ defmodule Pan.Parser.Analyzer do
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :timestamp,
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure",
-    :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID",
+    :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark", :"media:player",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
@@ -163,7 +163,7 @@ defmodule Pan.Parser.Analyzer do
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type",
-    :"itunes:length", :"podcast:name", :"blip:user", :"username"
+    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright"
   ], do: %{}
 
 
