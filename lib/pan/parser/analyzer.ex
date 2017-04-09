@@ -163,7 +163,8 @@ defmodule Pan.Parser.Analyzer do
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type",
-    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright"
+    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"avms:id",
+    :"clipper:id"
   ], do: %{}
 
 
