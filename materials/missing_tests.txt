@@ -1,11 +1,10 @@
-* 1 failing test
+* user_controller
 
 ----
 
 * maintenance_controller.ex
 * search_controller.ex
 * session_controller
-* user_controller
 
 * persona_frontend_controller.ex
 * search_frontend_controller.ex
