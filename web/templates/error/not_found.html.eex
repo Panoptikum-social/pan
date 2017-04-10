@@ -10,9 +10,9 @@
 
     <title>Panoptikum</title>
     <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css/app.css") %>">
+          href="/css/app.css">
     <link rel="icon" sizes="192x192" href="/images/icon.png">
-    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="/js/app.js"></script>
   </head>
 
   <body>
@@ -39,12 +39,12 @@
 
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li><%= link "Home", to: category_frontend_path(@conn, :index) %></li>
+              <li><%= link "Home", to: category_frontend_path(Pan.Endpoint, :index) %></li>
               <li><a href="https://blog.panoptikum.io/">About</a></li>
               <li><a href="https://blog.panoptikum.io/blog">Blog</a></li>
-              <li><%= link "Podcasters", to: persona_frontend_path(@conn, :index) %></li>
-              <li><%= link "Users", to: user_frontend_path(@conn, :index) %></li>
-              <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(@conn, :random) %></li>
+              <li><%= link "Podcasters", to: persona_frontend_path(Pan.Endpoint, :index) %></li>
+              <li><%= link "Users", to: user_frontend_path(Pan.Endpoint, :index) %></li>
+              <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(Pan.Endpoint, :random) %></li>
             </ul>
           </div>
 

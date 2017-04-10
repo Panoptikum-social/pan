@@ -5,8 +5,8 @@ defmodule Pan.ErrorViewTest do
   import Phoenix.View
 
   test "renders 404.html" do
-    assert render_to_string(Pan.ErrorView, "404.html", []) ==
-           "Page not found"
+    assert render_to_string(Pan.ErrorView, "404.html", conn: build_conn(:get, "/")) =~
+      "This page could not be found!"
   end
 
   test "render 500.html" do

@@ -115,6 +115,7 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace("Wedn,", "Wed,")
     |> String.replace("Thurs,","Thu,")
+    |> String.replace("Thue,","Thu,")
     |> String.replace("Thur,","Thu,")
     |> String.replace("Mo,",  "Mon,")
     |> String.replace("mån,", "Mon,")
