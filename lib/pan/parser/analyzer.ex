@@ -14,14 +14,15 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:title,             _, []]), do: %{}
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
   def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
-  def call(_, "tag", [:author,            _, [value]]), do: %{author: value}
-  def call(_, "tag", [:"googleplay:author", _, [value]]), do: %{author: value}
-  def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: value}
+  def call(_, "tag", [:author,            _, [value]]), do: %{author: String.slice(value, 0, 255)}
+  def call(_, "tag", [:"googleplay:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
+  def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
   def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
   def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
+  def call(_, "tag", [:explicit,          _, [value]]), do: %{explicit: Helpers.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
     %{last_build_date: Helpers.to_naive_datetime(value)}
   end
@@ -138,7 +139,8 @@ defmodule Pan.Parser.Analyzer do
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
-    :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent"
+    :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
+    :"feedpress:podcastId", :summary, :rating, :Category
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -163,7 +165,19 @@ defmodule Pan.Parser.Analyzer do
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"dc:type",
-    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright"
+    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"pingback:server",
+    :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername",
+    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id",
+    :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language",
+    :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
+    :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
+    :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable",
+    :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail"
+  ], do: %{}
+
+
+  def call(_, "image", [tag_atom, _, _]) when tag_atom in [
+    :guid
   ], do: %{}
 
 
@@ -177,11 +191,14 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one owner
   def call(map, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(map, "owner", value)
+  def call(map, "tag", [:owner,             _, value]), do: Iterator.parse(map, "owner", value)
   def call(map, "tag", [:"itunes:email",    _, value]), do: Iterator.parse(map, "owner", value)
   def call(_, "owner", [:"itunes:name",     _, []]), do: %{}
-  def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: value}
+  def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call(_, "owner", [:name,              _, [value]]), do: %{name: String.slice(value, 0, 255)}
   def call(_, "owner", [:"itunes:email",    _, []]), do: %{}
   def call(_, "owner", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call(_, "owner", [:email,             _, [value]]), do: %{email: value}
 # FIXME: HAS20170130 shwould be pulled out of itunes owner
   def call(_, "owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
@@ -235,15 +252,19 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:summary,           _, [value]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"atom:summary",  _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
+  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: String.slice(value, 0, 255)}
 
   def call(_, "episode", [:"itunes:author", _, []]), do: %{}
   def call(_, "episode", [:"itunes:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "episode", [:"googleplay:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"dc:publisher", _, [value]]), do: %{author: String.slice(value, 0, 255)}
 
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
@@ -332,6 +353,6 @@ defmodule Pan.Parser.Analyzer do
   def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
   def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
-# FIXME: HAS20170130 shwould be pulled out of itunes owner
+# FIXME: HAS20170130 should be pulled out of itunes owner
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 end

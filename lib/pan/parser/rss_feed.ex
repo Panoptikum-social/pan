@@ -35,6 +35,7 @@ defmodule Pan.Parser.RssFeed do
       {:ok, feed_xml} ->
        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                  |> Pan.Parser.Helpers.fix_character_code_strings()
                   |> String.trim()
                   |> Quinn.parse()
 

@@ -34,18 +34,24 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
-               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
-               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
-               try_format(feed_date, "{RFC1123} {Zname}")
+               try_format(feed_date, "{RFC1123} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}")
 
     if datetime do
       Timex.to_naive_datetime(datetime)
@@ -77,24 +83,30 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace("January",   "Jan")
     |> String.replace("February",  "Feb")
+    |> String.replace(" Far ",    " Feb ")
+    |> String.replace(" Fev ",    " Feb ")
+    |> String.replace(" Febr ",   " Feb ")
     |> String.replace("March",     "Mar")
+    |> String.replace(" Mär ",    " Mar ")
     |> String.replace("April",     "Apr")
+    |> String.replace(" Avr ",    " Apr ")
+    |> String.replace(" Mai ",    " May ")
     |> String.replace("June",      "Jun")
+    |> String.replace(" Juin ",   " Jun ")
     |> String.replace("July",      "Jul")
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
-    |> String.replace("October",   "Oct")
-    |> String.replace(" Mär ",     " Mar ")
-    |> String.replace(" Okt ",     " Oct ")
-    |> String.replace(" oct ",     " Oct ")
-    |> String.replace(" Dez ",     " Dec ")
-    |> String.replace(" Febr ",    " Feb ")
-    |> String.replace(" Noc ",    " Nov ")
     |> String.replace(" Set ",    " Sep ")
-    |> String.replace(" Sept ",    " Sep ")
+    |> String.replace(" Sept ",   " Sep ")
+    |> String.replace("October",   "Oct")
+    |> String.replace(" Okt ",    " Oct ")
+    |> String.replace(" OCt ",    " Oct ")
+    |> String.replace(" oct ",    " Oct ")
+    |> String.replace(" Noc ",    " Nov ")
+    |> String.replace("November",  "Nov")
+    |> String.replace(" Dez ",    " Dec ")
     |> String.replace(" Dic ",    " Dec ")
     |> String.replace(" dec ",    " Dec ")
-    |> String.replace("November",  "Nov")
     |> String.replace("December",  "Dec")
   end
 
@@ -110,6 +122,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Tus,",  "Tue,")
     |> String.replace("Tues,",  "Tue,")
     |> String.replace("Weds,",  "Wed,")
+    |> String.replace("MWed,",  "Wed,")
     |> String.replace("tor,", "Tue,")
     |> String.replace("Mi,",  "Wed,")
     |> String.replace("Do,",  "Thu,")
@@ -166,6 +179,12 @@ defmodule Pan.Parser.Helpers do
   def remove_comments(xml) do
     # U ... non-greedy, s ... . matches newlines as well
     Regex.replace(~r/<!--.*-->/Us, xml, "")
+  end
+
+
+  def fix_character_code_strings(xml) do
+    # Erlang does not know of 1252, that's the best we can do for now
+    Regex.replace(~r/Windows-1252/Us, xml, "iso-8859-1")
   end
 
 
