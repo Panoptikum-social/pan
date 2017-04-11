@@ -137,7 +137,7 @@ defmodule Pan.Parser.Analyzer do
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput,
-    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p,
+    :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
@@ -331,11 +331,11 @@ defmodule Pan.Parser.Analyzer do
 
 # Show debugging information for unknown tags on console
   def call(_, mode, [tag, attr, value]) do
-    Logger.error "=== Tag unknown: ==="
-    Logger.error "Mode: #{mode}"
-    Logger.error ~s(Tag: :"#{tag}")
-    Logger.error "Attr: #{inspect attr}"
-    Logger.error "Value: #{inspect value}"
+    Logger.warn "=== Tag unknown: ==="
+    Logger.warn "Mode: #{mode}"
+    Logger.warn ~s(Tag: :"#{tag}")
+    Logger.warn "Attr: #{inspect attr}"
+    Logger.warn "Value: #{inspect value}"
     {:error, "tag unknown"}
   end
 

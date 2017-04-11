@@ -35,8 +35,7 @@ defmodule Pan.Parser.Iterator do
       podcast_map =
         case Analyzer.call(map, context, [head[:name], head[:attr], head[:value]]) do
           {:error, "tag unknown"} ->
-            Logger.error "Feed_url: " <> map[:feed][:self_link_url]
-            raise "Tag unknown"
+            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
           map -> map
         end
 
@@ -63,8 +62,7 @@ defmodule Pan.Parser.Iterator do
       episode_map =
         case Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]]) do
           {:error, "tag unknown"} ->
-            Logger.error "Feed_url: " <> map[:feed][:self_link_url]
-            raise "Tag unknown"
+            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
           map -> map
         end
 
