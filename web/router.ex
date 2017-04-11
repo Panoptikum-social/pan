@@ -152,6 +152,7 @@ defmodule Pan.Router do
     resources "/users", UserController
 
     post "/feeds/:id/make_only", FeedController, :make_only
+    get "/feeds/datatable", FeedController, :datatable
     resources "/feeds", FeedController
 
     post "/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog

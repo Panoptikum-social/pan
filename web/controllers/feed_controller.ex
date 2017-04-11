@@ -8,9 +8,20 @@ defmodule Pan.FeedController do
 
 
   def index(conn, _params) do
-    feeds = Repo.all(Feed)
-            |> Repo.preload(:podcast)
-    render(conn, "index.html", feeds: feeds)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, _params) do
+    feeds = from(f in Feed, order_by: [asc: :self_link_url],
+                            join: podcast in assoc(f, :podcast),
+                            select: %{id: f.id,
+                                      self_link_title: f.self_link_title,
+                                      self_link_url: f.self_link_url,
+                                      feed_generator: f.feed_generator,
+                                      podcast_id: f.podcast_id,
+                                      podcast_title: podcast.title})
+               |> Repo.all
+    render conn, "datatable.json", feeds: feeds
   end
 
 
