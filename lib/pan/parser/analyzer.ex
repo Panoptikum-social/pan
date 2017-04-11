@@ -39,6 +39,7 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:image, _, value]), do: Iterator.parse(map, "image", value)
   def call(_, "image", [:title, _, _]), do: %{}
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
+  def call(_, "image", [:url,   _, []]), do: %{}
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: value}
   def call(map, "image", [:link,        _, _]), do: map
   def call(map, "image", [:description, _, _]), do: map
@@ -171,8 +172,8 @@ defmodule Pan.Parser.Analyzer do
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language",
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
-    :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable",
-    :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail"
+    :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
+    :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id"
   ], do: %{}
 
 
@@ -335,7 +336,7 @@ defmodule Pan.Parser.Analyzer do
     Logger.error ~s(Tag: :"#{tag}")
     Logger.error "Attr: #{inspect attr}"
     Logger.error "Value: #{inspect value}"
-    raise "Tag unknown"
+    {:error, "tag unknown"}
   end
 
 

@@ -1,6 +1,7 @@
 defmodule Pan.Parser.Iterator do
   alias Pan.Parser.Analyzer
   alias Pan.Parser.Helpers
+  require Logger
 
 # Actual feed parsing: Now the fun begins
   def parse(map, context \\ "tag", tags)
@@ -31,7 +32,13 @@ defmodule Pan.Parser.Iterator do
 
   def parse(map, context, [head | tail]) do
     if is_map(head) do
-      podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
+      podcast_map =
+        case Analyzer.call(map, context, [head[:name], head[:attr], head[:value]]) do
+          {:error, "tag unknown"} ->
+            Logger.error "Feed_url: " <> map[:feed][:self_link_url]
+            raise "Tag unknown"
+          map -> map
+        end
 
       Helpers.deep_merge(map, podcast_map)
       |> parse(context, tail)
@@ -53,7 +60,13 @@ defmodule Pan.Parser.Iterator do
 
   def parse(map, "episode", [head | tail], guid) do
     if is_map(head) do
-      episode_map = Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]])
+      episode_map =
+        case Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]]) do
+          {:error, "tag unknown"} ->
+            Logger.error "Feed_url: " <> map[:feed][:self_link_url]
+            raise "Tag unknown"
+          map -> map
+        end
 
       Helpers.deep_merge(map, %{episodes: %{String.to_atom(guid) => episode_map}})
       |> parse("episode", tail, guid)

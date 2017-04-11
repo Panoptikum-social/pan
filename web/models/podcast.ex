@@ -179,12 +179,12 @@ defmodule Pan.Podcast do
 
     notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
       {:ok, _} ->
-        %{content: "Updated Podcast " <> podcast.title,
+        %{content: "Updated podcast: " <> podcast.title,
           type: "success",
           user_name: current_user && current_user.name}
 
       {:error, message} ->
-        %{content: "Error:" <> message <> " / " <> podcast.title,
+        %{content: "Error: " <> message <> " / " <> podcast.title,
           type: "danger",
           user_name: current_user && current_user.name}
     end
