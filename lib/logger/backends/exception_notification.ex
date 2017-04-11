@@ -16,5 +16,5 @@ defmodule Logger.Backends.ExceptionNotification do
     when node(group_leader) != node(), do: {:ok, state}
 
   def handle_event({level, _group_leader, {Logger, _, _, _}}, state)
-    when level in [:debug, :info], do: {:ok, state}
+    when level in [:debug, :info, :warn], do: {:ok, state}
 end
