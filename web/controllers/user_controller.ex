@@ -22,7 +22,7 @@ defmodule Pan.UserController do
 
 
   def show(conn, %{"id" => id}, _user) do
-    user = Repo.get(Pan.User, id)
+    user = Repo.get!(Pan.User, id)
     render conn, "show.html", user: user
   end
 
