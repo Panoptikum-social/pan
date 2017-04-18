@@ -178,7 +178,7 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call(_, "image", [tag_atom, _, _]) when tag_atom in [
-    :guid
+    :guid, :meta
   ], do: %{}
 
 

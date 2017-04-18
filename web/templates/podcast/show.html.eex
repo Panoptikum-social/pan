@@ -20,6 +20,8 @@
 
 <%= render "_podcast.html", podcast: @podcast, conn: @conn %>
 <hr/>
-<%= render Pan.FeedView, "index.html", feeds: @podcast.feeds, conn: @conn %>
-<hr/>
+<%= render Pan.FeedView, "index_table.html", feeds: @podcast.feeds, conn: @conn %>
+
+<h2>Episodes</h2>
+
 <%= render Pan.EpisodeView, "_episodes.html", episodes: @podcast.episodes, conn: @conn %>
