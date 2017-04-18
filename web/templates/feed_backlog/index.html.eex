@@ -10,6 +10,7 @@
 <table class="table table-condensed table-striped table-bordered">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Url</th>
       <th>Feed generator</th>
       <th>In progress</th>
@@ -21,6 +22,7 @@
   <tbody>
 <%= for feed_backlog <- @backlog_feeds do %>
     <tr>
+      <td><%= feed_backlog.id %></td>
       <td>
         <%= link feed_backlog.url, to: feed_backlog.url, target: "_blank" %><br/>
 

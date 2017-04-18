@@ -141,10 +141,10 @@ defmodule Pan.Parser.Analyzer do
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
-    :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner", 
+    :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
     :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
-    :"amp:tracking"
+    :"amp:tracking", :"itunes:subitle"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -177,8 +177,10 @@ defmodule Pan.Parser.Analyzer do
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
     :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
     :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id", :"a10:link",
-    :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", 
-    :"georss:where", 
+    :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image",
+    :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
+    :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
+    :"dc:date.Taken"
   ], do: %{}
 
 

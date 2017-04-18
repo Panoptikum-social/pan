@@ -26,6 +26,7 @@ defmodule Pan.Parser.Helpers do
                 |> fix_time()
                 |> replace_long_month_names()
                 |> replace_long_week_days
+                |> fix_timezones()
 
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
@@ -37,12 +38,14 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
@@ -50,6 +53,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
@@ -85,28 +89,37 @@ defmodule Pan.Parser.Helpers do
   def replace_long_month_names(datetime) do
     datetime
     |> String.replace("January",   "Jan")
+    |> String.replace(" jan ",    " Jan ")
     |> String.replace("February",  "Feb")
+    |> String.replace(" feb ",    " Feb ")
     |> String.replace(" Far ",    " Feb ")
     |> String.replace(" Fev ",    " Feb ")
     |> String.replace(" Febr ",   " Feb ")
     |> String.replace("March",     "Mar")
     |> String.replace(" Mär ",    " Mar ")
+    |> String.replace(" mar ",    " Mar ")
     |> String.replace("April",     "Apr")
     |> String.replace(" Avr ",    " Apr ")
     |> String.replace(" Mai ",    " May ")
+    |> String.replace(" may ",    " May ")
+    |> String.replace(" jun ",    " Jun ")
     |> String.replace("June",      "Jun")
     |> String.replace(" Juin ",   " Jun ")
     |> String.replace("July",      "Jul")
+    |> String.replace(" jul ",    " Jul ")
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
     |> String.replace(" Set ",    " Sep ")
     |> String.replace(" Sept ",   " Sep ")
+    |> String.replace(" sep ",    " Sep ")
     |> String.replace("October",   "Oct")
+    |> String.replace("OCtober",   "Oct")
     |> String.replace(" Okt ",    " Oct ")
     |> String.replace(" OCt ",    " Oct ")
     |> String.replace(" oct ",    " Oct ")
     |> String.replace(" Noc ",    " Nov ")
     |> String.replace("November",  "Nov")
+    |> String.replace(" nov ",    " Nov ")
     |> String.replace(" Dez ",    " Dec ")
     |> String.replace(" Dic ",    " Dec ")
     |> String.replace(" dec ",    " Dec ")
@@ -136,8 +149,14 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Son,", "Sun,")
     |> String.replace("TueSun,", "Sun,")
     |> String.replace("ٍ", "")
+  end
+
+
+  def fix_timezones(datetime) do
+    datetime
     |> String.replace("NZDT", "+1300")
     |> String.replace("NZST", "+1200")
+    |> String.replace("AEDT", "+1100")
     |> String.replace("AEST", "EST")
     |> String.replace("-0001", "2016")
     |> String.replace("KST", "+0900")
@@ -195,5 +214,10 @@ defmodule Pan.Parser.Helpers do
   def remove_extra_angle_brackets(xml) do
     xml = Regex.replace(~r/>>/Us, xml, ">")
     Regex.replace(~r//Us, xml, "")
+  end
+
+
+  def fix_ampersands(xml) do
+    String.replace(xml, "& ", "&amp; ")
   end
 end
