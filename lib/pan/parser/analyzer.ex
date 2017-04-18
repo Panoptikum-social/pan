@@ -141,7 +141,10 @@ defmodule Pan.Parser.Analyzer do
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
-    :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background"
+    :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner", 
+    :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
+    :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
+    :"amp:tracking"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -149,7 +152,7 @@ defmodule Pan.Parser.Analyzer do
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
     :category, :"dc:creator", :comments, :"feedburner:origLink", :"itunes:image", :"dc:modifieddate",
-    :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block",
+    :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block", :meta,
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment,
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
@@ -173,7 +176,9 @@ defmodule Pan.Parser.Analyzer do
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
     :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
-    :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id"
+    :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id", :"a10:link",
+    :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", 
+    :"georss:where", 
   ], do: %{}
 
 
@@ -229,9 +234,9 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title, _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+  def call(_, "episode", [:title, _, [value | _]]), do: %{title: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:"itunes:title", _, [value]]), do: %{title:       String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: String.slice(value, 0, 255)}
 
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link:        String.slice(value, 0, 255)}
@@ -275,10 +280,13 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:pubDate,           _, [value]]) do
     %{publishing_date: Helpers.to_naive_datetime(value)}
   end
-  def call(_, "episode", [:"dc:date",         _, [value]]) do
+  def call(_, "episode", [:pubDate, _, []]) do
+    %{publishing_date: Timex.now()}
+  end
+  def call(_, "episode", [:"dc:date", _, [value]]) do
     %{publishing_date: Helpers.to_naive_datetime(value)}
   end
-  def call(_, "episode", [:pubDateShort,         _, [value]]) do
+  def call(_, "episode", [:pubDateShort, _, [value]]) do
     %{publishing_date: Helpers.to_naive_datetime(value)}
   end
 

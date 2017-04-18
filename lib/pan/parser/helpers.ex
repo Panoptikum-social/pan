@@ -32,6 +32,7 @@ defmodule Pan.Parser.Helpers do
     datetime = try_format(feed_date, "{RFC1123}") ||
                try_format(feed_date, "{ISO:Extended}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
@@ -48,10 +49,12 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}")
+
 
     if datetime do
       Timex.to_naive_datetime(datetime)
