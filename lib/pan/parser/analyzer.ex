@@ -144,7 +144,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
     :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
-    :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId"
+    :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
