@@ -18,7 +18,7 @@ defmodule Pan.Parser.Persistor do
     Pan.Parser.Category.persist_many(map[:categories], podcast)
     Pan.Parser.AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
-    if url && feed.self_link_url != url && String.starts_with?(url, "http") do
+    if url && feed.self_link_url != url do
       %{String.to_atom(UUID.uuid1()) => %{title: url, url: url}}
       |> Pan.Parser.AlternateFeed.get_or_insert_many(feed.id)
     end

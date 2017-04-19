@@ -36,10 +36,13 @@ defmodule Pan.Parser.Podcast do
         {:ok, "Podcast importet successfully"}
 
       {:redirect, redirect_target} ->
-        AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url})
+        if String.starts_with?(redirect_target, "http") do
+          AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url})
 
-        Feed.changeset(feed, %{self_link_url: redirect_target})
-        |> Repo.update([force: true])
+          Feed.changeset(feed, %{self_link_url: redirect_target})
+          |> Repo.update([force: true])
+        end
+
         # Now that we have updated Feed and alternate feed, let's try again
         delta_import(id)
 
