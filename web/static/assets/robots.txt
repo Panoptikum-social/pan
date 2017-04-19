@@ -4,3 +4,5 @@ User-agent: *
 Disallow: /categories
 Disallow: /podcasts
 Disallow: /episodes
+Disallow: /personas
+Disallow: /users
