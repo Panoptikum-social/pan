@@ -101,9 +101,7 @@ defmodule Pan.FeedBacklogController do
       try do
         Pan.Parser.RssFeed.initial_import(backlog_feed.url)
       rescue
-        CaseClauseError ->
-          Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="
-        RuntimeError ->
+        _ ->
           Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="
       end
     end
