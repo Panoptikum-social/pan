@@ -29,7 +29,7 @@ defmodule Pan.Parser.Podcast do
       Logger.error "=== Podcast #{inspect id} has no feed! ==="
     end
 
-    case RssFeed.import_to_map(feed.self_link_url) do
+    case RssFeed.import_to_map(feed.self_link_url, id) do
       {:ok, map} ->
         Persistor.delta_import(map, id)
         unpause(id)

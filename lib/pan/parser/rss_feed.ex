@@ -27,9 +27,9 @@ defmodule Pan.Parser.RssFeed do
    end
 
 
-  def import_to_map(url) do
+  def import_to_map(url, podcast_id \\ 0) do
     url = String.strip(url)
-    Logger.info "\n\e[96m === Download from: #{url} ===\e[0m"
+    Logger.info "\n\e[96m === #{podcast_id} ⬇ #{url} ===\e[0m"
 
     case Download.download(url) do
       {:ok, feed_xml} ->
