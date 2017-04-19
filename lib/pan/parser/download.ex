@@ -40,20 +40,21 @@ defmodule Pan.Parser.Download do
       {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}} -> {:error, "Connection refused"}
 
       {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
-        if option == "set_tls_version" do
-          {:error, "Does not work with old tls as well!"}
-        else
-          download(url, "set_tls_version")
-        end
-
+        try_without_tls_set(url, option)
+      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'handshake failure'}}} ->
+        try_without_tls_set(url, option)
       {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
-        if option == "set_tls_version" do
-          {:error, "Does not work with old tls as well!"}
-        else
-          download(url, "set_tls_version")
-        end
+        try_without_tls_set(url, option)
 
       {:error, reason} -> {:error, reason}
+    end
+  end
+
+
+  def try_without_tls_set(url, option) do
+    case option do
+      "unset_tls_version" -> {:error, "Does not work without specifying tls version as well!"}
+                        _ -> download(url, "unset_tls_version")
     end
   end
 
@@ -80,11 +81,11 @@ defmodule Pan.Parser.Download do
     end
 
     options = case option do
-      "set_tls_version" ->
-        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
-      _ ->
+      "unset_tls_version" ->
         [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
          ssl: [{:versions, [:'tlsv1.2']}]]
+      _ ->
+        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
     end
     HTTPoison.get(url, headers, options)
   end
