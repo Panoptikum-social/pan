@@ -186,7 +186,9 @@ require IEx
           user_name: current_user && current_user.name}
 
       {:error, message} ->
-        %{content: "Error: " <> message <> " / " <> podcast.title,
+        %{content: "Error: " <> message <> " | " <>
+                   "<i class='fa fa-refresh'></i> " <> Integer.to_string(podcast.id) <>
+                   " <i class='fa fa-podcast'></i> " <> podcast.title,
           type: "danger",
           user_name: current_user && current_user.name}
     end
