@@ -177,9 +177,11 @@ defmodule Pan.Podcast do
                                  next_update:      next_update})
     |> Repo.update()
 
+require IEx
     notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
       {:ok, _} ->
-        %{content: "Updated podcast: " <> podcast.title,
+        %{content: "<i class='fa fa-refresh'></i> " <> Integer.to_string(podcast.id) <>
+                    " <i class='fa fa-podcast'></i> " <> podcast.title,
           type: "success",
           user_name: current_user && current_user.name}
 
