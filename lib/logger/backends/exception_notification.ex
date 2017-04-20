@@ -2,12 +2,15 @@ defmodule Logger.Backends.ExceptionNotification do
   use GenEvent
 
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
-    Logger.Formatter.compile("$time $metadata[$level] $message\n")
-    |> Logger.Formatter.format(:error, message, timestamp, metadata)
-    |> IO.iodata_to_binary
-    |> Pan.Email.error_notification("exeception_notification@panoptikum.io",
-                                    "stefan@panoptikum.io")
-    |> Pan.Mailer.deliver_now()
+    unless String.contains?(inspect(message), ["Fatal error: handshake failure",
+                                               "fatal: :unexpected_end"]) do
+      Logger.Formatter.compile("$time $metadata[$level] $message\n")
+      |> Logger.Formatter.format(:error, message, timestamp, metadata)
+      |> IO.iodata_to_binary
+      |> Pan.Email.error_notification("exeception_notification@panoptikum.io",
+                                      "stefan@panoptikum.io")
+      |> Pan.Mailer.deliver_now()
+    end
 
     {:ok, state}
   end

@@ -44,3 +44,8 @@ config :pan, Pan.Repo,
 
 config :pan, :environment, "dev"
 import_config "dev.secret.exs"
+
+# Uncomment the next two lines to send emails from dev as well
+
+# config :logger, backends:
+#   [:console, {Logger.Backends.ExceptionNotification, :exeception_notification}]

@@ -42,7 +42,7 @@ defmodule Pan.Mixfile do
      {:httpoison, "~> 0.11.1"}, # http client
      {:hackney, "1.7.1"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
-     {:quinn, "~> 1.0.0"}, # XML parser (another one)
+     {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
      {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "~> 1.0"}, # pagination

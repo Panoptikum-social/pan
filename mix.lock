@@ -43,7 +43,7 @@
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], []},
   "postgrex": {:hex, :postgrex, "0.13.2", "2b88168fc6a5456a27bfb54ccf0ba4025d274841a7a3af5e5deb1b755d95154e", [:mix], [{:connection, "~> 1.0", [hex: :connection, optional: false]}, {:db_connection, "~> 1.1", [hex: :db_connection, optional: false]}, {:decimal, "~> 1.0", [hex: :decimal, optional: false]}]},
   "providers": {:hex, :providers, "1.6.0", "db0e2f9043ae60c0155205fcd238d68516331d0e5146155e33d1e79dc452964a", [:rebar3], [{:getopt, "0.8.2", [hex: :getopt, optional: false]}]},
-  "quinn": {:hex, :quinn, "1.0.1", "751174e21fffc971d115866fbc87897250cd4e40eed3debbc5c628e1bce391cf", [:mix], []},
+  "quinn": {:hex, :quinn, "1.0.2", "33cfca788e87e62b4d43a5a065c553d2c05a7bd2b8d9883a24d8285cc80c7008", [:mix], []},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], []},
   "relx": {:hex, :relx, "3.22.2", "aee2ef6e9ac6d21d6661133b7a0be6e81424de9cdca0012fc008bc677297c469", [:rebar3], [{:bbmustache, "1.0.4", [hex: :bbmustache, optional: false]}, {:cf, "0.2.2", [hex: :cf, optional: false]}, {:erlware_commons, "0.22.0", [hex: :erlware_commons, optional: false]}, {:getopt, "0.8.2", [hex: :getopt, optional: false]}, {:providers, "1.6.0", [hex: :providers, optional: false]}]},
   "scrivener": {:hex, :scrivener, "2.2.1", "5a84cdfc042e3c318a03f965d8197b8294676a8fff7c4a29e482a90c467ebf19", [:mix], []},

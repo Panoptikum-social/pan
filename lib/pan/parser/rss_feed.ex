@@ -33,17 +33,20 @@ defmodule Pan.Parser.RssFeed do
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-       feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-                  |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-                  |> Pan.Parser.Helpers.fix_ampersands()
-                  |> Pan.Parser.Helpers.fix_character_code_strings()
-                  |> String.trim()
-                  |> Quinn.parse()
-
-        map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-                        title: Enum.at(String.split(url, "/"), 2)}
-              |> Iterator.parse(feed_map)
-        {:ok, map}
+        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                   |> Pan.Parser.Helpers.fix_ampersands()
+                   |> Pan.Parser.Helpers.fix_character_code_strings()
+                   |> String.trim()
+        try do
+          feed_map = Quinn.parse(feed_map)
+          map = %{feed: %{self_link_title: "Feed", self_link_url: url},
+                  title: Enum.at(String.split(url, "/"), 2)}
+                |> Iterator.parse(feed_map)
+          {:ok, map}
+        catch
+          :exit, _ -> {:error, "Quinn parser finds unexpected end"}
+        end
 
       {:redirect, redirect_target} ->
         {:redirect, redirect_target}
