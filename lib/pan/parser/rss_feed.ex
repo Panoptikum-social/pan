@@ -5,8 +5,8 @@ defmodule Pan.Parser.RssFeed do
   require Logger
 
 
-  def initial_import(url, pagecount \\ 1) do
-    case import_to_map(url) do
+  def initial_import(url, feed_id \\ 0, pagecount \\ 1) do
+    case import_to_map(url, feed_id) do
       {:ok, map} ->
         podcast_id = Persistor.initial_import(map, url)
         next_page_url = map[:feed][:next_page_url]
@@ -22,14 +22,14 @@ defmodule Pan.Parser.RssFeed do
         {:error, "Connection timeout"}
 
       {:redirect, redirect_target} ->
-        initial_import(redirect_target, pagecount)
+        initial_import(redirect_target, feed_id, pagecount)
     end
    end
 
 
-  def import_to_map(url, podcast_id \\ 0) do
+  def import_to_map(url, logging_id \\ 0) do
     url = String.strip(url)
-    Logger.info "\n\e[96m === #{podcast_id} ⬇ #{url} ===\e[0m"
+    Logger.info "\n\e[96m === #{logging_id} ⬇ #{url} ===\e[0m"
 
     case Download.download(url) do
       {:ok, feed_xml} ->

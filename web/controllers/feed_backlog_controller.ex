@@ -83,7 +83,7 @@ defmodule Pan.FeedBacklogController do
   def import(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)
 
-    case Pan.Parser.RssFeed.initial_import(feed_backlog.url) do
+    case Pan.Parser.RssFeed.initial_import(feed_backlog.url, id) do
       {:ok, podcast_id} ->
         conn
         |> put_flash(:info, "Feed imported successfully.")
@@ -99,7 +99,7 @@ defmodule Pan.FeedBacklogController do
   def import_all(conn, _params) do
     for backlog_feed <- Repo.all(from f in FeedBacklog, order_by: [desc: :inserted_at]) do
       try do
-        Pan.Parser.RssFeed.initial_import(backlog_feed.url)
+        Pan.Parser.RssFeed.initial_import(backlog_feed.url, backlog_feed.id)
       rescue
         _ ->
           Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="

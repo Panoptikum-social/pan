@@ -25,7 +25,7 @@ defmodule Pan.Parser.Helpers do
                 |> String.replace("  ", " ")
                 |> fix_time()
                 |> replace_long_month_names()
-                |> replace_long_week_days
+                |> replace_long_week_days()
                 |> fix_timezones()
 
     # Formatters reference:
@@ -44,6 +44,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {AM}") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
@@ -133,6 +134,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Thurs,","Thu,")
     |> String.replace("Thue,","Thu,")
     |> String.replace("Thur,","Thu,")
+    |> String.replace("Thur ","Thu ")
     |> String.replace("Mo,",  "Mon,")
     |> String.replace("mån,", "Mon,")
     |> String.replace("Di,",  "Tue,")
