@@ -3,7 +3,7 @@ defmodule Logger.Backends.ExceptionNotification do
 
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
-                                               "fatal: :unexpected_end"]) do
+                                               ":unexpected_end"]) do
       Logger.Formatter.compile("$time $metadata[$level] $message\n")
       |> Logger.Formatter.format(:error, message, timestamp, metadata)
       |> IO.iodata_to_binary
