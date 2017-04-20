@@ -10,7 +10,7 @@
 
 </p>
 <%= @total %> podcasts / <%= @episodes_total %> episodes / <%= @stale %> stale /
-<%= @paused %> paused / <%= @retired %> retired / <%= @average %> h average update intervall
+<%= @paused %> paused / <%= @retired %> retired / <%= @average %> h ø / <%= @podcasts_per_hour %> p/h
 
 <h2>Podcasts</h2>
 

@@ -67,9 +67,13 @@ defmodule Pan.PodcastController do
 
     total = Repo.aggregate(Podcast, :count, :id)
     episodes_total = Repo.aggregate(Episode, :count, :id)
+    podcasts_per_hour = Decimal.new(total)
+                        |> Decimal.div(average)
+                        |> Decimal.round()
 
     render(conn, "index.html", stale: stale, paused: paused, retired: retired, average: average,
-                               total: total, episodes_total: episodes_total)
+                               total: total, episodes_total: episodes_total,
+                               podcasts_per_hour: podcasts_per_hour)
   end
 
 
