@@ -147,6 +147,8 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Tues,", "Tue,")
     |> String.replace("tor,",  "Tue,")
     |> String.replace("Weds,", "Wed,")
+    |> String.replace("Weds ", "Wed ")
+    |> String.replace("Wen,",  "Wed,")
     |> String.replace("MWed,", "Wed,")
     |> String.replace("Mi,",   "Wed,")
     |> String.replace("Thurs,","Thu,")

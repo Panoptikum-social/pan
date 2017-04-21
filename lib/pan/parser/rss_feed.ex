@@ -27,6 +27,9 @@ defmodule Pan.Parser.RssFeed do
       {:error, "This is not an rss feed!"} ->
         {:error, "This is not an rss feed!"}
 
+      {:error, "500: internal server error"} ->
+        {:error, "500: internal server error"}
+
       {:redirect, redirect_target} ->
         initial_import(redirect_target, feed_id, pagecount)
     end

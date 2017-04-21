@@ -124,21 +124,21 @@ defmodule Pan.Parser.Analyzer do
 # tags to ignore
   def call(map, "tag", [tag_atom, _, _]) when tag_atom in [
     :"feedpress:locale", :"fyyd:verify", :"itunes:block", :"itunes:keywords", :"media:thumbnail",
-    :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo,
+    :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency",
-    :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image",
+    :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id", :"sy:updateBase",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
     :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
-    :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput,
+    :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput, :refURL,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
-    :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid,
+    :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid, :odToken,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
@@ -166,7 +166,7 @@ defmodule Pan.Parser.Analyzer do
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark", :"media:player",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating",
-    :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed",
+    :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed", :showImage,
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
@@ -178,11 +178,12 @@ defmodule Pan.Parser.Analyzer do
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
     :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
     :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id", :"a10:link",
-    :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image",
+    :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", :showThumb,
     :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
     :"dc:date.Taken", :"title_in_language", :"itunes_image", :"foto_207", :"ddn:episode_id",
-    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image"
+    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID,
+    :"blip:youtube_category", :"blip:distributions_info", :"media:adult"
   ], do: %{}
 
 
