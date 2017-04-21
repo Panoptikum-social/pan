@@ -127,8 +127,8 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
-    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor,
-    :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe",
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
+    :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency",
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image",
@@ -144,7 +144,8 @@ defmodule Pan.Parser.Analyzer do
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
     :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
-    :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent"
+    :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent",
+    :"frequenceMiseAJour", :"EmissionParlee"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -158,7 +159,7 @@ defmodule Pan.Parser.Analyzer do
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point", :length,
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
-    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate,
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :"ddn:id",
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure", :timestamp,
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
@@ -171,7 +172,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
     :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"dc:type",
     :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername",
-    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id",
+    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :imageurl,
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language",
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
@@ -180,7 +181,8 @@ defmodule Pan.Parser.Analyzer do
     :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image",
     :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
-    :"dc:date.Taken", :"title_in_language", :"itunes_image", :"foto_207",
+    :"dc:date.Taken", :"title_in_language", :"itunes_image", :"foto_207", :"ddn:episode_id",
+    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image"
   ], do: %{}
 
 

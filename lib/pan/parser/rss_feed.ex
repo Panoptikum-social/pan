@@ -21,6 +21,12 @@ defmodule Pan.Parser.RssFeed do
       {:error, "Connection timeout"} ->
         {:error, "Connection timeout"}
 
+      {:error, "404: feed not found"} ->
+        {:error, "404: feed not found"}
+
+      {:error, "This is not an rss feed!"} ->
+        {:error, "This is not an rss feed!"}
+
       {:redirect, redirect_target} ->
         initial_import(redirect_target, feed_id, pagecount)
     end

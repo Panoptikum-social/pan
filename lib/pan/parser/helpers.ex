@@ -36,12 +36,17 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D}th {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D}rd {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D}st {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D}nd {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {AM}") ||
@@ -58,7 +63,10 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}")
+               try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D}, {YYYY} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
+               try_format(feed_date, "{WDfull} {Mshort} {D}, {YYYY}")
 
 
     if datetime do
@@ -108,6 +116,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(" Juin ",   " Jun ")
     |> String.replace("July",      "Jul")
     |> String.replace(" jul ",    " Jul ")
+    |> String.replace(" JUL ",    " Jul ")
     |> String.replace("August",    "Aug")
     |> String.replace("September", "Sep")
     |> String.replace(" Set ",    " Sep ")
@@ -131,24 +140,24 @@ defmodule Pan.Parser.Helpers do
   def replace_long_week_days(datetime) do
     datetime
     |> String.replace("Wedn,", "Wed,")
-    |> String.replace("Thurs,","Thu,")
-    |> String.replace("Thue,","Thu,")
-    |> String.replace("Thur,","Thu,")
-    |> String.replace("Thur ","Thu ")
-    |> String.replace("Mo,",  "Mon,")
-    |> String.replace("mån,", "Mon,")
-    |> String.replace("Di,",  "Tue,")
+    |> String.replace("Mo,",   "Mon,")
+    |> String.replace("mån,",  "Mon,")
+    |> String.replace("Di,",   "Tue,")
     |> String.replace("Tus,",  "Tue,")
-    |> String.replace("Tues,",  "Tue,")
-    |> String.replace("Weds,",  "Wed,")
-    |> String.replace("MWed,",  "Wed,")
-    |> String.replace("tor,", "Tue,")
-    |> String.replace("Mi,",  "Wed,")
-    |> String.replace("Do,",  "Thu,")
-    |> String.replace("Fr,",  "Fri,")
-    |> String.replace("Sa,",  "Sat,")
-    |> String.replace("So,",  "Sun,")
-    |> String.replace("Son,", "Sun,")
+    |> String.replace("Tues,", "Tue,")
+    |> String.replace("tor,",  "Tue,")
+    |> String.replace("Weds,", "Wed,")
+    |> String.replace("MWed,", "Wed,")
+    |> String.replace("Mi,",   "Wed,")
+    |> String.replace("Thurs,","Thu,")
+    |> String.replace("Thue,", "Thu,")
+    |> String.replace("Thur,", "Thu,")
+    |> String.replace("Thur ", "Thu ")
+    |> String.replace("Do,",   "Thu,")
+    |> String.replace("Fr,",   "Fri,")
+    |> String.replace("Sa,",   "Sat,")
+    |> String.replace("So,",   "Sun,")
+    |> String.replace("Son,",  "Sun,")
     |> String.replace("TueSun,", "Sun,")
     |> String.replace("ٍ", "")
   end

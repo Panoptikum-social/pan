@@ -88,10 +88,24 @@ defmodule Pan.FeedBacklogController do
         conn
         |> put_flash(:info, "Feed imported successfully.")
         |> redirect(to: podcast_frontend_path(conn, :show, podcast_id))
+
       {:error, "Connection timeout"} ->
         conn
-        |> put_flash(:error, "Connection timeout.")
-        |> redirect(to: feed_backlog_path(conn, :index))
+        Repo.delete!(feed_backlog)
+        |> put_flash(:error, "Connection timeout. - Deleted.")
+        |> render("import.html")
+
+      {:error, "404: feed not found"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "Feed not found - Deleted.")
+        |> render("import.html")
+
+      {:error, "This is not an rss feed!"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "This is not an rss feed! - Deleted.")
+        |> render("import.html")
     end
   end
 
