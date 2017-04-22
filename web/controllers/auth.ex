@@ -98,7 +98,7 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access that page.")
-      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
+      |> redirect(to: Helpers.category_frontend_path(conn, :index))
       |> halt()
     end
   end
@@ -112,7 +112,7 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must have a pro account to access that page.")
-      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
+      |> redirect(to: Helpers.category_frontend_path(conn, :index))
       |> halt()
     end
   end
@@ -125,7 +125,7 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access this page.")
-      |> redirect(to: Helpers.podcast_frontend_path(conn, :index))
+      |> redirect(to: Helpers.category_frontend_path(conn, :index))
       |> halt()
     end
   end
