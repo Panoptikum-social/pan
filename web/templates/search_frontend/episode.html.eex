@@ -14,3 +14,5 @@
                  to: @podcast_url,
                  class: "btn btn-default btn-xs",
                  style: "color: #000" %>
+
+<span class="h6 pull-right"><small><%= @score %></small></span>

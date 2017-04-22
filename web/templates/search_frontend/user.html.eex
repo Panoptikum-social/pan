@@ -8,3 +8,5 @@
   <%= link "https://panoptikum.io" <> @user.url, to: @user.url,
                                                  style: "color:#006621" %><br/>
 </p>
+
+<span class="h6 pull-right"><small><%= @score %></small></span>

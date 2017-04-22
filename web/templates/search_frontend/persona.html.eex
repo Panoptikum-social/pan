@@ -27,3 +27,5 @@
     </div>
   </div>
 <% end %>
+
+<span class="h6 pull-right"><small><%= @score %></small></span>

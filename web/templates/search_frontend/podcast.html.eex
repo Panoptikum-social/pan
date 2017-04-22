@@ -17,3 +17,5 @@
            to: category_frontend_path(Pan.Endpoint, :show, category),
            class: "btn btn-xs btn-light-gray" %>
 <% end %>
+
+<span class="h6 pull-right"><small><%= @score %></small></span>

@@ -13,13 +13,18 @@ defmodule Pan.SearchFrontendController do
 
     page = round((from + 10) / size)
 
-    query = search [index: "/panoptikum_" <> Application.get_env(:pan, :environment)] do
-      query do
-        match "_all", params["search"]["searchstring"]
-      end
-      size size
-      from from
-    end
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
+             search: [size: size, from: from,
+               query: [
+                 function_score: [
+                   query: [match: [_all: [query: params["search"]["searchstring"]]]],
+                   boost_mode: "multiply",
+                   functions: [
+                     %{filter: [term: ["_type": "categories"]], weight: 5},
+                     %{filter: [term: ["_type": "podcasts"]], weight: 4},
+                     %{filter: [term: ["_type": "personas"]], weight: 3},
+                     %{filter: [term: ["_type": "episodes"]], weight: 2},
+                     %{filter: [term: ["_type": "users"]], weight: 1}]]]]]
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits, took: took}} ->

@@ -53,7 +53,7 @@ defmodule Pan.Mixfile do
      {:earmark, "~> 1.1.0"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent,
      {:tzdata, "~> 0.5.11"}, # mailing
-     {:tirexs, "~> 0.8"}, # elasticsearch connector
+     {:tirexs, github: "Zatvobor/tirexs"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
     ]
   end
