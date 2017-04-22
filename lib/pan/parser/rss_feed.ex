@@ -2,6 +2,7 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Persistor
   alias Pan.Parser.Download
+  alias Pan.Parser.AlternateFeed
   require Logger
 
 
@@ -21,8 +22,14 @@ defmodule Pan.Parser.RssFeed do
       {:error, "Connection timeout"} ->
         {:error, "Connection timeout"}
 
+      {:error, "Timeout"} ->
+        {:error, "Connection timeout"}
+
       {:error, "404: feed not found"} ->
         {:error, "404: feed not found"}
+
+      {:error, "403: forbidden"} ->
+        {:error, "403: forbidden"}
 
       {:error, "This is not an rss feed!"} ->
         {:error, "This is not an rss feed!"}
@@ -30,8 +37,19 @@ defmodule Pan.Parser.RssFeed do
       {:error, "500: internal server error"} ->
         {:error, "500: internal server error"}
 
+      {:error, "Domain not resolveable"} ->
+        {:error, "Domain not resolveable"}
+
+      {:error, "Quinn parser finds unexpected end"} ->
+        {:error, "Quinn parser finds unexpected end"}
+
       {:redirect, redirect_target} ->
-        initial_import(redirect_target, feed_id, pagecount)
+        {:ok, podcast_id} = initial_import(redirect_target, feed_id, pagecount)
+
+        feed = Pan.Repo.get_by(Pan.Feed, podcast_id: podcast_id)
+        AlternateFeed.get_or_insert(feed.id, %{url: url})
+
+        {:ok, podcast_id}
     end
    end
 

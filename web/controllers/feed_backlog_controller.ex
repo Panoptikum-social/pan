@@ -107,6 +107,23 @@ defmodule Pan.FeedBacklogController do
         |> put_flash(:error, "500: Internal server error - Deleted.")
         |> render("import.html")
 
+      {:error, "Domain not resolveable"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "Domain not resolveable - Deleted.")
+        |> render("import.html")
+
+      {:error, "Quinn parser finds unexpected end"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "Quinn parser finds unexpected end - Deleted.")
+        |> render("import.html")
+
+      {:error, "403: forbidden"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "403: forbidden - Deleted.")
+        |> render("import.html")
 
       {:error, "This is not an rss feed!"} ->
         Repo.delete!(feed_backlog)

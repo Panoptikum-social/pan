@@ -125,7 +125,7 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [tag_atom, _, _]) when tag_atom in [
     :"feedpress:locale", :"fyyd:verify", :"itunes:block", :"itunes:keywords", :"media:thumbnail",
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
-    :"media:credit", :"media:copyright", :"media:rating", :"media:description", :"copyright",
+    :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright,
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
@@ -135,8 +135,8 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id", :"sy:updateBase",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
-    :"managingeditor", :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
-    :changefreq, :"dc:title", :"feedburner:browserFriendly", :"itunesowner", :textInput, :refURL,
+    :managingeditor, :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
+    :changefreq, :"dc:title", :"feedburner:browserFriendly", :itunesowner, :textInput, :refURL,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid, :odToken,
     :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
@@ -145,7 +145,8 @@ defmodule Pan.Parser.Analyzer do
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
     :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
     :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent",
-    :"frequenceMiseAJour", :"EmissionParlee"
+    :frequenceMiseAJour, :EmissionParlee, :"ionofm:thumbnail", :EmissionMusical, :audioExist,
+    :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -181,9 +182,11 @@ defmodule Pan.Parser.Analyzer do
     :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", :showThumb,
     :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
-    :"dc:date.Taken", :"title_in_language", :"itunes_image", :"foto_207", :"ddn:episode_id",
-    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID,
-    :"blip:youtube_category", :"blip:distributions_info", :"media:adult"
+    :"dc:date.Taken", :title_in_language, :itunes_image, :foto_207, :"ddn:episode_id", :lead, :date,
+    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID, :group,
+    :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file",
+    :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name",
+    :"blip:channel_list", :"blip:betaUser", :dureeReference
   ], do: %{}
 
 

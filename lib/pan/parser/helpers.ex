@@ -35,10 +35,12 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
@@ -51,14 +53,16 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {AM}") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
-               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}") ||
@@ -98,41 +102,54 @@ defmodule Pan.Parser.Helpers do
   def replace_long_month_names(datetime) do
     datetime
     |> String.replace("January",   "Jan")
-    |> String.replace(" jan ",    " Jan ")
+    |> String.replace("jan",       "Jan")
+    |> String.replace("JAN",       "Jan")
     |> String.replace("February",  "Feb")
-    |> String.replace(" feb ",    " Feb ")
-    |> String.replace(" Far ",    " Feb ")
-    |> String.replace(" Fev ",    " Feb ")
-    |> String.replace(" Febr ",   " Feb ")
+    |> String.replace("FEB",       "Feb")
+    |> String.replace("feb",       "Feb")
+    |> String.replace("Far",       "Feb")
+    |> String.replace("Fev",       "Feb")
+    |> String.replace("Febr",      "Feb")
     |> String.replace("March",     "Mar")
-    |> String.replace(" Mär ",    " Mar ")
-    |> String.replace(" mar ",    " Mar ")
+    |> String.replace("Mär",       "Mar")
+    |> String.replace("mar",       "Mar")
+    |> String.replace("MAR",       "Mar")
     |> String.replace("April",     "Apr")
-    |> String.replace(" Avr ",    " Apr ")
-    |> String.replace(" Mai ",    " May ")
-    |> String.replace(" may ",    " May ")
-    |> String.replace(" jun ",    " Jun ")
+    |> String.replace("APR",       "Apr")
+    |> String.replace("apr",       "Apr")
+    |> String.replace("Avr",       "Apr")
+    |> String.replace("Mai",       "May")
+    |> String.replace("may",       "May")
+    |> String.replace("MAY",       "May")
+    |> String.replace("jun",       "Jun")
+    |> String.replace("JUN",       "Jun")
     |> String.replace("June",      "Jun")
-    |> String.replace(" Juin ",   " Jun ")
+    |> String.replace("Juin",      "Jun")
     |> String.replace("July",      "Jul")
-    |> String.replace(" jul ",    " Jul ")
-    |> String.replace(" JUL ",    " Jul ")
+    |> String.replace("jul",       "Jul")
+    |> String.replace("JUL",       "Jul")
     |> String.replace("August",    "Aug")
+    |> String.replace("aug",       "Aug")
+    |> String.replace("AUG",       "Aug")
     |> String.replace("September", "Sep")
-    |> String.replace(" Set ",    " Sep ")
-    |> String.replace(" Sept ",   " Sep ")
-    |> String.replace(" sep ",    " Sep ")
+    |> String.replace("Set",       "Sep")
+    |> String.replace("Sept",      "Sep")
+    |> String.replace("sep",       "Sep")
+    |> String.replace("SEP",       "Sep")
     |> String.replace("October",   "Oct")
     |> String.replace("OCtober",   "Oct")
-    |> String.replace(" Okt ",    " Oct ")
-    |> String.replace(" OCt ",    " Oct ")
-    |> String.replace(" oct ",    " Oct ")
-    |> String.replace(" Noc ",    " Nov ")
+    |> String.replace("Okt",       "Oct")
+    |> String.replace("OCt",       "Oct")
+    |> String.replace("OCT",       "Oct")
+    |> String.replace("oct",       "Oct")
+    |> String.replace("Noc",       "Nov")
     |> String.replace("November",  "Nov")
-    |> String.replace(" nov ",    " Nov ")
-    |> String.replace(" Dez ",    " Dec ")
-    |> String.replace(" Dic ",    " Dec ")
-    |> String.replace(" dec ",    " Dec ")
+    |> String.replace("nov",       "Nov")
+    |> String.replace("NOV",       "Nov")
+    |> String.replace("Dez",       "Dec")
+    |> String.replace("Dic",       "Dec")
+    |> String.replace("dec",       "Dec")
+    |> String.replace("DEC",       "Dec")
     |> String.replace("December",  "Dec")
   end
 
