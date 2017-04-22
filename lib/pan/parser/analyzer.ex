@@ -40,7 +40,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "image", [:title, _, _]), do: %{}
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
   def call(_, "image", [:url,   _, []]), do: %{}
-  def call(_, "image", [:url,   _, [value]]), do: %{image_url: value}
+  def call(_, "image", [:url,   _, [value]]), do: %{image_url: String.slice(value, 0, 255)}
   def call(map, "image", [:link,        _, _]), do: map
   def call(map, "image", [:description, _, _]), do: map
   def call(map, "image", [:width,       _, _]), do: map
@@ -48,19 +48,19 @@ defmodule Pan.Parser.Analyzer do
 
   def call(map, "image", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
-                        else: %{image_url: attr[:href],
+                        else: %{image_url: String.slice(attr[:href], 0, 255),
                                 image_title: attr[:href]}
   end
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
-                        else: %{image_url: attr[:href],
+                        else: %{image_url: String.slice(attr[:href], 0, 255),
                                 image_title: attr[:href]}
   end
 
   def call(map, "tag", [:"itunes:image", _, [value]]) do
     if map[:image_url], do: map,
-                        else: %{image_url: value}
+                        else: %{image_url: String.slice(value, 0, 255)}
   end
 
 
@@ -188,7 +188,7 @@ defmodule Pan.Parser.Analyzer do
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file",
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id",
-    :"digicast:image", :"digicast:website"
+    :"digicast:image", :"digicast:website", :"dc:language"
   ], do: %{}
 
 
