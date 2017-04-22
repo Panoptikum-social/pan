@@ -143,10 +143,11 @@ defmodule Pan.Parser.Analyzer do
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
-    :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo",
+    :"amp:networkBackground", :"amp:networkWebsite", :artwork, :"amp:showFeaturedLogo", :feedcss,
     :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent",
     :frequenceMiseAJour, :EmissionParlee, :"ionofm:thumbnail", :EmissionMusical, :audioExist,
-    :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes
+    :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes, :license,
+    :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -157,7 +158,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block", :meta,
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment, :url,
     :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
-    :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated",
+    :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated", :img,
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point", :length,
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :"ddn:id",
@@ -172,7 +173,7 @@ defmodule Pan.Parser.Analyzer do
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
     :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"dc:type",
-    :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername",
+    :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername", :mobile,
     :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :imageurl,
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language",
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
@@ -185,8 +186,9 @@ defmodule Pan.Parser.Analyzer do
     :"dc:date.Taken", :title_in_language, :itunes_image, :foto_207, :"ddn:episode_id", :lead, :date,
     :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID, :group,
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file",
-    :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name",
-    :"blip:channel_list", :"blip:betaUser", :dureeReference
+    :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
+    :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id",
+    :"digicast:image", :"digicast:website"
   ], do: %{}
 
 
@@ -289,6 +291,9 @@ defmodule Pan.Parser.Analyzer do
     %{publishing_date: Helpers.to_naive_datetime(value)}
   end
   def call(_, "episode", [:pubdate,           _, [value]]) do
+    %{publishing_date: Helpers.to_naive_datetime(value)}
+  end
+  def call(_, "episode", [:"itunes:pubDate",  _, [value]]) do
     %{publishing_date: Helpers.to_naive_datetime(value)}
   end
   def call(_, "episode", [:pubDate, _, []]) do

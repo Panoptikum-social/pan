@@ -125,6 +125,12 @@ defmodule Pan.FeedBacklogController do
         |> put_flash(:error, "403: forbidden - Deleted.")
         |> render("import.html")
 
+      {:error, "Connection refused"} ->
+        Repo.delete!(feed_backlog)
+        conn
+        |> put_flash(:error, "Connection refused - Deleted.")
+        |> render("import.html")
+
       {:error, "This is not an rss feed!"} ->
         Repo.delete!(feed_backlog)
         conn

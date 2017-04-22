@@ -23,6 +23,7 @@ defmodule Pan.Parser.Helpers do
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> String.replace("  ", " ")
+                |> String.replace("\"", "")
                 |> fix_time()
                 |> replace_long_month_names()
                 |> replace_long_week_days()
@@ -36,6 +37,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
@@ -52,6 +54,8 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {AM}") ||
+               try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDfull} {Mshort} {D}, {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
                try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
@@ -171,6 +175,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Thurs,","Thu,")
     |> String.replace("Thue,", "Thu,")
     |> String.replace("Thur,", "Thu,")
+    |> String.replace("Thr,",  "Thu,")
     |> String.replace("Thur ", "Thu ")
     |> String.replace("Do,",   "Thu,")
     |> String.replace("Fr,",   "Fri,")
@@ -187,7 +192,8 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("NZDT", "+1300")
     |> String.replace("NZST", "+1200")
     |> String.replace("AEDT", "+1100")
-    |> String.replace("AEST", "EST")
+    |> String.replace("AEST",  "EST")
+    |> String.replace("GTM",   "GMT")
     |> String.replace("-0001", "2016")
     |> String.replace("KST", "+0900")
     |> String.replace("JST", "+0900")

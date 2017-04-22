@@ -31,6 +31,9 @@ defmodule Pan.Parser.RssFeed do
       {:error, "403: forbidden"} ->
         {:error, "403: forbidden"}
 
+      {:error, "Connection refused"} ->
+        {:error, "Connection refused"}
+
       {:error, "This is not an rss feed!"} ->
         {:error, "This is not an rss feed!"}
 
@@ -44,12 +47,14 @@ defmodule Pan.Parser.RssFeed do
         {:error, "Quinn parser finds unexpected end"}
 
       {:redirect, redirect_target} ->
-        {:ok, podcast_id} = initial_import(redirect_target, feed_id, pagecount)
-
-        feed = Pan.Repo.get_by(Pan.Feed, podcast_id: podcast_id)
-        AlternateFeed.get_or_insert(feed.id, %{url: url})
-
-        {:ok, podcast_id}
+        case initial_import(redirect_target, feed_id, pagecount) do
+          {:ok, podcast_id} ->
+            feed = Pan.Repo.get_by(Pan.Feed, podcast_id: podcast_id)
+            AlternateFeed.get_or_insert(feed.id, %{url: url})
+            {:ok, podcast_id}
+          {:error, error} ->
+            {:error, error}
+        end
     end
    end
 
