@@ -1,6 +1,16 @@
 defmodule Pan.Parser.Persistor do
   use Pan.Web, :controller
   alias Pan.Repo
+  alias Pan.Parser.Author
+  alias Pan.Parser.Podcast
+  alias Pan.Parser.Episode
+  alias Pan.Parser.Contributor
+  alias Pan.Parser.Feed
+  alias Pan.Parser.Category
+  alias Pan.Parser.AlternateFeed
+  alias Pan.Parser.Language
+  alias Pan.Parser.Owner
+
 
 
   def initial_import(map, url \\ nil) do
@@ -10,29 +20,29 @@ defmodule Pan.Parser.Persistor do
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-    {:ok, podcast} = Pan.Parser.Podcast.get_or_insert(podcast_map)
-    Pan.Parser.Author.get_or_insert_into_podcast(map[:author], podcast.id)
+    {:ok, podcast} = Podcast.get_or_insert(podcast_map)
+    Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
 
-    {:ok, feed}    = Pan.Parser.Feed.get_or_insert(feed_map, podcast.id)
+    {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
 
-    Pan.Parser.Category.persist_many(map[:categories], podcast)
-    Pan.Parser.AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
+    Category.persist_many(map[:categories], podcast)
+    AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
     if url && feed.self_link_url != url do
       %{String.to_atom(UUID.uuid1()) => %{title: url, url: url}}
-      |> Pan.Parser.AlternateFeed.get_or_insert_many(feed.id)
+      |> AlternateFeed.get_or_insert_many(feed.id)
     end
 
-    Pan.Parser.Language.persist_many(map[:languages], podcast)
+    Language.persist_many(map[:languages], podcast)
 
     if map[:owner] do
-      Pan.Parser.Owner.get_or_insert(map[:owner], podcast.id)
+      Owner.get_or_insert(map[:owner], podcast.id)
     end
 
-    Pan.Parser.Contributor.persist_many(map[:contributors], podcast)
+    Contributor.persist_many(map[:contributors], podcast)
 
     if map[:episodes] do
-      Pan.Parser.Episode.persist_many(map[:episodes], podcast)
+      Episode.persist_many(map[:episodes], podcast)
     end
 
     podcast.id
@@ -45,7 +55,7 @@ defmodule Pan.Parser.Persistor do
 
     unless map[:last_build_date] == podcast.last_build_date do
       if map[:episodes] do
-        Pan.Parser.Episode.persist_many(map[:episodes], podcast)
+        Episode.persist_many(map[:episodes], podcast)
       end
 
       Pan.Podcast.changeset(podcast, %{last_build_date: map[:last_build_date]})
@@ -58,7 +68,7 @@ defmodule Pan.Parser.Persistor do
     podcast = Repo.get!(Pan.Podcast, podcast_id)
 
     if map[:episodes] do
-      Pan.Parser.Episode.insert_contributors(map[:episodes], podcast)
+      Episode.insert_contributors(map[:episodes], podcast)
     end
   end
 end

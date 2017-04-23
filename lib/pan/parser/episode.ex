@@ -68,7 +68,7 @@ defmodule Pan.Parser.Episode do
             end
 
             Contributor.persist_many(episode_map[:contributors], episode)
-            Author.get_or_insert_into_episode(episode_map[:author], episode, podcast)
+            Author.get_or_insert_persona_and_gig(episode_map[:author], episode, podcast)
             Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
           {:exists, _episode} ->
             true

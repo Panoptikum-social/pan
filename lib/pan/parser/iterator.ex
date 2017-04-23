@@ -22,6 +22,32 @@ defmodule Pan.Parser.Iterator do
   end
 
 
+  def parse(map, "author", [head | tail]) do
+    author_map =
+      if is_map(head) do
+        Analyzer.call(map, "author", [head[:name], head[:attr], head[:value]])
+      else
+        %{name: String.slice(head, 0, 255)}
+      end
+
+    Helpers.deep_merge(map, %{author: author_map})
+    |> parse("author", tail)
+  end
+
+
+  def parse(map, "episode_author", [head | tail]) do
+    episode_author_map =
+      if is_map(head) do
+        Analyzer.call(map, "episode_author", [head[:name], head[:attr], head[:value]])
+      else
+        %{name: String.slice(head, 0, 255)}
+      end
+
+    Helpers.deep_merge(map, %{author: episode_author_map})
+    |> parse("episode_author", tail)
+  end
+
+
   def parse(map, "chapter", [head | tail]) do
     chapter_map = Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
 

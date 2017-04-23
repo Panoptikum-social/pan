@@ -13,10 +13,6 @@ defmodule Pan.Parser.Analyzer do
 # simple tags to include in podcast
   def call(_, "tag", [:title,             _, []]), do: %{}
   def call(_, "tag", [:title,             _, [value]]), do: %{title: value}
-  def call(_, "tag", [:"itunes:author",   _, []]), do: %{}
-  def call(_, "tag", [:author,            _, [value]]), do: %{author: String.slice(value, 0, 255)}
-  def call(_, "tag", [:"googleplay:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
-  def call(_, "tag", [:"itunes:author",   _, [value]]), do: %{author: String.slice(value, 0, 255)}
   def call(_, "tag", [:"itunes:summary",  _, []]),      do: %{}
   def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, []]), do: %{}
@@ -147,7 +143,8 @@ defmodule Pan.Parser.Analyzer do
     :"amp:tracking", :"itunes:subitle", :"feedpress:newsletterId", :"blogger:adultContent",
     :frequenceMiseAJour, :EmissionParlee, :"ionofm:thumbnail", :EmissionMusical, :audioExist,
     :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes, :license,
-    :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link"
+    :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
+    :"atom:updated"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -187,8 +184,9 @@ defmodule Pan.Parser.Analyzer do
     :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID, :group,
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file",
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
-    :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id",
-    :"digicast:image", :"digicast:website", :"dc:language"
+    :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
+    :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
+    :"cfi:downloadurl", :"cfi:lastdownloadtime"
   ], do: %{}
 
 
@@ -215,9 +213,22 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "owner", [:"itunes:email",    _, []]), do: %{}
   def call(_, "owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call(_, "owner", [:email,             _, [value]]), do: %{email: value}
-# FIXME: HAS20170130 shwould be pulled out of itunes owner
   def call(_, "owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
+
+# We expect one podcast author
+  def call(_,   "tag", [:"itunes:author",        _, []]), do: %{}
+  def call(map, "tag", [:"itunes:author",       _, value]), do: Iterator.parse(map, "author", value)
+  def call(map, "tag", [:"atom:author",         _, value]), do: Iterator.parse(map, "author", value)
+  def call(map, "tag", [:author,                _, value]), do: Iterator.parse(map, "author", value)
+  def call(map, "tag", [:"googleplay:author",   _, value]), do: Iterator.parse(map, "author", value)
+  def call(_, "author", [:"itunes:name",     _, []]), do: %{}
+  def call(_, "author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call(_, "author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call(_, "author", [:"itunes:email",    _, []]), do: %{}
+  def call(_, "author", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call(_, "author", [:"atom:email",      _, [value]]), do: %{email: value}
+  def call(_, "author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
@@ -277,11 +288,6 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: String.slice(value, 0, 255)}
 
-  def call(_, "episode", [:"itunes:author", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
-  def call(_, "episode", [:"googleplay:author", _, [value]]), do: %{author: String.slice(value, 0, 255)}
-  def call(_, "episode", [:"dc:publisher", _, [value]]), do: %{author: String.slice(value, 0, 255)}
-
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
   def call(_, "episode", [:duration, _, []]), do: %{}
@@ -317,6 +323,21 @@ defmodule Pan.Parser.Analyzer do
         %{}
     end
   end
+
+
+# We expect one episode author
+  def call(_, "episode", [:"itunes:author", _, []]), do: %{}
+  def call(map, "episode", [:"itunes:author", _, value]), do: Iterator.parse(map, "episode_author", value)
+  def call(map, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(map, "episode_author", value)
+  def call(map, "episode", [:"dc:publisher", _, value]), do: Iterator.parse(map, "episode_author", value)
+  def call(map, "episode", [:"atom:author", _, value]), do: Iterator.parse(map, "episode_author", value)
+  def call(_, "episode_author", [:"itunes:name",     _, []]), do: %{}
+  def call(_, "episode_author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call(_, "episode_author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call(_, "episode_author", [:"itunes:email",    _, []]), do: %{}
+  def call(_, "episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call(_, "episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
+  def call(_, "episode_author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 
 # Enclosures a.k.a. Audiofiles
@@ -378,6 +399,5 @@ defmodule Pan.Parser.Analyzer do
   def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
   def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
-# FIXME: HAS20170130 should be pulled out of itunes owner
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
 end

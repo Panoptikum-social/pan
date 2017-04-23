@@ -1,6 +1,5 @@
 defmodule Pan.SearchFrontendController do
   use Pan.Web, :controller
-  import Tirexs.Search
   require Logger
 
   def new(conn, params) do
