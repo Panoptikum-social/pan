@@ -204,31 +204,17 @@ defmodule Pan.Parser.Analyzer do
 
 
 # We expect one owner
-  def call(map, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(map, "owner", value)
-  def call(map, "tag", [:owner,             _, value]), do: Iterator.parse(map, "owner", value)
-  def call(map, "tag", [:"itunes:email",    _, value]), do: Iterator.parse(map, "owner", value)
-  def call(_, "owner", [:"itunes:name",     _, []]), do: %{}
-  def call(_, "owner", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "owner", [:name,              _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "owner", [:"itunes:email",    _, []]), do: %{}
-  def call(_, "owner", [:"itunes:email",    _, [value]]), do: %{email: value}
-  def call(_, "owner", [:email,             _, [value]]), do: %{email: value}
-  def call(_, "owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+  def call(_, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(%{}, "owner", value)
+  def call(_, "tag", [:owner,             _, value]), do: Iterator.parse(%{}, "owner", value)
+  def call(_, "tag", [:"itunes:email",    _, value]), do: Iterator.parse(%{}, "owner", value)
 
 
 # We expect one podcast author
   def call(_,   "tag", [:"itunes:author",        _, []]), do: %{}
-  def call(map, "tag", [:"itunes:author",       _, value]), do: Iterator.parse(map, "author", value)
-  def call(map, "tag", [:"atom:author",         _, value]), do: Iterator.parse(map, "author", value)
-  def call(map, "tag", [:author,                _, value]), do: Iterator.parse(map, "author", value)
-  def call(map, "tag", [:"googleplay:author",   _, value]), do: Iterator.parse(map, "author", value)
-  def call(_, "author", [:"itunes:name",     _, []]), do: %{}
-  def call(_, "author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "author", [:"itunes:email",    _, []]), do: %{}
-  def call(_, "author", [:"itunes:email",    _, [value]]), do: %{email: value}
-  def call(_, "author", [:"atom:email",      _, [value]]), do: %{email: value}
-  def call(_, "author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+  def call(_, "tag", [:"itunes:author",       _, value]), do: Iterator.parse(%{}, "author", value)
+  def call(_, "tag", [:"atom:author",         _, value]), do: Iterator.parse(%{}, "author", value)
+  def call(_, "tag", [:author,                _, value]), do: Iterator.parse(%{}, "author", value)
+  def call(_, "tag", [:"googleplay:author",   _, value]), do: Iterator.parse(%{}, "author", value)
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
@@ -251,7 +237,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # Episodes
-  def call(map, "tag", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
+  def call(map, "tag",     [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
   def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
@@ -326,18 +312,11 @@ defmodule Pan.Parser.Analyzer do
 
 
 # We expect one episode author
-  def call(_, "episode", [:"itunes:author", _, []]), do: %{}
-  def call(map, "episode", [:"itunes:author", _, value]), do: Iterator.parse(map, "episode_author", value)
-  def call(map, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(map, "episode_author", value)
-  def call(map, "episode", [:"dc:publisher", _, value]), do: Iterator.parse(map, "episode_author", value)
-  def call(map, "episode", [:"atom:author", _, value]), do: Iterator.parse(map, "episode_author", value)
-  def call(_, "episode_author", [:"itunes:name",     _, []]), do: %{}
-  def call(_, "episode_author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "episode_author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call(_, "episode_author", [:"itunes:email",    _, []]), do: %{}
-  def call(_, "episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
-  def call(_, "episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
-  def call(_, "episode_author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+  def call(_, "episode", [:"itunes:author",     _, []]), do: %{}
+  def call(_, "episode", [:"itunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"dc:publisher",      _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"atom:author",       _, value]), do: Iterator.parse(%{}, "episode_author", value)
 
 
 # Enclosures a.k.a. Audiofiles
@@ -400,4 +379,31 @@ defmodule Pan.Parser.Analyzer do
   def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
+
+
+  def call("owner", [:"itunes:name",     _, []]), do: %{}
+  def call("owner", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("owner", [:name,              _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("owner", [:"itunes:email",    _, []]), do: %{}
+  def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call("owner", [:email,             _, [value]]), do: %{email: value}
+  def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+
+
+  def call("author", [:"itunes:name",     _, []]), do: %{}
+  def call("author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("author", [:"itunes:email",    _, []]), do: %{}
+  def call("author", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call("author", [:"atom:email",      _, [value]]), do: %{email: value}
+  def call("author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+
+
+  def call("episode_author", [:"itunes:name",     _, []]), do: %{}
+  def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("episode_author", [:"itunes:email",    _, []]), do: %{}
+  def call("episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call("episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
+  def call("episode_author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 end

@@ -12,7 +12,7 @@ defmodule Pan.Parser.Iterator do
   def parse(map, "owner", [head | tail]) do
     owner_map =
       if is_map(head) do
-        Analyzer.call(map, "owner", [head[:name], head[:attr], head[:value]])
+        Analyzer.call("owner", [head[:name], head[:attr], head[:value]])
       else
         %{email: head}
       end
@@ -25,7 +25,7 @@ defmodule Pan.Parser.Iterator do
   def parse(map, "author", [head | tail]) do
     author_map =
       if is_map(head) do
-        Analyzer.call(map, "author", [head[:name], head[:attr], head[:value]])
+        Analyzer.call("author", [head[:name], head[:attr], head[:value]])
       else
         %{name: String.slice(head, 0, 255)}
       end
@@ -38,7 +38,7 @@ defmodule Pan.Parser.Iterator do
   def parse(map, "episode_author", [head | tail]) do
     episode_author_map =
       if is_map(head) do
-        Analyzer.call(map, "episode_author", [head[:name], head[:attr], head[:value]])
+        Analyzer.call("episode_author", [head[:name], head[:attr], head[:value]])
       else
         %{name: String.slice(head, 0, 255)}
       end
