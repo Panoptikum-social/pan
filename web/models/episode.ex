@@ -106,9 +106,8 @@ defmodule Pan.Episode do
     deleted_ids = all_ids -- episode_ids
 
     for deleted_id <- deleted_ids do
-      # delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/episodes/" <> Integer.to_string(deleted_id))
-      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/episodes/" <> Integer.to_string(deleted_id)
-      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
+      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+             "/episodes/" <> Integer.to_string(deleted_id))
     end
   end
 end

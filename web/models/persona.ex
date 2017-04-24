@@ -88,10 +88,11 @@ defmodule Pan.Persona do
     persona = Repo.get(Persona, id)
 
     if persona.redirect_id do
-      # delete!("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id))
-      # while timexs is broken we go directly for httpc:
-      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id)
-      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
+      delete("http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+             "/personas/" <> Integer.to_string(id))
+      # fallback, in case Tirexs brakes again:
+      # url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id)
+      # :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
     else
       put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
           [name:             persona.name,
@@ -102,7 +103,6 @@ defmodule Pan.Persona do
            image_url:        persona.image_url,
            image_title:      persona.image_title,
            url:              persona_frontend_path(Pan.Endpoint, :show, id)])
-
     end
   end
 
@@ -125,9 +125,8 @@ defmodule Pan.Persona do
     deleted_ids = all_ids -- persona_ids
 
     for deleted_id <- deleted_ids do
-      # delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(deleted_id))
-      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(deleted_id)
-      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
+      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+             "/personas/" <> Integer.to_string(deleted_id))
     end
   end
 end
