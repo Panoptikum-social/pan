@@ -32,15 +32,15 @@ defmodule Pan.Parser.Analyzer do
 
 
 # image with fallback to itunes:image
-  def call(map, "tag", [:image, _, value]), do: Iterator.parse(map, "image", value)
+  def call(_, "tag", [:image, _, value]), do: Iterator.parse(%{}, "image", value)
   def call(_, "image", [:title, _, _]), do: %{}
   def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
   def call(_, "image", [:url,   _, []]), do: %{}
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: String.slice(value, 0, 255)}
-  def call(map, "image", [:link,        _, _]), do: map
-  def call(map, "image", [:description, _, _]), do: map
-  def call(map, "image", [:width,       _, _]), do: map
-  def call(map, "image", [:height,      _, _]), do: map
+  def call(_, "image", [:link,        _, _]), do: %{}
+  def call(_, "image", [:description, _, _]), do: %{}
+  def call(_, "image", [:width,       _, _]), do: %{}
+  def call(_, "image", [:height,      _, _]), do: %{}
 
   def call(map, "image", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,

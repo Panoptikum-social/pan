@@ -53,6 +53,6 @@
   "sweet_xml": {:hex, :sweet_xml, "0.6.5", "dd9cde443212b505d1b5f9758feb2000e66a14d3c449f04c572f3048c66e6697", [:mix], []},
   "timelier": {:hex, :timelier, "0.9.2", "0a0f2e1a3449a396f5ee1456f25e8bc7dca84cf9ecbdd5d37ba24b2d560d4987", [:mix], []},
   "timex": {:hex, :timex, "3.1.13", "48b33162e3ec33e9a08fb5f98e3f3c19c3e328dded3156096c1969b77d33eef0", [:mix], [{:combine, "~> 0.7", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
-  "tirexs": {:git, "https://github.com/Zatvobor/tirexs.git", "6e07e7f247594f919ec8c891d76c552ac007b5f4", []},
+  "tirexs": {:git, "https://github.com/Zatvobor/tirexs.git", "2d708f58f243b6934adaeb4938f755941b0d8736", [branch: "263"]},
   "tzdata": {:hex, :tzdata, "0.5.11", "3d5469a9f46bdf4a8760333dbdabdcc4751325035c454b10521f71e7c611ae50", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
   "uuid": {:hex, :uuid, "1.1.6", "4927232f244e69c6e255643014c2d639dad5b8313dc2a6976ee1c3724e6ca60d", [:mix], []}}

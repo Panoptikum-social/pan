@@ -69,10 +69,27 @@ defmodule Pan.Category do
     |> Integer.to_string
   end
 
+
   def update_search_index(id) do
     category = Repo.get(Category, id)
     put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories/" <> Integer.to_string(id),
         [title: category.title,
          url: category_frontend_path(Pan.Endpoint, :show, id)])
+  end
+
+
+  def delete_search_index_orphans() do
+    category_ids = (from c in Category, select: c.id)
+                   |> Repo.all()
+
+    max_category_id = Enum.max(category_ids)
+    all_ids = Range.new(1, max_category_id) |> Enum.to_list()
+    deleted_ids = all_ids -- category_ids
+
+    for deleted_id <- deleted_ids do
+      # delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories/" <> Integer.to_string(deleted_id))
+      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories/" <> Integer.to_string(deleted_id)
+      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
+    end
   end
 end

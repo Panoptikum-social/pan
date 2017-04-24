@@ -198,6 +198,7 @@ defmodule Pan.Router do
     resources "/manifestations", ManifestationController
 
     get "/search/push", SearchController, :elasticsearch_push
+    get "/search/delete_orphans", SearchController, :elasticsearch_delete_orphans
 
     get "/maintenance/fix_gigs", MaintenanceController, :fix_gigs
     get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
