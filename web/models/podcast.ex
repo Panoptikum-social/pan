@@ -258,4 +258,20 @@ defmodule Pan.Podcast do
       |> Repo.update()
     end
   end
+
+
+  def delete_search_index_orphans() do
+    podcast_ids = (from c in Podcast, select: c.id)
+                  |> Repo.all()
+
+    max_podcast_id = Enum.max(podcast_ids)
+    all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
+    deleted_ids = all_ids -- podcast_ids
+
+    for deleted_id <- deleted_ids do
+      # delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(deleted_id))
+      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(deleted_id)
+      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
+    end
+  end
 end

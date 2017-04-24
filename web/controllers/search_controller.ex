@@ -17,6 +17,18 @@ defmodule Pan.SearchController do
     Pan.Category.delete_search_index_orphans()
     Logger.info "=== Category orphans deleted ==="
 
+    Pan.Podcast.delete_search_index_orphans()
+    Logger.info "=== Podcast orphans deleted ==="
+
+    Pan.Episode.delete_search_index_orphans()
+    Logger.info "=== Episode orphans deleted ==="
+
+    Pan.Persona.delete_search_index_orphans()
+    Logger.info "=== Persona orphans deleted ==="
+
+    Pan.User.delete_search_index_orphans()
+    Logger.info "=== User orphans deleted ==="
+
     Logger.info "=== Elasticsearch orphans deletion finished ==="
     render(conn, "done.html", %{})
   end

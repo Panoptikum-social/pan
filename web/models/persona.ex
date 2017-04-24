@@ -106,11 +106,28 @@ defmodule Pan.Persona do
     end
   end
 
+
   def update_search_all() do
     persona_ids = Repo.all(from p in Persona, select: p.id)
 
     for persona_id <- persona_ids do
       update_search_index(persona_id)
+    end
+  end
+
+
+  def delete_search_index_orphans() do
+    persona_ids = (from c in Persona, select: c.id)
+                  |> Repo.all()
+
+    max_persona_id = Enum.max(persona_ids)
+    all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
+    deleted_ids = all_ids -- persona_ids
+
+    for deleted_id <- deleted_ids do
+      # delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(deleted_id))
+      url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(deleted_id)
+      :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
     end
   end
 end
