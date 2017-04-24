@@ -241,9 +241,9 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title, _, [value | _]]), do: %{title: String.slice(value, 0, 255)}
+  def call(_, "episode", [:title, _, [value | _]]), do: %{title: String.slice(value, 0, 253)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: String.slice(value, 0, 253)}
 
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link:        String.slice(value, 0, 255)}
@@ -270,7 +270,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: (String.slice(value, 0, 255)
+                                                                             |> String.replace("\r", "")
+                                                                             |> String.replace("\n", ""))}
   def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
   def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: String.slice(value, 0, 255)}
 

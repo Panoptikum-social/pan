@@ -7,7 +7,8 @@ defmodule Pan.Parser.Author do
   def get_or_insert_persona_and_engagement(author_map, podcast_id) do
     if author_map[:email] || author_map[:name] do
       engagement = from(e in Engagement, where: e.podcast_id == ^podcast_id and
-                                                e.role == "owner")
+                                                e.role == "owner",
+                                         limit: 1)
                    |> Repo.one()
                    |> Repo.preload(:persona)
 
@@ -36,7 +37,8 @@ defmodule Pan.Parser.Author do
   def get_or_insert_persona_and_gig(author_map, episode, podcast) do
     if author_map[:email] || author_map[:name] do
       engagement = from(e in Engagement, where: e.podcast_id == ^podcast.id and
-                                                e.role == "author")
+                                                e.role == "author",
+                                         limit: 1)
                    |> Repo.one()
                    |> Repo.preload(:persona)
 
