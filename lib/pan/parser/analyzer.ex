@@ -186,7 +186,7 @@ defmodule Pan.Parser.Analyzer do
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
-    :"cfi:downloadurl", :"cfi:lastdownloadtime"
+    :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast"
   ], do: %{}
 
 
