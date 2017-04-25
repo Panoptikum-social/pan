@@ -47,6 +47,13 @@ defmodule Pan.Parser.Iterator do
     |> parse("episode_author", tail)
   end
 
+  def parse(map, "image", [head | tail]) do
+    image_map =  Analyzer.call(map, "image", [head[:name], head[:attr], head[:value]])
+
+    Helpers.deep_merge(map, %{author: image_map})
+    |> parse("image", tail)
+  end
+
 
   def parse(map, "chapter", [head | tail]) do
     chapter_map = Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
