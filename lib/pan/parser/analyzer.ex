@@ -386,6 +386,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:name",     _, []]), do: %{}
   def call("owner", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
   def call("owner", [:name,              _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("owner", [:"itunes:author",   _, [value]]), do: %{name: String.slice(value, 0, 255)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
