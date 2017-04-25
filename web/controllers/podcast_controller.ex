@@ -255,7 +255,9 @@ defmodule Pan.PodcastController do
                                                   select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts_without_languages = from(p in Podcast, where: not p.id in ^podcast_ids)
+    podcasts_without_languages = from(p in Podcast, where: (is_nil(p.update_paused) or
+                                                           p.update_paused == false) and
+                                                           not p.id in ^podcast_ids)
                                  |> Repo.all
 
     for {podcast, index} <- Enum.with_index(podcasts_without_languages) do
