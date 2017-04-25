@@ -36,6 +36,7 @@
             <%= link [fa_icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs truncate" %>
+            <%= for language <- podcast.languages, do: language.name %>
             </span>
           </div>
         <% end %>

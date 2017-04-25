@@ -33,6 +33,7 @@ defmodule Pan.CategoryFrontendController do
                |> Repo.preload([podcasts: from(p in Podcast, order_by: p.title),
                                 children: from(c in Category, order_by: c.title)])
                |> Repo.preload(:parent)
+               |> Repo.preload(podcasts: :languages)
     render(conn, "show.html", category: category)
   end
 end
