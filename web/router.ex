@@ -182,6 +182,7 @@ defmodule Pan.Router do
     get "/podcasts/:id/contributor_import", PodcastController, :contributor_import
     get "/podcasts/:id/delta_import", PodcastController, :delta_import
     get "/podcasts/:id/fix_owner", PodcastController, :fix_owner
+    get "/podcasts/fix_languages", PodcastController, :fix_languages
     get "/podcasts/:id/retire", PodcastController, :retire
     get "/podcasts/retirement", PodcastController, :retirement
     get "/podcasts/stale", PodcastController, :stale

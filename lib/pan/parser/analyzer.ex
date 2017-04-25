@@ -196,7 +196,7 @@ defmodule Pan.Parser.Analyzer do
 
 
 # We expect several language tags
-  def call(_, "tag", [:language, _, _]), do: %{}
+  def call(_, "tag", [:language, _, []]), do: %{}
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [:language, :"dc:language"] do
     uuid = String.to_atom(UUID.uuid1())
     %{languages: %{uuid => %{shortcode: value}}}

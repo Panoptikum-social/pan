@@ -4,6 +4,7 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Parser.RssFeed
   alias Pan.Parser.Persistor
   alias Pan.Parser.AlternateFeed
+  alias Pan.Parser.Language
   alias Pan.Podcast
   alias Pan.Feed
   require Logger
@@ -81,9 +82,23 @@ defmodule Pan.Parser.Podcast do
     case RssFeed.import_to_map(feed.self_link_url) do
       {:ok, map} ->
         Pan.Parser.Owner.get_or_insert(map[:owner], id)
-        {:ok, "Updated owner successfully"}
+        {:ok, "Updated owner successfully for #{id}"}
       {:error, message} ->
         {:error, message}
     end
+  end
+
+
+  def fix_language(podcast) do
+    feed = Repo.get_by(Feed, podcast_id: podcast.id)
+
+    case RssFeed.import_to_map(feed.self_link_url) do
+      {:ok, map} ->
+        Language.persist_many(map[:languages], podcast)
+        {:ok, "Updated owner successfully for #{podcast.title}"}
+      {:error, message} ->
+        {:error, message <> " for podcast #{podcast.title}, #{podcast.id}"}
+    end
+
   end
 end

@@ -3,6 +3,7 @@ defmodule Pan.PodcastController do
   alias Pan.Episode
   alias Pan.Category
   alias Pan.Podcast
+  require Logger
 
   plug :scrub_params, "podcast" when action in [:create, :update]
 
@@ -245,6 +246,25 @@ defmodule Pan.PodcastController do
 
     conn
     |> put_flash(:info, "Owner fixed successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
+
+  def fix_languages(conn, _params) do
+    podcast_ids = from(a in "languages_podcasts", group_by: a.podcast_id,
+                                                  select:   a.podcast_id)
+                  |> Repo.all
+
+    podcasts_without_languages = from(p in Podcast, where: not p.id in ^podcast_ids)
+                                 |> Repo.all
+
+    for {podcast, index} <- Enum.with_index(podcasts_without_languages) do
+      Logger.info ("#{index} of #{Enum.count(podcasts_without_languages)}")
+      Pan.Parser.Podcast.fix_language(podcast)
+    end
+
+    conn
+    |> put_flash(:info, "Languages fixed successfully.")
     |> redirect(to: podcast_path(conn, :index))
   end
 
