@@ -258,7 +258,8 @@ defmodule Pan.PodcastController do
     podcasts_without_languages = from(p in Podcast, where: (is_nil(p.update_paused) or
                                                            p.update_paused == false) and
                                                            not p.id in ^podcast_ids)
-                                 |> Repo.all
+                                 |> Repo.all()
+                                 |> Enum.shuffle()
 
     for {podcast, index} <- Enum.with_index(podcasts_without_languages) do
       Logger.info ("#{index} of #{Enum.count(podcasts_without_languages)}")
