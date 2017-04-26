@@ -30,4 +30,4 @@
   })
 </script>
 
-<%= link "New language", to: language_path(@conn, :new) %>s
+<%= link "New language", to: language_path(@conn, :new) %>

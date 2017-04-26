@@ -13,7 +13,7 @@ defmodule Pan.Language do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:shortcode, :name])
+    |> cast(params, [:shortcode, :name, :emoji])
     |> validate_required([:shortcode, :name])
     |> unique_constraint(:shortcode)
   end
