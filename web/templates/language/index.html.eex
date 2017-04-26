@@ -6,6 +6,7 @@
       <th>Id</th>
       <th>Shortcode</th>
       <th>Name</th>
+      <th>Emoji</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -22,6 +23,7 @@
         {data: 'id'},
         {data: 'shortcode'},
         {data: 'name'},
+        {data: 'emoji'},
         {data: 'actions'}
       ]
     })

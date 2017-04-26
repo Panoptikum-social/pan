@@ -18,6 +18,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :emoji, class: "control-label" %>
+    <%= text_input f, :emoji, class: "form-control" %>
+    <%= error_tag f, :emoji %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -2,6 +2,7 @@ defmodule Pan.LanguageController do
   use Pan.Web, :controller
 
   alias Pan.Language
+  alias Pan.Podcast
 
   plug :scrub_params, "language" when action in [:create, :update]
 
@@ -34,6 +35,7 @@ defmodule Pan.LanguageController do
 
   def show(conn, %{"id" => id}) do
     language = Repo.get!(Language, id)
+               |> Repo.preload(podcasts: from(Podcast, limit: 10))
     render(conn, "show.html", language: language)
   end
 

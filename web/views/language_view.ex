@@ -10,6 +10,7 @@ defmodule Pan.LanguageView do
     %{id:        language.id,
       shortcode: language.shortcode,
       name:      language.name,
+      emoji:     language.emoji,
       actions:   datatable_actions(language, &language_path/3)}
   end
 end
