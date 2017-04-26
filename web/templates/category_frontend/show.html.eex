@@ -28,20 +28,27 @@
     <hr/>
     <% end %>
 
-    <%= for group <- Enum.chunk(@category.podcasts, 6, 6, []) do %>
-      <div class="row">
-        <%= for podcast <- group do %>
-          <div class="col-md-2">
-            <span class="truncate">
-            <%= for language <- podcast.languages, do: language.emoji %>
 
-            <%= link [fa_icon("podcast"), " ", podcast.title],
-                     to: podcast_frontend_path(@conn, :show, podcast),
-                     class: "btn btn-default btn-xs truncate" %>
-            </span>
-          </div>
-        <% end %>
-      </div>
+    <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
+      <h3><%= List.first(podcasts) && List.first(podcasts).language_emoji %>
+          <%= language || "Language unknown" %></h3>
+
+      <%= for group <- Enum.chunk(podcasts, 6, 6, []) do %>
+
+        <div class="row">
+          <%= for podcast <- group do %>
+            <div class="col-md-2">
+              <span class="truncate">
+              <%= podcast.language_emoji %>
+
+              <%= link [fa_icon("podcast"), " ", podcast.title],
+                       to: podcast_frontend_path(@conn, :show, podcast.id),
+                       class: "btn btn-default btn-xs truncate" %>
+              </span>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 </div>

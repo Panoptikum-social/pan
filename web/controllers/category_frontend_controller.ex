@@ -2,7 +2,7 @@ defmodule Pan.CategoryFrontendController do
   use Pan.Web, :controller
 
   alias Pan.Category
-  alias Pan.Podcast
+  alias Pan.Language
   alias Pan.Subscription
 
   def index(conn, _params) do
@@ -30,10 +30,19 @@ defmodule Pan.CategoryFrontendController do
   def show(conn, %{"id" => id}) do
     category = Category
                |> Repo.get!(id)
-               |> Repo.preload([podcasts: from(p in Podcast, order_by: p.title),
-                                children: from(c in Category, order_by: c.title)])
+               |> Repo.preload([children: from(c in Category, order_by: c.title)])
                |> Repo.preload(:parent)
-               |> Repo.preload(podcasts: :languages)
-    render(conn, "show.html", category: category)
+
+    podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
+                                   join: c in assoc(p, :categories),
+                                   where: c.id == ^id,
+                                   select: %{id: p.id,
+                                             title: p.title,
+                                             language_name: l.name,
+                                             language_emoji: l.emoji})
+                                   |> Repo.all()
+
+    render(conn, "show.html", category: category,
+                              podcasts: podcasts)
   end
 end
