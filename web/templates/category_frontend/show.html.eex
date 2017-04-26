@@ -33,10 +33,11 @@
         <%= for podcast <- group do %>
           <div class="col-md-2">
             <span class="truncate">
+            <%= for language <- podcast.languages, do: language.emoji %>
+
             <%= link [fa_icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs truncate" %>
-            <%= for language <- podcast.languages, do: language.name %>
             </span>
           </div>
         <% end %>

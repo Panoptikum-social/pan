@@ -56,9 +56,9 @@
               <% end %>
               <dt><label class="label label-danger">Language</label></dt>
               <dd>
-                <%= for language <- @podcast.languages do
-                      language.name
-                    end %>
+                <%= for language <- @podcast.languages do %>
+                  <%= language.emoji %> <%= language.name %>
+                <% end %>
               </dd>
               <dt><label class="label label-success">last modified</label></dt>
               <dd><%= @podcast.last_build_date %></dd>
