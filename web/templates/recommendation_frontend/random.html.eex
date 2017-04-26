@@ -25,4 +25,5 @@
 <%= render Pan.CategoryFrontendView, "show.html",
            category: @category,
            current_user: @current_user,
+           podcasts: @podcasts,
            conn: @conn %>

@@ -7,6 +7,7 @@ defmodule Pan.RecommendationFrontendController do
   alias Pan.Recommendation
   alias Pan.Subscription
   alias Pan.Message
+  alias Pan.Language
 
 
   def action(conn, _) do
@@ -57,6 +58,15 @@ defmodule Pan.RecommendationFrontendController do
                |> Repo.preload([:parent, :children,
                                 [podcasts: :languages]])
 
+    podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
+                                   join: c in assoc(p, :categories),
+                                   where: c.id == ^category.id,
+                                   select: %{id: p.id,
+                                             title: p.title,
+                                             language_name: l.name,
+                                             language_emoji: l.emoji})
+                                   |> Repo.all()
+
     podcast = Repo.get(Podcast, podcast.id)
               |> Repo.preload([:episodes, :languages, :categories, :feeds, engagements: :persona])
 
@@ -71,6 +81,7 @@ defmodule Pan.RecommendationFrontendController do
                                 podcast: podcast,
                                 episode: episode,
                                 player: "podigee",
+                                podcasts: podcasts,
                                 changeset: changeset)
   end
 
