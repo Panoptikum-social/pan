@@ -54,7 +54,8 @@ defmodule Pan.RecommendationFrontendController do
                |> Repo.preload(:categories)
 
     category = Repo.get(Category, List.first(podcast.categories).id)
-               |> Repo.preload([:parent, :children, :podcasts])
+               |> Repo.preload([:parent, :children,
+                                [podcasts: :languages]])
 
     podcast = Repo.get(Podcast, podcast.id)
               |> Repo.preload([:episodes, :languages, :categories, :feeds, engagements: :persona])
