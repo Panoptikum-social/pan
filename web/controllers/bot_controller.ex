@@ -20,19 +20,13 @@ defmodule Pan.BotController do
                                   limit: 5)
                   |> Repo.all()
                   |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
+
+
     data = %{
       recipient: %{
         id: sender_id
       },
-      message: %{
-        attachment: %{
-          type: "template",
-          payload: %{
-            template_type: "generic",
-            elements: Enum.map(podcasts, &(podcast_json(conn, &1)))
-          }
-        }
-      }
+      message: message_response(conn, podcasts)
     }
     |> Poison.encode!
 
@@ -62,6 +56,24 @@ defmodule Pan.BotController do
     conn
     |> put_status(200)
     |> text("ok")
+  end
+
+  defp message_response(_conn, []) do
+    %{
+      text: "Sorry! I couldn't find any podcasts with that. How about \"Serial\"?"
+    }
+  end
+
+  defp message_response(conn, podcasts) do
+    %{
+      attachment: %{
+        type: "template",
+        payload: %{
+          template_type: "generic",
+          elements: Enum.map(podcasts, &(podcast_json(conn, &1)))
+        }
+      }
+    }
   end
 
   defp podcast_json(conn, podcast) do
