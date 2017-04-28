@@ -14,7 +14,6 @@ defmodule Pan.PodcastView do
   def podcast_json(podcast) do
     %{id:            podcast.id,
       title:         podcast.title,
-      author:        truncate(podcast.author_name, 100),
       update_paused: podcast.update_paused,
       updated_at:       Timex.format!(podcast.updated_at,
                                       "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),

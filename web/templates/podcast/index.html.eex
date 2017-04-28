@@ -19,7 +19,6 @@
     <tr>
       <th>ID</th>
       <th>Title</th>
-      <th>Author</th>
       <th>Update paused</th>
       <th>Updated at</th>
       <th>Update intervall</th>
@@ -40,7 +39,6 @@
       columns: [
         { data: 'id' },
         { data: 'title' },
-        { data: 'author' },
         { data: 'update_paused' },
         { data: 'updated_at' },
         { data: 'update_intervall' },

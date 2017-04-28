@@ -80,12 +80,8 @@ defmodule Pan.PodcastController do
 
   def datatable(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  join: e in assoc(p, :engagements),
-                                  where: e.role == "author",
-                                  join: persona in assoc(e, :persona),
                                   select: %{id: p.id,
                                             title: p.title,
-                                            author_name: persona.name,
                                             update_paused: p.update_paused,
                                             updated_at: p.updated_at,
                                             update_intervall: p.update_intervall,
