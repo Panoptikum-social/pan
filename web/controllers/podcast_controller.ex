@@ -281,6 +281,7 @@ defmodule Pan.PodcastController do
       # Task.async(fn -> delta_import_one(podcast, current_user) end)
       Podcast.delta_import_one(podcast, current_user)
     end
+    Logger.info "=== Manual triggered podcast update finished ==="
 
     conn
     |> put_flash(:info, "Podcasts updated successfully.")
