@@ -94,8 +94,7 @@ defmodule Pan.Parser.Analyzer do
       "related"   -> %{}
       "via"       -> %{}
       "alternate" ->
-        uuid = String.to_atom(UUID.uuid1())
-        alternate_feed_map = %{uuid => %{title: attr[:title], url: attr[:href]}}
+        alternate_feed_map = %{UUID.uuid1() => %{title: attr[:title], url: attr[:href]}}
         %{feed: %{alternate_feeds: alternate_feed_map}}
       "payment" -> %{payment_link_title: attr[:title],
                      payment_link_url: String.slice(attr[:href], 0, 255)}
@@ -198,8 +197,7 @@ defmodule Pan.Parser.Analyzer do
 # We expect several language tags
   def call(_, "tag", [:language, _, []]), do: %{}
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [:language, :"dc:language"] do
-    uuid = String.to_atom(UUID.uuid1())
-    %{languages: %{uuid => %{shortcode: value}}}
+    %{languages: %{UUID.uuid1() => %{shortcode: value}}}
   end
 
 
@@ -327,8 +325,7 @@ defmodule Pan.Parser.Analyzer do
                       length: String.slice(attr[:length], 0, 255),
                       type:   String.slice(attr[:type], 0, 255),
                       guid:   String.slice(attr[:"bitlove:guid"], 0, 255)}
-    uuid = String.to_atom(UUID.uuid1())
-    %{enclosures: %{uuid => enclosure_map}}
+    %{enclosures: %{UUID.uuid1() => enclosure_map}}
   end
 
 
@@ -346,12 +343,11 @@ defmodule Pan.Parser.Analyzer do
 
 # Episode contributors
   def call(_, "episode", [:"atom:contributor", _, value]) do
-    contributor_uuid = String.to_atom(UUID.uuid1())
-    Iterator.parse(%{contributors: %{contributor_uuid => %{}}}, "episode-contributor", value, contributor_uuid)
+    Iterator.parse(%{contributors: %{UUID.uuid1() => %{}}}, "episode-contributor", value, UUID.uuid1())
   end
   def call(_, "episode", [:"dc:contributor", _, [value]]) do
-    contributor_uuid = String.to_atom(UUID.uuid1())
-    %{contributors: %{contributor_uuid => %{name: value, uri: value}}}
+
+    %{contributors: %{UUID.uuid1() => %{name: value, uri: value}}}
   end
 
 
@@ -368,8 +364,7 @@ defmodule Pan.Parser.Analyzer do
 
 # Now the namespaces:
   def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
-    chapter_uuid = String.to_atom(UUID.uuid1())
-    %{chapter_uuid => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
+    %{UUID.uuid1() => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
   end
 
   def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}

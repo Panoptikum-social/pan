@@ -29,7 +29,7 @@ defmodule Pan.Parser.Persistor do
     AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
     if url && feed.self_link_url != url do
-      %{String.to_atom(UUID.uuid1()) => %{title: url, url: url}}
+      %{UUID.uuid1() => %{title: url, url: url}}
       |> AlternateFeed.get_or_insert_many(feed.id)
     end
 
