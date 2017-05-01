@@ -40,13 +40,18 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} 0100") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
+               try_format(feed_date, "{WDshort}, {D} {Mshort}, {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}, {Mshort}, {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort}, {D}th {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D}rd {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D}st {Mshort} {YYYY} {ISOtime} {Zname}") ||
@@ -69,6 +74,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{RFC1123} {Zname}") ||
                try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
@@ -125,19 +131,22 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("APR",       "Apr")
     |> String.replace("apr",       "Apr")
     |> String.replace("Avr",       "Apr")
+    |> String.replace("Abr",       "Apr")
     |> String.replace("Mai",       "May")
     |> String.replace("may",       "May")
     |> String.replace("MAY",       "May")
+    |> String.replace("MaY",       "May")
     |> String.replace("jun",       "Jun")
     |> String.replace("JUN",       "Jun")
     |> String.replace("June",      "Jun")
+    |> String.replace("Jung",      "Jun")
     |> String.replace("Juin",      "Jun")
     |> String.replace("July",      "Jul")
     |> String.replace("jul",       "Jul")
     |> String.replace("JUL",       "Jul")
+    |> String.replace("AUGUST",    "Aug")
     |> String.replace("August",    "Aug")
     |> String.replace("aug",       "Aug")
-    |> String.replace("AUG",       "Aug")
     |> String.replace("September", "Sep")
     |> String.replace("Set",       "Sep")
     |> String.replace("Sept",      "Sep")
@@ -153,6 +162,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("November",  "Nov")
     |> String.replace("nov",       "Nov")
     |> String.replace("NOV",       "Nov")
+    |> String.replace("Nove",      "Nov")
     |> String.replace("Dez",       "Dec")
     |> String.replace("Dic",       "Dec")
     |> String.replace("dec",       "Dec")

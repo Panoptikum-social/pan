@@ -143,7 +143,9 @@ defmodule Pan.Parser.Analyzer do
     :frequenceMiseAJour, :EmissionParlee, :"ionofm:thumbnail", :EmissionMusical, :audioExist,
     :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes, :license,
     :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
-    :"atom:updated"
+    :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
+    :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes"
+
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -163,7 +165,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark", :"media:player",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
-    :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating",
+    :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating", :style,
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed", :showImage,
     :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
@@ -185,13 +187,12 @@ defmodule Pan.Parser.Analyzer do
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
-    :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast"
+    :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
+    :"aan:cme", :keywords
   ], do: %{}
 
 
-  def call(_, "image", [tag_atom, _, _]) when tag_atom in [
-    :guid, :meta
-  ], do: %{}
+  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta ], do: %{}
 
 
 # We expect several language tags
@@ -386,6 +387,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+  def call("owner", [tag_atom, _, _]) when tag_atom in [:copyright ], do: %{}
 
 
   def call("author", [:"itunes:name",     _, []]), do: %{}
