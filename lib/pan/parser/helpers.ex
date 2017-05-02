@@ -126,7 +126,7 @@ defmodule Pan.Parser.Helpers do
   def replace_long_week_days(datetime) do
     datetime
     |> String.replace(~r/m[oå]n?d?a?y?/i,     "Mon")
-    |> String.replace(~r/t[ui]e?s?,?/i,       "Tue")
+    |> String.replace(~r/t[ui]e?s?d?a?y?/i,   "Tue")
     |> String.replace("Di",   "Tue")
     |> String.replace("tor",  "Tue")
     |> String.replace(~r/wed?n?e?s?d?a?y?/i,  "Wed")
@@ -134,7 +134,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Mi",   "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
     |> String.replace("Do",   "Thu")
-    |> String.replace(~r/fr[ei]d?a?y?/i,         "Fri")
+    |> String.replace(~r/fr[ei]d?a?y?/i,      "Fri")
     |> String.replace(~r/satu?r?d?a?y?/i,     "Sat")
     |> String.replace(~r/s[ou]nd?a?y?/i,      "Sun")
     |> String.replace("TueSun", "Sun")
