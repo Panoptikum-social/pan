@@ -62,7 +62,7 @@ defmodule Pan.Parser.Analyzer do
 
 # Description with fallback to itunes:subtitle
   def call(_, "tag", [:description, _, []]), do: %{}
-  def call(_, "tag", [:description, _, [value]]), do: %{description: value}
+  def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
 
   def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
   def call(map, "tag", [:"itunes:subtitle", _, [value]]) do
@@ -125,7 +125,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
-    :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency",
+    :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id", :"sy:updateBase",
@@ -144,7 +144,8 @@ defmodule Pan.Parser.Analyzer do
     :videoExist, :nomTypePodcast, :nomDocCategorie, :nomURLPodCast, :leRSS, :leRSSitunes, :license,
     :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
-    :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes"
+    :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
+    :"webfeeds:accentColor"
 
   ], do: map
 
@@ -183,12 +184,12 @@ defmodule Pan.Parser.Analyzer do
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
     :"dc:date.Taken", :title_in_language, :itunes_image, :foto_207, :"ddn:episode_id", :lead, :date,
     :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID, :group,
-    :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file",
+    :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file", :owner,
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
-    :"aan:cme", :keywords
+    :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player"
   ], do: %{}
 
 
@@ -209,11 +210,12 @@ defmodule Pan.Parser.Analyzer do
 
 
 # We expect one podcast author
-  def call(_,   "tag", [:"itunes:author",        _, []]), do: %{}
+  def call(_, "tag", [:"itunes:author",        _, []]), do: %{}
   def call(_, "tag", [:"itunes:author",       _, value]), do: Iterator.parse(%{}, "author", value)
   def call(_, "tag", [:"atom:author",         _, value]), do: Iterator.parse(%{}, "author", value)
   def call(_, "tag", [:author,                _, value]), do: Iterator.parse(%{}, "author", value)
   def call(_, "tag", [:"googleplay:author",   _, value]), do: Iterator.parse(%{}, "author", value)
+  def call(_, "tag", [:"artist",              _, value]), do: Iterator.parse(%{}, "author", value)
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
@@ -314,6 +316,7 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one episode author
   def call(_, "episode", [:"itunes:author",     _, []]), do: %{}
+  def call(_, "episode", [:"iTunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"itunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"dc:publisher",      _, value]), do: Iterator.parse(%{}, "episode_author", value)
@@ -387,7 +390,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
-  def call("owner", [tag_atom, _, _]) when tag_atom in [:copyright ], do: %{}
+  def call("owner", [tag_atom, _, _]) when tag_atom in [:copyright, :"itunes:keywords" ], do: %{}
 
 
   def call("author", [:"itunes:name",     _, []]), do: %{}

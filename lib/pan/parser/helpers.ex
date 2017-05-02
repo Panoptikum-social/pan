@@ -22,68 +22,62 @@ defmodule Pan.Parser.Helpers do
 
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
+                |> String.replace(",", " ")
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
+                |> String.replace("ٍ", "")
                 |> fix_time()
                 |> replace_long_month_names()
                 |> replace_long_week_days()
                 |> fix_timezones()
 
+
+
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
-    datetime = try_format(feed_date, "{RFC1123}") ||
+    datetime = try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}") ||
                try_format(feed_date, "{ISO:Extended}") ||
-               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
-               try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
-               try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} 0100") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}, {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort}, {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort},{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDshort}, {Mshort}, {D} {YYYY} {ISOtime}") ||
-               try_format(feed_date, "{WDshort}, {D}th {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D}rd {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D}st {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D}nd {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDfull}, {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDfull}, {D}, {Mshort} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {AM}") ||
-               try_format(feed_date, "{WDfull}, {Mshort} {D}, {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDfull} {Mshort} {D}, {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY}") ||
+               try_format(feed_date, "{WDshort} {D}nd {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D}rd {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D}st {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D}th {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
-               try_format(feed_date, "{WDshort}, {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
+               try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY}") ||
+               try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY}") ||
-               try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
-               try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
-               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
-               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
-               try_format(feed_date, "{Mshort} {D} {YYYY}") ||
-               try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
-               try_format(feed_date, "{RFC1123} {Zname}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY} {Z}") ||
-               try_format(feed_date, "{WDshort}, {Mshort} {D}, {YYYY} {Z}") ||
-               try_format(feed_date, "{WDshort} {Mshort} {D}, {YYYY} {Z}") ||
-               try_format(feed_date, "{WDshort}, {D} {Mshort} {YYYY}") ||
-               try_format(feed_date, "{WDfull} {Mshort} {D}, {YYYY}") ||
-               try_format(feed_date, "{WDfull}, {Mshort} {D} {ISOtime} {Z}") ||
-               try_format(feed_date, "{WDfull}:{D}:{0M}:{YYYY}: {ISOtime}")
+               try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime}") ||
+               try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
+               try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
 
 
     if datetime do
@@ -114,102 +108,50 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_month_names(datetime) do
     datetime
-    |> String.replace("January",   "Jan")
-    |> String.replace("jan",       "Jan")
-    |> String.replace("JAN",       "Jan")
-    |> String.replace("February",  "Feb")
-    |> String.replace("FEB",       "Feb")
-    |> String.replace("feb",       "Feb")
-    |> String.replace("Far",       "Feb")
-    |> String.replace("Fev",       "Feb")
-    |> String.replace("Febr",      "Feb")
-    |> String.replace("March",     "Mar")
-    |> String.replace("Mär",       "Mar")
-    |> String.replace("mar",       "Mar")
-    |> String.replace("MAR",       "Mar")
-    |> String.replace("April",     "Apr")
-    |> String.replace("APR",       "Apr")
-    |> String.replace("apr",       "Apr")
-    |> String.replace("Avr",       "Apr")
-    |> String.replace("Abr",       "Apr")
-    |> String.replace("Mai",       "May")
-    |> String.replace("may",       "May")
-    |> String.replace("MAY",       "May")
-    |> String.replace("MaY",       "May")
-    |> String.replace("jun",       "Jun")
-    |> String.replace("JUN",       "Jun")
-    |> String.replace("June",      "Jun")
-    |> String.replace("Jung",      "Jun")
-    |> String.replace("Juin",      "Jun")
-    |> String.replace("July",      "Jul")
-    |> String.replace("jul",       "Jul")
-    |> String.replace("JUL",       "Jul")
-    |> String.replace("AUGUST",    "Aug")
-    |> String.replace("August",    "Aug")
-    |> String.replace("aug",       "Aug")
-    |> String.replace("September", "Sep")
-    |> String.replace("Set",       "Sep")
-    |> String.replace("Sept",      "Sep")
-    |> String.replace("sep",       "Sep")
-    |> String.replace("SEP",       "Sep")
-    |> String.replace("October",   "Oct")
-    |> String.replace("OCtober",   "Oct")
-    |> String.replace("Okt",       "Oct")
-    |> String.replace("OCt",       "Oct")
-    |> String.replace("OCT",       "Oct")
-    |> String.replace("oct",       "Oct")
-    |> String.replace("Noc",       "Nov")
-    |> String.replace("November",  "Nov")
-    |> String.replace("nov",       "Nov")
-    |> String.replace("NOV",       "Nov")
-    |> String.replace("Nove",      "Nov")
-    |> String.replace("Dez",       "Dec")
-    |> String.replace("Dic",       "Dec")
-    |> String.replace("dec",       "Dec")
-    |> String.replace("DEC",       "Dec")
-    |> String.replace("December",  "Dec")
+    |> String.replace(~r/janu?a?r?y?/i,         "Jan")
+    |> String.replace(~r/f[ae][bv]r?u?a?r?y?/i, "Feb")
+    |> String.replace(~r/m[aä]rch/i,            "Mar")
+    |> String.replace(~r/a[pvb]r?i?l?/i,        "Apr")
+    |> String.replace(~r/m[a][iy]/i,            "May")
+    |> String.replace(~r/jui?n[eg]?/i,          "Jun")
+    |> String.replace(~r/july?/i,               "Jul")
+    |> String.replace(~r/augu?s?t?/i,           "Aug")
+    |> String.replace(~r/sep?t?e?m?b?e?r?/i,    "Sep")
+    |> String.replace(~r/o[ck]to?b?e?r?/i,      "Oct")
+    |> String.replace(~r/no[vc]e?m?b?e?r?/i,    "Nov")
+    |> String.replace(~r/d[ei][cz]e?m?b?e?r?/i, "Dec")
   end
 
 
   def replace_long_week_days(datetime) do
     datetime
-    |> String.replace("Wedn,", "Wed,")
-    |> String.replace("Mo,",   "Mon,")
-    |> String.replace("mån,",  "Mon,")
-    |> String.replace("Di,",   "Tue,")
-    |> String.replace("Tus,",  "Tue,")
-    |> String.replace("Tues,", "Tue,")
-    |> String.replace("tor,",  "Tue,")
-    |> String.replace("Weds,", "Wed,")
-    |> String.replace("Weds ", "Wed ")
-    |> String.replace("Wen,",  "Wed,")
-    |> String.replace("MWed,", "Wed,")
-    |> String.replace("Mi,",   "Wed,")
-    |> String.replace("Thurs,","Thu,")
-    |> String.replace("Thue,", "Thu,")
-    |> String.replace("Thur,", "Thu,")
-    |> String.replace("Thr,",  "Thu,")
-    |> String.replace("Thur ", "Thu ")
-    |> String.replace("Do,",   "Thu,")
-    |> String.replace("Fr,",   "Fri,")
-    |> String.replace("Sa,",   "Sat,")
-    |> String.replace("So,",   "Sun,")
-    |> String.replace("Son,",  "Sun,")
-    |> String.replace("TueSun,", "Sun,")
-    |> String.replace("ٍ", "")
+    |> String.replace(~r/m[oå]n?d?a?y?/i,     "Mon")
+    |> String.replace(~r/t[ui]e?s?,?/i,       "Tue")
+    |> String.replace("Di",   "Tue")
+    |> String.replace("tor",  "Tue")
+    |> String.replace(~r/wed?n?e?s?d?a?y?/i,  "Wed")
+    |> String.replace("MWed", "Wed")
+    |> String.replace("Mi",   "Wed")
+    |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
+    |> String.replace("Do",   "Thu")
+    |> String.replace(~r/fr[ei]d?a?y?/i,         "Fri")
+    |> String.replace(~r/satu?r?d?a?y?/i,     "Sat")
+    |> String.replace(~r/s[ou]nd?a?y?/i,      "Sun")
+    |> String.replace("TueSun", "Sun")
   end
 
 
   def fix_timezones(datetime) do
     datetime
-    |> String.replace("NZDT", "+1300")
-    |> String.replace("NZST", "+1200")
+    |> String.replace("BST",  "+0100")
+    |> String.replace("KST",  "+0900")
+    |> String.replace("JST",  "+0900")
     |> String.replace("AEDT", "+1100")
+    |> String.replace("NZST", "+1200")
+    |> String.replace("NZDT", "+1300")
     |> String.replace("AEST",  "EST")
     |> String.replace("GTM",   "GMT")
     |> String.replace("-0001", "2016")
-    |> String.replace("KST", "+0900")
-    |> String.replace("JST", "+0900")
   end
 
 
