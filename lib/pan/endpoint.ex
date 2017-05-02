@@ -13,7 +13,7 @@ defmodule Pan.Endpoint do
     at: "/", from: :pan, gzip: true,
     only: ~w(css fonts images js favicon.ico robots.txt
              podlove-web-player podlove-subscribe-button podigee-podcast-player
-             .well-known)
+             .well-known opensearch.xml)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
