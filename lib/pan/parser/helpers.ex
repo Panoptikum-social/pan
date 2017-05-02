@@ -110,7 +110,7 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace(~r/janu?a?r?y?/i,         "Jan")
     |> String.replace(~r/f[ae][bv]r?u?a?r?y?/i, "Feb")
-    |> String.replace(~r/m[aä]rch/i,            "Mar")
+    |> String.replace(~r/m[aä]rc?h?/i,          "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i,        "Apr")
     |> String.replace(~r/m[a][iy]/i,            "May")
     |> String.replace(~r/jui?n[eg]?/i,          "Jun")
