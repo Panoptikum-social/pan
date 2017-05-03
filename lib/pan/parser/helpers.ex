@@ -109,7 +109,7 @@ defmodule Pan.Parser.Helpers do
   def replace_long_month_names(datetime) do
     datetime
     |> String.replace(~r/janu?a?r?y?/i,         "Jan")
-    |> String.replace(~r/f[ae][bv]r?u?a?r?y?/i, "Feb")
+    |> String.replace(~r/f[ae][bvr]r?u?a?r?y?/i, "Feb")
     |> String.replace(~r/m[aä]rc?h?/i,          "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i,        "Apr")
     |> String.replace(~r/m[a][iy]/i,            "May")
@@ -126,7 +126,7 @@ defmodule Pan.Parser.Helpers do
   def replace_long_week_days(datetime) do
     datetime
     |> String.replace(~r/m[oå]n?d?a?y?/i,     "Mon")
-    |> String.replace(~r/t[ui]e?s?d?a?y?/i,   "Tue")
+    |> String.replace(~r/t[ui]e?s?[du]?[an]?y?/i,   "Tue")
     |> String.replace("Di",   "Tue")
     |> String.replace("tor",  "Tue")
     |> String.replace(~r/wed?n?e?s?d?a?y?/i,  "Wed")
@@ -137,7 +137,6 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/fr[ei]d?a?y?/i,      "Fri")
     |> String.replace(~r/satu?r?d?a?y?/i,     "Sat")
     |> String.replace(~r/s[ou]nd?a?y?/i,      "Sun")
-    |> String.replace("TueSun", "Sun")
   end
 
 

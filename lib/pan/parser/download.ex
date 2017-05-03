@@ -60,9 +60,14 @@ defmodule Pan.Parser.Download do
 
 
   def redirect(url, headers) do
-    redirect_target = headers
-                      |> Enum.into(%{})
-                      |> Map.fetch!("Location")
+    header_map = Enum.into(headers, %{})
+    redirect_target =
+      cond do
+        Map.has_key?(header_map, "Location") ->
+          Map.fetch!(header_map, "Location")
+        true ->
+          Map.fetch!(header_map, "location")
+      end
 
     if redirect_target == url do
       {:error, "redirects to itself"}
