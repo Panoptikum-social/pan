@@ -201,8 +201,6 @@ defmodule Pan.Router do
     get "/search/push", SearchController, :elasticsearch_push
     get "/search/delete_orphans", SearchController, :elasticsearch_delete_orphans
 
-    get "/maintenance/fix_gigs", MaintenanceController, :fix_gigs
-    get "/maintenance/remove_duplicates", MaintenanceController, :remove_duplicates
-    get "/maintenance/remove_duplicate_gigs", MaintenanceController, :remove_duplicate_gigs
+    get "/maintenance/fix", MaintenanceController, :fix
   end
 end
