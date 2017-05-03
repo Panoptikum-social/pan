@@ -105,19 +105,19 @@ defmodule Pan.BotController do
         %{
           type: "web_url",
           url: host <> podcast_frontend_path(conn, :show, podcast),
-          title: "In Panoptikum"
+          title: "👉 Panoptikum"
         },
         %{
           type: "web_url",
           url: podcast.website,
-          title: "Podcast website"
+          title: "🌎 Podcast website"
         },
         %{
           type: "web_url",
           url: host <> episode_frontend_path(conn, :player, episode),
           messenger_extensions: true,
           webview_height_ratio: "tall",
-          title: "Play latest episode"
+          title: "🎧 Latest episode"
         }
       ]
     }
