@@ -15,20 +15,6 @@ defmodule Pan.MaintenanceController do
 
 
   def fix(conn, _params) do
-    from(a in Pan.AlternateFeed, where: a.url == ^"http://reachmd.com/")
-    |> Repo.delete_all()
-
-    alternate_feeds = from(a in Pan.AlternateFeed, where: like(a.url, "https://reachmd.com/%"),
-                                                   preload: :feed)
-                      |> Repo.all()
-
-    for alternate_feed <- alternate_feeds do
-      Pan.Feed.changeset(alternate_feed.feed, %{self_link_url: alternate_feed.url})
-      |> Repo.update()
-    end
-
-    from(a in Pan.AlternateFeed, where: like(a.url, "https://reachmd.com/%"))
-                                 |> Repo.delete_all()
 
     render(conn, "done.html", %{})
   end
