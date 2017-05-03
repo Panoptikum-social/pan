@@ -55,4 +55,5 @@
   "timex": {:hex, :timex, "3.1.13", "48b33162e3ec33e9a08fb5f98e3f3c19c3e328dded3156096c1969b77d33eef0", [:mix], [{:combine, "~> 0.7", [hex: :combine, optional: false]}, {:gettext, "~> 0.10", [hex: :gettext, optional: false]}, {:tzdata, "~> 0.1.8 or ~> 0.5", [hex: :tzdata, optional: false]}]},
   "tirexs": {:hex, :tirexs, "0.8.15", "a8238e780420589e184b69e8381f5bf20fce4ce22d7a044f8f496f191833a9c8", [:mix], [{:exjsx, "~> 3.2.0", [hex: :exjsx, optional: false]}]},
   "tzdata": {:hex, :tzdata, "0.5.11", "3d5469a9f46bdf4a8760333dbdabdcc4751325035c454b10521f71e7c611ae50", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
-  "uuid": {:hex, :uuid, "1.1.6", "4927232f244e69c6e255643014c2d639dad5b8313dc2a6976ee1c3724e6ca60d", [:mix], []}}
+  "uuid": {:hex, :uuid, "1.1.6", "4927232f244e69c6e255643014c2d639dad5b8313dc2a6976ee1c3724e6ca60d", [:mix], []},
+  "xml_builder": {:hex, :xml_builder, "0.0.9", "68f336e8c5ba32c130d13e96a379cd77e0dbb1c5152c35a30be96c1d1566b05e", [:mix], []}}

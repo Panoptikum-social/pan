@@ -29,8 +29,8 @@ defmodule Pan.Parser.Helpers do
                 |> fix_time()
                 |> replace_long_month_names()
                 |> replace_long_week_days()
+                |> String.replace("  ", " ")
                 |> fix_timezones()
-
 
 
     # Formatters reference:
@@ -210,5 +210,9 @@ defmodule Pan.Parser.Helpers do
 
   def fix_ampersands(xml) do
     String.replace(xml, "& ", "&amp; ")
+  end
+
+  def to_255(text) do
+    String.slice(text, 0, 255)
   end
 end

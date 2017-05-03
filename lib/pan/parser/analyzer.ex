@@ -1,6 +1,6 @@
 defmodule Pan.Parser.Analyzer do
   alias Pan.Parser.Iterator
-  alias Pan.Parser.Helpers
+  alias Pan.Parser.Helpers , as: H
   require Logger
 
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge
@@ -17,24 +17,24 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
-  def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: Helpers.boolify(value)}
-  def call(_, "tag", [:explicit,          _, [value]]), do: %{explicit: Helpers.boolify(value)}
+  def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: H.boolify(value)}
+  def call(_, "tag", [:explicit,          _, [value]]), do: %{explicit: H.boolify(value)}
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
-    %{last_build_date: Helpers.to_naive_datetime(value)}
+    %{last_build_date: H.to_naive_datetime(value)}
   end
   def call(_, "tag", [:"dc:date", _, [value]]) do
-    %{last_build_date: Helpers.to_naive_datetime(value)}
+    %{last_build_date: H.to_naive_datetime(value)}
   end
   def call(_, "tag", [:pubDate, _, []]), do: %{}
   def call(_, "tag", [:pubDate, _, [value]]) do
-    %{last_build_date: Helpers.to_naive_datetime(value)}
+    %{last_build_date: H.to_naive_datetime(value)}
   end
 
 
 # image with fallback to itunes:image
   def call(_, "tag", [:image, _, value]), do: Iterator.parse(%{}, "image", value)
   def call(_, "image", [:title, _, _]), do: %{}
-  def call(_, "image", [:title, _, [value]]), do: %{image_title: value}
+  def call(_, "image", [:title, _, [value]]), do: %{image_title: String.slice(value, 0, 255)}
   def call(_, "image", [:url,   _, []]), do: %{}
   def call(_, "image", [:url,   _, [value]]), do: %{image_url: String.slice(value, 0, 255)}
   def call(_, "image", [:link,        _, _]), do: %{}
@@ -45,13 +45,13 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "image", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
                         else: %{image_url: String.slice(attr[:href], 0, 255),
-                                image_title: attr[:href]}
+                                image_title: H.to_255(attr[:href])}
   end
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
                         else: %{image_url: String.slice(attr[:href], 0, 255),
-                                image_title: attr[:href]}
+                                image_title: H.to_255(attr[:href])}
   end
 
   def call(map, "tag", [:"itunes:image", _, [value]]) do
@@ -283,22 +283,22 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:duration, _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [:pubDate,           _, [value]]) do
-    %{publishing_date: Helpers.to_naive_datetime(value)}
+    %{publishing_date: H.to_naive_datetime(value)}
   end
   def call(_, "episode", [:pubdate,           _, [value]]) do
-    %{publishing_date: Helpers.to_naive_datetime(value)}
+    %{publishing_date: H.to_naive_datetime(value)}
   end
   def call(_, "episode", [:"itunes:pubDate",  _, [value]]) do
-    %{publishing_date: Helpers.to_naive_datetime(value)}
+    %{publishing_date: H.to_naive_datetime(value)}
   end
   def call(_, "episode", [:pubDate, _, []]) do
     %{publishing_date: Timex.now()}
   end
   def call(_, "episode", [:"dc:date", _, [value]]) do
-    %{publishing_date: Helpers.to_naive_datetime(value)}
+    %{publishing_date: H.to_naive_datetime(value)}
   end
   def call(_, "episode", [:pubDateShort, _, [value]]) do
-    %{publishing_date: Helpers.to_naive_datetime(value)}
+    %{publishing_date: H.to_naive_datetime(value)}
   end
 
   def call(_, "episode", [:"atom:link", attr, _]) do

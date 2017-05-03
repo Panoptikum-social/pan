@@ -20,6 +20,8 @@ defmodule Pan.Parser.Persistor do
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
+    if Application.get_env(:pan, :environment) == "dev", do: IO.inspect podcast_map
+
     {:ok, podcast} = Podcast.get_or_insert(podcast_map)
     Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
 
