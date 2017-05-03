@@ -109,8 +109,8 @@ defmodule Pan.BotController do
         },
         %{
           type: "web_url",
-          url: host <> podcast_frontend_path(conn, :show, podcast),
-          title: "View Website"
+          url: podcast.website,
+          title: "Podcast website"
         },
         %{
           type: "web_url",
