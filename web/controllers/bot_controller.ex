@@ -1,7 +1,6 @@
 defmodule Pan.BotController do
   use Pan.Web, :controller
   alias Pan.Podcast
-  alias Pan.Episode
 
   # To test using ngrok, call:
   #   $ ngrok http 4000
@@ -26,7 +25,7 @@ defmodule Pan.BotController do
                      %{filter: [term: ["_type": "episodes"]], weight: 0},
                      %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
 
-    {:ok, 200, %{hits: hits, took: took}} = Tirexs.Query.create_resource(query)
+    {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
 
     podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
     podcasts = from(p in Podcast, where: p.id in ^podcast_ids,
