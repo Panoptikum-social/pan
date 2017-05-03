@@ -13,14 +13,25 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
-    sqlfrag = "%" <> message <> "%"
-    podcasts = from(p in Podcast, where: ilike(p.title,       ^sqlfrag) or
-                                         ilike(p.description, ^sqlfrag) or
-                                         ilike(p.summary,     ^sqlfrag),
-                                  limit: 5)
-                  |> Repo.all()
-                  |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
+             search: [size: 5, from: 0,
+               query: [
+                 function_score: [
+                   query: [match: [_all: [query: message]]],
+                   boost_mode: "multiply",
+                   functions: [
+                     %{filter: [term: ["_type": "categories"]], weight: 0},
+                     %{filter: [term: ["_type": "podcasts"]], weight: 1},
+                     %{filter: [term: ["_type": "personas"]], weight: 0},
+                     %{filter: [term: ["_type": "episodes"]], weight: 0},
+                     %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
 
+    {:ok, 200, %{hits: hits, took: took}} = Tirexs.Query.create_resource(query)
+
+    podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
+    podcasts = from(p in Podcast, where: p.id in ^podcast_ids,
+                                  preload: :episodes)
+               |> Repo.all
 
     data = %{
       recipient: %{
