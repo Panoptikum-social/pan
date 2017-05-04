@@ -116,7 +116,8 @@ defmodule Pan.Parser.Iterator do
 
 
   def parse(map, "episode-contributor", [head | tail], contributor_uuid) do
-    contributor_map = Analyzer.call("episode-contributor", [head[:name], head[:attr], head[:value]])
+    contributor_map =
+      Analyzer.call("episode-contributor", [head[:name], head[:attr], head[:value]])
 
     Helpers.deep_merge(map, %{contributors: %{contributor_uuid => contributor_map}})
     |> parse("episode-contributor", tail, contributor_uuid)

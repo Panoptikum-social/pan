@@ -348,10 +348,9 @@ defmodule Pan.Parser.Analyzer do
 
 # Episode contributors
   def call(_, "episode", [:"atom:contributor", _, value]) do
-    Iterator.parse(%{contributors: %{UUID.uuid1() => %{}}}, "episode-contributor", value, UUID.uuid1())
+    Iterator.parse(%{}, "episode-contributor", value, UUID.uuid1())
   end
   def call(_, "episode", [:"dc:contributor", _, [value]]) do
-
     %{contributors: %{UUID.uuid1() => %{name: value, uri: value}}}
   end
 

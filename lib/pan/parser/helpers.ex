@@ -59,6 +59,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
