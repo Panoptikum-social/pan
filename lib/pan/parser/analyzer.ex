@@ -189,7 +189,8 @@ defmodule Pan.Parser.Analyzer do
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
-    :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player"
+    :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
+    :"cba:duration", :"cba:attachmentID"
   ], do: %{}
 
 
