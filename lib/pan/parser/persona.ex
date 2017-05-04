@@ -7,8 +7,6 @@ defmodule Pan.Parser.Persona do
     # the database does not fit, we still fall back to weaker matches,
     # but not on the name, as names are no unique identifiers.
 
-    if Application.get_env(:pan, :environment) == "dev", do: IO.inspect persona_map
-
     persona_map = Map.put_new(persona_map, :pid,
                               UUID.uuid5(:url, persona_map[:uri] ||
                                                persona_map[:email] ||
