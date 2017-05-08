@@ -28,3 +28,5 @@
     </div>
   <% end %>
 <% end %>
+
+<script>if (hopscotch.getState() === "panoptikum:4") {hopscotch.startTour(tour)}</script>

@@ -1,4 +1,4 @@
-<div class="panel panel-warning">
+<div class="panel panel-warning" id="header">
   <div class="panel-heading">
     <div class="pull-left">
       <%= if @current_user && @current_user.admin do %>

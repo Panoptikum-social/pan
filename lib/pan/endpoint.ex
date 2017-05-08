@@ -11,7 +11,7 @@ defmodule Pan.Endpoint do
   # .well-known is for Let's Encrypt
   plug Plug.Static,
     at: "/", from: :pan, gzip: true,
-    only: ~w(css fonts images js favicon.ico robots.txt
+    only: ~w(css fonts images img js favicon.ico robots.txt
              podlove-web-player podlove-subscribe-button podigee-podcast-player
              .well-known opensearch.xml)
 

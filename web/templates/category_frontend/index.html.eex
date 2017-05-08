@@ -1,9 +1,11 @@
 <div class="row">
-  <div class="col-md-6" style="columns:         4 150px;
-                               -moz-columns:    4 150px;
-                               -webkit-columns: 4 150px;
-                               line-height: 350%;">
-    <%= render "_category_tree.html", categories: @categories, conn: @conn  %>
+  <div class="col-md-6"
+       style="columns:         4 150px;
+              -moz-columns:    4 150px;
+              -webkit-columns: 4 150px;
+              line-height: 350%;"
+       id="category_tree">
+    <%= render "_category_tree.html", categories: @categories, conn: @conn %>
   </div>
 
   <div class="col-md-3">
@@ -17,3 +19,22 @@
     <%= render "_latest_podcasts.html", conn: @conn  %>
   </div>
 </div>
+
+<%= unless @current_user do %>
+  <script>
+    setTimeout(function() {
+      calloutMgr.createCallout({
+        id: 'tour-info',
+        target: 'tour',
+        placement: 'left',
+        title: 'First time visitor?',
+        content: 'You can always start a short tour through Panoptikum here.',
+        padding: 10
+      })
+
+      setTimeout(function() {
+        calloutMgr.removeCallout('tour-info')
+      }, 4000);
+    }, 2000);
+  </script>
+<% end %>
