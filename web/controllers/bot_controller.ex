@@ -12,51 +12,8 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
-    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
-             search: [size: 5, from: 0,
-               query: [
-                 function_score: [
-                   query: [match: [_all: [query: message]]],
-                   boost_mode: "multiply",
-                   functions: [
-                     %{filter: [term: ["_type": "categories"]], weight: 0},
-                     %{filter: [term: ["_type": "podcasts"]], weight: 1},
-                     %{filter: [term: ["_type": "personas"]], weight: 0},
-                     %{filter: [term: ["_type": "episodes"]], weight: 0},
-                     %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
-
-    {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
-
-    podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
-    podcasts = from(p in Podcast, where: p.id in ^podcast_ids,
-                                  preload: :episodes)
-               |> Repo.all
-
-    data = %{
-      recipient: %{
-        id: sender_id
-      },
-      message: message_response(conn, podcasts)
-    }
-    |> Poison.encode!
-
-    params = %{
-      access_token: Application.get_env(:pan, :bot)[:fb_access_token]
-    }
-    |> URI.encode_query()
-
-    body = %{
-      setting_type: "domain_whitelisting",
-      whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
-      domain_action_type: "add"
-    }
-    |> Poison.encode!
-    "https://graph.facebook.com/v2.6/me/thread_settings?#{params}"
-    |> HTTPoison.post(body, ["Content-Type": "application/json"])
-
-    "https://graph.facebook.com/v2.6/me/messages?#{params}"
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
-
+    whitelist_urls()
+    respond_to_message(conn, message, sender_id)
     conn
     |> put_status(200)
     |> text("ok")
@@ -66,6 +23,59 @@ defmodule Pan.BotController do
     conn
     |> put_status(200)
     |> text("ok")
+  end
+
+  defp respond_to_message(conn, message, sender_id) do
+    data = %{
+      recipient: %{
+        id: sender_id
+      },
+      message: message_response(conn, podcasts_from_query(message))
+    }
+    |> Poison.encode!
+
+    "https://graph.facebook.com/v2.6/me/messages?#{access_token_params()}"
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+  end
+
+  defp podcasts_from_query(message) do
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
+     search: [size: 5, from: 0,
+      query: [
+        function_score: [
+          query: [match: [_all: [query: message]]],
+          boost_mode: "multiply",
+          functions: [
+            %{filter: [term: ["_type": "categories"]], weight: 0},
+            %{filter: [term: ["_type": "podcasts"]], weight: 1},
+            %{filter: [term: ["_type": "personas"]], weight: 0},
+            %{filter: [term: ["_type": "episodes"]], weight: 0},
+            %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
+
+    {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
+
+    podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
+
+    from(p in Podcast, where: p.id in ^podcast_ids, preload: :episodes)
+    |> Repo.all
+  end
+
+  defp whitelist_urls do
+    body = %{
+      setting_type: "domain_whitelisting",
+      whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
+      domain_action_type: "add"
+    }
+    |> Poison.encode!
+    "https://graph.facebook.com/v2.6/me/thread_settings?#{access_token_params()}"
+    |> HTTPoison.post(body, ["Content-Type": "application/json"])
+  end
+
+  defp access_token_params do
+    %{
+      access_token: Application.get_env(:pan, :bot)[:fb_access_token]
+    }
+    |> URI.encode_query()
   end
 
   defp message_response(_conn, []) do
