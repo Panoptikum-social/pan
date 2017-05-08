@@ -145,7 +145,7 @@ defmodule Pan.Parser.Analyzer do
     :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
-    :"webfeeds:accentColor"
+    :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage"
 
   ], do: map
 
@@ -190,7 +190,7 @@ defmodule Pan.Parser.Analyzer do
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
-    :"cba:duration", :"cba:attachmentID"
+    :"cba:duration", :"cba:attachmentID", :"im:image"
   ], do: %{}
 
 
@@ -311,6 +311,8 @@ defmodule Pan.Parser.Analyzer do
           payment_link_url: String.slice(attr[:href], 0, 255)}
       "alternate" ->
         %{}
+      "http://podlove.org/simple-chapters" ->
+        %{}
     end
   end
 
@@ -405,8 +407,10 @@ defmodule Pan.Parser.Analyzer do
   def call("episode_author", [:"itunes:name",     _, []]), do: %{}
   def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
   def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("episode_author", [:a,                 _, [value]]), do: %{name: String.slice(value, 0, 255)}
   def call("episode_author", [:"itunes:email",    _, []]), do: %{}
   def call("episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("episode_author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
+
 end
