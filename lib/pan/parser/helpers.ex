@@ -46,6 +46,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {Z}") ||
@@ -135,7 +136,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("Mi",   "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
     |> String.replace("Do",   "Thu")
-    |> String.replace(~r/fr[ei]d?a?y?/i,      "Fri")
+    |> String.replace(~r/fr[ei]?d?a?y?/i,      "Fri")
     |> String.replace(~r/satu?r?d?a?y?/i,     "Sat")
     |> String.replace(~r/s[ou]nd?a?y?/i,      "Sun")
   end
