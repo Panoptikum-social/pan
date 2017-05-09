@@ -7,24 +7,27 @@
     <%= for episode <- group do %>
 
       <div class="col-md-4">
-        <div class="panel panel-info">
+        <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">
-              <%= link episode.title, to: episode_frontend_path(@conn, :show, episode) %>
-              <span class="pull-right">
-                <%= link "listen ...", to: episode_frontend_path(@conn, :show, episode),
-                                       style: "color: #fff;" %>
-              </span>
-            </h3>
+            <span class="truncate">
+              <%= link [fa_icon("podcast"), " ", episode.podcast.title],
+                       to: podcast_frontend_path(@conn, :show, episode.podcast),
+                       class: "btn btn-xs btn-default" %> /
+              <%= link [fa_icon("headphones"), " ", episode.title],
+                          to: episode_frontend_path(@conn, :show, episode.id),
+                          class: "btn btn-primary btn-xs" %>
+            </span>
           </div>
           <div class="panel-body">
-            <%= link [fa_icon("podcast"), " ", episode.podcast.title],
-                     to: podcast_frontend_path(@conn, :show, episode.podcast),
-                     class: "btn btn-xs btn-default" %><br/>
-            <%= fa_icon("calendar") %> <%= episode.publishing_date %><br/>
-            <%= fa_icon("clock-o") %> <%= episode.duration %><br/>
-            <%= author_button(@conn, episode) %><br/>
-            <%= fa_icon("align-justify") %> <%= episode.subtitle %>
+            <hr style="margin-top: -15px; visibility:hidden;" />
+            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate} {h24}:{m}") %>
+            <span class="pull-right"><%= fa_icon("clock-o") %> <%= episode.duration %></span>
+            <hr style="margin-top: -15px; visibility:hidden;" />
+            <label class="label label-success">Author</label> <%= author_button(@conn, episode) %>
+            <hr style="margin-top: -15px; visibility:hidden;" />
+            <span class="truncate">
+              <%= fa_icon("align-justify") %> <%= episode.subtitle || episode.description %>
+            </span>
           </div>
         </div>
       </div>

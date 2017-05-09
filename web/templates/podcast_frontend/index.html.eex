@@ -7,35 +7,64 @@
     <%= for podcast <- group do %>
 
       <div class="col-md-4">
-        <div class="panel panel-primary">
+        <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title">
-              <%= link podcast.title, to: podcast_frontend_path(@conn, :show, podcast) %>
-              <a class="pull-right" href="<%= podcast.website %>"><%= podcast.website %></a>
+              <%= link [fa_icon("podcast"), " ", podcast.title],
+                       to: podcast_frontend_path(@conn, :show, podcast.id),
+                       class: "btn btn-default btn-xs truncate" %>
             </h3>
           </div>
           <div class="panel-body">
             <div class="row">
-              <div class="col-md-6">
-                <img class=" thumbnail" src="<%= podcast.image_url %>" alt="<%= podcast.image_title%>" width="150">
+              <div class="col-md-3">
+                <object data="<%= podcast.image_url %>"
+                        alt="<%= podcast.image_title%>"
+                        type="image/png"
+                        width="150"
+                        class="thumbnail">
+                  <img src="/images/missing-podcast.png"
+                       alt="missing image"
+                       width="150"
+                       />
+                </object>
               </div>
-              <div class="col-md-6">
-                Available here since<br/>
-                <%= fa_icon("calendar") %> <%= podcast.inserted_at %>
-
-                <h5>Categories</h5>
-                <ul>
-                  <%= for category <- podcast.categories do %>
-                    <li>
-                      <%= link [fa_icon("folder-o"), " ", category.title],
-                               to: category_frontend_url(@conn, :show, category),
-                               class: "btn btn-default btn-xs" %>
-                    </li>
+              <div class="col-md-9">
+                <dl class="dl-horizontal">
+                  <%= if podcast.website do %>
+                    <dt><label class="label label-danger">Website</label></dt>
+                    <dd>
+                      <%= link podcast.website, to: podcast.website, class: "truncate" %>
+                    </dd>
                   <% end %>
-                </ul>
 
-                <h5>Author</h5>
-                <%= author_button(@conn, podcast) %>
+                  <dt><label class="label label-info">Available since</label></dt>
+                  <dd>
+                    <%= fa_icon("calendar") %>
+                    <%= Timex.format!(podcast.inserted_at, "{ISOdate}") %>
+                  </dd>
+
+                  <dt><label class="label label-warning">Categories</label></dt>
+                  <%= for category <- podcast.categories do %>
+                    <dd style="line-height: 200%;">
+                      <%= link [fa_icon("folder-o"), " ", category.title],
+                               to: category_frontend_path(@conn, :show, category),
+                               class: "btn btn-xs btn-light-gray" %>
+                    </dd>
+                  <% end %>
+
+                  <dt><label class="label label-info">Contributors</label></dt>
+                  <%= for {engagement, index} <- Enum.with_index(podcast.engagements) do %>
+                    <dd style="line-height: 200%;">
+                      <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+                               to: persona_frontend_path(@conn, :show, engagement.persona),
+                               class: "btn btn-xs truncate btn-pink-rose" %>
+                      <span class="label label-success"><%= engagement.role %></span>
+                    </dd>
+                  <% end %>
+
+                </dl>
+
 
                 <%= if podcast.payment_link_url do %>
                     <h5>Support</h5>
