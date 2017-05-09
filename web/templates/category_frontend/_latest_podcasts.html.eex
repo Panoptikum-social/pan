@@ -28,7 +28,7 @@
             <br/>
           </span>
           <%= if podcast.description do %>
-            <small class="truncate"><%= fa_icon("image") %> <%= podcast.description %></small>
+            <%= fa_icon("image") %> <%= podcast.description %>
           <% end %>
         </li>
       <% end %>
