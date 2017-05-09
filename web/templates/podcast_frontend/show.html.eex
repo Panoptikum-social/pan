@@ -11,7 +11,7 @@
   <%= for group <- Enum.chunk(@podcast.episodes, 3, 3, []) do %>
     <div class="row">
       <%= for {episode, counter} <- Enum.with_index(group) do %>
-        <div class="col-lg-4 hidden-md hidden-sm hidden-xs">
+        <div class="col-lg-4 hidden-md hidden-sm hidden-xs" id="episode-<%= episode.id %>">
           <%= render "_episode.html", episode: episode, counter: counter, conn: @conn %>
         </div>
       <% end %>
@@ -29,4 +29,7 @@
   <% end %>
 <% end %>
 
-<script>if (hopscotch.getState() === "panoptikum:4") {hopscotch.startTour(tour)}</script>
+<script>
+  if (hopscotch.getState() === "panoptikum:5") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:10") {hopscotch.startTour(tour)}
+</script>

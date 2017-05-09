@@ -1,7 +1,7 @@
-<div>
+<div id="subscribe-button">
     <script class="podlove-subscribe-button"
             src="/podlove-subscribe-button/javascripts/app.js"
-            data-language="de"
+            data-language="en"
             data-size="medium"
             data-json-data="podcastData"
             data-colors="ED5565"

@@ -1,18 +1,26 @@
-<div class="panel panel-primary">
+<div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">
-    <%= link @episode.title, to: episode_frontend_path(@conn, :show, @episode) %></h3>
+      <%= link [fa_icon("headphones"), " ", @episode.title],
+               to: episode_frontend_path(@conn, :show, @episode),
+               class: "btn btn-primary btn-xs",
+               style: "color: #fff",
+               id: "detail-#{@episode.id}" %>
+      <span class="pull-right">
+        <%= link [fa_icon("headphones"), " Listen"],
+                 to: episode_frontend_path(@conn, :show, @episode) %>
+      </span>
   </div>
   <div class="panel-body">
-    <p><%= @episode.subtitle %></p>
 
     <dl class="dl-horizontal">
+      <dt><label class="label label-success">Subtitle</label></dt>
+      <dd><%= @episode.subtitle %></dd>
       <dt><label class="label">Support</label></dt>
       <%= if @episode.payment_link_url do %>
         <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
         <dt><label class="label label-warning">Duration</label></dt>
       <% end %>
-      <dd><%= @episode.duration %></dd>
+
       <dt><label class="label label-info">Publishing date</label></dt>
       <dd><%= @episode.publishing_date %></dd>
       <%= if @episode.link do %>

@@ -22,19 +22,26 @@
 
 <%= unless @current_user do %>
   <script>
-    setTimeout(function() {
-      calloutMgr.createCallout({
-        id: 'tour-info',
-        target: 'tour',
-        placement: 'left',
-        title: 'First time visitor?',
-        content: 'You can always start a short tour through Panoptikum here.',
-        padding: 10
-      })
-
+    if (hopscotch.getState() == null ) {
       setTimeout(function() {
-        calloutMgr.removeCallout('tour-info')
-      }, 4000);
-    }, 2000);
+        calloutMgr.createCallout({
+          id: 'tour-info',
+          target: 'tour',
+          placement: 'left',
+          title: 'First time visitor?',
+          content: 'You can always start a short tour through Panoptikum here.',
+          padding: 10
+        })
+
+        setTimeout(function() {
+          calloutMgr.removeCallout('tour-info')
+        }, 4000)
+      }, 2000)
+    }
   </script>
 <% end %>
+
+<script>
+  if (hopscotch.getState() === "panoptikum:1") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:17") {hopscotch.startTour(tour)}
+</script>

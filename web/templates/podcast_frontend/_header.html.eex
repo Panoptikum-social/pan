@@ -1,4 +1,4 @@
-<div class="panel panel-warning" id="header">
+<div class="panel panel-warning">
   <div class="panel-heading">
     <div class="pull-left">
       <%= if @current_user && @current_user.admin do %>
@@ -61,7 +61,7 @@
                 <% end %>
               </dd>
               <dt><label class="label label-success">last modified</label></dt>
-              <dd><%= @podcast.last_build_date %></dd>
+              <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
               <dt><label class="label label-info">Contributors</label></dt>
               <%= for {engagement, index} <- Enum.with_index(@podcast.engagements) do %>
                 <dd style="line-height: 200%;">
@@ -73,7 +73,7 @@
               <% end %>
               <dt><label class="label">Explicit</label></dt>
               <dd><%= @podcast.explicit %></dd>
-              <dt><label class="label label-info">Number of Episodes</label></dt>
+              <dt><label class="label label-info" id="metadata">Number of Episodes</label></dt>
               <dd><%= Enum.count(@podcast.episodes) %></dd>
               <dt><label class="label label-success"><%= fa_icon("feed") %> Rss-Feeds</label></dt>
               <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>

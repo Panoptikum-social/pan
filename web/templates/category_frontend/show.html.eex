@@ -63,4 +63,7 @@
   <%= follow_or_unfollow(@current_user.id, @category.id) %>
 <% end %>
 
-<script>if (hopscotch.getState() === "panoptikum:1") {hopscotch.startTour(tour)}</script>
+<script>
+  if (hopscotch.getState() === "panoptikum:2") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:4") {hopscotch.startTour(tour)}
+</script>

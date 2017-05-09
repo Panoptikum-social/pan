@@ -10,7 +10,7 @@
                                       conn: @conn %>
 
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-5" id="player">
       <%= case @player do %>
         <%= "podlove" -> %>
           <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
@@ -31,7 +31,7 @@
       <% end %>
     </div>
 
-    <div class="col-md-7">
+    <div class="col-md-7" id="shownotes">
       <%= if @episode.shownotes do %>
         <h3>Shownotes</h3>
         <p><%= raw(@episode.shownotes) %></p>
@@ -45,3 +45,8 @@
                                player: @player,
                                conn: @conn %>
 <% end %>
+
+<script>
+  if (hopscotch.getState() === "panoptikum:11") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:14") {hopscotch.startTour(tour)}
+</script>

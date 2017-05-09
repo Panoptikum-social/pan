@@ -27,13 +27,14 @@
         </dl>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6" >
         <%= if @persona.image_url do %>
           <object data="<%= @persona.image_url %>"
                   alt="<%= @persona.image_title%>"
                   type="image/png"
                   width="150"
-                  class="thumbnail">
+                  class="thumbnail"
+                  id="photo">
             <img src="/images/missing-persona.png"
                  alt="missing image"
                  width="150" />
@@ -99,7 +100,7 @@
   <% end %>
 
   <%= if @engagements != [] do %>
-    <div class="col-md-6">
+    <div class="col-md-6" id="gigs">
       <div class="panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title">Engagements, <%= @persona.name %> has entered</h3>
@@ -175,3 +176,8 @@
     <%= fa_icon "info-circle" %> Help
   </button>
 <% end %>
+
+<script>
+  if (hopscotch.getState() === "panoptikum:15") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:16") {hopscotch.startTour(tour)}
+</script>

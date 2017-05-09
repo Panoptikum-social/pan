@@ -1,5 +1,5 @@
 <%= if @episode.chapters != [] do %>
-  <h3>Deeplinks to Chapters</h3>
+  <h3 id="chapters">Deeplinks to Chapters</h3>
 
   <%= if @current_user do %>
     <div class="row">

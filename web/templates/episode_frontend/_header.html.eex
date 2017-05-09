@@ -6,9 +6,9 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-md-6">
-        <p><%= @episode.subtitle %> </p>
-
         <dl class="dl-horizontal">
+          <dt><label class="label label-success">Subtitle</label></dt>
+          <dd><%= @episode.subtitle %></dd>
           <%= if @episode.payment_link_url do %>
             <dt><label class="label">Support</label></dt>
             <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
@@ -16,18 +16,18 @@
           <dt><label class="label label-warning">Duration</label></dt>
           <dd><%= @episode.duration %></dd>
           <dt><label class="label label-info">Publishing date</label></dt>
-          <dd><%= @episode.publishing_date %></dd>
+          <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
           <dt><label class="label label-danger">Link</label></dt>
           <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
           <dt><label class="label label-primary">Deep link</label></dt>
-          <dd><a href="<%= @episode.deep_link %>"><%= @episode.deep_link %></a></dd>
+          <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
           <dt><label class="label label-info">Contributors</label></dt>
           <%= for {gig, index} <- Enum.with_index(@episode.gigs) do %>
             <dd style="line-height: 200%;">
               <%= link [fa_icon("user-o"), " ", gig.persona.name],
                        to: persona_frontend_path(@conn, :show, gig.persona),
                        class: "btn btn-xs truncate " <> btn_cycle(index) %>
-              <span class="label label-success"><%= gig.role %></span>
+              <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
             </dd>
           <% end %>
         </dl>

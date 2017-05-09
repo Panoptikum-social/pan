@@ -2,7 +2,8 @@
   <div style="display: inline-block;">
     <%= link [fa_icon("folder-o"), " ", truncate(category.title, 22)],
              to: category_frontend_path(@conn, :show, category),
-             class: "btn btn-sm " <> btn_cycle(counter) %>
+             class: "btn btn-sm " <> btn_cycle(counter),
+             id: "category-#{category.id}" %>
     <br/>
 
     <%= if category.children != [] do %>
