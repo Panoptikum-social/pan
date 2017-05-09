@@ -30,7 +30,7 @@
           <%= end %><br/>
 
           <%= if episode.subtitle do %>
-            <small><%= fa_icon("image") %> <%= episode.subtitle %></small>
+            <small class="truncate"><%= fa_icon("image") %> <%= episode.subtitle %></small>
           <%= end %>
         </li>
       <% end %>

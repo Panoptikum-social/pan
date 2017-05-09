@@ -10,15 +10,15 @@
       <%= for podcast <- ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() -> Pan.Podcast.latest() end) do %>
         <li class="list-group-item">
           <span style="line-height: 200%">
-            <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
+            <%= link [fa_icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast.id),
-                     class: "btn btn-default btn-xs",
+                     class: "btn btn-default btn-xs truncate",
                      style: "color: #000" %><br/>
 
             <%= if podcast.author_name do %>
               <%= link [fa_icon("user-o"), " ", podcast.author_name],
                    to: persona_frontend_path(@conn, :show, podcast.author_id),
-                   class: "btn btn-xs truncate btn-pink-rose" %>
+                   class: "btn btn-xs truncate btn-pink-rose truncate" %>
             <%= else %>
               <%= fa_icon("user-o") %> Unknown
             <% end %><br/>
@@ -28,7 +28,7 @@
             <br/>
           </span>
           <%= if podcast.description do %>
-            <small><%= fa_icon("image") %> <%= truncate(podcast.description, 150) %></small>
+            <small class="truncate"><%= fa_icon("image") %> <%= podcast.description %></small>
           <% end %>
         </li>
       <% end %>
