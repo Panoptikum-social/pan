@@ -6,27 +6,28 @@
     </span>
   </div>
   <div id="latest_podcasts">
-      <ul class="list-unstyled">
+    <ul class="list-unstyled">
       <%= for podcast <- ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() -> Pan.Podcast.latest() end) do %>
-        <li class="list-group-item">
-          <span style="line-height: 200%">
-            <%= link [fa_icon("podcast"), " ", podcast.title],
-                     to: podcast_frontend_path(@conn, :show, podcast.id),
-                     class: "btn btn-default btn-xs truncate",
-                     style: "color: #000" %><br/>
+        <li>
+          <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 75)],
+                   to: podcast_frontend_path(@conn, :show, podcast.id),
+                   class: "btn btn-default btn-xs truncate",
+                   style: "color: #000;" %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
 
-            <%= if podcast.author_name do %>
-              <%= link [fa_icon("user-o"), " ", podcast.author_name],
-                   to: persona_frontend_path(@conn, :show, podcast.author_id),
-                   class: "btn btn-xs truncate btn-pink-rose truncate" %>
-            <%= else %>
-              <%= fa_icon("user-o") %> Unknown
-            <% end %><br/>
+          <%= if podcast.author_name do %>
+            <%= link [fa_icon("user-o"), " ", truncate(podcast.author_name, 75)],
+                 to: persona_frontend_path(@conn, :show, podcast.author_id),
+                 class: "btn btn-xs truncate btn-pink-rose truncate" %>
+          <%= else %>
+            <%= fa_icon("user-o") %> Unknown
+          <% end %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
 
-            <%= fa_icon("calendar") %>
-            <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
-            <br/>
-          </span>
+          <%= fa_icon("calendar") %>
+          <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
+
           <%= if podcast.description do %>
             <%= fa_icon("image") %> <%= podcast.description %>
           <% end %>
