@@ -145,7 +145,8 @@ defmodule Pan.Parser.Analyzer do
     :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
-    :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage"
+    :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
+    :"awesound:lastCached"
 
   ], do: map
 
@@ -190,7 +191,7 @@ defmodule Pan.Parser.Analyzer do
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
-    :"cba:duration", :"cba:attachmentID", :"im:image"
+    :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3"
   ], do: %{}
 
 

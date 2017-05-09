@@ -27,6 +27,7 @@ defmodule Pan.Parser.Helpers do
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
                 |> fix_time()
+                |> replace_first_second_third_fourth()
                 |> replace_long_month_names()
                 |> replace_long_week_days()
                 |> String.replace("  ", " ")
@@ -51,10 +52,6 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY}") ||
-               try_format(feed_date, "{WDshort} {D}nd {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort} {D}rd {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort} {D}st {Mshort} {YYYY} {ISOtime} {Zname}") ||
-               try_format(feed_date, "{WDshort} {D}th {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}") ||
@@ -108,20 +105,29 @@ defmodule Pan.Parser.Helpers do
   end
 
 
+  def replace_first_second_third_fourth(datetime) do
+    datetime
+    |> String.replace(~r/(\d)st/i, "\\1")
+    |> String.replace(~r/(\d)nd/i, "\\1")
+    |> String.replace(~r/(\d)rd/i, "\\1")
+    |> String.replace(~r/(\d)th/i, "\\1")
+  end
+
+
   def replace_long_month_names(datetime) do
     datetime
-    |> String.replace(~r/janu?a?r?y?/i,         "Jan")
+    |> String.replace(~r/janu?a?r?y?/i,          "Jan")
     |> String.replace(~r/f[ae][bvr]r?u?a?r?y?/i, "Feb")
-    |> String.replace(~r/m[aä]rc?h?/i,          "Mar")
-    |> String.replace(~r/a[pvb]r?i?l?/i,        "Apr")
-    |> String.replace(~r/m[a][iy]/i,            "May")
-    |> String.replace(~r/jui?n[eg]?/i,          "Jun")
-    |> String.replace(~r/july?/i,               "Jul")
-    |> String.replace(~r/augu?s?t?/i,           "Aug")
-    |> String.replace(~r/sep?t?e?m?b?e?r?/i,    "Sep")
-    |> String.replace(~r/o[ck]to?b?e?r?/i,      "Oct")
-    |> String.replace(~r/no[vc]e?m?b?e?r?/i,    "Nov")
-    |> String.replace(~r/d[ei][cz]e?m?b?e?r?/i, "Dec")
+    |> String.replace(~r/m[aä]rc?h?/i,           "Mar")
+    |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")
+    |> String.replace(~r/m[a][iy]/i,             "May")
+    |> String.replace(~r/jui?n[eg]?/i,           "Jun")
+    |> String.replace(~r/july?/i,                "Jul")
+    |> String.replace(~r/augu?s?t?/i,            "Aug")
+    |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
+    |> String.replace(~r/o[ck]to?b?e?r?/i,       "Oct")
+    |> String.replace(~r/no[vc]e?m?b?e?r?/i,     "Nov")
+    |> String.replace(~r/d[ei][cz]e?m?b?e?r?/i,  "Dec")
   end
 
 
