@@ -93,9 +93,19 @@
         </span>
       </li>
     <% else %>
-      <li><a id="tour" href="javascript: hopscotch.startTour(tour);"><%= fa_icon("bus") %> Tour</a></li>
+      <li><a id="tour" href="#"><%= fa_icon("bus") %> Tour</a></li>
       <li><%= link "Register", to: user_frontend_path(@conn, :new) %></li>
       <li><%= link "Log in", to: session_path(@conn, :new) %></li>
     <% end %>
   </ul>
 </div>
+
+<script>
+  window.onload = function() {
+    var a = document.getElementById("tour");
+    a.onclick = function() {
+      hopscotch.startTour(tour);
+      return false;
+    }
+  }
+</script>
