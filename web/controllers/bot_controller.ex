@@ -13,7 +13,7 @@ defmodule Pan.BotController do
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
     whitelist_urls()
-    respond_to_message(conn, message, sender_id)
+    respond_to_message(message, sender_id)
     conn
     |> send_resp(200, "ok")
   end
@@ -23,12 +23,12 @@ defmodule Pan.BotController do
     |> send_resp(200, "ok")
   end
 
-  defp respond_to_message(conn, message, sender_id) do
+  defp respond_to_message(message, sender_id) do
     data = %{
       recipient: %{
         id: sender_id
       },
-      message: message_response(conn, podcasts_from_query(message))
+      message: message_response(podcasts_from_query(message))
     }
     |> Poison.encode!
 
@@ -80,25 +80,25 @@ defmodule Pan.BotController do
     |> URI.encode_query()
   end
 
-  defp message_response(_conn, []) do
+  defp message_response([]) do
     %{
       text: "Sorry! I couldn't find any podcasts with that. How about \"Serial\"?"
     }
   end
 
-  defp message_response(conn, podcasts) do
+  defp message_response(podcasts) do
     %{
       attachment: %{
         type: "template",
         payload: %{
           template_type: "generic",
-          elements: Enum.map(podcasts, &(podcast_json(conn, &1)))
+          elements: Enum.map(podcasts, &(podcast_json(&1)))
         }
       }
     }
   end
 
-  defp podcast_json(conn, podcast) do
+  defp podcast_json(podcast) do
     [episode | _rest] = podcast.episodes
     host = Application.get_env(:pan, :bot)[:host]
     %{
@@ -107,15 +107,15 @@ defmodule Pan.BotController do
       subtitle: podcast.description,
       default_action: %{
         type: "web_url",
-        url: host <> podcast_frontend_path(conn, :show, podcast),
+        url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
         messenger_extensions: true,
         webview_height_ratio: "tall",
-        fallback_url: host <> podcast_frontend_path(conn, :show, podcast)
+        fallback_url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast)
       },
       buttons: [
         %{
           type: "web_url",
-          url: host <> podcast_frontend_path(conn, :show, podcast),
+          url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
           title: "👉 Panoptikum"
         },
         %{
@@ -125,7 +125,7 @@ defmodule Pan.BotController do
         },
         %{
           type: "web_url",
-          url: host <> episode_frontend_path(conn, :player, episode),
+          url: host <> episode_frontend_path(Pan.Endpoint, :player, episode),
           messenger_extensions: true,
           webview_height_ratio: "tall",
           title: "🎧 Latest episode"
