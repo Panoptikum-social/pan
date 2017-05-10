@@ -15,14 +15,12 @@ defmodule Pan.BotController do
     whitelist_urls()
     respond_to_message(conn, message, sender_id)
     conn
-    |> put_status(200)
-    |> text("ok")
+    |> send_resp(200, "ok")
   end
 
   def message(conn, _params) do
     conn
-    |> put_status(200)
-    |> text("ok")
+    |> send_resp(200, "ok")
   end
 
   defp respond_to_message(conn, message, sender_id) do
@@ -34,7 +32,7 @@ defmodule Pan.BotController do
     }
     |> Poison.encode!
 
-    "https://graph.facebook.com/v2.6/me/messages?#{access_token_params()}"
+    facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"])
   end
 
@@ -67,8 +65,12 @@ defmodule Pan.BotController do
       domain_action_type: "add"
     }
     |> Poison.encode!
-    "https://graph.facebook.com/v2.6/me/thread_settings?#{access_token_params()}"
+    facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(body, ["Content-Type": "application/json"])
+  end
+
+  defp facebook_request_url(path, params) do
+    "https://graph.facebook.com/v2.6/me/#{path}?#{params}"
   end
 
   defp access_token_params do
