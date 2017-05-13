@@ -1,0 +1,9 @@
+<%= for podcast <- @podcasts do %>
+  <%= if podcast.last_build_date && podcast.last_episode && Timex.compare(podcast.last_build_date, podcast.last_episode) == -1 do %>
+    <%= podcast.id %> -
+    <%= podcast.title %> -
+    <%= if podcast.last_build_date, do: Timex.format!(podcast.last_build_date, "{ISOdate} {h24}:{m}") %> -
+    <%= if podcast.last_episode, do: Timex.format!(podcast.last_episode, "{ISOdate} {h24}:{m}") %>
+    <br/>
+  <% end %>
+<% end %>

@@ -54,7 +54,7 @@
                   <% end %>
 
                   <dt><label class="label label-info">Contributors</label></dt>
-                  <%= for {engagement, index} <- Enum.with_index(podcast.engagements) do %>
+                  <%= for engagement <- podcast.engagements do %>
                     <dd style="line-height: 200%;">
                       <%= link [fa_icon("user-o"), " ", engagement.persona.name],
                                to: persona_frontend_path(@conn, :show, engagement.persona),

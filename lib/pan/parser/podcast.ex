@@ -30,6 +30,9 @@ defmodule Pan.Parser.Podcast do
       Logger.error "=== Podcast #{inspect id} has no feed! ==="
     end
 
+    # Work in progress ...
+    # RssFeed.check_update_necessary(feed.self_link_url, id)
+
     case RssFeed.import_to_map(feed.self_link_url, id) do
       {:ok, map} ->
         Persistor.delta_import(map, id)
@@ -48,7 +51,6 @@ defmodule Pan.Parser.Podcast do
         delta_import(id)
 
       {:error, message} ->
-        unpause(id)
         {:error, message}
     end
   end
@@ -63,7 +65,6 @@ defmodule Pan.Parser.Podcast do
         {:ok, "Contributors importet successfully"}
 
       {:error, message} ->
-        unpause(id)
         {:error, message}
     end
   end
