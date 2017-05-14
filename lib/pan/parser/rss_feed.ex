@@ -25,32 +25,7 @@ defmodule Pan.Parser.RssFeed do
 
         {:ok, podcast_id}
 
-      {:error, "Connection timeout"} ->
-        {:error, "Connection timeout"}
-
-      {:error, "Timeout"} ->
-        {:error, "Connection timeout"}
-
-      {:error, "404: feed not found"} ->
-        {:error, "404: feed not found"}
-
-      {:error, "403: forbidden"} ->
-        {:error, "403: forbidden"}
-
-      {:error, "Connection refused"} ->
-        {:error, "Connection refused"}
-
-      {:error, "This is not an rss feed!"} ->
-        {:error, "This is not an rss feed!"}
-
-      {:error, "500: internal server error"} ->
-        {:error, "500: internal server error"}
-
-      {:error, "Domain not resolveable"} ->
-        {:error, "Domain not resolveable"}
-
-      {:error, "Quinn parser finds unexpected end"} ->
-        {:error, "Quinn parser finds unexpected end"}
+      {:error, error} -> {:error, error}
 
       {:redirect, redirect_target} ->
         case initial_import(redirect_target, feed_id, pagecount) do

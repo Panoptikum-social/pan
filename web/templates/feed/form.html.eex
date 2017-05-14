@@ -5,70 +5,74 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= label f, :self_link_title, class: "control-label" %>
-    <%= text_input f, :self_link_title, class: "form-control" %>
-    <%= error_tag f, :self_link_title %>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <%= label f, :self_link_title, class: "control-label" %>
+      <%= text_input f, :self_link_title, class: "form-control" %>
+      <%= error_tag f, :self_link_title %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :self_link_url, class: "control-label" %>
+      <%= text_input f, :self_link_url, class: "form-control" %>
+      <%= error_tag f, :self_link_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :next_page_url, class: "control-label" %>
+      <%= text_input f, :next_page_url, class: "form-control" %>
+      <%= error_tag f, :next_page_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :prev_page_url, class: "control-label" %>
+      <%= text_input f, :prev_page_url, class: "form-control" %>
+      <%= error_tag f, :prev_page_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :first_page_url, class: "control-label" %>
+      <%= text_input f, :first_page_url, class: "form-control" %>
+      <%= error_tag f, :first_page_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :last_page_url, class: "control-label" %>
+      <%= text_input f, :last_page_url, class: "form-control" %>
+      <%= error_tag f, :last_page_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :hub_link_url, class: "control-label" %>
+      <%= text_input f, :hub_link_url, class: "form-control" %>
+      <%= error_tag f, :hub_link_url %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :feed_generator, class: "control-label" %>
+      <%= text_input f, :feed_generator, class: "form-control" %>
+      <%= error_tag f, :feed_generator %>
+    </div>
+
+
+    <div class="form-group col-md-1">
+      <%= label f, :podcast_id, class: "control-label" %>
+      <%= text_input f, :podcast_id, class: "form-control" %>
+      <%= error_tag f, :podcast_id %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= label f, :self_link_url, class: "control-label" %>
-    <%= text_input f, :self_link_url, class: "form-control" %>
-    <%= error_tag f, :self_link_url %>
-  </div>
+  <br/>
 
-  <div class="form-group">
-    <%= label f, :next_page_url, class: "control-label" %>
-    <%= text_input f, :next_page_url, class: "form-control" %>
-    <%= error_tag f, :next_page_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :prev_page_url, class: "control-label" %>
-    <%= text_input f, :prev_page_url, class: "form-control" %>
-    <%= error_tag f, :prev_page_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :first_page_url, class: "control-label" %>
-    <%= text_input f, :first_page_url, class: "form-control" %>
-    <%= error_tag f, :first_page_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :last_page_url, class: "control-label" %>
-    <%= text_input f, :last_page_url, class: "form-control" %>
-    <%= error_tag f, :last_page_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :hub_link_url, class: "control-label" %>
-    <%= text_input f, :hub_link_url, class: "form-control" %>
-    <%= error_tag f, :hub_link_url %>
-  </div>
-
-  <div class="form-group">
-    <%= label f, :feed_generator, class: "control-label" %>
-    <%= text_input f, :feed_generator, class: "form-control" %>
-    <%= error_tag f, :feed_generator %>
-  </div>
-
-
-  <div class="form-group">
-    <%= label f, :podcast_id, class: "control-label" %>
-    <%= text_input f, :podcast_id, class: "form-control" %>
-    <%= error_tag f, :podcast_id %>
-  </div>
+  <h4>Alternate Feeds</h4>
 
   <%= inputs_for f, :alternate_feeds, fn i -> %>
-    <h4><%= label f, :alternate_feed, class: "control-label" %></h4>
-
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <%= label i, :url, class: "control-label" %>
       <%= text_input i, :url, class: "form-control" %>
     </div>
 
-    <div class="form-group">
+    <div class="form-group col-md-6">
       <%= label i, :title, class: "control-label" %>
       <%= text_input i, :title, class: "form-control" %>
     </div>

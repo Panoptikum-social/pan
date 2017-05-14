@@ -30,5 +30,19 @@
   <dd><%= @feed.podcast_id %></dd>
 </dl>
 
+<h4>Alternate Feeds</h4>
+<%= for alternate_feed <- @feed.alternate_feeds do %>
+  <div class="row">
+    <div class="col-md-1">
+      <%= link "Delete", to: alternate_feed_path(@conn, :delete, alternate_feed),
+                         method: :delete,
+                         data: [confirm: "Are you sure?"],
+                         class: "btn btn-danger btn-xs" %>
+    </div>
+    <div class="col-md-5"><%= alternate_feed.title %></div>
+    <div class="col-md-6"><%= alternate_feed.url %></div>
+  </div>
+<% end %>
+
 <%= link "Edit", to: feed_path(@conn, :edit, @feed) %>
 <%= link "Back", to: feed_path(@conn, :index) %>

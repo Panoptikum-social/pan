@@ -47,6 +47,7 @@ defmodule Pan.FeedController do
 
   def show(conn, %{"id" => id}) do
     feed = Repo.get!(Feed, id)
+           |> Repo.preload(:alternate_feeds)
     render(conn, "show.html", feed: feed)
   end
 

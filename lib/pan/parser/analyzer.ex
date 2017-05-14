@@ -146,7 +146,7 @@ defmodule Pan.Parser.Analyzer do
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
-    :"awesound:lastCached"
+    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id"
 
   ], do: map
 
@@ -191,7 +191,8 @@ defmodule Pan.Parser.Analyzer do
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
-    :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3"
+    :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
+    :"aidsgov:transcript"
   ], do: %{}
 
 

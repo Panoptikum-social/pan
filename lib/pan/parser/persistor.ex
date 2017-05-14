@@ -13,14 +13,14 @@ defmodule Pan.Parser.Persistor do
 
 
 
-  def initial_import(map, url \\ nil) do
+  def initial_import(map, _url \\ nil) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
                                  :languages, :categories, :owner, :categories,
                                  :author])
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-    if Application.get_env(:pan, :environment) == "dev", do: IO.inspect podcast_map
+    # if Application.get_env(:pan, :environment) == "dev", do: IO.inspect podcast_map
 
     {:ok, podcast} = Podcast.get_or_insert(podcast_map)
     Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
@@ -29,11 +29,6 @@ defmodule Pan.Parser.Persistor do
 
     Category.persist_many(map[:categories], podcast)
     AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
-
-    if url && feed.self_link_url != url do
-      %{UUID.uuid1() => %{title: url, url: url}}
-      |> AlternateFeed.get_or_insert_many(feed.id)
-    end
 
     Language.persist_many(map[:languages], podcast)
 

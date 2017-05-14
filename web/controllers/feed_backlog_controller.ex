@@ -89,52 +89,10 @@ defmodule Pan.FeedBacklogController do
         |> put_flash(:info, "Feed imported successfully.")
         |> redirect(to: podcast_frontend_path(conn, :show, podcast_id))
 
-      {:error, "Connection timeout"} ->
+      {:error, error} ->
         Repo.delete!(feed_backlog)
         conn
-        |> put_flash(:error, "Connection timeout. - Deleted.")
-        |> render("import.html")
-
-      {:error, "404: feed not found"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "404: Feed not found - Deleted.")
-        |> render("import.html")
-
-      {:error, "500: internal server error"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "500: Internal server error - Deleted.")
-        |> render("import.html")
-
-      {:error, "Domain not resolveable"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "Domain not resolveable - Deleted.")
-        |> render("import.html")
-
-      {:error, "Quinn parser finds unexpected end"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "Quinn parser finds unexpected end - Deleted.")
-        |> render("import.html")
-
-      {:error, "403: forbidden"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "403: forbidden - Deleted.")
-        |> render("import.html")
-
-      {:error, "Connection refused"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "Connection refused - Deleted.")
-        |> render("import.html")
-
-      {:error, "This is not an rss feed!"} ->
-        Repo.delete!(feed_backlog)
-        conn
-        |> put_flash(:error, "This is not an rss feed! - Deleted.")
+        |> put_flash(:error, error)
         |> render("import.html")
     end
   end

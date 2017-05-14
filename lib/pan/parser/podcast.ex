@@ -41,7 +41,8 @@ defmodule Pan.Parser.Podcast do
 
       {:redirect, redirect_target} ->
         if String.starts_with?(redirect_target, "http") do
-          AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url})
+          AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
+                                                 title: feed.self_link_url})
 
           Feed.changeset(feed, %{self_link_url: redirect_target})
           |> Repo.update([force: true])

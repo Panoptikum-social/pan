@@ -78,13 +78,12 @@ defmodule Pan.AlternateFeedController do
 
   def delete(conn, %{"id" => id}) do
     alternate_feed = Repo.get!(AlternateFeed, id)
+    feed_id = alternate_feed.feed_id
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(alternate_feed)
 
     conn
     |> put_flash(:info, "Alternate feed deleted successfully.")
-    |> redirect(to: alternate_feed_path(conn, :index))
+    |> redirect(to: feed_path(conn, :show, feed_id))
   end
 end
