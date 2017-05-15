@@ -221,6 +221,6 @@ defmodule Pan.Parser.Helpers do
   end
 
   def to_255(text) do
-    String.slice(text, 0, 255)
+    binary_part(text, 0, min(255, byte_size(text)))
   end
 end

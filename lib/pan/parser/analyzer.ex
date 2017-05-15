@@ -34,9 +34,9 @@ defmodule Pan.Parser.Analyzer do
 # image with fallback to itunes:image
   def call(_, "tag", [:image, _, value]), do: Iterator.parse(%{}, "image", value)
   def call(_, "image", [:title, _, _]), do: %{}
-  def call(_, "image", [:title, _, [value]]), do: %{image_title: String.slice(value, 0, 255)}
+  def call(_, "image", [:title, _, [value]]), do: %{image_title: H.to_255(value)}
   def call(_, "image", [:url,   _, []]), do: %{}
-  def call(_, "image", [:url,   _, [value]]), do: %{image_url: String.slice(value, 0, 255)}
+  def call(_, "image", [:url,   _, [value]]), do: %{image_url: H.to_255(value)}
   def call(_, "image", [:link,        _, _]), do: %{}
   def call(_, "image", [:description, _, _]), do: %{}
   def call(_, "image", [:width,       _, _]), do: %{}
@@ -44,19 +44,19 @@ defmodule Pan.Parser.Analyzer do
 
   def call(map, "image", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
-                        else: %{image_url: String.slice(attr[:href], 0, 255),
+                        else: %{image_url: H.to_255(attr[:href]),
                                 image_title: H.to_255(attr[:href])}
   end
 
   def call(map, "tag", [:"itunes:image", attr, _]) do
     if map[:image_url], do: map,
-                        else: %{image_url: String.slice(attr[:href], 0, 255),
+                        else: %{image_url: H.to_255(attr[:href]),
                                 image_title: H.to_255(attr[:href])}
   end
 
   def call(map, "tag", [:"itunes:image", _, [value]]) do
     if map[:image_url], do: map,
-                        else: %{image_url: String.slice(value, 0, 255)}
+                        else: %{image_url: H.to_255(value)}
   end
 
 
@@ -97,7 +97,7 @@ defmodule Pan.Parser.Analyzer do
         alternate_feed_map = %{UUID.uuid1() => %{title: attr[:title], url: attr[:href]}}
         %{feed: %{alternate_feeds: alternate_feed_map}}
       "payment" -> %{payment_link_title: attr[:title],
-                     payment_link_url: String.slice(attr[:href], 0, 255)}
+                     payment_link_url: H.to_255(attr[:href])}
     end
   end
 
@@ -245,15 +245,15 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title, _, [value | _]]), do: %{title: String.slice(value, 0, 253)}
+  def call(_, "episode", [:title, _, [value | _]]), do: %{title: H.to_255(value)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: String.slice(value, 0, 253)}
+  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: H.to_255(value)}
 
   def call(_, "episode", [:link, _, []]), do: %{}
-  def call(_, "episode", [:link, _, [value]]), do: %{link:        String.slice(value, 0, 255)}
-  def call(_, "episode", [:guid, _, [value]]), do: %{guid:        String.slice(value, 0, 255)}
+  def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
+  def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:guid, _, _]), do: %{}
-  def call(_, "episode", [:contentId, _, [value]]), do: %{guid:   String.slice(value, 0, 255)}
+  def call(_, "episode", [:contentId, _, [value]]), do: %{guid: H.to_255(value)}
 
   def call(_, "episode", [:description, _, []]), do: %{}
   def call(_, "episode", [:description, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
@@ -274,11 +274,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: (String.slice(value, 0, 255)
-                                                                             |> String.replace("\r", "")
-                                                                             |> String.replace("\n", ""))}
-  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: String.slice(value, 0, 255)}
-  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: String.slice(value, 0, 255)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: H.to_255(value)}
+  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: H.to_255(value)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: H.to_255(value)}
 
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
@@ -307,10 +305,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "http://podlove.org/deep-link" ->
-        %{deep_link: String.slice(attr[:href], 0, 255)}
+        %{deep_link: H.to_255(attr[:href])}
       "payment" ->
         %{payment_link_title: attr[:title],
-          payment_link_url: String.slice(attr[:href], 0, 255)}
+          payment_link_url: H.to_255(attr[:href])}
       "alternate" ->
         %{}
       "http://podlove.org/simple-chapters" ->
@@ -330,10 +328,10 @@ defmodule Pan.Parser.Analyzer do
 
 # Enclosures a.k.a. Audiofiles
   def call(_, "episode", [:enclosure, attr, _]) do
-    enclosure_map = %{url:    String.slice(attr[:url], 0, 255),
-                      length: String.slice(attr[:length], 0, 255),
-                      type:   String.slice(attr[:type], 0, 255),
-                      guid:   String.slice(attr[:"bitlove:guid"], 0, 255)}
+    enclosure_map = %{url:    H.to_255(attr[:url]),
+                      length: H.to_255(attr[:length]),
+                      type:   H.to_255(attr[:type]),
+                      guid:   H.to_255(attr[:"bitlove:guid"])}
     %{enclosures: %{UUID.uuid1() => enclosure_map}}
   end
 
@@ -372,7 +370,7 @@ defmodule Pan.Parser.Analyzer do
 
 # Now the namespaces:
   def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
-    %{UUID.uuid1() => %{start: attr[:start], title: String.slice(attr[:title], 0, 255)}}
+    %{UUID.uuid1() => %{start: attr[:start], title: H.to_255(attr[:title])}}
   end
 
   def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}
@@ -387,9 +385,9 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("owner", [:"itunes:name",     _, []]), do: %{}
-  def call("owner", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call("owner", [:name,              _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call("owner", [:"itunes:author",   _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("owner", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
+  def call("owner", [:name,              _, [value]]), do: %{name: H.to_255(value)}
+  def call("owner", [:"itunes:author",   _, [value]]), do: %{name: H.to_255(value)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
@@ -398,8 +396,8 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("author", [:"itunes:name",     _, []]), do: %{}
-  def call("author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call("author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
+  def call("author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
   def call("author", [:"itunes:email",    _, []]), do: %{}
   def call("author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("author", [:"atom:email",      _, [value]]), do: %{email: value}
@@ -407,9 +405,9 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("episode_author", [:"itunes:name",     _, []]), do: %{}
-  def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: String.slice(value, 0, 255)}
-  def call("episode_author", [:a,                 _, [value]]), do: %{name: String.slice(value, 0, 255)}
+  def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
+  def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
+  def call("episode_author", [:a,                 _, [value]]), do: %{name: H.to_255(value)}
   def call("episode_author", [:"itunes:email",    _, []]), do: %{}
   def call("episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
