@@ -116,7 +116,7 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_month_names(datetime) do
     datetime
-    |> String.replace(~r/janu?a?r?y?/i,          "Jan")
+    |> String.replace(~r/janu?r?a?r?y?/i,          "Jan")
     |> String.replace(~r/f[ae][bvr]r?u?a?r?y?/i, "Feb")
     |> String.replace(~r/m[aä]rc?h?/i,           "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")

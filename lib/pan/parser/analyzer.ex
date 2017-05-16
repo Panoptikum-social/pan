@@ -146,7 +146,7 @@ defmodule Pan.Parser.Analyzer do
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
-    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id"
+    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url"
 
   ], do: map
 
@@ -379,6 +379,7 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
+  def call("episode-contributor", [:"atom:uri",        _, []]), do: %{}
   def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
