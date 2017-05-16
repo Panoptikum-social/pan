@@ -29,7 +29,7 @@
           <hr style="margin-top: -15px; visibility:hidden;" />
 
           <%= if podcast.description do %>
-            <%= fa_icon("image") %> <%= podcast.description %>
+            <%= fa_icon("image") %> <%= truncate(podcast.description, 500) %>
           <% end %>
         </li>
       <% end %>
