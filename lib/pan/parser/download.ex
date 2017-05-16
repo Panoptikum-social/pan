@@ -7,6 +7,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
       {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
       {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
+      {:ok, %HTTPoison.Response{status_code: 508}} -> {:error, "504: loop detected"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
       {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}

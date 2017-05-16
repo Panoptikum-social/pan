@@ -221,6 +221,14 @@ defmodule Pan.Parser.Helpers do
   end
 
   def to_255(text) do
-    if text, do: binary_part(text, 0, min(255, byte_size(text)))
+    if text && byte_size(text) > 255 do
+      chars = text
+              |> binary_part(0, 255)
+              |> String.length()
+
+      String.slice(text, 0, chars - 1)
+    else
+      text
+    end
   end
 end
