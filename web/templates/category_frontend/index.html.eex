@@ -42,6 +42,7 @@
 <% end %>
 
 <script>
+  if (document.location.href.split("#")[1] == "start_tour") {hopscotch.startTour(tour)}
   if (hopscotch.getState() === "panoptikum:1") {hopscotch.startTour(tour)}
   if (hopscotch.getState() === "panoptikum:17") {hopscotch.startTour(tour)}
 </script>
