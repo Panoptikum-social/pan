@@ -19,7 +19,7 @@
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">DEMO</dt>
-        <dd class="nav-item"><a href="{{ site.pan_url }}#start_tour"><i class="fa fa-bus"></i> Tour</a></dd>
+        <dd class="nav-item"><a href="/categories#start_tour"><i class="fa fa-bus"></i> Tour</a></dd>
         <dd class="nav-item"><a href="/recommendations/random">Random</a></dd>
         <dd class="nav-item"><a href="/personas">Podcasters + Personas</a></dd>
         <dd class="nav-item"><a href="/podcasts">New podcasts</a></dd>
