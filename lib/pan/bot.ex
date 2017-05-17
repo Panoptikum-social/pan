@@ -13,6 +13,14 @@ defmodule Pan.Bot do
     |> HTTPoison.post(body, ["Content-Type": "application/json"])
   end
 
+  def turn_typing_indicator_on(sender_id) do
+    send_action(sender_id, "typing_on")
+  end
+
+  def turn_typing_indicator_off(sender_id) do
+    send_action(sender_id, "typing_off")
+  end
+
   def respond_to_message(message, sender_id) do
     data = %{
       recipient: %{
@@ -111,5 +119,18 @@ defmodule Pan.Bot do
         }
       ]
     }
+  end
+
+  defp send_action(sender_id, action) do
+    data = %{
+      recipient: %{
+        id: sender_id
+      },
+      sender_action: action
+    }
+    |> Poison.encode!
+
+    facebook_request_url("messages", access_token_params())
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
   end
 end
