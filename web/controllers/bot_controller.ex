@@ -11,6 +11,8 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
+    Pan.Bot.setup_call_to_action()
+    Pan.Bot.set_greeting("Hey there, {{user_first_name}}! I'll send you podcasts related to whatever you tell me. Give it a try!")
     Pan.Bot.mark_as_read(sender_id)
     Pan.Bot.turn_typing_indicator_on(sender_id)
     Pan.Bot.whitelist_urls()
@@ -20,7 +22,13 @@ defmodule Pan.BotController do
     |> send_resp(200, "ok")
   end
 
-  def message(conn, _params) do
+  def message(conn, %{"entry" => [%{"messaging" => [%{"postback" => %{"payload" => _payload}, "sender" => %{"id" => sender_id}}]}]}) do
+    Pan.Bot.greet_user(sender_id)
+    conn
+    |> send_resp(200, "ok")
+  end
+
+  def message(conn, params) do
     conn
     |> send_resp(200, "ok")
   end

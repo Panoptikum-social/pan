@@ -13,6 +13,50 @@ defmodule Pan.Bot do
     |> HTTPoison.post(body, ["Content-Type": "application/json"])
   end
 
+  def setup_call_to_action do
+    data = %{
+      setting_type: "call_to_actions",
+      thread_state: "new_thread",
+      call_to_actions: [
+        %{
+          payload: "GREETING_ACTION"
+        }
+      ]
+    }
+    |> Poison.encode!
+
+    facebook_request_url("thread_settings", access_token_params())
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+  end
+
+  def greet_user(sender_id) do
+    data = %{
+      recipient: %{
+        id: sender_id
+      },
+      message: %{
+        text: "Hey there! I'll send you podcasts related to whatever you tell me. Give it a try!"
+      }
+    }
+    |> Poison.encode!
+
+    facebook_request_url("messages", access_token_params())
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+  end
+
+  def set_greeting(message) do
+    data = %{
+      setting_type: "greeting",
+      greeting: %{
+        text: message
+      }
+    }
+    |> Poison.encode!
+
+    facebook_request_url("thread_settings", access_token_params())
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+  end
+
   def mark_as_read(sender_id) do
     send_action(sender_id, "mark_seen")
   end
