@@ -11,6 +11,7 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
+    Pan.Bot.mark_as_read(sender_id)
     Pan.Bot.turn_typing_indicator_on(sender_id)
     Pan.Bot.whitelist_urls()
     Pan.Bot.respond_to_message(message, sender_id)

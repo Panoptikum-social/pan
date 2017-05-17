@@ -13,6 +13,10 @@ defmodule Pan.Bot do
     |> HTTPoison.post(body, ["Content-Type": "application/json"])
   end
 
+  def mark_as_read(sender_id) do
+    send_action(sender_id, "mark_seen")
+  end
+
   def turn_typing_indicator_on(sender_id) do
     send_action(sender_id, "typing_on")
   end
