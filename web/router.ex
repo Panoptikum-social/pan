@@ -198,7 +198,8 @@ defmodule Pan.Router do
     get "/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona
     resources "/manifestations", ManifestationController
 
-    get "/search/push", SearchController, :elasticsearch_push
+    get "/search/:id/push", SearchController, :elasticsearch_push
+    get "/search/push_all", SearchController, :elasticsearch_push_all
     get "/search/delete_orphans", SearchController, :elasticsearch_delete_orphans
 
     get "/maintenance/fix", MaintenanceController, :fix

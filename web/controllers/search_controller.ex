@@ -12,6 +12,12 @@ defmodule Pan.SearchController do
   end
 
 
+  def elasticsearch_push_all(conn, _params) do
+    Search.push_all()
+    render(conn, "done.html", %{})
+  end
+
+
   def elasticsearch_delete_orphans(conn, _params) do
     Logger.info "=== Elasticsearch orphans deletion started ==="
     Pan.Category.delete_search_index_orphans()
