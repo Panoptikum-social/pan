@@ -1,11 +1,11 @@
 <p class="pull-right">
-  <%= link "Import all", to: feed_backlog_path(@conn, :import_all),
+  <%= link "Import 100", to: feed_backlog_path(@conn, :import_100),
                          class: "btn btn-danger" %>
   <%= link "Create Subscriptions", to: feed_backlog_path(@conn, :subscribe),
                                    class: "btn btn-info" %>
 </p>
 
-<h2>Listing <%= @feedcount %> backlog feeds</h2>
+<h2>Listing the last 25 of <%= @feedcount %> backlog feeds</h2>
 
 <table class="table table-condensed table-striped table-bordered">
   <thead>

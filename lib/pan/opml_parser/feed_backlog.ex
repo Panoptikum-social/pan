@@ -6,7 +6,7 @@ defmodule Pan.OpmlParser.FeedBacklog do
       nil ->
         %Pan.FeedBacklog{url: url,
                          user_id: user_id,
-                         in_progress: true}
+                         in_progress: false}
         |> Repo.insert()
       feed ->
         {:ok, feed}

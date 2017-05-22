@@ -8,7 +8,7 @@ defmodule Pan.FeedBacklogController do
 
   def index(conn, _params) do
     backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
-                                           limit: 50)
+                                           limit: 25)
                     |> Repo.all
     feedcount = Repo.aggregate(FeedBacklog, :count, :id)
 
@@ -98,9 +98,17 @@ defmodule Pan.FeedBacklogController do
   end
 
 
-  def import_all(conn, _params) do
-    for backlog_feed <- Repo.all(from f in FeedBacklog, order_by: [desc: :inserted_at]) do
+  def import_100(conn, _params) do
+    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
+                                           limit: 100)
+                    |> Repo.all()
+
+
+    for backlog_feed <- backlog_feeds do
       try do
+        Pan.FeedBacklog.changeset(backlog_feed, %{in_progress: true})
+        |> Repo.update()
+
         Pan.Parser.RssFeed.initial_import(backlog_feed.url, backlog_feed.id)
       rescue
         _ ->
