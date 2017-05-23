@@ -12,22 +12,24 @@ defmodule Pan.SearchFrontendView do
     case type do
       "episodes"   ->
         episode = Repo.get!(Episode, hit._id)
-                  |> Repo.preload([:podcast, gigs: :persona])
+                  |> Repo.preload([podcast: :languages, gigs: :persona])
 
         render("episode.html", episode: fields,
                                searchstring: searchstring,
                                podcast_title: episode.podcast.title,
                                podcast_url: podcast_frontend_url(Pan.Endpoint, :show, episode.podcast.id),
                                gigs: episode.gigs,
+                               languages: episode.podcast.languages,
                                score: score)
       "podcasts"   ->
         podcast = Repo.get!(Podcast, hit._id)
-                  |> Repo.preload([:categories, engagements: :persona])
+                  |> Repo.preload([:categories, :languages, engagements: :persona])
 
         render("podcast.html", podcast: fields,
                                searchstring: searchstring,
                                categories: podcast.categories,
                                engagements: podcast.engagements,
+                               languages: podcast.languages,
                                score: score)
       "personas"   ->
         persona = Repo.get!(Persona, hit._id)
