@@ -21,6 +21,7 @@
 
       <%= for hit <- @hits.hits do %>
         <%= hit_widget(hit, @searchstring) %>
+        <hr/>
       <% end %>
 
       <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size), page_number: @page},

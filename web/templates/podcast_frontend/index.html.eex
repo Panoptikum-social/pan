@@ -58,7 +58,7 @@
                     <dd style="line-height: 200%;">
                       <%= link [fa_icon("user-o"), " ", engagement.persona.name],
                                to: persona_frontend_path(@conn, :show, engagement.persona),
-                               class: "btn btn-xs truncate btn-pink-rose" %>
+                               class: "btn btn-xs truncate btn-lavender" %>
                       <span class="label label-success"><%= engagement.role %></span>
                     </dd>
                   <% end %>

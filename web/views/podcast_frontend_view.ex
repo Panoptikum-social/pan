@@ -11,7 +11,7 @@ defmodule Pan.PodcastFrontendView do
     if persona do
       link [fa_icon("user-o"), " ", persona.name],
            to: persona_frontend_path(conn, :show, persona),
-           class: "btn btn-xs truncate btn-pink-rose"
+           class: "btn btn-xs truncate btn-lavender"
     else
       [fa_icon("user-o"), " Unknown"]
     end

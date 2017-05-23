@@ -28,4 +28,14 @@
   </div>
 <% end %>
 
+<%= for {engagement, index} <- Enum.with_index(@engagements) do %>
+  <%= if index > 0, do: "·" %>
+    <%= link [fa_icon("podcast"), " ", truncate(engagement.podcast.title, 50)],
+                     to: podcast_frontend_path(Pan.Endpoint, :show, engagement.podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %>
+
+  <span class="label label-success"><%= engagement.role %></span>
+<% end %>
+
 <span class="h6 pull-right"><small><%= @score %></small></span>

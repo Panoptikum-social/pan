@@ -18,7 +18,7 @@
           <%= if podcast.author_name do %>
             <%= link [fa_icon("user-o"), " ", truncate(podcast.author_name, 75)],
                  to: persona_frontend_path(@conn, :show, podcast.author_id),
-                 class: "btn btn-xs truncate btn-pink-rose truncate" %>
+                 class: "btn btn-xs truncate btn-lavender truncate" %>
           <%= else %>
             <%= fa_icon("user-o") %> Unknown
           <% end %>

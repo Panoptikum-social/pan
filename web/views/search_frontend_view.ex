@@ -3,6 +3,7 @@ defmodule Pan.SearchFrontendView do
   alias Pan.Repo
   alias Pan.Episode
   alias Pan.Podcast
+  alias Pan.Persona
   import Scrivener.HTML
 
   def hit_widget(hit, searchstring) do
@@ -11,23 +12,29 @@ defmodule Pan.SearchFrontendView do
     case type do
       "episodes"   ->
         episode = Repo.get!(Episode, hit._id)
-                  |> Repo.preload(:podcast)
+                  |> Repo.preload([:podcast, gigs: :persona])
 
         render("episode.html", episode: fields,
                                searchstring: searchstring,
                                podcast_title: episode.podcast.title,
                                podcast_url: podcast_frontend_url(Pan.Endpoint, :show, episode.podcast.id),
+                               gigs: episode.gigs,
                                score: score)
       "podcasts"   ->
         podcast = Repo.get!(Podcast, hit._id)
-                  |> Repo.preload(:categories)
+                  |> Repo.preload([:categories, engagements: :persona])
 
         render("podcast.html", podcast: fields,
                                searchstring: searchstring,
                                categories: podcast.categories,
+                               engagements: podcast.engagements,
                                score: score)
       "personas"   ->
+        persona = Repo.get!(Persona, hit._id)
+                  |> Repo.preload(engagements: :podcast)
+
         render("persona.html", persona: fields,
+                               engagements: persona.engagements,
                                score: score)
       "users"      ->
         render("user.html", user: fields,
