@@ -11,24 +11,34 @@
 
   <div class="row">
     <div class="col-md-5" id="player">
-      <%= case @player do %>
-        <%= "podlove" -> %>
-          <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
-          <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
-            <source src="audio.m4a" type="audio/m4a">
-          </audio>
-          <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
-          <script>$('audio').podlovewebplayer();</script>
+      <%= case major_mimetype(@episode) do %>
+        <%= "video" -> %>
+          <video width="640" height="480" controls>
+            <%= for enclosure <- @episode.enclosures do %>
+              <source src="<%= enclosure.url %>">
+            <% end %>
+            Your browser does not support the video tag.
+          </video>
+        <%= _ -> %>
+          <%= case @player do %>
+            <%= "podlove" -> %>
+              <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
+              <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
+                <source src="audio.m4a" type="audio/m4a">
+              </audio>
+              <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
+              <script>$('audio').podlovewebplayer();</script>
 
-        <%= "podigee" -> %>
-          <script>
-            window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
-          </script>
-          <script class="podigee-podcast-player"
-                  src="/podigee-podcast-player/javascripts/podigee-podcast-player.js"
-                  data-configuration="playerConfiguration"></script>
-      <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
-      <% end %>
+            <%= "podigee" -> %>
+              <script>
+                window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
+              </script>
+              <script class="podigee-podcast-player"
+                      src="/podigee-podcast-player/javascripts/podigee-podcast-player.js"
+                      data-configuration="playerConfiguration"></script>
+          <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
+          <% end %>
+        <% end %>
     </div>
 
     <div class="col-md-7" id="shownotes">

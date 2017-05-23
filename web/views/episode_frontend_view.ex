@@ -189,4 +189,17 @@ defmodule Pan.EpisodeFrontendView do
   def complain_link() do
     link "Complain", to: "https://panoptikum.io/complaints", style: "color: #fff;"
   end
+
+
+  def major_mimetype(episode) do
+    mimetype(episode)
+    |> String.split("/")
+    |> List.first()
+  end
+
+  def mimetype(episode) do
+    episode.enclosures
+    |> List.first()
+    |> Map.get(:type)
+  end
 end
