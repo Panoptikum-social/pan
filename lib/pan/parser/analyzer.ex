@@ -93,6 +93,7 @@ defmodule Pan.Parser.Analyzer do
       "search"    -> %{}
       "related"   -> %{}
       "via"       -> %{}
+      nil         -> %{}
       "alternate" ->
         alternate_feed_map = %{UUID.uuid1() => %{title: attr[:title], url: attr[:href]}}
         %{feed: %{alternate_feeds: alternate_feed_map}}
@@ -192,7 +193,7 @@ defmodule Pan.Parser.Analyzer do
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
-    :"aidsgov:transcript", :"foto_428", :"podcast:brandStory"
+    :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash"
   ], do: %{}
 
 
@@ -312,6 +313,8 @@ defmodule Pan.Parser.Analyzer do
       "alternate" ->
         %{}
       "http://podlove.org/simple-chapters" ->
+        %{}
+      "replies" ->
         %{}
     end
   end
