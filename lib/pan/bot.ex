@@ -10,7 +10,7 @@ defmodule Pan.Bot do
     }
     |> Poison.encode!
     facebook_request_url("thread_settings", access_token_params())
-    |> HTTPoison.post(body, ["Content-Type": "application/json"])
+    |> HTTPoison.post(body, ["Content-Type": "application/json"], stream_to: self)
   end
 
   def setup_call_to_action do
@@ -26,7 +26,7 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("thread_settings", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self)
   end
 
   def greet_user(sender_id) do
@@ -41,7 +41,7 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("messages", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self)
   end
 
   def set_greeting(message) do
@@ -54,7 +54,7 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("thread_settings", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self)
   end
 
   def mark_as_read(sender_id) do
@@ -79,7 +79,7 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("messages", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self)
   end
 
   defp podcasts_from_query(message) do
@@ -179,6 +179,6 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("messages", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self)
   end
 end
