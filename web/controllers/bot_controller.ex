@@ -1,4 +1,5 @@
 defmodule Pan.BotController do
+  require Logger
   use Pan.Web, :controller
 
   # To test using ngrok, call:
@@ -11,17 +12,17 @@ defmodule Pan.BotController do
   end
 
   def message(conn, %{"entry" => [%{"messaging" => [%{"message" => %{"text" => message}, "sender" => %{"id" => sender_id}}]}]}) do
-    Logger.info(NaiveDateTime.utc_now())
+    Logger.info(NaiveDateTime.to_string(NaiveDateTime.utc_now()))
     Pan.Bot.setup_call_to_action()
     Pan.Bot.set_greeting("Hey there, {{user_first_name}}! I'll send you podcasts related to whatever you tell me. Give it a try!")
     Pan.Bot.mark_as_read(sender_id)
-    Logger.info(NaiveDateTime.utc_now())
+    Logger.info(NaiveDateTime.to_string(NaiveDateTime.utc_now()))
     Pan.Bot.turn_typing_indicator_on(sender_id)
     Pan.Bot.whitelist_urls()
-    Logger.info(NaiveDateTime.utc_now())
+    Logger.info(NaiveDateTime.to_string(NaiveDateTime.utc_now()))
     Pan.Bot.respond_to_message(message, sender_id)
     Pan.Bot.turn_typing_indicator_off(sender_id)
-    Logger.info(NaiveDateTime.utc_now())
+    Logger.info(NaiveDateTime.to_string(NaiveDateTime.utc_now()))
     conn
     |> send_resp(200, "ok")
   end
