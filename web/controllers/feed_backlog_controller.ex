@@ -100,7 +100,8 @@ defmodule Pan.FeedBacklogController do
 
   def import_100(conn, _params) do
     backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
-                                           limit: 100)
+                                           limit: 100,
+                                           in_prograess: false)
                     |> Repo.all()
 
 
