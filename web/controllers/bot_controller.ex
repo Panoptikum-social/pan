@@ -33,7 +33,7 @@ defmodule Pan.BotController do
     |> send_resp(200, "ok")
   end
 
-  def message(conn, params) do
+  def message(conn, _params) do
     conn
     |> send_resp(200, "ok")
   end
