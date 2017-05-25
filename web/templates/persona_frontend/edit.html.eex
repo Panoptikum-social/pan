@@ -64,13 +64,14 @@
   <div class="form-group">
     <%= label f, :description, class: "control-label" %>
     <%= textarea f, :long_description, class: "form-control",
-                                         id: "simplemde",
-                                         disabled: not pro(@current_user) %>
+                                       id: "simplemde",
+                                       disabled: not pro(@current_user) %>
     <%= error_tag f, :long_description %>
   </div>
   <%= if pro(@current_user) do %>
     <script>
-      var simplemde = new SimpleMDE({ element: document.getElementById("simplemde") })
+      var simplemde = new SimpleMDE({ element: document.getElementById("simplemde"),
+                                      spellChecker: false })
     </script>
   <%= end %>
 
