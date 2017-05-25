@@ -99,4 +99,23 @@
       </div>
     </div>
   </div>
+
+
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">The categories my podcasts are assigned to</div>
+      <div class="panel-body">
+        <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
+          <li class="list-group-item">
+            <b><%= rank + 1 %>.</b>:
+            <%= link [fa_icon("folder-o"), " ", truncate(title, 50)],
+                     to: category_frontend_path(@conn, :show, id),
+                     class: "btn btn-xs btn-light-gray" %>
+            <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
+          </li>
+        <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
