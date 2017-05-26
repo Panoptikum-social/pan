@@ -22,12 +22,14 @@
           <dt><label class="label label-primary">Deep link</label></dt>
           <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
           <dt><label class="label label-info">Contributors</label></dt>
-          <%= for gig <- @episode.gigs do %>
+          <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
             <dd style="line-height: 200%;">
-              <%= link [fa_icon("user-o"), " ", gig.persona.name],
-                       to: persona_frontend_path(@conn, :show, gig.persona),
+              <%= link [fa_icon("user-o"), " ", persona.name],
+                       to: persona_frontend_path(@conn, :show, persona),
                        class: "btn btn-xs truncate btn-lavender" %>
-              <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+              <%= for gig <- gigs do %>
+                <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span> &nbsp;
+              <% end %>
             </dd>
           <% end %>
         </dl>

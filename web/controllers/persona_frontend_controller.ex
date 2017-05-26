@@ -47,7 +47,7 @@ defmodule Pan.PersonaFrontendController do
 
       gigs = from(g in Gig, where: g.persona_id in ^persona_ids,
                             order_by: [desc: :publishing_date],
-                            preload: :episode)
+                            preload: [episode: :podcast])
              |> Repo.all()
 
       engagements = from(e in Engagement, where: e.persona_id in ^persona_ids,

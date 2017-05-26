@@ -79,18 +79,27 @@
           <thead>
             <tr>
               <th>Date</th>
+              <th>Podcast</th>
               <th>Episode</th>
               <th>Role</th>
             </tr>
           </thead>
           <tbody>
-            <%= for gig <- @gigs do %>
+            <%= for episode <- ordered_episodes(@gigs) do %>
               <tr>
-                <td><%= if gig.publishing_date, do: format_date(gig.publishing_date) %></td>
-                <td><%= link [fa_icon("headphones"), " ", truncate(gig.episode.title, 40)],
-                            to: episode_frontend_path(@conn, :show, gig.episode),
-                            class: "btn btn-primary btn-xs" %></td>
-                <td><span class="label label-success"><%= gig.role %></span></td>
+                <td align="right"><%= if episode.publishing_date, do: format_date(episode.publishing_date) %></td>
+                <td><%= link [fa_icon("podcast"), " ", episode.podcast.title],
+                               to: podcast_frontend_path(@conn, :show, episode.podcast),
+                               class: "btn btn-default btn-xs truncate",
+                               style: "color: #000" %></td></td>
+                <td><%= link [fa_icon("headphones"), " ", episode.title],
+                            to: episode_frontend_path(@conn, :show, episode),
+                            class: "btn btn-primary btn-xs truncate" %></td>
+                <td>
+                  <%= for gig <- Enum.group_by(@gigs, &Map.get(&1, :episode))[episode] do %>
+                    <span class="label label-success"><%= gig.role %></span>
+                  <% end %>
+                </td>
               </tr>
             <% end %>
           </tbody>
@@ -113,13 +122,17 @@
             </tr>
           </thead>
           <tbody>
-            <%= for engagement <- @engagements do %>
+            <%= for {podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast)) do %>
               <tr>
-                <td> <%= link [fa_icon("podcast"), " ", truncate(engagement.podcast.title, 50)],
-                               to: podcast_frontend_path(@conn, :show, engagement.podcast),
+                <td> <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
+                               to: podcast_frontend_path(@conn, :show, podcast),
                                class: "btn btn-default btn-xs",
                                style: "color: #000" %></td>
-                <td><span class="label label-success"><%= engagement.role %></span></td>
+                <td>
+                  <%= for engagement <- engagements do %>
+                    <span class="label label-success"><%= engagement.role %></span> &nbsp;
+                  <% end %>
+                </td>
               </tr>
             <% end %>
           </tbody>

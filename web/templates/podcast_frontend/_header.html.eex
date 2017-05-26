@@ -65,12 +65,15 @@
                 <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
               <% end %>
               <dt><label class="label label-info">Contributors</label></dt>
-              <%= for engagement <- @podcast.engagements do %>
+              <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
+
                 <dd style="line-height: 200%;">
-                  <%= link [fa_icon("user-o"), " ", engagement.persona.name],
-                           to: persona_frontend_path(@conn, :show, engagement.persona),
+                  <%= link [fa_icon("user-o"), " ", persona.name],
+                           to: persona_frontend_path(@conn, :show, persona),
                            class: "btn btn-xs truncate btn-lavender" %>
-                  <span class="label label-success"><%= engagement.role %></span>
+                  <%= for engagement <- engagements do %>
+                    <span class="label label-success"><%= engagement.role %></span> &nbsp;
+                  <% end %>
                 </dd>
               <% end %>
               <dt><label class="label">Explicit</label></dt>
