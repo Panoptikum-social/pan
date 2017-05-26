@@ -31,6 +31,13 @@ defmodule Pan.Parser.Download do
           {:ok, feed_xml}
         end
 
+      {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} ->
+        unless String.contains?(feed_xml, "<rss") do
+          {:error, "This is not an rss feed!"}
+        else
+          {:ok, feed_xml}
+        end
+
       {:ok, %HTTPoison.Response{status_code: code}} ->
         Logger.error "status_code unknown #{inspect code}"
 

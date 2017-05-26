@@ -193,7 +193,8 @@ defmodule Pan.Parser.Analyzer do
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
-    :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash"
+    :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
+    :"posterous:author"
   ], do: %{}
 
 
