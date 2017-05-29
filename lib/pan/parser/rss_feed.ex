@@ -104,30 +104,33 @@ defmodule Pan.Parser.RssFeed do
 
     Logger.info "\n\e[96m === #{id} ⬇ #{url} ===\e[0m"
 
-    {:ok, feed_xml} =  Download.download(url)
+    case Download.download(url) do
+      {:error, error} -> {:error, error}
+      {:ok, feed_xml} ->
 
-    feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-               |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-               |> Pan.Parser.Helpers.fix_ampersands()
-               |> Pan.Parser.Helpers.fix_character_code_strings()
-               |> String.trim()
-               |> Quinn.parse()
+        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+                   |> Pan.Parser.Helpers.fix_ampersands()
+                   |> Pan.Parser.Helpers.fix_character_code_strings()
+                   |> String.trim()
+                   |> Quinn.parse()
 
-    pubdates_map = Quinn.find(feed_map, [:item, :pubDate]) ++
-                   Quinn.find(feed_map, [:item, :lastBuildDate]) ++
-                   Quinn.find(feed_map, [:item, :"dc:date"])
-                   Quinn.find(feed_map, [:item, :pubDateShort])
+        pubdates_map = Quinn.find(feed_map, [:item, :pubDate]) ++
+                       Quinn.find(feed_map, [:item, :lastBuildDate]) ++
+                       Quinn.find(feed_map, [:item, :"dc:date"])
+                       Quinn.find(feed_map, [:item, :pubDateShort])
 
 
-    max_date = Enum.flat_map(pubdates_map, fn(x) -> x[:value]  end)
-               |> Enum.map(&Pan.Parser.Helpers.to_naive_datetime/1)
-               |> Enum.map(&Timex.to_unix/1)
-               |> Enum.max()
+        max_date = Enum.flat_map(pubdates_map, fn(x) -> x[:value]  end)
+                   |> Enum.map(&Pan.Parser.Helpers.to_naive_datetime/1)
+                   |> Enum.map(&Timex.to_unix/1)
+                   |> Enum.max()
 
-    if max_date > last_episode_publishing_date do
-      {:ok, "New Episodes"}
-    else
-      {:ok, "No new Episodes"}
-    end
+        if max_date > last_episode_publishing_date do
+          {:ok, "New Episodes"}
+        else
+          {:ok, "No new Episodes"}
+        end
+      end
   end
 end

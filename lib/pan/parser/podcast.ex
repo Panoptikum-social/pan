@@ -31,6 +31,7 @@ defmodule Pan.Parser.Podcast do
     end
 
     case RssFeed.check_update_necessary(feed.self_link_url, id) do
+      {:error, error} -> {:error, error}
       {:ok, "No new Episodes"} -> {:ok, "No new Episodes"}
       {:ok, "New Episodes"} ->
         case RssFeed.import_to_map(feed.self_link_url, id) do
