@@ -30,29 +30,29 @@ defmodule Pan.Parser.Podcast do
       Logger.error "=== Podcast #{inspect id} has no feed! ==="
     end
 
-    # Work in progress ...
-    # RssFeed.check_update_necessary(feed.self_link_url, id)
+    case RssFeed.check_update_necessary(feed.self_link_url, id) do
+      {:ok, "No new Episodes"} -> {:ok, "No new Episodes"}
+      {:ok, "New Episodes"} ->
+        case RssFeed.import_to_map(feed.self_link_url, id) do
+          {:ok, map} ->
+            Persistor.delta_import(map, id)
+            unpause(id)
+            {:ok, "New episode(s) importet"}
 
-    case RssFeed.import_to_map(feed.self_link_url, id) do
-      {:ok, map} ->
-        Persistor.delta_import(map, id)
-        unpause(id)
-        {:ok, "Podcast importet successfully"}
+          {:redirect, redirect_target} ->
+            if String.starts_with?(redirect_target, "http") do
+              AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
+                                                     title: feed.self_link_url})
 
-      {:redirect, redirect_target} ->
-        if String.starts_with?(redirect_target, "http") do
-          AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
-                                                 title: feed.self_link_url})
+              Feed.changeset(feed, %{self_link_url: redirect_target})
+              |> Repo.update([force: true])
+            end
 
-          Feed.changeset(feed, %{self_link_url: redirect_target})
-          |> Repo.update([force: true])
+            # Now that we have updated Feed and alternate feed, let's try again
+            delta_import(id)
+
+          {:error, message} -> {:error, message}
         end
-
-        # Now that we have updated Feed and alternate feed, let's try again
-        delta_import(id)
-
-      {:error, message} ->
-        {:error, message}
     end
   end
 
