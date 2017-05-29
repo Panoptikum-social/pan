@@ -5,10 +5,6 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.AlternateFeed
 
   use Pan.Web, :controller
-  alias Pan.Repo
-  alias Pan.Podcast
-  alias Pan.Episode
-
   require Logger
 
 
@@ -89,48 +85,5 @@ defmodule Pan.Parser.RssFeed do
     |> :timer.tc
     |> elem(0)
     |> Kernel./(1_000_000)
-  end
-
-  # Not in use yet, will speed up import
-  def check_update_necessary(url, id) do
-    url = String.strip(url)
-    podcast = Repo.get!(Podcast, id)
-
-    last_episode_publishing_date =
-      from(e in Episode, where: e.podcast_id == ^id,
-                         select: max(e.publishing_date))
-      |> Repo.one()
-      |> Timex.to_unix()
-
-    Logger.info "\n\e[96m === #{id} ⬇ #{url} ===\e[0m"
-
-    case Download.download(url) do
-      {:error, error} -> {:error, error}
-      {:ok, feed_xml} ->
-
-        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
-                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-                   |> Pan.Parser.Helpers.fix_ampersands()
-                   |> Pan.Parser.Helpers.fix_character_code_strings()
-                   |> String.trim()
-                   |> Quinn.parse()
-
-        pubdates_map = Quinn.find(feed_map, [:item, :pubDate]) ++
-                       Quinn.find(feed_map, [:item, :lastBuildDate]) ++
-                       Quinn.find(feed_map, [:item, :"dc:date"])
-                       Quinn.find(feed_map, [:item, :pubDateShort])
-
-
-        max_date = Enum.flat_map(pubdates_map, fn(x) -> x[:value]  end)
-                   |> Enum.map(&Pan.Parser.Helpers.to_naive_datetime/1)
-                   |> Enum.map(&Timex.to_unix/1)
-                   |> Enum.max()
-
-        if max_date > last_episode_publishing_date do
-          {:ok, "New Episodes"}
-        else
-          {:ok, "No new Episodes"}
-        end
-      end
   end
 end
