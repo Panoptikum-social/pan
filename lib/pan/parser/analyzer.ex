@@ -255,6 +255,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
   def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:guid, _, _]), do: %{}
+  def call(_, "episode", [:uniqueid, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:uniqueid, _, _]), do: %{}
+
   def call(_, "episode", [:contentId, _, [value]]), do: %{guid: H.to_255(value)}
 
   def call(_, "episode", [:description, _, []]), do: %{}
