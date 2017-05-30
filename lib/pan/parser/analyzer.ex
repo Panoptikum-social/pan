@@ -177,7 +177,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"dc:type",
     :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername", :mobile,
     :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :imageurl,
-    :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language",
+    :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language", :tags,
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
     :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
@@ -195,7 +195,7 @@ defmodule Pan.Parser.Analyzer do
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo"
+    :"posterous:author", :"companyLogo", :"coverimage"
   ], do: %{}
 
 
