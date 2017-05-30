@@ -166,7 +166,7 @@ defmodule Pan.Parser.Analyzer do
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :"ddn:id",
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure", :timestamp,
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
-    :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename",
+    :"media:title",:"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename", :tags,
     :"georss:box", :"gd:extendedProperty", :"media:content", :"rawvoice:metamark", :"media:player",
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating", :style,
