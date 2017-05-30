@@ -121,7 +121,7 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [tag_atom, _, _]) when tag_atom in [
     :"feedpress:locale", :"fyyd:verify", :"itunes:block", :"itunes:keywords", :"media:thumbnail",
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
-    :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright,
+    :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright, :id,
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
@@ -147,7 +147,8 @@ defmodule Pan.Parser.Analyzer do
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
-    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url"
+    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
+    :"companyLogo"
 
   ], do: map
 
@@ -194,11 +195,11 @@ defmodule Pan.Parser.Analyzer do
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author"
+    :"posterous:author", :"companyLogo"
   ], do: %{}
 
 
-  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta ], do: %{}
+  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta], do: %{}
 
 
 # We expect several language tags
@@ -326,6 +327,7 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one episode author
   def call(_, "episode", [:"itunes:author",     _, []]), do: %{}
+  def call(_, "episode", [:authors,             _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"iTunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"itunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(%{}, "episode_author", value)
@@ -406,14 +408,17 @@ defmodule Pan.Parser.Analyzer do
   def call("author", [:"itunes:name",     _, []]), do: %{}
   def call("author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
   def call("author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
+  def call("author", [:"name",            _, [value]]), do: %{name: H.to_255(value)}
   def call("author", [:"itunes:email",    _, []]), do: %{}
   def call("author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("author", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 
+  def call("episode_author", [:author,            _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call("episode_author", [:"itunes:name",     _, []]), do: %{}
   def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
+  def call("episode_author", [:name,              _, [value]]), do: %{name: H.to_255(value)}
   def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
   def call("episode_author", [:a,                 _, [value]]), do: %{name: H.to_255(value)}
   def call("episode_author", [:"itunes:email",    _, []]), do: %{}
@@ -421,4 +426,5 @@ defmodule Pan.Parser.Analyzer do
   def call("episode_author", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("episode_author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
+  def call("episode_author", [tag_atom, _, _]) when tag_atom in [:avatar], do: %{}
 end
