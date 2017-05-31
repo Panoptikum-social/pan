@@ -31,12 +31,14 @@ defmodule Pan.Persona do
     |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title,
                      :redirect_id, :long_description])
     |> validate_required([:pid, :name, :uri])
+    |> unique_constraint(:pid)
   end
 
   def user_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name, :uri])
     |> validate_required([:pid, :name, :uri])
+    |> unique_constraint(:pid)
   end
 
 
