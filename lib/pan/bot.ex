@@ -79,7 +79,8 @@ defmodule Pan.Bot do
     |> Poison.encode!
 
     facebook_request_url("messages", access_token_params())
-    |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
+    |> HTTPoison.post(data, ["Content-Type": "application/json"])
+    |> IO.inspect()
   end
 
   defp podcasts_from_query(message) do
