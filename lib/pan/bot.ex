@@ -96,7 +96,9 @@ defmodule Pan.Bot do
             %{filter: [term: ["_type": "episodes"]], weight: 0},
             %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
 
+    IO.inspect(query)
     {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
+    IO.inspect(hits)
 
     podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
 
