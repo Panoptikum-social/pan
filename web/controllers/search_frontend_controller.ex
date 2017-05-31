@@ -24,6 +24,7 @@ defmodule Pan.SearchFrontendController do
                      %{filter: [term: ["_type": "personas"]], weight: 0},
                      %{filter: [term: ["_type": "episodes"]], weight: 0},
                      %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
+    IO.inspect query
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits, took: took}} ->
