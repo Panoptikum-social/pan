@@ -19,12 +19,11 @@ defmodule Pan.SearchFrontendController do
                    query: [match: [_all: [query: params["search"]["searchstring"]]]],
                    boost_mode: "multiply",
                    functions: [
-                     %{filter: [term: ["_type": "categories"]], weight: 0},
-                     %{filter: [term: ["_type": "podcasts"]], weight: 1},
-                     %{filter: [term: ["_type": "personas"]], weight: 0},
-                     %{filter: [term: ["_type": "episodes"]], weight: 0},
-                     %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
-    IO.inspect query
+                     %{filter: [term: ["_type": "categories"]], weight: 5},
+                     %{filter: [term: ["_type": "podcasts"]], weight: 4},
+                     %{filter: [term: ["_type": "personas"]], weight: 3},
+                     %{filter: [term: ["_type": "episodes"]], weight: 2},
+                     %{filter: [term: ["_type": "users"]], weight: 1}]]]]]
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits, took: took}} ->
