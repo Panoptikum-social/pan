@@ -140,7 +140,7 @@ defmodule Pan.Bot do
     %{
       title: podcast.title,
       image_url: podcast.image_url,
-      subtitle: podcast.description,
+      subtitle: String.slice(podcast.description, 0..79),
       default_action: %{
         type: "web_url",
         url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
