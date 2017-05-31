@@ -136,10 +136,9 @@ defmodule Pan.Bot do
   defp podcast_json(podcast) do
     [episode | _rest] = podcast.episodes
     host = Application.get_env(:pan, :bot)[:host]
-    %{
+    data = %{
       title: podcast.title,
-      image_url: podcast.image_url,
-      subtitle: String.slice(podcast.description, 0..79),
+      subtitle: podcast.description,
       default_action: %{
         type: "web_url",
         url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
@@ -167,6 +166,11 @@ defmodule Pan.Bot do
         }
       ]
     }
+    case URI.parse(podcast.image_url).scheme do
+      nil -> data
+      _ ->
+        Map.put_new(data, :image_url, podcast.image_url)
+    end
   end
 
   defp send_action(sender_id, action) do
