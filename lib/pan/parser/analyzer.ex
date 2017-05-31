@@ -125,7 +125,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
-    :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email",
+    :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email", :pic,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
@@ -190,12 +190,12 @@ defmodule Pan.Parser.Analyzer do
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file", :owner,
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
-    :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read",
+    :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read", :pic,
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage"
+    :"posterous:author", :"companyLogo", :"coverimage",
   ], do: %{}
 
 
