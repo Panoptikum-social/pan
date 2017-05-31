@@ -166,7 +166,7 @@ defmodule Pan.Bot do
         }
       ]
     }
-    case URI.parse(podcast.image_url).scheme do
+    case podcast.image_url && URI.parse(podcast.image_url).scheme do
       nil -> data
       _ ->
         Map.put_new(data, :image_url, podcast.image_url)
