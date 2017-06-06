@@ -23,6 +23,7 @@ defmodule Pan.Parser.Helpers do
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> String.replace(",", " ")
+                |> String.replace(".", " ")
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
@@ -116,7 +117,7 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_month_names(datetime) do
     datetime
-    |> String.replace(~r/janu?r?a?r?y?/i,          "Jan")
+    |> String.replace(~r/janr?u?r?a?r?y?/i,      "Jan")
     |> String.replace(~r/f[ae][bvr]r?u?a?r?y?/i, "Feb")
     |> String.replace(~r/m[aä]rc?h?/i,           "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")
@@ -139,7 +140,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/t[ui]e?s?[du]?[an]?y?/i, "Tue")
     |> String.replace("Di",   "Tue")
     |> String.replace("tor",  "Tue")
-    |> String.replace(~r/wed?n?e?s?d?a?y?/i,      "Wed")
+    |> String.replace(~r/we[db]?n?e?s?d?a?y?/i,   "Wed")
     |> String.replace("MWed", "Wed")
     |> String.replace("Mi",   "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i,     "Thu")

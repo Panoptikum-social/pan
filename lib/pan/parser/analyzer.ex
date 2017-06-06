@@ -192,10 +192,10 @@ defmodule Pan.Parser.Analyzer do
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss",:"ez:id", :"cfi:id",
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read", :pic,
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
-    :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player",
+    :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player", :comment,
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage",
+    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb"
   ], do: %{}
 
 
