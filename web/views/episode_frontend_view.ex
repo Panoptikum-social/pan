@@ -192,14 +192,18 @@ defmodule Pan.EpisodeFrontendView do
 
 
   def major_mimetype(episode) do
-    mimetype(episode)
-    |> String.split("/")
-    |> List.first()
+    if mimetype(episode) do
+      mimetype(episode)
+      |> String.split("/")
+      |> List.first()
+    end
   end
 
   def mimetype(episode) do
-    episode.enclosures
-    |> List.first()
-    |> Map.get(:type)
+    if episode.enclosures != [] do
+      episode.enclosures
+      |> List.first()
+      |> Map.get(:type)
+    end
   end
 end
