@@ -274,12 +274,11 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
-  def call(_, "episode", [:"itunes:summary",  _, [value | _]]) do
-    case value[:name] do
-      :"content:encoded" -> %{summary: HtmlSanitizeEx2.basic_html_reduced(List.first(value[:value]))}
-      _                  -> %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
-    end
+  def call(_, "episode", [:"itunes:summary",  _, [value]]) when is_map(value) do
+    %{summary: HtmlSanitizeEx2.basic_html_reduced(List.first(value[:value]))}
   end
+
+  def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"atom:summary",  _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
