@@ -195,7 +195,7 @@ defmodule Pan.Parser.Analyzer do
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player", :comment,
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb"
+    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight"
   ], do: %{}
 
 
@@ -274,10 +274,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
-  def call(_, "episode", [:"itunes:summary",  _, [value]]) when is_map(value) do
+  def call(_, "episode", [:"itunes:summary",  _, [value | _]]) when is_map(value) do
     %{summary: HtmlSanitizeEx2.basic_html_reduced(List.first(value[:value]))}
   end
-
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"atom:summary",  _, []]), do: %{}
