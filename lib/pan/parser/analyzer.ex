@@ -195,7 +195,8 @@ defmodule Pan.Parser.Analyzer do
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player", :comment,
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight"
+    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight",
+    :"itunes:name"
   ], do: %{}
 
 
