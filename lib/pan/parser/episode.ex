@@ -9,7 +9,7 @@ defmodule Pan.Parser.Episode do
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        case Repo.get_by(Pan.Episode, title: episode_map[:title], podcast_id: podcast_id) do
+        case Repo.get_by(Pan.Episode, title: episode_map[:title] || episode_map[:subtitle] , podcast_id: podcast_id) do
           nil ->
             Repo.get(Pan.Podcast, podcast_id)
             |> Pan.Podcast.changeset(%{update_intervall: 1,
