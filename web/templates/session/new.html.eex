@@ -1,16 +1,18 @@
-<h1>Login</h1>
+<div class="col-md-6 col-md-offset-3">
+  <h1>Login</h1>
 
-<%= form_for @conn, session_path(@conn, :create), [as: :session], fn f-> %>
-  <div class="form-group">
-    <%= label f, :username_or_email, class: "control-label" %>
-    <%= text_input f, :username, placeholder: "Username", class: "form-control" %>
-  </div>
-  <div class="form-group">
-    <%= label f, :password, class: "control-label" %>
-    <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
-  </div>
-  <%= submit "Log in", class: "btn btn-primary" %>
-<% end %>
+  <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f-> %>
+    <div class="form-group">
+      <%= label f, :username_or_email, class: "control-label" %>
+      <%= text_input f, :username, placeholder: "Username", class: "form-control" %>
+    </div>
+    <div class="form-group">
+      <%= label f, :password, class: "control-label" %>
+      <%= password_input f, :password, placeholder: "Password", class: "form-control" %>
+    </div>
+    <%= submit "Log in", class: "btn btn-primary" %>
+  <% end %>
 
 
-<%= link "Forgot password", to: user_path(@conn, :forgot_password) %>
+  <%= link "I forgot my password!", to: user_path(@conn, :forgot_password) %>
+</div>
