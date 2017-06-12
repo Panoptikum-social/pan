@@ -118,6 +118,7 @@ defmodule Pan.UserFrontendController do
 
   def my_profile(conn, _params, user) do
     user = Repo.get!(User, user.id)
+           |> Repo.preload(:invoices)
            |> Repo.preload(personas: from(Persona, order_by: :name,
                                                    preload: [:delegates, :redirect]))
     render conn, "my_profile.html", user: user
@@ -283,5 +284,21 @@ defmodule Pan.UserFrontendController do
     conn
     |> put_flash(:info, "Followed all podcasts you had subscribed to.")
     |> redirect(to: user_frontend_path(conn, :my_podcasts))
+  end
+
+
+  def go_pro(conn, _params, user) do
+    unless user.pro_until do
+      payment_reference = "pan-#{user.id}-" <> Timex.format!(Timex.now(), "{ISOdate}")
+
+      User.changeset(user, %{pro_until: Timex.shift(Timex.now(), days: 30),
+                             payment_reference: payment_reference,
+                             billing_address: user.name})
+      |> Repo.update()
+    end
+
+    conn
+    |> put_flash(:info, "You are now a Panoptikum pro user!")
+    |> redirect(to: user_frontend_path(conn, :my_profile))
   end
 end

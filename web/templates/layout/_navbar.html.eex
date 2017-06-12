@@ -69,6 +69,7 @@
             <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
             <li role="separator" class="divider"></li>
             <li><%= link "Users", to: user_path(@conn, :index) %></li>
+            <li><%= link "Invoices", to: invoice_path(@conn, :index) %></li>
             <li><%= link "Messages", to: message_path(@conn, :index) %></li>
             <li><%= link "Likes", to: like_path(@conn, :index) %></li>
             <li><%= link "Follows", to: follow_path(@conn, :index) %></li>

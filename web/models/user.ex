@@ -18,9 +18,13 @@ defmodule Pan.User do
     field :share_subscriptions, :boolean, default: false
     field :share_follows, :boolean, default: false
     field :pro_until, :naive_datetime
+    field :billing_address, :string
+    field :payment_reference, :string
+    field :paper_bill, :boolean
     timestamps()
 
     has_many :manifestations, Pan.Manifestation
+    has_many :invoices, Pan.Invoice
     many_to_many :personas, Pan.Persona,
                             join_through: "manifestations"
 
@@ -42,7 +46,8 @@ defmodule Pan.User do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:name, :username, :email, :admin, :podcaster, :share_subscriptions,
-                     :share_follows, :pro_until])
+                     :share_follows, :pro_until, :billing_address, :payment_reference,
+                     :paper_bill])
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
@@ -53,7 +58,8 @@ defmodule Pan.User do
 
   def self_change_changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:podcaster, :email, :name, :username, :share_follows, :share_subscriptions])
+    |> cast(params, [:podcaster, :email, :name, :username, :share_follows, :share_subscriptions,
+                     :billing_address, :paper_bill])
     |> validate_required([:email, :name, :username])
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)

@@ -7,58 +7,107 @@
 <h1>My Profile</h1>
 
 <%= unless pro(@current_user) do %>
-  <div class="alert alert-info">
-    <strong>Info!</strong> Disabled buttons can be used with a pro account only.
+  <div class="row">
+    <div class="alert alert-warning col-md-6 col-md-offset-3">
+      <h4>Try it free for 30 days!</h4>
+
+      Claim your free pro account without any further obligations!<br/>
+      Why? To to support Panoptikum or to unlock all pro features now!<br/><br/>
+
+      <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro), class: "btn btn-warning", method: :post %>
+    </div>
   </div>
 <% end %>
 
-<%= link "Edit your data", to: user_frontend_path(@conn, :edit),
-                           class: "btn btn-warning pull-right" %>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
+                               class: "btn btn-warning pull-right" %>
 
-<dl class="dl-horizontal">
-  <dt>User Name</dt>
-  <dd><%= @user.username %></dd>
+    <dl class="dl-horizontal">
+      <dt>User Name</dt>
+      <dd><%= @user.username %></dd>
 
-  <dt>Full Name</dt>
-  <dd><%= @user.name %></dd>
+      <dt>Full Name</dt>
+      <dd><%= @user.name %></dd>
 
-  <dt>Email</dt>
-  <dd><%= @user.email %></dd>
+      <dt>Email</dt>
+      <dd><%= @user.email %></dd>
 
-  <%= if @user.admin do %>
-    <dt>Admin</dt>
-    <dd>
-      I have admin priviliges.
-    </dd>
-  <% end %>
+      <%= if @user.admin do %>
+        <dt>Admin</dt>
+        <dd>
+          I have admin priviliges.
+        </dd>
+      <% end %>
 
-  <dt>Podcaster</dt>
-  <dd>
-    <%= if @user.podcaster do %>
-      I am a podcaster myself.
-    <% else %>
-      I am not a podcaster.
+      <dt>Podcaster</dt>
+      <dd>
+        <%= if @user.podcaster do %>
+          I am a podcaster myself.
+        <% else %>
+          I am not a podcaster.
+        <% end %>
+      </dd>
+
+      <dt>Privacy</dt>
+      <dd>
+        <%= if @user.share_follows do %>
+          I do currently share my followings.
+        <% else %>
+          I do not share my followings.
+        <% end %>
+      </dd>
+
+      <dd>
+        <%= if @user.share_subscriptions do %>
+          I do currently share my subscriptions.
+        <% else %>
+          I do not share my subscriptions.
+        <% end %>
+      </dd>
+
+      <%= if @user.pro_until do %>
+        <dt>Pro account until</dt>
+        <dd>
+          <%= Timex.format!(@user.pro_until, "{ISOdate}") %> &nbsp;
+          <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>,
+          that is <b><%= Timex.diff(@user.pro_until, Timex.now(), :days) %></b> days from now.
+        </dd>
+
+        <dt>Billing address</dt>
+        <dd><pre><%= @user.billing_address %></pre></dd>
+
+        <dt>Payment reference</dt>
+        <dd><%= @user.payment_reference %></dd>
+
+        <dt>Paper bill</dt>
+        <dd>
+          <%= if @user.paper_bill do %>
+            I want to receive a bill printed on paper via smail mail.
+          <% else %>
+            It's fine to get the bill via email and I can download it as pdf.
+          <% end %>
+        </dd>
+      <% end %>
+    </dl>
+  </div>
+</div>
+
+<%= if @user.invoices != [] do %>
+  <h2>My invoices</h2>
+  All invoices, that appear hear, have been paid already.
+  <ul>
+    <%= for invoice <- @user.invoices do %>
+      <li>
+        <%= fa_icon("calendar") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+        &nbsp; &nbsp;
+        <%= link [fa_icon("download"), " ", fa_icon("file-pdf-o"), " ", invoice.filename],
+                 to: invoice_frontend_path(@conn, :download, invoice) %>
+      </li>
     <% end %>
-  </dd>
-
-  <dt>Privacy</dt>
-  <dd>
-    <%= if @user.share_follows do %>
-      I do currently share my followings.
-    <% else %>
-      I do not share my followings.
-    <% end %>
-  </dd>
-
-  <dd>
-    <%= if @user.share_subscriptions do %>
-      I do currently share my subscriptions.
-    <% else %>
-      I do not share my subscriptions.
-    <% end %>
-  </dd>
-</dl>
-
+  </ul>
+<% end %>
 
 <h2>Personas
   <button class="btn btn-primary btn-sm pull-right"

@@ -89,6 +89,7 @@ defmodule Pan.Router do
     put "/update", UserFrontendController, :update
     get "/edit_password", UserFrontendController, :edit_password
     put "/update_password", UserFrontendController, :update_password
+    post "/go_pro", UserFrontendController, :go_pro
 
     delete "/personas/:id/claim", PersonaFrontendController, :claim
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
@@ -107,6 +108,8 @@ defmodule Pan.Router do
     get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
     get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
     get "/personas/:id/redirect", PersonaFrontendController, :redirect
+
+    get "/invoices/:id/", InvoiceFrontendController, :download
   end
 
 
@@ -173,6 +176,8 @@ defmodule Pan.Router do
     get "/opmls/datatable", OpmlController, :datatable
     get "/opmls/:id/import", OpmlController, :import
     resources "/opmls", OpmlController
+
+    resources "/invoices", InvoiceController
 
     get "/podcasts/datatable", PodcastController, :datatable
     get "/podcasts/datatable_stale", PodcastController, :datatable_stale
