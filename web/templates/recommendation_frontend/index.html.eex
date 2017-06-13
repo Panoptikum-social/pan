@@ -2,11 +2,11 @@
 
 <%= pagination_links @conn, @recommendations, path: &recommendation_frontend_path/3 %>
 
-<%= for group <- Enum.chunk(@recommendations, 4, 4, []) do %>
+<%= for group <- Enum.chunk(@recommendations, 3, 3, []) do %>
   <div class="row">
     <%= for recommendation <- group do %>
 
-      <div class="col-md-3">
+      <div class="col-md-4">
         <div class="panel panel-default">
           <div class="panel-heading">
             <%= link [fa_icon("user"), " ", recommendation.user.name],

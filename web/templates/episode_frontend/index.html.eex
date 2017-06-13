@@ -2,11 +2,11 @@
 
 <%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>
 
-<%= for group <- Enum.chunk(@episodes, 3, 3, []) do %>
+<%= for group <- Enum.chunk(@episodes, 2, 2, []) do %>
   <div class="row">
     <%= for episode <- group do %>
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="panel panel-default">
           <div class="panel-heading">
             <span class="truncate">

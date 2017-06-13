@@ -10,7 +10,7 @@
                                       conn: @conn %>
 
   <div class="row">
-    <div class="col-md-5" id="player">
+    <div class="col-md-6" id="player">
       <%= case major_mimetype(@episode) do %>
         <%= "video" -> %>
           <video width="640" height="480" controls>
@@ -41,7 +41,7 @@
         <% end %>
     </div>
 
-    <div class="col-md-7" id="shownotes">
+    <div class="col-md-6" id="shownotes">
       <%= if @episode.shownotes do %>
         <h3>Shownotes</h3>
         <p><%= raw(@episode.shownotes) %></p>

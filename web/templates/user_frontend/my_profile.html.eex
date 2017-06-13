@@ -8,7 +8,7 @@
 
 <%= unless pro(@current_user) do %>
   <div class="row">
-    <div class="alert alert-warning col-md-6 col-md-offset-3">
+    <div class="alert alert-warning col-md-8 col-md-offset-2">
       <h4>Try it free for 30 days!</h4>
 
       Claim your free pro account without any further obligations!<br/>
@@ -20,7 +20,7 @@
 <% end %>
 
 <div class="row">
-  <div class="col-md-6 col-md-offset-3">
+  <div class="col-md-8 col-md-offset-2">
     <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
                                class: "btn btn-warning pull-right" %>
 
@@ -137,6 +137,26 @@
     <div class="panel-body">
       <div class="row">
         <div class="col-md-4">
+          <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
+                           class: "btn btn-warning pull-right" %>
+
+          <%= if persona.image_url do %>
+            <object data="<%= persona.image_url %>"
+                    alt="<%= persona.image_title%>"
+                    type="image/png"
+                    width="150"
+                    class="thumbnail">
+              <img src="/images/missing-persona.png"
+                   alt="missing image"
+                   width="150" />
+            </object>
+          <% else %>
+              <img src="/images/missing-persona.png"
+                   alt="missing image"
+                   width="150"
+                   class="thumbnail" />
+          <% end %>
+
           <dl class="dl-horizontal">
             <dt>Pid</dt>
             <dd><%= persona.pid %></dd>
@@ -161,30 +181,7 @@
           </dl>
         </div>
 
-        <div class="col-md-2">
-          <%= if persona.image_url do %>
-            <object data="<%= persona.image_url %>"
-                    alt="<%= persona.image_title%>"
-                    type="image/png"
-                    width="150"
-                    class="thumbnail">
-              <img src="/images/missing-persona.png"
-                   alt="missing image"
-                   width="150" />
-            </object>
-          <% else %>
-              <img src="/images/missing-persona.png"
-                   alt="missing image"
-                   width="150"
-                   class="thumbnail" />
-          <% end %>
-
-          <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
-                           class: "btn btn-warning" %>
-        </div>
-
-
-        <div class="col-md-3">
+        <div class="col-md-4">
           <h4>Delegations
             <button class="btn btn-primary btn-xs pull-right"
                   data-toggle="popover"
@@ -244,7 +241,7 @@
           </ul>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
           <h4>Redirection
             <button class="btn btn-primary btn-xs pull-right"
                 data-toggle="popover"

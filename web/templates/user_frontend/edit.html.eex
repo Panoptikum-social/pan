@@ -1,6 +1,6 @@
-<h2>Update Profile</h2>
+<div class="col-md-8 col-md-offset-2">
+  <h2>Update Profile</h2>
 
-<div class="col-md-6 col-md-offset-3">
   <%= form_for @changeset, user_frontend_path(@conn, :update), fn f -> %>
     <%= if @changeset.action do %>
       <div class="alert alert-danger">
