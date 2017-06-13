@@ -67,7 +67,7 @@ defmodule Pan.Episode do
                            where: (is_nil(p.blocked) or p.blocked == false) and
                                   e.publishing_date < ^NaiveDateTime.utc_now(),
                            preload: :podcast,
-                           limit: 5)
+                           limit: 10)
     |> Repo.all()
   end
 

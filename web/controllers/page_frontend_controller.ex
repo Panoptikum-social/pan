@@ -1,7 +1,6 @@
 defmodule Pan.PageFrontendController do
   use Pan.Web, :controller
 
-  alias Pan.Category
   alias Pan.Subscription
 
   def home(conn, _params) do

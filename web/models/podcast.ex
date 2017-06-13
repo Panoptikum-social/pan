@@ -131,7 +131,7 @@ defmodule Pan.Podcast do
                                  description: p.description,
                                  author_id: persona.id,
                                  author_name: persona.name},
-                       limit: 5)
+                       limit: 10)
     |> Repo.all()
   end
 

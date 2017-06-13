@@ -3,7 +3,6 @@ defmodule Pan.CategoryFrontendController do
 
   alias Pan.Category
   alias Pan.Language
-  alias Pan.Subscription
 
   def index(conn, _params) do
     categories = ConCache.get_or_store(:slow_cache, :categories, fn() ->

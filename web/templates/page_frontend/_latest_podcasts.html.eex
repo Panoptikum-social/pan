@@ -1,47 +1,56 @@
-<div class="panel panel-default">
+<div class="panel panel-primary">
   <div class="panel-heading">
-    <%= link "Latest Podcasts", to: podcast_frontend_path(@conn, :index), style: "color: #555" %>
+    <%= link "Latest Podcasts", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
-      <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #555" %>
+      <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
     </span>
   </div>
-  <div id="latest_podcasts">
-    <ul class="list-unstyled">
-      <%= for podcast <- ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() -> Pan.Podcast.latest() end) do %>
-        <li>
-          <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 75)],
-                   to: podcast_frontend_path(@conn, :show, podcast.id),
-                   class: "btn btn-default btn-xs truncate",
-                   style: "color: #000;" %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
 
-          <%= if podcast.author_name do %>
-            <%= link [fa_icon("user-o"), " ", truncate(podcast.author_name, 75)],
-                 to: persona_frontend_path(@conn, :show, podcast.author_id),
-                 class: "btn btn-xs truncate btn-lavender truncate" %>
-          <%= else %>
-            <%= fa_icon("user-o") %> Unknown
-          <% end %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+  <ul class="nav nav-tabs" role="tablist">
+    <%= for {podcast, index} <- Enum.with_index(ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() ->
+                                                  Pan.Podcast.latest()
+                                                end)) do %>
+      <li role="podcasts" class=<%= if index == 0, do: "active" %>>
+        <a href="#podcast-<%= podcast.id %>"
+           aria-controls="podcast-<%= podcast.id %>"
+           role="tab"
+           data-toggle="tab">
+          <%= index + 1 %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
 
-          <%= fa_icon("calendar") %>
-          <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+  <div class="tab-content">
+    <%= for {podcast, index} <- Enum.with_index(ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() ->
+                                                  Pan.Podcast.latest()
+                                                end)) do %>
+      <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
+                           id="podcast-<%= podcast.id %>">
 
-          <%= if podcast.description do %>
-            <%= fa_icon("image") %> <%= truncate(podcast.description, 500) %>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+        <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 75)],
+                 to: podcast_frontend_path(@conn, :show, podcast.id),
+                 class: "btn btn-default btn-xs truncate",
+                 style: "color: #000;" %>
+        <hr style="margin-top: -15px; visibility:hidden;" />
+
+        <%= if podcast.author_name do %>
+          <%= link [fa_icon("user-o"), " ", truncate(podcast.author_name, 75)],
+               to: persona_frontend_path(@conn, :show, podcast.author_id),
+               class: "btn btn-xs truncate btn-lavender truncate" %>
+        <%= else %>
+          <%= fa_icon("user-o") %> Unknown
+        <% end %>
+        <hr style="margin-top: -15px; visibility:hidden;" />
+
+        <%= fa_icon("calendar") %>
+        <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
+        <hr style="margin-top: -15px; visibility:hidden;" />
+
+        <%= if podcast.description do %>
+          <%= fa_icon("image") %> <%= truncate(podcast.description, 500) %>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<script>
-  $(function() {
-    $('#latest_podcasts').vTicker('init', {
-    padding: 15,
-    pause: 6000,
-    speed: 2000});
-  });
-</script>
