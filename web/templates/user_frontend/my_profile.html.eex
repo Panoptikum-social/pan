@@ -84,7 +84,7 @@
         <dt>Paper bill</dt>
         <dd>
           <%= if @user.paper_bill do %>
-            I want to receive a bill printed on paper via smail mail.
+            I want to receive a bill printed on paper via snail mail.
           <% else %>
             It's fine to get the bill via email and I can download it as pdf.
           <% end %>

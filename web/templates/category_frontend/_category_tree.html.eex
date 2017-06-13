@@ -18,4 +18,8 @@
     <hr style="margin: 0px;"/>
   </div>
   <br/>
+
+  <%= if category.id == 402 do %>
+    <span id="category_tree"></span>
+  <% end %>
 <% end %>

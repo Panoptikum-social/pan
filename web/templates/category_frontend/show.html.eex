@@ -64,6 +64,6 @@
 <% end %>
 
 <script>
-  if (hopscotch.getState() === "panoptikum:2") {hopscotch.startTour(tour)}
-  if (hopscotch.getState() === "panoptikum:4") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:3") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:5") {hopscotch.startTour(tour)}
 </script>

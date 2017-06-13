@@ -6,10 +6,6 @@
 
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
-    <div class="pull-right">
-      <%= render Pan.CategoryFrontendView, "_search.html", conn: @conn %><br/>
-    </div>
-
     <%= if @total > 0 do %>
       Showing <%= @size %> results <%= @from + 1 %> to <%= @from + @size %> out of
       <%= @total %> (<%= @took / 1000 %> Seconds)

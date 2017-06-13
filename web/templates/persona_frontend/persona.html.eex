@@ -191,6 +191,6 @@
 <% end %>
 
 <script>
-  if (hopscotch.getState() === "panoptikum:15") {hopscotch.startTour(tour)}
   if (hopscotch.getState() === "panoptikum:16") {hopscotch.startTour(tour)}
+  if (hopscotch.getState() === "panoptikum:17") {hopscotch.startTour(tour)}
 </script>

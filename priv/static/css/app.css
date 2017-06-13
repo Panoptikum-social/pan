@@ -17,14 +17,10 @@ table {margin-top: 10px; margin-bottom: 20px; }
 .alert:empty { display: none; }
 
 /* Phoenix inline forms in links and buttons */
-form.link, form.button {
-  display: inline;
-}
+form.link, form.button {display: inline; }
 
 /* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
-}
+.header {border-bottom: 1px solid #e5e5e5; }
 .logo {
   width: 100px;
   height: 100px;
@@ -35,49 +31,14 @@ form.link, form.button {
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing {
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
-/* Customize container */
-@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-/* Supporting marketing content */
-.marketing {
-  margin: 35px 0;
-}
+.header, .marketing {padding-right: 15px; padding-left: 15px; }
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   /* Remove the padding we set earlier */
-  .header,
-  .marketing {
-    padding-right: 0;
-    padding-left: 0;
-  }
+  .header {padding-right: 0; padding-left: 0; }
   /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+  .header {margin-bottom: 30px; }
 }
 
 /*
@@ -286,7 +247,9 @@ h5, .h5 { font-size: 17px; }
 h6, .h6 { font-size: 14px; }
 
 .navbar-text a {color: white; }
-.navbar-text {margin-left: 10px;}
+.navbar-text {margin: 10px; }
+.username {font-size: 20px;}
+.navbar-nav i.fa {font-size: 20px; padding-top: 5px;}
 
 /* Bootstrap Notifications */
 .notifications { position: fixed; z-index: 9999; }
@@ -308,8 +271,8 @@ h6, .h6 { font-size: 14px; }
 .list-group-item-primary > a,
 .list-group-item-success > a { color: #fff;}
 
-.footer { padding: 40px;
-          padding-bottom: 30px;
+.footer { padding: 20px;
+          padding-bottom: 20px;
           margin-top: 30px; }
 
 .navbar-default .navbar-nav>li>a,
@@ -326,7 +289,7 @@ h6, .h6 { font-size: 14px; }
 }
 
 .navbar-default {
-  padding: 15px;
+  padding: 10px;
   margin-left: -25px;
   margin-right: -15px;
   padding-right: 0px;
@@ -361,6 +324,8 @@ input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
   display: inline-block;
   max-width: 100%;
 }
+
+.nav>li>a {padding: 10px;}
 /**
  * simplemde v1.11.2
  * Copyright Next Step Webs, Inc.

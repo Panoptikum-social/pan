@@ -25,19 +25,18 @@
     <div class='notifications top-right'></div>
     <div class="container-fluid">
       <nav class="navbar navbar-default navbar-inverse">
-        <div class="container-fluid">
+        <div class="container">
           <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
-        </div><!-- /.container-fluid -->
+        </div>
       </nav>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
-      <main role="main">
+      <main role="main" class="container">
         <%= render @view_module, @view_template, assigns %>
       </main>
-
-    </div> <!-- /container -->
+    </div>
 
     <%= render "_footer.html", conn: @conn, current_user: @current_user %>
   </body>

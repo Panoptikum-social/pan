@@ -11910,9 +11910,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 (0, _jquery2.default)(function () {
   _mailbox2.default.init(_socket2.default);
 });
-
-(0, _jquery2.default)(".toshow").show();
-(0, _jquery2.default)(".tohide").hide();
 });
 
 ;require.register("web/static/js/category.js", function(exports, require, module) {
@@ -12703,9 +12700,17 @@ var tour = {
   showPrevButton: "true",
   steps: [
     { title: "Get an overview",
+      content: "Let'n navigate to the category tree first.",
+      target: "category_link",
+      placement: "right",
+      multipage: true,
+      onNext: function() {window.location = "/categories"} },
+
+    { title: "Get an overview",
       content: "You can find categories matching your interest in the category tree.",
       target: "category_tree",
-      placement: "right" },
+      placement: "top",
+      onPrev: function() {window.location = "/"} },
 
     { title: "Select a category",
       content: "Clicking on a category button lets us visit the category page.",
@@ -12718,7 +12723,7 @@ var tour = {
       content: "We select the German podcasts by clicking the language link.",
       target: "lang-German",
       placement: "bottom",
-      onPrev: function() {window.location = "/"} },
+      onPrev: function() {window.location = "/categories"} },
 
     { title: "Browse language",
       content: "Now we can browse through the german podcasts",

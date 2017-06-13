@@ -19,6 +19,3 @@ import socket from "./socket"
 import Mailbox from "./mailbox"
 
 $(function() {Mailbox.init(socket)})
-
-$(".toshow").show()
-$(".tohide").hide()
