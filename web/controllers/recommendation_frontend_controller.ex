@@ -52,12 +52,11 @@ defmodule Pan.RecommendationFrontendController do
   def random(conn, _params, _user) do
     podcast = from(p in Podcast, order_by: fragment("RANDOM()"),
                                  limit: 1,
-                                 preload: :categories)
+                                 preload: [:episodes, :languages, :categories, :feeds, engagements: :persona])
               |> Repo.one()
 
     category = Repo.get(Category, List.first(podcast.categories).id)
-               |> Repo.preload([:parent, :children,
-                                [podcasts: :languages]])
+               |> Repo.preload([:parent, :children])
 
     podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
                                    join: c in assoc(p, :categories),
@@ -67,9 +66,6 @@ defmodule Pan.RecommendationFrontendController do
                                              language_name: l.name,
                                              language_emoji: l.emoji})
                                    |> Repo.all()
-
-    podcast = Repo.get(Podcast, podcast.id)
-              |> Repo.preload([:episodes, :languages, :categories, :feeds, engagements: :persona])
 
     episode = Enum.random(podcast.episodes)
     episode = Repo.get(Episode, episode.id)
