@@ -50,9 +50,10 @@ defmodule Pan.RecommendationFrontendController do
 
 
   def random(conn, _params, _user) do
-    podcast = Repo.all(Podcast)
-               |> Enum.random
-               |> Repo.preload(:categories)
+    podcast = from(p in Podcast, order_by: fragment("RANDOM()"),
+                                 limit: 1,
+                                 preload: :categories)
+              |> Repo.one()
 
     category = Repo.get(Category, List.first(podcast.categories).id)
                |> Repo.preload([:parent, :children,
