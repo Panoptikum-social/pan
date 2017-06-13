@@ -9,8 +9,6 @@ defmodule Pan.OpmlParser.Analyzer do
   def call([:body, _, value], user_id), do: Iterator.parse(value, user_id)
 
 
-# feeds from BeyondPod
-
   def call([:outline, attr, value], user_id) do
     case attr[:type] do
       "rss" ->

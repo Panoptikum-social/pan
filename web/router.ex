@@ -97,6 +97,8 @@ defmodule Pan.Router do
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/:id/import", OpmlFrontendController, :import
 
+    resources "/feed_backlogs", FeedBacklogFrontendController, only: [:new, :create]
+
     get "/my_recommendations", RecommendationFrontendController, :my_recommendations
     resources "/recommendations", RecommendationFrontendController, only: [:create]
   end
