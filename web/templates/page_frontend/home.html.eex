@@ -6,7 +6,8 @@
   </div>
 
   <div class="col-md-6">
-    <%= render "_popular.html", popular_podcasts: @popular_podcasts, conn: @conn  %></br>
+    <%= render "_popular_podcasts.html", popular_podcasts: @popular_podcasts, conn: @conn  %></br>
+    <%= render "_liked_podcasts.html", liked_podcasts: @liked_podcasts, conn: @conn  %></br>
 
   </div>
 </div>

@@ -328,6 +328,7 @@ input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
 .nav>li>a {padding: 10px;}
 
 .panel>.nav-tabs {margin-top: 0px;}
+
 /**
  * simplemde v1.11.2
  * Copyright Next Step Webs, Inc.

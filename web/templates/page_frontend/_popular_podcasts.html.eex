@@ -1,0 +1,15 @@
+<div class="panel panel-info">
+  <div class="panel-heading">Top 10 subscribed Podcasts</div>
+  <div class="panel-body" style="margin-bottom: -20px;"">
+    <%= for {[count, id, title], rank} <- Enum.with_index(@popular_podcasts) do %>
+      <p>
+        <b><%= rank + 1 %>.</b>:
+        <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
+                 to: podcast_frontend_path(@conn, :show, id),
+                 class: "btn btn-default btn-xs",
+                 style: "color: #000" %>
+        <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
+      </p>
+    <% end %>
+  </div>
+</div>
