@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#434a54">
+
+    <title>Panoptikum</title>
+    <link rel="stylesheet"
+          href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="icon" sizes="192x192" href="/images/icon.png">
+    <script>window.userToken = "<%= assigns[:user_token] %>"
+            window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
+
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Panoptikum" href="https://panoptikum.io/opensearch.xml">
+  </head>
+
+  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
+    <div class='notifications top-right'></div>
+    <div class="container-fluid">
+      <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+          <%= render "_admin_navbar.html", conn: @conn, current_user: @current_user %>
+        </div>
+      </nav>
+
+      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+
+      <main role="main" class="container">
+        <%= render @view_module, @view_template, assigns %>
+      </main>
+    </div>
+  </body>
+</html>

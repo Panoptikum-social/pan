@@ -22,6 +22,10 @@ defmodule Pan.Router do
   end
 
 
+  pipeline :admin_layout do
+    plug :put_layout, {Pan.LayoutView, :admin}
+  end
+
   scope "/api", Pan do
     pipe_through :api
 
@@ -116,7 +120,7 @@ defmodule Pan.Router do
 
 
   scope "/admin", Pan do
-    pipe_through [:browser, :authenticate_admin]
+    pipe_through [:browser, :authenticate_admin, :admin_layout]
     resources "/episodes", EpisodeController
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
