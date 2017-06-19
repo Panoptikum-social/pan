@@ -6,19 +6,6 @@
 
 <h1>My Profile</h1>
 
-<%= unless pro(@current_user) do %>
-  <div class="row">
-    <div class="alert alert-warning col-md-8 col-md-offset-2">
-      <h4>Try it free for 30 days!</h4>
-
-      Claim your free pro account without any further obligations!<br/>
-      Why? To to support Panoptikum or to unlock all pro features now!<br/><br/>
-
-      <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro), class: "btn btn-warning", method: :post %>
-    </div>
-  </div>
-<% end %>
-
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
@@ -66,8 +53,21 @@
           I do not share my subscriptions.
         <% end %>
       </dd>
+    </dl>
 
-      <%= if @user.pro_until do %>
+    <%= if @user.pro_until do %>
+      <div class="row">
+        <div class="alert alert-warning col-md-8 col-md-offset-2">
+          <h4>Unlock all pro features for one year pro for 12 EUR only!</h4>
+
+          <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
+                                   class: "btn btn-primary" %>
+          <%= link "Payment information", to: user_frontend_path(@conn, :payment_info),
+                              class: "btn btn-warning pull-right" %>
+        </div>
+      </div>
+
+      <dl class="dl-horizontal">
         <dt>Pro account until</dt>
         <dd>
           <%= Timex.format!(@user.pro_until, "{ISOdate}") %> &nbsp;
@@ -89,10 +89,27 @@
             It's fine to get the bill via email and I can download it as pdf.
           <% end %>
         </dd>
-      <% end %>
-    </dl>
+      </dl>
+    <% end %>
   </div>
 </div>
+
+<%= unless pro(@current_user) do %>
+  <div class="row">
+    <div class="alert alert-warning col-md-8 col-md-offset-2">
+      <h4>Try it free for 30 days!</h4>
+
+      Claim your free pro account without any further obligations!<br/>
+      Why? To to support Panoptikum or to unlock all pro features now!<br/><br/>
+
+      <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
+                               class: "btn btn-primary" %>
+      <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro),
+                                        class: "btn btn-warning pull-right",
+                                        method: :post %>
+    </div>
+  </div>
+<% end %>
 
 <%= if @user.invoices != [] do %>
   <h2>My invoices</h2>

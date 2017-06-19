@@ -56,6 +56,7 @@ defmodule Pan.Router do
     get "/episodes/:id/player", EpisodeFrontendController, :player
 
     resources "/users", UserFrontendController, only: [:show, :index, :new, :create]
+    get "/pro_features", PageFrontendController, :pro_features
 
     get "/personas/:id/grant_access", PersonaFrontendController, :grant_access
     resources "/personas", PersonaFrontendController, only: [:show, :index]
@@ -110,6 +111,8 @@ defmodule Pan.Router do
 
   scope "/pro", Pan do
     pipe_through [:browser, :authenticate_pro]
+
+    get "/users/payment_info", UserFrontendController, :payment_info
 
     get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
     get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect

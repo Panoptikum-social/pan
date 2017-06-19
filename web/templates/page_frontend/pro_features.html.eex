@@ -1,0 +1,5 @@
+<h1>Pro features</h1>
+
+Need more description here ...
+<br/><br/><br/>
+<%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>

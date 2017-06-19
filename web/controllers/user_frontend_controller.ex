@@ -301,4 +301,9 @@ defmodule Pan.UserFrontendController do
     |> put_flash(:info, "You are now a Panoptikum pro user!")
     |> redirect(to: user_frontend_path(conn, :my_profile))
   end
+
+
+  def payment_info(conn, _params, user) do
+    render(conn, "payment_info.html", user: user)
+  end
 end

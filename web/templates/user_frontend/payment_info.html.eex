@@ -1,0 +1,5 @@
+<h1> Payment Information</h1>
+
+<%= @user.payment_reference %>
+
+... to follow soon ...

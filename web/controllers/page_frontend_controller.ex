@@ -26,4 +26,9 @@ defmodule Pan.PageFrontendController do
     render(conn, "home.html", popular_podcasts: popular_podcasts,
                               liked_podcasts: liked_podcasts)
   end
+
+
+  def pro_features(conn, _params) do
+    render(conn, "pro_features.html")
+  end
 end
