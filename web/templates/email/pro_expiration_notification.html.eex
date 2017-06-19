@@ -8,4 +8,3 @@
   <%= link "Your profile page",  to: Pan.Router.Helpers.user_frontend_url(Pan.Endpoint, :my_profile)%>.
 </p>
 <p>We won't bother you with any more emails, promised!</p>
-

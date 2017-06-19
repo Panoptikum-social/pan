@@ -46,7 +46,7 @@ defmodule Pan.Email do
     new_email()
     |> to(email_address)
     |> from("noreply@panoptikum.io")
-    |> subject("Panoptikum - Your Panoptikum pro account expires soon")
+    |> subject("Panoptikum - Your pro account expires soon")
     |> put_html_layout({Pan.LayoutView, "email.html"})
     |> render("pro_expiration_notification.html")
   end

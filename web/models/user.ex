@@ -237,7 +237,8 @@ defmodule Pan.User do
     end
   end
 
-  def pro_expiration do
+
+  def pro_expiration() do
     in_seven_days = Timex.now()
                     |> Timex.shift(days: 7)
     in_six_days = Timex.now()
