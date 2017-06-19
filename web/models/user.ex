@@ -236,4 +236,21 @@ defmodule Pan.User do
              "/users/" <> Integer.to_string(deleted_id))
     end
   end
+
+  def pro_expiration do
+    in_seven_days = Timex.now()
+                    |> Timex.shift(days: 7)
+    in_six_days = Timex.now()
+                  |> Timex.shift(days: 6)
+
+    emails = from(u in User, where: u.pro_until >= ^in_six_days and
+                                    u.pro_until <= ^in_seven_days,
+                             select: u.email)
+             |> Repo.all()
+
+    for email <- emails do
+      Pan.Email.pro_expiration_notification(email)
+      |> Pan.Mailer.deliver_now()
+    end
+  end
 end
