@@ -5,12 +5,10 @@ defmodule Pan.CategoryFrontendController do
   alias Pan.Language
 
   def index(conn, _params) do
-    categories = ConCache.get_or_store(:slow_cache, :categories, fn() ->
-                   (from c in Category, order_by: :title,
-                                        where: is_nil(c.parent_id))
-                   |> Repo.all()
-                   |> Repo.preload(children: from(cat in Category, order_by: cat.title))
-                 end)
+    categories = from(c in Category, order_by: :title,
+                                     where: is_nil(c.parent_id))
+                 |> Repo.all()
+                 |> Repo.preload(children: from(cat in Category, order_by: cat.title))
 
     render(conn, "index.html", categories: categories)
   end
