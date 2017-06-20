@@ -13,6 +13,9 @@
     <%= submit "Log in", class: "btn btn-primary" %>
   <% end %>
 
-
-  <%= link "I forgot my password!", to: user_path(@conn, :forgot_password) %>
+  <ul>
+    <li>Forgot your password? - <%= link "Get an email with a login link", to: user_path(@conn, :forgot_password) %></li>
+    <li>
+      No account yet? - <%= link "Sign up", to: user_frontend_path(@conn, :new) %>
+    </li>
 </div>

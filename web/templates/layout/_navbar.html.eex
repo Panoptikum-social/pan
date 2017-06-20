@@ -106,7 +106,7 @@
     <% else %>
       <li><a id="tour" href="#" title="tour"><%= fa_icon("bus") %></a></li>
       <li><%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
-                                          title: "Register" %></li>
+                                          title: "Sign up" %></li>
       <li><%= link fa_icon("sign-in"), to: session_path(@conn, :new),
                                           title: "Log in" %></li>
     <% end %>

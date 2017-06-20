@@ -1,5 +1,5 @@
 <div class="col-md-6 col-md-offset-3">
-  <h1>Create a new User</h1>
+  <h1>Sign Up</h1>
 
   <%= form_for @changeset, user_frontend_path(@conn, :create), fn f -> %>
     <%= if @changeset.action do %>
@@ -48,11 +48,11 @@
       <%= error_tag f, :password_confirmation %>
     </div>
     <div class="form-group">
-      <%= label f, :podcaster, class: "control-label" %>
+      <%= label f, "I am a podcaster", class: "control-label" %>
       <%= checkbox f, :podcaster, placeholder: "Podcaster", class: "form-control" %>
       <%= error_tag f, :podcaster %>
     </div>
-    <%= submit "Create User", class: "btn btn-primary" %>
+    <%= submit "Create Account", class: "btn btn-primary" %>
   <% end %>
 
 
