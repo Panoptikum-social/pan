@@ -196,7 +196,8 @@ defmodule Pan.Parser.Analyzer do
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId",
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
     :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight",
-    :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev"
+    :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
+    :"podcast:category"
   ], do: %{}
 
 
