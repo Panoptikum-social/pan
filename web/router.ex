@@ -150,6 +150,9 @@ defmodule Pan.Router do
     resources "/delegations", DelegationController
 
     get "/personas/datatable", PersonaController, :datatable
+    get "/personas/merge_candidates", PersonaController, :merge_candidates
+    get "/personas/merge_candidate_group", PersonaController, :merge_candidate_group
+    get "/personas/merge", PersonaController, :merge
     resources "/personas", PersonaController
 
     get "/languages/datatable", LanguageController, :datatable

@@ -1,0 +1,10 @@
+<h2>Merge Candidates</h2>
+
+<ul>
+  <%= for {name, frequency} <- @non_unique_names do %>
+    <li>
+      <%= link name, to: persona_path(@conn, :merge_candidate_group, name: name) %>
+      (<%= frequency %>)
+    </li>
+  <% end %>
+</ul>
