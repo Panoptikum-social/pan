@@ -139,8 +139,40 @@ defmodule Pan.PersonaController do
     Tirexs.HTTP.delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
                        "/personas/" <> Integer.to_string(from_id))
 
-    Repo.get!(Persona, from_id)
-    |> Repo.delete!
+    to_persona = Repo.get!(Persona, to_id)
+    from_persona = Repo.get!(Persona, from_id)
+
+    if to_persona.uri == nil and from_persona.uri != nil do
+      Persona.changeset(to_persona, %{uri: from_persona.uri})
+      |> Repo.update()
+    end
+
+    if to_persona.email == nil and from_persona.email != nil do
+      Persona.changeset(to_persona, %{email: from_persona.email})
+      |> Repo.update()
+    end
+
+    if to_persona.image_url == nil and from_persona.image_url != nil do
+      Persona.changeset(to_persona, %{image_url: from_persona.image_url})
+      |> Repo.update()
+    end
+
+    if to_persona.image_title == nil and from_persona.image_title != nil do
+      Persona.changeset(to_persona, %{image_title: from_persona.image_title})
+      |> Repo.update()
+    end
+
+    if to_persona.description == nil and from_persona.description != nil do
+      Persona.changeset(to_persona, %{description: from_persona.description})
+      |> Repo.update()
+    end
+
+    if to_persona.long_description == nil and from_persona.long_description != nil do
+      Persona.changeset(to_persona, %{long_description: from_persona.long_description})
+      |> Repo.update()
+    end
+
+    Repo.delete!(from_persona)
 
     conn
     |> put_flash(:info, "Personas merged successfully.")
