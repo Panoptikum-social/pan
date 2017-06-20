@@ -39,7 +39,8 @@
           <td>
             <%= for persona_to <- @personas do %>
               <%= unless persona.id == persona_to.id do
-                    link persona_to.id, to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id)
+                    link(persona_to.id, to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id),
+                         class: "btn")
                   end %>
             <% end %>
           </td>

@@ -174,8 +174,6 @@ defmodule Pan.PersonaController do
 
     Repo.delete!(from_persona)
 
-    conn
-    |> put_flash(:info, "Personas merged successfully.")
-    |> redirect(to: persona_path(conn, :merge_candidates))
+    render(conn, "merge.html")
   end
 end
