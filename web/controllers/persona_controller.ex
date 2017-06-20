@@ -76,8 +76,7 @@ defmodule Pan.PersonaController do
   def merge_candidates(conn, _params) do
     non_unique_names = from(p in Persona, group_by: p.name,
                                           having: count(p.id) > 1,
-                                          select: {p.name, count(p.id)},
-                                          limit: 100)
+                                          select: {p.name, count(p.id)})
                  |> Repo.all()
 
     render(conn, "merge_candidates.html", non_unique_names: non_unique_names)

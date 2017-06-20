@@ -1,4 +1,4 @@
-<h2>Merge Candidates</h2>
+<h2><%= Enum.count(@non_unique_names) %> Merge Candidates</h2>
 
 <ul>
   <%= for {name, frequency} <- @non_unique_names do %>
