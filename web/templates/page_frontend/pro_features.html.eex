@@ -1,5 +1,5 @@
 <h1>Pro features</h1>
 
-This page is work in progress and will be completed in a few days.<br/><br/>
+<p>This page is work in progress and will be completed in a few days.</p>
 
 <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
