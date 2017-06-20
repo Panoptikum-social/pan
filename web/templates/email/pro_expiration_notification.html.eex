@@ -5,6 +5,6 @@
 <p>
   If you would like to extend your pro account, please login to your account and find
   more information on your
-  <%= link "Your profile page",  to: Pan.Router.Helpers.user_frontend_url(Pan.Endpoint, :my_profile)%>.
+  <%= link "Your profile page",  to: Pan.Router.Helpers.session_url(Pan.Endpoint, :new)%>.
 </p>
 <p>We won't bother you with any more emails, promised!</p>

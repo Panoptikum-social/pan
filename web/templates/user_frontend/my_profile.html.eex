@@ -57,7 +57,7 @@
 
     <%= if @user.pro_until do %>
       <div class="row">
-        <div class="alert alert-warning col-md-8 col-md-offset-2">
+        <div class="alert alert-warning">
           <h4>Unlock all pro features for one year pro for 12 EUR only!</h4>
 
           <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),

@@ -24,7 +24,13 @@ defmodule Pan.SessionController do
                  "the confirmation link in the email we sent to you right now!"
                )
         end
-        |> redirect(to: category_frontend_path(conn, :index))
+
+        if get_session(conn, :desired_url) do
+          redirect(conn, to: get_session(conn, :desired_url))
+        else
+          redirect(conn, to: user_frontend_path(conn, :my_profile))
+        end
+
       {:error, _reason, conn} ->
         conn
         |> put_flash(:error, "Invalid username/password combination!")
@@ -54,7 +60,7 @@ defmodule Pan.SessionController do
   def delete(conn, _) do
     conn
     |> Pan.Auth.logout()
-    |> redirect(to: podcast_frontend_path(conn, :index))
+    |> redirect(to: "/")
   end
 
 

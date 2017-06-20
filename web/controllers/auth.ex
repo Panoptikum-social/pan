@@ -98,7 +98,8 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access that page.")
-      |> redirect(to: Helpers.category_frontend_path(conn, :index))
+      |> put_session(:desired_url, conn.request_path)
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end
@@ -111,8 +112,9 @@ defmodule Pan.Auth do
       conn
     else
       conn
-      |> put_flash(:error, "You must have a pro account to access that page.")
-      |> redirect(to: Helpers.category_frontend_path(conn, :index))
+      |> put_flash(:error, "You need to be logged in with a pro account to access that page.")
+      |> put_session(:desired_url, conn.request_path)
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end
@@ -125,7 +127,8 @@ defmodule Pan.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access this page.")
-      |> redirect(to: Helpers.category_frontend_path(conn, :index))
+      |> put_session(:desired_url, conn.request_path)
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end
