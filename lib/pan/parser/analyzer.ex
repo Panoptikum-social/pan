@@ -148,7 +148,7 @@ defmodule Pan.Parser.Analyzer do
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
-    :"companyLogo", :"itunes:type"
+    :companyLogo, :"itunes:type", :convertLineBreaks
 
   ], do: map
 

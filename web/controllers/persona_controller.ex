@@ -97,8 +97,20 @@ defmodule Pan.PersonaController do
     from_id = String.to_integer(from)
     to_id   = String.to_integer(to)
 
-    from(e in Pan.Engagement, where: e.persona_id == ^from_id)
-    |> Repo.update_all(set: [persona_id: to_id])
+    engagements = from(e in Pan.Engagement, where: e.persona_id == ^from_id)
+                  |> Repo.all()
+
+    for engagement <- engagements do
+      case Repo.get_by(Pan.Engagement, persona_id: to_id,
+                                       podcast_id: engagement.podcast_id,
+                                       role: engagement.role) do
+        nil ->
+          Pan.Engagement.changeset(engagement, %{persona_id: to_id})
+          |> Repo.update()
+        engagement ->
+          Repo.delete!(engagement)
+      end
+    end
 
     from(g in Pan.Gig, where: g.persona_id == ^from_id)
     |> Repo.update_all(set: [persona_id: to_id])
