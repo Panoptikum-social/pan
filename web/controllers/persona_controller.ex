@@ -107,7 +107,7 @@ defmodule Pan.PersonaController do
         nil ->
           Pan.Engagement.changeset(engagement, %{persona_id: to_id})
           |> Repo.update()
-        engagement ->
+        _ ->
           Repo.delete!(engagement)
       end
     end
