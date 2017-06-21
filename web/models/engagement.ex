@@ -16,6 +16,6 @@ defmodule Pan.Engagement do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:from, :until, :comment, :role, :persona_id, :podcast_id])
-    |> validate_required([:comment, :role, :persona_id, :podcast_id])
+    |> validate_required([:role])
   end
 end
