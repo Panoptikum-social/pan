@@ -105,9 +105,11 @@ defmodule Pan.PersonaController do
                                        podcast_id: engagement.podcast_id,
                                        role: engagement.role) do
         nil ->
+          IO.inspect "nothing found"
           Pan.Engagement.changeset(engagement, %{persona_id: to_id})
           |> Repo.update()
         _ ->
+          IO.inspect "found one"
           Repo.delete!(engagement)
       end
     end
