@@ -11,9 +11,9 @@
         <th>Email</th>
         <th>Image url</th>
         <th>Description</th>
+        <th>Merge to</th>
         <th>Podcasts</th>
         <th>Episodes</th>
-        <th>Merge</th>
       </tr>
     </thead>
     <tbody>
@@ -27,21 +27,21 @@
           <td><%= persona.image_url %></td>
           <td><%= persona.description %></td>
           <td>
-            <%= for engagement <- persona.engagements do %>
-              <%= engagement.podcast_id %>
-            <% end %>
-          </td>
-          <td>
-            <%= for gig <- persona.gigs do %>
-              <%= gig.episode_id %>
-            <% end %>
-          </td>
-          <td>
             <%= for persona_to <- @personas do %>
               <%= unless persona.id == persona_to.id do
                     link(persona_to.id, to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id),
                          class: "btn")
                   end %>
+            <% end %>
+          </td>
+          <td>
+            <%= for engagement <- persona.engagements do %>
+              <%= engagement.podcast_id %><br/>
+            <% end %>
+          </td>
+          <td>
+            <%= for gig <- persona.gigs do %>
+              <%= gig.episode_id %><br/>
             <% end %>
           </td>
         </tr>
@@ -51,6 +51,7 @@
 </div>
 
 <script>
+  // Code from: https://github.com/kmclaugh/Transpose_Table
   $(document).ready(function() {
     transpose_table();
   })
