@@ -125,7 +125,7 @@
                         to: episode_frontend_path(@conn, :show, episode),
                         class: "btn btn-primary btn-xs truncate" %></td>
             <td>
-              <%= for gig <- Enum.group_by(@gigs, &Map.get(&1, :episode))[episode] do %>
+              <%= for gig <- @grouped_gigs[episode] do %>
                 <span class="label label-success"><%= gig.role %></span>
               <% end %>
             </td>

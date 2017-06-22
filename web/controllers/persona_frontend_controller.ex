@@ -50,6 +50,8 @@ defmodule Pan.PersonaFrontendController do
                             preload: [episode: :podcast])
              |> Repo.all()
 
+      grouped_gigs = Enum.group_by(gigs, &Map.get(&1, :episode))
+
       engagements = from(e in Engagement, where: e.persona_id in ^persona_ids,
                                           preload: :podcast)
                     |> Repo.all()
@@ -64,6 +66,7 @@ defmodule Pan.PersonaFrontendController do
           render(conn, "persona.html", persona: persona,
                                        messages: messages,
                                        gigs: gigs,
+                                       grouped_gigs: grouped_gigs,
                                        engagements: engagements)
         redirect_id ->
           persona = Repo.get!(Persona, redirect_id)
