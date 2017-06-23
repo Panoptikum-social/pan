@@ -77,19 +77,32 @@ defmodule Pan.PersonaController do
     non_unique_names = from(p in Persona, group_by: p.name,
                                           having: count(p.id) > 1,
                                           select: {p.name, count(p.id)})
-                 |> Repo.all()
+                       |> Repo.all()
 
-    render(conn, "merge_candidates.html", non_unique_names: non_unique_names)
+    non_unique_emails = from(p in Persona, group_by: p.email,
+                                           having: count(p.id) > 1,
+                                           select: {p.email, count(p.id)})
+                        |> Repo.all()
+
+
+    render(conn, "merge_candidates.html", non_unique_names: non_unique_names,
+                                          non_unique_emails: non_unique_emails)
   end
 
 
-  def merge_candidate_group(conn, %{"name" => name}) do
-    personas = from(p in Persona, where: p.name == ^name,
-                                  preload: [:engagements, :gigs])
-               |> Repo.all()
+  def merge_candidate_group(conn, %{"name" => name, "email" => email}) do
+    personas =
+      if name do
+        from(p in Persona, where: p.name == ^name,
+                           preload: [:engagements, :gigs])
+        |> Repo.all()
+      else
+        from(p in Persona, where: p.email == ^email,
+                           preload: [:engagements, :gigs])
+        |> Repo.all()
+      end
 
     render(conn, "merge_candidate_group.html", personas: personas)
-
   end
 
 
