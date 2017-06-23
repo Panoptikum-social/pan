@@ -90,17 +90,19 @@ defmodule Pan.PersonaController do
   end
 
 
-  def merge_candidate_group(conn, %{"name" => name, "email" => email}) do
-    personas =
-      if name do
-        from(p in Persona, where: p.name == ^name,
-                           preload: [:engagements, :gigs])
-        |> Repo.all()
-      else
-        from(p in Persona, where: p.email == ^email,
-                           preload: [:engagements, :gigs])
-        |> Repo.all()
-      end
+  def merge_candidate_group(conn, %{"name" => name}) do
+    personas = from(p in Persona, where: p.name == ^name,
+                                  preload: [:engagements, :gigs])
+               |> Repo.all()
+
+    render(conn, "merge_candidate_group.html", personas: personas)
+  end
+
+
+  def merge_candidate_group(conn, %{"email" => email}) do
+    personas = from(p in Persona, where: p.email == ^email,
+                                  preload: [:engagements, :gigs])
+               |> Repo.all()
 
     render(conn, "merge_candidate_group.html", personas: personas)
   end
