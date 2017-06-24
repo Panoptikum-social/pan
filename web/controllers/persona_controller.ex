@@ -76,12 +76,14 @@ defmodule Pan.PersonaController do
   def merge_candidates(conn, _params) do
     non_unique_names = from(p in Persona, group_by: p.name,
                                           having: count(p.id) > 1,
-                                          select: {p.name, count(p.id)})
+                                          select: {p.name, count(p.id)},
+                                          order_by: p.name)
                        |> Repo.all()
 
     non_unique_emails = from(p in Persona, group_by: p.email,
                                            having: count(p.id) > 1,
-                                           select: {p.email, count(p.id)})
+                                           select: {p.email, count(p.id)},
+                                           order_by: p.email)
                         |> Repo.all()
 
 
