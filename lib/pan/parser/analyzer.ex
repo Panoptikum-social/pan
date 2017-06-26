@@ -25,10 +25,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"dc:date", _, [value]]) do
     %{last_build_date: H.to_naive_datetime(value)}
   end
+  def call(_, "tag", [:pubdate, _, []]), do: %{}
   def call(_, "tag", [:pubDate, _, []]), do: %{}
-  def call(_, "tag", [:pubDate, _, [value]]) do
-    %{last_build_date: H.to_naive_datetime(value)}
-  end
+  def call(_, "tag", [:pubdate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
+  def call(_, "tag", [:pubDate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
 
 
 # image with fallback to itunes:image
