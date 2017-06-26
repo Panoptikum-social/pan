@@ -179,7 +179,7 @@ defmodule Pan.Parser.Analyzer do
     :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :imageurl,
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language", :tags,
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
-    :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime",
+    :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime", :draft,
     :"blip:adminRating", :"blip:core_value", :"blip:core", :"blip:recommendable", :"avms:id",
     :"blip:recommendations", :"yv:adInfo", :"blip:smallThumbnail", :"clipper:id", :"a10:link",
     :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", :showThumb,
