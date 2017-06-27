@@ -5,7 +5,8 @@ defmodule Pan.Parser.Language do
     case Repo.get_by(Pan.Language, shortcode: language_map[:shortcode]) do
       nil ->
         %Pan.Language{shortcode: language_map[:shortcode],
-                      name: UUID.uuid1()}
+                      name: UUID.uuid1(),
+                      emoji: "_ is missing"}
         |> Repo.insert
       language ->
         {:ok, language}
