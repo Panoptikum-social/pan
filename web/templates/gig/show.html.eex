@@ -37,6 +37,10 @@
     <%= @gig.role %>
   </li>
 
+  <li>
+    <strong>Self proclaimed:</strong>
+    <%= @gig.self_proclaimed %>
+  </li>
 </ul>
 
 <%= link "Edit", to: gig_path(@conn, :edit, @gig) %>

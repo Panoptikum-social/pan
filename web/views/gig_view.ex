@@ -23,6 +23,7 @@ defmodule Pan.GigView do
       comment:         gig.comment,
       publishing_date: gig.publishing_date,
       role:            gig.role,
+      self_proclaimed: gig.self_proclaimed,
       actions:         datatable_actions(gig.id, &gig_path/3)}
   end
 end

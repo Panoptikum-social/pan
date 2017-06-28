@@ -19,8 +19,11 @@ let Episode = {
     })
 
     Array.from(document.querySelectorAll("[data-type='chapter']")).forEach(button => {
-      let event = button.dataset.event
       this.listen_to_chapter(episodeChannel, button.dataset.id)
+    })
+
+    Array.from(document.querySelectorAll("[data-type='persona']")).forEach(button => {
+      this.listen_to_proclaim(episodeChannel, button.dataset.personaid)
     })
   },
 
@@ -48,7 +51,8 @@ let Episode = {
                                         "[data-id='" + chapter_id + "']")
     button.addEventListener("click", e => {
       let payload = {chapter_id: chapter_id,
-                     action: button.dataset.action}
+                     action: button.dataset.action,
+                     persona_id: button.dataset.personaid}
 
       episodeChannel.push("like-chapter", payload)
                     .receive("ok", (response) => {
@@ -56,6 +60,25 @@ let Episode = {
         this.listen_to_chapter(episodeChannel, chapter_id)
       })
                     .receive("error", e => console.log(e))
+    })
+  },
+
+
+  listen_to_proclaim(episodeChannel, persona_id) {
+    var button = document.querySelector("[data-type='persona']" +
+                                        "[data-event='proclaim']" +
+                                        "[data-personaid='" + persona_id + "']")
+    button.addEventListener("click", e => {
+      let payload = {episode_id: button.dataset.id,
+                     persona_id: persona_id}
+
+      episodeChannel.push(button.dataset.event, payload)
+                    .receive("ok", (response) => {
+        button.outerHTML = response.button
+        this.listen_to_proclaim(episodeChannel, persona_id)
+      })
+                    .receive("error", e => console.log(e))
+
     })
   }
 }

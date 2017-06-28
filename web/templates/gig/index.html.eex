@@ -13,6 +13,7 @@
       <th><%= fa_icon "search" %> Comment</th>
       <th>Publishing date</th>
       <th><%= fa_icon "search" %>Role</th>
+      <th>Self proclaimed</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -34,6 +35,7 @@
         { data: 'comment' },
         { data: 'publishing_date' },
         { data: 'role' },
+        { data: 'self_proclaimed'},
         { data: 'actions' }
       ]
     })

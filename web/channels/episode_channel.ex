@@ -4,6 +4,7 @@ defmodule Pan.EpisodeChannel do
   alias Pan.Episode
   alias Pan.Message
   alias Pan.Chapter
+  alias Pan.Gig
 
   def join("episodes:" <> episode_id, _params, socket) do
     {:ok, assign(socket, :episode_id, String.to_integer(episode_id))}
@@ -56,6 +57,21 @@ defmodule Pan.EpisodeChannel do
                                            "like_chapter_button.html",
                                            user_id: e.current_user_id,
                                            chapter_id: e.chapter_id)
+    {:reply, {:ok, %{button: button}}, socket}
+  end
+
+
+  def handle_in("proclaim", params, socket) do
+    current_user_id = socket.assigns[:current_user_id]
+    episode_id = String.to_integer(params["episode_id"])
+    persona_id = String.to_integer(params["persona_id"])
+
+    Gig.proclaim(episode_id, persona_id, current_user_id)
+
+    button = Phoenix.View.render_to_string(Pan.EpisodeFrontendView,
+                                           "proclaim_button.html",
+                                           episode_id: episode_id,
+                                           persona_id: persona_id)
     {:reply, {:ok, %{button: button}}, socket}
   end
 end

@@ -36,6 +36,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :self_proclaimed, class: "control-label" %>
+    <%= text_input f, :self_proclaimed, class: "form-control" %>
+    <%= error_tag f, :self_proclaimed %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

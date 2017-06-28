@@ -5,6 +5,9 @@ defmodule Pan.EpisodeFrontendView do
   alias Pan.Like
   alias Pan.Episode
   alias Pan.Chapter
+  alias Pan.Gig
+  alias Pan.User
+  alias Pan.Persona
 
 
   def author_button(conn, episode) do
@@ -156,12 +159,57 @@ defmodule Pan.EpisodeFrontendView do
   end
 
 
+  def proclaim_or_not_buttons(user_id, episode_id) do
+    user = Repo.get!(User, user_id)
+           |> Repo.preload(:personas)
+
+    for persona <- user.personas do
+      proclaim_or_not(episode_id, persona)
+    end
+  end
+
+
+  def proclaim_or_not(episode_id, persona) do
+    case Gig.find_self_proclaimed(persona.id, episode_id) do
+      nil ->
+        content_tag :span do
+          [" ",
+           content_tag :button, class: "btn btn-default btn-sm",
+                                title: "Claim contribution",
+                                data: [type: "persona",
+                                       event: "proclaim",
+                                       personaid: persona.id,
+                                       id: episode_id] do
+               [fa_icon("user-plus"), " ", persona.name]
+           end]
+        end
+      _   ->
+        content_tag :span do
+          [" ",
+            content_tag :button, class: "btn btn-normal btn-sm",
+                                 title: "Withdraw contribution",
+                                 data: [type: "persona",
+                                        event: "proclaim",
+                                        personaid: persona.id,
+                                        id: episode_id] do
+              [fa_icon("user-times"), " ", persona.name]
+            end]
+        end
+    end
+  end
+
+
   def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
     like_or_unlike(user_id, episode_id)
   end
 
   def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
     like_or_unlike_chapter(user_id, chapter_id)
+  end
+
+  def render("proclaim_button.html", %{episode_id: episode_id, persona_id: persona_id}) do
+    persona = Repo.get(Persona, persona_id)
+    proclaim_or_not(episode_id, persona)
   end
 
 

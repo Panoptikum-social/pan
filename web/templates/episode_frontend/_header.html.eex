@@ -1,3 +1,9 @@
+<script>
+  $(function() {
+    $('[data-toggle="popover"]').popover()
+  })
+</script>
+
 <div class="panel panel-primary">
   <div class="panel-heading">
     <%= fa_icon("podcast") %> <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast), style: "color: #fff" %> /
@@ -28,7 +34,18 @@
                        to: persona_frontend_path(@conn, :show, persona),
                        class: "btn btn-xs truncate btn-lavender" %>
               <%= for gig <- gigs do %>
-                <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span> &nbsp;
+                <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+                <%= if gig.self_proclaimed do %>
+                  <sup data-toggle="popover"
+                       data-placement="right"
+                       data-title="Claimed contribution"
+                       data-html="true"
+                       data-content="This contribution is claimed by a user and not source of
+                                     the podcast feed.">
+                    <%= fa_icon "info-circle", class: "icon-lavender" %>
+                  </sup>
+                <% end %>
+                &nbsp;
               <% end %>
             </dd>
           <% end %>
@@ -53,7 +70,8 @@
 
 
     <%= if @current_user do %>
-      <%= like_or_unlike(@current_user.id, @episode.id) %>
+      <%= like_or_unlike(@current_user.id, @episode.id) %> <br/><br/>
+      <p><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
     <% end %>
 
     <%= render "_recommend_form.html",

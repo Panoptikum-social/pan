@@ -11999,8 +11999,11 @@ var Episode = {
     });
 
     Array.from(document.querySelectorAll("[data-type='chapter']")).forEach(function (button) {
-      var event = button.dataset.event;
       _this.listen_to_chapter(episodeChannel, button.dataset.id);
+    });
+
+    Array.from(document.querySelectorAll("[data-type='persona']")).forEach(function (button) {
+      _this.listen_to_proclaim(episodeChannel, button.dataset.personaid);
     });
   },
   listen_to: function listen_to(event, episodeChannel) {
@@ -12025,11 +12028,28 @@ var Episode = {
     var button = document.querySelector("[data-type='chapter']" + "[data-event='like-chapter']" + "[data-id='" + chapter_id + "']");
     button.addEventListener("click", function (e) {
       var payload = { chapter_id: chapter_id,
-        action: button.dataset.action };
+        action: button.dataset.action,
+        persona_id: button.dataset.personaid };
 
       episodeChannel.push("like-chapter", payload).receive("ok", function (response) {
         button.outerHTML = response.button;
         _this3.listen_to_chapter(episodeChannel, chapter_id);
+      }).receive("error", function (e) {
+        return console.log(e);
+      });
+    });
+  },
+  listen_to_proclaim: function listen_to_proclaim(episodeChannel, persona_id) {
+    var _this4 = this;
+
+    var button = document.querySelector("[data-type='persona']" + "[data-event='proclaim']" + "[data-personaid='" + persona_id + "']");
+    button.addEventListener("click", function (e) {
+      var payload = { episode_id: button.dataset.id,
+        persona_id: persona_id };
+
+      episodeChannel.push(button.dataset.event, payload).receive("ok", function (response) {
+        button.outerHTML = response.button;
+        _this4.listen_to_proclaim(episodeChannel, persona_id);
       }).receive("error", function (e) {
         return console.log(e);
       });

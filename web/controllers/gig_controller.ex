@@ -53,7 +53,8 @@ defmodule Pan.GigController do
                                     until_in_s:      g.until_in_s,
                                     comment:         g.comment,
                                     publishing_date: g.publishing_date,
-                                    role:            g.role})
+                                    role:            g.role,
+                                    self_proclaimed: g.self_proclaimed})
 
     gigs = if search != "" do
              from(g in gigs, join: p in assoc(g, :persona),
