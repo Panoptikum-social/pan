@@ -25,7 +25,7 @@
            data-toggle="dropdown" title="User menu">
           <%= fa_icon "user" %>
           <span class="username"><%= @current_user.username %></span>
-          <span class="caret"></span>
+          <%= fa_icon "bars" %>
         </a>
         <ul class="dropdown-menu">
           <li><%= link "My Profile",  to: user_frontend_path(@conn, :my_profile)%> </li>
@@ -43,7 +43,7 @@
           <a class="dropdown-toggle" href="#" role="button"
              aria-haspopup="true" aria-expanded="false"
              data-toggle="dropdown" title="Admin">
-            <%= fa_icon("wrench") %><span class="caret"></span>
+            <%= fa_icon("wrench") %><%= fa_icon "bars" %>
           </a>
           <ul class="dropdown-menu">
             <li><%= link "Categories", to: category_path(@conn, :index) %></li>
