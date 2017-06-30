@@ -11,9 +11,10 @@ defmodule Pan.Parser.Episode do
       nil ->
         case Repo.get_by(Pan.Episode, title: episode_map[:title] || episode_map[:subtitle] , podcast_id: podcast_id) do
           nil ->
+            # Here comes the line with the initial update time
             Repo.get(Pan.Podcast, podcast_id)
-            |> Pan.Podcast.changeset(%{update_intervall: 1,
-                                       next_update: Timex.shift(Timex.now(), hours: 1)})
+            |> Pan.Podcast.changeset(%{update_intervall: 10,
+                                       next_update: Timex.shift(Timex.now(), hours: 10)})
             |> Repo.update()
 
             %Pan.Episode{podcast_id: podcast_id}
