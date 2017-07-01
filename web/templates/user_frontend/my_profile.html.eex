@@ -94,7 +94,7 @@
   </div>
 </div>
 
-<%= unless pro(@current_user) do %>
+<%= unless @current_user.pro_until do %>
   <div class="row">
     <div class="alert alert-warning col-md-8 col-md-offset-2">
       <h4>Try it free for 30 days!</h4>
