@@ -20,7 +20,7 @@ defmodule Pan.Mixfile do
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
-                    :con_cache, :timelier, :tzdata, :tirexs]]
+                    :con_cache, :timelier, :tzdata, :tirexs, :floki]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
