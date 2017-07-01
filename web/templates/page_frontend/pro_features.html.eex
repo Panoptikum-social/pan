@@ -1,21 +1,3 @@
-<h1>Pro features</h1>
-
-<p>Users with a Pro Account have access to additonal features regarding personas</p>
-<ul>
-  <li>get a "speaking" URL to your personas page</li>
-  <li>edit the content of your personas page</li>
-</ul>
-
-<h2>URL to persona page</h2>
-<p>The automatically generated persona page has an URL that I find not easy to remember.</p>
-<p>A random example: https://panoptikum.io/9e113027-16d7-5534-a6d5-1711c00e822c</p>
-<p>So if you want to use the persona page as a showcase of your podcaster portfolio change the URL to something more memorable.</p>
-<p>Another random example: https://panoptikum.io/waldgruber</p>
-
-<h2>Content of persona page</h2>
-<p>The possibilty to edit the presented information on the persona page helps to overcome the hurl of incomplete feed data. Not all podcast producers name all contributors in each episode or if several people own a podcast together, the feed lists them together.</p>
-  
-
-<p>Login and try it out for free!</b>
+<%= content_for "pro_features", "div.content" %>
 
 <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>

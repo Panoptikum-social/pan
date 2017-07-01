@@ -5,4 +5,12 @@ defmodule Pan.PageFrontendView do
     Enum.at(["list-group-item-info", "list-group-item-danger",
              "list-group-item-warning", "list-group-item-primary", "list-group-item-success"], rem(counter, 5))
   end
+
+
+  def content_for(url, selector) do
+    HTTPoison.get!("https://blog.panoptikum.io/" <> url <> "/").body
+    |> Floki.find(selector)
+    |> Floki.raw_html()
+    |> Phoenix.HTML.raw()
+  end
 end

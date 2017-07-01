@@ -44,7 +44,8 @@ defmodule Pan.Mixfile do
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
-     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
+#     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
+     {:html_sanitize_ex, git: "https://github.com/rrrene/html_sanitize_ex"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "~> 1.0"}, # pagination
      {:scrivener_html, "~> 1.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
@@ -55,6 +56,7 @@ defmodule Pan.Mixfile do
      {:tzdata, "~> 0.5.11"}, # mailing
      {:tirexs, "~> 0.8.5"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
+     {:floki, "~> 0.17.0"}, # HTML parser
     ]
   end
 
