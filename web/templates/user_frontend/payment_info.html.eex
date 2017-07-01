@@ -1,3 +1,8 @@
-<%= Pan.PageFrontendView.content_for "payment_info", "div.content" %>
+<div class ="col-md-8 col-md-offset-2">
+  <%= Pan.PageFrontendView.unsafe_content_for("payment_info", "div.content")
+      |> String.replace("[your payment reference]", @user.payment_reference)
+      |> String.replace("[your billing address]", @user.billing_address)
+      |> Phoenix.HTML.raw() %>
 
-<%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
+  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
+</div>

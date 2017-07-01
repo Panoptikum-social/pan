@@ -8,9 +8,13 @@ defmodule Pan.PageFrontendView do
 
 
   def content_for(url, selector) do
+    unsafe_content_for(url, selector)
+    |> Phoenix.HTML.raw()
+  end
+
+  def unsafe_content_for(url, selector) do
     HTTPoison.get!("https://blog.panoptikum.io/" <> url <> "/").body
     |> Floki.find(selector)
     |> Floki.raw_html()
-    |> Phoenix.HTML.raw()
   end
 end
