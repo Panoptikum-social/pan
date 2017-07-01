@@ -12,29 +12,24 @@ defmodule Pan.PodcastView do
 
 
   def podcast_json(podcast) do
-    %{id:            podcast.id,
-      title:         podcast.title,
-      update_paused: podcast.update_paused,
-      updated_at:       Timex.format!(podcast.updated_at,
-                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+    %{id:               podcast.id,
+      title:            podcast.title,
+      update_paused:    podcast.update_paused,
+      updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
-      next_update:      podcast.next_update &&
-                        Timex.format!(podcast.next_update,
-                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
-      website:       podcast.website,
-      actions:       podcast_actions(podcast, &podcast_path/3)}
+      next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
+      website:          podcast.website,
+      actions:          podcast_actions(podcast, &podcast_path/3)}
   end
+
 
   def podcast_stale_json(podcast) do
     %{id:               podcast.id,
       title:            podcast.title,
       update_paused:    podcast.update_paused,
-      updated_at:       Timex.format!(podcast.updated_at,
-                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+      updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
-      next_update:      podcast.next_update &&
-                        Timex.format!(podcast.next_update,
-                                      "<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>"),
+      next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
       feed_url:         podcast.feed_url,
       website:          podcast.website,
       actions:          podcast_actions(podcast, &podcast_path/3)}
@@ -52,5 +47,12 @@ defmodule Pan.PodcastView do
      "</nobr>"]
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
+  end
+
+
+  def format_for_vienna(datetime) do
+    datetime
+    |> Timex.Timezone.convert("Europe/Vienna")
+    |> Timex.format!("<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>")
   end
 end
