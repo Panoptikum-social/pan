@@ -17,7 +17,7 @@
       <th>email confirmed</th>
       <th>Podcaster</th>
       <th>Admin</th>
-      <th>Password hash</th>
+      <th>Pro until</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -38,7 +38,7 @@
         { data: 'email_confirmed' },
         { data: 'podcaster' },
         { data: 'admin' },
-        { data: 'password_hash' },
+        { data: 'pro_until' },
         { data: 'actions' }
       ]
     })
