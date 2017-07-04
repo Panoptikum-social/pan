@@ -18,7 +18,7 @@ defmodule Pan.PodcastView do
       updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
       next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
-      website:          podcast.website,
+      website:          String.slice(podcast.website, 0, 100),
       actions:          podcast_actions(podcast, &podcast_path/3)}
   end
 
@@ -51,8 +51,6 @@ defmodule Pan.PodcastView do
 
 
   def format_for_vienna(datetime) do
-    datetime
-    |> Timex.Timezone.convert("Europe/Vienna")
-    |> Timex.format!("<nobr>{YYYY}-{0M}-{0D} {h24}:{m}:{s}</nobr>")
+    "<nobr>#{String.slice(NaiveDateTime.to_string(datetime), 0..18)}</nobr>"
   end
 end
