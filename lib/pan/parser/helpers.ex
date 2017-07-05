@@ -62,6 +62,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
+               try_format(feed_date, "{WDshort} {D} {M} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY}") ||
@@ -154,6 +155,7 @@ defmodule Pan.Parser.Helpers do
   def fix_timezones(datetime) do
     datetime
     |> String.replace("BST",  "+0100")
+    |> String.replace("CEST", "+0200")
     |> String.replace("KST",  "+0900")
     |> String.replace("JST",  "+0900")
     |> String.replace("AEDT", "+1100")
