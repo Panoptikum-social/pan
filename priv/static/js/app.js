@@ -12356,7 +12356,7 @@ exports.default = User;
 require.alias("phoenix/priv/static/phoenix.js", "phoenix");
 require.alias("phoenix_html/priv/static/phoenix_html.js", "phoenix_html");
 require.alias("process/browser.js", "process");process = require('process');require.register("___globals___", function(exports, require, module) {
-  
+
 
 // Auto-loaded modules from config.npm.globals.
 window["$"] = require("jquery");
@@ -12720,7 +12720,7 @@ var tour = {
   showPrevButton: "true",
   steps: [
     { title: "Get an overview",
-      content: "Let'n navigate to the category tree first.",
+      content: "Let's navigate to the category tree first.",
       target: "category_link",
       placement: "right",
       multipage: true,
