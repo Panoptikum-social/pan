@@ -146,7 +146,7 @@ defmodule Pan.Parser.Analyzer do
     :lastbuilddate, :"sy:updateperiod", :"sy:updatefrequency", :"a10:link", :lastBuildDate,
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
-    :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small",
+    :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
     :companyLogo, :"itunes:type", :convertLineBreaks
 
@@ -195,10 +195,10 @@ defmodule Pan.Parser.Analyzer do
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player", :comment,
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId", :artist,
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight",
+    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight", :tag,
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
-    :stream, :"itunes:email", :indTag
+    :stream, :"itunes:email", :indTag, :"app:control", :size
   ], do: %{}
 
 
@@ -258,6 +258,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
   def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:id, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:guid, _, _]), do: %{}
   def call(_, "episode", [:uniqueid, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:uniqueid, _, _]), do: %{}
