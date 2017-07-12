@@ -198,7 +198,7 @@ defmodule Pan.Parser.Analyzer do
     :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight", :tag,
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
-    :stream, :"itunes:email", :indTag, :"app:control", :size
+    :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned"
   ], do: %{}
 
 
