@@ -148,7 +148,7 @@ defmodule Pan.Parser.Analyzer do
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
-    :companyLogo, :"itunes:type", :convertLineBreaks
+    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded"
 
   ], do: map
 
@@ -198,11 +198,11 @@ defmodule Pan.Parser.Analyzer do
     :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight", :tag,
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
-    :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned"
+    :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2
   ], do: %{}
 
 
-  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta], do: %{}
+  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta, :"content:encoded"], do: %{}
 
 
 # We expect several language tags
