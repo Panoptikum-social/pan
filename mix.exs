@@ -37,7 +37,7 @@ defmodule Pan.Mixfile do
      {:cowboy, "~> 1.0.4"}, # web server
      {:comeonin, "~> 2.0"}, # password hashing library
      {:sweet_xml, "~> 0.6"}, # XML parser
-     {:timex, "~> 3.1.8"}, # time conversion
+     {:timex, "~> 3.1.24"}, # time conversion
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
      {:httpoison, "~> 0.11.1"}, # http client
      {:hackney, "1.7.1"}, # erlang http client, had to increase version here
