@@ -57,6 +57,9 @@ defmodule Pan.Mixfile do
      {:tirexs, "~> 0.8.5"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.17.0"}, # HTML parser
+
+     {:relx, "~>3.23.1"}, # manually inserted as asset compilation failed with 0.22.0
+     {:erlware_commons, "~> 1.0"},
     ]
   end
 
