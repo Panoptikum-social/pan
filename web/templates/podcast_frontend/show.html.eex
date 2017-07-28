@@ -1,6 +1,6 @@
 <%= if @podcast && @podcast.blocked == true do %>
   This podcast may not be published here, sorry.
-<%= else %>
+<% else %>
   <%= render "_header.html", podcast: @podcast,
                              current_user: @current_user,
                              changeset: @changeset,

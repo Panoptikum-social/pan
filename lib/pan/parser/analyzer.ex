@@ -63,6 +63,7 @@ defmodule Pan.Parser.Analyzer do
 # Description with fallback to itunes:subtitle
   def call(_, "tag", [:description, _, []]), do: %{}
   def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
+  def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
 
   def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
   def call(map, "tag", [:"itunes:subtitle", _, [value]]) do
@@ -259,6 +260,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
   def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:EpisodeGUID, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:id, _, [value]]), do: %{guid: H.to_255(value)}
   def call(_, "episode", [:guid, _, _]), do: %{}
   def call(_, "episode", [:uniqueid, _, [value]]), do: %{guid: H.to_255(value)}

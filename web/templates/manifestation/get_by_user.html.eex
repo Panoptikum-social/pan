@@ -1,6 +1,6 @@
 <%= if @manifestations == [] do %>
   none
-<%= end %>
+<% end %>
 
 <%= for manifestation <- @manifestations do %>
   <%= link [fa_icon("user-o"), " ", manifestation.persona.name],

@@ -34,7 +34,7 @@
       <%= List.first(podcasts) && List.first(podcasts).language_emoji %>
       <%= link ( language || "Language unknown"), to: "#" <> (language || "Language unknown"),
                                                   id: "lang-#{language}"%>
-    <%= end %>
+    <% end %>
 
 
     <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>

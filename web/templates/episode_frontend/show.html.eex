@@ -1,6 +1,6 @@
 <%= if @episode.podcast.blocked == true do %>
   This episode may not be published here, sorry.
-<%= else %>
+<% else %>
   <%= render "_header.html", episode: @episode,
                              current_user: @current_user,
                              changeset: @changeset,
@@ -12,16 +12,16 @@
   <div class="row">
     <div class="col-md-6" id="player">
       <%= case major_mimetype(@episode) do %>
-        <%= "video" -> %>
+        <% "video" -> %>
           <video width="640" height="480" controls>
             <%= for enclosure <- @episode.enclosures do %>
               <source src="<%= enclosure.url %>">
             <% end %>
             Your browser does not support the video tag.
           </video>
-        <%= _ -> %>
+        <% _ -> %>
           <%= case @player do %>
-            <%= "podlove" -> %>
+            <% "podlove" -> %>
               <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
               <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
                 <source src="audio.m4a" type="audio/m4a">
@@ -29,7 +29,7 @@
               <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
               <script>$('audio').podlovewebplayer();</script>
 
-            <%= "podigee" -> %>
+            <% "podigee" -> %>
               <script>
                 window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
               </script>

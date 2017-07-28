@@ -4,6 +4,6 @@
     <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
     <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
   </p>
-<%= else %>
+<% else %>
   <p><i>Log in to like, follow, recommend and subscribe!</i></p>
 <% end %>

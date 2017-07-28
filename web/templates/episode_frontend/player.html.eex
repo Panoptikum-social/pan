@@ -18,7 +18,7 @@
       $('audio').podlovewebplayer(<%= podlove_episodestruct(@episode) %>)
     </script>
 
-  <%= "podigee" -> %>
+  <% "podigee" -> %>
     <script>
       window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
     </script>

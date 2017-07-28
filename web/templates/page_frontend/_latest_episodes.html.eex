@@ -46,11 +46,11 @@
         <% end %>
         <%= if episode.duration do %>
           , <%= fa_icon("clock-o") %> <%= episode.duration %>
-        <%= end %><br/>
+        <% end %><br/>
 
         <%= if episode.subtitle do %>
           <%= fa_icon("image") %> <%= episode.subtitle %>
-        <%= end %>
+        <% end %>
       </div>
     <% end %>
   </div>

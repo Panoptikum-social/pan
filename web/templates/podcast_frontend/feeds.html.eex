@@ -1,6 +1,6 @@
 <%= if @podcast.blocked == true do %>
   This podcast may not be published here, sorry.
-<%= else %>
+<% else %>
   <div class="panel panel-warning">
     <div class="panel-heading">
       <h3 class="panel-title">

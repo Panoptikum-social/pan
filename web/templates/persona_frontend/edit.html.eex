@@ -73,7 +73,7 @@
       var simplemde = new SimpleMDE({ element: document.getElementById("simplemde"),
                                       spellChecker: false })
     </script>
-  <%= end %>
+  <% end %>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
