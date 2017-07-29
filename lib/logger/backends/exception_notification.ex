@@ -6,7 +6,7 @@ defmodule Logger.Backends.ExceptionNotification do
                                                "SSL: :hello: ssl_alert.erl:85:Warning: unrecognised name",
                                                ":unexpected_end"]) do
       Logger.Formatter.compile("$time $metadata[$level] $message\n")
-      |> Logger.Formatter.format(:error, message, timestamp, metadata)
+      |> Logger.Formatter.format(:error, message <> "===" <> message, timestamp, metadata)
       |> IO.iodata_to_binary
       |> Pan.Email.error_notification("exeception_notification@panoptikum.io",
                                       "stefan@panoptikum.io")
