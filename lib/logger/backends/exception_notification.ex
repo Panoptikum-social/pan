@@ -8,7 +8,8 @@ defmodule Logger.Backends.ExceptionNotification do
       Logger.Formatter.compile("$time $metadata[$level] $message\n")
       |> Logger.Formatter.format(:error, message, timestamp, metadata)
       |> IO.iodata_to_binary
-      |> Pan.Email.error_notification("stefan@panoptikum.io")
+      |> Pan.Email.error_notification("exeception_notification@panoptikum.io",
+                                      "stefan@panoptikum.io")
       |> Pan.Mailer.deliver_now()
     end
 
