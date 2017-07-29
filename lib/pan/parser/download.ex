@@ -1,8 +1,21 @@
 defmodule Pan.Parser.Download do
   require Logger
 
+  def check_for_rss(feed_xml) do
+    unless String.contains?(feed_xml, "<rss") do
+      {:error, "This is not an rss feed!"}
+    else
+      {:ok, feed_xml}
+    end
+  end
+
+
   def download(url, option \\ nil) do
     case get(url, option) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} -> check_for_rss(feed_xml)
+      {:ok, %HTTPoison.Response{status_code: 203, body: feed_xml}} -> check_for_rss(feed_xml)
+      {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} -> check_for_rss(feed_xml)
+
       {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
       {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
       {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
@@ -23,20 +36,6 @@ defmodule Pan.Parser.Download do
           {:error, "403: forbidden"}
         else
          download(url, "no_headers")
-        end
-
-      {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} ->
-        unless String.contains?(feed_xml, "<rss") do
-          {:error, "This is not an rss feed!"}
-        else
-          {:ok, feed_xml}
-        end
-
-      {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} ->
-        unless String.contains?(feed_xml, "<rss") do
-          {:error, "This is not an rss feed!"}
-        else
-          {:ok, feed_xml}
         end
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
