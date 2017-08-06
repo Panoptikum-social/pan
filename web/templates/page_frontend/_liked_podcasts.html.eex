@@ -2,7 +2,7 @@
   <div class="panel-heading">Top 5 liked Podcasts</div>
   <div class="panel-body" style="margin-bottom: -20px;"">
   <% last_count = 0 %>
-    <%= for {[count, id, title], rank} <- Enum.with_index(@liked_podcasts), last_count <- last_count do %>
+    <%= for {[count, id, title], rank} <- Enum.with_index(@liked_podcasts) do %>
       <p>
         <%= if count != last_count do %>
           <b><%= rank + 1 %>.</b>:
