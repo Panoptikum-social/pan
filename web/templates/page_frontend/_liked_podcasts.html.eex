@@ -6,7 +6,7 @@
         <%= if rank == 0 || count != List.first(Enum.at(@liked_podcasts, rank-1)) do %>
           <b><%= rank + 1 %>.</b>:
         <% else %>
-          &nbsp; &nbsp;
+          &nbsp; &nbsp; &nbsp;
         <% end %>
         <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
                  to: podcast_frontend_path(@conn, :show, id),
