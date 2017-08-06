@@ -3,7 +3,7 @@
   <div class="panel-body" style="margin-bottom: -20px;"">
     <%= for {[count, id, title], rank} <- Enum.with_index(@liked_podcasts) do %>
       <p>
-        <%= if rank == 0 || count != @liked_podcasts[rank-1][0] do %>
+        <%= if rank == 0 || count != List.first(Enum.at(@liked_podcasts, rank-1)) do %>
           <b><%= rank + 1 %>.</b>:
         <% else %>
           &nbsp; &nbsp;
