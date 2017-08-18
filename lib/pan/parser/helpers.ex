@@ -38,6 +38,7 @@ defmodule Pan.Parser.Helpers do
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
     datetime = try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}") ||
                try_format(feed_date, "{ISO:Extended}") ||
                try_format(feed_date, "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}") ||
