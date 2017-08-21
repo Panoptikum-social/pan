@@ -40,6 +40,7 @@ defmodule Pan.Parser.Helpers do
     datetime = try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}") ||
                try_format(feed_date, "{ISO:Extended}") ||
                try_format(feed_date, "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}") ||
@@ -48,7 +49,6 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
-               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
@@ -64,6 +64,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
                try_format(feed_date, "{WDshort} {D} {M} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY}") ||
@@ -155,8 +156,11 @@ defmodule Pan.Parser.Helpers do
 
   def fix_timezones(datetime) do
     datetime
+    |> String.replace("CST",  "-0600")
+    |> String.replace("PST",  "-0700")
     |> String.replace("BST",  "+0100")
     |> String.replace("CEST", "+0200")
+    |> String.replace("IDT",  "+0300")
     |> String.replace("KST",  "+0900")
     |> String.replace("JST",  "+0900")
     |> String.replace("AEDT", "+1100")

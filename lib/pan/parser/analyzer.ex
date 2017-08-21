@@ -149,8 +149,8 @@ defmodule Pan.Parser.Analyzer do
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
-    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle
-
+    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle,
+    :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -200,7 +200,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
-    :updated, :published, :subtitle
+    :updated, :published, :subtitle, :titleApp, :topTitleApp
   ], do: %{}
 
 
@@ -412,7 +412,9 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
-  def call("owner", [tag_atom, _, _]) when tag_atom in [:copyright, :"itunes:keywords" ], do: %{}
+  def call("owner", [tag_atom, _, _]) when tag_atom in [
+    :copyright, :"itunes:keywords", :"itunes:image"
+  ], do: %{}
 
 
   def call("author", [:"itunes:name",     _, []]), do: %{}
