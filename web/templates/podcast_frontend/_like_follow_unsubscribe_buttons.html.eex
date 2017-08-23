@@ -5,5 +5,14 @@
     <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
   </p>
 <% else %>
-  <p><i>Log in to like, follow, recommend and subscribe!</i></p>
+   <%= Podcast.likes(@podcast.id) %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
+
+   <%= Podcast.follows(@podcast.id) %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
+
+   <%= Podcast.subscriptions(@podcast.id) %>  <%= fa_icon("user-o") %> Subscribers
+
+  <p><i>
+    <%= link "Sign up", to: user_frontend_path(@conn, :new) %> /
+    <%= link "Log in ", to: session_path(@conn, :new) %> to like, follow, recommend and subscribe!
+  </i></p>
 <% end %>

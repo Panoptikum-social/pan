@@ -45,26 +45,26 @@
           <div class="col-md-7">
             <dl class="dl-horizontal">
               <%= if @podcast.website do %>
-                <dt><label class="label label-danger">Website</label></dt>
+                <dt>Website</dt>
                 <dd><%= link @podcast.website, to: @podcast.website %></dd>
               <% end %>
-              <dt><label class="label label-primary">Description</label></dt>
+              <dt>Description</dt>
               <dd><%= @podcast.description %></dd>
               <%= if @podcast.payment_link_url do %>
-                <dt><label class="label label-warning">Support</label></dt>
+                <dt>Support</dt>
                 <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
               <% end %>
-              <dt><label class="label label-danger">Language</label></dt>
+              <dt>Language</dt>
               <dd>
                 <%= for language <- @podcast.languages do %>
                   <%= language.emoji %> <%= language.name %>
                 <% end %>
               </dd>
               <%= if @podcast.last_build_date do %>
-                <dt><label class="label label-success">last modified</label></dt>
+                <dt>last modified</dt>
                 <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
               <% end %>
-              <dt><label class="label label-info">Contributors</label></dt>
+              <dt>Contributors</dt>
               <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
 
                 <dd style="line-height: 200%;">
@@ -76,13 +76,13 @@
                   <% end %>
                 </dd>
               <% end %>
-              <dt><label class="label">Explicit</label></dt>
+              <dt>Explicit</dt>
               <dd><%= @podcast.explicit %></dd>
-              <dt><label class="label label-info" id="metadata">Number of Episodes</label></dt>
+              <dt id="metadata">Number of Episodes</dt>
               <dd><%= Enum.count(@podcast.episodes) %></dd>
-              <dt><label class="label label-success"><%= fa_icon("feed") %> Rss-Feeds</label></dt>
+              <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
               <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
-              <dt><label class="label label-warning">Categories</label></dt>
+              <dt>Categories</dt>
               <%= for category <- @podcast.categories do %>
                 <dd style="line-height: 200%;">
                   <%= link [fa_icon("folder-o"), " ", category.title],

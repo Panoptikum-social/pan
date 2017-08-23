@@ -13,28 +13,28 @@
     <div class="row">
       <div class="col-md-6">
         <dl class="dl-horizontal">
-          <dt><label class="label label-success">Subtitle</label></dt>
+          <dt>Subtitle</dt>
           <dd><%= @episode.subtitle %></dd>
           <%= if @episode.payment_link_url do %>
-            <dt><label class="label">Support</label></dt>
+            <dt><Support</dt>
             <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
           <% end %>
-          <dt><label class="label label-warning">Duration</label></dt>
+          <dt>Duration</dt>
           <dd><%= @episode.duration %></dd>
-          <dt><label class="label label-info">Publishing date</label></dt>
+          <dt>Publishing date</dt>
           <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
-          <dt><label class="label label-danger">Link</label></dt>
+          <dt>Link</dt>
           <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
-          <dt><label class="label label-primary">Deep link</label></dt>
+          <dt>Deep link</dt>
           <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
-          <dt><label class="label label-info">Contributors</label></dt>
+          <dt>Contributors</dt>
           <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
             <dd style="line-height: 200%;">
               <%= link [fa_icon("user-o"), " ", persona.name],
                        to: persona_frontend_path(@conn, :show, persona),
                        class: "btn btn-xs truncate btn-lavender" %>
               <%= for gig <- gigs do %>
-                <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+                 <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
                 <%= if gig.self_proclaimed do %>
                   <sup data-toggle="popover"
                        data-placement="right"
