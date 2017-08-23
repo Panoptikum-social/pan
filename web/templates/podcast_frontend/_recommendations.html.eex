@@ -9,7 +9,7 @@
         <li class="list-group-item">
           <b><%= recommendation.user.name %>:</b> <%= recommendation.comment %>
           <span class="pull-right">
-            <%= Timex.format!(@recommendation.inserted_at, "{ISOdate} {h24}:{m}") %>
+            <%= Timex.format!(recommendation.inserted_at, "{ISOdate} {h24}:{m}") %>
           </span>
         </li>
       <% end %>
