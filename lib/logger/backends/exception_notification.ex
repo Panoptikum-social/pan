@@ -1,5 +1,13 @@
 defmodule Logger.Backends.ExceptionNotification do
-  use GenEvent
+  @behaviour :gen_event
+
+  def init(_) do
+    {:ok, %{}}
+  end
+
+  def handle_call({:configure, _options}, _state) do
+    {:ok, :ok, %{}}
+  end
 
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
