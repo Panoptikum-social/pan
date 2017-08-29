@@ -9,6 +9,10 @@ defmodule Logger.Backends.ExceptionNotification do
     {:ok, :ok, %{}}
   end
 
+  def handle_info(_level, state) do
+    {:noreply, state}
+  end
+
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
                                                "Warning: unrecognised name",
