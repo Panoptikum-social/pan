@@ -1,7 +1,7 @@
 defmodule Logger.Backends.ExceptionNotification do
-  use GenServer
+  use GenEvent
 
-  def handle_cast({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
+  def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
                                                "Warning: unrecognised name",
                                                ":unexpected_end"]) do
@@ -13,12 +13,11 @@ defmodule Logger.Backends.ExceptionNotification do
       |> Pan.Mailer.deliver_now()
     end
 
-    {:noreply, state}
+    {:ok, state}
   end
 
-  def handle_cast({_level, group_leader, {Logger, _, _, _}}, state)
-    when node(group_leader) != node(), do: {:noreply, state}
+  def handle_event({_level, group_leader, {Logger, _, _, _}}, state)
+    when node(group_leader) != node(), do: {:ok, state}
 
-  def handle_cast({level, _group_leader, {Logger, _, _, _}}, state)
-    when level in [:debug, :info, :warn], do: {:noreply, state}
-end
+  def handle_event({level, _group_leader, {Logger, _, _, _}}, state)
+    when level in [:debug, :info, :warn], do: {:ok, state}
