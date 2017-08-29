@@ -2,11 +2,11 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
-               to: category_frontend_path(@conn, :index) %>
+               to: category_frontend_path(@conn, :index_stats) %>
       /
       <%= if @category.parent do %>
         <%= link [fa_icon("folder-o"), " ", @category.parent.title],
-                 to: category_frontend_path(@conn, :show, @category.parent) %>
+                 to: category_frontend_path(@conn, :show_stats, @category.parent) %>
         /
       <% end %>
       <%= fa_icon("folder-open-o") %> <%= @category.title %>
@@ -19,7 +19,7 @@
           <%= for subcategory <- group do %>
             <div class="col-md-2">
               <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                       to: category_frontend_path(@conn, :show, subcategory),
+                       to: category_frontend_path(@conn, :show_stats, subcategory),
                        class: "btn btn-xs btn-light-gray truncate" %>
             </div>
           <% end %>
