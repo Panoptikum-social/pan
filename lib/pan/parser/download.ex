@@ -77,6 +77,18 @@ defmodule Pan.Parser.Download do
           Map.fetch!(header_map, "location")
       end
 
+    redirect_target =
+      case String.starts_with?(redirect_target, "http") do
+        true -> redirect_target
+        false ->
+          domain = String.split(url, "/", parts: 3, trim: true)
+                   |> Enum.drop(-1)
+                   |> Enum.join("//")
+          domain <> redirect_target
+      end
+
+    IO.inspect redirect_target
+
     if redirect_target == url do
       {:error, "redirects to itself"}
     else

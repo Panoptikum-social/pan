@@ -3,7 +3,6 @@ defmodule Pan.CategoryFrontendController do
 
   alias Pan.Category
   alias Pan.Language
-  alias Pan.Podcast
 
   def index(conn, _params) do
     categories = from(c in Category, order_by: :title,
