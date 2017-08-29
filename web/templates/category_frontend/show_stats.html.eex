@@ -2,7 +2,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
-               to: category_frontend_path(@conn, :index) %>
+               to: category_frontend_path(@conn, :stats) %>
       /
       <%= if @category.parent do %>
         <%= link [fa_icon("folder-o"), " ", @category.parent.title],
