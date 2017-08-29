@@ -45,6 +45,8 @@ defmodule Pan.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageFrontendController, :home
+    get "/categories/stats", CategoryFrontendController, :stats
+    get "/categories/:id/stats", CategoryFrontendController, :show_stats
     resources "/categories", CategoryFrontendController, only: [:index, :show]
 
     get "/podcasts/buttons", PodcastFrontendController, :button_index
