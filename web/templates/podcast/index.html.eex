@@ -7,6 +7,9 @@
                          class: "btn btn-primary" %>
   <%= link "Stale", to: podcast_path(@conn, :stale),
                     class: "btn btn-primary" %>
+  <%= link "Duplicates", to: podcast_path(@conn, :duplicates),
+                         class: "btn btn-primary" %>
+
 
 </p>
 <%= @total %> podcasts / <%= @episodes_total %> episodes / <%= @stale %> stale /

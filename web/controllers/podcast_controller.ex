@@ -3,6 +3,7 @@ defmodule Pan.PodcastController do
   alias Pan.Episode
   alias Pan.Category
   alias Pan.Podcast
+  alias Pan.Feed
   require Logger
 
   plug :scrub_params, "podcast" when action in [:create, :update]
@@ -313,7 +314,7 @@ defmodule Pan.PodcastController do
   def retirement(conn, _params) do
     candidates = from(p in Podcast, where: is_nil(p.retired) or p.retired == false,
                                     join: e in assoc(p, :episodes),
-                                    group_by: [p.id],
+                                    group_by: p.id,
                                     having: max(e.publishing_date) < ago(1, "year"),
                                     select: %{id: p.id,
                                               title: p.title,
@@ -337,5 +338,20 @@ defmodule Pan.PodcastController do
     conn
     |> put_flash(:info, "Podcast retired.")
     |> redirect(to: podcast_path(conn, :retirement))
+  end
+
+
+  def duplicates(conn, _params) do
+    duplicate_feeds = from(f in Feed, group_by: f.self_link_url,
+                                      having: count(f.id) > 1,
+                                      select: f.self_link_url)
+                      |> Repo.all()
+
+    feeds = from(f in Feed, where: f.self_link_url in ^duplicate_feeds,
+                            order_by: f.self_link_url,
+                            preload: :podcast)
+            |> Repo.all()
+
+    render(conn, "duplicates.html", feeds: feeds)
   end
 end

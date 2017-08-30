@@ -210,6 +210,7 @@ defmodule Pan.Router do
     get "/podcasts/orphans", PodcastController, :orphans
     get "/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted
     get "/podcasts/factory", PodcastController, :factory
+    get "/podcasts/duplicates", PodcastController, :duplicates
     resources "/podcasts", PodcastController
 
     get "/manifestations/datatable", ManifestationController, :datatable
