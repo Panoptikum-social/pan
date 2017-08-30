@@ -60,6 +60,7 @@ defmodule Pan.Mixfile do
 
      {:relx, "~>3.23.1"}, # manually inserted as asset compilation failed with 0.22.0
      {:erlware_commons, "~> 1.0"},
+     {:ja_serializer, "~> 0.12.0"}, #Jsonapi.org serializer
     ]
   end
 

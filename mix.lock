@@ -29,6 +29,8 @@
   "html_sanitize_ex": {:git, "https://github.com/rrrene/html_sanitize_ex", "5454d191a6c567be57abb4726d136195a7183bce", []},
   "httpoison": {:hex, :httpoison, "0.11.1", "d06c571274c0e77b6cc50e548db3fd7779f611fbed6681fd60a331f66c143a0b", [:mix], [{:hackney, "~> 1.7.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "4.0.0", "10aaa9f79d0b12cf0def53038547855b91144f1bfcc0ec73494f38bb7b9c4961", [:rebar3], []},
+  "inflex": {:hex, :inflex, "1.8.1", "9fa9684ff1a872eab7415c0be500cc1b7782f28da6ed75423081e75f92831b1c", [:mix], []},
+  "ja_serializer": {:hex, :ja_serializer, "0.12.0", "ba4ec5fc7afa6daba815b5cb2b9bd0de410554ac4f0ed54e954d39decb353ca4", [:mix], [{:inflex, "~> 1.4", [hex: :inflex, optional: false]}, {:plug, "> 1.0.0", [hex: :plug, optional: false]}, {:poison, ">= 1.4.0", [hex: :poison, optional: false]}, {:scrivener, "~> 1.2 or ~> 2.0", [hex: :scrivener, optional: true]}]},
   "jsx": {:hex, :jsx, "2.8.2", "7acc7d785b5abe8a6e9adbde926a24e481f29956dd8b4df49e3e4e7bcc92a018", [:mix, :rebar3], []},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},
   "mime": {:hex, :mime, "1.1.0", "01c1d6f4083d8aa5c7b8c246ade95139620ef8effb009edde934e0ec3b28090a", [:mix], []},

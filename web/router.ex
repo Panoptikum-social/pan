@@ -16,6 +16,9 @@ defmodule Pan.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :json_api do
+    plug :accepts, ["json-api"]
+  end
 
   pipeline :bot do
     plug :accepts, ["json"]
@@ -25,6 +28,14 @@ defmodule Pan.Router do
   pipeline :admin_layout do
     plug :put_layout, {Pan.LayoutView, :admin}
   end
+
+
+  scope "/jsonapi", Pan do
+    pipe_through :json_api
+
+    resources "/categories", CategoryApiController, only: [:index, :show]
+  end
+
 
   scope "/api", Pan do
     pipe_through :api
