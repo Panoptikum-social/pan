@@ -87,8 +87,6 @@ defmodule Pan.Parser.Download do
           domain <> redirect_target
       end
 
-    IO.inspect redirect_target
-
     if redirect_target == url do
       {:error, "redirects to itself"}
     else

@@ -131,7 +131,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/augu?s?t?/i,            "Aug")
     |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
-    |> String.replace(~r/no[vc]e?m?b?e?r?/i,     "Nov")
+    |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,     "Nov")
     |> String.replace(~r/d[ei][cz]e?m?b?e?r?/i,  "Dec")
   end
 

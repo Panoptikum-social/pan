@@ -151,7 +151,7 @@ defmodule Pan.Parser.Analyzer do
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
     :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle,
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
-    :"ionofm:coverart"
+    :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -201,7 +201,8 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
-    :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart"
+    :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
+    :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid"
   ], do: %{}
 
 
