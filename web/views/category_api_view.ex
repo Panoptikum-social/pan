@@ -4,7 +4,7 @@ defmodule Pan.CategoryApiView do
 
   def type(_, _), do: "category"
 
-  location "/categories/:id"
+  location "https://panoptikum.io/jsonapi/categories/:id"
   attributes [:title]
 
   has_one :parent,    serializer: Pan.PlainCategoryApiView, include: true
@@ -13,12 +13,13 @@ defmodule Pan.CategoryApiView do
   has_many :podcasts, serializer: Pan.ReducedPodcastApiView, include: false
 end
 
+
 defmodule Pan.PlainCategoryApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 
   def type(_, _), do: "category"
 
-  location "/categories/:id"
+  location "https://panoptikum.io/jsonapi/categories/:id"
   attributes [:title]
 end
