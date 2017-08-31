@@ -1,26 +1,29 @@
 defmodule Pan.PodcastApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
+  alias Pan.Podcast
 
   def type(_, _), do: "podcast"
 
-  location "https://panoptikum.io/jsonapi/categories/:id"
+  location "https://panoptikum.io/jsonapi/podcasts/:id"
   attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
               :payment_link_title, :payment_link_url, :explicit, :update_paused, :blocked,
-              :update_paused, :update_intervall, :next_update, :retired, :unique_identifier]
+              :update_paused, :update_intervall, :next_update, :retired, :unique_identifier,
+              :follower_count, :like_count, :subscription_count]
 
-end
+  has_many :episodes, serializer: Pan.ReducedEpisodeApiView, include: false
 
-defmodule Pan.PlainPodcastApiView do
-  use Pan.Web, :view
-  use JaSerializer.PhoenixView
+  def follower_count(podcast) do
+    Podcast.follows(podcast.id)
+  end
 
-  def type(_, _), do: "podcast"
+  def like_count(podcast) do
+    Podcast.likes(podcast.id)
+  end
 
-  location "https://panoptikum.io/jsonapi/categories/:id"
-  attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
-              :payment_link_title, :payment_link_url, :explicit, :update_paused, :blocked,
-              :update_paused, :update_intervall, :next_update, :retired, :unique_identifier]
+  def subscription_count(podcast) do
+    Podcast.subscriptions(podcast.id)
+  end
 end
 
 
@@ -30,6 +33,6 @@ defmodule Pan.ReducedPodcastApiView do
 
   def type(_, _), do: "podcast"
 
-  location "https://panoptikum.io/jsonapi/categories/:id"
+  location "https://panoptikum.io/jsonapi/podcasts/:id"
   attributes [:title, :website, :description, :image_title, :image_url]
 end
