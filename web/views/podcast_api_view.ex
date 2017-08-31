@@ -7,13 +7,16 @@ defmodule Pan.PodcastApiView do
 
   location "https://panoptikum.io/jsonapi/podcasts/:id"
   attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
-              :payment_link_title, :payment_link_url, :explicit, :update_paused, :blocked,
-              :update_paused, :update_intervall, :next_update, :retired, :unique_identifier,
-              :follower_count, :like_count, :subscription_count]
+              :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
+              :update_intervall, :next_update, :retired, :unique_identifier, :follower_count,
+              :like_count, :subscription_count]
 
   has_many :episodes, serializer: Pan.ReducedEpisodeApiView, include: false
   has_many :categories, serializer: Pan.PlainCategoryApiView, include: false
   has_many :languages, serializer: Pan.LanguageApiView, include: false
+  has_many :languages, serializer: Pan.LanguageApiView, include: false
+  has_many :engagements, serializer: Pan.PlainEngagmentApiView, include: false
+  has_many :contributors, serializer: Pan.PlainPersonaApiView, include: false
 
   def follower_count(podcast) do
     Podcast.follows(podcast.id)

@@ -34,7 +34,9 @@ defmodule Pan.Router do
     pipe_through :json_api
 
     resources "/categories", CategoryApiController, only: [:index, :show]
+    resources "/engagements", EngagementApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
+    resources "/personas", PersonaApiController, only: [:show]
     resources "/podcasts", PodcastApiController, only: [:show]
   end
 
