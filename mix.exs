@@ -20,7 +20,8 @@ defmodule Pan.Mixfile do
                     :comeonin, :sweet_xml, :timex, :earmark,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
-                    :con_cache, :timelier, :tzdata, :tirexs, :floki, :erlware_commons]]
+                    :con_cache, :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
+                    :ja_serializer]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
@@ -60,7 +61,7 @@ defmodule Pan.Mixfile do
 
      {:relx, "~>3.23.1"}, # manually inserted as asset compilation failed with 0.22.0
      {:erlware_commons, "~> 1.0"},
-     {:ja_serializer, "~> 0.12.0"}, #Jsonapi.org serializer
+     {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
     ]
   end
 
