@@ -38,6 +38,7 @@ defmodule Pan.Router do
     resources "/languages", LanguageApiController, only: [:index, :show]
     resources "/personas", PersonaApiController, only: [:show]
     resources "/podcasts", PodcastApiController, only: [:show]
+    resources "/recommendations", RecommendationApiController, only: [:show]
   end
 
 

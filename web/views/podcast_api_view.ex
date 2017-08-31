@@ -17,6 +17,7 @@ defmodule Pan.PodcastApiView do
   has_many :languages, serializer: Pan.LanguageApiView, include: false
   has_many :engagements, serializer: Pan.PlainEngagmentApiView, include: false
   has_many :contributors, serializer: Pan.PlainPersonaApiView, include: false
+  has_many :recommendations, serializer: Pan.PodcastRecommendationApiView, include: false
 
   def follower_count(podcast) do
     Podcast.follows(podcast.id)

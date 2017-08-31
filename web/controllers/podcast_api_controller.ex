@@ -27,10 +27,10 @@ defmodule Pan.PodcastApiController do
                |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
                                                             offset: ^offset,
                                                             limit: ^size))
-               |> Repo.preload([:categories, :languages, :engagements, :contributors])
+               |> Repo.preload([:categories, :languages, :engagements, :contributors, [recommendations: :user]])
 
     render conn, "show.json-api", data: podcast,
                                   opts: [page: links,
-                                         include: "episodes,categories,languages,engagements,contributors"]
+                                         include: "episodes,categories,languages,engagements,contributors,recommendations"]
   end
 end
