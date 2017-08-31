@@ -13,6 +13,7 @@ defmodule Pan.PodcastApiView do
 
   has_many :episodes, serializer: Pan.ReducedEpisodeApiView, include: false
   has_many :categories, serializer: Pan.PlainCategoryApiView, include: false
+  has_many :languages, serializer: Pan.LanguageApiView, include: false
 
   def follower_count(podcast) do
     Podcast.follows(podcast.id)
