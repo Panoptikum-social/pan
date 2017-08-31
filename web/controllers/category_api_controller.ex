@@ -31,12 +31,12 @@ defmodule Pan.CategoryApiController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: "https://panoptikum.io/jsonapi"}, conn)
+                                                         base_url: "https://panoptikum.io" <> conn.request_path}, conn)
 
     category = Repo.get(Category, id)
                |> Repo.preload([:children, :parent])
                |> Repo.preload(podcasts: from(p in Podcast, offset: ^offset, limit: ^size))
 
-    render conn, "show.json-api", data: category, opts: [page: links]
+    render conn, "show.json-api", data: category, opts: [page: links, include: "podcasts"]
   end
 end
