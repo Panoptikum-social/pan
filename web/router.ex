@@ -33,8 +33,10 @@ defmodule Pan.Router do
   scope "/jsonapi", Pan do
     pipe_through :json_api
 
+    resources "/alternate_feeds", AlternateFeedApiController, only: [:show]
     resources "/categories", CategoryApiController, only: [:index, :show]
     resources "/engagements", EngagementApiController, only: [:show]
+    resources "/feeds", FeedApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
     resources "/personas", PersonaApiController, only: [:show]
     resources "/podcasts", PodcastApiController, only: [:show]

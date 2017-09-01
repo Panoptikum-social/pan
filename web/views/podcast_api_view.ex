@@ -18,6 +18,7 @@ defmodule Pan.PodcastApiView do
   has_many :engagements, serializer: Pan.PlainEngagmentApiView, include: false
   has_many :contributors, serializer: Pan.PlainPersonaApiView, include: false
   has_many :recommendations, serializer: Pan.PodcastRecommendationApiView, include: false
+  has_many :feeds, serializer: Pan.PlainFeedApiView, include: false
 
   def follower_count(podcast) do
     Podcast.follows(podcast.id)
