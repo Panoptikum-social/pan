@@ -7,11 +7,13 @@ defmodule Pan.RecommendationApiView do
   location "https://panoptikum.io/jsonapi/recommendations/:id"
   attributes [:comment, :user_name]
 
-#  has_one :user, serializer: Pan.PlainUserApiView, include: true
-  has_one :podcast, serializer: Pan.ReducedPodcastApiView, include: true
-#  has_one :episode, serializer: Pan.PlainEpisodeApiView, include: true
-#  has_one :chapter, serializer: Pan.ChapterApiView, include: true
+  has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
+  has_one :episode, serializer: Pan.PlainEpisodeApiView, include: true
+  has_one :chapter, serializer: Pan.PlainChapterApiView, include: true
 
+  def user_name(recommendation) do
+    recommendation.user.name
+  end
 end
 
 

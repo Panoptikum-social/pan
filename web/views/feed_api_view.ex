@@ -8,7 +8,7 @@ defmodule Pan.FeedApiView do
   attributes [:self_link_title, :self_link_url, :next_page_url, :prev_page_url, :first_page_url,
               :last_page_url, :hub_link_url, :feed_generator]
 
-  has_one :podcast,    serializer: Pan.ReducedPodcastApiView, include: true
+  has_one :podcast,    serializer: Pan.PlainPodcastApiView, include: true
   has_many :alternate_feeds, serializer: Pan.PlainAlternateFeedApiView, include: true
 end
 

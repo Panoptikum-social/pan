@@ -6,8 +6,9 @@ defmodule Pan.RecommendationApiController do
 
   def show(conn, %{"id" => id}) do
     recommendation = Repo.get(Recommendation, id)
-                     |> Repo.preload(:podcast)
+                     |> Repo.preload([:podcast, :episode, :chapter, :user])
 
-    render conn, "show.json-api", data: recommendation
+    render conn, "show.json-api", data: recommendation,
+                                  opts: [include: "podcast,episode,chapter"]
   end
 end

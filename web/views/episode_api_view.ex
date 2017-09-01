@@ -1,23 +1,31 @@
 defmodule Pan.EpisodeApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
+  alias Pan.Episode
 
   def type(_, _), do: "episode"
 
   location "https://panoptikum.io/jsonapi/episodes/:id"
   attributes [:orig_link, :title, :publishing_date, :guid, :description, :shownotes,
-              :payment_link_title, :payment_link_url, :deep_link, :duration, :subtitle, :summary]
+              :payment_link_title, :payment_link_url, :deep_link, :duration, :subtitle, :summary,
+              :like_count]
 
 
-  has_many :episode, serializer: Pan.ReducedEpisodeApiView, include: false
+  has_one :podcast, serializer: Pan.PlainPodcastApiView, include: false
+  has_many :chapters, serializer: Pan.PlainChapterApiView, include: false
+  has_many :recommendations, serializer: Pan.PodcastRecommendationApiView, include: false
 
   def orig_link(episode) do
     episode.link
   end
+
+  def like_count(episode) do
+    Episode.likes(episode.id)
+  end
 end
 
 
-defmodule Pan.ReducedEpisodeApiView do
+defmodule Pan.PlainEpisodeApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 

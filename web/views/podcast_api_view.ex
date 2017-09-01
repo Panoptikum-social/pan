@@ -11,7 +11,7 @@ defmodule Pan.PodcastApiView do
               :update_intervall, :next_update, :retired, :unique_identifier, :follower_count,
               :like_count, :subscription_count]
 
-  has_many :episodes, serializer: Pan.ReducedEpisodeApiView, include: false
+  has_many :episodes, serializer: Pan.PlainEpisodeApiView, include: false
   has_many :categories, serializer: Pan.PlainCategoryApiView, include: false
   has_many :languages, serializer: Pan.LanguageApiView, include: false
   has_many :languages, serializer: Pan.LanguageApiView, include: false
@@ -34,7 +34,7 @@ defmodule Pan.PodcastApiView do
 end
 
 
-defmodule Pan.ReducedPodcastApiView do
+defmodule Pan.PlainPodcastApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 

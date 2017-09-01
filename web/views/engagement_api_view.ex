@@ -8,7 +8,7 @@ defmodule Pan.EngagementApiView do
   attributes [:from, :until, :comment, :role, :persona_id]
 
   has_one :persona, serializer: Pan.PlainPersonaApiView, include: true
-  has_one :podcast, serializer: Pan.ReducedPodcastApiView, include: true
+  has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
 end
 
 

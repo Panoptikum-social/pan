@@ -10,7 +10,7 @@ defmodule Pan.CategoryApiView do
   has_one :parent,    serializer: Pan.PlainCategoryApiView, include: true
   has_many :children, serializer: Pan.PlainCategoryApiView, include: true
 
-  has_many :podcasts, serializer: Pan.ReducedPodcastApiView, include: false
+  has_many :podcasts, serializer: Pan.PlainPodcastApiView, include: false
 end
 
 
