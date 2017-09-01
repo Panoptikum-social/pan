@@ -202,7 +202,8 @@ defmodule Pan.Parser.Analyzer do
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
     :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
-    :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid"
+    :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
+    :"sr:poddid"
   ], do: %{}
 
 
