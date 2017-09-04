@@ -5,7 +5,7 @@ defmodule Pan.EngagementApiView do
   def type(_, _), do: "engagement"
 
   location :engagement_api_url
-  attributes [:from, :until, :comment, :role, :persona_id]
+  attributes [:from, :until, :comment, :role, :persona_id, :podcast_id]
 
   has_one :persona, serializer: Pan.PlainPersonaApiView, include: true
   has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
@@ -23,7 +23,7 @@ defmodule Pan.PlainEngagmentApiView do
   def type(_, _), do: "engagement"
 
   location :engagement_api_url
-  attributes [:from, :until, :comment, :role, :persona_id]
+  attributes [:from, :until, :comment, :role, :persona_id, :podcast_id]
 
   def engagement_api_url(engagement, conn) do
     engagement_api_url(conn, :show, engagement)

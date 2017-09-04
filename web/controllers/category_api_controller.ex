@@ -31,7 +31,7 @@ defmodule Pan.CategoryApiController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: "https://panoptikum.io" <> conn.request_path}, conn)
+                                                         base_url: category_api_url(conn,:show, id)}, conn)
 
     category = Repo.get(Category, id)
                |> Repo.preload([:children, :parent])

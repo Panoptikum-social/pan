@@ -1,7 +1,6 @@
 defmodule Pan.EnclosureApiView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
-  alias Pan.Enclosure
 
   def type(_, _), do: "enclosure"
 

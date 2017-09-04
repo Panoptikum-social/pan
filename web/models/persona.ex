@@ -4,6 +4,10 @@ defmodule Pan.Persona do
   alias Pan.Repo
   alias Pan.Follow
   alias Pan.Persona
+  alias Pan.Podcast
+  alias Pan.Episode
+  alias Pan.Gig
+  alias Pan.Engagement
 
   schema "personas" do
     field :pid, :string
@@ -15,13 +19,20 @@ defmodule Pan.Persona do
     field :image_url, :string
     field :image_title, :string
 
-    belongs_to :redirect, Pan.Persona
-    has_many :engagements, Pan.Engagement
-    has_many :gigs, Pan.Gig
+    belongs_to :redirect, Persona
+    has_many :engagements, Engagement
+    has_many :gigs, Gig
 
-    many_to_many :delegates, Pan.Persona,
+    many_to_many :delegates, Persona,
                              join_through: "delegations",
                              join_keys: [persona_id: :id, delegate_id: :id]
+
+    many_to_many :podcasts, Podcast, join_through: "engagements",
+                                     on_delete: :delete_all
+
+    many_to_many :episodes, Episode, join_through: "gigs",
+                                     on_delete: :delete_all
+
     timestamps()
   end
 

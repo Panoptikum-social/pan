@@ -15,6 +15,8 @@ defmodule Pan.EpisodeApiView do
   has_many :chapters, serializer: Pan.PlainChapterApiView, include: false
   has_many :recommendations, serializer: Pan.PodcastRecommendationApiView, include: false
   has_many :enclosures, serializer: Pan.PlainEnclosureApiView, include: false
+  has_many :gigs, serializer: Pan.PlainGigApiView, include: false
+  has_many :contributors, serializer: Pan.PlainPersonaApiView, include: false
 
   def orig_link(episode) do
     episode.link

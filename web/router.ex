@@ -40,6 +40,7 @@ defmodule Pan.Router do
     resources "/engagements", EngagementApiController, only: [:show]
     resources "/episodes", EpisodeApiController, only: [:show]
     resources "/feeds", FeedApiController, only: [:show]
+    resources "/gigs", GigApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
     resources "/personas", PersonaApiController, only: [:show]
     resources "/podcasts", PodcastApiController, only: [:show]

@@ -21,7 +21,7 @@ defmodule Pan.PodcastApiController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: "https://panoptikum.io" <> conn.request_path}, conn)
+                                                         base_url: podcast_api_url(conn,:show, id)}, conn)
 
     podcast = Repo.get(Podcast, id)
                |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],

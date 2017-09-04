@@ -11,7 +11,9 @@ defmodule Pan.PersonaApiView do
   has_many :delegates, serializer: Pan.PlainPersonaApiView, include: true
 
   has_many :engagements, serializer: Pan.PlainEngagmentApiView, include: true
-  # has_many gigs
+  has_many :podcasts, serializer: Pan.PlainPodcastApiView, include: true
+  has_many :gigs, serializer: Pan.PlainGigApiView, include: true
+  has_many :episodes, serializer: Pan.PlainEpisodeApiView, include: true
 
   def persona_api_url(persona, conn) do
     persona_api_url(conn, :show, persona)
