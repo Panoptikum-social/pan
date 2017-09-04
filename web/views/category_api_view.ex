@@ -4,13 +4,17 @@ defmodule Pan.CategoryApiView do
 
   def type(_, _), do: "category"
 
-  location "https://panoptikum.io/jsonapi/categories/:id"
+  location :category_api_url
   attributes [:title]
 
   has_one :parent,    serializer: Pan.PlainCategoryApiView, include: true
   has_many :children, serializer: Pan.PlainCategoryApiView, include: true
 
   has_many :podcasts, serializer: Pan.PlainPodcastApiView, include: false
+
+  def category_api_url(category, conn) do
+    category_api_url(conn, :show, category)
+  end
 end
 
 
@@ -20,6 +24,10 @@ defmodule Pan.PlainCategoryApiView do
 
   def type(_, _), do: "category"
 
-  location "https://panoptikum.io/jsonapi/categories/:id"
+  location :category_api_url
   attributes [:title]
+
+  def category_api_url(category, conn) do
+    category_api_url(conn, :show, category)
+  end
 end

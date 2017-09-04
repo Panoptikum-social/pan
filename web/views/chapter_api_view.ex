@@ -5,7 +5,7 @@ defmodule Pan.ChapterApiView do
 
   def type(_, _), do: "chapter"
 
-  location "https://panoptikum.io/jsonapi/chapters/:id"
+  location :chapter_api_url
   attributes [:start, :title, :like_count]
 
   has_one :episode, serializer: Pan.PlainEpisodeApiView, include: false
@@ -13,6 +13,10 @@ defmodule Pan.ChapterApiView do
 
   def like_count(chapter) do
     Chapter.likes(chapter.id)
+  end
+
+  def chapter_api_url(chapter, conn) do
+    chapter_api_url(conn, :show, chapter)
   end
 end
 
@@ -23,6 +27,10 @@ defmodule Pan.PlainChapterApiView do
 
   def type(_, _), do: "chapter"
 
-  location "https://panoptikum.io/jsonapi/chapters/:id"
+  location :chapter_api_url
   attributes [:start, :title]
+
+  def chapter_api_url(chapter, conn) do
+    chapter_api_url(conn, :show, chapter)
+  end
 end

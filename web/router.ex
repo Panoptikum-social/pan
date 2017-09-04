@@ -36,6 +36,7 @@ defmodule Pan.Router do
     resources "/alternate_feeds", AlternateFeedApiController, only: [:show]
     resources "/chapters", ChapterApiController, only: [:show]
     resources "/categories", CategoryApiController, only: [:index, :show]
+    resources "/enclosures", EnclosureApiController, only: [:show]
     resources "/engagements", EngagementApiController, only: [:show]
     resources "/episodes", EpisodeApiController, only: [:show]
     resources "/feeds", FeedApiController, only: [:show]

@@ -4,7 +4,7 @@ defmodule Pan.RecommendationApiView do
 
   def type(_, _), do: "recommendation"
 
-  location "https://panoptikum.io/jsonapi/recommendations/:id"
+  location :recommendation_api_url
   attributes [:comment, :user_name]
 
   has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
@@ -13,6 +13,10 @@ defmodule Pan.RecommendationApiView do
 
   def user_name(recommendation) do
     recommendation.user.name
+  end
+
+  def recommendation_api_url(recommendation, conn) do
+    recommendation_api_url(conn, :show, recommendation)
   end
 end
 
@@ -23,10 +27,14 @@ defmodule Pan.PodcastRecommendationApiView do
 
   def type(_, _), do: "recommendation"
 
-  location "https://panoptikum.io/jsonapi/recommendations/:id"
+  location :recommendation_api_url
   attributes [:comment, :user_name, :inserted_at]
 
   def user_name(recommendation) do
     recommendation.user.name
+  end
+
+  def recommendation_api_url(recommendation, conn) do
+    recommendation_api_url(conn, :show, recommendation)
   end
 end

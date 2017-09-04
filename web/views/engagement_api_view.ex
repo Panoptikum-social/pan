@@ -4,11 +4,15 @@ defmodule Pan.EngagementApiView do
 
   def type(_, _), do: "engagement"
 
-  location "https://panoptikum.io/jsonapi/engagements/:id"
+  location :engagement_api_url
   attributes [:from, :until, :comment, :role, :persona_id]
 
   has_one :persona, serializer: Pan.PlainPersonaApiView, include: true
   has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
+
+  def engagement_api_url(engagement, conn) do
+    engagement_api_url(conn, :show, engagement)
+  end
 end
 
 
@@ -18,6 +22,10 @@ defmodule Pan.PlainEngagmentApiView do
 
   def type(_, _), do: "engagement"
 
-  location "https://panoptikum.io/jsonapi/engagements/:id"
+  location :engagement_api_url
   attributes [:from, :until, :comment, :role, :persona_id]
+
+  def engagement_api_url(engagement, conn) do
+    engagement_api_url(conn, :show, engagement)
+  end
 end

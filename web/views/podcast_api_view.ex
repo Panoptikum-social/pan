@@ -5,7 +5,7 @@ defmodule Pan.PodcastApiView do
 
   def type(_, _), do: "podcast"
 
-  location "https://panoptikum.io/jsonapi/podcasts/:id"
+  location :podcast_api_url
   attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
               :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
               :update_intervall, :next_update, :retired, :unique_identifier, :follower_count,
@@ -31,6 +31,10 @@ defmodule Pan.PodcastApiView do
   def subscription_count(podcast) do
     Podcast.subscriptions(podcast.id)
   end
+
+  def podcast_api_url(podcast, conn) do
+    podcast_api_url(conn, :show, podcast)
+  end
 end
 
 
@@ -40,6 +44,10 @@ defmodule Pan.PlainPodcastApiView do
 
   def type(_, _), do: "podcast"
 
-  location "https://panoptikum.io/jsonapi/podcasts/:id"
+  location :podcast_api_url
   attributes [:title, :website, :description, :image_title, :image_url]
+
+  def podcast_api_url(podcast, conn) do
+    podcast_api_url(conn, :show, podcast)
+  end
 end

@@ -4,6 +4,10 @@ defmodule Pan.LanguageApiView do
 
   def type(_, _), do: "language"
 
-  location "https://panoptikum.io/jsonapi/languages/:id"
+  location :language_api_url
   attributes [:name, :shortcode, :emoji]
+
+  def language_api_url(language, conn) do
+    language_api_url(conn, :show, language)
+  end
 end

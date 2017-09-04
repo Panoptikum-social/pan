@@ -4,13 +4,17 @@ defmodule Pan.AlternateFeedApiView do
 
   def type(_, _), do: "alternate_feed"
 
-  location "https://panoptikum.io/jsonapi/alternate_feeds/:id"
+  location :alternate_feed_api_url
   attributes [:title, :orig_url]
 
   has_one :feed, serializer: Pan.PlainFeedApiView, include: true
 
   def orig_url(alternate_feed) do
     alternate_feed.url
+  end
+
+  def alternate_feed_api_url(alternate_feed, conn) do
+    alternate_feed_api_url(conn, :show, alternate_feed)
   end
 end
 
@@ -21,10 +25,14 @@ defmodule Pan.PlainAlternateFeedApiView do
 
   def type(_, _), do: "alternate_feed"
 
-  location "https://panoptikum.io/jsonapi/alternate_feeds/:id"
+  location :alternate_feed_api_url
   attributes [:title, :orig_url]
 
   def orig_url(alternate_feed) do
     alternate_feed.url
+  end
+
+  def alternate_feed_api_url(alternate_feed, conn) do
+    alternate_feed_api_url(conn, :show, alternate_feed)
   end
 end

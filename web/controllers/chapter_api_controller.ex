@@ -4,7 +4,7 @@ defmodule Pan.ChapterApiController do
   alias Pan.Chapter
 
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id}) do
 
     chapter = Repo.get(Chapter, id)
               |> Repo.preload([:episode, [recommendations: :user]])
