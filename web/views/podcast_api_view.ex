@@ -9,7 +9,7 @@ defmodule Pan.PodcastApiView do
   attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
               :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
               :update_intervall, :next_update, :retired, :unique_identifier, :follower_count,
-              :like_count, :subscription_count]
+              :like_count, :subscription_count, :latest_episode_publishing_date]
 
   has_many :episodes, serializer: Pan.PlainEpisodeApiView, include: false
   has_many :categories, serializer: Pan.PlainCategoryApiView, include: false
@@ -34,6 +34,10 @@ defmodule Pan.PodcastApiView do
 
   def podcast_api_url(podcast, conn) do
     podcast_api_url(conn, :show, podcast)
+  end
+
+  def latest_episode_publishing_date(podcast) do
+    Podcast.latest_episode_publishing_date(podcast.id)
   end
 end
 

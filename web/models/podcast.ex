@@ -273,4 +273,10 @@ defmodule Pan.Podcast do
              "/podcasts/" <> Integer.to_string(deleted_id))
     end
   end
+
+
+  def latest_episode_publishing_date(id) do
+    from(e in Episode, where: e.podcast_id == ^id)
+    |> Repo.aggregate(:max, :publishing_date)
+  end
 end

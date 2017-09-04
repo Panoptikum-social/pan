@@ -43,8 +43,10 @@ defmodule Pan.Router do
     resources "/gigs", GigApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
     resources "/personas", PersonaApiController, only: [:show]
-    resources "/podcasts", PodcastApiController, only: [:show]
     resources "/recommendations", RecommendationApiController, only: [:show]
+
+    get "/podcasts/last_updated", PodcastApiController, :last_updated
+    resources "/podcasts", PodcastApiController, only: [:show]
   end
 
 
