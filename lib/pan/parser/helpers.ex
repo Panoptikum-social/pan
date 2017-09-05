@@ -72,6 +72,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY}") ||
+               try_format(feed_date, "{0D}/{0M}/{YYYY} {ISOtime}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
@@ -132,7 +133,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
     |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,     "Nov")
-    |> String.replace(~r/d[ei][cz]e?m?b?e?r?/i,  "Dec")
+    |> String.replace(~r/d[ei][vcz]e?m?b?e?r?/i,  "Dec")
   end
 
 

@@ -149,9 +149,9 @@ defmodule Pan.Parser.Analyzer do
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
-    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle,
+    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle, :itunes,
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
-    :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude"
+    :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -203,7 +203,7 @@ defmodule Pan.Parser.Analyzer do
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
     :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
-    :"sr:poddid"
+    :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId"
   ], do: %{}
 
 
