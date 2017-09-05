@@ -5,6 +5,37 @@ defmodule Pan.PodcastApiController do
   alias Pan.Podcast
 
 
+  def index(conn, params) do
+    page = Map.get(params, "page", %{})
+           |> Map.get("number", "1")
+           |> String.to_integer
+    size = Map.get(params, "page", %{})
+           |> Map.get("size", "10")
+           |> String.to_integer
+    offset = (page - 1) * size
+
+    total = from(p in Podcast, where: is_nil(p.blocked) or p.blocked == false,)
+            |> Repo.aggregate(:count, :id)
+    total_pages = div(total - 1, size) + 1
+
+    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                         size: size,
+                                                         total: total_pages,
+                                                         base_url: podcast_api_url(conn,:index)}, conn)
+
+    podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
+                                  where: is_nil(p.blocked) or p.blocked == false,
+                                  preload: [:categories, :languages, :engagements, :contributors],
+                                  limit: ^size,
+                                  offset: ^offset)
+               |> Repo.all()
+
+    render conn, "index.json-api", data: podcasts,
+                                   opts: [page: links,
+                                          include: "categories,engagements,contributors,languages"]
+  end
+
+
   def show(conn, %{"id" => id} = params) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")

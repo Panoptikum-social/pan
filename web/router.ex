@@ -48,7 +48,7 @@ defmodule Pan.Router do
     resources "/recommendations", RecommendationApiController, only: [:show]
 
     get "/podcasts/last_updated", PodcastApiController, :last_updated
-    resources "/podcasts", PodcastApiController, only: [:show]
+    resources "/podcasts", PodcastApiController, only: [:index, :show]
   end
 
 
