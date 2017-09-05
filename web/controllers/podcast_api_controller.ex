@@ -3,6 +3,7 @@ defmodule Pan.PodcastApiController do
   use JaSerializer
   alias Pan.Episode
   alias Pan.Podcast
+  alias Pan.Subscription
 
 
   def index(conn, params) do
@@ -98,5 +99,17 @@ defmodule Pan.PodcastApiController do
 
     render conn, "index.json-api", data: podcasts,
                                    opts: [page: links]
+  end
+
+
+  def subscribed_from_most(conn, _params) do
+    podcasts = from(s in Subscription, join: p in assoc(s, :podcast),
+                                       group_by: p.id,
+                                       select: p,
+                                       order_by: [desc: count(s.podcast_id)],
+                                       limit: 10)
+                       |> Repo.all()
+
+    render conn, "index.json-api", data: podcasts
   end
 end
