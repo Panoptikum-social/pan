@@ -4,7 +4,7 @@ defmodule Pan.PodcastApiController do
   alias Pan.Episode
   alias Pan.Podcast
   alias Pan.Subscription
-
+  alias Pan.Like
 
   def index(conn, params) do
     page = Map.get(params, "page", %{})
@@ -102,13 +102,25 @@ defmodule Pan.PodcastApiController do
   end
 
 
-  def subscribed_from_most(conn, _params) do
+  def most_subscribed(conn, _params) do
     podcasts = from(s in Subscription, join: p in assoc(s, :podcast),
                                        group_by: p.id,
                                        select: p,
                                        order_by: [desc: count(s.podcast_id)],
                                        limit: 10)
                        |> Repo.all()
+
+    render conn, "index.json-api", data: podcasts
+  end
+
+
+  def most_liked(conn, _params) do
+    podcasts = from(l in Like, join: p in assoc(l, :podcast),
+                               group_by: p.id,
+                               select: p,
+                               order_by: [desc: count(l.podcast_id)],
+                               limit: 10)
+               |> Repo.all()
 
     render conn, "index.json-api", data: podcasts
   end

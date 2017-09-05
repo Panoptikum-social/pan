@@ -47,7 +47,8 @@ defmodule Pan.Router do
     get "/recommendations/random", RecommendationApiController, :random
     resources "/recommendations", RecommendationApiController, only: [:show]
 
-    get "/podcasts/subscribed_from_most", PodcastApiController, :subscribed_from_most
+    get "/podcasts/most_subscribed", PodcastApiController, :most_subscribed
+    get "/podcasts/most_liked", PodcastApiController, :most_liked
     get "/podcasts/last_updated", PodcastApiController, :last_updated
     resources "/podcasts", PodcastApiController, only: [:index, :show]
   end
