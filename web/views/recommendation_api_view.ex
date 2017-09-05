@@ -7,9 +7,10 @@ defmodule Pan.RecommendationApiView do
   location :recommendation_api_url
   attributes [:comment, :user_name]
 
-  has_one :podcast, serializer: Pan.PlainPodcastApiView, include: true
-  has_one :episode, serializer: Pan.PlainEpisodeApiView, include: true
-  has_one :chapter, serializer: Pan.PlainChapterApiView, include: true
+  has_one :podcast, serializer: Pan.PlainPodcastApiView, include: false
+  has_one :episode, serializer: Pan.PlainEpisodeApiView, include: false
+  has_one :chapter, serializer: Pan.PlainChapterApiView, include: false
+  has_one :category, serializer: Pan.PlainCategoryApiView, include: false
 
   def user_name(recommendation) do
     recommendation.user.name
