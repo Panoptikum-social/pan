@@ -11,7 +11,7 @@ defmodule Pan.CategoryApiController do
                  |> Repo.preload(children: from(cat in Category, order_by: cat.title))
                  |> Repo.preload(:parent)
 
-    render conn, "index.json-api", data: categories
+    render conn, "index.json-api", data: categories, opts: [include: "children"]
   end
 
 

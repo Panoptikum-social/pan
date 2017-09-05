@@ -7,8 +7,8 @@ defmodule Pan.CategoryApiView do
   location :category_api_url
   attributes [:title]
 
-  has_one :parent,    serializer: Pan.PlainCategoryApiView, include: true
-  has_many :children, serializer: Pan.PlainCategoryApiView, include: true
+  has_one :parent,    serializer: Pan.PlainCategoryApiView, include: false
+  has_many :children, serializer: Pan.PlainCategoryApiView, include: false
 
   has_many :podcasts, serializer: Pan.PlainPodcastApiView, include: false
 
