@@ -38,7 +38,7 @@ defmodule Pan.Router do
     resources "/categories", CategoryApiController, only: [:index, :show]
     resources "/enclosures", EnclosureApiController, only: [:show]
     resources "/engagements", EngagementApiController, only: [:show]
-    resources "/episodes", EpisodeApiController, only: [:show]
+    resources "/episodes", EpisodeApiController, only: [:index, :show]
     resources "/feeds", FeedApiController, only: [:show]
     resources "/gigs", GigApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
