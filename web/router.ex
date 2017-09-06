@@ -45,7 +45,7 @@ defmodule Pan.Router do
     resources "/personas", PersonaApiController, only: [:show]
 
     get "/recommendations/random", RecommendationApiController, :random
-    resources "/recommendations", RecommendationApiController, only: [:show]
+    resources "/recommendations", RecommendationApiController, only: [:index, :show]
 
     get "/podcasts/most_subscribed", PodcastApiController, :most_subscribed
     get "/podcasts/most_liked", PodcastApiController, :most_liked

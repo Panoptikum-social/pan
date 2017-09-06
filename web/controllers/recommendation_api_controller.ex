@@ -6,6 +6,34 @@ defmodule Pan.RecommendationApiController do
   alias Pan.Episode
   use JaSerializer
 
+  def index(conn, params) do
+    page = Map.get(params, "page", %{})
+           |> Map.get("number", "1")
+           |> String.to_integer
+    size = Map.get(params, "page", %{})
+           |> Map.get("size", "10")
+           |> String.to_integer
+    offset = (page - 1) * size
+
+    total = Repo.aggregate(Recommendation, :count, :id)
+    total_pages = div(total - 1, size) + 1
+
+    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                         size: size,
+                                                         total: total_pages,
+                                                         base_url: episode_api_url(conn,:index)}, conn)
+
+    recommendations = from(e in Recommendation, order_by: [desc: :inserted_at],
+                                                preload: [:podcast, :episode, :chapter, :user],
+                                                limit: ^size,
+                                                offset: ^offset)
+               |> Repo.all()
+
+    render conn, "index.json-api", data: recommendations,
+                                   opts: [page: links,
+                                          include: "podcast,episode,chapter,user"]
+  end
+
 
   def show(conn, %{"id" => id}) do
     recommendation = Repo.get(Recommendation, id)
