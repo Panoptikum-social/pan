@@ -28,7 +28,7 @@ defmodule Pan.Mixfile do
   defp elixirc_paths(_),     do: ["lib", "web"]
 
   defp deps do
-    [{:phoenix, "~> 1.2.0"}, # web framework
+    [{:phoenix, "~> 1.3.0"}, # web framework
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
      {:postgrex, ">= 0.0.0"}, # database adapter
      {:phoenix_ecto, "~> 3.0"}, # ORM (yes!)

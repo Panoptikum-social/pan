@@ -3,7 +3,7 @@ use Mix.Config
 config :pan, Pan.Endpoint,
   http: [port: 8888, compress: true],
   url: [scheme: "https", host: "panoptikum.io", port: 443],
-  cache_static_manifest: "priv/static/manifest.json",
+  cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
   version: Mix.Project.config[:version]
