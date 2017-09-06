@@ -45,9 +45,9 @@ defmodule PanWeb.User do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name, :username, :email, :admin, :podcaster, :share_subscriptions,
-                     :share_follows, :pro_until, :billing_address, :payment_reference,
-                     :paper_bill])
+    |> cast(params, [:name, :username, :email, :admin, :podcaster, :email_confirmed,
+                     :share_subscriptions, :share_follows, :pro_until, :billing_address,
+                     :payment_reference, :paper_bill])
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)

@@ -6,7 +6,7 @@ defmodule Pan.Email do
     |> to(email_address)
     |> from("noreply@panoptikum.io")
     |> subject("Panoptikum - Login link")
-    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("login_link.html", token: token)
   end
 
@@ -16,7 +16,7 @@ defmodule Pan.Email do
     |> to(email_address)
     |> from("noreply@panoptikum.io")
     |> subject("Panoptikum - Email Confirmation")
-    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("email_confirmation_link.html", token: token)
   end
 
@@ -26,7 +26,7 @@ defmodule Pan.Email do
     |> to(email_address)
     |> from(user.email)
     |> subject("Panoptikum - Persona manifestation confirmation request")
-    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("confirm_persona_claim_link.html", token: token, user: user)
   end
 
@@ -47,7 +47,7 @@ defmodule Pan.Email do
     |> to(email_address)
     |> from("noreply@panoptikum.io")
     |> subject("Panoptikum - Your pro account expires soon")
-    |> put_html_layout({Pan.LayoutView, "email.html"})
+    |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("pro_expiration_notification.html")
   end
 end

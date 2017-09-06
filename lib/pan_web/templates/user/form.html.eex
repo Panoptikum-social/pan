@@ -30,6 +30,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :email_confirmed, class: "control-label" %>
+    <%= checkbox f, :email_confirmed, class: "form-control" %>
+    <%= error_tag f, :email_confirmed %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :podcaster, class: "control-label" %>
     <%= checkbox f, :podcaster, class: "form-control" %>
     <%= error_tag f, :podcaster %>
@@ -48,6 +54,36 @@
     <%= error_tag f, :pro_until %>
   </div>
 
+  <div class="form-group">
+    <%= label f, :share_subscriptions, class: "control-label" %>
+    <%= checkbox f, :share_subscriptions, class: "form-control" %>
+    <%= error_tag f, :share_subscriptions %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :share_follows, class: "control-label" %>
+    <%= checkbox f, :share_follows, class: "form-control" %>
+    <%= error_tag f, :share_follows %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :billing_address, class: "control-label" %>
+    <%= textarea f, :billing_address, [class: "form-control", rows: 7] %>
+    <%= error_tag f, :billing_address %>
+  </div>
+
+
+  <div class="form-group">
+    <%= label f, :payment_reference, class: "control-label" %>
+    <%= text_input f, :payment_reference, class: "form-control" %>
+    <%= error_tag f, :payment_reference %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :paper_bill, class: "control-label" %>
+    <%= checkbox f, :paper_bill, class: "form-control" %>
+    <%= error_tag f, :paper_bill %>
+  </div>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

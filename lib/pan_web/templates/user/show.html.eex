@@ -13,6 +13,9 @@
   <dt>Email</dt>
   <dd><%= @user.email %></dd>
 
+  <dt>Email confirmed</dt>
+  <dd><%= @user.email_confirmed %></dd>
+
   <dt>Inserted at</dt>
   <dd><%= @user.inserted_at %></dd>
 
@@ -39,6 +42,14 @@
 
   <dt>Pro until</dt>
   <dd><%= @user.pro_until %></dd>
+
+
+  <dt>Shares subscriptions</dt>
+  <dd><%= @user.share_subscriptions %>
+
+  <dt>Shares follows</dt>
+  <dd><%= @user.share_follows %>
+
 
   <dt>Billing address</dt>
   <dd><pre><%= @user.billing_address %></pre></dd>
