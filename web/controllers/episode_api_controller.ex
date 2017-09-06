@@ -13,7 +13,8 @@ defmodule Pan.EpisodeApiController do
     offset = (page - 1) * size
 
     total = from(e in Episode, join: p in assoc(e, :podcast),
-                               where: is_nil(p.blocked) or p.blocked == false)
+                               where: (is_nil(p.blocked) or p.blocked == false) and
+                                      e.publishing_date < ^NaiveDateTime.utc_now())
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
