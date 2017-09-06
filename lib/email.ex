@@ -1,5 +1,5 @@
 defmodule Pan.Email do
-  use Bamboo.Phoenix, view: Pan.EmailView
+  use Bamboo.Phoenix, view: PanWeb.EmailView
 
   def login_link_html_email(token, email_address) do
     new_email()

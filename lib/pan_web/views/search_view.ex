@@ -1,3 +1,3 @@
-defmodule Pan.SearchView do
+defmodule PanWeb.SearchView do
   use Pan.Web, :view
 end

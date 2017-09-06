@@ -1,4 +1,4 @@
-defmodule Pan.SearchFrontendView do
+defmodule PanWeb.SearchFrontendView do
   use Pan.Web, :view
   alias Pan.Repo
   alias PanWeb.Episode

@@ -1,3 +1,3 @@
-defmodule Pan.EmailView do
+defmodule PanWeb.EmailView do
   use Pan.Web, :view
 end
