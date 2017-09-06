@@ -1,5 +1,5 @@
 defmodule Pan.DelegationControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.DelegationControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Delegation
+    alias PanWeb.Delegation
     @invalid_attrs %{}
 
     test "lists all entries on index", %{conn: conn} do

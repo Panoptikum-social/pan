@@ -1,5 +1,5 @@
 defmodule Pan.PersonaControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.PersonaControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Persona
+    alias PanWeb.Persona
     @valid_attrs %{description: "some content",
                    email: "some content",
                    image_title: "some content",

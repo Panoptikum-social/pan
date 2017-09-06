@@ -12,8 +12,8 @@ defmodule Pan.TestHelpers do
       podcaster: false
     }, attrs)
 
-    %Pan.User{}
-    |> Pan.User.registration_changeset(changes)
+    %PanWeb.User{}
+    |> PanWeb.User.registration_changeset(changes)
     |> Repo.insert!()
   end
 
@@ -29,8 +29,8 @@ defmodule Pan.TestHelpers do
       podcaster: true
     }, attrs)
 
-    %Pan.User{}
-    |> Pan.User.changeset(changes)
+    %PanWeb.User{}
+    |> PanWeb.User.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -46,8 +46,8 @@ defmodule Pan.TestHelpers do
       podcaster: false
     }, attrs)
 
-    %Pan.User{}
-    |> Pan.User.changeset(changes)
+    %PanWeb.User{}
+    |> PanWeb.User.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -58,8 +58,8 @@ defmodule Pan.TestHelpers do
       parent_id: nil
     }, attrs)
 
-    %Pan.Category{}
-    |> Pan.Category.changeset(changes)
+    %PanWeb.Category{}
+    |> PanWeb.Category.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -73,8 +73,8 @@ defmodule Pan.TestHelpers do
       next_update: "2010-04-17 14:00:00"
     }, attrs)
 
-    %Pan.Podcast{}
-    |> Pan.Podcast.changeset(changes)
+    %PanWeb.Podcast{}
+    |> PanWeb.Podcast.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -84,8 +84,8 @@ defmodule Pan.TestHelpers do
                           link: "https://panoptikum.io",
                           publishing_date: ~N[2010-04-17 12:13:14]}, attrs)
 
-    %Pan.Episode{}
-    |> Pan.Episode.changeset(changes)
+    %PanWeb.Episode{}
+    |> PanWeb.Episode.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -94,8 +94,8 @@ defmodule Pan.TestHelpers do
     changes = Map.merge(%{start: "01:02:03.456",
                           title: "Chatter title"}, attrs)
 
-    %Pan.Chapter{}
-    |> Pan.Chapter.changeset(changes)
+    %PanWeb.Chapter{}
+    |> PanWeb.Chapter.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -111,8 +111,8 @@ defmodule Pan.TestHelpers do
       self_link_url: "https://panoptikum.io/feed/self_link"
     }, attrs)
 
-    %Pan.Feed{}
-    |> Pan.Feed.changeset(changes)
+    %PanWeb.Feed{}
+    |> PanWeb.Feed.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -122,8 +122,8 @@ defmodule Pan.TestHelpers do
                           name: "persona name",
                           uri: "persona uri"}, attrs)
 
-    %Pan.Persona{}
-    |> Pan.Persona.changeset(changes)
+    %PanWeb.Persona{}
+    |> PanWeb.Persona.changeset(changes)
     |> Repo.insert!()
   end
 
@@ -133,8 +133,8 @@ defmodule Pan.TestHelpers do
                           name: "persona name",
                           uri: "persona uri"}, attrs)
 
-    %Pan.Recommendation{comment: "recommendation comment text"}
-    |> Pan.Recommendation.changeset(changes)
+    %PanWeb.Recommendation{comment: "recommendation comment text"}
+    |> PanWeb.Recommendation.changeset(changes)
     |> Repo.insert!()
   end
 

@@ -1,8 +1,8 @@
 defmodule Pan.Parser.Author do
   use Pan.Web, :controller
   alias Pan.Parser.Persona
-  alias Pan.Engagement
-  alias Pan.Gig
+  alias PanWeb.Engagement
+  alias PanWeb.Gig
 
   def get_or_insert_persona_and_engagement(author_map, podcast_id) do
     if author_map[:email] || author_map[:name] do

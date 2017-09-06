@@ -1,5 +1,5 @@
 defmodule Pan.EnclosureControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.EnclosureControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Enclosure
+    alias PanWeb.Enclosure
     @valid_attrs %{guid: "some content", length: "some content", type: "some content", url: "some content"}
     @invalid_attrs %{}
 

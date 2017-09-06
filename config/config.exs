@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :pan, Pan.Endpoint,
+config :pan, PanWeb.Endpoint,
   url: [host: "localhost"],
   root: Path.dirname(__DIR__),
   secret_key_base: "p+SVheqFHkj2Z89dxUo/PoRR696q9G+mY9IPIbpm1bBHL1BJOawyku/GKnhT6RAs",
@@ -19,7 +19,7 @@ config :phoenix, :generators,
 
 config :pan, ecto_repos: [Pan.Repo]
 
-config :scrivener_html, routes_helper: Pan.Router.Helpers
+config :scrivener_html, routes_helper: PanWeb.Router.Helpers
 
 config :pan, Pan.Mailer,
   adapter: Bamboo.SMTPAdapter,

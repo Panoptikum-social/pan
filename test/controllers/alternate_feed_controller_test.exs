@@ -1,6 +1,6 @@
 defmodule Pan.AlternateFeedControllerTest do
-  use Pan.ConnCase
-  alias Pan.AlternateFeed
+  use PanWeb.ConnCase
+  alias PanWeb.AlternateFeed
   @valid_attrs %{title: "some content", url: "some content"}
   @invalid_attrs %{}
 

@@ -1,7 +1,7 @@
 defmodule Pan.AlternateFeedTest do
   use Pan.ModelCase
 
-  alias Pan.AlternateFeed
+  alias PanWeb.AlternateFeed
 
   @valid_attrs %{title: "Alternate feed title",
                  url: "http://panoptikum.io/alternate_feed"}

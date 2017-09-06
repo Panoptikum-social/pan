@@ -1,5 +1,5 @@
 defmodule Pan.EpisodeFrontendControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   test "lists all entries on index", %{conn: conn} do
     podcast = insert_podcast()

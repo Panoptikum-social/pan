@@ -2,10 +2,10 @@ defmodule Pan.Parser.AlternateFeed do
   use Pan.Web, :controller
 
   def get_or_insert(feed_id, alternate_feed_map) do
-    case Repo.get_by(Pan.AlternateFeed, feed_id: feed_id,
+    case Repo.get_by(PanWeb.AlternateFeed, feed_id: feed_id,
                                         url: alternate_feed_map[:url]) do
       nil ->
-        %Pan.AlternateFeed{feed_id: feed_id}
+        %PanWeb.AlternateFeed{feed_id: feed_id}
         |> Map.merge(alternate_feed_map)
         |> Repo.insert()
       alternate_feed ->

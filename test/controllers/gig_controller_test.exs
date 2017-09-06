@@ -1,5 +1,5 @@
 defmodule Pan.GigControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.GigControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Gig
+    alias PanWeb.Gig
     @valid_attrs %{comment: "some content",
                    from_in_s: 42,
                    publishing_date: ~N[2010-04-17 12:13:14],

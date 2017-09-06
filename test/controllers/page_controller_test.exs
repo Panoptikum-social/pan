@@ -1,5 +1,5 @@
 defmodule Pan.PageControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get conn, "/"

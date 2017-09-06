@@ -1,7 +1,7 @@
 defmodule Pan.EngagementTest do
   use Pan.ModelCase
 
-  alias Pan.Engagement
+  alias PanWeb.Engagement
 
   @valid_attrs %{comment: "Comment text",
                  from: %{day: 17, month: 4, year: 2010},

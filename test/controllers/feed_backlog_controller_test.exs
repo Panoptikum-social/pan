@@ -1,5 +1,5 @@
 defmodule Pan.FeedBacklogControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.FeedBacklogControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.FeedBacklog
+    alias PanWeb.FeedBacklog
     @valid_attrs %{feed_generator: "some content",
                    in_progress: true,
                    url: "http://panopkikum.io/dir/file.rss"}

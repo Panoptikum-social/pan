@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Category do
   use Pan.Web, :controller
   alias Pan.Repo
-  alias Pan.Category
+  alias PanWeb.Category
 
 
   def get_or_insert(title, nil) do
@@ -45,8 +45,8 @@ defmodule Pan.Parser.Category do
 
 
   def fix() do
-    podcasts = Pan.Repo.all(Pan.Podcast)
-    podcasts = Pan.Repo.preload(podcasts, [:feeds, :categories])
+    podcasts = Repo.all(PanWeb.Podcast)
+    podcasts = Repo.preload(podcasts, [:feeds, :categories])
 
     for podcast <- podcasts do
       headers = ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]

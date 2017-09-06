@@ -1,6 +1,6 @@
 defmodule Pan.OpmlFrontendControllerTest do
-  use Pan.ConnCase
-  alias Pan.FeedBacklog
+  use PanWeb.ConnCase
+  alias PanWeb.FeedBacklog
 
   describe "when user is logged in and is a user" do
     setup do
@@ -9,7 +9,7 @@ defmodule Pan.OpmlFrontendControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Opml
+    alias PanWeb.Opml
 
     test "lists all entries on index", %{conn: conn} do
       conn = get conn, opml_frontend_path(conn, :index)

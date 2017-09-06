@@ -1,7 +1,7 @@
 defmodule Pan.LikeTest do
   use Pan.ModelCase
 
-  alias Pan.Like
+  alias PanWeb.Like
 
   @valid_attrs %{comment: "Like comment"}
   @invalid_attrs %{}

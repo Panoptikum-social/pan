@@ -1,5 +1,5 @@
 defmodule Pan.LanguageControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.LanguageControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Language
+    alias PanWeb.Language
     @valid_attrs %{name: "some content", shortcode: "some content"}
     @invalid_attrs %{}
 

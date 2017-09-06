@@ -1,5 +1,5 @@
 defmodule Pan.FeedControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.FeedControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Feed
+    alias PanWeb.Feed
     @valid_attrs %{feed_generator: "some content",
                    first_page_url: "some content",
                    hub_link_url: "some content",

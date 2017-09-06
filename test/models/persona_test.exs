@@ -1,7 +1,7 @@
 defmodule Pan.PersonaTest do
   use Pan.ModelCase
 
-  alias Pan.Persona
+  alias PanWeb.Persona
 
   @valid_attrs %{description: "Persona description",
                  email: "jimmy.persona@panoptikum.io",

@@ -47,7 +47,7 @@ defmodule Pan.Parser.Persistor do
 
 
   def delta_import(map, podcast_id) do
-    podcast = Repo.get!(Pan.Podcast, podcast_id)
+    podcast = Repo.get!(PanWeb.Podcast, podcast_id)
     map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
 
     unless map[:last_build_date] == podcast.last_build_date do
@@ -55,14 +55,14 @@ defmodule Pan.Parser.Persistor do
         Episode.persist_many(map[:episodes], podcast)
       end
 
-      Pan.Podcast.changeset(podcast, %{last_build_date: map[:last_build_date]})
+      PanWeb.Podcast.changeset(podcast, %{last_build_date: map[:last_build_date]})
       |> Repo.update()
     end
   end
 
 
   def contributor_import(map, podcast_id) do
-    podcast = Repo.get!(Pan.Podcast, podcast_id)
+    podcast = Repo.get!(PanWeb.Podcast, podcast_id)
 
     if map[:episodes] do
       Episode.insert_contributors(map[:episodes], podcast)

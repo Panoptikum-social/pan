@@ -1,10 +1,10 @@
 defmodule Pan.Search do
   require Logger
-  alias Pan.Episode
-  alias Pan.Category
-  alias Pan.User
-  alias Pan.Persona
-  alias Pan.Podcast
+  alias PanWeb.Episode
+  alias PanWeb.Category
+  alias PanWeb.User
+  alias PanWeb.Persona
+  alias PanWeb.Podcast
 
   alias Pan.Repo
   import Ecto.Query, only: [from: 2]

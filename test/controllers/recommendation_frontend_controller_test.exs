@@ -1,7 +1,7 @@
 defmodule Pan.RecommendationFrontendControllerTest do
-  use Pan.ConnCase
-  alias Pan.Recommendation
-  alias Pan.Message
+  use PanWeb.ConnCase
+  alias PanWeb.Recommendation
+  alias PanWeb.Message
 
   test "lists all entries on index", %{conn: conn} do
     user = insert_user()

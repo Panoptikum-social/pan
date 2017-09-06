@@ -1,5 +1,5 @@
 defmodule Pan.RecommendationControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.RecommendationControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Recommendation
+    alias PanWeb.Recommendation
     @valid_attrs %{comment: "some content"}
     @invalid_attrs %{}
 

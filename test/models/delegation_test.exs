@@ -1,7 +1,7 @@
 defmodule Pan.DelegationTest do
   use Pan.ModelCase
 
-  alias Pan.Delegation
+  alias PanWeb.Delegation
 
   @invalid_attrs %{}
 

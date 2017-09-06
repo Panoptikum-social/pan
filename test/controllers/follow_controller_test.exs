@@ -1,5 +1,5 @@
 defmodule Pan.FollowControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.FollowControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Follow
+    alias PanWeb.Follow
     @valid_attrs %{}
     @invalid_attrs %{}
 

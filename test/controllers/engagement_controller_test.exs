@@ -1,5 +1,5 @@
 defmodule Pan.EngagementControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.EngagementControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Engagement
+    alias PanWeb.Engagement
     @valid_attrs %{comment: "some content",
                    from: %{day: 17, month: 4, year: 2010},
                    role: "some content",

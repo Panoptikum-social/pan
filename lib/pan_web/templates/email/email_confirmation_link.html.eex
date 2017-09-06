@@ -1,0 +1,6 @@
+<p>
+  Please confirm your Email Address clicking on this link:
+  <%= link "Confirm Email", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint,
+                                                               :confirm_email,
+                                                               token: @token)  %>
+</p>

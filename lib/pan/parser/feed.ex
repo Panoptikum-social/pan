@@ -3,9 +3,9 @@ defmodule Pan.Parser.Feed do
   alias Pan.Parser.AlternateFeed
 
   def get_or_insert(feed_map, podcast_id) do
-    case Repo.get_by(Pan.Feed, podcast_id: podcast_id) do
+    case Repo.get_by(PanWeb.Feed, podcast_id: podcast_id) do
       nil ->
-        %Pan.Feed{podcast_id: podcast_id}
+        %PanWeb.Feed{podcast_id: podcast_id}
         |> Map.merge(feed_map)
         |> Repo.insert()
       feed ->

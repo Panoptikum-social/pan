@@ -1,5 +1,5 @@
 defmodule Pan.LikeControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.LikeControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Like
+    alias PanWeb.Like
     @invalid_attrs %{}
 
     test "lists all entries on index", %{conn: conn} do

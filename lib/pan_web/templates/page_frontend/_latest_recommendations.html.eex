@@ -1,0 +1,76 @@
+<div  class="panel panel-success">
+  <div class="panel-heading">
+    <%= link "Latest Recommendations", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
+    <span class="pull-right">
+      <%= link "more ...", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
+    </span>
+  </div>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <%= for {recommendation, index} <- Enum.with_index(ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
+                                                         PanWeb.Recommendation.latest()
+                                                       end)) do %>
+      <li role="recommendations" class=<%= if index == 0, do: "active" %>>
+        <a href="#recommendation-<%= recommendation.id %>"
+           aria-controls="recommendation-<%= recommendation.id %>"
+           role="tab"
+           data-toggle="tab">
+          <%= index + 1 %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <%= for {recommendation, index} <- Enum.with_index(ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
+                                                         PanWeb.Recommendation.latest()
+                                                       end)) do %>
+      <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
+                           id="recommendation-<%= recommendation.id %>">
+        <%= if recommendation.podcast do %>
+          <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
+                   to: podcast_frontend_path(@conn, :show, recommendation.podcast),
+                   class: "btn btn-default btn-xs truncate",
+                   style: "color: #000" %>
+        <% end %>
+
+        <%= if recommendation.episode do %>
+          <%= link [fa_icon("podcast"), " ", recommendation.episode.podcast.title],
+                   to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
+                   class: "btn btn-default btn-xs truncate",
+                   style: "color: #000" %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
+          <%= link [fa_icon("headphones"), " ", recommendation.episode.title],
+                    to: episode_frontend_path(@conn, :show, recommendation.episode),
+                    class: "btn btn-primary btn-xs truncate" %>
+        <% end %>
+
+        <%= if recommendation.chapter_id do %>
+          <%= link [fa_icon("podcast"), " ", recommendation.chapter.episode.podcast.title],
+                   to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
+                   class: "btn btn-default btn-xs truncate",
+                   style: "color: #000" %>
+          <hr style="margin-top: -15px; visibility:hidden;" />
+          <%= link [fa_icon("headphones"), " ", recommendation.chapter.episode.title],
+                    to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
+                    class: "btn btn-primary btn-xs truncate" %><br/>
+          <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
+        <% end %>
+
+        <hr style="margin-top: -15px; visibility:hidden;" />
+
+        <%= link [fa_icon("user"), " ", recommendation.user.name],
+                 to: user_frontend_path(@conn, :show, recommendation.user),
+                 class: "btn btn-xs truncate btn-danger" %>
+
+        <span class="pull-right">
+          <%= fa_icon("calendar") %>
+          <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
+        </span>
+
+        <hr style="margin-top: -15px; visibility:hidden;" />
+        <%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+      </div>
+    <% end %>
+  </div>
+</div>

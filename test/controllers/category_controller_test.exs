@@ -1,5 +1,5 @@
 defmodule Pan.CategoryControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.CategoryControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Category
+    alias PanWeb.Category
     @valid_attrs %{title: "some content"}
     @invalid_attrs %{}
 

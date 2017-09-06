@@ -1,4 +1,4 @@
-defmodule Pan.ChannelCase do
+defmodule PanWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -27,7 +27,7 @@ defmodule Pan.ChannelCase do
 
 
       # The default endpoint for testing
-      @endpoint Pan.Endpoint
+      @endpoint PanWeb.Endpoint
     end
   end
 

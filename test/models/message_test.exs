@@ -1,7 +1,7 @@
 defmodule Pan.MessageTest do
   use Pan.ModelCase
 
-  alias Pan.Message
+  alias PanWeb.Message
 
   @valid_attrs %{content: "Message content",
                  event: "like",

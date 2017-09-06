@@ -1,5 +1,5 @@
 defmodule Pan.EpisodeControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.EpisodeControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Episode
+    alias PanWeb.Episode
     @valid_attrs %{deep_link: "some content",
                    description: "some content",
                    duration: "some content",

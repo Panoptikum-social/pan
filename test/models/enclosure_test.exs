@@ -1,7 +1,7 @@
 defmodule Pan.EnclosureTest do
   use Pan.ModelCase
 
-  alias Pan.Enclosure
+  alias PanWeb.Enclosure
 
   @valid_attrs %{guid: "https://panoptikum.io/path/enclosure.mp3",
                  length: "123456789",

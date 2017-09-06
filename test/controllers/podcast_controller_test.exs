@@ -1,5 +1,5 @@
 defmodule Pan.PodcastControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.PodcastControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Podcast
+    alias PanWeb.Podcast
     @valid_attrs %{description: "some content",
                    explicit: true,
                    image_title: "some content",

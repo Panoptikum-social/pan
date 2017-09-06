@@ -26,7 +26,7 @@ defmodule Pan.Parser.RssFeed do
       {:redirect, redirect_target} ->
         case initial_import(redirect_target, feed_id, pagecount) do
           {:ok, podcast_id} ->
-            feed = Pan.Repo.get_by(Pan.Feed, podcast_id: podcast_id)
+            feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
             AlternateFeed.get_or_insert(feed.id, %{url: url})
             {:ok, podcast_id}
           {:error, error} ->

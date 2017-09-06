@@ -1,7 +1,7 @@
 defmodule Pan.FollowTest do
   use Pan.ModelCase
 
-  alias Pan.Follow
+  alias PanWeb.Follow
 
   @invalid_attrs %{}
 

@@ -1,7 +1,7 @@
 defmodule Pan.FeedBacklogTest do
   use Pan.ModelCase
 
-  alias Pan.FeedBacklog
+  alias PanWeb.FeedBacklog
 
   @valid_attrs %{feed_generator: "Feed generator",
                  in_progress: true,

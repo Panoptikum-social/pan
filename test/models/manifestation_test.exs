@@ -1,7 +1,7 @@
 defmodule Pan.ManifestationTest do
   use Pan.ModelCase
 
-  alias Pan.Manifestation
+  alias PanWeb.Manifestation
 
   @valid_attrs %{}
   @invalid_attrs %{}

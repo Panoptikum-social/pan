@@ -1,7 +1,7 @@
 defmodule Pan.CategoryTest do
   use Pan.ModelCase
 
-  alias Pan.Category
+  alias PanWeb.Category
 
   @valid_attrs %{title: "Category title"}
   @invalid_attrs %{}

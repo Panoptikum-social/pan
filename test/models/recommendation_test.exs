@@ -1,7 +1,7 @@
 defmodule Pan.RecommendationTest do
   use Pan.ModelCase
 
-  alias Pan.Recommendation
+  alias PanWeb.Recommendation
 
   @valid_attrs %{comment: "Recommendation comment"}
   @invalid_attrs %{}

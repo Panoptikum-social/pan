@@ -5,20 +5,20 @@ defmodule Pan.Parser.FeedBacklog do
   def upload do
     stream = File.stream!("materials/backlog.xml", [:read, :utf8])
     Enum.each stream, fn(url) ->
-      %Pan.FeedBacklog{url: url}
+      %PanWeb.FeedBacklog{url: url}
       |> Repo.insert()
     end
   end
 
 
   def get_missing_generators do
-    feeds = Repo.all(from f in Pan.FeedBacklog, where: is_nil(f.feed_generator))
+    feeds = Repo.all(from f in PanWeb.FeedBacklog, where: is_nil(f.feed_generator))
 
     for feed <- feeds do
       feed_generator = get_generator(feed.url)
 
       if is_bitstring(feed_generator) do
-        Pan.FeedBacklog.changeset(feed, %{feed_generator: feed_generator})
+        PanWeb.FeedBacklog.changeset(feed, %{feed_generator: feed_generator})
         |> Repo.update()
       end
     end
@@ -45,8 +45,8 @@ defmodule Pan.Parser.FeedBacklog do
   end
 
   def delete_duplicates() do
-    for backlogfeed <- Repo.all(Pan.FeedBacklog) do
-      if Repo.get_by(Pan.Feed, self_link_url: backlogfeed.url), do: Repo.delete!(backlogfeed)
+    for backlogfeed <- Repo.all(PanWeb.FeedBacklog) do
+      if Repo.get_by(PanWeb.Feed, self_link_url: backlogfeed.url), do: Repo.delete!(backlogfeed)
     end
   end
 end

@@ -7,11 +7,11 @@ defmodule Pan.Parser.Owner do
       {:ok, owner} = Persona.get_or_insert(owner_map)
 
 
-      case Repo.get_by(Pan.Engagement, persona_id: owner.id,
+      case Repo.get_by(PanWeb.Engagement, persona_id: owner.id,
                                        podcast_id: podcast_id,
                                        role: "owner") do
         nil ->
-          %Pan.Engagement{persona_id: owner.id,
+          %PanWeb.Engagement{persona_id: owner.id,
                           podcast_id: podcast_id,
                           role: "owner"}
           |> Repo.insert()

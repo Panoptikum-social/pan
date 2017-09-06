@@ -1,5 +1,5 @@
 defmodule Pan.UserControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.UserControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.User
+    alias PanWeb.User
     @valid_attrs %{name: "John Doe",
                    username: "jdoe" ,
                    email: "john.doe@panoptikum.io",

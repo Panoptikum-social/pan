@@ -1,7 +1,7 @@
 defmodule Pan.OpmlTest do
   use Pan.ModelCase
 
-  alias Pan.Opml
+  alias PanWeb.Opml
 
   @valid_attrs %{content_type: "text/x-opml+xml",
                  filename: "podcasts.opml",

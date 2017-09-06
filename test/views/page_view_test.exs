@@ -1,3 +1,3 @@
 defmodule Pan.PageViewTest do
-  use Pan.ConnCase, async: true
+  use PanWeb.ConnCase, async: true
 end

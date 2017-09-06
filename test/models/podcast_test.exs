@@ -1,7 +1,7 @@
 defmodule Pan.PodcastTest do
   use Pan.ModelCase
 
-  alias Pan.Podcast
+  alias PanWeb.Podcast
 
   @valid_attrs %{author: "Podcast author",
                  description: "Podcast description",

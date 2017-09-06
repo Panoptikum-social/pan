@@ -24,8 +24,8 @@ defmodule Pan.Mixfile do
                     :ja_serializer]]
   end
 
-  defp elixirc_paths(:test), do: ["lib", "web", "test/support"]
-  defp elixirc_paths(_),     do: ["lib", "web"]
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_),     do: ["lib"]
 
   defp deps do
     [{:phoenix, "~> 1.3.0"}, # web framework
@@ -40,8 +40,8 @@ defmodule Pan.Mixfile do
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.1.24"}, # time conversion
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
-     {:httpoison, "~> 0.11.1"}, # http client
-     {:hackney, "1.7.1"}, # erlang http client, had to increase version here
+     {:httpoison, "~> 0.13.0"}, # http client
+     {:hackney, "1.9.0"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
@@ -51,11 +51,11 @@ defmodule Pan.Mixfile do
      {:scrivener_html, "~> 1.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
      {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter,
-     {:con_cache, "~> 0.12.0"}, # key/value cache
+     {:con_cache, "~> 0.12.1"}, # key/value cache
      {:earmark, "~> 1.1.0"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent,
      {:tzdata, "~> 0.5.11"}, # mailing
-     {:tirexs, "~> 0.8.5"}, # elasticsearch connector
+     {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.17.0"}, # HTML parser
 

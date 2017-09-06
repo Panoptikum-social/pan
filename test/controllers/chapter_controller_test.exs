@@ -1,5 +1,5 @@
 defmodule Pan.ChapterControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.ChapterControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Chapter
+    alias PanWeb.Chapter
     @valid_attrs %{start: "some content", title: "some content"}
     @invalid_attrs %{}
 

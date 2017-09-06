@@ -1,7 +1,7 @@
 defmodule Pan.InvoiceTest do
   use Pan.ModelCase
 
-  alias Pan.Invoice
+  alias PanWeb.Invoice
 
   @valid_attrs %{content_type: "some content", filename: "some content", path: "some content"}
   @invalid_attrs %{}

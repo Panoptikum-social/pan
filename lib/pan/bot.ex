@@ -1,6 +1,6 @@
 defmodule Pan.Bot do
   use Pan.Web, :controller
-  alias Pan.Podcast
+  alias PanWeb.Podcast
 
   def whitelist_urls do
     body = %{

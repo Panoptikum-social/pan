@@ -4,20 +4,21 @@ defmodule Pan.Parser.Episode do
   alias Pan.Parser.Chapter
   alias Pan.Parser.Enclosure
   alias Pan.Parser.Author
+  alias Pan.Repo
   require Logger
 
   def get_or_insert(episode_map, podcast_id) do
-    case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
+    case Repo.get_by(PanWeb.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        case Repo.get_by(Pan.Episode, title: episode_map[:title] || episode_map[:subtitle] , podcast_id: podcast_id) do
+        case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map[:subtitle] , podcast_id: podcast_id) do
           nil ->
             # Here comes the line with the initial update time
-            Repo.get(Pan.Podcast, podcast_id)
-            |> Pan.Podcast.changeset(%{update_intervall: 10,
+            Repo.get(PanWeb.Podcast, podcast_id)
+            |> PanWeb.Podcast.changeset(%{update_intervall: 10,
                                        next_update: Timex.shift(Timex.now(), hours: 10)})
             |> Repo.update()
 
-            %Pan.Episode{podcast_id: podcast_id}
+            %PanWeb.Episode{podcast_id: podcast_id}
             |> Map.merge(episode_map)
             |> Repo.insert()
           episode ->
@@ -30,9 +31,9 @@ defmodule Pan.Parser.Episode do
 
 
   def get(episode_map, podcast_id) do
-    case Repo.get_by(Pan.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
+    case Repo.get_by(PanWeb.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        case Repo.get_by(Pan.Episode, title: episode_map[:title], podcast_id: podcast_id) do
+        case Repo.get_by(PanWeb.Episode, title: episode_map[:title], podcast_id: podcast_id) do
           nil ->
             {:error, "not_found"}
           episode ->
@@ -102,10 +103,10 @@ defmodule Pan.Parser.Episode do
 
 
   def clean() do
-    episodes = Pan.Repo.all(Pan.Episode)
+    episodes = Repo.all(PanWeb.Episode)
 
     for episode <- episodes do
-      Pan.Episode.changeset(episode, %{description: HtmlSanitizeEx2.basic_html_reduced(episode.description),
+      PanWeb.Episode.changeset(episode, %{description: HtmlSanitizeEx2.basic_html_reduced(episode.description),
                                        summary:     HtmlSanitizeEx2.basic_html_reduced(episode.summary)})
       |> Repo.update()
     end

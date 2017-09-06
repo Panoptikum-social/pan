@@ -1,7 +1,7 @@
 defmodule Pan.SubscriptionTest do
   use Pan.ModelCase
 
-  alias Pan.Subscription
+  alias PanWeb.Subscription
 
   @valid_attrs %{}
   @invalid_attrs %{}

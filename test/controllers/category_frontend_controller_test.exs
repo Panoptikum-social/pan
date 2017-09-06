@@ -1,5 +1,5 @@
 defmodule Pan.CategoryFrontendControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   test "lists all entries on index", %{conn: conn} do
     insert_category()

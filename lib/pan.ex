@@ -5,7 +5,7 @@ defmodule Pan do
     import Supervisor.Spec, warn: false
 
     children = [
-      supervisor(Pan.Endpoint, []),
+      supervisor(PanWeb.Endpoint, []),
       supervisor(Pan.Repo, []),
       supervisor(ConCache, [[ttl_check: :timer.seconds(10),
                              ttl: :timer.seconds(600)],
@@ -20,7 +20,7 @@ defmodule Pan do
   end
 
   def config_change(changed, _new, removed) do
-    Pan.Endpoint.config_change(changed, removed)
+    PanWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

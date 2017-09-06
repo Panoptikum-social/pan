@@ -1,7 +1,7 @@
 defmodule Pan.FeedTest do
   use Pan.ModelCase
 
-  alias Pan.Feed
+  alias PanWeb.Feed
 
   @valid_attrs %{feed_generator: "Feed generator",
                  first_page_url: "https://panoptikum.io/feed/first_page",

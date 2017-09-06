@@ -1,7 +1,7 @@
 defmodule Pan.InvoiceControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
-  alias Pan.Invoice
+  alias PanWeb.Invoice
   @valid_attrs %{content_type: "some content", filename: "some content", path: "some content"}
   @invalid_attrs %{}
 

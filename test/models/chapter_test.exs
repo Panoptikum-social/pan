@@ -1,7 +1,7 @@
 defmodule Pan.ChapterTest do
   use Pan.ModelCase
 
-  alias Pan.Chapter
+  alias PanWeb.Chapter
 
   @valid_attrs %{start: "01:02:03.456",
                  title: "Chatter title"}

@@ -1,3 +1,3 @@
 defmodule Pan.LayoutViewTest do
-  use Pan.ConnCase, async: true
+  use PanWeb.ConnCase, async: true
 end

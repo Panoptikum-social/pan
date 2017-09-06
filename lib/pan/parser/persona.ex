@@ -26,12 +26,12 @@ defmodule Pan.Parser.Persona do
 
     persona_map = Map.put_new(persona_map, :uri, persona_map[:email])
 
-    case Repo.get_by(Pan.Persona, pid:   persona_map[:pid]) ||
-         Repo.get_by(Pan.Persona, pid:   persona_map[:uri] || "") ||
-         Repo.get_by(Pan.Persona, uri:   persona_map[:uri] || "") ||
-         Repo.get_by(Pan.Persona, email: persona_map[:email] || "") do
+    case Repo.get_by(PanWeb.Persona, pid:   persona_map[:pid]) ||
+         Repo.get_by(PanWeb.Persona, pid:   persona_map[:uri] || "") ||
+         Repo.get_by(PanWeb.Persona, uri:   persona_map[:uri] || "") ||
+         Repo.get_by(PanWeb.Persona, email: persona_map[:email] || "") do
       nil ->
-        %Pan.Persona{}
+        %PanWeb.Persona{}
         |> Map.merge(persona_map)
         |> Repo.insert()
       persona ->

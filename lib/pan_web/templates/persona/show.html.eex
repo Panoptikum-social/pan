@@ -1,0 +1,49 @@
+<h2>Show persona</h2>
+
+<ul>
+
+  <li>
+    <strong>Pid:</strong>
+    <%= @persona.pid %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @persona.name %>
+  </li>
+
+  <li>
+    <strong>Uri:</strong>
+    <%= @persona.uri %>
+  </li>
+
+  <li>
+    <strong>Email:</strong>
+    <%= @persona.email %>
+  </li>
+
+  <li>
+    <strong>Description Title:</strong>
+    <%= @persona.description %>
+  </li>
+
+
+  <li>
+    <strong>Long Description:</strong>
+    <%= PanWeb.PersonaFrontendView.markdown(@persona.long_description) %>
+  </li>
+
+  <li>
+    <strong>Image url:</strong>
+    <%= @persona.image_url %>
+  </li>
+
+  <li>
+    <strong>Image title:</strong>
+    <%= @persona.image_title %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: persona_path(@conn, :edit, @persona) %>
+<%= link "Back", to: persona_path(@conn, :index) %>

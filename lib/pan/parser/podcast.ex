@@ -5,8 +5,8 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Parser.Persistor
   alias Pan.Parser.AlternateFeed
   alias Pan.Parser.Language
-  alias Pan.Podcast
-  alias Pan.Feed
+  alias PanWeb.Podcast
+  alias PanWeb.Feed
   require Logger
 
 
@@ -66,8 +66,8 @@ defmodule Pan.Parser.Podcast do
 
 
   def unpause(id) do
-    Repo.get!(Pan.Podcast, id)
-    |> Pan.Podcast.changeset(%{update_paused: false})
+    Repo.get!(PanWeb.Podcast, id)
+    |> PanWeb.Podcast.changeset(%{update_paused: false})
     |> Repo.update([force: true])
   end
 

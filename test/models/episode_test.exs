@@ -1,7 +1,7 @@
 defmodule Pan.EpisodeTest do
   use Pan.ModelCase
 
-  alias Pan.Episode
+  alias PanWeb.Episode
 
   @valid_attrs %{author: "Episode author",
                  deep_link: "https://panoptikum.io/path/episode/deeplink",

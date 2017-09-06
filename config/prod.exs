@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :pan, Pan.Endpoint,
+config :pan, PanWeb.Endpoint,
   http: [port: 8888, compress: true],
   url: [scheme: "https", host: "panoptikum.io", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
@@ -15,9 +15,9 @@ config :logger, level: :info
 config :phoenix, :serve_endpoints, true
 
 config :timelier, crontab: [
-  {{42, :any, :any, :any, :any}, {Pan.Podcast, :import_stale_podcasts, []}},
-  {{48, :any, :any, :any, :any}, {Pan.Search,  :push, [2]}},
-  {{0,     6, :any, :any, :any}, {Pan.User,    :pro_expiration, []}},
+  {{42, :any, :any, :any, :any}, {PanWeb.Podcast, :import_stale_podcasts, []}},
+  {{48, :any, :any, :any, :any}, {PanWeb.Search,  :push, [2]}},
+  {{0,     6, :any, :any, :any}, {PanWeb.User,    :pro_expiration, []}},
 ]
 
 config :pan, :environment, "prod"

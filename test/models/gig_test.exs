@@ -1,7 +1,7 @@
 defmodule Pan.GigTest do
   use Pan.ModelCase
 
-  alias Pan.Gig
+  alias PanWeb.Gig
 
   @valid_attrs %{comment: "Gig comment",
                  from_in_s: 42,

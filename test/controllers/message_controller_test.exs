@@ -1,5 +1,5 @@
 defmodule Pan.MessageControllerTest do
-  use Pan.ConnCase
+  use PanWeb.ConnCase
 
   describe "when user is logged in and is an admin" do
     setup do
@@ -8,7 +8,7 @@ defmodule Pan.MessageControllerTest do
       {:ok, conn: conn}
     end
 
-    alias Pan.Message
+    alias PanWeb.Message
     @valid_attrs %{content: "some content",
                    event: "some content",
                    subtopic: "some content",

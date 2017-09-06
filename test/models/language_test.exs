@@ -1,7 +1,7 @@
 defmodule Pan.LanguageTest do
   use Pan.ModelCase
 
-  alias Pan.Language
+  alias PanWeb.Language
 
   @valid_attrs %{name: "de-DE",
                  shortcode: "DE"}
