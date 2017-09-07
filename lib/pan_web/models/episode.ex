@@ -63,11 +63,11 @@ defmodule PanWeb.Episode do
 
   def latest do
     from(e in PanWeb.Episode, order_by: [desc: :publishing_date],
-                           join: p in assoc(e, :podcast),
-                           where: (is_nil(p.blocked) or p.blocked == false) and
-                                  e.publishing_date < ^NaiveDateTime.utc_now(),
-                           preload: :podcast,
-                           limit: 10)
+                              join: p in assoc(e, :podcast),
+                              where: (is_nil(p.blocked) or p.blocked == false) and
+                                     e.publishing_date < ^NaiveDateTime.utc_now(),
+                              preload: :podcast,
+                              limit: 10)
     |> Repo.all()
   end
 
