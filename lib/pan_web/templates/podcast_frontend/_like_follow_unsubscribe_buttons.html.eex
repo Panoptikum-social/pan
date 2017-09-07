@@ -1,15 +1,15 @@
 <%= if @current_user do %>
   <p>
-    <%= like_or_unlike(@current_user.id, @podcast.id) %>
-    <%= follow_or_unfollow(@current_user.id, @podcast.id) %>
-    <%= subscribe_or_unsubscribe(@current_user.id, @podcast.id) %>
+    <%= like_or_unlike(@current_user.id, @podcast) %>
+    <%= follow_or_unfollow(@current_user.id, @podcast) %>
+    <%= subscribe_or_unsubscribe(@current_user.id, @podcast) %>
   </p>
 <% else %>
-   <%= Podcast.likes(@podcast.id) %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
+   <%= @podcast.likes_count %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
 
-   <%= Podcast.follows(@podcast.id) %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
+   <%= @podcast.followers_count %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
 
-   <%= Podcast.subscriptions(@podcast.id) %>  <%= fa_icon("user-o") %> Subscribers
+   <%= @podcast.subscriptions_count %>  <%= fa_icon("user-o") %> Subscribers
 
   <p><i>
     <%= link "Sign up", to: user_frontend_path(@conn, :new) %> /

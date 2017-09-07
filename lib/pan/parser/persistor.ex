@@ -41,6 +41,11 @@ defmodule Pan.Parser.Persistor do
       Episode.persist_many(map[:episodes], podcast)
     end
 
+    podcast
+    |> PanWeb.Podcast.changeset()
+    |> PanWeb.Podcast.update_counters()
+    |> Repo.update()
+
     podcast.id
   end
 
@@ -54,7 +59,8 @@ defmodule Pan.Parser.Persistor do
         Episode.persist_many(map[:episodes], podcast)
       end
 
-      PanWeb.Podcast.changeset(podcast, %{last_build_date: map[:last_build_date]})
+      podcast
+      |> PanWeb.Podcast.changeset(%{last_build_date: map[:last_build_date]})
       |> PanWeb.Podcast.update_counters()
       |> Repo.update()
     end

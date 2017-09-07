@@ -3,8 +3,6 @@ defmodule PanWeb.PodcastApiController do
   use JaSerializer
   alias PanWeb.Episode
   alias PanWeb.Podcast
-  alias PanWeb.Subscription
-  alias PanWeb.Like
 
   def index(conn, params) do
     page = Map.get(params, "page", %{})

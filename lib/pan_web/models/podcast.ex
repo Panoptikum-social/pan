@@ -73,6 +73,7 @@ defmodule PanWeb.Podcast do
       like ->
         Repo.delete!(like)
     end
+    Podcast.update_likes_count(podcast_id)
   end
 
 
@@ -85,6 +86,7 @@ defmodule PanWeb.Podcast do
       like ->
         Repo.delete!(like)
     end
+    Podcast.update_followers_count(podcast_id)
   end
 
 
@@ -104,25 +106,6 @@ defmodule PanWeb.Podcast do
     Repo.all(from l in Follow, where: l.podcast_id == ^podcast_id,
                                select: [:follower_id])
     |> Enum.map(fn(user) ->  "mailboxes:" <> Integer.to_string(user.follower_id) end)
-  end
-
-
-  def likes(id) do
-    from(l in Like, where: l.podcast_id == ^id)
-    |> Repo.aggregate(:count, :id)
-    |> Integer.to_string
-  end
-
-  def follows(id) do
-    from(f in Follow, where: f.podcast_id == ^id)
-    |> Repo.aggregate(:count, :id)
-    |> Integer.to_string
-  end
-
-  def subscriptions(id) do
-    from(s in Subscription, where: s.podcast_id == ^id)
-    |> Repo.aggregate(:count, :id)
-    |> Integer.to_string
   end
 
 
@@ -332,5 +315,38 @@ defmodule PanWeb.Podcast do
       |> PanWeb.Podcast.update_counters()
       |> Repo.update()
     end
+  end
+
+
+  def update_likes_count(id) do
+    likes_count = from(l in Like, where: l.podcast_id == ^id)
+                  |> Repo.aggregate(:count, :id)
+
+    Repo.get!(Podcast, id)
+    |> PanWeb.Podcast.changeset()
+    |> put_change(:likes_count, likes_count)
+    |> Repo.update()
+  end
+
+
+  def update_followers_count(id) do
+    followers_count = from(f in Follow, where: f.podcast_id == ^id)
+                      |> Repo.aggregate(:count, :id)
+
+    Repo.get!(Podcast, id)
+    |> PanWeb.Podcast.changeset()
+    |> put_change(:followers_count, followers_count)
+    |> Repo.update()
+  end
+
+
+  def update_subscriptions_count(id) do
+    subscriptions_count = from(s in Subscription, where: s.podcast_id == ^id)
+                          |> Repo.aggregate(:count, :id)
+
+    Repo.get!(Podcast, id)
+    |> PanWeb.Podcast.changeset()
+    |> put_change(:subscriptions_count, subscriptions_count)
+    |> Repo.update()
   end
 end
