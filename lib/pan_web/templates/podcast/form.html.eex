@@ -90,6 +90,42 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :episodes_count, class: "control-label" %>
+    <%= number_input f, :episodes_count, class: "form-control" %>
+    <%= error_tag f, :episodes_count %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :followers_count, class: "control-label" %>
+    <%= number_input f, :followers_count, class: "form-control" %>
+    <%= error_tag f, :followers_count %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :likes_count, class: "control-label" %>
+    <%= number_input f, :likes_count, class: "form-control" %>
+    <%= error_tag f, :likes_count %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :subscriptions_count, class: "control-label" %>
+    <%= number_input f, :subscriptions_count, class: "form-control" %>
+    <%= error_tag f, :subscriptions_count %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :latest_episode_publishing_date, class: "control-label" %>
+    <%= datetime_select f, :latest_episode_publishing_date, class: "form-control" %>
+    <%= error_tag f, :latest_episode_publishing_date %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :publication_frequency, class: "control-label" %>
+    <%= number_input f, :publication_frequency, class: "form-control" %>
+    <%= error_tag f, :publication_frequency %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
