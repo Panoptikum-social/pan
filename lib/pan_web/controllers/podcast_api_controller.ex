@@ -13,7 +13,7 @@ defmodule PanWeb.PodcastApiController do
            |> String.to_integer
     offset = (page - 1) * size
 
-    total = from(p in Podcast, where: is_nil(p.blocked) or p.blocked == false,)
+    total = from(p in Podcast, where: is_nil(p.blocked) or p.blocked == false)
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 

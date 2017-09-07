@@ -33,7 +33,8 @@ defmodule PanWeb.PlainPodcastApiView do
   def type(_, _), do: "podcast"
 
   location :podcast_api_url
-  attributes [:title, :website, :description, :image_title, :image_url]
+  attributes [:title, :website, :description, :image_title, :image_url,
+              :latest_episode_publishing_date]
 
   def podcast_api_url(podcast, conn) do
     podcast_api_url(conn, :show, podcast)

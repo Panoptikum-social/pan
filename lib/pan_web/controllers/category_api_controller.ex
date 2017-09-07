@@ -35,7 +35,10 @@ defmodule PanWeb.CategoryApiController do
 
     category = Repo.get(Category, id)
                |> Repo.preload([:children, :parent])
-               |> Repo.preload(podcasts: from(p in Podcast, offset: ^offset, limit: ^size))
+               |> Repo.preload(podcasts:
+                   from(p in Podcast, offset: ^offset,
+                                      order_by: [fragment("? DESC NULLS LAST", p.latest_episode_publishing_date)],
+                                      limit: ^size))
 
     render conn, "show.json-api", data: category, opts: [page: links, include: "podcasts"]
   end
