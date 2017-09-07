@@ -77,7 +77,10 @@ defmodule PanWeb.PodcastApiController do
            |> String.to_integer
     offset = (page - 1) * size
 
-    total = Repo.aggregate(PanWeb.Podcast, :count, :id)
+    total = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
+                                      is_nil(p.latest_episode_publishing_date) == false and
+                                      p.latest_episode_publishing_date < ^NaiveDateTime.utc_now())
+            |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
@@ -85,16 +88,12 @@ defmodule PanWeb.PodcastApiController do
                                                          total: total_pages,
                                                          base_url: podcast_api_url(conn,:last_updated)}, conn)
 
-    podcast_ids = from(e in Episode, order_by: [desc: max(e.publishing_date)],
-                                     where: is_nil(e.publishing_date) == false and
-                                            e.publishing_date < ^NaiveDateTime.utc_now(),
-                                     group_by: e.podcast_id,
-                                     select: e.podcast_id,
-                                     limit: ^size,
-                                     offset: ^offset)
-                  |> Repo.all()
-
-    podcasts = from(p in Podcast, where: p.id in ^podcast_ids)
+    podcasts = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
+                                         is_nil(p.latest_episode_publishing_date) == false and
+                                         p.latest_episode_publishing_date < ^NaiveDateTime.utc_now(),
+                                  order_by: [desc: :latest_episode_publishing_date],
+                                  limit: ^size,
+                                  offset: ^offset)
                |> Repo.all()
 
     render conn, "index.json-api", data: podcasts,
@@ -103,23 +102,17 @@ defmodule PanWeb.PodcastApiController do
 
 
   def most_subscribed(conn, _params) do
-    podcasts = from(s in Subscription, join: p in assoc(s, :podcast),
-                                       group_by: p.id,
-                                       select: p,
-                                       order_by: [desc: count(s.podcast_id)],
-                                       limit: 10)
-                       |> Repo.all()
+    podcasts = from(p in Podcast, order_by: [desc: p.subscriptions_count],
+                                  limit: 10)
+               |> Repo.all()
 
     render conn, "index.json-api", data: podcasts
   end
 
 
   def most_liked(conn, _params) do
-    podcasts = from(l in Like, join: p in assoc(l, :podcast),
-                               group_by: p.id,
-                               select: p,
-                               order_by: [desc: count(l.podcast_id)],
-                               limit: 10)
+    podcasts = from(p in Podcast, order_by: [desc: p.likes_count],
+                                  limit: 10)
                |> Repo.all()
 
     render conn, "index.json-api", data: podcasts

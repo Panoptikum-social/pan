@@ -282,12 +282,6 @@ defmodule PanWeb.Podcast do
   end
 
 
-  def latest_episode_publishing_date(id) do
-    from(e in Episode, where: e.podcast_id == ^id)
-    |> Repo.aggregate(:max, :publishing_date)
-  end
-
-
   def update_counters(podcast) do
     podcast_id = podcast.data.id
 
