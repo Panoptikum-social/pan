@@ -64,6 +64,15 @@
                 <dt>last modified</dt>
                 <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
               <% end %>
+              <%= if @podcast.latest_episode_publishing_date do %>
+                <dt>last episode published</dt>
+                <dd><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+              <% end %>
+              <%= if @podcast.publication_frequency > 0 do %>
+                <dt>publication frequency</dt>
+                <dd><%= Float.round(@podcast.publication_frequency, 2) %> days</dd>
+              <% end %>
+
               <dt>Contributors</dt>
               <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
 
