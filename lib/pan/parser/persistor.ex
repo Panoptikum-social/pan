@@ -12,7 +12,6 @@ defmodule Pan.Parser.Persistor do
   alias Pan.Parser.Owner
 
 
-
   def initial_import(map, _url \\ nil) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
                                  :languages, :categories, :owner, :categories,
@@ -56,6 +55,7 @@ defmodule Pan.Parser.Persistor do
       end
 
       PanWeb.Podcast.changeset(podcast, %{last_build_date: map[:last_build_date]})
+      |> PanWeb.Podcast.update_counters()
       |> Repo.update()
     end
   end

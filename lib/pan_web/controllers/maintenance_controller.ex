@@ -1,6 +1,7 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
   alias PanWeb.Episode
+  alias PanWeb.Podcast
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
@@ -25,5 +26,12 @@ defmodule PanWeb.MaintenanceController do
                |> Repo.all
 
     render(conn, "fix.html", podcasts: podcasts)
+  end
+
+
+  def update_podcast_counters(conn, _params) do
+    Podcast.update_all_counters()
+
+    render(conn, "done.html")
   end
 end

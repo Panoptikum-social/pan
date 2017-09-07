@@ -26,6 +26,12 @@ defmodule PanWeb.Podcast do
     field :next_update, :naive_datetime
     field :retired, :boolean, default: false
     field :unique_identifier, Ecto.UUID
+    field :episodes_count, :integer
+    field :followers_count, :integer
+    field :likes_count, :integer
+    field :subscriptions_count, :integer
+    field :latest_episode_publishing_date, :naive_datetime
+    field :publication_frequency, :float
     timestamps()
 
     has_many :episodes, PanWeb.Episode, on_delete: :delete_all
@@ -52,7 +58,8 @@ defmodule PanWeb.Podcast do
     |> cast(params, [:title, :website, :last_build_date, :explicit, :payment_link_title,
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
                      :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
-                     :next_update])
+                     :next_update, :episodes_count, :followers_count, :likes_count,
+                     :subscriptions_count, :latest_episode_publishing_date, :publication_frequency])
     |> validate_required([:title, :update_intervall, :next_update])
     |> unique_constraint(:title)
   end
@@ -278,5 +285,58 @@ defmodule PanWeb.Podcast do
   def latest_episode_publishing_date(id) do
     from(e in Episode, where: e.podcast_id == ^id)
     |> Repo.aggregate(:max, :publishing_date)
+  end
+
+
+  def update_counters(podcast) do
+    podcast_id = podcast.data.id
+
+    episodes_count = from(e in Episode, where: e.podcast_id == ^podcast_id)
+                     |> Repo.aggregate(:count, :id)
+
+    likes_count = from(l in Like, where: l.podcast_id == ^podcast_id)
+                  |> Repo.aggregate(:count, :id)
+
+    followers_count = from(f in Follow, where: f.podcast_id == ^podcast_id)
+                      |> Repo.aggregate(:count, :id)
+
+    subscriptions_count = from(s in Subscription, where: s.podcast_id == ^podcast_id)
+                          |> Repo.aggregate(:count, :id)
+
+    latest_episode_publishing_date = from(e in Episode, where: e.podcast_id == ^podcast_id)
+                          |> Repo.aggregate(:max, :publishing_date)
+
+    first_episode_publishing_date = from(e in Episode, where: e.podcast_id == ^podcast_id)
+                                    |> Repo.aggregate(:min, :publishing_date)
+
+    publication_frequency =
+      if episodes_count > 1 && latest_episode_publishing_date && first_episode_publishing_date do
+        NaiveDateTime.diff(latest_episode_publishing_date, first_episode_publishing_date, :second) /
+                      (episodes_count - 1) / 86400
+      else
+        0.0
+    end
+
+    podcast
+    |> put_change(:episodes_count, episodes_count)
+    |> put_change(:likes_count, likes_count)
+    |> put_change(:followers_count, followers_count)
+    |> put_change(:subscriptions_count, subscriptions_count)
+    |> put_change(:latest_episode_publishing_date, latest_episode_publishing_date)
+    |> put_change(:publication_frequency, publication_frequency)
+  end
+
+
+  def update_all_counters do
+    podcasts = Repo.all(Podcast)
+
+    for podcast <- podcasts do
+      Logger.info "\n\e[33m === Updating counter for podcast: #{podcast.id} #{podcast.title} ===\e[0m"
+
+      podcast
+      |> PanWeb.Podcast.changeset()
+      |> PanWeb.Podcast.update_counters()
+      |> Repo.update()
+    end
   end
 end

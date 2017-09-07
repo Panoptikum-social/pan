@@ -57,6 +57,24 @@
 
   <dt>Retired</dt>
   <dd><%= @podcast.retired %></dd>
+
+  <dt>Episodes count</dt>
+  <dd><%= @podcast.episodes_count %></dd>
+
+  <dt>Followers count</dt>
+  <dd><%= @podcast.followers_count %></dd>
+
+  <dt>Likes_count</dt>
+  <dd><%= @podcast.likes_count %></dd>
+
+  <dt>Subscriptions_count</dt>
+  <dd><%= @podcast.subscriptions_count %></dd>
+
+  <dt>Latest episode publishing date</dt>
+  <dd><%= @podcast.latest_episode_publishing_date %></dd>
+
+  <dt>Publication frequency</dt>
+  <dd><%= if @podcast.publication_frequency, do: Float.round(@podcast.publication_frequency, 2) %> days</dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>
