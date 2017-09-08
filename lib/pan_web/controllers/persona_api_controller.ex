@@ -65,6 +65,44 @@ defmodule PanWeb.PersonaApiController do
                                   gigs: gigs,
                                   engagements: engagements,
                                   opts: [page: links,
-                                        include: "rediect,delegates,engagements,gigs,podcasts,episodes"]
+                                        include: "redirect,delegates,engagements,gigs,podcasts,episodes"]
+  end
+
+
+    def search(conn, params) do
+    page = Map.get(params, "page", %{})
+           |> Map.get("number", "1")
+           |> String.to_integer
+    size = Map.get(params, "page", %{})
+           |> Map.get("size", "10")
+           |> String.to_integer
+    offset = (page - 1) * size
+
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas",
+             search: [size: size, from: offset, query: [match: [_all: params["filter"]]]]]
+
+
+    case Tirexs.Query.create_resource(query) do
+      {:ok, 200, %{hits: hits}} ->
+        total = Enum.min([hits.total, 10000])
+        total_pages = div(total - 1, size) + 1
+
+
+        links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                             size: size,
+                                                             total: total_pages,
+                                                             base_url: persona_api_url(conn,:search)}, conn)
+
+        persona_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
+
+        personas = from(p in Persona, where: p.id in ^persona_ids,
+                                      preload: [:redirect, :delegates, :podcasts])
+                   |> Repo.all()
+
+        render conn, "index.json-api", data: personas, opts: [page: links,
+                                                              include: "redirect,delegates,podcasts"]
+      {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
+        render(conn, "error.json-api", reason: reason)
+    end
   end
 end

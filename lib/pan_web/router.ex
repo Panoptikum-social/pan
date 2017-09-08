@@ -32,18 +32,27 @@ defmodule PanWeb.Router do
 
     resources "/alternate_feeds", AlternateFeedApiController, only: [:show]
     resources "/chapters", ChapterApiController, only: [:show]
+
+    get "/categories/search", CategoryApiController, :search
     resources "/categories", CategoryApiController, only: [:index, :show]
+
     resources "/enclosures", EnclosureApiController, only: [:show]
     resources "/engagements", EngagementApiController, only: [:show]
+
+    get "/episodes/search", EpisodeApiController, :search
     resources "/episodes", EpisodeApiController, only: [:index, :show]
+
     resources "/feeds", FeedApiController, only: [:show]
     resources "/gigs", GigApiController, only: [:show]
     resources "/languages", LanguageApiController, only: [:index, :show]
+
+    get "/personas/search", PersonaApiController, :search
     resources "/personas", PersonaApiController, only: [:show]
 
     get "/recommendations/random", RecommendationApiController, :random
     resources "/recommendations", RecommendationApiController, only: [:index, :show]
 
+    get "/podcasts/search", PodcastApiController, :search
     get "/podcasts/most_subscribed", PodcastApiController, :most_subscribed
     get "/podcasts/most_liked", PodcastApiController, :most_liked
     get "/podcasts/last_updated", PodcastApiController, :last_updated

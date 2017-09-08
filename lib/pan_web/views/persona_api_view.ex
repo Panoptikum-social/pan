@@ -10,10 +10,10 @@ defmodule PanWeb.PersonaApiView do
   has_one :redirect, serializer: PanWeb.PlainPersonaApiView, include: true
   has_many :delegates, serializer: PanWeb.PlainPersonaApiView, include: true
 
-  has_many :engagements, serializer: PanWeb.PlainEngagmentApiView, include: true
-  has_many :podcasts, serializer: PanWeb.PlainPodcastApiView, include: true
-  has_many :gigs, serializer: PanWeb.PlainGigApiView, include: true
-  has_many :episodes, serializer: PanWeb.PlainEpisodeApiView, include: true
+  has_many :engagements, serializer: PanWeb.PlainEngagmentApiView, include: false
+  has_many :podcasts, serializer: PanWeb.PlainPodcastApiView, include: false
+  has_many :gigs, serializer: PanWeb.PlainGigApiView, include: false
+  has_many :episodes, serializer: PanWeb.PlainEpisodeApiView, include: false
 
   def persona_api_url(persona, conn) do
     persona_api_url(conn, :show, persona)

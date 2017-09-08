@@ -31,7 +31,7 @@ defmodule PanWeb.SearchFrontendController do
         render(conn, "new.html", searchstring: params["search"]["searchstring"],
                                  hits: hits, took: took, from: from, size: size, page: page,
                                  total: total)
-      {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
+      {:error, number, %{error: %{caused_by: %{reason: reason}}}} ->
         render(conn, "error.html")
         raise reason
     end

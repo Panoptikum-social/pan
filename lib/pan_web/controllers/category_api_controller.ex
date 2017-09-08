@@ -42,4 +42,25 @@ defmodule PanWeb.CategoryApiController do
 
     render conn, "show.json-api", data: category, opts: [page: links, include: "podcasts"]
   end
+
+
+  def search(conn, params) do
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories",
+             search: [size: 1000, query: [match: [_all: params["filter"]]]]]
+
+
+    case Tirexs.Query.create_resource(query) do
+      {:ok, 200, %{hits: hits}} ->
+        category_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
+
+        categories = from(c in Category, where: c.id in ^category_ids)
+                     |> Repo.all()
+                     |> Repo.preload(children: from(cat in Category, order_by: cat.title))
+                     |> Repo.preload(:parent)
+
+        render conn, "index.json-api", data: categories, opts: [include: "children"]
+      {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
+        render(conn, "error.json-api", reason: reason)
+    end
+  end
 end
