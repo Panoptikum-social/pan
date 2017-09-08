@@ -5,8 +5,8 @@ defmodule PanWeb.SessionController do
     render conn, "new.html"
   end
 
-  def create(conn, %{"session" =>  %{"username" => user, "password" => pass}}) do
-    case PanWeb.Auth.login_by_username_and_pass(conn, user, pass) do
+  def create(conn, %{"session" =>  %{"username" => user, "password" => given_pass}}) do
+    case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass) do
       {:ok, conn} ->
         current_user = conn.assigns.current_user
         case current_user.email_confirmed do

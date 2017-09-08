@@ -59,6 +59,9 @@ defmodule PanWeb.Router do
     resources "/podcasts", PodcastApiController, only: [:index, :show]
 
     get "/search", SearchApiController, :search
+
+    post "/login", SessionApiController, :login
+    post "/get_token", SessionApiController, :login
   end
 
 

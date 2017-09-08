@@ -1,0 +1,3 @@
+# Obviously, that is no a real user's pass ;-)
+
+curl --data "username=informatom&password=secret" http://localhost:4000/jsonapi/login
