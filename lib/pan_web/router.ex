@@ -57,6 +57,8 @@ defmodule PanWeb.Router do
     get "/podcasts/most_liked", PodcastApiController, :most_liked
     get "/podcasts/last_updated", PodcastApiController, :last_updated
     resources "/podcasts", PodcastApiController, only: [:index, :show]
+
+    get "/search", SearchApiController, :search
   end
 
 
