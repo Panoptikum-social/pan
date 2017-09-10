@@ -203,7 +203,8 @@ defmodule Pan.Parser.Analyzer do
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
     :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
-    :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId"
+    :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
+    :categorie, :"photo:imgsrc"
   ], do: %{}
 
 
@@ -346,6 +347,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"dc:publisher",      _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"atom:author",       _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call(_, "episode", [:Author,              _, value]), do: Iterator.parse(%{}, "episode_author", value)
 
 
 # Enclosures a.k.a. Audiofiles
@@ -416,7 +418,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
   def call("owner", [tag_atom, _, _]) when tag_atom in [
-    :copyright, :"itunes:keywords", :"itunes:image"
+    :copyright, :"itunes:keywords", :"itunes:image", :"itunes:explicit"
   ], do: %{}
 
 
