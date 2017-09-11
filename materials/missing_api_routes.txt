@@ -1,0 +1,32 @@
+          user_frontend_path  POST    /users                                      PanWeb.UserFrontendController :create
+          user_frontend_path  POST    /pan/users/like_all_subscribed              PanWeb.UserFrontendController :like_all_subscribed
+          user_frontend_path  POST    /pan/users/follow_all_subscribed            PanWeb.UserFrontendController :follow_all_subscribed
+          user_frontend_path  GET     /pan/my_podcasts                            PanWeb.UserFrontendController :my_podcasts
+          user_frontend_path  GET     /pan/my_profile                             PanWeb.UserFrontendController :my_profile
+          user_frontend_path  GET     /pan/my_messages                            PanWeb.UserFrontendController :my_messages
+          user_frontend_path  PUT     /pan/update                                 PanWeb.UserFrontendController :update
+          user_frontend_path  PUT     /pan/update_password                        PanWeb.UserFrontendController :update_password
+       persona_frontend_path  DELETE  /pan/personas/:id/claim                     PanWeb.PersonaFrontendController :claim
+       persona_frontend_path  PATCH   /pan/personas/:id                           PanWeb.PersonaFrontendController :update
+          opml_frontend_path  GET     /pan/opmls                                  PanWeb.OpmlFrontendController :index
+          opml_frontend_path  POST    /pan/opmls                                  PanWeb.OpmlFrontendController :create
+          opml_frontend_path  DELETE  /pan/opmls/:id                              PanWeb.OpmlFrontendController :delete
+          opml_frontend_path  GET     /pan/opmls/:id/import                       PanWeb.OpmlFrontendController :import
+  feed_backlog_frontend_path  POST    /pan/feed_backlogs                          PanWeb.FeedBacklogFrontendController :create
+recommendation_frontend_path  GET     /pan/my_recommendations                     PanWeb.RecommendationFrontendController :my_recommendations
+recommendation_frontend_path  POST    /pan/recommendations                        PanWeb.RecommendationFrontendController :create
+       persona_frontend_path  GET     /pro/personas/:id/toggle_delegation         PanWeb.PersonaFrontendController :toggle_delegation
+       persona_frontend_path  GET     /pro/personas/:id/cancel_redirect           PanWeb.PersonaFrontendController :cancel_redirect
+       persona_frontend_path  GET     /pro/personas/:id/redirect                  PanWeb.PersonaFrontendController :redirect
+subscription: podcast
+like: user
+      podcast
+      persona
+      chapter
+      episode
+      category
+follow: user
+        podcast
+        persona
+        category
+proclaim: episode
