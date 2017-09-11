@@ -89,7 +89,7 @@ defmodule PanWeb.Auth do
   end
 
 
-  import Phoenix.Controller
+  import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
   alias PanWeb.Router.Helpers
 
   def authenticate_user(conn, _opts) do

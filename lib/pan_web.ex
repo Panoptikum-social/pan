@@ -27,8 +27,10 @@ defmodule Pan.Web do
       import PanWeb.Router.Helpers
       import PanWeb.Gettext
       import PanWeb.Auth, only: [authenticate_user: 2,
-                              authenticate_admin: 2,
-                              authenticate_pro: 2]
+                                 authenticate_admin: 2,
+                                 authenticate_pro: 2]
+
+      import PanWeb.ApiAuth, only: [authenticate_api_user: 2]
     end
   end
 
@@ -59,6 +61,8 @@ defmodule Pan.Web do
       import PanWeb.Auth, only: [authenticate_user: 2,
                               authenticate_admin: 2,
                               authenticate_pro: 2]
+
+      import PanWeb.ApiAuth, only: [authenticate_api_user: 2]
     end
   end
 

@@ -16,6 +16,9 @@ defmodule PanWeb.Router do
 
   pipeline :json_api do
     plug :accepts, ["json-api"]
+    plug :fetch_session
+    plug :put_secure_browser_headers
+    plug PanWeb.ApiAuth, repo: Pan.Repo
   end
 
   pipeline :bot do
@@ -64,6 +67,12 @@ defmodule PanWeb.Router do
     post "/get_token", SessionApiController, :login
   end
 
+
+  scope "/jsonapi/pan", PanWeb do
+    pipe_through [:json_api, :authenticate_api_user]
+
+    resources "/likes", LikeApiController, only: [:create]
+  end
 
   scope "/api", PanWeb do
     pipe_through :api

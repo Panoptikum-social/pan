@@ -18,6 +18,8 @@ defmodule PanWeb.SessionApiController do
                  valid_for: "1 hour",
                  valid_until: Timex.shift(Timex.now(), hours: 1)}
 
+        conn = Plug.Conn.put_resp_header(conn, "token", token)
+
         render conn, "show.json-api", data: data
 
       {:error, _reason, _conn} ->
