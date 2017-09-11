@@ -242,4 +242,17 @@ defmodule Pan.Parser.Helpers do
       text
     end
   end
+
+
+  def mark_if_deleted(changeset) do
+    if changeset.__meta__.state == :deleted do
+      changeset
+      |> Map.put(:deleted, true)
+      |> Map.put(:created, false)
+    else
+      changeset
+      |> Map.put(:created, true)
+      |> Map.put(:deleted, false)
+    end
+  end
 end

@@ -71,7 +71,7 @@ defmodule PanWeb.Router do
   scope "/jsonapi/pan", PanWeb do
     pipe_through [:json_api, :authenticate_api_user]
 
-    resources "/likes", LikeApiController, only: [:create]
+    post "/likes/toggle", LikeApiController, :toggle
   end
 
   scope "/api", PanWeb do

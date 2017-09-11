@@ -32,7 +32,7 @@ defmodule PanWeb.Category do
         %Like{enjoyer_id: user_id, category_id: category_id}
         |> Repo.insert
       like ->
-        Repo.delete!(like)
+        {:ok, Repo.delete!(like)}
     end
   end
 
@@ -43,8 +43,8 @@ defmodule PanWeb.Category do
       nil ->
         %Follow{follower_id: user_id, category_id: category_id}
         |> Repo.insert
-      like ->
-        Repo.delete!(like)
+      follow ->
+        {:ok, Repo.delete!(follow)}
     end
   end
 

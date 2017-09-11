@@ -66,27 +66,33 @@ defmodule PanWeb.Podcast do
 
 
   def like(podcast_id, user_id) do
-    case Like.find_podcast_like(user_id, podcast_id) do
-      nil ->
-        %Like{enjoyer_id: user_id, podcast_id: podcast_id}
-        |> Repo.insert
-      like ->
-        Repo.delete!(like)
-    end
+    response =
+      case Like.find_podcast_like(user_id, podcast_id) do
+        nil ->
+          %Like{enjoyer_id: user_id, podcast_id: podcast_id}
+          |> Repo.insert
+        like ->
+          {:ok, Repo.delete!(like)}
+      end
+
     Podcast.update_likes_count(podcast_id)
+    response
   end
 
 
   def follow(podcast_id, user_id) do
-    case Repo.get_by(Follow, follower_id: user_id,
-                             podcast_id: podcast_id) do
-      nil ->
-        %Follow{follower_id: user_id, podcast_id: podcast_id}
-        |> Repo.insert
-      like ->
-        Repo.delete!(like)
-    end
+    response =
+      case Repo.get_by(Follow, follower_id: user_id,
+                               podcast_id: podcast_id) do
+        nil ->
+          %Follow{follower_id: user_id, podcast_id: podcast_id}
+          |> Repo.insert
+        follow ->
+          {:ok, Repo.delete!(follow)}
+      end
+
     Podcast.update_followers_count(podcast_id)
+    response
   end
 
 
@@ -96,8 +102,8 @@ defmodule PanWeb.Podcast do
       nil ->
         %Subscription{user_id: user_id, podcast_id: podcast_id}
         |> Repo.insert
-      like ->
-        Repo.delete!(like)
+      subscription ->
+        {:ok, Repo.delete!(subscription)}
     end
   end
 
@@ -217,12 +223,10 @@ defmodule PanWeb.Podcast do
     next_update = Timex.now()
                   |> Timex.shift(hours: update_intervall)
 
-    changeset = Repo.get(Podcast, id)
+    Repo.get(Podcast, id)
     |> Podcast.changeset(%{update_intervall: update_intervall,
                            next_update:      next_update})
     |> Repo.update()
-
-    IO.inspect changeset
   end
 
 

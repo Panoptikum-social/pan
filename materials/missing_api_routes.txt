@@ -20,11 +20,9 @@ recommendation_frontend_path  POST    /pan/recommendations                      
        persona_frontend_path  GET     /pro/personas/:id/redirect                  PanWeb.PersonaFrontendController :redirect
 subscription: podcast
 like: user
-      podcast
       persona
       chapter
       episode
-      category
 follow: user
         podcast
         persona
