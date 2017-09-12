@@ -21,7 +21,6 @@ recommendation_frontend_path  POST    /pan/recommendations                      
 subscription: podcast
 like: user
       persona
-      chapter
       episode
 follow: user
         podcast
