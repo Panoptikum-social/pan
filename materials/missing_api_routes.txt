@@ -18,12 +18,10 @@ recommendation_frontend_path  POST    /pan/recommendations                      
        persona_frontend_path  GET     /pro/personas/:id/toggle_delegation         PanWeb.PersonaFrontendController :toggle_delegation
        persona_frontend_path  GET     /pro/personas/:id/cancel_redirect           PanWeb.PersonaFrontendController :cancel_redirect
        persona_frontend_path  GET     /pro/personas/:id/redirect                  PanWeb.PersonaFrontendController :redirect
+proclaim: episode
 subscription: podcast
-like: user
-      persona
-      episode
 follow: user
         podcast
         persona
         category
-proclaim: episode
+like: user
