@@ -117,7 +117,7 @@ defmodule PanWeb.User do
         %Like{enjoyer_id: current_user_id, user_id: user_id}
         |> Repo.insert
       like ->
-        Repo.delete!(like)
+        {:ok, Repo.delete!(like)}
     end
   end
 
@@ -128,8 +128,8 @@ defmodule PanWeb.User do
       nil ->
         %Follow{follower_id: current_user_id, user_id: user_id}
         |> Repo.insert
-      like ->
-        Repo.delete!(like)
+      follow ->
+        {:ok, Repo.delete!(follow)}
     end
   end
 

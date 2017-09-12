@@ -13,6 +13,7 @@ defmodule PanWeb.LikeApiView do
   has_one :chapter, serializer: PanWeb.PlainChapterApiView, include: false
   has_one :persona, serializer: PanWeb.PlainPersonaApiView, include: false
   has_one :category, serializer: PanWeb.PlainPersonaApiView, include: false
+  has_one :user, serializer: PanWeb.PlainUserApiView, include: false
 
   def user_name(like) do
     like.user && like.user.name

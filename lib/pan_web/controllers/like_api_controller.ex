@@ -7,6 +7,7 @@ defmodule PanWeb.LikeApiController do
   alias PanWeb.Chapter
   alias PanWeb.Episode
   alias PanWeb.Persona
+  alias PanWeb.User
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -47,6 +48,35 @@ defmodule PanWeb.LikeApiController do
 
     render conn, "show.json-api", data: like,
                                   opts: [include: "persona"]
+  end
+
+
+  def toggle(conn, %{"user_id" => user_id}, current_user) do
+    {:ok, like} = user_id
+                  |> String.to_integer()
+                  |> User.like(current_user.id)
+
+    like = like
+           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+           |> mark_if_deleted()
+
+    e = %Event{
+      topic:           "users",
+      subtopic:        user_id,
+      current_user_id: current_user.id,
+      user_id:         String.to_integer(user_id),
+      type:            "success",
+      event:           "like"
+    }
+
+    e = %{e | content: "« liked the user <b>" <>
+                       Repo.get!(User, e.user_id).name <> "</b> »"}
+
+    Message.persist_event(e)
+    Event.notify_subscribers(e)
+
+    render conn, "show.json-api", data: like,
+                                  opts: [include: "user"]
   end
 
 
