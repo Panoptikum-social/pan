@@ -41,7 +41,7 @@ defmodule PanWeb.ApiAuth do
   end
 
 
-  defp send_error(conn, reason) do
+  def send_error(conn, reason) do
     conn
     |> put_view(ErrorApiView)
     |> put_status(401)

@@ -30,8 +30,6 @@ defmodule PanWeb.SubscriptionApiController do
                    |> Repo.preload([:user, :podcast])
                    |> mark_if_deleted()
 
-    IO.inspect subscription.user
-
     render conn, "show.json-api", data: subscription,
                                   opts: [include: "user,podcast"]
   end

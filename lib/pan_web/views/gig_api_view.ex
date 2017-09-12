@@ -6,7 +6,7 @@ defmodule PanWeb.GigApiView do
 
   location :gig_api_url
   attributes [:from_in_s, :until_in_s, :comment, :publishing_date, :role, :self_proclaimed,
-              :persona_id, :episode_id]
+              :persona_id, :episode_id, :created, :deleted]
 
   has_one :persona, serializer: PanWeb.PlainPersonaApiView, include: true
   has_one :episode, serializer: PanWeb.PlainEpisodeApiView, include: true
@@ -25,7 +25,7 @@ defmodule PanWeb.PlainGigApiView do
 
   location :gig_api_url
   attributes [:from_in_s, :until_in_s, :comment, :publishing_date, :role, :self_proclaimed,
-              :persona_id, :episode_id]
+              :persona_id, :episode_id, :created, :deleted]
 
   def gig_api_url(gig, conn) do
     gig_api_url(conn, :show, gig)

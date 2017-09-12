@@ -35,11 +35,11 @@ defmodule PanWeb.Gig do
 
 
   def proclaim(episode_id, persona_id, current_user_id) do
-    with _ <- Repo.get_by(Manifestation, user_id: current_user_id,
-                                      persona_id: persona_id) do
+    IO.inspect Repo.get_by(Manifestation, user_id: current_user_id, persona_id: persona_id)
+    with %Manifestation{} <- Repo.get_by(Manifestation, user_id: current_user_id,
+                                                     persona_id: persona_id) do
       case Repo.get_by(Gig, episode_id: episode_id,
-                            persona_id: persona_id,
-                            self_proclaimed: true) do
+                            persona_id: persona_id) do
         nil ->
           %Gig{episode_id: episode_id,
                persona_id: persona_id,
@@ -47,8 +47,10 @@ defmodule PanWeb.Gig do
                role: "contributor"}
           |> Repo.insert
         gig ->
-          Repo.delete!(gig)
+          {:ok, Repo.delete!(gig)}
       end
+    else
+      _ -> {:error, "not your persona"}
     end
   end
 end

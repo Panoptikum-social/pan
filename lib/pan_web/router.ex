@@ -80,6 +80,7 @@ defmodule PanWeb.Router do
     post "/likes/toggle", LikeApiController, :toggle
     post "/follows/toggle", FollowApiController, :toggle
     post "/subscriptions/toggle", SubscriptionApiController, :toggle
+    post "/gigs/toggle", GigApiController, :toggle
   end
 
   scope "/api", PanWeb do
