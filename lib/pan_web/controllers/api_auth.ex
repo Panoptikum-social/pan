@@ -22,7 +22,13 @@ defmodule PanWeb.ApiAuth do
     case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 60) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
-        assign(conn, :current_user, user)
+        if user.email_confirmed do
+          assign(conn, :current_user, user)
+        else
+          conn
+          |> assign(:current_user, nil)
+          |> assign(:api_error, "email address not confirmed yet, click the confirmation link in the email")
+        end
       {:error, error} ->
         conn
         |> assign(:current_user, nil)

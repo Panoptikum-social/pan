@@ -32,7 +32,7 @@ defmodule PanWeb.UserApiController do
                                    opts: [page: links]
   end
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id}) do
     user = Repo.get(User, id)
            |> Repo.preload([:categories_i_like, :users_i_like])
 

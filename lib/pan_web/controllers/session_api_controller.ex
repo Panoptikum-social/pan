@@ -3,6 +3,7 @@ defmodule PanWeb.SessionApiController do
   use JaSerializer
   alias PanWeb.Auth
   alias PanWeb.Endpoint
+  alias PanWeb.ErrorApiView
 
   def login(conn, %{"username" => username, "password" => given_pass}) do
     conn = fetch_session(conn)
@@ -11,6 +12,16 @@ defmodule PanWeb.SessionApiController do
       {:ok, conn} ->
         current_user = conn.assigns.current_user
         token = Phoenix.Token.sign(Endpoint, "user", current_user.id)
+
+        unless current_user.email_confirmed do
+          conn
+          |> put_view(ErrorApiView)
+          |> put_status(401)
+          |> render(:errors, data: %{code: 401,
+                                     status: 401,
+                                     title: "Unauthorized",
+                                     detail: "email address not confirmed yet, click the confirmation link in the email"})
+        end
 
         data = %{id: current_user.id,
                  token: token,
