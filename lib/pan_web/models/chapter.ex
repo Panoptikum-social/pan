@@ -35,7 +35,7 @@ defmodule PanWeb.Chapter do
               podcast_id: chapter.episode.podcast_id}
         |> Repo.insert
       like ->
-        Repo.delete!(like)
+        {:ok, Repo.delete!(like)}
     end
   end
 

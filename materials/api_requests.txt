@@ -2,5 +2,4 @@
 
 curl --data "username=informatom&password=secret" http://localhost:4000/jsonapi/login
 
-
 curl --data "podcast_id=104" -H "Authorization: Bearer :token" http://localhost:4000/jsonapi/pan/likes/
