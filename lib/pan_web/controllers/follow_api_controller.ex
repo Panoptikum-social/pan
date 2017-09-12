@@ -1,7 +1,7 @@
 defmodule PanWeb.FollowApiController do
   use Pan.Web, :controller
   alias PanWeb.Category
-  alias Pan.Follow
+  alias PanWeb.Follow
   alias PanWeb.Podcast
   alias PanWeb.Persona
   alias PanWeb.User
@@ -12,10 +12,15 @@ defmodule PanWeb.FollowApiController do
   end
 
 
-  def show(conn, %{"id" => id}) do
-    follow = Repo.get(Follow, id)
+  def show(conn, %{"id" => id}, _user) do
+    follow = from(f in Follow, join: u in assoc(f, :follower),
+                               where: (f.id == ^id and u.share_follows == true),
+                               limit: 1,
+                               preload: [:category, :follower, :user, :podcast, :persona])
+             |> Repo.all()
 
-    render conn, "show.json-api", data: follow
+    render conn, "show.json-api", data: follow,
+                                  opts: [include: "category,follower,user,podcast,persona"]
   end
 
 

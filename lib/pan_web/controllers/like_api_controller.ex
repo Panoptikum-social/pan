@@ -2,7 +2,7 @@ defmodule PanWeb.LikeApiController do
   use Pan.Web, :controller
   alias PanWeb.Category
   alias PanWeb.Message
-  alias Pan.Like
+  alias PanWeb.Like
   alias PanWeb.Podcast
   alias PanWeb.Chapter
   alias PanWeb.Episode
@@ -15,8 +15,11 @@ defmodule PanWeb.LikeApiController do
   end
 
 
-  def show(conn, %{"id" => id}) do
-    like = Repo.get(Like, id)
+  def show(conn, %{"id" => id}, _user) do
+    like = from(l in Like, where: l.id == ^id,
+                           limit: 1,
+                           preload: [:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+           |> Repo.all()
 
     render conn, "show.json-api", data: like
   end

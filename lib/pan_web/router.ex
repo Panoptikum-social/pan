@@ -63,6 +63,10 @@ defmodule PanWeb.Router do
     get "/podcasts/last_updated", PodcastApiController, :last_updated
     resources "/podcasts", PodcastApiController, only: [:index, :show]
 
+    resources "/likes", LikeApiController, only: [:show]
+    resources "/follows", FollowApiController, only: [:show]
+    resources "/subscriptions", SubscriptionApiController, only: [:show]
+
     get "/search", SearchApiController, :search
 
     post "/login", SessionApiController, :login
@@ -74,8 +78,8 @@ defmodule PanWeb.Router do
     pipe_through [:json_api, :authenticate_api_user]
 
     post "/likes/toggle", LikeApiController, :toggle
-
     post "/follows/toggle", FollowApiController, :toggle
+    post "/subscriptions/toggle", SubscriptionApiController, :toggle
   end
 
   scope "/api", PanWeb do
