@@ -4,6 +4,34 @@ defmodule PanWeb.UserApiController do
   alias PanWeb.User
 
 
+  def index(conn, params) do
+    page = Map.get(params, "page", %{})
+           |> Map.get("number", "1")
+           |> String.to_integer
+    size = Map.get(params, "page", %{})
+           |> Map.get("size", "10")
+           |> String.to_integer
+    offset = (page - 1) * size
+
+    total = from(u in User, where: (is_nil(u.admin) or u.admin == false))
+            |> Repo.aggregate(:count, :id)
+    total_pages = div(total - 1, size) + 1
+
+    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                         size: size,
+                                                         total: total_pages,
+                                                         base_url: user_api_url(conn,:index)}, conn)
+
+    users = from(u in User, order_by: :name,
+                            limit: ^size,
+                            offset: ^offset,
+                            where: (is_nil(u.admin) or u.admin == false))
+            |> Repo.all()
+
+    render conn, "index.json-api", data: users,
+                                   opts: [page: links]
+  end
+
   def show(conn, %{"id" => id} = params) do
     user = Repo.get(User, id)
            |> Repo.preload([:categories_i_like, :users_i_like])

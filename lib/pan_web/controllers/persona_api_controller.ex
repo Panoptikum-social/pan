@@ -8,6 +8,36 @@ defmodule PanWeb.PersonaApiController do
   alias PanWeb.Episode
   use JaSerializer
 
+
+  def index(conn, params) do
+    page = Map.get(params, "page", %{})
+           |> Map.get("number", "1")
+           |> String.to_integer
+    size = Map.get(params, "page", %{})
+           |> Map.get("size", "10")
+           |> String.to_integer
+    offset = (page - 1) * size
+
+    total = Repo.aggregate(Persona, :count, :id)
+    total_pages = div(total - 1, size) + 1
+
+    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                         size: size,
+                                                         total: total_pages,
+                                                         base_url: user_api_url(conn,:index)}, conn)
+
+    personas = from(p in Persona, order_by: :name,
+                                  limit: ^size,
+                                  offset: ^offset,
+                                  preload: :redirect)
+               |> Repo.all()
+
+
+    render conn, "index.json-api", data: personas,
+                                   opts: [page: links, include: "redirect"]
+  end
+
+
   def show(conn, %{"id" => id} = params) do
     delegator_ids = from(d in Delegation, where: d.delegate_id == ^id,
                                           select: d.persona_id)
@@ -69,7 +99,7 @@ defmodule PanWeb.PersonaApiController do
   end
 
 
-    def search(conn, params) do
+  def search(conn, params) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer

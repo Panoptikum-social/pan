@@ -15,7 +15,7 @@ defmodule PanWeb.PersonaFrontendController do
 
   def index(conn, _params, _user) do
     personas = from(p in PanWeb.Persona, order_by: :name,
-                                      where: is_nil(p.redirect_id))
+                                         where: is_nil(p.redirect_id))
                |> Repo.all()
     render(conn, "index.html", personas: personas)
   end

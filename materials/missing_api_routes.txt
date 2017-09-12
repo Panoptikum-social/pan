@@ -24,4 +24,3 @@ follow: user
         podcast
         persona
         category
-like: user

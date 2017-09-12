@@ -7,8 +7,8 @@ defmodule PanWeb.PersonaApiView do
   location :persona_api_url
   attributes [:pid, :name, :uri, :email, :description, :long_description, :image_url, :image_title]
 
-  has_one :redirect, serializer: PanWeb.PlainPersonaApiView, include: true
-  has_many :delegates, serializer: PanWeb.PlainPersonaApiView, include: true
+  has_one :redirect, serializer: PanWeb.PlainPersonaApiView, include: false
+  has_many :delegates, serializer: PanWeb.PlainPersonaApiView, include: false
 
   has_many :engagements, serializer: PanWeb.PlainEngagmentApiView, include: false
   has_many :podcasts, serializer: PanWeb.PlainPodcastApiView, include: false
