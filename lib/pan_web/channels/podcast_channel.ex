@@ -48,8 +48,6 @@ defmodule PanWeb.PodcastChannel do
 
 
     Podcast.follow(e.podcast_id, e.current_user_id)
-    # Message.persist_event(e)
-    # Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(PanWeb.PodcastFrontendView,
                                            "follow_button.html",

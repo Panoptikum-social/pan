@@ -46,8 +46,6 @@ defmodule PanWeb.PersonaChannel do
                        Repo.get!(Persona, e.persona_id).name <> "</b> »"}
 
     Persona.follow(e.persona_id, e.current_user_id)
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(PanWeb.PersonaFrontendView,
                                            "follow_button.html",

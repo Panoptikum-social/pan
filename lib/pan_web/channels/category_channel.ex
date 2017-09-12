@@ -46,8 +46,6 @@ defmodule PanWeb.CategoryChannel do
                        Repo.get!(Category, e.category_id).title <> "</b> »"}
 
     Category.follow(e.category_id, e.current_user_id)
-    # Message.persist_event(e)
-    # Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(PanWeb.CategoryFrontendView,
                                            "follow_button.html",

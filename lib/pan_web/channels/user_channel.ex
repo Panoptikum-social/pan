@@ -46,8 +46,6 @@ defmodule PanWeb.UserChannel do
                        Repo.get!(User, e.user_id).name <> "</b> »"}
 
     User.follow(e.user_id, e.current_user_id)
-    # Message.persist_event(e)
-    # Event.notify_subscribers(e)
 
     button = Phoenix.View.render_to_string(PanWeb.UserFrontendView,
                                            "follow_button.html",
