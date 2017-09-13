@@ -1,20 +1,21 @@
-          user_frontend_path  GET     /pan/my_profile                             PanWeb.UserFrontendController :my_profile
-          user_frontend_path  GET     /pan/my_messages                            PanWeb.UserFrontendController :my_messages
-          user_frontend_path  PUT     /pan/update                                 PanWeb.UserFrontendController :update
-          user_frontend_path  PUT     /pan/update_password                        PanWeb.UserFrontendController :update_password
+opml_frontend_path  GET     /pan/opmls                                  PanWeb.OpmlFrontendController :index
+opml_frontend_path  POST    /pan/opmls                                  PanWeb.OpmlFrontendController :create
+opml_frontend_path  DELETE  /pan/opmls/:id                              PanWeb.OpmlFrontendController :delete
+opml_frontend_path  GET     /pan/opmls/:id/import                       PanWeb.OpmlFrontendController :import
+feed_backlog_frontend_path  POST    /pan/feed_backlogs                  PanWeb.FeedBacklogFrontendController :create
 
-       persona_frontend_path  DELETE  /pan/personas/:id/claim                     PanWeb.PersonaFrontendController :claim
----
-       persona_frontend_path  PATCH   /pan/personas/:id                           PanWeb.PersonaFrontendController :update
-       persona_frontend_path  GET     /pro/personas/:id/toggle_delegation         PanWeb.PersonaFrontendController :toggle_delegation
-       persona_frontend_path  GET     /pro/personas/:id/cancel_redirect           PanWeb.PersonaFrontendController :cancel_redirect
-       persona_frontend_path  GET     /pro/personas/:id/redirect                  PanWeb.PersonaFrontendController :redirect
+-----
 
-          opml_frontend_path  GET     /pan/opmls                                  PanWeb.OpmlFrontendController :index
----
-          opml_frontend_path  POST    /pan/opmls                                  PanWeb.OpmlFrontendController :create
-          opml_frontend_path  DELETE  /pan/opmls/:id                              PanWeb.OpmlFrontendController :delete
-          opml_frontend_path  GET     /pan/opmls/:id/import                       PanWeb.OpmlFrontendController :import
+user_frontend_path  GET     /pan/my_profile                             PanWeb.UserFrontendController :my_profile
+user_frontend_path  GET     /pan/my_messages                            PanWeb.UserFrontendController :my_messages
+user_frontend_path  PUT     /pan/update                                 PanWeb.UserFrontendController :update
+user_frontend_path  PUT     /pan/update_password                        PanWeb.UserFrontendController :update_password
+user_frontend_path  POST    /users                                      PanWeb.UserFrontendController :create
 
-  feed_backlog_frontend_path  POST    /pan/feed_backlogs                          PanWeb.FeedBacklogFrontendController :create
-          user_frontend_path  POST    /users                                      PanWeb.UserFrontendController :create
+-----
+
+persona_frontend_path  DELETE  /pan/personas/:id/claim                  PanWeb.PersonaFrontendController :claim
+persona_frontend_path  PATCH   /pan/personas/:id                        PanWeb.PersonaFrontendController :update
+persona_frontend_path  GET     /pro/personas/:id/toggle_delegation      PanWeb.PersonaFrontendController :toggle_delegation
+persona_frontend_path  GET     /pro/personas/:id/cancel_redirect        PanWeb.PersonaFrontendController :cancel_redirect
+persona_frontend_path  GET     /pro/personas/:id/redirect               PanWeb.PersonaFrontendController :redirect

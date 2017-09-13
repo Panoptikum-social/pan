@@ -94,6 +94,8 @@ defmodule PanWeb.Router do
     get "/categories/my", CategoryApiController, :my
     post "/like_all_subscribed_podcasts", LikeApiController, :like_all_subscribed_podcasts
     post "/follow_all_subscribed_podcasts", FollowApiController, :follow_all_subscribed_podcasts
+
+   resources "/opmls", OpmlApiController, only: [:index, :show]
   end
 
   scope "/api", PanWeb do
