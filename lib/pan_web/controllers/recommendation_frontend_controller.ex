@@ -104,7 +104,7 @@ defmodule PanWeb.RecommendationFrontendController do
         episode = Repo.get!(Episode, episode_id)
                   |> Repo.preload(:podcast)
 
-        %Event{topic: "podcasts",
+        %Event{topic: "episodes",
                subtopic: Integer.to_string(episode.podcast.id),
                podcast_id: episode.podcast.id,
                episode_id: episode_id,
@@ -117,7 +117,7 @@ defmodule PanWeb.RecommendationFrontendController do
         chapter = Repo.get!(Chapter, chapter_id)
                   |> Repo.preload([episode: :podcast])
 
-        %Event{topic:      "podcasts",
+        %Event{topic:      "chapters",
                subtopic:   Integer.to_string(chapter.episode.podcast.id),
                podcast_id: chapter.episode.podcast.id,
                episode_id: chapter.episode.id,

@@ -82,6 +82,7 @@ defmodule PanWeb.Router do
     post "/subscriptions/toggle", SubscriptionApiController, :toggle
     post "/gigs/toggle", GigApiController, :toggle
 
+    resources "/recommendations", RecommendationApiController, only: [:create]
     get "/recommendations/my", RecommendationApiController, :my
 
     get "/podcasts/i_follow", PodcastApiController, :i_follow
