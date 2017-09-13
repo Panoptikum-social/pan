@@ -269,25 +269,4 @@ defmodule PanWeb.PodcastApiController do
     render conn, "index.json-api", data: podcasts,
                                    opts: [include: "categories,engagements,contributors,languages"]
   end
-
-
-
-
-
-    # ---
-
-    # categories = from(r in CategoryPodcast, join: c in assoc(r, :category),
-    #                                         where: r.podcast_id in ^podcasts_subscribed_ids,
-    #                                         group_by: c.id,
-    #                                         select: [count(r.category_id), c.id, c.title],
-    #                                         order_by: [desc: count(r.category_id)],
-    #                                         limit: 10)
-    #              |> Repo.all()
-
-    # render(conn, "my_podcasts.html", user: user,
-    #                                  podcasts_i_like: podcasts_i_like,
-    #                                  recommendations: recommendations,
-    #                                  also_liked: also_liked,
-    #                                  categories: categories)
-
 end

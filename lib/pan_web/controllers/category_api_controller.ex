@@ -1,10 +1,17 @@
 defmodule PanWeb.CategoryApiController do
   use Pan.Web, :controller
-  alias PanWeb.Podcast
   use JaSerializer
+  alias PanWeb.Podcast
   alias PanWeb.Category
+  alias PanWeb.CategoryPodcast
+  alias PanWeb.Subscription
 
-  def index(conn, _params) do
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+
+  def index(conn, _params, _user) do
     categories = from(c in Category, order_by: :title,
                                      where: is_nil(c.parent_id))
                  |> Repo.all()
@@ -15,7 +22,7 @@ defmodule PanWeb.CategoryApiController do
   end
 
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id} = params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -44,7 +51,7 @@ defmodule PanWeb.CategoryApiController do
   end
 
 
-  def search(conn, params) do
+  def search(conn, params, _user) do
     query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/categories",
              search: [size: 1000, query: [match: [_all: params["filter"]]]]]
 
@@ -62,5 +69,26 @@ defmodule PanWeb.CategoryApiController do
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
         render(conn, "error.json-api", reason: reason)
     end
+  end
+
+
+  def my(conn, _params, user) do
+    podcasts_subscribed_ids = from(s in Subscription, where: s.user_id == ^user.id,
+                                                      select: s.podcast_id)
+                              |> Repo.all()
+
+    category_ids = from(r in CategoryPodcast, join: c in assoc(r, :category),
+                                             where: r.podcast_id in ^podcasts_subscribed_ids,
+                                             group_by: c.id,
+                                             select: c.id,
+                                             order_by: [desc: count(r.category_id)],
+                                             limit: 10)
+                  |> Repo.all()
+
+    categories = from(c in Category, where: c.id in ^category_ids,
+                                     preload: [:children, :parent])
+               |> Repo.all()
+
+    render conn, "index.json-api", data: categories, opts: [include: "children"]
   end
 end
