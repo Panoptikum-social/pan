@@ -194,6 +194,6 @@ defmodule PanWeb.RecommendationApiController do
     Event.notify_subscribers(e)
 
     render conn, "show.json-api", data: recommendation,
-                                  opts: [include: "episode,user"]
+                                  opts: [include: "chapter,user"]
   end
 end

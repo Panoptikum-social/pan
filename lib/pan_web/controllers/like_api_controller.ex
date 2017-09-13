@@ -8,6 +8,7 @@ defmodule PanWeb.LikeApiController do
   alias PanWeb.Episode
   alias PanWeb.Persona
   alias PanWeb.User
+  alias PanWeb.Subscription
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -194,5 +195,48 @@ defmodule PanWeb.LikeApiController do
 
     render conn, "show.json-api", data: like,
                                   opts: [include: "category"]
+  end
+
+
+  def like_all_subscribed_podcasts(conn, _params, user) do
+    subscribed_podcast_ids = Repo.all(from s in Subscription,
+                                      where: s.user_id == ^user.id,
+                                      select: s.podcast_id)
+    liked_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
+                                       not is_nil(l.podcast_id) and
+                                       is_nil(l.chapter_id) and
+                                       is_nil(l.episode_id),
+                                select: l.podcast_id)
+                |> Repo.all()
+
+    for id <- subscribed_podcast_ids do
+      unless Enum.member?(liked_ids, id) do
+        e = %Event{
+          topic:           "podcast",
+          subtopic:        Integer.to_string(id),
+          current_user_id: user.id,
+          podcast_id:      id,
+          type:            "success",
+          event:           "like"
+        }
+        e = %{e | content: "« liked the podcast <b>" <>
+                           Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
+
+        Podcast.like(e.podcast_id, e.current_user_id)
+        Message.persist_event(e)
+        Event.notify_subscribers(e)
+      end
+    end
+
+    likes = from(l in Like, where: l.enjoyer_id == ^user.id and
+                                   not is_nil(l.podcast_id) and
+                                   is_nil(l.chapter_id) and
+                                   is_nil(l.episode_id),
+                            preload: [:category, :enjoyer, :user, :podcast, :chapter,
+                                      :persona, :episode])
+            |> Repo.all()
+
+    render conn, "index.json-api", data: likes,
+                                   opts: [include: "podcast,user"]
   end
 end
