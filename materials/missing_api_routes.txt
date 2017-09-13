@@ -1,4 +1,3 @@
-opml_frontend_path  GET     /pan/opmls                                  PanWeb.OpmlFrontendController :index
 opml_frontend_path  POST    /pan/opmls                                  PanWeb.OpmlFrontendController :create
 opml_frontend_path  DELETE  /pan/opmls/:id                              PanWeb.OpmlFrontendController :delete
 opml_frontend_path  GET     /pan/opmls/:id/import                       PanWeb.OpmlFrontendController :import
