@@ -11,10 +11,7 @@ defmodule PanWeb.RecommendationApiView do
   has_one :episode, serializer: PanWeb.PlainEpisodeApiView, include: false
   has_one :chapter, serializer: PanWeb.PlainChapterApiView, include: false
   has_one :category, serializer: PanWeb.PlainCategoryApiView, include: false
-
-  def user_name(recommendation) do
-    recommendation.user.name
-  end
+  has_one :user, serializer: PanWeb.PlainUserApiView, include: false
 
   def recommendation_api_url(recommendation, conn) do
     recommendation_api_url(conn, :show, recommendation)

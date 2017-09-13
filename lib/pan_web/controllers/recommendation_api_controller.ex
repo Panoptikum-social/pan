@@ -6,7 +6,13 @@ defmodule PanWeb.RecommendationApiController do
   alias PanWeb.Episode
   use JaSerializer
 
-  def index(conn, params) do
+
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+
+  def index(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -35,7 +41,7 @@ defmodule PanWeb.RecommendationApiController do
   end
 
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}, _user) do
     recommendation = Repo.get(Recommendation, id)
                      |> Repo.preload([:podcast, :episode, :chapter, :user])
 
@@ -44,7 +50,7 @@ defmodule PanWeb.RecommendationApiController do
   end
 
 
-  def random(conn, _params) do
+  def random(conn, _params, _user) do
     podcast = from(p in Podcast, order_by: fragment("RANDOM()"),
                                  limit: 1,
                                  preload: [:episodes, :languages, :categories, :feeds, engagements: :persona])
@@ -71,5 +77,17 @@ defmodule PanWeb.RecommendationApiController do
                                   opts: [include: "podcast,episode,category"]
 
   end
-end
 
+
+  def my(conn, _params, user) do
+    recommendations = Repo.all(from r in Recommendation, where: r.user_id == ^user.id and
+                                                                not is_nil(r.podcast_id) and
+                                                                is_nil(r.episode_id) and
+                                                                is_nil(r.chapter_id),
+                                                         order_by: [desc: :inserted_at],
+                                                         preload: [:podcast, :user, :chapter, :episode])
+
+    render conn, "index.json-api", data: recommendations,
+                                   opts: [include: "podcast"]
+  end
+end
