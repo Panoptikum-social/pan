@@ -83,6 +83,10 @@ defmodule PanWeb.Router do
     post "/gigs/toggle", GigApiController, :toggle
 
     get "/recommendations/my", RecommendationApiController, :my
+
+    get "/podcasts/i_follow", PodcastApiController, :i_follow
+    get "/podcasts/i_like", PodcastApiController, :i_like
+    get "/podcasts/i_subscribed", PodcastApiController, :i_subscribed
   end
 
   scope "/api", PanWeb do

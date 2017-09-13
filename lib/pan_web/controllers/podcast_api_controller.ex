@@ -3,8 +3,16 @@ defmodule PanWeb.PodcastApiController do
   use JaSerializer
   alias PanWeb.Episode
   alias PanWeb.Podcast
+  alias PanWeb.Like
+  alias PanWeb.User
 
-  def index(conn, params) do
+
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+
+  def index(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -35,7 +43,7 @@ defmodule PanWeb.PodcastApiController do
   end
 
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id} = params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -66,7 +74,7 @@ defmodule PanWeb.PodcastApiController do
   end
 
 
-  def last_updated(conn, params) do
+  def last_updated(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -99,7 +107,7 @@ defmodule PanWeb.PodcastApiController do
   end
 
 
-  def most_subscribed(conn, _params) do
+  def most_subscribed(conn, _params, _user) do
     podcasts = from(p in Podcast, order_by: [desc: p.subscriptions_count],
                                   limit: 10)
                |> Repo.all()
@@ -108,7 +116,7 @@ defmodule PanWeb.PodcastApiController do
   end
 
 
-  def most_liked(conn, _params) do
+  def most_liked(conn, _params, _user) do
     podcasts = from(p in Podcast, order_by: [desc: p.likes_count],
                                   limit: 10)
                |> Repo.all()
@@ -117,7 +125,7 @@ defmodule PanWeb.PodcastApiController do
   end
 
 
-  def search(conn, params) do
+  def search(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -153,4 +161,101 @@ defmodule PanWeb.PodcastApiController do
         render(conn, "error.json-api", reason: reason)
     end
   end
+
+
+  def i_like(conn, _params, user) do
+    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
+                                         is_nil(l.chapter_id) and
+                                         is_nil(l.episode_id) and
+                                         not is_nil(l.podcast_id),
+                                  select: l.podcast_id)
+                  |> Repo.all()
+
+    podcasts = from(p in Podcast, where: p.id in ^podcast_ids,
+                                  order_by: :title,
+                                  preload: [:categories, :engagements, :contributors, :languages])
+               |> Repo.all()
+
+    render conn, "index.json-api", data: podcasts,
+                                   opts: [include: "categories,engagements,contributors,languages"]
+  end
+
+
+  def i_follow(conn, _params, user) do
+    user = Repo.get(User, user.id)
+           |> Repo.preload(podcasts_i_follow: from(p in Podcast, order_by: p.title))
+
+    podcasts = user.podcasts_i_follow
+               |> Repo.preload([:categories, :engagements, :contributors, :languages])
+
+    render conn, "index.json-api", data: podcasts,
+                                   opts: [include: "categories,engagements,contributors,languages"]
+  end
+
+
+  def i_subscribed(conn, _params, user) do
+    user = Repo.get(User, user.id)
+           |> Repo.preload(podcasts_i_subscribed: from(p in Podcast, order_by: p.title))
+
+    podcasts = user.podcasts_i_subscribed
+               |> Repo.preload([:categories, :engagements, :contributors, :languages])
+
+    render conn, "index.json-api", data: podcasts,
+                                   opts: [include: "categories,engagements,contributors,languages"]
+  end
+
+
+
+    # podcasts_subscribed_ids = from(s in Subscription, where: s.user_id == ^user.id,
+    #                                                   select: s.podcast_id)
+    #                           |> Repo.all()
+
+    # other_subscriber_ids = from(s in Subscription, where: s.podcast_id in ^podcasts_subscribed_ids,
+    #                                                select: s.user_id)
+    #                        |> Repo.all()
+    #                        |> Enum.uniq
+    #                        |> List.delete(user.id)
+
+    # recommendations = from(s in Subscription, join: p in assoc(s, :podcast),
+    #                                           where: s.user_id in ^other_subscriber_ids and
+    #                                                  not s.podcast_id in ^podcasts_subscribed_ids,
+    #                                           group_by: p.id,
+    #                                           select: [count(s.podcast_id), p.id, p.title],
+    #                                           order_by: [desc: count(s.podcast_id)],
+    #                                           limit: 10)
+    #                   |> Repo.all()
+
+    # users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_ids and
+    #                                            is_nil(l.chapter_id) and
+    #                                            is_nil(l.episode_id),
+    #                                     select: l.enjoyer_id)
+    #                     |> Repo.all()
+    #                     |> Enum.uniq
+    #                     |> List.delete(user.id)
+
+    # also_liked = from(l in Like, join: p in assoc(l, :podcast),
+    #                              where: l.enjoyer_id in ^users_also_liking and
+    #                                     is_nil(l.chapter_id) and
+    #                                     is_nil(l.episode_id) and
+    #                                     not l.podcast_id in ^podcast_ids,
+    #                              group_by: p.id,
+    #                              select: [count(l.podcast_id), p.id, p.title],
+    #                              order_by: [desc: count(l.podcast_id)],
+    #                              limit: 10)
+    #              |> Repo.all()
+
+    # categories = from(r in CategoryPodcast, join: c in assoc(r, :category),
+    #                                         where: r.podcast_id in ^podcasts_subscribed_ids,
+    #                                         group_by: c.id,
+    #                                         select: [count(r.category_id), c.id, c.title],
+    #                                         order_by: [desc: count(r.category_id)],
+    #                                         limit: 10)
+    #              |> Repo.all()
+
+    # render(conn, "my_podcasts.html", user: user,
+    #                                  podcasts_i_like: podcasts_i_like,
+    #                                  recommendations: recommendations,
+    #                                  also_liked: also_liked,
+    #                                  categories: categories)
+
 end

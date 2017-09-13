@@ -1,5 +1,5 @@
-recommendation_frontend_path  POST    /pan/recommendations                        PanWeb.RecommendationFrontendController :create
           user_frontend_path  GET     /pan/my_podcasts                            PanWeb.UserFrontendController :my_podcasts
+recommendation_frontend_path  POST    /pan/recommendations                        PanWeb.RecommendationFrontendController :create
           user_frontend_path  POST    /pan/users/like_all_subscribed              PanWeb.UserFrontendController :like_all_subscribed
           user_frontend_path  POST    /pan/users/follow_all_subscribed            PanWeb.UserFrontendController :follow_all_subscribed
 

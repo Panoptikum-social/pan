@@ -1,0 +1,1 @@
+../../../jekyll/panoptikum.io/pages/api.md
