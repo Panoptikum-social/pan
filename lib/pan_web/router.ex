@@ -87,6 +87,8 @@ defmodule PanWeb.Router do
     get "/podcasts/i_follow", PodcastApiController, :i_follow
     get "/podcasts/i_like", PodcastApiController, :i_like
     get "/podcasts/i_subscribed", PodcastApiController, :i_subscribed
+    get "/podcasts/also_listened_to", PodcastApiController, :also_listened_to
+    get "/podcasts/also_liked", PodcastApiController, :also_liked
   end
 
   scope "/api", PanWeb do
