@@ -92,7 +92,8 @@ defmodule PanWeb.Router do
     get "/podcasts/also_liked", PodcastApiController, :also_liked
 
     get "/categories/my", CategoryApiController, :my
-    post "/likes/like_all_subscribed_podcasts", LikeApiController, :like_all_subscribed_podcasts
+    post "/like_all_subscribed_podcasts", LikeApiController, :like_all_subscribed_podcasts
+    post "/follow_all_subscribed_podcasts", FollowApiController, :follow_all_subscribed_podcasts
   end
 
   scope "/api", PanWeb do

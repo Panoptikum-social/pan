@@ -1,6 +1,3 @@
-          user_frontend_path  POST    /pan/users/like_all_subscribed              PanWeb.UserFrontendController :like_all_subscribed
-          user_frontend_path  POST    /pan/users/follow_all_subscribed            PanWeb.UserFrontendController :follow_all_subscribed
----
           user_frontend_path  GET     /pan/my_profile                             PanWeb.UserFrontendController :my_profile
           user_frontend_path  GET     /pan/my_messages                            PanWeb.UserFrontendController :my_messages
           user_frontend_path  PUT     /pan/update                                 PanWeb.UserFrontendController :update
