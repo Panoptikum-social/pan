@@ -25,4 +25,29 @@ defmodule PanWeb.OpmlApiController do
     render conn, "show.json-api", data: opml,
                                   opts: [include: "user"]
   end
+
+
+  def create(conn, %{"upload" => upload}, user) do
+    destination_path =
+      if upload do
+        File.mkdir_p("/var/phoenix/pan-uploads/opml/#{user.id}")
+        path = "/var/phoenix/pan-uploads/opml/#{user.id}/#{upload.filename}"
+        File.cp(upload.path, path)
+        path
+      else
+        ""
+      end
+
+    {:ok, opml} = %Opml{content_type: upload.content_type,
+                        filename: upload.filename,
+                        path: destination_path,
+                        user_id: user.id}
+                  |> Opml.changeset()
+                  |> Repo.insert()
+
+    opml = Repo.preload(opml, :user)
+
+    render conn, "show.json-api", data: opml,
+                                  opts: [include: "user"]
+  end
 end

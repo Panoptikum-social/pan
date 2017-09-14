@@ -1,5 +1,10 @@
 # Obviously, that is no a real user's pass ;-)
 
+# Send data:
 curl --data "username=informatom&password=secret" http://localhost:4000/jsonapi/login
 
+# Send token:
 curl --data "podcast_id=104" -H "Authorization: Bearer :token" http://localhost:4000/jsonapi/pan/likes/
+
+# Upload a file:
+curl -v -H "Authorization: Bearer :token" -F "upload=@/full/path/to/opml.xml" http://localhost:4000/jsonapi/pan/opmls
