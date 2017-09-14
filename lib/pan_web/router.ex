@@ -96,7 +96,7 @@ defmodule PanWeb.Router do
     post "/follow_all_subscribed_podcasts", FollowApiController, :follow_all_subscribed_podcasts
 
     get "/opmls/:id/import", OpmlApiController, :import
-    resources "/opmls", OpmlApiController, only: [:index, :show, :create]
+    resources "/opmls", OpmlApiController, only: [:index, :show, :create, :delete]
   end
 
   scope "/api", PanWeb do

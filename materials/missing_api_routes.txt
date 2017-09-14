@@ -1,4 +1,3 @@
-opml_frontend_path  GET     /pan/opmls/:id/import                       PanWeb.OpmlFrontendController :import
 opml_frontend_path  DELETE  /pan/opmls/:id                              PanWeb.OpmlFrontendController :delete
 feed_backlog_frontend_path  POST    /pan/feed_backlogs                  PanWeb.FeedBacklogFrontendController :create
 

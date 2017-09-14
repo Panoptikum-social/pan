@@ -5,7 +5,7 @@ defmodule PanWeb.OpmlApiView do
   def type(_, _), do: "opml"
 
   location :opml_feed_api_url
-  attributes [:content_type, :filename, :inserted_at]
+  attributes [:content_type, :filename, :inserted_at, :deleted]
 
   has_one :user, serializer: PanWeb.PlainUserApiView, include: false
 
