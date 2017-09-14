@@ -50,4 +50,17 @@ defmodule PanWeb.OpmlApiController do
     render conn, "show.json-api", data: opml,
                                   opts: [include: "user"]
   end
+
+
+  def import(conn, %{"id" => id}, user) do
+    opml = from( o in Opml, where: o.id == ^id and
+                                   o.user_id == ^user.id,
+                            preload: :user)
+           |> Repo.one
+
+    Pan.OpmlParser.Opml.parse(opml.path, user.id)
+
+    render conn, "show.json-api", data: opml,
+                                  opts: [include: "user"]
+  end
 end
