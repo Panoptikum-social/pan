@@ -97,6 +97,8 @@ defmodule PanWeb.Router do
 
     get "/opmls/:id/import", OpmlApiController, :import
     resources "/opmls", OpmlApiController, only: [:index, :show, :create, :delete]
+
+    resources "/feed_backlogs", FeedBacklogApiController, only: [:show, :create]
   end
 
   scope "/api", PanWeb do
