@@ -3,7 +3,6 @@ defmodule PanWeb.UserApiController do
   use JaSerializer
   alias PanWeb.User
   alias PanWeb.MyUserApiView
-  alias PanWeb.ChangesetView
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -37,6 +36,7 @@ defmodule PanWeb.UserApiController do
     render conn, "index.json-api", data: users,
                                    opts: [page: links]
   end
+
 
   def show(conn, %{"id" => id}, _user) do
     user = Repo.get(User, id)
@@ -104,6 +104,29 @@ defmodule PanWeb.UserApiController do
          |> put_view(MyUserApiView)
          |> render("show.json-api", data: user,
                                     opts: [include: "personas"])
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render(:errors, data: changeset)
+    end
+  end
+
+
+  def create(conn, params, _user) do
+    changeset = User.registration_changeset(%User{}, params)
+
+    case Repo.insert(changeset) do
+      {:ok, user} ->
+        Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
+        |> Pan.Email.email_confirmation_link_html_email(user.email)
+        |> Pan.Mailer.deliver_now()
+
+        user = Repo.preload(user, :personas)
+
+        conn
+        |> put_view(MyUserApiView)
+        |> render("show.json-api", data: user,
+                                   opts: [include: "personas"])
       {:error, changeset} ->
         conn
         |> put_status(422)

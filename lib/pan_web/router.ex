@@ -52,7 +52,7 @@ defmodule PanWeb.Router do
     get "/personas/search", PersonaApiController, :search
     resources "/personas", PersonaApiController, only: [:index, :show]
 
-    resources "/users", UserApiController, only: [:index, :show]
+    resources "/users", UserApiController, only: [:index, :show, :create]
 
     get "/recommendations/random", RecommendationApiController, :random
     resources "/recommendations", RecommendationApiController, only: [:index, :show]
