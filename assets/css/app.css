@@ -40,3 +40,5 @@ form.link, form.button {display: inline; }
   /* Space out the masthead */
   .header {margin-bottom: 30px; }
 }
+
+.nobr { white-space:nowrap; }

@@ -101,6 +101,9 @@ defmodule PanWeb.Router do
     resources "/feed_backlogs", FeedBacklogApiController, only: [:show, :create]
 
     get "/users/my", UserApiController, :my
+
+    get "/messages/my", MessageApiController, :my
+    resources "/messages", MessageApiController, only: [:show]
   end
 
   scope "/api", PanWeb do

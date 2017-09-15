@@ -129,9 +129,9 @@ defmodule PanWeb.UserFrontendController do
   def my_messages(conn, params, user) do
     user_id = Integer.to_string(user.id)
 
-    subscribed_user_ids = User.subscribed_user_ids(user_id)
-    subscribed_category_ids = User.subscribed_category_ids(user_id)
-    subscribed_podcast_ids = User.subscribed_podcast_ids(user_id)
+    subscribed_user_ids = User.subscribed_user_ids(user.id)
+    subscribed_category_ids = User.subscribed_category_ids(user.id)
+    subscribed_podcast_ids = User.subscribed_podcast_ids(user.id)
 
     messages = from(m in Message,
                where: (m.topic == "mailboxes" and m.subtopic == ^user_id) or
@@ -139,7 +139,7 @@ defmodule PanWeb.UserFrontendController do
                       (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
                       (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
                order_by: [desc: :inserted_at],
-               preload: :creator)
+               preload: [:creator, :persona])
                |> Repo.paginate(params)
 
     render conn, "my_messages.html", user: user,

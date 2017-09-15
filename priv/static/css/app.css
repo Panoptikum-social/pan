@@ -41,6 +41,7 @@ form.link, form.button {display: inline; }
   .header {margin-bottom: 30px; }
 }
 
+.nobr { white-space:nowrap; }
 /*
  * bootflat 2.0.4
  *
