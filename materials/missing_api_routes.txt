@@ -1,7 +1,3 @@
-feed_backlog_frontend_path  POST    /pan/feed_backlogs                  PanWeb.FeedBacklogFrontendController :create
-
------
-
 persona_frontend_path  DELETE  /pan/personas/:id/claim                  PanWeb.PersonaFrontendController :claim
 persona_frontend_path  PATCH   /pan/personas/:id                        PanWeb.PersonaFrontendController :update
 persona_frontend_path  GET     /pro/personas/:id/toggle_delegation      PanWeb.PersonaFrontendController :toggle_delegation

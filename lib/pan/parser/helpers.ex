@@ -160,6 +160,7 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace("CST",  "-0600")
     |> String.replace("PST",  "-0700")
+    |> String.replace("PCT",  "-0700")
     |> String.replace("BST",  "+0100")
     |> String.replace("CEST", "+0200")
     |> String.replace("IDT",  "+0300")
