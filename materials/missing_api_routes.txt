@@ -1,4 +1,3 @@
-user_frontend_path  PUT     /pan/update_password                        PanWeb.UserFrontendController :update_password
 user_frontend_path  PUT     /pan/update                                 PanWeb.UserFrontendController :update
 user_frontend_path  POST    /users                                      PanWeb.UserFrontendController :create
 

@@ -91,4 +91,23 @@ defmodule PanWeb.UserApiController do
         |> render(:errors, data: changeset)
     end
   end
+
+
+  def update_user(conn, params, user) do
+    changeset = User.self_change_changeset(user, params)
+
+    case Repo.update(changeset) do
+      {:ok, _user} ->
+         user = Repo.preload(user, :personas)
+
+         conn
+         |> put_view(MyUserApiView)
+         |> render("show.json-api", data: user,
+                                    opts: [include: "personas"])
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render(:errors, data: changeset)
+    end
+  end
 end

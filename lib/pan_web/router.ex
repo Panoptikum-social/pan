@@ -102,11 +102,12 @@ defmodule PanWeb.Router do
 
     get "/users/my", UserApiController, :my
 
+
     get "/messages/my", MessageApiController, :my
     resources "/messages", MessageApiController, only: [:show]
 
     post "/update_password", UserApiController, :update_password
-    put "/update_password", UserApiController, :update_password
+    post "/update_user", UserApiController, :update_user
   end
 
   scope "/api", PanWeb do
