@@ -3,7 +3,7 @@ defmodule PanWeb.UserApiController do
   use JaSerializer
   alias PanWeb.User
   alias PanWeb.MyUserApiView
-
+  alias PanWeb.ChangesetView
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -71,5 +71,24 @@ defmodule PanWeb.UserApiController do
     |> put_view(MyUserApiView)
     |> render("show.json-api", data: user,
                                opts: [include: "personas"])
+  end
+
+
+  def update_password(conn, params, user) do
+    changeset = User.password_update_changeset(user, params)
+
+    case Repo.update(changeset) do
+      {:ok, user} ->
+         user = Repo.preload(user, :personas)
+
+         conn
+         |> put_view(MyUserApiView)
+         |> render("show.json-api", data: user,
+                                    opts: [include: "personas"])
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render(:errors, data: changeset)
+    end
   end
 end

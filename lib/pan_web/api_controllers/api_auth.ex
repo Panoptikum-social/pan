@@ -6,7 +6,6 @@ defmodule PanWeb.ApiAuth do
   alias PanWeb.User
   alias PanWeb.ErrorApiView
 
-
   def init(opts) do
     Keyword.fetch!(opts, :repo)
   end
