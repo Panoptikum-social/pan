@@ -34,7 +34,7 @@ defmodule PanWeb.SessionApiController do
         render conn, "show.json-api", data: data
 
       {:error, _reason, _conn} ->
-        token = "Could not be aquired. Wrong username/password combination?"
+        PanWeb.ApiAuth.send_error(conn, "Could not be aquired. Wrong username/password combination?")
     end
   end
 end

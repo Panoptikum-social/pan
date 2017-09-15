@@ -2,9 +2,15 @@ defmodule PanWeb.UserApiController do
   use Pan.Web, :controller
   use JaSerializer
   alias PanWeb.User
+  alias PanWeb.MyUserApiView
 
 
-  def index(conn, params) do
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
+
+
+  def index(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -32,7 +38,7 @@ defmodule PanWeb.UserApiController do
                                    opts: [page: links]
   end
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id}, _user) do
     user = Repo.get(User, id)
            |> Repo.preload([:categories_i_like, :users_i_like])
 
@@ -54,5 +60,16 @@ defmodule PanWeb.UserApiController do
 
     render conn, "show.json-api", data: user,
                                   opts: [include: include_string]
+  end
+
+
+  def my(conn, _params, user) do
+    user = Repo.get(User, user.id)
+           |> Repo.preload(:personas)
+
+    conn
+    |> put_view(MyUserApiView)
+    |> render("show.json-api", data: user,
+                               opts: [include: "personas"])
   end
 end

@@ -32,3 +32,21 @@ defmodule PanWeb.PlainUserApiView do
     user_api_url(conn, :show, user)
   end
 end
+
+
+defmodule PanWeb.MyUserApiView do
+  use Pan.Web, :view
+  use JaSerializer.PhoenixView
+
+  def type(_, _), do: "user"
+
+  location :my_user_api_url
+  attributes [:name, :username, :email, :admin, :podcaster, :email_confirmed, :share_subscriptions,
+              :share_follows, :pro_until, :billing_address, :payment_reference, :paper_bill]
+
+  has_many :personas, serializer: PanWeb.PlainPersonaApiView, include: false
+
+  def my_user_api_url(_user, conn) do
+    user_api_url(conn, :my)
+  end
+end

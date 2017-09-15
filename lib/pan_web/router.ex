@@ -99,6 +99,8 @@ defmodule PanWeb.Router do
     resources "/opmls", OpmlApiController, only: [:index, :show, :create, :delete]
 
     resources "/feed_backlogs", FeedBacklogApiController, only: [:show, :create]
+
+    get "/users/my", UserApiController, :my
   end
 
   scope "/api", PanWeb do
