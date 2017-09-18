@@ -6,6 +6,7 @@ defmodule PanWeb.PodcastApiController do
   alias PanWeb.Like
   alias PanWeb.User
   alias PanWeb.Subscription
+  import PanWeb.ApiAuth, only: [send_error: 2]
 
 
   def action(conn, _) do
@@ -159,7 +160,7 @@ defmodule PanWeb.PodcastApiController do
         render conn, "index.json-api", data: podcasts, opts: [page: links,
                                                               include: "categories,engagements,contributors,languages"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        render(conn, "error.json-api", reason: reason)
+        send_error(conn, reason)
     end
   end
 

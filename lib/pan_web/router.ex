@@ -81,6 +81,7 @@ defmodule PanWeb.Router do
     post "/follows/toggle", FollowApiController, :toggle
     post "/subscriptions/toggle", SubscriptionApiController, :toggle
     post "/gigs/toggle", GigApiController, :toggle
+    post "/delegations/toggle", DelegationApiController, :toggle
 
     resources "/recommendations", RecommendationApiController, only: [:create]
     get "/recommendations/my", RecommendationApiController, :my
@@ -111,6 +112,8 @@ defmodule PanWeb.Router do
     put "/update_user", UserApiController, :update_user
 
     resources "/personas", PersonaApiController, only: [:update]
+
+    resources "/delegations", DelegationApiController, only: [:show]
   end
 
   scope "/api", PanWeb do
@@ -167,6 +170,8 @@ defmodule PanWeb.Router do
     get "/2016/:month/:day/:file", MaintenanceController, :blog_2016
     get "/2017/:month/:day/:file", MaintenanceController, :blog_2017
     get "/:pid", PersonaFrontendController, :persona
+
+    post "/delegation/toggle", DelegationApiController, :toggle
   end
 
 
@@ -184,7 +189,7 @@ defmodule PanWeb.Router do
     get "/edit_password", UserFrontendController, :edit_password
     post "/go_pro", UserFrontendController, :go_pro
 
-    delete "/personas/:id/claim", PersonaFrontendController, :claim
+    post "/personas/:id/claim", PersonaFrontendController, :claim
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]

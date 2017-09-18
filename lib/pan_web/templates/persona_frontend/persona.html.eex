@@ -164,7 +164,7 @@
 <%= if @current_user && @current_user.podcaster == true  && @current_user.email_confirmed && @persona.email != nil do %>
   <%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
                     class: "btn btn-normal",
-                    method: :delete,
+                    method: :post,
                     data: [confirm: "Are you sure?"] %>
 
   <button class="btn btn-primary btn-sm"

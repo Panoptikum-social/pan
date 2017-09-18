@@ -3,6 +3,7 @@ defmodule PanWeb.GigApiController do
   alias PanWeb.Gig
   use JaSerializer
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
+  import PanWeb.ApiAuth, only: [send_error: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -27,7 +28,7 @@ defmodule PanWeb.GigApiController do
                                       opts: [include: "episode,persona"]
 
       {:error, "not your persona"} ->
-        PanWeb.ApiAuth.send_error(conn, "not your persona")
+        send_error(conn, "not your persona")
     end
   end
 end

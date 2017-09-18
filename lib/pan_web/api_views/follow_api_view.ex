@@ -4,7 +4,7 @@ defmodule PanWeb.FollowApiView do
 
   def type(_, _), do: "follow"
 
-  location :my_follow_api_url
+  location :follow_api_url
 
   attributes [:created, :deleted]
 
@@ -14,7 +14,8 @@ defmodule PanWeb.FollowApiView do
   has_one :follower, serializer: PanWeb.PlainUserApiView, include: false
   has_one :user, serializer: PanWeb.PlainUserApiView, include: false
 
-  def my_follow_api_url(_like, conn) do
-    follow_api_url(conn, :toggle)
+
+  def follow_api_url(follow, conn) do
+    follow_api_url(conn, :show, follow)
   end
 end

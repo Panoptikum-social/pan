@@ -1,5 +1,4 @@
-persona_frontend_path  DELETE  /pan/personas/:id/claim                  PanWeb.PersonaFrontendController :claim
-persona_frontend_path  PATCH   /pan/personas/:id                        PanWeb.PersonaFrontendController :update
-persona_frontend_path  GET     /pro/personas/:id/toggle_delegation      PanWeb.PersonaFrontendController :toggle_delegation
-persona_frontend_path  GET     /pro/personas/:id/cancel_redirect        PanWeb.PersonaFrontendController :cancel_redirect
-persona_frontend_path  GET     /pro/personas/:id/redirect               PanWeb.PersonaFrontendController :redirect
+GET  /pro/personas/:id/toggle_delegation :toggle_delegation
+GET  /pro/personas/:id/cancel_redirect   :cancel_redirect
+GET  /pro/personas/:id/redirect          :redirect
+POST /pan/personas/:id/claim             :claim

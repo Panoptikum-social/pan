@@ -8,6 +8,7 @@ defmodule PanWeb.PersonaApiController do
   alias PanWeb.Episode
   alias PanWeb.Manifestation
   use JaSerializer
+  import PanWeb.ApiAuth, only: [send_error: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -137,7 +138,7 @@ defmodule PanWeb.PersonaApiController do
         render conn, "index.json-api", data: personas, opts: [page: links,
                                                               include: "redirect,delegates,podcasts"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        render(conn, "error.json-api", reason: reason)
+        send_error(conn, "This persona is not assigned to your account.")
     end
   end
 
@@ -149,7 +150,7 @@ defmodule PanWeb.PersonaApiController do
 
     case manifestation do
       nil ->
-        render(conn, "error.json-api", reason: "This persona is not assigned to your account.")
+        send_error(conn, "This persona is not assigned to your account.")
       manifestation ->
         persona = manifestation.persona
 
