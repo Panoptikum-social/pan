@@ -1,4 +1,2 @@
-GET  /pro/personas/:id/toggle_delegation :toggle_delegation
 GET  /pro/personas/:id/cancel_redirect   :cancel_redirect
-GET  /pro/personas/:id/redirect          :redirect
 POST /pan/personas/:id/claim             :claim

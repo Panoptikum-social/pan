@@ -60,4 +60,18 @@ defmodule PanWeb.ApiAuth do
       |> halt()
     end
   end
+
+
+  def authenticate_api_pro_user(conn, _opts) do
+    current_user = conn.assigns.current_user
+
+    if current_user && current_user.pro_until != nil &&
+       NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+      conn
+    else
+      conn
+      |> send_error("Pro account needed")
+      |> halt()
+    end
+  end
 end

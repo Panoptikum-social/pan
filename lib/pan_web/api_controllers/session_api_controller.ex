@@ -3,7 +3,6 @@ defmodule PanWeb.SessionApiController do
   use JaSerializer
   alias PanWeb.Auth
   alias PanWeb.Endpoint
-  alias PanWeb.ErrorApiView
   import PanWeb.ApiAuth, only: [send_error: 2]
 
   def login(conn, %{"username" => username, "password" => given_pass}) do

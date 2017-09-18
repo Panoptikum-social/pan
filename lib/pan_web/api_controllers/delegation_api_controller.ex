@@ -23,7 +23,7 @@ defmodule PanWeb.DelegationApiController do
       render conn, "show.json-api", data: delegation,
                                     opts: [include: "persona,delegate"]
     else
-      send_error(conn, "This is not a delegation for your personas.")
+      send_error(conn, "You are not a manifestation of both of this personas.")
     end
   end
 
@@ -59,7 +59,7 @@ defmodule PanWeb.DelegationApiController do
                                         opts: [include: "persona,delegate"]
       end
     else
-      send_error(conn, "This is not a delegation for your personas.")
+      send_error(conn, "You are not a manifestation of both of this personas.")
     end
   end
 end

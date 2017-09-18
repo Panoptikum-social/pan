@@ -138,7 +138,7 @@ defmodule PanWeb.PersonaApiController do
         render conn, "index.json-api", data: personas, opts: [page: links,
                                                               include: "redirect,delegates,podcasts"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        send_error(conn, "This persona is not assigned to your account.")
+        send_error(conn, reason)
     end
   end
 
@@ -150,16 +150,10 @@ defmodule PanWeb.PersonaApiController do
 
     case manifestation do
       nil ->
-        send_error(conn, "This persona is not assigned to your account.")
+        send_error(conn, "You are not a manifestation of both of this personas.")
       manifestation ->
         persona = manifestation.persona
-
-        changeset =
-          if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) do
-            Persona.changeset(persona, params)
-          else
-            Persona.user_changeset(persona, params)
-          end
+        changeset = Persona.user_changeset(persona, params)
 
         case Repo.update(changeset) do
           {:ok, persona} ->
@@ -169,6 +163,67 @@ defmodule PanWeb.PersonaApiController do
             |> put_status(422)
             |> render(:errors, data: changeset)
         end
+    end
+  end
+
+
+  def pro_update(conn, %{"id" => id} = params, user) do
+    manifestation = from(m in Manifestation, where: m.user_id == ^user.id and m.persona_id == ^id,
+                                             preload: :persona)
+                    |> Repo.one()
+
+    case manifestation do
+      nil ->
+        send_error(conn, "You are not a manifestation of both of this personas.")
+      manifestation ->
+        persona = manifestation.persona
+        changeset = Persona.pro_user_changeset(persona, params)
+
+        case Repo.update(changeset) do
+          {:ok, persona} ->
+            show(conn, %{"id" => persona.id}, user)
+          {:error, changeset} ->
+            conn
+            |> put_status(422)
+            |> render(:errors, data: changeset)
+        end
+    end
+  end
+
+
+  def redirect(conn, %{"id" => id, "target_id" => target_id}, user) do
+    id = String.to_integer(id)
+    target_id = String.to_integer(target_id)
+
+    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                           select: m.persona_id)
+                  |> Repo.all()
+
+    if id in persona_ids && target_id in persona_ids do
+      from(p in Persona, where: p.id == ^id)
+      |> Repo.update_all(set: [redirect_id: target_id])
+
+      show(conn, %{"id" => id}, user)
+    else
+      send_error(conn, "You are not a manifestation of both of this personas.")
+    end
+  end
+
+
+  def cancel_redirect(conn, %{"id" => id}, user) do
+    id = String.to_integer(id)
+
+    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                           select: m.persona_id)
+                  |> Repo.all()
+
+    if id in persona_ids do
+      from(p in Persona, where: p.id == ^id)
+      |> Repo.update_all(set: [redirect_id: nil])
+
+      show(conn, %{"id" => id}, user)
+    else
+      send_error(conn, "You are not a manifestation of both of this personas.")
     end
   end
 end

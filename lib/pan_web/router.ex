@@ -81,7 +81,6 @@ defmodule PanWeb.Router do
     post "/follows/toggle", FollowApiController, :toggle
     post "/subscriptions/toggle", SubscriptionApiController, :toggle
     post "/gigs/toggle", GigApiController, :toggle
-    post "/delegations/toggle", DelegationApiController, :toggle
 
     resources "/recommendations", RecommendationApiController, only: [:create]
     get "/recommendations/my", RecommendationApiController, :my
@@ -114,6 +113,18 @@ defmodule PanWeb.Router do
     resources "/personas", PersonaApiController, only: [:update]
 
     resources "/delegations", DelegationApiController, only: [:show]
+  end
+
+
+  scope "/jsonapi/pro", PanWeb do
+    pipe_through [:json_api, :authenticate_api_pro_user]
+
+    post "/personas/:id/redirect", PersonaApiController, :redirect
+    post "/personas/:id/cancel_redirect", PersonaApiController, :cancel_redirect
+    put "/personas/:id", PersonaApiControlller, :pro_update
+    patch "/personas/:id", PersonaApiControlller, :pro_update
+
+    post "/delegations/toggle", DelegationApiController, :toggle
   end
 
   scope "/api", PanWeb do
@@ -319,3 +330,4 @@ defmodule PanWeb.Router do
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
   end
 end
+

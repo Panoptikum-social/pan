@@ -108,7 +108,7 @@ defmodule PanWeb.PersonaFrontendController do
 
         changeset =
           if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) do
-            Persona.changeset(persona, persona_params)
+            Persona.pro_user_changeset(persona, persona_params)
           else
             Persona.user_changeset(persona, persona_params)
           end
@@ -133,7 +133,8 @@ defmodule PanWeb.PersonaFrontendController do
                                            select: m.persona_id)
                   |> Repo.all()
 
-    if id in persona_ids and target_id in persona_ids do
+
+    if id in persona_ids && target_id in persona_ids do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: target_id])
 
