@@ -7,6 +7,7 @@ defmodule PanWeb.PersonaApiController do
   alias PanWeb.Podcast
   alias PanWeb.Episode
   alias PanWeb.Manifestation
+  alias PanWeb.ErrorApiView
   use JaSerializer
   import PanWeb.ApiAuth, only: [send_error: 2]
 
@@ -222,6 +223,28 @@ defmodule PanWeb.PersonaApiController do
       |> Repo.update_all(set: [redirect_id: nil])
 
       show(conn, %{"id" => id}, user)
+    else
+      send_error(conn, "You are not a manifestation of both of this personas.")
+    end
+  end
+
+
+  def claim(conn, %{"id" => id}, user) do
+    persona = Repo.get(Persona, id)
+
+    if persona.email do
+      PanWeb.Endpoint
+      |> Phoenix.Token.sign("persona", id)
+      |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
+      |> Pan.Mailer.deliver_now()
+
+      conn
+      |> put_view(ErrorApiView)
+      |> put_status(200)
+      |> render(:errors, data: %{code: 200,
+                                 status: 200,
+                                 title: "OK",
+                                 detail: "An Email to the Persona has been sent"})
     else
       send_error(conn, "You are not a manifestation of both of this personas.")
     end

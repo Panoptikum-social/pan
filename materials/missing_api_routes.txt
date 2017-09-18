@@ -1,2 +1,0 @@
-GET  /pro/personas/:id/cancel_redirect   :cancel_redirect
-POST /pan/personas/:id/claim             :claim

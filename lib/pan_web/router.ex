@@ -110,6 +110,7 @@ defmodule PanWeb.Router do
     patch "/update_user", UserApiController, :update_user
     put "/update_user", UserApiController, :update_user
 
+    post "/personas/:id/claim", PersonaApiController, :claim
     resources "/personas", PersonaApiController, only: [:update]
 
     resources "/delegations", DelegationApiController, only: [:show]
