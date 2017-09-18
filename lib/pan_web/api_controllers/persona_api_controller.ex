@@ -6,10 +6,15 @@ defmodule PanWeb.PersonaApiController do
   alias PanWeb.Delegation
   alias PanWeb.Podcast
   alias PanWeb.Episode
+  alias PanWeb.Manifestation
   use JaSerializer
 
+  def action(conn, _) do
+    apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
+  end
 
-  def index(conn, params) do
+
+  def index(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -38,7 +43,7 @@ defmodule PanWeb.PersonaApiController do
   end
 
 
-  def show(conn, %{"id" => id} = params) do
+  def show(conn, %{"id" => id} = params, _user) do
     delegator_ids = from(d in Delegation, where: d.delegate_id == ^id,
                                           select: d.persona_id)
                     |> Repo.all
@@ -99,7 +104,7 @@ defmodule PanWeb.PersonaApiController do
   end
 
 
-  def search(conn, params) do
+  def search(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
            |> String.to_integer
@@ -133,6 +138,36 @@ defmodule PanWeb.PersonaApiController do
                                                               include: "redirect,delegates,podcasts"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
         render(conn, "error.json-api", reason: reason)
+    end
+  end
+
+
+  def update(conn, %{"id" => id} = params, user) do
+    manifestation = from(m in Manifestation, where: m.user_id == ^user.id and m.persona_id == ^id,
+                                             preload: :persona)
+                    |> Repo.one()
+
+    case manifestation do
+      nil ->
+        render(conn, "error.json-api", reason: "This persona is not assigned to your account.")
+      manifestation ->
+        persona = manifestation.persona
+
+        changeset =
+          if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) do
+            Persona.changeset(persona, params)
+          else
+            Persona.user_changeset(persona, params)
+          end
+
+        case Repo.update(changeset) do
+          {:ok, persona} ->
+            show(conn, %{"id" => persona.id}, user)
+          {:error, changeset} ->
+            conn
+            |> put_status(422)
+            |> render(:errors, data: changeset)
+        end
     end
   end
 end
