@@ -3,7 +3,7 @@ defmodule PanWeb.Api.SessionController do
   use JaSerializer
   alias PanWeb.Auth
   alias PanWeb.Endpoint
-  import PanWeb.Api.Auth, only: [send_error: 2]
+  import PanWeb.Api.Helpers, only: [send_401: 2]
 
   def login(conn, %{"username" => username, "password" => given_pass}) do
     conn = fetch_session(conn)
@@ -14,7 +14,7 @@ defmodule PanWeb.Api.SessionController do
         token = Phoenix.Token.sign(Endpoint, "user", current_user.id)
 
         unless current_user.email_confirmed do
-          send_error(conn, "email address not confirmed yet, click the confirmation link in the email")
+          send_401(conn, "email address not confirmed yet, click the confirmation link in the email")
         end
 
         data = %{id: current_user.id,
@@ -28,7 +28,7 @@ defmodule PanWeb.Api.SessionController do
         render conn, "show.json-api", data: data
 
       {:error, _reason, _conn} ->
-        send_error(conn, "Could not be aquired. Wrong username/password combination?")
+        send_401(conn, "Could not be aquired. Wrong username/password combination?")
     end
   end
 end

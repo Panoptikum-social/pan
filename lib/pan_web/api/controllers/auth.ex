@@ -1,10 +1,8 @@
 defmodule PanWeb.Api.Auth do
   import Plug.Conn
-  import Phoenix.Controller, only: [render: 3, put_view: 2]
-
+  import PanWeb.Api.Helpers, only: [send_401: 2]
   alias Pan.Repo
   alias PanWeb.User
-  alias PanWeb.Api.ErrorView
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -40,24 +38,12 @@ defmodule PanWeb.Api.Auth do
   end
 
 
-  def send_error(conn, reason) do
-    conn
-    |> put_view(ErrorView)
-    |> put_status(401)
-    |> render(:errors, data: %{code: 401,
-                               status: 401,
-                               title: "Unauthorized",
-                               detail: reason})
-  end
-
-
   def authenticate_api_user(conn, _opts) do
     if conn.assigns.current_user do
       conn
     else
       conn
-      |> send_error(conn.assigns.api_error)
-      |> halt()
+      |> send_401(conn.assigns.api_error)
     end
   end
 
@@ -72,8 +58,7 @@ defmodule PanWeb.Api.Auth do
       error = conn.assigns.api_error || "Pro account needed"
 
       conn
-      |> send_error(error)
-      |> halt()
+      |> send_401(error)
     end
   end
 end

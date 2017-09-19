@@ -1,5 +1,4 @@
- alternate_feed  GET     alternate_feeds/:id              AlternateFee :show
-        chapter  GET     chapters/:id                     Chapte :show
+         chapter  GET     chapters/:id                     Chapte :show
        category  GET     categories/search                Category :search
        category  GET     categories/:id                   Category :show
       enclosure  GET     enclosures/:id                   Enclosur :show

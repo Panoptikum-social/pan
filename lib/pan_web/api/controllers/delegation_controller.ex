@@ -4,7 +4,7 @@ defmodule PanWeb.Api.DelegationController do
   alias PanWeb.Delegation
   alias PanWeb.Manifestation
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
-  import PanWeb.Api.Auth, only: [send_error: 2]
+  import PanWeb.Api.Helpers, only: [send_401: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -23,7 +23,7 @@ defmodule PanWeb.Api.DelegationController do
       render conn, "show.json-api", data: delegation,
                                     opts: [include: "persona,delegate"]
     else
-      send_error(conn, "You are not a manifestation of both of this personas.")
+      send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 
@@ -59,7 +59,7 @@ defmodule PanWeb.Api.DelegationController do
                                         opts: [include: "persona,delegate"]
       end
     else
-      send_error(conn, "You are not a manifestation of both of this personas.")
+      send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 end

@@ -10,15 +10,15 @@ defmodule PanWeb.Router do
     plug PanWeb.Auth, repo: Pan.Repo
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
   pipeline :json_api do
     plug :accepts, ["json-api"]
     plug :fetch_session
     plug :put_secure_browser_headers
     plug PanWeb.Api.Auth, repo: Pan.Repo
+  end
+
+  pipeline :api do
+    plug :accepts, ["json"]
   end
 
   pipeline :bot do
