@@ -2,6 +2,7 @@ defmodule PanWeb.Api.MessageController do
   use Pan.Web, :controller
   alias PanWeb.Message
   alias PanWeb.User
+  alias PanWeb.Api.Helpers
   use JaSerializer
 
   def action(conn, _) do
@@ -17,15 +18,20 @@ defmodule PanWeb.Api.MessageController do
 
     message = from(m in Message,
               where: m.id == ^id and
-                     (m.topic == "mailboxes" and m.subtopic == ^user_id) or
-                     (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
-                     (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
-                     (m.topic == "category"  and m.subtopic in ^subscribed_category_ids),
+                     ((m.topic == "mailboxes" and m.subtopic == ^user_id) or
+                      (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
+                      (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
+                      (m.topic == "category"  and m.subtopic in ^subscribed_category_ids)),
               order_by: [desc: :inserted_at],
-              preload: :creator)
+              preload: [:creator, :persona])
               |> Repo.one()
 
-    render conn, "show.json-api", data: message
+    if message do
+      render conn, "show.json-api", data: message,
+                                    opts: [include: "creator,persona"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

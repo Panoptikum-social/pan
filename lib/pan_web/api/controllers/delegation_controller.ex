@@ -3,8 +3,8 @@ defmodule PanWeb.Api.DelegationController do
   use JaSerializer
   alias PanWeb.Delegation
   alias PanWeb.Manifestation
+  alias PanWeb.Api.Helpers
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
-  import PanWeb.Api.Helpers, only: [send_401: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -19,11 +19,15 @@ defmodule PanWeb.Api.DelegationController do
     delegation = Repo.get(Delegation, id)
               |> Repo.preload([:persona, :delegate])
 
-    if delegation.persona_id in persona_ids and delegation.delegate_id in persona_ids do
-      render conn, "show.json-api", data: delegation,
-                                    opts: [include: "persona,delegate"]
+    if delegation do
+      if delegation.persona_id in persona_ids and delegation.delegate_id in persona_ids do
+        render conn, "show.json-api", data: delegation,
+                                      opts: [include: "persona,delegate"]
+      else
+        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+      end
     else
-      send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_404(conn)
     end
   end
 
@@ -59,7 +63,7 @@ defmodule PanWeb.Api.DelegationController do
                                         opts: [include: "persona,delegate"]
       end
     else
-      send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 end
