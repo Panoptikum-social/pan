@@ -18,7 +18,7 @@ defmodule PanWeb.Api.EnclosureView do
   end
 
   def location(enclosure, conn) do
-    enclosure_url(conn, :show, enclosure)
+    api_enclosure_url(conn, :show, enclosure)
   end
 end
 
@@ -41,6 +41,6 @@ defmodule PanWeb.Api.PlainEnclosureView do
   end
 
   def location(enclosure, conn) do
-    enclosure_url(conn, :show, enclosure)
+    api_enclosure_url(conn, :show, enclosure)
   end
 end

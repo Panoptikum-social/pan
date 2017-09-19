@@ -21,7 +21,7 @@ defmodule PanWeb.Api.PodcastView do
   has_many :feeds, serializer: PanWeb.Api.PlainFeedView, include: false
 
   def location(podcast, conn) do
-    podcast_url(conn, :show, podcast)
+    api_podcast_url(conn, :show, podcast)
   end
 end
 
@@ -37,6 +37,6 @@ defmodule PanWeb.Api.PlainPodcastView do
               :latest_episode_publishing_date]
 
   def location(podcast, conn) do
-    podcast_url(conn, :show, podcast)
+    api_podcast_url(conn, :show, podcast)
   end
 end

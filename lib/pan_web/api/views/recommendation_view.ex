@@ -14,7 +14,7 @@ defmodule PanWeb.Api.RecommendationView do
   has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
 
   def location(recommendation, conn) do
-    recommendation_url(conn, :show, recommendation)
+    api_recommendation_url(conn, :show, recommendation)
   end
 end
 
@@ -33,6 +33,6 @@ defmodule PanWeb.Api.PodcastRecommendationView do
   end
 
   def location(recommendation, conn) do
-    recommendation_url(conn, :show, recommendation)
+    api_recommendation_url(conn, :show, recommendation)
   end
 end

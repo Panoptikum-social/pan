@@ -12,7 +12,7 @@ defmodule PanWeb.Api.FeedView do
   has_many :alternate_feeds, serializer: PanWeb.Api.PlainAlternateFeedView, include: true
 
   def location(feed, conn) do
-    feed_url(conn, :show, feed)
+    api_feed_url(conn, :show, feed)
   end
 end
 
@@ -28,6 +28,6 @@ defmodule PanWeb.Api.PlainFeedView do
               :last_page_url, :hub_link_url, :feed_generator]
 
   def location(feed, conn) do
-    feed_url(conn, :show, feed)
+    api_feed_url(conn, :show, feed)
   end
 end

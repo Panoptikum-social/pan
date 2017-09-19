@@ -30,7 +30,7 @@ defmodule PanWeb.Router do
   end
 
 
-  scope "/jsonapi", PanWeb.Api do
+  scope "/jsonapi", PanWeb.Api, as: :api do
     pipe_through :json_api
 
     resources "/alternate_feeds", AlternateFeedController, only: [:show]
@@ -74,7 +74,7 @@ defmodule PanWeb.Router do
   end
 
 
-  scope "/jsonapi/pan", PanWeb.Api do
+  scope "/jsonapi/pan", PanWeb.Api, as: :api do
     pipe_through [:json_api, :authenticate_api_user]
 
     post "/likes/toggle", LikeController, :toggle
@@ -117,7 +117,7 @@ defmodule PanWeb.Router do
   end
 
 
-  scope "/jsonapi/pro", PanWeb.Api do
+  scope "/jsonapi/pro", PanWeb.Api, as: :api do
     pipe_through [:json_api, :authenticate_api_pro_user]
 
     post "/personas/:id/redirect", PersonaController, :redirect

@@ -12,6 +12,6 @@ defmodule PanWeb.Api.SubscriptionView do
   has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
 
   def location(_like, conn) do
-    subscription_url(conn, :toggle)
+    api_subscription_url(conn, :toggle)
   end
 end

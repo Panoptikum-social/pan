@@ -54,7 +54,7 @@ defmodule PanWeb.Api.MessageController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: message_url(conn,:my)}, conn)
+                                                         base_url: api_message_url(conn,:my)}, conn)
 
     messages = from(m in Message, order_by: [desc: :inserted_at],
                                   preload: [:creator, :persona],

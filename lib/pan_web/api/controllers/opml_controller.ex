@@ -2,6 +2,7 @@ defmodule PanWeb.Api.OpmlController do
   use Pan.Web, :controller
   alias PanWeb.Opml
   use JaSerializer
+  alias PanWeb.Api.Helpers
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -21,10 +22,16 @@ defmodule PanWeb.Api.OpmlController do
   def show(conn, %{"id" => id}, user) do
     opml = from(o in Opml, where: o.user_id == ^user.id and
                                   o.id == ^id,
+                           limit: 1,
                            preload: :user)
+           |> Repo.all()
 
-    render conn, "show.json-api", data: opml,
-                                  opts: [include: "user"]
+    if opml != [] do
+      render conn, "show.json-api", data: opml,
+                                    opts: [include: "user"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

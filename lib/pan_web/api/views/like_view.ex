@@ -17,6 +17,6 @@ defmodule PanWeb.Api.LikeView do
   has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
 
   def location(_like, conn) do
-    like_url(conn, :toggle)
+    api_like_url(conn, :toggle)
   end
 end

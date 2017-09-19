@@ -14,6 +14,6 @@ defmodule PanWeb.Api.FeedBacklogView do
   end
 
   def location(feed_backlog, conn) do
-    feed_backlog_url(conn, :show, feed_backlog)
+    api_feed_backlog_url(conn, :show, feed_backlog)
   end
 end

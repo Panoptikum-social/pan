@@ -14,7 +14,7 @@ defmodule PanWeb.Api.UserView do
   has_many :categories_i_like, serializer: PanWeb.Api.PlainCategoryView, include: false
 
   def location(user, conn) do
-    user_url(conn, :show, user)
+    api_user_url(conn, :show, user)
   end
 end
 
@@ -29,7 +29,7 @@ defmodule PanWeb.Api.PlainUserView do
   attributes [:name, :podcaster, :share_subscriptions, :share_follows]
 
   def location(user, conn) do
-    user_url(conn, :show, user)
+    api_user_url(conn, :show, user)
   end
 end
 
@@ -47,6 +47,6 @@ defmodule PanWeb.Api.MyUserView do
   has_many :personas, serializer: PanWeb.Api.PlainPersonaView, include: false
 
   def location(_user, conn) do
-    user_url(conn, :my)
+    api_user_url(conn, :my)
   end
 end

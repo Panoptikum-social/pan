@@ -26,7 +26,7 @@ defmodule PanWeb.Api.UserController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: user_url(conn,:index)}, conn)
+                                                         base_url: api_user_url(conn,:index)}, conn)
 
     users = from(u in User, order_by: :name,
                             limit: ^size,

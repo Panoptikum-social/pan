@@ -12,6 +12,6 @@ defmodule PanWeb.Api.DelegationView do
   has_one :delegate, serializer: PanWeb.Api.PlainPersonaView, include: false
 
   def location(delegation, conn) do
-    delegation_url(conn, :show, delegation)
+    api_delegation_url(conn, :show, delegation)
   end
 end

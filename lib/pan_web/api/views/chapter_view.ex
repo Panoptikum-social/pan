@@ -16,7 +16,7 @@ defmodule PanWeb.Api.ChapterView do
   end
 
   def location(chapter, conn) do
-    chapter_url(conn, :show, chapter)
+    api_chapter_url(conn, :show, chapter)
   end
 end
 
@@ -31,6 +31,6 @@ defmodule PanWeb.Api.PlainChapterView do
   attributes [:start, :title]
 
   def location(chapter, conn) do
-    chapter_url(conn, :show, chapter)
+    api_chapter_url(conn, :show, chapter)
   end
 end

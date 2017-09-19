@@ -10,6 +10,6 @@ defmodule PanWeb.Api.OpmlView do
   has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
 
   def location(opml, conn) do
-    opml_url(conn, :show, opml)
+    api_opml_url(conn, :show, opml)
   end
 end

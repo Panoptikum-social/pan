@@ -30,7 +30,7 @@ defmodule PanWeb.Api.PodcastController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: podcast_url(conn,:index)}, conn)
+                                                         base_url: api_podcast_url(conn,:index)}, conn)
 
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
                                   where: is_nil(p.blocked) or p.blocked == false,
@@ -61,7 +61,7 @@ defmodule PanWeb.Api.PodcastController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: podcast_url(conn,:show, id)}, conn)
+                                                         base_url: api_podcast_url(conn,:show, id)}, conn)
 
     podcast = Repo.get(Podcast, id)
                |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
@@ -98,7 +98,7 @@ defmodule PanWeb.Api.PodcastController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: podcast_url(conn,:last_updated)}, conn)
+                                                         base_url: api_podcast_url(conn,:last_updated)}, conn)
 
     podcasts = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
                                          is_nil(p.latest_episode_publishing_date) == false and
@@ -153,7 +153,7 @@ defmodule PanWeb.Api.PodcastController do
         links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                              size: size,
                                                              total: total_pages,
-                                                             base_url: podcast_url(conn,:search)}, conn)
+                                                             base_url: api_podcast_url(conn,:search)}, conn)
 
         podcast_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 

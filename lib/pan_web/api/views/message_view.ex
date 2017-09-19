@@ -11,6 +11,6 @@ defmodule PanWeb.Api.MessageView do
   has_one :persona, serializer: PanWeb.Api.PlainPersonaView, include: false
 
   def location(message, conn) do
-    message_url(conn, :show, message)
+    api_message_url(conn, :show, message)
   end
 end

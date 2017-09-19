@@ -16,7 +16,7 @@ defmodule PanWeb.Api.PersonaView do
   has_many :episodes, serializer: PanWeb.Api.PlainEpisodeView, include: false
 
   def location(persona, conn) do
-    persona_url(conn, :show, persona)
+    api_persona_url(conn, :show, persona)
   end
 end
 
@@ -31,6 +31,6 @@ defmodule PanWeb.Api.PlainPersonaView do
   attributes [:pid, :name, :uri, :email, :description, :long_description, :image_url, :image_title]
 
   def location(persona, conn) do
-    persona_url(conn, :show, persona)
+    api_persona_url(conn, :show, persona)
   end
 end

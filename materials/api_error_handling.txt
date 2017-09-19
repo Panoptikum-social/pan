@@ -1,5 +1,9 @@
-         search  GET     search                           Search :search
+   feed_backlog  GET     pan/feed_backlogs/:id            FeedBacklo :show
+        message  GET     pan/messages/:id                 Messag :show
+     delegation  GET     pan/delegations/:id              Delegation :show
            like  POST    pan/likes/toggle                 Like :toggle
+-----
+         search  GET     search                           Search :search
          follow  POST    pan/follows/toggle               Follow :toggle
    subscription  POST    pan/subscriptions/toggle         Subscription :toggle
             gig  POST    pan/gigs/toggle                  Gig :toggle
@@ -7,18 +11,14 @@
  recommendation  GET     pan/recommendations/my           Recommendation :my
            opml  GET     pan/opmls/:id/import             Opml :import
            opml  GET     pan/opmls                        Opml :index
-           opml  GET     pan/opmls/:id                    Opml :show
            opml  POST    pan/opmls                        Opml :create
            opml  DELETE  pan/opmls/:id                    Opml :delete
-   feed_backlog  GET     pan/feed_backlogs/:id            FeedBacklo :show
    feed_backlog  POST    pan/feed_backlogs                FeedBacklo :create
         message  GET     pan/messages/my                  Messag :my
-        message  GET     pan/messages/:id                 Messag :show
            user  PUT     pan/update_password              User :update_password
            user  PATCH   pan/update_user                  User :update_user
         persona  POST    pan/personas/:id/claim           Person :claim
         persona  PUT     pan/personas/:id                 Person :update
-     delegation  GET     pan/delegations/:id              Delegation :show
         persona  POST    pro/personas/:id/redirect        Person :redirect
         persona  POST    pro/personas/:id/cancel_redirect Person :cancel_redirect
         persona  PUT     pro/personas/:id                 Person :pro_update

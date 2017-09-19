@@ -16,6 +16,6 @@ defmodule PanWeb.Api.FollowView do
 
 
   def location(follow, conn) do
-    follow_url(conn, :show, follow)
+    api_follow_url(conn, :show, follow)
   end
 end

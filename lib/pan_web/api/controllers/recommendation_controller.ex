@@ -31,7 +31,7 @@ defmodule PanWeb.Api.RecommendationController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: episode_url(conn,:index)}, conn)
+                                                         base_url: api_episode_url(conn,:index)}, conn)
 
     recommendations = from(e in Recommendation, order_by: [desc: :inserted_at],
                                                 preload: [:podcast, :episode, :chapter, :user],

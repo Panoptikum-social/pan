@@ -27,7 +27,7 @@ defmodule PanWeb.Api.EpisodeView do
   end
 
   def location(episode, conn) do
-    episode_url(conn, :show, episode)
+    api_episode_url(conn, :show, episode)
   end
 end
 
@@ -47,6 +47,6 @@ defmodule PanWeb.Api.PlainEpisodeView do
   end
 
   def location(episode, conn) do
-    episode_url(conn, :show, episode)
+    api_episode_url(conn, :show, episode)
   end
 end

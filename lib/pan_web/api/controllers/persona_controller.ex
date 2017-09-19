@@ -31,7 +31,7 @@ defmodule PanWeb.Api.PersonaController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: user_url(conn,:index)}, conn)
+                                                         base_url: api_user_url(conn,:index)}, conn)
 
     personas = from(p in Persona, order_by: :name,
                                   limit: ^size,
@@ -66,7 +66,7 @@ defmodule PanWeb.Api.PersonaController do
     links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                          size: size,
                                                          total: total_pages,
-                                                         base_url: persona_url(conn,:show, id)}, conn)
+                                                         base_url: api_persona_url(conn,:show, id)}, conn)
 
     persona = Repo.get(Persona, id)
               |> Repo.preload([:redirect, :delegates, :podcasts])
@@ -133,7 +133,7 @@ defmodule PanWeb.Api.PersonaController do
         links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
                                                              size: size,
                                                              total: total_pages,
-                                                             base_url: persona_url(conn,:search)}, conn)
+                                                             base_url: api_persona_url(conn,:search)}, conn)
 
         persona_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 

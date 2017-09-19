@@ -1,6 +1,7 @@
 defmodule PanWeb.Api.FeedBacklogController do
   use Pan.Web, :controller
   alias PanWeb.FeedBacklog
+  alias PanWeb.Api.Helpers
   use JaSerializer
 
   def action(conn, _) do
@@ -11,10 +12,16 @@ defmodule PanWeb.Api.FeedBacklogController do
   def show(conn, %{"id" => id}, user) do
     feed_backlog = from(f in FeedBacklog, where: f.user_id == ^user.id and
                                                  f.id == ^id,
+                                          limit: 1,
                                           preload: :user)
+                   |> Repo.all()
 
-    render conn, "show.json-api", data: feed_backlog,
+    if feed_backlog != [] do
+      render conn, "show.json-api", data: feed_backlog,
                                   opts: [include: "user"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

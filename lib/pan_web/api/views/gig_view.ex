@@ -12,7 +12,7 @@ defmodule PanWeb.Api.GigView do
   has_one :episode, serializer: PanWeb.Api.PlainEpisodeView, include: true
 
   def location(gig, conn) do
-    gig_url(conn, :show, gig)
+    api_gig_url(conn, :show, gig)
   end
 end
 
@@ -28,6 +28,6 @@ defmodule PanWeb.Api.PlainGigView do
               :persona_id, :episode_id, :created, :deleted]
 
   def location(gig, conn) do
-    gig_url(conn, :show, gig)
+    api_gig_url(conn, :show, gig)
   end
 end

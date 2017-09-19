@@ -13,7 +13,7 @@ defmodule PanWeb.Api.CategoryView do
   has_many :podcasts, serializer: PanWeb.Api.PlainPodcastView, include: false
 
   def location(category, conn) do
-    category_url(conn, :show, category)
+    api_category_url(conn, :show, category)
   end
 end
 
@@ -28,6 +28,6 @@ defmodule PanWeb.Api.PlainCategoryView do
   attributes [:title]
 
   def location(category, conn) do
-    category_url(conn, :show, category)
+    api_category_url(conn, :show, category)
   end
 end

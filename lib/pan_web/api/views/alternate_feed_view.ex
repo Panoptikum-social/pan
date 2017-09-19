@@ -14,7 +14,7 @@ defmodule PanWeb.Api.AlternateFeedView do
   end
 
   def location(alternate_feed, conn) do
-    alternate_feed_url(conn, :show, alternate_feed)
+    api_alternate_feed_url(conn, :show, alternate_feed)
   end
 end
 
@@ -33,6 +33,6 @@ defmodule PanWeb.Api.PlainAlternateFeedView do
   end
 
   def location(alternate_feed, conn) do
-    alternate_feed_url(conn, :show, alternate_feed)
+    api_alternate_feed_url(conn, :show, alternate_feed)
   end
 end
