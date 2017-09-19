@@ -126,25 +126,31 @@ defmodule PanWeb.Api.PersonaController do
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits}} ->
-        total = Enum.min([hits.total, 10000])
-        total_pages = div(total - 1, size) + 1
+        if hits.total > 0 do
+          total = Enum.min([hits.total, 10000])
+          total_pages = div(total - 1, size) + 1
 
 
-        links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                             size: size,
-                                                             total: total_pages,
-                                                             base_url: api_persona_url(conn,:search)}, conn)
+          links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                               size: size,
+                                                               total: total_pages,
+                                                               base_url: api_persona_url(conn,:search)}, conn)
 
-        persona_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
+          persona_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 
-        personas = from(p in Persona, where: p.id in ^persona_ids,
-                                      preload: [:redirect, :delegates, :podcasts])
-                   |> Repo.all()
+          personas = from(p in Persona, where: p.id in ^persona_ids,
+                                        preload: [:redirect, :delegates, :podcasts])
+                     |> Repo.all()
 
-        render conn, "index.json-api", data: personas, opts: [page: links,
-                                                              include: "redirect,delegates,podcasts"]
+          render conn, "index.json-api", data: personas, opts: [page: links,
+                                                                include: "redirect,delegates,podcasts"]
+        else
+          Helpers.send_error(conn, 404, "Nothing found", "No matching personas found in the data base.")
+        end
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
         Helpers.send_401(conn, reason)
+      :error ->
+        Helpers.send_error(conn, 500, "Server error", "The search engine seams to be broken right now.")
     end
   end
 

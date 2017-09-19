@@ -1,5 +1,6 @@
 defmodule PanWeb.Api.SearchController do
   use Pan.Web, :controller
+  alias PanWeb.Api.Helpers
 
   def search(conn, params) do
      case params["filter"] do
@@ -14,6 +15,9 @@ defmodule PanWeb.Api.SearchController do
 
        %{"persona" => persona} ->
          redirect conn, to: api_persona_path(conn, :search, [filter: persona])
+
+       _ ->
+        Helpers.send_error(conn, 412, "Precondition Failed", "Expecting parameter filter[category|podcast|episode|persona]=searchterm")
      end
   end
 end

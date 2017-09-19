@@ -70,24 +70,30 @@ defmodule PanWeb.Api.EpisodeController do
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits}} ->
-        total = Enum.min([hits.total, 10000])
-        total_pages = div(total - 1, size) + 1
+        if hits.total > 0 do
+          total = Enum.min([hits.total, 10000])
+          total_pages = div(total - 1, size) + 1
 
-        links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                             size: size,
-                                                             total: total_pages,
-                                                             base_url: api_episode_url(conn,:search)}, conn)
+          links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
+                                                               size: size,
+                                                               total: total_pages,
+                                                               base_url: api_episode_url(conn,:search)}, conn)
 
-        episode_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
+          episode_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 
-        episodes = from(e in Episode, where: e.id in ^episode_ids,
-                                      preload: [:podcast, :gigs, :contributors])
-                   |> Repo.all()
+          episodes = from(e in Episode, where: e.id in ^episode_ids,
+                                        preload: [:podcast, :gigs, :contributors])
+                     |> Repo.all()
 
-        render conn, "index.json-api", data: episodes, opts: [page: links,
-                                                              include: "podcast,gigs,contributors"]
+          render conn, "index.json-api", data: episodes, opts: [page: links,
+                                                                include: "podcast,gigs,contributors"]
+        else
+          Helpers.send_error(conn, 404, "Nothing found", "No matching episodes found in the data base.")
+        end
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        render(conn, "error.json-api", reason: reason)
+        Helpers.send_401(conn, reason)
+      :error ->
+        Helpers.send_error(conn, 500, "Server error", "The search engine seams to be broken right now.")
     end
   end
 end

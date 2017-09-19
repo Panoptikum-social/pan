@@ -1,8 +1,6 @@
-         search  GET     search                           Search :search
-       category  GET     categories/search                Category :search
-        episode  GET     episodes/search                  Episod :search
-        persona  GET     personas/search                  Person :search
-        podcast  GET     podcasts/search                  Podcas :search
+        persona  POST    pan/personas/:id/claim           Person :claim
+        persona  POST    pro/personas/:id/redirect        Person :redirect
+        persona  POST    pro/personas/:id/cancel_redirect Person :cancel_redirect
 
            user  POST    users                            User :create
  recommendation  POST    pan/recommendations              Recommendation :create
@@ -18,7 +16,3 @@
 
            user  PUT     pan/update_password              User :update_password
            user  PATCH   pan/update_user                  User :update_user
-
-        persona  POST    pan/personas/:id/claim           Person :claim
-        persona  POST    pro/personas/:id/redirect        Person :redirect
-        persona  POST    pro/personas/:id/cancel_redirect Person :cancel_redirect
