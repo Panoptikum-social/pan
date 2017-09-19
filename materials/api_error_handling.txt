@@ -1,16 +1,4 @@
-       category  GET     categories/search                Category :search
-      enclosure  GET     enclosures/:id                   Enclosur :show
-     engagement  GET     engagements/:id                  Engagement :show
-        episode  GET     episodes/search                  Episod :search
-           feed  GET     feeds/:id                        Feed :show
-            gig  GET     gigs/:id                         Gig :show
-       language  GET     languages/:id                    Language :show
-        persona  GET     personas/search                  Person :search
-        persona  GET     personas/:id                     Person :show
-           user  GET     users/:id                        User :show
-           user  POST    users                            User :create
  recommendation  GET     recommendations/:id              Recommendation :show
-        podcast  GET     podcasts/search                  Podcas :search
         podcast  GET     podcasts/:id                     Podcas :show
            like  GET     likes/:id                        Like :show
          follow  GET     follows/:id                      Follow :show
@@ -40,3 +28,9 @@
         persona  POST    pro/personas/:id/cancel_redirect Person :cancel_redirect
         persona  PUT     pro/personas/:id                 Person :pro_update
      delegation  POST    pro/delegations/toggle           Delegation :toggle
+-----
+       category  GET     categories/search                Category :search
+        episode  GET     episodes/search                  Episod :search
+        persona  GET     personas/search                  Person :search
+           user  POST    users                            User :create
+        podcast  GET     podcasts/search                  Podcas :search

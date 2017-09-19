@@ -8,8 +8,8 @@ defmodule PanWeb.Api.PersonaController do
   alias PanWeb.Episode
   alias PanWeb.Manifestation
   alias PanWeb.Api.ErrorView
+  alias PanWeb.Api.Helpers
   use JaSerializer
-  import PanWeb.Api.Helpers, only: [send_401: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -92,17 +92,22 @@ defmodule PanWeb.Api.PersonaController do
                                   where: e.persona_id in ^persona_ids)
                |> Repo.all()
 
-    persona = persona
-              |> Map.put(:gigs, gigs)
-              |> Map.put(:engagements, engagements)
-              |> Map.put(:podcasts, podcasts)
-              |> Map.put(:episodes, episodes)
+    if persona do
+      persona = persona
+                |> Map.put(:gigs, gigs)
+                |> Map.put(:engagements, engagements)
+                |> Map.put(:podcasts, podcasts)
+                |> Map.put(:episodes, episodes)
 
-    render conn, "show.json-api", data: persona,
+
+      render conn, "show.json-api", data: persona,
                                   gigs: gigs,
                                   engagements: engagements,
                                   opts: [page: links,
                                         include: "redirect,delegates,engagements,gigs,podcasts,episodes"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 
@@ -139,7 +144,7 @@ defmodule PanWeb.Api.PersonaController do
         render conn, "index.json-api", data: personas, opts: [page: links,
                                                               include: "redirect,delegates,podcasts"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        send_401(conn, reason)
+        Helpers.send_401(conn, reason)
     end
   end
 
@@ -151,7 +156,7 @@ defmodule PanWeb.Api.PersonaController do
 
     case manifestation do
       nil ->
-        send_401(conn, "You are not a manifestation of both of this personas.")
+        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
       manifestation ->
         persona = manifestation.persona
         changeset = Persona.user_changeset(persona, params)
@@ -175,7 +180,7 @@ defmodule PanWeb.Api.PersonaController do
 
     case manifestation do
       nil ->
-        send_401(conn, "You are not a manifestation of both of this personas.")
+        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
       manifestation ->
         persona = manifestation.persona
         changeset = Persona.pro_user_changeset(persona, params)
@@ -206,7 +211,7 @@ defmodule PanWeb.Api.PersonaController do
 
       show(conn, %{"id" => id}, user)
     else
-      send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 
@@ -224,7 +229,7 @@ defmodule PanWeb.Api.PersonaController do
 
       show(conn, %{"id" => id}, user)
     else
-      send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 
@@ -246,7 +251,7 @@ defmodule PanWeb.Api.PersonaController do
                                  title: "OK",
                                  detail: "An Email to the Persona has been sent"})
     else
-      send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
     end
   end
 end

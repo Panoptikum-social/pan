@@ -3,6 +3,7 @@ defmodule PanWeb.Api.UserController do
   use JaSerializer
   alias PanWeb.User
   alias PanWeb.Api.MyUserView
+  alias PanWeb.Api.Helpers
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -45,21 +46,25 @@ defmodule PanWeb.Api.UserController do
     include_string = "categories_i_like,users_i_like"
 
     {user, include_string} =
-      if user.share_subscriptions do
+      if user && user.share_subscriptions do
         {Repo.preload(user, :podcasts_i_subscribed), include_string <> ",podcasts_i_subscribed"}
       else
         {user, include_string}
       end
 
     {user, include_string} =
-      if user.share_follows do
+      if user && user.share_follows do
         {Repo.preload(user, :podcasts_i_follow), include_string <> ",podcasts_i_follow"}
       else
         {user, include_string}
       end
 
-    render conn, "show.json-api", data: user,
-                                  opts: [include: include_string]
+    if user do
+      render conn, "show.json-api", data: user,
+                                    opts: [include: include_string]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

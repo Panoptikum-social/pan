@@ -1,6 +1,7 @@
 defmodule PanWeb.Api.LanguageController do
   use Pan.Web, :controller
   alias PanWeb.Language
+  alias PanWeb.Api.Helpers
   use JaSerializer
 
   def index(conn, _params) do
@@ -13,6 +14,10 @@ defmodule PanWeb.Api.LanguageController do
   def show(conn, %{"id" => id}) do
     language = Repo.get(Language, id)
 
-    render conn, "show.json-api", data: language
+    if language do
+      render conn, "show.json-api", data: language
+    else
+      Helpers.send_404(conn)
+    end
   end
 end
