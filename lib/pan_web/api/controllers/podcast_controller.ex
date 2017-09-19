@@ -6,7 +6,7 @@ defmodule PanWeb.Api.PodcastController do
   alias PanWeb.Like
   alias PanWeb.User
   alias PanWeb.Subscription
-  import PanWeb.Api.Helpers, only: [send_401: 2]
+  alias PanWeb.Api.Helpers
 
 
   def action(conn, _) do
@@ -70,9 +70,13 @@ defmodule PanWeb.Api.PodcastController do
                |> Repo.preload([:categories, :languages, :engagements, :contributors,
                                [recommendations: :user], :feeds])
 
-    render conn, "show.json-api", data: podcast,
+    if podcast do
+      render conn, "show.json-api", data: podcast,
                                   opts: [page: links,
                                          include: "episodes,categories,languages,engagements,contributors,recommendations,feeds"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 
@@ -160,7 +164,7 @@ defmodule PanWeb.Api.PodcastController do
         render conn, "index.json-api", data: podcasts, opts: [page: links,
                                                               include: "categories,engagements,contributors,languages"]
       {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        send_401(conn, reason)
+        Helpers.send_401(conn, reason)
     end
   end
 

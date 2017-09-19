@@ -2,6 +2,7 @@ defmodule PanWeb.Api.SubscriptionController do
   use Pan.Web, :controller
   alias PanWeb.Subscription
   alias PanWeb.Podcast
+  alias PanWeb.Api.Helpers
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -16,8 +17,12 @@ defmodule PanWeb.Api.SubscriptionController do
                                            preload: [:user, :podcast])
                    |> Repo.all()
 
-    render conn, "show.json-api", data: subscription,
+    if subscription != [] do
+      render conn, "show.json-api", data: subscription,
                                   opts: [include: "user,podcast"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

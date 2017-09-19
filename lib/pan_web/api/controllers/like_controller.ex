@@ -9,6 +9,7 @@ defmodule PanWeb.Api.LikeController do
   alias PanWeb.Persona
   alias PanWeb.User
   alias PanWeb.Subscription
+  alias PanWeb.Api.Helpers
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -22,7 +23,12 @@ defmodule PanWeb.Api.LikeController do
                            preload: [:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
            |> Repo.all()
 
-    render conn, "show.json-api", data: like
+    if like != [] do
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "category,enjoyer,user,podcast,chapter,persona,episode"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

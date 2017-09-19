@@ -7,6 +7,7 @@ defmodule PanWeb.Api.RecommendationController do
   alias PanWeb.Episode
   alias PanWeb.Message
   alias PanWeb.Chapter
+  alias PanWeb.Api.Helpers
   alias Pan.Parser.Helpers , as: H
 
 
@@ -48,8 +49,12 @@ defmodule PanWeb.Api.RecommendationController do
     recommendation = Repo.get(Recommendation, id)
                      |> Repo.preload([:podcast, :episode, :chapter, :user])
 
-    render conn, "show.json-api", data: recommendation,
-                                  opts: [include: "podcast,episode,chapter,user"]
+    if recommendation do
+      render conn, "show.json-api", data: recommendation,
+                                    opts: [include: "podcast,episode,chapter,user"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

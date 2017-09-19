@@ -7,6 +7,7 @@ defmodule PanWeb.Api.FollowController do
   alias PanWeb.User
   alias PanWeb.Subscription
   alias PanWeb.Message
+  alias PanWeb.Api.Helpers
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -21,8 +22,12 @@ defmodule PanWeb.Api.FollowController do
                                preload: [:category, :follower, :user, :podcast, :persona])
              |> Repo.all()
 
-    render conn, "show.json-api", data: follow,
+    if follow != [] do
+      render conn, "show.json-api", data: follow,
                                   opts: [include: "category,follower,user,podcast,persona"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 
