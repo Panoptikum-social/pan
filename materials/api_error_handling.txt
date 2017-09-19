@@ -1,3 +1,0 @@
-        opml  POST    pan/opmls             Opml :create
-        opml  GET     pan/opmls/:id/import  Opml :import
-        opml  GET     pan/opmls             Opml :index

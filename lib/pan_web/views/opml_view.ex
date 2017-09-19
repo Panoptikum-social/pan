@@ -12,7 +12,7 @@ defmodule PanWeb.OpmlView do
       user_name:     opml.user.name,
       content_type:  opml.content_type,
       filename:      opml.filename,
-      inserted_at:   opml.inserted_at,
+      inserted_at:   "<nobr>" <> Timex.format!(opml.inserted_at, "{YYYY}-{0M}-{0D} {h24}:{m}:{s}") <> "</nobr>",
       path:          opml.path,
       actions:       opml_actions(opml, &opml_path/3)}
   end
