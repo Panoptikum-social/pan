@@ -30,7 +30,8 @@ defmodule Pan.Web do
                                  authenticate_admin: 2,
                                  authenticate_pro: 2]
 
-      import PanWeb.ApiAuth, only: [authenticate_api_user: 2]
+      import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
+                                     authenticate_api_pro_user: 2]
     end
   end
 
@@ -62,8 +63,8 @@ defmodule Pan.Web do
                                  authenticate_admin: 2,
                                  authenticate_pro: 2]
 
-      import PanWeb.ApiAuth, only: [authenticate_api_user: 2,
-                                    authenticate_api_pro_user: 2]
+      import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
+                                     authenticate_api_pro_user: 2]
     end
   end
 

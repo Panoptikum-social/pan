@@ -18,7 +18,7 @@ defmodule PanWeb.Router do
     plug :accepts, ["json-api"]
     plug :fetch_session
     plug :put_secure_browser_headers
-    plug PanWeb.ApiAuth, repo: Pan.Repo
+    plug PanWeb.Api.Auth, repo: Pan.Repo
   end
 
   pipeline :bot do
@@ -30,102 +30,102 @@ defmodule PanWeb.Router do
   end
 
 
-  scope "/jsonapi", PanWeb do
+  scope "/jsonapi", PanWeb.Api do
     pipe_through :json_api
 
-    resources "/alternate_feeds", AlternateFeedApiController, only: [:show]
-    resources "/chapters", ChapterApiController, only: [:show]
+    resources "/alternate_feeds", AlternateFeedController, only: [:show]
+    resources "/chapters", ChapterController, only: [:show]
 
-    get "/categories/search", CategoryApiController, :search
-    resources "/categories", CategoryApiController, only: [:index, :show]
+    get "/categories/search", CategoryController, :search
+    resources "/categories", CategoryController, only: [:index, :show]
 
-    resources "/enclosures", EnclosureApiController, only: [:show]
-    resources "/engagements", EngagementApiController, only: [:show]
+    resources "/enclosures", EnclosureController, only: [:show]
+    resources "/engagements", EngagementController, only: [:show]
 
-    get "/episodes/search", EpisodeApiController, :search
-    resources "/episodes", EpisodeApiController, only: [:index, :show]
+    get "/episodes/search", EpisodeController, :search
+    resources "/episodes", EpisodeController, only: [:index, :show]
 
-    resources "/feeds", FeedApiController, only: [:show]
-    resources "/gigs", GigApiController, only: [:show]
-    resources "/languages", LanguageApiController, only: [:index, :show]
+    resources "/feeds", FeedController, only: [:show]
+    resources "/gigs", GigController, only: [:show]
+    resources "/languages", LanguageController, only: [:index, :show]
 
-    get "/personas/search", PersonaApiController, :search
-    resources "/personas", PersonaApiController, only: [:index, :show]
+    get "/personas/search", PersonaController, :search
+    resources "/personas", PersonaController, only: [:index, :show]
 
-    resources "/users", UserApiController, only: [:index, :show, :create]
+    resources "/users", UserController, only: [:index, :show, :create]
 
-    get "/recommendations/random", RecommendationApiController, :random
-    resources "/recommendations", RecommendationApiController, only: [:index, :show]
+    get "/recommendations/random", RecommendationController, :random
+    resources "/recommendations", RecommendationController, only: [:index, :show]
 
-    get "/podcasts/search", PodcastApiController, :search
-    get "/podcasts/most_subscribed", PodcastApiController, :most_subscribed
-    get "/podcasts/most_liked", PodcastApiController, :most_liked
-    get "/podcasts/last_updated", PodcastApiController, :last_updated
-    resources "/podcasts", PodcastApiController, only: [:index, :show]
+    get "/podcasts/search", PodcastController, :search
+    get "/podcasts/most_subscribed", PodcastController, :most_subscribed
+    get "/podcasts/most_liked", PodcastController, :most_liked
+    get "/podcasts/last_updated", PodcastController, :last_updated
+    resources "/podcasts", PodcastController, only: [:index, :show]
 
-    resources "/likes", LikeApiController, only: [:show]
-    resources "/follows", FollowApiController, only: [:show]
-    resources "/subscriptions", SubscriptionApiController, only: [:show]
+    resources "/likes", LikeController, only: [:show]
+    resources "/follows", FollowController, only: [:show]
+    resources "/subscriptions", SubscriptionController, only: [:show]
 
-    get "/search", SearchApiController, :search
+    get "/search", SearchController, :search
 
-    post "/login", SessionApiController, :login
-    post "/get_token", SessionApiController, :login
+    post "/login", SessionController, :login
+    post "/get_token", SessionController, :login
   end
 
 
-  scope "/jsonapi/pan", PanWeb do
+  scope "/jsonapi/pan", PanWeb.Api do
     pipe_through [:json_api, :authenticate_api_user]
 
-    post "/likes/toggle", LikeApiController, :toggle
-    post "/follows/toggle", FollowApiController, :toggle
-    post "/subscriptions/toggle", SubscriptionApiController, :toggle
-    post "/gigs/toggle", GigApiController, :toggle
+    post "/likes/toggle", LikeController, :toggle
+    post "/follows/toggle", FollowController, :toggle
+    post "/subscriptions/toggle", SubscriptionController, :toggle
+    post "/gigs/toggle", GigController, :toggle
 
-    resources "/recommendations", RecommendationApiController, only: [:create]
-    get "/recommendations/my", RecommendationApiController, :my
+    resources "/recommendations", RecommendationController, only: [:create]
+    get "/recommendations/my", RecommendationController, :my
 
-    get "/podcasts/i_follow", PodcastApiController, :i_follow
-    get "/podcasts/i_like", PodcastApiController, :i_like
-    get "/podcasts/i_subscribed", PodcastApiController, :i_subscribed
-    get "/podcasts/also_listened_to", PodcastApiController, :also_listened_to
-    get "/podcasts/also_liked", PodcastApiController, :also_liked
+    get "/podcasts/i_follow", PodcastController, :i_follow
+    get "/podcasts/i_like", PodcastController, :i_like
+    get "/podcasts/i_subscribed", PodcastController, :i_subscribed
+    get "/podcasts/also_listened_to", PodcastController, :also_listened_to
+    get "/podcasts/also_liked", PodcastController, :also_liked
 
-    get "/categories/my", CategoryApiController, :my
-    post "/like_all_subscribed_podcasts", LikeApiController, :like_all_subscribed_podcasts
-    post "/follow_all_subscribed_podcasts", FollowApiController, :follow_all_subscribed_podcasts
+    get "/categories/my", CategoryController, :my
+    post "/like_all_subscribed_podcasts", LikeController, :like_all_subscribed_podcasts
+    post "/follow_all_subscribed_podcasts", FollowController, :follow_all_subscribed_podcasts
 
-    get "/opmls/:id/import", OpmlApiController, :import
-    resources "/opmls", OpmlApiController, only: [:index, :show, :create, :delete]
+    get "/opmls/:id/import", OpmlController, :import
+    resources "/opmls", OpmlController, only: [:index, :show, :create, :delete]
 
-    resources "/feed_backlogs", FeedBacklogApiController, only: [:show, :create]
+    resources "/feed_backlogs", FeedBacklogController, only: [:show, :create]
 
-    get "/users/my", UserApiController, :my
+    get "/users/my", UserController, :my
 
-    get "/messages/my", MessageApiController, :my
-    resources "/messages", MessageApiController, only: [:show]
+    get "/messages/my", MessageController, :my
+    resources "/messages", MessageController, only: [:show]
 
-    patch "/update_password", UserApiController, :update_password
-    put "/update_password", UserApiController, :update_password
-    patch "/update_user", UserApiController, :update_user
-    put "/update_user", UserApiController, :update_user
+    patch "/update_password", UserController, :update_password
+    put "/update_password", UserController, :update_password
+    patch "/update_user", UserController, :update_user
+    put "/update_user", UserController, :update_user
 
-    post "/personas/:id/claim", PersonaApiController, :claim
-    resources "/personas", PersonaApiController, only: [:update]
+    post "/personas/:id/claim", PersonaController, :claim
+    resources "/personas", PersonaController, only: [:update]
 
-    resources "/delegations", DelegationApiController, only: [:show]
+    resources "/delegations", DelegationController, only: [:show]
   end
 
 
-  scope "/jsonapi/pro", PanWeb do
+  scope "/jsonapi/pro", PanWeb.Api do
     pipe_through [:json_api, :authenticate_api_pro_user]
 
-    post "/personas/:id/redirect", PersonaApiController, :redirect
-    post "/personas/:id/cancel_redirect", PersonaApiController, :cancel_redirect
-    put "/personas/:id", PersonaApiControlller, :pro_update
-    patch "/personas/:id", PersonaApiControlller, :pro_update
+    post "/personas/:id/redirect", PersonaController, :redirect
+    post "/personas/:id/cancel_redirect", PersonaController, :cancel_redirect
+    put "/personas/:id", PersonaController, :pro_update
+    patch "/personas/:id", PersonaController, :pro_update
 
-    post "/delegations/toggle", DelegationApiController, :toggle
+    post "/delegations/toggle", DelegationController, :toggle
   end
 
   scope "/api", PanWeb do
@@ -182,8 +182,6 @@ defmodule PanWeb.Router do
     get "/2016/:month/:day/:file", MaintenanceController, :blog_2016
     get "/2017/:month/:day/:file", MaintenanceController, :blog_2017
     get "/:pid", PersonaFrontendController, :persona
-
-    post "/delegation/toggle", DelegationApiController, :toggle
   end
 
 
