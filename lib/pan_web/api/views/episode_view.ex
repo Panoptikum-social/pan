@@ -32,7 +32,7 @@ defmodule PanWeb.Api.EpisodeView do
 end
 
 
-defmodule PanWeb.PlainEpisodeView do
+defmodule PanWeb.Api.PlainEpisodeView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 

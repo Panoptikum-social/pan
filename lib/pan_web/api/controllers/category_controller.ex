@@ -5,6 +5,7 @@ defmodule PanWeb.Api.CategoryController do
   alias PanWeb.Category
   alias PanWeb.CategoryPodcast
   alias PanWeb.Subscription
+  alias PanWeb.Api.Helpers
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -47,7 +48,11 @@ defmodule PanWeb.Api.CategoryController do
                                       order_by: [fragment("? DESC NULLS LAST", p.latest_episode_publishing_date)],
                                       limit: ^size))
 
-    render conn, "show.json-api", data: category, opts: [page: links, include: "podcasts"]
+    if category do
+      render conn, "show.json-api", data: category, opts: [page: links, include: "podcasts"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 

@@ -1,12 +1,9 @@
-         chapter  GET     chapters/:id                     Chapte :show
        category  GET     categories/search                Category :search
-       category  GET     categories/:id                   Category :show
       enclosure  GET     enclosures/:id                   Enclosur :show
      engagement  GET     engagements/:id                  Engagement :show
         episode  GET     episodes/search                  Episod :search
-        episode  GET     episodes/:id                     Episod :show
            feed  GET     feeds/:id                        Feed :show
-            gig  GET     gigs/:id                         Gi :show
+            gig  GET     gigs/:id                         Gig :show
        language  GET     languages/:id                    Language :show
         persona  GET     personas/search                  Person :search
         persona  GET     personas/:id                     Person :show
@@ -22,7 +19,7 @@
            like  POST    pan/likes/toggle                 Like :toggle
          follow  POST    pan/follows/toggle               Follow :toggle
    subscription  POST    pan/subscriptions/toggle         Subscription :toggle
-            gig  POST    pan/gigs/toggle                  Gi :toggle
+            gig  POST    pan/gigs/toggle                  Gig :toggle
  recommendation  POST    pan/recommendations              Recommendation :create
  recommendation  GET     pan/recommendations/my           Recommendation :my
            opml  GET     pan/opmls/:id/import             Opml :import

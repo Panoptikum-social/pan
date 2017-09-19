@@ -2,6 +2,7 @@ defmodule PanWeb.Api.EpisodeController do
   use Pan.Web, :controller
   use JaSerializer
   alias PanWeb.Episode
+  alias PanWeb.Api.Helpers
 
   def index(conn, params) do
     page = Map.get(params, "page", %{})
@@ -45,8 +46,12 @@ defmodule PanWeb.Api.EpisodeController do
               |> Repo.preload([:podcast, :chapters, [recommendations: :user], :enclosures, :gigs,
                                :contributors])
 
-    render conn, "show.json-api", data: episode,
+    if episode do
+      render conn, "show.json-api", data: episode,
                                   opts: [include: "podcast,chapters,recommendations,enclosures,gigs,contributors"]
+    else
+      Helpers.send_404(conn)
+    end
   end
 
 
