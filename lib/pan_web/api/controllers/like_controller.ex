@@ -198,7 +198,7 @@ defmodule PanWeb.Api.LikeController do
 
 
   def toggle(conn, %{"category_id" => category_id}, user) do
-    with %PanWeb.Podcast{} <- Repo.get(Podcast, category_id) do
+    with %PanWeb.Category{} <- Repo.get(Category, category_id) do
       {:ok, like} = category_id
                     |> String.to_integer()
                     |> Category.like(user.id)
