@@ -33,174 +33,198 @@ defmodule PanWeb.Api.LikeController do
 
 
   def toggle(conn, %{"persona_id" => persona_id}, user) do
-    {:ok, like} = persona_id
-                  |> String.to_integer()
-                  |> Persona.like(user.id)
+    with %PanWeb.Persona{} <- Repo.get(Persona, persona_id) do
+      {:ok, like} = persona_id
+                    |> String.to_integer()
+                    |> Persona.like(user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "personas",
-      subtopic:        persona_id,
-      current_user_id: user.id,
-      persona_id:      String.to_integer(persona_id),
-      type:            "success",
-      event:           "like"
-    }
+      e = %Event{
+        topic:           "personas",
+        subtopic:        persona_id,
+        current_user_id: user.id,
+        persona_id:      String.to_integer(persona_id),
+        type:            "success",
+        event:           "like"
+      }
 
-    e = %{e | content: "« liked the persona <b>" <>
-                       Repo.get!(Persona, e.persona_id).name <> "</b> »"}
+      e = %{e | content: "« liked the persona <b>" <>
+                         Repo.get!(Persona, e.persona_id).name <> "</b> »"}
 
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "persona"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "persona"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 
   def toggle(conn, %{"user_id" => user_id}, current_user) do
-    {:ok, like} = user_id
-                  |> String.to_integer()
-                  |> User.like(current_user.id)
+    with %PanWeb.User{} <- Repo.get(User, user_id) do
+      {:ok, like} = user_id
+                    |> String.to_integer()
+                    |> User.like(current_user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "users",
-      subtopic:        user_id,
-      current_user_id: current_user.id,
-      user_id:         String.to_integer(user_id),
-      type:            "success",
-      event:           "like"
-    }
+      e = %Event{
+        topic:           "users",
+        subtopic:        user_id,
+        current_user_id: current_user.id,
+        user_id:         String.to_integer(user_id),
+        type:            "success",
+        event:           "like"
+      }
 
-    e = %{e | content: "« liked the user <b>" <>
-                       Repo.get!(User, e.user_id).name <> "</b> »"}
+      e = %{e | content: "« liked the user <b>" <>
+                         Repo.get!(User, e.user_id).name <> "</b> »"}
 
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "user"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "user"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 
   def toggle(conn, %{"chapter_id" => chapter_id}, user) do
-    {:ok, like} = chapter_id
-                  |> String.to_integer()
-                  |> Chapter.like(user.id)
+    with %PanWeb.Chapter{} <- Repo.get(Chapter, chapter_id) do
+      {:ok, like} = chapter_id
+                    |> String.to_integer()
+                    |> Chapter.like(user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "chapters",
-      subtopic:        chapter_id,
-      current_user_id: user.id,
-      chapter_id:      String.to_integer(chapter_id),
-      type:            "success",
-      event:           "like-chapter"
-    }
+      e = %Event{
+        topic:           "chapters",
+        subtopic:        chapter_id,
+        current_user_id: user.id,
+        chapter_id:      String.to_integer(chapter_id),
+        type:            "success",
+        event:           "like-chapter"
+      }
 
-    chapter_title = Repo.get!(Chapter, e.chapter_id).title
-                    |> PanWeb.ViewHelpers.truncate(40)
-    e = %{e | content: "« liked the chapter <b> »" <> chapter_title <> "</b>"}
+      chapter_title = Repo.get!(Chapter, e.chapter_id).title
+                      |> PanWeb.ViewHelpers.truncate(40)
+      e = %{e | content: "« liked the chapter <b> »" <> chapter_title <> "</b>"}
 
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "chapter"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "chapter"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 
   def toggle(conn, %{"episode_id" => episode_id}, user) do
-    {:ok, like} = episode_id
-                  |> String.to_integer()
-                  |> Episode.like(user.id)
+    with %PanWeb.Episode{} <- Repo.get(Episode, episode_id) do
+      {:ok, like} = episode_id
+                    |> String.to_integer()
+                    |> Episode.like(user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "episodes",
-      subtopic:        episode_id,
-      current_user_id: user.id,
-      episode_id:      String.to_integer(episode_id),
-      type:            "success",
-      event:           "like"
-    }
+      e = %Event{
+        topic:           "episodes",
+        subtopic:        episode_id,
+        current_user_id: user.id,
+        episode_id:      String.to_integer(episode_id),
+        type:            "success",
+        event:           "like"
+      }
 
-    e = %{e | content: "« liked the episode <b>" <>
-                       Repo.get!(Episode, e.episode_id).title <> "</b> »"}
+      e = %{e | content: "« liked the episode <b>" <>
+                         Repo.get!(Episode, e.episode_id).title <> "</b> »"}
 
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "episode"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "episode"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 
   def toggle(conn, %{"podcast_id" => podcast_id}, user) do
-    {:ok, like} = podcast_id
-                  |> String.to_integer()
-                  |> Podcast.like(user.id)
+    with %PanWeb.Podcast{} <- Repo.get(Podcast, podcast_id) do
+      {:ok, like} = podcast_id
+                    |> String.to_integer()
+                    |> Podcast.like(user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "podcasts",
-      subtopic:        podcast_id,
-      current_user_id: user.id,
-      podcast_id:      String.to_integer(podcast_id),
-      type:            "success",
-      event:           "like"
-    }
-    e = %{e | content: "« liked the podcast <b>" <>
-                       Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
+      e = %Event{
+        topic:           "podcasts",
+        subtopic:        podcast_id,
+        current_user_id: user.id,
+        podcast_id:      String.to_integer(podcast_id),
+        type:            "success",
+        event:           "like"
+      }
+      e = %{e | content: "« liked the podcast <b>" <>
+                         Repo.get!(Podcast, e.podcast_id).title <> "</b> »"}
 
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "podcast"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "podcast"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 
   def toggle(conn, %{"category_id" => category_id}, user) do
-    {:ok, like} = category_id
-                  |> String.to_integer()
-                  |> Category.like(user.id)
+    with %PanWeb.Podcast{} <- Repo.get(Podcast, category_id) do
+      {:ok, like} = category_id
+                    |> String.to_integer()
+                    |> Category.like(user.id)
 
-    like = like
-           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-           |> mark_if_deleted()
+      like = like
+             |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
+             |> mark_if_deleted()
 
-    e = %Event{
-      topic:           "categories",
-      subtopic:        category_id,
-      current_user_id: user.id,
-      category_id:     String.to_integer(category_id),
-      type:            "success",
-      event:           "like"
-    }
-    e = %{e | content: "« liked the category <b>" <>
-                       Repo.get!(Category, e.category_id).title <> "</b> »"}
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
+      e = %Event{
+        topic:           "categories",
+        subtopic:        category_id,
+        current_user_id: user.id,
+        category_id:     String.to_integer(category_id),
+        type:            "success",
+        event:           "like"
+      }
+      e = %{e | content: "« liked the category <b>" <>
+                         Repo.get!(Category, e.category_id).title <> "</b> »"}
+      Message.persist_event(e)
+      Event.notify_subscribers(e)
 
-    render conn, "show.json-api", data: like,
-                                  opts: [include: "category"]
+      render conn, "show.json-api", data: like,
+                                    opts: [include: "category"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 

@@ -1,9 +1,3 @@
-           like  POST    pan/likes/toggle                 Like :toggle
-         follow  POST    pan/follows/toggle               Follow :toggle
-   subscription  POST    pan/subscriptions/toggle         Subscription :toggle
-            gig  POST    pan/gigs/toggle                  Gig :toggle
-     delegation  POST    pro/delegations/toggle           Delegation :toggle
-
          search  GET     search                           Search :search
        category  GET     categories/search                Category :search
         episode  GET     episodes/search                  Episod :search

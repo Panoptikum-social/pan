@@ -1,6 +1,8 @@
 defmodule PanWeb.Api.GigController do
   use Pan.Web, :controller
   alias PanWeb.Gig
+  alias PanWeb.Episode
+  alias PanWeb.Persona
   use JaSerializer
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
   alias PanWeb.Api.Helpers
@@ -24,17 +26,22 @@ defmodule PanWeb.Api.GigController do
 
 
   def toggle(conn, %{"episode_id" => episode_id, "persona_id" => persona_id}, user) do
-    case Gig.proclaim(String.to_integer(episode_id), String.to_integer(persona_id), user.id) do
-      {:ok, gig} ->
-        gig = gig
-              |> Repo.preload([:episode, :persona])
-              |> mark_if_deleted()
+    with %PanWeb.Episode{} <- Repo.get(Episode, episode_id),
+         %PanWeb.Persona{} <- Repo.get(Persona, persona_id) do
+      case Gig.proclaim(String.to_integer(episode_id), String.to_integer(persona_id), user.id) do
+        {:ok, gig} ->
+          gig = gig
+                |> Repo.preload([:episode, :persona])
+                |> mark_if_deleted()
 
-        render conn, "show.json-api", data: gig,
-                                      opts: [include: "episode,persona"]
+          render conn, "show.json-api", data: gig,
+                                        opts: [include: "episode,persona"]
 
-      {:error, "not your persona"} ->
-        Helpers.send_401(conn, "not your persona")
+        {:error, "not your persona"} ->
+          Helpers.send_401(conn, "not your persona")
+      end
+    else
+      nil -> Helpers.send_404(conn)
     end
   end
 end
