@@ -1,14 +1,7 @@
-        persona  POST    pan/personas/:id/claim           Person :claim
-        persona  POST    pro/personas/:id/redirect        Person :redirect
-        persona  POST    pro/personas/:id/cancel_redirect Person :cancel_redirect
-
            user  POST    users                            User :create
  recommendation  POST    pan/recommendations              Recommendation :create
            opml  POST    pan/opmls                        Opml :create
    feed_backlog  POST    pan/feed_backlogs                FeedBacklo :create
-
-        persona  PUT     pan/personas/:id                 Person :update
-        persona  PUT     pro/personas/:id                 Person :pro_update
 
            opml  GET     pan/opmls/:id/import             Opml :import
            opml  DELETE  pan/opmls/:id                    Opml :delete

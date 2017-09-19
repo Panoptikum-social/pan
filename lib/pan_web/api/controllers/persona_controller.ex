@@ -162,7 +162,7 @@ defmodule PanWeb.Api.PersonaController do
 
     case manifestation do
       nil ->
-        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+        Helpers.send_401(conn, "You are not a manifestation of this persona.")
       manifestation ->
         persona = manifestation.persona
         changeset = Persona.user_changeset(persona, params)
@@ -186,7 +186,7 @@ defmodule PanWeb.Api.PersonaController do
 
     case manifestation do
       nil ->
-        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+        Helpers.send_401(conn, "You are not a manifestation of of this persona.")
       manifestation ->
         persona = manifestation.persona
         changeset = Persona.pro_user_changeset(persona, params)
@@ -207,17 +207,26 @@ defmodule PanWeb.Api.PersonaController do
     id = String.to_integer(id)
     target_id = String.to_integer(target_id)
 
-    persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
-                                           select: m.persona_id)
-                  |> Repo.all()
+    with %PanWeb.Persona{} <- Repo.get(Persona, id),
+         %PanWeb.Persona{} <- Repo.get(Persona, target_id),
+                      true <- target_id != id do
 
-    if id in persona_ids && target_id in persona_ids do
-      from(p in Persona, where: p.id == ^id)
-      |> Repo.update_all(set: [redirect_id: target_id])
+      persona_ids = from(m in Manifestation, where: m.user_id == ^user.id,
+                                             select: m.persona_id)
+                    |> Repo.all()
 
-      show(conn, %{"id" => id}, user)
+      if id in persona_ids && target_id in persona_ids do
+        from(p in Persona, where: p.id == ^id)
+        |> Repo.update_all(set: [redirect_id: target_id])
+
+        show(conn, %{"id" => id}, user)
+      else
+        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+      end
     else
-      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+        nil -> Helpers.send_404(conn)
+      false -> Helpers.send_error(conn, 412, "Precondition Failed",
+                                             "redirects can only happen between different personas")
     end
   end
 
@@ -235,29 +244,31 @@ defmodule PanWeb.Api.PersonaController do
 
       show(conn, %{"id" => id}, user)
     else
-      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+      Helpers.send_401(conn, "You are not a manifestation of this persona.")
     end
   end
 
 
   def claim(conn, %{"id" => id}, user) do
-    persona = Repo.get(Persona, id)
+    with %PanWeb.Persona{} <- persona = Repo.get(Persona, id) do
+      if persona.email do
+        PanWeb.Endpoint
+        |> Phoenix.Token.sign("persona", id)
+        |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
+        |> Pan.Mailer.deliver_now()
 
-    if persona.email do
-      PanWeb.Endpoint
-      |> Phoenix.Token.sign("persona", id)
-      |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
-      |> Pan.Mailer.deliver_now()
-
-      conn
-      |> put_view(ErrorView)
-      |> put_status(200)
-      |> render(:errors, data: %{code: 200,
-                                 status: 200,
-                                 title: "OK",
-                                 detail: "An Email to the Persona has been sent"})
+        conn
+        |> put_view(ErrorView)
+        |> put_status(200)
+        |> render(:errors, data: %{code: 200,
+                                   status: 200,
+                                   title: "OK",
+                                   detail: "An Email to the Persona has been sent"})
+      else
+        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+      end
     else
-      Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+      nil -> Helpers.send_404(conn)
     end
   end
 end
