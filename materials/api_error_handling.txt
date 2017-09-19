@@ -1,11 +1,3 @@
-           user  POST    users                            User :create
- recommendation  POST    pan/recommendations              Recommendation :create
-           opml  POST    pan/opmls                        Opml :create
-   feed_backlog  POST    pan/feed_backlogs                FeedBacklo :create
-
-           opml  GET     pan/opmls/:id/import             Opml :import
-           opml  DELETE  pan/opmls/:id                    Opml :delete
-           opml  GET     pan/opmls                        Opml :index
-
-           user  PUT     pan/update_password              User :update_password
-           user  PATCH   pan/update_user                  User :update_user
+        opml  POST    pan/opmls             Opml :create
+        opml  GET     pan/opmls/:id/import  Opml :import
+        opml  GET     pan/opmls             Opml :index

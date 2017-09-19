@@ -66,13 +66,17 @@ defmodule PanWeb.Api.OpmlController do
                            preload: :user)
            |> Repo.one()
 
-    File.rm(opml.path)
+    with %PanWeb.Opml{} <- opml do
+      File.rm(opml.path)
 
-    opml = Repo.delete!(opml)
-           |> mark_if_deleted()
+      opml = Repo.delete!(opml)
+             |> mark_if_deleted()
 
-    render conn, "show.json-api", data: opml,
-                                  opts: [include: "user"]
+      render conn, "show.json-api", data: opml,
+                                    opts: [include: "user"]
+    else
+      nil -> Helpers.send_404(conn)
+    end
   end
 
 

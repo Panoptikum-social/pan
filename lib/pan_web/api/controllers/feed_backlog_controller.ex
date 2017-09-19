@@ -26,13 +26,20 @@ defmodule PanWeb.Api.FeedBacklogController do
 
 
   def create(conn, %{"url" => url}, user) do
-    {:ok, feed_backlog} = %FeedBacklog{user_id: user.id, url: url}
-                          |> FeedBacklog.changeset()
-                          |> Repo.insert()
+    changeset = %FeedBacklog{user_id: user.id, url: url}
+                |> FeedBacklog.changeset()
 
-    feed_backlog = Repo.preload(feed_backlog, :user)
+    case Repo.insert(changeset) do
+      {:ok, feed_backlog} ->
+        feed_backlog = Repo.preload(feed_backlog, :user)
 
-    render conn, "show.json-api", data: feed_backlog,
-                                  opts: [include: "user"]
+        conn
+        |> render("show.json-api", data: feed_backlog,
+                                   opts: [include: "user"])
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render(:errors, data: changeset)
+    end
   end
 end
