@@ -197,6 +197,7 @@ defmodule PanWeb.Router do
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
     get "/edit_password", UserFrontendController, :edit_password
+    put "/update_password", UserFrontendController, :update_password
     post "/go_pro", UserFrontendController, :go_pro
 
     post "/personas/:id/claim", PersonaFrontendController, :claim
