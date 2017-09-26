@@ -6,8 +6,27 @@
     <ul class="list-group">
       <%= for recommendation <- @episode.recommendations do %>
         <li class="list-group-item">
+          <%= if @current_user && @current_user.id == recommendation.user_id do %>
+            <% text = recommendation.user.name <> ": " <> recommendation.comment %>
+            <% url = URI.encode_www_form(episode_frontend_url(@conn, :show, @episode)) %>
+            <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
+                              "&url=" <> url,
+                          class: "social-button twitter-button",
+                          title: "Tweet it" %>
+            <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url,
+                          class: "social-button facebook-button",
+                          title: "Share on facebook" %>
+            <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url,
+                          class: "social-button email-button",
+                          title: "Send an E-Mail" %>
+            <br/>
+          <% end %>
+
           <b><%= recommendation.user.name %>:</b> <%= recommendation.comment %>
-          <span class="pull-right"><%= recommendation.inserted_at %></span>
+
+          <span class="pull-right">
+            <%= recommendation.inserted_at %>
+          </span>
         </li>
       <% end %>
     </ul>

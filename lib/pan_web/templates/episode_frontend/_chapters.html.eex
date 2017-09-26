@@ -31,6 +31,8 @@
         </div>
       </div>
       <%= render "_chapter_recommendations.html", chapter: chapter,
+                                                  current_user: @current_user,
+                                                  episode: @episode,
                                                   conn: @conn %>
     <% end %>
   <% else %>
