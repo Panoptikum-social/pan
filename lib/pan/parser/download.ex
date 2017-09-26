@@ -24,8 +24,10 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401: unauthorized"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
+      {:ok, %HTTPoison.Response{status_code: 410}} -> {:error, "410: Gone"}
       {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}
       {:ok, %HTTPoison.Response{status_code: 429}} -> {:error, "429: To many requests"}
+      {:ok, %HTTPoison.Response{status_code: 479}} -> {:error, "479: Not a standard status code"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)

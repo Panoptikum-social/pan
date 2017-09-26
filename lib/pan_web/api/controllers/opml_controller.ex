@@ -66,7 +66,7 @@ defmodule PanWeb.Api.OpmlController do
   end
 
 
-  def create(conn, %{}, user) do
+  def create(conn, %{}, _user) do
     Helpers.send_error(conn, 412, "Precondition Failed", "No file provided")
   end
 
