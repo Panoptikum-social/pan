@@ -8,7 +8,7 @@
       <%= for recommendation <- @podcast.recommendations do %>
         <li class="list-group-item">
           <%= if @current_user && @current_user.id == recommendation.user_id do %>
-            <% text = recommendation.user.name <> ": " <> recommendation.comment %>
+            <% text = "👍 " <> @podcast.title <> "%0A💬 " <> recommendation.comment <> "%0A🔊 " %>
             <% url = URI.encode_www_form(podcast_frontend_url(@conn, :show, @podcast)) %>
             <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
                               "&url=" <> url,
