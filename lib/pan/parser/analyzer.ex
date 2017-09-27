@@ -152,7 +152,8 @@ defmodule Pan.Parser.Analyzer do
     :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle, :itunes,
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
-    :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher"
+    :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher",:"webfeeds:cover",
+    :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [

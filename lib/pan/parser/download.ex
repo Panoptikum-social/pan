@@ -16,11 +16,6 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 203, body: feed_xml}} -> check_for_rss(feed_xml)
       {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} -> check_for_rss(feed_xml)
 
-      {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
-      {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
-      {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
-      {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
-      {:ok, %HTTPoison.Response{status_code: 508}} -> {:error, "504: loop detected"}
       {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401: unauthorized"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
@@ -28,6 +23,13 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}
       {:ok, %HTTPoison.Response{status_code: 429}} -> {:error, "429: To many requests"}
       {:ok, %HTTPoison.Response{status_code: 479}} -> {:error, "479: Not a standard status code"}
+
+      {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
+      {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
+      {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
+      {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
+      {:ok, %HTTPoison.Response{status_code: 508}} -> {:error, "508: loop detected"}
+      {:ok, %HTTPoison.Response{status_code: 509}} -> {:error, "509: Bandwidth Limit Exceeded"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
