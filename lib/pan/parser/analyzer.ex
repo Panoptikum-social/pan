@@ -207,7 +207,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
     :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
-    :"dc:source", :bitrate, :"meta:broadcastDate"
+    :"dc:source", :bitrate, :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified"
   ], do: %{}
 
 
