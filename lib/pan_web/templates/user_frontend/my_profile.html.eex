@@ -211,7 +211,7 @@
             </button>
           </h4>
 
-          <ul class="list-group" style="line-height: 200%;"">
+          <ul class="list-group" style="line-height: 200%;">
             <%= for delegate_persona <- @user.personas do %>
               <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
                 <li class="list-group-item">
@@ -270,7 +270,7 @@
           </button>
           </h4>
 
-          <ul class="list-group" style="line-height: 200%;"">
+          <ul class="list-group" style="line-height: 200%;">
             <%= if persona.redirect do %>
               <li class="list-group-item">
                 <%= fa_icon("arrow-right") %>

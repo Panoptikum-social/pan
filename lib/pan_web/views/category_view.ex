@@ -1,7 +1,6 @@
 defmodule PanWeb.CategoryView do
   use Pan.Web, :view
 
-
   def category_tree(categories) do
     Enum.map(categories, fn(category) ->
       %{categoryId: category.id,

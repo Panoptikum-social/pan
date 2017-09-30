@@ -63,4 +63,28 @@ defmodule PanWeb.CategoryFrontendController do
     render(conn, "show_stats.html", category: category,
                               podcasts: podcasts)
   end
+
+
+  def latest_episodes(conn, %{"id" => id} = params) do
+    category = Category
+               |> Repo.get!(id)
+               |> Repo.preload(:parent)
+
+    unless category.parent.title == "👩 👨 Community" do
+      render(conn, "no_community.html")
+    else
+      latest_episodes =
+        from(e in PanWeb.Episode, order_by: [desc: :publishing_date],
+                                  join: p in assoc(e, :podcast),
+                                  join: c in assoc(p, :categories),
+                                  where: (is_nil(p.blocked) or p.blocked == false) and
+                                         (e.publishing_date < ^NaiveDateTime.utc_now()) and
+                                         (c.id == ^id),
+                                  preload: :podcast)
+        |> Repo.paginate(params)
+
+      render(conn, "latest_episodes.html", latest_episodes: latest_episodes,
+                                           category_id: category.id)
+    end
+  end
 end
