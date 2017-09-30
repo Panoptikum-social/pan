@@ -84,7 +84,8 @@ defmodule PanWeb.CategoryFrontendController do
         |> Repo.paginate(params)
 
       render(conn, "latest_episodes.html", latest_episodes: latest_episodes,
-                                           category_id: category.id)
+                                           category_id: category.id,
+                                           category_title: category.title)
     end
   end
 end

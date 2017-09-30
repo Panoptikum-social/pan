@@ -1,11 +1,18 @@
 <div class="panel panel-warning">
   <div class="panel-heading">
+    <%= @category_title %> -
     <%= link "Latest Episodes", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
       <%= link "more ...", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
     </span>
   </div>
 
+  <div class="col-md-12">
+  <%= pagination_links @conn, @latest_episodes, [@category_id],
+                 path: &category_frontend_path/4,
+                 action: :latest_episodes,
+                 view_style: :bootstrap %>
+  </div>
   <table class="table table-condensed">
     <%= for episode <- @latest_episodes do %>
       <tr class="active">
