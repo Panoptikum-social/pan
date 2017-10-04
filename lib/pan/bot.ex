@@ -141,15 +141,15 @@ defmodule Pan.Bot do
       subtitle: podcast.description,
       default_action: %{
         type: "web_url",
-        url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
+        url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast),
         messenger_extensions: true,
         webview_height_ratio: "tall",
-        fallback_url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast)
+        fallback_url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast)
       },
       buttons: [
         %{
           type: "web_url",
-          url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
+          url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast),
           title: "👉 Panoptikum"
         },
         %{
@@ -159,7 +159,7 @@ defmodule Pan.Bot do
         },
         %{
           type: "web_url",
-          url: host <> episode_frontend_path(Pan.Endpoint, :player, episode),
+          url: host <> episode_frontend_path(PanWeb.Endpoint, :player, episode),
           messenger_extensions: true,
           webview_height_ratio: "tall",
           title: "🎧 Latest episode"
