@@ -1,4 +1,4 @@
-defmodule Pan.BotView do
+defmodule PanWeb.BotView do
   use Pan.Web, :view
 
   def render("webhook.json", %{ challenge: challenge}) do
