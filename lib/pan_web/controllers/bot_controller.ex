@@ -1,4 +1,4 @@
-defmodule Pan.BotController do
+defmodule PanWeb.BotController do
   require Logger
   use Pan.Web, :controller
 
