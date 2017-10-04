@@ -83,18 +83,8 @@ defmodule Pan.Bot do
   end
 
   defp podcasts_from_query(message) do
-    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
-     search: [size: 5, from: 0,
-      query: [
-        function_score: [
-          query: [match: [_all: [query: message]]],
-          boost_mode: "multiply",
-          functions: [
-            %{filter: [term: ["_type": "categories"]], weight: 0},
-            %{filter: [term: ["_type": "podcasts"]], weight: 1},
-            %{filter: [term: ["_type": "personas"]], weight: 0},
-            %{filter: [term: ["_type": "episodes"]], weight: 0},
-            %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",
+             search: [size: 5, from: 0, query: [match: [_all: params["filter"]]]]]
 
     {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
 
