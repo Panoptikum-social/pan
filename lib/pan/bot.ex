@@ -83,18 +83,8 @@ defmodule Pan.Bot do
   end
 
   defp podcasts_from_query(message) do
-    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
-     search: [size: 5, from: 0,
-      query: [
-        function_score: [
-          query: [match: [_all: [query: message]]],
-          boost_mode: "multiply",
-          functions: [
-            %{filter: [term: ["_type": "categories"]], weight: 0},
-            %{filter: [term: ["_type": "podcasts"]], weight: 1},
-            %{filter: [term: ["_type": "personas"]], weight: 0},
-            %{filter: [term: ["_type": "episodes"]], weight: 0},
-            %{filter: [term: ["_type": "users"]], weight: 0}]]]]]
+    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",
+             search: [size: 5, from: 0, query: [match: [_all: message]]]]
 
     {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
 
@@ -141,15 +131,15 @@ defmodule Pan.Bot do
       subtitle: podcast.description,
       default_action: %{
         type: "web_url",
-        url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
+        url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast),
         messenger_extensions: true,
         webview_height_ratio: "tall",
-        fallback_url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast)
+        fallback_url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast)
       },
       buttons: [
         %{
           type: "web_url",
-          url: host <> podcast_frontend_path(Pan.Endpoint, :show, podcast),
+          url: host <> podcast_frontend_path(PanWeb.Endpoint, :show, podcast),
           title: "👉 Panoptikum"
         },
         %{
@@ -159,7 +149,7 @@ defmodule Pan.Bot do
         },
         %{
           type: "web_url",
-          url: host <> episode_frontend_path(Pan.Endpoint, :player, episode),
+          url: host <> episode_frontend_path(PanWeb.Endpoint, :player, episode),
           messenger_extensions: true,
           webview_height_ratio: "tall",
           title: "🎧 Latest episode"
