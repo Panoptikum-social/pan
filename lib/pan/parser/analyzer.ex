@@ -29,7 +29,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:pubDate, _, []]), do: %{}
   def call(_, "tag", [:pubdate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
   def call(_, "tag", [:pubDate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
-
+  def call(_, "tag", [:lastPubDate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
 
 # image with fallback to itunes:image
   def call(_, "tag", [:image, _, value]), do: Iterator.parse(%{}, "image", value)
@@ -148,7 +148,7 @@ defmodule Pan.Parser.Analyzer do
     :"atom:updated", :"itunes:podcastskeywords", :"aan:channel_id", :"aan:feedback", :enclosure,
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
-    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url",
+    :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url", :generation,
     :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle, :itunes,
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
@@ -207,8 +207,9 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
     :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
-    :"dc:source", :bitrate, :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified",
-    :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail"
+    :"dc:source",  :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified", :"media:restriction",
+    :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail", :bitrate,
+    :"rcr:profile", :"rcr:cover"
   ], do: %{}
 
 
@@ -421,6 +422,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:author",   _, [value]]), do: %{name: H.to_255(value)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
+  def call("owner", [:"googleplay:email", _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
   def call("owner", [tag_atom, _, _]) when tag_atom in [

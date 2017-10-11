@@ -171,6 +171,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("NZDT", "+1300")
     |> String.replace("AEST",  "EST")
     |> String.replace("GTM",   "GMT")
+    |> String.replace("GMT+2", "+0200")
     |> String.replace("-0001", "2016")
   end
 
