@@ -27,6 +27,8 @@ defmodule Pan.Parser.Persona do
     persona_map = Map.put_new(persona_map, :uri, persona_map[:email])
     email = persona_map[:email] || ""
 
+IO.inspect persona_map
+
     case Repo.get_by(PanWeb.Persona, pid:   persona_map[:pid]) ||
          Repo.get_by(PanWeb.Persona, pid:   persona_map[:uri] || "") ||
          Repo.get_by(PanWeb.Persona, uri:   persona_map[:uri] || "") ||

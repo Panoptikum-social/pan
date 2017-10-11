@@ -208,7 +208,7 @@ defmodule Pan.Parser.Analyzer do
     :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
     :"dc:source", :bitrate, :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified",
-    :"usenix:author", :"wfw:commentRSS"
+    :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail"
   ], do: %{}
 
 
