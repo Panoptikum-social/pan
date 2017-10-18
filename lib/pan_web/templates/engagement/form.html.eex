@@ -30,6 +30,18 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :persona_id, class: "control-label" %>
+    <%= text_input f, :persona_id, class: "form-control" %>
+    <%= error_tag f, :persona_id %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :podcast_id, class: "control-label" %>
+    <%= text_input f, :podcast_id, class: "form-control" %>
+    <%= error_tag f, :podcast_id %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
