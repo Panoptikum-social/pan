@@ -209,7 +209,7 @@ defmodule Pan.Parser.Analyzer do
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
     :"dc:source",  :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified", :"media:restriction",
     :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail", :bitrate,
-    :"rcr:profile", :"rcr:cover"
+    :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt
   ], do: %{}
 
 
