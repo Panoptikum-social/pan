@@ -16,18 +16,63 @@
 
 <div id="navbar" class="navbar-collapse collapse">
   <ul class="nav navbar-nav">
-    <li><%= link fa_icon("home"), to: page_frontend_path(@conn, :home),
-                                 title: "Home" %></li>
-    <li><%= link fa_icon("sitemap"), to: category_frontend_path(@conn, :index),
-                                         id: "category_link",
-                                         title: "Categories" %></li>
-    <li><a href="https://blog.panoptikum.io/" title="About"><%= fa_icon("question-circle") %></a></li>
-    <li><a href="https://blog.panoptikum.io/blog" title=Blog><%= fa_icon("newspaper-o") %></a></li>
-    <li><%= link fa_icon("user-o"), to: persona_frontend_path(@conn, :index), title: "Podcasters" %></li>
-    <li><%= link fa_icon("user"), to: user_frontend_path(@conn, :index),
-                                  title: "Users" %></li>
-    <li><%= link fa_icon("magic"), to: recommendation_frontend_path(@conn, :random),
-                                   title: "Random" %></li>
+    <li>
+      <%= link fa_icon("home"), to: page_frontend_path(@conn, :home),
+                                title: "Home", class: "hidden-xs" %>
+      <%= link [fa_icon("home", class: "fa-fw"), raw("&nbsp; &nbsp; Home")],
+               to: page_frontend_path(@conn, :home),
+               title: "Home",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("sitemap"), to: category_frontend_path(@conn, :index),
+                                   id: "category_link", title: "Categories", class: "hidden-xs" %>
+      <%= link [fa_icon("sitemap", class: "fa-fw"), raw("&nbsp; &nbsp; Categories")],
+               to: category_frontend_path(@conn, :index),
+               id: "category_link",
+               title: "Categories",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <a href="https://blog.panoptikum.io/" title="About" class="hidden-xs">
+        <%= fa_icon("question-circle") %>
+      </a>
+      <a href="https://blog.panoptikum.io/" title="About" class="visible-xs-inline">
+        <%= fa_icon("question-circle", class: "fa-fw") %>&nbsp; &nbsp; About
+      </a>
+    </li>
+    <li>
+      <a href="https://blog.panoptikum.io/blog" title="Blog" class="hidden-xs">
+        <%= fa_icon("newspaper-o") %>
+      </a>
+      <a href="https://blog.panoptikum.io/blog" title="Blog" class="visible-xs-inline">
+        <%= fa_icon("newspaper-o", class: "fa-fw") %>&nbsp; &nbsp; Blog
+      </a>
+    </li>
+    <li>
+      <%= link fa_icon("user-o"), to: persona_frontend_path(@conn, :index),
+                                  title: "Podcasters", class: "hidden-xs" %>
+      <%= link [fa_icon("user-o", class: "fa-fw"), raw("&nbsp; &nbsp; Podcasters")],
+               to: persona_frontend_path(@conn, :index),
+               title: "Podcasters",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("user"), to: user_frontend_path(@conn, :index),
+                                title: "Users", class: "hidden-xs" %>
+      <%= link [fa_icon("user", class: "fa-fw"), raw("&nbsp; &nbsp; Users")],
+          to: user_frontend_path(@conn, :index),
+          title: "Users",
+          class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("magic"), to: recommendation_frontend_path(@conn, :random),
+                                   title: "Random", class: "hidden-xs" %>
+      <%= link [fa_icon("magic", class: "fa-fw"), raw("&nbsp; &nbsp; Random")],
+               to: recommendation_frontend_path(@conn, :random),
+               title: "Random",
+               class: "visible-xs-inline" %>
+    </li>
   </ul>
 
   <%= form_for @conn, search_frontend_path(@conn, :new),
@@ -97,19 +142,44 @@
       <% end %>
 
       <li>
-        <span class="navbar-text">
-          <%= link fa_icon("sign-out"), to: session_path(@conn, :delete, @current_user),
-                                           method: "delete",
-                                           title: "Log out",
-                                           style: "color: #aab2bd;" %>
-        </span>
+        <%= link fa_icon("sign-out"),
+                 to: session_path(@conn, :delete, @current_user),
+                 method: "delete",
+                 title: "Log out",
+                 style: "color: #aab2bd;",
+                 class: "hidden-xs navbar-text"%>
+        <%= link [fa_icon("sign-out", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Out")],
+                 to: session_path(@conn, :delete, @current_user),
+                 method: "delete",
+                 title: "Log out",
+                 style: "color: #aab2bd;",
+                 class: "visible-xs-inline navbar-text"%>
       </li>
     <% else %>
-      <li><a id="tour" href="#" title="tour"><%= fa_icon("bus") %></a></li>
-      <li><%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
-                                          title: "Sign up" %></li>
-      <li><%= link fa_icon("sign-in"), to: session_path(@conn, :new),
-                                          title: "Log in" %></li>
+      <li>
+        <a href="#" id=tour" title="Tour" class="hidden-xs">
+          <%= fa_icon("bus") %>
+        </a>
+        <a href="#" id=tour title="Blog" class="visible-xs-inline">
+          <%= fa_icon("bus", class: "fa-fw") %>&nbsp; &nbsp; Tour
+        </a>
+      </li>
+      <li>
+        <%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
+                                    title: "Sign up", class: "hidden-xs" %>
+        <%= link [fa_icon("pencil", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Up")],
+                 to: user_frontend_path(@conn, :new),
+                 title: "Sign up",
+                 class: "visible-xs-inline" %>
+      </li>
+      <li>
+        <%= link fa_icon("sign-in"), to: session_path(@conn, :new),
+                                     title: "Log In", class: "hidden-xs" %>
+        <%= link [fa_icon("sign-in", class: "fa-fw"), raw("&nbsp; &nbsp; Log In")],
+                 to: session_path(@conn, :new),
+                 title: "Log In",
+                 class: "visible-xs-inline" %>
+      </li>
     <% end %>
   </ul>
 </div>
