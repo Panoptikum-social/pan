@@ -21,7 +21,7 @@ defmodule PanWeb.GigView do
       from_in_s:       gig.from_in_s,
       until_in_s:      gig.until_in_s,
       comment:         gig.comment,
-      publishing_date: gig.publishing_date,
+      publishing_date: "<nobr>" <> (gig.publishing_date && Timex.format!(gig.publishing_date, "{ISOdate} {h24}:{m}")) <> "</nobr>",
       role:            gig.role,
       self_proclaimed: gig.self_proclaimed,
       actions:         datatable_actions(gig.id, &gig_path/3)}

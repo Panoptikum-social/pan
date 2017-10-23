@@ -24,49 +24,42 @@ defmodule PanWeb.GigController do
 
     records_total = Repo.aggregate(Gig, :count, :id)
 
-    records_filtered =
+    query =
       if search != "" do
         from(g in Gig, join: p in assoc(g, :persona),
                        join: e in assoc(g, :episode),
                        where: ilike(g.comment, ^searchfrag) or
                               ilike(g.role, ^searchfrag) or
                               ilike(p.name, ^searchfrag) or
-                              ilike(e.title, ^searchfrag))
-             |> Repo.aggregate(:count, :id)
+                              ilike(e.title, ^searchfrag) or
+                              ilike(fragment("cast (? as text)", g.id), ^searchfrag) or
+                              ilike(fragment("cast (? as text)", g.episode_id), ^searchfrag) or
+                              ilike(fragment("cast (? as text)", g.persona_id), ^searchfrag))
       else
         from(g in Gig)
-        |> Repo.aggregate(:count, :id)
       end
 
+    records_filtered = query
+                       |> Repo.aggregate(:count, :id)
 
-    gigs = from(g in Gig, limit: ^limit,
-                          offset: ^offset,
-                          order_by: ^order_by,
-                          join: p in assoc(g, :persona),
-                          join: e in assoc(g, :episode),
-                          select: %{id:              g.id,
-                                    persona_id:      g.persona_id,
-                                    persona_name:    p.name,
-                                    episode_id:      g.episode_id,
-                                    episode_title:   e.title,
-                                    from_in_s:       g.from_in_s,
-                                    until_in_s:      g.until_in_s,
-                                    comment:         g.comment,
-                                    publishing_date: g.publishing_date,
-                                    role:            g.role,
-                                    self_proclaimed: g.self_proclaimed})
 
-    gigs = if search != "" do
-             from(g in gigs, join: p in assoc(g, :persona),
-                             join: e in assoc(g, :episode),
-                             where: ilike(g.comment, ^searchfrag) or
-                                    ilike(g.role, ^searchfrag) or
-                                    ilike(p.name, ^searchfrag) or
-                                    ilike(e.title, ^searchfrag))
-             |> Repo.all
-           else
-             Repo.all(gigs)
-           end
+    gigs = from(g in query, limit: ^limit,
+                            offset: ^offset,
+                            order_by: ^order_by,
+                            join: p in assoc(g, :persona),
+                            join: e in assoc(g, :episode),
+                            select: %{id:              g.id,
+                                      persona_id:      g.persona_id,
+                                      persona_name:    p.name,
+                                      episode_id:      g.episode_id,
+                                      episode_title:   e.title,
+                                      from_in_s:       g.from_in_s,
+                                      until_in_s:      g.until_in_s,
+                                      comment:         g.comment,
+                                      publishing_date: g.publishing_date,
+                                      role:            g.role,
+                                      self_proclaimed: g.self_proclaimed})
+           |> Repo.all()
 
     render(conn, "datatable.json", gigs: gigs,
                                    draw: draw,
