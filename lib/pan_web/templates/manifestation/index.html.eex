@@ -4,10 +4,10 @@
   <thead>
     <tr>
       <th>Ud</th>
-      <th>User: Id</th>
-      <th>User: Name</th>
       <th>Persona: Id</th>
       <th>Persona: Name</th>
+      <th>User: Id</th>
+      <th>User: Name</th>
       <th>Actions</th>
     </tr>
   </thead>
