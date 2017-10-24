@@ -4,7 +4,8 @@ exports.config = {
 //    joinTo: "js/app.js"
       joinTo: {
         'js/app.js': /^(js\/)|(node_modules\/)/,
-        'js/vendor.js': /^(vendor\/)/
+        'js/vendor.js': /^(vendor\/)/,
+        'js/qrcode.js': /^(vendor\/qrcode.min.js)/
 //        "js/app.js": /^js/,
 //        "js/vendor.js": /^(?!js)/
 

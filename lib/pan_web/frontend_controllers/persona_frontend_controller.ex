@@ -78,6 +78,15 @@ defmodule PanWeb.PersonaFrontendController do
   end
 
 
+  def business_card(conn, %{"id" => id}, _user) do
+    persona = Repo.get!(Persona, id)
+
+    conn
+    |> put_layout("minimal.html")
+    |> render("business_card.html", persona: persona)
+  end
+
+
   def edit(conn, %{"id" => id}, user) do
     manifestation = from(m in Manifestation, where: m.user_id == ^user.id and m.persona_id == ^id,
                                              preload: :persona)

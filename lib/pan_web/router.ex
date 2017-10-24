@@ -164,6 +164,7 @@ defmodule PanWeb.Router do
     get "/pro_features", PageFrontendController, :pro_features
 
     get "/personas/:id/grant_access", PersonaFrontendController, :grant_access
+    get "/personas/:id/business_card", PersonaFrontendController, :business_card
     resources "/personas", PersonaFrontendController, only: [:show, :index]
 
     get "/forgot_password", UserController, :forgot_password
