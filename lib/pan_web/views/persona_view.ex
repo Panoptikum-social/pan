@@ -1,8 +1,14 @@
 defmodule PanWeb.PersonaView do
   use Pan.Web, :view
 
-  def render("datatable.json", %{personas: personas}) do
-    %{personas: Enum.map(personas, &persona_json/1)}
+  def render("datatable.json", %{personas: personas,
+                                 draw: draw,
+                                 records_total: records_total,
+                                 records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(personas, &persona_json/1)}
   end
 
 

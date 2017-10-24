@@ -94,7 +94,7 @@
            data-toggle="dropdown" title="User menu">
           <%= fa_icon "user" %>
           <span class="username"><%= @current_user.username %></span>
-          <%= fa_icon "bars" %>
+          <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
           <li><%= link "My Profile",  to: user_frontend_path(@conn, :my_profile) %> </li>

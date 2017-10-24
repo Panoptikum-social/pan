@@ -8,14 +8,14 @@
 <table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Pid</th>
-      <th>Name</th>
-      <th>Uri</th>
-      <th>Email</th>
+      <th><%= fa_icon "search" %> Id</th>
+      <th><%= fa_icon "search" %> Pid</th>
+      <th><%= fa_icon "search" %> Name</th>
+      <th><%= fa_icon "search" %> Uri</th>
+      <th><%= fa_icon "search" %> Email</th>
       <th>Description</th>
       <th>Image url</th>
-      <th>Image title</th>
+      <th><%= fa_icon "search" %> Image title</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -24,10 +24,8 @@
 <script>
   $(function() {
     $('#datatable').DataTable({
-      ajax: {
-        url: '/admin/personas/datatable',
-        dataSrc: 'personas'
-      },
+      serverSide: true,
+      ajax: {url: '<%= persona_path(@conn, :datatable) %>'},
       columns: [
         { data: 'id' },
         { data: 'pid' },
