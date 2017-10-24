@@ -20,13 +20,13 @@
 <table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Title</th>
+      <th><%= fa_icon "search" %> ID</th>
+      <th><%= fa_icon "search" %> Title</th>
       <th>Update paused</th>
       <th>Updated at</th>
       <th>Update intervall</th>
       <th>Next update</th>
-      <th>Website</th>
+      <th><%= fa_icon "search" %> Website</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -35,10 +35,8 @@
 <script>
   $(function() {
     $('#datatable').DataTable({
-      ajax: {
-        url: '/admin/podcasts/datatable',
-        dataSrc: 'podcasts'
-      },
+      serverSide: true,
+      ajax: {url: '<%= podcast_path(@conn, :datatable) %>'},
       columns: [
         { data: 'id' },
         { data: 'title' },

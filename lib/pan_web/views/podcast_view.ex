@@ -2,9 +2,17 @@ defmodule PanWeb.PodcastView do
   use Pan.Web, :view
   alias PanWeb.Endpoint
 
-  def render("datatable.json", %{podcasts: podcasts}) do
-    %{podcasts: Enum.map(podcasts, &podcast_json/1)}
+
+  def render("datatable.json", %{podcasts: podcasts,
+                                 draw: draw,
+                                 records_total: records_total,
+                                 records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(podcasts, &podcast_json/1)}
   end
+
 
   def render("datatable_stale.json", %{podcasts: podcasts}) do
     %{podcasts: Enum.map(podcasts, &podcast_stale_json/1)}
