@@ -91,6 +91,8 @@ defmodule PanWeb.PersonaController do
 
     case Repo.update(changeset) do
       {:ok, persona} ->
+        Persona.update_search_index(id)
+
         conn
         |> put_flash(:info, "Persona updated successfully.")
         |> redirect(to: persona_path(conn, :show, persona))
