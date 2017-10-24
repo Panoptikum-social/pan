@@ -2,9 +2,16 @@ defmodule PanWeb.FeedView do
   use Pan.Web, :view
   alias PanWeb.Endpoint
 
-  def render("datatable.json", %{feeds: feeds}) do
-    %{feeds: Enum.map(feeds, &feed_json/1)}
+  def render("datatable.json", %{feeds: feeds,
+                                 draw: draw,
+                                 records_total: records_total,
+                                 records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(feeds, &feed_json/1)}
   end
+
 
   def feed_json(feed) do
     %{id:              feed.id,

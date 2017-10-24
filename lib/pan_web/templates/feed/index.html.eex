@@ -17,10 +17,8 @@
 <script>
   $(function() {
     $('#datatable').DataTable({
-      ajax: {
-        url: '/admin/feeds/datatable',
-        dataSrc: 'feeds'
-      },
+      serverSide: true,
+      ajax: {url: '<%= feed_path(@conn, :datatable) %>'},
       columns: [
         { data: 'id' },
         { data: 'self_link_title' },

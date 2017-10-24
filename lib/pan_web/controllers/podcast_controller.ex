@@ -96,7 +96,6 @@ defmodule PanWeb.PodcastController do
 
     records_total = Repo.aggregate(Podcast, :count, :id)
 
-
     query =
       if search != "" do
         from(p in Podcast, where: ilike(p.title, ^searchfrag) or
@@ -108,7 +107,6 @@ defmodule PanWeb.PodcastController do
 
     records_filtered = query
                        |> Repo.aggregate(:count, :id)
-
 
     podcasts = from(p in query, limit: ^limit,
                                 offset: ^offset,

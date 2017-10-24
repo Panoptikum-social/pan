@@ -11,17 +11,55 @@ defmodule PanWeb.FeedController do
     render(conn, "index.html")
   end
 
-  def datatable(conn, _params) do
-    feeds = from(f in Feed, order_by: [asc: :self_link_url],
-                            join: podcast in assoc(f, :podcast),
-                            select: %{id: f.id,
-                                      self_link_title: f.self_link_title,
-                                      self_link_url: f.self_link_url,
-                                      feed_generator: f.feed_generator,
-                                      podcast_id: f.podcast_id,
-                                      podcast_title: podcast.title})
-               |> Repo.all
-    render conn, "datatable.json", feeds: feeds
+  def datatable(conn, params) do
+    search = params["search"]["value"]
+    searchfrag = "%#{params["search"]["value"]}%"
+
+    limit = String.to_integer(params["length"])
+    offset = String.to_integer(params["start"])
+    draw = String.to_integer(params["draw"])
+
+    columns = params["columns"]
+
+    order_by = Enum.map(params["order"], fn({_key, value}) ->
+                 column_number = value["column"]
+                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+               end)
+
+    records_total = Repo.aggregate(Feed, :count, :id)
+
+    query =
+      if search != "" do
+        from(f in Feed, join: podcast in assoc(f, :podcast),
+                        where: ilike(f.self_link_title, ^searchfrag) or
+                               ilike(f.self_link_url, ^searchfrag) or
+                               ilike(podcast.title, ^searchfrag) or
+                               ilike(fragment("cast (? as text)", f.podcast_id), ^searchfrag) or
+                               ilike(fragment("cast (? as text)", f.id), ^searchfrag))
+      else
+        from(f in Feed)
+      end
+
+    records_filtered = query
+                       |> Repo.aggregate(:count, :id)
+
+    feeds = from(f in query, limit: ^limit,
+                             offset: ^offset,
+                             order_by: ^order_by,
+                             join: podcast in assoc(f, :podcast),
+                             select: %{id: f.id,
+                                       self_link_title: f.self_link_title,
+                                       self_link_url: f.self_link_url,
+                                       feed_generator: f.feed_generator,
+                                       podcast_id: f.podcast_id,
+                                       podcast_title: podcast.title})
+            |> Repo.all()
+
+    render(conn, "datatable.json", feeds: feeds,
+                                   draw: draw,
+                                   records_total: records_total,
+                                   records_filtered: records_filtered)
+
   end
 
 
