@@ -19,7 +19,7 @@
         <%= category.title%>
       </a>
     </li>
-  <%= end %>
+  <% end %>
 </ul>
 
 <br/>
@@ -35,5 +35,5 @@
         </div>
       <% end %>
     </div>
-  <%= end %>
+  <% end %>
 </div>
