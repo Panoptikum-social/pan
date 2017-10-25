@@ -150,6 +150,7 @@ defmodule PanWeb.Router do
     get "/categories/stats", CategoryFrontendController, :stats
     get "/categories/:id/stats", CategoryFrontendController, :show_stats
     get "/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes
+    get "/categories/:id/categorized", CategoryFrontendController, :categorized
     resources "/categories", CategoryFrontendController, only: [:index, :show]
 
     get "/podcasts/buttons", PodcastFrontendController, :button_index

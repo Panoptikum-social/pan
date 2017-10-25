@@ -97,3 +97,6 @@ input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
 .nav>li>a {padding: 10px;}
 
 .panel>.nav-tabs {margin-top: 0px;}
+
+.panel-heading .panel-title { padding-left: 15px; }
+.panel-group-list .panel { margin-bottom: 1px; }
