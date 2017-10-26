@@ -5,7 +5,6 @@ defmodule PanWeb.CategoryFrontendController do
   alias PanWeb.Language
   alias PanWeb.Episode
   alias PanWeb.Podcast
-  alias PanWeb.Recommendation
 
   def index(conn, _params) do
     categories = from(c in Category, order_by: :title,
