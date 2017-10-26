@@ -1,3 +1,30 @@
+<%= if @category.parent.title == "👩 👨 Community" do %>
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Welcome to the Test Laboratory!
+      </h3>
+    </div>
+    <div class="panel-body" style="line-height: 2.5;">
+      <p>
+        We are currently testing different  and additional views for community categories!<br/>
+        Wanna give it a try?
+      </p>
+      <p>
+        <%= link "Latest episodes", to: category_frontend_path(@conn, :latest_episodes, @category),
+                                    class: "btn btn-info" %>
+        gives you a timeline view starting with the most current episode within this category.
+      </p>
+      <p>
+        <%= link "Categorized", to: category_frontend_path(@conn, :categorized, @category),
+                                class: "btn btn-info" %>
+        sorts the podcasts within this categories by the other categories, they are listed in.
+        Further more we display a info card with the most relevant information on this podcast.
+      </p>
+    </div>
+  </div>
+<% end %>
+
 <div class="panel panel-success">
   <div class="panel-heading">
     <h3 class="panel-title">

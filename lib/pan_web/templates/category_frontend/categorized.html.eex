@@ -1,14 +1,15 @@
-<h2>
-  <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
-           to: category_frontend_path(@conn, :stats) %>
+<%= link [fa_icon("folder-o"), " ", "Panoptikum"],
+         to: category_frontend_path(@conn, :stats) %>
+/
+<%= if @category.parent do %>
+  <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+           to: category_frontend_path(@conn, :show_stats, @category.parent) %>
   /
-  <%= if @category.parent do %>
-    <%= link [fa_icon("folder-o"), " ", @category.parent.title],
-             to: category_frontend_path(@conn, :show_stats, @category.parent) %>
-    /
-  <% end %>
-  <%= fa_icon("folder-open-o") %> <%= @category.title %>
-</h2>
+<% end %>
+<%= fa_icon("folder-open-o") %> <%= @category.title %>
+
+
+<h1><%= fa_icon("folder-open-o") %> <%= @category.title %></h1>
 
 <br/>
 
