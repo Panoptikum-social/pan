@@ -1,4 +1,4 @@
-<%= if @category.parent.title == "👩 👨 Community" do %>
+<%= if @category.parent && @category.parent.title == "👩 👨 Community" do %>
   <div class="panel panel-warning">
     <div class="panel-heading">
       <h3 class="panel-title">
@@ -29,11 +29,11 @@
   <div class="panel-heading">
     <h3 class="panel-title">
       <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
-               to: category_frontend_path(@conn, :stats) %>
+               to: category_frontend_path(@conn, :index) %>
       /
       <%= if @category.parent do %>
         <%= link [fa_icon("folder-o"), " ", @category.parent.title],
-                 to: category_frontend_path(@conn, :show_stats, @category.parent) %>
+                 to: category_frontend_path(@conn, :show, @category.parent) %>
         /
       <% end %>
       <%= fa_icon("folder-open-o") %> <%= @category.title %>
@@ -46,7 +46,7 @@
           <%= for subcategory <- group do %>
             <div class="col-md-2">
               <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                       to: category_frontend_path(@conn, :show_stats, subcategory),
+                       to: category_frontend_path(@conn, :show, subcategory),
                        class: "btn btn-xs btn-light-gray truncate" %>
             </div>
           <% end %>
