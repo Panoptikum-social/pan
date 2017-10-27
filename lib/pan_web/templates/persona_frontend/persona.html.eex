@@ -14,8 +14,11 @@
     <div class="row">
       <div class="col-md-6">
         <dl class="dl-horizontal">
-          <dt>Pid</dt>
+          <dt>Panoptikum-ID</dt>
           <dd><%= @persona.pid %></dd>
+          
+          <dt>Permalink (URI)</dt>
+          <dd><%= PanWeb.Endpoint.url %>/<%= @persona.pid %></dd>
 
           <dt>Name</dt>
           <dd><%= @persona.name %></dd>
@@ -24,7 +27,11 @@
             <dt>Uri</dt>
             <dd><%= @persona.uri %></dd>
           <% end %>
+
+          <dt>Business Cards</dt>
+          <dd><%= link [fa_icon("vcard-o"), " Show"], to: persona_frontend_url(@conn, :business_card, @persona) %></dd>
         </dl>
+        <span style="color: #fff;">Id: <%= @persona.id %></dd>
       </div>
 
       <div class="col-md-6" >
