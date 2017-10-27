@@ -32,7 +32,7 @@
       <script type="text/javascript">
         document.getElementById("qrcode-<%= i %>-<%= j %>").innerHTML = ""
         new QRCode(document.getElementById("qrcode-<%= i %>-<%= j %>"), {
-          text: "<%= persona_frontend_url(@conn, :persona, @persona) %>",
+          text: "<%= persona_frontend_url(@conn, :show, @persona) %>",
           width:  138,
           height: 138
         });
