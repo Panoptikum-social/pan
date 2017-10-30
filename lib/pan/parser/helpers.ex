@@ -23,7 +23,6 @@ defmodule Pan.Parser.Helpers do
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> String.replace(",", " ")
-                |> String.replace(".", " ")
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
@@ -82,9 +81,9 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime}") ||
+               try_format(feed_date, "{RFC3339z}") ||
                try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
                try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
-
 
     if datetime do
       Timex.to_naive_datetime(datetime)
