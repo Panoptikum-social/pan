@@ -69,7 +69,6 @@ defmodule Pan.Parser.Analyzer do
   end
 
 
-# Description with fallback to itunes:subtitle
   def call(_, "tag", [tag_atom, _, []]) when tag_atom in [:description, :"itunes:subtitle"] , do: %{}
   def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
   def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
