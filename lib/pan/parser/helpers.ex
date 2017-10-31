@@ -158,6 +158,7 @@ defmodule Pan.Parser.Helpers do
 
   def fix_timezones(datetime) do
     datetime
+    |> String.replace("AEST",  "+1000")
     |> String.replace("EST",  "-0500")
     |> String.replace("CST",  "-0600")
     |> String.replace("PST",  "-0700")
@@ -171,7 +172,6 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("AEDT", "+1100")
     |> String.replace("NZST", "+1200")
     |> String.replace("NZDT", "+1300")
-    |> String.replace("AEST",  "EST")
     |> String.replace("GTM",   "GMT")
     |> String.replace("GMT+2", "+0200")
     |> String.replace("-0001", "2016")
