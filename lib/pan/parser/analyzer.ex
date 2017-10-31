@@ -17,8 +17,11 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"itunes:summary",  _, [value | _]]), do: %{summary: value}
   def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
-  def call(_, "tag", [:"itunes:explicit", _, [value]]), do: %{explicit: H.boolify(value)}
-  def call(_, "tag", [:explicit,          _, [value]]), do: %{explicit: H.boolify(value)}
+
+  def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [
+    :"itunes:explicit", :"iTunes:explicit", :explicit
+  ], do: %{explicit: H.boolify(value)}
+
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
     %{last_build_date: H.to_naive_datetime(value)}
   end
@@ -42,31 +45,38 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "image", [:width,       _, _]), do: %{}
   def call(_, "image", [:height,      _, _]), do: %{}
 
-  def call(map, "image", [:"itunes:image", attr, _]) do
+  def call(map, "image", [tag_atom, attr, _]) when tag_atom in [
+    :"itunes:image", :"iTunes:image"
+  ] do
     if map[:image_url], do: map,
                         else: %{image_url: H.to_255(attr[:href]),
                                 image_title: H.to_255(attr[:href])}
   end
 
-  def call(map, "tag", [:"itunes:image", attr, _]) do
+  def call(map, "tag", [tag_atom, attr, _]) when tag_atom in [
+    :"itunes:image", :"iTunes:image"
+  ] do
     if map[:image_url], do: map,
                         else: %{image_url: H.to_255(attr[:href]),
                                 image_title: H.to_255(attr[:href])}
   end
 
-  def call(map, "tag", [:"itunes:image", _, [value]]) do
+  def call(map, "tag", [tag_atom, _, [value]]) when tag_atom in [
+    :"itunes:image", :"iTunes:image"
+  ] do
     if map[:image_url], do: map,
                         else: %{image_url: H.to_255(value)}
   end
 
 
 # Description with fallback to itunes:subtitle
-  def call(_, "tag", [:description, _, []]), do: %{}
+  def call(_, "tag", [tag_atom, _, []]) when tag_atom in [:description, :"itunes:subtitle"] , do: %{}
   def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
   def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
 
-  def call(_, "tag", [:"itunes:subtitle", _, []]), do: %{}
-  def call(map, "tag", [:"itunes:subtitle", _, [value]]) do
+  def call(map, "tag", [tag_atom, _, [value]]) when tag_atom in [
+    :"itunes:subtitle", :"iTunes:subtitle"
+  ] do
     if map[:description], do: %{},
                           else: %{description: value}
   end
@@ -200,7 +210,7 @@ defmodule Pan.Parser.Analyzer do
     :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId", :artist,
     :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
     :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight", :tag,
-    :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev",
+    :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev", :br,
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
     :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
@@ -280,6 +290,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:description, _, []]), do: %{}
   def call(_, "episode", [:description, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:descrition, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:"itunes:description", _, []]), do: %{}
   def call(_, "episode", [:"itunes:description", _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
 
