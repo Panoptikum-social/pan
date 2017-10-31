@@ -23,6 +23,7 @@ defmodule Pan.Parser.Helpers do
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> String.replace(",", " ")
+                |> String.replace(". ", " ")
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
