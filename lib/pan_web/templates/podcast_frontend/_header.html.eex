@@ -52,7 +52,7 @@
               <dd><%= @podcast.description %></dd>
               <%= if @podcast.payment_link_url do %>
                 <dt>Support</dt>
-                <dd><%= link @podcast.payment_link_title, to: @podcast.payment_link_url %></dd>
+                <dd><%= link @podcast.payment_link_title || "Support", to: @podcast.payment_link_url %></dd>
               <% end %>
               <dt>Language</dt>
               <dd>
