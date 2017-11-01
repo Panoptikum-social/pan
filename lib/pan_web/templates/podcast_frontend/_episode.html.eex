@@ -19,7 +19,7 @@
       <% end %>
       <%= if @episode.payment_link_url do %>
         <dt>Support</dt>
-        <dd>link(@episode.payment_link_title, to: @episode.payment_link_url) %></dd>
+        <dd><%= link(@episode.payment_link_title || "Support", to: @episode.payment_link_url) %></dd>
       <% end %>
       <dt>Duration</dt>
       <dd><%= @episode.duration %></dd>
