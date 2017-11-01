@@ -145,11 +145,13 @@
     <div class="panel" style="padding: 10px;
                               border: 1px dotted #cccccc;">
       <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= persona.id %>">
-            <%= fa_icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
-          </a>
-        </h4>
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= persona.id %>">
+          <%= fa_icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
+        </a>
+
+        <%= link [fa_icon("user-o"), " ", persona.name],
+                 to: persona_frontend_path(@conn, :show, persona),
+                 class: "btn btn-xs truncate btn-lavender pull-right" %>
       </div>
       <div id="collapse-<%= persona.id %>" class="panel-collapse collapse">
         <div class="panel-body">
