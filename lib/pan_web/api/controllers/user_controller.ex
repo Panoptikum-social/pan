@@ -17,6 +17,7 @@ defmodule PanWeb.Api.UserController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(u in User, where: (is_nil(u.admin) or u.admin == false))

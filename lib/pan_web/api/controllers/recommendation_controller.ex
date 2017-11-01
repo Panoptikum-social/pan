@@ -23,6 +23,7 @@ defmodule PanWeb.Api.RecommendationController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = Repo.aggregate(Recommendation, :count, :id)

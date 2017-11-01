@@ -30,6 +30,7 @@ defmodule PanWeb.Api.CategoryController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(c in PanWeb.CategoryPodcast, where: c.category_id == ^id)

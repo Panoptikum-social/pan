@@ -11,6 +11,7 @@ defmodule PanWeb.Api.EpisodeController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(e in Episode, join: p in assoc(e, :podcast),
@@ -62,6 +63,7 @@ defmodule PanWeb.Api.EpisodeController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/episodes",

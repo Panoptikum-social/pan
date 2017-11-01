@@ -42,6 +42,7 @@ defmodule PanWeb.Api.MessageController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     user_id = Integer.to_string(user.id)

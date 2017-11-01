@@ -21,6 +21,8 @@ defmodule PanWeb.Api.PodcastController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
+
     offset = (page - 1) * size
 
     total = from(p in Podcast, where: is_nil(p.blocked) or p.blocked == false)
@@ -52,6 +54,7 @@ defmodule PanWeb.Api.PodcastController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(e in PanWeb.Episode, where: e.podcast_id == ^id)
@@ -87,6 +90,7 @@ defmodule PanWeb.Api.PodcastController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
@@ -138,6 +142,7 @@ defmodule PanWeb.Api.PodcastController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",

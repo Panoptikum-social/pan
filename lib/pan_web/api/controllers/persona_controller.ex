@@ -23,6 +23,7 @@ defmodule PanWeb.Api.PersonaController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = Repo.aggregate(Persona, :count, :id)
@@ -57,6 +58,7 @@ defmodule PanWeb.Api.PersonaController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     total = from(g in PanWeb.Gig, where: g.persona_id == ^id)
@@ -118,6 +120,7 @@ defmodule PanWeb.Api.PersonaController do
     size = Map.get(params, "page", %{})
            |> Map.get("size", "10")
            |> String.to_integer
+           |> min(1000)
     offset = (page - 1) * size
 
     query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas",
