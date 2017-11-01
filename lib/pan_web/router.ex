@@ -164,6 +164,7 @@ defmodule PanWeb.Router do
     resources "/users", UserFrontendController, only: [:show, :index, :new, :create]
     get "/pro_features", PageFrontendController, :pro_features
 
+    get "/personas/datatable", PersonaFrontendController, :datatable
     get "/personas/:id/grant_access", PersonaFrontendController, :grant_access
     get "/personas/:id/business_card", PersonaFrontendController, :business_card
     resources "/personas", PersonaFrontendController, only: [:show, :index]

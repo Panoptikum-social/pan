@@ -14,10 +14,49 @@ defmodule PanWeb.PersonaFrontendController do
 
 
   def index(conn, _params, _user) do
-    personas = from(p in PanWeb.Persona, order_by: :name,
-                                         where: is_nil(p.redirect_id))
+    render(conn, "index.html")
+  end
+
+
+  def datatable(conn, params, _user) do
+    search = params["search"]["value"]
+    searchfrag = "%#{params["search"]["value"]}%"
+
+    limit = String.to_integer(params["length"])
+    offset = String.to_integer(params["start"])
+    draw = String.to_integer(params["draw"])
+
+    columns = params["columns"]
+
+    order_by = Enum.map(params["order"], fn({_key, value}) ->
+                 column_number = value["column"]
+                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+               end)
+
+    records_total = Repo.aggregate(Persona, :count, :id)
+
+    query =
+      if search != "" do
+        from(p in Persona, where: ilike(p.pid, ^searchfrag) or
+                                  ilike(p.name, ^searchfrag) or
+                                  ilike(fragment("cast (? as text)", p.id), ^searchfrag))
+      else
+        from(p in Persona)
+      end
+
+    records_filtered = query
+                       |> Repo.aggregate(:count, :id)
+
+    personas = from(p in query, limit: ^limit,
+                                offset: ^offset,
+                                order_by: ^order_by)
                |> Repo.all()
-    render(conn, "index.html", personas: personas)
+
+    render(conn, "datatable.json", personas: personas,
+                                   draw: draw,
+                                   records_total: records_total,
+                                   records_filtered: records_filtered)
+
   end
 
 

@@ -5,6 +5,7 @@ defmodule PanWeb.PersonaFrontendView do
   alias PanWeb.Follow
   alias PanWeb.Like
   alias PanWeb.Persona
+  alias PanWeb.Endpoint
 
 
   def markdown(content) do
@@ -88,5 +89,32 @@ defmodule PanWeb.PersonaFrontendView do
     |> Map.keys()
     |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
     |> Enum.reverse()
+  end
+
+
+  def render("datatable.json", %{personas: personas,
+                                 draw: draw,
+                                 records_total: records_total,
+                                 records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(personas, &persona_json/1)}
+  end
+
+
+  def persona_json(persona) do
+    %{id:   persona.id,
+      pid:  persona.pid,
+      name: persona_button(persona, &persona_frontend_path/3)}
+  end
+
+
+  def persona_button(persona, path) do
+    [link([fa_icon("user-o"), " ", persona.name],
+                        to: path.(Endpoint, :show, persona),
+                        class: "btn btn-xs btn-lavender")]
+    |> Enum.map(&my_safe_to_string/1)
+    |> Enum.join()
   end
 end

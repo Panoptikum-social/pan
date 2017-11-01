@@ -48,7 +48,6 @@ defmodule PanWeb.PersonaController do
                                    draw: draw,
                                    records_total: records_total,
                                    records_filtered: records_filtered)
-
   end
 
 
