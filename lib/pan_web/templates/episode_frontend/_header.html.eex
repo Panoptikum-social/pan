@@ -21,12 +21,18 @@
           <% end %>
           <dt>Duration</dt>
           <dd><%= @episode.duration %></dd>
-          <dt>Publishing date</dt>
-          <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
-          <dt>Link</dt>
-          <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
-          <dt>Deep link</dt>
-          <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
+          <%= if @episode.publishing_date do %>
+            <dt>Publishing date</dt>
+            <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+          <% end %>
+          <%= if @episode.link do %>
+            <dt>Link</dt>
+            <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
+          <% end %>
+          <%= if @episode.deep_link do %>
+            <dt>Deep link</dt>
+            <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
+          <% end %>
           <dt>Contributors</dt>
           <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
             <dd style="line-height: 200%;">

@@ -23,8 +23,10 @@
       <% end %>
       <dt>Duration</dt>
       <dd><%= @episode.duration %></dd>
-      <dt>Publishing date</dt>
-      <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+      <%= if @episode.publishing_date do %>
+        <dt>Publishing date</dt>
+        <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+      <% end %>
       <%= if @episode.link do %>
         <dt>Link</dt>
         <dd><a href="<%= @episode.link %>"><%= truncate @episode.link, 80 %></a></dd>
