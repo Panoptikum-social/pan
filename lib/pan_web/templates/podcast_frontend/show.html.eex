@@ -10,15 +10,61 @@
                                       current_user: @current_user,
                                       conn: @conn %>
 
-  <%= for group <- Enum.chunk(@podcast.episodes, 2, 2, []) do %>
-    <div class="row">
-      <%= for {episode, counter} <- Enum.with_index(group) do %>
-        <div class="col-md-6" id="episode-<%= episode.id %>">
-          <%= render "_episode.html", episode: episode, counter: counter, conn: @conn %>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
+  <h2>Episodes</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Title &amp; Description</th>
+          <th>Contributors</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for episode <- @podcast.episodes do %>
+          <tr>
+            <td align="right">
+              <%= if episode.publishing_date do %>
+                <%= PanWeb.PersonaFrontendView.format_date(episode.publishing_date) %>
+              <% end %>
+            </td>
+            <td>
+              <p style="line-height: 200%;">
+                <%= link [fa_icon("headphones"), " ", episode.title],
+                       to: episode_frontend_path(@conn, :show, episode),
+                       class: "btn btn-primary btn-xs truncate" %>
+              </p>
+              <%= truncate(HtmlSanitizeEx.strip_tags(episode.description), 255) %>
+            </td>
+            <td style="line-height: 200%;">
+              <%= for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona)) do %>
+                <nobr>
+                  <%= link [fa_icon("user-o"), " ", persona.name],
+                           to: persona_frontend_path(@conn, :show, persona),
+                           class: "btn btn-xs truncate btn-lavender" %>
+                  <%= for gig <- gigs do %>
+                     <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+                    <%= if gig.self_proclaimed do %>
+                      <sup data-toggle="popover"
+                           data-placement="right"
+                           data-title="Claimed contribution"
+                           data-html="true"
+                           data-content="This contribution is claimed by a user and not source of
+                                         the podcast feed.">
+                        <%= fa_icon "info-circle", class: "icon-lavender" %>
+                      </sup>
+                    <% end %>
+                    <br/>
+                  <% end %>
+                </nobr>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>
 
 <script>

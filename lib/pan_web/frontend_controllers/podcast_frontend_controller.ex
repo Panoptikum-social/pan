@@ -3,6 +3,7 @@ defmodule PanWeb.PodcastFrontendController do
   alias PanWeb.Podcast
   alias PanWeb.Episode
   alias PanWeb.Recommendation
+  alias PanWeb.Gig
 
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
@@ -25,9 +26,11 @@ defmodule PanWeb.PodcastFrontendController do
     podcast =  Repo.get!(Podcast, id)
                |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
                |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
+               |> Repo.preload(episodes: [gigs: :persona])
                |> Repo.preload([engagements: :persona])
 
-    render(conn, "show.html", podcast: podcast, changeset: changeset)
+    render(conn, "show.html", podcast: podcast,
+                              changeset: changeset)
   end
 
 
