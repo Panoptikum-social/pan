@@ -63,7 +63,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
-               try_format(feed_date, "{WDshort} {D} {M} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D}.{M}.{YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
@@ -159,19 +159,19 @@ defmodule Pan.Parser.Helpers do
   def fix_timezones(datetime) do
     datetime
     |> String.replace("AEST",  "+1000")
+    |> String.replace("CEST",  "+0200")
+    |> String.replace("AEDT", "+1100")
+    |> String.replace("NZST", "+1200")
+    |> String.replace("NZDT", "+1300")
     |> String.replace("EST",  "-0500")
     |> String.replace("CST",  "-0600")
     |> String.replace("PST",  "-0700")
     |> String.replace("PCT",  "-0700")
     |> String.replace("GMT+1",  "+0100")
     |> String.replace("BST",  "+0100")
-    |> String.replace("CEST", "+0200")
     |> String.replace("IDT",  "+0300")
     |> String.replace("KST",  "+0900")
     |> String.replace("JST",  "+0900")
-    |> String.replace("AEDT", "+1100")
-    |> String.replace("NZST", "+1200")
-    |> String.replace("NZDT", "+1300")
     |> String.replace("GTM",   "GMT")
     |> String.replace("GMT+2", "+0200")
     |> String.replace("-0001", "2016")
