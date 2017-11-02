@@ -1,5 +1,5 @@
 <%= if @podcast.recommendations != [] do %>
-  <h2>Recommendations</h2>
+  <h3>Recommendations</h2>
   <span class="pull-right"><%= complain_link() %></span>
 
   <table class="table table-condensed table-bordered">
@@ -34,3 +34,9 @@
     <% end %>
   </table>
 <% end %>
+
+<%= render "_recommend_form.html",
+           current_user: @current_user,
+           changeset: @changeset,
+           conn: @conn,
+           podcast: @podcast %>

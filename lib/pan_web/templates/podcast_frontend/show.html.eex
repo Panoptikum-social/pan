@@ -3,11 +3,11 @@
 <% else %>
   <%= render "_header.html", podcast: @podcast,
                              current_user: @current_user,
-                             changeset: @changeset,
                              conn: @conn %>
-
+  <br/><br/>
   <%= render "_recommendations.html", podcast: @podcast,
                                       current_user: @current_user,
+                                      changeset: @changeset,
                                       conn: @conn %>
 
   <h2>Episodes</h2>

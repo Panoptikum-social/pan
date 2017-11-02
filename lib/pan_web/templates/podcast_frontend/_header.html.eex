@@ -96,11 +96,6 @@
         </dl>
       </div>
     </div>
-    <%= render "_recommend_form.html",
-               current_user: @current_user,
-               changeset: @changeset,
-               conn: @conn,
-               podcast: @podcast %>
   </div>
 
   <div class="col-md-2">
