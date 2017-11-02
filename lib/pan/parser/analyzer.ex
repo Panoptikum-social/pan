@@ -163,7 +163,7 @@ defmodule Pan.Parser.Analyzer do
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher",:"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
-    :"collectiontype"
+    :"collectiontype", :"pentonplayer:channelAds"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -219,7 +219,8 @@ defmodule Pan.Parser.Analyzer do
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
     :"dc:source",  :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified", :"media:restriction",
     :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail", :bitrate,
-    :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt, :"itunes:artwork"
+    :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt, :"itunes:artwork",
+    :"pentonplayer:playerlink", :"pentonplayer:downloadlink", :"pentonplayer:adTimes"
   ], do: %{}
 
 

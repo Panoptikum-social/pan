@@ -148,11 +148,12 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("tor",  "Tue")
     |> String.replace(~r/we[db]?n?e?s?d?a?y?/i,   "Wed")
     |> String.replace("MWed", "Wed")
-    |> String.replace("Mi",   "Wed")
+    |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i,     "Thu")
     |> String.replace("Do",   "Thu")
     |> String.replace(~r/fr[ei]?d?a?y?/i,         "Fri")
     |> String.replace(~r/s[ou]nd?a?y?/i,          "Sun")
+    |> String.replace(~r/Lun/i,                   "Mon")
   end
 
 
