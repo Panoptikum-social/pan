@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading">
-      <%= link [fa_icon("headphones"), " ", @episode.title],
+      <%= link [fa_icon("headphones"), " ", @episode.title || Integer.to_string(@episode.id)],
                to: episode_frontend_path(@conn, :show, @episode),
                class: "btn btn-primary btn-xs",
                style: "color: #fff",

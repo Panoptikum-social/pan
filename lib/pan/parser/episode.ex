@@ -10,7 +10,9 @@ defmodule Pan.Parser.Episode do
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(PanWeb.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map[:subtitle] , podcast_id: podcast_id) do
+        case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map[:subtitle]
+                                                                    || episode_map[:guid],
+                                         podcast_id: podcast_id) do
           nil ->
             # Here comes the line with the initial update time
             Repo.get(PanWeb.Podcast, podcast_id)
