@@ -1,144 +1,135 @@
-<div class="panel panel-warning">
-  <div class="panel-heading">
-    <div class="pull-left">
-      <%= if @current_user && @current_user.admin do %>
-        <%= link fa_icon("cogs"), to: podcast_path(@conn, :show, @podcast),
-                                  class: "btn btn-xs btn-default" %> &nbsp;
-        <%= link fa_icon("rss"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
-                                 class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
+<%= if @current_user && @current_user.admin do %>
+  <%= link fa_icon("cogs"), to: podcast_path(@conn, :show, @podcast),
+                            class: "btn btn-xs btn-default" %> &nbsp;
+  <%= link fa_icon("rss"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
+                           class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
 
-      <% end %>
-    </div>
+<% end %>
 
-    <h3 class="panel-title">
-      <%= @podcast.title %>
-    </h3>
-  </div>
-  <div class="panel-body">
+<h1><%= @podcast.title %></h1>
+
+<div class="row">
+  <div class="col-md-10">
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-5">
         <div class="row">
           <div class="col-md-5">
-            <div class="row">
-              <div class="col-md-5">
-                <object data="<%= @podcast.image_url %>"
-                        alt="<%= @podcast.image_title%>"
-                        type="image/png"
-                        width="150"
-                        class="thumbnail">
-                  <img src="/images/missing-podcast.png"
-                       alt="missing image"
-                       width="150"
-                       />
-                </object>
-              </div>
-              <div class="col-md-7">
-                <p><%= raw @podcast.summary %></p>
-              </div>
-            </div>
-            <p>
-              <%= render "_like_follow_unsubscribe_buttons.html",
-                         current_user: @current_user, podcast: @podcast, conn: @conn %>
-            </p>
+            <object data="<%= @podcast.image_url %>"
+                    alt="<%= @podcast.image_title%>"
+                    type="image/png"
+                    width="150"
+                    class="thumbnail">
+              <img src="/images/missing-podcast.png"
+                   alt="missing image"
+                   width="150"
+                   />
+            </object>
           </div>
-
           <div class="col-md-7">
-            <dl class="dl-horizontal">
-              <%= if @podcast.website do %>
-                <dt>Website</dt>
-                <dd><%= link @podcast.website, to: @podcast.website %></dd>
-              <% end %>
-              <dt>Description</dt>
-              <dd><%= @podcast.description %></dd>
-              <%= if @podcast.payment_link_url do %>
-                <dt>Support</dt>
-                <dd><%= link @podcast.payment_link_title || "Support", to: @podcast.payment_link_url %></dd>
-              <% end %>
-              <dt>Language</dt>
-              <dd>
-                <%= for language <- @podcast.languages do %>
-                  <%= language.emoji %> <%= language.name %>
-                <% end %>
-              </dd>
-              <%= if @podcast.last_build_date do %>
-                <dt>last modified</dt>
-                <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
-              <% end %>
-              <%= if @podcast.latest_episode_publishing_date do %>
-                <dt>last episode published</dt>
-                <dd><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}") %></dd>
-              <% end %>
-              <%= if @podcast.publication_frequency > 0 do %>
-                <dt>publication frequency</dt>
-                <dd><%= Float.round(@podcast.publication_frequency, 2) %> days</dd>
-              <% end %>
-
-              <dt>Contributors</dt>
-              <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
-
-                <dd style="line-height: 200%;">
-                  <%= link [fa_icon("user-o"), " ", persona.name],
-                           to: persona_frontend_path(@conn, :show, persona),
-                           class: "btn btn-xs truncate btn-lavender" %>
-                  <%= for engagement <- engagements do %>
-                    <span class="label label-success"><%= engagement.role %></span> &nbsp;
-                  <% end %>
-                </dd>
-              <% end %>
-              <dt>Explicit</dt>
-              <dd><%= @podcast.explicit %></dd>
-              <dt id="metadata">Number of Episodes</dt>
-              <dd><%= Enum.count(@podcast.episodes) %></dd>
-              <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
-              <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
-              <dt>Categories</dt>
-              <%= for category <- @podcast.categories do %>
-                <dd style="line-height: 200%;">
-                  <%= link [fa_icon("folder-o"), " ", category.title],
-                           to: category_frontend_path(@conn, :show, category),
-                           class: "btn btn-xs btn-light-gray" %>
-                </dd>
-              <% end %>
-
-            </dl>
+            <p><%= raw @podcast.summary %></p>
           </div>
         </div>
-        <%= render "_recommend_form.html",
-                   current_user: @current_user,
-                   changeset: @changeset,
-                   conn: @conn,
-                   podcast: @podcast %>
+        <p>
+          <%= render "_like_follow_unsubscribe_buttons.html",
+                     current_user: @current_user, podcast: @podcast, conn: @conn %>
+        </p>
       </div>
 
-      <div class="col-md-2">
-        <div id="qrcode"></div>
-        <script type="text/javascript">
-          function whenAvailable(name, callback) {
-              var interval = 10; // ms
-              window.setTimeout(function() {
-                  if (window[name]) {
-                      callback(window[name]);
-                  } else {
-                      window.setTimeout(arguments.callee, interval);
-                  }
-              }, interval);
-          }
+      <div class="col-md-7">
+        <dl class="dl-horizontal">
+          <%= if @podcast.website do %>
+            <dt>Website</dt>
+            <dd><%= link @podcast.website, to: @podcast.website %></dd>
+          <% end %>
+          <dt>Description</dt>
+          <dd><%= @podcast.description %></dd>
+          <%= if @podcast.payment_link_url do %>
+            <dt>Support</dt>
+            <dd><%= link @podcast.payment_link_title || "Support", to: @podcast.payment_link_url %></dd>
+          <% end %>
+          <dt>Language</dt>
+          <dd>
+            <%= for language <- @podcast.languages do %>
+              <%= language.emoji %> <%= language.name %>
+            <% end %>
+          </dd>
+          <%= if @podcast.last_build_date do %>
+            <dt>last modified</dt>
+            <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
+          <% end %>
+          <%= if @podcast.latest_episode_publishing_date do %>
+            <dt>last episode published</dt>
+            <dd><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+          <% end %>
+          <%= if @podcast.publication_frequency > 0 do %>
+            <dt>publication frequency</dt>
+            <dd><%= Float.round(@podcast.publication_frequency, 2) %> days</dd>
+          <% end %>
 
-          whenAvailable("QRCode", function(t) {
-            document.getElementById("qrcode").innerHTML = ""
-            new QRCode(document.getElementById("qrcode"), {
-                       text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
-                       width:  142,
-                       height: 142,
-                     });
-          });
-        </script>
+          <dt>Contributors</dt>
+          <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
 
-        <hr/>
+            <dd style="line-height: 200%;">
+              <%= link [fa_icon("user-o"), " ", persona.name],
+                       to: persona_frontend_path(@conn, :show, persona),
+                       class: "btn btn-xs truncate btn-lavender" %>
+              <%= for engagement <- engagements do %>
+                <span class="label label-success"><%= engagement.role %></span> &nbsp;
+              <% end %>
+            </dd>
+          <% end %>
+          <dt>Explicit</dt>
+          <dd><%= @podcast.explicit %></dd>
+          <dt id="metadata">Number of Episodes</dt>
+          <dd><%= Enum.count(@podcast.episodes) %></dd>
+          <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
+          <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
+          <dt>Categories</dt>
+          <%= for category <- @podcast.categories do %>
+            <dd style="line-height: 200%;">
+              <%= link [fa_icon("folder-o"), " ", category.title],
+                       to: category_frontend_path(@conn, :show, category),
+                       class: "btn btn-xs btn-light-gray" %>
+            </dd>
+          <% end %>
 
-        <%= render "_subscribe_button.html",
-                   podcast: @podcast, conn: @conn %>
+        </dl>
       </div>
     </div>
+    <%= render "_recommend_form.html",
+               current_user: @current_user,
+               changeset: @changeset,
+               conn: @conn,
+               podcast: @podcast %>
+  </div>
+
+  <div class="col-md-2">
+    <div id="qrcode"></div>
+    <script type="text/javascript">
+      function whenAvailable(name, callback) {
+          var interval = 10; // ms
+          window.setTimeout(function() {
+              if (window[name]) {
+                  callback(window[name]);
+              } else {
+                  window.setTimeout(arguments.callee, interval);
+              }
+          }, interval);
+      }
+
+      whenAvailable("QRCode", function(t) {
+        document.getElementById("qrcode").innerHTML = ""
+        new QRCode(document.getElementById("qrcode"), {
+                   text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
+                   width:  142,
+                   height: 142,
+                 });
+      });
+    </script>
+
+    <hr/>
+
+    <%= render "_subscribe_button.html",
+               podcast: @podcast, conn: @conn %>
   </div>
 </div>
