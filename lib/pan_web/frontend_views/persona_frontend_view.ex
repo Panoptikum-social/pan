@@ -54,6 +54,16 @@ defmodule PanWeb.PersonaFrontendView do
     follow_or_unfollow(current_user_id, persona_id)
   end
 
+  def render("datatable.json", %{personas: personas,
+                                 draw: draw,
+                                 records_total: records_total,
+                                 records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(personas, &persona_json/1)}
+  end
+
 
   def follow_or_unfollow(follower_id, persona_id) do
     case Repo.get_by(Follow, follower_id: follower_id,
@@ -89,17 +99,6 @@ defmodule PanWeb.PersonaFrontendView do
     |> Map.keys()
     |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
     |> Enum.reverse()
-  end
-
-
-  def render("datatable.json", %{personas: personas,
-                                 draw: draw,
-                                 records_total: records_total,
-                                 records_filtered: records_filtered}) do
-    %{draw: draw,
-      recordsTotal: records_total,
-      recordsFiltered: records_filtered,
-      data: Enum.map(personas, &persona_json/1)}
   end
 
 
