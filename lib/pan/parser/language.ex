@@ -20,11 +20,11 @@ defmodule Pan.Parser.Language do
         Enum.map languages_map, fn({_, language_map}) ->
           elem(get_or_insert(language_map), 1)
         end
-      languages = Enum.uniq(languages)
 
-      Repo.preload(podcast, :languages)
-      |> Ecto.Changeset.change()
-      |> Ecto.Changeset.put_assoc(:languages, languages)
+      podcast = Repo.preload(podcast, :languages)
+
+      Ecto.Changeset.change(podcast)
+      |> Ecto.Changeset.put_assoc(:languages, podcast.languages ++ Enum.uniq(languages))
       |> Repo.update!
     end
   end
