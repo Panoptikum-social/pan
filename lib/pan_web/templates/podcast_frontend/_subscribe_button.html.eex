@@ -6,7 +6,7 @@
             data-json-data="podcastData"
             data-colors="ED5565"
             data-buttonid="123abc"
-            data-format="cover">
+            data-format="rectangle">
     </script>
 
     <script>

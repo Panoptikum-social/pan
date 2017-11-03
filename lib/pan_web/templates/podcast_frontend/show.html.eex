@@ -4,7 +4,6 @@
   <%= render "_header.html", podcast: @podcast,
                              current_user: @current_user,
                              conn: @conn %>
-  <br/><br/>
   <%= render "_recommendations.html", podcast: @podcast,
                                       current_user: @current_user,
                                       changeset: @changeset,
@@ -13,7 +12,7 @@
   <h2>Episodes</h2>
 
   <div class="table-responsive">
-    <table class="table table-bordered table-condensed">
+    <table class="table table-bordered table-condensed table-striped">
       <thead>
         <tr>
           <th>Date</th>
