@@ -3,11 +3,11 @@
 <% else %>
   <%= render "_header.html", episode: @episode,
                              current_user: @current_user,
-                             changeset: @changeset,
                              conn: @conn %>
 
   <%= render "_recommendations.html", episode: @episode,
                                       current_user: @current_user,
+                                      changeset: @changeset,
                                       conn: @conn %>
 
   <div class="row">

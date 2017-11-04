@@ -2,8 +2,9 @@
   <%= form_for @changeset, recommendation_frontend_path(@conn, :create), fn f -> %>
 
     <div class="form-group">
-      <%= label f, "Your recommendation:", class: "control-label" %>
-      <%= text_input f, :comment, class: "form-control", maxlength: 255  %>
+      <%= text_input f, :comment, class: "form-control",
+                                  maxlength: 255,
+                                  placeholder: "Your recommendation" %>
       <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
     </div>
 

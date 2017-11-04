@@ -164,7 +164,7 @@ defmodule PanWeb.EpisodeFrontendView do
            |> Repo.preload(:personas)
 
     for persona <- user.personas do
-      proclaim_or_not(episode_id, persona)
+      [proclaim_or_not(episode_id, persona), tag(:br)]
     end
   end
 
@@ -174,8 +174,8 @@ defmodule PanWeb.EpisodeFrontendView do
       nil ->
         content_tag :span do
           [" ",
-           content_tag :button, class: "btn btn-default btn-sm",
-                                title: "Claim contribution",
+           content_tag :button, class: "btn btn-inverse-lavender btn-xs",
+                                title: "Claim contribution for #{persona.pid}",
                                 data: [type: "persona",
                                        event: "proclaim",
                                        personaid: persona.id,
@@ -186,8 +186,8 @@ defmodule PanWeb.EpisodeFrontendView do
       _   ->
         content_tag :span do
           [" ",
-            content_tag :button, class: "btn btn-normal btn-sm",
-                                 title: "Withdraw contribution",
+            content_tag :button, class: "btn btn-lavender btn-xs",
+                                 title: "Withdraw contribution for #{persona.pid}",
                                  data: [type: "persona",
                                         event: "proclaim",
                                         personaid: persona.id,

@@ -4,89 +4,17 @@
   })
 </script>
 
-<div class="panel panel-primary">
-  <div class="panel-heading">
-    <%= fa_icon("podcast") %> <%= link @episode.podcast.title, to: podcast_frontend_path(@conn, :show, @episode.podcast), style: "color: #fff" %> /
-    <%= fa_icon("headphones") %> <%= @episode.title %>
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-6">
-        <dl class="dl-horizontal">
-          <dt>Subtitle</dt>
-          <dd><%= @episode.subtitle %></dd>
-          <%= if @episode.payment_link_url do %>
-            <dt><Support</dt>
-            <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
-          <% end %>
-          <dt>Duration</dt>
-          <dd><%= @episode.duration %></dd>
-          <%= if @episode.publishing_date do %>
-            <dt>Publishing date</dt>
-            <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
-          <% end %>
-          <%= if @episode.link do %>
-            <dt>Link</dt>
-            <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
-          <% end %>
-          <%= if @episode.deep_link do %>
-            <dt>Deep link</dt>
-            <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
-          <% end %>
-          <dt>Contributors</dt>
-          <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
-            <dd style="line-height: 200%;">
-              <%= link [fa_icon("user-o"), " ", persona.name],
-                       to: persona_frontend_path(@conn, :show, persona),
-                       class: "btn btn-xs truncate btn-lavender" %>
-              <%= for gig <- gigs do %>
-                 <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
-                <%= if gig.self_proclaimed do %>
-                  <sup data-toggle="popover"
-                       data-placement="right"
-                       data-title="Claimed contribution"
-                       data-html="true"
-                       data-content="This contribution is claimed by a user and not source of
-                                     the podcast feed.">
-                    <%= fa_icon "info-circle", class: "icon-lavender" %>
-                  </sup>
-                <% end %>
-                &nbsp;
-              <% end %>
-            </dd>
-          <% end %>
-        </dl>
-      </div>
-      <div class="col-md-6">
-        <h3>Enclosures</h3>
-        <dl class="dl-horizontal">
-          <%= for enclosure <- @episode.enclosures do %>
-            <dt><label class="label label-primary"><%= enclosure.type %></label></dt>
-            <dd>
-              <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
+<h1 style="line-height: 200%;">
+  <%= link [fa_icon("podcast"), " ", @episode.podcast.title],
+           to: podcast_frontend_path(@conn, :show, @episode.podcast),
+           class: "btn btn-default btn-lg" %>
+  &nbsp; / &nbsp;
+  <span class="btn btn-primary btn-lg"><%= fa_icon("headphones") %> <%= @episode.title %></span>
+</h1>
 
-              <%= if is_integer(enclosure.length) do %>
-                (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
-              <% end %>
-            </dd>
-          <% end %>
-        </dl>
-      </div>
-    </div>
-
-
-    <%= if @current_user do %>
-      <%= like_or_unlike(@current_user.id, @episode.id) %> <br/><br/>
-      <p><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
-    <% end %>
-
-    <%= render "_recommend_form.html",
-               current_user: @current_user,
-               changeset: @changeset,
-               conn: @conn,
-               episode: @episode %>
-
-    <%= if @episode.description do %>
+<div class="row">
+  <div class="col-md-6" style="border-right: 1px dotted #ccc;">
+    <%= if @episode.description && @episode.description != @episode.shownotes do %>
       <h3>Description</h3>
       <p><%= truncate(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
     <% end %>
@@ -95,5 +23,77 @@
       <h3>Summary</h3>
       <p><%= truncate(@episode.summary, 1000) %></p>
     <% end %>
+
+    <%= if @current_user do %>
+      <br/>
+      <b>Claim contribution</b>
+      <p style="line-height: 200%;"><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
+    <% end %>
+  </div>
+
+  <div class="col-md-6">
+    <dl class="dl-horizontal" style="margin-top: 30px;">
+      <dt>Subtitle</dt>
+      <dd><%= @episode.subtitle %></dd>
+      <%= if @episode.payment_link_url do %>
+        <dt><Support</dt>
+        <dd><%= link @episode.payment_link_title, to: @episode.payment_link_url %></dd>
+      <% end %>
+      <dt>Duration</dt>
+      <dd><%= @episode.duration %></dd>
+      <%= if @episode.publishing_date do %>
+        <dt>Publishing date</dt>
+        <dd><%= Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+      <% end %>
+      <%= if @episode.link do %>
+        <dt>Link</dt>
+        <dd><a href="<%= @episode.link %>"><%= @episode.link %></a></dd>
+      <% end %>
+      <%= if @episode.deep_link do %>
+        <dt>Deep link</dt>
+        <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
+      <% end %>
+      <dt>Contributors</dt>
+      <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
+        <dd style="line-height: 200%;">
+          <%= link [fa_icon("user-o"), " ", persona.name],
+                   to: persona_frontend_path(@conn, :show, persona),
+                   class: "btn btn-xs truncate btn-lavender" %>
+          <%= for gig <- gigs do %>
+             <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+            <%= if gig.self_proclaimed do %>
+              <sup data-toggle="popover"
+                   data-placement="right"
+                   data-title="Claimed contribution"
+                   data-html="true"
+                   data-content="This contribution is claimed by a user and not source of
+                                 the podcast feed.">
+                <%= fa_icon "info-circle", class: "icon-lavender" %>
+              </sup>
+            <% end %>
+            &nbsp;
+          <% end %>
+        </dd>
+      <% end %>
+
+      <dt>Enclosures</dt>
+      <dd></dd>
+      <%= for enclosure <- @episode.enclosures do %>
+        <dt><label class="label label-primary"><%= enclosure.type %></label></dt>
+        <dd>
+          <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
+
+          <%= if is_integer(enclosure.length) do %>
+            (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
+          <% end %>
+        </dd>
+      <% end %>
+    </dl>
   </div>
 </div>
+
+<%= if @current_user do %>
+  <p><%= like_or_unlike(@current_user.id, @episode.id) %></p>
+<% end %>
+
+<hr/>

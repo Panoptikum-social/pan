@@ -87,6 +87,20 @@
 .icon-lavender {color: #967adc; }
 
 
+.btn-inverse-lavender, .btn-inverse-lavender:active, .btn-inverse-lavender.active, .btn-inverse-lavender.disabled, .btn-inverse-lavender[disabled],
+.btn-inverse-lavender .open .dropdown-toggle.btn {
+  background-color: #fff;
+  border-color: #967adc;
+  color: #967adc;
+}
+.btn-inverse-lavender:hover, .btn-inverse-lavender:focus {
+  background-color: #fff;
+  border-color: #ac92ec;
+  color: #ac92ec;
+}
+
+
+
 .btn-pink-rose, .btn-pink-rose:active, .btn-pink-rose.active, .btn-pink-rose.disabled, .btn-pink-rose[disabled],
 .btn-pink-rose .open .dropdown-toggle.btn {
   background-color: #d770ad;

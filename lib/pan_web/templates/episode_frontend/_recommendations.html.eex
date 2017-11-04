@@ -1,34 +1,50 @@
+<h2>Recommendations</h2>
+
 <%= if @episode.recommendations != [] do %>
-  <div class="panel panel-info">
-    <div class="panel-heading">
-      Recommendations <span class="pull-right"><%= complain_link() %></span>
-    </div>
-    <ul class="list-group">
+  <span class="pull-right"><%= complain_link() %></span>
+
+  <table class="table table-condensed table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Recommendation</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
       <%= for recommendation <- @episode.recommendations do %>
-        <li class="list-group-item">
-          <%= if @current_user && @current_user.id == recommendation.user_id do %>
-            <% text = "👍 " <> @episode.title <> "%0A💬 " <> truncate(recommendation.comment, 80) <> "%0A🔊 " %>
-            <% url = URI.encode_www_form(episode_frontend_url(@conn, :show, @episode)) %>
-            <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
-                              "&url=" <> url,
-                          class: "social-button twitter-button",
-                          title: "Tweet it" %>
-            <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url,
-                          class: "social-button facebook-button",
-                          title: "Share on facebook" %>
-            <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url,
-                          class: "social-button email-button",
-                          title: "Send an E-Mail" %>
-            <br/>
-          <% end %>
-
-          <b><%= recommendation.user.name %>:</b> <%= recommendation.comment %>
-
-          <span class="pull-right">
-            <%= Timex.format!(recommendation.inserted_at, "{ISOdate} {h24}:{m}") %>
-          </span>
-        </li>
+        <tr>
+          <td>
+            <%= if @current_user && @current_user.id == recommendation.user_id do %>
+              <nobr>
+                <% text = "👍 " <> @episode.title <> "%0A💬 " <> truncate(recommendation.comment, 80) <> "%0A🔊 " %>
+                <% url = URI.encode_www_form(episode_frontend_url(@conn, :show, @episode)) %>
+                <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
+                                  "&url=" <> url,
+                              class: "social-button twitter-button",
+                              title: "Tweet it" %>
+                <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url,
+                              class: "social-button facebook-button",
+                              title: "Share on facebook" %>
+                <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url,
+                              class: "social-button email-button",
+                              title: "Send an E-Mail" %>
+              </nobr><br/>
+            <% end %>
+            <%= recommendation.user.name %>
+          </td>
+          <td><%= recommendation.comment %></td>
+          <td align="right">
+            <%= PanWeb.PersonaFrontendView.format_date(recommendation.inserted_at) %>
+          </td>
+        </tr>
       <% end %>
-    </ul>
-  </div>
+    </tbody>
+  </table>
 <% end %>
+
+<%= render "_recommend_form.html",
+           current_user: @current_user,
+           changeset: @changeset,
+           conn: @conn,
+           episode: @episode %>

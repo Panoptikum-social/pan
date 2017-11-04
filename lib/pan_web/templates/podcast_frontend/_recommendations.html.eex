@@ -1,5 +1,6 @@
+<h2>Recommendations</h2>
+
 <%= if @podcast.recommendations != [] do %>
-  <h3>Recommendations</h2>
   <span class="pull-right"><%= complain_link() %></span>
 
   <table class="table table-condensed table-bordered table-striped">
