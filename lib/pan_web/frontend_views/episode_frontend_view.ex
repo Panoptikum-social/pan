@@ -235,7 +235,7 @@ defmodule PanWeb.EpisodeFrontendView do
 
 
   def complain_link() do
-    link "Complain", to: "https://panoptikum.io/complaints", style: "color: #fff;"
+    link "Complain", to: "https://panoptikum.io/complaints"
   end
 
 
