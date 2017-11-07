@@ -33,6 +33,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 303, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 307, headers: headers}} -> redirect(url, headers)
 
       {:ok, %HTTPoison.Response{status_code: 403}} ->
