@@ -130,12 +130,12 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")
     |> String.replace(~r/m[a][iy]/i,             "May")
     |> String.replace(~r/jui?n[eg]?/i,           "Jun")
-    |> String.replace(~r/jui?ly?/i,                "Jul")
+    |> String.replace(~r/jui?ly?/i,              "Jul")
     |> String.replace(~r/augu?s?t?/i,            "Aug")
     |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
-    |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,     "Nov")
-    |> String.replace(~r/d[ei][vcz]e?m?b?e?r?/i,  "Dec")
+    |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,   "Nov")
+    |> String.replace(~r/d[ei][vcz]e?m?b?e?r?/i, "Dec")
   end
 
 
@@ -166,6 +166,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("NZST", "+1200")
     |> String.replace("NZDT", "+1300")
     |> String.replace("EST",  "-0500")
+    |> String.replace("EDT",  "-0400")
     |> String.replace("CST",  "-0600")
     |> String.replace("PST",  "-0700")
     |> String.replace("PCT",  "-0700")

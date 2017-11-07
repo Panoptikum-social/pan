@@ -323,23 +323,12 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:duration, _, []]), do: %{}
   def call(_, "episode", [:duration, _, [value]]), do: %{duration: value}
 
-  def call(_, "episode", [:pubDate,           _, [value]]) do
-    %{publishing_date: H.to_naive_datetime(value)}
-  end
-  def call(_, "episode", [:pubdate,           _, [value]]) do
-    %{publishing_date: H.to_naive_datetime(value)}
-  end
-  def call(_, "episode", [:"itunes:pubDate",  _, [value]]) do
-    %{publishing_date: H.to_naive_datetime(value)}
-  end
+  def call(_, "episode", [tag_atom, _, [value]]) when tag_atom in [
+      :pubDate, :pubdate, :"itunes:pubDate", :"dc:date", :pubDateShort
+    ], do: %{publishing_date: H.to_naive_datetime(value)}
+
   def call(_, "episode", [:pubDate, _, []]) do
     %{publishing_date: Timex.now()}
-  end
-  def call(_, "episode", [:"dc:date", _, [value]]) do
-    %{publishing_date: H.to_naive_datetime(value)}
-  end
-  def call(_, "episode", [:pubDateShort, _, [value]]) do
-    %{publishing_date: H.to_naive_datetime(value)}
   end
 
   def call(_, "episode", [:"atom:link", attr, _]) do
