@@ -30,6 +30,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}
       {:ok, %HTTPoison.Response{status_code: 508}} -> {:error, "508: loop detected"}
       {:ok, %HTTPoison.Response{status_code: 509}} -> {:error, "509: Bandwidth Limit Exceeded"}
+      {:ok, %HTTPoison.Response{status_code: 520}} -> {:error, "520: Unknown Error"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
