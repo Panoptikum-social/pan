@@ -1,6 +1,7 @@
 defmodule PanWeb.UserController do
   use Pan.Web, :controller
   alias PanWeb.User
+  alias PanWeb.Subscription
 
   plug :authenticate_user when action in [:index, :show]
 
@@ -97,7 +98,7 @@ defmodule PanWeb.UserController do
 
   def execute_merge(conn, %{"users" => %{"from" => from, "into" => into}}, _user) do
     from_id = String.to_integer(from)
-    into_id   = String.to_integer(into)
+    into_id = String.to_integer(into)
 
     from(c in PanWeb.Manifestation, where: c.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
@@ -133,5 +134,18 @@ defmodule PanWeb.UserController do
     |> Repo.delete!
 
     render(conn, "merge.html")
+  end
+
+
+  def push_subscriptions(conn, %{"user_id" => user_id, "category_id" => category_id}, _user) do
+    podcast_ids = from(s in Subscription, where: s.user_id == ^user_id,
+                                          select: s.podcast_id)
+                  |> Repo.all()
+
+    for podcast_id <- podcast_ids do
+      PanWeb.CategoryPodcast.get_or_insert(String.to_integer(category_id), podcast_id)
+    end
+
+    render(conn, "done.html")
   end
 end

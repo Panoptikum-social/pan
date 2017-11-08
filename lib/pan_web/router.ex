@@ -269,6 +269,7 @@ defmodule PanWeb.Router do
     get "/gigs/datatable", GigController, :datatable
     resources "/gigs", GigController
 
+    get "/users/:user_id/category/:category_id/push_subscriptions", UserController, :push_subscriptions
     get  "/users/merge", UserController, :merge
     post "/users/execute_merge", UserController, :execute_merge
     post "/users/:id/unset_pro", UserController, :unset_pro
