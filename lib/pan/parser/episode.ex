@@ -8,7 +8,6 @@ defmodule Pan.Parser.Episode do
   require Logger
 
   def get_or_insert(episode_map, podcast_id) do
-    IO.inspect episode_map
     case Repo.get_by(PanWeb.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
         if episode_map[:guid] do
