@@ -8,27 +8,36 @@ defmodule Pan.Parser.Episode do
   require Logger
 
   def get_or_insert(episode_map, podcast_id) do
+    IO.inspect episode_map
     case Repo.get_by(PanWeb.Episode, guid: episode_map[:guid], podcast_id: podcast_id) do
       nil ->
-        case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map[:subtitle]
-                                                                    || episode_map[:guid],
-                                         podcast_id: podcast_id) do
-          nil ->
-            # Here comes the line with the initial update time
-            Repo.get(PanWeb.Podcast, podcast_id)
-            |> PanWeb.Podcast.changeset(%{update_intervall: 10,
-                                       next_update: Timex.shift(Timex.now(), hours: 10)})
-            |> Repo.update()
-
-            %PanWeb.Episode{podcast_id: podcast_id}
-            |> Map.merge(episode_map)
-            |> Repo.insert()
-          episode ->
-            {:exists, episode}
+        if episode_map[:guid] do
+          insert(episode_map, podcast_id)
+        else
+          case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map[:subtitle],
+                                           podcast_id: podcast_id) do
+            nil ->
+              insert(episode_map, podcast_id)
+            episode ->
+              {:exists, episode}
+          end
         end
       episode ->
         {:exists, episode}
     end
+  end
+
+
+  def insert(episode_map, podcast_id) do
+    # Here comes the line with the initial update time
+    Repo.get(PanWeb.Podcast, podcast_id)
+    |> PanWeb.Podcast.changeset(%{update_intervall: 10,
+                               next_update: Timex.shift(Timex.now(), hours: 10)})
+    |> Repo.update()
+
+    %PanWeb.Episode{podcast_id: podcast_id}
+    |> Map.merge(episode_map)
+    |> Repo.insert()
   end
 
 
