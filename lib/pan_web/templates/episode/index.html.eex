@@ -1,3 +1,9 @@
+<p class="text-right">
+  <%= link "Remove duplicates", to: episode_path(@conn, :remove_duplicates),
+                                class: "btn btn-primary" %>
+</p>
+
+
 <h2>Listing <%= Enum.count(@episodes) %> episodes</h2>
 
 <%= render "_episodes.html", episodes: @episodes,

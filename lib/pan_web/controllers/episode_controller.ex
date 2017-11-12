@@ -5,6 +5,7 @@ defmodule PanWeb.EpisodeController do
 
   plug :scrub_params, "episode" when action in [:create, :update]
 
+
   def index(conn, params) do
     episodes = from(e in Episode, preload: [:podcast])
                |> Repo.paginate(params)
@@ -12,10 +13,12 @@ defmodule PanWeb.EpisodeController do
     render(conn, "index.html", episodes: episodes)
   end
 
+
   def new(conn, _params) do
     changeset = Episode.changeset(%Episode{})
     render(conn, "new.html", changeset: changeset)
   end
+
 
   def create(conn, %{"episode" => episode_params}) do
     changeset = Episode.changeset(%Episode{}, episode_params)
@@ -30,6 +33,7 @@ defmodule PanWeb.EpisodeController do
     end
   end
 
+
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
               |> Repo.preload(podcast: :contributors)
@@ -37,11 +41,13 @@ defmodule PanWeb.EpisodeController do
     render(conn, "show.html", episode: episode)
   end
 
+
   def edit(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
     changeset = Episode.changeset(episode)
     render(conn, "edit.html", episode: episode, changeset: changeset)
   end
+
 
   def update(conn, %{"id" => id, "episode" => episode_params}) do
     episode = Repo.get!(Episode, id)
@@ -57,6 +63,7 @@ defmodule PanWeb.EpisodeController do
     end
   end
 
+
   def delete(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
 
@@ -67,5 +74,23 @@ defmodule PanWeb.EpisodeController do
     conn
     |> put_flash(:info, "Episode deleted successfully.")
     |> redirect(to: episode_path(conn, :index))
+  end
+
+
+  def remove_duplicates(conn, _params) do
+    duplicate_episodes = from(e in Episode, group_by: [e.podcast_id, e.guid],
+                                            having: count(e.guid) > 1,
+                                            select: [e.podcast_id, e.guid])
+                         |> Repo.all()
+
+    for [podcast_id, guid] <- duplicate_episodes do
+      episode = from(e in Episode, where: e.podcast_id == ^podcast_id and e.guid == ^guid,
+                                   limit: 1)
+                |> Repo.all()
+                |> List.first()
+                |> Repo.delete()
+    end
+
+    render(conn, "duplicates.html", duplicate_episodes: duplicate_episodes)
   end
 end

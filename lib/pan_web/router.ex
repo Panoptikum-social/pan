@@ -232,7 +232,9 @@ defmodule PanWeb.Router do
 
   scope "/admin", PanWeb do
     pipe_through [:browser, :authenticate_admin, :admin_layout]
+    get "/episodes/remove_duplicates", EpisodeController, :remove_duplicates
     resources "/episodes", EpisodeController
+
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
 
@@ -335,4 +337,3 @@ defmodule PanWeb.Router do
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
   end
 end
-
