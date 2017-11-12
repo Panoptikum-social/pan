@@ -78,10 +78,10 @@ defmodule PanWeb.EpisodeController do
 
 
   def remove_duplicates(conn, _params) do
-    duplicate_episodes = from(e in Episode, group_by: [e.podcast_id, e.guid],
+    duplicate_episodes = from(e in Episode, limit: 5,
+                                            group_by: [e.podcast_id, e.guid],
                                             having: count(e.guid) > 1,
-                                            select: [e.podcast_id, e.guid],
-                                            limit: 10)
+                                            select: [e.podcast_id, e.guid])
                          |> Repo.all()
 
     for [podcast_id, guid] <- duplicate_episodes do
