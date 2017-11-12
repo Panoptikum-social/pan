@@ -222,7 +222,9 @@ defmodule Pan.Parser.Analyzer do
     :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt, :"itunes:artwork", :"descriptionApp",
     :"pentonplayer:playerlink", :"pentonplayer:downloadlink", :"pentonplayer:adTimes", :"cat5tv:id",
     :"epidsode-js-function", :"cat5tv:number", :"cat5tv:slug", :"cat5tv:title", :"cat5tv:year",
-    :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail"
+    :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
+    :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
+    :"castfire:date", :"castfire:filename", :"castfire:categories"
   ], do: %{}
 
 

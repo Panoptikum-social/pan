@@ -70,6 +70,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{Mshort} {D} {YYYY}") ||
                try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
+               try_format(feed_date, "{0M}/{0D}/{YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
                try_format(feed_date, "{0M}/{0D}/{YYYY}") ||
                try_format(feed_date, "{M}/{0D}/{YYYY}") ||

@@ -23,5 +23,3 @@ config :timelier, crontab: [
 config :pan, :environment, "prod"
 
 import_config "prod.secret.exs"
-
-config :pan, Pan.Repo, ownership_timeout: 300000

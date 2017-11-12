@@ -5,7 +5,7 @@
                                    class: "btn btn-info" %>
 </p>
 
-<h2>Listing the last 25 of <%= @feedcount %> backlog feeds</h2>
+<h2>Listing the last <%= Enum.count(@backlog_feeds) %> of <%= @feedcount %> backlog feeds</h2>
 
 <table class="table table-condensed table-striped table-bordered">
   <thead>
