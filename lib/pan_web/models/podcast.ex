@@ -25,6 +25,7 @@ defmodule PanWeb.Podcast do
     field :update_intervall, :integer
     field :next_update, :naive_datetime
     field :retired, :boolean, default: false
+    field :failure_count, :integer
     field :unique_identifier, Ecto.UUID
     field :episodes_count, :integer
     field :followers_count, :integer
@@ -59,7 +60,8 @@ defmodule PanWeb.Podcast do
                      :payment_link_url, :unique_identifier, :image_title, :image_url, :description,
                      :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
                      :next_update, :episodes_count, :followers_count, :likes_count,
-                     :subscriptions_count, :latest_episode_publishing_date, :publication_frequency])
+                     :subscriptions_count, :latest_episode_publishing_date, :publication_frequency,
+                     :failure_count])
     |> validate_required([:title, :update_intervall, :next_update])
     |> unique_constraint(:title)
   end

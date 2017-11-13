@@ -117,7 +117,8 @@ defmodule PanWeb.PodcastController do
                                           updated_at: p.updated_at,
                                           update_intervall: p.update_intervall,
                                           next_update: p.next_update,
-                                          website: p.website})
+                                          website: p.website,
+                                          failure_count: p.failure_count})
            |> Repo.all()
 
     render(conn, "datatable.json", podcasts: podcasts,
@@ -145,7 +146,8 @@ defmodule PanWeb.PodcastController do
                                             update_intervall: p.update_intervall,
                                             next_update: p.next_update,
                                             feed_url: f.self_link_url,
-                                            website: p.website})
+                                            website: p.website,
+                                            failure_count: p.failure_count})
                |> Repo.all
     render conn, "datatable_stale.json", podcasts: podcasts
   end

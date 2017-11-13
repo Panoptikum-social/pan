@@ -55,6 +55,9 @@
   <dt>Update paused</dt>
   <dd><%= @podcast.update_paused %></dd>
 
+  <dt>Failure count</dt>
+  <dd><%= @podcast.failure_count %></dd>
+
   <dt>Retired</dt>
   <dd><%= @podcast.retired %></dd>
 

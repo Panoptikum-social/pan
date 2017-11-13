@@ -51,7 +51,18 @@ defmodule Pan.Parser.Podcast do
         # Now that we have updated Feed and alternate feed, let's try again
         delta_import(id)
 
-      {:error, message} -> {:error, message}
+      {:error, message} ->
+        podcast = Repo.get(Podcast, id)
+
+        Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1})
+        |> Repo.update([force: true])
+
+        if podcast.failure_count == 9 do
+          Podcast.changeset(podcast, %{retired: true})
+          |> Repo.update([force: true])
+        end
+
+        {:error, message}
     end
   end
 
@@ -100,6 +111,5 @@ defmodule Pan.Parser.Podcast do
       {:error, message} ->
         {:error, message <> " for podcast #{podcast.title}, #{podcast.id}"}
     end
-
   end
 end

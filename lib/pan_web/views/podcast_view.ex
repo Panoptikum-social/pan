@@ -25,6 +25,7 @@ defmodule PanWeb.PodcastView do
       update_paused:    podcast.update_paused,
       updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
+      failure_count:    podcast.failure_count,
       next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
       website:          String.slice(podcast.website, 0, 100),
       actions:          podcast_actions(podcast, &podcast_path/3)}
@@ -37,6 +38,7 @@ defmodule PanWeb.PodcastView do
       update_paused:    podcast.update_paused,
       updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
+      failure_count:    podcast.failure_count,
       next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
       feed_url:         podcast.feed_url,
       website:          podcast.website,

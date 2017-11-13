@@ -26,6 +26,7 @@
       <th>Updated at</th>
       <th>Update intervall</th>
       <th>Next update</th>
+      <th>Failure count</th>
       <th><%= fa_icon "search" %> Website</th>
       <th>Actions</th>
     </tr>
@@ -44,6 +45,7 @@
         { data: 'updated_at' },
         { data: 'update_intervall' },
         { data: 'next_update' },
+        { data: 'failure_count' },
         { data: 'website' },
         { data: 'actions' }
       ]
