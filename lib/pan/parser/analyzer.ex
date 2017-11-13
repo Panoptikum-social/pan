@@ -163,7 +163,8 @@ defmodule Pan.Parser.Analyzer do
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher",:"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
-    :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text"
+    :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
+    :fullsummary
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -224,7 +225,8 @@ defmodule Pan.Parser.Analyzer do
     :"epidsode-js-function", :"cat5tv:number", :"cat5tv:slug", :"cat5tv:title", :"cat5tv:year",
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
-    :"castfire:date", :"castfire:filename", :"castfire:categories"
+    :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
+    :"lj:replycount"
   ], do: %{}
 
 
