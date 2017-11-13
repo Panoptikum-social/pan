@@ -4,65 +4,107 @@
   })
 </script>
 
-<div class="panel panel-info">
-  <div class="panel-heading">
-    <h3 class="panel-title">
-      <%= @persona.name %>
-    </h3>
-  </div>
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-md-6">
-        <dl class="dl-horizontal">
-          <dt>Panoptikum-ID</dt>
-          <dd><%= @persona.pid %></dd>
-          
-          <dt>Permalink (URI)</dt>
-          <dd><%= PanWeb.Endpoint.url %>/<%= @persona.pid %></dd>
-
-          <dt>Name</dt>
-          <dd><%= @persona.name %></dd>
-
-          <%= if @persona.uri do %>
-            <dt>Uri</dt>
-            <dd><%= @persona.uri %></dd>
-          <% end %>
-
-          <dt>Business Cards</dt>
-          <dd><%= link [fa_icon("vcard-o"), " Show"], to: persona_frontend_url(@conn, :business_card, @persona) %></dd>
-        </dl>
-        <span style="color: #fff;">Id: <%= @persona.id %></dd>
+<div class="row">
+  <div class="col-md-8" >
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <%= @persona.name %>
+        </h3>
       </div>
+      <div class="panel-body ">
+        <div class="row">
+          <div class="col-md-8">
+            <dl class="dl-horizontal">
+              <dt>Panoptikum-ID</dt>
+              <dd><%= @persona.pid %></dd>
 
-      <div class="col-md-6" >
-        <%= if @persona.image_url do %>
-          <object data="<%= @persona.image_url %>"
-                  alt="<%= @persona.image_title%>"
-                  type="image/png"
-                  width="150"
-                  class="thumbnail"
-                  id="photo">
-            <img src="/images/missing-persona.png"
-                 alt="missing image"
-                 width="150" />
-          </object>
-        <% else %>
-          <img src="/images/missing-persona.png"
-               alt="missing image"
-               width="150"
-               class="thumbnail" />
+              <dt>Permalink (URI)</dt>
+              <dd><%= PanWeb.Endpoint.url %>/<%= @persona.pid %></dd>
+
+              <dt>Name</dt>
+              <dd><%= @persona.name %></dd>
+
+              <%= if @persona.uri do %>
+                <dt>Uri</dt>
+                <dd><%= @persona.uri %></dd>
+              <% end %>
+
+              <dt>Business Cards</dt>
+              <dd><%= link [fa_icon("vcard-o"), " Show"], to: persona_frontend_url(@conn, :business_card, @persona) %></dd>
+            </dl>
+            <span style="color: #fff;">Id: <%= @persona.id %></span></dd>
+          </div>
+
+          <div class="col-md-4" >
+            <%= if @persona.image_url do %>
+              <object data="<%= @persona.image_url %>"
+                      alt="<%= @persona.image_title%>"
+                      type="image/png"
+                      width="150"
+                      class="thumbnail"
+                      id="photo">
+                <img src="/images/missing-persona.png"
+                     alt="missing image"
+                     width="150" />
+              </object>
+            <% else %>
+              <img src="/images/missing-persona.png"
+                   alt="missing image"
+                   width="150"
+                   class="thumbnail" />
+            <% end %>
+          </div>
+        </div>
+
+        <%= if @current_user do %>
+          <p>
+            <%= like_or_unlike(@current_user.id, @persona.id) %>
+            <%= follow_or_unfollow(@current_user.id, @persona.id) %>
+          </p>
         <% end %>
       </div>
     </div>
+  </div>
+  <div class="col-md-4" >
+    <%= if @current_user && @current_user.podcaster == true  && @current_user.email_confirmed && @persona.email != nil do %>
+      <h4>Claiming</h4>
+      <p>You can send an email to the owner of this persona and ask her for permission
+         to add you as a manifestation of this persona.<br/>
+         Your name, username and email address will be sent alongside in the email
+         to give the owner a chance to get in contact with you.</p>
 
-    <%= if @current_user do %>
-      <p>
-        <%= like_or_unlike(@current_user.id, @persona.id) %>
-        <%= follow_or_unfollow(@current_user.id, @persona.id) %>
-      </p>
+      <%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
+                        class: "btn btn-normal",
+                        method: :post,
+                        data: [confirm: "Are you sure?"] %>
+    <% else %>
+      <div class="alert alert-warning">
+        <h4>Claiming not available</h4>
+        <%= unless @current_user do %>
+          <p>You can only claim personas, if you are logged in.</p>
+        <% else %>
+          <%= unless @current_user.podcaster == true do %>
+            <p>You didn't say you are a podcaster in
+               <%= link "My Profile",  to: user_frontend_path(@conn, :my_profile),
+                                       class: "btn btn-sm btn-default" %> yet.</p>
+          <% end %>
+
+          <%= unless @current_user.email_confirmed do %>
+            <p>You didn't confirm your email address by clicking on the
+               confirmation link in the email sent to you after login.</p>
+          <% end %>
+
+          <%= unless @persona.email do %>
+            <p>This persona cannot be claimed yet, as no email address was provided in the feed.
+               This will change soon.</p>
+          <% end %>
+        <% end %>
+      </div>
     <% end %>
   </div>
 </div>
+
 
 <%= if @persona.description || @persona.long_description do %>
   <div class="panel panel-success">
@@ -170,25 +212,6 @@
       </ul>
     </div>
   </div>
-<% end %>
-
-<%= if @current_user && @current_user.podcaster == true  && @current_user.email_confirmed && @persona.email != nil do %>
-  <%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
-                    class: "btn btn-normal",
-                    method: :post,
-                    data: [confirm: "Are you sure?"] %>
-
-  <button class="btn btn-primary btn-sm"
-          data-toggle="popover"
-          data-placement="right"
-          data-title="Personas"
-          data-html="true"
-          data-content="You can send an email to the owner of this persona and ask her for permission
-                        to add you as a manifestation of this persona.<br/>
-                        Your name, username and email address will be sent alongside in the email
-                        to give the owner a chance to get in contact with you.">
-    <%= fa_icon "info-circle" %> Help
-  </button>
 <% end %>
 
 <script>

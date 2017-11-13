@@ -42,7 +42,9 @@ defmodule PanWeb.UserFrontendController do
 
         conn
         |> PanWeb.Auth.login(user)
-        |> put_flash(:info, "Your account @#{user.name} has been created!")
+        |> put_flash(:info, "Your account @#{user.username} has been created! Please confirm" <>
+                            " your email address via the confirmation link in the email sent to you." <>
+                            " Otherwise you won't be able to claim personas.")
         |> redirect(to: category_frontend_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
