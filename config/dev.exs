@@ -40,7 +40,8 @@ config :pan, Pan.Repo,
   password: "postgres",
   database: "pan_dev",
   hostname: "localhost",
-  pool_size: 10
+  pool_size: 10,
+  timeout: 1_000_000
 
 config :pan, :environment, "dev"
 import_config "dev.secret.exs"
