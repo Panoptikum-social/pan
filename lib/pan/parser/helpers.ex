@@ -174,6 +174,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("GMT+1",  "+0100")
     |> String.replace("BST",  "+0100")
     |> String.replace("IDT",  "+0300")
+    |> String.replace("GST",  "+0400")
     |> String.replace("KST",  "+0900")
     |> String.replace("JST",  "+0900")
     |> String.replace("GTM",   "GMT")
