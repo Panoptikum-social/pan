@@ -74,10 +74,10 @@
          Your name, username and email address will be sent alongside in the email
          to give the owner a chance to get in contact with you.</p>
 
-      <%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
-                        class: "btn btn-normal",
-                        method: :post,
-                        data: [confirm: "Are you sure?"] %>
+      <p><%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
+                           class: "btn btn-normal",
+                           method: :post,
+                           data: [confirm: "Are you sure?"] %></p>
     <% else %>
       <div class="alert alert-warning">
         <h4>Claiming not available</h4>
