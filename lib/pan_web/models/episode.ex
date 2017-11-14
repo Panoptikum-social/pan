@@ -113,24 +113,4 @@ defmodule PanWeb.Episode do
       end
     end
   end
-
-
-  def repair_index() do
-    episode_ids = (from e in Episode, select: e.id)
-                  |> Repo.all()
-
-    max_episode_id = Enum.max(episode_ids)
-
-    fix_limit = max_episode_id - 1485000
-
-    episode_ids = (from e in Episode, where: e.id < ^fix_limit,
-                                      select: e.id)
-                  |> Repo.all()
-    count = Integer.to_string(Enum.count(episode_ids))
-
-    for id <- episode_ids do
-      IO.puts Integer.to_string(id) <> " / " <> count
-      update_search_index(id)
-    end
-  end
 end
