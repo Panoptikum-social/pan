@@ -38,7 +38,7 @@ defmodule Pan.Parser.Podcast do
     case RssFeed.import_to_map(feed.self_link_url, id) do
       {:ok, map} ->
         Persistor.delta_import(map, id)
-        unpause(id)
+        unpause_and_reset_failure_count(id)
         {:ok, "Podcast importet"}
 
       {:redirect, redirect_target} ->
@@ -52,16 +52,7 @@ defmodule Pan.Parser.Podcast do
         delta_import(id)
 
       {:error, message} ->
-        podcast = Repo.get(Podcast, id)
-
-        Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1})
-        |> Repo.update([force: true])
-
-        if podcast.failure_count == 9 do
-          Podcast.changeset(podcast, %{retired: true})
-          |> Repo.update([force: true])
-        end
-
+        increase_failure_count(id)
         {:error, message}
     end
   end
@@ -81,10 +72,24 @@ defmodule Pan.Parser.Podcast do
   end
 
 
-  def unpause(id) do
-    Repo.get!(PanWeb.Podcast, id)
-    |> PanWeb.Podcast.changeset(%{update_paused: false})
+  def unpause_and_reset_failure_count(id) do
+    Repo.get(Podcast, id)
+    |> PanWeb.Podcast.changeset(%{update_paused: false,
+                                  failure_count: 0})
     |> Repo.update([force: true])
+  end
+
+
+  def increase_failure_count(id) do
+    podcast = Repo.get(Podcast, id)
+
+    Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1})
+    |> Repo.update([force: true])
+
+    if podcast.failure_count == 9 do
+      Podcast.changeset(podcast, %{retired: true})
+      |> Repo.update([force: true])
+    end
   end
 
 
