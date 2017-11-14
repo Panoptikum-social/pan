@@ -50,11 +50,14 @@ defmodule PanWeb.EpisodeController do
 
 
   def update(conn, %{"id" => id, "episode" => episode_params}) do
+    id = String.to_integer(id)
     episode = Repo.get!(Episode, id)
     changeset = Episode.changeset(episode, episode_params)
 
     case Repo.update(changeset) do
       {:ok, episode} ->
+        Episode.update_search_index(id)
+
         conn
         |> put_flash(:info, "Episode updated successfully.")
         |> redirect(to: episode_path(conn, :show, episode))
@@ -65,11 +68,13 @@ defmodule PanWeb.EpisodeController do
 
 
   def delete(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     episode = Repo.get!(Episode, id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(episode)
+    Episode.update_search_index(id)
 
     conn
     |> put_flash(:info, "Episode deleted successfully.")
@@ -84,11 +89,13 @@ defmodule PanWeb.EpisodeController do
                          |> Repo.all()
 
     for [podcast_id, guid] <- duplicate_episodes do
-      from(e in Episode, where: e.podcast_id == ^podcast_id and e.guid == ^guid,
+      episode = from(e in Episode, where: e.podcast_id == ^podcast_id and e.guid == ^guid,
                          limit: 1)
-      |> Repo.all()
-      |> List.first()
-      |> Repo.delete()
+                |> Repo.all()
+                |> List.first()
+
+      Repo.delete(episode)
+      Episode.update_search_index(episode.id)
     end
 
     render(conn, "duplicates.html", duplicate_episodes: duplicate_episodes)

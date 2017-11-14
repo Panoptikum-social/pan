@@ -204,11 +204,13 @@ defmodule PanWeb.PodcastController do
 
 
   def update(conn, %{"id" => id, "podcast" => podcast_params}) do
+    id = String.to_integer(id)
     podcast = Repo.get!(Podcast, id)
     changeset = Podcast.changeset(podcast, podcast_params)
 
     case Repo.update(changeset) do
       {:ok, podcast} ->
+        Podcast.update_search_index(id)
         conn
         |> put_flash(:info, "Podcast updated successfully.")
         |> redirect(to: podcast_path(conn, :show, podcast))
@@ -219,6 +221,7 @@ defmodule PanWeb.PodcastController do
 
 
   def delete(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     podcast = Repo.get!(Podcast, id)
               |> Repo.preload(episodes: :chapters)
               |> Repo.preload(:feeds)
@@ -242,6 +245,7 @@ defmodule PanWeb.PodcastController do
     Repo.delete_all(from e in PanWeb.Episode, where: e.podcast_id == ^podcast.id)
 
     Repo.delete!(podcast)
+    Podcast.update_search_index(id)
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")

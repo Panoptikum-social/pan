@@ -163,6 +163,7 @@ defmodule PanWeb.PersonaFrontendController do
 
         case Repo.update(changeset) do
           {:ok, _persona} ->
+            Persona.update_search_index(manifestation.persona.id)
             conn
             |> put_flash(:info, "Persona updated successfully.")
             |> redirect(to: user_frontend_path(conn, :my_profile))

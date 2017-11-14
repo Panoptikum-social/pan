@@ -85,6 +85,7 @@ defmodule PanWeb.PersonaController do
 
 
   def update(conn, %{"id" => id, "persona" => persona_params}) do
+    id = String.to_integer(id)
     persona = Repo.get!(Persona, id)
     changeset = Persona.changeset(persona, persona_params)
 
@@ -102,11 +103,11 @@ defmodule PanWeb.PersonaController do
 
 
   def delete(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     persona = Repo.get!(Persona, id)
 
-    # Here we use delete! (with a bang) because we expect
-    # it to always work (and if it does not, it will raise).
     Repo.delete!(persona)
+    Persona.update_search_index(id)
 
     conn
     |> put_flash(:info, "Persona deleted successfully.")
@@ -126,7 +127,6 @@ defmodule PanWeb.PersonaController do
                                            select: {p.email, count(p.id)},
                                            order_by: p.email)
                         |> Repo.all()
-
 
     render(conn, "merge_candidates.html", non_unique_names: non_unique_names,
                                           non_unique_emails: non_unique_emails)
@@ -243,7 +243,8 @@ defmodule PanWeb.PersonaController do
     end
 
     Repo.delete!(from_persona)
-
+    Persona.update_search_index(from_id)
+    Persona.update_search_index(to_id)
     render(conn, "merge.html")
   end
 end

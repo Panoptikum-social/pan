@@ -51,8 +51,11 @@ defmodule PanWeb.UserController do
 
 
   def delete(conn, %{"id" => id}, _user) do
+    id = String.to_integer(id)
     user = Repo.get!(User, id)
+
     Repo.delete!(user)
+    User.update_search_index(id)
 
     conn
     |> put_flash(:info, "User deleted successfully.")
@@ -132,6 +135,8 @@ defmodule PanWeb.UserController do
 
     Repo.get!(User, from_id)
     |> Repo.delete!
+    User.update_search_index(from_id)
+    User.update_search_index(into_id)
 
     render(conn, "merge.html")
   end

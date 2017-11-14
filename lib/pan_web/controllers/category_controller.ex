@@ -58,11 +58,13 @@ defmodule PanWeb.CategoryController do
 
 
   def update(conn, %{"id" => id, "category" => category_params}) do
+    id = String.to_integer(id)
     category = Repo.get!(Category, id)
     changeset = Category.changeset(category, category_params)
 
     case Repo.update(changeset) do
       {:ok, category} ->
+        Category.update_search_index(id)
         conn
         |> put_flash(:info, "Category updated successfully.")
         |> redirect(to: category_path(conn, :show, category))
@@ -73,11 +75,13 @@ defmodule PanWeb.CategoryController do
 
 
   def delete(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     category = Repo.get!(Category, id)
 
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(category)
+    Category.update_search_index(id)
 
     conn
     |> put_flash(:info, "Category deleted successfully.")
@@ -139,6 +143,9 @@ defmodule PanWeb.CategoryController do
     categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
                                                      order_by: :title,
                                                      preload: [children: :children])
+
+    Category.update_search_index(from_id)
+    Category.update_search_index(to_id)
 
     render(conn, "merge.html", categories: categories)
   end
