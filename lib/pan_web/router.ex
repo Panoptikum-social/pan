@@ -29,6 +29,10 @@ defmodule PanWeb.Router do
     plug :put_layout, {PanWeb.LayoutView, :admin}
   end
 
+  # allows us to visit `localhost:4000/sent_emails` while developing, to see sent emails
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.EmailPreviewPlug
+  end
 
   scope "/jsonapi", PanWeb.Api, as: :api do
     pipe_through :json_api
