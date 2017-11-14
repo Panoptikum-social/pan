@@ -17,3 +17,7 @@ erl_crash.dump
 
 # HAS: 20160921: seems not to work for me!
 # /priv/static/
+
+# config secret files
+/config/dev.secret.exs
+/config/prod.secret.exs
