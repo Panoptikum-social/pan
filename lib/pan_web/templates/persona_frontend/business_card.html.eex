@@ -17,7 +17,7 @@
                 left: <%= j %>mm;
                 width: 85mm;
                 height: 54mm;
-                border: 1px dotted #eee;"">
+                border: 1px dotted #eee;">
       <img src="<%= @persona.image_url %>" style="position: absolute;
                                                   top: 3mm;
                                                   height: 37mm;

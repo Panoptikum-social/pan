@@ -1,6 +1,6 @@
 <div class="panel panel-info">
   <div class="panel-heading">Top 10 subscribed Podcasts</div>
-  <div class="panel-body" style="margin-bottom: -20px;"">
+  <div class="panel-body" style="margin-bottom: -20px;">
     <%= for {[count, id, title], rank} <- Enum.with_index(@popular_podcasts) do %>
       <p>
         <%= if rank == 0 || count != List.first(Enum.at(@popular_podcasts, rank-1)) do %>
