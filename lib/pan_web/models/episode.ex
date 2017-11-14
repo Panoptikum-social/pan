@@ -102,13 +102,15 @@ defmodule PanWeb.Episode do
                   |> Repo.all()
 
     max_episode_id = Enum.max(episode_ids)
-    all_ids = Range.new(1, max_episode_id) |> Enum.to_list()
-    deleted_ids = all_ids -- episode_ids
 
-    for {deleted_id, index} <- Enum.with_index(deleted_ids) do
-      IO.puts Integer.to_string((Enum.count(deleted_ids) - index))
-      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
-             "/episodes/" <> Integer.to_string(deleted_id))
+    all_ids = Range.new(1, max_episode_id) |> Enum.to_list()
+
+    for id <- all_ids do
+      unless id in episode_ids do
+        IO.puts Integer.to_string(max_episode_id - id)
+        delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+               "/episodes/" <> Integer.to_string(id))
+      end
     end
   end
 end
