@@ -264,7 +264,8 @@ defmodule PanWeb.Podcast do
     all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
     deleted_ids = all_ids -- podcast_ids
 
-    for deleted_id <- deleted_ids do
+    for {deleted_id, index} <- Enum.with_index(deleted_ids) do
+      IO.puts Integer.to_string((Enum.count(deleted_ids) - index))
       delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
              "/podcasts/" <> Integer.to_string(deleted_id))
     end

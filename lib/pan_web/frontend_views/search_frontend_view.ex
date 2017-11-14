@@ -69,7 +69,9 @@ defmodule PanWeb.SearchFrontendView do
   def hit([head | tail], searchstring, output) do
     {type, content} = head
 
-    case content != nil and String.match?(content, ~r/#{searchstring}/i) do
+    regex = Regex.escape(searchstring)
+
+    case content != nil and String.match?(content, ~r/#{regex}/i) do
       true ->
         hit(tail, searchstring, output <> "<i>" <> Atom.to_string(type) <> ":</i> " <>
                                 highlight(content, searchstring) <> "<br/>")
@@ -84,7 +86,9 @@ defmodule PanWeb.SearchFrontendView do
 
 
   def highlight(result, searchstring) do
-    [left, match, right] =  Regex.split(~r/#{searchstring}/i, result, [include_captures: true, parts: 2])
+    regex = Regex.escape(searchstring)
+
+    [left, match, right] =  Regex.split(~r/#{regex}/i, result, [include_captures: true, parts: 2])
 
     left = left
            |> HtmlSanitizeEx.strip_tags
