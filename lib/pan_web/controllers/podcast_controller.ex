@@ -65,7 +65,7 @@ defmodule PanWeb.PodcastController do
 
     average = from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                         (is_nil(p.update_paused) or p.update_paused == false) and
-                                        (is_nil(p.retired) or p.retired == false)))
+                                        (is_nil(p.retired) or p.retired == false))
               |> Repo.aggregate(:avg, :update_intervall)
               |> Decimal.round(2)
 
