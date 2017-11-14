@@ -98,7 +98,7 @@ defmodule PanWeb.Episode do
 
 
   def delete_search_index_orphans() do
-    episode_ids = (from c in Episode, select: c.id)
+    episode_ids = (from e in Episode, select: e.id)
                   |> Repo.all()
 
     max_episode_id = Enum.max(episode_ids)
@@ -106,11 +106,31 @@ defmodule PanWeb.Episode do
     all_ids = Range.new(1, max_episode_id) |> Enum.to_list()
 
     for id <- all_ids do
-      unless id in episode_ids do
+      unless Enum.member?(episode_ids, id) do
         IO.puts Integer.to_string(max_episode_id - id)
         delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
                "/episodes/" <> Integer.to_string(id))
       end
+    end
+  end
+
+
+  def repair_index() do
+    episode_ids = (from e in Episode, select: e.id)
+                  |> Repo.all()
+
+    max_episode_id = Enum.max(episode_ids)
+
+    fix_limit = max_episode_id - 1485000
+
+    episode_ids = (from e in Episode, where: e.id < ^fix_limit,
+                                      select: e.id)
+                  |> Repo.all()
+    count = Integer.to_string(Enum.count(episode_ids))
+
+    for id <- episode_ids do
+      IO.puts Integer.to_string(id) <> " / " <> count
+      update_search_index(id)
     end
   end
 end
