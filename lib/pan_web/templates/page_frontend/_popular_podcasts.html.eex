@@ -1,9 +1,7 @@
 <div class="panel panel-info">
   <div class="panel-heading">Top 10 subscribed Podcasts</div>
-  <div class="panel-body" style="margin-bottom: -20px;">
     <%= render "_top_list_table.html",
           podcasts: @popular_podcasts,
           icon: "user",
           conn: @conn %>
-  </div>
 </div>
