@@ -8,6 +8,7 @@ defmodule PanWeb.Persona do
   alias PanWeb.Episode
   alias PanWeb.Gig
   alias PanWeb.Engagement
+  alias PanWeb.User
 
   schema "personas" do
     field :pid, :string
@@ -18,8 +19,10 @@ defmodule PanWeb.Persona do
     field :long_description, :string
     field :image_url, :string
     field :image_title, :string
+    field :owner_id, :boolean
 
     belongs_to :redirect, Persona
+    belongs_to :user, User
     has_many :engagements, Engagement
     has_many :gigs, Gig
 

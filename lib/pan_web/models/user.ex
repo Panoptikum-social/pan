@@ -25,6 +25,7 @@ defmodule PanWeb.User do
 
     has_many :manifestations, PanWeb.Manifestation
     has_many :invoices, PanWeb.Invoice
+    has_many :user_personas, PanWeb.Persona, foreign_key: :user_id
     many_to_many :personas, PanWeb.Persona,
                             join_through: "manifestations"
 
