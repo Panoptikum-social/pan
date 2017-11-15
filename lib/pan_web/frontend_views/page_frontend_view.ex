@@ -21,15 +21,17 @@ defmodule PanWeb.PageFrontendView do
     podcasts
     |> Enum.group_by(&select_count/1, &id_title_tuple/1)
     |> Map.to_list()
-    |> Enum.sort_by(fn {count, _list_of_podcasts} -> count end, &>=/2)
+    |> Enum.sort_by(fn {count, _list_of_id_title_tuples} -> count end, &>=/2)
     |> add_rank()
   end
   
   defp select_count([count, _id, _title]), do: count
   defp id_title_tuple([_count, id, title]), do: {id, title}
   
-  # entry point
-  defp add_rank(counts_and_podcasts) do
+  # takes a list of {count, list_of_id_title_tuples}
+  # and adds a rank according to the subscribers count
+  defp add_rank(counts_and_podcasts) when is_list(counts_and_podcasts) do
+    # start loop with an initial rank of 1 and an empty accumulator
     add_rank(counts_and_podcasts, {1, []})
   end
   # recursive loop
