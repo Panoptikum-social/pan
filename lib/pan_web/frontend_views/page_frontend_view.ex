@@ -28,8 +28,8 @@ defmodule PanWeb.PageFrontendView do
   defp select_count([count, _id, _title]), do: count
   defp id_title_tuple([_count, id, title]), do: {id, title}
   
-  # takes a list of {count, list_of_id_title_tuples}
-  # and adds a rank according to the subscribers count
+  # takes a list of {count, [{id, title}, ...]}
+  # and adds a rank, according to the subscribers count
   defp add_rank(counts_and_podcasts) when is_list(counts_and_podcasts) do
     # start loop with an initial rank of 1 and an empty accumulator
     add_rank(counts_and_podcasts, {1, []})
