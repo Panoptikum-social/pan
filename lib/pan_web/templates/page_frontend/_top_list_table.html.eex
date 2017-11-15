@@ -16,7 +16,9 @@
         </td>
         
         <td>
-          <%= count %> <%= fa_icon("user") %>
+          <span class="pull-right">
+            <%= count %> <%= fa_icon(@icon) %>
+          </span>
         </td>
       </tr>
     <% end %>
