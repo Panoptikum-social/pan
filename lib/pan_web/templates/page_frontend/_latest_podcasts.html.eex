@@ -10,6 +10,7 @@
     <%= for {podcast, index} <- Enum.with_index(ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() ->
                                                   PanWeb.Podcast.latest()
                                                 end)) do %>
+
       <li role="podcasts" class=<%= if index == 0, do: "active" %>>
         <a href="#podcast-<%= podcast.id %>"
            aria-controls="podcast-<%= podcast.id %>"
@@ -22,9 +23,10 @@
   </ul>
 
   <div class="tab-content">
-    <%= for {podcast, index} <- Enum.with_index(ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() ->
+    <%#= for {podcast, index} <- Enum.with_index(ConCache.get_or_store(:slow_cache, :latest_podcasts, fn() ->
                                                   PanWeb.Podcast.latest()
                                                 end)) do %>
+    <%= for {podcast, index} <- Enum.with_index(PanWeb.Podcast.latest()) do %>
       <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
                            id="podcast-<%= podcast.id %>">
 

@@ -118,7 +118,7 @@ defmodule PanWeb.Podcast do
 
 
   def latest do
-    from(p in Podcast, order_by: [desc: :inserted_at],
+    from(p in Podcast, order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
                        where: is_nil(p.blocked) or p.blocked == false,
                        join: e in assoc(p, :engagements),
                        where: e.role == "author",

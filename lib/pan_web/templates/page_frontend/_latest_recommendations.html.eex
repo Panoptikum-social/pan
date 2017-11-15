@@ -10,6 +10,7 @@
     <%= for {recommendation, index} <- Enum.with_index(ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
                                                          PanWeb.Recommendation.latest()
                                                        end)) do %>
+
       <li role="recommendations" class=<%= if index == 0, do: "active" %>>
         <a href="#recommendation-<%= recommendation.id %>"
            aria-controls="recommendation-<%= recommendation.id %>"
@@ -22,9 +23,10 @@
   </ul>
 
   <div class="tab-content">
-    <%= for {recommendation, index} <- Enum.with_index(ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
+    <%#= for {recommendation, index} <- Enum.with_index(ConCache.get_or_store(:fast_cache, :latest_recommendations, fn() ->
                                                          PanWeb.Recommendation.latest()
                                                        end)) do %>
+    <%= for {recommendation, index} <- Enum.with_index(PanWeb.Recommendation.latest()) do %>
       <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
                            id="recommendation-<%= recommendation.id %>">
         <%= if recommendation.podcast do %>
