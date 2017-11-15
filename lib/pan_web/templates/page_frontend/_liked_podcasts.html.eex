@@ -1,18 +1,9 @@
 <div class="panel panel-danger">
   <div class="panel-heading">Top 5 liked Podcasts</div>
-  <div class="panel-body" style="margin-bottom: -20px;"">
-    <%= for {[count, id, title], rank} <- Enum.with_index(@liked_podcasts) do %>
-      <p>
-        <%= if rank == 0 || count != List.first(Enum.at(@liked_podcasts, rank-1)) do %>
-          <b><%= rank + 1 %>.</b>:
-        <% else %>
-          &nbsp; &nbsp; &nbsp;
-        <% end %>
-        <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
-                 to: podcast_frontend_path(@conn, :show, id),
-                 class: "btn btn-default btn-xs",
-                 style: "color: #000" %>
-        <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
-      </p>
-    <% end %>
+  <div class="panel-body" style="margin-bottom: -20px;">
+    <%= render "_top_list_table.html",
+          podcasts: @liked_podcasts,
+          icon: "heart",
+          conn: @conn %>
+  </div>
 </div>

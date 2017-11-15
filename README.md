@@ -20,8 +20,8 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 * Install Node.js dependencies with `npm install` _inside the assets folder_
 
 ### Configuration
-* Copy `config/dev.secret.exs.samle` to `config/dev.secret.exs` and insert your own data
-* Copy `config/prod.secret.exs.samle` to `config/prod.secret.exs` and insert your own data
+* Copy `config/dev.secret.exs.sample` to `config/dev.secret.exs` and insert your own data
+* Copy `config/prod.secret.exs.sample` to `config/prod.secret.exs` and insert your own data
 
 ### Database and demo data
 * Setup your database with `mix ecto.setup`
