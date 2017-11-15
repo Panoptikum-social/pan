@@ -1,4 +1,4 @@
-<table class="table table-striped" style="margin-top: 0;">
+<table class="table table-striped" style="margin: 0;">
   <tbody>
     <%= for {rank, count, podcasts} <- prepare_for_toplist(@podcasts) do %>
       <tr>
