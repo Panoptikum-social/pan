@@ -4,6 +4,7 @@ defmodule PanWeb.User do
   alias Pan.Repo
   alias PanWeb.Follow
   alias PanWeb.User
+  alias PanWeb.Persona
 
   schema "users" do
     field :name, :string
@@ -25,14 +26,14 @@ defmodule PanWeb.User do
 
     has_many :manifestations, PanWeb.Manifestation
     has_many :invoices, PanWeb.Invoice
-    has_many :user_personas, PanWeb.Persona, foreign_key: :user_id
-    many_to_many :personas, PanWeb.Persona,
+    has_many :user_personas, Persona, foreign_key: :user_id
+    many_to_many :personas, Persona,
                             join_through: "manifestations"
 
     many_to_many :podcasts_i_subscribed, PanWeb.Podcast,
                                          join_through: "subscriptions"
 
-    many_to_many :users_i_like, PanWeb.User,
+    many_to_many :users_i_like, User,
                                 join_through: "likes",
                                 join_keys: [enjoyer_id: :id, user_id: :id]
     many_to_many :podcasts_i_follow, PanWeb.Podcast,

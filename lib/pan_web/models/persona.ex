@@ -9,6 +9,7 @@ defmodule PanWeb.Persona do
   alias PanWeb.Gig
   alias PanWeb.Engagement
   alias PanWeb.User
+  alias PanWeb.Manifestation
 
   schema "personas" do
     field :pid, :string
@@ -155,4 +156,22 @@ defmodule PanWeb.Persona do
              "/personas/" <> Integer.to_string(deleted_id))
     end
   end
+
+
+  def create_user_persona(user) do
+    if user.podcaster == true and Enum.count(user.user_personas) == 0 do
+      pid = UUID.uuid5(:url, Integer.to_string(user.id) <> user.username)
+
+      {:ok, persona} = %Persona{user_id: user.id,
+                                pid: pid,
+                                name: user.name,
+                                email: user.email}
+                       |> Repo.insert()
+
+      %Manifestation{persona_id: persona.id,
+                     user_id: user.id}
+      |> Repo.insert()
+    end
+  end
 end
+

@@ -122,9 +122,14 @@ defmodule PanWeb.UserFrontendController do
 
   def my_profile(conn, _params, user) do
     user = Repo.get!(User, user.id)
-           |> Repo.preload(:invoices)
+           |> Repo.preload(:user_personas)
+
+    Persona.create_user_persona(user)
+
+    user = Repo.preload(user, :invoices)
            |> Repo.preload(personas: from(Persona, order_by: :name,
                                                    preload: [:delegates, :redirect]))
+
     render conn, "my_profile.html", user: user
   end
 
