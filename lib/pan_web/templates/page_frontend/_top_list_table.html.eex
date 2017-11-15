@@ -1,4 +1,4 @@
-<table class="table table-striped" style="margin: 0;">
+<table class="top-list table table-striped" style="margin: 0;">
   <tbody>
     <%= for {rank, count, podcasts} <- prepare_for_toplist(@podcasts) do %>
       <tr>
@@ -6,12 +6,14 @@
           <%= rank %>.
         </th>
         
-        <td>
+        <td class="podcasts">
           <%= for {id, title} <- podcasts do %>
-            <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
-                     to: podcast_frontend_path(@conn, :show, id),
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %>
+            <p>
+              <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
+                    to: podcast_frontend_path(@conn, :show, id),
+                    class: "btn btn-default btn-xs",
+                    style: "color: #000;" %>
+            </p>
           <% end %>
         </td>
         

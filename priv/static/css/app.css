@@ -42,6 +42,10 @@ form.link, form.button {display: inline; }
 }
 
 .nobr { white-space:nowrap; }
+
+/* Top-List */
+.top-list .podcasts > p:last-child { margin-bottom: 0; }
+
 /*
  * bootflat 2.0.4
  *
