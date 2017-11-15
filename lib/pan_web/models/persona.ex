@@ -19,7 +19,6 @@ defmodule PanWeb.Persona do
     field :long_description, :string
     field :image_url, :string
     field :image_title, :string
-    field :user_id, :integer
 
     belongs_to :redirect, Persona
     belongs_to :user, User
