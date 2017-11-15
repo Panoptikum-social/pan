@@ -21,7 +21,7 @@ defmodule PanWeb.PageFrontendView do
     podcasts
     |> Enum.group_by(&select_count/1, &id_title_tuple/1)
     |> Map.to_list()
-    |> Enum.sort_by(fn {count, _list_of_id_title_tuples} -> count end, &>=/2)
+    |> Enum.sort_by(fn {count, _} -> count end, &>=/2) # sort by count, descending
     |> add_rank()
   end
   
