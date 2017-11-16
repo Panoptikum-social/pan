@@ -27,6 +27,7 @@ defmodule Pan.Parser.Podcast do
     end
   end
 
+
   def delta_import(id) do
     with {:ok, feed} <- get_feed_by_podcast_id(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id) do
@@ -71,9 +72,9 @@ defmodule Pan.Parser.Podcast do
 
 
   def unpause_and_reset_failure_count(id) do
-    Repo.get(Podcast, id)
-    |> PanWeb.Podcast.changeset(%{update_paused: false,
-                                  failure_count: 0})
+    Podcast
+    |> Repo.get(id)
+    |> PanWeb.Podcast.changeset(%{update_paused: false, failure_count: 0})
     |> Repo.update([force: true])
   end
 
@@ -81,11 +82,13 @@ defmodule Pan.Parser.Podcast do
   def increase_failure_count(id) do
     podcast = Repo.get(Podcast, id)
 
-    Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1})
+    podcast
+    |> Podcast.changeset(%{failure_count: (podcast.failure_count || 0) + 1})
     |> Repo.update([force: true])
 
     if podcast.failure_count == 9 do
-      Podcast.changeset(podcast, %{retired: true})
+      podcast
+      |> Podcast.changeset(%{retired: true})
       |> Repo.update([force: true])
     end
   end
