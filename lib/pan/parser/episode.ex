@@ -58,36 +58,7 @@ defmodule Pan.Parser.Episode do
 
   def persist_many(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map do
-
-      if episode_map.enclosures do
-        first_enclosure = episode_map.enclosures |> Map.to_list |> List.first |> elem(1)
-        fallback_url = if episode_map.link, do: episode_map.link, else: first_enclosure.url
-
-        plain_episode_map = episode_map
-        |> Map.drop([:chapters, :enclosures, :contributors])
-        |> Map.put_new(:guid, fallback_url)
-
-        case get_or_insert(plain_episode_map, podcast.id) do
-          {:ok, episode} ->
-            if episode_map.chapters do
-              for {_, chapter_map} <- episode_map.chapters do
-                Chapter.get_or_insert(chapter_map, episode.id)
-              end
-            end
-
-            if episode_map.enclosures do
-              for {_, enclosure_map} <- episode_map.enclosures do
-                Enclosure.get_or_insert(enclosure_map, episode.id)
-              end
-            end
-
-            Contributor.persist_many(episode_map.contributors, episode)
-            Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
-            Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
-          {:exists, _episode} ->
-            true
-        end
-      end
+      persist_one(episode_map, podcast)
     end
   end
 
@@ -125,6 +96,54 @@ defmodule Pan.Parser.Episode do
           summary:     HtmlSanitizeEx2.basic_html_reduced(episode.summary)}
       )
       |> Repo.update()
+    end
+  end
+
+
+  # private helpers
+  defp persist_one(%{enclosures: enclosures} = episode_map, podcast) do
+    first_enclosure = unwrap_first_enclosure(enclosures)
+    plain_episode_map = clean_episode(episode_map, first_enclosure.url)
+
+    with {:ok, episode} <- get_or_insert(plain_episode_map, podcast.id) do
+      if episode_map.chapters do
+        get_or_insert_chapters(episode_map.chapters, episode.id)
+      end
+      get_or_insert_enclosures(enclosures, episode.id)
+
+      Contributor.persist_many(episode_map.contributors, episode)
+      Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+      Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
+
+    else
+      {:exists, _episode} ->
+        true
+    end
+  end
+  defp persist_one(_episodes_map, _podcast), do: {:error, :no_enclosures}
+
+  defp unwrap_first_enclosure(enclosures) do
+    enclosures
+    |> Map.to_list
+    |> List.first
+    |> elem(1)
+  end
+
+  defp clean_episode(episode_map, fallback_url) do
+    episode_map
+    |> Map.drop([:chapters, :enclosures, :contributors])
+    |> Map.put_new(:guid, episode_map.link || fallback_url)
+  end
+
+  defp get_or_insert_chapters(chapters, episode_id) do
+    for {_, chapter_map} <- chapters do
+      Chapter.get_or_insert(chapter_map, episode_id)
+    end
+  end
+
+  defp get_or_insert_enclosures(enclosures, episode_id) do
+    for {_, enclosure_map} <- enclosures do
+      Enclosure.get_or_insert(enclosure_map, episode_id)
     end
   end
 end
