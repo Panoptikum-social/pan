@@ -55,7 +55,7 @@ defmodule Pan.Parser.Persistor do
     map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
 
     if map.last_build_date != podcast.last_build_date do
-      if map.episodes do
+      if map[:episodes] do
         Episode.persist_many(map.episodes, podcast)
       end
 
