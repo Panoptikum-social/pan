@@ -67,11 +67,7 @@ defmodule Pan.Parser.Episode do
     for {_, episode_map} <- episodes_map do
       if episode_map[:enclosures] do
         first_enclosure = unwrap_first_enclosure(episode_map.enclosures)
-        fallback_url = episode_map.link || first_enclosure.url
-
-        plain_episode_map = episode_map
-        |> Map.drop([:chapters, :enclosures, :contributors])
-        |> Map.put_new(:guid, fallback_url)
+        plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
         case get(plain_episode_map, podcast.id) do
           {:exists, episode} ->
