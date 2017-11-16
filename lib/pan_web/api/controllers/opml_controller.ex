@@ -92,9 +92,9 @@ defmodule PanWeb.Api.OpmlController do
 
 
   def import(conn, %{"id" => id}, user) do
-    opml = from( o in Opml, where: o.id == ^id and
-                                   o.user_id == ^user.id,
-                            preload: :user)
+    opml = from(o in Opml, where: o.id == ^id and
+                                  o.user_id == ^user.id,
+                           preload: :user)
            |> Repo.one()
 
     with %PanWeb.Opml{} <- opml do
