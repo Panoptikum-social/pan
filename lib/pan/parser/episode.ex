@@ -13,7 +13,7 @@ defmodule Pan.Parser.Episode do
         if episode_map[:guid] do
           insert(episode_map, podcast_id)
         else
-          case Repo.get_by(PanWeb.Episode, title: episode_map.title || episode_map.subtitle,
+          case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map.subtitle,
                                            podcast_id: podcast_id) do
             nil ->
               insert(episode_map, podcast_id)
@@ -107,7 +107,9 @@ defmodule Pan.Parser.Episode do
       end
       get_or_insert_enclosures(enclosures, episode.id)
 
-      Contributor.persist_many(episode_map.contributors, episode)
+      if episode_map[:contributors] do
+        Contributor.persist_many(episode_map.contributors, episode)
+      end
       Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
       Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
 
@@ -128,7 +130,7 @@ defmodule Pan.Parser.Episode do
   defp clean_episode(episode_map, fallback_url) do
     episode_map
     |> Map.drop([:chapters, :enclosures, :contributors])
-    |> Map.put_new(:guid, episode_map.link || fallback_url)
+    |> Map.put_new(:guid, episode_map[:link] || fallback_url)
   end
 
   defp get_or_insert_chapters(chapters, episode_id) do
