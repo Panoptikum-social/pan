@@ -13,7 +13,9 @@ env:
   - MIX_ENV=test
 
 install:
+  - rm config/dev.secret.exs
   - cp config/dev.secret.exs.example config/dev.secret.exs
+  - rm config/prod.secret.exs
   - cp config/prod.secret.exs.example config/prod.secret.exs
   - mix local.hex --force
   - mix local.rebar --force
