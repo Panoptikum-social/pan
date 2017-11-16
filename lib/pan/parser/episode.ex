@@ -102,15 +102,20 @@ defmodule Pan.Parser.Episode do
     plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
     with {:ok, episode} <- get_or_insert(plain_episode_map, podcast.id) do
+      get_or_insert_enclosures(enclosures, episode.id)
+
       if episode_map[:chapters] do
         get_or_insert_chapters(episode_map.chapters, episode.id)
       end
-      get_or_insert_enclosures(enclosures, episode.id)
 
       if episode_map[:contributors] do
         Contributor.persist_many(episode_map.contributors, episode)
       end
-      Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+
+      if episode_map[:author] do
+        Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+      end
+
       Logger.info "\n\e[33m === Importing new episode: #{episode.title} ===\e[0m"
 
     else
