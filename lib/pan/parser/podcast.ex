@@ -92,14 +92,10 @@ defmodule Pan.Parser.Podcast do
 
 
   def fix_owner(id) do
-    feed = Repo.get_by(Feed, podcast_id: id)
-
-    case RssFeed.import_to_map(feed.self_link_url) do
-      {:ok, map} ->
-        Pan.Parser.Owner.get_or_insert(map[:owner], id)
-        {:ok, "Updated owner successfully for #{id}"}
-      {:error, message} ->
-        {:error, message}
+    with {:ok, feed} <- get_feed_by_podcast_id(id),
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
+      Pan.Parser.Owner.get_or_insert(map[:owner], id)
+      {:ok, "Updated owner successfully for #{id}"}
     end
   end
 
