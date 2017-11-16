@@ -30,9 +30,9 @@ defmodule Pan.Parser.Podcast do
 
   def delta_import(id) do
     with {:ok, feed} <- get_feed_by_podcast_id(id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id) do
-      Persistor.delta_import(map, id)
-      unpause_and_reset_failure_count(id)
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
+         {:ok, _} <- Persistor.delta_import(map, id),
+         {:ok, _} <- unpause_and_reset_failure_count(id) do
       {:ok, "Podcast importet"}
 
     else

@@ -54,15 +54,17 @@ defmodule Pan.Parser.Persistor do
     podcast = Repo.get!(PanWeb.Podcast, podcast_id)
     map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
 
-    unless map[:last_build_date] == podcast.last_build_date do
-      if map[:episodes] do
-        Episode.persist_many(map[:episodes], podcast)
+    if map.last_build_date != podcast.last_build_date do
+      if map.episodes do
+        Episode.persist_many(map.episodes, podcast)
       end
 
       podcast
-      |> PanWeb.Podcast.changeset(%{last_build_date: map[:last_build_date]})
+      |> PanWeb.Podcast.changeset(%{last_build_date: map.last_build_date})
       |> PanWeb.Podcast.update_counters()
       |> Repo.update()
+    else
+      {:ok, :nothing_to_do}
     end
   end
 
