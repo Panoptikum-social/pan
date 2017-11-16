@@ -66,7 +66,7 @@ defmodule Pan.Parser.Episode do
   def insert_contributors(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map do
       if episode_map[:enclosures] do
-        first_enclosure = episode_map.enclosures |> Map.to_list |> List.first |> elem(1)
+        first_enclosure = unwrap_first_enclosure(episode_map.enclosures)
         fallback_url = episode_map.link || first_enclosure.url
 
         plain_episode_map = episode_map
@@ -124,8 +124,8 @@ defmodule Pan.Parser.Episode do
 
   defp unwrap_first_enclosure(enclosures) do
     enclosures
-    |> Map.to_list
-    |> List.first
+    |> Map.to_list()
+    |> List.first()
     |> elem(1)
   end
 
