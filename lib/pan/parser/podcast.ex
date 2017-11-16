@@ -33,24 +33,27 @@ defmodule Pan.Parser.Podcast do
       Persistor.delta_import(map, id)
       unpause_and_reset_failure_count(id)
       {:ok, "Podcast importet"}
-    
+
     else
       {:redirect, redirect_target} ->
         # TODO: Figure out how to get rid of this duplicate line
         {:ok, feed} = get_feed_by_podcast_id(id)
-        
+
         AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
                                                title: feed.self_link_url})
         feed
         |> Feed.changeset(%{self_link_url: redirect_target})
         |> Repo.update([force: true])
-        
+
         # Now that we have updated Feed and alternate feed, let's try again
         delta_import(id)
-      
+
       {:error, :not_found} ->
-        Logger.error "=== Podcast #{inspect id} has no feed! ==="
-      
+        increase_failure_count(id)
+        message = "=== Podcast #{inspect id} has no feed! ==="
+        Logger.error(message)
+        {:error, message}
+
       {:error, message} ->
         increase_failure_count(id)
         {:error, message}
@@ -117,8 +120,8 @@ defmodule Pan.Parser.Podcast do
         {:error, message <> " for podcast #{podcast.title}, #{podcast.id}"}
     end
   end
-  
-  
+
+
   # private helper
   defp get_feed_by_podcast_id(id) do
     case Repo.get_by(Feed, podcast_id: id) do
