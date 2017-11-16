@@ -67,7 +67,7 @@ defmodule Pan.Parser.Episode do
     for {_, episode_map} <- episodes_map do
       if episode_map[:enclosures] do
         first_enclosure = episode_map.enclosures |> Map.to_list |> List.first |> elem(1)
-        fallback_url = if episode_map[:link], do: episode_map.link, else: first_enclosure.url
+        fallback_url = episode_map.link || first_enclosure.url
 
         plain_episode_map = episode_map
         |> Map.drop([:chapters, :enclosures, :contributors])
