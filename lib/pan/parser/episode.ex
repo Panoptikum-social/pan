@@ -10,7 +10,7 @@ defmodule Pan.Parser.Episode do
   def get_or_insert(episode_map, podcast_id) do
     case Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id) do
       nil ->
-        if episode_map.guid do
+        if episode_map[:guid] do
           insert(episode_map, podcast_id)
         else
           case Repo.get_by(PanWeb.Episode, title: episode_map.title || episode_map.subtitle,
@@ -65,9 +65,9 @@ defmodule Pan.Parser.Episode do
 
   def insert_contributors(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map do
-      if episode_map.enclosures do
+      if episode_map[:enclosures] do
         first_enclosure = episode_map.enclosures |> Map.to_list |> List.first |> elem(1)
-        fallback_url = if episode_map.link, do: episode_map.link, else: first_enclosure.url
+        fallback_url = if episode_map[:link], do: episode_map.link, else: first_enclosure.url
 
         plain_episode_map = episode_map
         |> Map.drop([:chapters, :enclosures, :contributors])
@@ -106,7 +106,7 @@ defmodule Pan.Parser.Episode do
     plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
     with {:ok, episode} <- get_or_insert(plain_episode_map, podcast.id) do
-      if episode_map.chapters do
+      if episode_map[:chapters] do
         get_or_insert_chapters(episode_map.chapters, episode.id)
       end
       get_or_insert_enclosures(enclosures, episode.id)
