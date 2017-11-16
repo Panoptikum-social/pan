@@ -1,1 +1,0 @@
-../../pan-config/prod.secret.exs
