@@ -152,7 +152,7 @@ defmodule PanWeb.Api.PodcastController do
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits}} ->
         if hits.total > 0 do
-          total = Enum.min([hits.total, 10000])
+          total = Enum.min([hits.total, 10_000])
           total_pages = div(total - 1, size) + 1
 
 

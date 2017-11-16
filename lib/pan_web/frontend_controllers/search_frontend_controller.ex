@@ -27,7 +27,7 @@ defmodule PanWeb.SearchFrontendController do
 
     case Tirexs.Query.create_resource(query) do
       {:ok, 200, %{hits: hits, took: took}} ->
-        total = Enum.min([hits.total, 10000])
+        total = Enum.min([hits.total, 10_000])
         render(conn, "new.html", searchstring: params["search"]["searchstring"],
                                  hits: hits, took: took, from: from, size: size, page: page,
                                  total: total)

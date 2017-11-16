@@ -14,42 +14,52 @@ defmodule Pan.Search do
                 |> Timex.shift(hours: -1 * hours)
 
     Logger.info("=== Indexing categories (since #{inspect hours_ago}) ===")
-    from(c in Category, where: c.updated_at >= ^hours_ago,
-                        select: c.id)
+    categories_query = from(c in Category,
+                 where: c.updated_at >= ^hours_ago,
+                 select: c.id)
+    categories_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Category.update_search_index(id)
        end)
 
     Logger.info("=== Indexing users ===")
-    from(u in User, where: u.updated_at >= ^hours_ago,
-                    select: u.id)
+    users_query = from(u in User,
+                       where: u.updated_at >= ^hours_ago,
+                       select: u.id)
+    users_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          User.update_search_index(id)
        end)
 
     Logger.info("=== Indexing personas ===")
-    from(p in Persona, where: p.updated_at >= ^hours_ago,
-                       select: p.id)
+    personas_query = from(p in Persona,
+                          where: p.updated_at >= ^hours_ago,
+                          select: p.id)
+    personas_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Persona.update_search_index(id)
        end)
 
     Logger.info("=== Indexing podcasts ===")
-    from(p in Podcast, where: p.updated_at >= ^hours_ago,
-                       select: p.id)
+    podcasts_query = from(p in Podcast,
+                          where: p.updated_at >= ^hours_ago,
+                          select: p.id)
+    podcasts_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Podcast.update_search_index(id)
        end)
 
     Logger.info("=== Indexing episodes ===")
-    from(e in Episode, where: e.updated_at >= ^hours_ago,
-                       select: e.id)
+    episodes_query = from(e in Episode,
+                          where: e.updated_at >= ^hours_ago,
+                          select: e.id)
+    episodes_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Episode.update_search_index(id)
        end)
 
@@ -59,37 +69,42 @@ defmodule Pan.Search do
 
   def push_all() do
     Logger.info("=== Indexing categories (all) ===")
-    from(c in Category, select: c.id)
+    categories_query = from(c in Category, select: c.id)
+    categories_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Category.update_search_index(id)
        end)
 
     Logger.info("=== Indexing users ===")
-    from(u in User, select: u.id)
+    users_query = from(u in User, select: u.id)
+    users_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          User.update_search_index(id)
        end)
 
     Logger.info("=== Indexing personas ===")
-    from(p in Persona, select: p.id)
+    personas_query = from(p in Persona, select: p.id)
+    personas_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Persona.update_search_index(id)
        end)
 
     Logger.info("=== Indexing podcasts ===")
-    from(p in Podcast, select: p.id)
+    podcasts_query = from(p in Podcast, select: p.id)
+    podcasts_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Podcast.update_search_index(id)
        end)
 
     Logger.info("=== Indexing episodes ===")
-    from(e in Episode, select: e.id)
+    episodes_query = from(e in Episode, select: e.id)
+    episodes_query
     |> Repo.all()
-    |> Enum.map(fn(id) ->
+    |> Enum.each(fn(id) ->
          Episode.update_search_index(id)
        end)
 

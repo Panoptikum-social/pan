@@ -296,7 +296,7 @@ defmodule PanWeb.Podcast do
     publication_frequency =
       if episodes_count > 1 && latest_episode_publishing_date && first_episode_publishing_date do
         NaiveDateTime.diff(latest_episode_publishing_date, first_episode_publishing_date, :second) /
-                      (episodes_count - 1) / 86400
+                      (episodes_count - 1) / 86_400
       else
         0.0
     end

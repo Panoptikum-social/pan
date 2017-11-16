@@ -5,7 +5,7 @@ defmodule Pan.Parser.Contributor do
   alias PanWeb.Engagement
 
 
-  def persist_many(contributors_map, podcast = %PanWeb.Podcast{}) do
+  def persist_many(contributors_map, %PanWeb.Podcast{} = podcast) do
     if contributors_map do
       for {_, contributor_map} <- contributors_map do
         {:ok, contributor} = Persona.get_or_insert(contributor_map)
@@ -26,7 +26,7 @@ defmodule Pan.Parser.Contributor do
   end
 
 
-  def persist_many(contributors_map, episode = %PanWeb.Episode{}) do
+  def persist_many(contributors_map, %PanWeb.Episode{} = episode) do
     if contributors_map do
       for {_, contributor_map} <- contributors_map do
         {:ok, contributor} = Persona.get_or_insert(contributor_map)
