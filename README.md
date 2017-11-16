@@ -1,5 +1,7 @@
 # Panoptikum
 
+[![Build Status](https://travis-ci.org/PanoptikumIO/pan.svg?branch=master)](https://travis-ci.org/PanoptikumIO/pan)
+
 Panoptikum (or short Pan) is a webapplication written in [Phoenix](http://www.phoenixframework.org/)
 that represents a podcast discovery and community website.
 
