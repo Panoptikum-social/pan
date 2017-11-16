@@ -1,0 +1,1 @@
+../../pan-config/dev.secret.exs
