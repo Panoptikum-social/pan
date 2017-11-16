@@ -101,12 +101,12 @@ defmodule Pan.Parser.Podcast do
 
 
   def fix_language(podcast) do
-    feed = Repo.get_by(Feed, podcast_id: podcast.id)
+    with {:ok, feed} <- get_feed_by_podcast_id(podcast.id),
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
+      Language.persist_many(map[:languages], podcast)
+      {:ok, "Updated owner successfully for #{podcast.title}"}
 
-    case RssFeed.import_to_map(feed.self_link_url) do
-      {:ok, map} ->
-        Language.persist_many(map[:languages], podcast)
-        {:ok, "Updated owner successfully for #{podcast.title}"}
+    else
       {:error, message} ->
         {:error, message <> " for podcast #{podcast.title}, #{podcast.id}"}
     end
