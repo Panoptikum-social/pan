@@ -36,6 +36,7 @@ defmodule PanWeb.UserController do
 
 
   def update(conn, %{"id" => id, "user" => user_params}, _user) do
+    id = String.to_integer(id)
     user = Repo.get!(User, id)
     changeset = User.changeset(user, user_params)
 
