@@ -25,7 +25,7 @@ defmodule PanWeb.RecommendationFrontendController do
   end
 
 
-  def my_recommendations(conn,_params, user) do
+  def my_recommendations(conn, _params, user) do
     podcast_recommendations = Repo.all(from r in Recommendation, where: r.user_id == ^user.id and
                                                                         not is_nil(r.podcast_id) and
                                                                         is_nil(r.episode_id) and
