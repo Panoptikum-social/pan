@@ -57,7 +57,7 @@ defmodule Pan.Mixfile do
      {:timelier, "~> 0.9.2"}, # Cron like agent,
      {:tzdata, "~> 0.5.13"}, # Timezone information
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
-     {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
+     {:credo, "0.8.10", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.19.0"}, # HTML parser
      {:relx, "3.24.1"}, # manually inserted as asset compilation failed with 0.22.0
      {:erlware_commons, "~> 1.0"},
