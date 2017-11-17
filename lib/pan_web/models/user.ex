@@ -225,6 +225,12 @@ defmodule PanWeb.User do
   end
 
 
+  def delete_search_index(id) do
+    delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+           "/users/" <> Integer.to_string(id))
+  end
+
+
   def delete_search_index_orphans() do
     user_ids = (from c in User, select: c.id)
                |> Repo.all()
@@ -234,8 +240,7 @@ defmodule PanWeb.User do
     deleted_ids = all_ids -- user_ids
 
     for deleted_id <- deleted_ids do
-      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
-             "/users/" <> Integer.to_string(deleted_id))
+      delete_search_index(deleted_id)
     end
   end
 

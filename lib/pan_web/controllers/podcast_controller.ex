@@ -245,7 +245,7 @@ defmodule PanWeb.PodcastController do
     Repo.delete_all(from e in PanWeb.Episode, where: e.podcast_id == ^podcast.id)
 
     Repo.delete!(podcast)
-    Podcast.update_search_index(id)
+    Podcast.delete_search_index(id)
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")

@@ -187,7 +187,7 @@ defmodule PanWeb.PersonaFrontendController do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: target_id])
 
-      Persona.update_search_index(id)
+      Persona.delete_search_index(id)
 
       conn
       |> put_flash(:info, "Persona redirected successfully.")

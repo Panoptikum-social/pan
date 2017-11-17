@@ -97,6 +97,12 @@ defmodule PanWeb.Episode do
   end
 
 
+  def delete_search_index(id) do
+    delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+           "/episodes/" <> Integer.to_string(id))
+  end
+
+
   def delete_search_index_orphans() do
     episode_ids = (from e in Episode, select: e.id)
                   |> Repo.all()
@@ -108,8 +114,7 @@ defmodule PanWeb.Episode do
     for id <- all_ids do
       unless Enum.member?(episode_ids, id) do
         IO.puts Integer.to_string(max_episode_id - id)
-        delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
-               "/episodes/" <> Integer.to_string(id))
+        delete_search_index(id)
       end
     end
   end

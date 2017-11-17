@@ -46,8 +46,7 @@ defmodule Pan.Mixfile do
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1.8"}, # UUID creation
-#     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
-     {:html_sanitize_ex, git: "https://github.com/rrrene/html_sanitize_ex"}, # sanitizing html input (shownotes)
+     {:html_sanitize_ex, "1.3.0"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "1.3.0"}, # pagination
      {:scrivener_html, "1.7.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
@@ -59,7 +58,7 @@ defmodule Pan.Mixfile do
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, "0.8.10", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.19.0"}, # HTML parser
-     {:relx, "3.24.1"}, # manually inserted as asset compilation failed with 0.22.0
+     {:relx, "3.24.1"}, # Release assembler (asset compilation failed with 3.22.0)
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
     ]

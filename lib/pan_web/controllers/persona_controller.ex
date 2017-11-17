@@ -107,7 +107,7 @@ defmodule PanWeb.PersonaController do
     persona = Repo.get!(Persona, id)
 
     Repo.delete!(persona)
-    Persona.update_search_index(id)
+    Persona.delete_search_index(id)
 
     conn
     |> put_flash(:info, "Persona deleted successfully.")
@@ -243,7 +243,7 @@ defmodule PanWeb.PersonaController do
     end
 
     Repo.delete!(from_persona)
-    Persona.update_search_index(from_id)
+    Persona.delete_search_index(from_id)
     Persona.update_search_index(to_id)
     render(conn, "merge.html")
   end

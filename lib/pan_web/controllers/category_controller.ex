@@ -81,7 +81,7 @@ defmodule PanWeb.CategoryController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(category)
-    Category.update_search_index(id)
+    Category.delete_search_index(id)
 
     conn
     |> put_flash(:info, "Category deleted successfully.")
@@ -144,7 +144,7 @@ defmodule PanWeb.CategoryController do
                                                      order_by: :title,
                                                      preload: [children: :children])
 
-    Category.update_search_index(from_id)
+    Category.delete_search_index(from_id)
     Category.update_search_index(to_id)
 
     render(conn, "merge.html", categories: categories)

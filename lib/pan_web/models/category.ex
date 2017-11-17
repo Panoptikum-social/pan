@@ -78,6 +78,12 @@ defmodule PanWeb.Category do
   end
 
 
+  def delete_search_index(id) do
+      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
+             "/categories/" <> Integer.to_string(id))
+  end
+
+
   def delete_search_index_orphans() do
     category_ids = (from c in Category, select: c.id)
                    |> Repo.all()
@@ -88,8 +94,7 @@ defmodule PanWeb.Category do
 
     for {deleted_id, index} <- Enum.with_index(deleted_ids) do
       IO.puts Integer.to_string((Enum.count(deleted_ids) - index))
-      delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
-             "/categories/" <> Integer.to_string(deleted_id))
+      delete_search_index(deleted_id)
     end
   end
 end
