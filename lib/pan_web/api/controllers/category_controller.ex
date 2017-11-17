@@ -37,10 +37,9 @@ defmodule PanWeb.Api.CategoryController do
             |> Repo.aggregate(:count, :category_id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_category_url(conn,:show, id)}, conn)
+    links = conn
+    |> api_category_url(:show, id)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     category = Repo.get(Category, id)
                |> Repo.preload([:children, :parent])
