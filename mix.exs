@@ -32,16 +32,17 @@ defmodule Pan.Mixfile do
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
      {:postgrex, "0.13.3"}, # database adapter
      {:phoenix_ecto, "3.3.0"}, # ORM (yes!)
-     {:phoenix_html, "~> 2.4"}, # view layer
+     {:phoenix_html, "2.9.0"}, # view layer
      {:phoenix_live_reload, "1.1.3", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
      {:cowboy, "~> 1.0.4"}, # web server
-     {:comeonin, "~> 2.0"}, # password hashing library
+     {:comeonin, "4.0.3"}, # password hashing library
+     {:bcrypt_elixir, "1.0.4"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.1.24"}, # time conversion
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
      {:httpoison, "~> 0.13.0"}, # http client
-     {:hackney, "1.9.0"}, # erlang http client, had to increase version here
+     {:hackney, "1.10.1"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1.8"}, # UUID creation
@@ -58,7 +59,6 @@ defmodule Pan.Mixfile do
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.19.0"}, # HTML parser
-
      {:relx, "3.24.1"}, # manually inserted as asset compilation failed with 0.22.0
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer

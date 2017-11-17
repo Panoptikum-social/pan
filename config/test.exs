@@ -19,6 +19,5 @@ config :pan, Pan.Repo,
   pool: Ecto.Adapters.SQL.Sandbox
 
 config :comeonin, :bcrypt_log_rounds, 4
-config :comeonin, :pbkdf2_rounds, 1
 
 config :pan, :environment, "test"
