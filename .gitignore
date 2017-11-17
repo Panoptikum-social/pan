@@ -15,8 +15,7 @@ erl_crash.dump
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 
-# HAS: 20160921: seems not to work for me!
-# /priv/static/
+/priv/static/
 
 # config secret files
 /config/dev.secret.exs
