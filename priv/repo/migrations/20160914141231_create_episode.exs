@@ -18,7 +18,7 @@ defmodule Pan.Repo.Migrations.CreateEpisode do
       add :summary, :text
       add :podcast_id, references(:podcasts, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:episodes, [:podcast_id])
     create unique_index(:episodes, [:guid])

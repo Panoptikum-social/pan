@@ -7,7 +7,7 @@ defmodule Pan.Repo.Migrations.CreateChapter do
       add :title, :string
       add :episode_id, references(:episodes, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:chapters, [:episode_id])
 

@@ -18,7 +18,7 @@ defmodule Pan.Repo.Migrations.CreatePodcast do
       add :language_id, references(:languages, on_delete: :nothing)
       add :owner_id, references(:users, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:podcasts, [:language_id])
     create index(:podcasts, [:owner_id])

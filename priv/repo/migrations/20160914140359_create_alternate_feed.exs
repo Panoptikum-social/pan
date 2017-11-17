@@ -7,7 +7,7 @@ defmodule Pan.Repo.Migrations.CreateAlternateFeed do
       add :url, :string
       add :feed_id, references(:feeds, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:alternate_feeds, [:feed_id])
 

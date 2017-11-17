@@ -13,7 +13,7 @@ defmodule Pan.Repo.Migrations.CreateFeed do
       add :feed_generator, :string
       add :podcast_id, references(:podcasts, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:feeds, [:podcast_id])
 

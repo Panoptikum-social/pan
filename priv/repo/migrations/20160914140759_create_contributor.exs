@@ -7,7 +7,7 @@ defmodule Pan.Repo.Migrations.CreateContributor do
       add :uri, :string
       add :user_id, references(:users, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:contributors, [:user_id])
 

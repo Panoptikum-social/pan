@@ -8,7 +8,7 @@ defmodule Pan.Repo.Migrations.CreateUser do
       add :password_hash, :string
       add :email,         :string, null: false
 
-      timestamps
+      timestamps()
     end
 
     create unique_index(:users, [:username])

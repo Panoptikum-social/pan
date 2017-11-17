@@ -6,7 +6,7 @@ defmodule Pan.Repo.Migrations.CreateCategory do
       add :title, :string
       add :parent_id, references(:categories, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:categories, [:parent_id])
 
