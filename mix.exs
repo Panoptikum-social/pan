@@ -47,19 +47,19 @@ defmodule Pan.Mixfile do
      {:uuid, "~> 1.1.8"}, # UUID creation
 #     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
      {:html_sanitize_ex, git: "https://github.com/rrrene/html_sanitize_ex"}, # sanitizing html input (shownotes)
-     {:scrivener_ecto, "1.1.4"}, # pagination
+     {:scrivener_ecto, "1.3.0"}, # pagination
      {:scrivener_html, "1.7.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
      {:bamboo_smtp, "~> 1.4"}, # mailing smtp adapter,
      {:con_cache, "~> 0.12.1"}, # key/value cache
-     {:earmark, "~> 1.1.0"}, # Markdown parser
+     {:earmark, "1.2.3"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent,
      {:tzdata, "~> 0.5.13"}, # Timezone information
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
-     {:floki, "~> 0.17.0"}, # HTML parser
+     {:floki, "~> 0.19.0"}, # HTML parser
 
-     {:relx, "~>3.23.1"}, # manually inserted as asset compilation failed with 0.22.0
+     {:relx, "3.24.1"}, # manually inserted as asset compilation failed with 0.22.0
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
     ]
