@@ -35,7 +35,7 @@ defmodule Pan.Mixfile do
      {:phoenix_html, "2.10.5"}, # view layer
      {:phoenix_live_reload, "1.1.3", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
-     {:cowboy, "~> 1.0.4"}, # web server
+     {:cowboy, "1.1.2"}, # web server
      {:comeonin, "4.0.3"}, # password hashing library
      {:bcrypt_elixir, "1.0.4"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
