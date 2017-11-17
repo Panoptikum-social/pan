@@ -21,7 +21,7 @@ defmodule Pan.Mixfile do
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :con_cache, :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
-                    :ja_serializer]]
+                    :ja_serializer, :elixir_make]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
