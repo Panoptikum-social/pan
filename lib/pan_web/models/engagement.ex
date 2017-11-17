@@ -2,8 +2,8 @@ defmodule PanWeb.Engagement do
   use Pan.Web, :model
 
   schema "engagements" do
-    field :from, Ecto.Date
-    field :until, Ecto.Date
+    field :from, :date
+    field :until, :date
     field :comment, :string
     field :role, :string
     belongs_to :persona, PanWeb.Persona

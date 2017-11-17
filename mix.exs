@@ -30,10 +30,10 @@ defmodule Pan.Mixfile do
   defp deps do
     [{:phoenix, "~> 1.3.0"}, # web framework
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
-     {:postgrex, ">= 0.0.0"}, # database adapter
-     {:phoenix_ecto, "~> 3.0"}, # ORM (yes!)
+     {:postgrex, "0.13.3"}, # database adapter
+     {:phoenix_ecto, "3.3.0"}, # ORM (yes!)
      {:phoenix_html, "~> 2.4"}, # view layer
-     {:phoenix_live_reload, "~> 1.0", only: :dev}, # live browser page reload on code changes
+     {:phoenix_live_reload, "1.1.3", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
      {:cowboy, "~> 1.0.4"}, # web server
      {:comeonin, "~> 2.0"}, # password hashing library
@@ -44,17 +44,17 @@ defmodule Pan.Mixfile do
      {:hackney, "1.9.0"}, # erlang http client, had to increase version here
      {:exrm, "~> 1.0" }, # release manager
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
-     {:uuid, "~> 1.1"}, # UUID creation
+     {:uuid, "~> 1.1.8"}, # UUID creation
 #     {:html_sanitize_ex, "~> 1.0.0"}, # sanitizing html input (shownotes)
      {:html_sanitize_ex, git: "https://github.com/rrrene/html_sanitize_ex"}, # sanitizing html input (shownotes)
-     {:scrivener_ecto, "~> 1.0"}, # pagination
-     {:scrivener_html, "~> 1.1"}, # pagination view helper
+     {:scrivener_ecto, "1.1.4"}, # pagination
+     {:scrivener_html, "1.7.1"}, # pagination view helper
      {:bamboo, "~> 0.8"}, # mailing
-     {:bamboo_smtp, "~> 1.3"}, # mailing smtp adapter,
+     {:bamboo_smtp, "~> 1.4"}, # mailing smtp adapter,
      {:con_cache, "~> 0.12.1"}, # key/value cache
      {:earmark, "~> 1.1.0"}, # Markdown parser
      {:timelier, "~> 0.9.2"}, # Cron like agent,
-     {:tzdata, "~> 0.5.11"}, # mailing
+     {:tzdata, "~> 0.5.13"}, # Timezone information
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, github: "rrrene/credo", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.17.0"}, # HTML parser
