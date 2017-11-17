@@ -11,31 +11,36 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 
 ## Setup
 
-### Prerequirements
+### 📋 Prerequirements
 * Make sure you have [Elixir](https://elixir-lang.org) installed.
 * Make sure you have [Node.js](https://nodejs.org) installed.
 * Make sure you have [PostgreSQL](https://www.postgresql.org) installed and running.
 * Make sure you have [Elasticsearch](https://www.elastic.co/products/elasticsearch) installed and running.
 
-### Install dependencies
+### 📦 Install dependencies
 * Install Elixir's dependencies with `mix deps.get`
 * Install Node.js dependencies with `npm install` _inside the assets folder_
 
-### Configuration
+### 🛠 Configuration
 * Copy `config/dev.secret.exs.example` to `config/dev.secret.exs` and insert your own data
 * Copy `config/prod.secret.exs.example` to `config/prod.secret.exs` and insert your own data
 
-### Database and demo data
+### 📚 Database and demo data
 * Setup your database with `mix ecto.setup`
 * Import demo data
   * Uncompress `materials/pan_dev.sql.gz`
   * Import data with `psql pan_dev < pan_dev.sql` _inside the materials folder_
 
-### Run locally
+### ⏯ Run locally
 * Start Phoenix endpoint with `mix phx.server`
 * Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 * Login as Admin using username `admin` and password `changeme`
 
-### Bonus
+### 🌡 Testing
+* Run tests with `mix test`
+* Get basic test coverage report with `mix coveralls`
+
+### ✨ Bonus
+* To have a nice (html) coverage report try running `mix coveralls.html`
 * To view sent emails while developing you can visit [`localhost:4000/sent_emails`](http://localhost:4000/sent_emails)
 * To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)

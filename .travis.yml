@@ -24,3 +24,6 @@ install:
 
 before_script:
   - mix ecto.setup
+
+after_script:
+  - mix coveralls.travis

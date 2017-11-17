@@ -10,7 +10,15 @@ defmodule Pan.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
-     deps: deps()]
+     deps: deps(),
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: [
+       "coveralls": :test,
+       "coveralls.detail": :test,
+       "coveralls.post": :test,
+       "coveralls.html": :test
+     ]
+    ]
   end
 
   def application do
@@ -61,6 +69,7 @@ defmodule Pan.Mixfile do
      {:relx, "3.24.1"}, # Release assembler (asset compilation failed with 3.22.0)
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
+     {:excoveralls, "~> 0.7", only: :test}
     ]
   end
 
