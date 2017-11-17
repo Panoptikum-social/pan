@@ -24,10 +24,9 @@ defmodule PanWeb.Api.UserController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_user_url(conn,:index)}, conn)
+    links = conn
+    |> api_user_url(:index)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     users = from(u in User, order_by: :name,
                             limit: ^size,

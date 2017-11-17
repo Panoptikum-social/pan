@@ -4,11 +4,11 @@ defmodule PanWeb.SearchFrontendController do
 
   def new(conn, params) do
     size = 10
-    from = unless params["page"] in ["", nil] do
-             (String.to_integer(params["page"]) - 1) * size
-           else
-             0
-           end
+    from = if params["page"] in ["", nil] do
+      0
+    else
+      (String.to_integer(params["page"]) - 1) * size
+    end
 
     page = round((from + 10) / size)
 

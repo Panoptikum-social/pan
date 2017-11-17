@@ -29,10 +29,9 @@ defmodule PanWeb.Api.PersonaController do
     total = Repo.aggregate(Persona, :count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_user_url(conn,:index)}, conn)
+    links = conn
+    |> api_user_url(:index)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     personas = from(p in Persona, order_by: :name,
                                   limit: ^size,
@@ -65,10 +64,9 @@ defmodule PanWeb.Api.PersonaController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_persona_url(conn,:show, id)}, conn)
+    links = conn
+    |> api_persona_url(:show, id)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     persona = Repo.get(Persona, id)
               |> Repo.preload([:redirect, :delegates, :podcasts])
@@ -133,11 +131,9 @@ defmodule PanWeb.Api.PersonaController do
           total = Enum.min([hits.total, 10_000])
           total_pages = div(total - 1, size) + 1
 
-
-          links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                               size: size,
-                                                               total: total_pages,
-                                                               base_url: api_persona_url(conn,:search)}, conn)
+          links = conn
+          |> api_persona_url(:search)
+          |> Helpers.pagination_links({page, size, total_pages}, conn)
 
           persona_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 

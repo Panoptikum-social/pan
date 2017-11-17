@@ -29,10 +29,9 @@ defmodule PanWeb.Api.PodcastController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_podcast_url(conn,:index)}, conn)
+    links = conn
+    |> api_podcast_url(:index)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
                                   where: is_nil(p.blocked) or p.blocked == false,
@@ -61,10 +60,9 @@ defmodule PanWeb.Api.PodcastController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_podcast_url(conn,:show, id)}, conn)
+    links = conn
+    |> api_podcast_url(:show, id)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     podcast = Repo.get(Podcast, id)
                |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
@@ -99,10 +97,9 @@ defmodule PanWeb.Api.PodcastController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_podcast_url(conn,:last_updated)}, conn)
+    links = conn
+    |> api_podcast_url(:last_updated)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     podcasts = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
                                          is_nil(p.latest_episode_publishing_date) == false and
@@ -155,11 +152,9 @@ defmodule PanWeb.Api.PodcastController do
           total = Enum.min([hits.total, 10_000])
           total_pages = div(total - 1, size) + 1
 
-
-          links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                               size: size,
-                                                               total: total_pages,
-                                                               base_url: api_podcast_url(conn,:search)}, conn)
+          links = conn
+          |> api_podcast_url(:search)
+          |> Helpers.pagination_links({page, size, total_pages}, conn)
 
           podcast_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 

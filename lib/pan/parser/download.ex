@@ -2,10 +2,10 @@ defmodule Pan.Parser.Download do
   require Logger
 
   def check_for_rss(feed_xml) do
-    unless String.contains?(feed_xml, "<rss") do
-      {:error, "This is not an rss feed!"}
-    else
+    if String.contains?(feed_xml, "<rss") do
       {:ok, feed_xml}
+    else
+      {:error, "This is not an rss feed!"}
     end
   end
 
@@ -76,13 +76,11 @@ defmodule Pan.Parser.Download do
 
   def redirect(url, headers) do
     header_map = Enum.into(headers, %{})
-    redirect_target =
-      cond do
-        Map.has_key?(header_map, "Location") ->
-          Map.fetch!(header_map, "Location")
-        true ->
-          Map.fetch!(header_map, "location")
-      end
+    redirect_target = if Map.has_key?(header_map, "Location") do
+      Map.fetch!(header_map, "Location")
+    else
+      Map.fetch!(header_map, "location")
+    end
 
     redirect_target =
       case String.starts_with?(redirect_target, "http") do

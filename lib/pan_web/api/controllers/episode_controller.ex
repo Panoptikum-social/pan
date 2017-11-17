@@ -20,10 +20,9 @@ defmodule PanWeb.Api.EpisodeController do
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_episode_url(conn,:index)}, conn)
+    links = conn
+    |> api_episode_url(:index)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
                                   where: (is_nil(p.blocked) or p.blocked == false) and
@@ -76,10 +75,9 @@ defmodule PanWeb.Api.EpisodeController do
           total = Enum.min([hits.total, 10_000])
           total_pages = div(total - 1, size) + 1
 
-          links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                               size: size,
-                                                               total: total_pages,
-                                                               base_url: api_episode_url(conn,:search)}, conn)
+          links = conn
+          |> api_episode_url(:search)
+          |> Helpers.pagination_links({page, size, total_pages}, conn)
 
           episode_ids = Enum.map(hits[:hits], fn(hit) -> String.to_integer(hit[:_id]) end)
 

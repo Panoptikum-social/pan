@@ -29,10 +29,9 @@ defmodule PanWeb.Api.RecommendationController do
     total = Repo.aggregate(Recommendation, :count, :id)
     total_pages = div(total - 1, size) + 1
 
-    links = JaSerializer.Builder.PaginationLinks.build(%{number: page,
-                                                         size: size,
-                                                         total: total_pages,
-                                                         base_url: api_episode_url(conn,:index)}, conn)
+    links = conn
+    |> api_episode_url(:index)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     recommendations = from(e in Recommendation, order_by: [desc: :inserted_at],
                                                 preload: [:podcast, :episode, :chapter, :user],

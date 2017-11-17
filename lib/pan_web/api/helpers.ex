@@ -34,4 +34,12 @@ defmodule PanWeb.Api.Helpers do
                                detail: detail})
     |> halt()
   end
+
+  def pagination_links(base_url, {page, size, total_pages}, conn) do
+    %{number: page,
+      size: size,
+      total: total_pages,
+      base_url: base_url}
+    |> JaSerializer.Builder.PaginationLinks.build(conn)
+  end
 end

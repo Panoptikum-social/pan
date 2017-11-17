@@ -200,7 +200,7 @@ defmodule Pan.Parser.Helpers do
     Map.merge(left, right, &deep_resolve/3)
   end
 
-  defp deep_resolve(_key, left = %{}, right = %{}) do
+  defp deep_resolve(_key, %{} = left, %{} = right) do
     deep_merge(left, right)
   end
 
