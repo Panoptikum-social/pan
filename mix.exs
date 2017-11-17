@@ -32,7 +32,7 @@ defmodule Pan.Mixfile do
      {:phoenix_pubsub, "~> 1.0"}, # PubSub messaging
      {:postgrex, "0.13.3"}, # database adapter
      {:phoenix_ecto, "3.3.0"}, # ORM (yes!)
-     {:phoenix_html, "2.9.0"}, # view layer
+     {:phoenix_html, "2.10.5"}, # view layer
      {:phoenix_live_reload, "1.1.3", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
      {:cowboy, "~> 1.0.4"}, # web server

@@ -147,13 +147,13 @@
                  method: "delete",
                  title: "Log out",
                  style: "color: #aab2bd;",
-                 class: "hidden-xs navbar-text"%>
+                 class: "hidden-xs"%>
         <%= link [fa_icon("sign-out", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Out")],
                  to: session_path(@conn, :delete, @current_user),
                  method: "delete",
                  title: "Log out",
                  style: "color: #aab2bd;",
-                 class: "visible-xs-inline navbar-text"%>
+                 class: "visible-xs-inline"%>
       </li>
     <% else %>
       <li>
