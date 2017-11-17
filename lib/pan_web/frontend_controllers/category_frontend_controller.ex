@@ -72,9 +72,7 @@ defmodule PanWeb.CategoryFrontendController do
                |> Repo.get!(id)
                |> Repo.preload(:parent)
 
-    unless category.parent.title == "👩 👨 Community" do
-      render(conn, "no_community.html")
-    else
+    if category.parent.title == "👩 👨 Community" do
       latest_episodes =
         from(e in Episode, order_by: [desc: :publishing_date],
                            join: p in assoc(e, :podcast),
@@ -88,6 +86,8 @@ defmodule PanWeb.CategoryFrontendController do
       render(conn, "latest_episodes.html", latest_episodes: latest_episodes,
                                            category_id: category.id,
                                            category_title: category.title)
+    else
+      render(conn, "no_community.html")
     end
   end
 
@@ -97,9 +97,7 @@ defmodule PanWeb.CategoryFrontendController do
                |> Repo.get!(id)
                |> Repo.preload(:parent, [podcasts: :categories])
 
-    unless category.parent.title == "👩 👨 Community" do
-      render(conn, "no_community.html")
-    else
+    if category.parent.title == "👩 👨 Community" do
       podcast_ids = from(cp in PanWeb.CategoryPodcast, where: cp.category_id == ^id,
                                                        select: cp.podcast_id)
                     |> Repo.all()
@@ -116,6 +114,8 @@ defmodule PanWeb.CategoryFrontendController do
 
       render(conn, "categorized.html", categories: categories,
                                        category: category)
+    else
+      render(conn, "no_community.html")
     end
   end
 end

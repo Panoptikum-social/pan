@@ -2,10 +2,10 @@ defmodule Pan.Parser.Download do
   require Logger
 
   def check_for_rss(feed_xml) do
-    unless String.contains?(feed_xml, "<rss") do
-      {:error, "This is not an rss feed!"}
-    else
+    if String.contains?(feed_xml, "<rss") do
       {:ok, feed_xml}
+    else
+      {:error, "This is not an rss feed!"}
     end
   end
 
