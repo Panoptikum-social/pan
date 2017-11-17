@@ -6,7 +6,7 @@ defmodule Pan.Repo.Migrations.CreateLanguage do
       add :shortcode, :string
       add :name, :string
 
-      timestamps
+      timestamps()
     end
     create unique_index(:languages, [:shortcode])
 

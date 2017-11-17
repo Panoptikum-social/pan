@@ -9,7 +9,7 @@ defmodule Pan.Repo.Migrations.CreateEnclosure do
       add :guid, :string
       add :episode_id, references(:episodes, on_delete: :nothing)
 
-      timestamps
+      timestamps()
     end
     create index(:enclosures, [:episode_id])
 
