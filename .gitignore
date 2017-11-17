@@ -20,3 +20,6 @@ erl_crash.dump
 # config secret files
 /config/dev.secret.exs
 /config/prod.secret.exs
+
+# excoveralls specific
+/cover
