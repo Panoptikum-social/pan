@@ -68,13 +68,13 @@
   </div>
   <div class="col-md-4" >
     <%= cond do %>
-      <%= !@current_user -> %>
+      <% !@current_user -> %>
         <div class="alert alert-warning">
           <h4>Claiming not available</h4>
           <p>You can only claim personas, if you are logged in.</p>
         </div>
 
-      <%= @current_user && !@current_user.podcaster %>
+      <% !@current_user.podcaster -> %>
         <div class="alert alert-warning">
           <h4>Claiming not available</h4>
           <p>You didn't say you are a podcaster in
@@ -82,7 +82,7 @@
                                      class: "btn btn-sm btn-default" %> yet.</p>
         </div>
 
-      <%= @current_user && !@current_user.email_confirmed %>
+      <% !@current_user.email_confirmed -> %>
         <div class="alert alert-warning">
           <h4>Claiming not available</h4>
           <p>You didn't confirm your email address by clicking on the
