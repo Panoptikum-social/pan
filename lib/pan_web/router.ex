@@ -209,6 +209,8 @@ defmodule PanWeb.Router do
     post "/go_pro", UserFrontendController, :go_pro
 
     post "/personas/:id/claim", PersonaFrontendController, :claim
+    get "/personas/:id/warning", PersonaFrontendController, :warning
+    post "/personas/:id/connect", PersonaFrontendController, :connect
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]

@@ -296,4 +296,35 @@ defmodule PanWeb.PersonaFrontendController do
         |> render("grant_access.html")
     end
   end
+
+
+  def warning(conn, %{"id" => id}, user) do
+    persona = Repo.get(Persona, id)
+
+    render(conn, "warning.html", persona: persona)
+  end
+
+
+  def connect(conn, %{"id" => id}, user) do
+    persona = Repo.get(Persona, id)
+
+    if user.podcaster && user.email_confirmed && !persona.email do
+      persona
+      |> PanWeb.Persona.claiming_changeset(%{user_id: user.id,
+                                             email: user.email})
+      |> Repo.update()
+
+      %Manifestation{user_id: user.id,
+                     persona_id: persona.id}
+      |> Repo.insert
+
+      conn
+      |> put_flash(:info, "Persona claimed  successfully.")
+      |> redirect(to: persona_frontend_path(conn, :show, persona))
+    else
+      conn
+      |> put_flash(:error, "You are not allowed to claim this persona!")
+      |> render("warning.html", persona: persona)
+    end
+  end
 end

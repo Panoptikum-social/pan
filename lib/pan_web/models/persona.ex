@@ -43,7 +43,7 @@ defmodule PanWeb.Persona do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title,
-                     :redirect_id, :long_description])
+                     :redirect_id, :long_description, :user_id])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
   end
@@ -63,6 +63,12 @@ defmodule PanWeb.Persona do
     |> cast(params, [:name, :uri])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
+  end
+
+
+  def claiming_changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:user_id, :email])
   end
 
 
