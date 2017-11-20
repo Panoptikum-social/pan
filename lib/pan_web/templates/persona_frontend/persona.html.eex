@@ -74,7 +74,7 @@
           <p>You can only claim personas, if you are logged in.</p>
         </div>
 
-      <%= !@current_user.podcaster %>
+      <%= @current_user && !@current_user.podcaster %>
         <div class="alert alert-warning">
           <h4>Claiming not available</h4>
           <p>You didn't say you are a podcaster in
@@ -82,14 +82,14 @@
                                      class: "btn btn-sm btn-default" %> yet.</p>
         </div>
 
-      <%= !@current_user.email_confirmed %>
+      <%= @current_user && !@current_user.email_confirmed %>
         <div class="alert alert-warning">
           <h4>Claiming not available</h4>
           <p>You didn't confirm your email address by clicking on the
              confirmation link in the email sent to you after login.</p>
         </div>
 
-      <%= !@persona.email -> %>
+      <% !@persona.email -> %>
         <h4>Claiming</h4>
 
         <p>Please take the time to read the text on the following screen carefully.</p>
@@ -97,7 +97,7 @@
         <p><%= link "Start claiming process", to: persona_frontend_path(@conn, :warning, @persona),
                                               class: "btn btn-normal" %></p>
 
-      <%= true -> %>
+      <% true -> %>
         <h4>Claiming</h4>
         <p>You can send an email to the owner of this persona and ask her for permission
            to add you as a manifestation of this persona.<br/>
