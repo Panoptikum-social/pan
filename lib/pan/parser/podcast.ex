@@ -3,10 +3,9 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Repo
   alias Pan.Parser.RssFeed
   alias Pan.Parser.Persistor
-  alias Pan.Parser.AlternateFeed
   alias Pan.Parser.Language
+  alias Pan.Parser.Feed
   alias PanWeb.Podcast
-  alias PanWeb.Feed
   require Logger
 
 
@@ -29,7 +28,7 @@ defmodule Pan.Parser.Podcast do
 
 
   def delta_import(id) do
-    with {:ok, feed} <- get_feed_by_podcast_id(id),
+    with {:ok, feed} <- Feed.get_by_podcast_id(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
          {:ok, _} <- Persistor.delta_import(map, id),
          {:ok, _} <- unpause_and_reset_failure_count(id) do
@@ -37,16 +36,7 @@ defmodule Pan.Parser.Podcast do
 
     else
       {:redirect, redirect_target} ->
-        # TODO: Figure out how to get rid of this duplicate line
-        {:ok, feed} = get_feed_by_podcast_id(id)
-
-        AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
-                                               title: feed.self_link_url})
-        feed
-        |> Feed.changeset(%{self_link_url: redirect_target})
-        |> Repo.update([force: true])
-
-        # Now that we have updated Feed and alternate feed, let's try again
+        Feed.update_with_redirect_target(id, redirect_target)
         delta_import(id)
 
       {:error, :not_found} ->
@@ -63,7 +53,7 @@ defmodule Pan.Parser.Podcast do
 
 
   def contributor_import(id) do
-    with {:ok, feed} <- get_feed_by_podcast_id(id),
+    with {:ok, feed} <- Feed.get_by_podcast_id(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
       Persistor.contributor_import(map, id)
       {:ok, "Contributors importet successfully"}
@@ -95,7 +85,7 @@ defmodule Pan.Parser.Podcast do
 
 
   def fix_owner(id) do
-    with {:ok, feed} <- get_feed_by_podcast_id(id),
+    with {:ok, feed} <- Feed.get_by_podcast_id(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
       Pan.Parser.Owner.get_or_insert(map[:owner], id)
       {:ok, "Updated owner successfully for #{id}"}
@@ -104,7 +94,7 @@ defmodule Pan.Parser.Podcast do
 
 
   def fix_language(podcast) do
-    with {:ok, feed} <- get_feed_by_podcast_id(podcast.id),
+    with {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
       Language.persist_many(map[:languages], podcast)
       {:ok, "Updated owner successfully for #{podcast.title}"}
@@ -112,17 +102,6 @@ defmodule Pan.Parser.Podcast do
     else
       {:error, message} ->
         {:error, message <> " for podcast #{podcast.title}, #{podcast.id}"}
-    end
-  end
-
-
-  # private helper
-  defp get_feed_by_podcast_id(id) do
-    case Repo.get_by(Feed, podcast_id: id) do
-      nil ->
-        {:error, :not_found}
-      feed ->
-        {:ok, feed}
     end
   end
 end

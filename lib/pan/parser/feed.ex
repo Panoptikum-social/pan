@@ -1,11 +1,13 @@
 defmodule Pan.Parser.Feed do
   use Pan.Web, :controller
   alias Pan.Parser.AlternateFeed
+  alias PanWeb.Feed
+  alias Pan.Repo
 
   def get_or_insert(feed_map, podcast_id) do
-    case Repo.get_by(PanWeb.Feed, podcast_id: podcast_id) do
+    case Repo.get_by(Feed, podcast_id: podcast_id) do
       nil ->
-        %PanWeb.Feed{podcast_id: podcast_id}
+        %Feed{podcast_id: podcast_id}
         |> Map.merge(feed_map)
         |> Repo.insert()
       feed ->
@@ -17,6 +19,27 @@ defmodule Pan.Parser.Feed do
                                                    title: feed_map[:self_link_url]})
             {:ok, feed}
         end
+    end
+  end
+
+
+  def update_with_redirect_target(id, redirect_target) do
+    {:ok, feed} = get_by_podcast_id(id)
+
+    AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
+                                           title: feed.self_link_url})
+    feed
+    |> Feed.changeset(%{self_link_url: redirect_target})
+    |> Repo.update([force: true])
+  end
+
+
+  def get_by_podcast_id(id) do
+    case Repo.get_by(Feed, podcast_id: id) do
+      nil ->
+        {:error, :not_found}
+      feed ->
+        {:ok, feed}
     end
   end
 end

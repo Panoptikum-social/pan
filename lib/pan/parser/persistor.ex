@@ -59,6 +59,8 @@ defmodule Pan.Parser.Persistor do
         Episode.persist_many(map.episodes, podcast)
       end
 
+      Feed.update_with_redirect_target(podcast_id, map[:new_feed_url])
+
       podcast
       |> PanWeb.Podcast.changeset(%{last_build_date: map.last_build_date})
       |> PanWeb.Podcast.update_counters()

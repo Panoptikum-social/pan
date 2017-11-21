@@ -18,6 +18,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
 
+  def call(_, "tag", [:"new-feed-url", _, [value]]), do: %{new_feed_url: value}
+
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [
     :"itunes:explicit", :"iTunes:explicit", :explicit
   ], do: %{explicit: H.boolify(value)}
