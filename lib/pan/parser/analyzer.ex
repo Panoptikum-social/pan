@@ -135,7 +135,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright, :id,
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
-    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :managingEditor, :"dc:subject",
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email", :pic,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
@@ -143,11 +143,11 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id", :"sy:updateBase",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
-    :managingeditor, :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
+    :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :itunesowner, :textInput, :refURL,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid, :odToken,
-    :"manageEditor", :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
+    :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
@@ -241,20 +241,23 @@ defmodule Pan.Parser.Analyzer do
     %{languages: %{UUID.uuid1() => %{shortcode: value}}}
   end
 
-
 # We expect one owner
-  def call(_, "tag", [:"itunes:owner",    _, value]), do: Iterator.parse(%{}, "owner", value)
-  def call(_, "tag", [:owner,             _, value]), do: Iterator.parse(%{}, "owner", value)
-  def call(_, "tag", [:"itunes:email",    _, value]), do: Iterator.parse(%{}, "owner", value)
-
+  def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
+    :"itunes:owner", :owner, :"itunes:email"
+  ], do: Iterator.parse(%{}, :podcast_contributor, "owner", value)
 
 # We expect one podcast author
   def call(_, "tag", [:"itunes:author",        _, []]), do: %{}
-  def call(_, "tag", [:"itunes:author",       _, value]), do: Iterator.parse(%{}, "author", value)
-  def call(_, "tag", [:"atom:author",         _, value]), do: Iterator.parse(%{}, "author", value)
-  def call(_, "tag", [:author,                _, value]), do: Iterator.parse(%{}, "author", value)
-  def call(_, "tag", [:"googleplay:author",   _, value]), do: Iterator.parse(%{}, "author", value)
-  def call(_, "tag", [:"artist",              _, value]), do: Iterator.parse(%{}, "author", value)
+  def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
+    :"itunes:author", :"atom:author", :author, :"googleplay:author", :artist
+  ], do: Iterator.parse(%{}, :podcast_contributor, "author", value)
+
+
+  def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
+    :"managingEditor", :managingeditor, :"manageEditor"
+  ] do
+    Iterator.parse(%{}, :podcast_contributor, "managing_editor", value)
+  end
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do

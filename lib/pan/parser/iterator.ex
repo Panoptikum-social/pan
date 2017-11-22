@@ -9,31 +9,6 @@ defmodule Pan.Parser.Iterator do
 # We are done digging down
   def parse(map, _, []), do: map
 
-  def parse(map, "owner", [head | tail]) do
-    owner_map =
-      if is_map(head) do
-        Analyzer.call("owner", [head[:name], head[:attr], head[:value]])
-      else
-        %{email: head}
-      end
-
-    Helpers.deep_merge(map, %{owner: owner_map})
-    |> parse("owner", tail)
-  end
-
-
-  def parse(map, "author", [head | tail]) do
-    author_map =
-      if is_map(head) do
-        Analyzer.call("author", [head[:name], head[:attr], head[:value]])
-      else
-        %{name: String.slice(head, 0, 255)}
-      end
-
-    Helpers.deep_merge(map, %{author: author_map})
-    |> parse("author", tail)
-  end
-
 
   def parse(map, "episode_author", [head | tail]) do
     episode_author_map =
@@ -87,6 +62,20 @@ defmodule Pan.Parser.Iterator do
 
     Pan.Parser.Helpers.deep_merge(map, %{contributors: %{guid => contributor_map}})
     |> parse("contributor", tail, guid)
+  end
+
+
+  def parse(map, :podcast_contributor, _, []), do: map
+  def parse(map, :podcast_contributor, role, [head | tail]) do
+    contributor_map =
+      if is_map(head) do
+        Analyzer.call(role, [head[:name], head[:attr], head[:value]])
+      else
+        %{name: String.slice(head, 0, 255)}
+      end
+
+    Helpers.deep_merge(map, %{role => contributor_map})
+    |> parse(:podcast_contributor, role, tail)
   end
 
 

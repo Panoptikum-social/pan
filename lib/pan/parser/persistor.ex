@@ -9,7 +9,7 @@ defmodule Pan.Parser.Persistor do
   alias Pan.Parser.Category
   alias Pan.Parser.AlternateFeed
   alias Pan.Parser.Language
-  alias Pan.Parser.Owner
+  alias Pan.Parser.PodcastContributor
 
 
   def initial_import(map, _url \\ nil) do
@@ -22,7 +22,7 @@ defmodule Pan.Parser.Persistor do
     # if Application.get_env(:pan, :environment) == "dev", do: IO.inspect podcast_map
 
     {:ok, podcast} = Podcast.get_or_insert(podcast_map)
-    Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
+    Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
 
     {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
 
@@ -31,15 +31,14 @@ defmodule Pan.Parser.Persistor do
 
     Language.persist_many(map[:languages], podcast)
 
-    if map[:owner] do
-      Owner.get_or_insert(map[:owner], podcast.id)
-    end
+    map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+
+    map["managing_editor"] &&
+      PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
 
     Contributor.persist_many(map[:contributors], podcast)
 
-    if map[:episodes] do
-      Episode.persist_many(map[:episodes], podcast)
-    end
+    map[:episodes] && Episode.persist_many(map[:episodes], podcast)
 
     podcast
     |> PanWeb.Podcast.changeset()
