@@ -19,6 +19,7 @@
               alt="<%= @episode.image_title%>"
               type="image/png"
               width="150"
+              style="margin-top: 30px;"
               class="thumbnail">
         <img src="/images/missing-podcast.png"
              alt="missing image"
