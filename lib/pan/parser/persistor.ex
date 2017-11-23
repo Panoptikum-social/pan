@@ -77,7 +77,7 @@ defmodule Pan.Parser.Persistor do
 
     {:ok, podcast} = Podcast.update(podcast_map, podcast_id)
 
-    # Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+    Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
 
     # {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
 

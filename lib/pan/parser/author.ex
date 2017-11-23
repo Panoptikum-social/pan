@@ -19,17 +19,14 @@ defmodule Pan.Parser.Author do
           Persona.get_or_insert(author_map)
         end
 
-      case Repo.get_by(Engagement, persona_id: author.id,
-                                   podcast_id: podcast_id,
-                                   role: "author") do
-        nil ->
-          %Engagement{persona_id: author.id,
-                      podcast_id: podcast_id,
-                      role: "author"}
-          |> Repo.insert()
-        engagement ->
-          {:ok, engagement}
-      end
+      (from e in Engagement, where: e.podcast_id == ^podcast_id and
+                                    e.role == "author")
+      |> Repo.delete_all()
+
+      %Engagement{persona_id: author.id,
+                  podcast_id: podcast_id,
+                  role: "author"}
+      |> Repo.insert()
     end
   end
 
@@ -49,18 +46,16 @@ defmodule Pan.Parser.Author do
           Persona.get_or_insert(author_map)
         end
 
-      case Repo.get_by(Gig, persona_id: author.id,
-                            episode_id: episode.id,
-                            role: "author") do
-        nil ->
-          %Gig{persona_id: author.id,
-               episode_id: episode.id,
-               role: "author",
-               publishing_date: episode.publishing_date}
-          |> Repo.insert()
-        gig ->
-          {:ok, gig}
-      end
+      (from g in Gig, where: g.persona_id == ^author.id and
+                             g.episode_id == ^episode.id and
+                             g.role == "author")
+      |> Repo.delete_all()
+
+      %Gig{persona_id: author.id,
+           episode_id: episode.id,
+           role: "author",
+           publishing_date: episode.publishing_date}
+      |> Repo.insert()
     end
   end
 end
