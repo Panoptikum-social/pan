@@ -14,12 +14,10 @@ defmodule Pan.Parser.Persistor do
 
   def initial_import(map, _url \\ nil) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
-                                 :languages, :categories, :owner, :categories,
-                                 :author])
+                                 :languages, :categories, "owner", :categories,
+                                 "author", "managing_editor"])
     feed_map =    Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
-
-    # if Application.get_env(:pan, :environment) == "dev", do: IO.inspect podcast_map
 
     {:ok, podcast} = Podcast.get_or_insert(podcast_map)
     Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
@@ -69,6 +67,41 @@ defmodule Pan.Parser.Persistor do
     end
   end
 
+
+  def update_from_feed(map, podcast_id) do
+    podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
+                                 :languages, :categories, "owner", :categories,
+                                 "author", "managing_editor"])
+    feed_map =    Map.drop(map[:feed], [:alternate_feeds])
+    alternate_feeds_map = map[:feed][:alternate_feeds]
+
+    {:ok, podcast} = Podcast.update(podcast_map, podcast_id)
+
+    # Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+
+    # {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
+
+    # Category.persist_many(map[:categories], podcast)
+    # AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
+
+    # Language.persist_many(map[:languages], podcast)
+
+    # map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+
+    # map["managing_editor"] &&
+    #   PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
+
+    # Contributor.persist_many(map[:contributors], podcast)
+
+    # map[:episodes] && Episode.persist_many(map[:episodes], podcast)
+
+    podcast
+    |> PanWeb.Podcast.changeset()
+    |> PanWeb.Podcast.update_counters()
+    |> Repo.update()
+
+    {:ok, :nothing_to_do}
+  end
 
   def contributor_import(map, podcast_id) do
     podcast = Repo.get!(PanWeb.Podcast, podcast_id)

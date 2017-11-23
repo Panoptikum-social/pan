@@ -395,4 +395,17 @@ defmodule PanWeb.PodcastController do
 
     render(conn, "duplicates.html", feeds: feeds)
   end
+
+
+  def update_from_feed(conn, %{"id" => id}) do
+    case Pan.Parser.Podcast.update_from_feed(id) do
+      {:ok, message} ->
+        conn
+        |> put_flash(:info, message)
+      {:error, message} ->
+        conn
+        |> put_flash(:error, message)
+    end
+    |> redirect(to: podcast_path(conn, :show, id))
+  end
 end

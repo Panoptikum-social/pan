@@ -27,6 +27,13 @@ defmodule Pan.Parser.Podcast do
   end
 
 
+  def update(podcast_map, podcast_id) do
+    Repo.get(Podcast, podcast_id)
+    |> Podcast.changeset(podcast_map)
+    |> Repo.update()
+  end
+
+
   def delta_import(id) do
     with {:ok, feed} <- Feed.get_by_podcast_id(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
@@ -51,6 +58,28 @@ defmodule Pan.Parser.Podcast do
     end
   end
 
+
+  def update_from_feed(id) do
+    with {:ok, feed} <- Feed.get_by_podcast_id(id),
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
+         {:ok, _} <- Persistor.update_from_feed(map, id),
+         {:ok, _} <- unpause_and_reset_failure_count(id) do
+      {:ok, "Podcast data updated"}
+
+    else
+      {:redirect, redirect_target} ->
+        Feed.update_with_redirect_target(id, redirect_target)
+        delta_import(id)
+
+      {:error, :not_found} ->
+        message = "=== Podcast #{inspect id} has no feed! ==="
+        Logger.error(message)
+        {:error, message}
+
+      {:error, message} ->
+        {:error, message}
+    end
+  end
 
   def contributor_import(id) do
     with {:ok, feed} <- Feed.get_by_podcast_id(id),

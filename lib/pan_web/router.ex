@@ -320,6 +320,7 @@ defmodule PanWeb.Router do
     get "/podcasts/:id/fix_owner", PodcastController, :fix_owner
     get "/podcasts/fix_languages", PodcastController, :fix_languages
     get "/podcasts/:id/retire", PodcastController, :retire
+    get "/podcasts/:id/update_from_feed", PodcastController, :update_from_feed
     get "/podcasts/retirement", PodcastController, :retirement
     get "/podcasts/stale", PodcastController, :stale
     get "/podcasts/orphans", PodcastController, :orphans
