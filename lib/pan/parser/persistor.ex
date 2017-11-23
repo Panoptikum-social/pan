@@ -77,30 +77,37 @@ defmodule Pan.Parser.Persistor do
 
     {:ok, podcast} = Podcast.update(podcast_map, podcast_id)
 
-    Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+    PodcastContributor.delete_role(podcast_id, "owner")
+    map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast_id)
 
-    # {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
+    map["author"] && Author.get_or_insert_persona_and_engagement(map["author"], podcast_id)
 
-    # Category.persist_many(map[:categories], podcast)
-    # AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
+    PodcastContributor.delete_role(podcast_id, "managing_editor")
+    map["managing_editor"] &&
+      PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast_id)
 
-    # Language.persist_many(map[:languages], podcast)
+    {:ok, feed} = Feed.get_by_podcast_id(podcast_id)
+    if feed.self_link_url != feed_map[:self_link_url] do
+      Feed.update_with_redirect_target(feed.id, feed_map[:self_link_url])
+    end
 
-    # map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+    Category.persist_many(map[:categories], podcast)
+    AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
-    # map["managing_editor"] &&
-    #   PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
+    Language.delete_for_podcast(podcast_id)
+    Language.persist_many(map[:languages], podcast)
 
-    # Contributor.persist_many(map[:contributors], podcast)
+    PodcastContributor.delete_role(podcast_id, "contributor")
+    Contributor.persist_many(map[:contributors], podcast)
 
-    # map[:episodes] && Episode.persist_many(map[:episodes], podcast)
+    map[:episodes] && Episode.update_from_feed_many(map[:episodes], podcast)
 
     podcast
     |> PanWeb.Podcast.changeset()
     |> PanWeb.Podcast.update_counters()
     |> Repo.update()
 
-    {:ok, :nothing_to_do}
+    {:ok, :podcast_updated}
   end
 
   def contributor_import(map, podcast_id) do

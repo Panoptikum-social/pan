@@ -27,12 +27,31 @@ defmodule Pan.Parser.Episode do
   end
 
 
+  def insert_or_update(episode_map, podcast_id) do
+    episode =
+      if episode_map[:guid] do
+        Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id)
+      else
+        Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map.subtitle,
+                                    podcast_id: podcast_id)
+      end
+
+    if episode do
+      episode
+      |> PanWeb.Episode.changeset(episode_map)
+      |> Repo.update([force: true]) # forces timestamp to update
+    else
+      insert(episode_map, podcast_id)
+    end
+  end
+
+
   def insert(episode_map, podcast_id) do
     # Here comes the line with the initial update time
     PanWeb.Podcast
     |> Repo.get(podcast_id)
     |> PanWeb.Podcast.changeset(%{update_intervall: 10,
-                               next_update: Timex.shift(Timex.now(), hours: 10)})
+                                  next_update: Timex.shift(Timex.now(), hours: 10)})
     |> Repo.update()
 
     %PanWeb.Episode{podcast_id: podcast_id}
@@ -60,6 +79,35 @@ defmodule Pan.Parser.Episode do
     for {_, episode_map} <- episodes_map do
       persist_one(episode_map, podcast)
     end
+  end
+
+
+  def update_from_feed_many(episodes_map, podcast) do
+    for {_, episode_map} <- episodes_map do
+      update_from_feed_one(episode_map, podcast)
+    end
+
+    # delete derprecated episodes
+    one_hour_ago = Timex.now()
+                   |> Timex.shift(hours: -1 )
+
+    episode_ids = from(e in PanWeb.Episode, where: e.podcast_id == ^podcast.id and
+                                                   e.updated_at < ^one_hour_ago,
+                                            select: e.id)
+                  |> Repo.all()
+
+    from(g in PanWeb.Gig, where: g.episode_id in ^episode_ids)
+    |> Repo.delete_all()
+
+    from(e in PanWeb.Enclosure, where: e.episode_id in ^episode_ids)
+    |> Repo.delete_all()
+
+    from(c in PanWeb.Chapter, where: c.episode_id in ^episode_ids)
+    |> Repo.delete_all()
+
+    from(e in PanWeb.Episode, where: e.podcast_id == ^podcast.id and
+                                     e.updated_at < ^one_hour_ago)
+    |> Repo.delete_all()
   end
 
 
@@ -125,6 +173,7 @@ defmodule Pan.Parser.Episode do
   end
   defp persist_one(_episodes_map, _podcast), do: {:error, :no_enclosures}
 
+
   defp unwrap_first_enclosure(enclosures) do
     enclosures
     |> Map.to_list()
@@ -132,11 +181,13 @@ defmodule Pan.Parser.Episode do
     |> elem(1)
   end
 
+
   defp clean_episode(episode_map, fallback_url) do
     episode_map
     |> Map.drop([:chapters, :enclosures, :contributors])
     |> Map.put_new(:guid, episode_map[:link] || fallback_url)
   end
+
 
   defp get_or_insert_chapters(chapters, episode_id) do
     for {_, chapter_map} <- chapters do
@@ -144,9 +195,52 @@ defmodule Pan.Parser.Episode do
     end
   end
 
+
+  defp insert_or_touch_chapters(chapters, episode_id) do
+    for {_, chapter_map} <- chapters do
+      Chapter.insert_or_touch(chapter_map, episode_id)
+    end
+
+    # delete derprecated chapters
+    one_hour_ago = Timex.now()
+                   |> Timex.shift(hours: -1 )
+
+    from(c in PanWeb.Chapter, where: c.episode_id == ^episode_id and
+                                     c.updated_at < ^one_hour_ago)
+    |> Repo.delete_all()
+  end
+
+
+
   defp get_or_insert_enclosures(enclosures, episode_id) do
     for {_, enclosure_map} <- enclosures do
       Enclosure.get_or_insert(enclosure_map, episode_id)
     end
   end
+
+
+  defp update_from_feed_one(%{enclosures: enclosures} = episode_map, podcast) do
+    first_enclosure = unwrap_first_enclosure(enclosures)
+    plain_episode_map = clean_episode(episode_map, first_enclosure.url)
+
+    with {:ok, episode} <- insert_or_update(plain_episode_map, podcast.id) do
+      get_or_insert_enclosures(enclosures, episode.id)
+
+      if episode_map[:chapters] do
+        insert_or_touch_chapters(episode_map.chapters, episode.id)
+      end
+
+      if episode_map[:contributors] do
+        Contributor.delete_role(episode.id, "contributor")
+        Contributor.persist_many(episode_map.contributors, episode)
+      end
+
+      if episode_map[:author] do
+        Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+      end
+
+      Logger.info "\n\e[33m === Updating episode: #{episode.title} ===\e[0m"
+    end
+  end
+  defp update_from_feed_one(_episodes_map, _podcast), do: {:error, :no_enclosures}
 end

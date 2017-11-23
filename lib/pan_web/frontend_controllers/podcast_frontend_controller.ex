@@ -48,4 +48,31 @@ defmodule PanWeb.PodcastFrontendController do
 
     render(conn, "feeds.html", podcast: podcast)
   end
+
+
+  def trigger_update(conn, %{"id" => id}) do
+    id = String.to_integer(id)
+    podcast = Repo.get!(Podcast, id)
+
+    if !podcast.manually_updated_at or
+       podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do
+
+      podcast
+      |> Podcast.changeset(%{manually_updated_at: Timex.now()})
+      |> Repo.update()
+
+      case Pan.Parser.Podcast.update_from_feed(id) do
+        {:ok, message} ->
+          conn
+          |> put_flash(:info, message)
+        {:error, message} ->
+          conn
+          |> put_flash(:error, message)
+      end
+    else
+      conn
+      |> put_flash(:error, "This podcast has been updated manually within the last hour. Please try again in an hour.")
+    end
+    |> redirect(to: podcast_frontend_path(conn, :show, id))
+  end
 end

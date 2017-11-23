@@ -46,4 +46,11 @@ defmodule Pan.Parser.Contributor do
       end
     end
   end
+
+
+  def delete_role(episode_id, role) do
+    (from g in Gig, where: g.episode_id == ^episode_id and
+                           g.role == ^role)
+    |> Repo.delete_all()
+  end
 end

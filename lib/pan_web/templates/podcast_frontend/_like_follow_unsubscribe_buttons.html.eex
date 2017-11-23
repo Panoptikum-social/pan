@@ -4,6 +4,18 @@
     <%= follow_or_unfollow(@current_user.id, @podcast) %>
     <%= subscribe_or_unsubscribe(@current_user.id, @podcast) %>
   </p>
+
+  <%= if !@podcast.manually_updated_at or
+       @podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do %>
+    <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
+                                                  class: "btn btn-danger btn-xs" %>
+  <% else %>
+    <small>
+      A manual update will be available in
+      <%= Time.diff(@podcast.manually_updated_at, Timex.shift(Timex.now(), hours: -1), :seconds) / 60.00 |> Float.round(1) %>
+      minutes.
+    </small>
+  <% end %>
 <% else %>
    <%= @podcast.likes_count %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
 

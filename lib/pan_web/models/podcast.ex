@@ -33,6 +33,7 @@ defmodule PanWeb.Podcast do
     field :subscriptions_count, :integer
     field :latest_episode_publishing_date, :naive_datetime
     field :publication_frequency, :float
+    field :manually_updated_at, :naive_datetime
     timestamps()
 
     has_many :episodes, PanWeb.Episode, on_delete: :delete_all
@@ -61,7 +62,7 @@ defmodule PanWeb.Podcast do
                      :summary, :update_paused, :blocked, :retired, :updated_at, :update_intervall,
                      :next_update, :episodes_count, :followers_count, :likes_count,
                      :subscriptions_count, :latest_episode_publishing_date, :publication_frequency,
-                     :failure_count])
+                     :failure_count, :manually_updated_at])
     |> validate_required([:title, :update_intervall, :next_update])
     |> unique_constraint(:title)
   end

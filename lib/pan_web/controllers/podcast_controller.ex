@@ -398,6 +398,7 @@ defmodule PanWeb.PodcastController do
 
 
   def update_from_feed(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     case Pan.Parser.Podcast.update_from_feed(id) do
       {:ok, message} ->
         conn

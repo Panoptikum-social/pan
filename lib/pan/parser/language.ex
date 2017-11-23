@@ -28,4 +28,10 @@ defmodule Pan.Parser.Language do
       |> Repo.update!
     end
   end
+
+
+  def delete_for_podcast(podcast_id) do
+    (from lp in "languages_podcasts", where: lp.podcast_id == ^podcast_id)
+    |> Repo.delete_all()
+  end
 end

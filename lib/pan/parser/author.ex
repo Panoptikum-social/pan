@@ -3,6 +3,8 @@ defmodule Pan.Parser.Author do
   alias Pan.Parser.Persona
   alias PanWeb.Engagement
   alias PanWeb.Gig
+  alias Pan.Parser.PodcastContributor
+  alias Pan.Parser.Contributor
 
   def get_or_insert_persona_and_engagement(author_map, podcast_id) do
     if author_map[:email] || author_map[:name] do
@@ -19,9 +21,7 @@ defmodule Pan.Parser.Author do
           Persona.get_or_insert(author_map)
         end
 
-      (from e in Engagement, where: e.podcast_id == ^podcast_id and
-                                    e.role == "author")
-      |> Repo.delete_all()
+      PodcastContributor.delete_role(podcast_id, "author")
 
       %Engagement{persona_id: author.id,
                   podcast_id: podcast_id,
@@ -46,10 +46,7 @@ defmodule Pan.Parser.Author do
           Persona.get_or_insert(author_map)
         end
 
-      (from g in Gig, where: g.persona_id == ^author.id and
-                             g.episode_id == ^episode.id and
-                             g.role == "author")
-      |> Repo.delete_all()
+      Contributor.delete_role(episode.id, "author")
 
       %Gig{persona_id: author.id,
            episode_id: episode.id,

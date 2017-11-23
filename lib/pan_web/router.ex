@@ -202,6 +202,8 @@ defmodule PanWeb.Router do
     get "/my_profile", UserFrontendController, :my_profile
     get "/my_messages", UserFrontendController, :my_messages
 
+    get "/podcasts/:id/trigger_update", PodcastFrontendController, :trigger_update
+
     get "/edit", UserFrontendController, :edit
     put "/update", UserFrontendController, :update
     get "/edit_password", UserFrontendController, :edit_password
