@@ -173,14 +173,14 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
-    :category, :"dc:creator", :comments, :"feedburner:origLink", :"itunes:image", :"dc:modifieddate",
+    :category, :"dc:creator", :comments, :"feedburner:origLink", :"dc:modifieddate",
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block", :meta,
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment, :url,
-    :"cba:containsCopyright", :"media:thumbnail", :image, :source, :"media:description", :programid,
+    :"cba:containsCopyright", :"media:thumbnail", :source, :"media:description", :programid,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated", :img,
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point", :length,
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
-    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :"image_link", :itemDate, :"ddn:id",
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :itemDate, :"ddn:id",
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure", :timestamp,
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
     :"media:title", :"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename", :tags,
@@ -193,7 +193,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
     :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"dc:type",
     :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername", :mobile,
-    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :imageurl,
+    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id",
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language", :tags,
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime", :draft,
@@ -202,8 +202,8 @@ defmodule Pan.Parser.Analyzer do
     :"uzhfeeds:image", :"amp:banner", :"itunes:isClosedCaptioned", :"blip:poster_image", :showThumb,
     :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
-    :"dc:date.Taken", :title_in_language, :itunes_image, :foto_207, :"ddn:episode_id", :lead, :date,
-    :"ddn:special", :"ddn:expires", :imagetitle, :"grtv:image", :showIcon, :youtubeID, :group,
+    :"dc:date.Taken", :title_in_language, :foto_207, :"ddn:episode_id", :lead, :date,
+    :"ddn:special", :"ddn:expires", :"grtv:image", :showIcon, :youtubeID, :group,
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file", :owner,
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss", :"ez:id", :"cfi:id",
@@ -287,6 +287,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:title, _, [value | _]]), do: %{title: H.to_255(value)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: H.to_255(value)}
+
+  def call(_, "episode", [tag_atom, attr, _]) when tag_atom in [:"itunes:image", :"iTunes:image"] do
+    %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
+  end
 
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}

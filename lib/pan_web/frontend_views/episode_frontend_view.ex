@@ -164,7 +164,8 @@ defmodule PanWeb.EpisodeFrontendView do
            |> Repo.preload(:personas)
 
     for persona <- user.personas do
-      [proclaim_or_not(episode_id, persona), tag(:br)]
+      proclaim_or_not(episode_id, persona)
+      # [proclaim_or_not(episode_id, persona), tag(:br)]
     end
   end
 

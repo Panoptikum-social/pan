@@ -13,7 +13,22 @@
 </h1>
 
 <div class="row">
-  <div class="col-md-6" style="border-right: 1px dotted #ccc;">
+  <%= if @episode.image_url do %>
+    <div class="col-md-2">
+      <object data="<%= @episode.image_url %>"
+              alt="<%= @episode.image_title%>"
+              type="image/png"
+              width="150"
+              class="thumbnail">
+        <img src="/images/missing-podcast.png"
+             alt="missing image"
+             width="150"
+             />
+      </object>
+    </div>
+  <% end %>
+
+  <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">
     <%= if @episode.description && @episode.description != @episode.shownotes do %>
       <h3>Description</h3>
       <p><%= truncate(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
@@ -23,15 +38,9 @@
       <h3>Summary</h3>
       <p><%= truncate(@episode.summary, 1000) %></p>
     <% end %>
-
-    <%= if @current_user do %>
-      <br/>
-      <b>Claim contribution</b>
-      <p style="line-height: 200%;"><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
-    <% end %>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-5">
     <dl class="dl-horizontal" style="margin-top: 30px;">
       <dt>Subtitle</dt>
       <dd><%= @episode.subtitle %></dd>
@@ -91,6 +100,13 @@
     </dl>
   </div>
 </div>
+
+<%= if @current_user do %>
+  <br/>
+  <b>Claim contribution</b>
+  <p style="line-height: 200%;"><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
+<% end %>
+
 
 <%= if @current_user do %>
   <p><%= like_or_unlike(@current_user.id, @episode.id) %></p>
