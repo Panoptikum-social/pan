@@ -8,6 +8,13 @@
 
 <h1><%= @podcast.title %></h1>
 
+<%= if @podcast.retired do %>
+  <p class="alert alert-warning container" role="alert">
+    We retired this podcast, because we couldn't parse it for 10 consecutive times.
+  </p>
+<% end %>
+
+
 <div class="row">
   <div class="col-md-10">
     <div class="row">
