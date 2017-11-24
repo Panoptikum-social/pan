@@ -19,6 +19,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
 
   def call(_, "tag", [:"new-feed-url", _, [value]]), do: %{new_feed_url: value}
+  def call(_, "tag", [:"itunes:new-feed-url", _, [value]]), do: %{new_feed_url: value}
 
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [
     :"itunes:explicit", :"iTunes:explicit", :explicit
@@ -137,7 +138,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject",
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
-    :webMaster, :ttl, :"itunes:new-feed-url", :"googleplay:description", :"googleplay:email", :pic,
+    :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
