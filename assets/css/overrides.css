@@ -20,15 +20,6 @@ h6, .h6 { font-size: 14px; }
 .username {font-size: 14px;}
 .navbar-nav i.fa {font-size: 20px; padding-top: 5px;}
 
-/* Bootstrap Notifications */
-.notifications { position: fixed; z-index: 9999; }
-.notifications.top-right { right: 10px; top: 25px; }
-.notifications.top-left { left: 10px; top: 25px; }
-.notifications.bottom-left { left: 10px; bottom: 25px; }
-.notifications.bottom-right { right: 10px; bottom: 25px; }
-.notifications > div { position: relative; margin: 5px 0px; }
-.notifications > .alert { padding: 2px 10px 2px 10px; }
-
 .message-warning { background-color: #fffaed;}
 .message-success { background-color: #ddffdd;}
 .message-info { background-color: #d7f1fa;}
@@ -100,3 +91,6 @@ input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
 
 .panel-heading .panel-title { padding-left: 15px; }
 .panel-group-list .panel { margin-bottom: 1px; }
+
+.alert { padding: 5px;
+         transition: all .1s ease-in-out important!; }

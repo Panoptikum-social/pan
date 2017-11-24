@@ -292,6 +292,17 @@ defmodule Pan.Parser.Analyzer do
     %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
   end
 
+  def call(_, "episode", [:image, _, value]), do: Iterator.parse(%{}, "episode_image", value)
+  def call(_, "episode_image", [:title, _, _]), do: %{}
+  def call(_, "episode_image", [:title, _, [value]]), do: %{image_title: H.to_255(value)}
+  def call(_, "episode_image", [:url,   _, []]), do: %{}
+  def call(_, "episode_image", [:url,   _, [value]]), do: %{image_url: H.to_255(value)}
+  def call(_, "episode_image", [:link,        _, _]), do: %{}
+  def call(_, "episode_image", [:description, _, _]), do: %{}
+  def call(_, "episode_image", [:width,       _, _]), do: %{}
+  def call(_, "episode_image", [:height,      _, _]), do: %{}
+
+
   def call(_, "episode", [:link, _, []]), do: %{}
   def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
   def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}

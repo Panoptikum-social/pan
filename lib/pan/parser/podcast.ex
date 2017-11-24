@@ -60,10 +60,13 @@ defmodule Pan.Parser.Podcast do
 
 
   def update_from_feed(id) do
-    with {:ok, feed} <- Feed.get_by_podcast_id(id),
+    with {:ok, _} <- send_download_message(id),
+         {:ok, feed} <- Feed.get_by_podcast_id(id),
+         {:ok, _} <- send_parsing_message(id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
          {:ok, _} <- Persistor.update_from_feed(map, id),
-         {:ok, _} <- unpause_and_reset_failure_count(id) do
+         {:ok, _} <- unpause_and_reset_failure_count(id),
+         {:ok, _} <- send_final_messages_to_browser(id) do
       {:ok, "Podcast data updated"}
 
     else
@@ -95,6 +98,39 @@ defmodule Pan.Parser.Podcast do
     |> Repo.get(id)
     |> PanWeb.Podcast.changeset(%{update_paused: false, failure_count: 0})
     |> Repo.update([force: true])
+  end
+
+
+  def send_download_message(id) do
+      PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
+                                "notification", %{content: "Downloading...", type: "success"})
+      {:ok, "nothing to do"}
+  end
+
+
+  def send_parsing_message(id) do
+      PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
+                                "notification", %{content: "Parsing...", type: "success"})
+      {:ok, "nothing to do"}
+  end
+
+
+  def send_final_messages_to_browser(id) do
+    podcast = Repo.get(Podcast, id)
+    notification =
+      %{content: "<i class='fa fa-refresh'></i> " <> Integer.to_string(id) <>
+                  " <i class='fa fa-podcast'></i> " <> podcast.title,
+        type: "info"}
+
+    PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
+                              "notification", notification)
+
+    notification =
+      %{content: "You want to refresh your browser window now!",
+        type: "warning"}
+    PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
+                              "notification", notification)
+    {:ok, "nothing to do"}
   end
 
 

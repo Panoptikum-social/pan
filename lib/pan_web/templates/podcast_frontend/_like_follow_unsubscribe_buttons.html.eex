@@ -6,9 +6,20 @@
   </p>
 
   <%= if !@podcast.manually_updated_at or
-       @podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do %>
+       @podcast.manually_updated_at < Timex.shift(Timex.now(), hours: -1) do %>
     <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
                                                   class: "btn btn-danger btn-xs" %>
+
+    <button class="btn btn-primary btn-xs"
+            data-toggle="popover"
+            data-placement="left"
+            data-title="Metadata update"
+            data-html="true"
+            data-content="You can manually trigger a metadata update for this podcast once an hour,
+                          if you are impatient. This still will take some time, so keep track of
+                          the status updates. And refresh the page with [F5] when told so.">
+      <%= fa_icon "info-circle" %> Help
+    </button>
   <% else %>
     <small>
       A manual update will be available in
@@ -28,3 +39,9 @@
     <%= link "Log in ", to: session_path(@conn, :new) %> to like, follow, recommend and subscribe!
   </i></p>
 <% end %>
+
+<script>
+  $(function() {
+    $('[data-toggle="popover"]').popover()
+  })
+</script

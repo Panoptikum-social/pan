@@ -1,9 +1,17 @@
 let Notification = {
   popup(response) {
-    var message = { html: "<i>" + response.user_name + ":</i> &nbsp;" + response.content }
-    if(window.lastMessage != message.html){
-      $('.top-right').notify({type: response.type, message: message }).show()
-      window.lastMessage = message.html
+    var message;
+    if(typeof response.user_name == 'undefined'){
+      message = response.content
+    } else {
+      message = "<i>" + response.user_name + ":</i> &nbsp;" + response.content
+    }
+
+    if(window.lastMessage != message){
+      $.notify({message: message},
+               {type: response.type,
+                spacing: -5})
+      window.lastMessage = message
     }
   }
 }

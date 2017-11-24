@@ -23,7 +23,6 @@
   </head>
 
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
-    <div class='notifications top-right'></div>
     <div class="container-fluid">
       <nav class="navbar navbar-default navbar-inverse">
         <div class="container">

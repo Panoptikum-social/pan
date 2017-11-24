@@ -55,20 +55,15 @@ defmodule PanWeb.PodcastFrontendController do
     podcast = Repo.get!(Podcast, id)
 
     if !podcast.manually_updated_at or
-       podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do
+       podcast.manually_updated_at < Timex.shift(Timex.now(), hours: -1) do
 
       podcast
       |> Podcast.changeset(%{manually_updated_at: Timex.now()})
       |> Repo.update()
 
-      case Pan.Parser.Podcast.update_from_feed(id) do
-        {:ok, message} ->
-          conn
-          |> put_flash(:info, message)
-        {:error, message} ->
-          conn
-          |> put_flash(:error, message)
-      end
+      Task.async(fn -> Pan.Parser.Podcast.update_from_feed(id) end)
+      conn
+      |> put_flash(:info, "Podcast metadata update started")
     else
       conn
       |> put_flash(:error, "This podcast has been updated manually within the last hour. Please try again in an hour.")
