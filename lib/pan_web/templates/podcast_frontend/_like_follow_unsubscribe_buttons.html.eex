@@ -6,7 +6,7 @@
   </p>
 
   <%= if !@podcast.manually_updated_at or
-       @podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do %>
+         (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1) do %>
     <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
                                                   class: "btn btn-danger btn-xs" %>
 
@@ -23,7 +23,7 @@
   <% else %>
     <small>
       A manual update will be available in
-      <%= Time.diff(@podcast.manually_updated_at, Timex.shift(Timex.now(), hours: -1), :seconds) / 60.00 |> Float.round(1) %>
+      <%= Timex.Comparable.diff(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now(), :minutes) %>
       minutes.
     </small>
   <% end %>
