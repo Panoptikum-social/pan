@@ -13,7 +13,7 @@ defmodule PanWeb.EpisodeFrontendController do
 
     changeset = Recommendation.changeset(%Recommendation{})
     # options for player: "podlove", "podigee"
-    render(conn, "show.html", episode: episode, player: "podigee", changeset: changeset)
+    render(conn, "show.html", episode: episode, player: "podlove", changeset: changeset)
   end
 
 
