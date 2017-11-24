@@ -8,7 +8,7 @@ defmodule PanWeb.Api.EpisodeView do
   location :location
   attributes [:orig_link, :title, :publishing_date, :guid, :description, :shownotes,
               :payment_link_title, :payment_link_url, :deep_link, :duration, :subtitle, :summary,
-              :like_count]
+              :like_count, :image_title, :image_url]
 
 
   has_one :podcast, serializer: PanWeb.Api.PlainPodcastView, include: false
@@ -40,7 +40,7 @@ defmodule PanWeb.Api.PlainEpisodeView do
 
   location :location
   attributes [:orig_link, :title, :publishing_date, :description, :deep_link, :duration, :subtitle,
-              :summary]
+              :summary, :image_title, :image_url]
 
   def orig_link(episode) do
     episode.link
