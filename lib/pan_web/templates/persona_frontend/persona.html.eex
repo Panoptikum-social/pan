@@ -99,15 +99,21 @@
 
       <% true -> %>
         <h4>Claiming</h4>
-        <p>You can send an email to the owner of this persona and ask her for permission
-           to add you as a manifestation of this persona.<br/>
-           Your name, username and email address will be sent alongside in the email
-           to give the owner a chance to get in contact with you.</p>
 
-        <p><%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
-                             class: "btn btn-normal",
-                             method: :post,
-                             data: [confirm: "Are you sure?"] %></p>
+        <%= if Pan.Repo.get_by(PanWeb.Manifestation, persona_id: @persona.id,
+                                                     user_id: @current_user.id) do %>
+          <p>You have claimed this persona already.</p>
+        <% else %>
+          <p>You can send an email to the owner of this persona and ask her for permission
+             to add you as a manifestation of this persona.<br/>
+             Your name, username and email address will be sent alongside in the email
+             to give the owner a chance to get in contact with you.</p>
+
+          <p><%= link "Claim", to: persona_frontend_path(@conn, :claim, @persona),
+                               class: "btn btn-normal",
+                               method: :post,
+                               data: [confirm: "Are you sure?"] %></p>
+        <% end %>
     <% end %>
   </div>
 </div>
