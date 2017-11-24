@@ -31,9 +31,18 @@ defmodule Pan.Parser.Iterator do
 
 
   def parse(map, "episode_image", [head | tail]) do
-    episode_image_map =  Analyzer.call(map, "episode_image", [head[:name], head[:attr], head[:value]])
+    episode_image_map =
+      if is_map(head) do
+        case Analyzer.call(map, "episode_image", [head[:name], head[:attr], head[:value]]) do
+          {:error, "tag unknown"} ->
+            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
+          map -> map
+        end
+      else
+        %{image_url: head, image_title: head}
+      end
 
-    Helpers.deep_merge(map, %{episode_image: episode_image_map})
+    Helpers.deep_merge(map, episode_image_map)
     |> parse("episode_image", tail)
   end
 
