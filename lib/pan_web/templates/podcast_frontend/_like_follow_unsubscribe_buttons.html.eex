@@ -6,7 +6,7 @@
   </p>
 
   <%= if !@podcast.manually_updated_at or
-       @podcast.manually_updated_at < Timex.shift(Timex.now(), hours: -1) do %>
+       @podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do %>
     <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
                                                   class: "btn btn-danger btn-xs" %>
 
