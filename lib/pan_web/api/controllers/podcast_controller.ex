@@ -81,6 +81,30 @@ defmodule PanWeb.Api.PodcastController do
   end
 
 
+  def trigger_update(conn, %{"id" => id} = params, _user) do
+    id = String.to_integer(id)
+    podcast = Repo.get!(Podcast, id)
+
+    if !podcast.manually_updated_at or
+       (Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1) do
+
+      podcast
+      |> Podcast.changeset(%{manually_updated_at: Timex.now()})
+      |> Repo.update()
+
+      Pan.Parser.Podcast.update_from_feed(id)
+      show(conn, params, nil)
+    else
+      minutes = podcast.manually_updated_at
+                |> Timex.shift(hours: 1)
+                |> Timex.Comparable.diff(Timex.now(), :minutes)
+
+      Helpers.send_error(conn, 429, "Too many requests",
+                         "The next update on this podcast is available in #{minutes} minutes.")
+    end
+  end
+
+
   def last_updated(conn, params, _user) do
     page = Map.get(params, "page", %{})
            |> Map.get("number", "1")
