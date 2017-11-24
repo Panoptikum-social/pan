@@ -78,6 +78,10 @@
 
   <dt>Publication frequency</dt>
   <dd><%= if @podcast.publication_frequency, do: Float.round(@podcast.publication_frequency, 2) %> days</dd>
+
+  <dt>Manually updated at</dt>
+  <dd><%= @podcast.manually_updated_at %></dd>
+
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

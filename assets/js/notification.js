@@ -10,7 +10,8 @@ let Notification = {
     if(window.lastMessage != message){
       $.notify({message: message},
                {type: response.type,
-                spacing: -5})
+                spacing: -5,
+                newest_on_top: true})
       window.lastMessage = message
     }
   }

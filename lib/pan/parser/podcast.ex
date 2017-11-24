@@ -103,14 +103,14 @@ defmodule Pan.Parser.Podcast do
 
   def send_download_message(id) do
       PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
-                                "notification", %{content: "Downloading...", type: "success"})
+                                "notification", %{content: "<i class='fa fa-download'></i> ...", type: "success"})
       {:ok, "nothing to do"}
   end
 
 
   def send_parsing_message(id) do
       PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
-                                "notification", %{content: "Parsing...", type: "success"})
+                                "notification", %{content: "<i class='fa fa-feed'></i> ...", type: "success"})
       {:ok, "nothing to do"}
   end
 
@@ -126,7 +126,7 @@ defmodule Pan.Parser.Podcast do
                               "notification", notification)
 
     notification =
-      %{content: "You want to refresh your browser window now!",
+      %{content: "You want to refresh your browser window now [F5]!",
         type: "warning"}
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                               "notification", notification)

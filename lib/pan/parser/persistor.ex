@@ -70,7 +70,7 @@ defmodule Pan.Parser.Persistor do
 
   def update_from_feed(map, podcast_id) do
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast_id),
-                          "notification", %{content: "Updating podcast...", type: "success"})
+                          "notification", %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-podcast'></i>...", type: "success"})
 
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
                                  :languages, :categories, "owner", :categories,

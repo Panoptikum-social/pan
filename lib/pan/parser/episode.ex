@@ -85,7 +85,7 @@ defmodule Pan.Parser.Episode do
   def update_from_feed_many(episodes_map, podcast) do
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                               "notification",
-                              %{content: "Updating episodes ...", type: "success"})
+                              %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-headphones'></i> ...", type: "success"})
 
     for {_, episode_map} <- episodes_map do
       update_from_feed_one(episode_map, podcast)
@@ -93,7 +93,7 @@ defmodule Pan.Parser.Episode do
 
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                               "notification",
-                              %{content: "Deleting orphans ...", type: "success"})
+                              %{content: "<i class='fa fa-trash'></i> Orphans ...", type: "success"})
 
     # delete derprecated episodes
     one_hour_ago = Timex.now()
@@ -234,7 +234,7 @@ defmodule Pan.Parser.Episode do
     with {:ok, episode} <- insert_or_update(plain_episode_map, podcast.id) do
       PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                                 "notification",
-                                %{content: "Updating episode #{episode.id} #{episode.title} ...",
+                                %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-headphones'></i> #{episode.id} #{episode.title} ...",
                                   type: "success"})
 
 

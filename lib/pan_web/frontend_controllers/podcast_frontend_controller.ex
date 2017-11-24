@@ -55,7 +55,7 @@ defmodule PanWeb.PodcastFrontendController do
     podcast = Repo.get!(Podcast, id)
 
     if !podcast.manually_updated_at or
-       podcast.manually_updated_at < Timex.shift(Timex.now(), hours: -1) do
+       podcast.manually_updated_at > Timex.shift(Timex.now(), hours: -1) do
 
       podcast
       |> Podcast.changeset(%{manually_updated_at: Timex.now()})
