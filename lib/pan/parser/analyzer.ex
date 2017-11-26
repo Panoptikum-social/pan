@@ -289,11 +289,14 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: H.to_255(value)}
 
-  def call(_, "episode", [tag_atom, attr, _]) when tag_atom in [:"itunes:image", :"iTunes:image"] do
-    %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
-  end
+  def call(_, "episode", [tag_atom, attr, _]) when tag_atom in [
+    :"itunes:image", :"iTunes:image", :"itunes_image"
+  ], do: %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
 
-  def call(_, "episode", [:image, _, value]), do: Iterator.parse(%{}, "episode_image", value)
+  def call(_, "episode", [tag_atom, _, value]) when tag_atom in [
+    :image, :imageurl], do: Iterator.parse(%{}, "episode_image", value)
+  def call(_, "episode", [:imagetitle, _, [value]]), do: %{image_title: H.to_255(value)}
+
   def call(_, "episode_image", [:title, _, _]), do: %{}
   def call(_, "episode_image", [:title, _, [value]]), do: %{image_title: H.to_255(value)}
   def call(_, "episode_image", [:url,   _, []]), do: %{}
