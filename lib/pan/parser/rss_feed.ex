@@ -68,7 +68,7 @@ defmodule Pan.Parser.RssFeed do
 
 
   def check_for_changes(feed_xml, podcast_id, check_changes) do
-    if check_changes
+    if check_changes do
       feed_xml =
         if String.valid?(feed_xml) do
           feed_xml
