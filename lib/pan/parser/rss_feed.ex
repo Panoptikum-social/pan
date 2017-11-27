@@ -68,8 +68,6 @@ defmodule Pan.Parser.RssFeed do
 
 
   def check_for_changes(feed_map, podcast_id, check_changes) do
-    podcast_id = String.to_integer(podcast_id)
-
     if check_changes do
       case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
         nil ->

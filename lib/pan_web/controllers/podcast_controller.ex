@@ -254,6 +254,7 @@ defmodule PanWeb.PodcastController do
 
 
   def delta_import(conn, %{"id" => id}) do
+    id = String.to_integer(id)
     case Pan.Parser.Podcast.delta_import(id) do
       {:ok, message} ->
         conn
