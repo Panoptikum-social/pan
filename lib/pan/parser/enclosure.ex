@@ -15,7 +15,9 @@ defmodule Pan.Parser.Enclosure do
   defp get_enclosure(episode_id, enclosure_map) do
     Repo.get_by(PanWeb.Enclosure, episode_id: episode_id,
                                   url: enclosure_map[:url]) ||
-    Repo.get_by(PanWeb.Enclosure, episode_id: episode_id,
-                                  guid: enclosure_map[:guid])
+      if enclosure_map[:guid] do
+        Repo.get_by(PanWeb.Enclosure, episode_id: episode_id,
+                                      guid: enclosure_map[:guid])
+      end
   end
 end

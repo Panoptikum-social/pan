@@ -40,7 +40,6 @@ defmodule Pan.Parser.Podcast do
          {:ok, _} <- Persistor.delta_import(map, id),
          {:ok, _} <- unpause_and_reset_failure_count(id) do
       {:ok, "Podcast importet"}
-
     else
       {:redirect, redirect_target} ->
         Feed.update_with_redirect_target(id, redirect_target)
