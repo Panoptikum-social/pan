@@ -29,7 +29,7 @@ defmodule Pan.Mixfile do
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :con_cache, :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
-                    :ja_serializer,  :bcrypt_elixir, :elixir_make]]
+                    :ja_serializer,  :bcrypt_elixir, :elixir_make, :p1_utils, :iconv]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -70,7 +70,8 @@ defmodule Pan.Mixfile do
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
      {:excoveralls, "~> 0.7", only: :test} # Code coverage tool
-     # {:iconv, "~> 1.0.0", manager: :rebar} # Unicode converter
+     {:p1_utils, "1.0.10", manager: :rebar} # dependency for iconv
+     {:iconv, "~> 1.0.0", manager: :rebar} # Unicode converter
     ]
   end
 

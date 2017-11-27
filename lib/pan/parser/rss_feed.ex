@@ -68,13 +68,13 @@ defmodule Pan.Parser.RssFeed do
 
 
   def check_for_changes(feed_xml, podcast_id, check_changes) do
-    if check_changes or String.valid?(feed_xml) == false do
-#       feed_xml =
-#         if String.valid?(feed_xml) do
-#           feed_xml
-#         else
-# #          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
-#         end
+    if check_changes
+      feed_xml =
+        if String.valid?(feed_xml) do
+          feed_xml
+        else
+         :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
+        end
 
       case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
         nil ->
