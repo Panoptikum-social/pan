@@ -69,28 +69,32 @@ defmodule Pan.Parser.RssFeed do
 
   def check_for_changes(feed_xml, podcast_id, check_changes) do
     if check_changes do
-      feed_xml =
-        if String.valid?(feed_xml) do
-          feed_xml
-        else
-#          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
-        end
+#       feed_xml =
+#         if String.valid?(feed_xml) do
+#           feed_xml
+#         else
+# #          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
+#         end
 
-      case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
-        nil ->
-          %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
-          |> Repo.insert()
-          {:ok, "go_on"}
-        rss_feed ->
-          if count_changes(rss_feed.content, feed_xml) > 3 do
-            rss_feed
-            |> PanWeb.RssFeed.changeset(%{content: feed_xml})
-            |> Repo.update()
-
+      if String.valid?(feed_xml) do
+        case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
+          nil ->
+            %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
+            |> Repo.insert()
             {:ok, "go_on"}
-          else
-            {:done, "nothing to do"}
-          end
+          rss_feed ->
+            if count_changes(rss_feed.content, feed_xml) > 3 do
+              rss_feed
+              |> PanWeb.RssFeed.changeset(%{content: feed_xml})
+              |> Repo.update()
+
+              {:ok, "go_on"}
+            else
+              {:done, "nothing to do"}
+            end
+        else
+          {:ok, "go_on"}
+        end
       end
     else
       {:ok, "go_on"}
