@@ -76,23 +76,22 @@ defmodule Pan.Parser.RssFeed do
 # #          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
 #         end
 
-      if String.valid?(feed_xml) do
-        case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
-          nil ->
-            %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
-            |> Repo.insert()
-            {:ok, "go_on"}
-          rss_feed ->
-            if count_changes(rss_feed.content, feed_xml) > 3 do
-              rss_feed
-              |> PanWeb.RssFeed.changeset(%{content: feed_xml})
-              |> Repo.update()
+      case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
+        nil ->
+          %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
+          |> Repo.insert()
+          {:ok, "go_on"}
+        rss_feed ->
+          if count_changes(rss_feed.content, feed_xml) > 3 do
+            rss_feed
+            |> PanWeb.RssFeed.changeset(%{content: feed_xml})
+            |> Repo.update()
 
-              {:ok, "go_on"}
-            else
-              {:done, "nothing to do"}
-            end
-        end
+            {:ok, "go_on"}
+          else
+            {:done, "nothing to do"}
+          end
+      end
     else
       {:ok, "go_on"}
     end
