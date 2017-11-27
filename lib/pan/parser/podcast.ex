@@ -12,7 +12,7 @@ defmodule Pan.Parser.Podcast do
   def get_or_insert(podcast_map) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
-        %Podcast{update_intervall: 1,
+        %Podcast{update_intervall: 10,
                  next_update: Timex.shift(Timex.now(), hours: 1),
                  publication_frequency: 0.0,
                  subscriptions_count: 0,

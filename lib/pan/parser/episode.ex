@@ -8,40 +8,43 @@ defmodule Pan.Parser.Episode do
   require Logger
 
   def get_or_insert(episode_map, podcast_id) do
-    case Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id) do
+    case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
       nil ->
-        if episode_map[:guid] do
-          insert(episode_map, podcast_id)
-        else
-          case Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map.subtitle,
-                                           podcast_id: podcast_id) do
-            nil ->
-              insert(episode_map, podcast_id)
-            episode ->
-              {:exists, episode}
-          end
-        end
+        insert(episode_map, podcast_id)
       episode ->
         {:exists, episode}
     end
   end
 
 
-  def insert_or_update(episode_map, podcast_id) do
-    episode =
-      if episode_map[:guid] do
-        Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id)
-      else
-        Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map.subtitle,
-                                    podcast_id: podcast_id)
-      end
+  def get(episode_map, podcast_id) do
+    case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
+      nil ->
+        {:error, "not_found"}
+      episode ->
+        {:exists, episode}
+    end
+  end
 
-    if episode do
-      episode
-      |> PanWeb.Episode.changeset(episode_map)
-      |> Repo.update([force: true]) # forces timestamp to update
+
+  def get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
+    if episode_map[:guid] do
+      Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id)
     else
-      insert(episode_map, podcast_id)
+      Repo.get_by(PanWeb.Episode, title: episode_map[:title] || episode_map.subtitle,
+                                  podcast_id: podcast_id)
+    end
+  end
+
+
+  def insert_or_update(episode_map, podcast_id) do
+    case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
+      nil ->
+        insert(episode_map, podcast_id)
+      episode ->
+        episode
+        |> PanWeb.Episode.changeset(episode_map)
+        |> Repo.update([force: true]) # forces timestamp to update
     end
   end
 
@@ -57,21 +60,6 @@ defmodule Pan.Parser.Episode do
     %PanWeb.Episode{podcast_id: podcast_id}
     |> Map.merge(episode_map)
     |> Repo.insert()
-  end
-
-
-  def get(episode_map, podcast_id) do
-    case Repo.get_by(PanWeb.Episode, guid: episode_map.guid, podcast_id: podcast_id) do
-      nil ->
-        case Repo.get_by(PanWeb.Episode, title: episode_map.title, podcast_id: podcast_id) do
-          nil ->
-            {:error, "not_found"}
-          episode ->
-            {:exists, episode}
-        end
-      episode ->
-        {:exists, episode}
-    end
   end
 
 
