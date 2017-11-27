@@ -1,38 +1,29 @@
 <h2>Listing rss feeds</h2>
 
-<table class="table table-condensed table-striped table-bordered">
+<table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>ID</th>
+      <th><%= fa_icon "search" %> Id</th>
       <th>Content</th>
-      <th>Podcast</th>
-
-      <th></th>
+      <th><%= fa_icon "search" %> Podcast</th>
+      <th>Actions</th>
     </tr>
   </thead>
-  <tbody>
-<%= for rss_feed <- @rss_feeds do %>
-    <tr>
-      <td><%= rss_feed.id %></td>
-      <td><%= truncate(rss_feed.content, 255) %></td>
-      <td><%= rss_feed.podcast_id %></td>
-
-      <td class="text-right">
-        <%= link "Show", to: rss_feed_path(@conn, :show, rss_feed), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: rss_feed_path(@conn, :edit, rss_feed), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: rss_feed_path(@conn, :delete, rss_feed), method: :delete,
-                                                                                data: [confirm: "Are you sure?"],
-                                                                                class: "btn btn-danger btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
 </table>
 
 <script>
   $(function() {
-      $('#datatable').DataTable();
-  } );
+    $('#datatable').DataTable({
+      serverSide: true,
+      ajax: {url: '<%= rss_feed_path(@conn, :datatable) %>'},
+      columns: [
+        { data: 'id' },
+        { data: 'content' },
+        { data: 'podcast_id' },
+        { data: 'actions' }
+      ]
+    })
+  })
 </script>
 
 <%= link "New rss feed", to: rss_feed_path(@conn, :new) %>
