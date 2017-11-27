@@ -1,0 +1,38 @@
+<h2>Listing rss feeds</h2>
+
+<table class="table table-condensed table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Content</th>
+      <th>Podcast</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for rss_feed <- @rss_feeds do %>
+    <tr>
+      <td><%= rss_feed.id %></td>
+      <td><%= truncate(rss_feed.content, 255) %></td>
+      <td><%= rss_feed.podcast_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: rss_feed_path(@conn, :show, rss_feed), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: rss_feed_path(@conn, :edit, rss_feed), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: rss_feed_path(@conn, :delete, rss_feed), method: :delete,
+                                                                                data: [confirm: "Are you sure?"],
+                                                                                class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<script>
+  $(function() {
+      $('#datatable').DataTable();
+  } );
+</script>
+
+<%= link "New rss feed", to: rss_feed_path(@conn, :new) %>

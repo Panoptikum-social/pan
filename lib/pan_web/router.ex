@@ -246,6 +246,7 @@ defmodule PanWeb.Router do
 
     resources "/chapters", ChapterController
     resources "/enclosures", EnclosureController
+    resources "/rss_feeds", RssFeedController
 
     get "/messages/datatable", MessageController, :datatable
     resources "/messages", MessageController

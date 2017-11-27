@@ -36,7 +36,7 @@ defmodule Pan.Parser.Podcast do
 
   def delta_import(id) do
     with {:ok, feed} <- Feed.get_by_podcast_id(id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id),
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id, true), # do check for changes!
          {:ok, _} <- Persistor.delta_import(map, id),
          {:ok, _} <- unpause_and_reset_failure_count(id) do
       {:ok, "Podcast importet"}
@@ -54,6 +54,9 @@ defmodule Pan.Parser.Podcast do
       {:error, message} ->
         increase_failure_count(id)
         {:error, message}
+
+      {:done, "nothing to do"} ->
+        {:ok, "nothing to do"}
     end
   end
 
@@ -85,7 +88,7 @@ defmodule Pan.Parser.Podcast do
 
   def contributor_import(id) do
     with {:ok, feed} <- Feed.get_by_podcast_id(id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id) do
       Persistor.contributor_import(map, id)
       {:ok, "Contributors importet successfully"}
     end
@@ -150,7 +153,7 @@ defmodule Pan.Parser.Podcast do
 
   def fix_owner(id) do
     with {:ok, feed} <- Feed.get_by_podcast_id(id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id) do
       Pan.Parser.PodcastContributor.get_or_insert(map[:owner], "owner", id)
       {:ok, "Updated owner successfully for #{id}"}
     end
@@ -159,7 +162,7 @@ defmodule Pan.Parser.Podcast do
 
   def fix_language(podcast) do
     with {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url) do
+         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, podcast.id) do
       Language.persist_many(map[:languages], podcast)
       {:ok, "Updated owner successfully for #{podcast.title}"}
 
