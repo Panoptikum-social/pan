@@ -18,6 +18,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:link,              _, []]), do: %{}
   def call(_, "tag", [:link,              _, [value]]), do: %{website: value}
 
+  def call(_, "tag", [:"itunes:new-feed-url", _, []]), do: %{}
   def call(_, "tag", [:"new-feed-url", _, [value]]), do: %{new_feed_url: value}
   def call(_, "tag", [:"itunes:new-feed-url", _, [value]]), do: %{new_feed_url: value}
 
@@ -204,7 +205,7 @@ defmodule Pan.Parser.Analyzer do
     :"georss:where", :"itunes:subitle", :"media:category", :"geourl:latitude", :"geourl:longitude",
     :"icbm:latitude", :"icbm:longitude", :"itunes:owner", :"jwplayer:image", :"flickr:date_taken",
     :"dc:date.Taken", :title_in_language, :foto_207, :"ddn:episode_id", :lead, :date,
-    :"ddn:special", :"ddn:expires", :"grtv:image", :showIcon, :youtubeID, :group,
+    :"ddn:special", :"ddn:expires", :"grtv:image", :showIcon, :youtubeID, :group, :"nprml:parent",
     :"blip:youtube_category", :"blip:distributions_info", :"media:adult", :"jwplayer:file", :owner,
     :"jwplayer:duration", :"ionofm:thumbnail", :"blip:is_premium", :"blip:channel_name", :keyword,
     :"blip:channel_list", :"blip:betaUser", :dureeReference, :"wfw:commentrss", :"ez:id", :"cfi:id",
