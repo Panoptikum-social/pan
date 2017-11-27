@@ -70,7 +70,7 @@ defmodule Pan.Mixfile do
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
      {:excoveralls, "~> 0.7", only: :test}, # Code coverage tool
-     {:iconv, "~> 1.0.0"} # Unicode converter
+     {:iconv, "~> 1.0.0", manager: :rebar} # Unicode converter
     ]
   end
 
