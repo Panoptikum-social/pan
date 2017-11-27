@@ -42,14 +42,14 @@ defmodule Pan.Parser.RssFeed do
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-        feed_map = Pan.Parser.Helpers.remove_comments(feed_xml)
+        feed_xml = Pan.Parser.Helpers.remove_comments(feed_xml)
                    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
                    |> Pan.Parser.Helpers.fix_ampersands()
                    |> Pan.Parser.Helpers.fix_character_code_strings()
                    |> String.trim()
 
-        with  {:ok, "go_on"} <- check_for_changes(feed_map, logging_id, check_changes),
-              {:ok, feed_map} <- xml_to_map(feed_map) do
+        with  {:ok, "go_on"} <- check_for_changes(feed_xml, logging_id, check_changes),
+              {:ok, feed_map} <- xml_to_map(feed_xml) do
           parse_to_map(feed_map, url)
         else
           {:exit, error} ->
@@ -67,17 +67,24 @@ defmodule Pan.Parser.RssFeed do
   end
 
 
-  def check_for_changes(feed_map, podcast_id, check_changes) do
+  def check_for_changes(feed_xml, podcast_id, check_changes) do
     if check_changes do
+      feed_xml =
+        if String.valid?(feed_xml) do
+          feed_xml
+        else
+          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
+        end
+
       case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
         nil ->
-          %PanWeb.RssFeed{content: feed_map, podcast_id: podcast_id}
+          %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
           |> Repo.insert()
           {:ok, "go_on"}
         rss_feed ->
-          if count_changes(rss_feed.content, feed_map) > 3 do
+          if count_changes(rss_feed.content, feed_xml) > 3 do
             rss_feed
-            |> PanWeb.RssFeed.changeset(%{content: feed_map})
+            |> PanWeb.RssFeed.changeset(%{content: feed_xml})
             |> Repo.update()
 
             {:ok, "go_on"}
