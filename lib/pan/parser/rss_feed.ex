@@ -73,7 +73,7 @@ defmodule Pan.Parser.RssFeed do
         if String.valid?(feed_xml) do
           feed_xml
         else
-          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
+#          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
         end
 
       case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
