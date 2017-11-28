@@ -49,6 +49,7 @@
             <li><%= link "Categories", to: category_path(@conn, :index) %></li>
             <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
             <li><%= link "Feeds", to: feed_path(@conn, :index) %></li>
+            <li><%= link "RssFeeds", to: rss_feed_path(@conn, :index) %></li>
             <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
             <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
             <li role="separator" class="divider"></li>
