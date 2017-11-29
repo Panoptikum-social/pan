@@ -52,17 +52,13 @@ defmodule Pan.Parser.RssFeed do
               {:ok, feed_map} <- xml_to_map(feed_xml) do
           parse_to_map(feed_map, url)
         else
-          {:exit, error} ->
-            {:exit, error}
-          {:done, "nothing to do"} ->
-            {:done, "nothing to do"}
+          {:exit, error} -> {:exit, error}
+          {:done, "nothing to do"} -> {:done, "nothing to do"}
+          {:error, reason} -> {:error, reason}
         end
 
-      {:redirect, redirect_target} ->
-        {:redirect, redirect_target}
-
-      {:error, reason} ->
-        {:error, reason}
+      {:redirect, redirect_target} -> {:redirect, redirect_target}
+      {:error, reason} -> {:error, reason}
     end
   end
 
@@ -107,8 +103,7 @@ defmodule Pan.Parser.RssFeed do
 
   def xml_to_map(feed_map) do
     try do
-      feed_map = Quinn.parse(feed_map)
-      {:ok, feed_map}
+      {:ok, Quinn.parse(feed_map)}
     catch
       :exit, _ -> {:error, "Quinn parser finds unexpected end"}
     end
