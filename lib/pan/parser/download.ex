@@ -16,7 +16,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 203, body: feed_xml}} -> check_for_rss(feed_xml)
       {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} -> check_for_rss(feed_xml)
 
-      {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "400: bad request"}
+      {:ok, %HTTPoison.Response{status_code: 400}} -> {:error, "400: bad request"}
       {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401: unauthorized"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
