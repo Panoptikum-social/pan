@@ -11,15 +11,15 @@
 <table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Title</th>
+      <th><%= fa_icon "search" %> ID</th>
+      <th><%= fa_icon "search" %> Title</th>
       <th>Update paused</th>
-      <th>Updated at</th>
+      <th>Updated at (Europe/Vienna)</th>
       <th>Update intervall</th>
-      <th>Next update</th>
+      <th>Next update (Europe/Vienna)</th>
       <th>Failure count</th>
       <th>Feed url</th>
-      <th>Website</th>
+      <th><%= fa_icon "search" %> Website</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -28,10 +28,8 @@
 <script>
   $(function() {
     $('#datatable').DataTable({
-      ajax: {
-        url: '/admin/podcasts/datatable_stale',
-        dataSrc: 'podcasts'
-      },
+      serverSide: true,
+      ajax: {url: '<%= podcast_path(@conn, :datatable_stale) %>'},
       columns: [
         { data: 'id' },
         { data: 'title' },

@@ -134,23 +134,59 @@ defmodule PanWeb.PodcastController do
   end
 
 
-  def datatable_stale(conn, _params) do
-    podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  join: f in assoc(p, :feeds),
-                                  where: p.next_update <= ^Timex.now() and
-                                         (is_nil(p.update_paused) or p.update_paused == false) and
-                                         (is_nil(p.retired) or p.retired == false),
-                                  select: %{id: p.id,
-                                            title: p.title,
-                                            update_paused: p.update_paused,
-                                            updated_at: p.updated_at,
-                                            update_intervall: p.update_intervall,
-                                            next_update: p.next_update,
-                                            feed_url: f.self_link_url,
-                                            website: p.website,
-                                            failure_count: p.failure_count})
-               |> Repo.all
-    render conn, "datatable_stale.json", podcasts: podcasts
+  def datatable_stale(conn, params) do
+    search = params["search"]["value"]
+    searchfrag = "%#{params["search"]["value"]}%"
+
+    limit = String.to_integer(params["length"])
+    offset = String.to_integer(params["start"])
+    draw = String.to_integer(params["draw"])
+
+    columns = params["columns"]
+
+    order_by = Enum.map(params["order"], fn({_key, value}) ->
+                 column_number = value["column"]
+                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+               end)
+
+    records_total = Repo.aggregate(Podcast, :count, :id)
+
+    query =
+      if search != "" do
+        from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                  (is_nil(p.update_paused) or p.update_paused == false) and
+                                  (is_nil(p.retired) or p.retired == false) and
+                                  (ilike(p.title, ^searchfrag) or
+                                   ilike(p.website, ^searchfrag) or
+                                   ilike(fragment("cast (? as text)", p.id), ^searchfrag)))
+      else
+        from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                  (is_nil(p.update_paused) or p.update_paused == false) and
+                                  (is_nil(p.retired) or p.retired == false))
+      end
+
+    records_filtered = query
+                       |> Repo.aggregate(:count, :id)
+
+    podcasts = from(p in query, join: f in assoc(p, :feeds),
+                                limit: ^limit,
+                                offset: ^offset,
+                                order_by: ^order_by,
+                                select: %{id: p.id,
+                                          title: p.title,
+                                          update_paused: p.update_paused,
+                                          updated_at: p.updated_at,
+                                          update_intervall: p.update_intervall,
+                                          feed_url: f.self_link_url,
+                                          next_update: p.next_update,
+                                          website: p.website,
+                                          failure_count: p.failure_count})
+           |> Repo.all()
+
+    render(conn, "datatable_stale.json", podcasts: podcasts,
+                                   draw: draw,
+                                   records_total: records_total,
+                                   records_filtered: records_filtered)
   end
 
 

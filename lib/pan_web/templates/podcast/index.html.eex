@@ -23,9 +23,9 @@
       <th><%= fa_icon "search" %> ID</th>
       <th><%= fa_icon "search" %> Title</th>
       <th>Update paused</th>
-      <th>Updated at</th>
+      <th>Updated at (Europe/Vienna)</th>
       <th>Update intervall</th>
-      <th>Next update</th>
+      <th>Next update (Europe/Vienna)</th>
       <th>Failure count</th>
       <th><%= fa_icon "search" %> Website</th>
       <th>Actions</th>

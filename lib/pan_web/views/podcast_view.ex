@@ -14,8 +14,14 @@ defmodule PanWeb.PodcastView do
   end
 
 
-  def render("datatable_stale.json", %{podcasts: podcasts}) do
-    %{podcasts: Enum.map(podcasts, &podcast_stale_json/1)}
+  def render("datatable_stale.json", %{podcasts: podcasts,
+                                       draw: draw,
+                                       records_total: records_total,
+                                       records_filtered: records_filtered}) do
+    %{draw: draw,
+      recordsTotal: records_total,
+      recordsFiltered: records_filtered,
+      data: Enum.map(podcasts, &podcast_stale_json/1)}
   end
 
 
@@ -26,7 +32,7 @@ defmodule PanWeb.PodcastView do
       updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
       failure_count:    podcast.failure_count,
-      next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
+      next_update:      format_for_vienna(podcast.next_update),
       website:          String.slice(podcast.website, 0, 100),
       actions:          podcast_actions(podcast, &podcast_path/3)}
   end
@@ -39,7 +45,7 @@ defmodule PanWeb.PodcastView do
       updated_at:       format_for_vienna(podcast.updated_at),
       update_intervall: podcast.update_intervall,
       failure_count:    podcast.failure_count,
-      next_update:      podcast.next_update && format_for_vienna(podcast.next_update),
+      next_update:      format_for_vienna(podcast.next_update),
       feed_url:         podcast.feed_url,
       website:          podcast.website,
       actions:          podcast_actions(podcast, &podcast_path/3)}
@@ -61,6 +67,13 @@ defmodule PanWeb.PodcastView do
 
 
   def format_for_vienna(datetime) do
-    "<nobr>#{String.slice(NaiveDateTime.to_string(datetime), 0..18)}</nobr>"
+    if datetime do
+      datetime = datetime
+                 |> Timex.Timezone.convert("Europe/Vienna")
+                 |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}:{s}")
+      "<nobr>#{datetime}</nobr>"
+    else
+      "no datetime"
+    end
   end
 end
