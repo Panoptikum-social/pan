@@ -15,8 +15,6 @@ import "phoenix_html"
 import $ from "jquery"
 import "bootstrap-notify"
 
-import PodlovePlayer from "@podlove/podlove-web-player"
-
 import socket from "./socket"
 import Mailbox from "./mailbox"
 

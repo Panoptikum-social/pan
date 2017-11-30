@@ -34,4 +34,9 @@ defmodule PanWeb.MaintenanceController do
 
     render(conn, "done.html")
   end
+
+
+  def sandbox(conn, _params) do
+    render(conn, "sandbox.html")
+  end
 end

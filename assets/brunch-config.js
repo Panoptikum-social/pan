@@ -41,8 +41,7 @@ exports.config = {
     whitelist: ["phoenix",
                 "phoenix_html",
                 "jquery",
-                "boostrap-notify",
-                "@podlove/podlove-web-player"],
+                "boostrap-notify"],
     globals: {
       $: 'jquery',
       jQuery: 'jquery'

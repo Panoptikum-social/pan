@@ -343,6 +343,7 @@ defmodule PanWeb.Router do
     get "/search/push_all", SearchController, :elasticsearch_push_all
     get "/search/delete_orphans", SearchController, :elasticsearch_delete_orphans
 
+    get "/maintenance/sandbox", MaintenanceController, :sandbox
     get "/maintenance/fix", MaintenanceController, :fix
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
   end
