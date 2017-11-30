@@ -23,28 +23,32 @@ defmodule PanWeb.EpisodeFrontendView do
 
 
   def podlove_episodestruct(episode) do
-    %{poster: episode.podcast.image_url,
-      title: episode.title,
-      subtitle: episode.description,
-      alwaysShowHours: true,
-      startVolume: 0.8,
-      width: "auto",
-      summaryVisible: false,
-      timecontrolsVisible: false,
-      chaptersVisible: true,
-      sharebuttonsVisible: false,
-      summary: episode.summary,
-      duration: episode.duration,
-      permalink: episode.deep_link,
-      activeTab: "chapters",
-      show: %{title: episode.podcast.title,
+    %{show: %{title: episode.podcast.title,
               subtitle: episode.podcast.summary,
               summary: episode.podcast.description,
               poster: episode.podcast.image_url,
-              url: episode.link},
+              link: episode.podcast.website
+             },
+      title: episode.title,
+      subtitle: episode.description,
+      summary: episode.summary,
+      poster: episode.podcast.image_url,
+      publicationDate: episode.publishing_date,
+      duration: episode.duration,
+      link: episode.link,
+      theme: %{main: '#2B8AC6',
+               highlight: '#EC79F2'
+              },
+      tabs: %{info: true,
+              share: true,
+              chapters: true,
+              audio: true,
+              download: true
+             },
+      contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
-      downloads: downloadlist(episode.enclosures)
-    }
+      audio: audiolist(episode.enclosures)
+     }
     |> Poison.encode!
     |> raw
   end
@@ -71,7 +75,9 @@ defmodule PanWeb.EpisodeFrontendView do
                               |> truncate(1000)
                               |> ej(),
                  chaptermarks: chapterlist(episode.chapters)
-               }
+               },
+      reference: %{base: PanWeb.Endpoint.url <> "podlove-webplayer/"}
+
     }
     |> Poison.encode!
     |> raw
@@ -90,6 +96,18 @@ defmodule PanWeb.EpisodeFrontendView do
   end
 
 
+  defp contributorlist(gigs) do
+    Enum.map(gigs, fn(gig) ->
+      %{name: gig.persona.name,
+        role: %{id: 1,
+                slug: gig.role,
+                title: gig.role
+               }
+       }
+    end)
+  end
+
+
   defp enclosuremap(enclosures) do
     Enum.map(enclosures, fn(enclosure) ->
       %{filetype(enclosure) => enclosure.url}
@@ -98,6 +116,18 @@ defmodule PanWeb.EpisodeFrontendView do
   end
 
 
+# for podlove
+  def audiolist(enclosures) do
+    Enum.map(enclosures, fn(enclosure) ->
+      %{url: enclosure.url,
+        mimeType: enclosure.type,
+        size: enclosure.length,
+        title: String.split(enclosure.url, "/") |> List.last}
+    end)
+  end
+
+
+# for podigee
   def downloadlist(enclosures) do
     Enum.map(enclosures, fn(enclosure) ->
       %{assetTitle: String.split(enclosure.url, "/") |> List.last,

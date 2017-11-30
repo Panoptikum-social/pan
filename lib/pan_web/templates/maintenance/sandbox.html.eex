@@ -1,4 +1,3 @@
-before
 <div id="example"></div>
 <script src="/podlove-webplayer/embed.js"></script>
 <script>
@@ -106,4 +105,3 @@ before
     }]
   });
 </script>
-after
