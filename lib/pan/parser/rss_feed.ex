@@ -95,9 +95,13 @@ defmodule Pan.Parser.RssFeed do
 
 
   def count_changes(old, new) do
-    String.splitter(old,"\n")
-    |> Enum.zip(String.splitter(new, "\n"))
-    |> Enum.count(fn {oldone, newone} -> oldone != newone end)
+    if old do
+      String.splitter(old,"\n")
+      |> Enum.zip(String.splitter(new, "\n"))
+      |> Enum.count(fn {oldone, newone} -> oldone != newone end)
+    else
+      999 # catch the case where for whatever reason the old content is empty
+    end
   end
 
 
