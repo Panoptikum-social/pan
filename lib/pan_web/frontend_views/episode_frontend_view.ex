@@ -22,7 +22,7 @@ defmodule PanWeb.EpisodeFrontendView do
   end
 
 
-  def podlove_episodestruct(episode) do
+  def podlove_episodestruct(conn, episode) do
     %{show: %{title: episode.podcast.title,
               subtitle: episode.podcast.summary,
               summary: episode.podcast.description,
@@ -36,18 +36,13 @@ defmodule PanWeb.EpisodeFrontendView do
       publicationDate: episode.publishing_date,
       duration: episode.duration,
       link: episode.link,
-      theme: %{main: '#2B8AC6',
-               highlight: '#EC79F2'
-              },
-      tabs: %{info: true,
-              share: true,
-              chapters: true,
-              audio: true,
-              download: true
-             },
+#      theme: %{main: '#2B8AC6', highlight: '#EC79F2'},
+      tabs: %{chapters: true},
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
-      audio: audiolist(episode.enclosures)
+      audio: audiolist(episode.enclosures),
+      reference: %{base: PanWeb.Endpoint.url <> "podlove-webplayer/",
+                   share: episode_frontend_path(conn, :show, episode.id)}
      }
     |> Poison.encode!
     |> raw
@@ -75,9 +70,7 @@ defmodule PanWeb.EpisodeFrontendView do
                               |> truncate(1000)
                               |> ej(),
                  chaptermarks: chapterlist(episode.chapters)
-               },
-      reference: %{base: PanWeb.Endpoint.url <> "podlove-webplayer/"}
-
+               }
     }
     |> Poison.encode!
     |> raw
