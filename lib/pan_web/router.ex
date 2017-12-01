@@ -163,6 +163,7 @@ defmodule PanWeb.Router do
     get "/podcasts/:id/feeds", PodcastFrontendController, :feeds
     get "/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button
 
+    get "/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence
     resources "/episodes", EpisodeFrontendController, only: [:show, :index]
     get "/episodes/:id/player", EpisodeFrontendController, :player
 

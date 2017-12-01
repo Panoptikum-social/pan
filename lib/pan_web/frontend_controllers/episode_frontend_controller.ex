@@ -19,7 +19,7 @@ defmodule PanWeb.EpisodeFrontendController do
 
   def player(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-              |> Repo.preload([:podcast, :enclosures, :contributors])
+              |> Repo.preload([:podcast, :enclosures, gigs: :persona, recommendations: :user])
               |> Repo.preload(chapters: from(chapter in Chapter, order_by: chapter.start))
 
     # options for player: "podlove", "podigee"
@@ -38,5 +38,10 @@ defmodule PanWeb.EpisodeFrontendController do
                |> Repo.paginate(params)
 
     render(conn, "index.html", episodes: episodes)
+  end
+
+  def silence(conn, _params) do
+    # Just here to silence a weird request from the podlove webplayer
+    text conn, nil
   end
 end

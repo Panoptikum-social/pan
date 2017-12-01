@@ -30,19 +30,18 @@ defmodule PanWeb.EpisodeFrontendView do
               link: episode.podcast.website
              },
       title: episode.title,
-      subtitle: episode.description,
-      summary: episode.summary,
+      subtitle: HtmlSanitizeEx.strip_tags(episode.description),
+      summary: HtmlSanitizeEx.strip_tags(episode.summary),
       poster: episode.podcast.image_url,
       publicationDate: episode.publishing_date,
       duration: episode.duration,
-      link: episode.link,
-#      theme: %{main: '#2B8AC6', highlight: '#EC79F2'},
+      link: episode_frontend_url(conn, :show, episode.id),
+      theme: %{main: "#eee"},
       tabs: %{chapters: true},
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
       audio: audiolist(episode.enclosures),
-      reference: %{base: PanWeb.Endpoint.url <> "/podlove-webplayer/",
-                   share: episode_frontend_path(conn, :show, episode.id)}
+      reference: %{base: PanWeb.Endpoint.url <> "/podlove-webplayer/"}
      }
     |> Poison.encode!
     |> raw

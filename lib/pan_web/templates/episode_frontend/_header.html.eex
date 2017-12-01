@@ -29,17 +29,20 @@
     </div>
   <% end %>
 
-  <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">
-    <%= if @episode.description && @episode.description != @episode.shownotes do %>
-      <h3>Description</h3>
-      <p><%= truncate(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
-    <% end %>
+  <%= if (@episode.description && @episode.description != @episode.shownotes) ||
+         (@episode.summary && @episode.summary != @episode.description) do %>
+    <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">
+      <%= if @episode.description && @episode.description != @episode.shownotes do %>
+        <h3>Description</h3>
+        <p><%= truncate(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
+      <% end %>
 
-    <%= if @episode.summary && @episode.summary != @episode.description do %>
-      <h3>Summary</h3>
-      <p><%= truncate(@episode.summary, 1000) %></p>
-    <% end %>
-  </div>
+      <%= if @episode.summary && @episode.summary != @episode.description do %>
+        <h3>Summary</h3>
+        <p><%= truncate(@episode.summary, 1000) %></p>
+      <% end %>
+    </div>
+  <% end %>
 
   <div class="col-md-5">
     <dl class="dl-horizontal" style="margin-top: 30px;">

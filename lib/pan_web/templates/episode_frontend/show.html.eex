@@ -34,7 +34,7 @@
                       data-configuration="playerConfiguration"></script>
           <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
           <% end %>
-        <% end %>
+      <% end %>
     </div>
 
     <div class="col-md-6" id="shownotes">
