@@ -163,6 +163,7 @@ defmodule PanWeb.Router do
     get "/podcasts/:id/feeds", PodcastFrontendController, :feeds
     get "/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button
 
+    get "/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence
     resources "/episodes", EpisodeFrontendController, only: [:show, :index]
     get "/episodes/:id/player", EpisodeFrontendController, :player
 
@@ -346,6 +347,7 @@ defmodule PanWeb.Router do
     get "/search/push_all", SearchController, :elasticsearch_push_all
     get "/search/delete_orphans", SearchController, :elasticsearch_delete_orphans
 
+    get "/maintenance/sandbox", MaintenanceController, :sandbox
     get "/maintenance/fix", MaintenanceController, :fix
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
   end

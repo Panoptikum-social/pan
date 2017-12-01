@@ -23,13 +23,8 @@
         <% _ -> %>
           <%= case @player do %>
             <% "podlove" -> %>
-              <script type='text/javascript' src="/podlove-web-player/js/vendor/jquery.min.js"></script>
-              <audio data-podlove-web-player-source="/episodes/player/<%= @episode.id %>">
-                <source src="audio.m4a" type="audio/m4a">
-              </audio>
-              <script src="/podlove-web-player/js/podlove-web-moderator.min.js"></script>
-              <script>$('audio').podlovewebplayer();</script>
-
+              <%= render "_podlove_webplayer4.html", episode: @episode,
+                                                     conn: @conn %>
             <% "podigee" -> %>
               <script>
                 window.playerConfiguration = <%= podigee_episodestruct(@episode) %>
@@ -39,7 +34,7 @@
                       data-configuration="playerConfiguration"></script>
           <%# CDN - Repo: https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js %>
           <% end %>
-        <% end %>
+      <% end %>
     </div>
 
     <div class="col-md-6" id="shownotes">

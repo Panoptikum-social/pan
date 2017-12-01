@@ -1,5 +1,5 @@
 {
- "repository": {},
+  "repository": {},
   "license": "MIT",
   "scripts": {
     "deploy": "brunch build --production",

@@ -13,19 +13,19 @@ defmodule PanWeb.EpisodeFrontendController do
 
     changeset = Recommendation.changeset(%Recommendation{})
     # options for player: "podlove", "podigee"
-    render(conn, "show.html", episode: episode, player: "podigee", changeset: changeset)
+    render(conn, "show.html", episode: episode, player: "podlove", changeset: changeset)
   end
 
 
   def player(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)
-              |> Repo.preload([:podcast, :enclosures, :contributors])
+              |> Repo.preload([:podcast, :enclosures, gigs: :persona, recommendations: :user])
               |> Repo.preload(chapters: from(chapter in Chapter, order_by: chapter.start))
 
     # options for player: "podlove", "podigee"
     conn
     |> put_layout("minimal.html")
-    |> render("player.html", episode: episode, player: "podigee")
+    |> render("player.html", episode: episode, player: "podlove")
   end
 
 
@@ -38,5 +38,10 @@ defmodule PanWeb.EpisodeFrontendController do
                |> Repo.paginate(params)
 
     render(conn, "index.html", episodes: episodes)
+  end
+
+  def silence(conn, _params) do
+    # Just here to silence a weird request from the podlove webplayer
+    text conn, nil
   end
 end
