@@ -236,9 +236,17 @@ defmodule Pan.Parser.Helpers do
   end
 
 
-  def fix_ampersands(xml) do
-    String.replace(xml, "& ", "&amp; ")
-  end
+  def fix_html_entities(xml) do
+    xml
+    |> String.replace("& ", "&amp; ")
+    |> String.replace("&#xC4;", "Ä")
+    |> String.replace("&#xE4;", "ä")
+    |> String.replace("&#xD6;", "Ö")
+    |> String.replace("&#xF6;", "ö")
+    |> String.replace("&#xDC;", "Ü")
+    |> String.replace("&#xFC;", "ü")
+    |> String.replace("&#xDF;", "ß")
+      end
 
   def to_255(text) do
     if text && byte_size(text) > 255 do
