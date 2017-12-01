@@ -41,7 +41,7 @@ defmodule PanWeb.EpisodeFrontendView do
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
       audio: audiolist(episode.enclosures),
-      reference: %{base: PanWeb.Endpoint.url <> "podlove-webplayer/",
+      reference: %{base: PanWeb.Endpoint.url <> "/podlove-webplayer/",
                    share: episode_frontend_path(conn, :show, episode.id)}
      }
     |> Poison.encode!

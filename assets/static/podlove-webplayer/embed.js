@@ -3103,9 +3103,9 @@
                     (0, g.iframeResizer)({ checkOrigin: !1, log: !1 }, t), r.done() }).return(n).then(S) } },
         O = function(t) { return l.default.resolve(t).then(function(t) { return (0, o.default)(t) ? (0, y.default)(t) : t }).then(function(t) { return Object.assign({}, t, m.params) }) },
         T = function() { var t = arguments.length > 0 && void 0 !== arguments[0] ? arguments[0] : {}; return (0, d.tag)("script", "window.PODLOVE = " + JSON.stringify(t)) },
-        k = function(t) { return (0, d.tag)("link", "", { rel: "stylesheet", href: "/podlove-webplayer/" + "/style.css" }) },
-        C = function(t) { return (0, d.tag)("script", "", { type: "text/javascript", src: "/podlove-webplayer/" + "/vendor.js" }) },
-        A = function(t) { return (0, d.tag)("script", "", { type: "text/javascript", src: "/podlove-webplayer/" + "/window.js" }) },
+        k = function(t) { return (0, d.tag)("link", "", { rel: "stylesheet", href: (0, c.default)(t.reference, "base", ".") + "/style.css" }) },
+        C = function(t) { return (0, d.tag)("script", "", { type: "text/javascript", src: (0, c.default)(t.reference, "base", ".") + "/vendor.js" }) },
+        A = function(t) { return (0, d.tag)("script", "", { type: "text/javascript", src: (0, c.default)(t.reference, "base", ".") + "/window.js" }) },
         F = (0, d.tag)("script", b.default),
         P = (0, d.tag)("PodlovePlayer");
     window.podlovePlayer = function(t, e) { var n = "string" == typeof t ? (0, s.default)((0, d.findNode)(t)) : t; return O(e).then(function(t) { return l.default.all([P, T(t), k(t), C(t), A(t), F]) }).then(function(t) { return t.join("") }).then(j(n)) } }, function(t, e, n) { "use strict";
