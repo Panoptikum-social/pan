@@ -51,32 +51,7 @@ defmodule PanWeb.PodcastController do
 
 
   def index(conn, _params) do
-    stale = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                      (is_nil(p.update_paused) or p.update_paused == false) and
-                                      (is_nil(p.retired) or p.retired == false))
-            |> Repo.aggregate(:count, :id)
-
-    paused = from(p in Podcast, where: (p.update_paused == true) and
-                                       (is_nil(p.retired) or p.retired == false))
-             |> Repo.aggregate(:count, :id)
-
-    retired = from(p in Podcast, where: p.retired == true)
-              |> Repo.aggregate(:count, :id)
-
-    average = from(p in Podcast, where: (is_nil(p.update_paused) or p.update_paused == false) and
-                                        (is_nil(p.retired) or p.retired == false))
-              |> Repo.aggregate(:avg, :update_intervall)
-              |> Decimal.round(2)
-
-    total = Repo.aggregate(Podcast, :count, :id)
-    episodes_total = Repo.aggregate(Episode, :count, :id)
-    podcasts_per_hour = Decimal.new(total)
-                        |> Decimal.div(average)
-                        |> Decimal.round()
-
-    render(conn, "index.html", stale: stale, paused: paused, retired: retired, average: average,
-                               total: total, episodes_total: episodes_total,
-                               podcasts_per_hour: podcasts_per_hour)
+    render(conn, "index.html")
   end
 
 

@@ -1,0 +1,77 @@
+
+<div class="col-md-3">
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr><td>Module</td><td>Kind</td><td>Number</td></tr>
+    </thead>
+
+    <tbody>
+      <tr><th>Podcasts</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_podcasts %></td></tr>
+      <tr><td></td>
+          <td>stale</td>
+          <td class="text-right"><%= @stale_podcasts %></td></tr>
+      <tr><td></td>
+          <td>inactive</td>
+          <td class="text-right"><%= @inactive_podcasts %></td></tr>
+      <tr><td></td>
+          <td>retired</td>
+          <td class="text-right"><%= @retired_podcasts %></td></tr>
+      <tr><td></td>
+          <td>average update intervall</td>
+          <td class="text-right"><%= @average_update_intervall %> h ø</td></tr>
+      <tr><td></td>
+          <td>update frequency</td>
+          <td class="text-right"><%= @podcasts_per_hour %> p/h</td></tr>
+      <tr><td></td>
+          <td>backlog</td>
+          <td class="text-right"><%= @total_feed_backlogs %></td></tr>
+      <tr><th>Episodes</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_episodes %></td></tr>
+      <tr><th>Language</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_languages %></td></tr>
+      <tr><th>Category</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_categories %></td></tr>
+      <tr><th></th>
+          <td>categorizations</td>
+          <td class="text-right"><%= @total_categorizations %></td></tr>
+      <tr><th>Users</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_users %></td></tr>
+      <tr><th></th>
+          <td>subscriptions</td>
+          <td class="text-right"><%= @total_subscriptions %></td></tr>
+      <tr><th></th>
+          <td>likes</td>
+          <td class="text-right"><%= @total_likes %></td></tr>
+      <tr><th></th>
+          <td>recommendations</td>
+          <td class="text-right"><%= @total_recommendations %></td></tr>
+      <tr><th></th>
+          <td>follows</td>
+          <td class="text-right"><%= @total_follows %></td></tr>
+      <tr><th></th>
+          <td>opmls</td>
+          <td class="text-right"><%= @total_opmls %></td></tr>
+      <tr><th>Personas</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_personas %></td></tr>
+      <tr><th></th>
+          <td>engagements</td>
+          <td class="text-right"><%= @total_engagements %></td></tr>
+      <tr><th></th>
+          <td>gigs</td>
+          <td class="text-right"><%= @total_gigs %></td></tr>
+      <tr><th></th>
+          <td>manifestations</td>
+          <td class="text-right"><%= @total_manifestations %></td></tr>
+      <tr><th></th>
+          <td>delegations</td>
+          <td class="text-right"><%= @total_delegations %></td></tr>
+    </tbody>
+  </table>
+</div>
