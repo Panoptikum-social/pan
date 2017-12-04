@@ -13,10 +13,10 @@
 </h1>
 
 <div class="row">
-  <%= if @episode.image_url do %>
+  <%= if @episode.image_url || @episode.podcast.image_url do %>
     <div class="col-md-2">
-      <object data="<%= @episode.image_url %>"
-              alt="<%= @episode.image_title%>"
+      <object data="<%= @episode.image_url || @episode.podcast.image_url %>"
+              alt="<%= @episode.image_title || @episode.podcast.image_title %>"
               type="image/png"
               width="150"
               style="margin-top: 30px;"

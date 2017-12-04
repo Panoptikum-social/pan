@@ -16,7 +16,7 @@
   <% end %>
 <% end %>
 
-<br/><hr/><br/>
+<hr/><br/>
 
 <script>
   $('#recommendation_comment').keyup(function(){

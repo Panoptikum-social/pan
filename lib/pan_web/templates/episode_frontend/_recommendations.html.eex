@@ -1,5 +1,5 @@
 <%= if @episode.recommendations != [] or @current_user do %>
-<h2>Recommendations</h2>
+  <h2>Recommendations</h2>
 
   <%= if @episode.recommendations != [] do %>
     <span class="pull-right"><%= complain_link() %></span>
@@ -43,10 +43,12 @@
       </tbody>
     </table>
   <% end %>
+
+  <%= render "_recommend_form.html",
+             current_user: @current_user,
+             changeset: @changeset,
+             conn: @conn,
+             episode: @episode %>
 <% end %>
 
-<%= render "_recommend_form.html",
-           current_user: @current_user,
-           changeset: @changeset,
-           conn: @conn,
-           episode: @episode %>
+
