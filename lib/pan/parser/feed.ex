@@ -26,11 +26,13 @@ defmodule Pan.Parser.Feed do
   def update_with_redirect_target(id, redirect_target) do
     {:ok, feed} = get_by_podcast_id(id)
 
-    AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
-                                           title: feed.self_link_url})
-    feed
-    |> Feed.changeset(%{self_link_url: redirect_target})
-    |> Repo.update([force: true])
+    if String.starts_with?(redirect_target, "http") do
+      AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
+                                             title: feed.self_link_url})
+      feed
+      |> Feed.changeset(%{self_link_url: redirect_target})
+      |> Repo.update([force: true])
+    end
   end
 
 
