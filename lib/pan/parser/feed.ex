@@ -26,7 +26,7 @@ defmodule Pan.Parser.Feed do
   def update_with_redirect_target(id, redirect_target) do
     {:ok, feed} = get_by_podcast_id(id)
 
-    if String.starts_with?(redirect_target, "http") do
+    if redirect_target && String.starts_with?(redirect_target, "http") do
       AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
                                              title: feed.self_link_url})
       feed
