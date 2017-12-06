@@ -30,7 +30,8 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 * Import demo data
   * Uncompress `materials/pan_dev.sql.gz`
   * Import data with `psql pan_dev < pan_dev.sql` _inside the materials folder_
-  * Seed an admin user `mix run priv/repo/seeds.exs` with credentials user `admin` with password `changeme`
+  * Seed an admin user with `mix run priv/repo/seeds.exs` that has the credentials user `admin` and
+    password `changeme`
 
 ### ⏯ Run locally
 * Start Phoenix endpoint with `mix phx.server`
