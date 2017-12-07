@@ -6,6 +6,7 @@ config :pan, PanWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
+  check_origin: ["https://panoptikum.io", "https://ansible.local"],
   version: Mix.Project.config[:version]
 
 config :logger, backends:
