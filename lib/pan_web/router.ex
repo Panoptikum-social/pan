@@ -198,6 +198,7 @@ defmodule PanWeb.Router do
   scope "/pan", PanWeb do
     pipe_through [:browser, :authenticate_user]
 
+    get "/users/payment_info", UserFrontendController, :payment_info
     post "/users/like_all_subscribed", UserFrontendController, :like_all_subscribed
     post "/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed
     get "/my_podcasts", UserFrontendController, :my_podcasts
@@ -229,8 +230,6 @@ defmodule PanWeb.Router do
 
   scope "/pro", PanWeb do
     pipe_through [:browser, :authenticate_pro]
-
-    get "/users/payment_info", UserFrontendController, :payment_info
 
     get "/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation
     get "/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect
@@ -284,6 +283,8 @@ defmodule PanWeb.Router do
     get "/gigs/datatable", GigController, :datatable
     resources "/gigs", GigController
 
+    get "/edit_password/:id", UserController, :edit_password
+    put "/update_password/:id", UserController, :update_password
     get "/users/:user_id/category/:category_id/push_subscriptions", UserController, :push_subscriptions
     get  "/users/merge", UserController, :merge
     post "/users/execute_merge", UserController, :execute_merge

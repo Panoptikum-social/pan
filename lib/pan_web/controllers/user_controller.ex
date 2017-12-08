@@ -155,4 +155,27 @@ defmodule PanWeb.UserController do
 
     render(conn, "done.html")
   end
+
+
+  def edit_password(conn, %{"id" => id}, _user) do
+    user = Repo.get!(User, id)
+    changeset = User.changeset(user)
+    render(conn, "edit_password.html", user: user, changeset: changeset)
+  end
+
+
+  def update_password(conn, %{"id" => id, "user" => user_params}, _user) do
+    user = Repo.get!(User, id)
+    changeset = User.password_update_changeset(user, user_params)
+
+    case Repo.update(changeset) do
+      {:ok, _user} ->
+         conn
+         |> put_flash(:info, "Password updated successfully.")
+         |> redirect(to: user_path(conn, :show, user))
+      {:error, changeset} ->
+
+         render(conn, "edit_password.html", user: user, changeset: changeset)
+    end
+  end
 end
