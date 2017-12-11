@@ -230,7 +230,7 @@ defmodule Pan.Parser.Analyzer do
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
-    :"lj:replycount"
+    :"lj:replycount", :"xerosocial", :media, :language
   ], do: %{}
 
 
@@ -373,6 +373,8 @@ defmodule Pan.Parser.Analyzer do
         %{}
       "replies" ->
         %{}
+      nil ->
+        %{link: H.to_255(attr[:href])}
     end
   end
 
