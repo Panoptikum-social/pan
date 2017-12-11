@@ -34,6 +34,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 509}} -> {:error, "509: Bandwidth Limit Exceeded"}
       {:ok, %HTTPoison.Response{status_code: 520}} -> {:error, "520: Unknown Error"}
       {:ok, %HTTPoison.Response{status_code: 521}} -> {:error, "521: Web server is down"}
+      {:ok, %HTTPoison.Response{status_code: 526}} -> {:error, "526: Invalid SSL certificate"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
       {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
