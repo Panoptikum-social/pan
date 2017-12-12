@@ -201,7 +201,9 @@ defmodule PanWeb.Podcast do
   def update_search_index(id) do
     podcast = Repo.get(Podcast, id)
 
-    unless podcast.blocked == true do
+    if podcast.blocked == true do
+      delete_search_index(id)
+    else
       put("/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(id),
           [title:       podcast.title,
            description: podcast.description,
