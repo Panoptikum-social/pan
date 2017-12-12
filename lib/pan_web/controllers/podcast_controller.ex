@@ -222,6 +222,7 @@ defmodule PanWeb.PodcastController do
     case Repo.update(changeset) do
       {:ok, podcast} ->
         Podcast.update_search_index(id)
+        Podcast.remove_unwanted_references(id)
         conn
         |> put_flash(:info, "Podcast updated successfully.")
         |> redirect(to: podcast_path(conn, :show, podcast))

@@ -7,6 +7,7 @@ defmodule PanWeb.Podcast do
   alias PanWeb.Podcast
   alias PanWeb.Engagement
   alias PanWeb.Episode
+  alias PanWeb.Gig
   require Logger
 
   schema "podcasts" do
@@ -209,6 +210,52 @@ defmodule PanWeb.Podcast do
            description: podcast.description,
            summary:     podcast.summary,
            url:         podcast_frontend_path(PanWeb.Endpoint, :show, id)])
+    end
+  end
+
+
+  def remove_unwanted_references(id) do
+    podcast = Repo.get(Podcast, id)
+
+    if podcast.blocked == true do
+      episode_ids = from(e in Episode, where: e.podcast_id == ^id,
+                                       select: e.id)
+                    |> Repo.all()
+
+      from(g in Gig, where: g.episode_id in ^episode_ids)
+      |> Repo.delete_all()
+
+      for episode_id <- episode_ids do
+        Episode.delete_search_index(episode_id)
+      end
+
+      from(e in Engagement, where: e.podcast_id == ^id)
+      |> Repo.delete_all()
+
+      from(cp in PanWeb.CategoryPodcast, where: cp.podcast_id == ^id)
+      |> Repo.delete_all()
+
+      from(f in PanWeb.Follow, where: f.podcast_id == ^id)
+      |> Repo.delete_all()
+
+      from(lp in "languages_podcasts", where: lp.podcast_id == ^id)
+      |> Repo.delete_all()
+
+      from(r in PanWeb.Recommendation, where: r.podcast_id == ^id)
+      |> Repo.delete_all()
+
+      from(r in PanWeb.Recommendation, where: r.episode_id in ^episode_ids)
+      |> Repo.delete_all()
+
+      chapter_ids = from(c in PanWeb.Chapter, where: c.episode_id in ^episode_ids,
+                                              select: c.id)
+                    |> Repo.all()
+
+      from(r in PanWeb.Recommendation, where: r.chapter_id in ^chapter_ids)
+      |> Repo.delete_all()
+
+      from(s in PanWeb.Subscription, where: s.podcast_id == ^id)
+      |> Repo.delete_all()
     end
   end
 
