@@ -105,10 +105,10 @@
       </li>
     <% else %>
       <li>
-        <a href="#" id=tour" title="Tour" class="hidden-xs">
+        <a href="#" id="tour" title="Tour" class="hidden-xs">
           <%= fa_icon("bus") %>
         </a>
-        <a href="#" id=tour title="Blog" class="visible-xs-inline">
+        <a href="#" title="Blog" class="visible-xs-inline">
           <%= fa_icon("bus", class: "fa-fw") %>&nbsp; &nbsp; Tour
         </a>
       </li>

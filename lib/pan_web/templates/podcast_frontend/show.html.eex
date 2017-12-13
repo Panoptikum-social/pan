@@ -28,11 +28,12 @@
                 <%= PanWeb.PersonaFrontendView.format_date(episode.publishing_date) %>
               <% end %>
             </td>
-            <td>
+            <td id="episode-<%= episode.id %>">
               <p style="line-height: 200%;">
                 <%= link [fa_icon("headphones"), " ", episode.title],
                        to: episode_frontend_path(@conn, :show, episode),
-                       class: "btn btn-primary btn-xs truncate" %>
+                       class: "btn btn-primary btn-xs truncate",
+                       id: "detail-#{episode.id}" %>
               </p>
               <%= truncate(HtmlSanitizeEx.strip_tags(episode.description), 255) %>
             </td>

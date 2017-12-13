@@ -1,4 +1,4 @@
-<h2>Recommendations</h2>
+<h2 id="recommendations">Recommendations</h2>
 
 <%= if @podcast.recommendations != [] do %>
   <span class="pull-right"><%= complain_link() %></span>

@@ -164,7 +164,8 @@
 <% end %>
 
 <%= if @gigs != [] do %>
-  <div class="panel panel-primary">
+  <div class="panel panel-primary"
+       id="gigs">
     <div class="panel-heading">
       <h3 class="panel-title">Gigs, <%= @persona.name %> has been engaged in</h3>
     </div>
