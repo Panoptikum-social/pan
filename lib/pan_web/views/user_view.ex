@@ -16,6 +16,8 @@ defmodule PanWeb.UserView do
       podcaster:       user.podcaster,
       admin:           user.admin,
       pro_until:       user.pro_until && PanWeb.PodcastView.format_for_vienna(user.pro_until),
+      inserted_at:     PanWeb.PodcastView.format_for_vienna(user.inserted_at),
+      updated_at:      PanWeb.PodcastView.format_for_vienna(user.updated_at),
       actions:         user_actions(user, &user_path/3)}
   end
 

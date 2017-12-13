@@ -18,6 +18,8 @@
       <th>Podcaster</th>
       <th>Admin</th>
       <th>Pro until</th>
+      <th>Inserted at</th>
+      <th>Updated at</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -39,6 +41,8 @@
         { data: 'podcaster' },
         { data: 'admin' },
         { data: 'pro_until' },
+        { data: 'inserted_at' },
+        { data: 'updated_at' },
         { data: 'actions' }
       ]
     })
