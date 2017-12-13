@@ -13,7 +13,8 @@ defmodule PanWeb.PodcastController do
                                                    select:   a.podcast_id)
                   |> Repo.all
 
-    unassigned_podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
+    unassigned_podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and
+                                                    (is_nil(p.blocked) or p.blocked == false))
                           |> Repo.all
 
     podcast_ids = from(e in Episode, group_by: e.podcast_id,
@@ -34,7 +35,8 @@ defmodule PanWeb.PodcastController do
                                                    select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids)
+    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and
+                                         (is_nil(p.blocked) or p.blocked == false))
               |> Repo.all
 
     category = Repo.get_by(Category, title: "Unsorted")
