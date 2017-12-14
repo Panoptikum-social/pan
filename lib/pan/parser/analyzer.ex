@@ -168,7 +168,7 @@ defmodule Pan.Parser.Analyzer do
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher", :"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
-    :fullsummary, :"itunes:subtitle"
+    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -373,6 +373,8 @@ defmodule Pan.Parser.Analyzer do
         %{}
       "replies" ->
         %{}
+      "self" ->
+        %{link: H.to_255(attr[:href])}
       nil ->
         %{link: H.to_255(attr[:href])}
     end
@@ -451,9 +453,9 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("owner", [:"itunes:name",     _, []]), do: %{}
-  def call("owner", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
-  def call("owner", [:name,              _, [value]]), do: %{name: H.to_255(value)}
-  def call("owner", [:"itunes:author",   _, [value]]), do: %{name: H.to_255(value)}
+  def call("owner", [tag_atom, _, [value]]) when tag_atom in [
+    :name, :"itunes:name", :"itunes:author", :"itunes:caption"
+  ], do: %{name: H.to_255(value)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:"googleplay:email", _, [value]]), do: %{email: value}
