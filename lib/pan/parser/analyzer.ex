@@ -168,7 +168,7 @@ defmodule Pan.Parser.Analyzer do
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher", :"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
-    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle"
+    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -230,7 +230,7 @@ defmodule Pan.Parser.Analyzer do
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
-    :"lj:replycount", :"xerosocial", :media, :language
+    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice
   ], do: %{}
 
 
