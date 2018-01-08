@@ -254,7 +254,7 @@ defmodule Pan.Parser.Helpers do
               |> binary_part(0, 255)
               |> String.length()
 
-      String.slice(text, 0, chars - 1)
+      String.slice(text, 0, chars - 2)
     else
       text
     end
