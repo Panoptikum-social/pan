@@ -69,12 +69,12 @@ defmodule PanWeb.Api.PodcastController do
                                                             offset: ^offset,
                                                             limit: ^size))
                |> Repo.preload([:categories, :languages, :engagements, :contributors,
-                               [recommendations: :user], :feeds])
+                               [recommendations: :user], :feeds, [episodes: :enclosures]])
 
     if podcast do
       render conn, "show.json-api", data: podcast,
                                   opts: [page: links,
-                                         include: "episodes,categories,languages,engagements,contributors,recommendations,feeds"]
+                                         include: "episodes.enclosures,categories,languages,engagements,contributors,recommendations,feeds"]
     else
       Helpers.send_404(conn)
     end

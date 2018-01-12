@@ -42,6 +42,8 @@ defmodule PanWeb.Api.PlainEpisodeView do
   attributes [:orig_link, :title, :publishing_date, :description, :deep_link, :duration, :subtitle,
               :summary, :image_title, :image_url]
 
+  has_many :enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false
+
   def orig_link(episode) do
     episode.link
   end
