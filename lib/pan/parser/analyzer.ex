@@ -175,14 +175,14 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
-    :category, :"dc:creator", :comments, :"feedburner:origLink", :"dc:modifieddate",
+    :category, :"dc:creator", :comments, :"feedburner:origLink", :"dc:modifieddate", :encoded,
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block", :meta,
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment, :url,
-    :"cba:containsCopyright", :"media:thumbnail", :source, :"media:description", :programid,
+    :"cba:containsCopyright", :"media:thumbnail", :source, :"media:description", :programid, :a,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated", :img,
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point", :length,
     :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
-    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :itemDate, :"ddn:id",
+    :"wfw:content", :"wfw:comment", :"creativeCommons:license", :itemDate, :"ddn:id", :"dc:format",
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure", :timestamp,
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
     :"media:title", :"media:credit", :"dc:subject", :"dc:identifier", :"georss:featurename", :tags,
@@ -236,9 +236,10 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta, :"content:encoded"], do: %{}
 
-
 # We expect several language tags
   def call(_, "tag", [:language, _, []]), do: %{}
+  def call(_, "tag", [tag_atom, _, [_]]) when tag_atom in [:"rtl:credit" ], do: %{}
+
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [:language, :"dc:language"] do
     %{languages: %{UUID.uuid1() => %{shortcode: value}}}
   end

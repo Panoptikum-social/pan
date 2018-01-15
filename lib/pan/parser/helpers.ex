@@ -56,6 +56,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
+               try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Z})") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
                try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
@@ -126,7 +127,7 @@ defmodule Pan.Parser.Helpers do
   def replace_long_month_names(datetime) do
     datetime
     |> String.replace(~r/janr?u?r?a?r?y?/i,      "Jan")
-    |> String.replace(~r/f[ae][bvr]r?u?a?r?y?/i, "Feb")
+    |> String.replace(~r/f[ae][bvr][rv]?u?a?r?y?/i, "Feb")
     |> String.replace(~r/m[aä]rc?h?/i,           "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")
     |> String.replace(~r/m[a][iy]/i,             "May")
@@ -136,7 +137,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
     |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,   "Nov")
-    |> String.replace(~r/d[ei][vcz]e?m?b?e?r?/i, "Dec")
+    |> String.replace(~r/d[ei][vcz][e]?m?b?[re]?[ro]?/i, "Dec")
   end
 
 
