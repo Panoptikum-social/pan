@@ -27,6 +27,7 @@ defmodule Pan.Parser.Helpers do
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
+                |> String.replace("~", "")
                 |> fix_time()
                 |> replace_first_second_third_fourth()
                 |> replace_long_month_names()
