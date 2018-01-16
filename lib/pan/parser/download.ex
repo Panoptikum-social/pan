@@ -20,6 +20,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401: unauthorized"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
+      {:ok, %HTTPoison.Response{status_code: 408}} -> {:error, "408: Request timeout"}
       {:ok, %HTTPoison.Response{status_code: 410}} -> {:error, "410: Gone"}
       {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}
       {:ok, %HTTPoison.Response{status_code: 423}} -> {:error, "423: Locked"}
