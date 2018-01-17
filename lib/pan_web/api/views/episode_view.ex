@@ -66,19 +66,23 @@ end
 
 defmodule DurationHelpers do
   def duration_in_seconds(duration) do
-    duration = String.replace(duration, ~r/(.*?\:.*?\:.*?)(\:.*)/, "\\1")
+    if duration do 
+      duration = String.replace(duration, ~r/(.*?\:.*?\:.*?)(\:.*)/, "\\1")
 
-    if String.match?(duration, ~r/^([0-9]+)(\:[0-9]{1,2})*$/) do
-      if String.match?(duration, ~r/\:/) do
-        fragments = String.split(duration, ":")
-        fragments = if length(fragments) < 3, do: ["0" | fragments], else: fragments
+      if String.match?(duration, ~r/^([0-9]+)(\:[0-9]{1,2})*$/) do
+        if String.match?(duration, ~r/\:/) do
+          fragments = String.split(duration, ":")
+          fragments = if length(fragments) < 3, do: ["0" | fragments], else: fragments
 
-        seconds(fragments, 0) + seconds(fragments, 1) + seconds(fragments, 2)
+          seconds(fragments, 0) + seconds(fragments, 1) + seconds(fragments, 2)
+        else
+          String.to_integer(duration)
+        end
       else
-        String.to_integer(duration)
+        0
       end
     else
-      0
+      nil
     end
   end
 
