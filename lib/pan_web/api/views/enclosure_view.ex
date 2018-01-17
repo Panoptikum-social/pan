@@ -5,7 +5,7 @@ defmodule PanWeb.Api.EnclosureView do
   def type(_, _), do: "enclosure"
 
   location :location
-  attributes [:orig_url, :duration, :type, :guid, :mime_type]
+  attributes [:orig_url, :file_size, :type, :guid, :mime_type]
 
   has_one :episode, serializer: PanWeb.Api.PlainEpisodeView, include: false
 
@@ -17,7 +17,7 @@ defmodule PanWeb.Api.EnclosureView do
     enclosure.type
   end
 
-  def duration(enclosure) do
+  def file_size(enclosure) do
     enclosure.length
   end
 
@@ -34,14 +34,14 @@ defmodule PanWeb.Api.PlainEnclosureView do
   def type(_, _), do: "enclosure"
 
   location :location
-  attributes [:orig_url, :duration, :type, :guid, :mime_type]
+  attributes [:orig_url, :file_size, :type, :guid, :mime_type]
 
-  def orig_url(alternate_feed) do
-    alternate_feed.url
+  def orig_url(enclosure) do
+    enclosure.url
   end
 
-  def duration(alternate_feed) do
-    alternate_feed.length
+  def file_size(enclosure) do
+    enclosure.length
   end
 
   def mime_type(enclosure) do
