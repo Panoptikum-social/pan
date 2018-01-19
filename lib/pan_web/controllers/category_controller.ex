@@ -141,8 +141,9 @@ defmodule PanWeb.CategoryController do
     |> Repo.delete!
 
     categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
-                                                     order_by: :title,
-                                                     preload: [children: :children])
+                                                     order_by: :title)
+                 |> Repo.preload([children: from(c in Category, order_by: c.title)])
+                 |> Repo.preload([children: :children])
 
     Category.delete_search_index(from_id)
     Category.update_search_index(to_id)
