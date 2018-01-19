@@ -31,7 +31,8 @@ form.link, form.button {display: inline; }
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
-.header, .marketing {padding-right: 15px; padding-left: 15px; }
+.header, .marketing {padding-right: 15px;
+                     padding-left: 15px; }
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
@@ -45,3 +46,7 @@ form.link, form.button {display: inline; }
 
 /* Top-List */
 .top-list .podcasts > p:last-child { margin-bottom: 0; }
+
+/* Tree-View */
+.node-tree1, .node-tree2 { padding-top: 1px;
+                           padding-bottom: 1px;}

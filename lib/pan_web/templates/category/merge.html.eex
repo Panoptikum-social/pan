@@ -20,8 +20,8 @@
 <script>
   //bootstrap-treeview:  https://github.com/jonmiles/bootstrap-treeview
   var treedata = <%= category_tree(@categories) %>
-  $('#tree1').treeview({data: treedata});
-  $('#tree2').treeview({data: treedata});
+  $('#tree1').treeview({data: treedata, showBorder: false});
+  $('#tree2').treeview({data: treedata, showBorder: false});
 
  function merge_selected(){
   var from_id = $("#tree1").treeview('getSelected')[0].categoryId
