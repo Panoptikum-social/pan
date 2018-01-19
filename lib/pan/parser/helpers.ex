@@ -39,6 +39,7 @@ defmodule Pan.Parser.Helpers do
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
     datetime = try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}") ||
@@ -147,7 +148,7 @@ defmodule Pan.Parser.Helpers do
     datetime
     |> String.replace(~r/satu?r?d?a?y?/i,         "Sat")
     |> String.replace(~r/m[oå]n?d?a?y?/i,         "Mon")
-    |> String.replace(~r/t[ui]e?s?[du]?[an]?y?/i, "Tue")
+    |> String.replace(~r/t[ui][er]?s?[du]?[an]?y?/i, "Tue")
     |> String.replace("Di",   "Tue")
     |> String.replace("tor",  "Tue")
     |> String.replace(~r/we[db]?n?e?s?d?a?y?/i,   "Wed")
@@ -155,7 +156,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i,     "Thu")
     |> String.replace("Do",   "Thu")
-    |> String.replace(~r/fr[ei]?d?a?y?/i,         "Fri")
+    |> String.replace(~r/f[ir][rei]?d?a?y?/i,         "Fri")
     |> String.replace(~r/s[ou]nd?a?y?/i,          "Sun")
     |> String.replace(~r/Lun/i,                   "Mon")
   end

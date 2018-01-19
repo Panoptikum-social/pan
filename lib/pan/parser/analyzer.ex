@@ -218,7 +218,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev", :br,
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
-    :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body,
+    :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body, :type,
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
     :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
@@ -391,6 +391,8 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"dc:publisher",      _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:"atom:author",       _, value]), do: Iterator.parse(%{}, "episode_author", value)
   def call(_, "episode", [:Author,              _, value]), do: Iterator.parse(%{}, "episode_author", value)
+
+  def call(_, "episode", [:managingEditor,              _, value]), do: Iterator.parse(%{}, "managing_editor", value)
 
 
 # Enclosures a.k.a. Audiofiles
