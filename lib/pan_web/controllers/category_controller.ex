@@ -91,9 +91,9 @@ defmodule PanWeb.CategoryController do
 
   def merge(conn, _params) do
     categories = Repo.all(from category in Category, where: is_nil(category.parent_id),
-                                                     order_by: :title,
-                                                     preload: [children: :children])
-
+                                                     order_by: :title)
+                 |> Repo.preload([children: from(c in Category, order_by: c.title)])
+                 |> Repo.preload([children: :children])
     render(conn, "merge.html", categories: categories)
   end
 
