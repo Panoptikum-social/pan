@@ -17,7 +17,7 @@
           <td>
             <%= if @current_user && @current_user.id == recommendation.user_id do %>
               <nobr>
-                <% text = "👍 " <> @podcast.title <> "%0A💬 " <> truncate(recommendation.comment, 80) <> "%0A🔊 " %>
+                <% text = "👍 " <> @podcast.title <> "%0A💬 " <> truncate(recommendation.comment, 220) <> "%0A🔊 " %>
                 <% url = URI.encode_www_form(podcast_frontend_url(@conn, :show, @podcast)) %>
                 <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
                                   "&url=" <> url,

@@ -7,7 +7,7 @@
       <%= for recommendation <- @chapter.recommendations do %>
         <li class="list-group-item" id="chapter-<%= @chapter.id %>">
           <%= if @current_user && @current_user.id == recommendation.user_id do %>
-            <% text = "👍 " <> @chapter.title <> "%0A💬 " <> truncate(recommendation.comment, 80) <> "%0A🔊 " %>
+            <% text = "👍 " <> @chapter.title <> "%0A💬 " <> truncate(recommendation.comment, 220) <> "%0A🔊 " %>
             <% url = URI.encode_www_form(episode_frontend_url(@conn, :show, @episode.id)) %>
             <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
                               "&url=" <> url <> "%23chapter-#{@chapter.id}",
