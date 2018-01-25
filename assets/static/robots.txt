@@ -12,3 +12,4 @@ Disallow: /podcasts
 Disallow: /episodes
 Disallow: /personas
 Disallow: /users
+Disallow: /search
