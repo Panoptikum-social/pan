@@ -86,7 +86,7 @@ defmodule PanWeb.UserFrontendView do
 
 
   def episode_button(conn, episode) do
-    link [fa_icon("headphones"), " ", truncate(episode.title, 40)],
+    link [fa_icon("headphones"), " ", truncate_string(episode.title, 40)],
          to: episode_frontend_path(conn, :show, episode),
          class: "btn btn-primary btn-xs",
          style: "color: #fff"

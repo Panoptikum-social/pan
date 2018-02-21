@@ -93,11 +93,11 @@ defmodule PanWeb.SearchFrontendView do
     left = left
            |> HtmlSanitizeEx.strip_tags
            |> String.reverse
-           |> truncate(60)
+           |> truncate_string(60)
            |> String.reverse
     right = right
             |> HtmlSanitizeEx.strip_tags
-            |> truncate(60)
+            |> truncate_string(60)
 
     left <> "<b>" <> match <> "</b>" <> right
   end

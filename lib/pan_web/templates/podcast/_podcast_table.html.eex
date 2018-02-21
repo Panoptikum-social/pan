@@ -16,7 +16,7 @@
       <tr>
         <td><%= podcast.id %></td>
         <td><%= podcast.title %></td>
-        <td><%= if podcast.website do %><a href="<%= podcast.website %>"><%= truncate(podcast.website, 50)%> <% end %></a></td>
+        <td><%= if podcast.website do %><a href="<%= podcast.website %>"><%= truncate_string(podcast.website, 50)%> <% end %></a></td>
         <td><%= podcast.updated_at %></td>
         <td><%= podcast.last_build_date %></td>
         <td><%= podcast.update_paused %></td>

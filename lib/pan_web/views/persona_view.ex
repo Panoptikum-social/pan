@@ -15,7 +15,7 @@ defmodule PanWeb.PersonaView do
   def persona_json(persona) do
     %{id:          persona.id,
       pid:         "<nobr>" <> persona.pid <> "</nobr>",
-      name:        "<nobr>" <> truncate(persona.name, 100) <> "</nobr>",
+      name:        "<nobr>" <> truncate_string(persona.name, 100) <> "</nobr>",
       uri:         persona.uri,
       email:       persona.email,
       description: persona.description,

@@ -51,7 +51,7 @@ defmodule Pan.Mixfile do
      {:font_awesome_phoenix, "~> 1.0"}, # Font Awesome (just view helpers)
      {:httpoison, "~> 0.13.0"}, # http client
      {:hackney, "1.10.1"}, # erlang http client, had to increase version here
-     {:exrm, "~> 1.0" }, # release manager
+     {:distillery, "~> 1.5", runtime: false}, # release manager, distillery is deprecated
      {:quinn, "~> 1.0.2"}, # XML parser (another one)
      {:uuid, "~> 1.1.8"}, # UUID creation
      {:html_sanitize_ex, "1.3.0"}, # sanitizing html input (shownotes)

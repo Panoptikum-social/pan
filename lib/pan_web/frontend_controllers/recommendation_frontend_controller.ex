@@ -130,7 +130,7 @@ defmodule PanWeb.RecommendationFrontendController do
     e = %{e | current_user_id: user.id,
               type:            "success",
               event:           "recommend",
-              content:         PanWeb.ViewHelpers.truncate("« recommended " <>
+              content:         PanWeb.ViewHelpers.truncate_string("« recommended " <>
                                                         e.notification_text <> " » " <>
                                                         recommendation_params["comment"], 255)}
 

@@ -146,7 +146,7 @@
         <tbody>
           <%= for {podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast)) do %>
             <tr>
-              <td> <%= link [fa_icon("podcast"), " ", truncate(podcast.title, 50)],
+              <td> <%= link [fa_icon("podcast"), " ", truncate_string(podcast.title, 50)],
                              to: podcast_frontend_path(@conn, :show, podcast),
                              class: "btn btn-default btn-xs",
                              style: "color: #000" %></td>

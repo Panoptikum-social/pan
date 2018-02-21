@@ -66,7 +66,7 @@ defmodule PanWeb.EpisodeFrontendView do
                  url: episode.deep_link || episode.link,
                  description: episode.description
                               |> HtmlSanitizeEx.strip_tags
-                              |> truncate(1000)
+                              |> truncate_string(1000)
                               |> ej(),
                  chaptermarks: chapterlist(episode.chapters)
                }

@@ -13,7 +13,7 @@ defmodule PanWeb.RssFeedView do
 
 
   def rss_feed_json(rss_feed) do
-    {:safe, content} = html_escape(truncate(rss_feed.content, 255))
+    {:safe, content} = html_escape(truncate_string(rss_feed.content, 255))
 
     %{id:          rss_feed.id,
       content:     content,

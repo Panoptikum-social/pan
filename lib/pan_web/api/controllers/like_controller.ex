@@ -118,7 +118,7 @@ defmodule PanWeb.Api.LikeController do
       }
 
       chapter_title = Repo.get!(Chapter, e.chapter_id).title
-                      |> PanWeb.ViewHelpers.truncate(40)
+                      |> PanWeb.ViewHelpers.truncate_string(40)
       e = %{e | content: "« liked the chapter <b> »" <> chapter_title <> "</b>"}
 
       Message.persist_event(e)

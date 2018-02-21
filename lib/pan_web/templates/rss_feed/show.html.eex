@@ -4,7 +4,7 @@
 
   <li>
     <strong>Content:</strong>
-    <%= truncate(@rss_feed.content, 255) %>
+    <%= truncate_string(@rss_feed.content, 255) %>
   </li>
 
   <li>

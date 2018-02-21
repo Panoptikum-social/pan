@@ -27,7 +27,7 @@
           <% end %>
         </td>
         <td style="line-height: 200%;">
-          <%= link [fa_icon("headphones"), " ", truncate(episode.title, 80)],
+          <%= link [fa_icon("headphones"), " ", truncate_string(episode.title, 80)],
                    to: episode_frontend_path(@conn, :show, episode.id),
                    class: "btn btn-primary btn-xs truncate" %><br/>
           <%= link [fa_icon("podcast"), " ", episode.podcast.title],

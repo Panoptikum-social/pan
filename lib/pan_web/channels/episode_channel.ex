@@ -45,7 +45,7 @@ defmodule PanWeb.EpisodeChannel do
       event:           "like-chapter"
     }
     chapter_title = Repo.get!(Chapter, e.chapter_id).title
-                    |> PanWeb.ViewHelpers.truncate(40)
+                    |> PanWeb.ViewHelpers.truncate_string(40)
     e = %{e | content: "« " <> params["action"] <> "d the chapter <b> »" <>
                        chapter_title <> "</b>"}
 

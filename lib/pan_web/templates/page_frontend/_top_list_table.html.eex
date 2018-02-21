@@ -5,18 +5,18 @@
         <th scope="row">
           <%= rank %>.
         </th>
-        
+
         <td class="podcasts">
           <%= for {id, title} <- podcasts do %>
             <p>
-              <%= link [fa_icon("podcast"), " ", truncate(title, 50)],
+              <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
                     to: podcast_frontend_path(@conn, :show, id),
                     class: "btn btn-default btn-xs",
                     style: "color: #000;" %>
             </p>
           <% end %>
         </td>
-        
+
         <td>
           <span class="pull-right">
             <%= count %> <%= fa_icon(@icon) %>

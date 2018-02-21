@@ -1,4 +1,5 @@
-%{"bamboo": {:hex, :bamboo, "0.8.0", "573889a3efcb906bb9d25a1c4caa4ca22f479235e1b8cc3260d8b88dabeb4b14", [:mix], [{:hackney, "~> 1.6", [hex: :hackney, optional: false]}, {:plug, "~> 1.0", [hex: :plug, optional: false]}, {:poison, ">= 1.5.0", [hex: :poison, optional: false]}]},
+%{
+  "bamboo": {:hex, :bamboo, "0.8.0", "573889a3efcb906bb9d25a1c4caa4ca22f479235e1b8cc3260d8b88dabeb4b14", [:mix], [{:hackney, "~> 1.6", [hex: :hackney, optional: false]}, {:plug, "~> 1.0", [hex: :plug, optional: false]}, {:poison, ">= 1.5.0", [hex: :poison, optional: false]}]},
   "bamboo_smtp": {:hex, :bamboo_smtp, "1.4.0", "a01d91406f3a46b3452c84d345d50f75d6facca5e06337358287a97da0426240", [:mix], [{:bamboo, "~> 0.8.0", [hex: :bamboo, optional: false]}, {:gen_smtp, "~> 0.12.0", [hex: :gen_smtp, optional: false]}]},
   "bbmustache": {:hex, :bbmustache, "1.0.4", "7ba94f971c5afd7b6617918a4bb74705e36cab36eb84b19b6a1b7ee06427aa38", [:rebar], []},
   "bcrypt_elixir": {:hex, :bcrypt_elixir, "1.0.4", "7598efbe9bd56fdc04412b4377a6a3add0bcf8e0cf1f31684190425a404f14e2", [:make, :mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, optional: false]}]},
@@ -14,10 +15,11 @@
   "credo": {:hex, :credo, "0.8.10", "261862bb7363247762e1063713bb85df2bbd84af8d8610d1272cd9c1943bba63", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, optional: false]}]},
   "db_connection": {:hex, :db_connection, "1.1.2", "2865c2a4bae0714e2213a0ce60a1b12d76a6efba0c51fbda59c9ab8d1accc7a8", [:mix], [{:connection, "~> 1.0.2", [hex: :connection, optional: false]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: true]}, {:sbroker, "~> 1.0", [hex: :sbroker, optional: true]}]},
   "decimal": {:hex, :decimal, "1.4.1", "ad9e501edf7322f122f7fc151cce7c2a0c9ada96f2b0155b8a09a795c2029770", [:mix], []},
+  "distillery": {:hex, :distillery, "1.5.2", "eec18b2d37b55b0bcb670cf2bcf64228ed38ce8b046bb30a9b636a6f5a4c0080", [:mix], [], "hexpm"},
   "earmark": {:hex, :earmark, "1.2.3", "206eb2e2ac1a794aa5256f3982de7a76bf4579ff91cb28d0e17ea2c9491e46a4", [:mix], []},
   "ecto": {:hex, :ecto, "2.2.6", "3fd1067661d6d64851a0d4db9acd9e884c00d2d1aa41cc09da687226cf894661", [:mix], [{:db_connection, "~> 1.1", [hex: :db_connection, optional: true]}, {:decimal, "~> 1.2", [hex: :decimal, optional: false]}, {:mariaex, "~> 0.8.0", [hex: :mariaex, optional: true]}, {:poison, "~> 2.2 or ~> 3.0", [hex: :poison, optional: true]}, {:poolboy, "~> 1.5", [hex: :poolboy, optional: false]}, {:postgrex, "~> 0.13.0", [hex: :postgrex, optional: true]}, {:sbroker, "~> 1.0", [hex: :sbroker, optional: true]}]},
   "elixir_make": {:hex, :elixir_make, "0.4.0", "992f38fabe705bb45821a728f20914c554b276838433349d4f2341f7a687cddf", [:mix], []},
-  "erlware_commons": {:hex, :erlware_commons, "1.0.3", "abd000fe5893342a405b5f4a2900ff560875b3234e8fe915fdef172d98eaf250", [:rebar3], [{:cf, "0.2.2", [hex: :cf, optional: false]}]},
+  "erlware_commons": {:hex, :erlware_commons, "1.0.3", "abd000fe5893342a405b5f4a2900ff560875b3234e8fe915fdef172d98eaf250", [:rebar3], [{:cf, "0.2.2", [repo: "hexpm", hex: :cf, optional: false]}], "hexpm"},
   "exactor": {:hex, :exactor, "2.2.3", "a6972f43bb6160afeb73e1d8ab45ba604cd0ac8b5244c557093f6e92ce582786", [:mix], []},
   "excoveralls": {:hex, :excoveralls, "0.7.5", "339e433e5d3bce09400dc8de7b9040741a409c93917849916c136a0f51fdc183", [:mix], [{:exjsx, ">= 3.0.0", [hex: :exjsx, optional: false]}, {:hackney, ">= 0.12.0", [hex: :hackney, optional: false]}]},
   "exjsx": {:hex, :exjsx, "3.2.1", "1bc5bf1e4fd249104178f0885030bcd75a4526f4d2a1e976f4b428d347614f0f", [:mix], [{:jsx, "~> 2.8.0", [hex: :jsx, optional: false]}]},
@@ -55,7 +57,7 @@
   "providers": {:hex, :providers, "1.7.0", "bbf730563914328ec2511d205e6477a94831db7297de313b3872a2b26c562eab", [:rebar3], [{:getopt, "1.0.1", [hex: :getopt, optional: false]}]},
   "quinn": {:hex, :quinn, "1.0.2", "33cfca788e87e62b4d43a5a065c553d2c05a7bd2b8d9883a24d8285cc80c7008", [:mix], []},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], []},
-  "relx": {:hex, :relx, "3.24.1", "8211a2c55ea67621c64fdf6a40877d95da790478b78e3b18496e1c5916046032", [:rebar3], [{:bbmustache, "1.0.4", [hex: :bbmustache, optional: false]}, {:cf, "0.2.2", [hex: :cf, optional: false]}, {:erlware_commons, "1.0.3", [hex: :erlware_commons, optional: false]}, {:getopt, "1.0.1", [hex: :getopt, optional: false]}, {:providers, "1.7.0", [hex: :providers, optional: false]}]},
+  "relx": {:hex, :relx, "3.24.1", "8211a2c55ea67621c64fdf6a40877d95da790478b78e3b18496e1c5916046032", [:rebar3], [{:bbmustache, "1.0.4", [repo: "hexpm", hex: :bbmustache, optional: false]}, {:cf, "0.2.2", [repo: "hexpm", hex: :cf, optional: false]}, {:erlware_commons, "1.0.3", [repo: "hexpm", hex: :erlware_commons, optional: false]}, {:getopt, "1.0.1", [repo: "hexpm", hex: :getopt, optional: false]}, {:providers, "1.7.0", [repo: "hexpm", hex: :providers, optional: false]}], "hexpm"},
   "scrivener": {:hex, :scrivener, "2.4.0", "c9431804b13ac6a5c4b01eb32188c1ff926898a2d684244d021706841f022e66", [:mix], []},
   "scrivener_ecto": {:hex, :scrivener_ecto, "1.3.0", "69698428e22810ac8a47abc12d1df5b2f5d8f6b36dc5d5bfe6dd93fde857c576", [:mix], [{:ecto, "~> 2.0", [hex: :ecto, optional: false]}, {:postgrex, "~> 0.11.0 or ~> 0.12.0 or ~> 0.13.0", [hex: :postgrex, optional: true]}, {:scrivener, "~> 2.4", [hex: :scrivener, optional: false]}]},
   "scrivener_html": {:hex, :scrivener_html, "1.7.1", "afa35128fb36184bc469e4531bb1ef61b2d91bb29e373157068c62332291485f", [:mix], [{:phoenix, "~> 1.0-pre and < 1.4.0", [hex: :phoenix, optional: true]}, {:phoenix_html, "~> 2.2", [hex: :phoenix_html, optional: false]}, {:plug, "~> 1.1", [hex: :plug, optional: false]}, {:scrivener, "~> 1.2 or ~> 2.0", [hex: :scrivener, optional: false]}]},
@@ -67,4 +69,5 @@
   "tzdata": {:hex, :tzdata, "0.5.13", "dfd6a10c1c9ed2b4c6493e35af5da6c37058c9578b2e413d37242d6943ed07d9", [:mix], [{:hackney, "~> 1.0", [hex: :hackney, optional: false]}]},
   "unicode_util_compat": {:hex, :unicode_util_compat, "0.3.1", "a1f612a7b512638634a603c8f401892afbf99b8ce93a45041f8aaca99cadb85e", [:rebar3], []},
   "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], []},
-  "xml_builder": {:hex, :xml_builder, "0.0.9", "68f336e8c5ba32c130d13e96a379cd77e0dbb1c5152c35a30be96c1d1566b05e", [:mix], []}}
+  "xml_builder": {:hex, :xml_builder, "0.0.9", "68f336e8c5ba32c130d13e96a379cd77e0dbb1c5152c35a30be96c1d1566b05e", [:mix], []},
+}

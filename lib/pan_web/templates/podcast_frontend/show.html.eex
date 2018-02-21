@@ -35,7 +35,7 @@
                        class: "btn btn-primary btn-xs truncate",
                        id: "detail-#{episode.id}" %>
               </p>
-              <%= truncate(HtmlSanitizeEx.strip_tags(episode.description), 255) %>
+              <%= truncate_string(HtmlSanitizeEx.strip_tags(episode.description), 255) %>
             </td>
             <td style="line-height: 200%;">
               <%= for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona)) do %>

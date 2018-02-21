@@ -10,7 +10,7 @@ defmodule PanWeb.ViewHelpers do
   end
 
 
-  def truncate(string, len) do
+  def truncate_string(string, len) do
     length = len - 3
     if string do
       if String.length(string) > length do
