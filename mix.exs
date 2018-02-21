@@ -66,7 +66,6 @@ defmodule Pan.Mixfile do
      {:tirexs, "~> 0.8.15"}, # elasticsearch connector
      {:credo, "0.8.10", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.19.0"}, # HTML parser
-     {:relx, "3.24.1"}, # Release assembler (asset compilation failed with 3.22.0)
      {:erlware_commons, "~> 1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
      {:excoveralls, "~> 0.7", only: :test}, # Code coverage tool
