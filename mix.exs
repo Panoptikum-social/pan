@@ -25,7 +25,7 @@ defmodule Pan.Mixfile do
     [mod: {Pan, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :gettext, :phoenix_ecto, :postgrex, :httpoison,
-                    :comeonin, :sweet_xml, :timex, :earmark,
+                    :comeonin, :sweet_xml, :timex, :earmark, :exactor,
                     :font_awesome_phoenix, :quinn, :uuid, :html_sanitize_ex,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :con_cache, :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
