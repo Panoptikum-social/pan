@@ -137,7 +137,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright, :id,
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
-    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject",
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject", :imageurl,
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
@@ -168,7 +168,7 @@ defmodule Pan.Parser.Analyzer do
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher", :"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
-    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season"
+    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season",
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -230,7 +230,8 @@ defmodule Pan.Parser.Analyzer do
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
-    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url"
+    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
+    :"startDate", :"endDate", :"end_date"
   ], do: %{}
 
 
@@ -447,12 +448,15 @@ defmodule Pan.Parser.Analyzer do
   def call("contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:  value}
 
 
-  def call("episode-contributor", [:"atom:name",       _, [value]]), do: %{name:  value}
+  def call("episode-contributor", [tag_atom, _, [value]]) when tag_atom in [
+    :"atom:name", :"atom:uri"
+  ], do: %{name:  value}
+
   def call("episode-contributor", [:"atom:uri",        _, []]), do: %{}
-  def call("episode-contributor", [:"atom:uri",        _, [value]]), do: %{uri:   value}
   def call("episode-contributor", [:"atom:email",      _, []]), do: %{}
   def call("episode-contributor", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("episode-contributor", [:"panoptikum:pid",  _, [value]]), do: %{pid:   value}
+  def call("episode-contributor", [:"atom:facebook", _, _]), do: %{}
 
 
   def call("owner", [:"itunes:name",     _, []]), do: %{}
