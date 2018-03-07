@@ -18,6 +18,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %HTTPoison.Response{status_code: 400}} -> {:error, "400: bad request"}
       {:ok, %HTTPoison.Response{status_code: 401}} -> {:error, "401: unauthorized"}
+      {:ok, %HTTPoison.Response{status_code: 402}} -> {:error, "402: Payment required"}
       {:ok, %HTTPoison.Response{status_code: 404}} -> {:error, "404: feed not found"}
       {:ok, %HTTPoison.Response{status_code: 406}} -> {:error, "406: not acceptable"}
       {:ok, %HTTPoison.Response{status_code: 408}} -> {:error, "408: Request timeout"}
@@ -35,6 +36,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 509}} -> {:error, "509: Bandwidth Limit Exceeded"}
       {:ok, %HTTPoison.Response{status_code: 520}} -> {:error, "520: Unknown Error"}
       {:ok, %HTTPoison.Response{status_code: 521}} -> {:error, "521: Web server is down"}
+      {:ok, %HTTPoison.Response{status_code: 523}} -> {:error, "523: Origin is unreachable"}
       {:ok, %HTTPoison.Response{status_code: 526}} -> {:error, "526: Invalid SSL certificate"}
 
       {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)

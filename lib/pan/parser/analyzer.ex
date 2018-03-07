@@ -232,7 +232,7 @@ defmodule Pan.Parser.Analyzer do
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
     :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
-    :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt"
+    :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url"
   ], do: %{}
 
 
