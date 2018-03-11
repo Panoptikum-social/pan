@@ -35,7 +35,7 @@ defmodule PanWeb.EpisodeFrontendController do
                                    e.publishing_date < ^NaiveDateTime.utc_now(),
                                   order_by: [desc: :publishing_date],
                                   preload: [:podcast])
-               |> Repo.paginate(params)
+               |> Repo.paginate(page: params["page"], page_size: 10)
 
     render(conn, "index.html", episodes: episodes)
   end

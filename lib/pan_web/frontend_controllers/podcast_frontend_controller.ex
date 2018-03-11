@@ -8,7 +8,7 @@ defmodule PanWeb.PodcastFrontendController do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
                                   where: is_nil(p.blocked) or p.blocked == false,
                                   preload: [:categories, [engagements: :persona]])
-               |> Repo.paginate(params)
+               |> Repo.paginate(page: params["page"], page_size: 10)
 
     render(conn, "index.html", podcasts: podcasts)
   end

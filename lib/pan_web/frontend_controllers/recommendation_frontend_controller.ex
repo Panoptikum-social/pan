@@ -19,7 +19,7 @@ defmodule PanWeb.RecommendationFrontendController do
     recommendations = from(p in Recommendation, order_by: [desc: :inserted_at],
                                                 preload: [:user, :podcast, episode: :podcast,
                                                           chapter: [episode: :podcast]])
-                      |> Repo.paginate(page: params["page"], page_size: 16)
+                      |> Repo.paginate(page: params["page"], page_size: 15)
 
     render(conn, "index.html", recommendations: recommendations)
   end
