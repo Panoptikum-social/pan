@@ -169,7 +169,8 @@ defmodule Pan.Parser.Analyzer do
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
-    :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy"
+    :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
+    :"Atom:link"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
