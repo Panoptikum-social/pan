@@ -170,7 +170,7 @@ defmodule Pan.Parser.Analyzer do
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
-    :"Atom:link"
+    :"Atom:link", :"ituneslink"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -233,7 +233,8 @@ defmodule Pan.Parser.Analyzer do
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
     :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
-    :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url"
+    :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url",
+    :"primaryCat"
   ], do: %{}
 
 
