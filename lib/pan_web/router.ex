@@ -90,6 +90,8 @@ defmodule PanWeb.Router do
     get "/recommendations/my", RecommendationController, :my
 
     get "/podcasts/:id/trigger_update", PodcastController, :trigger_update
+    get "/podcasts/:id/trigger_episode_update", PodcastController, :trigger_episode_update
+
     get "/podcasts/i_follow", PodcastController, :i_follow
     get "/podcasts/i_like", PodcastController, :i_like
     get "/podcasts/i_subscribed", PodcastController, :i_subscribed
