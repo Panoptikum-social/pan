@@ -170,7 +170,7 @@ defmodule Pan.Parser.Analyzer do
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
-    :"Atom:link", :"ituneslink"
+    :"Atom:link", :"ituneslink", :"itunescategory"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -222,7 +222,7 @@ defmodule Pan.Parser.Analyzer do
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
     :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body, :type,
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
-    :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp,
+    :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp, :b,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
     :"dc:source",  :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified", :"media:restriction",
     :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail", :bitrate,
