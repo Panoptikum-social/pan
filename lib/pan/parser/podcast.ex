@@ -42,7 +42,7 @@ defmodule Pan.Parser.Podcast do
       {:ok, "Podcast importet"}
     else
       {:redirect, redirect_target} ->
-        Feed.update_with_redirect_target(id, redirect_target)
+        Feed.update_with_redirect_target(id, Pan.Parser.Helpers.to_255(redirect_target))
         delta_import(id)
 
       {:error, :not_found} ->
