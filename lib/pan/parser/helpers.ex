@@ -28,6 +28,8 @@ defmodule Pan.Parser.Helpers do
                 |> String.replace("\"", "")
                 |> String.replace("ٍ", "")
                 |> String.replace("~", "")
+                |> String.replace("\r", "")
+                |> String.replace("\n", "")
                 |> fix_time()
                 |> replace_first_second_third_fourth()
                 |> replace_long_month_names()
@@ -157,7 +159,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i,     "Thu")
     |> String.replace("Do",   "Thu")
-    |> String.replace(~r/f[ir][rei]?d?a?y?/i,         "Fri")
+    |> String.replace(~r/f[ir][rei]?d?a?y?/i,     "Fri")
     |> String.replace(~r/s[ou]nd?a?y?/i,          "Sun")
     |> String.replace(~r/Lun/i,                   "Mon")
   end
@@ -165,6 +167,7 @@ defmodule Pan.Parser.Helpers do
 
   def fix_timezones(datetime) do
     datetime
+    |> String.replace(" 0000",  " +0000")
     |> String.replace("AEST",  "+1000")
     |> String.replace("CEST",  "+0200")
     |> String.replace("AEDT", "+1100")
