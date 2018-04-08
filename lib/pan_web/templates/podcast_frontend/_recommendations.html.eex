@@ -18,12 +18,13 @@
             <%= if @current_user && @current_user.id == recommendation.user_id do %>
               <nobr>
                 <% text = "👍 " <> @podcast.title <> "%0A💬 " <> truncate_string(recommendation.comment, 220) <> "%0A🔊 " %>
+                <% facebook_text = @podcast.title <> "%0A" <> truncate_string(recommendation.comment, 220) %>
                 <% url = URI.encode_www_form(podcast_frontend_url(@conn, :show, @podcast)) %>
                 <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
                                   "&url=" <> url,
                               class: "social-button twitter-button",
                               title: "Tweet it" %>
-                <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url <> "&quote=" <> text,
+                <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url <> "&quote=" <> facebook_text,
                               class: "social-button facebook-button",
                               title: "Share on facebook" %>
                 <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url,
