@@ -23,7 +23,7 @@
                                   "&url=" <> url,
                               class: "social-button twitter-button",
                               title: "Tweet it" %>
-                <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url,
+                <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url <> "&quote=" <> text,
                               class: "social-button facebook-button",
                               title: "Share on facebook" %>
                 <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url,
