@@ -68,7 +68,8 @@ defmodule PanWeb.MaintenanceController do
     total_podcasts = Repo.aggregate(Podcast, :count, :id)
                      |> delimit_integer(" ")
 
-    total_episodes = Repo.aggregate(PanWeb.Episode, :count, :id)
+
+    total_episodes = Repo.aggregate(PanWeb.Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
     podcasts_per_hour = Repo.aggregate(Podcast, :count, :id) - inactive_podcasts
