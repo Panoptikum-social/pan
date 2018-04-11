@@ -4,10 +4,8 @@ defmodule PanWeb.SearchController do
   require Logger
 
 
-  def elasticsearch_push(conn, %{"hours" => hours}) do
-    String.to_integer(hours)
-    |> Search.push()
-
+  def elasticsearch_push_missing(conn, _params) do
+    Search.push_missing()
     render(conn, "done.html", %{})
   end
 

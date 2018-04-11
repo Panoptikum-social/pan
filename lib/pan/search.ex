@@ -9,59 +9,72 @@ defmodule Pan.Search do
   alias Pan.Repo
   import Ecto.Query, only: [from: 2]
 
-  def push(hours) do
-    hours_ago = Timex.now()
-                |> Timex.shift(hours: -1 * hours)
+  def push_missing do
+    limit = 2_500
 
-    Logger.info("=== Indexing categories (since #{inspect hours_ago}) ===")
-    categories_query = from(c in Category,
-                 where: c.updated_at >= ^hours_ago,
-                 select: c.id)
-    categories_query
+    category_ids = from(c in Category, where: is_nil(c.elastic) or c.elastic == false,
+                                       limit: ^limit,
+                                       select: c.id)
     |> Repo.all()
-    |> Enum.each(fn(id) ->
-         Category.update_search_index(id)
-       end)
 
-    Logger.info("=== Indexing users ===")
-    users_query = from(u in User,
-                       where: u.updated_at >= ^hours_ago,
-                       select: u.id)
-    users_query
-    |> Repo.all()
-    |> Enum.each(fn(id) ->
-         User.update_search_index(id)
-       end)
+    for id <- category_ids, do: Category.update_search_index(id)
 
-    Logger.info("=== Indexing personas ===")
-    personas_query = from(p in Persona,
-                          where: p.updated_at >= ^hours_ago,
-                          select: p.id)
-    personas_query
-    |> Repo.all()
-    |> Enum.each(fn(id) ->
-         Persona.update_search_index(id)
-       end)
+    from(c in Category, where: c.id in ^category_ids)
+    |> Repo.update_all(set: [elastic: true])
 
-    Logger.info("=== Indexing podcasts ===")
-    podcasts_query = from(p in Podcast,
-                          where: p.updated_at >= ^hours_ago,
-                          select: p.id)
-    podcasts_query
-    |> Repo.all()
-    |> Enum.each(fn(id) ->
-         Podcast.update_search_index(id)
-       end)
+    Logger.info("=== Indexed #{length(category_ids)} categories ===")
 
-    Logger.info("=== Indexing episodes ===")
-    episodes_query = from(e in Episode,
-                          where: e.updated_at >= ^hours_ago,
-                          select: e.id)
-    episodes_query
+
+    user_ids = from(c in User, where: is_nil(c.elastic) or c.elastic == false,
+                                       limit: ^limit,
+                                       select: c.id)
     |> Repo.all()
-    |> Enum.each(fn(id) ->
-         Episode.update_search_index(id)
-       end)
+
+    for id <- user_ids, do: User.update_search_index(id)
+
+    from(c in User, where: c.id in ^user_ids)
+    |> Repo.update_all(set: [elastic: true])
+
+    Logger.info("=== Indexed #{length(user_ids)} users ===")
+
+
+    persona_ids = from(c in Persona, where: is_nil(c.elastic) or c.elastic == false,
+                                       limit: ^limit,
+                                       select: c.id)
+    |> Repo.all()
+
+    for id <- persona_ids, do: Persona.update_search_index(id)
+
+    from(c in Persona, where: c.id in ^persona_ids)
+    |> Repo.update_all(set: [elastic: true])
+
+    Logger.info("=== Indexed #{length(persona_ids)} personas ===")
+
+
+    podcast_ids = from(c in Podcast, where: is_nil(c.elastic) or c.elastic == false,
+                                       limit: ^limit,
+                                       select: c.id)
+    |> Repo.all()
+
+    for id <- podcast_ids, do: Podcast.update_search_index(id)
+
+    from(c in Podcast, where: c.id in ^podcast_ids)
+    |> Repo.update_all(set: [elastic: true])
+
+    Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
+
+
+    episode_ids = from(c in Episode, where: is_nil(c.elastic) or c.elastic == false,
+                                       limit: ^limit,
+                                       select: c.id)
+    |> Repo.all()
+
+    for id <- episode_ids, do: Episode.update_search_index(id)
+
+    from(c in Episode, where: c.id in ^episode_ids)
+    |> Repo.update_all(set: [elastic: true])
+
+    Logger.info("=== Indexed #{length(episode_ids)} episodes ===")
 
     Logger.info("=== Indexing finished ===")
   end

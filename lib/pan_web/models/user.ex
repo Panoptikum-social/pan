@@ -22,6 +22,7 @@ defmodule PanWeb.User do
     field :billing_address, :string
     field :payment_reference, :string
     field :paper_bill, :boolean
+    field :elastic, :boolean
     timestamps()
 
     has_many :manifestations, PanWeb.Manifestation
@@ -49,7 +50,7 @@ defmodule PanWeb.User do
     struct
     |> cast(params, [:name, :username, :email, :admin, :podcaster, :email_confirmed,
                      :share_subscriptions, :share_follows, :pro_until, :billing_address,
-                     :payment_reference, :paper_bill])
+                     :payment_reference, :paper_bill, :elastic])
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
