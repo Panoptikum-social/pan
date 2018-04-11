@@ -11,6 +11,7 @@ defmodule Pan.Search do
 
   def push_missing do
     limit = 2_500
+    episode_limit = limit * 3
 
     category_ids = from(c in Category, where: is_nil(c.elastic) or c.elastic == false,
                                        limit: ^limit,
@@ -65,7 +66,7 @@ defmodule Pan.Search do
 
 
     episode_ids = from(c in Episode, where: is_nil(c.elastic) or c.elastic == false,
-                                       limit: ^limit,
+                                       limit: ^episode_limit,
                                        select: c.id)
     |> Repo.all()
 
