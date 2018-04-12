@@ -72,6 +72,11 @@ defmodule PanWeb.MaintenanceController do
     total_episodes = Repo.aggregate(PanWeb.Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
+    unindexed_episodes =
+      from(p in Episode, where: (is_nil(p.elastic) or p.elastic == false))
+      |> Repo.aggregate(:count, :id)
+      |> delimit_integer(" ")
+
     podcasts_per_hour = Repo.aggregate(Podcast, :count, :id) - inactive_podcasts
                         |> Decimal.new()
                         |> Decimal.div(average_update_intervall)
@@ -120,7 +125,8 @@ defmodule PanWeb.MaintenanceController do
                                total_feed_backlogs: total_feed_backlogs,
                                total_follows: total_follows,
                                total_manifestations: total_manifestations,
-                               total_delegations: total_delegations)
+                               total_delegations: total_delegations,
+                               unindexed_episodes: unindexed_episodes)
 
   end
 
