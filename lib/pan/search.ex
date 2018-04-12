@@ -10,7 +10,7 @@ defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
 
   def push_missing do
-    limit = 2_500
+    limit = 1_000
 
     category_ids = from(c in Category, where: is_nil(c.elastic) or c.elastic == false,
                                        limit: ^limit,
@@ -63,7 +63,7 @@ defmodule Pan.Search do
 
     Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
 
-    for _counter <- [1, 2, 3] do
+    for _counter <- [1, 2, 3, 4, 5, 6, 7, 8] do
       episode_ids = from(c in Episode, where: is_nil(c.elastic) or c.elastic == false,
                                        limit: ^limit,
                                        select: c.id)
