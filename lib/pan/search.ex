@@ -10,10 +10,8 @@ defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
 
   def push_missing do
-    limit = 1_000
-
     category_ids = from(c in Category, where: is_nil(c.elastic) or c.elastic == false,
-                                       limit: ^limit,
+                                       limit: 100,
                                        select: c.id)
     |> Repo.all()
 
@@ -21,12 +19,11 @@ defmodule Pan.Search do
 
     from(c in Category, where: c.id in ^category_ids)
     |> Repo.update_all(set: [elastic: true])
-
     Logger.info("=== Indexed #{length(category_ids)} categories ===")
 
 
     user_ids = from(c in User, where: is_nil(c.elastic) or c.elastic == false,
-                               limit: ^limit,
+                               limit: 100,
                                select: c.id)
     |> Repo.all()
 
@@ -34,12 +31,11 @@ defmodule Pan.Search do
 
     from(c in User, where: c.id in ^user_ids)
     |> Repo.update_all(set: [elastic: true])
-
     Logger.info("=== Indexed #{length(user_ids)} users ===")
 
 
     persona_ids = from(c in Persona, where: is_nil(c.elastic) or c.elastic == false,
-                                     limit: ^limit,
+                                     limit: 1000,
                                      select: c.id)
     |> Repo.all()
 
@@ -47,12 +43,11 @@ defmodule Pan.Search do
 
     from(c in Persona, where: c.id in ^persona_ids)
     |> Repo.update_all(set: [elastic: true])
-
     Logger.info("=== Indexed #{length(persona_ids)} personas ===")
 
 
     podcast_ids = from(c in Podcast, where: is_nil(c.elastic) or c.elastic == false,
-                                     limit: ^limit,
+                                     limit: 100,
                                      select: c.id)
     |> Repo.all()
 
@@ -60,23 +55,19 @@ defmodule Pan.Search do
 
     from(c in Podcast, where: c.id in ^podcast_ids)
     |> Repo.update_all(set: [elastic: true])
-
     Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
 
-    for _counter <- [1, 2, 3, 4, 5, 6, 7, 8] do
-      episode_ids = from(c in Episode, where: is_nil(c.elastic) or c.elastic == false,
-                                       limit: ^limit,
-                                       select: c.id)
-      |> Repo.all()
 
-      for id <- episode_ids, do: Episode.update_search_index(id)
+    episode_ids = from(c in Episode, where: is_nil(c.elastic) or c.elastic == false,
+                                     limit: 1000,
+                                     select: c.id)
+    |> Repo.all()
 
-      from(c in Episode, where: c.id in ^episode_ids)
-      |> Repo.update_all(set: [elastic: true])
+    for id <- episode_ids, do: Episode.update_search_index(id)
 
-      Logger.info("=== Indexed #{length(episode_ids)} episodes ===")
-    end
-
+    from(c in Episode, where: c.id in ^episode_ids)
+    |> Repo.update_all(set: [elastic: true])
+    Logger.info("=== Indexed #{length(episode_ids)} episodes ===")
     Logger.info("=== Indexing finished ===")
   end
 
