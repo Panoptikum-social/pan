@@ -236,7 +236,7 @@ defmodule Pan.Parser.Analyzer do
     :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
     :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url",
     :"primaryCat", :"advance:original", :"lastModDate",  :"sportspower:content", :"itunes:provider",
-    :"sportspower:image", :"sportspower:thumbnail", :"s:story_id"
+    :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category"
   ], do: %{}
 
 
