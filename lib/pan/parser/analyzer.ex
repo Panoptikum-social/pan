@@ -170,8 +170,11 @@ defmodule Pan.Parser.Analyzer do
     :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
-    :"Atom:link", :"ituneslink", :"itunescategory", :"jmutube:params", :"cstv2:level",
-    :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item"
+    :"Atom:link", :"ituneslink", :"itunescategory", :"jmutube:params", :"cstv2:level", :url,
+    :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item", :"tahoetv:url_xml",
+    :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :"email",
+    :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
+    :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -236,7 +239,10 @@ defmodule Pan.Parser.Analyzer do
     :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
     :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url",
     :"primaryCat", :"advance:original", :"lastModDate",  :"sportspower:content", :"itunes:provider",
-    :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category", :"app:keywords"
+    :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category", :"app:keywords",
+    :"geo:Point", :"tahoetv:file_flv", :"tahoetv:file_html", :"tahoetv:file_player_graphic",
+    :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
+    :"apple-wallpapers:thumbnail", :"apple-wallpapers:image"
   ], do: %{}
 
 

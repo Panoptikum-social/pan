@@ -137,7 +137,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/a[pvb]r?i?l?/i,         "Apr")
     |> String.replace(~r/m[a][iy]/i,             "May")
     |> String.replace(~r/jui?n[eg]?/i,           "Jun")
-    |> String.replace(~r/jui?ly?/i,              "Jul")
+    |> String.replace(~r/jui?[l1]y?/i,           "Jul")
     |> String.replace(~r/augu?s?t?/i,            "Aug")
     |> String.replace(~r/sep?t?e?m?b?e?r?/i,     "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
