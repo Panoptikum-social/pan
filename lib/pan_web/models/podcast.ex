@@ -40,6 +40,7 @@ defmodule PanWeb.Podcast do
 
     has_many :episodes, PanWeb.Episode, on_delete: :delete_all
     has_many :feeds, PanWeb.Feed, on_delete: :delete_all
+    has_many :rss_feeds, PanWeb.RssFeed, on_delete: :delete_all
     has_many :subscriptions, PanWeb.Subscription
     has_many :engagements, PanWeb.Engagement
 
