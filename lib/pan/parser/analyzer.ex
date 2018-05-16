@@ -242,7 +242,7 @@ defmodule Pan.Parser.Analyzer do
     :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category", :"app:keywords",
     :"geo:Point", :"tahoetv:file_flv", :"tahoetv:file_html", :"tahoetv:file_player_graphic",
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
-    :"apple-wallpapers:thumbnail", :"apple-wallpapers:image"
+    :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate"
   ], do: %{}
 
 
