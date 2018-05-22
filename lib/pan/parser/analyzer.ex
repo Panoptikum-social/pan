@@ -174,7 +174,8 @@ defmodule Pan.Parser.Analyzer do
     :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item", :"tahoetv:url_xml",
     :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :"email",
     :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
-    :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation"
+    :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation",
+    :"audioboom:banner-image"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
