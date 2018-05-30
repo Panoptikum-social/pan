@@ -331,7 +331,8 @@ defmodule PanWeb.PodcastController do
     podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                          (is_nil(p.update_paused) or p.update_paused == false) and
                                          (is_nil(p.retired) or p.retired == false),
-                                  order_by: [asc: :next_update])
+                                  order_by: [asc: :next_update],
+                                  limit: 2000)
                |> Repo.all()
 
     for podcast <- podcasts do
