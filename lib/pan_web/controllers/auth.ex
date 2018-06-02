@@ -132,4 +132,14 @@ defmodule PanWeb.Auth do
       |> halt()
     end
   end
+
+
+  def unset_cookie(conn, _opts) do
+    # if we are not trying to log in right now or if we are not logged in yet
+    if conn.assigns.current_user || conn.path_info == ["sessions", "new"] do
+      conn
+    else
+      configure_session(conn, drop: true)
+    end
+  end
 end

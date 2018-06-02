@@ -61,7 +61,8 @@ defmodule Pan.Web do
 
       import PanWeb.Auth, only: [authenticate_user: 2,
                                  authenticate_admin: 2,
-                                 authenticate_pro: 2]
+                                 authenticate_pro: 2,
+                                 unset_cookie: 2]
 
       import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
                                      authenticate_api_pro_user: 2]

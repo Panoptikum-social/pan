@@ -151,7 +151,8 @@ defmodule PanWeb.Router do
 
 
   scope "/", PanWeb do
-    pipe_through :browser # Use the default browser stack
+#    pipe_through :browser # Use the default browser stack
+    pipe_through [:browser, :unset_cookie]
 
     get "/", PageFrontendController, :home
     get "/categories/stats", CategoryFrontendController, :stats
