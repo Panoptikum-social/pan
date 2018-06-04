@@ -10,6 +10,15 @@ defmodule PanWeb.Router do
     plug PanWeb.Auth, repo: Pan.Repo
   end
 
+  pipeline :browser_without_csrf do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :put_secure_browser_headers
+    plug PanWeb.Auth, repo: Pan.Repo
+  end
+
+
   pipeline :json_api do
     plug :accepts, ["json-api"]
     plug :fetch_session
@@ -70,8 +79,6 @@ defmodule PanWeb.Router do
     resources "/likes", LikeController, only: [:show]
     resources "/follows", FollowController, only: [:show]
     resources "/subscriptions", SubscriptionController, only: [:show]
-
-    get "/search", SearchController, :search
 
     post "/login", SessionController, :login
     post "/get_token", SessionController, :login
@@ -185,9 +192,6 @@ defmodule PanWeb.Router do
     get "/sessions/login_via_token", SessionController, :login_via_token
     get "/sessions/confirm_email", SessionController, :confirm_email
 
-    post "/search", SearchFrontendController, :new
-    get "/search", SearchFrontendController, :new
-
     get "/recommendations/random", RecommendationFrontendController, :random
     resources "/recommendations", RecommendationFrontendController, only: [:index]
 
@@ -195,6 +199,14 @@ defmodule PanWeb.Router do
     get "/2016/:month/:day/:file", MaintenanceController, :blog_2016
     get "/2017/:month/:day/:file", MaintenanceController, :blog_2017
     get "/:pid", PersonaFrontendController, :persona
+  end
+
+
+  scope "/search", PanWeb do
+    pipe_through [:browser_without_csrf, :unset_cookie]
+
+    post "/", SearchFrontendController, :new
+    get "/", SearchFrontendController, :new
   end
 
 
