@@ -393,32 +393,24 @@ You can even delete all the recommendations, you created so far, at once, by cli
          data: [confirm: "Are you sure? All recommendations will be deleted!"],
          class: "btn btn-danger btn-sm" %>
 
-<table class="table table-striped table-condensed table-bordered">
+<table class="table table-condensed table-bordered">
   <thead>
-    <tr>
-      <th colspan=3>Comment</th>
-      <th>Actions</th>
-    </tr>
-    <tr>
+    <tr class="table-info">
       <th>Podcast</th>
       <th>Episode</th>
       <th>Chapter</th>
       <th>Date</th>
     </tr>
+    <tr class="table-success">
+      <th colspan=3>Comment</th>
+      <th>Actions</th>
+    </tr>
+    <tr><td colspan=4></td></tr>
   </thead>
 
   <tbody>
     <%= for recommendation <- @user.recommendations do %>
-      <tr>
-        <td colspan=3><%= recommendation.comment %></td>
-        <td>
-          <%= link "Delete", to: recommendation_frontend_path(@conn, :delete, recommendation),
-                             method: :delete,
-                             data: [confirm: "Are you sure?"],
-                             class: "btn btn-danger btn-xs" %>
-        </td>
-      </tr>
-      <tr>
+      <tr class="table-info">
         <td><%= recommendation.podcast &&
                 link recommendation.podcast.title, to: podcast_frontend_path(@conn, :show, recommendation.podcast),
                                                    target: "_blank" %></td>
@@ -430,6 +422,16 @@ You can even delete all the recommendations, you created so far, at once, by cli
                                                    target: "_blank" %></td>
         <td><nobr><%= Timex.format!(recommendation.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></nobr></td>
       </tr>
+      <tr class="table-success">
+        <td colspan=3><%= recommendation.comment %></td>
+        <td>
+          <%= link "Delete", to: recommendation_frontend_path(@conn, :delete, recommendation),
+                             method: :delete,
+                             data: [confirm: "Are you sure?"],
+                             class: "btn btn-danger btn-xs" %>
+        </td>
+      </tr>
+      <tr><td colspan=4></td></tr>
     <% end %>
   </tbody>
 </table>

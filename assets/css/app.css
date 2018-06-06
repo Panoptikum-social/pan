@@ -50,3 +50,7 @@ form.link, form.button {display: inline; }
 /* Tree-View */
 .node-tree1, .node-tree2 { padding-top: 1px;
                            padding-bottom: 1px;}
+
+.table-info { background-color: #d7f1fa; }
+.table-warning { background-color: #ffebba; }
+.table-success { background-color: #ebf6df; }
