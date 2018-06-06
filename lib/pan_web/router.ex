@@ -219,6 +219,7 @@ defmodule PanWeb.Router do
     get "/my_podcasts", UserFrontendController, :my_podcasts
     get "/my_profile", UserFrontendController, :my_profile
     get "/my_messages", UserFrontendController, :my_messages
+    get "/my_data", UserFrontendController, :my_data
 
     get "/podcasts/:id/trigger_update", PodcastFrontendController, :trigger_update
 
@@ -239,7 +240,10 @@ defmodule PanWeb.Router do
     resources "/feed_backlogs", FeedBacklogFrontendController, only: [:new, :create]
 
     get "/my_recommendations", RecommendationFrontendController, :my_recommendations
-    resources "/recommendations", RecommendationFrontendController, only: [:create]
+    resources "/recommendations", RecommendationFrontendController, only: [:create, :delete]
+
+    resources "/messages", MessageFrontendController, only: [:delete]
+    delete "/messages/", MessageFrontendController, :delete_all
   end
 
 

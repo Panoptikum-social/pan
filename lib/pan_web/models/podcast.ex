@@ -52,7 +52,7 @@ defmodule PanWeb.Podcast do
     many_to_many :listeners, PanWeb.User, join_through: "subscriptions",
                                        on_delete: :delete_all
     many_to_many :followers, PanWeb.User, join_through: "likes",
-                                       join_keys: [podcast_id: :id, enjoyer_id: :id]
+                                          join_keys: [podcast_id: :id, enjoyer_id: :id]
     many_to_many :languages, PanWeb.Language, join_through: "languages_podcasts",
                                            on_delete: :delete_all
   end

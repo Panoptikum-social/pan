@@ -120,6 +120,19 @@ defmodule PanWeb.UserFrontendController do
   end
 
 
+  def my_data(conn, _params, user) do
+    user = Repo.get!(User, user.id)
+           |> Repo.preload([:user_personas, :personas, :invoices, :podcasts_i_subscribed,
+                            :users_i_like, :podcasts_i_follow, :categories_i_like,
+                            :categories_i_follow, :podcasts_i_like, :users_i_follow,
+                            :episodes_i_like, :messages_created,
+                            [chapters_i_like: :episode],
+                            [recommendations: [:podcast, :episode, :chapter]]])
+
+    render(conn, "my_data.html", user: user)
+  end
+
+
   def my_profile(conn, _params, user) do
     user = Repo.get!(User, user.id)
            |> Repo.preload(:user_personas)

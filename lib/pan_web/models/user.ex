@@ -28,6 +28,9 @@ defmodule PanWeb.User do
     has_many :manifestations, PanWeb.Manifestation
     has_many :invoices, PanWeb.Invoice
     has_many :user_personas, Persona, foreign_key: :user_id
+    has_many :recommendations, PanWeb.Recommendation
+    has_many :messages_created, PanWeb.Message, foreign_key: :creator_id
+
     many_to_many :personas, Persona,
                             join_through: "manifestations"
 
@@ -37,12 +40,27 @@ defmodule PanWeb.User do
     many_to_many :users_i_like, User,
                                 join_through: "likes",
                                 join_keys: [enjoyer_id: :id, user_id: :id]
+    many_to_many :users_i_follow, User,
+                                  join_through: "follows",
+                                  join_keys: [follower_id: :id, user_id: :id]
     many_to_many :podcasts_i_follow, PanWeb.Podcast,
                                 join_through: "follows",
                                 join_keys: [follower_id: :id, podcast_id: :id]
+    many_to_many :podcasts_i_like, PanWeb.Podcast,
+                                join_through: "likes",
+                                join_keys: [enjoyer_id: :id, podcast_id: :id]
+    many_to_many :episodes_i_like, PanWeb.Episode,
+                                   join_through: "likes",
+                                   join_keys: [enjoyer_id: :id, episode_id: :id]
+    many_to_many :chapters_i_like, PanWeb.Chapter,
+                                   join_through: "likes",
+                                   join_keys: [enjoyer_id: :id, chapter_id: :id]
     many_to_many :categories_i_like, PanWeb.Category,
                                      join_through: "likes",
                                      join_keys: [enjoyer_id: :id, category_id: :id]
+    many_to_many :categories_i_follow, PanWeb.Category,
+                                       join_through: "follows",
+                                       join_keys: [follower_id: :id, category_id: :id]
   end
 
 
