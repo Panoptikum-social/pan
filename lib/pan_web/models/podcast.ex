@@ -1,13 +1,8 @@
 defmodule PanWeb.Podcast do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.Like
-  alias PanWeb.Follow
-  alias PanWeb.Subscription
-  alias PanWeb.Podcast
-  alias PanWeb.Engagement
-  alias PanWeb.Episode
-  alias PanWeb.Gig
+  alias PanWeb.{Category, Engagement, Episode, Feed, Follow, Gig, Language, Like, Persona, Podcast,
+                Recommendation, RssFeed, Subscription, User }
   require Logger
 
   schema "podcasts" do
@@ -38,23 +33,25 @@ defmodule PanWeb.Podcast do
     field :elastic, :boolean
     timestamps()
 
-    has_many :episodes, PanWeb.Episode, on_delete: :delete_all
-    has_many :feeds, PanWeb.Feed, on_delete: :delete_all
-    has_many :rss_feeds, PanWeb.RssFeed, on_delete: :delete_all
-    has_many :subscriptions, PanWeb.Subscription
-    has_many :engagements, PanWeb.Engagement
+    has_many :episodes, Episode, on_delete: :delete_all
+    has_many :feeds, Feed, on_delete: :delete_all
+    has_many :rss_feeds, RssFeed, on_delete: :delete_all
+    has_many :recommendations, Recommendation, on_delete: :delete_all
+    has_many :engagements, Engagement, on_delete: :delete_all
 
-    has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
-    many_to_many :categories, PanWeb.Category, join_through: "categories_podcasts",
-                                            on_delete: :delete_all
-    many_to_many :contributors, PanWeb.Persona, join_through: "engagements",
-                                             on_delete: :delete_all
-    many_to_many :listeners, PanWeb.User, join_through: "subscriptions",
+    many_to_many :categories, Category, join_through: "categories_podcasts",
+                                        on_delete: :delete_all
+    many_to_many :contributors, Persona, join_through: "engagements"
+    many_to_many :listeners, User, join_through: "subscriptions",
+                                   on_delete: :delete_all
+    many_to_many :likers, User, join_through: "likes",
+                                join_keys: [podcast_id: :id, enjoyer_id: :id],
+                                on_delete: :delete_all
+    many_to_many :followers, User, join_through: "follows",
+                                   join_keys: [podcast_id: :id, follower_id: :id],
+                                   on_delete: :delete_all
+    many_to_many :languages, Language, join_through: "languages_podcasts",
                                        on_delete: :delete_all
-    many_to_many :followers, PanWeb.User, join_through: "likes",
-                                          join_keys: [podcast_id: :id, enjoyer_id: :id]
-    many_to_many :languages, PanWeb.Language, join_through: "languages_podcasts",
-                                           on_delete: :delete_all
   end
 
 

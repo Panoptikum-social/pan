@@ -5,6 +5,12 @@ defmodule PanWeb.User do
   alias PanWeb.Follow
   alias PanWeb.User
   alias PanWeb.Persona
+  alias PanWeb.Subscription
+  alias PanWeb.Podcast
+  alias PanWeb.Category
+  alias PanWeb.Chapter
+  alias PanWeb.Episode
+
 
   schema "users" do
     field :name, :string
@@ -25,17 +31,17 @@ defmodule PanWeb.User do
     field :elastic, :boolean
     timestamps()
 
-    has_many :manifestations, PanWeb.Manifestation
+    has_many :manifestations, PanWeb.Manifestation, on_delete: :delete_all
     has_many :invoices, PanWeb.Invoice, on_delete: :nilify_all
     has_many :user_personas, Persona, foreign_key: :user_id
     has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
-    has_many :messages_created, PanWeb.Message, foreign_key: :creator_id
+    has_many :messages_created, PanWeb.Message, foreign_key: :creator_id, on_delete: :delete_all
     has_many :opmls, PanWeb.Opml, on_delete: :delete_all
 
     many_to_many :personas, Persona,
                             join_through: "manifestations"
 
-    many_to_many :podcasts_i_subscribed, PanWeb.Podcast,
+    many_to_many :podcasts_i_subscribed, Podcast,
                                          join_through: "subscriptions"
 
     many_to_many :users_i_like, User,
@@ -50,26 +56,30 @@ defmodule PanWeb.User do
     many_to_many :personas_i_follow, Persona,
                                      join_through: "follows",
                                      join_keys: [follower_id: :id, persona_id: :id]
-    many_to_many :podcasts_i_follow, PanWeb.Podcast,
-                                join_through: "follows",
-                                join_keys: [follower_id: :id, podcast_id: :id]
-    many_to_many :podcasts_i_like, PanWeb.Podcast,
-                                join_through: "likes",
-                                join_keys: [enjoyer_id: :id, podcast_id: :id]
-    many_to_many :episodes_i_like, PanWeb.Episode,
+    many_to_many :podcasts_i_follow, Podcast,
+                                     join_through: "follows",
+                                     join_keys: [follower_id: :id, podcast_id: :id]
+    many_to_many :podcasts_i_like, Podcast,
+                                   join_through: "likes",
+                                   join_keys: [enjoyer_id: :id, podcast_id: :id]
+    many_to_many :episodes_i_like, Episode,
                                    join_through: "likes",
                                    join_keys: [enjoyer_id: :id, episode_id: :id]
-    many_to_many :chapters_i_like, PanWeb.Chapter,
+    many_to_many :chapters_i_like, Chapter,
                                    join_through: "likes",
                                    join_keys: [enjoyer_id: :id, chapter_id: :id]
-    many_to_many :categories_i_like, PanWeb.Category,
+    many_to_many :categories_i_like, Category,
                                      join_through: "likes",
                                      join_keys: [enjoyer_id: :id, category_id: :id]
-    many_to_many :categories_i_follow, PanWeb.Category,
+    many_to_many :categories_i_follow, Category,
                                        join_through: "follows",
                                        join_keys: [follower_id: :id, category_id: :id]
 
-    has_many :following, Follow, foreign_key: :user_id, on_delete: :delete_all
+    has_many :following, Follow, on_delete: :delete_all
+    has_many :followeds, Follow, foreign_key: :follower_id, on_delete: :delete_all
+    has_many :liking, Like, on_delete: :delete_all
+    has_many :liked, Like, foreign_key: :enjoyer_id, on_delete: :delete_all
+    has_many :subscriptions, Subscription, on_delete: :delete_all
   end
 
 

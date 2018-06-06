@@ -1,9 +1,7 @@
 defmodule PanWeb.PodcastController do
   use Pan.Web, :controller
-  alias PanWeb.Episode
-  alias PanWeb.Category
-  alias PanWeb.Podcast
-  alias PanWeb.Feed
+  alias PanWeb.{AlternateFeed, Chapter, Category, Enclosure, Episode, Feed, Gig, Like,
+                Podcast, Recommendation}
   require Logger
 
   plug :scrub_params, "podcast" when action in [:create, :update]
@@ -242,21 +240,17 @@ defmodule PanWeb.PodcastController do
 
     for episode <- podcast.episodes do
       for chapter <- episode.chapters do
-        Repo.delete_all(from l in PanWeb.Like,           where: l.chapter_id == ^chapter.id)
-        Repo.delete_all(from r in PanWeb.Recommendation, where: r.chapter_id == ^chapter.id)
+        Repo.delete_all(from l in Like, where: l.chapter_id == ^chapter.id)
+        Repo.delete_all(from r in Recommendation, where: r.chapter_id == ^chapter.id)
       end
-      Repo.delete_all(from c in PanWeb.Chapter,   where: c.episode_id == ^episode.id)
-      Repo.delete_all(from e in PanWeb.Enclosure, where: e.episode_id == ^episode.id)
-      Repo.delete_all(from g in PanWeb.Gig,       where: g.episode_id == ^episode.id)
+      Repo.delete_all(from c in Chapter, where: c.episode_id == ^episode.id)
+      Repo.delete_all(from e in Enclosure, where: e.episode_id == ^episode.id)
+      Repo.delete_all(from g in Gig, where: g.episode_id == ^episode.id)
     end
 
     for feed <- podcast.feeds do
-      Repo.delete_all(from a in PanWeb.AlternateFeed, where: a.feed_id == ^feed.id)
+      Repo.delete_all(from a in AlternateFeed, where: a.feed_id == ^feed.id)
     end
-
-    Repo.delete_all(from l in PanWeb.Like,    where: l.podcast_id == ^podcast.id)
-    Repo.delete_all(from f in PanWeb.Follow,  where: f.podcast_id == ^podcast.id)
-    Repo.delete_all(from e in PanWeb.Episode, where: e.podcast_id == ^podcast.id)
 
     Repo.delete!(podcast)
     Podcast.delete_search_index(id)

@@ -154,6 +154,16 @@ defmodule PanWeb.RecommendationFrontendController do
   end
 
 
+  def delete_all(conn, _, user) do
+    from(r in Recommendation, where: r.user_id == ^user.id)
+    |> Repo.delete_all()
+
+    conn
+    |> put_flash(:info, "All recommendations deleted successfully.")
+    |> redirect(to: user_frontend_path(conn, :my_data))
+  end
+
+
   defp redirect_to_back(conn) do
     path =
       conn

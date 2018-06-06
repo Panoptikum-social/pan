@@ -52,15 +52,22 @@
 
 <h2>Personas</h2>
 
-<%= for persona <- @user.personas do %>
-  <h3> Persona <%= persona.name %></h3>
+You can even delete all manifestations as personas, you created so far, at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Delete all subscriptions"],
+         to: manifestation_frontend_path(@conn, :delete_all),
+         method: :delete,
+         data: [confirm: "Are you sure? All manifestations will be deleted!"],
+         class: "btn btn-danger" %>
 
-  <p class="pull-right">
+
+<%= for persona <- @user.personas do %>
+  <h3>
+    Persona <%= persona.name %>
     <%= link "Delete Manifestation", to: manifestation_frontend_path(@conn, :delete, persona.id),
                                      method: :delete,
                                      data: [confirm: "Are you sure?"],
-                                     class: "btn btn-danger btn-sm" %>
-  </p>
+                                     class: "btn btn-danger btn-xs" %>
+  </h3>
 
   <dl class="dl-horizontal">
     <dt>Pid</dt>
@@ -82,14 +89,13 @@
 
 
 <%= for persona <- @user.user_personas do %>
-  <h3> Persona <%= persona.name %></h3>
-
-  <p class="pull-right">
+  <h3>
+    Persona <%= persona.name %>
     <%= link "Disconnect Persona", to: persona_frontend_path(@conn, :disconnect, persona.id),
                                    method: :post,
                                    data: [confirm: "Are you sure?"],
-                                   class: "btn btn-danger btn-sm" %>
-  </p>
+                                   class: "btn btn-danger btn-xs" %>
+  </h3>
 
   <dl class="dl-horizontal">
     <dt>Pid</dt>
@@ -129,12 +135,12 @@ Invoices cannot be deleted, we have to store them due to fiscal regulations.
 Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
-You can even delete all the subscriptions, you created so far at once, by clicking &nbsp;
+You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp;
 <%= link [fa_icon("warning"), " Delete all subscriptions"],
          to: subscription_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All messages will be deleted!"],
-         class: "btn btn-danger" %>
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for podcast <- @user.podcasts_i_subscribed do %>
@@ -153,7 +159,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
          to: follow_frontend_path(@conn, :unfollow_all_podcasts),
          method: :delete,
          data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-         class: "btn btn-danger" %>
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for podcast <- @user.podcasts_i_follow do %>
@@ -172,10 +178,10 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
          to: like_frontend_path(@conn, :unlike_all_podcasts),
          method: :delete,
          data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-         class: "btn btn-danger" %>
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
-  <%= for podcast <- @user.podcasts_i_like do %>
+  <%= for podcast <- Enum.uniq(@user.podcasts_i_like) do %>
     <li><%= link podcast.title, to: podcast_frontend_path(@conn, :show, podcast), target: "_blank" %></li>
   <% end %>
 </ul>
@@ -184,10 +190,17 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
 <h2>Liked Episodes</h2>
 
 Click on the episode link to open the episode show page in a new tab
-to un/like, un/subscribe, un/follow.
+to un/like, un/subscribe, un/follow.<br/>
+
+You can even unlike all the episodes, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all episodes"],
+         to: like_frontend_path(@conn, :unlike_all_episodes),
+         method: :delete,
+         data: [confirm: "Are you sure? All episodes will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
-  <%= for episode <- @user.episodes_i_like do %>
+  <%= for episode <- Enum.uniq(@user.episodes_i_like) do %>
     <li><%= link episode.title, to: episode_frontend_path(@conn, :show, episode), target: "_blank" %></li>
   <% end %>
 </ul>
@@ -196,7 +209,14 @@ to un/like, un/subscribe, un/follow.
 <h2>Liked Chapters</h2>
 
 Click on the chaptere link to open the episode show page in a new tab
-to un/like, un/subscribe, un/follow.
+to un/like, un/subscribe, un/follow.<br/>
+
+You can even unlike all the chapters, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all chapters"],
+         to: like_frontend_path(@conn, :unlike_all_chapters),
+         method: :delete,
+         data: [confirm: "Are you sure? All chapters will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for chapter <- @user.chapters_i_like do %>
@@ -208,7 +228,14 @@ to un/like, un/subscribe, un/follow.
 <h2>Liked Users</h2>
 
 Click on the user link to open the user show page in a new tab
-to un/like, un/follow.
+to un/like, un/follow.<br/>
+
+You can even unlike all the users, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all users"],
+         to: like_frontend_path(@conn, :unlike_all_users),
+         method: :delete,
+         data: [confirm: "Are you sure? All users will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for user <- @user.users_i_like do %>
@@ -219,7 +246,14 @@ to un/like, un/follow.
 <h2>Followed Users</h2>
 
 Click on the user link to open the user show page in a new tab
-to un/like, un/follow.
+to un/like, un/follow.<br/>
+
+You can even unfollow all the users, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unfollow all users"],
+         to: follow_frontend_path(@conn, :unfollow_all_users),
+         method: :delete,
+         data: [confirm: "Are you sure? All users will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for user <- @user.users_i_follow do %>
@@ -230,7 +264,14 @@ to un/like, un/follow.
 <h2>Followed Personas</h2>
 
 Click on the persona link to open the persona show page in a new tab
-to un/like, un/follow.
+to un/like, un/follow. <br/>
+
+You can even unfollow all the personas, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unfollow all personas"],
+         to: follow_frontend_path(@conn, :unfollow_all_personas),
+         method: :delete,
+         data: [confirm: "Are you sure? All personas will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for persona <- @user.personas_i_follow do %>
@@ -242,7 +283,14 @@ to un/like, un/follow.
 <h2>Liked Personas</h2>
 
 Click on the persona link to open the persona show page in a new tab
-to un/like, un/follow.
+to un/like, un/follow.<br/>
+
+You can even unlike all the personas, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all personas"],
+         to: like_frontend_path(@conn, :unlike_all_personas),
+         method: :delete,
+         data: [confirm: "Are you sure? All personas will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for persona <- @user.personas_i_like do %>
@@ -251,21 +299,17 @@ to un/like, un/follow.
 </ul>
 
 
-<h2>Liked Categories</h2>
-
-Click on the category link to open the category show page in a new tab
-to un/like, un/follow.
-
-<ul>
-  <%= for category <- @user.categories_i_like do %>
-    <li><%= link category.title, to: category_frontend_path(@conn, :show, category), target: "_blank" %></li>
-  <% end %>
-</ul>
-
 <h2>Followed Categories</h2>
 
 Click on the category link to open the category show page in a new tab
-to un/like, un/follow.
+to un/like, un/follow.<br/>
+
+You can even unfollow all the categories, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unfollow all categories"],
+         to: follow_frontend_path(@conn, :unfollow_all_categories),
+         method: :delete,
+         data: [confirm: "Are you sure? All categories will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
 
 <ul>
   <%= for category <- @user.categories_i_follow do %>
@@ -273,15 +317,35 @@ to un/like, un/follow.
   <% end %>
 </ul>
 
+
+<h2>Liked Categories</h2>
+
+Click on the category link to open the category show page in a new tab
+to un/like, un/follow.<br/>
+
+You can even unlike all the categories, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all categories"],
+         to: like_frontend_path(@conn, :unlike_all_categories),
+         method: :delete,
+         data: [confirm: "Are you sure? All categories will be unfollowed!"],
+         class: "btn btn-danger btn-sm" %>
+
+<ul>
+  <%= for category <- @user.categories_i_like do %>
+    <li><%= link category.title, to: category_frontend_path(@conn, :show, category), target: "_blank" %></li>
+  <% end %>
+</ul>
+
+
 <h2>Messages</h2>
 
 You can delete a recommendation by clicking the Delete button next to it.<br/>
-You can even delete all the messages, you created so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Delete All Messages"],
+You can even delete all the messages, you created so far, at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Delete all messages"],
          to: message_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All messages will be deleted!"],
-         class: "btn btn-danger" %>
+         class: "btn btn-danger btn-sm" %>
 
 <br/><br/>
 
@@ -320,7 +384,14 @@ You can even delete all the messages, you created so far at once, by clicking &n
 
 You can delete a recommendation by clicking the Delete button next to it.<br/>
 You can double check the context by clicking the podcast or episode link, that will open
-podcast or episode in a new tab, respectively.
+podcast or episode in a new tab, respectively.<br/>
+
+You can even delete all the recommendations, you created so far, at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Delete all recommendations"],
+         to: recommendation_frontend_path(@conn, :delete_all),
+         method: :delete,
+         data: [confirm: "Are you sure? All recommendations will be deleted!"],
+         class: "btn btn-danger btn-sm" %>
 
 <table class="table table-striped table-condensed table-bordered">
   <thead>

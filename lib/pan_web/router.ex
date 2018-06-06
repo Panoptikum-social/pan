@@ -242,6 +242,7 @@ defmodule PanWeb.Router do
     resources "/feed_backlogs", FeedBacklogFrontendController, only: [:new, :create]
 
     get "/my_recommendations", RecommendationFrontendController, :my_recommendations
+    delete "/my_recommendations/delete_all", RecommendationFrontendController, :delete_all
     resources "/recommendations", RecommendationFrontendController, only: [:create, :delete]
 
     resources "/messages", MessageFrontendController, only: [:delete]
@@ -249,10 +250,19 @@ defmodule PanWeb.Router do
 
     delete "/subscriptions/", SubscriptionFrontendController, :delete_all
 
+    delete "/follows/unfollow_all_categories", FollowFrontendController, :unfollow_all_categories
+    delete "/follows/unfollow_all_personas", FollowFrontendController, :unfollow_all_personas
     delete "/follows/unfollow_all_podcasts", FollowFrontendController, :unfollow_all_podcasts
+    delete "/follows/unfollow_all_users", FollowFrontendController, :unfollow_all_users
 
+    delete "/likes/unlike_all_categories", LikeFrontendController, :unlike_all_categories
+    delete "/likes/unlike_all_chapters", LikeFrontendController, :unlike_all_chapters
+    delete "/likes/unlike_all_episodes", LikeFrontendController, :unlike_all_episodes
+    delete "/likes/unlike_all_personas", LikeFrontendController, :unlike_all_personas
     delete "/likes/unlike_all_podcasts", LikeFrontendController, :unlike_all_podcasts
+    delete "/likes/unlike_all_users", LikeFrontendController, :unlike_all_users
 
+    delete "/manifestations/delete_all", ManifestationFrontendController, :delete_all
     resources "/manifestations", ManifestationFrontendController, only: [:delete]
   end
 

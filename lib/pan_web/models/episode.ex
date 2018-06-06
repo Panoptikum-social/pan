@@ -1,9 +1,7 @@
 defmodule PanWeb.Episode do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.Like
-  alias PanWeb.Episode
-  alias PanWeb.Gig
+  alias PanWeb.{Chapter, Enclosure, Episode, Gig, Like, Persona, Podcast, Recommendation}
 
   schema "episodes" do
     field :title, :string
@@ -23,14 +21,14 @@ defmodule PanWeb.Episode do
     field :elastic, :boolean
     timestamps()
 
-    belongs_to :podcast, PanWeb.Podcast
+    belongs_to :podcast, Podcast
 
-    has_many :chapters, PanWeb.Chapter, on_delete: :delete_all
-    has_many :enclosures, PanWeb.Enclosure, on_delete: :delete_all
-    has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
+    has_many :chapters, Chapter, on_delete: :delete_all
+    has_many :enclosures, Enclosure, on_delete: :delete_all
+    has_many :recommendations, Recommendation, on_delete: :delete_all
+    has_many :gigs, Gig, on_delete: :delete_all
 
-    has_many :gigs, PanWeb.Gig
-    many_to_many :contributors, PanWeb.Persona, join_through: "gigs", on_delete: :delete_all
+    many_to_many :contributors, Persona, join_through: "gigs"
   end
 
 

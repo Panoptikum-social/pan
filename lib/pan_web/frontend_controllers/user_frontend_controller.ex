@@ -125,7 +125,7 @@ defmodule PanWeb.UserFrontendController do
            |> Repo.preload([:user_personas, :personas, :invoices, :podcasts_i_subscribed, :opmls,
                             :users_i_like, :podcasts_i_follow, :categories_i_like,
                             :categories_i_follow, :podcasts_i_like, :users_i_follow,
-                            :episodes_i_like, :messages_created, :personas_i_follow,
+                            :messages_created, :episodes_i_like, :personas_i_follow,
                             :personas_i_like,
                             [chapters_i_like: :episode],
                             [recommendations: [:podcast, :episode, :chapter]]])

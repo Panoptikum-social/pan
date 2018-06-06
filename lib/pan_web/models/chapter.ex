@@ -7,12 +7,12 @@ defmodule PanWeb.Chapter do
   schema "chapters" do
     field :start, :string
     field :title, :string
+    timestamps()
+
+    belongs_to :episode, PanWeb.Episode
 
     has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
     has_many :likes, PanWeb.Like, on_delete: :delete_all
-    belongs_to :episode, PanWeb.Episode
-
-    timestamps()
   end
 
 
