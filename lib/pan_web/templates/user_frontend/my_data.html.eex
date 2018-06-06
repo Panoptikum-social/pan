@@ -1,11 +1,11 @@
 <h2>Account</h2>
 
 <p class="pull-right">
-  You can use
+  Manage &nbsp;
   <%= link [fa_icon("user-circle"), " My Profile"],
            to: user_frontend_path(@conn, :my_profile),
-           class: "btn btn-default" %>
-  to update your data.
+           class: "btn btn-default",
+           target: "_blank" %>
 </p>
 <dl class="dl-horizontal">
   <dt>Name</dt>
@@ -33,10 +33,34 @@
 </dl>
 
 
+<h2>OPML Files</h2>
+
+<p class="pull-right">
+  Manage &nbsp;
+  <%= link [fa_icon("file-audio-o"), " My OPMLs"],
+           to: opml_frontend_path(@conn, :index),
+           class: "btn btn-default",
+           target: "_blank" %>
+</p>
+
+<ul>
+  <%= for opml <- @user.opmls do %>
+    <li><%= opml.filename %></li>
+  <% end %>
+</ul>
+
+
 <h2>Personas</h2>
 
 <%= for persona <- @user.personas do %>
   <h3> Persona <%= persona.name %></h3>
+
+  <p class="pull-right">
+    <%= link "Delete Manifestation", to: manifestation_frontend_path(@conn, :delete, persona.id),
+                                     method: :delete,
+                                     data: [confirm: "Are you sure?"],
+                                     class: "btn btn-danger btn-sm" %>
+  </p>
 
   <dl class="dl-horizontal">
     <dt>Pid</dt>
@@ -60,6 +84,13 @@
 <%= for persona <- @user.user_personas do %>
   <h3> Persona <%= persona.name %></h3>
 
+  <p class="pull-right">
+    <%= link "Disconnect Persona", to: persona_frontend_path(@conn, :disconnect, persona.id),
+                                   method: :post,
+                                   data: [confirm: "Are you sure?"],
+                                   class: "btn btn-danger btn-sm" %>
+  </p>
+
   <dl class="dl-horizontal">
     <dt>Pid</dt>
     <dd><%= persona.pid %></dd>
@@ -80,6 +111,8 @@
 
 <h2>Invoices</h2>
 
+Invoices cannot be deleted, we have to store them due to fiscal regulations.
+
 <%= for invoice <- @user.invoices do %>
   <dl class="dl-horizontal">
     <dt>Date</dt>
@@ -94,7 +127,14 @@
 <h2>Subscribed Podcasts</h2>
 
 Click on the podcast link to open the podcast show page in a new tab
-to un/like, un/subscribe, un/follow.
+to un/like, un/subscribe, un/follow.<br/>
+
+You can even delete all the subscriptions, you created so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Delete all subscriptions"],
+         to: subscription_frontend_path(@conn, :delete_all),
+         method: :delete,
+         data: [confirm: "Are you sure? All messages will be deleted!"],
+         class: "btn btn-danger" %>
 
 <ul>
   <%= for podcast <- @user.podcasts_i_subscribed do %>
@@ -106,7 +146,14 @@ to un/like, un/subscribe, un/follow.
 <h2>Followed Podcasts</h2>
 
 Click on the podcast link to open the podcast show page in a new tab
-to un/like, un/subscribe, un/follow.
+to un/like, un/subscribe, un/follow.<br/>
+
+You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unfollow all podcasts"],
+         to: follow_frontend_path(@conn, :unfollow_all_podcasts),
+         method: :delete,
+         data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
+         class: "btn btn-danger" %>
 
 <ul>
   <%= for podcast <- @user.podcasts_i_follow do %>
@@ -118,7 +165,14 @@ to un/like, un/subscribe, un/follow.
 <h2>Liked Podcasts</h2>
 
 Click on the podcast link to open the podcast show page in a new tab
-to un/like, un/subscribe, un/follow.
+to un/like, un/subscribe, un/follow.<br/>
+
+You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp;
+<%= link [fa_icon("warning"), " Unlike all podcasts"],
+         to: like_frontend_path(@conn, :unlike_all_podcasts),
+         method: :delete,
+         data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
+         class: "btn btn-danger" %>
 
 <ul>
   <%= for podcast <- @user.podcasts_i_like do %>
@@ -172,6 +226,30 @@ to un/like, un/follow.
     <li><%= link user.name, to: user_frontend_path(@conn, :show, user), target: "_blank" %></li>
   <% end %>
 </ul>
+
+<h2>Followed Personas</h2>
+
+Click on the persona link to open the persona show page in a new tab
+to un/like, un/follow.
+
+<ul>
+  <%= for persona <- @user.personas_i_follow do %>
+    <li><%= link persona.name, to: persona_frontend_path(@conn, :show, persona), target: "_blank" %></li>
+  <% end %>
+</ul>
+
+
+<h2>Liked Personas</h2>
+
+Click on the persona link to open the persona show page in a new tab
+to un/like, un/follow.
+
+<ul>
+  <%= for persona <- @user.personas_i_like do %>
+    <li><%= link persona.name, to: persona_frontend_path(@conn, :show, persona), target: "_blank" %></li>
+  <% end %>
+</ul>
+
 
 <h2>Liked Categories</h2>
 
@@ -284,3 +362,17 @@ podcast or episode in a new tab, respectively.
     <% end %>
   </tbody>
 </table>
+
+<div class="alert alert-danger alert-dismissable" style="padding: 15px;">
+  <h3 style="margin-top: 0px;">Danger Zone</h3>
+
+  You can actually delete your account. <br/>
+  We would be really sad to see you leave.
+  But you can always sign up for a new account.<br/><br/>
+
+  <%= link [fa_icon("warning"), " Delete my account"],
+           to: user_frontend_path(@conn, :delete_my_account),
+           method: :delete,
+           data: [confirm: "Are you sure? Your account would be deleted!"],
+           class: "btn btn-danger" %>
+</div>

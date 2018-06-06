@@ -327,4 +327,17 @@ defmodule PanWeb.PersonaFrontendController do
       |> render("warning.html", persona: persona)
     end
   end
+
+
+  def disconnect(conn, %{"id" => id}, user) do
+    from(r in Persona, where: r.id == ^id and r.user_id == ^user.id)
+    |> Repo.one()
+    |> PanWeb.Persona.claiming_changeset(%{user_id: nil,
+                                           email: nil})
+    |> Repo.update()
+
+    conn
+    |> put_flash(:info, "Persona disconnected successfully.")
+    |> redirect(to: user_frontend_path(conn, :my_data))
+  end
 end

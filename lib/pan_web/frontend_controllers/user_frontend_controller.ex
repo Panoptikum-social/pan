@@ -122,10 +122,11 @@ defmodule PanWeb.UserFrontendController do
 
   def my_data(conn, _params, user) do
     user = Repo.get!(User, user.id)
-           |> Repo.preload([:user_personas, :personas, :invoices, :podcasts_i_subscribed,
+           |> Repo.preload([:user_personas, :personas, :invoices, :podcasts_i_subscribed, :opmls,
                             :users_i_like, :podcasts_i_follow, :categories_i_like,
                             :categories_i_follow, :podcasts_i_like, :users_i_follow,
-                            :episodes_i_like, :messages_created,
+                            :episodes_i_like, :messages_created, :personas_i_follow,
+                            :personas_i_like,
                             [chapters_i_like: :episode],
                             [recommendations: [:podcast, :episode, :chapter]]])
 
@@ -327,5 +328,17 @@ defmodule PanWeb.UserFrontendController do
 
   def payment_info(conn, _params, user) do
     render(conn, "payment_info.html", user: user)
+  end
+
+
+  def delete_my_account(conn, _params, user) do
+    user = Repo.get!(User, user.id)
+
+    Repo.delete!(user)
+    User.delete_search_index(user.id)
+
+    conn
+    |> put_flash(:info, "User deleted successfully.")
+    |> redirect(to: "/")
   end
 end

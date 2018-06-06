@@ -26,10 +26,11 @@ defmodule PanWeb.User do
     timestamps()
 
     has_many :manifestations, PanWeb.Manifestation
-    has_many :invoices, PanWeb.Invoice
+    has_many :invoices, PanWeb.Invoice, on_delete: :nilify_all
     has_many :user_personas, Persona, foreign_key: :user_id
-    has_many :recommendations, PanWeb.Recommendation
+    has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
     has_many :messages_created, PanWeb.Message, foreign_key: :creator_id
+    has_many :opmls, PanWeb.Opml, on_delete: :delete_all
 
     many_to_many :personas, Persona,
                             join_through: "manifestations"
@@ -43,6 +44,12 @@ defmodule PanWeb.User do
     many_to_many :users_i_follow, User,
                                   join_through: "follows",
                                   join_keys: [follower_id: :id, user_id: :id]
+    many_to_many :personas_i_like, Persona,
+                                   join_through: "likes",
+                                   join_keys: [enjoyer_id: :id, persona_id: :id]
+    many_to_many :personas_i_follow, Persona,
+                                     join_through: "follows",
+                                     join_keys: [follower_id: :id, persona_id: :id]
     many_to_many :podcasts_i_follow, PanWeb.Podcast,
                                 join_through: "follows",
                                 join_keys: [follower_id: :id, podcast_id: :id]
@@ -61,6 +68,8 @@ defmodule PanWeb.User do
     many_to_many :categories_i_follow, PanWeb.Category,
                                        join_through: "follows",
                                        join_keys: [follower_id: :id, category_id: :id]
+
+    has_many :following, Follow, foreign_key: :user_id, on_delete: :delete_all
   end
 
 

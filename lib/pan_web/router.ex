@@ -220,6 +220,7 @@ defmodule PanWeb.Router do
     get "/my_profile", UserFrontendController, :my_profile
     get "/my_messages", UserFrontendController, :my_messages
     get "/my_data", UserFrontendController, :my_data
+    delete "/delete_my_account", UserFrontendController, :delete_my_account
 
     get "/podcasts/:id/trigger_update", PodcastFrontendController, :trigger_update
 
@@ -232,6 +233,7 @@ defmodule PanWeb.Router do
     post "/personas/:id/claim", PersonaFrontendController, :claim
     get "/personas/:id/warning", PersonaFrontendController, :warning
     post "/personas/:id/connect", PersonaFrontendController, :connect
+    post "/personas/:id/disconnect", PersonaFrontendController, :disconnect
     resources "/personas", PersonaFrontendController, only: [:edit, :update]
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
@@ -244,6 +246,14 @@ defmodule PanWeb.Router do
 
     resources "/messages", MessageFrontendController, only: [:delete]
     delete "/messages/", MessageFrontendController, :delete_all
+
+    delete "/subscriptions/", SubscriptionFrontendController, :delete_all
+
+    delete "/follows/unfollow_all_podcasts", FollowFrontendController, :unfollow_all_podcasts
+
+    delete "/likes/unlike_all_podcasts", LikeFrontendController, :unlike_all_podcasts
+
+    resources "/manifestations", ManifestationFrontendController, only: [:delete]
   end
 
 
