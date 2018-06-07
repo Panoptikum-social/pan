@@ -1,13 +1,7 @@
 defmodule PanWeb.Api.PodcastController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Episode
-  alias PanWeb.Podcast
-  alias PanWeb.Like
-  alias PanWeb.User
-  alias PanWeb.Subscription
-  alias PanWeb.Api.Helpers
-
+  alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

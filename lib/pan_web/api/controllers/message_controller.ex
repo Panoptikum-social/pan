@@ -1,8 +1,6 @@
 defmodule PanWeb.Api.MessageController do
   use Pan.Web, :controller
-  alias PanWeb.Message
-  alias PanWeb.User
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Message, User}
   use JaSerializer
 
   def action(conn, _) do

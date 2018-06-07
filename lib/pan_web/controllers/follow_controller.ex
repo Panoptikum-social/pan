@@ -1,6 +1,5 @@
 defmodule PanWeb.FollowController do
   use Pan.Web, :controller
-
   alias PanWeb.Follow
 
   def index(conn, _params) do

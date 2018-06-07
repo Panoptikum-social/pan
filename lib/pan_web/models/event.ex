@@ -1,10 +1,6 @@
 defmodule Event do
   alias Pan.Repo
-  alias PanWeb.Podcast
-  alias PanWeb.Endpoint
-  alias PanWeb.User
-  alias PanWeb.Persona
-  alias PanWeb.Category
+  alias PanWeb.{Category, Endpoint, Persona, Podcast, User}
 
   defstruct topic:           "",
             subtopic:        "",

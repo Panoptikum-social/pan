@@ -1,6 +1,5 @@
 defmodule PanWeb.MessageController do
   use Pan.Web, :controller
-
   alias PanWeb.Message
 
   def index(conn, _params) do

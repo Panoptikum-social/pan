@@ -1,6 +1,5 @@
 defmodule PanWeb.EngagementController do
   use Pan.Web, :controller
-
   alias PanWeb.Engagement
 
   def index(conn, _params) do

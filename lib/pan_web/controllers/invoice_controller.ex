@@ -1,6 +1,5 @@
 defmodule PanWeb.InvoiceController do
   use Pan.Web, :controller
-
   alias PanWeb.Invoice
 
   def index(conn, _params) do

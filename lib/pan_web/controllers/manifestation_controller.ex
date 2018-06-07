@@ -1,9 +1,6 @@
 defmodule PanWeb.ManifestationController do
   use Pan.Web, :controller
-  alias PanWeb.Manifestation
-  alias PanWeb.User
-  alias PanWeb.Persona
-
+  alias PanWeb.{Manifestation, Persona, User}
 
   def index(conn, _params) do
     render(conn, "index.html")

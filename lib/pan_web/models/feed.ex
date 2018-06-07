@@ -1,9 +1,7 @@
 defmodule PanWeb.Feed do
   use Pan.Web, :model
-  alias PanWeb.Feed
-  alias PanWeb.AlternateFeed
   alias Pan.Repo
-  alias PanWeb.Podcast
+  alias PanWeb.{AlternateFeed, Feed, Podcast}
 
   schema "feeds" do
     field :self_link_title, :string

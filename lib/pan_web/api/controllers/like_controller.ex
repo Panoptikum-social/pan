@@ -1,15 +1,7 @@
 defmodule PanWeb.Api.LikeController do
   use Pan.Web, :controller
-  alias PanWeb.Category
-  alias PanWeb.Message
-  alias PanWeb.Like
-  alias PanWeb.Podcast
-  alias PanWeb.Chapter
-  alias PanWeb.Episode
-  alias PanWeb.Persona
-  alias PanWeb.User
-  alias PanWeb.Subscription
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Category, Chapter, Episode, Like, Message, Persona, Podcast,
+                Subscription, User}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do

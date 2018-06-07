@@ -1,9 +1,6 @@
 defmodule PanWeb.FeedBacklogController do
   use Pan.Web, :controller
-  alias PanWeb.Feed
-  alias PanWeb.AlternateFeed
-  alias PanWeb.FeedBacklog
-  alias PanWeb.Subscription
+  alias PanWeb.{AlternateFeed, Feed, FeedBacklog, Subscription}
   require Logger
 
   def index(conn, _params) do

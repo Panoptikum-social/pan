@@ -1,6 +1,5 @@
 defmodule PanWeb.EpisodeController do
   use Pan.Web, :controller
-
   alias PanWeb.Episode
 
   plug :scrub_params, "episode" when action in [:create, :update]

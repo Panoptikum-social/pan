@@ -1,6 +1,5 @@
 defmodule PanWeb.PageFrontendController do
   use Pan.Web, :controller
-
   alias PanWeb.Podcast
 
   def home(conn, _params) do

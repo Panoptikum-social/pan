@@ -1,16 +1,8 @@
 defmodule PanWeb.User do
   use Pan.Web, :model
-  alias PanWeb.Like
   alias Pan.Repo
-  alias PanWeb.Follow
-  alias PanWeb.User
-  alias PanWeb.Persona
-  alias PanWeb.Subscription
-  alias PanWeb.Podcast
-  alias PanWeb.Category
-  alias PanWeb.Chapter
-  alias PanWeb.Episode
-
+  alias PanWeb.{Category, Chapter, Episode, Follow, Invoice, Like, Manifestation, Message,
+                Opml, Persona, Podcast, Recommendation, User, Subscription}
 
   schema "users" do
     field :name, :string
@@ -31,12 +23,12 @@ defmodule PanWeb.User do
     field :elastic, :boolean
     timestamps()
 
-    has_many :manifestations, PanWeb.Manifestation, on_delete: :delete_all
-    has_many :invoices, PanWeb.Invoice, on_delete: :nilify_all
+    has_many :manifestations, Manifestation, on_delete: :delete_all
+    has_many :invoices, Invoice, on_delete: :nilify_all
     has_many :user_personas, Persona, foreign_key: :user_id
-    has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
-    has_many :messages_created, PanWeb.Message, foreign_key: :creator_id, on_delete: :delete_all
-    has_many :opmls, PanWeb.Opml, on_delete: :delete_all
+    has_many :recommendations, Recommendation, on_delete: :delete_all
+    has_many :messages_created, Message, foreign_key: :creator_id, on_delete: :delete_all
+    has_many :opmls, Opml, on_delete: :delete_all
 
     many_to_many :personas, Persona,
                             join_through: "manifestations"

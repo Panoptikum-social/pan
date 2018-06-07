@@ -1,12 +1,6 @@
 defmodule PanWeb.PersonaFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.Persona
-  alias PanWeb.Message
-  alias PanWeb.Manifestation
-  alias PanWeb.Gig
-  alias PanWeb.Delegation
-  alias PanWeb.Engagement
-  alias PanWeb.Manifestation
+  alias PanWeb.{Delegation, Engagement, Gig, Manifestation, Message, Persona}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

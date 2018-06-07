@@ -1,6 +1,5 @@
 defmodule PanWeb.LikeController do
   use Pan.Web, :controller
-
   alias PanWeb.Like
 
   def index(conn, _params) do

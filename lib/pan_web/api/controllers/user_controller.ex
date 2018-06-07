@@ -1,9 +1,7 @@
 defmodule PanWeb.Api.UserController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.User
-  alias PanWeb.Api.MyUserView
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Api.MyUserView, User}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

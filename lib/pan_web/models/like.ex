@@ -1,7 +1,7 @@
 defmodule PanWeb.Like do
   use Pan.Web, :model
-  alias PanWeb.Like
   alias Pan.Repo
+  alias PanWeb.Like
 
   schema "likes" do
     belongs_to :enjoyer, PanWeb.User

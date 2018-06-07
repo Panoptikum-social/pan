@@ -1,6 +1,5 @@
 defmodule PanWeb.OpmlController do
   use Pan.Web, :controller
-
   alias PanWeb.Opml
 
   def index(conn, _params) do

@@ -1,9 +1,7 @@
 defmodule PanWeb.Api.AlternateFeedController do
   use Pan.Web, :controller
-  alias PanWeb.AlternateFeed
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{AlternateFeed, Api.Helpers}
   use JaSerializer
-
 
   def show(conn, %{"id" => id}) do
     alternate_feed = AlternateFeed

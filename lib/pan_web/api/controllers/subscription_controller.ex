@@ -1,8 +1,6 @@
 defmodule PanWeb.Api.SubscriptionController do
   use Pan.Web, :controller
-  alias PanWeb.Subscription
-  alias PanWeb.Podcast
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Podcast, Subscription}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do

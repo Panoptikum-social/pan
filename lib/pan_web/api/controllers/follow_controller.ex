@@ -1,13 +1,6 @@
 defmodule PanWeb.Api.FollowController do
   use Pan.Web, :controller
-  alias PanWeb.Category
-  alias PanWeb.Follow
-  alias PanWeb.Podcast
-  alias PanWeb.Persona
-  alias PanWeb.User
-  alias PanWeb.Subscription
-  alias PanWeb.Message
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Category, Follow, Message, Persona, Podcast, Subscription, User}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do

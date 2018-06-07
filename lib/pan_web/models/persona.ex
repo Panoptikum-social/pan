@@ -1,15 +1,7 @@
 defmodule PanWeb.Persona do
   use Pan.Web, :model
-  alias PanWeb.Like
   alias Pan.Repo
-  alias PanWeb.Follow
-  alias PanWeb.Persona
-  alias PanWeb.Podcast
-  alias PanWeb.Episode
-  alias PanWeb.Gig
-  alias PanWeb.Engagement
-  alias PanWeb.User
-  alias PanWeb.Manifestation
+  alias PanWeb.{Engagement, Episode, Follow, Gig, Like, Manifestation, Persona, Podcast, User}
 
   schema "personas" do
     field :pid, :string

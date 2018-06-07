@@ -1,14 +1,6 @@
 defmodule PanWeb.UserFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.Message
-  alias PanWeb.User
-  alias PanWeb.Like
-  alias PanWeb.Follow
-  alias PanWeb.Subscription
-  alias PanWeb.Podcast
-  alias PanWeb.Persona
-  alias PanWeb.CategoryPodcast
-
+  alias PanWeb.{CategoryPodcast, Follow, Like, Message, Persona, Podcast, Subscription, User}
 
   plug :scrub_params, "user" when action in [:create, :update]
 

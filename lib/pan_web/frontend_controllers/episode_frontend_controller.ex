@@ -1,9 +1,6 @@
 defmodule PanWeb.EpisodeFrontendController do
   use Pan.Web, :controller
-
-  alias PanWeb.Episode
-  alias PanWeb.Chapter
-  alias PanWeb.Recommendation
+  alias PanWeb.{Chapter, Episode, Recommendation}
 
   def show(conn, %{"id" => id}) do
     episode = Repo.get!(Episode, id)

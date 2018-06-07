@@ -1,6 +1,5 @@
 defmodule PanWeb.GigController do
   use Pan.Web, :controller
-
   alias PanWeb.Gig
 
   def index(conn, _params) do

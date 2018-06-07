@@ -1,8 +1,7 @@
 defmodule PanWeb.Api.EpisodeController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Episode
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Episode}
 
   def index(conn, params) do
     page = Map.get(params, "page", %{})

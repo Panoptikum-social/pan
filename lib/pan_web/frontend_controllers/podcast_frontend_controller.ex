@@ -1,8 +1,6 @@
 defmodule PanWeb.PodcastFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.Podcast
-  alias PanWeb.Episode
-  alias PanWeb.Recommendation
+  alias PanWeb.{Episode, Podcast, Recommendation}
 
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],

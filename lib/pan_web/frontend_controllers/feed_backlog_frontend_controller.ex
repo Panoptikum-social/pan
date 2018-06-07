@@ -1,6 +1,5 @@
 defmodule PanWeb.FeedBacklogFrontendController do
   use Pan.Web, :controller
-
   alias PanWeb.FeedBacklog
 
   def action(conn, _) do

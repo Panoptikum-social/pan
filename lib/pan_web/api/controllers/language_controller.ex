@@ -1,7 +1,6 @@
 defmodule PanWeb.Api.LanguageController do
   use Pan.Web, :controller
-  alias PanWeb.Language
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Language}
   use JaSerializer
 
   def index(conn, _params) do

@@ -1,7 +1,7 @@
 defmodule PanWeb.Subscription do
   use Pan.Web, :model
-  alias PanWeb.Subscription
   alias Pan.Repo
+  alias PanWeb.Subscription
 
   schema "subscriptions" do
     belongs_to :user, PanWeb.User

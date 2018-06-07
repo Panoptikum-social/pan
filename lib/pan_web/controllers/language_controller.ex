@@ -1,8 +1,6 @@
 defmodule PanWeb.LanguageController do
   use Pan.Web, :controller
-
-  alias PanWeb.Language
-  alias PanWeb.Podcast
+  alias PanWeb.{Language, Podcast}
 
   plug :scrub_params, "language" when action in [:create, :update]
 

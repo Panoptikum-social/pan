@@ -3,7 +3,6 @@ defmodule PanWeb.SearchController do
   alias Pan.Search
   require Logger
 
-
   def elasticsearch_push_missing(conn, _params) do
     Search.push_missing()
     render(conn, "done.html", %{})

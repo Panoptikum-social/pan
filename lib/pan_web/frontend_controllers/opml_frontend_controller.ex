@@ -1,6 +1,5 @@
 defmodule PanWeb.OpmlFrontendController do
   use Pan.Web, :controller
-
   alias PanWeb.Opml
 
   def action(conn, _) do

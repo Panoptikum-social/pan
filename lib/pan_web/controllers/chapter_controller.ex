@@ -1,6 +1,5 @@
 defmodule PanWeb.ChapterController do
   use Pan.Web, :controller
-
   alias PanWeb.Chapter
 
   plug :scrub_params, "chapter" when action in [:create, :update]

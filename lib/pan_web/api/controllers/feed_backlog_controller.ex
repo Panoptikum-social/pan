@@ -1,7 +1,6 @@
 defmodule PanWeb.Api.FeedBacklogController do
   use Pan.Web, :controller
-  alias PanWeb.FeedBacklog
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, FeedBacklog}
   use JaSerializer
 
   def action(conn, _) do

@@ -1,10 +1,7 @@
 defmodule PanWeb.CategoryController do
   use Pan.Web, :controller
-  alias PanWeb.Category
-  alias PanWeb.Podcast
-  alias PanWeb.Follow
-  alias PanWeb.Like
   alias Pan.Repo
+  alias PanWeb.{Category, Follow, Like, Podcast}
 
   plug :scrub_params, "category" when action in [:create, :update]
 

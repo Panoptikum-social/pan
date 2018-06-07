@@ -1,8 +1,7 @@
 defmodule PanWeb.Api.EnclosureController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Enclosure
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Enclosure}
 
   def show(conn, %{"id" => id}) do
 

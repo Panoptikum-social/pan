@@ -1,8 +1,7 @@
 defmodule PanWeb.Api.ChapterController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Chapter
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Chapter}
 
 
   def show(conn, %{"id" => id}) do

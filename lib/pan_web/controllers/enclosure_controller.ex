@@ -1,6 +1,5 @@
 defmodule PanWeb.EnclosureController do
   use Pan.Web, :controller
-
   alias PanWeb.Enclosure
 
   plug :scrub_params, "enclosure" when action in [:create, :update]

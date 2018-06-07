@@ -1,15 +1,8 @@
 defmodule PanWeb.Api.RecommendationController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Recommendation
-  alias PanWeb.Podcast
-  alias PanWeb.Category
-  alias PanWeb.Episode
-  alias PanWeb.Message
-  alias PanWeb.Chapter
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Category, Chapter, Episode, Message, Podcast, Recommendation}
   alias Pan.Parser.Helpers , as: H
-
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

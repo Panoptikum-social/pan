@@ -1,7 +1,6 @@
 defmodule PanWeb.Api.EngagementController do
   use Pan.Web, :controller
-  alias PanWeb.Engagement
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Engagement}
   use JaSerializer
 
   def show(conn, %{"id" => id}) do

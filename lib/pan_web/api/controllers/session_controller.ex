@@ -1,8 +1,7 @@
 defmodule PanWeb.Api.SessionController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Auth
-  alias PanWeb.Endpoint
+  alias PanWeb.{Auth, Endpoint}
   import PanWeb.Api.Helpers, only: [send_401: 2]
 
   def login(conn, %{"username" => username, "password" => given_pass}) do

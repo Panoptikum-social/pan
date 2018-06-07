@@ -2,7 +2,6 @@ defmodule PanWeb.SubscriptionFrontendController do
   use Pan.Web, :controller
   alias PanWeb.Subscription
 
-
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end

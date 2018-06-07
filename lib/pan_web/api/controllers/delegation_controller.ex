@@ -1,10 +1,7 @@
 defmodule PanWeb.Api.DelegationController do
   use Pan.Web, :controller
   use JaSerializer
-  alias PanWeb.Delegation
-  alias PanWeb.Manifestation
-  alias PanWeb.Persona
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Delegation, Manifestation, Persona}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do

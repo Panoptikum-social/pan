@@ -1,6 +1,5 @@
 defmodule PanWeb.DelegationController do
   use Pan.Web, :controller
-
   alias PanWeb.Delegation
 
   def index(conn, _params) do

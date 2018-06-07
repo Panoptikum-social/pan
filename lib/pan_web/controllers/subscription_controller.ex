@@ -1,8 +1,6 @@
 defmodule PanWeb.SubscriptionController do
   use Pan.Web, :controller
-
   alias PanWeb.Subscription
-
 
   def index(conn, _params) do
     render(conn, "index.html")

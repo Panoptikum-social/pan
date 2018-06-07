@@ -1,8 +1,7 @@
 defmodule PanWeb.Gig do
   use Pan.Web, :model
-  alias PanWeb.Gig
   alias Pan.Repo
-  alias PanWeb.Manifestation
+  alias PanWeb.{Gig, Manifestation}
 
   schema "gigs" do
     field :from_in_s, :integer

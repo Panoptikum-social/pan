@@ -1,11 +1,8 @@
 defmodule PanWeb.Api.GigController do
   use Pan.Web, :controller
-  alias PanWeb.Gig
-  alias PanWeb.Episode
-  alias PanWeb.Persona
   use JaSerializer
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Episode, Gig, Persona}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])

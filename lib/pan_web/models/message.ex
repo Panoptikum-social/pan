@@ -1,7 +1,7 @@
 defmodule PanWeb.Message do
   use Pan.Web, :model
-  alias PanWeb.Message
   alias Pan.Repo
+  alias PanWeb.Message
 
   schema "messages" do
     field :content, :string

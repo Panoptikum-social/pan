@@ -1,8 +1,7 @@
 defmodule PanWeb.Api.OpmlController do
   use Pan.Web, :controller
-  alias PanWeb.Opml
   use JaSerializer
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Opml}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do

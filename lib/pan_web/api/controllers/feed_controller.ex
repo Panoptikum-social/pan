@@ -1,9 +1,7 @@
 defmodule PanWeb.Api.FeedController do
   use Pan.Web, :controller
-  alias PanWeb.Feed
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Feed}
   use JaSerializer
-
 
   def show(conn, %{"id" => id}) do
     feed = Repo.get(Feed, id)

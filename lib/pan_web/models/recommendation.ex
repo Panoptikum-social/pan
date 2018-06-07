@@ -1,7 +1,7 @@
 defmodule PanWeb.Recommendation do
   use Pan.Web, :model
-  alias PanWeb.Recommendation
   alias Pan.Repo
+  alias PanWeb.Recommendation
 
   schema "recommendations" do
     field :comment, :string

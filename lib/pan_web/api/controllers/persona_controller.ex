@@ -1,14 +1,7 @@
 defmodule PanWeb.Api.PersonaController do
   use Pan.Web, :controller
-  alias PanWeb.Persona
-  alias PanWeb.Gig
-  alias PanWeb.Engagement
-  alias PanWeb.Delegation
-  alias PanWeb.Podcast
-  alias PanWeb.Episode
-  alias PanWeb.Manifestation
-  alias PanWeb.Api.ErrorView
-  alias PanWeb.Api.Helpers
+  alias PanWeb.{Api.Helpers, Api.ErrorView, Delegation, Engagement, Episode, Gig,
+                Manifestation, Persona, Podcast}
   use JaSerializer
 
   def action(conn, _) do

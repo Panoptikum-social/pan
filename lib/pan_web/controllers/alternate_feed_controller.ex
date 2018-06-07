@@ -1,6 +1,5 @@
 defmodule PanWeb.AlternateFeedController do
   use Pan.Web, :controller
-
   alias PanWeb.AlternateFeed
 
   plug :scrub_params, "alternate_feed" when action in [:create, :update]

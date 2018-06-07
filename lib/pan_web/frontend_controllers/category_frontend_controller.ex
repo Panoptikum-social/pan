@@ -1,10 +1,6 @@
 defmodule PanWeb.CategoryFrontendController do
   use Pan.Web, :controller
-
-  alias PanWeb.Category
-  alias PanWeb.Language
-  alias PanWeb.Episode
-  alias PanWeb.Podcast
+  alias PanWeb.{Category, Episode, Language, Podcast}
 
   def index(conn, _params) do
     categories = from(c in Category, order_by: :title,

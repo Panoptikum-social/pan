@@ -1,10 +1,8 @@
 defmodule PanWeb.UserController do
   use Pan.Web, :controller
-  alias PanWeb.User
-  alias PanWeb.Subscription
+  alias PanWeb.{Subscription, User}
 
   plug :authenticate_user when action in [:index, :show]
-
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
