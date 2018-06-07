@@ -60,10 +60,12 @@ defmodule PanWeb.UserFrontendController do
         user = Repo.get!(User, id)
                |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
 
-        podcast_related_likes = Repo.all(from l in Like, where: l.enjoyer_id == ^id
-                                                                and not is_nil(l.podcast_id),
-                                                         order_by: [desc: :inserted_at])
-                                |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+        podcast_related_likes = from(l in Like, where: l.enjoyer_id == ^id and not is_nil(l.podcast_id),
+                                                order_by: [desc: :inserted_at])
+                                |> Repo.all()
+                                |> Repo.preload([:podcast,
+                                                 [episode: :podcast],
+                                                 [chapter: [episode: :podcast]]])
 
         messages = from(m in Message, where: m.creator_id == ^id,
                                       order_by: [desc: :inserted_at],
@@ -175,10 +177,7 @@ defmodule PanWeb.UserFrontendController do
            |> Repo.preload(podcasts_i_subscribed: from(p in Podcast, order_by: p.title))
            |> Repo.preload(podcasts_i_follow: from(p in Podcast, order_by: p.title))
 
-    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
-                                         is_nil(l.chapter_id) and
-                                         is_nil(l.episode_id) and
-                                         not is_nil(l.podcast_id),
+    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                                   select: l.podcast_id)
                   |> Repo.all()
 
@@ -205,19 +204,14 @@ defmodule PanWeb.UserFrontendController do
                                               limit: 10)
                       |> Repo.all()
 
-    users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_ids and
-                                               is_nil(l.chapter_id) and
-                                               is_nil(l.episode_id),
+    users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_ids,
                                         select: l.enjoyer_id)
                         |> Repo.all()
                         |> Enum.uniq
                         |> List.delete(user.id)
 
     also_liked = from(l in Like, join: p in assoc(l, :podcast),
-                                 where: l.enjoyer_id in ^users_also_liking and
-                                        is_nil(l.chapter_id) and
-                                        is_nil(l.episode_id) and
-                                        not l.podcast_id in ^podcast_ids,
+                                 where: l.enjoyer_id in ^users_also_liking and not l.podcast_id in ^podcast_ids,
                                  group_by: p.id,
                                  select: [count(l.podcast_id), p.id, p.title],
                                  order_by: [desc: count(l.podcast_id)],
@@ -241,14 +235,12 @@ defmodule PanWeb.UserFrontendController do
 
 
   def like_all_subscribed(conn, _params, user) do
-    subscribed_podcast_ids = Repo.all(from s in Subscription,
-                                      where: s.user_id == ^user.id,
-                                      select: s.podcast_id)
+    subscribed_podcast_ids = from( s in Subscription, where: s.user_id == ^user.id,
+                                                      select: s.podcast_id)
+                             |> Repo.all()
+
     liked_ids = Repo.all(from l in Like,
-                         where: l.enjoyer_id == ^user.id and
-                                not is_nil(l.podcast_id) and
-                                is_nil(l.chapter_id) and
-                                is_nil(l.episode_id),
+                         where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                          select: l.podcast_id)
 
     for id <- subscribed_podcast_ids do

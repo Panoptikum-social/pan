@@ -181,7 +181,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
          class: "btn btn-danger btn-sm" %>
 
 <ul>
-  <%= for podcast <- Enum.uniq(@user.podcasts_i_like) do %>
+  <%= for podcast <- @user.podcasts_i_like do %>
     <li><%= link podcast.title, to: podcast_frontend_path(@conn, :show, podcast), target: "_blank" %></li>
   <% end %>
 </ul>
@@ -200,7 +200,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
          class: "btn btn-danger btn-sm" %>
 
 <ul>
-  <%= for episode <- Enum.uniq(@user.episodes_i_like) do %>
+  <%= for episode <- @user.episodes_i_like do %>
     <li><%= link episode.title, to: episode_frontend_path(@conn, :show, episode), target: "_blank" %></li>
   <% end %>
 </ul>

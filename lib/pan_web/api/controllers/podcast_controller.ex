@@ -227,10 +227,7 @@ defmodule PanWeb.Api.PodcastController do
 
 
   def i_like(conn, _params, user) do
-    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
-                                         is_nil(l.chapter_id) and
-                                         is_nil(l.episode_id) and
-                                         not is_nil(l.podcast_id),
+    podcast_ids = from(l in Like, where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                                   select: l.podcast_id)
                   |> Repo.all()
 
@@ -298,16 +295,11 @@ defmodule PanWeb.Api.PodcastController do
 
 
   def also_liked(conn, _params, user) do
-    podcast_i_like_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
-                                                is_nil(l.chapter_id) and
-                                                is_nil(l.episode_id) and
-                                                not is_nil(l.podcast_id),
+    podcast_i_like_ids = from(l in Like, where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                                          select: l.podcast_id)
                          |> Repo.all()
 
-    users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_i_like_ids and
-                                               is_nil(l.chapter_id) and
-                                               is_nil(l.episode_id),
+    users_also_liking = from(l in Like, where: l.podcast_id in ^podcast_i_like_ids,
                                         select: l.enjoyer_id)
                         |> Repo.all()
                         |> Enum.uniq
@@ -315,8 +307,6 @@ defmodule PanWeb.Api.PodcastController do
 
     podcast_ids = from(l in Like, join: p in assoc(l, :podcast),
                                   where: l.enjoyer_id in ^users_also_liking and
-                                         is_nil(l.chapter_id) and
-                                         is_nil(l.episode_id) and
                                          not l.podcast_id in ^podcast_i_like_ids,
                                   group_by: p.id,
                                   select: p.id,

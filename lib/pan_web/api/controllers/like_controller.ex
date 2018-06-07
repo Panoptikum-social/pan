@@ -232,10 +232,7 @@ defmodule PanWeb.Api.LikeController do
     subscribed_podcast_ids = Repo.all(from s in Subscription,
                                       where: s.user_id == ^user.id,
                                       select: s.podcast_id)
-    liked_ids = from(l in Like, where: l.enjoyer_id == ^user.id and
-                                       not is_nil(l.podcast_id) and
-                                       is_nil(l.chapter_id) and
-                                       is_nil(l.episode_id),
+    liked_ids = from(l in Like, where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                                 select: l.podcast_id)
                 |> Repo.all()
 
@@ -258,10 +255,7 @@ defmodule PanWeb.Api.LikeController do
       end
     end
 
-    likes = from(l in Like, where: l.enjoyer_id == ^user.id and
-                                   not is_nil(l.podcast_id) and
-                                   is_nil(l.chapter_id) and
-                                   is_nil(l.episode_id),
+    likes = from(l in Like, where: l.enjoyer_id == ^user.id and not is_nil(l.podcast_id),
                             preload: [:category, :enjoyer, :user, :podcast, :chapter,
                                       :persona, :episode])
             |> Repo.all()

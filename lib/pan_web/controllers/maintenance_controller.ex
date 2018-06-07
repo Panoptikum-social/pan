@@ -17,12 +17,6 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
-    from(l in Like, where: not is_nil(l.chapter_id))
-    |> Repo.update_all(set: [podcast_id: nil, episode_id: nil])
-
-    from(l in Like, where: not is_nil(l.episode_id))
-    |> Repo.update_all(set: [podcast_id: nil])
-
     render(conn, "done.html")
   end
 
