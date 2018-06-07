@@ -29,14 +29,14 @@
           <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
         </div>
       </nav>
-
-      <p class="alert alert-info container" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main" class="container">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
     </div>
+
+    <p class="alert alert-info container" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
+
+    <main role="main" class="container">
+      <%= render @view_module, @view_template, assigns %>
+    </main>
 
     <%= render "_footer.html", conn: @conn, current_user: @current_user %>
   </body>
