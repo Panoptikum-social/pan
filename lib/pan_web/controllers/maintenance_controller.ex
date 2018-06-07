@@ -1,7 +1,6 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
-  alias PanWeb.Episode
-  alias PanWeb.Podcast
+  alias PanWeb.{Episode, Like, Podcast}
 
 
   def vienna_beamers(conn, _params) do
@@ -18,15 +17,13 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
-    podcasts = from(e in Episode, join: p in assoc(e, :podcast),
-                                  group_by: p.id,
-                                  select: %{id: p.id,
-                                            title: p.title,
-                                            last_episode: max(e.publishing_date),
-                                            last_build_date: p.last_build_date})
-               |> Repo.all
+    from(l in Like, where: not is_nil(l.chapter_id))
+    |> Repo.update_all(set: [podcast_id: nil, episode_id: nil])
 
-    render(conn, "fix.html", podcasts: podcasts)
+    from(l in Like, where: not is_nil(l.episode_id))
+    |> Repo.update_all(set: [podcast_id: nil])
+
+    render(conn, "done.html")
   end
 
 

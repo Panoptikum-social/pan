@@ -46,9 +46,7 @@ defmodule PanWeb.Episode do
     case Repo.get_by(Like, enjoyer_id: user_id,
                            episode_id: episode_id) do
       nil ->
-        episode = Repo.get(Episode, episode_id)
-        %Like{enjoyer_id: user_id, episode_id: episode_id,
-              podcast_id: episode.podcast_id}
+        %Like{enjoyer_id: user_id, episode_id: episode_id}
         |> Repo.insert
       like ->
       {:ok, Repo.delete!(like)}

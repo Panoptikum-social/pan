@@ -2,7 +2,6 @@ defmodule PanWeb.Chapter do
   use Pan.Web, :model
   alias Pan.Repo
   alias PanWeb.Like
-  alias PanWeb.Chapter
 
   schema "chapters" do
     field :start, :string
@@ -27,12 +26,7 @@ defmodule PanWeb.Chapter do
     case Repo.get_by(Like, enjoyer_id: user_id,
                            chapter_id: chapter_id) do
       nil ->
-        chapter = Repo.get(Chapter, chapter_id)
-                  |> Repo.preload(:episode)
-        %Like{enjoyer_id: user_id,
-              chapter_id: chapter_id,
-              episode_id: chapter.episode_id,
-              podcast_id: chapter.episode.podcast_id}
+        %Like{enjoyer_id: user_id, chapter_id: chapter_id}
         |> Repo.insert
       like ->
         {:ok, Repo.delete!(like)}
