@@ -1,5 +1,12 @@
 <h2>Account</h2>
 
+<p>
+  <%= link [fa_icon("download"), " Download"],
+           to: user_json_download_path(@conn, :download),
+           class: "btn btn-primary" %>
+   all my data as JSON-File
+</p>
+
 <p class="pull-right">
   Manage &nbsp;
   <%= link [fa_icon("user-circle"), " My Profile"],

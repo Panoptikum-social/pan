@@ -26,6 +26,17 @@ defmodule PanWeb.Router do
     plug PanWeb.Api.Auth, repo: Pan.Repo
   end
 
+
+  pipeline :json_download do
+    plug :accepts, ["json-api"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+    plug PanWeb.Auth, repo: Pan.Repo
+  end
+
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -207,6 +218,13 @@ defmodule PanWeb.Router do
 
     post "/", SearchFrontendController, :new
     get "/", SearchFrontendController, :new
+  end
+
+
+  scope "/mydata", PanWeb do
+    pipe_through [:json_download]
+
+    get "/download", UserJsonDownloadController, :download
   end
 
 

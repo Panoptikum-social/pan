@@ -14,3 +14,18 @@ defmodule PanWeb.Api.MessageView do
     api_message_url(conn, :show, message)
   end
 end
+
+
+defmodule PanWeb.Api.PlainMessageView do
+  use Pan.Web, :view
+  use JaSerializer.PhoenixView
+
+  def type(_, _), do: "message"
+
+  location :location
+  attributes [:content, :type, :topic, :subtopic, :event]
+
+  def location(message, conn) do
+    api_message_url(conn, :show, message)
+  end
+end
