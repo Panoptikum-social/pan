@@ -85,6 +85,15 @@
   <% end %>
 
   <ul class="nav navbar-nav navbar-right">
+    <li>
+      <a href="#" id="tour" title="Tour" class="hidden-xs">
+        <%= fa_icon("bus") %>
+      </a>
+      <a href="#" title="Blog" class="visible-xs-inline">
+        <%= fa_icon("bus", class: "fa-fw") %>&nbsp; &nbsp; Tour
+      </a>
+    </li>
+
     <%= if @current_user do %>
       <%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %>
       <%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %>
@@ -104,14 +113,6 @@
                  class: "visible-xs-inline"%>
       </li>
     <% else %>
-      <li>
-        <a href="#" id="tour" title="Tour" class="hidden-xs">
-          <%= fa_icon("bus") %>
-        </a>
-        <a href="#" title="Blog" class="visible-xs-inline">
-          <%= fa_icon("bus", class: "fa-fw") %>&nbsp; &nbsp; Tour
-        </a>
-      </li>
       <li>
         <%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
                                     title: "Sign up", class: "hidden-xs" %>
