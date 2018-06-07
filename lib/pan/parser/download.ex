@@ -26,6 +26,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 422}} -> {:error, "422: Unprocessible entity"}
       {:ok, %HTTPoison.Response{status_code: 423}} -> {:error, "423: Locked"}
       {:ok, %HTTPoison.Response{status_code: 429}} -> {:error, "429: To many requests"}
+      {:ok, %HTTPoison.Response{status_code: 451}} -> {:error, "451: Unavailable For Legal Reasons"}
       {:ok, %HTTPoison.Response{status_code: 479}} -> {:error, "479: Not a standard status code"}
 
       {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}

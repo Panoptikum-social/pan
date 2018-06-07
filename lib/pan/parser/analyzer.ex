@@ -244,7 +244,8 @@ defmodule Pan.Parser.Analyzer do
     :"geo:Point", :"tahoetv:file_flv", :"tahoetv:file_html", :"tahoetv:file_player_graphic",
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
-    :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground"
+    :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
+    :"social:guest_name"
   ], do: %{}
 
 
