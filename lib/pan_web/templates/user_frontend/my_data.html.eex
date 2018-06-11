@@ -346,8 +346,8 @@ You can even unlike all the categories, you followed so far at once, by clicking
 
 <h2>Messages</h2>
 
-You can delete a recommendation by clicking the Delete button next to it.<br/>
-You can even delete all the messages, you created so far, at once, by clicking &nbsp;
+You can delete a message by clicking the Delete button next to it.<br/>
+You can even safely delete all the messages, you created so far, at once, by clicking &nbsp;
 <%= link [fa_icon("warning"), " Delete all messages"],
          to: message_frontend_path(@conn, :delete_all),
          method: :delete,
