@@ -139,6 +139,7 @@ defmodule PanWeb.Auth do
     # IO.inspect conn.path_info
     if conn.assigns.current_user ||
        conn.path_info == ["sessions", "new"] ||
+       conn.path_info == ["sessions"] ||
        conn.path_info == ["forgot_password"] ||
        conn.path_info == ["users", "new"] ||
        conn.path_info == ["users"]do
