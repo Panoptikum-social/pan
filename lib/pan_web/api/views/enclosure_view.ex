@@ -2,10 +2,10 @@ defmodule PanWeb.Api.EnclosureView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 
-  def type(_, _), do: "enclosure"
-
   location :location
   attributes [:orig_url, :file_size, :type, :guid, :mime_type]
+
+  def type(_, _), do: "enclosure"
 
   has_one :episode, serializer: PanWeb.Api.PlainEpisodeView, include: false
 
@@ -31,10 +31,10 @@ defmodule PanWeb.Api.PlainEnclosureView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 
-  def type(_, _), do: "enclosure"
-
   location :location
   attributes [:orig_url, :file_size, :type, :guid, :mime_type]
+
+  def type(_, _), do: "enclosure"
 
   def orig_url(enclosure) do
     enclosure.url

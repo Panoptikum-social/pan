@@ -5,7 +5,7 @@ defmodule PanWeb.Api.PodcastView do
   def type(_, _), do: "podcast"
 
   location :location
-  attributes [:title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
+  attributes [:title, :website, :description, :summary, :image_title, :orig_image_url, :last_build_date,
               :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
               :update_intervall, :next_update, :retired, :unique_identifier, :episodes_count,
               :followers_count, :likes_count, :subscriptions_count, :latest_episode_publishing_date,
@@ -23,6 +23,10 @@ defmodule PanWeb.Api.PodcastView do
   def location(podcast, conn) do
     api_podcast_url(conn, :show, podcast)
   end
+
+  def orig_image_url(podcast, _conn) do
+    podcast.image_url
+  end
 end
 
 
@@ -33,10 +37,14 @@ defmodule PanWeb.Api.PlainPodcastView do
   def type(_, _), do: "podcast"
 
   location :location
-  attributes [:title, :website, :description, :image_title, :image_url,
+  attributes [:title, :website, :description, :image_title, :orig_image_url,
               :latest_episode_publishing_date]
 
   def location(podcast, conn) do
     api_podcast_url(conn, :show, podcast)
+  end
+
+  def orig_image_url(podcast, _conn) do
+    podcast.image_url
   end
 end

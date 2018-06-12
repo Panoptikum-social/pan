@@ -29,6 +29,7 @@
       <li><%= link "Delegations", to: delegation_path(@conn, :index) %></li>
       <li role="separator" class="divider"></li>
       <li><%= link "Languages", to: language_path(@conn, :index) %></li>
+      <li><%= link "Images", to: image_path(@conn, :index) %></li>
       <li role="separator" class="divider"></li>
       <li><%= link "Statistics", to: maintenance_path(@conn, :stats) %></li>
     </ul>

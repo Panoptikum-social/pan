@@ -8,7 +8,7 @@ defmodule PanWeb.Api.EpisodeView do
   location :location
   attributes [:orig_link, :title, :publishing_date, :guid, :description, :shownotes,
               :payment_link_title, :payment_link_url, :deep_link, :duration, :subtitle, :summary,
-              :like_count, :image_title, :image_url, :duration_in_s]
+              :like_count, :image_title, :orig_image_url, :duration_in_s]
 
 
   has_one :podcast, serializer: PanWeb.Api.PlainPodcastView, include: false
@@ -20,6 +20,10 @@ defmodule PanWeb.Api.EpisodeView do
 
   def orig_link(episode) do
     episode.link
+  end
+
+  def orig_image_url(episode, _conn) do
+    episode.image_url
   end
 
   def like_count(episode) do
@@ -45,12 +49,16 @@ defmodule PanWeb.Api.PlainEpisodeView do
 
   location :location
   attributes [:orig_link, :title, :publishing_date, :description, :deep_link, :duration, :subtitle,
-              :summary, :image_title, :image_url, :duration_in_s]
+              :summary, :image_title, :orig_image_url, :duration_in_s]
 
   has_many :enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false
 
   def orig_link(episode) do
     episode.link
+  end
+
+  def orig_image_url(episode, _conn) do
+    episode.image_url
   end
 
   def location(episode, conn) do
@@ -66,7 +74,7 @@ end
 
 defmodule DurationHelpers do
   def duration_in_seconds(duration) do
-    if duration do 
+    if duration do
       duration = String.replace(duration, ~r/(.*?\:.*?\:.*?)(\:.*)/, "\\1")
 
       if String.match?(duration, ~r/^([0-9]+)(\:[0-9]{1,2})*$/) do
