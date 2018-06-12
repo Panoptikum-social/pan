@@ -15,6 +15,9 @@ defmodule PanWeb.Endpoint do
              podlove-webplayer podlove-subscribe-button podigee-podcast-player
              .well-known opensearch.xml)
 
+  plug Plug.Static,
+    at: "thumbnails/", from: "/var/phoenix/pan-uploads/images/", gzip: true
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

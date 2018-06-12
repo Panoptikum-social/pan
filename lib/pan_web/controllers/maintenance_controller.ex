@@ -1,6 +1,7 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
-  alias PanWeb.{Episode, Podcast}
+  alias PanWeb.{Episode, Image, Persona, Podcast}
+  import Mogrify
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
@@ -16,6 +17,43 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
+    persona_ids = from(i in Image, group_by: i.persona_id,
+                                   select:   i.persona_id)
+                  |> Repo.all
+
+    personas_missing_thumbnails = from(p in Persona, where: not is_nil(p.image_url) and
+                                                            not p.id in ^persona_ids)
+                                  |> Repo.all
+
+    for persona <- personas_missing_thumbnails do
+      target_dir = "/var/phoenix/pan-uploads/images/persona-#{persona.id}"
+
+      {:ok, response} = HTTPoison.get(persona.image_url)
+
+      if response.body != "" do
+        filename = response.request_url
+                   |> URI.parse()
+                   |> Map.get(:path)
+                   |> Path.basename()
+
+        File.mkdir_p(target_dir)
+        File.write!(target_dir <> "/" <> filename, response.body)
+
+        open(target_dir <> "/" <> filename)
+        |> resize_to_limit("150x150")
+        |> save(in_place: true)
+
+        content_type = Keyword.get(response.headers, :"Content-Type", "unknown")
+
+        %Image{content_type: content_type,
+               filename: filename,
+               path: "/thumbnails/persona-#{persona.id}/#{filename}",
+               persona_id: persona.id}
+        |> Image.changeset()
+        |> Repo.insert()
+      end
+    end
+
     render(conn, "done.html")
   end
 

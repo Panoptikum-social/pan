@@ -8,7 +8,7 @@ defmodule Pan.Repo.Migrations.CreateImage do
       add :path, :string
       add :podcast_id, references(:podcasts, on_delete: :nothing)
       add :episode_id, references(:episodes, on_delete: :nothing)
-      add :persona_id, references(:episodes, on_delete: :nothing)
+      add :persona_id, references(:personas, on_delete: :nothing)
 
       timestamps()
     end

@@ -3,6 +3,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Thumbnail</th>
       <th>Filename</th>
       <th>Content type</th>
       <th>Path</th>
@@ -16,6 +17,7 @@
   <tbody>
 <%= for image <- @images do %>
     <tr>
+      <td><%= img_tag(image.path) %></td>
       <td><%= image.filename %></td>
       <td><%= image.content_type %></td>
       <td><%= image.path %></td>

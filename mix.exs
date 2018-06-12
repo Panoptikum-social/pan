@@ -70,7 +70,8 @@ defmodule Pan.Mixfile do
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
      {:excoveralls, "~> 0.7", only: :test}, # Code coverage tool
      {:p1_utils, "1.0.10", manager: :rebar}, # dependency for iconv
-     {:iconv, "~> 1.0.0", manager: :rebar} # Unicode converter
+     {:iconv, "~> 1.0.0", manager: :rebar}, # Unicode converter
+     {:mogrify, "~> 0.6.1"} # Imagemagick wrapper
     ]
   end
 
