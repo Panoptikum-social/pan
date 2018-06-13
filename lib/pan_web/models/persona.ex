@@ -263,6 +263,7 @@ defmodule PanWeb.Persona do
             rescue
               MatchError -> 0
               File.Error -> 0
+              Protocol.UndefinedError -> 0
             end
 
     unless width > 0 do
