@@ -245,7 +245,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
-    :"social:guest_name"
+    :"social:guest_name", :thumbnail
   ], do: %{}
 
 
@@ -355,8 +355,9 @@ defmodule Pan.Parser.Analyzer do
   end
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
-  def call(_, "episode", [:"atom:summary",  _, []]), do: %{}
-  def call(_, "episode", [:"atom:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:summary,           _, []]), do: %{}
+  def call(_, "episode", [:"atom:summary",    _, []]), do: %{}
+  def call(_, "episode", [:"atom:summary",    _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: H.to_255(value)}
