@@ -375,6 +375,7 @@ defmodule PanWeb.Router do
 
     resources "/invoices", InvoiceController
 
+    get "/images/datatable", ImageController, :datatable
     resources "/images", ImageController
 
     get "/podcasts/datatable", PodcastController, :datatable

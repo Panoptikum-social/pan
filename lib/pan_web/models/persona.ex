@@ -210,7 +210,7 @@ defmodule PanWeb.Persona do
             |> resize_to_limit("150x150")
             |> save(in_place: true)
 
-            content_type = Keyword.get(response.headers, :"Content-Type", "unknown")
+            content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
 
             {:ok, image} = %Image{content_type: content_type,
                                   filename: filename,

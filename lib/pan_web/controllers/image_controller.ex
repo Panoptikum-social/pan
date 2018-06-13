@@ -3,8 +3,55 @@ defmodule PanWeb.ImageController do
   alias PanWeb.Image
 
   def index(conn, _params) do
-    images = Repo.all(Image)
-    render(conn, "index.html", images: images)
+    render(conn, "index.html")
+  end
+
+  def datatable(conn, params) do
+    search = params["search"]["value"]
+    searchfrag = "%#{params["search"]["value"]}%"
+
+    limit = String.to_integer(params["length"])
+    offset = String.to_integer(params["start"])
+    draw = String.to_integer(params["draw"])
+
+    columns = params["columns"]
+
+    order_by = Enum.map(params["order"], fn({_key, value}) ->
+                 column_number = value["column"]
+                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+               end)
+
+    records_total = Repo.aggregate(Image, :count, :id)
+
+    query =
+      if search != "" do
+        from(i in Image, where: ilike(fragment("cast (? as text)", i.persona_id), ^searchfrag) or
+                                ilike(fragment("cast (? as text)", i.episode_id), ^searchfrag) or
+                                ilike(fragment("cast (? as text)", i.podcast_id), ^searchfrag) or
+                                ilike(fragment("cast (? as text)", i.id), ^searchfrag))
+      else
+        from(i in Image)
+      end
+
+    records_filtered = query
+                       |> Repo.aggregate(:count, :id)
+
+    images = from(i in query, limit: ^limit,
+                                offset: ^offset,
+                                order_by: ^order_by,
+                                select: %{id:           i.id,
+                                          filename:     i.filename,
+                                          content_type: i.content_type,
+                                          path:         i.path,
+                                          podcast_id:   i.podcast_id,
+                                          episode_id:   i.episode_id,
+                                          persona_id:   i.persona_id})
+           |> Repo.all()
+
+    render(conn, "datatable.json", images: images,
+                                   draw: draw,
+                                   records_total: records_total,
+                                   records_filtered: records_filtered)
   end
 
 
@@ -99,3 +146,4 @@ defmodule PanWeb.ImageController do
     |> redirect(to: image_path(conn, :index))
   end
 end
+
