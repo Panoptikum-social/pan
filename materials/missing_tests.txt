@@ -14,3 +14,9 @@
 
 * category_frontend_controller.ex FIXME! #8
 * recommendation_frontend_controller.ex : message creation & event sending
+
+---
+
+A monster feed for parser speed profiling:
+
+http://www2.tsn.ca/podcasts/tsnradiopodcast.xml

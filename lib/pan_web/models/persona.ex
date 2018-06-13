@@ -1,7 +1,9 @@
 defmodule PanWeb.Persona do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.{Engagement, Episode, Follow, Gig, Like, Manifestation, Persona, Podcast, User}
+  alias PanWeb.{Engagement, Episode, Follow, Gig, Image, Like, Manifestation, Persona,
+                Podcast, User}
+  import Mogrify
 
   schema "personas" do
     field :pid, :string
@@ -177,5 +179,64 @@ defmodule PanWeb.Persona do
       |> Repo.insert()
     end
   end
-end
 
+
+  def clear_image_url(persona) do
+    persona
+    |> Persona.changeset(%{image_url: nil})
+    |> Repo.update()
+  end
+
+  def cache_thumbnail_image(persona) do
+    target_dir = "/var/phoenix/pan-uploads/images/persona-#{persona.id}"
+
+    if URI.parse(persona.image_url).host == nil do
+      Persona.clear_image_url(persona)
+    else
+      case HTTPoison.get(persona.image_url) do
+        {:ok, response} ->
+          if response.body != "" do
+            filename = response.request_url
+                       |> URI.parse()
+                       |> Map.get(:path)
+                       |> Path.basename()
+
+            File.mkdir_p(target_dir)
+            File.write!(target_dir <> "/" <> filename, response.body)
+
+            open(target_dir <> "/" <> filename)
+            |> resize_to_limit("150x150")
+            |> save(in_place: true)
+
+            content_type = Keyword.get(response.headers, :"Content-Type", "unknown")
+
+            %Image{content_type: content_type,
+                   filename: filename,
+                   path: "/thumbnails/persona-#{persona.id}/#{filename}",
+                   persona_id: persona.id}
+            |> Image.changeset()
+            |> Repo.insert()
+          end
+
+        {:error, _reason} -> Persona.clear_image_url(persona)
+      end
+    end
+  end
+
+
+  def cache_missing_thumbnail_images() do
+    persona_ids = from(i in Image, group_by: i.persona_id,
+                                   select:   i.persona_id)
+                  |> Repo.all
+
+    personas_missing_thumbnails = from(p in Persona, where: not is_nil(p.image_url) and
+                                                            not p.id in ^persona_ids)
+                                  |> Repo.all
+
+    IO.inspect length(personas_missing_thumbnails)
+
+    for persona <- personas_missing_thumbnails do
+      Persona.cache_thumbnail_image(persona)
+    end
+  end
+end
