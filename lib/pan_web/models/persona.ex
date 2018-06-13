@@ -183,9 +183,11 @@ defmodule PanWeb.Persona do
 
   def clear_image_url(persona) do
     persona
-    |> Persona.changeset(%{image_url: nil})
+    |> Persona.changeset(%{image_url: nil,
+                           uri: persona.uri || persona.pid})
     |> Repo.update()
   end
+
 
   def cache_thumbnail_image(persona) do
     target_dir = "/var/phoenix/pan-uploads/images/persona-#{persona.id}"
@@ -210,12 +212,15 @@ defmodule PanWeb.Persona do
 
             content_type = Keyword.get(response.headers, :"Content-Type", "unknown")
 
-            %Image{content_type: content_type,
-                   filename: filename,
-                   path: "/thumbnails/persona-#{persona.id}/#{filename}",
-                   persona_id: persona.id}
-            |> Image.changeset()
-            |> Repo.insert()
+            {:ok, image} = %Image{content_type: content_type,
+                                  filename: filename,
+                                  path: "/thumbnails/persona-#{persona.id}/#{filename}",
+                                  persona_id: persona.id}
+                           |> Image.changeset()
+                           |> Repo.insert()
+
+            width = delete_if_defect(image)
+            if width == 0, do: Persona.clear_image_url(persona)
           end
 
         {:error, _reason} -> Persona.clear_image_url(persona)
@@ -233,10 +238,39 @@ defmodule PanWeb.Persona do
                                                             not p.id in ^persona_ids)
                                   |> Repo.all
 
-    IO.inspect length(personas_missing_thumbnails)
+    IO.puts Integer.to_string(length(personas_missing_thumbnails)) <> " missing images"
 
     for persona <- personas_missing_thumbnails do
       Persona.cache_thumbnail_image(persona)
     end
+  end
+
+
+  def delete_defect_thumbnails() do
+    for image <- Repo.all(from(i in Image)) do
+      delete_if_defect(image)
+    end
+  end
+
+
+  def delete_if_defect(image) do
+    target_dir = "/var/phoenix/pan-uploads/images/persona-#{image.persona_id}"
+
+    width = try do
+              Mogrify.open(target_dir <> "/" <> image.filename)
+              |> Mogrify.verbose()
+              |> Map.get(:width)
+            rescue
+              MatchError -> 0
+              File.Error -> 0
+            end
+
+    unless width > 0 do
+      File.rm(target_dir <> "/" <> image.filename)
+      File.rmdir(target_dir)
+      Repo.delete!(image)
+    end
+
+    width
   end
 end

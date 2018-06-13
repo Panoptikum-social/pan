@@ -52,9 +52,13 @@
       <%= checkbox f, :podcaster, placeholder: "Podcaster", class: "form-control" %>
       <%= error_tag f, :podcaster %>
     </div>
+
+    <p>
+      Submitting this form will transfer a session cookie to the server.<br/>
+      Please, read our <a href="https://blog.panoptikum.io/privacy">Privacy Policy</a>
+      before signing up!
+    </p>
+
     <%= submit "Create Account", class: "btn btn-primary" %>
   <% end %>
-
-
-  Please, read our <%= link "Privacy Policy", to: "https://blog.panoptikum.io/privacy/" %> !
 </div>
