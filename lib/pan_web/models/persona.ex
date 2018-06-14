@@ -198,29 +198,35 @@ defmodule PanWeb.Persona do
       case HTTPoison.get(persona.image_url) do
         {:ok, response} ->
           if response.body != "" do
-            filename = response.request_url
-                       |> URI.parse()
-                       |> Map.get(:path)
-                       |> Path.basename()
+            path = response.request_url
+                   |> URI.parse()
+                   |> Map.get(:path)
 
-            File.mkdir_p(target_dir)
-            File.write!(target_dir <> "/" <> filename, response.body)
+            if path do
+              filename = Path.basename(path)
+              File.mkdir_p(target_dir)
+              File.write!(target_dir <> "/" <> filename, response.body)
 
-            open(target_dir <> "/" <> filename)
-            |> resize_to_limit("150x150")
-            |> save(in_place: true)
+              open(target_dir <> "/" <> filename)
+              |> resize_to_limit("150x150")
+              |> save(in_place: true)
 
-            content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
+              content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
 
-            {:ok, image} = %Image{content_type: content_type,
-                                  filename: filename,
-                                  path: "/thumbnails/persona-#{persona.id}/#{filename}",
-                                  persona_id: persona.id}
-                           |> Image.changeset()
-                           |> Repo.insert()
+              {:ok, image} = %Image{content_type: content_type,
+                                    filename: filename,
+                                    path: "/thumbnails/persona-#{persona.id}/#{filename}",
+                                    persona_id: persona.id}
+                             |> Image.changeset()
+                             |> Repo.insert()
 
-            width = delete_if_defect(image)
-            if width == 0, do: Persona.clear_image_url(persona)
+              width = delete_if_defect(image)
+              if width == 0, do: Persona.clear_image_url(persona)
+            else
+              Persona.clear_image_url(persona)
+            end
+          else
+            Persona.clear_image_url(persona)
           end
 
         {:error, _reason} -> Persona.clear_image_url(persona)
