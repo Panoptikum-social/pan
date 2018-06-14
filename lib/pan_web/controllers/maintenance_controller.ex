@@ -16,7 +16,27 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
-    Persona.cache_missing_thumbnail_images()
+    gigs = from(g in PanWeb.Gig, where: is_nil(g.publishing_date))
+           |> Repo.all()
+
+
+    for gig <- gigs do
+      gig
+      |> PanWeb.Gig.changeset(%{publishing_date: gig.inserted_at})
+      |> Repo.update()
+    end
+
+    episodes = from(e in PanWeb.Episode, where: is_nil(e.publishing_date))
+           |> Repo.all()
+
+    for episode <- episodes do
+      episode
+      |> PanWeb.Episode.changeset(%{publishing_date: episode.inserted_at,
+                                    link: episode.link || "http://example.com"})
+      |> Repo.update()
+    end
+
+    # Persona.cache_missing_thumbnail_images()
 
     render(conn, "done.html")
   end

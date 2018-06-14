@@ -95,6 +95,9 @@ defmodule PanWeb.PersonaFrontendView do
 
 
   def ordered_episodes(gigs) do
+    a = Enum.group_by(gigs, &Map.get(&1, :episode))
+    |> Map.keys()
+
     Enum.group_by(gigs, &Map.get(&1, :episode))
     |> Map.keys()
     |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
