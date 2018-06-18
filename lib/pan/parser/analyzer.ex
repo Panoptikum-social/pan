@@ -175,7 +175,7 @@ defmodule Pan.Parser.Analyzer do
     :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :"email",
     :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
-    :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary",
+    :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel"
   ], do: map
 
