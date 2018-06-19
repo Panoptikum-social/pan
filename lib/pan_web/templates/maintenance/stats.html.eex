@@ -75,6 +75,15 @@
       <tr><th></th>
           <td>delegations</td>
           <td class="text-right"><%= @total_delegations %></td></tr>
+      <tr><th>Thumbnails</th>
+          <td>episodes_missing</td>
+          <td class="text-right"><%= @episodes_missing %></td></tr>
+      <tr><th></th>
+          <td>podcasts_missing</td>
+          <td class="text-right"><%= @podcasts_missing %></td></tr>
+      <tr><th></th>
+          <td>personas_missing</td>
+          <td class="text-right"><%= @personas_missing %></td></tr>
     </tbody>
   </table>
 </div>
