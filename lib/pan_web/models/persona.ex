@@ -3,7 +3,6 @@ defmodule PanWeb.Persona do
   alias Pan.Repo
   alias PanWeb.{Engagement, Episode, Follow, Gig, Image, Like, Manifestation, Persona,
                 Podcast, User}
-  import Mogrify
 
   schema "personas" do
     field :pid, :string
@@ -181,68 +180,15 @@ defmodule PanWeb.Persona do
   end
 
 
-  def clear_image_url(persona) do
-    persona
-    |> Persona.changeset(%{image_url: nil,
-                           uri: persona.uri || persona.pid})
-    |> Repo.update()
-  end
-
-
-  def cache_thumbnail_image(persona) do
-    target_dir = "/var/phoenix/pan-uploads/images/persona-#{persona.id}"
-
-    if URI.parse(persona.image_url).host == nil do
-      Persona.clear_image_url(persona)
-    else
-      case HTTPoison.get(persona.image_url) do
-        {:ok, response} ->
-          if response.body != "" do
-            path = response.request_url
-                   |> URI.parse()
-                   |> Map.get(:path)
-
-            if path do
-              filename = Path.basename(path)
-              File.mkdir_p(target_dir)
-              File.write!(target_dir <> "/" <> filename, response.body)
-
-              open(target_dir <> "/" <> filename)
-              |> resize_to_limit("150x150")
-              |> save(in_place: true)
-
-              content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
-
-              {:ok, image} = %Image{content_type: content_type,
-                                    filename: filename,
-                                    path: "/thumbnails/persona-#{persona.id}/#{filename}",
-                                    persona_id: persona.id}
-                             |> Image.changeset()
-                             |> Repo.insert()
-
-              width = delete_if_defect(image)
-              if width == 0, do: Persona.clear_image_url(persona)
-            else
-              Persona.clear_image_url(persona)
-            end
-          else
-            Persona.clear_image_url(persona)
-          end
-
-        {:error, _reason} -> Persona.clear_image_url(persona)
-      end
-    end
-  end
-
-
   def cache_missing_thumbnail_images() do
     persona_ids = from(i in Image, group_by: i.persona_id,
                                    select:   i.persona_id)
                   |> Repo.all
 
-    personas_missing_thumbnails = from(p in Persona, where: not is_nil(p.image_url) and
-                                                            not p.id in ^persona_ids)
-                                  |> Repo.all
+    personas_missing_thumbnails =
+      from(p in Persona, where: not is_nil(p.image_url) and
+                                not p.id in ^persona_ids)
+      |> Repo.all
 
     IO.puts Integer.to_string(length(personas_missing_thumbnails)) <> " missing images"
 
@@ -252,32 +198,17 @@ defmodule PanWeb.Persona do
   end
 
 
-  def delete_defect_thumbnails() do
-    for image <- Repo.all(from(i in Image)) do
-      delete_if_defect(image)
+  def cache_thumbnail_image(persona) do
+    with {:error, _} <- Image.download_thumbnail("persona", persona.id, persona.image_url) do
+      Persona.clear_image_url(persona)
     end
   end
 
 
-  def delete_if_defect(image) do
-    target_dir = "/var/phoenix/pan-uploads/images/persona-#{image.persona_id}"
-
-    width = try do
-              Mogrify.open(target_dir <> "/" <> image.filename)
-              |> Mogrify.verbose()
-              |> Map.get(:width)
-            rescue
-              MatchError -> 0
-              File.Error -> 0
-              Protocol.UndefinedError -> 0
-            end
-
-    unless width > 0 do
-      File.rm(target_dir <> "/" <> image.filename)
-      File.rmdir(target_dir)
-      Repo.delete!(image)
-    end
-
-    width
+  def clear_image_url(persona) do
+    persona
+    |> Persona.changeset(%{image_url: nil,
+                           uri: persona.uri || persona.pid})
+    |> Repo.update()
   end
 end
