@@ -16,10 +16,9 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
-    Repo.delete_all(PanWeb.Image)
-#    Persona.cache_missing_thumbnail_images()
-#    Episode.cache_missing_thumbnail_images()
-#    Podcast.cache_missing_thumbnail_images()
+    Persona.cache_missing_thumbnail_images()
+    Episode.cache_missing_thumbnail_images()
+    Podcast.cache_missing_thumbnail_images()
 
     render(conn, "done.html")
   end

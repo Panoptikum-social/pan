@@ -58,8 +58,11 @@ defmodule PanWeb.Image do
 
 
   def download_thumbnail(type, id, url) do
-    target_dir = "/var/phoenix/pan-uploads/images/#{type}/#{String.replace(id, ~r/(.)/, "\\1/")}"
-    asset_path = "/thumbnails/#{type}/#{String.replace(id, ~r/(.)/, "\\1/")}"
+    id_part = id
+              |> Integer.to_string()
+              |> String.replace(~r/(.)/, "\\1/")
+    target_dir = "/var/phoenix/pan-uploads/images/#{type}/#{id_part}"
+    asset_path = "/thumbnails/#{type}/#{id_part}"
 
     with {:ok, _} <- not_empty(URI.parse(url).host),
          {:ok, url} <- starts_with_http(url),

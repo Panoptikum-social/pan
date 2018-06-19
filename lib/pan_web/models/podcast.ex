@@ -417,13 +417,12 @@ defmodule PanWeb.Podcast do
     podcast_ids = from(i in Image, group_by: i.podcast_id,
                                    select:   i.podcast_id)
                   |> Repo.all
+                  |> List.delete(nil)
 
-    podcast_ids = if length(podcast_ids) == 1, do: [], else: podcast_ids
-
-    podcasts_missing_thumbnails = from(p in Podcast, where: not is_nil(p.image_url) and not p.id in ^podcast_ids)
-      |> Repo.all
-
-    IO.puts Integer.to_string(length(podcasts_missing_thumbnails)) <> " missing images"
+    podcasts_missing_thumbnails = from(p in Podcast, where: not is_nil(p.image_url)
+                                                            and not p.id in ^podcast_ids)
+                                  |> Ecto.Query.limit(1000)
+                                  |> Repo.all
 
     for podcast <- podcasts_missing_thumbnails do
       Podcast.cache_thumbnail_image(podcast)

@@ -125,15 +125,13 @@ defmodule PanWeb.Episode do
     episode_ids = from(i in Image, group_by: i.episode_id,
                                    select:   i.episode_id)
                   |> Repo.all
-
-    episode_ids = if length(episode_ids) == 1, do: [], else: episode_ids
+                  |> List.delete(nil)
 
     episodes_missing_thumbnails =
       from(e in Episode, where: not is_nil(e.image_url) and
                                 not e.id in ^episode_ids)
+      |> Ecto.Query.limit(1000)
       |> Repo.all
-
-    IO.puts Integer.to_string(length(episodes_missing_thumbnails)) <> " missing images"
 
     for episode <- episodes_missing_thumbnails do
       Episode.cache_thumbnail_image(episode)
