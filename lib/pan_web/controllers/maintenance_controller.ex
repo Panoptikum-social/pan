@@ -61,10 +61,12 @@ defmodule PanWeb.MaintenanceController do
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
-    unindexed_episodes =
-      from(e in Episode, where: e.elastic != true)
-      |> Repo.aggregate(:count, :id)
-      |> delimit_integer(" ")
+#    unindexed_episodes =
+#      from(e in Episode, where: e.elastic != true)
+#      |> Repo.aggregate(:count, :id)
+#      |> delimit_integer(" ")
+
+    unindexed_episodes = 999999
 
     podcasts_per_hour = Repo.aggregate(Podcast, :count, :id) - inactive_podcasts
                         |> Decimal.new()
