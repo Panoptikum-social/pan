@@ -58,7 +58,8 @@ defmodule PanWeb.Image do
 
 
   def download_thumbnail(type, id, url) do
-    target_dir = "/var/phoenix/pan-uploads/images/#{type}-#{id}"
+    target_dir = "/var/phoenix/pan-uploads/images/#{type}/#{String.replace(id, ~r/(.)/, "\\1/")}"
+    asset_path = "/thumbnails/#{type}/#{String.replace(id, ~r/(.)/, "\\1/")}"
 
     with {:ok, _} <- not_empty(URI.parse(url).host),
          {:ok, url} <- starts_with_http(url),
@@ -78,7 +79,7 @@ defmodule PanWeb.Image do
 
       {:ok, image} = %Image{content_type: content_type,
                             filename: filename,
-                            path: "/thumbnails/persona-#{id}/#{filename}",
+                            path: asset_path,
                             persona_id: type == "persona" && id || nil,
                             podcast_id: type == "podcast" && id || nil,
                             episode_id: type == "episode" && id || nil}

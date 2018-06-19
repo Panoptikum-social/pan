@@ -1,8 +1,8 @@
 defmodule PanWeb.Podcast do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.{Category, Engagement, Episode, Feed, Follow, Gig, Language, Like, Persona, Podcast,
-                Recommendation, RssFeed, Subscription, User }
+  alias PanWeb.{Category, Engagement, Episode, Feed, Follow, Gig, Image, Language, Like,
+                Persona, Podcast, Recommendation, RssFeed, Subscription, User }
   require Logger
 
   schema "podcasts" do
@@ -409,6 +409,38 @@ defmodule PanWeb.Podcast do
     Repo.get!(Podcast, id)
     |> PanWeb.Podcast.changeset()
     |> put_change(:subscriptions_count, subscriptions_count)
+    |> Repo.update()
+  end
+
+
+  def cache_missing_thumbnail_images() do
+    podcast_ids = from(i in Image, group_by: i.podcast_id,
+                                   select:   i.podcast_id)
+                  |> Repo.all
+
+    podcast_ids = if length(podcast_ids) == 1, do: [], else: podcast_ids
+
+    podcasts_missing_thumbnails = from(p in Podcast, where: not is_nil(p.image_url) and not p.id in ^podcast_ids)
+      |> Repo.all
+
+    IO.puts Integer.to_string(length(podcasts_missing_thumbnails)) <> " missing images"
+
+    for podcast <- podcasts_missing_thumbnails do
+      Podcast.cache_thumbnail_image(podcast)
+    end
+  end
+
+
+  def cache_thumbnail_image(podcast) do
+    with {:error, _} <- Image.download_thumbnail("podcast", podcast.id, podcast.image_url) do
+      Podcast.clear_image_url(podcast)
+    end
+  end
+
+
+  def clear_image_url(podcast) do
+    podcast
+    |> Podcast.changeset(%{image_url: nil})
     |> Repo.update()
   end
 end

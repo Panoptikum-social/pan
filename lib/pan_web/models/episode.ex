@@ -1,7 +1,7 @@
 defmodule PanWeb.Episode do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.{Chapter, Enclosure, Episode, Gig, Like, Persona, Podcast, Recommendation}
+  alias PanWeb.{Chapter, Enclosure, Episode, Gig, Image, Like, Persona, Podcast, Recommendation}
 
   schema "episodes" do
     field :title, :string
@@ -118,5 +118,39 @@ defmodule PanWeb.Episode do
         delete_search_index(id)
       end
     end
+  end
+
+
+  def cache_missing_thumbnail_images() do
+    episode_ids = from(i in Image, group_by: i.episode_id,
+                                   select:   i.episode_id)
+                  |> Repo.all
+
+    episode_ids = if length(episode_ids) == 1, do: [], else: episode_ids
+
+    episodes_missing_thumbnails =
+      from(e in Episode, where: not is_nil(e.image_url) and
+                                not e.id in ^episode_ids)
+      |> Repo.all
+
+    IO.puts Integer.to_string(length(episodes_missing_thumbnails)) <> " missing images"
+
+    for episode <- episodes_missing_thumbnails do
+      Episode.cache_thumbnail_image(episode)
+    end
+  end
+
+
+  def cache_thumbnail_image(episode) do
+    with {:error, _} <- Image.download_thumbnail("episode", episode.id, episode.image_url) do
+      Episode.clear_image_url(episode)
+    end
+  end
+
+
+  def clear_image_url(episode) do
+    episode
+    |> Episode.changeset(%{image_url: nil})
+    |> Repo.update()
   end
 end

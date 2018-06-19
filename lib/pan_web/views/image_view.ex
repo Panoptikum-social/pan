@@ -25,7 +25,7 @@ defmodule PanWeb.ImageView do
   end
 
   def thumbnail(record) do
-    [img_tag(record.path, width: 50)]
+    [img_tag(record.path <> "/" <> record.filename, width: 50)]
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
   end
