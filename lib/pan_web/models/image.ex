@@ -1,6 +1,6 @@
 defmodule PanWeb.Image do
   use Pan.Web, :model
-  alias PanWeb.Image
+  alias PanWeb.{Episode, Image, Persona, Podcast}
   alias Pan.Repo
 
   schema "images" do
@@ -113,5 +113,12 @@ defmodule PanWeb.Image do
     URI.parse(response.request_url)
     |> Map.get(:path)
     |> not_empty()
+  end
+
+
+  def cache_missing() do
+    Persona.cache_missing_thumbnail_images()
+    Episode.cache_missing_thumbnail_images()
+    Podcast.cache_missing_thumbnail_images()
   end
 end

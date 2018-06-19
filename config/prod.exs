@@ -17,6 +17,7 @@ config :phoenix, :serve_endpoints, true
 
 config :timelier, crontab: [
   {{42, :any, :any, :any, :any}, {PanWeb.Podcast, :import_stale_podcasts, []}},
+  {{30, :any, :any, :any, :any}, {PanWeb.Image, :cache_missing, []}},
   {{[8, 18, 28, 38, 48, 58], :any, :any, :any, :any}, {Pan.Search,     :push_missing, []}},
   {{0,     6, :any, :any, :any}, {PanWeb.User,    :pro_expiration, []}},
 ]

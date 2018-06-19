@@ -1,6 +1,6 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
-  alias PanWeb.{Episode, Persona, Podcast}
+  alias PanWeb.{Episode, Podcast}
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
@@ -16,10 +16,6 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
-    Persona.cache_missing_thumbnail_images()
-    Episode.cache_missing_thumbnail_images()
-    Podcast.cache_missing_thumbnail_images()
-
     render(conn, "done.html")
   end
 
