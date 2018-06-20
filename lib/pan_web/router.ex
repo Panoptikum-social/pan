@@ -51,7 +51,7 @@ defmodule PanWeb.Router do
 
   # allows us to visit `localhost:4000/sent_emails` while developing, to see sent emails
   if Mix.env == :dev do
-    forward "/sent_emails", Bamboo.EmailPreviewPlug
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 
   scope "/jsonapi", PanWeb.Api, as: :api do
