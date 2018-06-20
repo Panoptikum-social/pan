@@ -35,25 +35,32 @@ defmodule PanWeb.Image do
     target_dir = String.replace(image.path, "thumbnails", "var/phoenix/pan-uploads/images")
                  |> Path.dirname()
 
-    width =
-      try do
-        Mogrify.open(target_dir <> "/" <> image.filename)
-        |> Mogrify.verbose()
-        |> Map.get(:width)
-      rescue
-        MatchError -> 0
-        File.Error -> 0
-        Protocol.UndefinedError -> 0
-      end
+    width = try do
+              Mogrify.open(target_dir <> "/" <> image.filename)
+              |> Mogrify.verbose()
+              |> Map.get(:width)
+            rescue
+              MatchError -> 0
+              File.Error -> 0
+              Protocol.UndefinedError -> 0
+            end
 
     if width == 0 do
-      File.rm(target_dir <> "/" <> image.filename)
-      File.rmdir(target_dir)
-      Repo.delete!(image)
+      delete_asset(image)
       {:error, "error"}
     else
       {:ok, width}
     end
+  end
+
+
+  def delete_asset(image) do
+    target_dir = String.replace(image.path, "thumbnails", "var/phoenix/pan-uploads/images")
+                 |> Path.dirname()
+
+    File.rm(target_dir <> "/" <> image.filename)
+    File.rmdir(target_dir)
+    Repo.delete!(image)
   end
 
 

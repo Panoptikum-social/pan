@@ -19,6 +19,7 @@ defmodule PanWeb.Persona do
     belongs_to :user, User
     has_many :engagements, Engagement
     has_many :gigs, Gig
+    has_many :thumbnails, Image
 
     many_to_many :delegates, Persona,
                              join_through: "delegations",

@@ -38,16 +38,12 @@
               <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
                                class: "btn btn-warning pull-right" %>
 
-              <%= if persona.image_url do %>
-                <object data="<%= persona.image_url %>"
-                        alt="<%= persona.image_title%>"
-                        type="image/png"
-                        width="150"
-                        class="thumbnail">
-                  <img src="/images/missing-persona.png"
-                       alt="missing image"
-                       width="150" />
-                </object>
+              <%= if thumbnail = List.first(persona.thumbnails) do %>
+                <%= img_tag(thumbnail.path <> "/" <> thumbnail.filename,
+                            width: 150,
+                            alt: persona.image_title,
+                            class: "thumbnail",
+                            id: "photo") %>
               <% else %>
                   <img src="/images/missing-persona.png"
                        alt="missing image"

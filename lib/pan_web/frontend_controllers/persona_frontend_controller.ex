@@ -154,6 +154,11 @@ defmodule PanWeb.PersonaFrontendController do
 
         changeset =
           if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) do
+            thumbnail = from(i in Image, where: i.persona_id == ^id)
+                        |> Repo.one()
+            if thumbnail, do: Image.delete_asset(thumbnail)
+            Image.download_thumbnail("persona", String.to_integer(id), persona_params["image_url"])
+
             Persona.pro_user_changeset(persona, persona_params)
           else
             Persona.user_changeset(persona, persona_params)
@@ -162,6 +167,7 @@ defmodule PanWeb.PersonaFrontendController do
         case Repo.update(changeset) do
           {:ok, _persona} ->
             Persona.update_search_index(manifestation.persona.id)
+
             conn
             |> put_flash(:info, "Persona updated successfully.")
             |> redirect(to: user_frontend_path(conn, :my_profile))
