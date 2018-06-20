@@ -130,7 +130,7 @@ defmodule PanWeb.Episode do
     episodes_missing_thumbnails =
       from(e in Episode, where: not is_nil(e.image_url) and
                                 not e.id in ^episode_ids)
-      |> Ecto.Query.limit(2000)
+      |> Ecto.Query.limit(3000)
       |> Repo.all
 
     for episode <- episodes_missing_thumbnails do

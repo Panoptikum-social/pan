@@ -75,8 +75,9 @@ defmodule PanWeb.Image do
          {:ok, url} <- starts_with_http(url),
          {:ok, response} <- HTTPoison.get(url),
          {:ok, _} <- not_empty(response.body),
-         {:ok, path} <- extract_path(response) do
-      filename = Path.basename(path)
+         {:ok, path} <- extract_path(response),
+         {:ok, filename} <- not_empty(Path.basename(path))
+    do
       File.mkdir_p(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
