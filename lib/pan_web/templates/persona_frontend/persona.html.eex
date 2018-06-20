@@ -37,17 +37,12 @@
           </div>
 
           <div class="col-md-4" >
-            <%= if @persona.image_url do %>
-              <object data="<%= @persona.image_url %>"
-                      alt="<%= @persona.image_title%>"
-                      type="image/png"
-                      width="150"
-                      class="thumbnail"
-                      id="photo">
-                <img src="/images/missing-persona.png"
-                     alt="missing image"
-                     width="150" />
-              </object>
+            <%= if @persona_thumbnail do %>
+              <%= img_tag(@persona_thumbnail.path <> "/" <> @persona_thumbnail.filename,
+                          width: 150,
+                          alt: @persona.image_title,
+                          class: "thumbnail",
+                          id: "photo") %>
             <% else %>
               <img src="/images/missing-persona.png"
                    alt="missing image"

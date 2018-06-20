@@ -1,6 +1,6 @@
 defmodule PanWeb.PersonaFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.{Delegation, Engagement, Gig, Manifestation, Message, Persona}
+  alias PanWeb.{Delegation, Engagement, Gig, Image, Manifestation, Message, Persona}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -89,6 +89,9 @@ defmodule PanWeb.PersonaFrontendController do
                                           preload: :podcast)
                     |> Repo.all()
 
+      persona_thumbnail = from(i in Image, where: i.persona_id == ^persona.id)
+                          |> Repo.one()
+
       case persona.redirect_id do
         nil ->
           messages = from(m in Message, where: m.persona_id in ^persona_ids,
@@ -100,7 +103,8 @@ defmodule PanWeb.PersonaFrontendController do
                                        messages: messages,
                                        gigs: gigs,
                                        grouped_gigs: grouped_gigs,
-                                       engagements: engagements)
+                                       engagements: engagements,
+                                       persona_thumbnail: persona_thumbnail)
         redirect_id ->
           persona = Repo.get!(Persona, redirect_id)
           redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))

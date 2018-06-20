@@ -57,23 +57,17 @@ defmodule PanWeb.MaintenanceController do
     total_podcasts = Repo.aggregate(Podcast, :count, :id)
                      |> delimit_integer(" ")
 
-
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
-#    indexed_episodes =
-#      from(e in Episode, where: e.elastic == true)
-#      |> Repo.aggregate(:count, :id)
-
-#    unindexed_episodes = delimit_integer(total_episodes - indexed_episodes , " ")
-
-    unindexed_episodes = 999999
+    unindexed_episodes = from(e in Episode, where: e.elastic != true)
+                         |> Repo.aggregate(:count, :id)
+                         |> delimit_integer(" ")
 
     podcasts_per_hour = Repo.aggregate(Podcast, :count, :id) - inactive_podcasts
                         |> Decimal.new()
                         |> Decimal.div(average_update_intervall)
                         |> Decimal.round()
-
 
     total_users = Repo.aggregate(User, :count, :id)
     total_gigs = Repo.aggregate(Gig, :count, :id)
@@ -96,32 +90,23 @@ defmodule PanWeb.MaintenanceController do
     total_manifestations = Repo.aggregate(Manifestation, :count, :id)
     total_delegations = Repo.aggregate(Delegation, :count, :id)
 
-    podcast_ids = from(i in Image, group_by: i.podcast_id,
-                                   select:   i.podcast_id)
-                  |> Repo.all
-                  |> List.delete(nil)
+    podcast_images = from(i in Image, where: not is_nil(i.podcast_id))
+                     |> Repo.aggregate(:count, :id)
+    podcasts_with_image = from(p in Podcast, where: not is_nil(p.image_url) )
+                          |> Repo.aggregate(:count, :id)
+    podcasts_missing = podcasts_with_image - podcast_images
 
-    podcasts_missing = from(p in Podcast, where: not is_nil(p.image_url)
-                                                 and not p.id in ^podcast_ids)
-                       |> Repo.aggregate(:count, :id)
+    episode_images = from(i in Image, where: not is_nil(i.episode_id))
+                     |> Repo.aggregate(:count, :id)
+    episodes_with_image = from(e in Episode, where: not is_nil(e.image_url))
+                          |> Repo.aggregate(:count, :id)
+    episodes_missing = episodes_with_image - episode_images
 
-    episode_ids = from(i in Image, group_by: i.episode_id,
-                                   select:   i.episode_id)
-                  |> Repo.all
-                  |> List.delete(nil)
-
-    episodes_missing = from(e in Episode, where: not is_nil(e.image_url)
-                                                 and not e.id in ^episode_ids)
-                       |> Repo.aggregate(:count, :id)
-
-    persona_ids = from(i in Image, group_by: i.persona_id,
-                                   select:   i.persona_id)
-                  |> Repo.all
-                  |> List.delete(nil)
-
-    personas_missing = from(p in Persona, where: not is_nil(p.image_url)
-                                                 and not p.id in ^persona_ids)
-                       |> Repo.aggregate(:count, :id)
+    persona_images = from(i in Image, where: not is_nil(i.persona_id))
+                     |> Repo.aggregate(:count, :id)
+    personas_with_image = from(p in Persona, where: not is_nil(p.image_url))
+                          |> Repo.aggregate(:count, :id)
+    personas_missing = personas_with_image - persona_images
 
 
     render(conn, "stats.html", stale_podcasts: stale_podcasts,
