@@ -21,16 +21,17 @@
       <div class="col-md-5">
         <div class="row">
           <div class="col-md-5">
-            <object data="<%= @podcast.image_url %>"
-                    alt="<%= @podcast.image_title%>"
-                    type="image/png"
-                    width="150"
-                    class="thumbnail">
+            <%= if @podcast_thumbnail do %>
+              <%= img_tag(@podcast_thumbnail.path <> "/" <> @podcast_thumbnail.filename,
+                          width: 150,
+                          alt: @podcast.image_title,
+                          class: "thumbnail",
+                          id: "photo") %>
+            <% else %>
               <img src="/images/missing-podcast.png"
                    alt="missing image"
-                   width="150"
-                   />
-            </object>
+                   width="150" />
+            <% end %>
           </div>
           <div class="col-md-7">
             <p><%= raw @podcast.summary %></p>

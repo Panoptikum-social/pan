@@ -1,6 +1,6 @@
 defmodule PanWeb.PodcastFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.{Episode, Podcast, Recommendation}
+  alias PanWeb.{Episode, Image, Podcast, Recommendation}
 
   def index(conn, params) do
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
@@ -26,7 +26,11 @@ defmodule PanWeb.PodcastFrontendController do
                |> Repo.preload(episodes: [gigs: :persona])
                |> Repo.preload([engagements: :persona])
 
+    podcast_thumbnail = from(i in Image, where: i.podcast_id == ^podcast.id)
+                        |> Repo.one()
+
     render(conn, "show.html", podcast: podcast,
+                              podcast_thumbnail: podcast_thumbnail,
                               changeset: changeset)
   end
 

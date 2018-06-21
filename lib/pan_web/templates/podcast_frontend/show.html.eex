@@ -3,6 +3,7 @@
 <% else %>
   <%= render "_header.html", podcast: @podcast,
                              current_user: @current_user,
+                             podcast_thumbnail: @podcast_thumbnail,
                              conn: @conn %>
   <%= render "_recommendations.html", podcast: @podcast,
                                       current_user: @current_user,
