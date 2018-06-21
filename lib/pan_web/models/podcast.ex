@@ -38,6 +38,7 @@ defmodule PanWeb.Podcast do
     has_many :rss_feeds, RssFeed, on_delete: :delete_all
     has_many :recommendations, Recommendation, on_delete: :delete_all
     has_many :engagements, Engagement, on_delete: :delete_all
+    has_many :thumbnails, Image, on_delete: :delete_all
 
     many_to_many :categories, Category, join_through: "categories_podcasts",
                                         on_delete: :delete_all

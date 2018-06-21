@@ -27,6 +27,7 @@ defmodule PanWeb.Episode do
     has_many :enclosures, Enclosure, on_delete: :delete_all
     has_many :recommendations, Recommendation, on_delete: :delete_all
     has_many :gigs, Gig, on_delete: :delete_all
+    has_many :thumbnails, Image, on_delete: :delete_all
 
     many_to_many :contributors, Persona, join_through: "gigs"
   end
