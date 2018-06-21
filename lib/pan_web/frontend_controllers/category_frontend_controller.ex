@@ -14,9 +14,9 @@ defmodule PanWeb.CategoryFrontendController do
 
   def show(conn, %{"id" => id}) do
     if category = Repo.get(Category, id) do
-      category
-      |> Repo.preload([children: from(c in Category, order_by: c.title)])
-      |> Repo.preload(:parent)
+      category = category
+                 |> Repo.preload([children: from(c in Category, order_by: c.title)])
+                 |> Repo.preload(:parent)
 
       podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
                                      join: c in assoc(p, :categories),
