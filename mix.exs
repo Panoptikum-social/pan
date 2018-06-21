@@ -11,13 +11,6 @@ defmodule Pan.Mixfile do
      start_permanent: Mix.env == :prod,
      aliases: aliases(),
      deps: deps(),
-     test_coverage: [tool: ExCoveralls],
-     preferred_cli_env: [
-       "coveralls": :test,
-       "coveralls.detail": :test,
-       "coveralls.post": :test,
-       "coveralls.html": :test
-     ]
     ]
   end
 
@@ -67,7 +60,6 @@ defmodule Pan.Mixfile do
      {:floki, "~> 0.20.2"}, # HTML parser
      {:erlware_commons, "~> 1.1.0"},
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
-     {:excoveralls, "~> 0.9.1", only: :test}, # Code coverage tool
      {:p1_utils, "1.0.11", manager: :rebar}, # dependency for iconv
      {:iconv, "~> 1.0.7", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.6.1"}, # Imagemagick wrapper
