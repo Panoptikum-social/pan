@@ -40,9 +40,7 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 
 ### 🌡 Testing
 * Run tests with `mix test`
-* Get basic test coverage report with `mix coveralls`
 
 ### ✨ Bonus
-* To have a nice (html) coverage report try running `mix coveralls.html`
 * To view sent emails while developing you can visit [`localhost:4000/sent_emails`](http://localhost:4000/sent_emails)
 * To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)

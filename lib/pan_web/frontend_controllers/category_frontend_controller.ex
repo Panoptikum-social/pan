@@ -13,22 +13,27 @@ defmodule PanWeb.CategoryFrontendController do
 
 
   def show(conn, %{"id" => id}) do
-    category = Category
-               |> Repo.get!(id)
-               |> Repo.preload([children: from(c in Category, order_by: c.title)])
-               |> Repo.preload(:parent)
+    if category = Repo.get(Category, id) do
+      category
+      |> Repo.preload([children: from(c in Category, order_by: c.title)])
+      |> Repo.preload(:parent)
 
-    podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
-                                   join: c in assoc(p, :categories),
-                                   where: c.id == ^id,
-                                   select: %{id: p.id,
-                                             title: p.title,
-                                             language_name: l.name,
-                                             language_emoji: l.emoji})
-                                   |> Repo.all()
+      podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),
+                                     join: c in assoc(p, :categories),
+                                     where: c.id == ^id,
+                                     select: %{id: p.id,
+                                               title: p.title,
+                                               language_name: l.name,
+                                               language_emoji: l.emoji})
+                                     |> Repo.all()
 
-    render(conn, "show.html", category: category,
-                              podcasts: podcasts)
+      render(conn, "show.html", category: category,
+                                podcasts: podcasts)
+    else
+      conn
+      |> put_status(:not_found)
+      |> render("not_found.html")
+    end
   end
 
 
