@@ -24,6 +24,7 @@ defmodule PanWeb.PodcastFrontendController do
                |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
                |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
                |> Repo.preload(episodes: [gigs: :persona])
+               |> Repo.preload(episodes: :thumbnails)
                |> Repo.preload([engagements: :persona])
 
     podcast_thumbnail = from(i in Image, where: i.podcast_id == ^podcast.id)
