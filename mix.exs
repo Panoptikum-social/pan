@@ -26,7 +26,7 @@ defmodule Pan.Mixfile do
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger,
                     :gettext, :phoenix_ecto, :postgrex, :httpoison, :mogrify,
                     :comeonin, :sweet_xml, :timex, :earmark, :exactor,
-                    :quinn, :uuid, :html_sanitize_ex,
+                    :quinn, :uuid, :html_sanitize_ex, :parse_trans,
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
                     :ja_serializer, :bcrypt_elixir, :elixir_make, :p1_utils, :iconv,
