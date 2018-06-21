@@ -89,8 +89,7 @@ defmodule PanWeb.PersonaFrontendController do
                                           preload: :podcast)
                     |> Repo.all()
 
-      persona_thumbnail = from(i in Image, where: i.persona_id == ^persona.id)
-                          |> Repo.one()
+      persona_thumbnail = Repo.get_by(Image, persona_id: persona.id)
 
       case persona.redirect_id do
         nil ->

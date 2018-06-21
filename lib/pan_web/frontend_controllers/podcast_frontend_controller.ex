@@ -27,8 +27,7 @@ defmodule PanWeb.PodcastFrontendController do
                |> Repo.preload(episodes: :thumbnails)
                |> Repo.preload([engagements: :persona])
 
-    podcast_thumbnail = from(i in Image, where: i.podcast_id == ^podcast.id)
-                        |> Repo.one()
+    podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
 
     render(conn, "show.html", podcast: podcast,
                               podcast_thumbnail: podcast_thumbnail,

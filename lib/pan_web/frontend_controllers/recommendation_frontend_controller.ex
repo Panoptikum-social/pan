@@ -1,6 +1,6 @@
 defmodule PanWeb.RecommendationFrontendController do
   use Pan.Web, :controller
-  alias PanWeb.{Category, Chapter, Episode, Language, Message, Podcast, Recommendation,
+  alias PanWeb.{Category, Chapter, Episode, Image, Language, Message, Podcast, Recommendation,
                 Subscription}
 
   def action(conn, _) do
@@ -60,16 +60,22 @@ defmodule PanWeb.RecommendationFrontendController do
                                              language_emoji: l.emoji})
                                    |> Repo.all()
 
+    podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
+
     episode = Enum.random(podcast.episodes)
     episode = Repo.get(Episode, episode.id)
               |> Repo.preload([:podcast, :enclosures, [chapters: :recommendations],
                                :contributors, :recommendations, [gigs: :persona]])
 
+    episode_thumbnail = Repo.get_by(Image, episode_id: episode.id) ||
+                        Repo.get_by(Image, podcast_id: episode.podcast.id)
+
+
     changeset = Recommendation.changeset(%Recommendation{})
 
     render(conn, "random.html", category: category,
-                                podcast: podcast,
-                                episode: episode,
+                                podcast: podcast, podcast_thumbnail: podcast_thumbnail,
+                                episode: episode, episode_thumbnail: episode_thumbnail,
                                 player: "podigee",
                                 podcasts: podcasts,
                                 changeset: changeset)
