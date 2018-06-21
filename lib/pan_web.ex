@@ -49,7 +49,6 @@ defmodule Pan.Web do
       import PanWeb.Router.Helpers
       import PanWeb.ErrorHelpers
       import PanWeb.Gettext
-      import FontAwesomePhoenix.HTML
       import PanWeb.ViewHelpers
       import HtmlSanitizeEx2, only: [basic_html_reduced: 1]
     end

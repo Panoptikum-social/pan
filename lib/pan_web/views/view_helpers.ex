@@ -46,4 +46,12 @@ defmodule PanWeb.ViewHelpers do
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
   end
+
+  def fa_icon(name) do
+    ~s(<i class="fa fa-#{name}"></i>) |> raw()
+  end
+
+  def fa_icon(name, class: class) do
+    ~s(<i class="fa fa-#{name} #{class}"></i>) |> raw()
+  end
 end
