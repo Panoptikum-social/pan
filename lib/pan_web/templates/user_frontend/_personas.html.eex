@@ -39,7 +39,7 @@
                                class: "btn btn-warning pull-right" %>
 
               <%= if thumbnail = List.first(persona.thumbnails) do %>
-                <%= img_tag(thumbnail.path <> "/" <> thumbnail.filename,
+                <%= img_tag(thumbnail.path <> thumbnail.filename,
                             width: 150,
                             alt: persona.image_title,
                             class: "thumbnail",

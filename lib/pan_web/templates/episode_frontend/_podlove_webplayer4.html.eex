@@ -2,5 +2,6 @@
 <script src="/podlove-webplayer/embed.js"></script>
 
 <script>
-  podlovePlayer('#podlove-webplayer', <%= podlove_episodestruct(@conn, @episode) %>)
+  podlovePlayer('#podlove-webplayer',
+                <%= podlove_episodestruct(@conn, @episode, @episode_thumbnail) %>)
 </script>

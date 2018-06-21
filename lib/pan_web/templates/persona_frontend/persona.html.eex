@@ -38,7 +38,7 @@
 
           <div class="col-md-4" >
             <%= if @persona_thumbnail do %>
-              <%= img_tag(@persona_thumbnail.path <> "/" <> @persona_thumbnail.filename,
+              <%= img_tag(@persona_thumbnail.path <> @persona_thumbnail.filename,
                           width: 150,
                           alt: @persona.image_title,
                           class: "thumbnail",

@@ -22,7 +22,7 @@
         <div class="row">
           <div class="col-md-5">
             <%= if @podcast_thumbnail do %>
-              <%= img_tag(@podcast_thumbnail.path <> "/" <> @podcast_thumbnail.filename,
+              <%= img_tag(@podcast_thumbnail.path <> @podcast_thumbnail.filename,
                           width: 150,
                           alt: @podcast.image_title,
                           class: "thumbnail",
