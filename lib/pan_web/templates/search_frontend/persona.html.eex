@@ -5,8 +5,8 @@
                   height: 120,
                   alt: @persona_image_title,
                   class: "thumbnail",
-                  id: "photo"),
-                  style: "margin-bottom:0px;" %>
+                  id: "photo",
+                  style: "margin-bottom:0px;") %>
     <% else %>
       <img src="/images/missing-persona.png" alt="missing image" height="120"
            class="thumbnail" syle="margin-bottom:0px;" />
