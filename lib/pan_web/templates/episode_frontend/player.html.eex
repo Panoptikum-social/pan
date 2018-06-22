@@ -5,6 +5,7 @@
   <%= case @player do %>
     <%= "podlove" -> %>
       <%= render "_podlove_webplayer4.html", episode: @episode,
+                                             episode_thumbnail: @episode_thumbnail,
                                              conn: @conn %>
     <% "podigee" -> %>
       <script>
