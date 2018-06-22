@@ -2,12 +2,14 @@
   <div class="col-md-2">
     <%= if @episode_thumbnail do %>
       <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
-                  height: 100,
+                  height: 120,
                   alt: @episode_image_title || @podcast_image_title,
                   class: "thumbnail",
-                  id: "photo") %>
+                  id: "photo",
+                  style: "margin-bottom:0px;") %>
     <% else %>
-      <img src="/images/missing-episode.png" alt="missing image" width="100" />
+      <img src="/images/missing-episode.png" alt="missing image" height="120"
+           class="thumbnail" syle="margin-bottom:0px;" />
     <% end %>
   </div>
 
