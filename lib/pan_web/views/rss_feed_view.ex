@@ -16,7 +16,7 @@ defmodule PanWeb.RssFeedView do
     {:safe, content} = html_escape(truncate_string(rss_feed.content, 255))
 
     %{id:          rss_feed.id,
-      content:     content,
+      content:     to_string(content),
       podcast_id:  rss_feed.podcast_id,
       actions:     datatable_actions(rss_feed, &rss_feed_path/3)}
   end
