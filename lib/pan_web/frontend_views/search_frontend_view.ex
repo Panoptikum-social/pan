@@ -1,9 +1,7 @@
 defmodule PanWeb.SearchFrontendView do
   use Pan.Web, :view
   alias Pan.Repo
-  alias PanWeb.Episode
-  alias PanWeb.Podcast
-  alias PanWeb.Persona
+  alias PanWeb.{Episode, Image, Podcast, Persona}
   import Scrivener.HTML
 
   def hit_widget(hit, searchstring) do
@@ -13,30 +11,42 @@ defmodule PanWeb.SearchFrontendView do
       "episodes"   ->
         episode = Repo.get!(Episode, hit._id)
                   |> Repo.preload([podcast: :languages, gigs: :persona])
+        episode_thumbnail = Repo.get_by(Image, episode_id: episode.id) ||
+                            Repo.get_by(Image, podcast_id: episode.podcast_id)
 
         render("episode.html", episode: fields,
                                searchstring: searchstring,
                                podcast_title: episode.podcast.title,
+                               episode_image_title: episode.image_title,
+                               podcast_image_title: episode.podcast.image_title,
                                podcast_url: podcast_frontend_url(PanWeb.Endpoint, :show, episode.podcast.id),
                                gigs: episode.gigs,
                                languages: episode.podcast.languages,
+                               episode_thumbnail: episode_thumbnail,
                                score: score)
       "podcasts"   ->
         podcast = Repo.get!(Podcast, hit._id)
                   |> Repo.preload([:categories, :languages, engagements: :persona])
+        podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
 
         render("podcast.html", podcast: fields,
                                searchstring: searchstring,
                                categories: podcast.categories,
                                engagements: podcast.engagements,
                                languages: podcast.languages,
+                               podcast_thumbnail: podcast_thumbnail,
+                               podcast_image_title: podcast.image_title,
                                score: score)
+
       "personas"   ->
         persona = Repo.get!(Persona, hit._id)
                   |> Repo.preload(engagements: :podcast)
+        persona_thumbnail = Repo.get_by(Image, persona_id: persona.id)
 
         render("persona.html", persona: fields,
                                engagements: persona.engagements,
+                               persona_thumbnail: persona_thumbnail,
+                               persona_image_title: persona.image_title,
                                score: score)
       "users"      ->
         render("user.html", user: fields,

@@ -21,7 +21,7 @@
                   class: "thumbnail",
                   id: "photo") %>
     <% else %>
-      <img src="/images/missing-podcast.png" alt="missing image" width="150" />
+      <img src="/images/missing-episode.png" alt="missing episode" width="150" />
     <% end %>
   </div>
 
