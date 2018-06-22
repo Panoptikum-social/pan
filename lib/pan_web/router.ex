@@ -167,6 +167,12 @@ defmodule PanWeb.Router do
     post "/webhook", BotController, :message
   end
 
+  scope "/search", PanWeb do
+    pipe_through [:browser_without_csrf, :unset_cookie]
+
+    post "/", SearchFrontendController, :new
+    get "/", SearchFrontendController, :new
+  end
 
   scope "/", PanWeb do
 #    pipe_through :browser # Use the default browser stack
@@ -210,14 +216,6 @@ defmodule PanWeb.Router do
     get "/2016/:month/:day/:file", MaintenanceController, :blog_2016
     get "/2017/:month/:day/:file", MaintenanceController, :blog_2017
     get "/:pid", PersonaFrontendController, :persona
-  end
-
-
-  scope "/search", PanWeb do
-    pipe_through [:browser_without_csrf, :unset_cookie]
-
-    post "/", SearchFrontendController, :new
-    get "/", SearchFrontendController, :new
   end
 
 
