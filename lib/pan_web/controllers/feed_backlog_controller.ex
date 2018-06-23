@@ -96,7 +96,7 @@ defmodule PanWeb.FeedBacklogController do
 
 
   def import_100(conn, _params) do
-    backlog_feeds = from(f in FeedBacklog, where: f.in_progress == false,
+    backlog_feeds = from(f in FeedBacklog, where: f.in_progress != true,
                                            order_by: [desc: :inserted_at],
                                            limit: 100)
                     |> Repo.all()

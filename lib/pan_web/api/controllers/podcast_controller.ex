@@ -19,7 +19,7 @@ defmodule PanWeb.Api.PodcastController do
 
     offset = (page - 1) * size
 
-    total = from(p in Podcast, where: is_nil(p.blocked) or p.blocked == false)
+    total = from(p in Podcast, where: p.blocked != true)
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
 
@@ -28,7 +28,7 @@ defmodule PanWeb.Api.PodcastController do
     |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     podcasts = from(p in Podcast, order_by: [desc: :inserted_at],
-                                  where: is_nil(p.blocked) or p.blocked == false,
+                                  where: p.blocked != true,
                                   preload: [:categories, :languages, :engagements, :contributors],
                                   limit: ^size,
                                   offset: ^offset)
@@ -136,8 +136,8 @@ defmodule PanWeb.Api.PodcastController do
            |> min(1000)
     offset = (page - 1) * size
 
-    total = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
-                                      is_nil(p.latest_episode_publishing_date) == false and
+    total = from(p in Podcast, where: p.blocked != true and
+                                      not is_nil(p.latest_episode_publishing_date) and
                                       p.latest_episode_publishing_date < ^NaiveDateTime.utc_now())
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
@@ -146,8 +146,8 @@ defmodule PanWeb.Api.PodcastController do
     |> api_podcast_url(:last_updated)
     |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-    podcasts = from(p in Podcast, where: (is_nil(p.blocked) or p.blocked == false) and
-                                         is_nil(p.latest_episode_publishing_date) == false and
+    podcasts = from(p in Podcast, where: p.blocked != true and
+                                         not is_nil(p.latest_episode_publishing_date) and
                                          p.latest_episode_publishing_date < ^NaiveDateTime.utc_now(),
                                   order_by: [desc: :latest_episode_publishing_date],
                                   limit: ^size,

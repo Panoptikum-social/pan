@@ -64,7 +64,7 @@ defmodule PanWeb.Episode do
   def latest do
     from(e in PanWeb.Episode, order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
                               join: p in assoc(e, :podcast),
-                              where: (is_nil(p.blocked) or p.blocked == false) and
+                              where: p.blocked != true and
                                      e.publishing_date < ^NaiveDateTime.utc_now(),
                               preload: :podcast,
                               limit: 10)
