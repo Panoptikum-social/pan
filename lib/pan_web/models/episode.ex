@@ -123,18 +123,11 @@ defmodule PanWeb.Episode do
 
 
   def cache_missing_thumbnail_images() do
-    episode_ids = from(i in Image, group_by: i.episode_id,
-                                   select:   i.episode_id)
-                  |> Repo.all
-                  |> List.delete(nil)
-
     episodes_missing_thumbnails =
-      from(e in Episode, where: not is_nil(e.image_url) and
-                                not e.id in ^episode_ids)
+      (from e in Episode, left_join: i in assoc(e, :thumbnails),
+                          where: is_nil(i.episode_id) and not is_nil(e.image_url))
       |> Ecto.Query.limit(3000)
       |> Repo.all
-
-raise "stop"
 
     for episode <- episodes_missing_thumbnails do
       Episode.cache_thumbnail_image(episode)

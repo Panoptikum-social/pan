@@ -415,15 +415,11 @@ defmodule PanWeb.Podcast do
 
 
   def cache_missing_thumbnail_images() do
-    podcast_ids = from(i in Image, group_by: i.podcast_id,
-                                   select:   i.podcast_id)
-                  |> Repo.all
-                  |> List.delete(nil)
-
-    podcasts_missing_thumbnails = from(p in Podcast, where: not is_nil(p.image_url)
-                                                            and not p.id in ^podcast_ids)
-                                  |> Ecto.Query.limit(1000)
-                                  |> Repo.all
+    podcasts_missing_thumbnails =
+      (from p in Podcast, left_join: i in assoc(p, :thumbnails),
+                          where: is_nil(i.podcast_id) and not is_nil(p.image_url))
+      |> Ecto.Query.limit(3000)
+      |> Repo.all
 
     for podcast <- podcasts_missing_thumbnails do
       Podcast.cache_thumbnail_image(podcast)
