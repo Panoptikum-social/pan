@@ -134,6 +134,8 @@ defmodule PanWeb.Episode do
       |> Ecto.Query.limit(3000)
       |> Repo.all
 
+raise "stop"
+
     for episode <- episodes_missing_thumbnails do
       Episode.cache_thumbnail_image(episode)
     end

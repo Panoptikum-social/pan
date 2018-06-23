@@ -134,7 +134,7 @@ defmodule PanWeb.PodcastController do
                                    ilike(fragment("cast (? as text)", p.id), ^searchfrag)))
       else
         from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                  p.update_paused != true and p.retired != true
+                                  p.update_paused != true and p.retired != true)
       end
 
     records_filtered = query
@@ -319,12 +319,11 @@ defmodule PanWeb.PodcastController do
 
     podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                          p.update_paused != true and p.retired != true,
-                                  order_by: [asc: :next_update])
+                                  order_by: [asc: :next_update],
                                   limit: 2000)
                |> Repo.all()
 
     for podcast <- podcasts do
-      # Task.async(fn -> delta_import_one(podcast, current_user) end)
       Podcast.delta_import_one(podcast, current_user)
     end
     Logger.info "=== Manual triggered podcast update finished ==="
