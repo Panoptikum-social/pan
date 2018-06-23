@@ -12,7 +12,7 @@ defmodule PanWeb.PodcastController do
                   |> Repo.all
 
     unassigned_podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and
-                                                    (is_nil(p.blocked) or p.blocked == false))
+                                                    p.blocked != true)
                           |> Repo.all
 
     podcast_ids = from(e in Episode, group_by: e.podcast_id,
@@ -33,8 +33,7 @@ defmodule PanWeb.PodcastController do
                                                    select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and
-                                         (is_nil(p.blocked) or p.blocked == false))
+    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and p.blocked != true)
               |> Repo.all
 
     category = Repo.get_by(Category, title: "Unsorted")
@@ -129,15 +128,13 @@ defmodule PanWeb.PodcastController do
     query =
       if search != "" do
         from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                  (is_nil(p.update_paused) or p.update_paused == false) and
-                                  (is_nil(p.retired) or p.retired == false) and
+                                  p.update_paused != true and p.retired != true and
                                   (ilike(p.title, ^searchfrag) or
                                    ilike(p.website, ^searchfrag) or
                                    ilike(fragment("cast (? as text)", p.id), ^searchfrag)))
       else
         from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                  (is_nil(p.update_paused) or p.update_paused == false) and
-                                  (is_nil(p.retired) or p.retired == false))
+                                  p.update_paused != true and p.retired != true
       end
 
     records_filtered = query
@@ -167,8 +164,7 @@ defmodule PanWeb.PodcastController do
 
   def factory(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  where: p.update_paused == true and
-                                         (is_nil(p.retired) or p.retired == false),
+                                  where: p.update_paused == true and p.retired != true,
                                   preload: :feeds)
                |> Repo.all()
 
@@ -302,8 +298,7 @@ defmodule PanWeb.PodcastController do
                                                   select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts_without_languages = from(p in Podcast, where: (is_nil(p.update_paused) or
-                                                           p.update_paused == false) and
+    podcasts_without_languages = from(p in Podcast, where: p.update_paused != true and
                                                            not p.id in ^podcast_ids)
                                  |> Repo.all()
                                  |> Enum.shuffle()
@@ -323,9 +318,8 @@ defmodule PanWeb.PodcastController do
     current_user = conn.assigns.current_user
 
     podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                         (is_nil(p.update_paused) or p.update_paused == false) and
-                                         (is_nil(p.retired) or p.retired == false),
-                                  order_by: [asc: :next_update],
+                                         p.update_paused != true and p.retired != true,
+                                  order_by: [asc: :next_update])
                                   limit: 2000)
                |> Repo.all()
 
@@ -363,7 +357,7 @@ defmodule PanWeb.PodcastController do
 
 
   def retirement(conn, _params) do
-    candidates = from(p in Podcast, where: is_nil(p.retired) or p.retired == false,
+    candidates = from(p in Podcast, where: p.retired != true,
                                     join: e in assoc(p, :episodes),
                                     group_by: p.id,
                                     having: max(e.publishing_date) < ago(1, "year"),

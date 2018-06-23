@@ -78,7 +78,7 @@ defmodule PanWeb.CategoryFrontendController do
         from(e in Episode, order_by: [desc: :publishing_date],
                            join: p in assoc(e, :podcast),
                            join: c in assoc(p, :categories),
-                           where: (is_nil(p.blocked) or p.blocked == false) and
+                           where: p.blocked != true and
                                   (e.publishing_date < ^NaiveDateTime.utc_now()) and
                                   (c.id == ^id),
                            preload: :podcast)

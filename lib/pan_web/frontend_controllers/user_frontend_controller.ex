@@ -12,7 +12,7 @@ defmodule PanWeb.UserFrontendController do
 
   def index(conn, _params, _user) do
     users = Repo.all(from u in User, order_by: :name,
-                                     where: (is_nil(u.admin) or u.admin == false))
+                                     where: u.admin != true)
     render conn, "index.html", users: users
   end
 
