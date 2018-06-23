@@ -41,22 +41,19 @@ defmodule PanWeb.Feed do
     cond do
       feed = from(f in Feed, where: ilike(f.self_link_url, ^"%#{url}%"),
                              limit: 1)
-             |> Repo.all()
-             |> List.first() ->
+             |> Repo.one() ->
         feed
 
       alternate_feed = from(a in AlternateFeed, where: ilike(a.url, ^"%#{url}%"),
                                                 preload: :feed,
                                                 limit: 1)
-                       |> Repo.all()
-                       |> List.first() ->
+                       |> Repo.one() ->
         alternate_feed.feed
 
       podcast = from(p in Podcast, where: ilike(p.website, ^"%#{url}%"),
                                    preload: :feeds,
                                    limit: 1)
-                |> Repo.all()
-                |> List.first() ->
+                |> Repo.one() ->
         List.first(podcast.feeds)
 
       String.contains?(url, "/") ->

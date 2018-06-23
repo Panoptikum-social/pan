@@ -363,6 +363,7 @@ defmodule PanWeb.Router do
     resources "/categories", CategoryController
 
     get "/backlog_feeds/subscribe", FeedBacklogController, :subscribe
+    get "/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50
     get "/backlog_feeds/import_100", FeedBacklogController, :import_100
     get "/backlog_feeds/:id/import", FeedBacklogController, :import
     resources "/backlog_feeds", FeedBacklogController

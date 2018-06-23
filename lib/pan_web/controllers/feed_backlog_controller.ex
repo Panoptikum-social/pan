@@ -1,6 +1,6 @@
 defmodule PanWeb.FeedBacklogController do
   use Pan.Web, :controller
-  alias PanWeb.{AlternateFeed, Feed, FeedBacklog, Subscription}
+  alias PanWeb.{Feed, FeedBacklog}
   require Logger
 
   def index(conn, _params) do
@@ -121,30 +121,17 @@ defmodule PanWeb.FeedBacklogController do
 
 
   def subscribe(conn, _params) do
-    for backlog_feed <- Repo.all(FeedBacklog) do
-      feeds = Repo.all(from f in Feed, where: f.self_link_url == ^backlog_feed.url,
-                                       preload: :podcast)
-      feed = case feeds do
-        [] ->
-          alternate_feeds = Repo.all(from f in AlternateFeed, where: f.url == ^backlog_feed.url,
-                                                              preload: [feed: :podcast])
-          case alternate_feeds do
-            [] ->
-              nil
-            alternate_feeds ->
-              List.first(alternate_feeds).feed
-            end
-        feeds ->
-          List.first(feeds)
-      end
+    for backlog_feed <- Repo.all(FeedBacklog), do: FeedBacklog.subscribe(backlog_feed)
+    redirect(conn, to: feed_backlog_path(conn, :index))
+  end
 
-      if feed do
-        Subscription.get_or_insert(backlog_feed.user_id, feed.podcast.id)
-        Repo.delete!(backlog_feed)
-      end
-    end
 
-    conn
-    |> redirect(to: feed_backlog_path(conn, :index))
+  def subscribe50(conn, _params) do
+    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
+                                           limit: 50)
+                    |> Repo.all
+
+    for backlog_feed <- backlog_feeds, do: FeedBacklog.subscribe(backlog_feed)
+    redirect(conn, to: feed_backlog_path(conn, :index))
   end
 end

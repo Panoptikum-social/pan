@@ -17,6 +17,7 @@ defmodule PanWeb.MaintenanceController do
 
 
   def fix(conn, _params) do
+    PanWeb.Image.cache_missing()
     render(conn, "done.html")
   end
 
