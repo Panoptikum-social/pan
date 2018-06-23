@@ -63,7 +63,7 @@ defmodule Pan.Mixfile do
      {:p1_utils, "1.0.11", manager: :rebar}, # dependency for iconv
      {:iconv, "~> 1.0.7", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.6.1"}, # Imagemagick wrapper
-     {:exactor, "~> 2.2.4", warn_missing: false}
+     {:exactor, "~> 2.2.4", warn_missing: false} # Simplifies implementation of GenServer based processes
     ]
   end
 
