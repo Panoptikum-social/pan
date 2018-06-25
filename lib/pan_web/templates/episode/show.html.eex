@@ -1,5 +1,9 @@
 <h2>Show episode</h2>
 
+<div class="pull-right">
+  <%= link "Edit", to: episode_path(@conn, :edit, @episode), class: "btn btn-warning" %>
+</div>
+
 <dl class="dl-horizontal">
   <dt>Title</dt>
   <dd><%= @episode.title %></dd>
@@ -22,6 +26,9 @@
   <dt>Payment link</dt>
   <dd><a href="<%= @episode.payment_link_url %>"><%= @episode.payment_link_title %></a></dd>
 
+  <dt>Image</dt>
+  <dd><a href="<%= @episode.image_url %>"><%= @episode.image_title %></a></dd>
+
   <dt>Deep link</dt>
   <dd><%= @episode.deep_link %></dd>
 
@@ -41,6 +48,10 @@
 
   <dt>Podcast</dt>
   <dd><%= @episode.podcast.title %></dd>
+
+  <dt>Elastic</dt>
+  <dd><%= @episode.elastic %></dd>
+
 </ul>
 
 <hr/>
@@ -50,7 +61,6 @@
 <hr/>
 <%= render PanWeb.PodcastView, "_podcast.html", podcast: @episode.podcast, conn: @conn %>
 <hr/>
-
 
 <%= link "Edit", to: episode_path(@conn, :edit, @episode) %>
 <%= link "Back", to: episode_path(@conn, :index) %>

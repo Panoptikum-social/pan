@@ -54,6 +54,19 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :image_title, class: "control-label" %>
+    <%= text_input f, :image_title, class: "form-control" %>
+    <%= error_tag f, :image_title %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :image_url, class: "control-label" %>
+    <%= text_input f, :image_url, class: "form-control" %>
+    <%= error_tag f, :image_url %>
+  </div>
+
+
+  <div class="form-group">
     <%= label f, :deep_link, class: "control-label" %>
     <%= text_input f, :deep_link, class: "form-control" %>
     <%= error_tag f, :deep_link %>
@@ -75,6 +88,12 @@
     <%= label f, :summary, class: "control-label" %>
     <%= textarea f, :summary, class: "form-control" %>
     <%= error_tag f, :summary %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :elastic, class: "control-label" %>
+    <%= checkbox f, :elastic, class: "form-control" %>
+    <%= error_tag f, :elastic %>
   </div>
 
   <div class="form-group">
