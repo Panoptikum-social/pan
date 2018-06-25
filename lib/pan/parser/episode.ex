@@ -73,37 +73,25 @@ defmodule Pan.Parser.Episode do
   def update_from_feed_many(episodes_map, podcast) do
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                               "notification",
-                              %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-headphones'></i> ...", type: "success"})
+                              %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-headphones'></i> ...",
+                                type: "success"})
 
-    for {_, episode_map} <- episodes_map do
-      update_from_feed_one(episode_map, podcast)
-    end
+    for {_, episode_map} <- episodes_map, do: update_from_feed_one(episode_map, podcast)
 
     PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
                               "notification",
-                              %{content: "<i class='fa fa-trash'></i> Orphans ...", type: "success"})
+                              %{content: "<i class='fa fa-trash'></i> Orphans ...",
+                                type: "success"})
 
     # delete derprecated episodes
     one_hour_ago = Timex.now()
-                   |> Timex.shift(hours: -1 )
+                   |> Timex.shift(hours: -1)
 
-    episode_ids = from(e in PanWeb.Episode, where: e.podcast_id == ^podcast.id and
-                                                   e.updated_at < ^one_hour_ago,
-                                            select: e.id)
-                  |> Repo.all()
+    episodes = from(e in PanWeb.Episode, where: e.podcast_id == ^podcast.id and
+                                                e.updated_at < ^one_hour_ago)
+               |> Repo.all()
 
-    from(g in PanWeb.Gig, where: g.episode_id in ^episode_ids)
-    |> Repo.delete_all()
-
-    from(e in PanWeb.Enclosure, where: e.episode_id in ^episode_ids)
-    |> Repo.delete_all()
-
-    from(c in PanWeb.Chapter, where: c.episode_id in ^episode_ids)
-    |> Repo.delete_all()
-
-    from(e in PanWeb.Episode, where: e.podcast_id == ^podcast.id and
-                                     e.updated_at < ^one_hour_ago)
-    |> Repo.delete_all()
+    for episode <- episodes, do: Repo.delete(episode)
   end
 
 
