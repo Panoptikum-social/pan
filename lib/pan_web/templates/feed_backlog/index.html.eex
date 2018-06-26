@@ -26,7 +26,7 @@
     <tr>
       <td><%= feed_backlog.id %></td>
       <td>
-        <%= link feed_backlog.url, to: feed_backlog.url, target: "_blank" %><br/>
+        <%= link feed_backlog.url, to: String.downcase(feed_backlog.url), target: "_blank" %><br/>
 
         <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
           <%= link [ fa_icon("feed"), " Create alternate feed"],
