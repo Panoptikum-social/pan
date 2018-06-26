@@ -16,7 +16,7 @@
               <h3>Alternate feeds:</h3>
               <ul>
                 <%= for alternate_feed <- feed.alternate_feeds do %>
-                  <li><%= link alternate_feed.title, to: alternate_feed.url %></li>
+                  <li><%= link alternate_feed.title, to: String.downcase(alternate_feed.url) %></li>
                 <% end %>
               </ul>
             <% end %>

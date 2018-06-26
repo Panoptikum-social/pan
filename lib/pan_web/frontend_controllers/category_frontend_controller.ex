@@ -74,13 +74,16 @@ defmodule PanWeb.CategoryFrontendController do
                |> Repo.preload(:parent)
 
     if category.parent.title == "👩 👨 Community" do
+      podcast_ids = from(p in Podcast, join: c in assoc(p, :categories),
+                                       where: p.blocked != true and
+                                              c.id == ^id,
+                                       select: p.id)
+                    |> Repo.all
+
       latest_episodes =
         from(e in Episode, order_by: [desc: :publishing_date],
-                           join: p in assoc(e, :podcast),
-                           join: c in assoc(p, :categories),
-                           where: p.blocked != true and
-                                  (e.publishing_date < ^NaiveDateTime.utc_now()) and
-                                  (c.id == ^id),
+                           where: e.publishing_date < ^NaiveDateTime.utc_now() and
+                                  e.podcast_id in ^podcast_ids,
                            preload: :podcast)
         |> Repo.paginate(params)
 
