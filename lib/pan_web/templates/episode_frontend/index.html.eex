@@ -1,6 +1,6 @@
 <h3>Latest episodes</h3>
 
-<%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>
+<%= pagination_links @conn, @episodes, last: false, path: &episode_frontend_path/3 %>
 
 <%= for group <- Enum.chunk(@episodes, 2, 2, []) do %>
   <div class="row">
@@ -36,4 +36,4 @@
   </div>
 <% end %>
 
-<%= pagination_links @conn, @episodes, path: &episode_frontend_path/3 %>
+<%= pagination_links @conn, @episodes, last: false, path: &episode_frontend_path/3 %>
