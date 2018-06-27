@@ -1,16 +1,12 @@
 defmodule Pan.Search do
   require Logger
-  alias PanWeb.Episode
-  alias PanWeb.Category
-  alias PanWeb.User
-  alias PanWeb.Persona
-  alias PanWeb.Podcast
-
+  alias PanWeb.{Category, Episode, Persona, Podcast, User}
   alias Pan.Repo
   import Ecto.Query, only: [from: 2]
+  import Ecto.Convenience, only: [is_false: 1]
 
   def push_missing do
-    category_ids = from(c in Category, where: c.elastic != true,
+    category_ids = from(c in Category, where: is_false(c.elastic),
                                        limit: 100,
                                        select: c.id)
                    |> Repo.all()
@@ -22,7 +18,7 @@ defmodule Pan.Search do
     Logger.info("=== Indexed #{length(category_ids)} categories ===")
 
 
-    user_ids = from(c in User, where: c.elastic != true,
+    user_ids = from(c in User, where: is_false(c.elastic),
                                limit: 100,
                                select: c.id)
                |> Repo.all()
@@ -34,7 +30,7 @@ defmodule Pan.Search do
     Logger.info("=== Indexed #{length(user_ids)} users ===")
 
 
-    persona_ids = from(c in Persona, where: c.elastic != true,
+    persona_ids = from(c in Persona, where: is_false(c.elastic),
                                      limit: 1000,
                                      select: c.id)
                   |> Repo.all()
@@ -46,7 +42,7 @@ defmodule Pan.Search do
     Logger.info("=== Indexed #{length(persona_ids)} personas ===")
 
 
-    podcast_ids = from(c in Podcast, where: c.elastic != true,
+    podcast_ids = from(c in Podcast, where: is_false(c.elastic),
                                      limit: 100,
                                      select: c.id)
                   |> Repo.all()
@@ -58,7 +54,7 @@ defmodule Pan.Search do
     Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
 
 
-    episode_ids = from(c in Episode, where: c.elastic != true,
+    episode_ids = from(c in Episode, where: is_false(c.elastic),
                                      limit: 1000,
                                      select: c.id)
                   |> Repo.all()

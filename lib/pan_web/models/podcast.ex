@@ -121,7 +121,7 @@ defmodule PanWeb.Podcast do
 
   def latest do
     from(p in Podcast, order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
-                       where: p.blocked != true,
+                       where: is_false(p.blocked),
                        join: e in assoc(p, :engagements),
                        where: e.role == "author",
                        join: persona in assoc(e, :persona),
@@ -155,7 +155,7 @@ defmodule PanWeb.Podcast do
 
   def import_stale_podcasts() do
     podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                         p.update_paused != true and p.retired != true,
+                                         is_false(p.update_paused) and is_false(p.retired),
                                   order_by: [asc: :next_update],
                                   limit: 2000)
                |> Repo.all()

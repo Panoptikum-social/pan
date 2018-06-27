@@ -9,7 +9,7 @@ defmodule PanWeb.PodcastController do
   def orphans(conn, _params) do
     unassigned_podcasts =
       from(p in Podcast, left_join: c in assoc(p, :categories),
-                         where: is_nil(c.id) and p.blocked != true)
+                         where: is_nil(c.id) and is_false(p.blocked))
       |> Repo.all
 
     podcasts_without_episodes = from(p in Podcast, where: p.episodes_count == 0)
@@ -25,7 +25,7 @@ defmodule PanWeb.PodcastController do
                                                    select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and p.blocked != true)
+    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and is_false(p.blocked))
               |> Repo.all
 
     category = Repo.get_by(Category, title: "Unsorted")
@@ -120,13 +120,13 @@ defmodule PanWeb.PodcastController do
     query =
       if search != "" do
         from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                  p.update_paused != true and p.retired != true and
+                                  is_false(p.update_paused) and is_false(p.retired) and
                                   (ilike(p.title, ^searchfrag) or
                                    ilike(p.website, ^searchfrag) or
                                    ilike(fragment("cast (? as text)", p.id), ^searchfrag)))
       else
         from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                  p.update_paused != true and p.retired != true)
+                                  is_false(p.update_paused) and is_false(p.retired))
       end
 
     records_filtered = query
@@ -156,7 +156,7 @@ defmodule PanWeb.PodcastController do
 
   def factory(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
-                                  where: p.update_paused == true and p.retired != true,
+                                  where: p.update_paused == true and is_false(p.retired),
                                   preload: :feeds)
                |> Repo.all()
 
@@ -290,7 +290,7 @@ defmodule PanWeb.PodcastController do
                                                   select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts_without_languages = from(p in Podcast, where: p.update_paused != true and
+    podcasts_without_languages = from(p in Podcast, where: is_false(p.update_paused) and
                                                            not p.id in ^podcast_ids)
                                  |> Repo.all()
                                  |> Enum.shuffle()
@@ -310,7 +310,7 @@ defmodule PanWeb.PodcastController do
     current_user = conn.assigns.current_user
 
     podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                         p.update_paused != true and p.retired != true,
+                                         is_false(p.update_paused) and is_false(p.retired),
                                   order_by: [asc: :next_update],
                                   limit: 2000)
                |> Repo.all()
@@ -348,7 +348,7 @@ defmodule PanWeb.PodcastController do
 
 
   def retirement(conn, _params) do
-    candidates = from(p in Podcast, where: p.retired != true,
+    candidates = from(p in Podcast, where: is_false(p.retired),
                                     join: e in assoc(p, :episodes),
                                     group_by: p.id,
                                     having: max(e.publishing_date) < ago(1, "year"),

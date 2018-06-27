@@ -75,7 +75,7 @@ defmodule PanWeb.CategoryFrontendController do
 
     if category.parent.title == "👩 👨 Community" do
       podcast_ids = from(c in Category, join: p in assoc(c, :podcasts),
-                                        where: not (p.blocked == true) and
+                                        where: is_false(p.blocked) and
                                                c.id == ^id,
                                         select: p.id)
                     |> Repo.all

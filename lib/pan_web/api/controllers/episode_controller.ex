@@ -14,7 +14,7 @@ defmodule PanWeb.Api.EpisodeController do
     offset = (page - 1) * size
 
     total = from(e in Episode, join: p in assoc(e, :podcast),
-                               where: p.blocked != true and
+                               where: is_false(p.blocked) and
                                       e.publishing_date < ^NaiveDateTime.utc_now())
             |> Repo.aggregate(:count, :id)
     total_pages = div(total - 1, size) + 1
@@ -24,7 +24,7 @@ defmodule PanWeb.Api.EpisodeController do
     |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
-                                  where: p.blocked != true and
+                                  where: is_false(p.blocked) and
                                          e.publishing_date < ^NaiveDateTime.utc_now(),
                                   order_by: [desc: :publishing_date],
                                   preload: [:podcast, :gigs, :contributors],

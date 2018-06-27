@@ -39,7 +39,7 @@ defmodule PanWeb.EpisodeFrontendController do
 
   def index(conn, params) do
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
-                                  where: p.blocked != true and
+                                  where: is_false(p.blocked) and
                                          e.publishing_date < ^NaiveDateTime.utc_now(),
                                   order_by: [desc: :publishing_date],
                                   preload: [:podcast])

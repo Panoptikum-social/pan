@@ -37,13 +37,13 @@ defmodule PanWeb.MaintenanceController do
   def stats(conn, _params) do
     stale_podcasts =
       from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                p.update_paused != true and
-                                p.retired != true)
+                                is_false(p.update_paused) and
+                                is_false(p.retired))
       |> Repo.aggregate(:count, :id)
       |> delimit_integer(" ")
 
     inactive_podcasts =
-      from(p in Podcast, where: p.update_paused == true and p.retired != true)
+      from(p in Podcast, where: p.update_paused == true and is_false(p.retired))
       |> Repo.aggregate(:count, :id)
 
     retired_podcasts =
@@ -51,7 +51,7 @@ defmodule PanWeb.MaintenanceController do
       |> Repo.aggregate(:count, :id)
 
     average_update_intervall =
-      from(p in Podcast, where: p.update_paused != true and p.retired != true)
+      from(p in Podcast, where: is_false(p.update_paused) and is_false(p.retired))
       |> Repo.aggregate(:avg, :update_intervall)
       |> Decimal.round(2)
 
@@ -61,7 +61,7 @@ defmodule PanWeb.MaintenanceController do
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
-    unindexed_episodes = from(e in Episode, where: e.elastic != true)
+    unindexed_episodes = from(e in Episode, where: is_false(e.elastic))
                          |> Repo.aggregate(:count, :id)
                          |> delimit_integer(" ")
 
