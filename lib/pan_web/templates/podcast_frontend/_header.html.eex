@@ -48,7 +48,7 @@
         <dl class="dl-horizontal">
           <%= if @podcast.website do %>
             <dt>Website</dt>
-            <dd><%= link @podcast.website, to: @podcast.website %></dd>
+            <dd><%= link @podcast.website, to: String.downcase(@podcast.website) %></dd>
           <% end %>
           <dt>Description</dt>
           <dd><%= @podcast.description %></dd>
