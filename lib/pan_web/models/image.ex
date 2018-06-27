@@ -71,9 +71,13 @@ defmodule PanWeb.Image do
     target_dir = "/var/phoenix/pan-uploads/images/#{type}/#{id_part}"
     asset_path = "/thumbnails/#{type}/#{id_part}"
 
+    headers = ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
+               ssl: [{:versions, [:'tlsv1.2']}]]
+
     with {:ok, _} <- not_empty(URI.parse(url).host),
          {:ok, url} <- starts_with_http(url),
-         {:ok, response} <- HTTPoison.get(url),
+         {:ok, response} <- HTTPoison.get(url, headers, options),
          {:ok, _} <- not_empty(response.body),
          {:ok, path} <- extract_path(response),
          {:ok, filename} <- not_empty(Path.basename(path))
