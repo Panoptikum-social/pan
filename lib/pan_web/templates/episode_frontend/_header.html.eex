@@ -90,7 +90,7 @@
       <%= for enclosure <- @episode.enclosures do %>
         <dt><label class="label label-primary"><%= enclosure.type %></label></dt>
         <dd>
-          <%= link String.split(enclosure.url, "/") |> List.last, to: enclosure.url %>
+          <%= link String.split(enclosure.url, "/") |> List.last, to: String.trim(enclosure.url) %>
 
           <%= if is_integer(enclosure.length) do %>
             (<%= Float.round(String.to_integer(enclosure.length) / 1048576, 1) %> MB)
