@@ -176,7 +176,8 @@ defmodule Pan.Parser.Analyzer do
     :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
-    :"podcastRF:publicationChannel"
+    :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
+    :"syn:updateFrequency", :"syn:updateBase"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -246,7 +247,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
-    :"social:guest_name", :thumbnail
+    :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media"
   ], do: %{}
 
 
@@ -480,7 +481,7 @@ defmodule Pan.Parser.Analyzer do
     :name, :"itunes:name", :"itunes:author", :"itunes:caption"
   ], do: %{name: H.to_255(value)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
-  def call("owner", [:"itunes:copyright",    _, []]), do: %{}
+  def call("owner", [:"itunes:copyright",    _, _]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("owner", [:"googleplay:email", _, [value]]), do: %{email: value}
   def call("owner", [:email,             _, [value]]), do: %{email: value}
