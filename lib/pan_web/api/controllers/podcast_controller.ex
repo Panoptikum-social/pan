@@ -2,6 +2,7 @@ defmodule PanWeb.Api.PodcastController do
   use Pan.Web, :controller
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
+  import PanWeb.Api.Helpers, only: [send_504: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -113,8 +114,10 @@ defmodule PanWeb.Api.PodcastController do
       |> Podcast.changeset(%{manually_updated_at: thirty_minutes_ago})
       |> Repo.update()
 
-      Pan.Parser.Podcast.delta_import(id)
-      show(conn, params, nil)
+      case Pan.Parser.Podcast.delta_import(id) do
+        {:ok, _ }         -> show(conn, params, nil)
+        {:error, message} -> send_504(conn, message)
+      end
     else
       minutes = podcast.manually_updated_at
                 |> Timex.shift(hours: 1)

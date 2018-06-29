@@ -11,6 +11,17 @@ defmodule PanWeb.Api.Helpers do
     |> halt()
   end
 
+  def send_504(conn, reason) do
+    conn
+    |> put_view(ErrorView)
+    |> put_status(504)
+    |> render(:errors, data: %{code: 504,
+                               status: 504,
+                               title: "Timeout when trying to download feed:",
+                               detail: reason})
+    |> halt()
+  end
+
 
   def send_401(conn, reason) do
     conn
