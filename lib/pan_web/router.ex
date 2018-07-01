@@ -186,6 +186,8 @@ defmodule PanWeb.Router do
     resources "/categories", CategoryFrontendController, only: [:index, :show]
 
     get "/podcasts/buttons", PodcastFrontendController, :button_index
+    get "/podcasts/liked", PodcastFrontendController, :liked
+    get "/podcasts/popular", PodcastFrontendController, :popular
     resources "/podcasts", PodcastFrontendController, only: [:index, :show]
     get "/podcasts/:id/feeds", PodcastFrontendController, :feeds
     get "/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button

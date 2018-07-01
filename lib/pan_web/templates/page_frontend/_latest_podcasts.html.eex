@@ -1,6 +1,6 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <%= link "Latest Podcasts", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
+    <%= link "Podcasts new in Panoptikum", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
       <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
     </span>

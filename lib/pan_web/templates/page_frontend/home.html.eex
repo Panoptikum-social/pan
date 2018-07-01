@@ -1,14 +1,17 @@
 <div class="row">
   <div class="col-md-6">
-    <%= render "_latest_recommendations.html", conn: @conn  %><br/>
-    <%= render "_latest_podcasts.html", conn: @conn  %>
-    <%= render "_latest_episodes.html", conn: @conn  %>
+    <%= render "_latest_podcasts.html", conn: @conn  %></br>
+    <%= render PanWeb.PodcastFrontendView,
+               "_popular_podcasts.html", popular_podcasts: @popular_podcasts,
+                                         conn: @conn %>
   </div>
 
   <div class="col-md-6">
-    <%= render "_popular_podcasts.html", popular_podcasts: @popular_podcasts, conn: @conn  %></br>
-    <%= render "_liked_podcasts.html", liked_podcasts: @liked_podcasts, conn: @conn  %></br>
-
+    <%= render "_latest_episodes.html", conn: @conn  %></br>
+    <%= render "_latest_recommendations.html", conn: @conn  %><br/>
+    <%= render PanWeb.PodcastFrontendView,
+               "_liked_podcasts.html", liked_podcasts: @liked_podcasts,
+                                       conn: @conn %>
   </div>
 </div>
 

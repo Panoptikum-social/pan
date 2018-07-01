@@ -1,7 +1,0 @@
-<div class="panel panel-danger">
-  <div class="panel-heading">Top 5 liked Podcasts</div>
-    <%= render "_top_list_table.html",
-          podcasts: @liked_podcasts,
-          icon: "heart",
-          conn: @conn %>
-</div>
