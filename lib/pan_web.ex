@@ -10,7 +10,7 @@ defmodule Pan.Web do
 
       import Ecto
       import Ecto.Changeset
-      import Ecto.Query, only: [from: 1, from: 2]
+      import Ecto.Query, only: [from: 1, from: 2, where: 2, select: 2]
       import Ecto.Convenience, only: [is_false: 1]
       import PanWeb.Router.Helpers
       import Tirexs.HTTP
