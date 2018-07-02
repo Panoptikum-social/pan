@@ -50,7 +50,7 @@ defmodule PanWeb.Episode do
         %Like{enjoyer_id: user_id, episode_id: episode_id}
         |> Repo.insert
       like ->
-      {:ok, Repo.delete!(like)}
+        {:ok, Repo.delete!(like)}
     end
   end
 
@@ -144,7 +144,8 @@ defmodule PanWeb.Episode do
 
   def clear_image_url(episode) do
     episode
-    |> Episode.changeset(%{image_url: nil})
+    |> Episode.changeset(%{image_url: nil,
+                           link: episode.link || "https://example.com"})
     |> Repo.update()
   end
 end
