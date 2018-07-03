@@ -77,7 +77,7 @@ defmodule PanWeb.Image do
 
     with {:ok, _} <- not_empty(URI.parse(url).host),
          {:ok, url} <- starts_with_http(url),
-         {:ok, response} <- HTTPoison.get(url, headers, options),
+         {:ok, response} <- URI.encode(url) |> HTTPoison.get(headers, options),
          {:ok, _} <- not_empty(response.body),
          {:ok, path} <- extract_path(response),
          {:ok, filename} <- not_empty(Path.basename(path))

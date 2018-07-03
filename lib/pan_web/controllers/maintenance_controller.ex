@@ -99,9 +99,11 @@ defmodule PanWeb.MaintenanceController do
 
     episode_images = from(i in Image, where: not is_nil(i.episode_id))
                      |> Repo.aggregate(:count, :id)
-    episodes_with_image = from(e in Episode, where: not is_nil(e.image_url))
-                          |> Repo.aggregate(:count, :id)
-    episodes_missing = episodes_with_image - episode_images
+
+    episodes_missing =
+      (from e in Episode, left_join: i in assoc(e, :thumbnails),
+                          where: is_nil(i.episode_id) and not is_nil(e.image_url))
+      |> Repo.aggregate(:count, :id)
 
     persona_images = from(i in Image, where: not is_nil(i.persona_id))
                      |> Repo.aggregate(:count, :id)
