@@ -2,6 +2,7 @@ defmodule PanWeb.Episode do
   use Pan.Web, :model
   alias Pan.Repo
   alias PanWeb.{Chapter, Enclosure, Episode, Gig, Image, Like, Persona, Podcast, Recommendation}
+  require Logger
 
   schema "episodes" do
     field :title, :string
@@ -130,6 +131,7 @@ defmodule PanWeb.Episode do
       |> Repo.all
 
     for episode <- episodes_missing_thumbnails do
+      Logger.error "=== Importing image for : " <> Integer.to_string(episode.id) <> " " <> episode.image_url <> " ==="
       Episode.cache_thumbnail_image(episode)
     end
   end
