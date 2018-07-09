@@ -9,21 +9,28 @@ defmodule PanWeb.SearchFrontendView do
 
     case type do
       "episodes"   ->
-        episode = Repo.get!(Episode, hit._id)
-                  |> Repo.preload([podcast: :languages, gigs: :persona])
-        episode_thumbnail = Repo.get_by(Image, episode_id: episode.id) ||
-                            Repo.get_by(Image, podcast_id: episode.podcast_id)
+        if episode = Repo.get(Episode, hit._id) do
+          episode = Repo.preload(episode, [podcast: :languages, gigs: :persona])
 
-        render("episode.html", episode: fields,
-                               searchstring: searchstring,
-                               podcast_title: episode.podcast.title,
-                               episode_image_title: episode.image_title,
-                               podcast_image_title: episode.podcast.image_title,
-                               podcast_url: podcast_frontend_url(PanWeb.Endpoint, :show, episode.podcast.id),
-                               gigs: episode.gigs,
-                               languages: episode.podcast.languages,
-                               episode_thumbnail: episode_thumbnail,
-                               score: score)
+          episode_thumbnail = Repo.get_by(Image, episode_id: episode.id) ||
+                              Repo.get_by(Image, podcast_id: episode.podcast_id)
+
+          render("episode.html", episode: fields,
+                                 searchstring: searchstring,
+                                 podcast_title: episode.podcast.title,
+                                 episode_image_title: episode.image_title,
+                                 podcast_image_title: episode.podcast.image_title,
+                                 podcast_url: podcast_frontend_url(PanWeb.Endpoint, :show, episode.podcast.id),
+                                 gigs: episode.gigs,
+                                 languages: episode.podcast.languages,
+                                 episode_thumbnail: episode_thumbnail,
+                                 score: score)
+        else
+          String.to_integer(hit._id)
+          |> Episode.delete_search_index()
+
+          nil
+        end
       "podcasts"   ->
         podcast = Repo.get!(Podcast, hit._id)
                   |> Repo.preload([:categories, :languages, engagements: :persona])
