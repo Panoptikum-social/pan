@@ -177,7 +177,7 @@ defmodule Pan.Parser.Analyzer do
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
-    :"syn:updateFrequency", :"syn:updateBase"
+    :"syn:updateFrequency", :"syn:updateBase", :"acast:item"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
