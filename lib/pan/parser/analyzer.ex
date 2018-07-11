@@ -247,7 +247,8 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
-    :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media"
+    :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media",
+    :"usat:shortHeadline", :"displaydate"
   ], do: %{}
 
 
