@@ -50,6 +50,7 @@ defmodule PanWeb.Persona do
                      :long_description])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
+    |> unique_constraint(:uri)
   end
 
 
@@ -58,6 +59,7 @@ defmodule PanWeb.Persona do
     |> cast(params, [:name, :uri])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
+    |> unique_constraint(:uri)
   end
 
 
