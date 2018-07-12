@@ -163,8 +163,6 @@ defmodule PanWeb.PersonaFrontendController do
             Persona.user_changeset(persona, persona_params)
           end
 
-require IEx; IEx.pry()
-
         case Repo.update(changeset) do
           {:ok, _persona} ->
             Persona.update_search_index(manifestation.persona.id)
