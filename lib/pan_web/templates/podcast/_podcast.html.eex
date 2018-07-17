@@ -85,6 +85,8 @@
   <dt>Manually updated at</dt>
   <dd><%= @podcast.manually_updated_at %></dd>
 
+  <dt>Indexed by Elatsicsearch</dt>
+  <dd><%= @podcast.elastic %></dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

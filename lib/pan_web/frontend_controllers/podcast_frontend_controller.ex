@@ -63,7 +63,7 @@ defmodule PanWeb.PodcastFrontendController do
       |> Podcast.changeset(%{manually_updated_at: Timex.now()})
       |> Repo.update()
 
-      Task.async(fn -> Pan.Parser.Podcast.update_from_feed(id) end)
+      Pan.Parser.Podcast.update_from_feed(id)
       conn
       |> put_flash(:info, "Podcast metadata update started")
     else
