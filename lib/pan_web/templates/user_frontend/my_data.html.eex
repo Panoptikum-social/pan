@@ -30,7 +30,7 @@
   <dt>Shares follows?</dt>
   <dd><%= @user.share_follows %></dd>
   <dt>Pro account until</dt>
-  <dd><%= Timex.format!(@user.pro_until, "{ISOdate} {h24}:{m}") %></dd>
+  <dd><%= if @user.pro_until, do: Timex.format!(@user.pro_until, "{ISOdate} {h24}:{m}") %></dd>
   <dt>Billing address</dt>
   <dd><pre><%= @user.billing_address %></pre></dd>
   <dt>Payment reference</dt>
