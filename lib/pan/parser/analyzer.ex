@@ -248,7 +248,7 @@ defmodule Pan.Parser.Analyzer do
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media",
-    :"usat:shortHeadline", :"displaydate", :"pingback:receiver"
+    :"usat:shortHeadline", :"displaydate", :"pingback:receiver", :maxImgUrl
   ], do: %{}
 
 
