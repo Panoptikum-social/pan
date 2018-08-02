@@ -2,7 +2,8 @@
 <br/><br/>
 
 <%= render PanWeb.EpisodeFrontendView, "show.html",
-           episode: @episode, episode_thumbnail: @episode_thumbnail,
+           episode: @episode,
+           episode_thumbnail: @episode_thumbnail,
            current_user: @current_user,
            player: @player,
            changeset: @changeset,
@@ -13,7 +14,9 @@
 <br/><br/>
 
 <%= render PanWeb.PodcastFrontendView, "_header.html",
-           podcast: @podcast, podcast_thumbnail: @podcast_thumbnail,
+           podcast: @podcast,
+           podcast_thumbnail: @podcast_thumbnail,
+           episodes: @podcast.episodes,
            current_user: @current_user,
            changeset: @changeset,
            conn: @conn %>
