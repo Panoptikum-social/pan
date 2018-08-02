@@ -119,4 +119,8 @@ defmodule PanWeb.PersonaFrontendView do
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
   end
+
+  def slug_with_gigs(conn, _, [page: page]) do
+    conn.assigns[:persona].pid <> "?page=#{page}#gigs"
+  end
 end

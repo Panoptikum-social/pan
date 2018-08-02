@@ -81,7 +81,7 @@ defmodule PanWeb.PersonaFrontendController do
       gigs = from(g in Gig, where: g.persona_id in ^persona_ids,
                             order_by: [desc: :publishing_date],
                             preload: [episode: :podcast])
-             |> Repo.all()
+             |> Repo.paginate(page: params["page"], page_size: 50)
 
       grouped_gigs = Enum.group_by(gigs, &Map.get(&1, :episode))
 
