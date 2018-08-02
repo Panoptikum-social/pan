@@ -90,7 +90,7 @@
           <dt>Explicit</dt>
           <dd><%= @podcast.explicit %></dd>
           <dt id="metadata">Number of Episodes</dt>
-          <dd><%= Enum.count(@podcast.episodes) %></dd>
+          <dd><%= Enum.count(@episodes) %></dd>
           <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
           <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
           <dt>Categories</dt>

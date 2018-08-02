@@ -18,18 +18,21 @@ defmodule PanWeb.PodcastFrontendController do
   end
 
 
-  def show(conn, %{"id" => id}) do
+  def show(conn, %{"id" => id} = params) do
     changeset = Recommendation.changeset(%Recommendation{})
     podcast =  Repo.get!(Podcast, id)
                |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
-               |> Repo.preload(episodes: from(episode in Episode, order_by: [desc: episode.publishing_date]))
-               |> Repo.preload(episodes: [gigs: :persona])
-               |> Repo.preload(episodes: :thumbnails)
                |> Repo.preload([engagements: :persona])
+
+    episodes = from(e in Episode, where: e.podcast_id == ^id,
+                                  order_by: [desc: :publishing_date],
+                                  preload: [:thumbnails, [gigs: :persona]])
+               |> Repo.paginate(page: params["page"], page_size: 50)
 
     podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
 
     render(conn, "show.html", podcast: podcast,
+                              episodes: episodes,
                               podcast_thumbnail: podcast_thumbnail,
                               changeset: changeset)
   end
