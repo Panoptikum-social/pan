@@ -1,9 +1,6 @@
 defmodule Pan.Parser.Episode do
   use Pan.Web, :controller
-  alias Pan.Parser.Contributor
-  alias Pan.Parser.Chapter
-  alias Pan.Parser.Enclosure
-  alias Pan.Parser.Author
+  alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
   alias Pan.Repo
   require Logger
 
@@ -56,6 +53,10 @@ defmodule Pan.Parser.Episode do
     |> PanWeb.Podcast.changeset(%{update_intervall: 10,
                                   next_update: Timex.shift(Timex.now(), hours: 10)})
     |> Repo.update()
+
+    episode_map = episode_map
+                  |> Map.put_new(:publishing_date, Timex.now())
+                  |> Map.put_new(:title, "No title provided")
 
     %PanWeb.Episode{podcast_id: podcast_id}
     |> Map.merge(episode_map)

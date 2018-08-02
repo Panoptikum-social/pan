@@ -52,6 +52,11 @@
   <dt>Elastic</dt>
   <dd><%= @episode.elastic %></dd>
 
+  <dt>Inserted at</dt>
+  <dd><%= @episode.inserted_at %></dd>
+
+  <dt>Updated at</dt>
+  <dd><%= @episode.updated_at %></dd>
 </ul>
 
 <hr/>
