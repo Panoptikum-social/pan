@@ -3,6 +3,7 @@
 <% else %>
   <%= render "_header.html", podcast: @podcast,
                              episodes: @episodes,
+                             episode_count: @episodes.total_entries,
                              current_user: @current_user,
                              podcast_thumbnail: @podcast_thumbnail,
                              conn: @conn %>
