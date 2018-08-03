@@ -239,16 +239,16 @@ defmodule Pan.Parser.Analyzer do
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
-    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url",
+    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url", :episode,
     :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url",
     :"primaryCat", :"advance:original", :"lastModDate",  :"sportspower:content", :"itunes:provider",
     :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category", :"app:keywords",
     :"geo:Point", :"tahoetv:file_flv", :"tahoetv:file_html", :"tahoetv:file_player_graphic",
-    :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration",
+    :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration", :season,
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media",
-    :"usat:shortHeadline", :"displaydate", :"pingback:receiver", :maxImgUrl
+    :"usat:shortHeadline", :"displaydate", :"pingback:receiver", :maxImgUrl, :"itunes:album"
   ], do: %{}
 
 
