@@ -377,6 +377,8 @@ defmodule PanWeb.Router do
     resources "/invoices", InvoiceController
 
     get "/images/datatable", ImageController, :datatable
+    get "/images/cache_missing", ImageController, :cache_missing
+    get "/images/remove_duplicates", ImageController, :remove_duplicates
     resources "/images", ImageController
 
     get "/podcasts/datatable", PodcastController, :datatable
@@ -411,7 +413,6 @@ defmodule PanWeb.Router do
 
     get "/maintenance/stats", MaintenanceController, :stats
     get "/maintenance/sandbox", MaintenanceController, :sandbox
-    get "/maintenance/fix", MaintenanceController, :fix
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
   end
 end

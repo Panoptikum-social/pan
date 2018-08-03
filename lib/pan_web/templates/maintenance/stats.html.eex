@@ -1,4 +1,3 @@
-
 <div class="col-md-3">
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -33,15 +32,32 @@
       <tr><th></th>
           <td>unindexed by Elastic Search</td>
           <td class="text-right"><%= @unindexed_episodes %></td></tr>
-      <tr><th>Language</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_languages %></td></tr>
       <tr><th>Category</th>
           <td>total</td>
           <td class="text-right"><%= @total_categories %></td></tr>
       <tr><th></th>
           <td>categorizations</td>
           <td class="text-right"><%= @total_categorizations %></td></tr>
+      <tr><th>Thumbnails</th>
+          <td>episodes_missing</td>
+          <td class="text-right"><%= @episodes_missing %></td></tr>
+      <tr><th></th>
+          <td>podcasts_missing</td>
+          <td class="text-right"><%= @podcasts_missing %></td></tr>
+      <tr><th></th>
+          <td>personas_missing</td>
+          <td class="text-right"><%= @personas_missing %></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="col-md-3">
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr><td>Module</td><td>Kind</td><td>Number</td></tr>
+    </thead>
+
+    <tbody>
       <tr><th>Users</th>
           <td>total</td>
           <td class="text-right"><%= @total_users %></td></tr>
@@ -75,15 +91,31 @@
       <tr><th></th>
           <td>delegations</td>
           <td class="text-right"><%= @total_delegations %></td></tr>
-      <tr><th>Thumbnails</th>
-          <td>episodes_missing</td>
-          <td class="text-right"><%= @episodes_missing %></td></tr>
-      <tr><th></th>
-          <td>podcasts_missing</td>
-          <td class="text-right"><%= @podcasts_missing %></td></tr>
-      <tr><th></th>
-          <td>personas_missing</td>
-          <td class="text-right"><%= @personas_missing %></td></tr>
+      <tr><th>Languages</th>
+          <td>total</td>
+          <td class="text-right"><%= @total_languages %></td></tr>
     </tbody>
   </table>
+</div>
+
+<div class="col-md-3">
+  <ul class="list-group">
+    <li class="list-group-item" style="border-top: 1px solid #ddd;">
+      <%= link "Elasticsearch push missing",
+               to: search_path(@conn, :elasticsearch_push_missing),
+               class: "btn btn-primary" %>
+    </li>
+
+    <li class="list-group-item">
+      <%= link "Cache missing images",
+               to: image_path(@conn, :cache_missing),
+               class: "btn btn-primary" %>
+    </li>
+
+    <li class="list-group-item">
+      <%= link "Remove duplicate images",
+               to: image_path(@conn, :remove_duplicates),
+               class: "btn btn-primary" %>
+    </li>
+  </ul>
 </div>

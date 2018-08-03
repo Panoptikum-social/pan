@@ -16,12 +16,6 @@ defmodule PanWeb.MaintenanceController do
   end
 
 
-  def fix(conn, _params) do
-    PanWeb.Image.cache_missing()
-    render(conn, "done.html")
-  end
-
-
   def update_podcast_counters(conn, _params) do
     Podcast.update_all_counters()
 

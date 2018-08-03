@@ -145,5 +145,54 @@ defmodule PanWeb.ImageController do
     |> put_flash(:info, "Image deleted successfully.")
     |> redirect(to: image_path(conn, :index))
   end
-end
 
+
+  def cache_missing(conn, _params) do
+    PanWeb.Image.cache_missing()
+    render(conn, "done.html")
+  end
+
+
+  def remove_duplicates(conn, _params) do
+    duplicate_images = from(i in Image, group_by: [i.episode_id],
+                                        having: count(i.episode_id) > 1,
+                                        select: i.episode_id)
+                       |> Repo.all()
+
+    for episode_id <- duplicate_images do
+      from(i in Image, where: i.episode_id == ^episode_id,
+                       limit: 1)
+      |> Repo.all()
+      |> List.first()
+      |> Repo.delete()
+    end
+
+    duplicate_images = from(i in Image, group_by: [i.podcast_id],
+                                        having: count(i.podcast_id) > 1,
+                                        select: i.podcast_id)
+                       |> Repo.all()
+
+    for podcast_id <- duplicate_images do
+      from(i in Image, where: i.podcast_id == ^podcast_id,
+                       limit: 1)
+      |> Repo.all()
+      |> List.first()
+      |> Repo.delete()
+    end
+
+    duplicate_images = from(i in Image, group_by: [i.persona_id],
+                                        having: count(i.persona_id) > 1,
+                                        select: i.persona_id)
+                       |> Repo.all()
+
+    for persona_id <- duplicate_images do
+      from(i in Image, where: i.persona_id == ^persona_id,
+                       limit: 1)
+      |> Repo.all()
+      |> List.first()
+      |> Repo.delete()
+    end
+
+    render(conn, "done.html")
+  end
+end
