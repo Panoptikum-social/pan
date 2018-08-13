@@ -44,7 +44,7 @@ defmodule Pan.Mixfile do
      {:timex, "~> 3.3.0"}, # time conversion
      {:httpoison, "~> 1.2.0"}, # http client
      {:hackney, "1.12.1"}, # erlang http client, had to increase version here
-     {:distillery, "~> 1.5.3", runtime: false}, # release manager
+     {:distillery, "~> 2.0.0-rc.11", runtime: false}, # release manager
      {:quinn, "~> 1.1.2"}, # XML parser (another one)
      {:uuid, "~> 1.1.8"}, # UUID creation
      {:html_sanitize_ex, "1.3.0"}, # sanitizing html input (shownotes)
