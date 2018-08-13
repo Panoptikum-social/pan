@@ -139,7 +139,7 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject", :imageurl,
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
-    :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic,
+    :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic, :"rp:cta",
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
