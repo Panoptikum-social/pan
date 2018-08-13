@@ -252,7 +252,9 @@ defmodule Pan.Parser.Analyzer do
   ], do: %{}
 
 
-  def call(_, "image", [tag_atom, _, _]) when tag_atom in [:guid, :meta, :"content:encoded"], do: %{}
+  def call(_, "image", [tag_atom, _, _]) when tag_atom in [
+    :guid, :meta, :"content:encoded", :copyright
+  ], do: %{}
 
 # We expect several language tags
   def call(_, "tag", [:language, _, []]), do: %{}
