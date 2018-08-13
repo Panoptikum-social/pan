@@ -189,7 +189,7 @@ defmodule PanWeb.UserFrontendController do
 
     recommendations = from(s in Subscription, join: p in assoc(s, :podcast),
                                               where: s.user_id in ^other_subscriber_ids and
-                                                     not s.podcast_id in ^podcasts_subscribed_ids,
+                                                     s.podcast_id not in ^podcasts_subscribed_ids,
                                               group_by: p.id,
                                               select: [count(s.podcast_id), p.id, p.title],
                                               order_by: [desc: count(s.podcast_id)],
@@ -203,7 +203,7 @@ defmodule PanWeb.UserFrontendController do
                         |> List.delete(user.id)
 
     also_liked = from(l in Like, join: p in assoc(l, :podcast),
-                                 where: l.enjoyer_id in ^users_also_liking and not l.podcast_id in ^podcast_ids,
+                                 where: l.enjoyer_id in ^users_also_liking and l.podcast_id not in ^podcast_ids,
                                  group_by: p.id,
                                  select: [count(l.podcast_id), p.id, p.title],
                                  order_by: [desc: count(l.podcast_id)],

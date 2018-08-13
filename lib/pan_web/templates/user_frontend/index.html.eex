@@ -22,7 +22,7 @@
 
       <div role="tabpanel" class="tab-pane fade <%= if List.first(to_charlist(letter)) == 65, do: 'in active' %>"
                            id="<%= to_charlist(letter) |> List.first %>">
-        <%= for {group, outer} <- Enum.chunk(grouped_users[letter], 12, 12, []) |> Enum.with_index() do %>
+        <%= for {group, outer} <- Enum.chunk_every(grouped_users[letter], 12, 12, []) |> Enum.with_index() do %>
           <div class="row" style="line-height: 2.5;">
             <%= for {user, inner} <- Enum.with_index(group) do %>
               <div class="col-md-1">

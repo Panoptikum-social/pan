@@ -143,8 +143,8 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
-    :lame, :broadcastlimit, :"itunes:link", :"channelExportDir", :"atom:id", :"sy:updateBase",
-    :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :"html",
+    :lame, :broadcastlimit, :"itunes:link", :channelExportDir, :"atom:id", :"sy:updateBase",
+    :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :html,
     :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :itunesowner, :textInput, :refURL,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
@@ -166,13 +166,13 @@ defmodule Pan.Parser.Analyzer do
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher", :"webfeeds:cover",
-    :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :"desription",
-    :"collectiontype", :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
+    :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :desription,
+    :collectiontype, :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
-    :"Atom:link", :"ituneslink", :"itunescategory", :"jmutube:params", :"cstv2:level", :url,
+    :"Atom:link", :ituneslink, :itunescategory, :"jmutube:params", :"cstv2:level", :url,
     :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item", :"tahoetv:url_xml",
-    :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :"email",
+    :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :email,
     :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
@@ -190,7 +190,7 @@ defmodule Pan.Parser.Analyzer do
     :"cba:containsCopyright", :"media:thumbnail", :source, :"media:description", :programid, :a,
     :poddid, :"dcterms:modified", :"dcterms:created", :toPubDate, :audioId, :"atom:updated", :img,
     :"thr:total", :"ard:visibility", :"series:name", :"rawvoice:poster", :"georss:point", :length,
-    :"copyright", :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
+    :copyright, :"ard:programInformation", :"sc:chapters", :"xhtml:body", :"itunesu:category",
     :"wfw:content", :"wfw:comment", :"creativeCommons:license", :itemDate, :"ddn:id", :"dc:format",
     :"media:keywords", :"media:rights", :"ppg:enclosureLegacy", :"ppg:enclosureSecure", :timestamp,
     :"podcastRF:businessReference", :"podcastRF:magnetothequeID", :"podcastRF:stepID", :explicit,
@@ -199,10 +199,10 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:category", :"fyyd:episodeID", :"fyyd:podcastID", :"fyyd:origPubdate", :"geo:lat",
     :"geo:long", :"rawvoice:isHD", :"podcast:type", :"podcast:description", :"media:rating", :style,
     :"podfm:nodownload", :"podfm:downloadCount", :script, :"rte-days", :"rawvoice:embed", :showImage,
-    :"lastBuildDate", :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :"subTitleLink",
+    :lastBuildDate, :"merriam:shortdef", :"dc:title", :div, :"rawvoice:webm", :subTitleLink,
     :"app:edited", :"media:text", :"ecc:description", :guide, :"dc:description", :"itunes:keyword",
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
-    :"itunes:length", :"podcast:name", :"blip:user", :"username", :"dc:copyright", :"dc:type",
+    :"itunes:length", :"podcast:name", :"blip:user", :username, :"dc:copyright", :"dc:type",
     :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername", :mobile,
     :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id",
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language", :tags,
@@ -221,9 +221,9 @@ defmodule Pan.Parser.Analyzer do
     :"digicast:image", :"digicast:website", :"dc:language", :"atom:published", :"cfi:read", :pic,
     :"cfi:downloadurl", :"cfi:lastdownloadtime", :"cba:broadcast", :"aan:item_id", :"aan:segments",
     :"aan:cme", :keywords, :"itunes:link", :"podextra:humandate", :"podextra:player", :comment,
-    :"cba:duration", :"cba:attachmentID", :"im:image", :"episode_mp3", :"jwplayer:talkId", :artist,
-    :"aidsgov:transcript", :"foto_428", :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
-    :"posterous:author", :"companyLogo", :"coverimage", :"media:thumb", :"podcast:spotlight", :tag,
+    :"cba:duration", :"cba:attachmentID", :"im:image", :episode_mp3, :"jwplayer:talkId", :artist,
+    :"aidsgov:transcript", :foto_428, :"podcast:brandStory", :"thr:in-reply-to", :"media:hash",
+    :"posterous:author", :companyLogo, :coverimage, :"media:thumb", :"podcast:spotlight", :tag,
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev", :br,
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
@@ -233,22 +233,22 @@ defmodule Pan.Parser.Analyzer do
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
     :"dc:source",  :"meta:broadcastDate", :"aan:quiz_link", :"dc:modified", :"media:restriction",
     :"usenix:author", :"wfw:commentRSS", :"podcast:attachment", :"post-thumbnail", :bitrate,
-    :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt, :"itunes:artwork", :"descriptionApp",
+    :"rcr:profile", :"rcr:cover", :postthumbnail, :fxexcerpt, :"itunes:artwork", :descriptionApp,
     :"pentonplayer:playerlink", :"pentonplayer:downloadlink", :"pentonplayer:adTimes", :"cat5tv:id",
     :"epidsode-js-function", :"cat5tv:number", :"cat5tv:slug", :"cat5tv:title", :"cat5tv:year",
     :"cat5tv:season", :"cat5tv:genre", :"cat5tv:description", :"cat5tv:thumbnail", :"castfire:sh_id",
     :"castfire:show_id", :"castfire:network", :"castfire:content_producer", :"castfire:channel",
     :"castfire:date", :"castfire:filename", :"castfire:categories", :fullsummary, :newsid,
-    :"lj:replycount", :"xerosocial", :media, :language, :rawvoice, :"itunes:new-feed-url", :episode,
-    :"startDate", :"endDate", :"end_date", :"itunes:composer", :"usat:excerpt", :"meta:url",
-    :"primaryCat", :"advance:original", :"lastModDate",  :"sportspower:content", :"itunes:provider",
+    :"lj:replycount", :xerosocial, :media, :language, :rawvoice, :"itunes:new-feed-url", :episode,
+    :startDate, :endDate, :end_date, :"itunes:composer", :"usat:excerpt", :"meta:url",
+    :primaryCat, :"advance:original", :lastModDate,  :"sportspower:content", :"itunes:provider",
     :"sportspower:image", :"sportspower:thumbnail", :"s:story_id", :"app:category", :"app:keywords",
     :"geo:Point", :"tahoetv:file_flv", :"tahoetv:file_html", :"tahoetv:file_player_graphic",
     :"itunes:synopsis", :"customtag-image", :"customtag-summary", :"customtag-duration", :season,
-    :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :"modifiedDate", :"acast:episodeId",
+    :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :modifiedDate, :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
-    :"social:guest_name", :thumbnail, :"fecha", :"pthumbnail", :"custom:timestamp", :"pp:media",
-    :"usat:shortHeadline", :"displaydate", :"pingback:receiver", :maxImgUrl, :"itunes:album"
+    :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
+    :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album"
   ], do: %{}
 
 
@@ -275,7 +275,7 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
-    :"managingEditor", :managingeditor, :"manageEditor"
+    :managingEditor, :managingeditor, :manageEditor
   ] do
     Iterator.parse(%{}, :podcast_contributor, "managing_editor", value)
   end
@@ -310,7 +310,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: H.to_255(value)}
 
   def call(_, "episode", [tag_atom, attr, _]) when tag_atom in [
-    :"itunes:image", :"iTunes:image", :"itunes_image"
+    :"itunes:image", :"iTunes:image", :itunes_image
   ], do: %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
 
   def call(_, "episode", [tag_atom, _, value]) when tag_atom in [
@@ -495,7 +495,7 @@ defmodule Pan.Parser.Analyzer do
   def call("author", [:"itunes:name",     _, []]), do: %{}
   def call("author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
   def call("author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
-  def call("author", [:"name",            _, [value]]), do: %{name: H.to_255(value)}
+  def call("author", [:name,            _, [value]]), do: %{name: H.to_255(value)}
   def call("author", [:"itunes:email",    _, []]), do: %{}
   def call("author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("author", [:"atom:email",      _, [value]]), do: %{email: value}

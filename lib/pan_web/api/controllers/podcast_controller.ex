@@ -275,7 +275,7 @@ defmodule PanWeb.Api.PodcastController do
 
     podcast_ids = from(s in Subscription, join: p in assoc(s, :podcast),
                                           where: s.user_id in ^other_subscriber_ids and
-                                                 not s.podcast_id in ^podcasts_subscribed_ids,
+                                                 s.podcast_id not in ^podcasts_subscribed_ids,
                                           group_by: p.id,
                                           select: p.id,
                                           order_by: [desc: count(s.podcast_id)],
@@ -304,7 +304,7 @@ defmodule PanWeb.Api.PodcastController do
 
     podcast_ids = from(l in Like, join: p in assoc(l, :podcast),
                                   where: l.enjoyer_id in ^users_also_liking and
-                                         not l.podcast_id in ^podcast_i_like_ids,
+                                         l.podcast_id not in ^podcast_i_like_ids,
                                   group_by: p.id,
                                   select: p.id,
                                   order_by: [desc: count(l.podcast_id)],

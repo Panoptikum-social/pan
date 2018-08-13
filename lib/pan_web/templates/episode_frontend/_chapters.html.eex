@@ -36,7 +36,7 @@
                                                   conn: @conn %>
     <% end %>
   <% else %>
-    <%= for group <- Enum.chunk(@episode.chapters, 4, 4, []) do %>
+    <%= for group <- Enum.chunk_every(@episode.chapters, 4, 4, []) do %>
       <div class="row">
         <%= for chapter <- group do %>
           <div class="col-md-3">

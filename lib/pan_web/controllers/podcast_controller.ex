@@ -25,7 +25,7 @@ defmodule PanWeb.PodcastController do
                                                    select:   a.podcast_id)
                   |> Repo.all
 
-    podcasts = from(p in Podcast, where: not p.id in ^podcast_ids and is_false(p.blocked))
+    podcasts = from(p in Podcast, where: p.id not in ^podcast_ids and is_false(p.blocked))
               |> Repo.all
 
     category = Repo.get_by(Category, title: "Unsorted")
@@ -291,7 +291,7 @@ defmodule PanWeb.PodcastController do
                   |> Repo.all
 
     podcasts_without_languages = from(p in Podcast, where: is_false(p.update_paused) and
-                                                           not p.id in ^podcast_ids)
+                                                           p.id not in ^podcast_ids)
                                  |> Repo.all()
                                  |> Enum.shuffle()
 

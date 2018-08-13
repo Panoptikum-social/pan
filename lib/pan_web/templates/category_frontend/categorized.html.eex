@@ -28,7 +28,7 @@
 <div class="tab-content">
   <%= for {category, index} <- Enum.with_index(@categories) do %>
     <div class="tab-pane fade <%= if index == 0,do: 'active in' %>" id="category-<%= category.id %>">
-      <%= for group <- Enum.chunk(category.podcasts, 2, 2, []) do %>
+      <%= for group <- Enum.chunk_every(category.podcasts, 2, 2, []) do %>
         <div class="row">
           <%= for podcast <- group do %>
           <%= render PanWeb.PodcastFrontendView, "_podcast_widget.html",

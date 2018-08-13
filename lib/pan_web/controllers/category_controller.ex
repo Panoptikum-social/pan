@@ -121,7 +121,7 @@ defmodule PanWeb.CategoryController do
                         |> Repo.all()
 
     from(r in "categories_podcasts", where: r.category_id == ^from_id and
-                                            not r.podcast_id in ^already_in_to_ids)
+                                            r.podcast_id not in ^already_in_to_ids)
     |> Repo.update_all(set: [category_id: to_id])
 
     from(r in "categories_podcasts", where: r.category_id == ^from_id and
@@ -155,7 +155,7 @@ defmodule PanWeb.CategoryController do
 
     podcast_ids = Enum.map(category.podcasts, fn(podcast) -> podcast.id end)
 
-    podcasts_unassigned = Repo.all(from p in Podcast, where: not p.id in ^podcast_ids)
+    podcasts_unassigned = Repo.all(from p in Podcast, where: p.id not in ^podcast_ids)
 
     render conn, "get_podcasts.json", podcasts_assigned: category.podcasts,
                                       podcasts_unassigned: podcasts_unassigned

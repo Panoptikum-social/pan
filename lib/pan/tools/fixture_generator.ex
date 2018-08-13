@@ -63,12 +63,12 @@ defmodule Pan.Tools.FixtureGenerator do
 
     persona_ids = ids_with_gigs ++ ids_with_engagements
 
-    (from d in PanWeb.Delegation, where: not d.persona_id in ^persona_ids)
+    (from d in PanWeb.Delegation, where: d.persona_id not in ^persona_ids)
     |> Repo.delete_all()
-    (from d in PanWeb.Delegation, where: not d.delegate_id in ^persona_ids)
+    (from d in PanWeb.Delegation, where: d.delegate_id not in ^persona_ids)
     |> Repo.delete_all()
 
-    (from p in PanWeb.Persona, where: not p.id in ^persona_ids)
+    (from p in PanWeb.Persona, where: p.id not in ^persona_ids)
     |> Repo.delete_all()
   end
 end
