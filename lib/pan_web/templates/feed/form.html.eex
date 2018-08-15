@@ -54,11 +54,28 @@
       <%= error_tag f, :feed_generator %>
     </div>
 
+    <div class="form-group col-md-6">
+      <%= label f, :etag, class: "control-label" %>
+      <%= text_input f, :etag, class: "form-control" %>
+      <%= error_tag f, :etag %>
+    </div>
 
-    <div class="form-group col-md-1">
+    <div class="form-group col-md-6">
+      <%= label f, :last_modified, class: "control-label" %>
+      <%= text_input f, :last_modified, class: "form-control" %>
+      <%= error_tag f, :last_modified %>
+    </div>
+
+    <div class="form-group col-md-6">
       <%= label f, :podcast_id, class: "control-label" %>
       <%= text_input f, :podcast_id, class: "form-control" %>
       <%= error_tag f, :podcast_id %>
+    </div>
+
+    <div class="form-group col-md-6">
+      <%= label f, :truest_last_modified, class: "control-label" %>
+      <%= checkbox f, :truest_last_modified, class: "form-control" %>
+      <%= error_tag f, :truest_last_modified %>
     </div>
   </div>
 

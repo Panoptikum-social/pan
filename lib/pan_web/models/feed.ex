@@ -12,6 +12,9 @@ defmodule PanWeb.Feed do
     field :last_page_url, :string
     field :hub_link_url, :string
     field :feed_generator, :string
+    field :etag, :string
+    field :last_modified, :naive_datetime
+    field :trust_last_modified, :boolean
     timestamps()
 
     belongs_to :podcast, PanWeb.Podcast
@@ -21,8 +24,9 @@ defmodule PanWeb.Feed do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:self_link_url, :self_link_title, :next_page_url, :prev_page_url,
-                     :first_page_url, :last_page_url, :hub_link_url, :feed_generator, :podcast_id])
+    |> cast(params, [:self_link_url, :self_link_title, :next_page_url, :prev_page_url, :etag,
+                     :first_page_url, :last_page_url, :hub_link_url, :feed_generator, :podcast_id,
+                     :last_modified, :trust_last_modified])
     |> validate_required([:self_link_url])
     |> cast_assoc(:alternate_feeds)
   end

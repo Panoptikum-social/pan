@@ -44,4 +44,9 @@ defmodule Pan.Parser.Feed do
         {:ok, feed}
     end
   end
+
+
+  def needs_update(podcast_id) do
+     _feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
+  end
 end

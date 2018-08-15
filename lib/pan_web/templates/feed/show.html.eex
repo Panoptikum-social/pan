@@ -26,6 +26,15 @@
   <dt>Feed generator</dt>
   <dd><%= @feed.feed_generator %></dd>
 
+  <dt>E-tag</dt>
+  <dd><%= @feed.etag %></dd>
+
+  <dt>Last Modified</dt>
+  <dd><%= @feed.last_modified %></dd>
+
+  <dt>Last Modified Trustworthy?</dt>
+  <dd><%= @feed.trust_last_modified %></dd>
+
   <dt>Podcast</dt>
   <dd><%= @feed.podcast_id %></dd>
 </dl>
