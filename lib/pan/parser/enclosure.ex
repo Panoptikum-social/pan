@@ -1,5 +1,5 @@
 defmodule Pan.Parser.Enclosure do
-  use Pan.Web, :controller
+  alias Pan.Repo
 
   def get_or_insert(enclosure_map, episode_id) do
     case get_enclosure(episode_id, enclosure_map) do

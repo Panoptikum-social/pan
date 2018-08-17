@@ -1,13 +1,15 @@
 defmodule Pan.Parser.AlternateFeed do
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
+  alias PanWeb.AlternateFeed
 
   def get_or_insert(feed_id, alternate_feed_map) do
-    case (from a in PanWeb.AlternateFeed, where: a.feed_id == ^feed_id and
-                                                 a.url == ^alternate_feed_map[:url],
-                                          limit: 1)
+    case (from a in AlternateFeed, where: a.feed_id == ^feed_id and
+                                          a.url == ^alternate_feed_map[:url],
+                                   limit: 1)
          |> Repo.one() do
       nil ->
-        %PanWeb.AlternateFeed{feed_id: feed_id}
+        %AlternateFeed{feed_id: feed_id}
         |> Map.merge(alternate_feed_map)
         |> Repo.insert()
       alternate_feed ->

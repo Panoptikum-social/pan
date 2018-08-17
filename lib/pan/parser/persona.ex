@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Persona do
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
 
   def get_or_insert(persona_map) do
     # The idea is to set the pid to be imported as strong as possible

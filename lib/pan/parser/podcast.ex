@@ -1,10 +1,6 @@
 defmodule Pan.Parser.Podcast do
-  use Pan.Web, :controller
   alias Pan.Repo
-  alias Pan.Parser.RssFeed
-  alias Pan.Parser.Persistor
-  alias Pan.Parser.Language
-  alias Pan.Parser.Feed
+  alias Pan.Parser.{Feed, Language, Persistor, RssFeed}
   alias PanWeb.Podcast
   require Logger
 

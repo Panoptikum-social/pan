@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Episode do
-  use Pan.Web, :controller
-  alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
+  import Ecto.Query
   alias Pan.Repo
+  alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
   require Logger
 
   def get_or_insert(episode_map, podcast_id) do

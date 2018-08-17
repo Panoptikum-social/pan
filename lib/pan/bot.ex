@@ -1,5 +1,7 @@
 defmodule Pan.Bot do
-  use Pan.Web, :controller
+  import Ecto.Query
+  import PanWeb.Router.Helpers
+  alias Pan.Repo
   alias PanWeb.Podcast
 
   def whitelist_urls do
@@ -91,7 +93,7 @@ defmodule Pan.Bot do
     podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
 
     from(p in Podcast, where: p.id in ^podcast_ids, preload: :episodes)
-    |> Pan.Repo.all
+    |> Repo.all
   end
 
   defp facebook_request_url(path, params) do

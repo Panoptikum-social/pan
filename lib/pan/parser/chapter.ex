@@ -1,5 +1,4 @@
 defmodule Pan.Parser.Chapter do
-  use Pan.Web, :controller
   alias Pan.Repo
 
   def get_or_insert(chapter_map, episode_id) do

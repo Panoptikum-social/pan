@@ -1,16 +1,7 @@
 defmodule Pan.Parser.Persistor do
-  use Pan.Web, :controller
   alias Pan.Repo
-  alias Pan.Parser.Author
-  alias Pan.Parser.Podcast
-  alias Pan.Parser.Episode
-  alias Pan.Parser.Contributor
-  alias Pan.Parser.Feed
-  alias Pan.Parser.Category
-  alias Pan.Parser.AlternateFeed
-  alias Pan.Parser.Language
-  alias Pan.Parser.PodcastContributor
-
+  alias Pan.Parser.{AlternateFeed, Author, Category, Contributor, Episode,
+                    Feed, Language, Podcast, PodcastContributor}
 
   def initial_import(map, _url \\ nil) do
     podcast_map = Map.drop(map, [:episodes, :feed, :contributors,

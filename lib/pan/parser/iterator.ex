@@ -1,6 +1,5 @@
 defmodule Pan.Parser.Iterator do
-  alias Pan.Parser.Analyzer
-  alias Pan.Parser.Helpers
+  alias Pan.Parser.{Analyzer, Helpers}
   require Logger
 
 # Actual feed parsing: Now the fun begins

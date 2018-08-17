@@ -1,5 +1,6 @@
 defmodule Pan.Parser.PodcastContributor do
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
   alias Pan.Parser.Persona
   alias PanWeb.Engagement
 

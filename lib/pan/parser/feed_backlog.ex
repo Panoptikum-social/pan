@@ -1,6 +1,6 @@
 defmodule Pan.Parser.FeedBacklog do
-
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
 
   def upload do
     stream = File.stream!("materials/backlog.xml", [:read, :utf8])

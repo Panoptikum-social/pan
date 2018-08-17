@@ -1,8 +1,7 @@
 defmodule Pan.Parser.Feed do
-  use Pan.Web, :controller
+  alias Pan.Repo
   alias Pan.Parser.AlternateFeed
   alias PanWeb.{Feed, Podcast}
-  alias Pan.Repo
 
   def get_or_insert(feed_map, podcast_id) do
     case Repo.get_by(Feed, podcast_id: podcast_id) do

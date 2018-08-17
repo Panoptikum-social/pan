@@ -1,9 +1,8 @@
 defmodule Pan.Parser.Contributor do
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
   alias Pan.Parser.Persona
-  alias PanWeb.Gig
-  alias PanWeb.Engagement
-
+  alias PanWeb.{Engagement, Gig}
 
   def persist_many(contributors_map, %PanWeb.Podcast{} = podcast) do
     if contributors_map do

@@ -1,9 +1,9 @@
 defmodule Pan.Search do
-  require Logger
-  alias PanWeb.{Category, Episode, Persona, Podcast, User}
-  alias Pan.Repo
   import Ecto.Query, only: [from: 2]
   import Ecto.Convenience, only: [is_false: 1]
+  alias Pan.Repo
+  alias PanWeb.{Category, Episode, Persona, Podcast, User}
+  require Logger
 
   def push_missing do
     category_ids = from(c in Category, where: is_false(c.elastic),

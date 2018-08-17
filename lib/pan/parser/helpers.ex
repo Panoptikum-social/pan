@@ -1,14 +1,13 @@
 defmodule Pan.Parser.Helpers do
-  use Pan.Web, :controller
-  use Timex
+  import Ecto.Query
+  alias Pan.Repo
   require Logger
+  use Timex
 
   def boolify(explicit) do
     case explicit do
-      "yes" ->
-        true
-      _ ->
-        false
+      "yes" -> true
+      _     -> false
     end
   end
 

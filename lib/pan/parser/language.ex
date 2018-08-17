@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Language do
-  use Pan.Web, :controller
+  import Ecto.Query
+  alias Pan.Repo
 
   def get_or_insert(language_map) do
     case Repo.get_by(PanWeb.Language, shortcode: language_map[:shortcode]) do

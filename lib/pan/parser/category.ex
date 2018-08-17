@@ -1,8 +1,7 @@
 defmodule Pan.Parser.Category do
-  use Pan.Web, :controller
+  import Ecto.Query
   alias Pan.Repo
   alias PanWeb.Category
-
 
   def get_or_insert(title, nil) do
     case Repo.one(from c in Category, where: c.title == ^title and is_nil(c.parent_id)) do

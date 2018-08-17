@@ -1,7 +1,6 @@
 defmodule Pan.Parser.RssFeed do
+  alias Pan.Repo
   alias Pan.Parser.{AlternateFeed, Download, Iterator, Persistor}
-
-  use Pan.Web, :controller
   require Logger
 
   def initial_import(url, feed_id \\ 0, pagecount \\ 1) do
