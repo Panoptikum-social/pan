@@ -7,6 +7,8 @@ defmodule Pan.Updater.Podcast do
   require Logger
 
   def import_new_episodes(podcast, current_user \\ nil) do
+    Logger.info("\n\e[96m === #{podcast.id} ⬇ #{podcast.title} ===\e[0m")
+
     with {:ok, _podcast} <- set_next_update(podcast),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast),

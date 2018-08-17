@@ -7,7 +7,6 @@ defmodule Pan.Updater.RssFeed do
 
   def import_to_map(feed_xml, url, podcast_id \\ 0) do
     url = String.trim(url)
-    Logger.info("\n\e[96m === #{podcast_id} ⬇ #{url} ===\e[0m")
 
     with feed_xml <- clean_up_xml(feed_xml),
          {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
