@@ -25,7 +25,7 @@ defmodule Pan.Updater.Feed do
   def check_headers(_, feed, nil, nil) do
     Feed.changeset(feed, %{no_headers_avaiable: true})
     |> Repo.update()
-    {:ok, "go_on"}
+    {:ok, "go on"}
   end
 
   def check_headers(podcast, feed, nil, last_modified_header) do

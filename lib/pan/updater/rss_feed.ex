@@ -10,7 +10,7 @@ defmodule Pan.Updater.RssFeed do
     Logger.info("\n\e[96m === #{podcast_id} ⬇ #{url} ===\e[0m")
 
     with feed_xml <- clean_up_xml(feed_xml),
-         {:ok, "go_on"} <- check_for_changes(feed_xml, podcast_id),
+         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
          {:ok, feed_map} <- xml_to_map(feed_xml) do
       run_the_parser(feed_map, url)
     else
@@ -38,7 +38,7 @@ defmodule Pan.Updater.RssFeed do
         RssFeed.changeset(rss_feed, %{content: feed_xml})
         |> Repo.update()
 
-        {:ok, "go_on"}
+        {:ok, "go on"}
       else
         {:done, "nothing to do"}
       end
@@ -46,7 +46,7 @@ defmodule Pan.Updater.RssFeed do
       %RssFeed{content: feed_xml, podcast_id: podcast_id}
       |> Repo.insert()
 
-      {:ok, "go_on"}
+      {:ok, "go on"}
     end
   end
 

@@ -43,7 +43,7 @@ defmodule Pan.Parser.RssFeed do
                    |> Pan.Parser.Helpers.fix_character_code_strings()
                    |> String.trim()
 
-        with  {:ok, "go_on"} <- check_for_changes(feed_xml, logging_id, check_changes),
+        with  {:ok, "go on"} <- check_for_changes(feed_xml, logging_id, check_changes),
               {:ok, feed_map} <- xml_to_map(feed_xml) do
           parse_to_map(feed_map, url)
         else
@@ -71,20 +71,20 @@ defmodule Pan.Parser.RssFeed do
         nil ->
           %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
           |> Repo.insert()
-          {:ok, "go_on"}
+          {:ok, "go on"}
         rss_feed ->
           if count_changes(rss_feed.content, feed_xml) > 3 do
             rss_feed
             |> PanWeb.RssFeed.changeset(%{content: feed_xml})
             |> Repo.update()
 
-            {:ok, "go_on"}
+            {:ok, "go on"}
           else
             {:done, "nothing to do"}
           end
       end
     else
-      {:ok, "go_on"}
+      {:ok, "go on"}
     end
   end
 
