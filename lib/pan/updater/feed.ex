@@ -1,6 +1,7 @@
 defmodule Pan.Updater.Feed do
   alias Pan.Repo
   alias PanWeb.Feed
+  alias Pan.Parser.Helpers, as: H
   require Logger
 
   def needs_update(feed, podcast) do
@@ -31,9 +32,7 @@ defmodule Pan.Updater.Feed do
   end
 
   def check_headers(podcast, feed, nil, last_modified_header) do
-    {:ok, last_modified} =
-      last_modified_header
-      |> Timex.parse("{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Zname}")
+    last_modified = H.to_naive_datetime(last_modified_header)
 
     if feed.trust_last_modified and last_modified == feed.last_modified do
       # last_modified unchanged and trustworthy
