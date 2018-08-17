@@ -14,7 +14,7 @@ defmodule Pan.Updater.Feed do
 
       options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
 
-      {:ok, %HTTPoison.Response{status_code: 200, headers: headers}} =
+      {:ok, %HTTPoison.Response{headers: headers}} =
         HTTPoison.head(feed.self_link_url, headers, options)
 
       headermap = Enum.into(headers, %{})
