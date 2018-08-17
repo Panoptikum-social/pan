@@ -154,15 +154,14 @@ defmodule PanWeb.Podcast do
 
 
   def import_stale_podcasts() do
-    podcast_ids = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                            is_false(p.update_paused) and is_false(p.retired),
-                                     order_by: [asc: :next_update],
-                                     select: p.id,
-                                     limit: 2000)
+    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                         is_false(p.update_paused) and is_false(p.retired),
+                                  order_by: [asc: :next_update],
+                                  limit: 2000)
                |> Repo.all()
-    Logger.info "=== Started importing " <> to_string(length(podcast_ids)) <> " podcasts ==="
+    Logger.info "=== Started importing #{length(podcasts)} podcasts ==="
 
-    for podcast_id <- podcast_ids, do: Pan.Updater.Podcast.import_new_episodes(podcast_id)
+    for podcast <- podcasts, do: Pan.Updater.Podcast.import_new_episodes(podcast)
     Logger.info "=== Import job finished ==="
   end
 

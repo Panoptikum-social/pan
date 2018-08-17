@@ -302,18 +302,14 @@ defmodule PanWeb.PodcastController do
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
 
-    podcast_ids = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                            is_false(p.update_paused) and is_false(p.retired),
-                                     order_by: [asc: :next_update],
-                                     select: p.id,
-                                     limit: 2000)
+    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                         is_false(p.update_paused) and is_false(p.retired),
+                                  order_by: [asc: :next_update],
+                                  limit: 2000)
                   |> Repo.all()
 
-    for podcast_id <- podcast_ids do
-      Pan.Updater.Podcast.import_new_episodes(podcast_id, current_user)
-    end
+    for podcast <- podcasts, do: Pan.Updater.Podcast.import_new_episodes(podcast, current_user)
     Logger.info "=== Manual triggered podcast update finished ==="
-
 
     put_flash(conn, :info, "Podcasts updated successfully.")
     |> redirect(to: podcast_path(conn, :index))

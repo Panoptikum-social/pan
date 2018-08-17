@@ -29,34 +29,6 @@ defmodule Pan.Parser.Podcast do
     |> Repo.update()
   end
 
-
-  def delta_import(id) do
-    with {:ok, feed} <- Feed.get_by_podcast_id(id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, id, true), # do check for changes!
-         {:ok, _} <- Persistor.delta_import(map, id),
-         {:ok, _} <- unpause_and_reset_failure_count(id) do
-      {:ok, "Podcast importet"}
-    else
-      {:redirect, redirect_target} ->
-        Feed.update_with_redirect_target(id, Pan.Parser.Helpers.to_255(redirect_target))
-        delta_import(id)
-
-      {:error, :not_found} ->
-        increase_failure_count(id)
-        message = "=== Podcast #{inspect id} has no feed! ==="
-        Logger.error(message)
-        {:error, message}
-
-      {:error, message} ->
-        increase_failure_count(id)
-        {:error, message}
-
-      {:done, "nothing to do"} ->
-        {:ok, "nothing to do"}
-    end
-  end
-
-
   def update_from_feed(id) do
     with {:ok, _} <- send_download_message(id),
          {:ok, feed} <- Feed.get_by_podcast_id(id),
@@ -70,10 +42,10 @@ defmodule Pan.Parser.Podcast do
     else
       {:redirect, redirect_target} ->
         Feed.update_with_redirect_target(id, redirect_target)
-        delta_import(id)
+        update_from_feed(id)
 
       {:error, :not_found} ->
-        message = "=== Podcast #{inspect id} has no feed! ==="
+        message = "=== Podcast #{id} has no feed! ==="
         Logger.error(message)
         {:error, message}
 
@@ -100,14 +72,14 @@ defmodule Pan.Parser.Podcast do
 
 
   def send_download_message(id) do
-      PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
+      PanWeb.Endpoint.broadcast("podcasts:#{id}",
                                 "notification", %{content: "<i class='fa fa-download'></i> ...", type: "success"})
       {:ok, "nothing to do"}
   end
 
 
   def send_parsing_message(id) do
-      PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(id),
+      PanWeb.Endpoint.broadcast("podcasts:#{id}",
                                 "notification", %{content: "<i class='fa fa-feed'></i> ...", type: "success"})
       {:ok, "nothing to do"}
   end
@@ -120,14 +92,12 @@ defmodule Pan.Parser.Podcast do
                   " <i class='fa fa-podcast'></i> " <> podcast.title,
         type: "info"}
 
-    PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
-                              "notification", notification)
+    PanWeb.Endpoint.broadcast("podcasts:#{podcast.id}", "notification", notification)
 
     notification =
       %{content: "You want to refresh your browser window now [F5]!",
         type: "warning"}
-    PanWeb.Endpoint.broadcast("podcasts:" <> Integer.to_string(podcast.id),
-                              "notification", notification)
+    PanWeb.Endpoint.broadcast("podcasts:#{podcast.id}", "notification", notification)
     {:ok, "nothing to do"}
   end
 
