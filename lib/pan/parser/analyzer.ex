@@ -139,17 +139,17 @@ defmodule Pan.Parser.Analyzer do
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
     :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject", :imageurl,
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
-    :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic, :"rp:cta",
+    :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic, :"rp:cta", :wideImage,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
     :"ppg:seriesDetails", :"ppg:systemRef", :"ppg:network", :cloud, :"googleplay:image", :style,
     :"googleplay:author", :"googleplay:explicit", :feed, :webmaster, :ilink, :ffmpeg, :domain,
     :lame, :broadcastlimit, :"itunes:link", :channelExportDir, :"atom:id", :"sy:updateBase",
     :"openSearch:totalResults", :"openSearch:startIndex", :"openSearch:itemsPerPage", :html,
-    :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType,
+    :"ard:programInformation", :"dc:creator", :"itunes:complete", :feedType, :"Subject-Taxonomy",
     :changefreq, :"dc:title", :"feedburner:browserFriendly", :itunesowner, :textInput, :refURL,
     :"podcastRF:originStation", :"itunes:explicit", :meta, :"dc:rights", :skipDays, :a, :p, :br, :b,
     :"sc:totalAvailable", :skipHours, :keywords, :script, :"googleplay:block", :guid, :odToken,
-    :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id",
+    :"itunes:name", :"amp:logo", :"itunes:catago", :"xhtml:meta", :"avms:id", :"Drugs-Taxonomy",
     :"blogChannel:blogRoll", :"blogChannel:blink", :"thespringbox:skin", :"admin:generatorAgent",
     :"feedpress:podcastId", :summary, :rating, :Category, :"amp:background", :"amp:banner",
     :"amp:halfBanner", :"amp:networkLogo", :"amp:networkSmallLogo", :"amp:networkHalfBanner",
@@ -177,7 +177,7 @@ defmodule Pan.Parser.Analyzer do
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
-    :"syn:updateFrequency", :"syn:updateBase", :"acast:item"
+    :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -204,7 +204,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:group", :"rawvoice:donate", :"podcast:title", :"media:copyright", :"pingback:server",
     :"itunes:length", :"podcast:name", :"blip:user", :username, :"dc:copyright", :"dc:type",
     :"pingback:target", :"trackback:ping", :filename, :"blip:userid", :"blip:safeusername", :mobile,
-    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id",
+    :"blip:showpath", :"blip:show", :"blip:showpage", :"blip:picture", :"blip:posts_id", :wideImage,
     :"blip:item_id", :"blip:item_type", :"blip:rating", :"blip:datestamp", :"blip:language", :tags,
     :"blip:adChannel", :"blip:categories", :"blip:license", :"blip:puredescription", :"dc:rights",
     :"blip:thumbnail_src", :"blip:", :"blip:embedUrl", :"blip:embedLookup", :"blip:runtime", :draft,
@@ -248,7 +248,8 @@ defmodule Pan.Parser.Analyzer do
     :"apple-wallpapers:thumbnail", :"apple-wallpapers:image", :modifiedDate, :"acast:episodeId",
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
-    :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album"
+    :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
+    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy"
   ], do: %{}
 
 
