@@ -1,35 +1,34 @@
 defmodule Pan.Updater.Podcast do
   alias Pan.Repo
   alias Pan.Parser.Helpers, as: H
-  alias Pan.Parser.{Feed, RssFeed, Persistor}
+  alias Pan.Parser.{Download, Feed, Persistor}
+  alias Pan.Updater.{RssFeed}
   alias PanWeb.{Endpoint, Podcast}
   require Logger
 
   def import_new_episodes(podcast, current_user \\ nil) do
     with {:ok, _podcast} <- set_next_update(podcast),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
-         # do check for changes!
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, podcast.id, true),
+         {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast),
+         {:ok, feed_xml} <- Download.download(feed.self_link_url),
+         {:ok, map} <- RssFeed.import_to_map(feed_xml, feed.self_link_url, podcast.id),
          {:ok, _} <- Persistor.delta_import(map, podcast.id),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
       notify_user(current_user, {:ok, "imported"}, podcast)
+      {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
       {:redirect, redirect_target} ->
         Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target))
         import_new_episodes(podcast, current_user)
 
-      {:error, :not_found} ->
-        increase_failure_count(podcast)
-        message = "=== Podcast #{podcast.id} has no feed! ==="
-        Logger.error(message)
-        notify_user(current_user, {:error, message}, podcast)
-
       {:error, message} ->
         increase_failure_count(podcast)
+        Logger.error(message)
         notify_user(current_user, {:error, message}, podcast)
+        {:error, message}
 
       {:done, "nothing to do"} ->
-        nil
+        {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
   end
 

@@ -1,7 +1,9 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
-  alias PanWeb.{Category, Delegation, Engagement, Episode, FeedBacklog, Follow, Gig, Image, Language,
-                Like, Manifestation, Opml, Persona, Podcast, Recommendation, Subscription, User}
+  alias PanWeb.{Category, Delegation, Engagement, Episode, Feed,
+                FeedBacklog, Follow, Gig, Image, Language,
+                Like, Manifestation, Opml, Persona, Podcast,
+                Recommendation, Subscription, User}
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
@@ -51,6 +53,16 @@ defmodule PanWeb.MaintenanceController do
 
     total_podcasts = Repo.aggregate(Podcast, :count, :id)
                      |> delimit_integer(" ")
+
+    feeds_without_headers = from(f in Feed, where: f.no_headers_available == ^true)
+                            |> Repo.aggregate(:count, :id)
+
+    feeds_with_etag = from(f in Feed, where: not is_nil(f.etag))
+                      |> Repo.aggregate(:count, :id)
+
+    feeds_with_last_modified = from(f in Feed, where: not is_nil(f.last_modified))
+                      |> Repo.aggregate(:count, :id)
+
 
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
@@ -102,7 +114,6 @@ defmodule PanWeb.MaintenanceController do
                           |> Repo.aggregate(:count, :id)
     personas_missing = personas_with_image - persona_images
 
-
     render(conn, "stats.html", stale_podcasts: stale_podcasts,
                                inactive_podcasts: inactive_podcasts,
                                retired_podcasts: retired_podcasts,
@@ -128,10 +139,11 @@ defmodule PanWeb.MaintenanceController do
                                unindexed_episodes: unindexed_episodes,
                                podcasts_missing: podcasts_missing,
                                episodes_missing: episodes_missing,
-                               personas_missing: personas_missing)
-
+                               personas_missing: personas_missing,
+                               feeds_without_headers: feeds_without_headers,
+                               feeds_with_etag: feeds_with_etag,
+                               feeds_with_last_modified: feeds_with_last_modified)
   end
-
 
   defp delimit_integer(number, delimiter) do
     abs(number)

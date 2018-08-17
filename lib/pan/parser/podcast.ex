@@ -44,7 +44,7 @@ defmodule Pan.Parser.Podcast do
         Feed.update_with_redirect_target(id, redirect_target)
         update_from_feed(id)
 
-      {:error, :not_found} ->
+      {:error, "not found"} ->
         message = "=== Podcast #{id} has no feed! ==="
         Logger.error(message)
         {:error, message}

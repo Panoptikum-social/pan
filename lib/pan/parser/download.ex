@@ -113,7 +113,7 @@ defmodule Pan.Parser.Download do
       "no_headers" ->
         []
       _ ->
-        ["User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0"]
+        ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"]
     end
 
     options = case option do

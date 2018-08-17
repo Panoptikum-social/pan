@@ -249,10 +249,10 @@ defmodule PanWeb.PodcastController do
 
 
   def delta_import(conn, %{"id" => id}) do
-    id = String.to_integer(id)
+    podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
 
-    case Pan.Updater.Podcast.import_new_episodes(id, current_user) do
+    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user) do
       {:ok,    message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end

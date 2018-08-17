@@ -35,6 +35,9 @@
   <dt>Last Modified Trustworthy?</dt>
   <dd><%= @feed.trust_last_modified %></dd>
 
+  <dt>No Headers available for faster feed update (ETag, last modified)!</dt>
+  <dd><%= @feed.no_headers_available %></dd>
+
   <dt>Podcast</dt>
   <dd><%= @feed.podcast_id %></dd>
 </dl>

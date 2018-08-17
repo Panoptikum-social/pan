@@ -94,6 +94,15 @@
       <tr><th>Languages</th>
           <td>total</td>
           <td class="text-right"><%= @total_languages %></td></tr>
+      <tr><th>Feeds</th>
+          <td>without headers</td>
+          <td class="text-right"><%= @feeds_without_headers %></td></tr>
+      <tr><th></th>
+          <td>with etag</td>
+          <td class="text-right"><%= @feeds_with_etag %></td></tr>
+      <tr><th></th>
+          <td>with last modified</td>
+          <td class="text-right"><%= @feeds_with_last_modified %></td></tr>
     </tbody>
   </table>
 </div>

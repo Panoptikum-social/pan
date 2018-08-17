@@ -255,7 +255,13 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&#xDC;", "Ü")
     |> String.replace("&#xFC;", "ü")
     |> String.replace("&#xDF;", "ß")
-      end
+  end
+
+
+  def fix_encoding(xml) do
+    if String.valid?(xml), do: xml, else: :iconv.convert("ISO-8859-1", "utf-8", xml)
+  end
+
 
   def to_255(text) do
     if text && byte_size(text) > 255 do

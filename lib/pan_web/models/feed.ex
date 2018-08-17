@@ -15,6 +15,7 @@ defmodule PanWeb.Feed do
     field :etag, :string
     field :last_modified, :naive_datetime
     field :trust_last_modified, :boolean
+    field :no_headers_available, :boolean
     timestamps()
 
     belongs_to :podcast, PanWeb.Podcast
@@ -26,7 +27,7 @@ defmodule PanWeb.Feed do
     struct
     |> cast(params, [:self_link_url, :self_link_title, :next_page_url, :prev_page_url, :etag,
                      :first_page_url, :last_page_url, :hub_link_url, :feed_generator, :podcast_id,
-                     :last_modified, :trust_last_modified])
+                     :last_modified, :trust_last_modified, :no_headers_available])
     |> validate_required([:self_link_url])
     |> cast_assoc(:alternate_feeds)
   end
