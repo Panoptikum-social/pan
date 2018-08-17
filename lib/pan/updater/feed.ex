@@ -29,7 +29,7 @@ defmodule Pan.Updater.Feed do
   end
 
   def check_headers(podcast, feed, nil, last_modified_header) do
-    last_modified =
+    {:ok, last_modified} =
       last_modified_header
       |> Timex.parse("{WDshort}, {D} {Mshort} {YYYY} {ISOtime} {Zname}")
 
