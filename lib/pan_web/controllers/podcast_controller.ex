@@ -26,7 +26,7 @@ defmodule PanWeb.PodcastController do
                   |> Repo.all
 
     podcasts = from(p in Podcast, where: p.id not in ^podcast_ids and is_false(p.blocked))
-              |> Repo.all
+               |> Repo.all
 
     category = Repo.get_by(Category, title: "Unsorted")
                |> Repo.preload(:podcasts)
@@ -35,8 +35,8 @@ defmodule PanWeb.PodcastController do
     |> Ecto.Changeset.put_assoc(:podcasts, category.podcasts ++ podcasts)
     |> Repo.update!
 
-    conn
-    |> put_flash(:info, "Podcasts assigned successfully.")
+
+    put_flash(conn, :info, "Podcasts assigned successfully.")
     |> redirect(to: podcast_path(conn, :orphans))
   end
 
@@ -148,9 +148,9 @@ defmodule PanWeb.PodcastController do
            |> Repo.all()
 
     render(conn, "datatable_stale.json", podcasts: podcasts,
-                                   draw: draw,
-                                   records_total: records_total,
-                                   records_filtered: records_filtered)
+                                         draw: draw,
+                                         records_total: records_total,
+                                         records_filtered: records_filtered)
   end
 
 
@@ -175,8 +175,7 @@ defmodule PanWeb.PodcastController do
 
     case Repo.insert(changeset) do
       {:ok, _podcast} ->
-        conn
-        |> put_flash(:info, "Podcast created successfully.")
+        put_flash(conn, :info, "Podcast created successfully.")
         |> redirect(to: podcast_path(conn, :index))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
@@ -211,8 +210,8 @@ defmodule PanWeb.PodcastController do
       {:ok, podcast} ->
         Podcast.update_search_index(id)
         Podcast.remove_unwanted_references(id)
-        conn
-        |> put_flash(:info, "Podcast updated successfully.")
+
+        put_flash(conn, :info, "Podcast updated successfully.")
         |> redirect(to: podcast_path(conn, :show, podcast))
       {:error, changeset} ->
         render(conn, "edit.html", podcast: podcast, changeset: changeset)
@@ -251,13 +250,11 @@ defmodule PanWeb.PodcastController do
 
   def delta_import(conn, %{"id" => id}) do
     id = String.to_integer(id)
-    case Pan.Parser.Podcast.delta_import(id) do
-      {:ok, message} ->
-        conn
-        |> put_flash(:info, message)
-      {:error, message} ->
-        conn
-        |> put_flash(:error, message)
+    current_user = conn.assigns.current_user
+
+    case Pan.Updater.Podcast.import_new_episodes(id, current_user) do
+      {:ok,    message} -> put_flash(conn, :info, message)
+      {:error, message} -> put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, id))
   end
@@ -265,12 +262,8 @@ defmodule PanWeb.PodcastController do
 
   def contributor_import(conn, %{"id" => id}) do
     case Pan.Parser.Podcast.contributor_import(id) do
-      {:ok, message} ->
-        conn
-        |> put_flash(:info, message)
-      {:error, message} ->
-        conn
-        |> put_flash(:error, message)
+      {:ok,    message} -> put_flash(conn, :info, message)
+      {:error, message} -> put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, id))
   end
@@ -309,19 +302,20 @@ defmodule PanWeb.PodcastController do
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
 
-    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                         is_false(p.update_paused) and is_false(p.retired),
-                                  order_by: [asc: :next_update],
-                                  limit: 2000)
-               |> Repo.all()
+    podcast_ids = from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                            is_false(p.update_paused) and is_false(p.retired),
+                                     order_by: [asc: :next_update],
+                                     select: p.id,
+                                     limit: 2000)
+                  |> Repo.all()
 
-    for podcast <- podcasts do
-      Podcast.delta_import_one(podcast, current_user)
+    for podcast_id <- podcast_ids do
+      Pan.Updater.Podcast.import_new_episodes(podcast_id, current_user)
     end
     Logger.info "=== Manual triggered podcast update finished ==="
 
-    conn
-    |> put_flash(:info, "Podcasts updated successfully.")
+
+    put_flash(conn, :info, "Podcasts updated successfully.")
     |> redirect(to: podcast_path(conn, :index))
   end
 
@@ -331,8 +325,8 @@ defmodule PanWeb.PodcastController do
     |> PanWeb.Podcast.changeset
     |> Repo.update([force: true])
 
-    conn
-    |> put_flash(:info, "Podcast touched.")
+
+    put_flash(conn, :info, "Podcast touched.")
     |> redirect(to: podcast_path(conn, :index))
   end
 
@@ -341,8 +335,7 @@ defmodule PanWeb.PodcastController do
     from(p in Podcast, where: p.id == ^id)
     |> Repo.update_all(set: [update_paused: true])
 
-    conn
-    |> put_flash(:info, "Podcast paused.")
+    put_flash(conn, :info, "Podcast paused.")
     |> redirect(to: podcast_path(conn, :index))
   end
 
@@ -395,12 +388,8 @@ defmodule PanWeb.PodcastController do
   def update_from_feed(conn, %{"id" => id}) do
     id = String.to_integer(id)
     case Pan.Parser.Podcast.update_from_feed(id) do
-      {:ok, message} ->
-        conn
-        |> put_flash(:info, message)
-      {:error, message} ->
-        conn
-        |> put_flash(:error, message)
+      {:ok,    message} -> put_flash(conn, :info, message)
+      {:error, message} -> put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, id))
   end

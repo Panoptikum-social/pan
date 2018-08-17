@@ -154,48 +154,16 @@ defmodule PanWeb.Podcast do
 
 
   def import_stale_podcasts() do
-    podcasts = from(p in Podcast, where: p.next_update <= ^Timex.now() and
-                                         is_false(p.update_paused) and is_false(p.retired),
-                                  order_by: [asc: :next_update],
-                                  limit: 2000)
+    podcast_ids = from(p in Podcast, where: p.next_update <= ^Timex.now() and
+                                            is_false(p.update_paused) and is_false(p.retired),
+                                     order_by: [asc: :next_update],
+                                     select: p.id,
+                                     limit: 2000)
                |> Repo.all()
-    Logger.info "=== Started importing " <> to_string(length(podcasts)) <> " podcasts ==="
+    Logger.info "=== Started importing " <> to_string(length(podcast_ids)) <> " podcasts ==="
 
-    for podcast <- podcasts do
-      delta_import_one(podcast, nil)
-    end
+    for podcast_id <- podcast_ids, do: Pan.Updater.Podcast.import_new_episodes(podcast_id)
     Logger.info "=== Import job finished ==="
-  end
-
-
-  def delta_import_one(podcast, current_user \\ nil) do
-    podcast = Repo.get(Podcast, podcast.id)
-    next_update = Timex.now()
-                  |> Timex.shift(hours: podcast.update_intervall + 1)
-
-    Podcast.changeset(podcast, %{update_intervall: podcast.update_intervall + 1,
-                                 next_update:      next_update})
-    |> Repo.update()
-
-    notification = case Pan.Parser.Podcast.delta_import(podcast.id) do
-      {:ok, _} ->
-        %{content: "<i class='fa fa-refresh'></i> " <> Integer.to_string(podcast.id) <>
-                    " <i class='fa fa-podcast'></i> " <> podcast.title,
-          type: "success",
-          user_name: current_user && current_user.name}
-
-      {:error, message} ->
-        %{content: "Error: " <> message <> " | " <>
-                   "<i class='fa fa-refresh'></i> " <> Integer.to_string(podcast.id) <>
-                   " <i class='fa fa-podcast'></i> " <> podcast.title,
-          type: "danger",
-          user_name: current_user && current_user.name}
-    end
-
-    if current_user do
-      PanWeb.Endpoint.broadcast "mailboxes:" <> Integer.to_string(current_user.id),
-                             "notification", notification
-    end
   end
 
 
