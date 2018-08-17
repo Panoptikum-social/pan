@@ -14,11 +14,13 @@ defmodule Pan.Updater.Feed do
 
       options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
 
-      {:ok, %HTTPoison.Response{headers: headers}} =
-        HTTPoison.head(feed.self_link_url, headers, options)
-
-      headermap = Enum.into(headers, %{})
-      check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
+      case HTTPoison.head(feed.self_link_url, headers, options) do
+        {:ok, %HTTPoison.Response{headers: headers}} ->
+          headermap = Enum.into(headers, %{})
+          check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
+        {:error, _error} ->
+          {:ok, "go on"}
+      end
     end
   end
 
