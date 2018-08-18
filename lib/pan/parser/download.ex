@@ -5,7 +5,7 @@ defmodule Pan.Parser.Download do
     if String.contains?(feed_xml, "<rss") do
       {:ok, feed_xml}
     else
-      {:error, "This is not an rss feed!"}
+      {:error, "not an rss feed"}
     end
   end
 
