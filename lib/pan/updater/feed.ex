@@ -57,7 +57,7 @@ defmodule Pan.Updater.Feed do
   def check_trustwortyness(feed, podcast, last_modified) do
     # We allow for a difference of (rather arbitrary) 100 seconds between last_modified header
     # and the last build date of the podcast or the publishing date of latest episode:
-    if abs(Timex.diff(podcast.last_build_date, last_modified, :seconds)) < 100 or
+    if (podcast.last_build_date && abs(Timex.diff(podcast.last_build_date, last_modified, :seconds)) < 100) ||
          abs(Timex.diff(podcast.latest_episode_publishing_date, last_modified, :seconds)) < 100 do
       Feed.changeset(feed, %{last_modified: last_modified, trust_last_modified: true})
       |> Repo.update()
