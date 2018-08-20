@@ -12,7 +12,7 @@ defmodule Pan.Updater.RssFeed do
     with feed_xml <- clean_up_xml(feed_xml),
          {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
          {:ok, feed_map} <- xml_to_map(feed_xml),
-         {:ok, reduced_map} <- Filter.only_new_items(feed_map, podcast_id),
+         {:ok, reduced_map} <- Filter.only_new_items(feed_map, podcast_id) do
       run_the_parser(reduced_map, url)
     else
       {:exit, error} -> {:exit, error}
