@@ -3,14 +3,16 @@ defmodule Pan.Updater.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Helpers, as: H
   alias PanWeb.RssFeed
+  alias Pan.Updater.Filter
   require Logger
 
   def import_to_map(feed_xml, url, podcast_id \\ 0) do
     url = String.trim(url)
 
     with feed_xml <- clean_up_xml(feed_xml),
-         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
-         {:ok, feed_map} <- xml_to_map(feed_xml) do
+#         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
+         {:ok, feed_map} <- xml_to_map(feed_xml),
+         {:ok, _reduced_map} <- Filter.only_new_items(feed_map, podcast_id) do
       run_the_parser(feed_map, url)
     else
       {:exit, error} -> {:exit, error}

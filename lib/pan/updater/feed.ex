@@ -25,14 +25,14 @@ defmodule Pan.Updater.Feed do
     end
   end
 
-  def check_headers(_, feed, nil, nil) do
+  defp check_headers(_, feed, nil, nil) do
     Feed.changeset(feed, %{no_headers_available: true})
     |> Repo.update()
 
     {:ok, "go on"}
   end
 
-  def check_headers(podcast, feed, nil, last_modified_header) do
+  defp check_headers(podcast, feed, nil, last_modified_header) do
     last_modified = H.to_naive_datetime(last_modified_header)
 
     if feed.trust_last_modified and last_modified == feed.last_modified do
@@ -43,7 +43,7 @@ defmodule Pan.Updater.Feed do
     end
   end
 
-  def check_headers(_, feed, etag, _) do
+  defp check_headers(_, feed, etag, _) do
     if etag == feed.etag do
       # etag unchanged
       {:done, "nothing to do"}
@@ -55,7 +55,7 @@ defmodule Pan.Updater.Feed do
     end
   end
 
-  def check_trustwortyness(feed, podcast, last_modified) do
+  defp check_trustwortyness(feed, podcast, last_modified) do
     # We allow for a difference of (rather arbitrary) 100 seconds between last_modified header
     # and the last build date of the podcast or the publishing date of latest episode:
     if (podcast.last_build_date &&
