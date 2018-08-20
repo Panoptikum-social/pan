@@ -185,7 +185,8 @@ defmodule PanWeb.PodcastController do
 
   def show(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
-              |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date]))
+              |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
+                                                           limit: 100))
               |> Repo.preload(episodes: :podcast)
               |> Repo.preload(feeds: :podcast)
               |> Repo.preload([:languages, :categories, :contributors])

@@ -289,6 +289,11 @@ defmodule Pan.Parser.Helpers do
   end
 
 
+  def split_time() do
+    IO.inspect "=== Start === "
+    :os.system_time(:millisecond)
+  end
+
   def split_time(message, start_time) do
     milliseconds = :os.system_time(:millisecond) - start_time
                     |> Integer.to_string
