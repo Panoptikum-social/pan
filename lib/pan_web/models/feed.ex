@@ -16,7 +16,7 @@ defmodule PanWeb.Feed do
     field :last_modified, :naive_datetime
     field :trust_last_modified, :boolean
     field :no_headers_available, :boolean
-    field :hash, :sting
+    field :hash, :string
     timestamps()
 
     belongs_to :podcast, PanWeb.Podcast
