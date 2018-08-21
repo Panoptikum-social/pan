@@ -3,14 +3,15 @@ defmodule Pan.Updater.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Helpers, as: H
   alias PanWeb.RssFeed
-  alias Pan.Updater.Filter
+  alias Pan.Updater.{Feed, Filter}
   require Logger
 
-  def import_to_map(feed_xml, url, podcast_id \\ 0, forced \\ false) do
-    url = String.trim(url)
+  def import_to_map(feed_xml, feed, podcast_id \\ 0, forced \\ false) do
+    url = String.trim(feed.self_link_url)
 
     with feed_xml <- clean_up_xml(feed_xml),
-         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id, forced),
+         {:ok, "go on"} <- Feed.hash_changed(feed_xml, feed, forced),
+         {:ok, "go on"} <- more_than_x_lines_changed(feed_xml, podcast_id, 3, forced),
          {:ok, feed_map} <- xml_to_map(feed_xml),
          {:ok, reduced_map} <- Filter.only_new_items_and_new_feed_url(feed_map, podcast_id) do
       run_the_parser(reduced_map, url)
@@ -31,7 +32,7 @@ defmodule Pan.Updater.RssFeed do
     |> H.fix_encoding()
   end
 
-  defp check_for_changes(feed_xml, podcast_id, forced) do
+  defp more_than_x_lines_changed(feed_xml, podcast_id, max_lines_changed, forced) do
     case forced == false && Repo.get_by(RssFeed, podcast_id: podcast_id) do
       false ->
         {:ok, "go on"}
@@ -43,7 +44,7 @@ defmodule Pan.Updater.RssFeed do
         {:ok, "go on"}
 
       rss_feed ->
-        if count_changes(rss_feed.content, feed_xml) > 3 do
+        if count_changes(rss_feed.content, feed_xml) > max_lines_changed do
           RssFeed.changeset(rss_feed, %{content: feed_xml})
           |> Repo.update()
 

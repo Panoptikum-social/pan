@@ -15,6 +15,7 @@
                      class: "btn btn-danger" %>
   <%= link "Pause", to: podcast_path(@conn, :pause, @podcast), class: "btn btn-info" %>
   <%= link "Delta import", to: podcast_path(@conn, :delta_import, @podcast), class: "btn btn-success" %>
+  <%= link "Forced delta import", to: podcast_path(@conn, :forced_delta_import, @podcast), class: "btn btn-success" %>
   <%= link "Contributor import", to: podcast_path(@conn, :contributor_import, @podcast), class: "btn btn-success" %>
   <%= link "Update from feed", to: podcast_path(@conn, :update_from_feed, @podcast), class: "btn btn-success" %>
 </div>

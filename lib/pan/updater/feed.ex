@@ -72,4 +72,33 @@ defmodule Pan.Updater.Feed do
       {:ok, "go on"}
     end
   end
+
+  def hash_changed(feed_xml, feed, forced) do
+    case forced == false && feed.hash do
+      false ->
+        {:ok, "go on"}
+
+      nil ->
+        update_hash_and_go_on(feed, feed_xml)
+
+      feed_hash ->
+        if feed_hash == md5hash(feed_xml) do
+          {:done, "nothing to do"}
+        else
+          update_hash_and_go_on(feed, feed_xml)
+        end
+    end
+  end
+
+  defp update_hash_and_go_on(feed, feed_xml) do
+    Feed.changeset(feed, %{hash: md5hash(feed_xml)})
+    |> Repo.update()
+
+    {:ok, "go on"}
+  end
+
+  defp md5hash(xml) do
+    :crypto.hash(:md5, xml)
+    |> Base.encode16()
+  end
 end

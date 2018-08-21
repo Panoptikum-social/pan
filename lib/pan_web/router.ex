@@ -388,6 +388,7 @@ defmodule PanWeb.Router do
     get "/podcasts/:id/touch", PodcastController, :touch
     get "/podcasts/:id/contributor_import", PodcastController, :contributor_import
     get "/podcasts/:id/delta_import", PodcastController, :delta_import
+    get "/podcasts/:id/forced_delta_import", PodcastController, :forced_delta_import
     get "/podcasts/:id/fix_owner", PodcastController, :fix_owner
     get "/podcasts/fix_languages", PodcastController, :fix_languages
     get "/podcasts/:id/retire", PodcastController, :retire

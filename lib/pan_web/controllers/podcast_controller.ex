@@ -249,15 +249,20 @@ defmodule PanWeb.PodcastController do
   end
 
 
-  def delta_import(conn, %{"id" => id}) do
+  def delta_import(conn, %{"id" => id}, forced \\ false) do
     podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
 
-    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user, :forced) do
+    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user, forced) do
       {:ok,    message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, id))
+  end
+
+
+  def forced_delta_import(conn, %{"id" => id}) do
+    delta_import(conn, %{"id" => id}, :forced)
   end
 
 
