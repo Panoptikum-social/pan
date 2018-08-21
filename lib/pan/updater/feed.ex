@@ -4,8 +4,8 @@ defmodule Pan.Updater.Feed do
   alias Pan.Parser.Helpers, as: H
   require Logger
 
-  def needs_update(feed, podcast) do
-    if feed.no_headers_available do
+  def needs_update(feed, podcast, forced \\ false) do
+    if forced != false || feed.no_headers_available do
       {:ok, "go on"}
     else
       headers = [

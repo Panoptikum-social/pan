@@ -253,7 +253,7 @@ defmodule PanWeb.PodcastController do
     podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
 
-    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user) do
+    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user, :forced) do
       {:ok,    message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end

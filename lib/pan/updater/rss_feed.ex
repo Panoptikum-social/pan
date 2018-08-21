@@ -6,13 +6,13 @@ defmodule Pan.Updater.RssFeed do
   alias Pan.Updater.Filter
   require Logger
 
-  def import_to_map(feed_xml, url, podcast_id \\ 0) do
+  def import_to_map(feed_xml, url, podcast_id \\ 0, forced \\ false) do
     url = String.trim(url)
 
     with feed_xml <- clean_up_xml(feed_xml),
-         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id),
+         {:ok, "go on"} <- check_for_changes(feed_xml, podcast_id, forced),
          {:ok, feed_map} <- xml_to_map(feed_xml),
-         {:ok, reduced_map} <- Filter.only_new_items(feed_map, podcast_id) do
+         {:ok, reduced_map} <- Filter.only_new_items_and_new_feed_url(feed_map, podcast_id) do
       run_the_parser(reduced_map, url)
     else
       {:exit, error} -> {:exit, error}
@@ -31,23 +31,26 @@ defmodule Pan.Updater.RssFeed do
     |> H.fix_encoding()
   end
 
-  defp check_for_changes(feed_xml, podcast_id) do
-    rss_feed = Repo.get_by(RssFeed, podcast_id: podcast_id)
+  defp check_for_changes(feed_xml, podcast_id, forced) do
+    case forced == false && Repo.get_by(RssFeed, podcast_id: podcast_id) do
+      false ->
+        {:ok, "go on"}
 
-    if rss_feed do
-      if count_changes(rss_feed.content, feed_xml) > 3 do
-        RssFeed.changeset(rss_feed, %{content: feed_xml})
-        |> Repo.update()
+      nil ->
+        %RssFeed{content: feed_xml, podcast_id: podcast_id}
+        |> Repo.insert()
 
         {:ok, "go on"}
-      else
-        {:done, "nothing to do"}
-      end
-    else
-      %RssFeed{content: feed_xml, podcast_id: podcast_id}
-      |> Repo.insert()
 
-      {:ok, "go on"}
+      rss_feed ->
+        if count_changes(rss_feed.content, feed_xml) > 3 do
+          RssFeed.changeset(rss_feed, %{content: feed_xml})
+          |> Repo.update()
+
+          {:ok, "go on"}
+        else
+          {:done, "nothing to do"}
+        end
     end
   end
 

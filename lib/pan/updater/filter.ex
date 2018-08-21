@@ -3,7 +3,7 @@ defmodule Pan.Updater.Filter do
   alias Pan.Repo
   alias PanWeb.Episode
 
-  def only_new_items(feed_map, podcast_id) do
+  def only_new_items_and_new_feed_url(feed_map, podcast_id) do
     known_guids =
       from(e in Episode,
         where: e.podcast_id == ^podcast_id,
@@ -12,9 +12,13 @@ defmodule Pan.Updater.Filter do
       |> Repo.all()
 
     items =
-      Quinn.find(feed_map, [:rss, :channel, :item])
+      Quinn.find(feed_map, :item)
       |> Enum.reject(&known_guid?(&1, known_guids))
-    {:ok, items}
+
+    new_feed_url = Quinn.find(feed_map, :"new-feed-url")
+    itunes_new_feed_url = Quinn.find(feed_map, :"itunes:new-feed-url")
+
+    {:ok, [new_feed_url | [itunes_new_feed_url | items]]}
   end
 
   defp known_guid?(item, known_guids) do
