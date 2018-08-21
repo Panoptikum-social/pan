@@ -294,8 +294,8 @@ defmodule PanWeb.Podcast do
   end
 
 
-  def update_counters(podcast) do
-    podcast_id = podcast.data.id
+  def update_counters(podcast_changeset) do
+    podcast_id = podcast_changeset.data.id
 
     episodes_count = where(Episode, podcast_id: ^podcast_id)
                      |> Repo.aggregate(:count, :id)
@@ -310,11 +310,13 @@ defmodule PanWeb.Podcast do
                           |> Repo.aggregate(:count, :id)
 
     episode_publishing_dates = from(e in Episode, where: e.podcast_id == ^podcast_id,
-                                                  select: e.publishing_date)
+                                                  select: [e.publishing_date, e.inserted_at])
                                |> Repo.all()
 
-    latest_episode_publishing_date = Enum.max_by(episode_publishing_dates, &(Date.to_iso8601(&1)))
-    first_episode_publishing_date =  Enum.min_by(episode_publishing_dates, &(Date.to_iso8601(&1)))
+    latest_episode_publishing_date = Enum.map(episode_publishing_dates, &best_effort_for_pubdate(&1))
+                                     |> Enum.max()
+    first_episode_publishing_date =  Enum.map(episode_publishing_dates, &best_effort_for_pubdate(&1))
+                                     |> Enum.max()
 
     publication_frequency =
       if episodes_count > 1 && latest_episode_publishing_date && first_episode_publishing_date do
@@ -324,13 +326,18 @@ defmodule PanWeb.Podcast do
         0.0
       end
 
-    podcast
+    podcast_changeset
     |> put_change(:episodes_count, episodes_count)
     |> put_change(:likes_count, likes_count)
     |> put_change(:followers_count, followers_count)
     |> put_change(:subscriptions_count, subscriptions_count)
     |> put_change(:latest_episode_publishing_date, latest_episode_publishing_date)
     |> put_change(:publication_frequency, publication_frequency)
+  end
+
+
+  defp best_effort_for_pubdate([publishing_date, inserted_at]) do
+    publishing_date || inserted_at
   end
 
 

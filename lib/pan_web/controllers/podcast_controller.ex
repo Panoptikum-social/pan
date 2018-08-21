@@ -390,4 +390,18 @@ defmodule PanWeb.PodcastController do
     end
     |> redirect(to: podcast_path(conn, :show, id))
   end
+
+
+  def update_missing_counters(conn, _params) do
+    podcasts = from(p in Podcast, where: is_nil(p.latest_episode_publishing_date))
+               |> Repo.all()
+
+    for podcast <- podcasts do
+      Podcast.changeset(podcast)
+      |> Podcast.update_counters()
+      |> Repo.update()
+    end
+
+    render(conn, "done.html")
+  end
 end

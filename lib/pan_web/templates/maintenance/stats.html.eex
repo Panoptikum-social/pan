@@ -126,5 +126,11 @@
                to: image_path(@conn, :remove_duplicates),
                class: "btn btn-primary" %>
     </li>
+
+    <li class="list-group-item" style="border-top: 1px solid #ddd;">
+      <%= link "Update missing podcast counters",
+               to: podcast_path(@conn, :update_missing_counters),
+               class: "btn btn-primary" %>
+    </li>
   </ul>
 </div>

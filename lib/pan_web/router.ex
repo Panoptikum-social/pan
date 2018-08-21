@@ -398,6 +398,7 @@ defmodule PanWeb.Router do
     get "/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted
     get "/podcasts/factory", PodcastController, :factory
     get "/podcasts/duplicates", PodcastController, :duplicates
+    get "/podcasts/update_missing_counters", PodcastController, :update_missing_counters
     resources "/podcasts", PodcastController
 
     get "/manifestations/datatable", ManifestationController, :datatable
