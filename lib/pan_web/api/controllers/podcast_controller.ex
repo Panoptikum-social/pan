@@ -77,7 +77,6 @@ defmodule PanWeb.Api.PodcastController do
 
 
   def trigger_update(conn, %{"id" => id} = params, _user) do
-    id = String.to_integer(id)
     podcast = Repo.get!(Podcast, id)
 
     if !podcast.manually_updated_at or

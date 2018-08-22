@@ -56,7 +56,6 @@ defmodule PanWeb.PodcastFrontendController do
 
 
   def trigger_update(conn, %{"id" => id}) do
-    id = String.to_integer(id)
     podcast = Repo.get!(Podcast, id)
 
     if !podcast.manually_updated_at or
@@ -66,14 +65,14 @@ defmodule PanWeb.PodcastFrontendController do
       |> Podcast.changeset(%{manually_updated_at: Timex.now()})
       |> Repo.update()
 
-      Pan.Parser.Podcast.update_from_feed(id)
+      Pan.Parser.Podcast.update_from_feed(podcast)
       conn
       |> put_flash(:info, "Podcast metadata update started")
     else
       conn
       |> put_flash(:error, "This podcast has been updated manually within the last hour. Please try again in an hour.")
     end
-    |> redirect(to: podcast_frontend_path(conn, :show, id))
+    |> redirect(to: podcast_frontend_path(conn, :show, podcast.id))
   end
 
 

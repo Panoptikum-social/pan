@@ -388,12 +388,12 @@ defmodule PanWeb.PodcastController do
 
 
   def update_from_feed(conn, %{"id" => id}) do
-    id = String.to_integer(id)
-    case Pan.Parser.Podcast.update_from_feed(id) do
+    podcast = Repo.get!(Podcast, id)
+    case Pan.Parser.Podcast.update_from_feed(podcast) do
       {:ok,    message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
-    |> redirect(to: podcast_path(conn, :show, id))
+    |> redirect(to: podcast_path(conn, :show, podcast.id))
   end
 
 

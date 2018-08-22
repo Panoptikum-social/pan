@@ -6,6 +6,7 @@ defmodule Pan.Updater.Podcast do
   alias PanWeb.{Endpoint, Podcast}
   require Logger
 
+
   def import_new_episodes(podcast, current_user \\ nil, forced \\ false) do
     Logger.info("\n\e[96m === #{podcast.id} ⬇ #{podcast.title} ===\e[0m")
 
@@ -14,7 +15,7 @@ defmodule Pan.Updater.Podcast do
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
          {:ok, feed_xml} <- Download.download(feed.self_link_url),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
-         {:ok, _} <- Persistor.delta_import(map, podcast.id),
+         {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
       notify_user(current_user, {:ok, "imported"}, podcast)
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
@@ -33,6 +34,7 @@ defmodule Pan.Updater.Podcast do
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
   end
+
 
   defp set_next_update(podcast) do
     next_update = Timex.shift(Timex.now(), hours: podcast.update_intervall + 1)
@@ -71,7 +73,7 @@ defmodule Pan.Updater.Podcast do
     }
   end
 
-  defp unpause_and_reset_failure_count(podcast) do
+  def unpause_and_reset_failure_count(podcast) do
     PanWeb.Podcast.changeset(podcast, %{update_paused: false, failure_count: 0})
     |> Repo.update(force: true)
   end
