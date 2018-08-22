@@ -104,17 +104,38 @@ defmodule PanWeb.EpisodeController do
 
   def remove_javascript_from_shownotes(conn, _params) do
     episodes = from(e in Episode, where: like(e.shownotes, "%(function%"),
-                                  limit: 10000)
+                                  limit: 1000,
+                                  order_by: e.id)
                |> Repo.all()
 
-    Logger.info "=== Sanitizing #{length(episodes)} episodes ... ==="
-
     for episode <- episodes do
-      sanitized_shownotes = String.replace(episode.shownotes, ~r/\(function.*\(\);/isU, "")
+      IO.puts episode.id
+      sanitized_shownotes = episode.shownotes
+                            |> String.replace(~r/\$\('.*}\);/isU, "")
+                            |> String.replace(~r/\(function.*\(\);/isU, "")
+                            |> String.replace(~r/\(function.*\)\);/isU, "")
+                            |> String.replace(~r/\(function.*\('altnerd'\);/isU, "")
+                            |> String.replace(~r/\(function.*smcx-sdk"\);/isU, "")
+                            |> String.replace(~r/jquery\(.*\(jQuery\);/isU, "")
+                            |> String.replace(~r/jquery\(.*}\)}\);/isU, "")
+                            |> String.replace(~r/jQuery\(.*} ?\);/isU, "")
+                            |> String.replace(~r/window.podcastData.*}/is, "")
+                            |> String.replace(~r/window.gie.*\)}\);/isU, "")
+                            |> String.replace(~r/__ATA.cmd.push.*}\);/is, "")
+                            |> String.replace(~r/if\(typeof\(jQuery.*}\);/is, "")
+                            |> String.replace(~r/<span>Advertisements.* 'important'\);/is, "")
+                            |> String.replace(~r/<span>Anuncios.* 'important'\);/is, "")
+                            |> String.replace(~r/\(document.*"js";/isU, "")
 
-      Episode.changeset(episode, %{shownotes: sanitized_shownotes})
+      Episode.changeset(episode, %{shownotes: sanitized_shownotes, link: fallback_link(episode)})
       |> Repo.update()
     end
+
+    Logger.info "=== Sanitized #{length(episodes)} episodes ... ==="
     render(conn, "done.html")
+  end
+
+  defp fallback_link(episode) do
+    episode.link || episode_frontend_path(PanWeb.Endpoint, :show, episode)
   end
 end
