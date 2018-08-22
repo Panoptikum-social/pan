@@ -299,6 +299,7 @@ defmodule PanWeb.Router do
   scope "/admin", PanWeb do
     pipe_through [:browser, :authenticate_admin, :admin_layout]
     get "/episodes/remove_duplicates", EpisodeController, :remove_duplicates
+    get "/episodes/remove_javascript_from_shownotes", EpisodeController, :remove_javascript_from_shownotes
     resources "/episodes", EpisodeController
 
     resources "/chapters", ChapterController

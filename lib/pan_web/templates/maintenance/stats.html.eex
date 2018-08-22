@@ -132,5 +132,11 @@
                to: podcast_path(@conn, :update_missing_counters),
                class: "btn btn-primary" %>
     </li>
+
+    <li class="list-group-item" style="border-top: 1px solid #ddd;">
+      <%= link "Remove javascript from shownotes",
+               to: episode_path(@conn, :remove_javascript_from_shownotes),
+               class: "btn btn-primary" %>
+    </li>
   </ul>
 </div>

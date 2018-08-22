@@ -1,6 +1,7 @@
 defmodule PanWeb.EpisodeController do
   use Pan.Web, :controller
   alias PanWeb.Episode
+  require Logger
 
   plug :scrub_params, "episode" when action in [:create, :update]
 
@@ -98,5 +99,22 @@ defmodule PanWeb.EpisodeController do
     end
 
     render(conn, "duplicates.html", duplicate_episodes: duplicate_episodes)
+  end
+
+
+  def remove_javascript_from_shownotes(conn, _params) do
+    episodes = from(e in Episode, where: like(e.shownotes, "%(function%"),
+                                  limit: 10000)
+               |> Repo.all()
+
+    Logger.info "=== Sanitizing #{length(episodes)} episodes ... ==="
+
+    for episode <- episodes do
+      sanitized_shownotes = String.replace(episode.shownotes, ~r/\(function.*\(\);/isU, "")
+
+      Episode.changeset(episode, %{shownotes: sanitized_shownotes})
+      |> Repo.update()
+    end
+    render(conn, "done.html")
   end
 end
