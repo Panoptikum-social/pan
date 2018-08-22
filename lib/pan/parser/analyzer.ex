@@ -1,13 +1,14 @@
 defmodule Pan.Parser.Analyzer do
-  alias Pan.Parser.Iterator
-  alias Pan.Parser.Helpers , as: H
+  import Pan.Parser.Iterator, only: [parse: 3, parse: 4]
+  import UUID, only: [uuid1: 0]
+  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1]
   require Logger
 
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge
 
 #wrappers to dive into
-  def call(map, "tag", [:rss,     _, value]), do: Iterator.parse(map, "tag", value)
-  def call(map, "tag", [:channel, _, value]), do: Iterator.parse(map, "tag", value)
+  def call(map, "tag", [:rss,     _, value]), do: parse(map, "tag", value)
+  def call(map, "tag", [:channel, _, value]), do: parse(map, "tag", value)
 
 
 # simple tags to include in podcast
@@ -24,26 +25,26 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [
     :"itunes:explicit", :"iTunes:explicit", :explicit
-  ], do: %{explicit: H.boolify(value)}
+  ], do: %{explicit: boolify(value)}
 
   def call(_, "tag", [:lastBuildDate,     _, [value]]) do
-    %{last_build_date: H.to_naive_datetime(value)}
+    %{last_build_date: to_naive_datetime(value)}
   end
   def call(_, "tag", [:"dc:date", _, [value]]) do
-    %{last_build_date: H.to_naive_datetime(value)}
+    %{last_build_date: to_naive_datetime(value)}
   end
   def call(_, "tag", [:pubdate, _, []]), do: %{}
   def call(_, "tag", [:pubDate, _, []]), do: %{}
-  def call(_, "tag", [:pubdate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
-  def call(_, "tag", [:pubDate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
-  def call(_, "tag", [:lastPubDate, _, [value]]), do: %{last_build_date: H.to_naive_datetime(value)}
+  def call(_, "tag", [:pubdate, _, [value]]), do: %{last_build_date: to_naive_datetime(value)}
+  def call(_, "tag", [:pubDate, _, [value]]), do: %{last_build_date: to_naive_datetime(value)}
+  def call(_, "tag", [:lastPubDate, _, [value]]), do: %{last_build_date: to_naive_datetime(value)}
 
 # image with fallback to itunes:image
-  def call(_, "tag", [:image, _, value]), do: Iterator.parse(%{}, "image", value)
+  def call(_, "tag", [:image, _, value]), do: parse(%{}, "image", value)
   def call(_, "image", [:title, _, _]), do: %{}
-  def call(_, "image", [:title, _, [value]]), do: %{image_title: H.to_255(value)}
+  def call(_, "image", [:title, _, [value]]), do: %{image_title: to_255(value)}
   def call(_, "image", [:url,   _, []]), do: %{}
-  def call(_, "image", [:url,   _, [value]]), do: %{image_url: H.to_255(value)}
+  def call(_, "image", [:url,   _, [value]]), do: %{image_url: to_255(value)}
   def call(_, "image", [:link,        _, _]), do: %{}
   def call(_, "image", [:description, _, _]), do: %{}
   def call(_, "image", [:width,       _, _]), do: %{}
@@ -53,23 +54,23 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:image", :"iTunes:image"
   ] do
     if map[:image_url], do: map,
-                        else: %{image_url: H.to_255(attr[:href]),
-                                image_title: H.to_255(attr[:href])}
+                        else: %{image_url: to_255(attr[:href]),
+                                image_title: to_255(attr[:href])}
   end
 
   def call(map, "tag", [tag_atom, attr, _]) when tag_atom in [
     :"itunes:image", :"iTunes:image"
   ] do
     if map[:image_url], do: map,
-                        else: %{image_url: H.to_255(attr[:href]),
-                                image_title: H.to_255(attr[:href])}
+                        else: %{image_url: to_255(attr[:href]),
+                                image_title: to_255(attr[:href])}
   end
 
   def call(map, "tag", [tag_atom, _, [value]]) when tag_atom in [
     :"itunes:image", :"iTunes:image"
   ] do
     if map[:image_url], do: map,
-                        else: %{image_url: H.to_255(value)}
+                        else: %{image_url: to_255(value)}
   end
 
 
@@ -94,9 +95,9 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "self"      -> %{feed: %{self_link_title: attr[:title],
-                            self_link_url: attr[:href]}}
+                               self_link_url: attr[:href]}}
       "current"   -> %{feed: %{self_link_title: attr[:title],
-                            self_link_url: attr[:href]}}
+                               self_link_url: attr[:href]}}
       "next"      -> %{feed: %{next_page_url: attr[:href]}}
       "prev"      -> %{feed: %{prev_page_url: attr[:href]}}
       "prev-archive" -> %{feed: %{prev_page_url: attr[:href]}}
@@ -112,7 +113,7 @@ defmodule Pan.Parser.Analyzer do
         alternate_feed_map = %{UUID.uuid1() => %{title: attr[:title], url: attr[:href]}}
         %{feed: %{alternate_feeds: alternate_feed_map}}
       "payment" -> %{payment_link_title: attr[:title],
-                     payment_link_url: H.to_255(attr[:href])}
+                     payment_link_url: to_255(attr[:href])}
     end
   end
 
@@ -262,68 +263,68 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [tag_atom, _, [_]]) when tag_atom in [:"rtl:credit" ], do: %{}
 
   def call(_, "tag", [tag_atom, _, [value]]) when tag_atom in [:language, :"dc:language"] do
-    %{languages: %{UUID.uuid1() => %{shortcode: value}}}
+    %{languages: %{uuid1() => %{shortcode: value}}}
   end
 
 # We expect one owner
   def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
     :"itunes:owner", :owner, :"itunes:email"
-  ], do: Iterator.parse(%{}, :podcast_contributor, "owner", value)
+  ], do: parse(%{}, :podcast_contributor, "owner", value)
 
 # We expect one podcast author
   def call(_, "tag", [:"itunes:author",        _, []]), do: %{}
   def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
     :"itunes:author", :"atom:author", :author, :"googleplay:author", :artist
-  ], do: Iterator.parse(%{}, :podcast_contributor, "author", value)
+  ], do: parse(%{}, :podcast_contributor, "author", value)
 
 
   def call(_, "tag", [tag_atom, _, value]) when tag_atom in [
     :managingEditor, :managingeditor, :manageEditor
   ] do
-    Iterator.parse(%{}, :podcast_contributor, "managing_editor", value)
+    parse(%{}, :podcast_contributor, "managing_editor", value)
   end
 
 # Parsing categories infintely deep
   def call(_, "tag", [:"itunes:category", attr, []]) do
-    %{categories: %{UUID.uuid1() => %{title: attr[:text], parent: nil}}}
+    %{categories: %{uuid1() => %{title: attr[:text], parent: nil}}}
   end
   def call(_, "tag", [:"itunes:category", [], [value]]) do
-    %{categories: %{UUID.uuid1() => %{title: value, parent: nil}}}
+    %{categories: %{uuid1() => %{title: value, parent: nil}}}
   end
   def call(_, "tag", [:"itunes:category", attr, value]) do
-    Iterator.parse(%{categories: %{UUID.uuid1() => %{title: attr[:text], parent: nil}}}, "category", value, attr[:text])
+    parse(%{categories: %{uuid1() => %{title: attr[:text], parent: nil}}}, "category", value, attr[:text])
   end
 
   def call("category", [:"itunes:category", attr, []], parent_title) do
-    %{categories: %{UUID.uuid1() => %{title: attr[:text], parent: parent_title}}}
+    %{categories: %{uuid1() => %{title: attr[:text], parent: parent_title}}}
   end
 
   def call("category", [:"itunes:category", attr, value], parent_title) do
-    Iterator.parse(%{categories: %{UUID.uuid1() => %{title: attr[:text], parent: parent_title}}}, "category", value, attr[:text])
+    parse(%{categories: %{uuid1() => %{title: attr[:text], parent: parent_title}}}, "category", value, attr[:text])
   end
 
 
 # Episodes
-  def call(map, "tag",     [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
-  def call(map, "episode", [:item, _, value]), do: Iterator.parse(map, "episode", value, UUID.uuid1())
+  def call(map, "tag",     [:item, _, value]), do: parse(map, "episode", value, uuid1())
+  def call(map, "episode", [:item, _, value]), do: parse(map, "episode", value, uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title, _, [value | _]]), do: %{title: H.to_255(value)}
+  def call(_, "episode", [:title, _, [value | _]]), do: %{title: to_255(value)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: H.to_255(value)}
+  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: to_255(value)}
 
   def call(_, "episode", [tag_atom, attr, _]) when tag_atom in [
     :"itunes:image", :"iTunes:image", :itunes_image
-  ], do: %{image_url: H.to_255(attr[:href]), image_title: H.to_255(attr[:href])}
+  ], do: %{image_url: to_255(attr[:href]), image_title: to_255(attr[:href])}
 
   def call(_, "episode", [tag_atom, _, value]) when tag_atom in [
-    :image, :imageurl], do: Iterator.parse(%{}, "episode_image", value)
-  def call(_, "episode", [:imagetitle, _, [value]]), do: %{image_title: H.to_255(value)}
+    :image, :imageurl], do: parse(%{}, "episode_image", value)
+  def call(_, "episode", [:imagetitle, _, [value]]), do: %{image_title: to_255(value)}
 
   def call(_, "episode_image", [:title, _, _]), do: %{}
-  def call(_, "episode_image", [:title, _, [value]]), do: %{image_title: H.to_255(value)}
+  def call(_, "episode_image", [:title, _, [value]]), do: %{image_title: to_255(value)}
   def call(_, "episode_image", [:url,   _, []]), do: %{}
-  def call(_, "episode_image", [:url,   _, [value]]), do: %{image_url: H.to_255(value)}
+  def call(_, "episode_image", [:url,   _, [value]]), do: %{image_url: to_255(value)}
   def call(_, "episode_image", [:link,        _, _]), do: %{}
   def call(_, "episode_image", [:description, _, _]), do: %{}
   def call(_, "episode_image", [:width,       _, _]), do: %{}
@@ -331,44 +332,44 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call(_, "episode", [:link, _, []]), do: %{}
-  def call(_, "episode", [:link, _, [value]]), do: %{link: H.to_255(value)}
-  def call(_, "episode", [:guid, _, [value]]), do: %{guid: H.to_255(value)}
-  def call(_, "episode", [:"itunes:guid", _, [value]]), do: %{guid: H.to_255(value)}
-  def call(_, "episode", [:EpisodeGUID, _, [value]]), do: %{guid: H.to_255(value)}
-  def call(_, "episode", [:id, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:link, _, [value]]), do: %{link: to_255(value)}
+  def call(_, "episode", [:guid, _, [value]]), do: %{guid: to_255(value)}
+  def call(_, "episode", [:"itunes:guid", _, [value]]), do: %{guid: to_255(value)}
+  def call(_, "episode", [:EpisodeGUID, _, [value]]), do: %{guid: to_255(value)}
+  def call(_, "episode", [:id, _, [value]]), do: %{guid: to_255(value)}
   def call(_, "episode", [:guid, _, _]), do: %{}
-  def call(_, "episode", [:uniqueid, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:uniqueid, _, [value]]), do: %{guid: to_255(value)}
   def call(_, "episode", [:uniqueid, _, _]), do: %{}
 
-  def call(_, "episode", [:contentId, _, [value]]), do: %{guid: H.to_255(value)}
+  def call(_, "episode", [:contentId, _, [value]]), do: %{guid: to_255(value)}
 
   def call(_, "episode", [:description, _, []]), do: %{}
-  def call(_, "episode", [:description, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
-  def call(_, "episode", [:descrition, _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:description, _, [value | _]]), do: %{description: scrub(value)}
+  def call(_, "episode", [:descrition, _, [value | _]]), do: %{description: scrub(value)}
   def call(_, "episode", [:"itunes:description", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:description", _, [value | _]]), do: %{description: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"itunes:description", _, [value | _]]), do: %{description: scrub(value)}
 
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
-  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: scrub(value)}
   def call(_, "episode", [:content, _, []]), do: %{}
-  def call(_, "episode", [:content, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:content, _, [value]]), do: %{shownotes: scrub(value)}
   def call(_, "episode", [:shownotes, _, []]), do: %{}
-  def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:shownotes, _, [value]]), do: %{shownotes: scrub(value)}
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]) when is_map(value) do
-    %{summary: HtmlSanitizeEx2.basic_html_reduced(List.first(value[:value]))}
+    %{summary: scrub(List.first(value[:value]))}
   end
-  def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
-  def call(_, "episode", [:summary,           _, [value]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: scrub(value)}
+  def call(_, "episode", [:summary,           _, [value]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",    _, []]), do: %{}
-  def call(_, "episode", [:"atom:summary",    _, [value | _]]), do: %{summary: HtmlSanitizeEx2.basic_html_reduced(value)}
+  def call(_, "episode", [:"atom:summary",    _, [value | _]]), do: %{summary: scrub(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: H.to_255(value)}
-  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: H.to_255(value)}
-  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: H.to_255(value)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: to_255(value)}
+  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: to_255(value)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: to_255(value)}
 
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
   def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
@@ -377,7 +378,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [tag_atom, _, [value]]) when tag_atom in [
       :pubDate, :pubdate, :"itunes:pubDate", :"dc:date", :pubDateShort
-    ], do: %{publishing_date: H.to_naive_datetime(value)}
+    ], do: %{publishing_date: to_naive_datetime(value)}
 
   def call(_, "episode", [:pubDate, _, []]) do
     %{publishing_date: Timex.now()}
@@ -386,10 +387,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"atom:link", attr, _]) do
     case attr[:rel] do
       "http://podlove.org/deep-link" ->
-        %{deep_link: H.to_255(attr[:href])}
+        %{deep_link: to_255(attr[:href])}
       "payment" ->
         %{payment_link_title: attr[:title],
-          payment_link_url: H.to_255(attr[:href])}
+          payment_link_url: to_255(attr[:href])}
       "alternate" ->
         %{}
       "http://podlove.org/simple-chapters" ->
@@ -397,54 +398,54 @@ defmodule Pan.Parser.Analyzer do
       "replies" ->
         %{}
       "self" ->
-        %{link: H.to_255(attr[:href])}
+        %{link: to_255(attr[:href])}
       nil ->
-        %{link: H.to_255(attr[:href])}
+        %{link: to_255(attr[:href])}
     end
   end
 
 
 # We expect one episode author
   def call(_, "episode", [:"itunes:author",     _, []]), do: %{}
-  def call(_, "episode", [:authors,             _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"iTunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"itunes:author",     _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"googleplay:author", _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"dc:publisher",      _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"atom:author",       _, value]), do: Iterator.parse(%{}, "episode_author", value)
-  def call(_, "episode", [:Author,              _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call(_, "episode", [:authors,             _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"iTunes:author",     _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"itunes:author",     _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"googleplay:author", _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"dc:publisher",      _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:"atom:author",       _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [:Author,              _, value]), do: parse(%{}, "episode_author", value)
 
-  def call(_, "episode", [:managingEditor,              _, value]), do: Iterator.parse(%{}, "managing_editor", value)
+  def call(_, "episode", [:managingEditor, _, value]), do: parse(%{}, "managing_editor", value)
 
 
 # Enclosures a.k.a. Audiofiles
   def call(_, "episode", [:enclosure, attr, _]) do
-    enclosure_map = %{url:    H.to_255(attr[:url]),
-                      length: H.to_255(attr[:length]),
-                      type:   H.to_255(attr[:type]),
-                      guid:   H.to_255(attr[:"bitlove:guid"])}
-    %{enclosures: %{UUID.uuid1() => enclosure_map}}
+    enclosure_map = %{url:    to_255(attr[:url]),
+                      length: to_255(attr[:length]),
+                      type:   to_255(attr[:type]),
+                      guid:   to_255(attr[:"bitlove:guid"])}
+    %{enclosures: %{uuid1() => enclosure_map}}
   end
 
 
 # Chapters
   def call(_, "episode", [tag_atom, _, value]) when tag_atom in [:"psc:chapters", :chapters] do
-    Iterator.parse(%{}, "chapter", value)
+    parse(%{}, "chapter", value)
   end
 
 
 # We expect several contributors
   def call(map, "tag", [:"atom:contributor", _, value]) do
-    Iterator.parse(map, "contributor", value, UUID.uuid1())
+    parse(map, "contributor", value, uuid1())
   end
 
 
 # Episode contributors
   def call(_, "episode", [:"atom:contributor", _, value]) do
-    Iterator.parse(%{}, "episode-contributor", value, UUID.uuid1())
+    parse(%{}, "episode-contributor", value, uuid1())
   end
   def call(_, "episode", [:"dc:contributor", _, [value]]) do
-    %{contributors: %{UUID.uuid1() => %{name: value, uri: value}}}
+    %{contributors: %{uuid1() => %{name: value, uri: value}}}
   end
 
 
@@ -461,7 +462,7 @@ defmodule Pan.Parser.Analyzer do
 
 # Now the namespaces:
   def call("chapter", [tag_atom, attr, _]) when tag_atom in [:"psc:chapter", :chapter] do
-    %{UUID.uuid1() => %{start: attr[:start], title: H.to_255(attr[:title])}}
+    %{uuid1() => %{start: attr[:start], title: to_255(attr[:title])}}
   end
 
   def call("contributor", [:"atom:name",       _, [value]]), do: %{name: value}
@@ -483,7 +484,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:"itunes:name",     _, []]), do: %{}
   def call("owner", [tag_atom, _, [value]]) when tag_atom in [
     :name, :"itunes:name", :"itunes:author", :"itunes:caption"
-  ], do: %{name: H.to_255(value)}
+  ], do: %{name: to_255(value)}
   def call("owner", [:"itunes:email",    _, []]), do: %{}
   def call("owner", [:"itunes:copyright",    _, _]), do: %{}
   def call("owner", [:"itunes:email",    _, [value]]), do: %{email: value}
@@ -496,21 +497,21 @@ defmodule Pan.Parser.Analyzer do
 
 
   def call("author", [:"itunes:name",     _, []]), do: %{}
-  def call("author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
-  def call("author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
-  def call("author", [:name,            _, [value]]), do: %{name: H.to_255(value)}
+  def call("author", [:"itunes:name",     _, [value]]), do: %{name: to_255(value)}
+  def call("author", [:"atom:name",       _, [value]]), do: %{name: to_255(value)}
+  def call("author", [:name,            _, [value]]), do: %{name: to_255(value)}
   def call("author", [:"itunes:email",    _, []]), do: %{}
   def call("author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("author", [:"atom:email",      _, [value]]), do: %{email: value}
   def call("author", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
 
 
-  def call("episode_author", [:author,            _, value]), do: Iterator.parse(%{}, "episode_author", value)
+  def call("episode_author", [:author,            _, value]), do: parse(%{}, "episode_author", value)
   def call("episode_author", [:"itunes:name",     _, []]), do: %{}
-  def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: H.to_255(value)}
-  def call("episode_author", [:name,              _, [value]]), do: %{name: H.to_255(value)}
-  def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: H.to_255(value)}
-  def call("episode_author", [:a,                 _, [value]]), do: %{name: H.to_255(value)}
+  def call("episode_author", [:"itunes:name",     _, [value]]), do: %{name: to_255(value)}
+  def call("episode_author", [:name,              _, [value]]), do: %{name: to_255(value)}
+  def call("episode_author", [:"atom:name",       _, [value]]), do: %{name: to_255(value)}
+  def call("episode_author", [:a,                 _, [value]]), do: %{name: to_255(value)}
   def call("episode_author", [:"itunes:email",    _, []]), do: %{}
   def call("episode_author", [:"itunes:email",    _, [value]]), do: %{email: value}
   def call("episode_author", [:"atom:email",      _, [value]]), do: %{email: value}

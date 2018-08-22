@@ -300,4 +300,11 @@ defmodule Pan.Parser.Helpers do
     IO.inspect "=== " <> message <> " === " <> milliseconds
     :os.system_time(:millisecond)
   end
+
+
+  def scrub(value) do
+    # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy
+    String.replace(value, ~r/<script.*<\/script>/isU, "")
+    |> HtmlSanitizeEx2.basic_html_reduced()
+  end
 end
