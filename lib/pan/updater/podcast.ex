@@ -65,7 +65,7 @@ defmodule Pan.Updater.Podcast do
     %{
       content:
         "Error: #{message} | <i class='fa fa-refresh'></i> #{podcast.id} " <>
-          "<i class='fa fa-podcast'></i> {podcast.title}",
+          "<i class='fa fa-podcast'></i> #{podcast.title}",
       type: "danger",
       user_name: current_user && current_user.name
     }
