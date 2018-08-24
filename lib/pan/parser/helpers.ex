@@ -302,9 +302,15 @@ defmodule Pan.Parser.Helpers do
   end
 
 
-  def scrub(value) do
+  def scrub(value) when is_binary(value) do
     # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy
     String.replace(value, ~r/<script.*<\/script>/isU, "")
     |> HtmlSanitizeEx2.basic_html_reduced()
+  end
+
+  def scrub(value) do
+    value.value
+    |> to_string
+    |> scrub()
   end
 end
