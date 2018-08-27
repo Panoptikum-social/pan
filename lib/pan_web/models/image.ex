@@ -2,6 +2,7 @@ defmodule PanWeb.Image do
   use Pan.Web, :model
   alias PanWeb.{Episode, Image, Persona, Podcast}
   alias Pan.Repo
+  require Logger
 
   schema "images" do
     field :filename, :string
@@ -132,5 +133,6 @@ defmodule PanWeb.Image do
     Persona.cache_missing_thumbnail_images()
     Episode.cache_missing_thumbnail_images()
     Podcast.cache_missing_thumbnail_images()
+    Logger.info "=== Thumbnail image caching job finished ==="
   end
 end
