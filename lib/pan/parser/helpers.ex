@@ -34,6 +34,7 @@ defmodule Pan.Parser.Helpers do
                 |> replace_long_month_names()
                 |> replace_long_week_days()
                 |> String.replace("  ", " ")
+                |> String.trim()
                 |> fix_timezones()
 
 

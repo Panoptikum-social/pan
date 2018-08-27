@@ -27,11 +27,13 @@ defmodule Pan.Parser.Persistor do
 
     Contributor.persist_many(map[:contributors], podcast)
 
-    map[:episodes] && Episode.persist_many(map[:episodes], podcast)
+    if map[:episodes] do
+      Episode.persist_many(map[:episodes], podcast)
 
-    PanWeb.Podcast.changeset(podcast)
-    |> PanWeb.Podcast.update_counters()
-    |> Repo.update()
+      PanWeb.Podcast.changeset(podcast)
+      |> PanWeb.Podcast.update_counters()
+      |> Repo.update()
+    end
 
     podcast.id
   end

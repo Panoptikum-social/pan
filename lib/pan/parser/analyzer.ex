@@ -138,7 +138,7 @@ defmodule Pan.Parser.Analyzer do
     :"media:keywords", :"media:category", :category, :site, :docs, :"feedburner:info", :logo, :div,
     :"media:credit", :"media:copyright", :"media:rating", :"media:description", :copyright, :id,
     :"feedburner:feedFlare", :"geo:lat", :"geo:long", :"creativeCommons:license", :"clipper:id",
-    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject", :imageurl,
+    :"feedburner:emailServiceId", :"feedburner:feedburnerHostname", :"dc:subject", :imageurl, :path,
     :"sy:updatePeriod", :"sy:updateFrequency", :"wfw:commentRss", :"rawvoice:subscribe", :updated,
     :webMaster, :ttl, :"googleplay:description", :"googleplay:email", :pic, :"rp:cta", :wideImage,
     :"googleplay:category", :"rawvoice:rating", :"rawvoice:location", :"rawvoice:frequency", :block,
@@ -171,14 +171,15 @@ defmodule Pan.Parser.Analyzer do
     :collectiontype, :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
     :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
-    :"Atom:link", :ituneslink, :itunescategory, :"jmutube:params", :"cstv2:level", :url,
+    :"Atom:link", :ituneslink, :itunescategory, :"jmutube:params", :"cstv2:level", :url, :audiopath,
     :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item", :"tahoetv:url_xml",
     :"tahoetv:history_days", :"tahoetv:itunes_feed_id", :"Copyright", :"Webmaster", :email,
     :"isc:store_title", :"customtag-subtitle", :"apple-wallpapers:feedVersion", :"dc:contributor",
     :"dc:type", :"dc:format", :"dc:identifier", :"dc:source", :"dc:relation", :"acast:showId",
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
-    :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support"
+    :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
+    :"fs:self_link"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -250,7 +251,7 @@ defmodule Pan.Parser.Analyzer do
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
-    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy"
+    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year"
   ], do: %{}
 
 
