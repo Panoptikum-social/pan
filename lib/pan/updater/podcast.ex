@@ -7,7 +7,7 @@ defmodule Pan.Updater.Podcast do
   require Logger
 
 
-  def import_new_episodes(podcast, current_user \\ nil, forced \\ false) do
+  def import_new_episodes(podcast, current_user \\ nil, forced \\ false, no_failure_count_increase \\ false) do
     Logger.info("\n\e[96m === #{podcast.id} ⬇ #{podcast.title} ===\e[0m")
 
     with {:ok, _podcast} <- set_next_update(podcast),
@@ -25,7 +25,7 @@ defmodule Pan.Updater.Podcast do
         import_new_episodes(podcast, current_user)
 
       {:error, message} ->
-        increase_failure_count(podcast)
+        unless no_failure_count_increase == :no_failure_count_increase, do: increase_failure_count(podcast)
         Logger.warn(message)
         notify_user(current_user, {:error, message}, podcast)
         {:error, message}

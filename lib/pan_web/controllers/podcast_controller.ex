@@ -249,11 +249,11 @@ defmodule PanWeb.PodcastController do
   end
 
 
-  def delta_import(conn, %{"id" => id}, forced \\ false) do
+  def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\false) do
     podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
 
-    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user, forced) do
+    case Pan.Updater.Podcast.import_new_episodes(podcast, current_user, forced, no_failure_count_increase) do
       {:ok,    message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
@@ -262,7 +262,7 @@ defmodule PanWeb.PodcastController do
 
 
   def forced_delta_import(conn, %{"id" => id}) do
-    delta_import(conn, %{"id" => id}, :forced)
+    delta_import(conn, %{"id" => id}, :forced, :no_failure_count_increase)
   end
 
 

@@ -30,6 +30,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :failure_count, class: "control-label" %>
+    <%= text_input f, :failure_count, class: "form-control" %>
+    <%= error_tag f, :failure_count %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :website, class: "control-label" %>
     <%= text_input f, :website, class: "form-control" %>
     <%= error_tag f, :website %>

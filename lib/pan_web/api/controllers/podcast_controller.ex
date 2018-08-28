@@ -99,7 +99,7 @@ defmodule PanWeb.Api.PodcastController do
   end
 
 
-  def trigger_episode_update(conn, %{"id" => id} = params, _user) do
+  def trigger_episode_update(conn, %{"id" => id} = params, user) do
     podcast = Repo.get!(Podcast, id)
 
     if !podcast.manually_updated_at or
@@ -111,7 +111,7 @@ defmodule PanWeb.Api.PodcastController do
       Podcast.changeset(podcast, %{manually_updated_at: thirty_minutes_ago})
       |> Repo.update()
 
-      case Pan.Updater.Podcast.import_new_episodes(podcast) do
+      case Pan.Updater.Podcast.import_new_episodes(podcast, user, :not_forced, :no_failure_count_increase) do
         {:ok, _ }         -> show(conn, params, nil)
         {:error, message} -> send_504(conn, message)
       end
