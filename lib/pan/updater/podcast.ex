@@ -74,7 +74,9 @@ defmodule Pan.Updater.Podcast do
   end
 
   def unpause_and_reset_failure_count(podcast) do
-    PanWeb.Podcast.changeset(podcast, %{update_paused: false, failure_count: 0})
+    PanWeb.Podcast.changeset(podcast, %{update_paused: false,
+                                        retired: false,
+                                        failure_count: 0})
     |> Repo.update(force: true)
   end
 
