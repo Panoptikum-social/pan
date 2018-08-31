@@ -1,7 +1,7 @@
 defmodule Pan.Updater.Feed do
   alias Pan.Repo
   alias PanWeb.Feed
-  alias Pan.Parser.Helpers, as: H
+  import Pan.Parser.Helpers, only: [md5hash: 1, to_naive_datetime: 1]
   require Logger
 
   def needs_update(feed, podcast, forced \\ false) do
@@ -33,7 +33,7 @@ defmodule Pan.Updater.Feed do
   end
 
   defp check_headers(podcast, feed, nil, last_modified_header) do
-    last_modified = H.to_naive_datetime(last_modified_header)
+    last_modified = to_naive_datetime(last_modified_header)
 
     if feed.trust_last_modified and last_modified == feed.last_modified do
       # last_modified unchanged and trustworthy
@@ -95,10 +95,5 @@ defmodule Pan.Updater.Feed do
     |> Repo.update()
 
     {:ok, "go on"}
-  end
-
-  defp md5hash(xml) do
-    :crypto.hash(:md5, xml)
-    |> Base.encode16()
   end
 end

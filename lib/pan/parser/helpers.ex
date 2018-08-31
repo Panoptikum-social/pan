@@ -314,4 +314,10 @@ defmodule Pan.Parser.Helpers do
     |> to_string
     |> scrub()
   end
+
+
+  def md5hash(xml) do
+    :crypto.hash(:md5, xml)
+    |> Base.encode16()
+  end
 end

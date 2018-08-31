@@ -2,7 +2,7 @@ defmodule PanWeb.Api.PodcastController do
   use Pan.Web, :controller
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
-  import PanWeb.Api.Helpers, only: [send_504: 2]
+  import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -60,16 +60,24 @@ defmodule PanWeb.Api.PodcastController do
     |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     podcast = Repo.get(Podcast, id)
-               |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
-                                                            offset: ^offset,
-                                                            limit: ^size))
-               |> Repo.preload([:categories, :languages, :engagements, :contributors,
-                               [recommendations: :user], :feeds, [episodes: :enclosures]])
+              |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
+                                                           offset: ^offset,
+                                                           limit: ^size))
+              |> Repo.preload([:categories, :languages, :engagements, :contributors,
+                              [recommendations: :user], :feeds, [episodes: :enclosures]])
 
     if podcast do
-      render conn, "show.json-api", data: podcast,
-                                  opts: [page: links,
-                                         include: "episodes.enclosures,categories,languages,engagements,contributors,recommendations,feeds"]
+      includes = "episodes.enclosures,categories,languages,engagements,contributors,recommendations,feeds"
+
+      podcast_json = PanWeb.Api.PodcastView
+                     |> JaSerializer.format(podcast, conn, include: includes)
+                     |> Poison.encode!()
+
+      conn
+      |> add_etag_header(podcast_json)
+      |> render("show.json-api", data: podcast,
+                                 opts: [page: links,
+                                        include: includes ])
     else
       Helpers.send_404(conn)
     end

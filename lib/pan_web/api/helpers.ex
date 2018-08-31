@@ -53,4 +53,12 @@ defmodule PanWeb.Api.Helpers do
       base_url: base_url}
     |> JaSerializer.Builder.PaginationLinks.build(conn)
   end
+
+
+  def add_etag_header(conn, json) do
+    md5_hash = :crypto.hash(:md5, json)
+               |> Base.encode16()
+
+    Plug.Conn.put_resp_header(conn, "ETag", md5_hash)
+  end
 end
