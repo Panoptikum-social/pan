@@ -153,7 +153,7 @@ defmodule PanWeb.PersonaFrontendController do
         persona = manifestation.persona
 
         changeset =
-          if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) do
+          if user.pro_until && NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) == :gt do
             thumbnail = from(i in Image, where: i.persona_id == ^id)
                         |> Repo.one()
             if thumbnail, do: Image.delete_asset(thumbnail)
