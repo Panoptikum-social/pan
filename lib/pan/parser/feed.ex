@@ -1,4 +1,5 @@
 defmodule Pan.Parser.Feed do
+  import Ecto.Query
   alias Pan.Repo
   alias Pan.Parser.AlternateFeed
   alias PanWeb.Feed
@@ -26,11 +27,13 @@ defmodule Pan.Parser.Feed do
     {:ok, feed} = get_by_podcast_id(id)
 
     if redirect_target && String.starts_with?(redirect_target, "http") do
-      AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
-                                             title: feed.self_link_url})
-      feed
-      |> Feed.changeset(%{self_link_url: redirect_target})
-      |> Repo.update([force: true])
+      unless Enum.member?(alternate_feed_urls(id), redirect_target) do
+        AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
+                                               title: feed.self_link_url})
+        feed
+        |> Feed.changeset(%{self_link_url: redirect_target})
+        |> Repo.update([force: true])
+      end
     end
   end
 
@@ -42,5 +45,12 @@ defmodule Pan.Parser.Feed do
       feed ->
         {:ok, feed}
     end
+  end
+
+
+  def alternate_feed_urls(id) do
+    from(a in PanWeb.AlternateFeed, where: a.feed_id == ^id,
+                                    select: a.url)
+    |> Repo.all()
   end
 end

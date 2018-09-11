@@ -13,7 +13,7 @@ defmodule Pan.Updater.Podcast do
     with {:ok, _podcast} <- set_next_update(podcast),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
-         {:ok, feed_xml} <- Download.download(feed.self_link_url),
+         {:ok, feed_xml} <- Download.download(feed.self_link_url, nil, feed.id),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
@@ -21,18 +21,29 @@ defmodule Pan.Updater.Podcast do
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
       {:redirect, redirect_target} ->
-        Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target))
-        import_new_episodes(podcast, current_user)
+        case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
+          {:ok, _} ->
+            import_new_episodes(podcast, current_user, forced, no_failure_count_increase)
+          {:error, message} ->
+            handle_message(podcast, current_user, message, no_failure_count_increase)
+        end
 
       {:error, message} ->
-        unless no_failure_count_increase == :no_failure_count_increase, do: increase_failure_count(podcast)
-        Logger.warn(message)
-        notify_user(current_user, {:error, message}, podcast)
-        {:error, message}
+        handle_message(podcast, current_user, message, no_failure_count_increase)
 
       {:done, "nothing to do"} ->
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
+  end
+
+
+  defp handle_message(podcast, current_user, message, no_failure_count_increase) do
+    unless no_failure_count_increase == :no_failure_count_increase do
+      increase_failure_count_and_persist_error(podcast, message)
+    end
+    Logger.warn(message)
+    notify_user(current_user, {:error, message}, podcast)
+    {:error, message}
   end
 
 
@@ -80,8 +91,10 @@ defmodule Pan.Updater.Podcast do
     |> Repo.update(force: true)
   end
 
-  defp increase_failure_count(podcast) do
-    Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1})
+  defp increase_failure_count_and_persist_error(podcast, message) do
+    Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1,
+                                 last_error_message: message,
+                                 last_error_occured: NaiveDateTime.utc_now()})
     |> Repo.update(force: true)
 
     if podcast.failure_count == 9 do

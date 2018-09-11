@@ -262,7 +262,8 @@ defmodule PanWeb.PodcastController do
 
 
   def forced_delta_import(conn, %{"id" => id}) do
-    delta_import(conn, %{"id" => id}, :forced, :no_failure_count_increase)
+    delta_import(conn, %{"id" => id}, :forced, false)
+    # delta_import(conn, %{"id" => id}, :forced, :no_failure_count_increase)
   end
 
 

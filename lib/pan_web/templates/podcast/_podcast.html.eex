@@ -87,6 +87,12 @@
 
   <dt>Indexed by Elatsicsearch</dt>
   <dd><%= @podcast.elastic %></dd>
+
+  <dt>Last error message</dt>
+  <dd><%= @podcast.last_error_message %></dd>
+
+  <dt>Last error occured</dt>
+  <dd><%= @podcast.last_error_occured %></dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

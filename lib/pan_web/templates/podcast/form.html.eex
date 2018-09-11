@@ -144,6 +144,18 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :last_error_message, class: "control-label" %>
+    <%= text_input f, :last_error_message, class: "form-control" %>
+    <%= error_tag f, :last_error_message %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :last_error_occured, class: "control-label" %>
+    <%= datetime_select f, :last_error_occured, class: "form-control" %>
+    <%= error_tag f, :last_error_occured %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

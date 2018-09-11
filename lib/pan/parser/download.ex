@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Download do
   require Logger
+  alias Pan.Parser.Feed
 
   def check_for_rss(feed_xml) do
     if String.contains?(feed_xml, "<rss") do
@@ -10,7 +11,7 @@ defmodule Pan.Parser.Download do
   end
 
 
-  def download(url, option \\ nil) do
+  def download(url, option \\ nil, feed_id \\ nil) do
     case get(url, option) do
       {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} -> check_for_rss(feed_xml)
       {:ok, %HTTPoison.Response{status_code: 203, body: feed_xml}} -> check_for_rss(feed_xml)
@@ -41,9 +42,9 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 523}} -> {:error, "523: Origin is unreachable"}
       {:ok, %HTTPoison.Response{status_code: 526}} -> {:error, "526: Invalid SSL certificate"}
 
-      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers)
-      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers)
-      {:ok, %HTTPoison.Response{status_code: 303, headers: headers}} -> redirect(url, headers)
+      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} -> redirect(url, headers, feed_id)
+      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} -> redirect(url, headers, feed_id)
+      {:ok, %HTTPoison.Response{status_code: 303, headers: headers}} -> redirect(url, headers, feed_id)
       {:ok, %HTTPoison.Response{status_code: 307}} -> {:error, "307: Temporary redirect"}
 
       {:ok, %HTTPoison.Response{status_code: 403}} ->
@@ -82,7 +83,7 @@ defmodule Pan.Parser.Download do
   end
 
 
-  def redirect(url, headers) do
+  def redirect(url, headers, feed_id) do
     header_map = Enum.into(headers, %{})
     redirect_target = if Map.has_key?(header_map, "Location") do
       Map.fetch!(header_map, "Location")
@@ -97,13 +98,16 @@ defmodule Pan.Parser.Download do
           domain = String.split(url, "/", parts: 3, trim: true)
                    |> Enum.drop(-1)
                    |> Enum.join("//")
-          domain <> redirect_target
+          domain <> "/" <> redirect_target
       end
 
-    if redirect_target == url do
-      {:error, "redirects to itself"}
-    else
-      {:redirect, redirect_target}
+    there_is_a_loop_here = Feed.alternate_feed_urls(feed_id)
+                           |> Enum.member?(redirect_target)
+
+    cond do
+      redirect_target == url -> {:error, "redirects to itself"}
+      there_is_a_loop_here -> {:error, "loop detected"}
+      true -> {:redirect, redirect_target}
     end
   end
 
