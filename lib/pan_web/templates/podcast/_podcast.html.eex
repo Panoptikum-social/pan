@@ -21,19 +21,19 @@
   <dd><%= @podcast.image_url %></dd>
 
   <dt>Last build date</dt>
-  <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.last_build_date && Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Updated at</dt>
-  <dd><%= Timex.format!(@podcast.updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.updated_at && Timex.format!(@podcast.updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Update intervall</dt>
   <dd><%= @podcast.update_intervall %></dd>
 
   <dt>Next update</dt>
-  <dd><%= Timex.format!(@podcast.next_update, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.next_update && Timex.format!(@podcast.next_update, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Inserted at</dt>
-  <dd><%= Timex.format!(@podcast.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.inserted_at && Timex.format!(@podcast.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Payment link title</dt>
   <dd><%= @podcast.payment_link_title %></dd>
@@ -77,13 +77,13 @@
   <dd><%= @podcast.subscriptions_count %></dd>
 
   <dt>Latest episode publishing date</dt>
-  <dd><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.latest_episode_publishing_date && Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Publication frequency</dt>
   <dd><%= if @podcast.publication_frequency, do: Float.round(@podcast.publication_frequency, 2) %> days</dd>
 
   <dt>Manually updated at</dt>
-  <dd><%= Timex.format!(@podcast.manually_updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.manually_updated_at && Timex.format!(@podcast.manually_updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
   <dt>Indexed by Elatsicsearch</dt>
   <dd><%= @podcast.elastic %></dd>
@@ -92,7 +92,7 @@
   <dd><%= @podcast.last_error_message %></dd>
 
   <dt>Last error occured</dt>
-  <dd><%= Timex.format!(@podcast.last_error_occured, "{ISOdate} {h24}:{m}:{s}") %></dd>
+  <dd><%= @podcast.last_error_occured && Timex.format!(@podcast.last_error_occured, "{ISOdate} {h24}:{m}:{s}") %></dd>
 </dl>
 
 <%= link "Show", to: podcast_path(@conn, :show, @podcast) %>
