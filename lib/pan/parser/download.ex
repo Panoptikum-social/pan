@@ -91,24 +91,7 @@ defmodule Pan.Parser.Download do
       Map.fetch!(header_map, "location")
     end
 
-    redirect_target =
-      case String.starts_with?(redirect_target, "http") do
-        true -> redirect_target
-        false ->
-          domain = String.split(url, "/", parts: 3, trim: true)
-                   |> Enum.drop(-1)
-                   |> Enum.join("//")
-          domain <> "/" <> redirect_target
-      end
-
-    there_is_a_loop_here = Feed.alternate_feed_urls(feed_id)
-                           |> Enum.member?(redirect_target)
-
-    cond do
-      redirect_target == url -> {:error, "redirects to itself"}
-      there_is_a_loop_here -> {:error, "loop detected"}
-      true -> {:redirect, redirect_target}
-    end
+    Feed.check_for_redirect_loop(url, redirect_target, feed_id)
   end
 
 

@@ -26,14 +26,41 @@ defmodule Pan.Parser.Feed do
   def update_with_redirect_target(id, redirect_target) do
     {:ok, feed} = get_by_podcast_id(id)
 
-    if redirect_target && String.starts_with?(redirect_target, "http") do
-      unless Enum.member?(alternate_feed_urls(id), redirect_target) do
+    case redirect_target && check_for_redirect_loop(feed.self_link_url, redirect_target, id) do
+      {:redirect, redirect_target} ->
         AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url,
                                                title: feed.self_link_url})
         feed
         |> Feed.changeset(%{self_link_url: redirect_target})
         |> Repo.update([force: true])
+
+      {:error, message} -> {:error, message}
+      nil -> {:error, "empty redirect target"}
+    end
+  end
+
+
+  def check_for_redirect_loop(url, redirect_target, id) do
+    redirect_target =
+      case String.starts_with?(redirect_target, "http") do
+        true -> redirect_target
+        false ->
+          domain = String.split(url, "/", parts: 3, trim: true)
+                   |> Enum.drop(-1)
+                   |> Enum.join("//")
+          "#{domain}/#{redirect_target}"
       end
+
+    there_is_a_loop_here = alternate_feed_urls(id)
+                           |> Enum.member?(redirect_target)
+
+    cond do
+      redirect_target == url ->
+        {:error, "redirects to itself"}
+      there_is_a_loop_here ->
+        {:error, "loop detected"}
+      true ->
+        {:redirect, redirect_target}
     end
   end
 
