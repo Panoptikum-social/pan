@@ -45,10 +45,11 @@ defmodule Pan.Parser.Feed do
       case String.starts_with?(redirect_target, "http") do
         true -> redirect_target
         false ->
-          domain = String.split(url, "/", parts: 3, trim: true)
-                   |> Enum.drop(-1)
-                   |> Enum.join("//")
-          "#{domain}/#{redirect_target}"
+          String.split(url, "/", parts: 3, trim: true)
+          |> Enum.drop(-1)
+          |> Enum.join("//")
+          |> Kernel.<>("/")
+          |> Kernel.<>(String.trim_leading(redirect_target, "/"))
       end
 
     there_is_a_loop_here =
