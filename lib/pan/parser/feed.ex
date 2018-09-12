@@ -51,8 +51,14 @@ defmodule Pan.Parser.Feed do
           "#{domain}/#{redirect_target}"
       end
 
-    there_is_a_loop_here = alternate_feed_urls(id)
-                           |> Enum.member?(redirect_target)
+    there_is_a_loop_here =
+      if id do
+        alternate_feed_urls(id)
+        |> Enum.member?(redirect_target)
+      else
+        # This is a legitimate case: for initial import, there is no feed in the database yet
+        false
+      end
 
     cond do
       redirect_target == url ->
