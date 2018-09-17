@@ -32,14 +32,14 @@
     <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
       &nbsp; &nbsp; &nbsp;
         <%= Integer.to_string(length(podcasts)) %>
-        <%= hd(podcasts) && hd(podcasts).language_emoji %>
+        <%= List.first(podcasts) && hd(podcasts).language_emoji %>
         <%= link (language || "Language unknown"), to: "#" <> (language || "Language unknown"),
                                                     id: "lang-#{language}"%>
     <% end %>
 
 
     <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
-      <h3 id="<%= language %>"><%= hd(podcasts) && hd(podcasts).language_emoji %>
+      <h3 id="<%= language %>"><%= List.first(podcasts) && hd(podcasts).language_emoji %>
         <%= if podcasts != [], do: Integer.to_string(length(podcasts)) %> <%= language || "Language unknown" %></h3>
       <%= for group <- Enum.chunk_every(podcasts, 6, 6, []) do %>
         <div class="row">
