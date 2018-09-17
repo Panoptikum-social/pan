@@ -145,7 +145,7 @@ defmodule PanWeb.Podcast do
                                   preload: :persona,
                                   limit: 1)
     |> Repo.all()
-    |> hd()
+    |> List.first()
 
     if engagement, do: engagement.persona
   end
@@ -236,7 +236,7 @@ defmodule PanWeb.Podcast do
                                      limit: 1,
                                      select: e.updated_at)
                   |> Repo.all()
-                  |> hd()
+                  |> List.first()
 
     hours = Timex.diff(Timex.now(), Timex.to_datetime(last_update), :hours)
 

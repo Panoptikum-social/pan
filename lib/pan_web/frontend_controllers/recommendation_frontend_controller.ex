@@ -48,7 +48,7 @@ defmodule PanWeb.RecommendationFrontendController do
                                  preload: [:episodes, :languages, :categories, :feeds, engagements: :persona])
               |> Repo.one()
 
-    category = Repo.get(Category, hd(podcast.categories).id)
+    category = Repo.get(Category, List.first(podcast.categories).id)
                |> Repo.preload([:parent, :children])
 
     podcasts = from(l in Language, right_join: p in assoc(l, :podcasts),

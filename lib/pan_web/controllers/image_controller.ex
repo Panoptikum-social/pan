@@ -163,7 +163,7 @@ defmodule PanWeb.ImageController do
       from(i in Image, where: i.episode_id == ^episode_id,
                        limit: 1)
       |> Repo.all()
-      |> hd()
+      |> List.first()
       |> Repo.delete()
     end
 
@@ -176,7 +176,7 @@ defmodule PanWeb.ImageController do
       from(i in Image, where: i.podcast_id == ^podcast_id,
                        limit: 1)
       |> Repo.all()
-      |> hd()
+      |> List.first()
       |> Repo.delete()
     end
 
@@ -189,7 +189,7 @@ defmodule PanWeb.ImageController do
       from(i in Image, where: i.persona_id == ^persona_id,
                        limit: 1)
       |> Repo.all()
-      |> hd()
+      |> List.first()
       |> Repo.delete()
     end
 

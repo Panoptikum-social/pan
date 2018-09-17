@@ -28,7 +28,7 @@ defmodule Pan.Updater.Filter do
 
       attribute_map ->
         Map.get(attribute_map, :value)
-        |> hd()
+        |> List.first()
         |> (&Enum.member?(known_guids, &1)).()
     end
   end
