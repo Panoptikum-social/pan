@@ -1,4 +1,4 @@
-<h2>Listing <%= Enum.count(@podcasts) %> podcasts</h2>
+<h2>Listing <%= length(@podcasts) %> podcasts</h2>
 <p class="text-right">
 ...
 </p>

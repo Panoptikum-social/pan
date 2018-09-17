@@ -17,7 +17,7 @@ defmodule Pan.Parser.Persona do
       if persona_map[:email] do
         Map.put_new(persona_map, :name, persona_map[:email]
         |> String.split("@")
-        |> List.first()
+        |> hd()
         |> String.split(".")
         |> Stream.map(&String.capitalize/1)
         |> Enum.join(" "))

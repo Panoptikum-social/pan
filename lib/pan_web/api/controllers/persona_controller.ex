@@ -86,18 +86,16 @@ defmodule PanWeb.Api.PersonaController do
                |> Repo.all()
 
     if persona do
-      persona = persona
-                |> Map.put(:gigs, gigs)
-                |> Map.put(:engagements, engagements)
-                |> Map.put(:podcasts, podcasts)
-                |> Map.put(:episodes, episodes)
-
+      persona = struct(persona, gigs: gigs,
+                                engagements: engagements,
+                                podcasts: podcasts,
+                                episodes: episodes)
 
       render conn, "show.json-api", data: persona,
-                                  gigs: gigs,
-                                  engagements: engagements,
-                                  opts: [page: links,
-                                        include: "redirect,delegates,engagements,gigs,podcasts,episodes"]
+                                    gigs: gigs,
+                                    engagements: engagements,
+                                    opts: [page: links,
+                                           include: "redirect,delegates,engagements,gigs,podcasts,episodes"]
     else
       Helpers.send_404(conn)
     end

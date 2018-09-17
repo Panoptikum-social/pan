@@ -273,14 +273,14 @@ defmodule PanWeb.EpisodeFrontendView do
     if mimetype(episode) do
       mimetype(episode)
       |> String.split("/")
-      |> List.first()
+      |> hd()
     end
   end
 
   def mimetype(episode) do
     if episode.enclosures != [] do
       episode.enclosures
-      |> List.first()
+      |> hd()
       |> Map.get(:type)
     end
   end

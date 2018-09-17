@@ -17,7 +17,7 @@
            podcast: @podcast,
            podcast_thumbnail: @podcast_thumbnail,
            episodes: @podcast.episodes,
-           episode_count: Enum.count(@podcast.episodes),
+           episode_count: length(@podcast.episodes),
            current_user: @current_user,
            changeset: @changeset,
            conn: @conn %>

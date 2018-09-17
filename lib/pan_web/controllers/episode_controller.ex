@@ -92,7 +92,7 @@ defmodule PanWeb.EpisodeController do
       episode = from(e in Episode, where: e.podcast_id == ^podcast_id and e.guid == ^guid,
                          limit: 1)
                 |> Repo.all()
-                |> List.first()
+                |> hd()
 
       Repo.delete(episode)
       Episode.delete_search_index(episode.id)

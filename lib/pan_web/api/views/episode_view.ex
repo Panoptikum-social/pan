@@ -99,7 +99,7 @@ defmodule DurationHelpers do
       Enum.at(fragments, fragment_index)
       |> String.to_integer()
 
-    fragment_value * :math.pow(60, Enum.count(fragments) - fragment_index - 1)
+    fragment_value * :math.pow(60, length(fragments) - fragment_index - 1)
     |> round()
   end
 end

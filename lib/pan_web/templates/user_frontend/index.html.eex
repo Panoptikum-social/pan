@@ -6,8 +6,8 @@
 <div class="panel">
   <ul class="nav nav-tabs" role="tablist">
     <%= for letter <- letters do %>
-      <li role="users" class=<%= if List.first(to_charlist(letter)) == 65, do: "active" %>>
-        <a href="#<%= to_charlist(letter) |> List.first() %>"
+      <li role="users" class=<%= if hd(to_charlist(letter)) == 65, do: "active" %>>
+        <a href="#<%= to_charlist(letter) |> hd() %>"
            aria-controls="<%= to_charlist(letter) |> List.first %>"
            role="tab"
            data-toggle="tab">
@@ -20,7 +20,7 @@
   <div class="tab-content">
     <%= for letter <- letters do %>
 
-      <div role="tabpanel" class="tab-pane fade <%= if List.first(to_charlist(letter)) == 65, do: 'in active' %>"
+      <div role="tabpanel" class="tab-pane fade <%= if hd(to_charlist(letter)) == 65, do: 'in active' %>"
                            id="<%= to_charlist(letter) |> List.first %>">
         <%= for {group, outer} <- Enum.chunk_every(grouped_users[letter], 12, 12, []) |> Enum.with_index() do %>
           <div class="row" style="line-height: 2.5;">

@@ -162,7 +162,7 @@ defmodule Pan.Parser.Episode do
   defp unwrap_first_enclosure(enclosures) do
     enclosures
     |> Map.to_list()
-    |> List.first()
+    |> hd()
     |> elem(1)
   end
 

@@ -296,7 +296,7 @@ defmodule PanWeb.PodcastController do
                                  |> Enum.shuffle()
 
     for {podcast, index} <- Enum.with_index(podcasts_without_languages) do
-      Logger.info ("#{index} of #{Enum.count(podcasts_without_languages)}")
+      Logger.info ("#{index} of #{length(podcasts_without_languages)}")
       Pan.Parser.Podcast.fix_language(podcast)
     end
 

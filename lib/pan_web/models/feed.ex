@@ -60,7 +60,7 @@ defmodule PanWeb.Feed do
                                    preload: :feeds,
                                    limit: 1)
                 |> Repo.one() ->
-        List.first(podcast.feeds)
+        hd(podcast.feeds)
 
       String.contains?(url, "/") ->
         url

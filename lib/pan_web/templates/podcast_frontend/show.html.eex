@@ -34,8 +34,8 @@
               <% end %>
             </td>
             <td align="center">
-              <%= if List.first(episode.thumbnails) do %>
-                <%= img_tag(List.first(episode.thumbnails).path <> List.first(episode.thumbnails).filename,
+              <%= if hd(episode.thumbnails) do %>
+                <%= img_tag(hd(episode.thumbnails).path <> hd(episode.thumbnails).filename,
                             width: 100, height: 100,
                             alt: @podcast.image_title,
                             class: "thumbnail",

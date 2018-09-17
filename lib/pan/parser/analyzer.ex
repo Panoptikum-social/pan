@@ -360,7 +360,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"itunes:summary",  _, []]), do: %{}
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]) when is_map(value) do
-    %{summary: scrub(List.first(value[:value]))}
+    %{summary: scrub(hd(value[:value]))}
   end
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: scrub(value)}

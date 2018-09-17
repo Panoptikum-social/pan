@@ -145,7 +145,7 @@ defmodule PanWeb.Podcast do
                                   preload: :persona,
                                   limit: 1)
     |> Repo.all()
-    |> List.first()
+    |> hd()
 
     if engagement, do: engagement.persona
   end
@@ -236,7 +236,7 @@ defmodule PanWeb.Podcast do
                                      limit: 1,
                                      select: e.updated_at)
                   |> Repo.all()
-                  |> List.first()
+                  |> hd()
 
     hours = Timex.diff(Timex.now(), Timex.to_datetime(last_update), :hours)
 
@@ -291,7 +291,7 @@ defmodule PanWeb.Podcast do
     deleted_ids = all_ids -- podcast_ids
 
     for {deleted_id, index} <- Enum.with_index(deleted_ids) do
-      IO.puts Integer.to_string((Enum.count(deleted_ids) - index))
+      IO.puts Integer.to_string((length(deleted_ids) - index))
       delete_search_index(deleted_id)
     end
   end

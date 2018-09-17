@@ -3,7 +3,7 @@
                                        class: "btn btn-warning" %>
 </p>
 
-<h2>Listing <%= Enum.count(@unassigned_podcasts) %> podcasts without categories</h2>
+<h2>Listing <%= length(@unassigned_podcasts) %> podcasts without categories</h2>
 
 <table class="table">
   <thead>
@@ -43,7 +43,7 @@
   </tbody>
 </table>
 
-<h2>Listing <%= Enum.count(@podcasts_without_episodes) %> podcasts without episodes</h2>
+<h2>Listing <%= length(@podcasts_without_episodes) %> podcasts without episodes</h2>
 
 <table class="table">
   <thead>

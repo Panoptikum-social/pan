@@ -57,7 +57,7 @@ defmodule PanWeb.Api.RecommendationController do
                                  preload: [:episodes, :languages, :categories, :feeds, engagements: :persona])
               |> Repo.one()
 
-    category = Repo.get(Category, List.first(podcast.categories).id)
+    category = Repo.get(Category, hd(podcast.categories).id)
                |> Repo.preload([:parent, :children, :podcasts])
 
     episode = Enum.random(podcast.episodes)
@@ -65,14 +65,12 @@ defmodule PanWeb.Api.RecommendationController do
               |> Repo.preload([:podcast, :enclosures, [chapters: :recommendations],
                                :contributors, :recommendations, [gigs: :persona]])
 
-    recommendation = %Recommendation{podcast_id: podcast.id,
-                                     episode_id: episode.id,
-                                     id: "random"}
-                     |> Map.put(:podcast, podcast)
-                     |> Map.put(:episode, episode)
-                     |> Map.put(:category, category)
-                     |> Map.put(:chapter, %{})
-                     |> Map.put(:user, %PanWeb.User{id: 1, name: "Fortuna"})
+    recommendation = %Recommendation{podcast_id: podcast.id, episode_id: episode.id, id: "random"}
+                     |> struct(podcast: podcast,
+                               episode: episode,
+                               category: category,
+                               chapter: {},
+                               user: %PanWeb.User{id: 1, name: "Fortuna"})
 
     render conn, "show.json-api", data: recommendation,
                                   opts: [include: "podcast,episode,category"]

@@ -12,7 +12,7 @@ defmodule PanWeb.Api.Auth do
   def call(conn, _repo) do
     token = conn
             |> get_req_header("authorization")
-            |> List.first()
+            |> hd()
 
     token = token && String.slice(token, 7..-1)
 

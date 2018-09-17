@@ -58,14 +58,14 @@
     Jump to:
     <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
       &nbsp; &nbsp; &nbsp;
-      <%= List.first(podcasts) && List.first(podcasts).language_emoji %>
+      <%= hd(podcasts) && hd(podcasts).language_emoji %>
       <%= link ( language || "Language unknown"), to: "#" <> (language || "Language unknown"),
                                                   id: "lang-#{language}"%>
     <% end %>
 
 
     <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
-      <h3 id="<%= language %>"><%= List.first(podcasts) && List.first(podcasts).language_emoji %>
+      <h3 id="<%= language %>"><%= hd(podcasts) && hd(podcasts).language_emoji %>
         <%= language || "Language unknown" %></h3>
       <%= for group <- Enum.chunk_every(podcasts, 6, 6, []) do %>
         <div class="row">
