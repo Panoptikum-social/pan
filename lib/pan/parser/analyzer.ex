@@ -180,7 +180,7 @@ defmodule Pan.Parser.Analyzer do
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
-    :"fs:self_link"
+    :"fs:self_link", :service
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -252,7 +252,7 @@ defmodule Pan.Parser.Analyzer do
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
-    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year"
+    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration"
   ], do: %{}
 
 
