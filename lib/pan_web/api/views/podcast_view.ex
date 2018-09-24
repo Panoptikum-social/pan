@@ -9,7 +9,8 @@ defmodule PanWeb.Api.PodcastView do
               :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
               :update_intervall, :next_update, :retired, :unique_identifier, :episodes_count,
               :followers_count, :likes_count, :subscriptions_count, :latest_episode_publishing_date,
-              :publication_frequency]
+              :publication_frequency, :manually_updated_at, :elastic, :last_error_message,
+              :last_error_occured]
 
   has_many :episodes, serializer: PanWeb.Api.PlainEpisodeView, include: false
   has_many :categories, serializer: PanWeb.Api.PlainCategoryView, include: false
