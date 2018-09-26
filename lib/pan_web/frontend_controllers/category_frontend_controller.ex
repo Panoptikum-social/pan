@@ -80,9 +80,6 @@ defmodule PanWeb.CategoryFrontendController do
                                         select: p.id)
                     |> Repo.all
 
-
-IO.inspect podcast_ids
-
       latest_episodes =
         from(e in Episode, order_by: [desc: :publishing_date],
                            where: e.publishing_date < ^NaiveDateTime.utc_now() and

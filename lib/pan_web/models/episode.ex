@@ -116,7 +116,6 @@ defmodule PanWeb.Episode do
 
     for id <- all_ids do
       unless Enum.member?(episode_ids, id) do
-        IO.puts Integer.to_string(max_episode_id - id)
         delete_search_index(id)
       end
     end

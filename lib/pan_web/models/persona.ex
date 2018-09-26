@@ -160,7 +160,6 @@ defmodule PanWeb.Persona do
     deleted_ids = all_ids -- persona_ids
 
     for {deleted_id, index} <- Enum.with_index(deleted_ids) do
-      IO.puts Integer.to_string((length(deleted_ids) - index))
       delete_search_index(deleted_id)
     end
   end

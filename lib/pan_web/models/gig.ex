@@ -34,7 +34,6 @@ defmodule PanWeb.Gig do
 
 
   def proclaim(episode_id, persona_id, current_user_id) do
-    IO.inspect Repo.get_by(Manifestation, user_id: current_user_id, persona_id: persona_id)
     with %Manifestation{} <- Repo.get_by(Manifestation, user_id: current_user_id,
                                                      persona_id: persona_id) do
       case Repo.get_by(Gig, episode_id: episode_id,

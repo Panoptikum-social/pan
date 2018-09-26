@@ -136,7 +136,6 @@ defmodule PanWeb.Auth do
 
   def unset_cookie(conn, _opts) do
     # if not logged in yet or do not fill out a form, we can delete the cookie
-    # IO.inspect conn.path_info
     if conn.assigns.current_user ||
        conn.path_info == ["sessions", "new"] ||
        conn.path_info == ["sessions"] ||

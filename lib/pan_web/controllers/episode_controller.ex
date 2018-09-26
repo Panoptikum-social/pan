@@ -109,7 +109,6 @@ defmodule PanWeb.EpisodeController do
                |> Repo.all()
 
     for episode <- episodes do
-      IO.puts episode.id
       sanitized_shownotes = episode.shownotes
                             |> String.replace(~r/\$\('.*}\);/isU, "")
                             |> String.replace(~r/\(function.*\(\);/isU, "")
