@@ -5,6 +5,27 @@ defmodule PanWeb.MaintenanceController do
                 Like, Manifestation, Opml, Persona, Podcast,
                 Recommendation, Subscription, User}
 
+  def activity_pub(conn, _params) do
+    address = "@informatom@pleroma.panoptikum.io"
+    options =  ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"]
+    headers = ["Accept": "application/activity+json"]
+
+    [_, username, domain] = Regex.split(~r{@}, address)
+
+    {:ok, %HTTPoison.Response{body: stringbody, headers: headers}} =
+      HTTPoison.get("https://" <> domain <> "/users/" <> username, headers, options)
+
+    {:ok, body} = Poison.decode(stringbody)
+
+    {:ok, %HTTPoison.Response{body: stringbody, headers: headers}} = HTTPoison.get(body["outbox"])
+    {:ok, body} = Poison.decode(stringbody)
+
+    require IEx; IEx.pry
+
+    render(conn, "done.html")
+  end
+
+
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
   end

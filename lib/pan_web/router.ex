@@ -417,5 +417,7 @@ defmodule PanWeb.Router do
     get "/maintenance/stats", MaintenanceController, :stats
     get "/maintenance/sandbox", MaintenanceController, :sandbox
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
+
+    get "/maintenance/activity_pub", MaintenanceController, :activity_pub
   end
 end

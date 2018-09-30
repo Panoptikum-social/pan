@@ -165,17 +165,26 @@ defmodule PanWeb.Persona do
 
   def create_user_persona(user) do
     if user.podcaster == true and Enum.empty?(user.user_personas) do
-      pid = UUID.uuid5(:url, Integer.to_string(user.id) <> user.username)
+      case Repo.one(from p in Persona, where: p.email == ^user.email) do
+        nil ->
+          pid = UUID.uuid5(:url, Integer.to_string(user.id) <> user.username)
 
-      {:ok, persona} = %Persona{user_id: user.id,
-                                pid: pid,
-                                name: user.name,
-                                email: user.email}
-                       |> Repo.insert()
+          {:ok, persona} = %Persona{user_id: user.id,
+                                    pid: pid,
+                                    name: user.name,
+                                    email: user.email}
+                           |> Repo.insert()
 
-      %Manifestation{persona_id: persona.id,
-                     user_id: user.id}
-      |> Repo.insert()
+          %Manifestation{persona_id: persona.id,
+                         user_id: user.id}
+          |> Repo.insert()
+        persona ->
+          persona
+          |> PanWeb.Persona.changeset(%{user_id: user.id})
+          |> Repo.update()
+
+          {:ok, persona}
+      end
     end
   end
 
