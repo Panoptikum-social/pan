@@ -32,6 +32,7 @@ defmodule Pan.Parser.Download do
       {:ok, %HTTPoison.Response{status_code: 479}} -> {:error, "479: Not a standard status code"}
 
       {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "500: internal server error"}
+      {:ok, %HTTPoison.Response{status_code: 500}} -> {:error, "501: not implemented"}
       {:ok, %HTTPoison.Response{status_code: 502}} -> {:error, "502: bad gateway"}
       {:ok, %HTTPoison.Response{status_code: 503}} -> {:error, "503: service unavailable"}
       {:ok, %HTTPoison.Response{status_code: 504}} -> {:error, "504: gateway time-out"}

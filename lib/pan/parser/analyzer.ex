@@ -327,6 +327,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode_image", [:title, _, [value]]), do: %{image_title: to_255(value)}
   def call(_, "episode_image", [:url,   _, []]), do: %{}
   def call(_, "episode_image", [:url,   _, [value]]), do: %{image_url: to_255(value)}
+  def call(_, "episode_image", [:url,   _, [_, value, _]]), do: %{image_url: to_255(value)}
   def call(_, "episode_image", [:link,        _, _]), do: %{}
   def call(_, "episode_image", [:description, _, _]), do: %{}
   def call(_, "episode_image", [:width,       _, _]), do: %{}
