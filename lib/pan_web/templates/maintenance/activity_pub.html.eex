@@ -1,11 +1,16 @@
-<%= for toot <- @toots do %>
+<ul class="media-list">
+  <%= for toot <- @toots do %>
+    <li class="media">
+      <div class="pull-left">
+        <%= img_tag(toot.actor_image, height: 80, alt: toot.name, class: "thumbnail") %>
+      </div>
 
-  <%= toot.published %><br/>
-  <%= toot.content %>
-
-  <%#= show_name(toot) %>
-  <%#= show_preferred_username(toot) %>
-  <%#= show_image body(["icon->url"]) %>
-
-  <hr/>
-<% end %>
+      <div class="media-body">
+        <%= toot.name %> &nbsp;
+        <%= toot.preferred_username %><br/>
+        <%= toot.published %><br/>
+        <%= toot.content %>
+      </div>
+    </li>
+  <% end %>
+</ul>
