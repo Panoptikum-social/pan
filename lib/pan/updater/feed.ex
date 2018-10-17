@@ -33,13 +33,17 @@ defmodule Pan.Updater.Feed do
   end
 
   defp check_headers(podcast, feed, nil, last_modified_header) do
-    last_modified = to_naive_datetime(last_modified_header)
+    if last_modified_header != "" do
+      last_modified = to_naive_datetime(last_modified_header)
 
-    if feed.trust_last_modified and last_modified == feed.last_modified do
-      # last_modified unchanged and trustworthy
-      {:done, "nothing to do"}
+      if feed.trust_last_modified and last_modified == feed.last_modified do
+        # last_modified unchanged and trustworthy
+        {:done, "nothing to do"}
+      else
+        check_trustwortyness(feed, podcast, last_modified)
+      end
     else
-      check_trustwortyness(feed, podcast, last_modified)
+      {:ok, "go on"}
     end
   end
 
