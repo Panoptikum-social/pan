@@ -15,10 +15,11 @@ defmodule Pan.ActivityPub.Timeline do
 
 
   defp to_map(toot, pid) do
-    %{published:          View.published(toot),
-      content:            View.content(toot),
-      name:               View.name(toot, pid),
-      preferred_username: View.preferred_username(toot, pid),
-      actor_image:        View.actor_image(toot, pid)}
+    %{published:           View.published(toot),
+      content:             View.content(toot, pid),
+      name:                View.name(toot, pid),
+      preferred_username:  View.preferred_username(toot, pid),
+      attributed_to_image: View.attributed_to_image(toot, pid),
+      actor_url:           View.actor_url(toot, pid)}
   end
 end

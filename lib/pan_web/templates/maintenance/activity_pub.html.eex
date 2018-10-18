@@ -1,14 +1,14 @@
 <ul class="media-list">
   <%= for toot <- @toots do %>
-    <li class="media">
+    <li class="media" style="color: #14171a;">
       <div class="pull-left">
-        <%= img_tag(toot.actor_image, height: 80, alt: toot.name, class: "thumbnail") %>
+        <%= img_tag(toot.attributed_to_image, height: 70, alt: toot.name, class: "thumbnail") %>
       </div>
 
       <div class="media-body">
-        <%= toot.name %> &nbsp;
-        <%= toot.preferred_username %><br/>
-        <%= toot.published %><br/>
+        <b><%= toot.name %></b>
+        <span style="color: #657786;"><%= link toot.preferred_username, to: toot.actor_url %> -
+        <%= toot.published %></span><br/>
         <%= toot.content %>
       </div>
     </li>
