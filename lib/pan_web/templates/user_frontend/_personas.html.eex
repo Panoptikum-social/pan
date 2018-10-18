@@ -55,23 +55,26 @@
                 <dt>Pid</dt>
                 <dd><%= persona.pid %></dd>
 
-                <dt>name</dt>
+                <dt>Name</dt>
                 <dd><%= persona.name %></dd>
 
-                <dt>uri</dt>
+                <dt>Uri</dt>
                 <dd><%= persona.uri %></dd>
 
-                <dt>email</dt>
+                <dt>Email</dt>
                 <dd><%= persona.email %></dd>
 
-                <dt>description</dt>
+                <dt>Description</dt>
                 <dd><%= persona.description %></dd>
 
-                <dt>image_url</dt>
+                <dt>Image url</dt>
                 <dd><%= if persona.image_url, do: truncate_string(persona.image_url, 40) %></dd>
 
-                <dt>image_title</dt>
+                <dt>Image title</dt>
                 <dd><%= persona.image_title %></dd>
+
+                <dt>Fediverse Address</dt>
+                <dd><%= persona.fediverse_address %></dd>
               </dl>
 
             <%= if persona.user_id do %>

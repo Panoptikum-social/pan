@@ -5,14 +5,6 @@ defmodule PanWeb.MaintenanceController do
                 Like, Manifestation, Opml, Persona, Podcast,
                 Recommendation, Subscription, User}
 
-alias Pan.ActivityPub.Timeline
-
-  def activity_pub(conn, _params) do
-    toots = Timeline.toots("@informatom@pleroma.panoptikum.io")
-
-    render(conn, "activity_pub.html", toots: toots)
-  end
-
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")

@@ -36,6 +36,12 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :fediverse_address, class: "control-label" %>
+    <%= text_input f, :fediverse_address, class: "form-control" %>
+    <%= error_tag f, :fediverse_address %>
+  </div>
+
+  <div class="form-group">
     <%= label f, :user_id, class: "control-label" %>
     <%= text_input f, :user_id, class: "form-control" %>
     <%= error_tag f, :user_id %>

@@ -1,6 +1,11 @@
 defmodule Pan.ActivityPub.View do
   use Pan.Web, :view
-  alias Pan.ActivityPub.Net
+  alias Pan.ActivityPub.{Net, Timeline, View}
+
+  def widget(url) do
+    toots = Timeline.toots(url)
+    render(View, "widget.html", toots: toots)
+  end
 
   def published(toot) do
     {:ok, datetime} =
@@ -31,6 +36,10 @@ defmodule Pan.ActivityPub.View do
     lookup(toot["actor"], pid)["icon"]["url"]
   end
 
+  def boosted(toot) do
+    toot["type"] == "Announce"
+  end
+
   def attributed_to_image(%{"object" => object}, pid) when is_binary(object) do
     attributedTo = lookup(object, pid)["attributedTo"]
     lookup(attributedTo, pid)["icon"]["url"]
@@ -38,6 +47,33 @@ defmodule Pan.ActivityPub.View do
 
   def attributed_to_image(%{"object" => object}, pid) do
     lookup(object["attributedTo"], pid)["icon"]["url"]
+  end
+
+  def attributed_to_name(%{"object" => object}, pid) when is_binary(object) do
+    attributedTo = lookup(object, pid)["attributedTo"]
+    lookup(attributedTo, pid)["name"]
+  end
+
+  def attributed_to_name(%{"object" => object}, pid) do
+    lookup(object["attributedTo"], pid)["name"]
+  end
+
+  def attributed_to_preferred_username(%{"object" => object}, pid) when is_binary(object) do
+    attributedTo = lookup(object, pid)["attributedTo"]
+    lookup(attributedTo, pid)["preferredUsername"]
+  end
+
+  def attributed_to_preferred_username(%{"object" => object}, pid) do
+    lookup(object["attributedTo"], pid)["preferredUsername"]
+  end
+
+  def attributed_to_url(%{"object" => object}, pid) when is_binary(object) do
+    attributedTo = lookup(object, pid)["attributedTo"]
+    lookup(attributedTo, pid)["url"]
+  end
+
+  def attributed_to_url(%{"object" => object}, pid) do
+    lookup(object["attributedTo"], pid)["url"]
   end
 
   def actor_url(toot, pid) do
