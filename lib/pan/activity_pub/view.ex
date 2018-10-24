@@ -15,6 +15,11 @@ defmodule Pan.ActivityPub.View do
     Timex.from_now(datetime)
   end
 
+  def content(%{"atomUri" => atom_uri}, pid) when is_binary(atom_uri) do
+    lookup(atom_uri, pid)["content"]
+    |> raw()
+  end
+
   def content(%{"object" => object}, pid) when is_binary(object) do
     lookup(object, pid)["content"]
     |> raw()
@@ -40,6 +45,11 @@ defmodule Pan.ActivityPub.View do
     toot["type"] == "Announce"
   end
 
+  def attributed_to_image(%{"atomUri" => atom_uri}, pid) when is_binary(atom_uri) do
+    attributedTo = lookup(atom_uri, pid)["actor"]
+    lookup(attributedTo, pid)["icon"]["url"]
+  end
+
   def attributed_to_image(%{"object" => object}, pid) when is_binary(object) do
     attributedTo = lookup(object, pid)["attributedTo"]
     lookup(attributedTo, pid)["icon"]["url"]
@@ -47,6 +57,11 @@ defmodule Pan.ActivityPub.View do
 
   def attributed_to_image(%{"object" => object}, pid) do
     lookup(object["attributedTo"], pid)["icon"]["url"]
+  end
+
+  def attributed_to_name(%{"atomUri" => atom_uri}, pid) when is_binary(atom_uri) do
+    attributedTo = lookup(atom_uri, pid)["actor"]
+    lookup(attributedTo, pid)["name"]
   end
 
   def attributed_to_name(%{"object" => object}, pid) when is_binary(object) do
@@ -58,6 +73,11 @@ defmodule Pan.ActivityPub.View do
     lookup(object["attributedTo"], pid)["name"]
   end
 
+  def attributed_to_preferred_username(%{"atomUri" => atom_uri}, pid) when is_binary(atom_uri) do
+    attributedTo = lookup(atom_uri, pid)["actor"]
+    lookup(attributedTo, pid)["preferredUsername"]
+  end
+
   def attributed_to_preferred_username(%{"object" => object}, pid) when is_binary(object) do
     attributedTo = lookup(object, pid)["attributedTo"]
     lookup(attributedTo, pid)["preferredUsername"]
@@ -65,6 +85,11 @@ defmodule Pan.ActivityPub.View do
 
   def attributed_to_preferred_username(%{"object" => object}, pid) do
     lookup(object["attributedTo"], pid)["preferredUsername"]
+  end
+
+  def attributed_to_url(%{"atomUri" => atom_uri}, pid) when is_binary(atom_uri) do
+    attributedTo = lookup(atom_uri, pid)["actor"]
+    lookup(attributedTo, pid)["url"]
   end
 
   def attributed_to_url(%{"object" => object}, pid) when is_binary(object) do

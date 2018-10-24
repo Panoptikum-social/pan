@@ -9,7 +9,11 @@ defmodule Pan.ActivityPub.Timeline do
 
     {:ok, toot_bodymap} = Net.get(actor["outbox"])
 
-    toot_bodymap["first"]["orderedItems"]
+    if is_binary(toot_bodymap["first"]) do
+      View.lookup(toot_bodymap["first"], pid)["orderedItems"]
+    else
+      toot_bodymap["first"]["orderedItems"]
+    end
     |> Enum.map(fn(toot) -> to_map(toot, pid) end)
   end
 
