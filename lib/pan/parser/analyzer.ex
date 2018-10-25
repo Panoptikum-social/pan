@@ -187,7 +187,7 @@ defmodule Pan.Parser.Analyzer do
     :"googleplay:description", :"googleplay:image", :"googleplay:explicit", :"googleplay:block",
     :"frn:id", :"frn:title", :"frn:language", :"frn:art", :"frn:radio", :"frn:serie", :"frn:laenge",
     :"frn:licence", :"frn:last_update", :"itunes:keywords", :"post-id", :author, :"itunes:explicit",
-    :category, :"dc:creator", :comments, :"feedburner:origLink", :"dc:modifieddate", :encoded,
+    :category, :"dc:creator", :comments, :"feedburner:origLink", :"dc:modifieddate", :encoded, :BR,
     :"feedburner:origEnclosureLink", :"wfw:commentRss", :"slash:comments", :"itunes:block", :meta,
     :"itunes:order", :"ppg:canonical", :"cba:productionDate", :"cba:broadcastDate", :payment, :url,
     :"cba:containsCopyright", :"media:thumbnail", :source, :"media:description", :programid, :a,

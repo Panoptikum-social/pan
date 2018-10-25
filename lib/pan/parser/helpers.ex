@@ -22,6 +22,7 @@ defmodule Pan.Parser.Helpers do
   def to_naive_datetime(feed_date) do
     feed_date = feed_date
                 |> String.replace(",", " ")
+                |> String.replace("p.m.", "")
                 |> String.replace(". ", " ")
                 |> String.replace("  ", " ")
                 |> String.replace("\"", "")
@@ -51,6 +52,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
+               try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
                try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
