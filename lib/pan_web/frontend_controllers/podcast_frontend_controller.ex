@@ -25,7 +25,7 @@ defmodule PanWeb.PodcastFrontendController do
                |> Repo.preload([engagements: :persona])
 
     episodes = from(e in Episode, where: e.podcast_id == ^id,
-                                  order_by: [desc: :publishing_date],
+                                  order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
                                   preload: [:thumbnails, [gigs: :persona]])
                |> Repo.paginate(page: params["page"], page_size: 50)
 
