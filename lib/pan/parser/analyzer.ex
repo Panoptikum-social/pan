@@ -252,7 +252,8 @@ defmodule Pan.Parser.Analyzer do
     :"mlb:display-date", :"mlb:display-date-epoch", :"statmuse:background", :"statmuse:foreground",
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
-    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration"
+    :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
+    :"podcastRF:publicationChannel"
   ], do: %{}
 
 
