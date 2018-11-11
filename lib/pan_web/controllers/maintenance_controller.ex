@@ -1,7 +1,7 @@
 defmodule PanWeb.MaintenanceController do
   use Pan.Web, :controller
   alias PanWeb.{Category, Delegation, Engagement, Episode, Feed,
-                FeedBacklog, Follow, Gig, Image, Language,
+                FeedBacklog, Follow, Gig, Language,
                 Like, Manifestation, Opml, Persona, Podcast,
                 Recommendation, Subscription, User}
 
@@ -32,41 +32,53 @@ defmodule PanWeb.MaintenanceController do
 
 
   def catch_up_thumbnailed(conn, _paar) do
-    podcasts_missing_thumnailed =
-      (from p in Podcast, left_join: i in assoc(p, :thumbnails),
-                          where: not is_nil(i.podcast_id)
-                                 and not is_nil(p.image_url)
-                                 and is_nil(p.thumbnailed),
-                          select: p.id,
-                          limit: 10_000)
+    podcast_candidates =
+      (from e in Podcast, where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+                          limit: 1_000,
+                          select: e.id)
+    |> Repo.all()
+
+    podcasts_missing_thumbnailed =
+      (from e in Podcast, where: e.id in ^podcast_candidates,
+                          left_join: i in assoc(e, :thumbnails),
+                          where: not is_nil(i.podcast_id),
+                          select: e.id)
       |> Repo.all()
 
-    (from p in Podcast, where: p.id in ^podcasts_missing_thumnailed)
+    (from p in Podcast, where: p.id in ^podcasts_missing_thumbnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
-    personas_missing_thumnailed =
-      (from p in Persona, left_join: i in assoc(p, :thumbnails),
-                          where: not is_nil(i.persona_id)
-                                 and not is_nil(p.image_url)
-                                 and is_nil(p.thumbnailed),
-                          select: p.id,
-                          limit: 10_000)
+    persona_candidates =
+      (from e in Persona, where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+                          limit: 1_000,
+                          select: e.id)
+    |> Repo.all()
+
+    personas_missing_thumbnailed =
+      (from e in Persona, where: e.id in ^persona_candidates,
+                          left_join: i in assoc(e, :thumbnails),
+                          where: not is_nil(i.persona_id),
+                          select: e.id)
       |> Repo.all()
 
-    (from p in Persona, where: p.id in ^personas_missing_thumnailed)
+    (from p in Persona, where: p.id in ^personas_missing_thumbnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
-    for _i <- 1..100 do
-      episodes_missing_thumnailed =
-        (from e in Episode, left_join: i in assoc(e, :thumbnails),
-                            where: not is_nil(i.episode_id)
-                                   and not is_nil(e.image_url)
-                                   and is_nil(e.thumbnailed),
-                            select: e.id,
-                            limit: 1_000)
+    for _i <- 1..10 do
+      episode_candidates =
+        (from e in Episode, where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+                            limit: 1_000,
+                            select: e.id)
+      |> Repo.all()
+
+      episodes_missing_thumbnailed =
+        (from e in Episode, where: e.id in ^episode_candidates,
+                            left_join: i in assoc(e, :thumbnails),
+                            where: not is_nil(i.episode_id),
+                            select: e.id)
         |> Repo.all()
 
-      (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
+      (from e in Episode, where: e.id in ^episodes_missing_thumbnailed)
       |> Repo.update_all(set: [thumbnailed: true])
     end
 
@@ -141,17 +153,6 @@ defmodule PanWeb.MaintenanceController do
     total_manifestations = Repo.aggregate(Manifestation, :count, :id)
     total_delegations = Repo.aggregate(Delegation, :count, :id)
 
-    podcast_images = from(i in Image, where: not is_nil(i.podcast_id))
-                     |> Repo.aggregate(:count, :id)
-    podcasts_with_image = from(p in Podcast, where: not is_nil(p.image_url) )
-                          |> Repo.aggregate(:count, :id)
-    podcasts_missing = podcasts_with_image - podcast_images
-
-    episodes_missing =
-      (from e in Episode, left_join: i in assoc(e, :thumbnails),
-                          where: is_nil(i.episode_id) and not is_nil(e.image_url))
-      |> Repo.aggregate(:count, :id)
-
     episodes_without_image =
       (from e in Episode, where: is_nil(e.thumbnailed) and not is_nil(e.image_url))
       |> Repo.aggregate(:count, :id)
@@ -163,12 +164,6 @@ defmodule PanWeb.MaintenanceController do
     personas_without_image =
       (from p in Persona, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
       |> Repo.aggregate(:count, :id)
-
-    persona_images = from(i in Image, where: not is_nil(i.persona_id))
-                     |> Repo.aggregate(:count, :id)
-    personas_with_image = from(p in Persona, where: not is_nil(p.image_url))
-                          |> Repo.aggregate(:count, :id)
-    personas_missing = personas_with_image - persona_images
 
     render(conn, "stats.html", stale_podcasts: stale_podcasts,
                                inactive_podcasts: inactive_podcasts,
@@ -193,9 +188,6 @@ defmodule PanWeb.MaintenanceController do
                                total_manifestations: total_manifestations,
                                total_delegations: total_delegations,
                                unindexed_episodes: unindexed_episodes,
-                               podcasts_missing: podcasts_missing,
-                               episodes_missing: episodes_missing,
-                               personas_missing: personas_missing,
                                episodes_without_image: episodes_without_image,
                                podcasts_without_image: podcasts_without_image,
                                personas_without_image: personas_without_image,

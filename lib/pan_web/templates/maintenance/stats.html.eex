@@ -40,15 +40,6 @@
           <td class="text-right"><%= @total_categorizations %></td></tr>
       <tr><th>Thumbnails</th>
           <td>episodes_missing</td>
-          <td class="text-right"><%= @episodes_missing %></td></tr>
-      <tr><th></th>
-          <td>podcasts_missing</td>
-          <td class="text-right"><%= @podcasts_missing %></td></tr>
-      <tr><th></th>
-          <td>personas_missing</td>
-          <td class="text-right"><%= @personas_missing %></td></tr>
-      <tr><th>* Thumbnails</th>
-          <td>episodes_missing</td>
           <td class="text-right"><%= @episodes_without_image %></td></tr>
       <tr><th></th>
           <td>podcasts_missing</td>
@@ -150,7 +141,7 @@
     </li>
 
     <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Catch up missing thumnailed booleans",
+      <%= link "Catch up missing thumbnailed booleans",
                to: maintenance_path(@conn, :catch_up_thumbnailed),
                class: "btn btn-primary" %>
     </li>

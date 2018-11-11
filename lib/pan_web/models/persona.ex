@@ -193,15 +193,21 @@ defmodule PanWeb.Persona do
 
   def cache_missing_thumbnail_images() do
     personas_missing_thumbnails =
-      (from p in Persona, left_join: i in assoc(p, :thumbnails),
-                          where: is_nil(i.persona_id) and not is_nil(p.image_url))
-      |> Ecto.Query.limit(3000)
-      |> Repo.all
-
+      (from e in Persona, where: is_nil(e.thumbnailed)
+                                 and not is_nil(e.image_url),
+                          limit: 3_000)
+      |> Repo.all()
 
     for persona <- personas_missing_thumbnails do
       Persona.cache_thumbnail_image(persona)
     end
+
+
+    persona_ids = personas_missing_thumbnails
+                  |> Enum.map(fn persona -> persona.id end)
+
+    from(e in Persona, where: e.id in ^persona_ids)
+    |> Repo.update_all(set: [thumbnailed: true])
   end
 
 
