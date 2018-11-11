@@ -41,9 +41,7 @@ defmodule PanWeb.MaintenanceController do
                           limit: 10_000)
       |> Repo.all()
 
-      IO.inspect podcasts_missing_thumnailed
-
-    return = (from p in Podcast, where: p.id in ^podcasts_missing_thumnailed)
+    (from p in Podcast, where: p.id in ^podcasts_missing_thumnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
     personas_missing_thumnailed =
@@ -55,9 +53,7 @@ defmodule PanWeb.MaintenanceController do
                           limit: 10_000)
       |> Repo.all()
 
-      IO.inspect personas_missing_thumnailed
-
-    return = (from p in Persona, where: p.id in ^personas_missing_thumnailed)
+    (from p in Persona, where: p.id in ^personas_missing_thumnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
     episodes_missing_thumnailed =
@@ -69,11 +65,8 @@ defmodule PanWeb.MaintenanceController do
                           limit: 10_000)
       |> Repo.all()
 
-      IO.inspect episodes_missing_thumnailed
-
-    return = (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
+    (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
     |> Repo.update_all(set: [thumbnailed: true])
-
 
     render(conn, "done.html")
   end
