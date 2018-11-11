@@ -31,6 +31,54 @@ defmodule PanWeb.MaintenanceController do
   end
 
 
+  def catch_up_thumbnailed(conn, _paar) do
+    podcasts_missing_thumnailed =
+      (from p in Podcast, left_join: i in assoc(p, :thumbnails),
+                          where: not is_nil(i.podcast_id)
+                                 and not is_nil(p.image_url)
+                                 and is_nil(p.thumbnailed),
+                          select: p.id,
+                          limit: 10_000)
+      |> Repo.all()
+
+      IO.inspect podcasts_missing_thumnailed
+
+    return = (from p in Podcast, where: p.id in ^podcasts_missing_thumnailed)
+    |> Repo.update_all(set: [thumbnailed: true])
+
+    personas_missing_thumnailed =
+      (from p in Persona, left_join: i in assoc(p, :thumbnails),
+                          where: not is_nil(i.persona_id)
+                                 and not is_nil(p.image_url)
+                                 and is_nil(p.thumbnailed),
+                          select: p.id,
+                          limit: 10_000)
+      |> Repo.all()
+
+      IO.inspect personas_missing_thumnailed
+
+    return = (from p in Persona, where: p.id in ^personas_missing_thumnailed)
+    |> Repo.update_all(set: [thumbnailed: true])
+
+    episodes_missing_thumnailed =
+      (from e in Episode, left_join: i in assoc(e, :thumbnails),
+                          where: not is_nil(i.episode_id)
+                                 and not is_nil(e.image_url)
+                                 and is_nil(e.thumbnailed),
+                          select: e.id,
+                          limit: 10_000)
+      |> Repo.all()
+
+      IO.inspect episodes_missing_thumnailed
+
+    return = (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
+    |> Repo.update_all(set: [thumbnailed: true])
+
+
+    render(conn, "done.html")
+  end
+
+
   def stats(conn, _params) do
     stale_podcasts =
       from(p in Podcast, where: p.next_update <= ^Timex.now() and
@@ -109,6 +157,18 @@ defmodule PanWeb.MaintenanceController do
                           where: is_nil(i.episode_id) and not is_nil(e.image_url))
       |> Repo.aggregate(:count, :id)
 
+    episodes_without_image =
+      (from e in Episode, where: is_nil(e.thumbnailed) and not is_nil(e.image_url))
+      |> Repo.aggregate(:count, :id)
+
+    podcasts_without_image =
+      (from p in Podcast, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
+      |> Repo.aggregate(:count, :id)
+
+    personas_without_image =
+      (from p in Persona, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
+      |> Repo.aggregate(:count, :id)
+
     persona_images = from(i in Image, where: not is_nil(i.persona_id))
                      |> Repo.aggregate(:count, :id)
     personas_with_image = from(p in Persona, where: not is_nil(p.image_url))
@@ -141,6 +201,9 @@ defmodule PanWeb.MaintenanceController do
                                podcasts_missing: podcasts_missing,
                                episodes_missing: episodes_missing,
                                personas_missing: personas_missing,
+                               episodes_without_image: episodes_without_image,
+                               podcasts_without_image: podcasts_without_image,
+                               personas_without_image: personas_without_image,
                                feeds_without_headers: feeds_without_headers,
                                feeds_with_etag: feeds_with_etag,
                                feeds_with_last_modified: feeds_with_last_modified)

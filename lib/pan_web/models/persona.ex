@@ -14,6 +14,7 @@ defmodule PanWeb.Persona do
     field :image_url, :string
     field :image_title, :string
     field :elastic, :boolean
+    field :thumbnailed, :boolean
     field :fediverse_address, :string
 
     belongs_to :redirect, Persona
@@ -39,7 +40,7 @@ defmodule PanWeb.Persona do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title,
-                     :redirect_id, :long_description, :user_id, :elastic])
+                     :redirect_id, :long_description, :user_id, :elastic, :thumbnailed])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
   end

@@ -77,6 +77,13 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :thumbailed, class: "control-label" %>
+    <%= checkbox f, :thumbailed, class: "form-control" %>
+    <%= error_tag f, :thumbailed %>
+  </div>
+
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

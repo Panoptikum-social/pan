@@ -48,6 +48,11 @@
     <%= @persona.image_title %>
   </li>
 
+  <li>
+    <strong>Thumbnail created:</strong>
+    <%= @persona.thumbnailed %>
+  </li>
+
 </ul>
 
 <%= link "Edit", to: persona_path(@conn, :edit, @persona) %>

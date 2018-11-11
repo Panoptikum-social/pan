@@ -88,6 +88,9 @@
   <dt>Indexed by Elatsicsearch</dt>
   <dd><%= @podcast.elastic %></dd>
 
+  <dt>Thumbnail created</dt>
+  <dd><%= @podcast.thumbnailed %></dd>
+
   <dt>Last error message</dt>
   <dd><%= @podcast.last_error_message %></dd>
 
