@@ -56,17 +56,19 @@ defmodule PanWeb.MaintenanceController do
     (from p in Persona, where: p.id in ^personas_missing_thumnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
-    episodes_missing_thumnailed =
-      (from e in Episode, left_join: i in assoc(e, :thumbnails),
-                          where: not is_nil(i.episode_id)
-                                 and not is_nil(e.image_url)
-                                 and is_nil(e.thumbnailed),
-                          select: e.id,
-                          limit: 10_000)
-      |> Repo.all()
+    for _i <- 1..100 do
+      episodes_missing_thumnailed =
+        (from e in Episode, left_join: i in assoc(e, :thumbnails),
+                            where: not is_nil(i.episode_id)
+                                   and not is_nil(e.image_url)
+                                   and is_nil(e.thumbnailed),
+                            select: e.id,
+                            limit: 1_000)
+        |> Repo.all()
 
-    (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
-    |> Repo.update_all(set: [thumbnailed: true])
+      (from e in Episode, where: e.id in ^episodes_missing_thumnailed)
+      |> Repo.update_all(set: [thumbnailed: true])
+    end
 
     render(conn, "done.html")
   end
