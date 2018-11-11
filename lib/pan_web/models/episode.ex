@@ -124,18 +124,16 @@ defmodule PanWeb.Episode do
 
 
   def cache_missing_thumbnail_images() do
-    episodes_missing_thumbnails =
-      (from e in Episode, where: is_nil(e.thumbnailed)
-                                 and not is_nil(e.image_url),
-                          limit: 3_000)
-      |> Repo.all()
+    episode_ids = (from e in Episode, where: is_nil(e.thumbnailed)
+                                             and not is_nil(e.image_url),
+                                      limit: 3_000,
+                                      select: e.id)
+                  |> Repo.all()
 
-    for episode <- episodes_missing_thumbnails do
-      Episode.cache_thumbnail_image(episode)
-    end
+    episodes = (from e in Episode, where: e.id in ^episode_ids)
+               |> Repo.all()
 
-    episode_ids = episodes_missing_thumbnails
-                  |> Enum.map(fn episode -> episode.id end)
+    for episode <- episodes, do: Episode.cache_thumbnail_image(episode)
 
     from(e in Episode, where: e.id in ^episode_ids)
     |> Repo.update_all(set: [thumbnailed: true])

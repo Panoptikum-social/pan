@@ -390,22 +390,19 @@ defmodule PanWeb.Podcast do
 
 
   def cache_missing_thumbnail_images() do
-    podcasts_missing_thumbnails =
-      (from e in Podcast, where: is_nil(e.thumbnailed)
-                          and not is_nil(e.image_url),
-                          limit: 3_000)
+    podcast_ids = (from e in Podcast, where: is_nil(e.thumbnailed)
+                                             and not is_nil(e.image_url),
+                                      limit: 3_000,
+                                      select: e.id)
     |> Repo.all()
 
-    for podcast <- podcasts_missing_thumbnails do
-      Podcast.cache_thumbnail_image(podcast)
-    end
+    podcasts = (from p in Podcast, where: p.id in ^podcast_ids)
+               |> Repo.all()
 
-    podcast_ids = podcasts_missing_thumbnails
-                  |> Enum.map(fn podcast -> podcast.id end)
+    for podcast <- podcasts, do: Podcast.cache_thumbnail_image(podcast)
 
-    from(e in Podcast, where: e.id in ^podcast_ids)
+    from(p in Podcast, where: p.id in ^podcast_ids)
     |> Repo.update_all(set: [thumbnailed: true])
-
   end
 
   def cache_thumbnail_image(podcast) do
