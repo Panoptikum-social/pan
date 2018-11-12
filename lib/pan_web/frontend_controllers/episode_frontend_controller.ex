@@ -41,7 +41,7 @@ defmodule PanWeb.EpisodeFrontendController do
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
                                   where: is_false(p.blocked) and
                                          e.publishing_date < ^NaiveDateTime.utc_now(),
-                                  order_by: [desc: :publishing_date],
+                                  order_by: [desc: :id],
                                   preload: [:podcast])
                |> Repo.paginate(page: params["page"], page_size: 10)
 
