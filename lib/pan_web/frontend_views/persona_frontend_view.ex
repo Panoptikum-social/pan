@@ -88,6 +88,14 @@ defmodule PanWeb.PersonaFrontendView do
   end
 
 
+  def ordered_episodes(grouped_gigs) do
+    grouped_gigs
+    |> Map.keys()
+    |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
+    |> Enum.reverse()
+  end
+
+
   def format_date(date) do
     Timex.to_date(date)
     |> Timex.format!("%e.%m.%Y", :strftime)
