@@ -365,13 +365,19 @@ defmodule Pan.Parser.Analyzer do
     %{summary: scrub(List.first(value[:value]))}
   end
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: scrub(value)}
+  def call(_, "episode", [:summary,           _, [value | _]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",    _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",    _, [value | _]]), do: %{summary: scrub(value)}
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:subtitle", _, [value]]), do: %{subtitle: to_255(value)}
+  def call(_, "episode", [:"itunes:subtitle", _, [value]]) do
+    case value[:name] do
+     :"content:encoded" -> %{subtitle: to_255(List.first(value[:value]))}
+     nil -> %{subtitle: to_255(value)}
+    end
+  end
   def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: to_255(value)}
   def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: to_255(value)}
 
