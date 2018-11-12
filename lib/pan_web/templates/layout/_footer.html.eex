@@ -24,7 +24,6 @@
         <dd class="nav-item"><a href="/personas">Podcasters + Personas</a></dd>
         <dd class="nav-item"><a href="/podcasts">New podcasts</a></dd>
         <dd class="nav-item"><a href="/episodes">New episodes</a></dd>
-        <dd class="nav-item"><a href="/podcasts/buttons">Podcast Buttons</a></dd>
       </dl>
       <dl class="footer-nav">
         <dt class="nav-title">SUPPORTED BY</dt>

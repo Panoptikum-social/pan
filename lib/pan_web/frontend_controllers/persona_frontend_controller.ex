@@ -78,8 +78,8 @@ defmodule PanWeb.PersonaFrontendController do
                       |> Repo.all
       persona_ids = [persona.id | delegator_ids]
 
-      gigs = from(g in Gig, join: e in assoc(g, :episode),
-                            where: g.persona_id in ^persona_ids,
+      gigs = from(g in Gig, where: g.persona_id in ^persona_ids,
+                            join: e in assoc(g, :episode),
                             order_by: [desc: e.publishing_date],
                             preload: [episode: :podcast])
              |> Repo.paginate(page: params["page"], page_size: 50)
