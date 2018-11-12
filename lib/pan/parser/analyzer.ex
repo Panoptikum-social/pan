@@ -373,7 +373,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]) do
-    if Map.has_key?(value, :name) do
+    if is_map(value) && Map.has_key?(value, :value) do
       %{subtitle: to_255(List.first(value[:value]))}
     else
       %{subtitle: to_255(value)}
