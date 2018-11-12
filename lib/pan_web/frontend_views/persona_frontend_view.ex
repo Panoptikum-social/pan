@@ -94,17 +94,6 @@ defmodule PanWeb.PersonaFrontendView do
   end
 
 
-  def ordered_episodes(gigs) do
-    Enum.group_by(gigs, &Map.get(&1, :episode))
-    |> Map.keys()
-
-    Enum.group_by(gigs, &Map.get(&1, :episode))
-    |> Map.keys()
-    |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
-    |> Enum.reverse()
-  end
-
-
   def persona_json(persona) do
     %{id:   persona.id,
       pid:  persona.pid,

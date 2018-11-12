@@ -197,7 +197,7 @@
         </tr>
       </thead>
       <tbody>
-        <%= for episode <- ordered_episodes(@gigs) do %>
+        <%= for episode <- Map.keys(@grouped_gigs) do %>
           <tr>
             <td align="right"><%= if episode.publishing_date, do: format_date(episode.publishing_date) %></td>
             <td><%= link [fa_icon("podcast"), " ", episode.podcast.title],
