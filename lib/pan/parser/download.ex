@@ -70,6 +70,8 @@ defmodule Pan.Parser.Download do
         try_without_tls_set(url, option)
       {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
         try_without_tls_set(url, option)
+      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'unrecognised name'}} ->
+        try_without_tls_set(url, option)
 
       {:error, reason} -> {:error, reason}
     end
