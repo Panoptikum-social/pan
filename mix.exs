@@ -38,7 +38,6 @@ defmodule Pan.Mixfile do
      {:phoenix_html, "2.12.0"}, # view layer
      {:phoenix_live_reload, "1.2.0", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
-     {:cowboy, "~> 2.5"}, # web server
      {:plug_cowboy, "~> 2.0"}, # web server plug
      {:plug, "~> 1.7.1"}, # connection adapters
      {:comeonin, "4.1.1"}, # password hashing library
