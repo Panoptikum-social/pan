@@ -4,6 +4,7 @@ config :pan, PanWeb.Endpoint,
   http: [port: 8888, compress: true],
   url: [scheme: "https", host: "panoptikum.io", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
+  handler: Phoenix.Endpoint.Cowboy2Handler,
   server: true,
   root: ".",
   check_origin: ["https://panoptikum.io", "https://ansible.local"],
@@ -25,3 +26,5 @@ config :timelier, crontab: [
 config :pan, :environment, "prod"
 
 import_config "prod.secret.exs"
+
+
