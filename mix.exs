@@ -23,7 +23,7 @@ defmodule Pan.Mixfile do
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
                     :ja_serializer, :bcrypt_elixir, :elixir_make, :p1_utils, :iconv,
-                    :exactor]]
+                    :exactor, :jason]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -66,7 +66,7 @@ defmodule Pan.Mixfile do
      {:iconv, "~> 1.0.10", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.6.1"}, # Imagemagick wrapper
      {:exactor, "~> 2.2.4", warn_missing: false}, # Simplifies implementation of GenServer based processes
-     {:jason, "~> 1.0"}, # Json generation
+     {:jason, "~> 1.1"}, # Json generation
     ]
   end
 
