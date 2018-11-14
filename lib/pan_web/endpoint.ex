@@ -1,7 +1,9 @@
 defmodule PanWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :pan
 
-  socket "/socket", PanWeb.UserSocket, websocket: true # or list of options
+  socket "/socket", PanWeb.UserSocket,
+    websocket: true, # or list of options
+    longpoll: [check_origin: ["https://panoptikum.io", "https://ansible.local"]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
