@@ -8,10 +8,6 @@ defmodule PanWeb.UserSocket do
   channel "podcasts:*",   PanWeb.PodcastChannel
   channel "episodes:*",   PanWeb.EpisodeChannel
 
-
-  transport :websocket, Phoenix.Transports.WebSocket
-  # transport :longpoll, Phoenix.Transports.LongPoll
-
   @max_age 4 * 7 * 24 * 60 * 60
 
   def connect(%{"token" => token}, socket) do

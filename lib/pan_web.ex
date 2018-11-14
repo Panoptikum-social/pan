@@ -26,6 +26,7 @@ defmodule Pan.Web do
       import Ecto.Query, only: [from: 1, from: 2]
 
       import PanWeb.Router.Helpers
+
       import PanWeb.Gettext
       import PanWeb.Auth, only: [authenticate_user: 2,
                                  authenticate_admin: 2,
