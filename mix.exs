@@ -23,7 +23,7 @@ defmodule Pan.Mixfile do
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
                     :ja_serializer, :bcrypt_elixir, :elixir_make, :p1_utils, :iconv,
-                    :exactor, :jason]]
+                    :exactor, :jason, :plug_cowboy]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
