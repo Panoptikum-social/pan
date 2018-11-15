@@ -3,6 +3,7 @@ defmodule Pan.Parser.Episode do
   alias Pan.Repo
   alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
   require Logger
+  import Pan.Parser.Helpers, only: [now: 0]
 
   def get_or_insert(episode_map, podcast_id) do
     case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
@@ -51,11 +52,11 @@ defmodule Pan.Parser.Episode do
     PanWeb.Podcast
     |> Repo.get(podcast_id)
     |> PanWeb.Podcast.changeset(%{update_intervall: 10,
-                                  next_update: Timex.shift(Timex.now(), hours: 10)})
+                                  next_update: Timex.shift(now(), hours: 10)})
     |> Repo.update()
 
     episode_map = episode_map
-                  |> Map.put_new(:publishing_date, Timex.now())
+                  |> Map.put_new(:publishing_date, now())
                   |> Map.put_new(:title, "No title provided")
 
     %PanWeb.Episode{podcast_id: podcast_id}

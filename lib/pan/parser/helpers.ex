@@ -99,7 +99,9 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
 
     if datetime do
-      Timex.to_naive_datetime(datetime)
+      datetime
+      |> DateTime.truncate(:second)
+      |> Timex.to_naive_datetime()
     else
       Logger.error "Error in date parsing: " <> feed_date
       raise "Error in date parsing"
@@ -321,5 +323,12 @@ defmodule Pan.Parser.Helpers do
   def md5hash(xml) do
     :crypto.hash(:md5, xml)
     |> Base.encode16()
+  end
+
+
+  def now() do
+    Timex.now()
+    |> DateTime.truncate(:second)
+    |> Timex.to_naive_datetime()
   end
 end
