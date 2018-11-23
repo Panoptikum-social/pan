@@ -19,7 +19,6 @@ defmodule PanWeb.PodcastController do
                                  podcasts_without_episodes: podcasts_without_episodes)
   end
 
-
   def assign_to_unsorted(conn, _params) do
     podcast_ids = from(a in "categories_podcasts", group_by: a.podcast_id,
                                                    select:   a.podcast_id)
@@ -40,11 +39,9 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :orphans))
   end
 
-
   def index(conn, _params) do
     render(conn, "index.html")
   end
-
 
   def datatable(conn, params) do
     search = params["search"]["value"]
@@ -94,11 +91,9 @@ defmodule PanWeb.PodcastController do
                                    records_filtered: records_filtered)
   end
 
-
   def stale(conn, _params) do
     render(conn, "stale.html")
   end
-
 
   def datatable_stale(conn, params) do
     search = params["search"]["value"]
@@ -153,7 +148,6 @@ defmodule PanWeb.PodcastController do
                                          records_filtered: records_filtered)
   end
 
-
   def factory(conn, _params) do
     podcasts = from(p in Podcast, order_by: [asc: :updated_at],
                                   where: p.update_paused == true and is_false(p.retired),
@@ -163,12 +157,10 @@ defmodule PanWeb.PodcastController do
     render(conn, "factory.html", podcasts: podcasts)
   end
 
-
   def new(conn, _params) do
     changeset = Podcast.changeset(%Podcast{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"podcast" => podcast_params}) do
     changeset = Podcast.changeset(%Podcast{}, podcast_params)
@@ -182,7 +174,6 @@ defmodule PanWeb.PodcastController do
     end
   end
 
-
   def show(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
               |> Repo.preload(episodes: from(e in Episode, order_by: [desc: e.publishing_date],
@@ -194,13 +185,11 @@ defmodule PanWeb.PodcastController do
     render(conn, "show.html", podcast: podcast)
   end
 
-
   def edit(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
     changeset = Podcast.changeset(podcast)
     render(conn, "edit.html", podcast: podcast, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "podcast" => podcast_params}) do
     id = String.to_integer(id)
@@ -218,7 +207,6 @@ defmodule PanWeb.PodcastController do
         render(conn, "edit.html", podcast: podcast, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}) do
     id = String.to_integer(id)
@@ -248,7 +236,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :index))
   end
 
-
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
     podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
@@ -260,12 +247,10 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :show, id))
   end
 
-
   def forced_delta_import(conn, %{"id" => id}) do
     delta_import(conn, %{"id" => id}, :forced, false)
     # delta_import(conn, %{"id" => id}, :forced, :no_failure_count_increase)
   end
-
 
   def contributor_import(conn, %{"id" => id}) do
     case Pan.Parser.Podcast.contributor_import(id) do
@@ -275,7 +260,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :show, id))
   end
 
-
   def fix_owner(conn, %{"id" => id}) do
     Pan.Parser.Podcast.fix_owner(id)
 
@@ -283,7 +267,6 @@ defmodule PanWeb.PodcastController do
     |> put_flash(:info, "Owner fixed successfully.")
     |> redirect(to: podcast_path(conn, :index))
   end
-
 
   def fix_languages(conn, _params) do
     podcast_ids = from(a in "languages_podcasts", group_by: a.podcast_id,
@@ -305,7 +288,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :index))
   end
 
-
   def delta_import_all(conn, _params) do
     current_user = conn.assigns.current_user
 
@@ -315,13 +297,18 @@ defmodule PanWeb.PodcastController do
                                   limit: 2000)
                   |> Repo.all()
 
-    for podcast <- podcasts, do: Pan.Updater.Podcast.import_new_episodes(podcast, current_user)
-    Logger.info "=== Manual triggered podcast update finished ==="
-
-    put_flash(conn, :info, "Podcasts updated successfully.")
+    Task.async(fn -> trigger_import_new_episodes(podcasts, current_user) end)
+    
+    put_flash(conn, :info, "Async podcasts update Task started .")
     |> redirect(to: podcast_path(conn, :index))
   end
 
+  defp trigger_import_new_episodes(podcasts, current_user) do
+    for podcast <- podcasts do
+      Pan.Updater.Podcast.import_new_episodes(podcast, current_user)
+    end
+    Logger.info "=== Manual triggered podcast update finished ==="
+  end
 
   def touch(conn, %{"id" => id}) do
     Repo.get!(Podcast, id)
@@ -333,7 +320,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :index))
   end
 
-
   def pause(conn, %{"id" => id}) do
     from(p in Podcast, where: p.id == ^id)
     |> Repo.update_all(set: [update_paused: true])
@@ -341,7 +327,6 @@ defmodule PanWeb.PodcastController do
     put_flash(conn, :info, "Podcast paused.")
     |> redirect(to: podcast_path(conn, :index))
   end
-
 
   def retirement(conn, _params) do
     candidates = from(p in Podcast, where: is_false(p.retired),
@@ -362,7 +347,6 @@ defmodule PanWeb.PodcastController do
                                     retired: retired)
   end
 
-
   def retire(conn, %{"id" => id}) do
     from(p in Podcast, where: p.id == ^id)
     |> Repo.update_all(set: [retired: true])
@@ -371,7 +355,6 @@ defmodule PanWeb.PodcastController do
     |> put_flash(:info, "Podcast retired.")
     |> redirect(to: podcast_path(conn, :retirement))
   end
-
 
   def duplicates(conn, _params) do
     duplicate_feeds = from(f in Feed, group_by: f.self_link_url,
@@ -387,7 +370,6 @@ defmodule PanWeb.PodcastController do
     render(conn, "duplicates.html", feeds: feeds)
   end
 
-
   def update_from_feed(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
     case Pan.Parser.Podcast.update_from_feed(podcast) do
@@ -396,7 +378,6 @@ defmodule PanWeb.PodcastController do
     end
     |> redirect(to: podcast_path(conn, :show, podcast.id))
   end
-
 
   def update_missing_counters(conn, _params) do
     podcasts = from(p in Podcast, where: is_nil(p.latest_episode_publishing_date))
