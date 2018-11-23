@@ -297,7 +297,7 @@ defmodule PanWeb.PodcastController do
                                   limit: 2000)
                   |> Repo.all()
 
-    Task.async(fn -> trigger_import_new_episodes(podcasts, current_user) end)
+    Task.start(fn -> trigger_import_new_episodes(podcasts, current_user) end)
     
     put_flash(conn, :info, "Async podcasts update Task started .")
     |> redirect(to: podcast_path(conn, :index))

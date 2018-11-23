@@ -101,7 +101,14 @@ defmodule PanWeb.FeedBacklogController do
                                            limit: 100)
                     |> Repo.all()
 
+    Task.start(fn -> trigger_initial_import(backlog_feeds) end)
 
+    conn
+      |> put_flash(:info, "Feeds imported successfully.")
+      |> redirect(to: feed_backlog_path(conn, :index))
+  end
+
+  defp trigger_initial_import(backlog_feeds) end
     for backlog_feed <- backlog_feeds do
       try do
         PanWeb.FeedBacklog.changeset(backlog_feed, %{in_progress: true})
@@ -113,10 +120,6 @@ defmodule PanWeb.FeedBacklogController do
           Logger.error "=== Error importing: " <> backlog_feed.url <> " ==="
       end
     end
-
-    conn
-      |> put_flash(:info, "Feeds imported successfully.")
-      |> redirect(to: feed_backlog_path(conn, :index))
   end
 
 
