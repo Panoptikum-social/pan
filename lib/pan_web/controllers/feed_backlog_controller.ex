@@ -108,7 +108,7 @@ defmodule PanWeb.FeedBacklogController do
       |> redirect(to: feed_backlog_path(conn, :index))
   end
 
-  defp trigger_initial_import(backlog_feeds) end
+  defp trigger_initial_import(backlog_feeds) do
     for backlog_feed <- backlog_feeds do
       try do
         PanWeb.FeedBacklog.changeset(backlog_feed, %{in_progress: true})
