@@ -300,7 +300,7 @@ defmodule PanWeb.PodcastController do
     Task.start(fn -> trigger_import_new_episodes(podcasts, current_user) end)
     
     put_flash(conn, :info, "Async podcasts update Task started .")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: podcast_path(conn, :stale))
   end
 
   defp trigger_import_new_episodes(podcasts, current_user) do
