@@ -38,14 +38,18 @@ defmodule PanWeb.EpisodeFrontendController do
 
 
   def index(conn, params) do
-    episodes = from(e in Episode, join: p in assoc(e, :podcast),
-                                  where: is_false(p.blocked) and
-                                         e.publishing_date < ^NaiveDateTime.utc_now(),
-                                  order_by: [desc: :id],
-                                  preload: [:podcast])
-               |> Repo.paginate(page: params["page"], page_size: 10)
+    episode_ids = from(e in Episode, order_by: [desc: :id],
+                                     select: e.id)
+                  |> Repo.paginate(page: params["page"], page_size: 10)
 
-    render(conn, "index.html", episodes: episodes)
+    episodes = from(e in Episode, join: p in assoc(e, :podcast),
+                                  where: e.id in ^episode_ids.entries and
+                                        is_false(p.blocked),
+                                  order_by: [desc: :id],
+                                  preload: :podcast)
+               |> Repo.all()
+
+    render(conn, "index.html", episode_ids: episode_ids, episodes: episodes)
   end
 
   def silence(conn, _params) do
