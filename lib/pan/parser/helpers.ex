@@ -99,9 +99,7 @@ defmodule Pan.Parser.Helpers do
                try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
 
     if datetime do
-      datetime
-      |> DateTime.truncate(:second)
-      |> Timex.to_naive_datetime()
+      NaiveDateTime.truncate(datetime, :second)
     else
       Logger.error "Error in date parsing: " <> feed_date
       raise "Error in date parsing"
