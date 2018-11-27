@@ -4,6 +4,7 @@ defmodule PanWeb.InvoiceController do
 
   def index(conn, _params) do
     invoices = Repo.all(Invoice)
+               |> Repo.preload(:user)
     render(conn, "index.html", invoices: invoices)
   end
 

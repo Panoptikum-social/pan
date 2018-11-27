@@ -6,8 +6,9 @@
       <th>Filename</th>
       <th>Content type</th>
       <th>Path</th>
-      <th>User</th>
-
+      <th>User Id</th>
+      <th>Username</th>
+      <th>User Name</th>
       <th></th>
     </tr>
   </thead>
@@ -17,7 +18,9 @@
       <td><%= invoice.filename %></td>
       <td><%= invoice.content_type %></td>
       <td><%= invoice.path %></td>
-      <td><%= invoice.user_id %></td>
+      <td><%= link invoice.user_id, to: user_path(@conn, :show, invoice.user) %></td>
+      <td><%= invoice.user.username %></td>
+      <td><%= invoice.user.name %></td>
 
       <td class="text-right">
         <%= link "Show", to: invoice_path(@conn, :show, invoice), class: "btn btn-default btn-xs" %>
