@@ -381,7 +381,7 @@ defmodule PanWeb.PodcastController do
 
   def update_missing_counters(conn, _params) do
     podcasts = from(p in Podcast, where: p.publication_frequency == 0.0,
-                                  limit: 1000)
+                                  limit: 5000)
                |> Repo.all()
 
     Task.start(fn -> update_missing_counters_async(podcasts) end)
