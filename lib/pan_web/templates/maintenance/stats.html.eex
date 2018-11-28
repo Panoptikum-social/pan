@@ -30,6 +30,9 @@
           <td>total</td>
           <td class="text-right"><%= @total_episodes %></td></tr>
       <tr><th></th>
+          <td>estimated</td>
+          <td class="text-right"><%= @estimated_episodes %></td></tr>
+      <tr><th></th>
           <td>unindexed by Elastic Search</td>
           <td class="text-right"><%= @unindexed_episodes %></td></tr>
       <tr><th>Category</th>

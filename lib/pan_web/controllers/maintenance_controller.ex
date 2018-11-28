@@ -123,6 +123,9 @@ defmodule PanWeb.MaintenanceController do
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
+    estimated_episodes = Ecto.Convenience.total_estimated(Episode)
+                         |> delimit_integer(" ")
+
     unindexed_episodes = from(e in Episode, where: is_false(e.elastic))
                          |> Repo.aggregate(:count, :id)
                          |> delimit_integer(" ")
@@ -171,6 +174,7 @@ defmodule PanWeb.MaintenanceController do
                                average_update_intervall: average_update_intervall,
                                total_podcasts: total_podcasts,
                                total_episodes: total_episodes,
+                               estimated_episodes: estimated_episodes,
                                podcasts_per_hour: podcasts_per_hour,
                                total_users: total_users,
                                total_gigs: total_gigs,
