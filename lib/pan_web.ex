@@ -11,7 +11,7 @@ defmodule Pan.Web do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query, only: [from: 1, from: 2, where: 2, select: 2]
-      import Ecto.Convenience, only: [is_false: 1]
+      import Ecto.Convenience, only: [is_false: 1, total_estimated: 1]
       import PanWeb.Router.Helpers
       import Tirexs.HTTP
     end
@@ -35,7 +35,7 @@ defmodule Pan.Web do
       import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
                                      authenticate_api_pro_user: 2]
 
-      import Ecto.Convenience, only: [is_false: 1]
+      import Ecto.Convenience, only: [is_false: 1, total_estimated: 1]
     end
   end
 

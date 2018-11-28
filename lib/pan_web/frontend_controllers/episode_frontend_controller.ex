@@ -38,9 +38,12 @@ defmodule PanWeb.EpisodeFrontendController do
 
 
   def index(conn, params) do
-    episode_ids = from(e in Episode, order_by: [desc: :id],
-                                     select: e.id)
-                  |> Repo.paginate(page: params["page"], page_size: 10)
+    episode_ids = 
+      from(e in Episode, order_by: [desc: :id],
+                         select: e.id)
+      |> Repo.paginate(page: params["page"], 
+                       page_size: 10,
+                       options: [total_entries: total_estimated(Episode)])
 
     episodes = from(e in Episode, join: p in assoc(e, :podcast),
                                   where: e.id in ^episode_ids.entries and
