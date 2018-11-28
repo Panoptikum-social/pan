@@ -165,7 +165,8 @@ defmodule PanWeb.MaintenanceController do
       |> Repo.aggregate(:count, :id)
 
     podcasts_with_zero_publication_frequency = 
-      (from p in Podcast, where: p.publication_frequency == 0.0)
+      (from p in Podcast, where: p.publication_frequency == 0.0 and
+                                 p.episodes_count > 1)
       |> Repo.aggregate(:count, :id)
 
     personas_without_image =
