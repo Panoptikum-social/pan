@@ -164,6 +164,10 @@ defmodule PanWeb.MaintenanceController do
       (from p in Podcast, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
       |> Repo.aggregate(:count, :id)
 
+    podcasts_with_zero_publication_frequency = 
+      (from p in Podcast, where: p.publication_frequency == 0.0)
+      |> Repo.aggregate(:count, :id)
+
     personas_without_image =
       (from p in Persona, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
       |> Repo.aggregate(:count, :id)
@@ -197,7 +201,8 @@ defmodule PanWeb.MaintenanceController do
                                personas_without_image: personas_without_image,
                                feeds_without_headers: feeds_without_headers,
                                feeds_with_etag: feeds_with_etag,
-                               feeds_with_last_modified: feeds_with_last_modified)
+                               feeds_with_last_modified: feeds_with_last_modified,
+                               podcasts_with_zero_publication_frequency: podcasts_with_zero_publication_frequency)
   end
 
   defp delimit_integer(number, delimiter) do

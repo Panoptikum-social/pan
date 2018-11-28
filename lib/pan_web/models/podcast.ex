@@ -313,11 +313,11 @@ defmodule PanWeb.Podcast do
     episode_publishing_dates = from(e in Episode, where: e.podcast_id == ^podcast_id,
                                                   select: [e.publishing_date, e.inserted_at])
                                |> Repo.all()
+                               |> Enum.map(&best_effort_for_pubdate(&1))
+                               |> Enum.sort_by(&NaiveDateTime.to_erl/1)
 
-    latest_episode_publishing_date = Enum.map(episode_publishing_dates, &best_effort_for_pubdate(&1))
-                                     |> Enum.max()
-    first_episode_publishing_date =  Enum.map(episode_publishing_dates, &best_effort_for_pubdate(&1))
-                                     |> Enum.max()
+    latest_episode_publishing_date = List.last(episode_publishing_dates)
+    first_episode_publishing_date  = List.first(episode_publishing_dates)
 
     publication_frequency =
       if episodes_count > 1 && latest_episode_publishing_date && first_episode_publishing_date do
@@ -337,7 +337,7 @@ defmodule PanWeb.Podcast do
   end
 
 
-  defp best_effort_for_pubdate([publishing_date, inserted_at]) do
+  def best_effort_for_pubdate([publishing_date, inserted_at]) do
     publishing_date || inserted_at
   end
 

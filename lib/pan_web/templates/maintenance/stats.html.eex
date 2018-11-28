@@ -26,6 +26,9 @@
       <tr><td></td>
           <td>backlog</td>
           <td class="text-right"><%= @total_feed_backlogs %></td></tr>
+      <tr><td></td>
+          <td>zero publication frequency</td>
+          <td class="text-right"><%= @podcasts_with_zero_publication_frequency %></td></tr>
       <tr><th>Episodes</th>
           <td>total</td>
           <td class="text-right"><%= @total_episodes %></td></tr>

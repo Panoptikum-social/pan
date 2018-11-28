@@ -380,7 +380,8 @@ defmodule PanWeb.PodcastController do
   end
 
   def update_missing_counters(conn, _params) do
-    podcasts = from(p in Podcast, where: is_nil(p.latest_episode_publishing_date))
+    podcasts = from(p in Podcast, where: p.publication_frequency == 0.0,
+                                  limit: 1000)
                |> Repo.all()
 
     for podcast <- podcasts do
