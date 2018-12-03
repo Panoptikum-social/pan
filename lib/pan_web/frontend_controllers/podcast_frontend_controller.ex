@@ -12,12 +12,6 @@ defmodule PanWeb.PodcastFrontendController do
   end
 
 
-  def button_index(conn, _params) do
-    podcasts = Repo.all(Podcast)
-    render(conn, "button_index.html", podcasts: podcasts)
-  end
-
-
   def show(conn, %{"id" => id} = params) do
     changeset = Recommendation.changeset(%Recommendation{})
     podcast =  Repo.get!(Podcast, id)
