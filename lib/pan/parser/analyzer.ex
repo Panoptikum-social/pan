@@ -180,7 +180,7 @@ defmodule Pan.Parser.Analyzer do
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
-    :"fs:self_link", :service
+    :"fs:self_link", :service, :"anchor:station"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
