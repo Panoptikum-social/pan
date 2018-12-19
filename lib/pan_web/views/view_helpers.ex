@@ -25,7 +25,7 @@ defmodule PanWeb.ViewHelpers do
 
 
   def ej(nil), do: ""
-  def ej(string), do: escape_javascript(string)
+  def ej(string), do: javascript_escape(string)
 
 
   def my_safe_to_string({:safe, string}), do: safe_to_string({:safe, string})
