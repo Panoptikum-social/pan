@@ -104,7 +104,8 @@ defmodule Pan.Parser.RssFeed do
     try do
       {:ok, Quinn.parse(feed_map)}
     catch
-      :exit, _ -> {:error, "Quinn parser finds unexpected end"}
+      :exit, error -> 
+        {:error, "Quinn error: " <> error}
     end
   end
 

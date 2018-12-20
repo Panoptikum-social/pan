@@ -66,6 +66,8 @@ defmodule Pan.Parser.Download do
 
       {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
         try_without_tls_set(url, option)
+      {:error, %HTTPoison.Error{id: nil, reason: {:closed, _feed_xml}}} ->
+        try_without_tls_set(url, option)
       {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'handshake failure'}}} ->
         try_without_tls_set(url, option)
       {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
