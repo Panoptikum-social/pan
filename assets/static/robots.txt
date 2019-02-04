@@ -13,3 +13,9 @@ Disallow: /
 
 User-agent: dotbot
 Disallow: /
+
+User-agent: YandexBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
