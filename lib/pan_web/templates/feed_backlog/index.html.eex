@@ -5,6 +5,12 @@
                             class: "btn btn-info" %>
   <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
                             class: "btn btn-info" %>
+
+  <%= link "Delete All (from Itunes user)", 
+           to: feed_backlog_path(@conn, :delete_all),
+           method: :delete,
+           data: [confirm: "Are you sure?"],
+           class: "btn btn-danger" %>
 </p>
 
 <h2>Listing the last <%= length(@backlog_feeds) %> of <%= @feedcount %> backlog feeds</h2>

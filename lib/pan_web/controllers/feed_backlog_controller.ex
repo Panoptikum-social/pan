@@ -76,6 +76,15 @@ defmodule PanWeb.FeedBacklogController do
     |> redirect(to: feed_backlog_path(conn, :index))
   end
 
+  def delete_all(conn, _params) do
+    from(f in FeedBacklog, where: f.user_id == 1055)
+    |> Repo.delete_all
+
+    conn
+    |> put_flash(:info, "Feed backlogs from itunes user deleted successfully.")
+    |> redirect(to: feed_backlog_path(conn, :index))
+  end
+
 
   def import(conn, %{"id" => id}) do
     feed_backlog = Repo.get!(FeedBacklog, id)

@@ -368,6 +368,7 @@ defmodule PanWeb.Router do
     get "/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50
     get "/backlog_feeds/import_100", FeedBacklogController, :import_100
     get "/backlog_feeds/:id/import", FeedBacklogController, :import
+    delete "/feed_backlogs/delete_all", FeedBacklogController, :delete_all
     resources "/backlog_feeds", FeedBacklogController
 
     get "/opmls/datatable", OpmlController, :datatable
