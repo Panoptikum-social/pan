@@ -64,6 +64,23 @@ defmodule PanWeb.OpmlFrontendController do
   end
 
 
+  def download(conn, %{"id" => id}, user) do
+    case Repo.one(from o in Opml, where: o.id == ^id and o.user_id == ^user.id) do
+      nil ->
+        conn
+        |> put_flash(:error, "This is not a valid OPML for you")
+        |> redirect(to: opml_frontend_path(conn, :index))
+        |> halt()
+
+      opml ->
+        conn
+        |> put_resp_content_type("application/octet-stream", "utf-8")
+        |> put_resp_header("content-disposition", ~s[attachment; filename="#{opml.filename}"])
+        |> send_file(200, opml.path)
+    end
+  end
+
+
   def import(conn, %{"id" => id}, user) do
     opml = Repo.one(from o in Opml, where: o.id == ^id and o.user_id == ^user.id)
 

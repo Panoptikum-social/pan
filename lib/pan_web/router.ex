@@ -255,6 +255,7 @@ defmodule PanWeb.Router do
 
     resources "/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete]
     get "/opmls/:id/import", OpmlFrontendController, :import
+    get "/opmls/:id/download", OpmlFrontendController, :download
 
     resources "/feed_backlogs", FeedBacklogFrontendController, only: [:new, :create]
 
