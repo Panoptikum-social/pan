@@ -4,7 +4,7 @@ defmodule PanWeb.FeedBacklogController do
   require Logger
 
   def index(conn, _params) do
-    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
+    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :id],
                                            limit: 25)
                     |> Repo.all
     feedcount = Repo.aggregate(FeedBacklog, :count, :id)
