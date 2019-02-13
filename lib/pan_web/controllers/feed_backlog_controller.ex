@@ -139,7 +139,7 @@ defmodule PanWeb.FeedBacklogController do
 
 
   def subscribe50(conn, _params) do
-    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :inserted_at],
+    backlog_feeds = from(f in FeedBacklog, order_by: [desc: :id],
                                            limit: 50)
                     |> Repo.all
 
