@@ -180,7 +180,7 @@ defmodule Pan.Parser.Analyzer do
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
-    :"fs:self_link", :service, :"anchor:station"
+    :"fs:self_link", :service, :"anchor:station", :"pcp:entries"
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -253,7 +253,7 @@ defmodule Pan.Parser.Analyzer do
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
-    :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit
+    :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit 
   ], do: %{}
 
 
@@ -365,6 +365,7 @@ defmodule Pan.Parser.Analyzer do
     %{summary: scrub(List.first(value[:value]))}
   end
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: scrub(value)}
+  def call(_, "episode", [:"itunes:sumary",  _, [value | _]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, [value | _]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, [value]]), do: %{summary: scrub(value)}
   def call(_, "episode", [:summary,           _, []]), do: %{}
