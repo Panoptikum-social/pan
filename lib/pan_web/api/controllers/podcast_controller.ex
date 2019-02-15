@@ -94,7 +94,7 @@ defmodule PanWeb.Api.PodcastController do
       |> Podcast.changeset(%{manually_updated_at: Timex.now()})
       |> Repo.update()
 
-      Pan.Parser.Podcast.update_from_feed(id)
+      Pan.Parser.Podcast.update_from_feed(podcast)
       show(conn, params, nil)
     else
       minutes = podcast.manually_updated_at
