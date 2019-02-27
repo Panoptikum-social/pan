@@ -1,6 +1,6 @@
 defmodule PanWeb.Auth do
   import Plug.Conn
-  import Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+  import Bcrypt, only: [verify_pass: 2, no_user_verify: 0]
 
   alias Pan.Repo
   alias PanWeb.User
@@ -48,12 +48,12 @@ defmodule PanWeb.Auth do
     user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)
 
     cond do
-      user && checkpw(given_pass, user.password_hash) ->
+      user && verify_pass(given_pass, user.password_hash) ->
         {:ok, login(conn, user)}
       user ->
         {:error, :unauthorized, conn}
       true ->
-        dummy_checkpw()
+        no_user_verify()
         {:error, :not_found, conn}
     end
   end
@@ -69,7 +69,7 @@ defmodule PanWeb.Auth do
       {:error, :invalid} ->
         {:error, :invalid}
       true ->
-        dummy_checkpw()
+        no_user_verify()
         {:error, :not_found, conn}
     end
   end
