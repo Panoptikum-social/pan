@@ -78,6 +78,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [tag_atom, _, []]) when tag_atom in [:description, :"itunes:subtitle"] , do: %{}
   def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
   def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
+  def call(_, "tag", [:"itunes:description", [text: value], _]), do: %{description: value}
 
   def call(map, "tag", [tag_atom, _, [value]]) when tag_atom in [
     :"itunes:subtitle", :"iTunes:subtitle"
@@ -253,7 +254,8 @@ defmodule Pan.Parser.Analyzer do
     :"social:guest_name", :thumbnail, :fecha, :pthumbnail, :"custom:timestamp", :"pp:media",
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
-    :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit 
+    :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
+    :publication
   ], do: %{}
 
 
@@ -381,6 +383,7 @@ defmodule Pan.Parser.Analyzer do
     end
   end
   def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: to_255(value)}
+  def call(_, "episode", [:"itunes:subtitle", [value]]), do: %{subtitle: to_255(value)}
   def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: to_255(value)}
 
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
