@@ -30,44 +30,43 @@ defmodule Pan.Mixfile do
   defp elixirc_paths(_),     do: ["lib"]
 
   defp deps do
-    [{:phoenix, "~> 1.4.0", override: true}, # web framework
-     {:phoenix_pubsub, "~> 1.1.1"}, # PubSub messaging
-     {:postgrex, "0.14.1"}, # database adapter
-     {:ecto_sql, "3.0.3"}, # ecto sql adapter
-     {:phoenix_ecto, "~> 4.0.0"}, # phoenix support for ecto
-     {:phoenix_html, "2.13.0"}, # view layer
-     {:phoenix_live_reload, "1.2.0", only: :dev}, # live browser page reload on code changes
+    [{:phoenix, "~> 1.4", override: true}, # web framework
+     {:phoenix_pubsub, "~> 1.1"}, # PubSub messaging
+     {:postgrex, "~> 0.14"}, # database adapter
+     {:ecto_sql, "~> 3.0"}, # ecto sql adapter
+     {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
+     {:phoenix_html, "~> 2.1"}, # view layer
+     {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
-     {:plug_cowboy, "2.0.1"}, # web server plug
+     {:plug_cowboy, "~> 2.0"}, # web server plug
      {:plug, "~> 1.7.1"}, # connection adapters
-     {:comeonin, "4.1.2"}, # password hashing library
-     {:bcrypt_elixir, "1.1.1"}, # algorithm used for comeonin
+     {:bcrypt_elixir, "~> 2.0"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
-     {:timex, "~> 3.4.2"}, # time conversion
-     {:httpoison, "1.5.0"}, # http client
-     {:hackney, "1.14.3"}, # erlang http client, had to increase version here
-     {:distillery, "~> 2.0.12", runtime: false}, # release manager
-     {:quinn, "~> 1.1.2"}, # XML parser (another one)
-     {:uuid, "~> 1.1.8"}, # UUID creation
-     {:html_sanitize_ex, "1.3.0"}, # sanitizing html input (shownotes)
-     {:scrivener_ecto, "2.0.0"}, # pagination
-     {:scrivener_html, "~> 1.7.1"}, # pagination view helper
-     {:bamboo_smtp, "~> 1.6.0"}, # mailing smtp adapter,
-     {:bamboo, "~> 1.1.0"}, # mailing
-     {:earmark, "1.3.0"}, # Markdown parser
-     {:timelier, "~> 0.9.2"}, # Cron like agent,
-     {:tzdata, "~> 0.5.19"}, # Timezone information
-     {:tirexs, "~> 0.8.15"}, # elasticsearch connector
-     {:credo, "1.0.0", only: [:dev, :test]}, # Code analysis
-     {:floki, "~> 0.20.4"}, # HTML parser
-     {:erlware_commons, "1.3.1"}, #reuseable Erlang components
+     {:timex, "~> 3.4"}, # time conversion
+     {:httpoison, "~> 1.5"}, # http client
+     {:hackney, "~> 1.14"}, # erlang http client, had to increase version here
+     {:distillery, "~> 2.0", runtime: false}, # release manager
+     {:quinn, "~> 1.1"}, # XML parser (another one)
+     {:uuid, "~> 1.1"}, # UUID creation
+     {:html_sanitize_ex, "~> 1.3"}, # sanitizing html input (shownotes)
+     {:scrivener_ecto, "~> 2.0"}, # pagination
+     {:scrivener_html, "~> 1.7"}, # pagination view helper
+     {:bamboo_smtp, "~> 1.6"}, # mailing smtp adapter,
+     {:bamboo, "~> 1.2"}, # mailing
+     {:earmark, "~> 1.3"}, # Markdown parser
+     {:timelier, "~> 0.9"}, # Cron like agent,
+     {:tzdata, "~> 0.5"}, # Timezone information
+     {:tirexs, "~> 0.8"}, # elasticsearch connector
+     {:credo, "~> 1.0", only: [:dev, :test]}, # Code analysis
+     {:floki, "~> 0.2"}, # HTML parser
+     {:erlware_commons, "~> 1.3"}, #reuseable Erlang components
      {:ja_serializer, git: "https://github.com/vt-elixir/ja_serializer"}, #Jsonapi.org serializer
-     {:p1_utils, "1.0.13", manager: :rebar}, # dependency for iconv
-     {:iconv, "~> 1.0.10", manager: :rebar}, # Unicode converter
-     {:mogrify, "0.7.0"}, # Imagemagick wrapper
-     {:exactor, "~> 2.2.4", warn_missing: false}, # Simplifies implementation of GenServer based processes
+     {:p1_utils, "~> 1.0", manager: :rebar}, # dependency for iconv
+     {:iconv, "~> 1.0", manager: :rebar}, # Unicode converter
+     {:mogrify, "~> 0.7"}, # Imagemagick wrapper
+     {:exactor, "~> 2.2", warn_missing: false}, # Simplifies implementation of GenServer based processes
      {:jason, "~> 1.1"}, # Json generation,
-     {:httpotion, "~> 3.1.0"}
+     {:httpotion, "~> 3.1"}
     ]
   end
 

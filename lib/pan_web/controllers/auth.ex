@@ -1,6 +1,6 @@
 defmodule PanWeb.Auth do
   import Plug.Conn
-  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
+  import Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
 
   alias Pan.Repo
   alias PanWeb.User
