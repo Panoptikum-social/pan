@@ -74,14 +74,13 @@ defmodule Pan.Parser.Analyzer do
                         else: %{image_url: to_255(value)}
   end
 
-
   def call(_, "tag", [tag_atom, _, []]) when tag_atom in [:description, :"itunes:subtitle"] , do: %{}
   def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
   def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
   def call(_, "tag", [:"itunes:description", [text: value], _]), do: %{description: value}
 
   def call(map, "tag", [tag_atom, _, [value]]) when tag_atom in [
-    :"itunes:subtitle", :"iTunes:subtitle"
+    :"itunes:subtitle", :"iTunes:subtitle", :subtitle
   ] do
     if map[:description], do: %{},
                           else: %{description: value}
@@ -165,13 +164,13 @@ defmodule Pan.Parser.Analyzer do
     :"aan:iTunes_id", :"aan:publicsearch", :"aan:isitunes", :"podextra:filtered", :"webfeeds:logo",
     :"webfeeds:accentColor", :"volomedia:ga_id", :"dc:coverage", :"itunes:image-small", :xmlUrl,
     :"awesound:lastCached", :"admin:errorReportsTo", :"cbs:id", :"itunes:new_feed_url", :generation,
-    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :subtitle, :itunes,
+    :companyLogo, :"itunes:type", :convertLineBreaks, :"content:encoded", :itunes,
     :"c9:totalResults", :"c9:pageCount", :"c9:pageSize", :"castfire:total", :"castfire:sh_id",
     :"ionofm:coverart", :"itunes:subcategory", :"icbm:latitude", :"icbm:longitude", :"yt:channelId",
     :"a10:author", :"a10:contributor", :"a10:id", :"itunes:publisher", :"webfeeds:cover",
     :"webfeeds:icon", :"webfeeds:related", :"webfeeds:analytics", :"dc:publisher", :desription,
     :collectiontype, :"pentonplayer:channelAds", :"all-js-function", :"media:title", :"media:text",
-    :fullsummary, :"itunes:subtitle", :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
+    :fullsummary, :"nrk:url", :"nrk:urlTitle", :"itunes:season", :programarid,
     :"dc:description", :"meta:url", :"podcastRF:podcastProductionStrategy", :"itunesu:category",
     :"Atom:link", :ituneslink, :itunescategory, :"jmutube:params", :"cstv2:level", :url, :audiopath,
     :"cstv:address", :"podzinger:id", :"itunes:provider", :"acast:locked-item", :"tahoetv:url_xml",
@@ -231,7 +230,7 @@ defmodule Pan.Parser.Analyzer do
     :"itunes:name", :"itunes:episode", :"itunes:episodeType", :"itunes:season", :"georss:elev", :br,
     :"podcast:category", :podcastimge1, :podcastimge2, :"itunes:type", :hq_filename, :hq_filetype,
     :stream, :"itunes:email", :indTag, :"app:control", :size, :"itunes:isCloseCaptioned", :guid2,
-    :updated, :published, :subtitle, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body, :type,
+    :updated, :published, :titleApp, :topTitleApp, :"ionofm:coverart", :p, :body, :type,
     :"itunes:subtitel", :"includedComments:comment-collection", :"dcterms:valid", :"sr:programid",
     :"sr:poddid", :itunes, :"media:enclosure", :"yt:videoId", :"yt:channelId", :durationapp, :b,
     :categorie, :"photo:imgsrc", :expiryTime, :"a10:updated", :"a10:content", :"a10:author",
@@ -255,7 +254,7 @@ defmodule Pan.Parser.Analyzer do
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
     :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
-    :publication
+    :publication, :itunes_explicit, :itunes_keywords
   ], do: %{}
 
 
@@ -366,14 +365,13 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:"itunes:summary",  _, [value | _]]) when is_map(value) do
     %{summary: scrub(List.first(value[:value]))}
   end
-  def call(_, "episode", [:"itunes:summary",  _, [value | _]]), do: %{summary: scrub(value)}
-  def call(_, "episode", [:"itunes:sumary",  _, [value | _]]), do: %{summary: scrub(value)}
-  def call(_, "episode", [:summary,           _, [value | _]]), do: %{summary: scrub(value)}
-  def call(_, "episode", [:summary,           _, [value]]), do: %{summary: scrub(value)}
+
+  def call(_, "episode", [tag_atom, _, [value | _]]) when tag_atom in [
+    :"itunes:summary", :summary, :itunes_summary, :"atom:summary"
+  ], do: %{summary: to_255(value)}
+
   def call(_, "episode", [:summary,           _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",    _, []]), do: %{}
-  def call(_, "episode", [:"atom:summary",    _, [value | _]]), do: %{summary: scrub(value)}
-
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, [value]]) do
     if is_map(value) && Map.has_key?(value, :value) do
@@ -382,14 +380,15 @@ defmodule Pan.Parser.Analyzer do
       %{subtitle: to_255(value)}
     end
   end
-  def call(_, "episode", [:subtitle,          _, [value]]), do: %{subtitle: to_255(value)}
-  def call(_, "episode", [:"itunes:subtitle", [value]]), do: %{subtitle: to_255(value)}
-  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]), do: %{subtitle: to_255(value)}
+  def call(_, "episode", [tag_atom, _, [value]]) when tag_atom in [
+    :subtitle, :itunes_subtitle, :"itunes:subtitle"
+  ], do: %{subtitle: to_255(value)}
 
   def call(_, "episode", [:"itunes:duration", _, []]), do: %{}
-  def call(_, "episode", [:"itunes:duration", _, [value]]), do: %{duration: value}
+  def call(_, "episode", [tag_atom, _, [value]]) when tag_atom in [
+    :"itunes:duration", :itunes_duration, :duration
+    ], do: %{duration: value}
   def call(_, "episode", [:duration, _, []]), do: %{}
-  def call(_, "episode", [:duration, _, [value]]), do: %{duration: value}
 
   def call(_, "episode", [tag_atom, _, [value]]) when tag_atom in [
       :pubDate, :pubdate, :"itunes:pubDate", :"dc:date", :pubDateShort
@@ -422,13 +421,10 @@ defmodule Pan.Parser.Analyzer do
 
 # We expect one episode author
   def call(_, "episode", [:"itunes:author",     _, []]), do: %{}
-  def call(_, "episode", [:authors,             _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"iTunes:author",     _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"itunes:author",     _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"googleplay:author", _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"dc:publisher",      _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:"atom:author",       _, value]), do: parse(%{}, "episode_author", value)
-  def call(_, "episode", [:Author,              _, value]), do: parse(%{}, "episode_author", value)
+  def call(_, "episode", [tag_atom, _, value]) when tag_atom in [
+    :authors, :"iTunes:author", :"itunes:author", :itunes_author, :"googleplay:author",
+    :"dc:publisher", :"atom:author", :Author
+  ], do: parse(%{}, "episode_author", value)
 
   def call(_, "episode", [:managingEditor, _, value]), do: parse(%{}, "managing_editor", value)
 
@@ -507,7 +503,7 @@ defmodule Pan.Parser.Analyzer do
   def call("owner", [:email,             _, [value]]), do: %{email: value}
   def call("owner", [:"panoptikum:pid",  _, [value]]), do: %{pid: value}
   def call("owner", [tag_atom, _, _]) when tag_atom in [
-    :copyright, :"itunes:keywords", :"itunes:image", :"itunes:explicit"
+    :copyright, :"itunes:keywords", :"itunes:image", :"itunes:explicit", :itunes_explicit
   ], do: %{}
 
 

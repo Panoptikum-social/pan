@@ -117,8 +117,8 @@ defmodule PanWeb.PersonaFrontendView do
     |> Enum.join()
   end
 
-  def slug_with_gigs(conn, _action, []) do
-    slug_with_gigs(conn, _action, [page: 1])
+  def slug_with_gigs(conn, action, []) do
+    slug_with_gigs(conn, action, [page: 1])
   end
 
   def slug_with_gigs(conn, _, [page: page]) do
