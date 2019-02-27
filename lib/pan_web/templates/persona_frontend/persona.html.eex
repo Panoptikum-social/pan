@@ -186,7 +186,9 @@
   </div>
 
   <div class="table-responsive" id="gigs">
-    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, path: &slug_with_gigs/3) %>
+    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, 
+                                                       last: false, 
+                                                       path: &slug_with_gigs/3) %>
     <table class="table table-striped table-condensed">
       <thead>
         <tr>
@@ -216,7 +218,9 @@
         <% end %>
       </tbody>
     </table>
-    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, path: &slug_with_gigs/3) %>
+    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, 
+                                                       last: false, 
+                                                       path: &slug_with_gigs/3) %>
   </div>
 <% end %>
 

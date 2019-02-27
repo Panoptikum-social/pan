@@ -8,10 +8,11 @@
   </div>
 
   <div class="col-md-12">
-  <%= pagination_links @conn, @latest_episodes, [@category_id],
-                 path: &category_frontend_path/4,
-                 action: :latest_episodes,
-                 view_style: :bootstrap %>
+    <%= pagination_links @conn, @latest_episodes, [@category_id],
+                         last: false,
+                         path: &category_frontend_path/4,
+                         action: :latest_episodes,
+                         view_style: :bootstrap %>
   </div>
   <table class="table table-condensed">
     <%= for episode <- @latest_episodes do %>
@@ -53,6 +54,7 @@
 </div>
 
 <%= pagination_links @conn, @latest_episodes, [@category_id],
-             path: &category_frontend_path/4,
-             action: :latest_episodes,
-             view_style: :bootstrap %>
+                     last: false,
+                     path: &category_frontend_path/4,
+                     action: :latest_episodes,
+                     view_style: :bootstrap %>
