@@ -22,6 +22,7 @@ defmodule PanWeb.UserController do
 
   def show(conn, %{"id" => id}, _user) do
     user = Repo.get!(PanWeb.User, id)
+           |> Repo.preload(:user_personas)
     render conn, "show.html", user: user
   end
 

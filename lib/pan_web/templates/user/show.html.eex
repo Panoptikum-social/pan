@@ -60,3 +60,28 @@
   <dt>Paper bill</dt>
   <dd><%= @user.paper_bill %></dd>
 </dl>
+
+<h2>Personas</h2>
+
+<table class="table table-striped table-compact">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Pid</th>
+      <th>Name</th>
+      <th>Uri</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for persona <- @user.user_personas do %>
+      <tr>
+        <td><%= link persona.id, to: persona_path(@conn, :show, persona) %></td>
+        <td><%= persona.pid %></td>
+        <td><%= persona.name %></td>
+        <td><%= persona.uri %></td>
+        <td><%= persona.email %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
