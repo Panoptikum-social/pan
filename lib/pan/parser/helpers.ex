@@ -40,7 +40,7 @@ defmodule Pan.Parser.Helpers do
 
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
-    datetime = 
+    datetime =
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}") ||
       try_format(feed_date, "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}") ||
@@ -55,6 +55,7 @@ defmodule Pan.Parser.Helpers do
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
+      try_format(feed_date, "{WDshort} {D} {Mshort} {ISOtime} {Zname}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
@@ -76,6 +77,7 @@ defmodule Pan.Parser.Helpers do
       try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
       try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
       try_format(feed_date, "{Mshort} {D} {YYYY}") ||
+      try_format(feed_date, "{Mshort} {YYYY}") ||
       try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
       try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
       try_format(feed_date, "{0M}/{0D}/{YYYY} {ISOtime} {Zname}") ||
@@ -97,20 +99,20 @@ defmodule Pan.Parser.Helpers do
       try_format(feed_date, "{RFC3339z}") ||
       try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
       try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
-    
+
     ensure_naive_in_seconds(datetime, feed_date)
-  end 
+  end
 
   defp ensure_naive_in_seconds(datetime, feed_date) do
     case datetime do
-      naive = %NaiveDateTime{} -> 
+      naive = %NaiveDateTime{} ->
         naive
         |> NaiveDateTime.truncate(:second)
-      datetime = %DateTime{} -> 
+      datetime = %DateTime{} ->
         datetime
         |> DateTime.to_naive()
         |> NaiveDateTime.truncate(:second)
-      _ -> 
+      _ ->
         Logger.error "Error in date parsing: " <> feed_date
         raise "Error in date parsing"
     end
@@ -181,24 +183,24 @@ defmodule Pan.Parser.Helpers do
 
   def fix_timezones(datetime) do
     datetime
-    |> String.replace(" 0000",  " +0000")
+    |> String.replace(" 0000", " +0000")
     |> String.replace("AEST",  "+1000")
     |> String.replace("CEST",  "+0200")
-    |> String.replace("AEDT", "+1100")
-    |> String.replace("NZST", "+1200")
-    |> String.replace("NZDT", "+1300")
-    |> String.replace("EST",  "-0500")
-    |> String.replace("EDT",  "-0400")
-    |> String.replace("CST",  "-0600")
-    |> String.replace("PST",  "-0700")
-    |> String.replace("PdT",  "-0700")
-    |> String.replace("PCT",  "-0700")
-    |> String.replace("GMT+1",  "+0100")
-    |> String.replace("BST",  "+0100")
-    |> String.replace("IDT",  "+0300")
-    |> String.replace("GST",  "+0400")
-    |> String.replace("KST",  "+0900")
-    |> String.replace("JST",  "+0900")
+    |> String.replace("AEDT",  "+1100")
+    |> String.replace("NZST",  "+1200")
+    |> String.replace("NZDT",  "+1300")
+    |> String.replace("EST",   "-0500")
+    |> String.replace("EDT",   "-0400")
+    |> String.replace("CST",   "-0600")
+    |> String.replace("PST",   "-0700")
+    |> String.replace("PdT",   "-0700")
+    |> String.replace("PCT",   "-0700")
+    |> String.replace("GMT+1", "+0100")
+    |> String.replace("BST",   "+0100")
+    |> String.replace("IDT",   "+0300")
+    |> String.replace("GST",   "+0400")
+    |> String.replace("KST",   "+0900")
+    |> String.replace("JST",   "+0900")
     |> String.replace("GTM",   "GMT")
     |> String.replace("GMT+2", "+0200")
     |> String.replace("-0001", "2016")
