@@ -30,7 +30,7 @@
     <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">
       <%= if @episode.description && @episode.description != @episode.shownotes do %>
         <h3>Description</h3>
-        <p><%= truncate_string(HtmlSanitizeEx.strip_tags(@episode.description), 1000) %></p>
+        <p><%= HtmlSanitizeEx.strip_tags(@episode.description) %></p>
       <% end %>
 
       <%= if @episode.summary && @episode.summary != @episode.description do %>

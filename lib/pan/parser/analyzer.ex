@@ -368,7 +368,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [tag_atom, _, [value | _]]) when tag_atom in [
     :"itunes:summary", :summary, :itunes_summary, :"atom:summary"
-  ], do: %{summary: to_255(value)}
+  ], do: %{summary: scrub(value)}
 
   def call(_, "episode", [:summary,           _, []]), do: %{}
   def call(_, "episode", [:"atom:summary",    _, []]), do: %{}
