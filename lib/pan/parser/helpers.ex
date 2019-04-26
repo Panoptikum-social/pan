@@ -54,6 +54,7 @@ defmodule Pan.Parser.Helpers do
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
+      try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {ISOtime} {Zname}") ||
       try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
@@ -158,7 +159,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/s[ep]p?t?e?m?b?e?r?/i,  "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i,      "Oct")
     |> String.replace(~r/no[vc]e?m?e?b?e?r?/i,   "Nov")
-    |> String.replace(~r/d[ei][vcz][e]?m?b?[re]?[ro]?/i, "Dec")
+    |> String.replace(~r/d[ei][vcsz][e]?m?b?[re]?[ro]?/i, "Dec")
   end
 
 
@@ -192,6 +193,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("EST",   "-0500")
     |> String.replace("EDT",   "-0400")
     |> String.replace("CST",   "-0600")
+    |> String.replace("CMT",   "-0600")
     |> String.replace("PST",   "-0700")
     |> String.replace("PdT",   "-0700")
     |> String.replace("PCT",   "-0700")
