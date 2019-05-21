@@ -21,6 +21,7 @@ defmodule PanWeb.User do
     field :payment_reference, :string
     field :paper_bill, :boolean
     field :elastic, :boolean
+    field :bot_check, :integer, virtual: true
     timestamps()
 
     has_many :manifestations, Manifestation, on_delete: :delete_all
@@ -103,16 +104,25 @@ defmodule PanWeb.User do
   def registration_changeset(struct, params) do
     struct
     |> cast(params, [:name, :username, :email, :podcaster, :share_subscriptions, :share_follows,
-                     :password, :password_confirmation])
-    |> validate_required([:name, :username, :email, :password, :password_confirmation])
+                     :password, :password_confirmation, :bot_check])
+    |> validate_required([:name, :username, :email, :password, :password_confirmation, :bot_check])
     |> validate_length(:username, min: 3, max: 30)
     |> validate_confirmation(:password)
+    |> validate_bot_check(params)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
     |> validate_length(:password, min: 6, max: 100)
     |> put_pass_hash()
+  end
+
+  defp validate_bot_check(changeset, params) do
+    if params["bot_check"] == "42" do
+      changeset
+    else
+      add_error(changeset, :bot_check, "It seems, you are a bot! 🤣")
+    end
   end
 
   def password_update_changeset(struct, params) do
