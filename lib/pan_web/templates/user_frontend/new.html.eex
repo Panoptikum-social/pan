@@ -54,7 +54,7 @@
     </div>
     <div class="form-group">
       <%= label f, "If you subtract two from 44, you get...", class: "control-label" %>
-      <%= number_input f, :bot_check, placeholder: "... sorry, we had to many bots sign up!", class: "form-control",
+      <%= number_input f, :bot_check, placeholder: "... sorry, we had too many bots sign up!", class: "form-control",
                                     length: 2 %>
       <%= error_tag f, :bot_check %>
     </div>
