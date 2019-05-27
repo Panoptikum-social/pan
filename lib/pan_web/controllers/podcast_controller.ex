@@ -1,7 +1,7 @@
 defmodule PanWeb.PodcastController do
   use Pan.Web, :controller
-  alias PanWeb.{AlternateFeed, Chapter, Category, Enclosure, Episode, Feed, Gig, Like,
-                Podcast, Recommendation}
+  alias PanWeb.{AlternateFeed, Chapter, Category, Enclosure, Episode,
+                Feed, Gig, Image, Like, Podcast, Recommendation}
   require Logger
 
   plug :scrub_params, "podcast" when action in [:create, :update]
@@ -222,11 +222,19 @@ defmodule PanWeb.PodcastController do
       Repo.delete_all(from c in Chapter, where: c.episode_id == ^episode.id)
       Repo.delete_all(from e in Enclosure, where: e.episode_id == ^episode.id)
       Repo.delete_all(from g in Gig, where: g.episode_id == ^episode.id)
+
+      images = Repo.all(from i in Image, where: i.episode_id == ^episode.id)
+      for image <- images do
+        File.rm(image.path)
+        Repo.delete!(image)
+      end
     end
 
     for feed <- podcast.feeds do
       Repo.delete_all(from a in AlternateFeed, where: a.feed_id == ^feed.id)
     end
+
+
 
     Repo.delete!(podcast)
     Podcast.delete_search_index(id)
