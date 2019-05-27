@@ -20,6 +20,7 @@ defmodule PanWeb.FeedView do
       feed_generator:  feed.feed_generator,
       podcast_id:      "<a href='/admin/podcasts/#{feed.podcast_id}'>#{feed.podcast_id}</a>",
       podcast_title:   feed.podcast_title,
+      podcast_episodes_count: feed.podcast_episodes_count,
       actions:         feed_actions(feed, &feed_path/3)}
   end
 

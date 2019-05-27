@@ -82,6 +82,7 @@ defmodule PanWeb.PodcastController do
                                           update_intervall: p.update_intervall,
                                           next_update: p.next_update,
                                           website: p.website,
+                                          episodes_count: p.episodes_count,
                                           failure_count: p.failure_count})
            |> Repo.all()
 
@@ -298,7 +299,7 @@ defmodule PanWeb.PodcastController do
                   |> Repo.all()
 
     Task.start(fn -> trigger_import_new_episodes(podcasts, current_user) end)
-    
+
     put_flash(conn, :info, "Async podcasts update Task started .")
     |> redirect(to: podcast_path(conn, :stale))
   end

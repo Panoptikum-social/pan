@@ -26,6 +26,7 @@
       <th>Next update (Europe/Vienna)</th>
       <th>Failure count</th>
       <th><%= fa_icon "search" %> Website</th>
+      <th>Episodes count</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -45,6 +46,7 @@
         { data: 'next_update' },
         { data: 'failure_count' },
         { data: 'website' },
+        { data: 'episodes_count' },
         { data: 'actions' }
       ]
     })

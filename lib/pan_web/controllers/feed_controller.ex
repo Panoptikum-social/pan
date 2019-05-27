@@ -43,15 +43,21 @@ defmodule PanWeb.FeedController do
 
     feeds = from(f in query, limit: ^limit,
                              offset: ^offset,
-                             order_by: ^order_by,
                              join: podcast in assoc(f, :podcast),
                              select: %{id: f.id,
                                        self_link_title: f.self_link_title,
                                        self_link_url: f.self_link_url,
                                        feed_generator: f.feed_generator,
                                        podcast_id: f.podcast_id,
+                                       podcast_episodes_count: podcast.episodes_count,
                                        podcast_title: podcast.title})
-            |> Repo.all()
+
+   feeds = case order_by do
+     [asc: :podcast_episodes_count] ->  from([_, podcast] in feeds, order_by: [asc: podcast.episodes_count])
+     [desc: :podcast_episodes_count] -> from([_, podcast] in feeds, order_by: [desc: podcast.episodes_count])
+     _ -> from([_, _] in feeds, order_by: ^order_by)
+   end
+   |> Repo.all()
 
     render(conn, "datatable.json", feeds: feeds,
                                    draw: draw,

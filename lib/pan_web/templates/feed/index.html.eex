@@ -9,6 +9,7 @@
       <th>Feed generator</th>
       <th>Podcast Id</th>
       <th>Podcast</th>
+      <th>Episodes count</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -26,6 +27,7 @@
         { data: 'feed_generator' },
         { data: 'podcast_id' },
         { data: 'podcast_title' },
+        { data: 'podcast_episodes_count'}, 
         { data: 'actions' }
       ]
     })
