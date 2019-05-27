@@ -139,7 +139,6 @@ defmodule PanWeb.PodcastController do
                                           update_intervall: p.update_intervall,
                                           feed_url: f.self_link_url,
                                           next_update: p.next_update,
-                                          website: p.website,
                                           failure_count: p.failure_count})
            |> Repo.all()
 

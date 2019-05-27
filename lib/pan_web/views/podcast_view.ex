@@ -48,8 +48,6 @@ defmodule PanWeb.PodcastView do
       failure_count:    podcast.failure_count,
       next_update:      format_for_vienna(podcast.next_update),
       feed_url:         podcast.feed_url,
-      website:          podcast.website,
-      episodes_count:   podcast.episodes_count,
       actions:          podcast_actions(podcast, &podcast_path/3)}
   end
 

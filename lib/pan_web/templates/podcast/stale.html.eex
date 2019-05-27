@@ -19,7 +19,6 @@
       <th>Next update (Europe/Vienna)</th>
       <th>Failure count</th>
       <th>Feed url</th>
-      <th><%= fa_icon "search" %> Website</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -39,7 +38,6 @@
         { data: 'next_update' },
         { data: 'failure_count' },
         { data: 'feed_url' },
-        { data: 'website' },
         { data: 'actions' }
       ]
     })
