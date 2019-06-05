@@ -419,6 +419,6 @@ defmodule PanWeb.Router do
     get "/maintenance/sandbox", MaintenanceController, :sandbox
     get "/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters
     get "/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed
+    get "/maintenance/exception_notification", MaintenanceController, :exception_notification
   end
 end
-

@@ -33,9 +33,6 @@
           <td>total</td>
           <td class="text-right"><%= @total_episodes %></td></tr>
       <tr><th></th>
-          <td>estimated</td>
-          <td class="text-right"><%= @estimated_episodes %></td></tr>
-      <tr><th></th>
           <td>unindexed by Elastic Search</td>
           <td class="text-right"><%= @unindexed_episodes %></td></tr>
       <tr><th>Category</th>
@@ -149,6 +146,12 @@
     <li class="list-group-item" style="border-top: 1px solid #ddd;">
       <%= link "Catch up missing thumbnailed booleans",
                to: maintenance_path(@conn, :catch_up_thumbnailed),
+               class: "btn btn-primary" %>
+    </li>
+
+    <li class="list-group-item" style="border-top: 1px solid #ddd;">
+      <%= link "Trigger exception notification",
+               to: maintenance_path(@conn, :exception_notification),
                class: "btn btn-primary" %>
     </li>
   </ul>

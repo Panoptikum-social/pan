@@ -19,6 +19,10 @@ defmodule PanWeb.MaintenanceController do
   end
 
 
+  def exception_notification(_conn, _params) do
+    raise "exception_notification"
+  end
+
   def update_podcast_counters(conn, _params) do
     Podcast.update_all_counters()
 
@@ -123,9 +127,6 @@ defmodule PanWeb.MaintenanceController do
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
-    estimated_episodes = Ecto.Convenience.total_estimated(Episode)
-                         |> delimit_integer(" ")
-
     unindexed_episodes = from(e in Episode, where: is_false(e.elastic))
                          |> Repo.aggregate(:count, :id)
                          |> delimit_integer(" ")
@@ -164,7 +165,7 @@ defmodule PanWeb.MaintenanceController do
       (from p in Podcast, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
       |> Repo.aggregate(:count, :id)
 
-    podcasts_with_zero_publication_frequency = 
+    podcasts_with_zero_publication_frequency =
       (from p in Podcast, where: p.publication_frequency == 0.0 and
                                  p.episodes_count > 1)
       |> Repo.aggregate(:count, :id)
@@ -179,7 +180,6 @@ defmodule PanWeb.MaintenanceController do
                                average_update_intervall: average_update_intervall,
                                total_podcasts: total_podcasts,
                                total_episodes: total_episodes,
-                               estimated_episodes: estimated_episodes,
                                podcasts_per_hour: podcasts_per_hour,
                                total_users: total_users,
                                total_gigs: total_gigs,
