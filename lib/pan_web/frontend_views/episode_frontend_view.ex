@@ -50,7 +50,7 @@ defmodule PanWeb.EpisodeFrontendView do
       audio: audiolist(episode.enclosures),
       reference: %{base: PanWeb.Endpoint.url <> "/podlove-webplayer/"}
      }
-    |> Poison.encode!
+    |> Jason.encode!
     |> raw
   end
 
@@ -78,7 +78,7 @@ defmodule PanWeb.EpisodeFrontendView do
                  chaptermarks: chapterlist(episode.chapters)
                }
     }
-    |> Poison.encode!
+    |> Jason.encode!
     |> raw
   end
 

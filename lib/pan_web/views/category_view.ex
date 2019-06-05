@@ -11,7 +11,7 @@ defmodule PanWeb.CategoryView do
          state: %{expanded: false}
       }
     end)
-    |> Poison.encode!
+    |> Jason.encode!
     |> raw
   end
 

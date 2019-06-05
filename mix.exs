@@ -23,7 +23,7 @@ defmodule Pan.Mixfile do
                     :scrivener_ecto, :scrivener_html, :bamboo, :bamboo_smtp,
                     :timelier, :tzdata, :tirexs, :floki, :erlware_commons,
                     :ja_serializer, :bcrypt_elixir, :elixir_make, :p1_utils, :iconv,
-                    :exactor, :jason, :plug_cowboy, :httpotion, :poison]]
+                    :exactor, :jason, :plug_cowboy, :httpotion]]
   end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
@@ -61,7 +61,6 @@ defmodule Pan.Mixfile do
      {:floki, "~> 0.2"}, # HTML parser
      {:erlware_commons, "~> 1.3"}, #reuseable Erlang components
      {:ja_serializer, "~> 0.15"}, #Jsonapi.org serializer
-     {:poison, "~> 4.0"}, #Seems to be a new dependency for ja_serializer
      {:p1_utils, "~> 1.0", manager: :rebar}, # dependency for iconv
      {:iconv, "~> 1.0", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.7"}, # Imagemagick wrapper

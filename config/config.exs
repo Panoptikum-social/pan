@@ -30,7 +30,7 @@ config :phoenix, :generators,
   binary_id: false
 
 config :phoenix, :json_library, Jason
-config :phoenix, :format_encoders, "json-api": Poison
+config :phoenix, :format_encoders, "json-api": Jason
 
 config :scrivener_html, routes_helper: PanWeb.Router.Helpers
 

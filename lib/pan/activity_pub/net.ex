@@ -14,6 +14,6 @@ defmodule Pan.ActivityPub.Net do
 
   def get(url) do
     {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(url, @headers, @options)
-    Poison.decode(body)
+    Jason.decode(body)
   end
 end

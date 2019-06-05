@@ -10,7 +10,7 @@ defmodule Pan.Bot do
       whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
       domain_action_type: "add"
     }
-    |> Poison.encode!
+    |> Jason.encode!
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(body, ["Content-Type": "application/json"], stream_to: self())
   end
@@ -25,7 +25,7 @@ defmodule Pan.Bot do
         }
       ]
     }
-    |> Poison.encode!
+    |> Jason.encode!
 
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
@@ -40,7 +40,7 @@ defmodule Pan.Bot do
         text: "Hey there! I'll send you podcasts related to whatever you tell me. Give it a try!"
       }
     }
-    |> Poison.encode!
+    |> Jason.encode!
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
@@ -53,7 +53,7 @@ defmodule Pan.Bot do
         text: message
       }
     }
-    |> Poison.encode!
+    |> Jason.encode!
 
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
@@ -78,7 +78,7 @@ defmodule Pan.Bot do
       },
       message: message_response(podcasts_from_query(message))
     }
-    |> Poison.encode!
+    |> Jason.encode!
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
@@ -172,7 +172,7 @@ defmodule Pan.Bot do
       },
       sender_action: action
     }
-    |> Poison.encode!
+    |> Jason.encode!
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())

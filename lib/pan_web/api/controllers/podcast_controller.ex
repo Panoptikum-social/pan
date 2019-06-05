@@ -71,7 +71,7 @@ defmodule PanWeb.Api.PodcastController do
 
       podcast_json = PanWeb.Api.PodcastView
                      |> JaSerializer.format(podcast, conn, include: includes)
-                     |> Poison.encode!()
+                     |> Jason.encode!()
 
       conn
       |> add_etag_header(podcast_json)
