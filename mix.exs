@@ -39,7 +39,7 @@ defmodule Pan.Mixfile do
      {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
      {:gettext, "~> 0.9"}, # i18n and l10n
      {:plug_cowboy, "~> 2.0"}, # web server plug
-     {:plug, "~> 1.7.1"}, # connection adapters
+     {:plug, "~> 1.8"}, # connection adapters
      {:bcrypt_elixir, "~> 2.0"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.4"}, # time conversion
@@ -51,7 +51,7 @@ defmodule Pan.Mixfile do
      {:html_sanitize_ex, "~> 1.3"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "~> 2.0"}, # pagination
      {:scrivener_html, "~> 1.7"}, # pagination view helper
-     {:bamboo_smtp, "~> 1.6"}, # mailing smtp adapter,
+     {:bamboo_smtp, "~> 1.7"}, # mailing smtp adapter,
      {:bamboo, "~> 1.2"}, # mailing
      {:earmark, "~> 1.3"}, # Markdown parser
      {:timelier, "~> 0.9"}, # Cron like agent,
