@@ -33,7 +33,7 @@ defmodule Pan.Mixfile do
     [{:phoenix, "~> 1.4", override: true}, # web framework
      {:phoenix_pubsub, "~> 1.1"}, # PubSub messaging
      {:postgrex, "~> 0.14"}, # database adapter
-     {:ecto_sql, "~> 3.0"}, # ecto sql adapter
+     {:ecto_sql, "~> 3.1"}, # ecto sql adapter
      {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
      {:phoenix_html, "~> 2.1"}, # view layer
      {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
@@ -55,7 +55,7 @@ defmodule Pan.Mixfile do
      {:bamboo, "~> 1.2"}, # mailing
      {:earmark, "~> 1.3"}, # Markdown parser
      {:timelier, "~> 0.9"}, # Cron like agent,
-     {:tzdata, "~> 0.5"}, # Timezone information
+     {:tzdata, "~> 1.0"}, # Timezone information
      {:tirexs, "~> 0.8"}, # elasticsearch connector
      {:credo, "~> 1.0", only: [:dev, :test]}, # Code analysis
      {:floki, "~> 0.2"}, # HTML parser
