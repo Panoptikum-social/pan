@@ -254,7 +254,8 @@ defmodule Pan.Parser.Analyzer do
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
     :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
-    :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG
+    :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG,
+    :"media:comments"
   ], do: %{}
 
 
