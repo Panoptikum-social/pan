@@ -180,7 +180,10 @@ defmodule Pan.Parser.Analyzer do
     :"audioboom:banner-image", :"pingback:receiver", :"googleplay:summary", :"pinecast:site",
     :"podcastRF:publicationChannel", :"spotify:countryOfOrigin", :"syn:updatePeriod", :"pp:media",
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
-    :"fs:self_link", :service, :"anchor:station", :"pcp:entries"
+    :"fs:self_link", :service, :"anchor:station", :"pcp:entries", :"podcastRF:replaySource",
+    :"podcastRF:firstBuildDate", :"podcastRF:lastBroadcastDate", :"podcastRF:nbKeepingDay",
+    :"podcastRF:broadcastKind"
+
   ], do: map
 
   def call(_, "episode", [tag_atom, _, _]) when tag_atom in [
@@ -256,7 +259,7 @@ defmodule Pan.Parser.Analyzer do
     :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
     :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG,
     :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium",
-    :"acast:settings" 
+    :"acast:settings"
   ], do: %{}
 
 
