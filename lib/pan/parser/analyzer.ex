@@ -182,7 +182,7 @@ defmodule Pan.Parser.Analyzer do
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
     :"fs:self_link", :service, :"anchor:station", :"pcp:entries", :"podcastRF:replaySource",
     :"podcastRF:firstBuildDate", :"podcastRF:lastBroadcastDate", :"podcastRF:nbKeepingDay",
-    :"podcastRF:broadcastKind"
+    :"podcastRF:broadcastKind", :"podcastRF:nbKeepingItem"
 
   ], do: map
 
