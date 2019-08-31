@@ -258,7 +258,7 @@ defmodule Pan.Parser.Analyzer do
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
     :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
     :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG,
-    :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium",
+    :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium", :"omny:clipId",
     :"acast:settings"
   ], do: %{}
 
