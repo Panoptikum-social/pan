@@ -182,7 +182,8 @@ defmodule Pan.Parser.Analyzer do
     :"syn:updateFrequency", :"syn:updateBase", :"acast:item", :"Genes-Taxonomy", :"anchor:support",
     :"fs:self_link", :service, :"anchor:station", :"pcp:entries", :"podcastRF:replaySource",
     :"podcastRF:firstBuildDate", :"podcastRF:lastBroadcastDate", :"podcastRF:nbKeepingDay",
-    :"podcastRF:broadcastKind", :"podcastRF:nbKeepingItem"
+    :"podcastRF:broadcastKind", :"podcastRF:nbKeepingItem", :"acast:showUrl", :"acast:signature",
+    :"acast:network", :"acast:settings"
 
   ], do: map
 
@@ -257,7 +258,7 @@ defmodule Pan.Parser.Analyzer do
     :"usat:shortHeadline", :displaydate, :"pingback:receiver", :maxImgUrl, :"itunes:album",
     :"Subject-Taxonomy", :"Drugs-Taxonomy", :"Genes-Taxonomy", :"itunes:year", :"default:duration",
     :"podcastRF:publicationChannel", :"ard:sendereihe", :itunesExplicit, :"itunes:copyright",
-    :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG,
+    :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG, :download,
     :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium", :"omny:clipId",
     :"acast:settings"
   ], do: %{}
