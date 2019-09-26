@@ -44,15 +44,15 @@ defmodule Pan.Mixfile do
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.4"}, # time conversion
      {:httpoison, "~> 1.5"}, # http client
-     {:hackney, "~> 1.14"}, # erlang http client, had to increase version here
+     {:hackney, "~> 1.15"}, # erlang http client, had to increase version here
      {:distillery, "~> 2.0", runtime: false}, # release manager
      {:quinn, "~> 1.1"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
      {:html_sanitize_ex, "~> 1.3"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "~> 2.0"}, # pagination
      {:scrivener_html, "~> 1.7"}, # pagination view helper
-     {:bamboo_smtp, "~> 1.7"}, # mailing smtp adapter,
-     {:bamboo, "~> 1.2"}, # mailing
+     {:bamboo_smtp, "~> 2.0"}, # mailing smtp adapter,
+     {:bamboo, "~> 1.3"}, # mailing
      {:earmark, "~> 1.3"}, # Markdown parser
      {:timelier, "~> 0.9"}, # Cron like agent,
      {:tzdata, "~> 1.0"}, # Timezone information
@@ -62,7 +62,7 @@ defmodule Pan.Mixfile do
      {:erlware_commons, "~> 1.3"}, #reuseable Erlang components
      {:ja_serializer, "~> 0.15"}, #Jsonapi.org serializer
      {:p1_utils, "~> 1.0", manager: :rebar}, # dependency for iconv
-     {:iconv, "~> 1.0", manager: :rebar}, # Unicode converter
+     {:iconv, "~> 1.0.10", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.7"}, # Imagemagick wrapper
      {:exactor, "~> 2.2", warn_missing: false}, # Simplifies implementation of GenServer based processes
      {:jason, "~> 1.1"}, # Json generation,
