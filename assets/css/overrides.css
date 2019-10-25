@@ -92,5 +92,5 @@ input.drop[type=checkbox]:checked ~ li.drop { background-color: #333; }
 .panel-heading .panel-title { padding-left: 15px; }
 .panel-group-list .panel { margin-bottom: 1px; }
 
-.alert { padding: 5px;
+.alert { padding: 10px;
          transition: all .1s ease-in-out important!; }

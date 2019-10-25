@@ -57,8 +57,14 @@
 
     <%= if @user.pro_until do %>
       <div class="row">
-        <div class="alert alert-warning">
-          <h4>Unlock all pro features for one year pro for 12 EUR only!</h4>
+        <div class="alert <%= alert_class(@user) %>">
+          <%= if pro_days_left(@user) > 0 do %>
+            <b>Your pro account is running for <b><%= pro_days_left(@user) %></b> more days.</b>
+          <% else %>
+            <b>Your pro account has expired.</b>
+          <% end %>
+          <p text-align="center">Get access to all pro features for one more year for 12 EUR only!</p>
+          <br/>
 
           <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
                                    class: "btn btn-primary" %>
@@ -70,9 +76,8 @@
       <dl class="dl-horizontal">
         <dt>Pro account until</dt>
         <dd>
-          <%= Timex.format!(@user.pro_until, "{ISOdate}") %> &nbsp;
-          <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>,
-          that is <b><%= Timex.diff(@user.pro_until, Timex.now(), :days) %></b> days from now.
+          <%= Timex.format!(@user.pro_until, "{ISOdate}") %> 
+          <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
         </dd>
 
         <dt>Billing address</dt>

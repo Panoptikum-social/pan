@@ -12,6 +12,17 @@ defmodule PanWeb.UserFrontendView do
     user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
   end
 
+  def pro_days_left(user) do
+    Timex.diff(user.pro_until, Timex.now(), :days)
+  end
+
+  def alert_class(user) do
+    cond do 
+      pro_days_left(user) > 30 -> "alert-success"
+      pro_days_left(user) > 7 -> "alert-warning"
+      pro_days_left(user) < 7 -> "alert-danger"
+    end
+  end
 
   def disabled(user) do
     if user.pro_until == nil || compare(user.pro_until, utc_now()) == :lt do
