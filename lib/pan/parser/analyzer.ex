@@ -183,7 +183,7 @@ defmodule Pan.Parser.Analyzer do
     :"fs:self_link", :service, :"anchor:station", :"pcp:entries", :"podcastRF:replaySource",
     :"podcastRF:firstBuildDate", :"podcastRF:lastBroadcastDate", :"podcastRF:nbKeepingDay",
     :"podcastRF:broadcastKind", :"podcastRF:nbKeepingItem", :"acast:showUrl", :"acast:signature",
-    :"acast:network", :"acast:settings"
+    :"acast:network", :"acast:settings", :"podaccess:showInfo"
 
   ], do: map
 
