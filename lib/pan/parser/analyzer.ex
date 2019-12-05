@@ -312,6 +312,7 @@ defmodule Pan.Parser.Analyzer do
   def call("category", [:"itunes:category", attr, value], parent_title) do
     parse(%{categories: %{uuid1() => %{title: attr[:text], parent: parent_title}}}, "category", value, attr[:text])
   end
+
   def call("category", [:"itunes:Subcategory", _, _], _), do: %{}
 
 # Episodes
