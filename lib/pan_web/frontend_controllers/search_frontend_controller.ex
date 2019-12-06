@@ -20,8 +20,8 @@ defmodule PanWeb.SearchFrontendController do
                    fuzziness: 2,
                    boost_mode: "multiply",
                    functions: [
-                     %{filter: [term: [_type: "categories"]], weight: 5},
-                     %{filter: [term: [_type: "podcasts"]], weight: 4},
+                     %{filter: [term: [_type: "categories"]], weight: 20},
+                     %{filter: [term: [_type: "podcasts"]], weight: 10},
                      %{filter: [term: [_type: "personas"]], weight: 3},
                      %{filter: [term: [_type: "episodes"]], weight: 2},
                      %{filter: [term: [_type: "users"]], weight: 1}]]]]]
