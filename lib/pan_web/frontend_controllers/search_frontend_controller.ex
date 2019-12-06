@@ -17,7 +17,6 @@ defmodule PanWeb.SearchFrontendController do
                query: [
                  function_score: [
                    query: [match: [_all: [query: params["search"]["searchstring"]]]],
-                   fuzziness: 2,
                    boost_mode: "multiply",
                    functions: [
                      %{filter: [term: [_type: "categories"]], weight: 20},
