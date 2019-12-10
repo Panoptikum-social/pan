@@ -185,6 +185,7 @@ defmodule Pan.Parser.Helpers do
   def fix_timezones(datetime) do
     datetime
     |> String.replace(" 0000", " +0000")
+    |> String.replace("BRT",   "-0300")
     |> String.replace("AEST",  "+1000")
     |> String.replace("CEST",  "+0200")
     |> String.replace("AEDT",  "+1100")

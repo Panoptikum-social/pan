@@ -15,6 +15,7 @@ defmodule PanWeb.SearchFrontendController do
     query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment),
              search: [size: size, from: from,
                query: [
+                 fuzziness: 2,
                  function_score: [
                    query: [match: [_all: [query: params["search"]["searchstring"]]]],
                    boost_mode: "multiply",
