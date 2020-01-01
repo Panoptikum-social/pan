@@ -1,21 +1,4 @@
 # See http://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
 #
 User-agent: *
-Disallow: /users/
-Disallow: /users
-Disallow: /search
-
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: dotbot
-Disallow: /
-
-User-agent: YandexBot
-Disallow: /
-
-User-agent: SemrushBot
 Disallow: /
