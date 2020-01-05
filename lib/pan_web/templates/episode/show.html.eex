@@ -2,6 +2,11 @@
 
 <div class="pull-right">
   <%= link "Edit", to: episode_path(@conn, :edit, @episode), class: "btn btn-warning" %>
+
+  <%= link "Delete", to: episode_path(@conn, :delete, @episode),
+                     method: :delete,
+                     data: [confirm: "Are you sure?"],
+                     class: "btn btn-danger" %>
 </div>
 
 <dl class="dl-horizontal">
