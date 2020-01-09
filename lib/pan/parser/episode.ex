@@ -40,6 +40,9 @@ defmodule Pan.Parser.Episode do
       nil ->
         insert(episode_map, podcast_id)
       episode ->
+        ### Here is place to remove info from episodes, that is no longer in the feed
+        episode_map = Map.put_new(episode_map, :image_url, nil)
+
         episode
         |> PanWeb.Episode.changeset(episode_map)
         |> Repo.update([force: true]) # forces timestamp to update

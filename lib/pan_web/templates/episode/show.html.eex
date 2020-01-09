@@ -34,6 +34,9 @@
   <dt>Image</dt>
   <dd><a href="<%= @episode.image_url %>"><%= @episode.image_title %></a></dd>
 
+  <dt>Image Url</dt>
+  <dd><%= @episode.image_url %></dd>
+
   <dt>Deep link</dt>
   <dd><%= @episode.deep_link %></dd>
 
