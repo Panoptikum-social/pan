@@ -33,14 +33,14 @@ defmodule Pan.Mixfile do
     [{:phoenix, "~> 1.4", override: true}, # web framework
      {:phoenix_pubsub, "~> 1.1"}, # PubSub messaging
      {:postgrex, "~> 0.14"}, # database adapter
-     {:ecto_sql, "~> 3.1"}, # ecto sql adapter
+     {:ecto_sql, "~> 3.3"}, # ecto sql adapter
      {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
      {:phoenix_html, "~> 2.1"}, # view layer
      {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
-     {:gettext, "~> 0.9"}, # i18n and l10n
+     {:gettext, "~> 0.17"}, # i18n and l10n
      {:plug_cowboy, "~> 2.0"}, # web server plug
      {:plug, "~> 1.8"}, # connection adapters
-     {:bcrypt_elixir, "~> 2.0"}, # algorithm used for comeonin
+     {:bcrypt_elixir, "~> 2.1"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.4"}, # time conversion
      {:httpoison, "~> 1.5"}, # http client
@@ -48,20 +48,20 @@ defmodule Pan.Mixfile do
      {:distillery, "~> 2.0", runtime: false}, # release manager
      {:quinn, "~> 1.1"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
-     {:html_sanitize_ex, "~> 1.3"}, # sanitizing html input (shownotes)
+     {:html_sanitize_ex, "~> 1.4"}, # sanitizing html input (shownotes)
      {:scrivener_ecto, "~> 2.0"}, # pagination
      {:scrivener_html, "~> 1.7"}, # pagination view helper
-     {:bamboo_smtp, "~> 2.0"}, # mailing smtp adapter,
-     {:bamboo, "~> 1.3"}, # mailing
-     {:earmark, "~> 1.3"}, # Markdown parser
+     {:bamboo_smtp, "~> 2.1"}, # mailing smtp adapter,
+     {:bamboo, "~> 1.4"}, # mailing
+     {:earmark, "~> 1.4"}, # Markdown parser
      {:timelier, "~> 0.9"}, # Cron like agent,
      {:tzdata, "~> 1.0"}, # Timezone information
      {:tirexs, "~> 0.8"}, # elasticsearch connector
-     {:credo, "~> 1.0", only: [:dev, :test]}, # Code analysis
-     {:floki, "~> 0.2"}, # HTML parser
+     {:credo, "~> 1.2", only: [:dev, :test]}, # Code analysis
+     {:floki, "~> 0.25"}, # HTML parser
      {:erlware_commons, "~> 1.3"}, #reuseable Erlang components
      {:ja_serializer, "~> 0.15"}, #Jsonapi.org serializer
-     {:p1_utils, "~> 1.0", manager: :rebar}, # dependency for iconv
+     {:p1_utils, "~> 1.0.13"}, # dependency for iconv
      {:iconv, "~> 1.0.10", manager: :rebar}, # Unicode converter
      {:mogrify, "~> 0.7"}, # Imagemagick wrapper
      {:exactor, "~> 2.2", warn_missing: false}, # Simplifies implementation of GenServer based processes
