@@ -33,7 +33,7 @@ defmodule Pan.Mixfile do
     [{:phoenix, "~> 1.4", override: true}, # web framework
      {:phoenix_pubsub, "~> 1.1"}, # PubSub messaging
      {:postgrex, "~> 0.14"}, # database adapter
-     {:ecto_sql, "~> 3.3"}, # ecto sql adapter
+     {:ecto_sql, "~> 3.3"}, # ecto sql adapter 
      {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
      {:phoenix_html, "~> 2.1"}, # view layer
      {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
@@ -49,7 +49,7 @@ defmodule Pan.Mixfile do
      {:quinn, "~> 1.1"}, # XML parser (another one)
      {:uuid, "~> 1.1"}, # UUID creation
      {:html_sanitize_ex, "~> 1.4"}, # sanitizing html input (shownotes)
-     {:scrivener_ecto, "~> 2.0"}, # pagination
+     {:scrivener_ecto, "~> 2.3"}, # pagination
      {:scrivener_html, "~> 1.7"}, # pagination view helper
      {:bamboo_smtp, "~> 2.1"}, # mailing smtp adapter,
      {:bamboo, "~> 1.4"}, # mailing
