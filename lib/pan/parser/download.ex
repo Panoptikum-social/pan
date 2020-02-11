@@ -110,10 +110,10 @@ defmodule Pan.Parser.Download do
 
     options = case option do
       "unset_tls_version" ->
-        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure],
+        [recv_timeout: 10_000, timeout: 10_000, hackney: [:insecure],
          ssl: [{:versions, [:'tlsv1.2']}]]
       _ ->
-        [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
+        [recv_timeout: 10_000, timeout: 10_000, hackney: [:insecure]]
     end
     HTTPoison.get(url, headers, options)
   end
