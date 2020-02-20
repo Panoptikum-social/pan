@@ -197,7 +197,7 @@ defmodule PanWeb.Persona do
                                       limit: 250)
                   |> Repo.all()
 
-    personas = (from p in Persona, where: p.id in ^ persona_ids)
+    personas = (from p in Persona, where: p.id in ^persona_ids)
                |> Repo.all()
 
     for persona <- personas, do: Persona.cache_thumbnail_image(persona)
