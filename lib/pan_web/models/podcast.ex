@@ -390,8 +390,8 @@ defmodule PanWeb.Podcast do
 
 
   def cache_missing_thumbnail_images() do
-    podcast_ids = (from e in Podcast, where: is_nil(e.thumbnailed)
-                                             and not is_nil(e.image_url),
+    podcast_ids = (from p in Podcast, where: is_nil(p.thumbnailed)
+                                             and not is_nil(p.image_url),
                                       limit: 250,
                                       select: e.id)
     |> Repo.all()

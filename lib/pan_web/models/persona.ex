@@ -194,7 +194,8 @@ defmodule PanWeb.Persona do
   def cache_missing_thumbnail_images() do
     persona_ids = (from p in Persona, where: is_nil(p.thumbnailed)
                                              and not is_nil(p.image_url),
-                                      limit: 250)
+                                      limit: 250,
+                                      select: p.id)
                   |> Repo.all()
 
     personas = (from p in Persona, where: p.id in ^persona_ids)
