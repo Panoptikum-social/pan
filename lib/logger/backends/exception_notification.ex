@@ -6,9 +6,10 @@ defmodule Logger.Backends.ExceptionNotification do
   def init(args), do: {:ok, args}
 
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do
-    Logger.debug(message)
-    Logger.debug(timestamp)
-    Logger.debug(metadata)
+    Logger.info(message)
+    Logger.info(timestamp)
+    Logger.info(metadata)
+    Logger.info(level)
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
                                                "Warning: unrecognised name",
                                                ":whitespace_required_between_attributes",
