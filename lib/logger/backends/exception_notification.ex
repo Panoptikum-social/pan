@@ -9,7 +9,6 @@ defmodule Logger.Backends.ExceptionNotification do
     Logger.info(message)
     Logger.info(timestamp)
     Logger.info(metadata)
-    Logger.info(level)
     unless String.contains?(inspect(message), ["Fatal error: handshake failure",
                                                "Warning: unrecognised name",
                                                ":whitespace_required_between_attributes",
