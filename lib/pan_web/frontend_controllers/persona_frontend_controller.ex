@@ -54,8 +54,7 @@ defmodule PanWeb.PersonaFrontendController do
   end
 
 
-  def show(conn, params, _user) do
-    id = String.to_integer(params["id"])
+  def show(conn, %{"id" => id}, _user) do
     persona = Repo.get!(Persona, id)
 
     case persona.redirect_id do
