@@ -1,6 +1,10 @@
 defmodule PanWeb.ErrorView do
   use Pan.Web, :view
 
+  def render("400.html", assigns) do
+    render("not_found.html", assigns)
+  end
+
   def render("404.html", assigns) do
     render("not_found.html", assigns)
   end
