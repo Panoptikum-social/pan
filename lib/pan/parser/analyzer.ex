@@ -364,6 +364,7 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
   def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: scrub(value)}
+  def call(_, "episode", [:"content:encoded", _, [value | _]]), do: %{shownotes: scrub(value)}
   def call(_, "episode", [:content, _, []]), do: %{}
   def call(_, "episode", [:content, _, [value]]), do: %{shownotes: scrub(value)}
   def call(_, "episode", [:shownotes, _, []]), do: %{}
