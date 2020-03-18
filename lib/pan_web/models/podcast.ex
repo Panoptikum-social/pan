@@ -126,9 +126,10 @@ defmodule PanWeb.Podcast do
   def latest do
     from(p in Podcast, order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
                        where: is_false(p.blocked),
-                       join: e in assoc(p, :engagements),
-                       where: e.role == "author",
-                       join: persona in assoc(e, :persona),
+                       left_join: e in assoc(p, :engagements),
+#                       where: e.role == "author",
+# we want to see podcasts here, even if they have no author                  
+                       left_join: persona in assoc(e, :persona),
                        select: %{id: p.id,
                                  title: p.title,
                                  inserted_at: p.inserted_at,
