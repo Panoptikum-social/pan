@@ -261,7 +261,7 @@ defmodule Pan.Parser.Analyzer do
     :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG, :download,
     :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium", :"omny:clipId",
     :"acast:settings", :imageSource, :"cba:teaser", :featuredthumbnail, :featuredImage, :licence,
-    :toothashtag, :tootimage, :tootwith
+    :toothashtag, :tootimage, :tootwith, :"podcastproduzenten:rellink"
   ], do: %{}
 
 
