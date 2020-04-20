@@ -70,7 +70,7 @@ defmodule PanWeb.PodcastController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     podcasts = from(p in query, limit: ^limit,
                                 offset: ^offset,
@@ -126,7 +126,7 @@ defmodule PanWeb.PodcastController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     podcasts = from(p in query, join: f in assoc(p, :feeds),
                                 limit: ^limit,

@@ -57,14 +57,14 @@ defmodule PanWeb.Category do
 
   def likes(id) do
     from(l in Like, where: l.category_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
 
   def follows(id) do
     from(l in Follow, where: l.category_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 

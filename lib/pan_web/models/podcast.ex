@@ -300,16 +300,16 @@ defmodule PanWeb.Podcast do
     podcast_id = podcast_changeset.data.id
 
     episodes_count = where(Episode, podcast_id: ^podcast_id)
-                     |> Repo.aggregate(:count, :id)
+                     |> Repo.aggregate(:count)
 
     likes_count = where(Like, podcast_id: ^podcast_id)
-                  |> Repo.aggregate(:count, :id)
+                  |> Repo.aggregate(:count)
 
     followers_count = where(Follow, podcast_id: ^podcast_id)
-                      |> Repo.aggregate(:count, :id)
+                      |> Repo.aggregate(:count)
 
     subscriptions_count = where(Subscription, podcast_id: ^podcast_id)
-                          |> Repo.aggregate(:count, :id)
+                          |> Repo.aggregate(:count)
 
     episode_publishing_dates = from(e in Episode, where: e.podcast_id == ^podcast_id,
                                                   select: [e.publishing_date, e.inserted_at])
@@ -359,7 +359,7 @@ defmodule PanWeb.Podcast do
 
   def update_likes_count(id) do
     likes_count = from(l in Like, where: l.podcast_id == ^id)
-                  |> Repo.aggregate(:count, :id)
+                  |> Repo.aggregate(:count)
 
     Repo.get!(Podcast, id)
     |> PanWeb.Podcast.changeset()
@@ -370,7 +370,7 @@ defmodule PanWeb.Podcast do
 
   def update_followers_count(id) do
     followers_count = from(f in Follow, where: f.podcast_id == ^id)
-                      |> Repo.aggregate(:count, :id)
+                      |> Repo.aggregate(:count)
 
     Repo.get!(Podcast, id)
     |> PanWeb.Podcast.changeset()
@@ -381,7 +381,7 @@ defmodule PanWeb.Podcast do
 
   def update_subscriptions_count(id) do
     subscriptions_count = from(s in Subscription, where: s.podcast_id == ^id)
-                          |> Repo.aggregate(:count, :id)
+                          |> Repo.aggregate(:count)
 
     Repo.get!(Podcast, id)
     |> PanWeb.Podcast.changeset()

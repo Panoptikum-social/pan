@@ -16,7 +16,7 @@ defmodule PanWeb.Api.EpisodeController do
     total = from(e in Episode, join: p in assoc(e, :podcast),
                                where: is_false(p.blocked) and
                                       e.publishing_date < ^NaiveDateTime.utc_now())
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn

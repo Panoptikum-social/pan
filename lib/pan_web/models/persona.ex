@@ -105,14 +105,14 @@ defmodule PanWeb.Persona do
 
   def likes(id) do
     from(l in Like, where: l.persona_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
 
   def follows(id) do
     from(f in Follow, where: f.persona_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 

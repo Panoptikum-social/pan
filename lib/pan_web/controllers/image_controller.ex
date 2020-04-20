@@ -34,7 +34,7 @@ defmodule PanWeb.ImageController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     images = from(i in query, limit: ^limit,
                                 offset: ^offset,

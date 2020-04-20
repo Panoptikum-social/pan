@@ -53,7 +53,7 @@ defmodule PanWeb.Api.MessageController do
                       (m.topic == "users"     and m.subtopic in ^subscribed_user_ids) or
                       (m.topic == "podcasts"  and m.subtopic in ^subscribed_podcast_ids) or
                       (m.topic == "category"  and m.subtopic in ^subscribed_category_ids))
-               |> Repo.aggregate(:count, :id)
+               |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn

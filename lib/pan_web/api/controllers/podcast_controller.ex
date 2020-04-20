@@ -21,7 +21,7 @@ defmodule PanWeb.Api.PodcastController do
     offset = (page - 1) * size
 
     total = from(p in Podcast, where: is_false(p.blocked))
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn
@@ -52,7 +52,7 @@ defmodule PanWeb.Api.PodcastController do
     offset = (page - 1) * size
 
     total = from(e in PanWeb.Episode, where: e.podcast_id == ^id)
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn
@@ -147,7 +147,7 @@ defmodule PanWeb.Api.PodcastController do
     total = from(p in Podcast, where: is_false(p.blocked) and
                                       not is_nil(p.latest_episode_publishing_date) and
                                       p.latest_episode_publishing_date < ^NaiveDateTime.utc_now())
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn
