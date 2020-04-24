@@ -39,7 +39,7 @@ defmodule PanWeb.GigController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     gigs = from(g in query, limit: ^limit,
                             offset: ^offset,

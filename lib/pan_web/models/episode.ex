@@ -58,7 +58,7 @@ defmodule PanWeb.Episode do
 
   def likes(id) do
     from(l in Like, where: l.episode_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 

@@ -54,7 +54,7 @@ defmodule PanWeb.Api.PersonaController do
     offset = (page - 1) * size
 
     total = from(g in PanWeb.Gig, where: g.persona_id == ^id)
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn

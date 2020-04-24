@@ -185,24 +185,24 @@ defmodule PanWeb.User do
 
   def likes(id) do
     from(l in Like, where: l.user_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
 
   def follows(id) do
     from(f in Follow, where: f.user_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
 
   def popularity(id) do
     followers = from(f in Follow, where: f.user_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
 
     likes = from(l in Like, where: l.user_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
 
     Integer.to_string(followers + likes)
   end

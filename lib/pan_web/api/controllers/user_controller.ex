@@ -19,7 +19,7 @@ defmodule PanWeb.Api.UserController do
     offset = (page - 1) * size
 
     total = from(u in User, where: is_false(u.admin))
-            |> Repo.aggregate(:count, :id)
+            |> Repo.aggregate(:count)
     total_pages = div(total - 1, size) + 1
 
     links = conn

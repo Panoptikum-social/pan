@@ -39,7 +39,7 @@ defmodule PanWeb.FeedController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     feeds = from(f in query, limit: ^limit,
                              offset: ^offset,

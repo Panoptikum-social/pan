@@ -37,7 +37,7 @@ defmodule PanWeb.PersonaController do
       end
 
     records_filtered = query
-                       |> Repo.aggregate(:count, :id)
+                       |> Repo.aggregate(:count)
 
     personas = from(p in query, limit: ^limit,
                                 offset: ^offset,

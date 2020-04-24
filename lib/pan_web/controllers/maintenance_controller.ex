@@ -95,16 +95,16 @@ defmodule PanWeb.MaintenanceController do
       from(p in Podcast, where: p.next_update <= ^Timex.now() and
                                 is_false(p.update_paused) and
                                 is_false(p.retired))
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
       |> delimit_integer(" ")
 
     inactive_podcasts =
       from(p in Podcast, where: p.update_paused == true and is_false(p.retired))
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     retired_podcasts =
       from(p in Podcast, where: p.retired == true)
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     average_update_intervall =
       from(p in Podcast, where: is_false(p.update_paused) and is_false(p.retired))
@@ -115,20 +115,20 @@ defmodule PanWeb.MaintenanceController do
                      |> delimit_integer(" ")
 
     feeds_without_headers = from(f in Feed, where: f.no_headers_available == ^true)
-                            |> Repo.aggregate(:count, :id)
+                            |> Repo.aggregate(:count)
 
     feeds_with_etag = from(f in Feed, where: not is_nil(f.etag))
-                      |> Repo.aggregate(:count, :id)
+                      |> Repo.aggregate(:count)
 
     feeds_with_last_modified = from(f in Feed, where: not is_nil(f.last_modified))
-                      |> Repo.aggregate(:count, :id)
+                      |> Repo.aggregate(:count)
 
 
     total_episodes = Repo.aggregate(Podcast, :sum, :episodes_count)
                      |> delimit_integer(" ")
 
     unindexed_episodes = from(e in Episode, where: is_false(e.elastic))
-                         |> Repo.aggregate(:count, :id)
+                         |> Repo.aggregate(:count)
                          |> delimit_integer(" ")
 
     podcasts_per_hour = Repo.aggregate(Podcast, :count, :id) - inactive_podcasts
@@ -159,20 +159,20 @@ defmodule PanWeb.MaintenanceController do
 
     episodes_without_image =
       (from e in Episode, where: is_nil(e.thumbnailed) and not is_nil(e.image_url))
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     podcasts_without_image =
       (from p in Podcast, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     podcasts_with_zero_publication_frequency =
       (from p in Podcast, where: p.publication_frequency == 0.0 and
                                  p.episodes_count > 1)
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     personas_without_image =
       (from p in Persona, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
-      |> Repo.aggregate(:count, :id)
+      |> Repo.aggregate(:count)
 
     render(conn, "stats.html", stale_podcasts: stale_podcasts,
                                inactive_podcasts: inactive_podcasts,

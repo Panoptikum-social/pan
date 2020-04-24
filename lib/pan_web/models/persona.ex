@@ -40,7 +40,8 @@ defmodule PanWeb.Persona do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:pid, :name, :uri, :email, :description, :image_url, :image_title,
-                     :redirect_id, :long_description, :user_id, :elastic, :thumbnailed])
+                     :redirect_id, :long_description, :user_id, :elastic, :thumbnailed, 
+                     :fediverse_address])
     |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
   end
@@ -104,14 +105,14 @@ defmodule PanWeb.Persona do
 
   def likes(id) do
     from(l in Like, where: l.persona_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
 
   def follows(id) do
     from(f in Follow, where: f.persona_id == ^id)
-    |> Repo.aggregate(:count, :id)
+    |> Repo.aggregate(:count)
     |> Integer.to_string
   end
 
