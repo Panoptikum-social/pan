@@ -183,7 +183,7 @@ defmodule Pan.Parser.Analyzer do
     :"fs:self_link", :service, :"anchor:station", :"pcp:entries", :"podcastRF:replaySource",
     :"podcastRF:firstBuildDate", :"podcastRF:lastBroadcastDate", :"podcastRF:nbKeepingDay",
     :"podcastRF:broadcastKind", :"podcastRF:nbKeepingItem", :"acast:showUrl", :"acast:signature",
-    :"acast:network", :"acast:settings", :"podaccess:showInfo"
+    :"acast:network", :"acast:settings", :"podaccess:showInfo", :"npo:mid"
 
   ], do: map
 
@@ -261,7 +261,7 @@ defmodule Pan.Parser.Analyzer do
     :publication, :itunes_explicit, :itunes_keywords, :"acast:episodeUrl", :featuredIMG, :download,
     :"media:comments", :author_picture, :"castbox:tid", :"castbox:episode_premium", :"omny:clipId",
     :"acast:settings", :imageSource, :"cba:teaser", :featuredthumbnail, :featuredImage, :licence,
-    :toothashtag, :tootimage, :tootwith, :"podcastproduzenten:rellink"
+    :toothashtag, :tootimage, :tootwith, :"podcastproduzenten:rellink", :"npo:mid"
   ], do: %{}
 
 
