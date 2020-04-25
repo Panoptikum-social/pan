@@ -26,7 +26,11 @@
             <%= if @podcast.website do %>
               <dt><label class="label label-danger">Website</label></dt>
               <dd>
-                <%= link @podcast.website, to: @podcast.website, class: "truncate" %>
+                <%= try do 
+                      link @podcast.website, to: @podcast.website, class: "truncate"
+                    rescue 
+                      _ -> @podcast.website
+                    end %>
               </dd>
             <% end %>
 
