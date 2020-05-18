@@ -115,7 +115,7 @@ defmodule Pan.Parser.Download do
       _ ->
         [recv_timeout: 10_000, timeout: 10_000, hackney: [:insecure],
         #HAS20200518 removed sslv3 for tlsv1.3
-        ssl: [{:versions, [:'tlsv1.3', :'tlsv1.2', :'tlsv1.1', :tlsv1]}]]
+        ssl: [{:versions, [:'tlsv1.2', :'tlsv1.1', :tlsv1]}]]
     end
     HTTPoison.get(url, headers, options)
   end
