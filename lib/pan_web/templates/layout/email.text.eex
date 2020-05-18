@@ -1,5 +1,5 @@
 Hello!
 
-<%= render @view_module, @view_template, assigns %>
+<%= @inner_content %>
 
-- The MyApp Team.
+- The Panoptikum.io Team.

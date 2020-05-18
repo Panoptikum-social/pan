@@ -30,8 +30,8 @@ defmodule Pan.Mixfile do
   defp elixirc_paths(_),     do: ["lib"]
 
   defp deps do
-    [{:phoenix, "~> 1.4", override: true}, # web framework
-     {:phoenix_pubsub, "~> 1.1"}, # PubSub messaging
+    [{:phoenix, "~> 1.5.1", override: true}, # web framework
+     {:phoenix_pubsub, "~> 2.0"}, # PubSub messaging
      {:postgrex, "~> 0.14"}, # database adapter
      {:ecto_sql, "~> 3.3"}, # ecto sql adapter 
      {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
@@ -43,7 +43,7 @@ defmodule Pan.Mixfile do
      {:bcrypt_elixir, "~> 2.1"}, # algorithm used for comeonin
      {:sweet_xml, "~> 0.6"}, # XML parser
      {:timex, "~> 3.4"}, # time conversion
-     {:httpoison, "~> 1.5"}, # http client
+     {:httpoison, "~> 1.6"}, # http client
      {:hackney, "~> 1.15"}, # erlang http client, had to increase version here
      {:distillery, "~> 2.0", runtime: false}, # release manager
      {:quinn, "~> 1.1"}, # XML parser (another one)

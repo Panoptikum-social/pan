@@ -32,7 +32,7 @@
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
 
       <main role="main" class="container-fluid">
-        <%= render @view_module, @view_template, assigns %>
+        <%= @inner_content %>
       </main>
     </div>
   </body>

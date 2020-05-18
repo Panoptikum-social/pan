@@ -5,8 +5,7 @@ config :pan, PanWeb.Endpoint,
   root: Path.dirname(__DIR__),
   secret_key_base: "p+SVheqFHkj2Z89dxUo/PoRR696q9G+mY9IPIbpm1bBHL1BJOawyku/GKnhT6RAs",
   render_errors: [accepts: ~w(html json)],
-  pubsub: [name: Pan.PubSub,
-           adapter: Phoenix.PubSub.PG2],
+  pubsub_server: Pan.PubSub,
   http: [compress: true]
 
 config :pan, ecto_repos: [Pan.Repo]

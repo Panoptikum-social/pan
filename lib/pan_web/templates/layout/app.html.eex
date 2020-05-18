@@ -35,7 +35,7 @@
     <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
 
     <main role="main" class="container">
-      <%= render @view_module, @view_template, assigns %>
+      <%= @inner_content %>
     </main>
 
     <%= render "_footer.html", conn: @conn, current_user: @current_user %>

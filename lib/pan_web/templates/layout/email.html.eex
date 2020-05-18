@@ -6,7 +6,7 @@
   </head>
   <body>
     <p>Hello!</p>
-    <%= render @view_module, @view_template, assigns %>
+    <%= @inner_content %>
     <p>- The Panoptikum Team.</p>
   </body>
 </html>
