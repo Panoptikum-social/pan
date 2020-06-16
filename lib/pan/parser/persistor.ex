@@ -80,7 +80,7 @@ defmodule Pan.Parser.Persistor do
 
     {:ok, feed} = Feed.get_by_podcast_id(podcast.id)
     if feed.self_link_url != feed_map[:self_link_url] do
-      Feed.update_with_redirect_target(feed.id, feed_map[:self_link_url])
+      Feed.update_with_redirect_target(podcast.id, feed_map[:self_link_url])
     end
 
     Category.persist_many(map[:categories], podcast)
