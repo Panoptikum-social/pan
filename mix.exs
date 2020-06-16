@@ -33,7 +33,7 @@ defmodule Pan.Mixfile do
     [{:phoenix, "~> 1.5.1", override: true}, # web framework
      {:phoenix_pubsub, "~> 2.0"}, # PubSub messaging
      {:postgrex, "~> 0.14"}, # database adapter
-     {:ecto_sql, "~> 3.3"}, # ecto sql adapter 
+     {:ecto_sql, "~> 3.3"}, # ecto sql adapter
      {:phoenix_ecto, "~> 4.0"}, # phoenix support for ecto
      {:phoenix_html, "~> 2.1"}, # view layer
      {:phoenix_live_reload, "~> 1.2", only: :dev}, # live browser page reload on code changes
@@ -62,7 +62,7 @@ defmodule Pan.Mixfile do
      {:erlware_commons, "~> 1.3"}, #reuseable Erlang components
      {:ja_serializer, "~> 0.15"}, #Jsonapi.org serializer
      {:p1_utils, "~> 1.0.13"}, # dependency for iconv
-     {:iconv, "~> 1.0.10", manager: :rebar}, # Unicode converter
+     {:iconv, "~> 1.0.10", git: "https://github.com/processone/iconv"}, # Unicode converter
      {:mogrify, "~> 0.7"}, # Imagemagick wrapper
      {:exactor, "~> 2.2", warn_missing: false}, # Simplifies implementation of GenServer based processes
      {:jason, "~> 1.1"}, # Json generation,
