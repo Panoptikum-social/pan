@@ -49,7 +49,7 @@ defmodule PanWeb.SessionController do
         conn
         |> put_flash(:error, "The token has expired already!")
         |> render("new.html")
-      {:error, _reason, conn} ->
+      {:error, _reason} ->
         conn
         |> put_flash(:error, "Invalid token!")
         |> render("new.html")
