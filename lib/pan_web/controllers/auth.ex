@@ -68,7 +68,7 @@ defmodule PanWeb.Auth do
         {:error, :expired}
       {:error, :invalid} ->
         {:error, :invalid}
-      true ->
+      _ ->
         no_user_verify()
         {:error, :not_found, conn}
     end
@@ -83,7 +83,7 @@ defmodule PanWeb.Auth do
         {:error, :expired}
       {:error, :invalid} ->
         {:error, :invalid}
-      true ->
+      _ ->
         {:error, :invalid}
     end
   end

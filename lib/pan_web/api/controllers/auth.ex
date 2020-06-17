@@ -30,10 +30,6 @@ defmodule PanWeb.Api.Auth do
         conn
         |> assign(:current_user, nil)
         |> assign(:api_error, "token " <> Atom.to_string(error))
-      true ->
-        conn
-        |> assign(:current_user, nil)
-        |> assign(:api_error, "token error")
     end
   end
 

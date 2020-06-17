@@ -33,10 +33,9 @@ defmodule Pan.Parser.FeedBacklog do
     try do
       %HTTPoison.Response{body: feed_xml} = HTTPoison.get!(url, headers, options)
       feed_map = Quinn.parse(feed_xml)
-      Quinn.find(feed_map, [:channel, :generator]).value
-
       # import SweetXml
       # xpath(feed_xml, ~x"//channel/generator/text()"s)
+      Quinn.find(feed_map, [:channel, :generator]).value
     catch
       :exit, _ ->  nil
       :timeout, _ -> nil
