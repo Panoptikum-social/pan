@@ -9,9 +9,13 @@ defmodule Pan.LikeTest do
   test "changeset with valid attributes" do
     enjoyer = insert_user()
     podcast = insert_podcast()
-    changeset = Like.changeset(%Like{},
-                               Map.merge(@valid_attrs, %{enjoyer_id: enjoyer.id,
-                                                         podcast_id: podcast.id}))
+
+    changeset =
+      Like.changeset(
+        %Like{},
+        Map.merge(@valid_attrs, %{enjoyer_id: enjoyer.id, podcast_id: podcast.id})
+      )
+
     assert changeset.valid?
   end
 

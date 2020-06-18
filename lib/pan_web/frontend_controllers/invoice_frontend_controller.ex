@@ -2,14 +2,12 @@ defmodule PanWeb.InvoiceFrontendController do
   use Pan.Web, :controller
   alias PanWeb.Invoice
 
-
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-
   def download(conn, %{"id" => id}, user) do
-    case Repo.one(from i in Invoice, where: i.id == ^id and i.user_id == ^user.id) do
+    case Repo.one(from(i in Invoice, where: i.id == ^id and i.user_id == ^user.id)) do
       nil ->
         conn
         |> put_flash(:error, "This is not a valid invoice for you")

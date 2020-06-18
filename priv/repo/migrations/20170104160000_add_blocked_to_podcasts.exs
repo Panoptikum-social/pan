@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddBlockedToPodcasts do
 
   def change do
     alter table(:podcasts) do
-      add :blocked, :boolean
+      add(:blocked, :boolean)
     end
   end
 end

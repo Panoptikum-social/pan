@@ -4,10 +4,10 @@ defmodule PanWeb.Api.FeedBacklogView do
 
   def type(_, _), do: "feed_backlog"
 
-  location :location
-  attributes [:orig_url, :feed_generator, :in_progress]
+  location(:location)
+  attributes([:orig_url, :feed_generator, :in_progress])
 
-  has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
+  has_one(:user, serializer: PanWeb.Api.PlainUserView, include: false)
 
   def orig_url(feed_backlog) do
     feed_backlog.url

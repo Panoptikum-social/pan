@@ -3,10 +3,12 @@ defmodule Pan.EnclosureTest do
 
   alias PanWeb.Enclosure
 
-  @valid_attrs %{guid: "https://panoptikum.io/path/enclosure.mp3",
-                 length: "123456789",
-                 type: "audio/mp4",
-                 url: "https://panoptikum.io/path/enclosure.mp3"}
+  @valid_attrs %{
+    guid: "https://panoptikum.io/path/enclosure.mp3",
+    length: "123456789",
+    type: "audio/mp4",
+    url: "https://panoptikum.io/path/enclosure.mp3"
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

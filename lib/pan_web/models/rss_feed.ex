@@ -2,12 +2,11 @@ defmodule PanWeb.RssFeed do
   use Pan.Web, :model
 
   schema "rss_feeds" do
-    field :content, :string
-    belongs_to :podcast, PanWeb.Podcast
+    field(:content, :string)
+    belongs_to(:podcast, PanWeb.Podcast)
 
     timestamps()
   end
-
 
   def changeset(struct, params \\ %{}) do
     struct

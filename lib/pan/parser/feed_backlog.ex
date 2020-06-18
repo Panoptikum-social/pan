@@ -3,10 +3,11 @@ defmodule Pan.Parser.FeedBacklog do
 
   def upload do
     stream = File.stream!("materials/backlog.xml", [:read, :utf8])
-    Enum.each stream, fn(url) ->
+
+    Enum.each(stream, fn url ->
       %PanWeb.FeedBacklog{url: url}
       |> Repo.insert()
-    end
+    end)
   end
 
   def delete_duplicates() do

@@ -3,8 +3,8 @@ defmodule Pan.Repo.Migrations.CreateLanguagesPodcasts do
 
   def change do
     create table(:languages_podcasts, primary_key: false) do
-      add :language_id, references(:languages)
-      add :podcast_id, references(:podcasts)
+      add(:language_id, references(:languages))
+      add(:podcast_id, references(:podcasts))
     end
   end
 end

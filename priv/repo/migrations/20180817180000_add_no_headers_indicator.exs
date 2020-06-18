@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddNoHeadersIndicator do
 
   def change do
     alter table(:feeds) do
-      add :no_headers_available, :boolean, default: false
+      add(:no_headers_available, :boolean, default: false)
     end
   end
 end

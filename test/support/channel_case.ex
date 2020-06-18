@@ -25,7 +25,6 @@ defmodule PanWeb.ChannelCase do
       import Ecto.Changeset
       import Ecto.Query
 
-
       # The default endpoint for testing
       @endpoint PanWeb.Endpoint
     end
@@ -41,4 +40,3 @@ defmodule PanWeb.ChannelCase do
     :ok
   end
 end
-

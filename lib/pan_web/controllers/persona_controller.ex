@@ -6,7 +6,6 @@ defmodule PanWeb.PersonaController do
     render(conn, "index.html")
   end
 
-
   def datatable(conn, params) do
     search = params["search"]["value"]
     searchfrag = "%#{params["search"]["value"]}%"
@@ -17,45 +16,53 @@ defmodule PanWeb.PersonaController do
 
     columns = params["columns"]
 
-    order_by = Enum.map(params["order"], fn({_key, value}) ->
-                 column_number = value["column"]
-                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
-               end)
+    order_by =
+      Enum.map(params["order"], fn {_key, value} ->
+        column_number = value["column"]
+        {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+      end)
 
     records_total = Repo.aggregate(Persona, :count, :id)
 
     query =
       if search != "" do
-        from(p in Persona, where: ilike(p.pid, ^searchfrag) or
-                                  ilike(p.name, ^searchfrag) or
-                                  ilike(p.uri, ^searchfrag) or
-                                  ilike(p.email, ^searchfrag) or
-                                  ilike(p.image_title, ^searchfrag) or
-                                  ilike(fragment("cast (? as text)", p.id), ^searchfrag))
+        from(p in Persona,
+          where:
+            ilike(p.pid, ^searchfrag) or
+              ilike(p.name, ^searchfrag) or
+              ilike(p.uri, ^searchfrag) or
+              ilike(p.email, ^searchfrag) or
+              ilike(p.image_title, ^searchfrag) or
+              ilike(fragment("cast (? as text)", p.id), ^searchfrag)
+        )
       else
         from(p in Persona)
       end
 
-    records_filtered = query
-                       |> Repo.aggregate(:count)
+    records_filtered =
+      query
+      |> Repo.aggregate(:count)
 
-    personas = from(p in query, limit: ^limit,
-                                offset: ^offset,
-                                order_by: ^order_by)
-               |> Repo.all()
+    personas =
+      from(p in query,
+        limit: ^limit,
+        offset: ^offset,
+        order_by: ^order_by
+      )
+      |> Repo.all()
 
-    render(conn, "datatable.json", personas: personas,
-                                   draw: draw,
-                                   records_total: records_total,
-                                   records_filtered: records_filtered)
+    render(conn, "datatable.json",
+      personas: personas,
+      draw: draw,
+      records_total: records_total,
+      records_filtered: records_filtered
+    )
   end
-
 
   def new(conn, _params) do
     changeset = Persona.changeset(%Persona{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"persona" => persona_params}) do
     changeset = Persona.changeset(%Persona{}, persona_params)
@@ -65,24 +72,22 @@ defmodule PanWeb.PersonaController do
         conn
         |> put_flash(:info, "Persona created successfully.")
         |> redirect(to: persona_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 
   def show(conn, %{"id" => id}) do
     persona = Repo.get!(Persona, id)
     render(conn, "show.html", persona: persona)
   end
 
-
   def edit(conn, %{"id" => id}) do
     persona = Repo.get!(Persona, id)
     changeset = Persona.changeset(persona)
     render(conn, "edit.html", persona: persona, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "persona" => persona_params}) do
     id = String.to_integer(id)
@@ -96,11 +101,11 @@ defmodule PanWeb.PersonaController do
         conn
         |> put_flash(:info, "Persona updated successfully.")
         |> redirect(to: persona_path(conn, :show, persona))
+
       {:error, changeset} ->
         render(conn, "edit.html", persona: persona, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}) do
     id = String.to_integer(id)
@@ -114,57 +119,71 @@ defmodule PanWeb.PersonaController do
     |> redirect(to: persona_path(conn, :index))
   end
 
-
   def merge_candidates(conn, _params) do
-    non_unique_names = from(p in Persona, group_by: p.name,
-                                          having: count(p.id) > 1,
-                                          select: {p.name, count(p.id)},
-                                          order_by: p.name)
-                       |> Repo.all()
+    non_unique_names =
+      from(p in Persona,
+        group_by: p.name,
+        having: count(p.id) > 1,
+        select: {p.name, count(p.id)},
+        order_by: p.name
+      )
+      |> Repo.all()
 
-    non_unique_emails = from(p in Persona, group_by: p.email,
-                                           having: count(p.id) > 1,
-                                           select: {p.email, count(p.id)},
-                                           order_by: p.email)
-                        |> Repo.all()
+    non_unique_emails =
+      from(p in Persona,
+        group_by: p.email,
+        having: count(p.id) > 1,
+        select: {p.email, count(p.id)},
+        order_by: p.email
+      )
+      |> Repo.all()
 
-    render(conn, "merge_candidates.html", non_unique_names: non_unique_names,
-                                          non_unique_emails: non_unique_emails)
+    render(conn, "merge_candidates.html",
+      non_unique_names: non_unique_names,
+      non_unique_emails: non_unique_emails
+    )
   end
-
 
   def merge_candidate_group(conn, %{"name" => name}) do
-    personas = from(p in Persona, where: p.name == ^name,
-                                  preload: [:engagements, :gigs])
-               |> Repo.all()
+    personas =
+      from(p in Persona,
+        where: p.name == ^name,
+        preload: [:engagements, :gigs]
+      )
+      |> Repo.all()
 
     render(conn, "merge_candidate_group.html", personas: personas)
   end
-
 
   def merge_candidate_group(conn, %{"email" => email}) do
-    personas = from(p in Persona, where: p.email == ^email,
-                                  preload: [:engagements, :gigs])
-               |> Repo.all()
+    personas =
+      from(p in Persona,
+        where: p.email == ^email,
+        preload: [:engagements, :gigs]
+      )
+      |> Repo.all()
 
     render(conn, "merge_candidate_group.html", personas: personas)
   end
-
 
   def merge(conn, %{"from" => from, "to" => to}) do
     from_id = String.to_integer(from)
-    to_id   = String.to_integer(to)
+    to_id = String.to_integer(to)
 
-    engagements = from(e in PanWeb.Engagement, where: e.persona_id == ^from_id)
-                  |> Repo.all()
+    engagements =
+      from(e in PanWeb.Engagement, where: e.persona_id == ^from_id)
+      |> Repo.all()
 
     for engagement <- engagements do
-      case Repo.get_by(PanWeb.Engagement, persona_id: to_id,
-                                       podcast_id: engagement.podcast_id,
-                                       role: engagement.role) do
+      case Repo.get_by(PanWeb.Engagement,
+             persona_id: to_id,
+             podcast_id: engagement.podcast_id,
+             role: engagement.role
+           ) do
         nil ->
           PanWeb.Engagement.changeset(engagement, %{persona_id: to_id})
           |> Repo.update()
+
         _ ->
           Repo.delete!(engagement)
       end
@@ -179,35 +198,56 @@ defmodule PanWeb.PersonaController do
     from(f in PanWeb.Follow, where: f.persona_id == ^from_id)
     |> Repo.update_all(set: [persona_id: to_id])
 
-    from(p in Persona, where: p.redirect_id == ^from_id and
-                              p.id != ^to_id)
+    from(p in Persona,
+      where:
+        p.redirect_id == ^from_id and
+          p.id != ^to_id
+    )
     |> Repo.update_all(set: [redirect_id: to_id])
 
-    from(p in Persona, where: p.redirect_id == ^from_id and
-                              p.id == ^to_id)
+    from(p in Persona,
+      where:
+        p.redirect_id == ^from_id and
+          p.id == ^to_id
+    )
     |> Repo.update_all(set: [redirect_id: nil])
 
-    from(d in PanWeb.Delegation, where: d.persona_id == ^from_id and
-                                 d.delegate_id != ^to_id)
+    from(d in PanWeb.Delegation,
+      where:
+        d.persona_id == ^from_id and
+          d.delegate_id != ^to_id
+    )
     |> Repo.update_all(set: [persona_id: to_id])
 
-    from(d in PanWeb.Delegation, where: d.delegate_id == ^from_id and
-                                 d.persona_id != ^to_id)
+    from(d in PanWeb.Delegation,
+      where:
+        d.delegate_id == ^from_id and
+          d.persona_id != ^to_id
+    )
     |> Repo.update_all(set: [delegate_id: to_id])
 
-    from(d in PanWeb.Delegation, where: d.persona_id == ^from_id and
-                                 d.delegate_id == ^to_id)
+    from(d in PanWeb.Delegation,
+      where:
+        d.persona_id == ^from_id and
+          d.delegate_id == ^to_id
+    )
     |> Repo.delete_all()
 
-    from(d in PanWeb.Delegation, where: d.persona_id == ^to_id and
-                                 d.delegate_id == ^from_id)
+    from(d in PanWeb.Delegation,
+      where:
+        d.persona_id == ^to_id and
+          d.delegate_id == ^from_id
+    )
     |> Repo.delete_all()
 
     from(m in PanWeb.Manifestation, where: m.persona_id == ^to_id)
     |> Repo.delete_all()
 
-    Tirexs.HTTP.delete("http://127.0.0.1:9200/panoptikum_" <> Application.get_env(:pan, :environment) <>
-                       "/personas/" <> Integer.to_string(from_id))
+    Tirexs.HTTP.delete(
+      "http://127.0.0.1:9200/panoptikum_" <>
+        Application.get_env(:pan, :environment) <>
+        "/personas/" <> Integer.to_string(from_id)
+    )
 
     to_persona = Repo.get!(Persona, to_id)
     from_persona = Repo.get!(Persona, from_id)

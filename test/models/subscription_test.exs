@@ -7,8 +7,10 @@ defmodule Pan.SubscriptionTest do
     test "is valid with valid attributes" do
       podcast = insert_podcast()
       user = insert_user()
-      changeset = Subscription.changeset(%Subscription{}, %{user_id: user.id,
-                                                            podcast_id: podcast.id})
+
+      changeset =
+        Subscription.changeset(%Subscription{}, %{user_id: user.id, podcast_id: podcast.id})
+
       assert changeset.valid?
     end
 
@@ -17,7 +19,6 @@ defmodule Pan.SubscriptionTest do
       refute changeset.valid?
     end
   end
-
 
   describe "get_or_insert" do
     test "inserts new subscription" do

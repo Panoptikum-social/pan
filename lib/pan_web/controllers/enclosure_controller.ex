@@ -2,11 +2,13 @@ defmodule PanWeb.EnclosureController do
   use Pan.Web, :controller
   alias PanWeb.Enclosure
 
-  plug :scrub_params, "enclosure" when action in [:create, :update]
+  plug(:scrub_params, "enclosure" when action in [:create, :update])
 
   def index(conn, params) do
-    enclosures = from(Enclosure)
-               |> Repo.paginate(params)
+    enclosures =
+      from(Enclosure)
+      |> Repo.paginate(params)
+
     render(conn, "index.html", enclosures: enclosures)
   end
 
@@ -23,6 +25,7 @@ defmodule PanWeb.EnclosureController do
         conn
         |> put_flash(:info, "Enclosure created successfully.")
         |> redirect(to: enclosure_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -48,6 +51,7 @@ defmodule PanWeb.EnclosureController do
         conn
         |> put_flash(:info, "Enclosure updated successfully.")
         |> redirect(to: enclosure_path(conn, :show, enclosure))
+
       {:error, changeset} ->
         render(conn, "edit.html", enclosure: enclosure, changeset: changeset)
     end

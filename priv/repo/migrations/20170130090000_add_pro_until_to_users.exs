@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddProUntilToUsers do
 
   def change do
     alter table(:users) do
-      add :pro_until, :datetime
+      add(:pro_until, :datetime)
     end
   end
 end

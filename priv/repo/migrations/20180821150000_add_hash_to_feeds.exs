@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddNoHeadersIndicator do
 
   def change do
     alter table(:feeds) do
-      add :hash, :string
+      add(:hash, :string)
     end
   end
 end

@@ -3,10 +3,12 @@ defmodule Pan.EngagementTest do
 
   alias PanWeb.Engagement
 
-  @valid_attrs %{comment: "Comment text",
-                 from: %{day: 17, month: 4, year: 2010},
-                 role: "contributor",
-                 until: %{day: 17, month: 4, year: 2010}}
+  @valid_attrs %{
+    comment: "Comment text",
+    from: %{day: 17, month: 4, year: 2010},
+    role: "contributor",
+    until: %{day: 17, month: 4, year: 2010}
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

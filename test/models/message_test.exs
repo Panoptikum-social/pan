@@ -3,11 +3,13 @@ defmodule Pan.MessageTest do
 
   alias PanWeb.Message
 
-  @valid_attrs %{content: "Message content",
-                 event: "like",
-                 subtopic: "42",
-                 topic: "users",
-                 type: "success"}
+  @valid_attrs %{
+    content: "Message content",
+    event: "like",
+    subtopic: "42",
+    topic: "users",
+    type: "success"
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

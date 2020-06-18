@@ -3,8 +3,8 @@ defmodule Pan.Repo.Migrations.AddLastErrorToPodcast do
 
   def change do
     alter table(:podcasts) do
-      add :last_error_message, :string
-      add :last_error_occured, :naive_datetime
+      add(:last_error_message, :string)
+      add(:last_error_occured, :naive_datetime)
     end
   end
 end

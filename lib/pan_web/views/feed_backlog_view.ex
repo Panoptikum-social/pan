@@ -5,7 +5,7 @@ defmodule PanWeb.FeedBacklogView do
   def best_matching_feed(url) do
     url
     |> String.split("/", parts: 3)
-    |> List.last
+    |> List.last()
     |> Feed.clean_and_best_matching()
   end
 end

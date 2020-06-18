@@ -4,10 +4,10 @@ defmodule PanWeb.Api.AlternateFeedView do
 
   def type(_, _), do: "alternate_feed"
 
-  location :location
-  attributes [:title, :orig_url]
+  location(:location)
+  attributes([:title, :orig_url])
 
-  has_one :feed, serializer: PanWeb.Api.PlainFeedView, include: true
+  has_one(:feed, serializer: PanWeb.Api.PlainFeedView, include: true)
 
   def orig_url(alternate_feed) do
     alternate_feed.url
@@ -18,15 +18,14 @@ defmodule PanWeb.Api.AlternateFeedView do
   end
 end
 
-
 defmodule PanWeb.Api.PlainAlternateFeedView do
   use Pan.Web, :view
   use JaSerializer.PhoenixView
 
   def type(_, _), do: "alternate_feed"
 
-  location :location
-  attributes [:title, :orig_url]
+  location(:location)
+  attributes([:title, :orig_url])
 
   def orig_url(alternate_feed) do
     alternate_feed.url

@@ -5,18 +5,33 @@ defmodule PanWeb.Api.EpisodeView do
 
   def type(_, _), do: "episode"
 
-  location :location
-  attributes [:orig_link, :title, :publishing_date, :guid, :description, :shownotes,
-              :payment_link_title, :payment_link_url, :deep_link, :duration, :subtitle, :summary,
-              :like_count, :image_title, :orig_image_url, :duration_in_s]
+  location(:location)
 
+  attributes([
+    :orig_link,
+    :title,
+    :publishing_date,
+    :guid,
+    :description,
+    :shownotes,
+    :payment_link_title,
+    :payment_link_url,
+    :deep_link,
+    :duration,
+    :subtitle,
+    :summary,
+    :like_count,
+    :image_title,
+    :orig_image_url,
+    :duration_in_s
+  ])
 
-  has_one :podcast, serializer: PanWeb.Api.PlainPodcastView, include: false
-  has_many :chapters, serializer: PanWeb.Api.PlainChapterView, include: false
-  has_many :recommendations, serializer: PanWeb.Api.PodcastRecommendationView, include: false
-  has_many :enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false
-  has_many :gigs, serializer: PanWeb.Api.PlainGigView, include: false
-  has_many :contributors, serializer: PanWeb.Api.PlainPersonaView, include: false
+  has_one(:podcast, serializer: PanWeb.Api.PlainPodcastView, include: false)
+  has_many(:chapters, serializer: PanWeb.Api.PlainChapterView, include: false)
+  has_many(:recommendations, serializer: PanWeb.Api.PodcastRecommendationView, include: false)
+  has_many(:enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false)
+  has_many(:gigs, serializer: PanWeb.Api.PlainGigView, include: false)
+  has_many(:contributors, serializer: PanWeb.Api.PlainPersonaView, include: false)
 
   def orig_link(episode) do
     episode.link
@@ -35,11 +50,10 @@ defmodule PanWeb.Api.EpisodeView do
   end
 
   def duration_in_s(episode) do
-    episode.duration |>
-    DurationHelpers.duration_in_seconds()
+    episode.duration
+    |> DurationHelpers.duration_in_seconds()
   end
 end
-
 
 defmodule PanWeb.Api.PlainEpisodeView do
   use Pan.Web, :view
@@ -47,11 +61,23 @@ defmodule PanWeb.Api.PlainEpisodeView do
 
   def type(_, _), do: "episode"
 
-  location :location
-  attributes [:orig_link, :title, :publishing_date, :description, :deep_link, :duration, :subtitle,
-              :summary, :image_title, :orig_image_url, :duration_in_s]
+  location(:location)
 
-  has_many :enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false
+  attributes([
+    :orig_link,
+    :title,
+    :publishing_date,
+    :description,
+    :deep_link,
+    :duration,
+    :subtitle,
+    :summary,
+    :image_title,
+    :orig_image_url,
+    :duration_in_s
+  ])
+
+  has_many(:enclosures, serializer: PanWeb.Api.PlainEnclosureView, include: false)
 
   def orig_link(episode) do
     episode.link
@@ -66,11 +92,10 @@ defmodule PanWeb.Api.PlainEpisodeView do
   end
 
   def duration_in_s(episode) do
-    episode.duration |>
-    DurationHelpers.duration_in_seconds()
+    episode.duration
+    |> DurationHelpers.duration_in_seconds()
   end
 end
-
 
 defmodule DurationHelpers do
   def duration_in_seconds(duration) do
@@ -99,7 +124,7 @@ defmodule DurationHelpers do
       Enum.at(fragments, fragment_index)
       |> String.to_integer()
 
-    fragment_value * :math.pow(60, length(fragments) - fragment_index - 1)
+    (fragment_value * :math.pow(60, length(fragments) - fragment_index - 1))
     |> round()
   end
 end

@@ -13,18 +13,23 @@ defmodule PanWeb.Api.SessionController do
         token = Phoenix.Token.sign(Endpoint, "user", current_user.id)
 
         unless current_user.email_confirmed do
-          send_401(conn, "email address not confirmed yet, click the confirmation link in the email")
+          send_401(
+            conn,
+            "email address not confirmed yet, click the confirmation link in the email"
+          )
         end
 
-        data = %{id: current_user.id,
-                 token: token,
-                 created_at: Timex.now(),
-                 valid_for: "1 hour",
-                 valid_until: Timex.shift(Timex.now(), hours: 1)}
+        data = %{
+          id: current_user.id,
+          token: token,
+          created_at: Timex.now(),
+          valid_for: "1 hour",
+          valid_until: Timex.shift(Timex.now(), hours: 1)
+        }
 
         conn = Plug.Conn.put_resp_header(conn, "token", token)
 
-        render conn, "show.json-api", data: data
+        render(conn, "show.json-api", data: data)
 
       {:error, _reason, _conn} ->
         send_401(conn, "Could not be aquired. Wrong username/password combination?")

@@ -4,8 +4,8 @@ defmodule PanWeb.Api.LanguageView do
 
   def type(_, _), do: "language"
 
-  location :location
-  attributes [:name, :shortcode, :emoji]
+  location(:location)
+  attributes([:name, :shortcode, :emoji])
 
   def location(language, conn) do
     api_language_url(conn, :show, language)

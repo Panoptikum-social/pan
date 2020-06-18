@@ -6,19 +6,18 @@ defmodule PanWeb.EngagementController do
     render(conn, "index.html")
   end
 
-
   def datatable(conn, _params) do
-    engagements = from(Engagement, preload: [:persona, :podcast])
-                  |> Repo.all()
-    render conn, "datatable.json", engagements: engagements
-  end
+    engagements =
+      from(Engagement, preload: [:persona, :podcast])
+      |> Repo.all()
 
+    render(conn, "datatable.json", engagements: engagements)
+  end
 
   def new(conn, _params) do
     changeset = Engagement.changeset(%Engagement{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"engagement" => engagement_params}) do
     changeset = Engagement.changeset(%Engagement{}, engagement_params)
@@ -28,24 +27,22 @@ defmodule PanWeb.EngagementController do
         conn
         |> put_flash(:info, "Engagement created successfully.")
         |> redirect(to: engagement_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 
   def show(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)
     render(conn, "show.html", engagement: engagement)
   end
 
-
   def edit(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)
     changeset = Engagement.changeset(engagement)
     render(conn, "edit.html", engagement: engagement, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "engagement" => engagement_params}) do
     engagement = Repo.get!(Engagement, id)
@@ -56,11 +53,11 @@ defmodule PanWeb.EngagementController do
         conn
         |> put_flash(:info, "Engagement updated successfully.")
         |> redirect(to: engagement_path(conn, :show, engagement))
+
       {:error, changeset} ->
         render(conn, "edit.html", engagement: engagement, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}) do
     engagement = Repo.get!(Engagement, id)

@@ -9,9 +9,13 @@ defmodule Pan.ManifestationTest do
   test "changeset with valid attributes" do
     user = insert_user()
     persona = insert_persona()
-    changeset = Manifestation.changeset(%Manifestation{},
-                                        Map.merge(@valid_attrs, %{user_id: user.id,
-                                                                  persona_id: persona.id}))
+
+    changeset =
+      Manifestation.changeset(
+        %Manifestation{},
+        Map.merge(@valid_attrs, %{user_id: user.id, persona_id: persona.id})
+      )
+
     assert changeset.valid?
   end
 

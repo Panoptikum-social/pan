@@ -10,7 +10,6 @@ defmodule Pan.Email do
     |> render("login_link.html", token: token)
   end
 
-
   def email_confirmation_link_html_email(token, email_address) do
     new_email()
     |> to(email_address)
@@ -19,7 +18,6 @@ defmodule Pan.Email do
     |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("email_confirmation_link.html", token: token)
   end
-
 
   def confirm_persona_claim_link_html_email(token, user, email_address) do
     new_email()
@@ -30,9 +28,8 @@ defmodule Pan.Email do
     |> render("confirm_persona_claim_link.html", token: token, user: user)
   end
 
-
   def error_notification(mail_body, from, to) do
-    {:ok, hostname} = :inet.gethostname
+    {:ok, hostname} = :inet.gethostname()
 
     new_email()
     |> to(to)
@@ -40,7 +37,6 @@ defmodule Pan.Email do
     |> subject("Panoptikum - #{hostname} - Error Notification")
     |> text_body(mail_body)
   end
-
 
   def pro_expiration_notification(email_address) do
     new_email()

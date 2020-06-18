@@ -4,10 +4,10 @@ defmodule PanWeb.Api.OpmlView do
 
   def type(_, _), do: "opml"
 
-  location :location
-  attributes [:content_type, :filename, :inserted_at, :deleted]
+  location(:location)
+  attributes([:content_type, :filename, :inserted_at, :deleted])
 
-  has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
+  has_one(:user, serializer: PanWeb.Api.PlainUserView, include: false)
 
   def location(opml, conn) do
     api_opml_url(conn, :show, opml)
@@ -20,8 +20,8 @@ defmodule PanWeb.Api.PlainOpmlView do
 
   def type(_, _), do: "opml"
 
-  location :location
-  attributes [:content_type, :filename, :inserted_at, :deleted]
+  location(:location)
+  attributes([:content_type, :filename, :inserted_at, :deleted])
 
   def location(opml, conn) do
     api_opml_url(conn, :show, opml)

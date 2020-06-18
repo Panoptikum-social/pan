@@ -2,10 +2,10 @@ defmodule PanWeb.Invoice do
   use Pan.Web, :model
 
   schema "invoices" do
-    field :filename, :string
-    field :content_type, :string
-    field :path, :string
-    belongs_to :user, PanWeb.User
+    field(:filename, :string)
+    field(:content_type, :string)
+    field(:path, :string)
+    belongs_to(:user, PanWeb.User)
 
     timestamps()
   end

@@ -7,17 +7,21 @@ defmodule PanWeb.OpmlController do
   end
 
   def datatable(conn, _params) do
-    opmls = Repo.all(from o in Opml, order_by: [desc: :inserted_at],
-                                     preload: :user)
-    render conn, "datatable.json", opmls: opmls
-  end
+    opmls =
+      Repo.all(
+        from(o in Opml,
+          order_by: [desc: :inserted_at],
+          preload: :user
+        )
+      )
 
+    render(conn, "datatable.json", opmls: opmls)
+  end
 
   def new(conn, _params) do
     changeset = Opml.changeset(%Opml{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"opml" => opml_params}) do
     destination_path =
@@ -32,15 +36,19 @@ defmodule PanWeb.OpmlController do
 
     changeset =
       if upload do
-        Opml.changeset(%Opml{content_type: upload.content_type,
-                             filename: upload.filename,
-                             path: destination_path,
-                             user_id: opml_params["user_id"]})
+        Opml.changeset(%Opml{
+          content_type: upload.content_type,
+          filename: upload.filename,
+          path: destination_path,
+          user_id: opml_params["user_id"]
+        })
       else
-        Opml.changeset(%Opml{content_type: nil,
-                             filename: nil,
-                             path: destination_path,
-                             user_id: opml_params["user_id"]})
+        Opml.changeset(%Opml{
+          content_type: nil,
+          filename: nil,
+          path: destination_path,
+          user_id: opml_params["user_id"]
+        })
       end
 
     case Repo.insert(changeset) do
@@ -48,24 +56,22 @@ defmodule PanWeb.OpmlController do
         conn
         |> put_flash(:info, "OPML created successfully.")
         |> redirect(to: opml_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 
   def show(conn, %{"id" => id}) do
     opml = Repo.get!(Opml, id)
     render(conn, "show.html", opml: opml)
   end
 
-
   def edit(conn, %{"id" => id}) do
     opml = Repo.get!(Opml, id)
     changeset = Opml.changeset(opml)
     render(conn, "edit.html", opml: opml, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "opml" => opml_params}) do
     opml = Repo.get!(Opml, id)
@@ -76,6 +82,7 @@ defmodule PanWeb.OpmlController do
         conn
         |> put_flash(:info, "OPML updated successfully.")
         |> redirect(to: opml_path(conn, :show, opml))
+
       {:error, changeset} ->
         render(conn, "edit.html", opml: opml, changeset: changeset)
     end
@@ -92,11 +99,11 @@ defmodule PanWeb.OpmlController do
     |> redirect(to: opml_path(conn, :index))
   end
 
-
   def import(conn, %{"id" => id}) do
     opml = Repo.get!(Opml, id)
 
     Pan.OpmlParser.Opml.parse(opml.path, opml.user_id)
+
     conn
     |> put_flash(:info, "OPML imported successfully.")
     |> redirect(to: opml_frontend_path(conn, :index))

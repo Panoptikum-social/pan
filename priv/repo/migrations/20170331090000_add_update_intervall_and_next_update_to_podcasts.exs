@@ -3,8 +3,8 @@ defmodule Pan.Repo.Migrations.AddUpdateIntervallAndNextUpdateToPodcasts do
 
   def change do
     alter table(:podcasts) do
-      add :update_intervall, :integer
-      add :next_update, :naive_datetime
+      add(:update_intervall, :integer)
+      add(:next_update, :naive_datetime)
     end
   end
 end

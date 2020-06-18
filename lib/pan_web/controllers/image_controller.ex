@@ -16,50 +16,60 @@ defmodule PanWeb.ImageController do
 
     columns = params["columns"]
 
-    order_by = Enum.map(params["order"], fn({_key, value}) ->
-                 column_number = value["column"]
-                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
-               end)
+    order_by =
+      Enum.map(params["order"], fn {_key, value} ->
+        column_number = value["column"]
+        {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+      end)
 
     records_total = Repo.aggregate(Image, :count, :id)
 
     query =
       if search != "" do
-        from(i in Image, where: ilike(fragment("cast (? as text)", i.persona_id), ^searchfrag) or
-                                ilike(fragment("cast (? as text)", i.episode_id), ^searchfrag) or
-                                ilike(fragment("cast (? as text)", i.podcast_id), ^searchfrag) or
-                                ilike(fragment("cast (? as text)", i.id), ^searchfrag))
+        from(i in Image,
+          where:
+            ilike(fragment("cast (? as text)", i.persona_id), ^searchfrag) or
+              ilike(fragment("cast (? as text)", i.episode_id), ^searchfrag) or
+              ilike(fragment("cast (? as text)", i.podcast_id), ^searchfrag) or
+              ilike(fragment("cast (? as text)", i.id), ^searchfrag)
+        )
       else
         from(i in Image)
       end
 
-    records_filtered = query
-                       |> Repo.aggregate(:count)
+    records_filtered =
+      query
+      |> Repo.aggregate(:count)
 
-    images = from(i in query, limit: ^limit,
-                                offset: ^offset,
-                                order_by: ^order_by,
-                                select: %{id:           i.id,
-                                          filename:     i.filename,
-                                          content_type: i.content_type,
-                                          path:         i.path,
-                                          podcast_id:   i.podcast_id,
-                                          episode_id:   i.episode_id,
-                                          persona_id:   i.persona_id})
-           |> Repo.all()
+    images =
+      from(i in query,
+        limit: ^limit,
+        offset: ^offset,
+        order_by: ^order_by,
+        select: %{
+          id: i.id,
+          filename: i.filename,
+          content_type: i.content_type,
+          path: i.path,
+          podcast_id: i.podcast_id,
+          episode_id: i.episode_id,
+          persona_id: i.persona_id
+        }
+      )
+      |> Repo.all()
 
-    render(conn, "datatable.json", images: images,
-                                   draw: draw,
-                                   records_total: records_total,
-                                   records_filtered: records_filtered)
+    render(conn, "datatable.json",
+      images: images,
+      draw: draw,
+      records_total: records_total,
+      records_filtered: records_filtered
+    )
   end
-
 
   def new(conn, _params) do
     changeset = Image.changeset(%Image{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"image" => image_params}) do
     record_slug =
@@ -81,19 +91,23 @@ defmodule PanWeb.ImageController do
 
     changeset =
       if upload do
-        Image.changeset(%Image{content_type: upload.content_type,
-                                   filename: upload.filename,
-                                   path: destination_path,
-                                   podcast_id: image_params["podcast_id"],
-                                   episode_id: image_params["episode_id"],
-                                   persona_id: image_params["persona_id"]})
+        Image.changeset(%Image{
+          content_type: upload.content_type,
+          filename: upload.filename,
+          path: destination_path,
+          podcast_id: image_params["podcast_id"],
+          episode_id: image_params["episode_id"],
+          persona_id: image_params["persona_id"]
+        })
       else
-        Image.changeset(%Image{content_type: nil,
-                                   filename: nil,
-                                   path: destination_path,
-                                   podcast_id: image_params["podcast_id"],
-                                   episode_id: image_params["episode_id"],
-                                   persona_id: image_params["persona_id"]})
+        Image.changeset(%Image{
+          content_type: nil,
+          filename: nil,
+          path: destination_path,
+          podcast_id: image_params["podcast_id"],
+          episode_id: image_params["episode_id"],
+          persona_id: image_params["persona_id"]
+        })
       end
 
     case Repo.insert(changeset) do
@@ -101,24 +115,22 @@ defmodule PanWeb.ImageController do
         conn
         |> put_flash(:info, "Image uploaded successfully.")
         |> redirect(to: image_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 
   def show(conn, %{"id" => id}) do
     image = Repo.get!(Image, id)
     render(conn, "show.html", image: image)
   end
 
-
   def edit(conn, %{"id" => id}) do
     image = Repo.get!(Image, id)
     changeset = Image.changeset(image)
     render(conn, "edit.html", image: image, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "image" => image_params}) do
     image = Repo.get!(Image, id)
@@ -129,11 +141,11 @@ defmodule PanWeb.ImageController do
         conn
         |> put_flash(:info, "Image updated successfully.")
         |> redirect(to: image_path(conn, :show, image))
+
       {:error, changeset} ->
         render(conn, "edit.html", image: image, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}) do
     image = Repo.get!(Image, id)
@@ -146,48 +158,61 @@ defmodule PanWeb.ImageController do
     |> redirect(to: image_path(conn, :index))
   end
 
-
   def cache_missing(conn, _params) do
     PanWeb.Image.cache_missing()
     render(conn, "done.html")
   end
 
-
   def remove_duplicates(conn, _params) do
-    duplicate_images = from(i in Image, group_by: [i.episode_id],
-                                        having: count(i.episode_id) > 1,
-                                        select: i.episode_id)
-                       |> Repo.all()
+    duplicate_images =
+      from(i in Image,
+        group_by: [i.episode_id],
+        having: count(i.episode_id) > 1,
+        select: i.episode_id
+      )
+      |> Repo.all()
 
     for episode_id <- duplicate_images do
-      from(i in Image, where: i.episode_id == ^episode_id,
-                       limit: 1)
+      from(i in Image,
+        where: i.episode_id == ^episode_id,
+        limit: 1
+      )
       |> Repo.all()
       |> List.first()
       |> Repo.delete()
     end
 
-    duplicate_images = from(i in Image, group_by: [i.podcast_id],
-                                        having: count(i.podcast_id) > 1,
-                                        select: i.podcast_id)
-                       |> Repo.all()
+    duplicate_images =
+      from(i in Image,
+        group_by: [i.podcast_id],
+        having: count(i.podcast_id) > 1,
+        select: i.podcast_id
+      )
+      |> Repo.all()
 
     for podcast_id <- duplicate_images do
-      from(i in Image, where: i.podcast_id == ^podcast_id,
-                       limit: 1)
+      from(i in Image,
+        where: i.podcast_id == ^podcast_id,
+        limit: 1
+      )
       |> Repo.all()
       |> List.first()
       |> Repo.delete()
     end
 
-    duplicate_images = from(i in Image, group_by: [i.persona_id],
-                                        having: count(i.persona_id) > 1,
-                                        select: i.persona_id)
-                       |> Repo.all()
+    duplicate_images =
+      from(i in Image,
+        group_by: [i.persona_id],
+        having: count(i.persona_id) > 1,
+        select: i.persona_id
+      )
+      |> Repo.all()
 
     for persona_id <- duplicate_images do
-      from(i in Image, where: i.persona_id == ^persona_id,
-                       limit: 1)
+      from(i in Image,
+        where: i.persona_id == ^persona_id,
+        limit: 1
+      )
       |> Repo.all()
       |> List.first()
       |> Repo.delete()

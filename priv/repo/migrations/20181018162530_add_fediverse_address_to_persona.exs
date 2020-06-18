@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddFediverseAddressToPersona do
 
   def change do
     alter table(:personas) do
-      add :fediverse_address, :string
+      add(:fediverse_address, :string)
     end
   end
 end

@@ -1,6 +1,7 @@
 defmodule PanWeb.Api.SessionView do
   use Pan.Web, :view
-  use JaSerializer.PhoenixView # Or use in web/web.ex
+  # Or use in web/web.ex
+  use JaSerializer.PhoenixView
 
-  attributes [:token, :created_at, :valid_for, :valid_until]
+  attributes([:token, :created_at, :valid_for, :valid_until])
 end

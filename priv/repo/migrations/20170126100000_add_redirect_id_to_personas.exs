@@ -3,9 +3,9 @@ defmodule Pan.Repo.Migrations.AddRedirectIdToPersonas do
 
   def change do
     alter table(:personas) do
-      add :redirect_id, :integer
+      add(:redirect_id, :integer)
     end
 
-    create index(:personas, [:redirect_id])
+    create(index(:personas, [:redirect_id]))
   end
 end

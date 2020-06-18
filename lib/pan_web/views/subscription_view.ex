@@ -6,11 +6,13 @@ defmodule PanWeb.SubscriptionView do
   end
 
   def subscription_json(subscription) do
-    %{id:            subscription.id,
-      user_id:    subscription.user_id,
-      user_name:  subscription.user.name,
-      podcast_id:    subscription.podcast_id,
+    %{
+      id: subscription.id,
+      user_id: subscription.user_id,
+      user_name: subscription.user.name,
+      podcast_id: subscription.podcast_id,
       podcast_title: subscription.podcast.title,
-      actions:       datatable_actions(subscription, &subscription_path/3)}
+      actions: datatable_actions(subscription, &subscription_path/3)
+    }
   end
 end

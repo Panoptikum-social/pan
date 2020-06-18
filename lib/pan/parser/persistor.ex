@@ -1,19 +1,39 @@
 defmodule Pan.Parser.Persistor do
   alias Pan.Repo
-  alias Pan.Parser.{AlternateFeed, Author, Category, Contributor, Episode,
-                    Feed, Language, Podcast, PodcastContributor}
+
+  alias Pan.Parser.{
+    AlternateFeed,
+    Author,
+    Category,
+    Contributor,
+    Episode,
+    Feed,
+    Language,
+    Podcast,
+    PodcastContributor
+  }
 
   def initial_import(map, _url \\ nil) do
-    podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
-                                 :languages, :categories, "owner", :categories,
-                                 "author", "managing_editor"])
-    feed_map =    Map.drop(map[:feed], [:alternate_feeds])
+    podcast_map =
+      Map.drop(map, [
+        :episodes,
+        :feed,
+        :contributors,
+        :languages,
+        :categories,
+        "owner",
+        :categories,
+        "author",
+        "managing_editor"
+      ])
+
+    feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
     {:ok, podcast} = Podcast.get_or_insert(podcast_map)
     Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
 
-    {:ok, feed}    = Feed.get_or_insert(feed_map, podcast.id)
+    {:ok, feed} = Feed.get_or_insert(feed_map, podcast.id)
 
     Category.persist_many(map[:categories], podcast)
     AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
@@ -38,7 +58,6 @@ defmodule Pan.Parser.Persistor do
     podcast.id
   end
 
-
   def delta_import(map, podcast) do
     map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
 
@@ -54,15 +73,26 @@ defmodule Pan.Parser.Persistor do
     end
   end
 
-
   def update_from_feed(map, podcast) do
-    PanWeb.Endpoint.broadcast("podcasts: #{podcast.id}",
-                              "notification", %{content: "<i class='fa fa-refresh'></i> <i class='fa fa-podcast'></i>...",
-                                                type: "success"})
-    podcast_map = Map.drop(map, [:episodes, :feed, :contributors,
-                                 :languages, :categories, "owner", :categories,
-                                 "author", "managing_editor"])
-    feed_map =    Map.drop(map[:feed], [:alternate_feeds])
+    PanWeb.Endpoint.broadcast("podcasts: #{podcast.id}", "notification", %{
+      content: "<i class='fa fa-refresh'></i> <i class='fa fa-podcast'></i>...",
+      type: "success"
+    })
+
+    podcast_map =
+      Map.drop(map, [
+        :episodes,
+        :feed,
+        :contributors,
+        :languages,
+        :categories,
+        "owner",
+        :categories,
+        "author",
+        "managing_editor"
+      ])
+
+    feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
     {:ok, podcast} =
@@ -75,10 +105,12 @@ defmodule Pan.Parser.Persistor do
     map["author"] && Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
 
     PodcastContributor.delete_role(podcast.id, "managing_editor")
+
     map["managing_editor"] &&
       PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
 
     {:ok, feed} = Feed.get_by_podcast_id(podcast.id)
+
     if feed.self_link_url != feed_map[:self_link_url] do
       Feed.update_with_redirect_target(podcast.id, feed_map[:self_link_url])
     end
@@ -100,7 +132,6 @@ defmodule Pan.Parser.Persistor do
 
     {:ok, :podcast_updated}
   end
-
 
   def contributor_import(map, podcast_id) do
     podcast = Repo.get!(PanWeb.Podcast, podcast_id)

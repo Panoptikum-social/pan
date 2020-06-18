@@ -9,20 +9,23 @@ defmodule Pan.GigControllerTest do
     end
 
     alias PanWeb.Gig
-    @valid_attrs %{comment: "some content",
-                   from_in_s: 42,
-                   publishing_date: ~N[2010-04-17 12:13:14],
-                   role: "some content",
-                   until_in_s: 42}
+
+    @valid_attrs %{
+      comment: "some content",
+      from_in_s: 42,
+      publishing_date: ~N[2010-04-17 12:13:14],
+      role: "some content",
+      until_in_s: 42
+    }
     @invalid_attrs %{}
 
     test "lists all entries on index", %{conn: conn} do
-      conn = get conn, gig_path(conn, :index)
+      conn = get(conn, gig_path(conn, :index))
       assert html_response(conn, 200) =~ "Listing gigs"
     end
 
     test "renders form for new resources", %{conn: conn} do
-      conn = get conn, gig_path(conn, :new)
+      conn = get(conn, gig_path(conn, :new))
       assert html_response(conn, 200) =~ "New gig"
     end
 
@@ -31,34 +34,39 @@ defmodule Pan.GigControllerTest do
       episode = insert_episode(%{podcast_id: podcast.id})
       persona = insert_persona()
 
-      conn = post conn, gig_path(conn, :create),
-                        gig: Map.merge(@valid_attrs, %{episode_id: episode.id,
-                                                       persona_id: persona.id})
+      conn =
+        post(conn, gig_path(conn, :create),
+          gig: Map.merge(@valid_attrs, %{episode_id: episode.id, persona_id: persona.id})
+        )
+
       assert redirected_to(conn) == gig_path(conn, :index)
-      assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode.id,
-                                                        persona_id: persona.id}))
+
+      assert Repo.get_by(
+               Gig,
+               Map.merge(@valid_attrs, %{episode_id: episode.id, persona_id: persona.id})
+             )
     end
 
     test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-      conn = post conn, gig_path(conn, :create), gig: @invalid_attrs
+      conn = post(conn, gig_path(conn, :create), gig: @invalid_attrs)
       assert html_response(conn, 200) =~ "New gig"
     end
 
     test "shows chosen resource", %{conn: conn} do
-      gig = Repo.insert! %Gig{}
-      conn = get conn, gig_path(conn, :show, gig)
+      gig = Repo.insert!(%Gig{})
+      conn = get(conn, gig_path(conn, :show, gig))
       assert html_response(conn, 200) =~ "Show gig"
     end
 
     test "renders page not found when id is nonexistent", %{conn: conn} do
-      assert_error_sent 404, fn ->
-        get conn, gig_path(conn, :show, -1)
-      end
+      assert_error_sent(404, fn ->
+        get(conn, gig_path(conn, :show, -1))
+      end)
     end
 
     test "renders form for editing chosen resource", %{conn: conn} do
-      gig = Repo.insert! %Gig{}
-      conn = get conn, gig_path(conn, :edit, gig)
+      gig = Repo.insert!(%Gig{})
+      conn = get(conn, gig_path(conn, :edit, gig))
       assert html_response(conn, 200) =~ "Edit gig"
     end
 
@@ -67,41 +75,50 @@ defmodule Pan.GigControllerTest do
       episode = insert_episode(%{podcast_id: podcast.id})
       persona = insert_persona()
 
-      gig = Repo.insert! %Gig{}
-      conn = put conn, gig_path(conn, :update, gig),
-                       gig: Map.merge(@valid_attrs, %{episode_id: episode.id,
-                                                      persona_id: persona.id})
+      gig = Repo.insert!(%Gig{})
+
+      conn =
+        put(conn, gig_path(conn, :update, gig),
+          gig: Map.merge(@valid_attrs, %{episode_id: episode.id, persona_id: persona.id})
+        )
+
       assert redirected_to(conn) == gig_path(conn, :show, gig)
-      assert Repo.get_by(Gig, Map.merge(@valid_attrs, %{episode_id: episode.id,
-                                                        persona_id: persona.id}))
+
+      assert Repo.get_by(
+               Gig,
+               Map.merge(@valid_attrs, %{episode_id: episode.id, persona_id: persona.id})
+             )
     end
 
     test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
-      gig = Repo.insert! %Gig{}
-      conn = put conn, gig_path(conn, :update, gig), gig: @invalid_attrs
+      gig = Repo.insert!(%Gig{})
+      conn = put(conn, gig_path(conn, :update, gig), gig: @invalid_attrs)
       assert html_response(conn, 200) =~ "Edit gig"
     end
 
     test "deletes chosen resource", %{conn: conn} do
-      gig = Repo.insert! %Gig{}
-      conn = delete conn, gig_path(conn, :delete, gig)
+      gig = Repo.insert!(%Gig{})
+      conn = delete(conn, gig_path(conn, :delete, gig))
       assert redirected_to(conn) == gig_path(conn, :index)
       refute Repo.get(Gig, gig.id)
     end
   end
 
   test "requires admin authentication on all actions", %{conn: conn} do
-    Enum.each([
-      get(conn, gig_path(conn, :new)),
-      get(conn, gig_path(conn, :index)),
-      get(conn, gig_path(conn, :show, "123")),
-      get(conn, gig_path(conn, :edit, "123")),
-      put(conn, gig_path(conn, :update, "123")),
-      post(conn, gig_path(conn, :create, %{})),
-      delete(conn, gig_path(conn, :delete, "123"))
-    ], fn conn ->
-      assert html_response(conn, 302)
-      assert conn.halted
-    end)
+    Enum.each(
+      [
+        get(conn, gig_path(conn, :new)),
+        get(conn, gig_path(conn, :index)),
+        get(conn, gig_path(conn, :show, "123")),
+        get(conn, gig_path(conn, :edit, "123")),
+        put(conn, gig_path(conn, :update, "123")),
+        post(conn, gig_path(conn, :create, %{})),
+        delete(conn, gig_path(conn, :delete, "123"))
+      ],
+      fn conn ->
+        assert html_response(conn, 302)
+        assert conn.halted
+      end
+    )
   end
 end

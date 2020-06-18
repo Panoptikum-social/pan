@@ -5,7 +5,7 @@ defmodule Pan.UserTest do
 
   @valid_attrs %{
     name: "John Doe",
-    username: "jdoe" ,
+    username: "jdoe",
     email: "john.doe@panoptikum.io",
     password: "supersecret",
     password_confirmation: "supersecret",
@@ -71,6 +71,7 @@ defmodule Pan.UserTest do
         password: "supersecret",
         password_confirmation: "supersecret"
       }
+
       password_update_changeset = User.password_update_changeset(%User{}, attrs)
       assert password_update_changeset.valid?
     end
@@ -81,7 +82,9 @@ defmodule Pan.UserTest do
     end
 
     test "is invalid with password length out of range 6..100" do
-      long = "cupcake_ipsum_dolor_sit_amet_icing_chupa_chups_pie_carrot_cake_icing_gummies_pudding_chocolatebars_cocoa"
+      long =
+        "cupcake_ipsum_dolor_sit_amet_icing_chupa_chups_pie_carrot_cake_icing_gummies_pudding_chocolatebars_cocoa"
+
       long_attrs = %{password: long, password_confirmation: long}
       long_changeset = User.password_update_changeset(%User{}, long_attrs)
       refute long_changeset.valid?
@@ -100,7 +103,9 @@ defmodule Pan.UserTest do
 
   describe "request_login_changeset" do
     test "is valid with valid attributes" do
-      request_login_changeset = User.request_login_changeset(%User{}, %{email: @valid_attrs.email})
+      request_login_changeset =
+        User.request_login_changeset(%User{}, %{email: @valid_attrs.email})
+
       assert request_login_changeset.valid?
     end
 
@@ -110,7 +115,9 @@ defmodule Pan.UserTest do
     end
 
     test "is invalid with email length out of range 3..100" do
-      long = "cupcake_ipsum_dolor_sit_amet_icing_chupa_chups_pie_carrot_cake_icing_gummies_pudding@nonexistingsprovider.com"
+      long =
+        "cupcake_ipsum_dolor_sit_amet_icing_chupa_chups_pie_carrot_cake_icing_gummies_pudding@nonexistingsprovider.com"
+
       long_changeset = User.request_login_changeset(%User{}, %{email: long})
       refute long_changeset.valid?
 
@@ -125,6 +132,7 @@ defmodule Pan.UserTest do
         password: "supersecret",
         password_confirmation: "something else"
       }
+
       password_update_changeset = User.password_update_changeset(%User{}, attrs)
       assert is_nil(password_update_changeset.changes[:password_hash])
     end
@@ -134,6 +142,7 @@ defmodule Pan.UserTest do
         password: "supersecret",
         password_confirmation: "supersecret"
       }
+
       password_update_changeset = User.password_update_changeset(%User{}, attrs)
       assert String.length(password_update_changeset.changes[:password_hash]) > 0
     end

@@ -4,12 +4,11 @@ defmodule PanWeb.Subscription do
   alias PanWeb.Subscription
 
   schema "subscriptions" do
-    belongs_to :user, PanWeb.User
-    belongs_to :podcast, PanWeb.Podcast
+    belongs_to(:user, PanWeb.User)
+    belongs_to(:podcast, PanWeb.Podcast)
 
     timestamps()
   end
-
 
   def changeset(struct, params \\ %{}) do
     struct
@@ -17,13 +16,15 @@ defmodule PanWeb.Subscription do
     |> validate_required([:user_id, :podcast_id])
   end
 
-
   def get_or_insert(user_id, podcast_id) do
-    case Repo.get_by(Subscription, user_id:    user_id,
-                                   podcast_id: podcast_id) do
+    case Repo.get_by(Subscription,
+           user_id: user_id,
+           podcast_id: podcast_id
+         ) do
       nil ->
         %Subscription{user_id: user_id, podcast_id: podcast_id}
         |> Repo.insert()
+
       subscription ->
         {:ok, subscription}
     end

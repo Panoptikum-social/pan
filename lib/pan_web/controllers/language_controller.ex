@@ -2,7 +2,7 @@ defmodule PanWeb.LanguageController do
   use Pan.Web, :controller
   alias PanWeb.{Language, Podcast}
 
-  plug :scrub_params, "language" when action in [:create, :update]
+  plug(:scrub_params, "language" when action in [:create, :update])
 
   def index(conn, _params) do
     render(conn, "index.html")
@@ -10,7 +10,7 @@ defmodule PanWeb.LanguageController do
 
   def datatable(conn, _params) do
     languages = Repo.all(Language)
-    render conn, "datatable.json", languages: languages
+    render(conn, "datatable.json", languages: languages)
   end
 
   def new(conn, _params) do
@@ -26,14 +26,17 @@ defmodule PanWeb.LanguageController do
         conn
         |> put_flash(:info, "Language created successfully.")
         |> redirect(to: language_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
 
   def show(conn, %{"id" => id}) do
-    language = Repo.get!(Language, id)
-               |> Repo.preload(podcasts: from(Podcast, limit: 10))
+    language =
+      Repo.get!(Language, id)
+      |> Repo.preload(podcasts: from(Podcast, limit: 10))
+
     render(conn, "show.html", language: language)
   end
 
@@ -52,6 +55,7 @@ defmodule PanWeb.LanguageController do
         conn
         |> put_flash(:info, "Language updated successfully.")
         |> redirect(to: language_path(conn, :show, language))
+
       {:error, changeset} ->
         render(conn, "edit.html", language: language, changeset: changeset)
     end

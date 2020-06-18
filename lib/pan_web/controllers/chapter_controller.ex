@@ -2,11 +2,13 @@ defmodule PanWeb.ChapterController do
   use Pan.Web, :controller
   alias PanWeb.Chapter
 
-  plug :scrub_params, "chapter" when action in [:create, :update]
+  plug(:scrub_params, "chapter" when action in [:create, :update])
 
   def index(conn, params) do
-    chapters = from(Chapter)
-               |> Repo.paginate(params)
+    chapters =
+      from(Chapter)
+      |> Repo.paginate(params)
+
     render(conn, "index.html", chapters: chapters)
   end
 
@@ -23,6 +25,7 @@ defmodule PanWeb.ChapterController do
         conn
         |> put_flash(:info, "Chapter created successfully.")
         |> redirect(to: chapter_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -48,6 +51,7 @@ defmodule PanWeb.ChapterController do
         conn
         |> put_flash(:info, "Chapter updated successfully.")
         |> redirect(to: chapter_path(conn, :show, chapter))
+
       {:error, changeset} ->
         render(conn, "edit.html", chapter: chapter, changeset: changeset)
     end

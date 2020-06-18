@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddLongDescriptionToPersonas do
 
   def change do
     alter table(:personas) do
-      add :long_description, :text
+      add(:long_description, :text)
     end
   end
 end

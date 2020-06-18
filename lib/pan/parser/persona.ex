@@ -8,19 +8,30 @@ defmodule Pan.Parser.Persona do
     # the database does not fit, we still fall back to weaker matches,
     # but not on the name, as names are no unique identifiers.
 
-    persona_map = Map.put_new(persona_map, :pid,
-                              UUID.uuid5(:url, persona_map[:uri] ||
-                                               persona_map[:email] ||
-                                               persona_map[:name]))
+    persona_map =
+      Map.put_new(
+        persona_map,
+        :pid,
+        UUID.uuid5(
+          :url,
+          persona_map[:uri] ||
+            persona_map[:email] ||
+            persona_map[:name]
+        )
+      )
 
     persona_map =
       if persona_map[:email] do
-        Map.put_new(persona_map, :name, persona_map[:email]
-        |> String.split("@")
-        |> List.first()
-        |> String.split(".")
-        |> Stream.map(&String.capitalize/1)
-        |> Enum.join(" "))
+        Map.put_new(
+          persona_map,
+          :name,
+          persona_map[:email]
+          |> String.split("@")
+          |> List.first()
+          |> String.split(".")
+          |> Stream.map(&String.capitalize/1)
+          |> Enum.join(" ")
+        )
       else
         persona_map
       end
@@ -29,15 +40,20 @@ defmodule Pan.Parser.Persona do
     uri = persona_map[:uri] || ""
     email = persona_map[:email] || ""
 
-    case Repo.get_by(PanWeb.Persona, pid:   persona_map[:pid]) ||
-         Repo.get_by(PanWeb.Persona, pid:   uri) ||
-         Repo.get_by(PanWeb.Persona, uri:   uri) ||
-         Repo.one(from p in PanWeb.Persona, where: p.email == ^email,
-                                            limit: 1) do
+    case Repo.get_by(PanWeb.Persona, pid: persona_map[:pid]) ||
+           Repo.get_by(PanWeb.Persona, pid: uri) ||
+           Repo.get_by(PanWeb.Persona, uri: uri) ||
+           Repo.one(
+             from(p in PanWeb.Persona,
+               where: p.email == ^email,
+               limit: 1
+             )
+           ) do
       nil ->
         %PanWeb.Persona{}
         |> Map.merge(persona_map)
         |> Repo.insert()
+
       persona ->
         {:ok, persona}
     end

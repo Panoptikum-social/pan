@@ -28,12 +28,9 @@ defmodule Pan.Web do
       import PanWeb.Router.Helpers
 
       import PanWeb.Gettext
-      import PanWeb.Auth, only: [authenticate_user: 2,
-                                 authenticate_admin: 2,
-                                 authenticate_pro: 2]
+      import PanWeb.Auth, only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2]
 
-      import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
-                                     authenticate_api_pro_user: 2]
+      import PanWeb.Api.Auth, only: [authenticate_api_user: 2, authenticate_api_pro_user: 2]
 
       import Ecto.Convenience, only: [is_false: 1, total_estimated: 1]
     end
@@ -41,8 +38,9 @@ defmodule Pan.Web do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/pan_web/templates",
-                        namespace: PanWeb
+      use Phoenix.View,
+        root: "lib/pan_web/templates",
+        namespace: PanWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -62,13 +60,10 @@ defmodule Pan.Web do
     quote do
       use Phoenix.Router
 
-      import PanWeb.Auth, only: [authenticate_user: 2,
-                                 authenticate_admin: 2,
-                                 authenticate_pro: 2,
-                                 unset_cookie: 2]
+      import PanWeb.Auth,
+        only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2, unset_cookie: 2]
 
-      import PanWeb.Api.Auth, only: [authenticate_api_user: 2,
-                                     authenticate_api_pro_user: 2]
+      import PanWeb.Api.Auth, only: [authenticate_api_user: 2, authenticate_api_pro_user: 2]
     end
   end
 

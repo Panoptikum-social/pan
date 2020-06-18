@@ -5,55 +5,61 @@ defmodule Pan.Bot do
   alias PanWeb.Podcast
 
   def whitelist_urls do
-    body = %{
-      setting_type: "domain_whitelisting",
-      whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
-      domain_action_type: "add"
-    }
-    |> Jason.encode!
+    body =
+      %{
+        setting_type: "domain_whitelisting",
+        whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.io/"],
+        domain_action_type: "add"
+      }
+      |> Jason.encode!()
+
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(body, ["Content-Type": "application/json"], stream_to: self())
   end
 
   def setup_call_to_action do
-    data = %{
-      setting_type: "call_to_actions",
-      thread_state: "new_thread",
-      call_to_actions: [
-        %{
-          payload: "GREETING_ACTION"
-        }
-      ]
-    }
-    |> Jason.encode!
+    data =
+      %{
+        setting_type: "call_to_actions",
+        thread_state: "new_thread",
+        call_to_actions: [
+          %{
+            payload: "GREETING_ACTION"
+          }
+        ]
+      }
+      |> Jason.encode!()
 
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
   end
 
   def greet_user(sender_id) do
-    data = %{
-      recipient: %{
-        id: sender_id
-      },
-      message: %{
-        text: "Hey there! I'll send you podcasts related to whatever you tell me. Give it a try!"
+    data =
+      %{
+        recipient: %{
+          id: sender_id
+        },
+        message: %{
+          text:
+            "Hey there! I'll send you podcasts related to whatever you tell me. Give it a try!"
+        }
       }
-    }
-    |> Jason.encode!
+      |> Jason.encode!()
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
   end
 
   def set_greeting(message) do
-    data = %{
-      setting_type: "greeting",
-      greeting: %{
-        text: message
+    data =
+      %{
+        setting_type: "greeting",
+        greeting: %{
+          text: message
+        }
       }
-    }
-    |> Jason.encode!
+      |> Jason.encode!()
 
     facebook_request_url("thread_settings", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
@@ -72,28 +78,31 @@ defmodule Pan.Bot do
   end
 
   def respond_to_message(message, sender_id) do
-    data = %{
-      recipient: %{
-        id: sender_id
-      },
-      message: message_response(podcasts_from_query(message))
-    }
-    |> Jason.encode!
+    data =
+      %{
+        recipient: %{
+          id: sender_id
+        },
+        message: message_response(podcasts_from_query(message))
+      }
+      |> Jason.encode!()
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())
   end
 
   defp podcasts_from_query(message) do
-    query = [index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",
-             search: [size: 5, from: 0, query: [match: [_all: message]]]]
+    query = [
+      index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",
+      search: [size: 5, from: 0, query: [match: [_all: message]]]
+    ]
 
     {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
 
-    podcast_ids = Enum.map(hits.hits, fn(hit) -> hit._id end)
+    podcast_ids = Enum.map(hits.hits, fn hit -> hit._id end)
 
     from(p in Podcast, where: p.id in ^podcast_ids, preload: :episodes)
-    |> Repo.all
+    |> Repo.all()
   end
 
   defp facebook_request_url(path, params) do
@@ -119,7 +128,7 @@ defmodule Pan.Bot do
         type: "template",
         payload: %{
           template_type: "generic",
-          elements: Enum.map(podcasts, &(podcast_json(&1)))
+          elements: Enum.map(podcasts, &podcast_json(&1))
         }
       }
     }
@@ -128,6 +137,7 @@ defmodule Pan.Bot do
   defp podcast_json(podcast) do
     [episode | _rest] = podcast.episodes
     host = Application.get_env(:pan, :bot)[:host]
+
     data = %{
       title: podcast.title,
       subtitle: podcast.description,
@@ -158,21 +168,25 @@ defmodule Pan.Bot do
         }
       ]
     }
+
     case podcast.image_url && URI.parse(podcast.image_url).scheme do
-      nil -> data
+      nil ->
+        data
+
       _ ->
         Map.put_new(data, :image_url, podcast.image_url)
     end
   end
 
   defp send_action(sender_id, action) do
-    data = %{
-      recipient: %{
-        id: sender_id
-      },
-      sender_action: action
-    }
-    |> Jason.encode!
+    data =
+      %{
+        recipient: %{
+          id: sender_id
+        },
+        sender_action: action
+      }
+      |> Jason.encode!()
 
     facebook_request_url("messages", access_token_params())
     |> HTTPoison.post(data, ["Content-Type": "application/json"], stream_to: self())

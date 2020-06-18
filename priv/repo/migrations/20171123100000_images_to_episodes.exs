@@ -3,8 +3,8 @@ defmodule Pan.Repo.Migrations.AddImagesToEpisodes do
 
   def change do
     alter table(:episodes) do
-      add :image_title, :string
-      add :image_url, :string
+      add(:image_title, :string)
+      add(:image_url, :string)
     end
   end
 end

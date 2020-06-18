@@ -2,16 +2,15 @@ defmodule PanWeb.Engagement do
   use Pan.Web, :model
 
   schema "engagements" do
-    field :from, :date
-    field :until, :date
-    field :comment, :string
-    field :role, :string
-    belongs_to :persona, PanWeb.Persona
-    belongs_to :podcast, PanWeb.Podcast
+    field(:from, :date)
+    field(:until, :date)
+    field(:comment, :string)
+    field(:role, :string)
+    belongs_to(:persona, PanWeb.Persona)
+    belongs_to(:podcast, PanWeb.Podcast)
 
     timestamps()
   end
-
 
   def changeset(struct, params \\ %{}) do
     struct

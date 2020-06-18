@@ -4,5 +4,5 @@ defmodule PanWeb.Api.InvoiceView do
 
   def type(_, _), do: "invoice"
 
-  attributes [:filename, :content_type, :inserted_at]
+  attributes([:filename, :content_type, :inserted_at])
 end

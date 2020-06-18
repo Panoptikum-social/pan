@@ -4,14 +4,20 @@ defmodule Pan.Parser.AlternateFeed do
   alias PanWeb.AlternateFeed
 
   def get_or_insert(feed_id, alternate_feed_map) do
-    case (from a in AlternateFeed, where: a.feed_id == ^feed_id and
-                                          a.url == ^alternate_feed_map[:url],
-                                   limit: 1)
+    alternate_feed =
+      from(
+        a in AlternateFeed,
+        where: a.feed_id == ^feed_id and a.url == ^alternate_feed_map[:url],
+        limit: 1
+      )
+
+    case alternate_feed
          |> Repo.one() do
       nil ->
         %AlternateFeed{feed_id: feed_id}
         |> Map.merge(alternate_feed_map)
         |> Repo.insert()
+
       alternate_feed ->
         {:ok, alternate_feed}
     end

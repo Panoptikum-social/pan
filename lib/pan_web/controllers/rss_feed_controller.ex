@@ -6,7 +6,6 @@ defmodule PanWeb.RssFeedController do
     render(conn, "index.html")
   end
 
-
   def datatable(conn, params) do
     search = params["search"]["value"]
     searchfrag = "%#{params["search"]["value"]}%"
@@ -17,10 +16,11 @@ defmodule PanWeb.RssFeedController do
 
     columns = params["columns"]
 
-    order_by = Enum.map(params["order"], fn({_key, value}) ->
-                 column_number = value["column"]
-                 {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
-               end)
+    order_by =
+      Enum.map(params["order"], fn {_key, value} ->
+        column_number = value["column"]
+        {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
+      end)
 
     records_total = Repo.aggregate(RssFeed, :count, :id)
 
@@ -31,26 +31,30 @@ defmodule PanWeb.RssFeedController do
         from(p in RssFeed)
       end
 
-    records_filtered = query
-                       |> Repo.aggregate(:count)
+    records_filtered =
+      query
+      |> Repo.aggregate(:count)
 
-    rss_feeds = from(p in query, limit: ^limit,
-                                 offset: ^offset,
-                                 order_by: ^order_by)
-               |> Repo.all()
+    rss_feeds =
+      from(p in query,
+        limit: ^limit,
+        offset: ^offset,
+        order_by: ^order_by
+      )
+      |> Repo.all()
 
-    render(conn, "datatable.json", rss_feeds: rss_feeds,
-                                   draw: draw,
-                                   records_total: records_total,
-                                   records_filtered: records_filtered)
+    render(conn, "datatable.json",
+      rss_feeds: rss_feeds,
+      draw: draw,
+      records_total: records_total,
+      records_filtered: records_filtered
+    )
   end
-
 
   def new(conn, _params) do
     changeset = RssFeed.changeset(%RssFeed{})
     render(conn, "new.html", changeset: changeset)
   end
-
 
   def create(conn, %{"rss_feed" => rss_feed_params}) do
     changeset = RssFeed.changeset(%RssFeed{}, rss_feed_params)
@@ -60,11 +64,11 @@ defmodule PanWeb.RssFeedController do
         conn
         |> put_flash(:info, "Rss feed created successfully.")
         |> redirect(to: rss_feed_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
   end
-
 
   def show(conn, %{"id" => id}) do
     rss_feed = Repo.get!(RssFeed, id)
@@ -72,13 +76,11 @@ defmodule PanWeb.RssFeedController do
     render(conn, "show.html", rss_feed: rss_feed)
   end
 
-
   def edit(conn, %{"id" => id}) do
     rss_feed = Repo.get!(RssFeed, id)
     changeset = RssFeed.changeset(rss_feed)
     render(conn, "edit.html", rss_feed: rss_feed, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "rss_feed" => rss_feed_params}) do
     rss_feed = Repo.get!(RssFeed, id)
@@ -89,11 +91,11 @@ defmodule PanWeb.RssFeedController do
         conn
         |> put_flash(:info, "RssFeed updated successfully.")
         |> redirect(to: rss_feed_path(conn, :show, rss_feed))
+
       {:error, changeset} ->
         render(conn, "edit.html", rss_feed: rss_feed, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}) do
     rss_feed = Repo.get!(RssFeed, id)

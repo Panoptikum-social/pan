@@ -16,7 +16,8 @@ defmodule Pan.Parser.RssFeed do
 
         {:ok, podcast_id}
 
-      {:error, error} -> {:error, error}
+      {:error, error} ->
+        {:error, error}
 
       {:redirect, redirect_target} ->
         case initial_import(redirect_target, feed_id, pagecount) do
@@ -24,27 +25,28 @@ defmodule Pan.Parser.RssFeed do
             feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
             AlternateFeed.get_or_insert(feed.id, %{url: url})
             {:ok, podcast_id}
+
           {:error, error} ->
             {:error, error}
         end
     end
-   end
-
+  end
 
   def import_to_map(url, logging_id \\ 0, check_changes \\ false) do
     url = String.trim(url)
-    Logger.info "\n\e[96m === #{logging_id} ⬇ #{url} ===\e[0m"
+    Logger.info("\n\e[96m === #{logging_id} ⬇ #{url} ===\e[0m")
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-        feed_xml = Pan.Parser.Helpers.remove_comments(feed_xml)
-                   |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-                   |> Pan.Parser.Helpers.fix_html_entities()
-                   |> Pan.Parser.Helpers.fix_character_code_strings()
-                   |> String.trim()
+        feed_xml =
+          Pan.Parser.Helpers.remove_comments(feed_xml)
+          |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+          |> Pan.Parser.Helpers.fix_html_entities()
+          |> Pan.Parser.Helpers.fix_character_code_strings()
+          |> String.trim()
 
-        with  {:ok, "go on"} <- check_for_changes(feed_xml, logging_id, check_changes),
-              {:ok, feed_map} <- xml_to_map(feed_xml) do
+        with {:ok, "go on"} <- check_for_changes(feed_xml, logging_id, check_changes),
+             {:ok, feed_map} <- xml_to_map(feed_xml) do
           parse_to_map(feed_map, url)
         else
           {:exit, error} -> {:exit, error}
@@ -52,11 +54,13 @@ defmodule Pan.Parser.RssFeed do
           {:error, reason} -> {:error, reason}
         end
 
-      {:redirect, redirect_target} -> {:redirect, redirect_target}
-      {:error, reason} -> {:error, reason}
+      {:redirect, redirect_target} ->
+        {:redirect, redirect_target}
+
+      {:error, reason} ->
+        {:error, reason}
     end
   end
-
 
   def check_for_changes(feed_xml, podcast_id, check_changes) do
     if check_changes do
@@ -64,14 +68,16 @@ defmodule Pan.Parser.RssFeed do
         if String.valid?(feed_xml) do
           feed_xml
         else
-         :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
+          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
         end
 
       case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
         nil ->
           %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
           |> Repo.insert()
+
           {:ok, "go on"}
+
         rss_feed ->
           if count_changes(rss_feed.content, feed_xml) > 3 do
             rss_feed
@@ -88,40 +94,41 @@ defmodule Pan.Parser.RssFeed do
     end
   end
 
-
   def count_changes(old, new) do
     if old do
-      String.splitter(old,"\n")
+      String.splitter(old, "\n")
       |> Enum.zip(String.splitter(new, "\n"))
       |> Enum.count(fn {oldone, newone} -> oldone != newone end)
     else
-      999 # catch the case where for whatever reason the old content is empty
+      # catch the case where for whatever reason the old content is empty
+      999
     end
   end
-
 
   def xml_to_map(feed_map) do
     try do
       {:ok, Quinn.parse(feed_map)}
     catch
-      :exit, error -> 
+      :exit, error ->
         {:error, "Quinn error: " <> error}
     end
   end
 
-
   def parse_to_map(quinn_map, url) do
-    map = %{feed: %{self_link_title: "Feed", self_link_url: url},
-            title: Enum.at(String.split(url, "/"), 2)}
-          |> Iterator.parse(quinn_map)
+    map =
+      %{
+        feed: %{self_link_title: "Feed", self_link_url: url},
+        title: Enum.at(String.split(url, "/"), 2)
+      }
+      |> Iterator.parse(quinn_map)
+
     {:ok, map}
   end
 
-
-# Convenience function for runtime measurement
+  # Convenience function for runtime measurement
   def measure_runtime(function) do
     function
-    |> :timer.tc
+    |> :timer.tc()
     |> elem(0)
     |> Kernel./(1_000_000)
   end

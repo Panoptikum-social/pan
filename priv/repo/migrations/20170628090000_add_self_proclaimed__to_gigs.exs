@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddSelfProclaimedtoGigs do
 
   def change do
     alter table(:gigs) do
-      add :self_proclaimed, :boolean
+      add(:self_proclaimed, :boolean)
     end
   end
 end

@@ -11,16 +11,18 @@ defmodule PanWeb.Auth do
 
   def call(conn, repo) do
     user_id = get_session(conn, :user_id)
+
     cond do
       user = conn.assigns[:current_user] ->
         put_current_user(conn, user)
+
       user = user_id && repo.get(PanWeb.User, user_id) ->
         put_current_user(conn, user)
+
       true ->
         assign(conn, :current_user, nil)
     end
   end
-
 
   def login(conn, user) do
     conn
@@ -28,7 +30,6 @@ defmodule PanWeb.Auth do
     |> put_session(:user_id, user.id)
     |> configure_session(renew: true)
   end
-
 
   defp put_current_user(conn, user) do
     token = Phoenix.Token.sign(conn, "user socket", user.id)
@@ -38,11 +39,9 @@ defmodule PanWeb.Auth do
     |> assign(:user_token, token)
   end
 
-
   def logout(conn) do
     configure_session(conn, drop: true)
   end
-
 
   def login_by_username_and_pass(conn, username, given_pass) do
     user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)
@@ -50,44 +49,49 @@ defmodule PanWeb.Auth do
     cond do
       user && verify_pass(given_pass, user.password_hash) ->
         {:ok, login(conn, user)}
+
       user ->
         {:error, :unauthorized, conn}
+
       true ->
         no_user_verify()
         {:error, :not_found, conn}
     end
   end
 
-
   def login_by_token(conn, token) do
     case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 5) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
         {:ok, login(conn, user)}
+
       {:error, :expired} ->
         {:error, :expired}
+
       {:error, :invalid} ->
         {:error, :invalid}
+
       _ ->
         no_user_verify()
         {:error, :not_found, conn}
     end
   end
 
-
   def grant_access_by_token(_conn, token) do
     case Phoenix.Token.verify(PanWeb.Endpoint, "persona", token, max_age: 60 * 60 * 48) do
       {:ok, persona_id} ->
         {:ok, String.to_integer(persona_id)}
+
       {:error, :expired} ->
         {:error, :expired}
+
       {:error, :invalid} ->
         {:error, :invalid}
+
       _ ->
         {:error, :invalid}
     end
   end
-
 
   import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
   alias PanWeb.Router.Helpers
@@ -104,11 +108,11 @@ defmodule PanWeb.Auth do
     end
   end
 
-
   def authenticate_pro(conn, _opts) do
     current_user = conn.assigns.current_user
+
     if current_user && current_user.pro_until != nil &&
-       NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+         NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
       conn
     else
       conn
@@ -119,9 +123,9 @@ defmodule PanWeb.Auth do
     end
   end
 
-
   def authenticate_admin(conn, _opts) do
     current_user = conn.assigns.current_user
+
     if current_user && current_user.admin do
       conn
     else
@@ -133,15 +137,14 @@ defmodule PanWeb.Auth do
     end
   end
 
-
   def unset_cookie(conn, _opts) do
     # if not logged in yet or do not fill out a form, we can delete the cookie
     if conn.assigns.current_user ||
-       conn.path_info == ["sessions", "new"] ||
-       conn.path_info == ["sessions"] ||
-       conn.path_info == ["forgot_password"] ||
-       conn.path_info == ["users", "new"] ||
-       conn.path_info == ["users"]do
+         conn.path_info == ["sessions", "new"] ||
+         conn.path_info == ["sessions"] ||
+         conn.path_info == ["forgot_password"] ||
+         conn.path_info == ["users", "new"] ||
+         conn.path_info == ["users"] do
       conn
     else
       configure_session(conn, drop: true)

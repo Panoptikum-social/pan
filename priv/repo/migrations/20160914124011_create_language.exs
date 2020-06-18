@@ -3,12 +3,12 @@ defmodule Pan.Repo.Migrations.CreateLanguage do
 
   def change do
     create table(:languages) do
-      add :shortcode, :string
-      add :name, :string
+      add(:shortcode, :string)
+      add(:name, :string)
 
       timestamps()
     end
-    create unique_index(:languages, [:shortcode])
 
+    create(unique_index(:languages, [:shortcode]))
   end
 end

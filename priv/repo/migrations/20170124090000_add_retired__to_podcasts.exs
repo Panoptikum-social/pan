@@ -3,7 +3,7 @@ defmodule Pan.Repo.Migrations.AddUpdatePausedToPodcasts do
 
   def change do
     alter table(:podcasts) do
-      add :retired, :boolean, default: false
+      add(:retired, :boolean, default: false)
     end
   end
 end

@@ -35,11 +35,10 @@ config :scrivener_html, routes_helper: PanWeb.Router.Helpers
 
 config :tirexs, :uri, "http://127.0.0.1:9200"
 
-
 config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"

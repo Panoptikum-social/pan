@@ -4,12 +4,12 @@ defmodule PanWeb.Api.SubscriptionView do
 
   def type(_, _), do: "subscription"
 
-  location :location
+  location(:location)
 
-  attributes [:created, :deleted]
+  attributes([:created, :deleted])
 
-  has_one :podcast, serializer: PanWeb.Api.PlainPodcastView, include: false
-  has_one :user, serializer: PanWeb.Api.PlainUserView, include: false
+  has_one(:podcast, serializer: PanWeb.Api.PlainPodcastView, include: false)
+  has_one(:user, serializer: PanWeb.Api.PlainUserView, include: false)
 
   def location(_like, conn) do
     api_subscription_url(conn, :toggle)

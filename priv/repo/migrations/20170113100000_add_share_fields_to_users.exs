@@ -3,8 +3,8 @@ defmodule Pan.Repo.Migrations.AddShareFieldsToUsers do
 
   def change do
     alter table(:users) do
-      add :share_subscriptions, :boolean
-      add :share_follows, :boolean
+      add(:share_subscriptions, :boolean)
+      add(:share_follows, :boolean)
     end
   end
 end

@@ -7,9 +7,11 @@ defmodule PanWeb.DelegationController do
   end
 
   def datatable(conn, _params) do
-    delegations = from(Delegation, preload: [:persona, :delegate])
-                     |> Repo.all()
-    render conn, "datatable.json", delegations: delegations
+    delegations =
+      from(Delegation, preload: [:persona, :delegate])
+      |> Repo.all()
+
+    render(conn, "datatable.json", delegations: delegations)
   end
 
   def new(conn, _params) do
@@ -25,6 +27,7 @@ defmodule PanWeb.DelegationController do
         conn
         |> put_flash(:info, "Delegation created successfully.")
         |> redirect(to: delegation_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -50,6 +53,7 @@ defmodule PanWeb.DelegationController do
         conn
         |> put_flash(:info, "Delegation updated successfully.")
         |> redirect(to: delegation_path(conn, :show, delegation))
+
       {:error, changeset} ->
         render(conn, "edit.html", delegation: delegation, changeset: changeset)
     end

@@ -6,9 +6,8 @@ defmodule PanWeb.SubscriptionFrontendController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-
   def delete_all(conn, _, user) do
-    Repo.delete_all(from s in Subscription, where: s.user_id == ^user.id)
+    Repo.delete_all(from(s in Subscription, where: s.user_id == ^user.id))
 
     conn
     |> put_flash(:info, "Deleted all your subscriptions successfully.")

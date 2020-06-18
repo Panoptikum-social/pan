@@ -6,8 +6,12 @@ defmodule Pan.Updater.Podcast do
   alias PanWeb.{Endpoint, Podcast}
   require Logger
 
-
-  def import_new_episodes(podcast, current_user \\ nil, forced \\ false, no_failure_count_increase \\ false) do
+  def import_new_episodes(
+        podcast,
+        current_user \\ nil,
+        forced \\ false,
+        no_failure_count_increase \\ false
+      ) do
     Logger.info("\n\e[96m === #{podcast.id} ⬇ #{podcast.title} ===\e[0m")
 
     with {:ok, _podcast} <- set_next_update(podcast),
@@ -24,6 +28,7 @@ defmodule Pan.Updater.Podcast do
         case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
           {:ok, _} ->
             import_new_episodes(podcast, current_user, forced, no_failure_count_increase)
+
           {:error, message} ->
             handle_message(podcast, current_user, message, no_failure_count_increase)
         end
@@ -36,16 +41,15 @@ defmodule Pan.Updater.Podcast do
     end
   end
 
-
   defp handle_message(podcast, current_user, message, no_failure_count_increase) do
     unless no_failure_count_increase == :no_failure_count_increase do
       increase_failure_count_and_persist_error(podcast, message)
     end
+
     Logger.warn(message)
     notify_user(current_user, {:error, message}, podcast)
     {:error, message}
   end
-
 
   defp set_next_update(podcast) do
     next_update = Timex.shift(Timex.now(), hours: podcast.update_intervall + 1)
@@ -85,16 +89,16 @@ defmodule Pan.Updater.Podcast do
   end
 
   def unpause_and_reset_failure_count(podcast) do
-    PanWeb.Podcast.changeset(podcast, %{update_paused: false,
-                                        retired: false,
-                                        failure_count: 0})
+    PanWeb.Podcast.changeset(podcast, %{update_paused: false, retired: false, failure_count: 0})
     |> Repo.update(force: true)
   end
 
   defp increase_failure_count_and_persist_error(podcast, message) do
-    Podcast.changeset(podcast, %{failure_count: (podcast.failure_count || 0) + 1,
-                                 last_error_message: message,
-                                 last_error_occured: NaiveDateTime.utc_now()})
+    Podcast.changeset(podcast, %{
+      failure_count: (podcast.failure_count || 0) + 1,
+      last_error_message: message,
+      last_error_occured: NaiveDateTime.utc_now()
+    })
     |> Repo.update(force: true)
 
     if podcast.failure_count == 9 do

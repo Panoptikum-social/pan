@@ -9,51 +9,65 @@ defmodule PanWeb.Api.OpmlController do
   end
 
   def index(conn, _params, user) do
-    opmls = from(o in Opml, where: o.user_id == ^user.id,
-                            preload: :user)
-            |> Repo.all()
+    opmls =
+      from(o in Opml,
+        where: o.user_id == ^user.id,
+        preload: :user
+      )
+      |> Repo.all()
 
-    render conn, "index.json-api", data: opmls,
-                                   opts: [include: "user"]
+    render(conn, "index.json-api",
+      data: opmls,
+      opts: [include: "user"]
+    )
   end
 
-
   def show(conn, %{"id" => id}, user) do
-    opml = from(o in Opml, where: o.user_id == ^user.id and
-                                  o.id == ^id,
-                           limit: 1,
-                           preload: :user)
-           |> Repo.all()
+    opml =
+      from(o in Opml,
+        where:
+          o.user_id == ^user.id and
+            o.id == ^id,
+        limit: 1,
+        preload: :user
+      )
+      |> Repo.all()
 
     if opml != [] do
-      render conn, "show.json-api", data: opml,
-                                    opts: [include: "user"]
+      render(conn, "show.json-api",
+        data: opml,
+        opts: [include: "user"]
+      )
     else
       Helpers.send_404(conn)
     end
   end
 
-
   def create(conn, %{"upload" => upload}, user) do
     with %Plug.Upload{} <- upload do
-
       File.mkdir_p("/var/phoenix/pan-uploads/opml/#{user.id}")
       path = "/var/phoenix/pan-uploads/opml/#{user.id}/#{upload.filename}"
       File.cp(upload.path, path)
 
-      changeset = %Opml{content_type: upload.content_type,
-                        filename: upload.filename,
-                        path: path,
-                        user_id: user.id}
-                  |> Opml.changeset()
+      changeset =
+        %Opml{
+          content_type: upload.content_type,
+          filename: upload.filename,
+          path: path,
+          user_id: user.id
+        }
+        |> Opml.changeset()
 
       case Repo.insert(changeset) do
         {:ok, opml} ->
           opml = Repo.preload(opml, :user)
 
           conn
-          |> render("show.json-api", data: opml,
-                                     opts: [include: "user"])
+          |> render("show.json-api",
+            data: opml,
+            opts: [include: "user"]
+          )
+
         {:error, changeset} ->
           conn
           |> put_status(422)
@@ -64,43 +78,53 @@ defmodule PanWeb.Api.OpmlController do
     end
   end
 
-
   def create(conn, %{}, _user) do
     Helpers.send_error(conn, 412, "Precondition Failed", "No file provided")
   end
 
-
   def delete(conn, %{"id" => id}, user) do
-    opml = from(o in Opml, where: o.id == ^id and
-                                  o.user_id == ^user.id,
-                           preload: :user)
-           |> Repo.one()
+    opml =
+      from(o in Opml,
+        where:
+          o.id == ^id and
+            o.user_id == ^user.id,
+        preload: :user
+      )
+      |> Repo.one()
 
     with %PanWeb.Opml{} <- opml do
       File.rm(opml.path)
 
-      opml = Repo.delete!(opml)
-             |> mark_if_deleted()
+      opml =
+        Repo.delete!(opml)
+        |> mark_if_deleted()
 
-      render conn, "show.json-api", data: opml,
-                                    opts: [include: "user"]
+      render(conn, "show.json-api",
+        data: opml,
+        opts: [include: "user"]
+      )
     else
       nil -> Helpers.send_404(conn)
     end
   end
 
-
   def import(conn, %{"id" => id}, user) do
-    opml = from(o in Opml, where: o.id == ^id and
-                                  o.user_id == ^user.id,
-                           preload: :user)
-           |> Repo.one()
+    opml =
+      from(o in Opml,
+        where:
+          o.id == ^id and
+            o.user_id == ^user.id,
+        preload: :user
+      )
+      |> Repo.one()
 
     with %PanWeb.Opml{} <- opml do
       Pan.OpmlParser.Opml.parse(opml.path, user.id)
 
-      render conn, "show.json-api", data: opml,
-                                    opts: [include: "user"]
+      render(conn, "show.json-api",
+        data: opml,
+        opts: [include: "user"]
+      )
     else
       nil -> Helpers.send_404(conn)
     end

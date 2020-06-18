@@ -7,9 +7,11 @@ defmodule PanWeb.FollowController do
   end
 
   def datatable(conn, _params) do
-    follows = from(Follow, preload: [:follower, :podcast, :user, :category])
-              |> Repo.all()
-    render conn, "datatable.json", follows: follows
+    follows =
+      from(Follow, preload: [:follower, :podcast, :user, :category])
+      |> Repo.all()
+
+    render(conn, "datatable.json", follows: follows)
   end
 
   def new(conn, _params) do
@@ -25,6 +27,7 @@ defmodule PanWeb.FollowController do
         conn
         |> put_flash(:info, "Follow created successfully.")
         |> redirect(to: follow_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -50,6 +53,7 @@ defmodule PanWeb.FollowController do
         conn
         |> put_flash(:info, "Follow updated successfully.")
         |> redirect(to: follow_path(conn, :show, follow))
+
       {:error, changeset} ->
         render(conn, "edit.html", follow: follow, changeset: changeset)
     end

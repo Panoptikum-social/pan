@@ -7,12 +7,11 @@ defmodule Pan.DelegationTest do
 
   test "changeset with valid attributes" do
     persona = insert_persona()
-    delegate = insert_persona(%{pid:  "delegate pid",
-                                name: "delegate name",
-                                uri:  "delegate uri"})
+    delegate = insert_persona(%{pid: "delegate pid", name: "delegate name", uri: "delegate uri"})
 
-    changeset = Delegation.changeset(%Delegation{persona_id: persona.id,
-                                                 delegate_id: delegate.id})
+    changeset =
+      Delegation.changeset(%Delegation{persona_id: persona.id, delegate_id: delegate.id})
+
     assert changeset.valid?
   end
 

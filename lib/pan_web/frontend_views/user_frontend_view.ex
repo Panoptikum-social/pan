@@ -7,7 +7,6 @@ defmodule PanWeb.UserFrontendView do
   alias PanWeb.User
   import NaiveDateTime
 
-
   def pro(user) do
     user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
   end
@@ -17,7 +16,7 @@ defmodule PanWeb.UserFrontendView do
   end
 
   def alert_class(user) do
-    cond do 
+    cond do
       pro_days_left(user) > 30 -> "alert-success"
       pro_days_left(user) > 7 -> "alert-warning"
       pro_days_left(user) < 7 -> "alert-danger"
@@ -32,52 +31,47 @@ defmodule PanWeb.UserFrontendView do
     end
   end
 
-
   def like_or_unlike(enjoyer_id, user_id) do
-    case Repo.get_by(Like, enjoyer_id: enjoyer_id,
-                           user_id: user_id) do
+    case Repo.get_by(Like,
+           enjoyer_id: enjoyer_id,
+           user_id: user_id
+         ) do
       nil ->
-        content_tag :button, class: "btn btn-warning",
-                             data: [type: "user",
-                                    event: "like",
-                                    action: "like",
-                                    id: user_id] do
+        content_tag :button,
+          class: "btn btn-warning",
+          data: [type: "user", event: "like", action: "like", id: user_id] do
           [User.likes(user_id), " ", fa_icon("heart-o"), " Like"]
         end
-      _   ->
-        content_tag :button, class: "btn btn-success",
-                             data: [type: "user",
-                                    event: "like",
-                                    action: "unlike" ,
-                                    id: user_id] do
+
+      _ ->
+        content_tag :button,
+          class: "btn btn-success",
+          data: [type: "user", event: "like", action: "unlike", id: user_id] do
           [User.likes(user_id), " ", fa_icon("heart"), " Unlike"]
         end
     end
   end
 
-
   def follow_or_unfollow(follower_id, user_id) do
-    case Repo.get_by(Follow, follower_id: follower_id,
-                             user_id: user_id) do
+    case Repo.get_by(Follow,
+           follower_id: follower_id,
+           user_id: user_id
+         ) do
       nil ->
-        content_tag :button, class: "btn btn-primary",
-                             data: [type: "user",
-                                    event: "follow",
-                                    action: "follow",
-                                    id: user_id] do
+        content_tag :button,
+          class: "btn btn-primary",
+          data: [type: "user", event: "follow", action: "follow", id: user_id] do
           [User.follows(user_id), " ", fa_icon("commenting-o"), " Follow"]
         end
-      _   ->
-        content_tag :button, class: "btn btn-success",
-                             data: [type: "user",
-                                    event: "follow",
-                                    action: "unfollow" ,
-                                    id: user_id] do
+
+      _ ->
+        content_tag :button,
+          class: "btn btn-success",
+          data: [type: "user", event: "follow", action: "unfollow", id: user_id] do
           [User.follows(user_id), " ", fa_icon("commenting"), " Unfollow"]
         end
     end
   end
-
 
   def render("like_button.html", %{current_user_id: current_user_id, user_id: user_id}) do
     like_or_unlike(current_user_id, user_id)
@@ -87,27 +81,25 @@ defmodule PanWeb.UserFrontendView do
     follow_or_unfollow(current_user_id, user_id)
   end
 
-
   def podcast_button(conn, podcast) do
-    link [fa_icon("podcast"), " ", podcast.title],
-         to: podcast_frontend_path(conn, :show, podcast),
-         class: "btn btn-default btn-xs",
-         style: "color: #000"
+    link([fa_icon("podcast"), " ", podcast.title],
+      to: podcast_frontend_path(conn, :show, podcast),
+      class: "btn btn-default btn-xs",
+      style: "color: #000"
+    )
   end
-
 
   def episode_button(conn, episode) do
-    link [fa_icon("headphones"), " ", truncate_string(episode.title, 40)],
-         to: episode_frontend_path(conn, :show, episode),
-         class: "btn btn-primary btn-xs",
-         style: "color: #fff"
+    link([fa_icon("headphones"), " ", truncate_string(episode.title, 40)],
+      to: episode_frontend_path(conn, :show, episode),
+      class: "btn btn-primary btn-xs",
+      style: "color: #fff"
+    )
   end
-
 
   def chapter_label(chapter) do
     [fa_icon("indent"), " ", chapter.title]
   end
-
 
   def format_date(date) do
     Timex.to_date(date)

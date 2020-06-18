@@ -3,24 +3,25 @@ defmodule Pan.Repo.Migrations.RemoveAuthorFromPodcastsAndEpisodes do
 
   def up do
     alter table(:podcasts) do
-      remove :author
-      remove :owner_id
+      remove(:author)
+      remove(:owner_id)
     end
 
     alter table(:episodes) do
-      remove :author
+      remove(:author)
     end
   end
 
   def down do
     alter table(:podcasts) do
-      add :author, :string
-      add :owner_id, references(:users, on_delete: :nothing)
+      add(:author, :string)
+      add(:owner_id, references(:users, on_delete: :nothing))
     end
-    create index(:podcasts, [:owner_id])
+
+    create(index(:podcasts, [:owner_id]))
 
     alter table(:episodes) do
-      add :author, :string
+      add(:author, :string)
     end
   end
 end

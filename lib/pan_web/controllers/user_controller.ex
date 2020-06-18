@@ -2,37 +2,34 @@ defmodule PanWeb.UserController do
   use Pan.Web, :controller
   alias PanWeb.{Subscription, User}
 
-  plug :authenticate_user when action in [:index, :show]
+  plug(:authenticate_user when action in [:index, :show])
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-
   def index(conn, _params, _user) do
-    render conn, "index.html"
+    render(conn, "index.html")
   end
-
 
   def datatable(conn, _params, _user) do
     users = Repo.all(User)
-    render conn, "datatable.json", users: users
+    render(conn, "datatable.json", users: users)
   end
-
 
   def show(conn, %{"id" => id}, _user) do
-    user = Repo.get!(PanWeb.User, id)
-           |> Repo.preload(:user_personas)
-    render conn, "show.html", user: user
-  end
+    user =
+      Repo.get!(PanWeb.User, id)
+      |> Repo.preload(:user_personas)
 
+    render(conn, "show.html", user: user)
+  end
 
   def edit(conn, %{"id" => id}, _user) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)
   end
-
 
   def update(conn, %{"id" => id, "user" => user_params}, _user) do
     id = String.to_integer(id)
@@ -41,15 +38,16 @@ defmodule PanWeb.UserController do
 
     case Repo.update(changeset) do
       {:ok, user} ->
-         User.update_search_index(id)
-         conn
-         |> put_flash(:info, "User updated successfully.")
-         |> redirect(to: user_path(conn, :show, user))
+        User.update_search_index(id)
+
+        conn
+        |> put_flash(:info, "User updated successfully.")
+        |> redirect(to: user_path(conn, :show, user))
+
       {:error, changeset} ->
-         render(conn, "edit.html", user: user, changeset: changeset)
+        render(conn, "edit.html", user: user, changeset: changeset)
     end
   end
-
 
   def delete(conn, %{"id" => id}, _user) do
     id = String.to_integer(id)
@@ -63,7 +61,6 @@ defmodule PanWeb.UserController do
     |> redirect(to: user_path(conn, :index))
   end
 
-
   def unset_pro(conn, %{"id" => id}, _user) do
     Repo.get(User, id)
     |> User.changeset(%{pro_until: nil})
@@ -74,31 +71,30 @@ defmodule PanWeb.UserController do
     |> redirect(to: user_path(conn, :index))
   end
 
-
   def forgot_password(conn, _params, _user) do
     render(conn, "forgot_password.html")
   end
-
 
   def request_login_link(conn, %{"user" => user_params}, _user) do
     changeset = User.request_login_changeset(%User{}, user_params)
 
     case Repo.get_by(User, email: changeset.changes.email) do
       nil ->
-        true # we ignore unknown emails on purpose
+        # we ignore unknown emails on purpose
+        true
+
       user ->
         Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
         |> Pan.Email.login_link_html_email(changeset.changes.email)
         |> Pan.Mailer.deliver_now()
     end
+
     render(conn, "login_link_sent.html")
   end
-
 
   def merge(conn, _params, _user) do
     render(conn, "merge.html")
   end
-
 
   def execute_merge(conn, %{"users" => %{"from" => from, "into" => into}}, _user) do
     from_id = String.to_integer(from)
@@ -135,18 +131,21 @@ defmodule PanWeb.UserController do
     |> Repo.update_all(set: [user_id: into_id])
 
     Repo.get!(User, from_id)
-    |> Repo.delete!
+    |> Repo.delete!()
+
     User.delete_search_index(from_id)
     User.update_search_index(into_id)
 
     render(conn, "merge.html")
   end
 
-
   def push_subscriptions(conn, %{"user_id" => user_id, "category_id" => category_id}, _user) do
-    podcast_ids = from(s in Subscription, where: s.user_id == ^user_id,
-                                          select: s.podcast_id)
-                  |> Repo.all()
+    podcast_ids =
+      from(s in Subscription,
+        where: s.user_id == ^user_id,
+        select: s.podcast_id
+      )
+      |> Repo.all()
 
     for podcast_id <- podcast_ids do
       PanWeb.CategoryPodcast.get_or_insert(String.to_integer(category_id), podcast_id)
@@ -155,13 +154,11 @@ defmodule PanWeb.UserController do
     render(conn, "done.html")
   end
 
-
   def edit_password(conn, %{"id" => id}, _user) do
     user = Repo.get!(User, id)
     changeset = User.changeset(user)
     render(conn, "edit_password.html", user: user, changeset: changeset)
   end
-
 
   def update_password(conn, %{"id" => id, "user" => user_params}, _user) do
     user = Repo.get!(User, id)
@@ -169,12 +166,12 @@ defmodule PanWeb.UserController do
 
     case Repo.update(changeset) do
       {:ok, _user} ->
-         conn
-         |> put_flash(:info, "Password updated successfully.")
-         |> redirect(to: user_path(conn, :show, user))
-      {:error, changeset} ->
+        conn
+        |> put_flash(:info, "Password updated successfully.")
+        |> redirect(to: user_path(conn, :show, user))
 
-         render(conn, "edit_password.html", user: user, changeset: changeset)
+      {:error, changeset} ->
+        render(conn, "edit_password.html", user: user, changeset: changeset)
     end
   end
 end

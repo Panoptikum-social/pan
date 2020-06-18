@@ -3,8 +3,7 @@ defmodule Pan.LanguageTest do
 
   alias PanWeb.Language
 
-  @valid_attrs %{name: "de-DE",
-                 shortcode: "DE"}
+  @valid_attrs %{name: "de-DE", shortcode: "DE"}
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

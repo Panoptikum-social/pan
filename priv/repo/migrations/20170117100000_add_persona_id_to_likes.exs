@@ -3,9 +3,9 @@ defmodule Pan.Repo.Migrations.AddPersonaIdToLikes do
 
   def change do
     alter table(:likes) do
-      add :persona_id, :integer
+      add(:persona_id, :integer)
     end
 
-    create index(:likes, [:persona_id])
+    create(index(:likes, [:persona_id]))
   end
 end

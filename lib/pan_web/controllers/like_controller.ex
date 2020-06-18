@@ -7,9 +7,11 @@ defmodule PanWeb.LikeController do
   end
 
   def datatable(conn, _params) do
-    likes = from(Like, preload: [:enjoyer, :podcast, :episode, :chapter, :user, :category])
-              |> Repo.all()
-    render conn, "datatable.json", likes: likes
+    likes =
+      from(Like, preload: [:enjoyer, :podcast, :episode, :chapter, :user, :category])
+      |> Repo.all()
+
+    render(conn, "datatable.json", likes: likes)
   end
 
   def new(conn, _params) do
@@ -25,6 +27,7 @@ defmodule PanWeb.LikeController do
         conn
         |> put_flash(:info, "Like created successfully.")
         |> redirect(to: like_path(conn, :index))
+
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -50,6 +53,7 @@ defmodule PanWeb.LikeController do
         conn
         |> put_flash(:info, "Like updated successfully.")
         |> redirect(to: like_path(conn, :show, like))
+
       {:error, changeset} ->
         render(conn, "edit.html", like: like, changeset: changeset)
     end

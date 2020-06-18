@@ -3,9 +3,11 @@ defmodule Pan.OpmlTest do
 
   alias PanWeb.Opml
 
-  @valid_attrs %{content_type: "text/x-opml+xml",
-                 filename: "podcasts.opml",
-                 path: "/var/phoenix/pan-uploads/opml/6/podcasts.opml"}
+  @valid_attrs %{
+    content_type: "text/x-opml+xml",
+    filename: "podcasts.opml",
+    path: "/var/phoenix/pan-uploads/opml/6/podcasts.opml"
+  }
   @invalid_attrs %{}
 
   test "changeset with valid attributes" do

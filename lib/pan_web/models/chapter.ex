@@ -4,16 +4,15 @@ defmodule PanWeb.Chapter do
   alias PanWeb.Like
 
   schema "chapters" do
-    field :start, :string
-    field :title, :string
+    field(:start, :string)
+    field(:title, :string)
     timestamps()
 
-    belongs_to :episode, PanWeb.Episode
+    belongs_to(:episode, PanWeb.Episode)
 
-    has_many :recommendations, PanWeb.Recommendation, on_delete: :delete_all
-    has_many :likes, PanWeb.Like, on_delete: :delete_all
+    has_many(:recommendations, PanWeb.Recommendation, on_delete: :delete_all)
+    has_many(:likes, PanWeb.Like, on_delete: :delete_all)
   end
-
 
   def changeset(struct, params \\ %{}) do
     struct
@@ -21,22 +20,23 @@ defmodule PanWeb.Chapter do
     |> validate_required([:start, :title])
   end
 
-
   def like(chapter_id, user_id) do
-    case Repo.get_by(Like, enjoyer_id: user_id,
-                           chapter_id: chapter_id) do
+    case Repo.get_by(Like,
+           enjoyer_id: user_id,
+           chapter_id: chapter_id
+         ) do
       nil ->
         %Like{enjoyer_id: user_id, chapter_id: chapter_id}
-        |> Repo.insert
+        |> Repo.insert()
+
       like ->
         {:ok, Repo.delete!(like)}
     end
   end
 
-
   def likes(id) do
     from(l in Like, where: l.chapter_id == ^id)
     |> Repo.aggregate(:count)
-    |> Integer.to_string
+    |> Integer.to_string()
   end
 end
