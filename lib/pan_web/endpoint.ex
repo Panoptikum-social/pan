@@ -19,7 +19,8 @@ defmodule PanWeb.Endpoint do
     gzip: true,
     only: ~w(css fonts images img js favicon.ico robots.txt
              podlove-webplayer podlove-subscribe-button podigee-podcast-player
-             .well-known opensearch.xml google0fe1c0bbe8862b06.html)
+             .well-known opensearch.xml google0fe1c0bbe8862b06.html
+             css_alt js_alt)
   )
 
   plug(Plug.Static, at: "thumbnails/", from: "/var/phoenix/pan-uploads/images/", gzip: true)

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Podcasting Social Network">
+    <meta name="author" content="Stefan Haslinger">
+    <meta name="theme-color" content="#434a54">
+
+    <title>Panoptikum</title>
+    <link rel="stylesheet"
+          href="<%= static_path(@conn, "/css_alt/app_alt.css") %>">
+    <link rel="icon" sizes="192x192" href="/images/icon.png">
+    <script>window.userToken = "<%= assigns[:user_token] %>"
+            window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
+    <script src="<%= static_path(@conn, "/js_alt/app_alt.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js_alt/vendor_alt.js") %>"></script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
+
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Panoptikum" href="https://panoptikum.io/opensearch.xml">
+  </head>
+
+  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
+    <div class="container">
+      <nav class="navbar">
+          <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
+      </nav>
+    </div>
+
+    <p class="alert alert-info container" role="alert"><%= get_flash(@conn, :info) %></p>
+    <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
+
+    <main role="main" class="container">
+      <%= @inner_content %>
+    </main>
+
+    <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
+  </body>
+</html>

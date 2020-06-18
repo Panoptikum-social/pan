@@ -1,0 +1,144 @@
+<div class="navbar-header">
+  <button type="button"
+          class="navbar-toggle collapsed"
+          data-toggle="collapse"
+          data-target="#navbar"
+          aria-expanded="false"
+          aria-controls="navbar">
+    <span class="sr-only">Toggle navigation</span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+    <span class="icon-bar"></span>
+  </button>
+  <a href="/" class="navbar-brand"><img src="/images/panoptikum.thumbnail.png" width="40" style="margin-top: -10px;"></a>
+  <a class="navbar-brand" href="/">Panoptikum.io</a>
+</div>
+
+<div id="navbar" class="navbar-collapse collapse">
+  <ul class="nav navbar-nav">
+    <li>
+      <%= link fa_icon("home"), to: page_frontend_path(@conn, :home),
+                                title: "Home", class: "hidden-xs" %>
+      <%= link [fa_icon("home", class: "fa-fw"), raw("&nbsp; &nbsp; Home")],
+               to: page_frontend_path(@conn, :home),
+               title: "Home",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("sitemap"), to: category_frontend_path(@conn, :index),
+                                   id: "category_link", title: "Categories", class: "hidden-xs" %>
+      <%= link [fa_icon("sitemap", class: "fa-fw"), raw("&nbsp; &nbsp; Categories")],
+               to: category_frontend_path(@conn, :index),
+               id: "category_link",
+               title: "Categories",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <a href="https://blog.panoptikum.io/" title="About" class="hidden-xs">
+        <%= fa_icon("question-circle") %>
+      </a>
+      <a href="https://blog.panoptikum.io/" title="About" class="visible-xs-inline">
+        <%= fa_icon("question-circle", class: "fa-fw") %>&nbsp; &nbsp; About
+      </a>
+    </li>
+    <li>
+      <a href="https://blog.panoptikum.io/blog" title="Blog" class="hidden-xs">
+        <%= fa_icon("newspaper-o") %>
+      </a>
+      <a href="https://blog.panoptikum.io/blog" title="Blog" class="visible-xs-inline">
+        <%= fa_icon("newspaper-o", class: "fa-fw") %>&nbsp; &nbsp; Blog
+      </a>
+    </li>
+    <li>
+      <%= link fa_icon("user-o"), to: persona_frontend_path(@conn, :index),
+                                  title: "Podcasters", class: "hidden-xs" %>
+      <%= link [fa_icon("user-o", class: "fa-fw"), raw("&nbsp; &nbsp; Podcasters")],
+               to: persona_frontend_path(@conn, :index),
+               title: "Podcasters",
+               class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("user"), to: user_frontend_path(@conn, :index),
+                                title: "Users", class: "hidden-xs" %>
+      <%= link [fa_icon("user", class: "fa-fw"), raw("&nbsp; &nbsp; Users")],
+          to: user_frontend_path(@conn, :index),
+          title: "Users",
+          class: "visible-xs-inline" %>
+    </li>
+    <li>
+      <%= link fa_icon("magic"), to: recommendation_frontend_path(@conn, :random),
+                                   title: "Random", class: "hidden-xs" %>
+      <%= link [fa_icon("magic", class: "fa-fw"), raw("&nbsp; &nbsp; Random")],
+               to: recommendation_frontend_path(@conn, :random),
+               title: "Random",
+               class: "visible-xs-inline" %>
+    </li>
+  </ul>
+
+  <%= form_for @conn, search_frontend_path(@conn, :new),
+                      [as: :search, class: "navbar-form navbar-left"],
+                      fn f -> %>
+    <div class="form-group">
+      &nbsp;&nbsp;&nbsp;<%= text_input f, :searchstring, class: "form-control", placeholder: "Search" %>
+    </div>
+    <%= submit fa_icon("search"), class: "btn", title: "Submit" %>
+  <% end %>
+
+  <ul class="nav navbar-nav navbar-right">
+    <li>
+      <a href="#" id="tour" title="Tour" class="hidden-xs">
+        <%= fa_icon("bus") %>
+      </a>
+      <a href="#" title="Blog" class="visible-xs-inline">
+        <%= fa_icon("bus", class: "fa-fw") %>&nbsp; &nbsp; Tour
+      </a>
+    </li>
+
+    <%= if @current_user do %>
+      <%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %>
+      <%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %>
+
+      <li>
+        <%= link fa_icon("sign-out"),
+                 to: session_path(@conn, :delete, @current_user),
+                 method: "delete",
+                 title: "Log out",
+                 style: "color: #aab2bd;",
+                 class: "hidden-xs"%>
+        <%= link [fa_icon("sign-out", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Out")],
+                 to: session_path(@conn, :delete, @current_user),
+                 method: "delete",
+                 title: "Log out",
+                 style: "color: #aab2bd;",
+                 class: "visible-xs-inline"%>
+      </li>
+    <% else %>
+      <li>
+        <%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
+                                    title: "Sign up", class: "hidden-xs" %>
+        <%= link [fa_icon("pencil", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Up")],
+                 to: user_frontend_path(@conn, :new),
+                 title: "Sign up",
+                 class: "visible-xs-inline" %>
+      </li>
+      <li>
+        <%= link fa_icon("sign-in"), to: session_path(@conn, :new),
+                                     title: "Log In", class: "hidden-xs" %>
+        <%= link [fa_icon("sign-in", class: "fa-fw"), raw("&nbsp; &nbsp; Log In")],
+                 to: session_path(@conn, :new),
+                 title: "Log In",
+                 class: "visible-xs-inline" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+<script>
+  window.onload = function() {
+    var a = document.getElementById("tour");
+    a.onclick = function() {
+      hopscotch.startTour(tour);
+      return false;
+    }
+  }
+</script>

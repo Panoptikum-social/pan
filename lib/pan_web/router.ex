@@ -46,6 +46,10 @@ defmodule PanWeb.Router do
     plug(:put_layout, {PanWeb.LayoutView, :admin})
   end
 
+  pipeline :alternative_layout do
+    plug(:put_layout, {PanWeb.LayoutView, :app_alt})
+  end
+
   # allows us to visit `localhost:4000/sent_emails` while developing, to see sent emails
   if Mix.env() == :dev do
     forward("/sent_emails", Bamboo.SentEmailViewerPlug)
@@ -422,5 +426,10 @@ defmodule PanWeb.Router do
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
+  end
+
+  scope "/alt", PanWeb do
+    pipe_through([:browser, :alternative_layout])
+    get("/home", PageFrontendController, :home_alt)
   end
 end
