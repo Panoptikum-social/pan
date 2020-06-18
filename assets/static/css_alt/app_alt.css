@@ -1,0 +1,82 @@
+body {
+  font-family: Ubuntu;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  background: #E6E9ED;
+}
+
+.tabs .input {
+  position: absolute;
+  opacity: 0;
+}
+
+.tabs .label {
+  width: 100%;
+  padding: 10px;
+  background: #E6E9ED;
+  cursor: pointer;
+  color: #656D78;
+}
+
+.tabs .tab {
+  display: none;
+  padding: 10px;
+  background: white;
+}
+
+.tabs .label:hover {
+  background: #CCD1D9;
+}
+
+.tabs .label:active {
+  background: #AAB2BD;
+}
+
+.tabs .input:focus + .label {
+  z-index: 1;
+}
+
+.tabs .input:checked + .label + .tab {
+  display: block;
+}
+
+.tabs .input:checked + .label {
+  background: white;
+  color: black;
+}
+
+@media (min-width: 600px) {
+  .tabs .label {
+    width: auto;
+  }
+  .tabs .tab {
+    -webkit-box-ordinal-group: 100;
+        -ms-flex-order: 99;
+            order: 99;
+  }
+}
+/*# sourceMappingURL=app_alt.css.map */
