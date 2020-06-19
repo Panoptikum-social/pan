@@ -45,7 +45,7 @@
           <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
         <% end %>
 
-        <hr style="margin-top: -15px; visibility:hidden;" />
+        <br/>
 
         <%= link [fa_icon("user"), " ", recommendation.user.name],
                  to: user_frontend_path(@conn, :show, recommendation.user),
@@ -56,7 +56,7 @@
           <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
         </span>
 
-        <hr style="margin-top: -15px; visibility:hidden;" />
+        <br/>
         <%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
       </div>
     <% end %>

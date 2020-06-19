@@ -18,21 +18,19 @@
         <%= link [fa_icon("podcast"), " ", truncate_string(podcast.title, 75)],
                   to: podcast_frontend_path(@conn, :show, podcast.id),
                   class: "btn btn-default btn-xs truncate",
-                  style: "color: #000;" %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
-
-          <%= if podcast.author_name do %>
+                  style: "color: #000;" %><br/>
+        <%= if podcast.author_name do %>
             <%= link [fa_icon("user-o"), " ", truncate_string(podcast.author_name, 75)],
                 to: persona_frontend_path(@conn, :show, podcast.author_id),
                 class: "btn btn-xs truncate btn-lavender truncate" %>
           <% else %>
             <%= fa_icon("user-o") %> Unknown
           <% end %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+          <br/>
 
           <%= fa_icon("calendar") %>
-          <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+          <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %><br/>
+
 
           <%= if podcast.description do %>
             <%= fa_icon("image") %> <%= truncate_string(podcast.description, 500) %>

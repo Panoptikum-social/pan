@@ -1,38 +1,43 @@
 <div role="footer" class="column">
-  
   <div class="row">
-    <div class="footer-logo"><a href="/"><img src="/images/panoptikum.thumbnail.png" width="30"/>Panoptikum.io</a></div>
-    <dl class="footer-nav column">
-      <dt class="nav-title">META</dt>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/code_of_conduct">Code of Conduct</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/privacy">Privacy</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/complaints">Complaints</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/community">Community</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/imprint">Imprint</a></dd>
-    </dl>
-    <dl class="footer-nav column">
-      <dt class="nav-title">ABOUT</dt>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/">About</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/blog">Blog</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/talks">Talks</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/community">FAQ</a></dd>
-    </dl>
-    <dl class="footer-nav column">
-      <dt class="nav-title">DEMO</dt>
-      <dd class="nav-item"><a href="/categories#start_tour"><i class="fa fa-bus"></i> Tour</a></dd>
-      <dd class="nav-item"><a href="/recommendations/random">Random</a></dd>
-      <dd class="nav-item"><a href="/personas">Podcasters + Personas</a></dd>
-      <dd class="nav-item"><a href="/podcasts">New podcasts</a></dd>
-      <dd class="nav-item"><a href="/episodes">New episodes</a></dd>
-    </dl>
-    <dl class="footer-nav column">
-      <dt class="nav-title">SUPPORTED BY</dt>
-      <dd class="nav-item"><a href="https://www.informatom.com">Stefan a.k.a. Informatom</a></dd>
-      <dd class="nav-item"><a href="https://www.waldgruber.at">Community Manager Sonja</a></dd>
-      <dd class="nav-item"><a href="http://ramonhuidobro.com">Bot Master Ramon</a></dd>
-      <dd class="nav-item"><a href="https://www.mittenin.at">Mittenin.at</a></dd>
-      <dd class="nav-item"><a href="https://blog.panoptikum.io/vienna-beamers">Vienna Beamers</a></dd>
-    </dl>
+    <div class="footer-logo">
+      <a href="/"><img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io</a>
+    </div>
+    <ul class="column">
+      <li>META</li>
+      <li></li>
+      <li><a href="https://blog.panoptikum.io/code_of_conduct">Code of Conduct</a></li>
+      <li><a href="https://blog.panoptikum.io/privacy">Privacy</a></li>
+      <li><a href="https://blog.panoptikum.io/complaints">Complaints</a></li>
+      <li><a href="https://blog.panoptikum.io/community">Community</a></li>
+      <li><a href="https://blog.panoptikum.io/imprint">Imprint</a></li>
+    </ul>
+    <ul class="column">
+      <li>ABOUT</li>
+      <li></li>
+      <li><a href="https://blog.panoptikum.io/">About</a></li>
+      <li><a href="https://blog.panoptikum.io/blog">Blog</a></li>
+      <li><a href="https://blog.panoptikum.io/talks">Talks</a></li>
+      <li><a href="https://blog.panoptikum.io/community">FAQ</a></li>
+    </ul>
+    <ul class="column">
+      <li>DEMO</li>
+      <li></li>
+      <li><a href="/categories#start_tour"><i class="fa fa-bus"></i> Tour</a></li>
+      <li><a href="/recommendations/random">Random</a></li>
+      <li><a href="/personas">Podcasters + Personas</a></li>
+      <li><a href="/podcasts">New podcasts</a></li>
+      <li><a href="/episodes">New episodes</a></li>
+    </ul>
+    <ul class="column">
+      <li>SUPPORTED BY</li>
+      <li></li>
+      <li><a href="https://www.informatom.com">Stefan a.k.a. Informatom</a></li>
+      <li><a href="https://www.waldgruber.at">Community Manager Sonja</a></li>
+      <li><a href="http://ramonhuidobro.com">Bot Master Ramon</a></li>
+      <li><a href="https://www.mittenin.at">Mittenin.at</a></li>
+      <li><a href="https://blog.panoptikum.io/vienna-beamers">Vienna Beamers</a></li>
+    </ul>
   </div>
 
   <div class="text-center">
