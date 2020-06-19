@@ -10,7 +10,7 @@
 
     <title>Panoptikum</title>
     <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css_alt/app_alt.css") %>">
+          href="<%= static_path(@conn, "/css/app_alt.css") %>">
     <link rel="icon" sizes="192x192" href="/images/icon.png">
     <script>window.userToken = "<%= assigns[:user_token] %>"
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
@@ -24,16 +24,24 @@
 
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>" class="column">
     <nav class="row">
+      <div class="width-limiter">
         <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
+      </div>
     </nav>
 
     <p class="alert alert-info container" role="alert"><%= get_flash(@conn, :info) %></p>
     <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
 
-    <main role="main">
-      <%= @inner_content %>
+    <main role="main" class="row">
+      <div class="width-limiter">
+        <%= @inner_content %>
+      </div>
     </main>
 
-    <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
+    <footer class="row">
+      <div class="width-limiter">
+        <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
+      </div>
+    </footer>
   </body>
 </html>

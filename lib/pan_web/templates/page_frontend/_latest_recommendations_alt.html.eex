@@ -1,29 +1,20 @@
-<div  class="panel panel-success">
-  <div class="panel-heading">
+<div  class="panel">
+  <div class="panel-heading bg-success">
     <%= link "Latest Recommendations", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
       <%= link "more ...", to: recommendation_frontend_path(@conn, :index), style: "color: #fff" %>
     </span>
   </div>
 
-  <ul class="nav nav-tabs" role="tablist">
+  <div class="tabs">
     <%= for {recommendation, index} <- Enum.with_index(PanWeb.Recommendation.latest()) do %>
-
-      <li role="recommendations" class=<%= if index == 0, do: "active" %>>
-        <a href="#recommendation-<%= recommendation.id %>"
-           aria-controls="recommendation-<%= recommendation.id %>"
-           role="tab"
-           data-toggle="tab">
-          <%= index + 1 %>
-        </a>
-      </li>
-    <% end %>
-  </ul>
-
-  <div class="tab-content">
-    <%= for {recommendation, index} <- Enum.with_index(PanWeb.Recommendation.latest()) do %>
-      <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
-                           id="recommendation-<%= recommendation.id %>">
+      <input name="latest_recommendations_tabs"
+            type="radio"
+            id="tab-<%= recommendation.id %>"
+            <%= if index == 0, do: 'checked=checked'%>
+            class="input"/>
+      <label for="tab-<%= recommendation.id %>" class="label"><%= index + 1 %></label>
+      <div class="tab">
         <%= if recommendation.podcast do %>
           <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
                    to: podcast_frontend_path(@conn, :show, recommendation.podcast),

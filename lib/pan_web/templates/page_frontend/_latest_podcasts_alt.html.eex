@@ -1,5 +1,5 @@
-<div class="panel panel-primary">
-  <div class="panel-heading">
+<div class="panel">
+  <div class="panel-heading bg-primary">
     <%= link "Podcasts new in Panoptikum", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
       <%= link "more ...", to: podcast_frontend_path(@conn, :index), style: "color: #fff" %>
@@ -8,7 +8,7 @@
 
   <div class="tabs">
     <%= for {podcast, index} <- Enum.with_index(PanWeb.Podcast.latest()) do %>
-      <input name="tabs"
+      <input name="latest_podcasts_tabs"
             type="radio"
             id="tab-<%= podcast.id %>"
             <%= if index == 0, do: 'checked=checked'%>

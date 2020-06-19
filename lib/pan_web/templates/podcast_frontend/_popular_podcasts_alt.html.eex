@@ -1,10 +1,10 @@
-<div class="panel panel-info">
-  <div class="panel-heading">Top 15 subscribed Podcasts
+<div class="panel">
+  <div class="panel-heading bg-info">Top 15 subscribed Podcasts
     <span class="pull-right">
       <%= link "more ...", to: podcast_frontend_path(@conn, :popular), style: "color: #fff" %>
     </span>
   </div>
-  <%= render "_top_list_table.html", podcasts: @popular_podcasts,
+  <%= render "_top_list_table_alt.html", podcasts: @popular_podcasts,
                                      icon: "user",
                                      conn: @conn %>
 </div>

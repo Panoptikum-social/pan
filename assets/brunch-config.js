@@ -8,7 +8,10 @@ exports.config = {
       }
     },
     stylesheets: {
-      joinTo: "css/app.css"
+      joinTo: {
+        "css/app.css": /^(css\/)/,
+        "css/app_alt.css": /^(css_alt\/)/
+      }
     },
     templates: {
       joinTo: "js/app.js"
@@ -20,13 +23,16 @@ exports.config = {
   },
 
   paths: {
-    watched: ["static", "css", "js", "vendor"],
+    watched: ["static", "css", "css_alt", "js", "vendor"],
     public: "../priv/static"
   },
 
   plugins: {
     babel: {
       ignore: [/vendor/]
+    },
+    sass: {
+      mode: "native"
     }
   },
 

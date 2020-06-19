@@ -1,30 +1,20 @@
-<div class="panel panel-warning">
-  <div class="panel-heading">
+<div class="panel">
+  <div class="panel-heading bg-warning">
     <%= link "Latest Episodes", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
     <span class="pull-right">
       <%= link "more ...", to: episode_frontend_path(@conn, :index), style: "color: #fff" %>
     </span>
   </div>
 
-  <ul class="nav nav-tabs" role="tablist">
+  <div class="tabs">
     <%= for {episode, index} <- Enum.with_index(PanWeb.Episode.latest()) do %>
-
-      <li role="episodes" class=<%= if index == 0, do: "active" %>>
-        <a href="#episode-<%= episode.id %>"
-           aria-controls="episode-<%= episode.id %>"
-           role="tab"
-           data-toggle="tab">
-          <%= index + 1 %>
-        </a>
-      </li>
-    <% end %>
-  </ul>
-
-  <div class="tab-content">
-    <%= for {episode, index} <- Enum.with_index(PanWeb.Episode.latest()) do %>
-      <div role="tabpanel" class="tab-pane fade <%= if index == 0, do: 'in active' %>"
-                           id="episode-<%= episode.id %>">
-
+      <input name="latest_episodes_tabs"
+            type="radio"
+            id="tab-<%= episode.id %>"
+            <%= if index == 0, do: 'checked=checked'%>
+            class="input"/>
+      <label for="tab-<%= episode.id %>" class="label"><%= index + 1 %></label>
+      <div class="tab">
         <%= link [fa_icon("headphones"), " ", episode.title],
                     to: episode_frontend_path(@conn, :show, episode.id),
                     class: "btn btn-primary btn-xs truncate" %>
