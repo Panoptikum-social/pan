@@ -4,7 +4,9 @@ $base-line-height: 20px;
 
 $small-padding: 10px;
 $standard-padding: 20px;
-$smartphone: 600px;
+$smartphone-resolution: 600px;
+$tablet-resolution: 900px;
+$desktop-resolution: 1200px;
 
 //color palette
 $color-blue-jeans: #4A89DC;
@@ -53,9 +55,15 @@ a {
 }
 
 // Grid
-.width-limiter { 
-  max-width: 1200px;
+.space-out { 
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  &>* { flex: 1 1 0; }
+}
+
+@media (min-width: $desktop-resolution) { 
+  .space-out { width: 1180px; } 
 }
 
 .row { 
@@ -101,7 +109,7 @@ a {
     color: black; 
     border-bottom: none;
   }
-  @media (min-width: $smartphone) { 
+  @media (min-width: $smartphone-resolution) { 
     .label { width: auto; } 
     .tab { order: 99; } }
 }
@@ -131,6 +139,14 @@ a {
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 5px;
+}
+
+.btn-medium {
+  padding: 0px 7px;
+  margin-top: -0px;
+  font-size: $base-font-size * 1.2;
+  line-height: $base-line-height * 1.2;
+  border-radius: 3px;
 }
 
 .btn-xs {
@@ -226,6 +242,19 @@ a {
   color: text-color-for($color-lavender);
 }
 
+.bg-grey {
+  background-color: $color-medium-gray;
+  color: text-color-for($color-medium-gray);
+}
+
+.btn-grey {
+  @extend .bg-grey;
+  &:hover {
+    background-color: hover-color-for($color-medium-gray);
+    color: text-color-for($color-medium-gray);
+  }
+}
+
 .btn-lavender{
   @extend .bg-lavender;
   &:hover {
@@ -272,22 +301,48 @@ footer {
   margin: -10px;
   font-weight: 500;
   background-color: rgb(67, 74, 84);
-  color: $color-very-light-gray;
+  color: white;
   a { 
-    color: $color-medium-gray;
+    color: $color-light-medium-gray;
     font-weight: 400;
    }
-  .footer-logo {
-    margin-top: 7px;
-    font-size: 20px;
-    a { color: $color-very-light-gray; };
-    img {
-      vertical-align: middle; 
-      width: 30px;
-    };
-  }
   ul { 
     list-style-type: none; 
     line-height: 22px;
   }
+}
+
+.branding {
+  margin-top: -3px;
+  font-size: 20px;
+  a { color: $color-very-light-gray; };
+  img {
+    vertical-align: middle; 
+    width: 30px;
+  };
+}
+
+.branding-width {flex: 1.5 1.5 0;}
+
+nav {
+  padding-top: 10px;
+  margin: -10px;
+  font-weight: 500;
+  background-color: rgb(67, 74, 84);
+  color: $color-very-light-gray;
+  a { color: $color-light-gray; };
+  img {
+    vertical-align: middle; 
+    width: 40px;
+  };
+  .space-out>form { 
+    flex: 2 2 0;
+    margin-top: 10px; 
+  }
+}
+
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
 }

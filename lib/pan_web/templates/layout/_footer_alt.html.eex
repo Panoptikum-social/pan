@@ -1,7 +1,9 @@
-<div role="footer" class="column">
+<div class="column">
   <div class="row">
-    <div class="footer-logo">
-      <a href="/"><img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io</a>
+    <div class="column branding-width">
+      <a class="branding" href="/">
+        <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
+      </a>
     </div>
     <ul class="column">
       <li>META</li>

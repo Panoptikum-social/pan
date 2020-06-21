@@ -24,7 +24,7 @@
 
   <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>" class="column">
     <nav class="row">
-      <div class="width-limiter">
+      <div class="space-out">
         <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
       </div>
     </nav>
@@ -33,13 +33,13 @@
     <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
 
     <main role="main" class="row">
-      <div class="width-limiter">
+      <div class="space-out">
         <%= @inner_content %>
       </div>
     </main>
 
     <footer class="row">
-      <div class="width-limiter">
+      <div class="space-out">
         <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
       </div>
     </footer>
