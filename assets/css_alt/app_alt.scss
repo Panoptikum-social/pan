@@ -296,8 +296,10 @@ a {
  }
 }
 
+// Font-Awesome-Icons
 i.fa { margin-right: 4px; }
 
+// Footer
 footer {
   margin: -10px;
   font-weight: 500;
@@ -325,6 +327,7 @@ footer {
 
 .branding-width {flex: 1.5 1.5 0;}
 
+// Header
 nav {
   padding-top: 10px;
   margin: -10px;
@@ -340,7 +343,6 @@ nav {
     flex: 2 2 0;
     margin-top: 10px; 
   }
-  // Dropdown
   ul { 
     margin: 5px 0px 10px 0px;
     padding: 0px;
@@ -349,13 +351,14 @@ nav {
 
   li { padding: 4px; }
 
+  // Dropdown
   .dropdown {
     position: relative;
     display: inline-block;
   }
 
   .dropdown-content {
-    margin: 27px;
+    margin: 35px;
     padding: 5px 10px 0px 10px;
     display: none;
     position: absolute;
@@ -366,9 +369,13 @@ nav {
     background-color: $color-nav-background;
   }
 
-  .dropdown:hover .dropdown-content { 
-    display: block;
-    border: 1px solid $color-medium-gray; }
+  .dropdown:active , .dropdown:focus-within {
+    a { outline: 0; }
+    .dropdown-content { 
+      display: block;
+      border: 1px solid $color-medium-gray; 
+    } 
+  }
 
   .form-inline {  
     display: flex;
