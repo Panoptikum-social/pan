@@ -25,6 +25,7 @@ $color-light-medium-gray: #CCD1D9;
 $color-medium-gray: #AAB2BD;
 $color-medium-dark-gray: #656D78;
 $color-dark-gray: #434A54;
+$color-nav-background: rgb(67, 74, 84);
 
 @function text-color-for($color) {
   @if (lightness($color) > 70) {
@@ -143,7 +144,7 @@ a {
 
 .btn-medium {
   padding: 0px 7px;
-  margin-top: -0px;
+  margin-top: 2px;
   font-size: $base-font-size * 1.2;
   line-height: $base-line-height * 1.2;
   border-radius: 3px;
@@ -328,7 +329,7 @@ nav {
   padding-top: 10px;
   margin: -10px;
   font-weight: 500;
-  background-color: rgb(67, 74, 84);
+  background-color: $color-nav-background;
   color: $color-very-light-gray;
   a { color: $color-light-gray; };
   img {
@@ -339,10 +340,41 @@ nav {
     flex: 2 2 0;
     margin-top: 10px; 
   }
-}
+  // Dropdown
+  ul { 
+    margin: 5px 0px 10px 0px;
+    padding: 0px;
+    list-style-type: none; 
+  }
 
-.form-inline {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
+  li { padding: 4px; }
+
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    margin: 27px;
+    padding: 5px 10px 0px 10px;
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: -40px;
+    min-width: 220px;
+    z-index: 1;
+    background-color: $color-nav-background;
+  }
+
+  .dropdown:hover .dropdown-content { 
+    display: block;
+    border: 1px solid $color-medium-gray; }
+
+  .form-inline {  
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;    
+  }
+
+  .divider { border-bottom: 1px solid $color-medium-dark-gray; }
 }

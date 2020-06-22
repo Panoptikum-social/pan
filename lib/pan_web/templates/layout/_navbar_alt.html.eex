@@ -5,67 +5,60 @@
   </a>
 </div>
 
-<div class="column">
-  <%= link [fa_icon("sitemap", class: "fa-fw"), "Categories"],
+<ul>
+  <li><%= link [fa_icon("sitemap", class: "fa-fw"), "Categories"],
             to: category_frontend_path(@conn, :index),
             title: "Categories",
-            class: "visible-xs-inline" %>
-  <%= link [fa_icon("magic", class: "fa-fw"), "Random"],
-          to: recommendation_frontend_path(@conn, :random) %>
-</div>
-<div class="column">
-  <a href="https://blog.panoptikum.io/">
+            class: "visible-xs-inline" %></li>
+  <li><%= link [fa_icon("magic", class: "fa-fw"), "Random"],
+          to: recommendation_frontend_path(@conn, :random) %></li>
+</ul>
+<ul>
+  <li><a href="https://blog.panoptikum.io/">
     <%= fa_icon("question-circle", class: "fa-fw") %> About
-  </a>
-    <a href="#" title="Blog">
+  </a></li>
+    <li><a href="#" title="Blog">
     <%= fa_icon("bus", class: "fa-fw") %> Tour
-  </a>
-  <a href="https://blog.panoptikum.io/blog">
+  </a></li>
+  <li><a href="https://blog.panoptikum.io/blog">
     <%= fa_icon("newspaper-o", class: "fa-fw") %> Blog
-  </a>
-</div>
-<div class="column">
-  <%= link [fa_icon("user-o", class: "fa-fw"), "Podcasters"],
-            to: persona_frontend_path(@conn, :index) %>
-  <%= link [fa_icon("user", class: "fa-fw"), "Users"],
-      to: user_frontend_path(@conn, :index) %>
-</div>
+  </a></li>
+</ul>
+<ul>
+  <li><%= link [fa_icon("user-o", class: "fa-fw"), "Podcasters"],
+            to: persona_frontend_path(@conn, :index) %></li>
+  <li><%= link [fa_icon("user", class: "fa-fw"), "Users"],
+      to: user_frontend_path(@conn, :index) %></li>
+</ul>
 
 <%= form_for @conn, search_frontend_path(@conn, :new),
-                    [as: :search, class: "inline-"],
+                    [as: :search, class: "column form-inline"],
                     fn f -> %>
-  <%= text_input f, :searchstring,
-        size: "15",
-        class: "form-control",
-        placeholder: "Search" %> &nbsp;
+  <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
   <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
-                             class: "btn btn-medium btn-grey",
-                             title: "Submit" %>
+                            class: "btn btn-medium btn-grey",
+                            title: "Submit" %>
 <% end %>
 
+
 <%= if @current_user do %>
-  <%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %>
-  <%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %>
-
-  <%= link fa_icon("sign-out"),
-            to: session_path(@conn, :delete, @current_user),
-            method: "delete",
-            title: "Log out",
-            style: "color: #aab2bd;",
-            class: "hidden-xs"%>
-  <%= link [fa_icon("sign-out", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Out")],
-            to: session_path(@conn, :delete, @current_user),
-            method: "delete",
-            title: "Log out",
-            style: "color: #aab2bd;",
-            class: "visible-xs-inline"%>
+  <ul>
+    <li class="dropdown">
+      <%= render "_user_dropdown_alt.html", conn: @conn, current_user: @current_user %>
+    </li>
+    <li class="dropdown">
+      <%= render "_admin_dropdown_alt.html", conn: @conn, current_user: @current_user %>
+    </li>
+    <li><%= link [fa_icon("sign-out", class: "fa-fw"), "Sign Out"],
+              to: session_path(@conn, :delete, @current_user),
+              method: "delete" %></li>
+  </ul>
 <% else %>
-  <div class="column">
-    <%= link [fa_icon("pencil", class: "fa-fw"), "Sign Up"],
-              to: user_frontend_path(@conn, :new) %>
+  <ul>
+    <li><%= link [fa_icon("pencil", class: "fa-fw"), "Sign Up"],
+              to: user_frontend_path(@conn, :new) %></li>
 
-    <%= link [fa_icon("sign-in", class: "fa-fw"), "Log In"],
-              to: session_path(@conn, :new) %>
-    </div>
-  </div>
+    <li><%= link [fa_icon("sign-in", class: "fa-fw"), "Log In"],
+              to: session_path(@conn, :new) %></li>
+  </ul>
 <% end %>
