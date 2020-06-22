@@ -67,9 +67,20 @@ a {
   .space-out { width: 1180px; } 
 }
 
+@media (max-width: $smartphone-resolution) { 
+  .space-out { 
+    flex-direction: column; 
+    margin: $small-padding;
+  }
+}
+
 .row { 
   display: flex; 
   justify-content : center;
+}
+
+@media (max-width: $smartphone-resolution) { 
+  .row { flex-direction: column; }
 }
 
 .column {
@@ -280,7 +291,7 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
   display: inline-block;
-  max-width: 100%;
+  max-width: 90%;
 }
 
 .table-striped{
@@ -354,7 +365,7 @@ nav {
   // Dropdown
   .dropdown {
     position: relative;
-    display: inline-block;
+    display: block;
   }
 
   .dropdown-content {
@@ -385,3 +396,5 @@ nav {
 
   .divider { border-bottom: 1px solid $color-medium-dark-gray; }
 }
+
+table { overflow-x:auto; }

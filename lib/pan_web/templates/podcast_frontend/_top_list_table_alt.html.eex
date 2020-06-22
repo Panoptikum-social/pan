@@ -7,9 +7,9 @@
         </td>
         <td>
           <%= for {id, title} <- podcasts do %>
-              <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+              <%= link [fa_icon("podcast"), " ", title],
                     to: podcast_frontend_path(@conn, :show, id),
-                    class: "btn btn-default btn-xs",
+                    class: "btn btn-default btn-xs truncate",
                     style: "color: #000;" %><br/>
 
           <% end %>
