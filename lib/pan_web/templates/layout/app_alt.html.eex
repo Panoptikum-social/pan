@@ -4,44 +4,42 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Podcasting Social Network">
+    <meta name="description" content="Panoptikum Podcasting Social Network">
     <meta name="author" content="Stefan Haslinger">
-    <meta name="theme-color" content="#434a54">
 
     <title>Panoptikum</title>
     <link rel="stylesheet"
           href="<%= static_path(@conn, "/css/app_alt.css") %>">
-    <link rel="icon" sizes="192x192" href="/images/icon.png">
-    <script>window.userToken = "<%= assigns[:user_token] %>"
+    <link rel="icon"
+          sizes="192x192"
+          href="/images/icon.png">
+    <script>window.userToken = "<%= assigns[:user_token] %>";
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
     <script src="<%= static_path(@conn, "/js_alt/app_alt.js") %>"></script>
     <script src="<%= static_path(@conn, "/js_alt/vendor_alt.js") %>"></script>
     <%= render_existing @view_module, "scripts.html", assigns %>
 
-    <link rel="search" type="application/opensearchdescription+xml"
-          title="Panoptikum" href="https://panoptikum.io/opensearch.xml">
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          title="Panoptikum"
+          href="https://panoptikum.io/opensearch.xml">
   </head>
 
-  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>" class="column">
-    <nav class="row">
-      <div class="space-out">
+  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
+    <main role="main" class="grid-container">
+      <nav class="nav">
         <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
+      </nav>
+      <div class="alerts">
+        <div class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></div>
+        <div class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></div>
       </div>
-    </nav>
-
-    <p class="alert alert-info container" role="alert"><%= get_flash(@conn, :info) %></p>
-    <p class="alert alert-danger container" role="alert"><%= get_flash(@conn, :error) %></p>
-
-    <main role="main" class="row">
-      <div class="space-out">
-        <%= @inner_content %>
+      <div class="container">
+          <%= @inner_content %>
       </div>
-    </main>
-
-    <footer class="row">
-      <div class="space-out">
+      <footer class="footer">
         <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
-      </div>
-    </footer>
+      </footer>
+    </main>
   </body>
 </html>

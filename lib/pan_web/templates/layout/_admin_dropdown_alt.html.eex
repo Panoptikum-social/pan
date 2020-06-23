@@ -1,34 +1,25 @@
 <%= if @current_user.admin do %>
-  <a href="#">
-    <%= fa_icon("wrench") %>
-    Admin&nbsp;
-    <sup><%= fa_icon("caret-down") %></sup>
-  </a>
-  <ul class="dropdown-content">
-    <li><%= link "Categories", to: category_path(@conn, :index) %></li>
-    <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
-    <li><%= link "Feeds", to: feed_path(@conn, :index) %></li>
-    <li><%= link "RssFeeds", to: rss_feed_path(@conn, :index) %></li>
-    <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
-    <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
-    <li class="divider"></li>
-    <li><%= link "Users", to: user_path(@conn, :index) %></li>
-    <li><%= link "Invoices", to: invoice_path(@conn, :index) %></li>
-    <li><%= link "Messages", to: message_path(@conn, :index) %></li>
-    <li><%= link "Likes", to: like_path(@conn, :index) %></li>
-    <li><%= link "Follows", to: follow_path(@conn, :index) %></li>
-    <li><%= link "Subscriptions", to: subscription_path(@conn, :index) %></li>
-    <li><%= link "Recommendations", to: recommendation_path(@conn, :index) %></li>
-    <li class="divider"></li>
-    <li><%= link "Personas", to: persona_path(@conn, :index) %></li>
-    <li><%= link "Gigs", to: gig_path(@conn, :index) %></li>
-    <li><%= link "Engagements", to: engagement_path(@conn, :index) %></li>
-    <li><%= link "Manifestations", to: manifestation_path(@conn, :index) %></li>
-    <li><%= link "Delegations", to: delegation_path(@conn, :index) %></li>
-    <li class="divider"></li>
-    <li><%= link "Languages", to: language_path(@conn, :index) %></li>
-    <li><%= link "Images", to: image_path(@conn, :index) %></li>
-    <li class="divider"></li>
-    <li><%= link "Statistics", to: maintenance_path(@conn, :stats) %></li>
-  </ul>
+  <li class="divider"></li>
+  <li class="uppercase text-right"><%= fa_icon("wrench") %> Administration</li>
+  <li><%= link "Categories", to: category_path(@conn, :index) %></li>
+  <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
+  <li><%= link "Feeds", to: feed_path(@conn, :index) %></li>
+  <li><%= link "RssFeeds", to: rss_feed_path(@conn, :index) %></li>
+  <li><%= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
+  <li><%= link "OPMLs", to: opml_path(@conn, :index) %></li>
+  <li><%= link "Users", to: user_path(@conn, :index) %></li>
+  <li><%= link "Invoices", to: invoice_path(@conn, :index) %></li>
+  <li><%= link "Messages", to: message_path(@conn, :index) %></li>
+  <li><%= link "Likes", to: like_path(@conn, :index) %></li>
+  <li><%= link "Follows", to: follow_path(@conn, :index) %></li>
+  <li><%= link "Subscriptions", to: subscription_path(@conn, :index) %></li>
+  <li><%= link "Recommendations", to: recommendation_path(@conn, :index) %></li>
+  <li><%= link "Personas", to: persona_path(@conn, :index) %></li>
+  <li><%= link "Gigs", to: gig_path(@conn, :index) %></li>
+  <li><%= link "Engagements", to: engagement_path(@conn, :index) %></li>
+  <li><%= link "Manifestations", to: manifestation_path(@conn, :index) %></li>
+  <li><%= link "Delegations", to: delegation_path(@conn, :index) %></li>
+  <li><%= link "Languages", to: language_path(@conn, :index) %></li>
+  <li><%= link "Images", to: image_path(@conn, :index) %></li>
+  <li><%= link "Statistics", to: maintenance_path(@conn, :stats) %></li>
 <% end %>

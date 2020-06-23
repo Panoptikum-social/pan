@@ -1,5 +1,3 @@
-@import "scss/constants.scss";
-
 // Tabs //
 
 .tabs {
@@ -23,7 +21,7 @@
 
   .tab {
     display: none;
-    padding: $small-padding;
+    padding: $single;
     background: white;
   }
 

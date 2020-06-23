@@ -1,9 +1,16 @@
-<div class="column branding-width">
-  <a href="/" class="branding">
-    <img alt="Logo, Home" src="/images/panoptikum.thumbnail.png">
-    Panoptikum.io
-  </a>
-</div>
+<a href="/" class="branding">
+  <img alt="Logo, Home" src="/images/panoptikum.thumbnail.png">
+  Panoptikum.io
+</a>
+
+<%= form_for @conn, search_frontend_path(@conn, :new),
+                    [as: :search, class: "nav-form"],
+                    fn f -> %>
+  <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
+  <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
+                            class: "btn btn-medium btn-grey",
+                            title: "Submit" %>
+<% end %>
 
 <ul>
   <li><%= link [fa_icon("sitemap", class: "fa-fw"), "Categories"],
@@ -12,8 +19,6 @@
             class: "visible-xs-inline" %></li>
   <li><%= link [fa_icon("magic", class: "fa-fw"), "Random"],
           to: recommendation_frontend_path(@conn, :random) %></li>
-</ul>
-<ul>
   <li><a href="https://blog.panoptikum.io/">
     <%= fa_icon("question-circle", class: "fa-fw") %> About
   </a></li>
@@ -23,42 +28,22 @@
   <li><a href="https://blog.panoptikum.io/blog">
     <%= fa_icon("newspaper-o", class: "fa-fw") %> Blog
   </a></li>
-</ul>
-<ul>
   <li><%= link [fa_icon("user-o", class: "fa-fw"), "Podcasters"],
             to: persona_frontend_path(@conn, :index) %></li>
   <li><%= link [fa_icon("user", class: "fa-fw"), "Users"],
       to: user_frontend_path(@conn, :index) %></li>
-</ul>
 
-<%= form_for @conn, search_frontend_path(@conn, :new),
-                    [as: :search, class: "column form-inline"],
-                    fn f -> %>
-  <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
-  <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
-                            class: "btn btn-medium btn-grey",
-                            title: "Submit" %>
-<% end %>
-
-
-<%= if @current_user do %>
-  <ul>
-    <li class="dropdown">
-      <%= render "_user_dropdown_alt.html", conn: @conn, current_user: @current_user %>
-    </li>
-    <li class="dropdown">
-      <%= render "_admin_dropdown_alt.html", conn: @conn, current_user: @current_user %>
-    </li>
+  <%= if @current_user do %>
+    <li><%= render "_user_dropdown_alt.html", conn: @conn, current_user: @current_user %></li>
+    <li><%= render "_admin_dropdown_alt.html", conn: @conn, current_user: @current_user %></li>
+    <li class="divider"></li>
     <li><%= link [fa_icon("sign-out", class: "fa-fw"), "Sign Out"],
               to: session_path(@conn, :delete, @current_user),
               method: "delete" %></li>
-  </ul>
-<% else %>
-  <ul>
+  <% else %>
     <li><%= link [fa_icon("pencil", class: "fa-fw"), "Sign Up"],
               to: user_frontend_path(@conn, :new) %></li>
-
     <li><%= link [fa_icon("sign-in", class: "fa-fw"), "Log In"],
               to: session_path(@conn, :new) %></li>
-  </ul>
-<% end %>
+  <% end %>
+</ul>

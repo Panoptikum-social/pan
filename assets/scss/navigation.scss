@@ -1,19 +1,27 @@
 // Navigation // 
 
-// Branding
-
-.branding-width {
-  flex: 1.5 1.5 0;
-}
-
 // Header
 
+main {
+  display: flex;
+}
+
 nav {
-  padding-top: 10px;
-  margin: -10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: $single;
   font-weight: 500;
   background-color: $color-nav-background;
   color: $color-very-light-gray;
+
+  &>* {
+    flex: initial;
+  }
+
+  .branding {
+    margin-top: $double;
+  }
 
   a {
     color: $color-light-gray;
@@ -24,13 +32,7 @@ nav {
     width: 40px;
   }
 
-  .space-out>form {
-    flex: 2 2 0;
-    margin-top: 10px;
-  }
-
   ul {
-    margin: 5px 0px 10px 0px;
     padding: 0px;
     list-style-type: none;
   }
@@ -40,7 +42,7 @@ nav {
   }
 
   // Dropdown
-
+  pull
   .dropdown {
     position: relative;
     display: block;
@@ -70,21 +72,21 @@ nav {
     }
   }
 
-  .form-inline {
+  .nav-form {
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;
+    margin-top: $double;
   }
 
   .divider {
-    border-bottom: 1px solid $color-medium-dark-gray;
+    border-top: 1px solid $color-medium-dark-gray;
   }
 }
 
 // Footer
 
 footer {
-  margin: -10px;
   font-weight: 500;
   background-color: rgb(67, 74, 84);
   color: white;
