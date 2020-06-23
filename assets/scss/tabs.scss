@@ -1,0 +1,61 @@
+@import "scss/constants.scss";
+
+// Tabs
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+
+  .input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .label {
+    width: 100%;
+    padding: 8px;
+    background: $color-light-gray;
+    cursor: pointer;
+    color: $color-medium-dark-gray;
+    border: 1px solid $color-light-medium-gray;
+
+  }
+
+  .tab {
+    display: none;
+    padding: $small-padding;
+    background: white;
+  }
+
+  .label:hover {
+    background: $color-light-medium-gray;
+  }
+
+  .label:active {
+    background: $color-medium-gray;
+  }
+
+  .input:focus+.label {
+    z-index: 1;
+  }
+
+  .input:checked+.label+.tab {
+    display: block;
+    width: 100%;
+  }
+
+  .input:checked+.label {
+    background: white;
+    color: black;
+    border-bottom: none;
+  }
+
+  @media (min-width: $smartphone-resolution) {
+    .label {
+      width: auto;
+    }
+
+    .tab {
+      order: 99;
+    }
+  }
+}

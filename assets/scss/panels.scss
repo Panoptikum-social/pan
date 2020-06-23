@@ -1,0 +1,16 @@
+// Panels
+.panel {
+  border: 1px solid $color-light-gray;
+  border-radius: 15px;
+  margin: 10px 0px;
+
+  th,
+  td {
+    padding: 3px 20px 3px 5px;
+  }
+}
+
+.panel-heading {
+  padding: 10px;
+  border-radius: 5px 5px 0px 0px;
+}

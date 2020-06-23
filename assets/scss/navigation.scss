@@ -1,0 +1,109 @@
+// Branding
+.branding-width {
+  flex: 1.5 1.5 0;
+}
+
+// Header
+nav {
+  padding-top: 10px;
+  margin: -10px;
+  font-weight: 500;
+  background-color: $color-nav-background;
+  color: $color-very-light-gray;
+
+  a {
+    color: $color-light-gray;
+  }
+
+  img {
+    vertical-align: middle;
+    width: 40px;
+  }
+
+  .space-out>form {
+    flex: 2 2 0;
+    margin-top: 10px;
+  }
+
+  ul {
+    margin: 5px 0px 10px 0px;
+    padding: 0px;
+    list-style-type: none;
+  }
+
+  li {
+    padding: 4px;
+  }
+
+  // Dropdown
+  .dropdown {
+    position: relative;
+    display: block;
+  }
+
+  .dropdown-content {
+    margin: 35px;
+    padding: 5px 10px 0px 10px;
+    display: none;
+    position: absolute;
+    top: 0px;
+    left: -40px;
+    min-width: 220px;
+    z-index: 1;
+    background-color: $color-nav-background;
+  }
+
+  .dropdown:active,
+  .dropdown:focus-within {
+    a {
+      outline: 0;
+    }
+
+    .dropdown-content {
+      display: block;
+      border: 1px solid $color-medium-gray;
+    }
+  }
+
+  .form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+  }
+
+  .divider {
+    border-bottom: 1px solid $color-medium-dark-gray;
+  }
+}
+
+// Footer
+footer {
+  margin: -10px;
+  font-weight: 500;
+  background-color: rgb(67, 74, 84);
+  color: white;
+
+  a {
+    color: $color-light-medium-gray;
+    font-weight: 400;
+  }
+
+  ul {
+    list-style-type: none;
+    line-height: 22px;
+  }
+}
+
+.branding {
+  margin-top: -3px;
+  font-size: 20px;
+
+  a {
+    color: $color-very-light-gray;
+  }
+
+  img {
+    vertical-align: middle;
+    width: 30px;
+  }
+}

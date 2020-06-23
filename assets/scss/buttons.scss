@@ -1,0 +1,170 @@
+// Buttons
+.btn {
+  margin: 3px 0px 3px;
+  display: inline-block;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+// Sizes
+.btn-medium {
+  padding: 0px 7px;
+  margin-top: 2px;
+  font-size: $base-font-size * 1.2;
+  line-height: $base-line-height * 1.2;
+  border-radius: 3px;
+}
+
+.btn-xs {
+  padding: 0px 5px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+
+// Backgrounds
+
+.bg-default{
+  background-color: white;  
+  color: text-color-for(white);
+  border: 1px solid $color-medium-gray;
+}
+
+.bg-primary {
+  background-color: $color-aqua;  
+  color: text-color-for($color-aqua);
+}
+
+.bg-info {
+  background-color: $color-mint;
+  color: text-color-for($color-mint);
+}
+
+.bg-danger {
+  background-color: $color-grapefruit;
+  color: text-color-for($color-grapefruit);
+}
+
+.bg-warning {
+  background-color: $color-sunflower;
+  color: text-color-for($color-sunflower);
+}
+
+.bg-success {
+  background-color: $color-grass;
+  color: text-color-for($color-grass);
+}
+
+.bg-lavender {
+  background-color: $color-lavender;
+  color: text-color-for($color-lavender);
+}
+
+.bg-grey {
+  background-color: $color-medium-gray;
+  color: text-color-for($color-medium-gray);
+}
+
+// Buttons named after use case
+
+.btn-default {
+  @extend .bg-default;
+  &:hover {
+    background-color: active-color-for(white);    
+  }
+  &:active {
+    color: text-color-for(scale-color(white, $lightness: -40%)) !important;
+    background-color: scale-color(white, $lightness: -40%);
+  }
+}
+
+.btn-primary{
+  @extend .bg-primary;
+  &:hover {
+    background-color: hover-color-for($color-aqua);
+    color: text-color-for($color-aqua);
+  }
+  &:active {
+    background-color: active-color-for($color-aqua);
+    color: text-color-for(active-color-for($color-aqua));
+  }
+}
+
+.btn-info {
+  @extend .bg-info;
+  &:hover {
+    background-color: hover-color-for($color-mint);
+    color: text-color-for($color-mint);
+  }
+  &:active {
+    background-color: active-color-for($color-mint);
+    color: text-color-for(active-color-for($color-mint));
+  }
+}
+
+.btn-danger{
+  @extend .bg-danger;
+  &:hover {
+    background-color: hover-color-for($color-grapefruit);
+    color: text-color-for($color-grapefruit);
+  }
+  &:active {
+    background-color: active-color-for($color-grapefruit);
+    color: text-color-for(active-color-for($color-grapefruit));
+  }
+}
+
+.btn-warning{
+  @extend .bg-warning;
+  &:hover {
+    background-color: hover-color-for($color-sunflower);
+    color: text-color-for($color-sunflower);
+  }
+  &:active {
+    background-color: active-color-for($color-sunflower);
+    color: text-color-for(active-color-for($color-sunflower));
+  }
+}
+
+.btn-success{
+  @extend .bg-success;
+  &:hover {
+    background-color: hover-color-for($color-grass);
+    color: text-color-for($color-grass);
+  }
+  &:active {
+    background-color: active-color-for($color-grass);
+    color: text-color-for(active-color-for($color-grass));
+  }
+}
+
+// Buttons named after colors
+
+.btn-lavender{
+  @extend .bg-lavender;
+  &:hover {
+    background-color: hover-color-for($color-lavender);
+    color: text-color-for($color-lavender);
+  }
+  &:active {
+    background-color: active-color-for($color-lavender);
+    color: text-color-for(active-color-for($color-lavender));
+  }
+}
+
+
+.btn-grey {
+  @extend .bg-grey;
+  &:hover {
+    background-color: hover-color-for($color-medium-gray);
+    color: text-color-for($color-medium-gray);
+  }
+  &:active {
+    background-color: active-color-for($color-medium-gray);
+    color: text-color-for(active-color-for($color-medium-gray));
+  }
+}
+

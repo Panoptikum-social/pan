@@ -1,0 +1,41 @@
+// Grid
+.space-out {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  &>* {
+    flex: 1 1 0;
+  }
+}
+
+@media (min-width: $desktop-resolution) {
+  .space-out {
+    width: 1180px;
+  }
+}
+
+@media (max-width: $smartphone-resolution) {
+  .space-out {
+    flex-direction: column;
+    margin: $small-padding;
+  }
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: $smartphone-resolution) {
+  .row {
+    flex-direction: column;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  margin: $small-padding;
+  flex: 1;
+}
