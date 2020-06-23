@@ -15,10 +15,6 @@ nav {
   background-color: $color-nav-background;
   color: $color-very-light-gray;
 
-  &>* {
-    flex: initial;
-  }
-
   .branding {
     margin-top: $double;
   }

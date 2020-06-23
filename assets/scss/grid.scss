@@ -8,7 +8,21 @@ body {
   display: grid;
   grid-template-columns: max-content 1fr 1fr;
   grid-template-rows: 0 auto auto;
-  grid-template-areas: "nav alerts alerts""nav container container""nav footer footer";
+  grid-template-areas: "nav alerts alerts"
+    "nav container container"
+    "nav footer footer";
+}
+
+@media (max-width: 900px) {
+  .grid-container {
+    grid-template-columns: auto;
+    grid-template-rows: auto 0 auto auto;
+    grid-template-areas:
+      "nav"
+      "alerts"
+      "container"
+      "footer";
+  }
 }
 
 .nav {
@@ -26,15 +40,29 @@ body {
   display: flex;
   justify-self: center;
   justify-content: space-between;
+
+  @media (max-width: 900px) {
+    justify-self: center;
+  }
+
+  .column {
+    max-width: 600px;
+    width: 100%;
+  }
 }
 
 .footer {
   grid-area: footer;
   display: flex;
+
+  .column {
+    flex: auto;
+  }
 }
 
 .row {
   display: flex;
+  justify-content: space-between;
 }
 
 @media (max-width: $desktop-resolution) {
@@ -47,5 +75,4 @@ body {
   display: flex;
   flex-direction: column;
   margin: $single;
-  max-width: 600px;
 }
