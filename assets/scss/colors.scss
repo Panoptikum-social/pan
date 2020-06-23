@@ -1,4 +1,7 @@
-//color palette
+// Colors //
+
+// Color palette
+
 $color-blue-jeans: #4A89DC;
 $color-aqua: #3BAFDA;
 $color-mint:#37BC9B;
@@ -9,7 +12,7 @@ $color-grapefruit: #DA4453;
 $color-lavender: #967ADC;
 $color-pink-rose: #D770AD;
 
-//gray scales
+// Gray scales
 $color-very-light-gray: #F5F7FA;
 $color-light-gray: #E6E9ED;
 $color-light-medium-gray: #CCD1D9;
@@ -18,7 +21,8 @@ $color-medium-dark-gray: #656D78;
 $color-dark-gray: #434A54;
 $color-nav-background: rgb(67, 74, 84);
 
-// color calculations
+// Color calculations
+
 @function text-color-for($color) {
   @if (lightness($color) > 70) {
     @return black;

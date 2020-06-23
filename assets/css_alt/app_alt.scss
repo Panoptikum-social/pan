@@ -1,3 +1,6 @@
+
+// Imports
+
 @import "scss/constants.scss";
 @import "scss/helpers.scss";
 @import "scss/colors.scss";
@@ -7,6 +10,9 @@
 @import "scss/navigation.scss";
 @import "scss/tables.scss";
 @import "scss/panels.scss";
+
+
+// Resets
 
 body {
   font-family: $base-font;
@@ -18,7 +24,10 @@ a {
   text-decoration: none;
 }
 
+// Third party libraries //
+
 // Font Awesome icons
+
 i.fa {
   margin-right: 4px;
 }
