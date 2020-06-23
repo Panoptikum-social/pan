@@ -10,7 +10,7 @@
   }
 
   .label {
-    width: 100%;
+    width: auto;
     padding: 8px;
     background: $color-light-gray;
     cursor: pointer;
@@ -20,6 +20,7 @@
   }
 
   .tab {
+    order: 99;
     display: none;
     padding: $single;
     background: white;
@@ -46,15 +47,5 @@
     background: white;
     color: black;
     border-bottom: none;
-  }
-
-  @media (min-width: $smartphone-resolution) {
-    .label {
-      width: auto;
-    }
-
-    .tab {
-      order: 99;
-    }
   }
 }

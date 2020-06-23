@@ -87,24 +87,34 @@ footer {
   background-color: rgb(67, 74, 84);
   color: white;
 
+  .column {
+    flex-basis: 100%;
+  }
+
+  .row {
+    flex-wrap: wrap;
+  }
+
   a {
     color: $color-light-medium-gray;
     font-weight: 400;
   }
 
   ul {
+    flex: 1 0 content;
     list-style-type: none;
     line-height: 22px;
+  }
+
+  .branding {
+    flex: 1 0 content;
+    margin-top: $single;
   }
 }
 
 .branding {
-  margin-top: -3px;
   font-size: 20px;
-
-  a {
-    color: $color-very-light-gray;
-  }
+  color: $color-very-light-gray;
 
   img {
     vertical-align: middle;

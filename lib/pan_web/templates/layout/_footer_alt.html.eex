@@ -1,11 +1,9 @@
 <div class="column">
   <div class="row">
-    <div class="column branding-width">
-      <a class="branding" href="/">
-        <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
-      </a>
-    </div>
-    <ul class="column">
+    <a class="branding" href="/">
+      <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
+    </a>
+    <ul>
       <li>META</li>
       <li></li>
       <li><a href="https://blog.panoptikum.io/code_of_conduct">Code of Conduct</a></li>
@@ -14,7 +12,7 @@
       <li><a href="https://blog.panoptikum.io/community">Community</a></li>
       <li><a href="https://blog.panoptikum.io/imprint">Imprint</a></li>
     </ul>
-    <ul class="column">
+    <ul>
       <li>ABOUT</li>
       <li></li>
       <li><a href="https://blog.panoptikum.io/">About</a></li>
@@ -22,7 +20,7 @@
       <li><a href="https://blog.panoptikum.io/talks">Talks</a></li>
       <li><a href="https://blog.panoptikum.io/community">FAQ</a></li>
     </ul>
-    <ul class="column">
+    <ul>
       <li>DEMO</li>
       <li></li>
       <li><a href="/categories#start_tour"><i class="fa fa-bus"></i> Tour</a></li>
@@ -31,7 +29,7 @@
       <li><a href="/podcasts">New podcasts</a></li>
       <li><a href="/episodes">New episodes</a></li>
     </ul>
-    <ul class="column">
+    <ul>
       <li>SUPPORTED BY</li>
       <li></li>
       <li><a href="https://www.informatom.com">Stefan a.k.a. Informatom</a></li>

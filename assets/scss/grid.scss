@@ -13,7 +13,7 @@ body {
     "nav footer footer";
 }
 
-@media (max-width: 900px) {
+@media (max-width: $tablet-resolution) {
   .grid-container {
     grid-template-columns: auto;
     grid-template-rows: auto 0 auto auto;
@@ -41,8 +41,12 @@ body {
   justify-self: center;
   justify-content: space-between;
 
-  @media (max-width: 900px) {
+  @media (max-width: $tablet-resolution) {
     justify-self: center;
+  }
+
+  @media (max-width: $desktop-resolution) {
+    flex-direction: column;
   }
 
   .column {
@@ -54,21 +58,11 @@ body {
 .footer {
   grid-area: footer;
   display: flex;
-
-  .column {
-    flex: auto;
-  }
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-}
-
-@media (max-width: $desktop-resolution) {
-  .row {
-    flex-direction: column;
-  }
 }
 
 .column {
