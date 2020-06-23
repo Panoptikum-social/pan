@@ -7,7 +7,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: max-content 1fr 1fr;
-  grid-template-rows: max-content max-content max-content;
+  grid-template-rows: 0 auto auto;
   grid-template-areas: "nav alerts alerts""nav container container""nav footer footer";
 }
 
@@ -24,8 +24,8 @@ body {
   grid-area: container;
   max-width: 1200px;
   display: flex;
-  justify-content: space-between;
   justify-self: center;
+  justify-content: space-between;
 }
 
 .footer {
@@ -35,10 +35,6 @@ body {
 
 .row {
   display: flex;
-
-  &>* {
-    flex: 0 1 600px;
-  }
 }
 
 @media (max-width: $desktop-resolution) {
@@ -51,5 +47,5 @@ body {
   display: flex;
   flex-direction: column;
   margin: $single;
-  flex: 1;
+  max-width: 600px;
 }
