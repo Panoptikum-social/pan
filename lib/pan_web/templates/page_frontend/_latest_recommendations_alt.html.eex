@@ -27,7 +27,7 @@
                    to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
                    class: "btn btn-default btn-xs truncate",
                    style: "color: #000" %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+                   <br/>
           <%= link [fa_icon("headphones"), " ", recommendation.episode.title],
                     to: episode_frontend_path(@conn, :show, recommendation.episode),
                     class: "btn btn-primary btn-xs truncate" %>
@@ -37,8 +37,7 @@
           <%= link [fa_icon("podcast"), " ", recommendation.chapter.episode.podcast.title],
                    to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
                    class: "btn btn-default btn-xs truncate",
-                   style: "color: #000" %>
-          <hr style="margin-top: -15px; visibility:hidden;" />
+                   style: "color: #000" %> <br/>
           <%= link [fa_icon("headphones"), " ", recommendation.chapter.episode.title],
                     to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
                     class: "btn btn-primary btn-xs truncate" %><br/>

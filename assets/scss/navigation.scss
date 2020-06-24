@@ -38,8 +38,7 @@ nav {
   }
 
   // Dropdown
-  pull
-  .dropdown {
+  pull .dropdown {
     position: relative;
     display: block;
   }
@@ -83,17 +82,11 @@ nav {
 // Footer
 
 footer {
+  display: flex;
+  flex-wrap: wrap;
   font-weight: 500;
-  background-color: rgb(67, 74, 84);
+  background-color: $color-nav-background;
   color: white;
-
-  .column {
-    flex-basis: 100%;
-  }
-
-  .row {
-    flex-wrap: wrap;
-  }
 
   a {
     color: $color-light-medium-gray;
@@ -101,23 +94,37 @@ footer {
   }
 
   ul {
-    flex: 1 0 content;
+    flex: 1 0 content;    
     list-style-type: none;
+    padding: 0px 10px 10px 10px;
     line-height: 22px;
-  }
-
-  .branding {
-    flex: 1 0 content;
-    margin-top: $single;
   }
 }
 
-.branding {
+.footer-branding {
+  background-color: $color-nav-background;
   font-size: 20px;
   color: $color-very-light-gray;
+  a {
+    color: $color-very-light-gray;
+    font-weight: 500;
+  }
 
   img {
     vertical-align: middle;
     width: 30px;
+  }
+}
+
+.footer-branding, 
+.hosting,
+.unused  {
+  padding-top: $single;
+  padding-bottom: $single;
+  background-color: $color-nav-background;
+  color: $color-very-light-gray;
+  a {
+    color: $color-very-light-gray;
+    font-weight: 500;
   }
 }

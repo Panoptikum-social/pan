@@ -37,9 +37,18 @@
       <div class="container">
           <%= @inner_content %>
       </div>
+      <div class="footer-branding">
+        <a class="branding" href="/">
+        <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
+      </a>
+      </div>
       <footer class="footer">
         <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
       </footer>
+      <div class="hosting text-center">
+        Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
+      </div>
+      <div class="unused"></div>
     </main>
   </body>
 </html>

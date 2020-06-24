@@ -8,9 +8,11 @@ body {
   display: grid;
   grid-template-columns: max-content 1fr 1fr;
   grid-template-rows: 0 auto auto;
-  grid-template-areas: "nav alerts alerts"
+  grid-template-areas:
+    "nav alerts alerts"
     "nav container container"
-    "nav footer footer";
+    "branding footer footer"
+    "unused hosting hosting";
 }
 
 @media (max-width: $tablet-resolution) {
@@ -21,7 +23,10 @@ body {
       "nav"
       "alerts"
       "container"
-      "footer";
+      "footer"
+      "hosting"
+      "branding"
+      "unused";
   }
 }
 
@@ -33,10 +38,21 @@ body {
   grid-area: alerts;
 }
 
+.footer-branding {
+  grid-area: branding;
+}
+
+.hosting {
+  grid-area: hosting;
+}
+
+.unused {
+  grid-area: unused;
+}
+
 .container {
-  @extend .row;
   grid-area: container;
-  max-width: 1200px;
+  max-width: 1220px;
   display: flex;
   justify-self: center;
   justify-content: space-between;
@@ -51,13 +67,12 @@ body {
 
   .column {
     max-width: 600px;
-    width: 100%;
+    margin: 0px $single 0px $single; 
   }
 }
 
 .footer {
   grid-area: footer;
-  display: flex;
 }
 
 .row {
@@ -68,5 +83,4 @@ body {
 .column {
   display: flex;
   flex-direction: column;
-  margin: $single;
 }
