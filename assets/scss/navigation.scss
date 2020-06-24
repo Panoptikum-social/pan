@@ -119,12 +119,26 @@ footer {
 .footer-branding, 
 .hosting,
 .unused  {
-  padding-top: $single;
-  padding-bottom: $single;
+  padding: $single;
   background-color: $color-nav-background;
   color: $color-very-light-gray;
   a {
     color: $color-very-light-gray;
     font-weight: 500;
+  }
+}
+
+.branding {
+  background-color: $color-nav-background;
+  font-size: 20px;
+  color: $color-very-light-gray;
+  a {
+    color: $color-very-light-gray;
+    font-weight: 500;
+  }
+
+  img {
+    vertical-align: middle;
+    width: 30px;
   }
 }
