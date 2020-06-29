@@ -17,7 +17,7 @@ body {
 
 @media (max-width: $tablet-resolution) {
   .grid-container {
-    grid-template-columns: auto;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-template-rows: auto 0 auto auto;
     grid-template-areas:
       "nav"
@@ -51,14 +51,15 @@ body {
 }
 
 .container {
+  max-width: 100%;
   grid-area: container;
-  max-width: 1220px;
   display: flex;
   justify-self: center;
   justify-content: space-between;
 
   @media (max-width: $tablet-resolution) {
     justify-self: center;
+    flex: 0 1 1220px;
   }
 
   @media (max-width: $desktop-resolution) {

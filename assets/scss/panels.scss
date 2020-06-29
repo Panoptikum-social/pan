@@ -16,6 +16,15 @@
   }
   
   .btn {
+    box-sizing: border-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    max-width: 100%;
+  }
+
+  td>.btn {
     white-space: normal;
     text-align: left;
   }

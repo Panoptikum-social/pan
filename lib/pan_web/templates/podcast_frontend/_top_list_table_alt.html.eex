@@ -9,7 +9,7 @@
           <%= for {id, title} <- podcasts do %>
               <%= link [fa_icon("podcast"), " ", title],
                     to: podcast_frontend_path(@conn, :show, id),
-                    class: "btn btn-default btn-xs truncate",
+                    class: "btn btn-default btn-xs",
                     style: "color: #000;" %><br/>
 
           <% end %>
