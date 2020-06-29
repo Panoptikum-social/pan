@@ -27,30 +27,30 @@
         <%= if recommendation.podcast do %>
           <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
                    to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                   class: "btn btn-default btn-xs truncate",
+                   class: "btn btn-default btn-xs",
                    style: "color: #000" %>
         <% end %>
 
         <%= if recommendation.episode do %>
           <%= link [fa_icon("podcast"), " ", recommendation.episode.podcast.title],
                    to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
-                   class: "btn btn-default btn-xs truncate",
+                   class: "btn btn-default btn-xs",
                    style: "color: #000" %>
           <hr style="margin-top: -15px; visibility:hidden;" />
           <%= link [fa_icon("headphones"), " ", recommendation.episode.title],
                     to: episode_frontend_path(@conn, :show, recommendation.episode),
-                    class: "btn btn-primary btn-xs truncate" %>
+                    class: "btn btn-primary btn-xs" %>
         <% end %>
 
         <%= if recommendation.chapter_id do %>
           <%= link [fa_icon("podcast"), " ", recommendation.chapter.episode.podcast.title],
                    to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
-                   class: "btn btn-default btn-xs truncate",
+                   class: "btn btn-default btn-xs",
                    style: "color: #000" %>
           <hr style="margin-top: -15px; visibility:hidden;" />
           <%= link [fa_icon("headphones"), " ", recommendation.chapter.episode.title],
                     to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
-                    class: "btn btn-primary btn-xs truncate" %><br/>
+                    class: "btn btn-primary btn-xs" %><br/>
           <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
         <% end %>
 
@@ -58,7 +58,7 @@
 
         <%= link [fa_icon("user"), " ", recommendation.user.name],
                  to: user_frontend_path(@conn, :show, recommendation.user),
-                 class: "btn btn-xs truncate btn-danger" %>
+                 class: "btn btn-xs btn-danger" %>
 
         <span class="pull-right">
           <%= fa_icon("calendar") %>

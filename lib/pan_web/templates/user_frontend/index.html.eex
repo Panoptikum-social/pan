@@ -28,8 +28,7 @@
               <div class="col-md-1">
                <%= link [fa_icon("user-o"), " ", user.name],
                         to: user_frontend_path(@conn, :show, user),
-                        class: "btn btn-xs truncate " <> btn_cycle(outer * 12 + inner) %>
-
+                        class: "btn btn-xs " <> btn_cycle(outer * 12 + inner) %>
               </div>
             <% end %>
           </div>

@@ -29,7 +29,7 @@
 
         <%= link [fa_icon("user-o"), " ", persona.name],
                  to: persona_frontend_path(@conn, :show, persona),
-                 class: "btn btn-xs truncate btn-lavender pull-right" %>
+                 class: "btn btn-xs btn-lavender pull-right" %>
       </div>
       <div id="collapse-<%= persona.id %>" class="panel-collapse collapse">
         <div class="panel-body">

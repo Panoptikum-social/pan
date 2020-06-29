@@ -17,7 +17,7 @@
       <div class="tab">
         <%= link [fa_icon("headphones"), " ", episode.title],
                     to: episode_frontend_path(@conn, :show, episode.id),
-                    class: "btn btn-primary btn-xs truncate" %>
+                    class: "btn btn-primary btn-xs" %>
         <br/>
         <%= link [fa_icon("podcast"), " ", episode.podcast.title],
                     to: podcast_frontend_path(@conn, :show, episode.podcast_id),

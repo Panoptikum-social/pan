@@ -57,7 +57,7 @@
                 <nobr>
                   <%= link [fa_icon("user-o"), " ", persona.name],
                            to: persona_frontend_path(@conn, :show, persona),
-                           class: "btn btn-xs truncate btn-lavender" %>
+                           class: "btn btn-xs btn-lavender" %>
                   <%= for gig <- gigs do %>
                      <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
                     <%= if gig.self_proclaimed do %>

@@ -32,7 +32,7 @@
 
       <%= link [fa_icon("user-o"), " ", gig.persona.name],
                to: persona_frontend_path(PanWeb.Endpoint, :show, gig.persona),
-               class: "btn btn-xs truncate btn-lavender" %>
+               class: "btn btn-xs btn-lavender" %>
       <span class="label label-success"><%= gig.role %></span>
     <% end %>
 

@@ -11,7 +11,7 @@
           <div class="panel-heading">
             <%= link [fa_icon("user"), " ", recommendation.user.name],
                      to: user_frontend_path(@conn, :show, recommendation.user),
-                     class: "btn btn-xs truncate btn-danger" %>
+                     class: "btn btn-xs btn-danger" %>
 
             <span class="pull-right">
               <%= fa_icon("calendar") %>
@@ -23,7 +23,7 @@
             <%= if recommendation.podcast do %>
               <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
                        to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                       class: "btn btn-default btn-xs truncate",
+                       class: "btn btn-default btn-xs",
                        style: "color: #000" %>
             <% end %>
 

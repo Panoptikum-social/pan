@@ -17,11 +17,12 @@
 }
 
 .truncate {
+  box-sizing: border-box;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   display: inline-block;
-  max-width: 400px;
+  max-width: 100%;
 }
 
 .uppercase {
