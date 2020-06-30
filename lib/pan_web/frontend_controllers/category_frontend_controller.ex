@@ -66,6 +66,19 @@ defmodule PanWeb.CategoryFrontendController do
     render(conn, "stats.html", categories: categories)
   end
 
+  def stats_alt(conn, _params) do
+    categories =
+      from(c in Category,
+        order_by: :title,
+        where: is_nil(c.parent_id)
+      )
+      |> Repo.all()
+      |> Repo.preload(children: from(cat in Category, order_by: cat.title))
+      |> Repo.preload([:podcasts, children: :podcasts])
+
+    render(conn, "stats_alt.html", categories: categories)
+  end
+
   def show_stats(conn, %{"id" => id}) do
     category =
       Category

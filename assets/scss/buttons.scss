@@ -103,6 +103,26 @@
   @extend .bg-gray;
 }
 
+.bg-dark-gray {
+  background-color: $dark-gray;
+  color: text-color-for($dark-gray);
+}
+
+.bg-blue-jeans {
+  background-color: $blue-jeans;
+  color: text-color-for($blue-jeans);
+}
+
+.bg-pink-rose {
+  background-color: $pink-rose;
+  color: text-color-for($pink-rose);
+}
+
+.bg-bittersweet {
+  background-color: $bittersweet;
+  color: text-color-for($bittersweet);
+}
+
 // Buttons named after use case
 
 .btn-default {
@@ -236,3 +256,58 @@
   @extend .btn-gray;
 }
 
+.btn-dark-gray {
+  @extend .bg-dark-gray;
+
+  &:hover {
+    background-color: hover-color-for($dark-gray);
+    color: text-color-for($dark-gray);
+  }
+
+  &:active {
+    background-color: active-color-for($dark-gray);
+    color: text-color-for(active-color-for($dark-gray));
+  }
+}
+
+.btn-blue-jeans {
+  @extend .bg-blue-jeans;
+
+  &:hover {
+    background-color: hover-color-for($blue-jeans);
+    color: text-color-for($blue-jeans);
+  }
+
+  &:active {
+    background-color: active-color-for($blue-jeans);
+    color: text-color-for(active-color-for($blue-jeans));
+  }
+}
+
+.btn-pink-rose {
+  @extend .bg-pink-rose;
+
+  &:hover {
+    background-color: hover-color-for($pink-rose);
+    color: text-color-for($pink-rose);
+  }
+
+  &:active {
+    background-color: active-color-for($pink-rose);
+    color: text-color-for(active-color-for($pink-rose));
+  }
+}
+
+.btn-bittersweet {
+  @extend .bg-bittersweet;
+
+  &:hover {
+    background-color: hover-color-for($bittersweet);
+    color: text-color-for($bittersweet);
+  }
+
+  &:active {
+    background-color: active-color-for($bittersweet);
+    color: text-color-for(active-color-for($bittersweet));
+  }
+}

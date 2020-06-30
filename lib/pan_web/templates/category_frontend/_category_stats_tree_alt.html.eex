@@ -1,7 +1,7 @@
 <%= for {category, counter} <- Enum.with_index(@categories) do %>
   <div class="inline-block">
-    <%= link [fa_icon("folder-o"), " ", truncate_string(category.title, 22)],
-             to: category_frontend_path(@conn, :show, category),
+    <%= link [Integer.to_string(length(category.podcasts)), " ", fa_icon("folder-o"), " ", truncate_string(category.title, 22)],
+             to: category_frontend_path(@conn, :show_stats, category),
              class: "btn btn-sm " <> btn_cycle(counter),
              id: "category-#{category.id}" %>
     <br/>
@@ -9,8 +9,8 @@
     <%= if category.children != [] do %>
       <p>
         <%= for subcategory <- category.children do %>
-          <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                   to: category_frontend_path(@conn, :show, subcategory),
+          <%= link [Integer.to_string(length(subcategory.podcasts)), " ", fa_icon("folder-o"), " ", subcategory.title],
+                   to: category_frontend_path(@conn, :show_stats, subcategory),
                    class: "btn btn-xs btn-light-gray" %>
         <% end %>
       </p>
