@@ -50,6 +50,12 @@ body {
   grid-area: unused;
 }
 
+.content {
+  width: 100%;
+  grid-area: container;
+  justify-self: center;
+}
+
 .container {
   max-width: 100%;
   grid-area: container;
@@ -57,18 +63,13 @@ body {
   justify-self: center;
   justify-content: space-between;
 
-  @media (max-width: $tablet-resolution) {
-    justify-self: center;
-    flex: 0 1 1220px;
-  }
-
   @media (max-width: $desktop-resolution) {
     flex-direction: column;
   }
 
   .column {
+    flex: 0 0 600px;
     max-width: 600px;
-    margin: 0px $single 0px $single;
   }
 }
 
@@ -78,7 +79,19 @@ body {
 
 .row {
   display: flex;
-  justify-content: space-between;
+}
+
+.button-flex-row {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: $double;
+  justify-content: flex-start;
+  
+  &>a, div {
+    flex: 0 2 240px;
+    @extend .truncate;
+  }
 }
 
 .column {

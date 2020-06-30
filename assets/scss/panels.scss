@@ -3,7 +3,7 @@
 .panel {
   border: 1px solid $light-medium-gray;
   border-radius: 10px;
-  margin: 10px 0px;
+  margin: $double;
 
   th,
   td {
@@ -33,4 +33,8 @@
 .panel-heading {
   padding: 10px;
   border-radius: 10px 10px 0px 0px;
+}
+
+.panel-body {
+  margin: $double;
 }

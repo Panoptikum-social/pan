@@ -1,8 +1,8 @@
 <p class="text-center">
   <a class="btn btn-primary" onclick="toggle_manifestation()">
     <%= fa_icon "user" %>
-    <%= fa_icon "arrow-leftright " %>
-    <%= fa_icon "arrow-right " %>
+    <%= fa_icon "arrow-left" %>
+    <%= fa_icon "arrow-right" %>
     <%= fa_icon "user-o" %> &nbsp;
     Toggle Manifestation
   </a>

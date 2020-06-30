@@ -53,6 +53,33 @@ defmodule PanWeb.CategoryFrontendController do
     end
   end
 
+  def show_alt(conn, %{"id" => id}) do
+    if category = Repo.get(Category, id) do
+      category =
+        category
+        |> Repo.preload(children: from(c in Category, order_by: c.title))
+        |> Repo.preload(:parent)
+
+      podcasts =
+        from(l in Language,
+          right_join: p in assoc(l, :podcasts),
+          join: c in assoc(p, :categories),
+          where: c.id == ^id,
+          select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
+        )
+        |> Repo.all()
+
+      render(conn, "show_alt.html",
+        category: category,
+        podcasts: podcasts
+      )
+    else
+      conn
+      |> put_status(:not_found)
+      |> render("not_found_alt.html")
+    end
+  end
+
   def stats(conn, _params) do
     categories =
       from(c in Category,
@@ -80,6 +107,28 @@ defmodule PanWeb.CategoryFrontendController do
   end
 
   def show_stats(conn, %{"id" => id}) do
+    category =
+      Category
+      |> Repo.get!(id)
+      |> Repo.preload(children: from(c in Category, order_by: c.title))
+      |> Repo.preload(:parent)
+
+    podcasts =
+      from(l in Language,
+        right_join: p in assoc(l, :podcasts),
+        join: c in assoc(p, :categories),
+        where: c.id == ^id,
+        select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
+      )
+      |> Repo.all()
+
+    render(conn, "show_stats.html",
+      category: category,
+      podcasts: podcasts
+    )
+  end
+
+  def show_stats_alt(conn, %{"id" => id}) do
     category =
       Category
       |> Repo.get!(id)

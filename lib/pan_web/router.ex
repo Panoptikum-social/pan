@@ -173,7 +173,6 @@ defmodule PanWeb.Router do
   end
 
   scope "/", PanWeb do
-    #    pipe_through :browser # Use the default browser stack
     pipe_through([:browser, :unset_cookie])
 
     get("/", PageFrontendController, :home)
@@ -433,5 +432,7 @@ defmodule PanWeb.Router do
     get("/home", PageFrontendController, :home_alt)
     get("/categories", CategoryFrontendController, :index_alt)
     get("/categories/stats", CategoryFrontendController, :stats_alt)
+    get("/categories/:id", CategoryFrontendController, :show_alt)
+    get("/categories/:id/stats", CategoryFrontendController, :show_stats_alt)
   end
 end

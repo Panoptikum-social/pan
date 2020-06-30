@@ -42,9 +42,7 @@
         <div class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></div>
         <div class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></div>
       </div>
-      <div class="container">
-          <%= @inner_content %>
-      </div>
+      <%= @inner_content %>
       <div class="footer-branding">
         <a class="branding" href="/">
         <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io

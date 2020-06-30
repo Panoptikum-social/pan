@@ -1,3 +1,5 @@
-<div class="category-columns">
-  <%= render "_category_tree_alt.html", categories: @categories, conn: @conn %>
+<div class="content">
+  <div class="category-columns">
+    <%= render "_category_tree_alt.html", categories: @categories, conn: @conn %>
+  </div>
 </div>

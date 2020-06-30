@@ -17,6 +17,7 @@
     <% end %>
     <hr class="divider"/>
   </div>
+  <br/>
 
   <%= if category.id == 402 do %>
     <span id="category_tree"></span>
