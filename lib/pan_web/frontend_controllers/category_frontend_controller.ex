@@ -14,6 +14,18 @@ defmodule PanWeb.CategoryFrontendController do
     render(conn, "index.html", categories: categories)
   end
 
+  def index_alt(conn, _params) do
+    categories =
+      from(c in Category,
+        order_by: :title,
+        where: is_nil(c.parent_id)
+      )
+      |> Repo.all()
+      |> Repo.preload(children: from(cat in Category, order_by: cat.title))
+
+    render(conn, "index_alt.html", categories: categories)
+  end
+
   def show(conn, %{"id" => id}) do
     if category = Repo.get(Category, id) do
       category =

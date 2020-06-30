@@ -28,3 +28,8 @@
 .uppercase {
   text-transform: uppercase;
 }
+
+hr.divider {
+  border: 0;
+  border-top: 1px solid $light-gray;
+}

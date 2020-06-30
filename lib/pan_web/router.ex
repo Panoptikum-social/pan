@@ -431,5 +431,6 @@ defmodule PanWeb.Router do
   scope "/alt", PanWeb do
     pipe_through([:browser, :alternative_layout])
     get("/home", PageFrontendController, :home_alt)
+    get("/categories", CategoryFrontendController, :index_alt)
   end
 end

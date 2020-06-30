@@ -12,10 +12,10 @@
   .label {
     width: auto;
     padding: 8px;
-    background: $color-light-gray;
+    background: $light-gray;
     cursor: pointer;
-    color: $color-medium-dark-gray;
-    border: 1px solid $color-light-medium-gray;
+    color: $medium-dark-gray;
+    border: 1px solid $light-medium-gray;
 
   }
 
@@ -28,11 +28,11 @@
   }
 
   .label:hover {
-    background: $color-light-medium-gray;
+    background: $light-medium-gray;
   }
 
   .label:active {
-    background: $color-medium-gray;
+    background: $medium-gray;
   }
 
   .input:focus+.label {

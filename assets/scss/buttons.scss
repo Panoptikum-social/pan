@@ -13,12 +13,34 @@
 
 // Button sizes
 
+.btn-xl {
+  padding: 4px 9px;
+  font-size: 16px;
+  line-height: $base-line-height * 1.4;
+  border-radius: 76px;
+}
+
+.btn-large {
+  padding: 3px 8px;
+  font-size: 15px;
+  line-height: $base-line-height * 1.3;
+  border-radius: 6px;
+}
+
 .btn-medium {
-  padding: 0px 7px;
+  padding: 2px 7px;
   margin-top: 2px;
-  font-size: $base-font-size * 1.2;
+  font-size: 14px;
   line-height: $base-line-height * 1.2;
-  border-radius: 3px;
+  border-radius: 5px;
+}
+
+.btn-sm {
+  padding: 1px 6px;
+  margin-top: 1px;
+  font-size: 13px;
+  line-height: $base-line-height * 1.1;
+  border-radius: 4px;
 }
 
 .btn-xs {
@@ -32,42 +54,53 @@
 .bg-default {
   background-color: white;
   color: text-color-for(white);
-  border: 1px solid $color-medium-gray;
+  border: 1px solid $medium-gray;
 }
 
 .bg-primary {
-  background-color: $color-aqua;
-  color: text-color-for($color-aqua);
+  background-color: $aqua;
+  color: text-color-for($aqua);
 }
 
 .bg-info {
-  background-color: $color-mint;
-  color: text-color-for($color-mint);
+  background-color: $mint;
+  color: text-color-for($mint);
 }
 
 .bg-danger {
-  background-color: $color-grapefruit;
-  color: text-color-for($color-grapefruit);
+  background-color: $grapefruit;
+  color: text-color-for($grapefruit);
 }
 
 .bg-warning {
-  background-color: $color-sunflower;
-  color: text-color-for($color-sunflower);
+  background-color: $sunflower;
+  color: text-color-for($sunflower);
 }
 
 .bg-success {
-  background-color: $color-grass;
-  color: text-color-for($color-grass);
+  background-color: $grass;
+  color: text-color-for($grass);
 }
 
 .bg-lavender {
-  background-color: $color-lavender;
-  color: text-color-for($color-lavender);
+  background-color: $lavender;
+  color: text-color-for($lavender);
 }
 
-.bg-grey {
-  background-color: $color-medium-gray;
-  color: text-color-for($color-medium-gray);
+
+.bg-light-gray {
+  background-color: $light-gray;
+  color: text-color-for($light-gray);
+  border: 1px solid $medium-gray;
+}
+
+.bg-gray {
+  background-color: $medium-gray;
+  color: text-color-for($medium-gray);
+}
+
+.bg-medium-gray {
+  @extend .bg-gray;
 }
 
 // Buttons named after use case
@@ -89,13 +122,13 @@
   @extend .bg-primary;
 
   &:hover {
-    background-color: hover-color-for($color-aqua);
-    color: text-color-for($color-aqua);
+    background-color: hover-color-for($aqua);
+    color: text-color-for($aqua);
   }
 
   &:active {
-    background-color: active-color-for($color-aqua);
-    color: text-color-for(active-color-for($color-aqua));
+    background-color: active-color-for($aqua);
+    color: text-color-for(active-color-for($aqua));
   }
 }
 
@@ -103,13 +136,13 @@
   @extend .bg-info;
 
   &:hover {
-    background-color: hover-color-for($color-mint);
-    color: text-color-for($color-mint);
+    background-color: hover-color-for($mint);
+    color: text-color-for($mint);
   }
 
   &:active {
-    background-color: active-color-for($color-mint);
-    color: text-color-for(active-color-for($color-mint));
+    background-color: active-color-for($mint);
+    color: text-color-for(active-color-for($mint));
   }
 }
 
@@ -117,13 +150,13 @@
   @extend .bg-danger;
 
   &:hover {
-    background-color: hover-color-for($color-grapefruit);
-    color: text-color-for($color-grapefruit);
+    background-color: hover-color-for($grapefruit);
+    color: text-color-for($grapefruit);
   }
 
   &:active {
-    background-color: active-color-for($color-grapefruit);
-    color: text-color-for(active-color-for($color-grapefruit));
+    background-color: active-color-for($grapefruit);
+    color: text-color-for(active-color-for($grapefruit));
   }
 }
 
@@ -131,13 +164,13 @@
   @extend .bg-warning;
 
   &:hover {
-    background-color: hover-color-for($color-sunflower);
-    color: text-color-for($color-sunflower);
+    background-color: hover-color-for($sunflower);
+    color: text-color-for($sunflower);
   }
 
   &:active {
-    background-color: active-color-for($color-sunflower);
-    color: text-color-for(active-color-for($color-sunflower));
+    background-color: active-color-for($sunflower);
+    color: text-color-for(active-color-for($sunflower));
   }
 }
 
@@ -145,13 +178,13 @@
   @extend .bg-success;
 
   &:hover {
-    background-color: hover-color-for($color-grass);
-    color: text-color-for($color-grass);
+    background-color: hover-color-for($grass);
+    color: text-color-for($grass);
   }
 
   &:active {
-    background-color: active-color-for($color-grass);
-    color: text-color-for(active-color-for($color-grass));
+    background-color: active-color-for($grass);
+    color: text-color-for(active-color-for($grass));
   }
 }
 
@@ -161,26 +194,45 @@
   @extend .bg-lavender;
 
   &:hover {
-    background-color: hover-color-for($color-lavender);
-    color: text-color-for($color-lavender);
+    background-color: hover-color-for($lavender);
+    color: text-color-for($lavender);
   }
 
   &:active {
-    background-color: active-color-for($color-lavender);
-    color: text-color-for(active-color-for($color-lavender));
+    background-color: active-color-for($lavender);
+    color: text-color-for(active-color-for($lavender));
   }
 }
 
-.btn-grey {
-  @extend .bg-grey;
+.btn-light-gray {
+  @extend .bg-light-gray;
 
   &:hover {
-    background-color: hover-color-for($color-medium-gray);
-    color: text-color-for($color-medium-gray);
+    background-color: hover-color-for($light-gray);
+    color: text-color-for($light-gray);
   }
 
   &:active {
-    background-color: active-color-for($color-medium-gray);
-    color: text-color-for(active-color-for($color-medium-gray));
+    background-color: active-color-for($light-gray);
+    color: text-color-for(active-color-for($light-gray));
   }
 }
+
+.btn-gray {
+  @extend .bg-gray;
+
+  &:hover {
+    background-color: hover-color-for($medium-gray);
+    color: text-color-for($medium-gray);
+  }
+
+  &:active {
+    background-color: active-color-for($medium-gray);
+    color: text-color-for(active-color-for($medium-gray));
+  }
+}
+
+.btn-medium-gray {
+  @extend .btn-gray;
+}
+

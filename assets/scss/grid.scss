@@ -68,7 +68,7 @@ body {
 
   .column {
     max-width: 600px;
-    margin: 0px $single 0px $single; 
+    margin: 0px $single 0px $single;
   }
 }
 
@@ -84,4 +84,21 @@ body {
 .column {
   display: flex;
   flex-direction: column;
+}
+
+.category-columns {
+  columns: 4;
+  margin: $double;
+
+  @media (max-width: $desktop-resolution) {
+    columns: 3;
+  }
+
+  @media (max-width: $tablet-resolution) {
+    columns: 2;
+  }
+
+  @media (max-width: $smartphone-resolution) {
+    columns: 1;
+  }
 }

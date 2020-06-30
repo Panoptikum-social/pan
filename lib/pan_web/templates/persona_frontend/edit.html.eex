@@ -9,7 +9,7 @@
 
   <%= unless pro(@current_user) do %>
     <div class="alert alert-info">
-      <strong>Info!</strong> Fields greyed out can be updated with pro accounts only.
+      <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
     </div>
   <% end %>
 

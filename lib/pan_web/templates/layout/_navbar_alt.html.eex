@@ -8,7 +8,7 @@
                     fn f -> %>
   <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
   <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
-                            class: "btn btn-medium btn-grey",
+                            class: "btn btn-medium btn-gray",
                             title: "Submit" %>
 <% end %>
 

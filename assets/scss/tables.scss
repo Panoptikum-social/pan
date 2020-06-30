@@ -9,13 +9,13 @@ table {
   border-collapse: collapse;
 
   tbody>tr:nth-of-type(odd) {
-    background-color: $color-very-light-gray;
+    background-color: $very-light-gray;
   }
 
   td,
   th {
     border-width: 1px 0px 1px 0px;
     border-style: solid;
-    border-color: $color-light-gray;
+    border-color: $light-gray;
   }
 }
