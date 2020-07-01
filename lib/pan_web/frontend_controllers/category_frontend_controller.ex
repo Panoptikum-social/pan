@@ -76,7 +76,7 @@ defmodule PanWeb.CategoryFrontendController do
     else
       conn
       |> put_status(:not_found)
-      |> render("not_found_alt.html")
+      |> render("not_found.html")
     end
   end
 
