@@ -94,7 +94,7 @@ footer {
   }
 
   ul {
-    flex: 1 0 auto;    
+    flex: 1 0 auto;
     list-style-type: none;
     padding: 0px 10px 10px 10px;
     line-height: 22px;
@@ -105,6 +105,7 @@ footer {
   background-color: $nav-background;
   font-size: 20px;
   color: $very-light-gray;
+
   a {
     color: $very-light-gray;
     font-weight: 500;
@@ -116,12 +117,13 @@ footer {
   }
 }
 
-.footer-branding, 
+.footer-branding,
 .hosting,
-.unused  {
+.unused {
   padding: $single;
   background-color: $nav-background;
   color: $very-light-gray;
+
   a {
     color: $very-light-gray;
     font-weight: 500;
@@ -132,6 +134,7 @@ footer {
   background-color: $nav-background;
   font-size: 20px;
   color: $very-light-gray;
+
   a {
     color: $very-light-gray;
     font-weight: 500;

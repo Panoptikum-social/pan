@@ -434,5 +434,8 @@ defmodule PanWeb.Router do
     get("/categories/stats", CategoryFrontendController, :stats_alt)
     get("/categories/:id", CategoryFrontendController, :show_alt)
     get("/categories/:id/stats", CategoryFrontendController, :show_stats_alt)
+    get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes_alt)
+    get("/categories/:id/categorized", CategoryFrontendController, :categorized_alt)
+
   end
 end
