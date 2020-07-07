@@ -173,15 +173,18 @@ defmodule PanWeb.Router do
   end
 
   scope "/", PanWeb do
-    pipe_through([:browser, :unset_cookie])
-
+    pipe_through([:browser, :alternative_layout])
     get("/", PageFrontendController, :home)
+    get("/home", PageFrontendController, :home)
     get("/categories/stats", CategoryFrontendController, :stats)
     get("/categories/:id/stats", CategoryFrontendController, :show_stats)
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
     resources("/categories", CategoryFrontendController, only: [:index, :show])
+  end
 
+  scope "/", PanWeb do
+    pipe_through([:browser, :unset_cookie])
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)
     resources("/podcasts", PodcastFrontendController, only: [:index, :show])
@@ -425,17 +428,5 @@ defmodule PanWeb.Router do
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-  end
-
-  scope "/alt", PanWeb do
-    pipe_through([:browser, :alternative_layout])
-    get("/home", PageFrontendController, :home_alt)
-    get("/categories", CategoryFrontendController, :index_alt)
-    get("/categories/stats", CategoryFrontendController, :stats_alt)
-    get("/categories/:id", CategoryFrontendController, :show_alt)
-    get("/categories/:id/stats", CategoryFrontendController, :show_stats_alt)
-    get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes_alt)
-    get("/categories/:id/categorized", CategoryFrontendController, :categorized_alt)
-
   end
 end

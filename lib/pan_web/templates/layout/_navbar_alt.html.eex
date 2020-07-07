@@ -22,9 +22,6 @@
   <li><a href="https://blog.panoptikum.io/">
     <%= fa_icon("question-circle", class: "fa-fw") %> About
   </a></li>
-    <li><a href="#" title="Blog">
-    <%= fa_icon("bus", class: "fa-fw") %> Tour
-  </a></li>
   <li><a href="https://blog.panoptikum.io/blog">
     <%= fa_icon("newspaper-o", class: "fa-fw") %> Blog
   </a></li>

@@ -1,70 +1,62 @@
-<div class="panel panel-success">
-  <div class="panel-heading">
-    <h3 class="panel-title">
+<div class="content">
+  <div class="panel">
+    <div class="panel-heading bg-success">
       <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
-               to: category_frontend_path(@conn, :stats) %>
+              to: category_frontend_path(@conn, :stats) %>
       /
       <%= if @category.parent do %>
         <%= link [fa_icon("folder-o"), " ", @category.parent.title],
-                 to: category_frontend_path(@conn, :show, @category.parent) %>
+                to: category_frontend_path(@conn, :show, @category.parent) %>
         /
       <% end %>
       <%= fa_icon("folder-open-o") %> <%= @category.title %>
-    </h3>
-  </div>
-  <div class="panel-body" style="line-height: 2.5;">
-    <%= if @category.children != [] do %>
-      <%= for group <- Enum.chunk_every(@category.children, 6, 6, []) do %>
-        <div class="row">
-          <%= for subcategory <- group do %>
+    </div>
+    <div class="panel-body">
+      <%= if @category.children != [] do %>
+        <div class="button-flex-row">
+          <%= for subcategory <- @category.children do %>
             <div class="col-md-2">
               <%= link [fa_icon("folder-o"), " ", subcategory.title],
-                       to: category_frontend_path(@conn, :show_stats, subcategory),
-                       class: "btn btn-xs btn-light-gray truncate" %>
+                      to: category_frontend_path(@conn, :show_stats, subcategory),
+                      class: "btn btn-xs btn-light-gray truncate" %>
             </div>
           <% end %>
         </div>
+      <hr class="divider" />
       <% end %>
-    <hr/>
-    <% end %>
 
-    Jump to:
-    <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
-      &nbsp; &nbsp; &nbsp;
-        <%= Integer.to_string(length(podcasts)) %>
-        <%= List.first(podcasts) && List.first(podcasts).language_emoji %>
-        <%= link (language || "Language unknown"), to: "#" <> (language || "Language unknown"),
-                                                    id: "lang-#{language}"%>
-    <% end %>
-
-
-    <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
-      <h3 id="<%= language %>"><%= List.first(podcasts) && List.first(podcasts).language_emoji %>
-        <%= if podcasts != [], do: Integer.to_string(length(podcasts)) %> <%= language || "Language unknown" %></h3>
-      <%= for group <- Enum.chunk_every(podcasts, 6, 6, []) do %>
-        <div class="row">
-          <%= for podcast <- group do %>
-            <div class="col-md-2">
-              <span class="truncate">
-                <%= link [fa_icon("podcast"), " ", podcast.title],
-                         to: podcast_frontend_path(@conn, :show, podcast.id),
-                         class: "btn btn-default btn-xs truncate",
-                         id: "podcast-#{podcast.id}" %>
-              </span>
+      Jump to:
+      <div class="button-flex-row">
+        <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
+            <div>
+              <%= Integer.to_string(length(podcasts)) %> &nbsp;
+              <%= List.first(podcasts) && List.first(podcasts).language_emoji %> &nbsp;
+              <%= link (language || "Language unknown"), to: "#" <> (language || "Language unknown"),
+                                                          id: "lang-#{language}"%>
             </div>
+        <% end %>
+      </div>
+
+      <%= for {language, podcasts} <- Enum.group_by(@podcasts, &Map.get(&1, :language_name)) do %>
+        <h3 id="<%= language %>">
+          <%= if podcasts != [], do: Integer.to_string(length(podcasts)) %> &nbsp;
+          <%= List.first(podcasts) && List.first(podcasts).language_emoji %> &nbsp;
+          <%= language || "Language unknown" %></h3>
+
+        <div class="button-flex-row">
+          <%= for podcast <- podcasts do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                    to: podcast_frontend_path(@conn, :show, podcast.id),
+                    class: "btn btn-default btn-xs truncate",
+                    id: "podcast-#{podcast.id}" %>
           <% end %>
         </div>
       <% end %>
-    <% end %>
+    </div>
   </div>
+
+  <%= if @current_user do %>
+    <%= like_or_unlike(@current_user.id, @category.id) %> &nbsp;
+    <%= follow_or_unfollow(@current_user.id, @category.id) %>
+  <% end %>
 </div>
-
-<%= if @current_user do %>
-  <%= like_or_unlike(@current_user.id, @category.id) %>
-  <%= follow_or_unfollow(@current_user.id, @category.id) %>
-<% end %>
-
-<script>
-  if (hopscotch.getState() === "panoptikum:3") {hopscotch.startTour(tour)}
-  if (hopscotch.getState() === "panoptikum:5") {hopscotch.startTour(tour)}
-</script>
