@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="column">
     <%= render "_latest_podcasts_alt.html", conn: @conn  %></br>
     <%= render PanWeb.PodcastFrontendView,
