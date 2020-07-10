@@ -142,7 +142,7 @@ defmodule PanWeb.CategoryFrontendController do
         )
         |> Repo.all()
         |> Repo.preload(podcasts: from(p in Podcast, where: p.id in ^podcast_ids))
-        |> Repo.preload(podcasts: [:categories, [engagements: :persona]])
+        |> Repo.preload(podcasts: [:categories, [engagements: :persona], :thumbnails])
 
       render(conn, "categorized.html",
         categories: categories,

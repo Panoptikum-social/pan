@@ -9,7 +9,10 @@
     opacity: 0;
   }
 
-  .label {
+  &>.label {
+    display: initial;
+    font-weight: initial;
+    margin: initial;
     width: auto;
     padding: 8px;
     background: $light-gray;
@@ -19,7 +22,7 @@
 
   }
 
-  .tab {
+  &>.tab {
     order: 99;
     display: none;
     padding: $single;
@@ -27,24 +30,24 @@
     max-width: 90%;
   }
 
-  .label:hover {
+  &>.label:hover {
     background: $light-medium-gray;
   }
 
-  .label:active {
+  &>.label:active {
     background: $medium-gray;
   }
 
-  .input:focus+.label {
+  &>.input:focus+.label {
     z-index: 1;
   }
 
-  .input:checked+.label+.tab {
+  &>.input:checked+.label+.tab {
     display: block;
     width: 100%;
   }
 
-  .input:checked+.label {
+  &>.input:checked+.label {
     background: white;
     color: black;
     border-bottom: none;

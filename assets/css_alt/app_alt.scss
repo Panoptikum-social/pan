@@ -1,6 +1,7 @@
 // Imports
 
 @import "scss/constants.scss";
+@import "scss/fonts.scss";
 @import "scss/colors.scss";
 @import "scss/helpers.scss";
 @import "scss/buttons.scss";
@@ -9,15 +10,11 @@
 @import "scss/navigation.scss";
 @import "scss/tables.scss";
 @import "scss/panels.scss";
+@import "scss/lists.scss";
+@import "scss/labels.scss";
 
 // Resets
  
-body {
-  font-family: $base-font;
-  font-size: $base-font-size;
-  line-height: $base-line-height;
-}
-
 a {
   text-decoration: none;
 }
