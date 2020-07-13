@@ -5,7 +5,7 @@
               class: "btn btn-default btn-xs truncate" %>
   </div>
   <div class="panel-body">
-    <div class="row">
+    <div class="row-responsive">
       <%= if length(@podcast.thumbnails) > 0 do %>
         <%= img_tag(List.first(@podcast.thumbnails).path <> List.first(@podcast.thumbnails).filename,
                     width: 150,
@@ -65,7 +65,7 @@
         <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %>
     <% end %>
 
-    <div class="row">
+    <div class="row-responsive">
       <div>
         <h5>Description</h5>
         <%= @podcast.description %>

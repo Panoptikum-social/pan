@@ -84,6 +84,19 @@ body {
   }
 }
 
+.row-responsive {
+  display: flex;
+  .dont-shrink {
+    flex: 1 0 auto;
+   }
+  .dont-flex {
+    flex: 0 0 initial;
+  }
+  @media (max-width: $desktop-resolution) {
+    flex-direction: column;
+  }
+}
+
 .button-flex-row {
   max-width: 100%;
   display: flex;
