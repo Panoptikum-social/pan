@@ -1,7 +1,7 @@
 use Mix.Config
 
 config :pan, PanWeb.Endpoint,
-  http: [port: 8888, compress: true],
+  http: [port: 8888, compress: false],
   url: [scheme: "https", host: "panoptikum.io", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
