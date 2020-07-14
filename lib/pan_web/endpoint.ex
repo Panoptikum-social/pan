@@ -16,6 +16,7 @@ defmodule PanWeb.Endpoint do
   plug(Plug.Static,
     at: "/",
     from: :pan,
+    brotli: true,
     gzip: true,
     only: ~w(css fonts images img js favicon.ico robots.txt
              podlove-webplayer podlove-subscribe-button podigee-podcast-player
