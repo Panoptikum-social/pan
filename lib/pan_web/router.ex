@@ -181,13 +181,16 @@ defmodule PanWeb.Router do
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
     resources("/categories", CategoryFrontendController, only: [:index, :show])
+
+    resources("/podcasts", PodcastFrontendController, only: [:index, :show])
+    get("/qrcode/:code", QRCodeFrontendController, :generate)
   end
 
   scope "/", PanWeb do
     pipe_through([:browser, :unset_cookie])
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)
-    resources("/podcasts", PodcastFrontendController, only: [:index, :show])
+    # resources("/podcasts", PodcastFrontendController, only: [:index, :show])
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
 

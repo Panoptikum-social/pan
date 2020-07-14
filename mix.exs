@@ -138,7 +138,9 @@ defmodule Pan.Mixfile do
       {:exactor, "~> 2.2", warn_missing: false},
       # Json generation,
       {:jason, "~> 1.1"},
-      {:httpotion, "~> 3.1"}
+      {:httpotion, "~> 3.1"},
+      {:eqrcode, "~> 0.1.7"}
+      #QR Code generation
     ]
   end
 

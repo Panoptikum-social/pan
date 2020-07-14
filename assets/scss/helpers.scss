@@ -42,3 +42,12 @@ hr.divider {
 .half-width {
   width: 50%;
 }
+
+.dotted-border-left-and-right {
+  border-left: dotted 1px #ccc;
+  border-right: dotted 1px #ccc;
+}
+
+.double-margin {
+  margin: $double;
+}
