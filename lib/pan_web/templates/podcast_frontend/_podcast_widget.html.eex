@@ -8,17 +8,13 @@
     <div class="row-responsive">
       <%= if length(@podcast.thumbnails) > 0 do %>
         <%= img_tag(List.first(@podcast.thumbnails).path <> List.first(@podcast.thumbnails).filename,
-                    width: 150,
-                    height: 150,
-                    alt: @podcast.image_title,
+                    alt: List.last(String.split(@podcast.image_title || "", "/")),
                     class: "thumbnail dont-flex",
                     id: "photo") %>
       <% else %>
         <img src="/images/missing-podcast.png"
-             class="dont-flex"
-             alt="missing image"
-             width="150"
-             height="150"/>
+             class="thumbnail dont-flex"
+             alt="no podcast image available">
       <% end %>
 
       <dl class="dl-horizontal">
