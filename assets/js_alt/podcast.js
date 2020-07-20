@@ -34,5 +34,4 @@ let Podcast = {
     })
   }
 }
-
 export default Podcast
