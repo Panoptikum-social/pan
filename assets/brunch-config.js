@@ -3,6 +3,7 @@ exports.config = {
     javascripts: {
       joinTo: {
         'js/app.js': /^(js\/)|(node_modules\/)/,
+        'js_alt/app_alt.js': /^(js_alt\/)|(node_modules\/)/,
         'js/vendor.js': /^(vendor\/)/,
         'js/qrcode.js': /^(vendor\/qrcode.min.js)/
       }
@@ -14,7 +15,10 @@ exports.config = {
       }
     },
     templates: {
-      joinTo: "js/app.js"
+      joinTo: { 
+        'js/app.js': /^(js\/)|(node_modules\/)/, 
+        'js_alt/app_alt.js': /^(js_alt\/)|(node_modules\/)/,
+      }
     }
   },
 
@@ -23,7 +27,7 @@ exports.config = {
   },
 
   paths: {
-    watched: ["static", "css", "css_alt", "js", "vendor"],
+    watched: ["static", "css", "css_alt", "js", "js_alt", "vendor"],
     public: "../priv/static"
   },
 
@@ -38,7 +42,8 @@ exports.config = {
 
   modules: {
     autoRequire: {
-      "js/app.js": ["js/app"]
+      "js/app.js": ["js/app"],
+      "js/app_alt.js": ["js_alt/app_alt"]
     }
   },
 
