@@ -5,6 +5,14 @@
   border-radius: 10px;
   margin: $double 0 $double 0;
 
+  &.double-margin {
+    margin: $double;
+  }
+
+  &.single-margin {
+    margin: $single;
+  }
+
   th,
   td {
     padding: 3px 20px 3px 5px;

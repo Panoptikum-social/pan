@@ -45,7 +45,7 @@
             </td>
             <td id="episode-<%= episode.id %>">
               <p>
-                <%= link [fa_icon("headphones"), " ", truncate_string(episode.title, 80) || "no title"],
+                <%= link [fa_icon("headphones"), " ", episode.title || "no title"],
                       to: episode_frontend_path(@conn, :show, episode),
                       class: "btn btn-primary btn-xs truncate",
                       id: "detail-#{episode.id}" %>

@@ -184,6 +184,8 @@ defmodule PanWeb.Router do
 
     resources("/podcasts", PodcastFrontendController, only: [:index, :show])
     get("/qrcode/:code", QRCodeFrontendController, :generate)
+
+    resources("/episodes", EpisodeFrontendController, only: [:show, :index])
   end
 
   scope "/", PanWeb do
@@ -195,7 +197,7 @@ defmodule PanWeb.Router do
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
 
     get("/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence)
-    resources("/episodes", EpisodeFrontendController, only: [:show, :index])
+    # resources("/episodes", EpisodeFrontendController, only: [:show, :index])
     get("/episodes/:id/player", EpisodeFrontendController, :player)
 
     resources("/users", UserFrontendController, only: [:show, :index, :new, :create])

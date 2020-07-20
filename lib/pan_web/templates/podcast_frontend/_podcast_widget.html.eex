@@ -1,4 +1,4 @@
-<div class="panel">
+<div class="panel single-margin">
   <div class="panel-heading bg-info">
     <%= link [fa_icon("podcast"), " ", @podcast.title],
               to: podcast_frontend_path(@conn, :show, @podcast.id),
@@ -36,11 +36,11 @@
         </dd>
 
         <dt><label class="label bg-warning">Categories</label></dt>
-        <dd class="button-flex-row">
+        <dd>
           <%= for category <- @podcast.categories do %>
             <%= link [fa_icon("folder-o"), " ", category.title],
                       to: category_frontend_path(@conn, :show, category),
-                      class: "btn btn-xs btn-light-gray" %>
+                      class: "btn btn-xs btn-light-gray" %> &nbsp;
           <% end %>
         </dd>
 
