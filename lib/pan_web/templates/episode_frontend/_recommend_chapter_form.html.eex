@@ -23,7 +23,7 @@
 <% end %>
 
 <script>
-  $('[data-chapter="<%=@chapter.id %>"]').keyup(function(){
-      $("#remaining<%=@chapter.id %>").html((255 - this.value.length));
-  })
+  document.querySelector('[data-chapter="<%=@chapter.id %>"]').onkeyup = function(){
+      document.querySelector("#remaining<%=@chapter.id %>").innerHTML = 255 - this.value.length;
+  };
 </script>

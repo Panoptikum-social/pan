@@ -1,33 +1,36 @@
 <script>
-  $(function() {
-    $('[data-toggle="popover"]').popover()
-  })
+document.addEventListener("DOMContentLoaded", function(){
+  if (element = document.querySelector('[data-toggle="popover"]')) {
+    element.popover();
+  }
+});
 </script>
 
-<h1 style="line-height: 200%;">
-  <%= link [fa_icon("podcast"), " ", @episode.podcast.title],
-           to: podcast_frontend_path(@conn, :show, @episode.podcast),
-           class: "btn btn-default btn-lg" %>
-  &nbsp; / &nbsp;
-  <span class="btn btn-primary btn-lg"><%= fa_icon("headphones") %> <%= @episode.title %></span>
-</h1>
+<div class="content">
+  <h1>
+    <%= link [fa_icon("podcast"), " ", @episode.podcast.title],
+            to: podcast_frontend_path(@conn, :show, @episode.podcast),
+            class: "btn btn-default btn-xl" %>
+    &nbsp; / &nbsp;
+    <span class="btn btn-primary btn-xl"><%= fa_icon("headphones") %> <%= @episode.title %></span>
+  </h1>
 
-<div class="row">
-  <div class="col-md-2">
-    <%= if @episode_thumbnail do %>
-      <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
-                  width: 150,
-                  alt: @episode.image_title || @episode.podcast.image_title,
-                  class: "thumbnail",
-                  id: "photo") %>
-    <% else %>
-      <img src="/images/missing-episode.png" alt="missing episode" width="150" />
-    <% end %>
-  </div>
+  <div class="row-responsive">
+    <div class="flex-one">
+      <%= if @episode_thumbnail do %>
+        <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
+                    width: 150,
+                    alt: @episode.image_title || @episode.podcast.image_title,
+                    class: "thumbnail",
+                    id: "photo") %>
+      <% else %>
+        <img src="/images/missing-episode.png"
+            alt="missing episode"
+            width="150" />
+      <% end %>
+    </div>
 
-  <%= if (@episode.description && @episode.description != @episode.shownotes) ||
-         (@episode.summary && @episode.summary != @episode.description) do %>
-    <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">
+    <div class="flex-two">
       <%= if @episode.description && @episode.description != @episode.shownotes do %>
         <h3>Description</h3>
         <p><%= HtmlSanitizeEx.strip_tags(@episode.description) %></p>
@@ -38,10 +41,8 @@
         <p><%= raw(@episode.summary) %></p>
       <% end %>
     </div>
-  <% end %>
 
-  <div class="col-md-5">
-    <dl class="dl-horizontal" style="margin-top: 30px;">
+    <dl class="dl-horizontal flex-two">
       <dt>Subtitle</dt>
       <dd><%= @episode.subtitle %></dd>
       <%= if @episode.payment_link_url do %>
@@ -66,17 +67,17 @@
       <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
         <dd style="line-height: 200%;">
           <%= link [fa_icon("user-o"), " ", persona.name],
-                   to: persona_frontend_path(@conn, :show, persona),
-                   class: "btn btn-xs btn-lavender" %>
+                  to: persona_frontend_path(@conn, :show, persona),
+                  class: "btn btn-xs btn-lavender" %>
           <%= for gig <- gigs do %>
-             <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+            <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
             <%= if gig.self_proclaimed do %>
               <sup data-toggle="popover"
-                   data-placement="right"
-                   data-title="Claimed contribution"
-                   data-html="true"
-                   data-content="This contribution is claimed by a user and not source of
-                                 the podcast feed.">
+                  data-placement="right"
+                  data-title="Claimed contribution"
+                  data-html="true"
+                  data-content="This contribution is claimed by a user and not source of
+                                the podcast feed.">
                 <%= fa_icon "info-circle", class: "icon-lavender" %>
               </sup>
             <% end %>
@@ -99,17 +100,17 @@
       <% end %>
     </dl>
   </div>
+
+  <%= if @current_user do %>
+    <br/>
+    <b>Claim contribution</b>
+    <p style="line-height: 200%;"><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
+  <% end %>
+
+
+  <%= if @current_user do %>
+    <p><%= like_or_unlike(@current_user.id, @episode.id) %></p>
+  <% end %>
+
+  <hr/>
 </div>
-
-<%= if @current_user do %>
-  <br/>
-  <b>Claim contribution</b>
-  <p style="line-height: 200%;"><%= proclaim_or_not_buttons(@current_user.id, @episode.id) %></p>
-<% end %>
-
-
-<%= if @current_user do %>
-  <p><%= like_or_unlike(@current_user.id, @episode.id) %></p>
-<% end %>
-
-<hr/>

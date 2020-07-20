@@ -76,9 +76,11 @@ body {
 
 .row {
   display: flex;
+
   .dont-shrink {
     flex: 1 0 auto;
-   }
+  }
+
   .dont-flex {
     flex: 0 0 initial;
   }
@@ -86,12 +88,15 @@ body {
 
 .row-responsive {
   display: flex;
+
   .dont-shrink {
     flex: 1 0 auto;
-   }
+  }
+
   .dont-flex {
     flex: 0 0 initial;
   }
+
   @media (max-width: $desktop-resolution) {
     flex-direction: column;
   }
@@ -103,8 +108,9 @@ body {
   flex-wrap: wrap;
   column-gap: $double;
   justify-content: flex-start;
-  
-  &>a, div {
+
+  &>a,
+  div {
     flex: 0 2 240px;
     @extend .truncate;
   }
@@ -130,4 +136,16 @@ body {
   @media (max-width: $smartphone-resolution) {
     columns: 1;
   }
+}
+
+.flex-one {
+  flex: 1
+}
+
+.flex-two {
+  flex: 2
+}
+
+.flex-three {
+  flex: 3
 }

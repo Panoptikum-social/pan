@@ -17,7 +17,7 @@
   padding: 4px 9px;
   font-size: 16px;
   line-height: $base-line-height * 1.4;
-  border-radius: 76px;
+  border-radius: 7px;
 }
 
 .btn-large {
@@ -223,6 +223,25 @@
     color: text-color-for(active-color-for($lavender));
   }
 }
+
+.btn-inverse-lavender {
+background-color: white;
+border-color: #967adc;
+color: #967adc;
+
+  &:hover {
+    background-color: hover-color-for(white);
+    color: text-color-for(white);
+  }
+
+  &:active {
+    background-color: active-color-for(white);
+    color: text-color-for(active-color-for(white));
+  }
+}
+
+
+
 
 .btn-light-gray {
   @extend .bg-light-gray;

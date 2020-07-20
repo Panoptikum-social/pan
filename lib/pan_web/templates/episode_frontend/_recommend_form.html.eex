@@ -19,7 +19,7 @@
 <hr/><br/>
 
 <script>
-  $('#recommendation_comment').keyup(function(){
-      $("#remaining").html((255 - this.value.length));
-  })
+  document.querySelector('#recommendation_comment').onkeyup = function(){
+      document.querySelector("#remaining").innerHTML = 255 - this.value.length;
+  };
 </script>
