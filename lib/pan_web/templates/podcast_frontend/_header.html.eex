@@ -14,7 +14,7 @@
   </p>
 <% end %>
 
-<div class="row">
+<div class="row-responsive">
   <div role="description-and-image">
     <div class="row">
       <%= if @podcast_thumbnail do %>
@@ -88,7 +88,7 @@
       <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
       <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
       <dt>Categories</dt>
-      <dd style="line-height: 200%;">
+      <dd>
         <%= for category <- @podcast.categories do %>
           <%= link [fa_icon("folder-o"), " ", category.title],
                     to: category_frontend_path(@conn, :show, category),

@@ -264,7 +264,7 @@ defmodule PanWeb.EpisodeFrontendView do
   end
 
   def complain_link() do
-    link("Complain", to: "https://panoptikum.io/complaints")
+    link("Complain", to: "https://blog.panoptikum.io/complaints/")
   end
 
   def major_mimetype(episode) do

@@ -6,7 +6,7 @@ main {
   display: flex;
 }
 
-nav {
+nav.nav {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -143,5 +143,47 @@ footer {
   img {
     vertical-align: middle;
     width: 30px;
+  }
+}
+
+// pagination
+
+nav > ul.pagination {
+  display: flex;
+  justify-content: flex-start;
+  margin: $double;
+  list-style-type: none;
+
+  &>li:first-of-type {
+    border-radius: $single 0 0 $single;
+    border: 1px solid $light-gray;
+  }
+
+  &>li:last-of-type {
+    border-radius: 0 $single $single 0;
+    border: 1px solid $light-gray;
+  }
+
+  &>li {
+    padding: $single;
+    border: 1px solid $light-gray;
+
+    &.active {
+      background-color: hover-color-for($grass);
+
+      a {
+        background-color: hover-color-for($grass);
+        color: white;
+      }
+    }
+
+    &:hover:not(.active) {
+      background-color: $light-gray;
+    }
+
+    &>a {
+      padding: $single;
+      color: black;
+    }
   }
 }
