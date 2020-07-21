@@ -1,6 +1,6 @@
 {
   "repository": {},
-  "license": "MIT",
+  "license": "AGPLv3",
   "scripts": {
     "deploy": "brunch build --production",
     "watch": "brunch watch --stdin"

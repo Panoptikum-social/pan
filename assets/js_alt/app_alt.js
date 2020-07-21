@@ -18,6 +18,16 @@ import "bootstrap-notify"
 import socket from "./socket"
 import Mailbox from "./mailbox"
 
-document.addEventListener('DOMContentLoaded', function(){ 
-  Mailbox.init(socket)
-}, false)
+function docReady(fn) {
+    // see if DOM is already available
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", fn);
+    }
+}
+
+docReady(function () { 
+    Mailbox.init(socket) 
+})

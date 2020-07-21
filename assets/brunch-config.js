@@ -17,7 +17,7 @@ exports.config = {
     templates: {
       joinTo: { 
         'js/app.js': /^(js\/)|(node_modules\/)/, 
-        'js_alt/app_alt.js': /^(js_alt\/)|(node_modules\/)/,
+        'js_alt/app_alt.js': /^(js_alt\/)|(node_modules\/)/, 
       }
     }
   },
@@ -43,7 +43,7 @@ exports.config = {
   modules: {
     autoRequire: {
       "js/app.js": ["js/app"],
-      "js/app_alt.js": ["js_alt/app_alt"]
+      "js_alt/app_alt.js": ["js_alt/app_alt"],
     }
   },
 
