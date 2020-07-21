@@ -12,9 +12,6 @@
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
 import "phoenix_html"
-import $ from "jquery"
-import "bootstrap-notify"
-
 import socket from "./socket"
 import Mailbox from "./mailbox"
 

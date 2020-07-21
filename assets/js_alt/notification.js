@@ -1,3 +1,5 @@
+import tinyToast from "./tiny-toast"
+
 let Notification = {
   popup(response) {
     var message;
@@ -8,10 +10,7 @@ let Notification = {
     }
 
     if(window.lastMessage != message){
-      $.notify({message: message},
-               {type: response.type,
-                spacing: 5,
-                newest_on_top: true})
+      tinyToast.show(message, response.type).hide(50000)
       window.lastMessage = message
     }
   }
