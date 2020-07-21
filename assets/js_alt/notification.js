@@ -10,7 +10,7 @@ let Notification = {
     }
 
     if(window.lastMessage != message){
-      tinyToast.show(message, response.type).hide(50000)
+      tinyToast.show(message, response.type).hide(5000)
       window.lastMessage = message
     }
   }
