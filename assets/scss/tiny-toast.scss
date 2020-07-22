@@ -1,0 +1,39 @@
+.tinytoast {
+  color: #000;
+  position: fixed;
+  top: 0em;
+  right: 1em;
+  background-color: #fff;
+  border-radius: 3px;
+  border-width: 2px;
+  border-color: #000;
+  border-style: solid;
+  padding: 10px;
+  z-index: 1000;
+  font-size: 14px;
+  font-family: Ubuntu;
+}
+
+.tinyToast-success {
+  @extend .tinytoast;
+  background-color: #cfc;
+  border-color: #0f0;
+}
+
+.tinyToast-info {
+  @extend .tinytoast;
+  background-color: #ccf;
+  border-color: #00f;
+}
+
+.tinyToast-warning {
+  @extend .tinytoast;
+  background-color: #ffc;
+  border-color: #ff0;
+}
+
+.tinyToast-danger {
+  @extend .tinytoast;
+  background-color: #fcc;
+  border-color: #f00;
+}
