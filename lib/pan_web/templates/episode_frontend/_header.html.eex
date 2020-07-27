@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function(){
       <%= if @episode_thumbnail do %>
         <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
                     width: 150,
-                    alt: @episode.image_title || @episode.podcast.image_title,
+                    alt: (@episode.image_title || @episode.podcast.image_title) |> String.split("/") |> List.last() |> String.split(".") |> List.first(),
                     class: "thumbnail",
                     id: "photo") %>
       <% else %>
@@ -63,27 +63,29 @@ document.addEventListener("DOMContentLoaded", function(){
         <dt>Deep link</dt>
         <dd><a href="<%= @episode.deep_link %>" id="metadata"><%= @episode.deep_link %></a></dd>
       <% end %>
-      <dt>Contributors</dt>
-      <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
-        <dd style="line-height: 200%;">
-          <%= link [fa_icon("user-o"), " ", persona.name],
-                  to: persona_frontend_path(@conn, :show, persona),
-                  class: "btn btn-xs btn-lavender" %>
-          <%= for gig <- gigs do %>
-            <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
-            <%= if gig.self_proclaimed do %>
-              <sup data-toggle="popover"
-                  data-placement="right"
-                  data-title="Claimed contribution"
-                  data-html="true"
-                  data-content="This contribution is claimed by a user and not source of
-                                the podcast feed.">
-                <%= fa_icon "info-circle", class: "icon-lavender" %>
-              </sup>
+      <%= if @episode.gigs != [] do %>
+        <dt>Contributors</dt>
+        <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
+          <dd>
+            <%= link [fa_icon("user-o"), " ", persona.name],
+                    to: persona_frontend_path(@conn, :show, persona),
+                    class: "btn btn-xs btn-lavender" %>
+            <%= for gig <- gigs do %>
+              <span class="label label-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+              <%= if gig.self_proclaimed do %>
+                <sup data-toggle="popover"
+                    data-placement="right"
+                    data-title="Claimed contribution"
+                    data-html="true"
+                    data-content="This contribution is claimed by a user and not source of
+                                  the podcast feed.">
+                  <%= fa_icon "info-circle", class: "icon-lavender" %>
+                </sup>
+              <% end %>
+              &nbsp;
             <% end %>
-            &nbsp;
-          <% end %>
-        </dd>
+          </dd>
+        <% end %>
       <% end %>
 
       <dt>Enclosures</dt>
