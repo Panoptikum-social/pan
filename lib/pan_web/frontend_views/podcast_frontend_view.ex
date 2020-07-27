@@ -37,14 +37,14 @@ defmodule PanWeb.PodcastFrontendView do
     case Like.find_podcast_like(user_id, podcast.id) do
       nil ->
         content_tag :button,
-          class: "btn btn-warning",
+          class: "btn btn-medium btn-warning",
           data: [type: "podcast", event: "like", action: "like", id: podcast.id] do
           [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-o"), " ", " Like"]
         end
 
       _ ->
         content_tag :button,
-          class: "btn btn-success",
+          class: "btn btn-medium btn-success",
           data: [type: "podcast", event: "like", action: "unlike", id: podcast.id] do
           [Integer.to_string(podcast.likes_count), " ", fa_icon("heart"), " Unlike"]
         end
@@ -58,14 +58,14 @@ defmodule PanWeb.PodcastFrontendView do
          ) do
       nil ->
         content_tag :button,
-          class: "btn btn-primary",
+          class: "btn btn-medium btn-primary",
           data: [type: "podcast", event: "follow", action: "follow", id: podcast.id] do
           [Integer.to_string(podcast.followers_count), " ", fa_icon("commenting-o"), " Follow"]
         end
 
       _ ->
         content_tag :button,
-          class: "btn btn-success",
+          class: "btn btn-medium btn-success",
           data: [type: "podcast", event: "follow", action: "unfollow", id: podcast.id] do
           [Integer.to_string(podcast.followers_count), " ", fa_icon("commenting"), " Unfollow"]
         end
@@ -79,14 +79,14 @@ defmodule PanWeb.PodcastFrontendView do
          ) do
       nil ->
         content_tag :button,
-          class: "btn btn-info",
+          class: "btn btn-medium btn-info",
           data: [type: "podcast", action: "subscribe", event: "subscribe", id: podcast.id] do
           [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user-o"), " Subscribe"]
         end
 
       _ ->
         content_tag :button,
-          class: "btn btn-success",
+          class: "btn btn-medium btn-success",
           data: [type: "podcast", action: "unsubscribe", event: "subscribe", id: podcast.id] do
           [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user"), " Unsubscribe"]
         end

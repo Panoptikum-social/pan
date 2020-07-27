@@ -1,7 +1,7 @@
 // Buttons // 
 
 .btn {
-  margin: 3px 0px 3px;
+  margin: 3px;
   display: inline-block;
   text-align: center;
   white-space: nowrap;
@@ -14,39 +14,40 @@
 // Button sizes
 
 .btn-xl {
-  padding: 4px 9px;
+  padding: 5px 9px;
   font-size: 16px;
-  line-height: $base-line-height * 1.4;
+  line-height: 2;
   border-radius: 7px;
 }
 
 .btn-large {
-  padding: 3px 8px;
+  padding: 4px 8px;
   font-size: 15px;
-  line-height: $base-line-height * 1.3;
+  line-height: 1.85;
   border-radius: 6px;
 }
 
 .btn-medium {
-  padding: 2px 7px;
+  padding: 3px 7px;
   margin-top: 2px;
   font-size: 14px;
-  line-height: $base-line-height * 1.2;
+  line-height: 1.75;
   border-radius: 5px;
 }
 
 .btn-sm {
-  padding: 1px 6px;
+  padding: 2px 6px;
   margin-top: 1px;
   font-size: 13px;
-  line-height: $base-line-height * 1.1;
+  line-height: 1.6;
   border-radius: 4px;
 }
 
 .btn-xs {
-  padding: 0px 5px;
+  padding: 1px 5px;
   font-size: 12px;
   border-radius: 3px;
+  line-height: 1.5;
 }
 
 // Button backgrounds

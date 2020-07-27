@@ -41,36 +41,32 @@
                             id: "photo") %>
               <% end %>
             </td>
-            <td id="episode-<%= episode.id %>">
-              <p>
-                <%= link [fa_icon("headphones"), " ", episode.title || "no title"],
-                      to: episode_frontend_path(@conn, :show, episode),
-                      class: "btn btn-primary btn-xs truncate",
-                      id: "detail-#{episode.id}" %>
-              </p>
+            <td id="episode-<%= episode.id %>" class="top">
+              <%= link [fa_icon("headphones"), " ", episode.title || "no title"],
+                    to: episode_frontend_path(@conn, :show, episode),
+                    class: "btn btn-primary btn-xs truncate",
+                    id: "detail-#{episode.id}" %><br/>
               <%= truncate_string(HtmlSanitizeEx.strip_tags(episode.description), 255) %>
             </td>
-            <td>
+            <td class="top">
               <%= for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona)) do %>
-                <p>
-                  <%= link [fa_icon("user-o"), " ", persona.name],
-                          to: persona_frontend_path(@conn, :show, persona),
-                          class: "btn btn-xs btn-lavender" %>
-                  <%= for gig <- gigs do %>
-                    <span class="label bg-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
-                    <%= if gig.self_proclaimed do %>
-                      <sup data-toggle="popover"
-                          data-placement="right"
-                          data-title="Claimed contribution"
-                          data-html="true"
-                          data-content="This contribution is claimed by a user and not source of
-                                        the podcast feed.">
-                        <%= fa_icon "info-circle", class: "icon-lavender" %>
-                      </sup>
-                    <% end %>
-                    <br/>
+                <%= link [fa_icon("user-o"), " ", persona.name],
+                        to: persona_frontend_path(@conn, :show, persona),
+                        class: "btn btn-xs btn-lavender" %>
+                <%= for gig <- gigs do %>
+                  <span class="label bg-success" id="gig-<%= gig.id %>"><%= gig.role %></span>
+                  <%= if gig.self_proclaimed do %>
+                    <sup data-toggle="popover"
+                        data-placement="right"
+                        data-title="Claimed contribution"
+                        data-html="true"
+                        data-content="This contribution is claimed by a user and not source of
+                                      the podcast feed.">
+                      <%= fa_icon "info-circle", class: "icon-lavender" %>
+                    </sup>
                   <% end %>
-                </p>
+                  <br/>
+                <% end %>
               <% end %>
             </td>
           </tr>

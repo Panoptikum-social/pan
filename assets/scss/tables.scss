@@ -2,23 +2,23 @@
 
 table {
   overflow-x: auto;
-}
 
-.table-striped {
-  border-spacing: 0px;
-  border-collapse: collapse;
+  &.table-striped {
+    border-spacing: 0px;
+    border-collapse: collapse;
 
-  tbody > tr:nth-of-type(odd) {
-    background-color: $very-light-gray;
-  }
+    tbody > tr:nth-of-type(odd) {
+      background-color: $very-light-gray;
+    }
 
-  td,
-  th {
-    border: 1px solid $light-gray;
-    padding: 5px;
+    td,
+    th {
+      border: 1px solid $light-gray;
+      padding: 5px;
 
-    .top {
-      vertical-align: top;
+      &.top {
+        vertical-align: top;
+      }
     }
   }
 }
