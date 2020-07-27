@@ -1,4 +1,4 @@
-// Tables // 
+// Tables //
 
 table {
   overflow-x: auto;
@@ -8,14 +8,17 @@ table {
   border-spacing: 0px;
   border-collapse: collapse;
 
-  tbody>tr:nth-of-type(odd) {
+  tbody > tr:nth-of-type(odd) {
     background-color: $very-light-gray;
   }
 
   td,
   th {
-    border-width: 1px 0px 1px 0px;
-    border-style: solid;
-    border-color: $light-gray;
+    border: 1px solid $light-gray;
+    padding: 5px;
+
+    .top {
+      vertical-align: top;
+    }
   }
 }

@@ -20,12 +20,13 @@
       <%= if @podcast_thumbnail do %>
         <%= img_tag(@podcast_thumbnail.path <> @podcast_thumbnail.filename,
                     width: 150,
-                    alt: List.last(String.split(@podcast.image_title, "/")),
-                    class: "thumbnail",
+                    alt: @podcast.image_title |> String.split("/") |> List.last() |> String.split(".") |> List.first(),
+                    class: "thumbnail dont-shrink",
                     id: "photo") %>
       <% else %>
         <img src="/images/missing-podcast.png"
               alt="missing image"
+              class="thumbnail dont-shrink"
               width="150" />
       <% end %>
       <div>

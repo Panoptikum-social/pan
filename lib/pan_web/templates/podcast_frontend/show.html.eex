@@ -36,10 +36,8 @@
             <td align="center">
               <%= if List.first(episode.thumbnails) do %>
                 <%= img_tag(List.first(episode.thumbnails).path <> List.first(episode.thumbnails).filename,
-                            width: 100, height: 100,
-                            alt: @podcast.image_title,
-                            class: "thumbnail",
-                            style: "margin-bottom: 0px;",
+                            alt: @podcast.image_title |> String.split("/") |> List.last() |> String.split(".") |> List.first(),
+                            class: "thumbnail small",
                             id: "photo") %>
               <% end %>
             </td>
