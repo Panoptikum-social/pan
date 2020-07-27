@@ -109,11 +109,15 @@ body {
   column-gap: $double;
   justify-content: flex-start;
 
-  &>a,
+  & > a,
   div {
     flex: 0 2 240px;
     @extend .truncate;
   }
+}
+
+.column-gap {
+  column-gap: $double;
 }
 
 .column {
@@ -139,13 +143,13 @@ body {
 }
 
 .flex-one {
-  flex: 1
+  flex: 1;
 }
 
 .flex-two {
-  flex: 2
+  flex: 2;
 }
 
 .flex-three {
-  flex: 3
+  flex: 3;
 }

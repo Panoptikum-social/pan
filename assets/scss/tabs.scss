@@ -9,12 +9,13 @@
     opacity: 0;
   }
 
-  &>.label {
+  &>label.label {
+    padding: $single;
     display: initial;
+    font-size: initial;
     font-weight: initial;
     margin: initial;
     width: auto;
-    padding: 8px;
     background: $light-gray;
     cursor: pointer;
     color: $medium-dark-gray;
