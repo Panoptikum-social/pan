@@ -24,11 +24,11 @@
     </table>
 
     <a class="btn btn-primary" onclick="execute_assign()">
-      <%= fa_icon "podcast" %>
+      <%= la_icon "podcast-solid" %>
       <%= fa_icon "arrow-right " %>
       <%= fa_icon "folder-open-o" %>
       <%= fa_icon "arrow-right " %>
-      <%= fa_icon "podcast" %> &nbsp;
+      <%= la_icon "podcast-solid" %> &nbsp;
       Update Assignments
     </a>
   </div>

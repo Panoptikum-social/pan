@@ -13,7 +13,7 @@
 <% end %>
 
 <ul>
-  <li><%= link [fa_icon("sitemap", class: "fa-fw"), "Categories"],
+  <li><%= link [la_icon("sitemap-solid"), "Categories"],
             to: category_frontend_path(@conn, :index),
             title: "Categories",
             class: "visible-xs-inline" %></li>

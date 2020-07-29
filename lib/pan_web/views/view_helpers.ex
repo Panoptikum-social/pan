@@ -1,7 +1,7 @@
 defmodule PanWeb.ViewHelpers do
   import Phoenix.HTML
   import Phoenix.HTML.Link
-  alias PanWeb.Endpoint
+  alias PanWeb.{Endpoint}
 
   def btn_cycle(counter) do
     Enum.at(
@@ -69,11 +69,21 @@ defmodule PanWeb.ViewHelpers do
     |> Enum.join()
   end
 
-  def fa_icon(name) do
-    ~s(<i class="fa fa-#{name}"></i>) |> raw()
-  end
+ def fa_icon(name) do
+   ~s(<i class="fa fa-#{name}"></i>) |> raw()
+ end
 
-  def fa_icon(name, class: class) do
-    ~s(<i class="fa fa-#{name} #{class}"></i>) |> raw()
+ def fa_icon(name, class: class) do
+   ~s(<i class="fa fa-#{name} #{class}"></i>) |> raw()
+ end
+
+  def la_icon(name), do: la_icon(name, class: "")
+  def la_icon(name, class: class) do
+    :code.priv_dir(:pan)
+    |> Path.join("/static/svg/line_awesome_icons/#{name}.svg")
+    |> File.read()
+    |> elem(1)
+    |> String.replace("<svg", "<svg class=\"#{class} line-awesome\"")
+    |> raw()
   end
 end

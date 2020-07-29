@@ -21,6 +21,10 @@ nav.nav {
 
   a {
     color: $light-gray;
+    &>svg.line-awesome {
+      fill: $light-gray;
+    }
+  
   }
 
   img {
