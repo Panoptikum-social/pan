@@ -6,7 +6,7 @@ config :pan, PanWeb.Endpoint,
   secret_key_base: "p+SVheqFHkj2Z89dxUo/PoRR696q9G+mY9IPIbpm1bBHL1BJOawyku/GKnhT6RAs",
   render_errors: [accepts: ~w(html json)],
   pubsub_server: Pan.PubSub,
-  http: [compress: true]
+  http: [compress: false]
 
 config :pan, ecto_repos: [Pan.Repo]
 
