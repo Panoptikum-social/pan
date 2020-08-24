@@ -3,9 +3,9 @@
 <table id="datatable" class="table table-striped table-condensed table-bordered">
   <thead>
     <tr>
-      <th><%= fa_icon "search" %> Id</th>
+      <th><%= la_icon("search-solid") %> Id</th>
       <th>Content</th>
-      <th><%= fa_icon "search" %> Podcast</th>
+      <th><%= la_icon("search-solid") %> Podcast</th>
       <th>Actions</th>
     </tr>
   </thead>

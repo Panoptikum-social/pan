@@ -17,7 +17,7 @@
 
         <td>
           <span class="pull-right">
-            <nobr><%= count %> <%= fa_icon(@icon) %></nobr>
+            <nobr><%= count %> <%= la_icon(@icon) %></nobr>
           </span>
         </td>
       </tr>

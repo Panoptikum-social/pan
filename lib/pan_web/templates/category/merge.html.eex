@@ -9,9 +9,9 @@
   </div>
   <div class="col-md-2">
     <a class="btn btn-primary" onclick="merge_selected()">
-      <%= fa_icon "file-o" %>
-      <%= fa_icon "arrow-right " %>
-      <%= fa_icon "file-text-o" %>
+      <%= la_icon("folder") %>
+      <%= la_icon("arrow-right-solid") %>
+      <%= la_icon("folder") %>
       Merge Categories
     </a>
   </div>

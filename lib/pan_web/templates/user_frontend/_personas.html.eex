@@ -8,7 +8,7 @@
             You might be podcasting in the name of an organisation, a group or use an alias,
             when you appear contributing to a podcast. <br/> We call all these different identities
             personas.">
-    <%= fa_icon "info-circle" %> Help
+    <%= la_icon("info-circle-solid") %> Help
   </button>
 </h2>
 
@@ -92,7 +92,7 @@
                       data-content="A delegation lets the gigs (i.e. contributions to episodes) and
                         engagements (i.e. contributions to podcasts) of the persona also appear on the
                         profile page of the target persona.">
-                  <%= fa_icon "info-circle" %> Help
+                  <%= la_icon("info-circle-solid") %> Help
                 </button>
               </h4>
 
@@ -151,7 +151,7 @@
                     data-title="Redirection"
                     data-content="The redirection redirects the persona profile page to the profile
                       page of the target persona.">
-                <%= fa_icon "info-circle" %> Help
+                <%= la_icon("info-circle-solid") %> Help
               </button>
               </h4>
 

@@ -2,7 +2,7 @@
   <a class="dropdown-toggle" href="#" role="button"
      aria-haspopup="true" aria-expanded="false"
      data-toggle="dropdown" title="User menu">
-    <%= fa_icon "user" %>
+    <%= la_icon("user") %>
     <span class="username"><%= @current_user.username %></span>
     <span class="caret"></span>
   </a>

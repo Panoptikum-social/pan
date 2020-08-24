@@ -1,9 +1,9 @@
 <p class="text-center">
   <a class="btn btn-primary" onclick="toggle_manifestation()">
-    <%= fa_icon "user" %>
-    <%= fa_icon "arrow-left" %>
-    <%= fa_icon "arrow-right" %>
-    <%= fa_icon "user-o" %> &nbsp;
+    <%= la_icon("user") %>
+    <%= la_icon("arrow-left-solid") %>
+    <%= la_icon("arrow-right-solid") %>
+    <%= la_icon("user-tie-solid") %> &nbsp;
     Toggle Manifestation
   </a>
 </p>

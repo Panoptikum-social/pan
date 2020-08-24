@@ -1,5 +1,5 @@
 <li class="divider"></li>
-<li class="uppercase text-right"><%= fa_icon "user" %> <%= @current_user.username %></div>
+<li class="uppercase text-right"><%= la_icon("user") %> <%= @current_user.username %></div>
 <li><%= link [la_icon("user-circle"), " My Profile"],  to: user_frontend_path(@conn, :my_profile) %></li>
 <li><%= link [la_icon("user-secret-solid"), " Change Password"], to: user_frontend_path(@conn, :edit_password) %> </li>
 <li><%= link [la_icon("envelope-open"), " My Messages"], to: user_frontend_path(@conn, :my_messages) %></li>

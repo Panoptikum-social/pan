@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     data-html="true"
                     data-content="This contribution is claimed by a user and not source of
                                   the podcast feed.">
-                  <%= fa_icon "info-circle", class: "icon-lavender" %>
+                  <%= la_icon("info-circle-solid", class: "icon-lavender") %>
                 </sup>
               <% end %>
               &nbsp;

@@ -15,7 +15,7 @@
           <% end %>
         </td>
         <td class="text-right">
-          <%= count %> <%= fa_icon(@icon) %>
+          <%= count %> <%= la_icon(@icon) %>
         </td>
       </tr>
     <% end %>

@@ -69,14 +69,6 @@ defmodule PanWeb.ViewHelpers do
     |> Enum.join()
   end
 
- def fa_icon(name) do
-   ~s(<i class="fa fa-#{name}"></i>) |> raw()
- end
-
- def fa_icon(name, class: class) do
-   ~s(<i class="fa fa-#{name} #{class}"></i>) |> raw()
- end
-
   def la_icon(name), do: la_icon(name, class: "")
   def la_icon(name, class: class) do
     :code.priv_dir(:pan)

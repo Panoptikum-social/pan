@@ -18,7 +18,7 @@
             data-content="You can manually trigger a metadata update for this podcast once an hour,
                           if you are impatient. This still will take some time, so keep track of
                           the status updates. And refresh the page with [F5] when told so.">
-      <%= fa_icon "info-circle" %> Help
+      <%= la_icon("info-circle-solid") %> Help
     </button>
   <% else %>
     <small>

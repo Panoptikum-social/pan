@@ -23,8 +23,7 @@ nav.nav {
     color: $light-gray;
     &>svg.line-awesome {
       fill: $light-gray;
-    }
-  
+    }  
   }
 
   img {
@@ -39,6 +38,9 @@ nav.nav {
 
   li {
     padding: 4px;
+    &>svg.line-awesome {
+      fill: $light-gray;
+    }  
   }
 
   // Dropdown
