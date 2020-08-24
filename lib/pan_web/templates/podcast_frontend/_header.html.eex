@@ -74,7 +74,7 @@
       <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
 
         <dd style="line-height: 200%;">
-          <%= link [fa_icon("user-o"), " ", persona.name],
+          <%= link [la_icon("user-astronaut-solid"), " ", persona.name],
                     to: persona_frontend_path(@conn, :show, persona),
                     class: "btn btn-xs btn-lavender" %>
           <%= for engagement <- engagements do %>

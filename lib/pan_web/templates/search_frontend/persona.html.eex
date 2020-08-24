@@ -15,7 +15,7 @@
 
   <div class="col-md-10">
     <h3 style="margin-bottom: 5px; margin-top: 0px;">
-      <%= fa_icon("user-o") %> Persona &nbsp;
+      <%= la_icon("user-astronaut-solid") %> Persona &nbsp;
       <%= link @persona.name, to: @persona.url,
                               style: "color:#1a0dab" %>
     </h3>

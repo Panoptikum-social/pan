@@ -17,30 +17,30 @@
             to: category_frontend_path(@conn, :index),
             title: "Categories",
             class: "visible-xs-inline" %></li>
-  <li><%= link [fa_icon("magic", class: "fa-fw"), "Random"],
+  <li><%= link [la_icon("magic-solid"), "Random"],
           to: recommendation_frontend_path(@conn, :random) %></li>
   <li><a href="https://blog.panoptikum.io/">
-    <%= fa_icon("question-circle", class: "fa-fw") %> About
+    <%= la_icon("question-circle") %> About
   </a></li>
   <li><a href="https://blog.panoptikum.io/blog">
-    <%= fa_icon("newspaper-o", class: "fa-fw") %> Blog
+    <%= la_icon("newspaper") %> Blog
   </a></li>
-  <li><%= link [fa_icon("user-o", class: "fa-fw"), "Podcasters"],
+  <li><%= link [la_icon("user-astronaut-solid"), "Podcasters"],
             to: persona_frontend_path(@conn, :index) %></li>
-  <li><%= link [fa_icon("user", class: "fa-fw"), "Users"],
+  <li><%= link [la_icon("user"), "Users"],
       to: user_frontend_path(@conn, :index) %></li>
 
   <%= if @current_user do %>
     <li><%= render "_user_dropdown_alt.html", conn: @conn, current_user: @current_user %></li>
     <li><%= render "_admin_dropdown_alt.html", conn: @conn, current_user: @current_user %></li>
     <li class="divider"></li>
-    <li><%= link [fa_icon("sign-out", class: "fa-fw"), "Sign Out"],
+    <li><%= link [la_icon("sign-out-alt-solid"), "Sign Out"],
               to: session_path(@conn, :delete, @current_user),
               method: "delete" %></li>
   <% else %>
-    <li><%= link [fa_icon("pencil", class: "fa-fw"), "Sign Up"],
+    <li><%= link [la_icon("pen-solid"), "Sign Up"],
               to: user_frontend_path(@conn, :new) %></li>
-    <li><%= link [fa_icon("sign-in", class: "fa-fw"), "Log In"],
+    <li><%= link [la_icon("sign-in-alt-solid"), "Log In"],
               to: session_path(@conn, :new) %></li>
   <% end %>
 </ul>

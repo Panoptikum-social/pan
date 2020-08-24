@@ -3,7 +3,7 @@
 <% end %>
 
 <%= for manifestation <- @manifestations do %>
-  <%= link [fa_icon("user-o"), " ", manifestation.persona.name],
+  <%= link [la_icon("user-astronaut-solid"), " ", manifestation.persona.name],
           to: persona_frontend_path(@conn, :show, manifestation.persona),
           class: "btn btn-xs" %> &nbsp;
 <% end %>

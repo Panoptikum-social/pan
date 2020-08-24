@@ -50,7 +50,7 @@
             </td>
             <td class="top">
               <%= for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona)) do %>
-                <%= link [fa_icon("user-o"), " ", persona.name],
+                <%= link [la_icon("user-astronaut-solid"), " ", persona.name],
                         to: persona_frontend_path(@conn, :show, persona),
                         class: "btn btn-xs btn-lavender" %>
                 <%= for gig <- gigs do %>

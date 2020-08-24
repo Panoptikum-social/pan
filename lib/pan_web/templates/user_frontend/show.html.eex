@@ -67,7 +67,7 @@
         <div class="panel-body">
           <p style="line-height: 200%;">
             <%= for user <- @user.users_i_like do %>
-              <%= link [fa_icon("user"), " ", user.name],
+              <%= link [la_icon("user"), " ", user.name],
                        to: user_frontend_path(@conn, :show, user),
                        class: "btn btn-default btn-xs",
                        style: "color: #000" %> &nbsp;

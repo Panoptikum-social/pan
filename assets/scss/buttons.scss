@@ -55,49 +55,58 @@
 .bg-default {
   background-color: white;
   color: text-color-for(white);
+  fill: text-color-for(white);
   border: 1px solid $medium-gray;
 }
 
 .bg-primary {
   background-color: $aqua;
   color: text-color-for($aqua);
+  fill: text-color-for($aqua);
 }
 
 .bg-info {
   background-color: $mint;
   color: text-color-for($mint);
+  fill: text-color-for($mint);
 }
 
 .bg-danger {
   background-color: $grapefruit;
   color: text-color-for($grapefruit);
+  fill: text-color-for($grapefruit);
 }
 
 .bg-warning {
   background-color: $sunflower;
   color: text-color-for($sunflower);
+  fill: text-color-for($sunflower);
 }
 
 .bg-success {
   background-color: $grass;
   color: text-color-for($grass);
+  fill: text-color-for($grass);
 }
 
 .bg-lavender {
   background-color: $lavender;
   color: text-color-for($lavender);
+  fill: text-color-for($lavender);
 }
 
 
 .bg-light-gray {
   background-color: $light-gray;
   color: text-color-for($light-gray);
+  fill: text-color-for($light-gray);
   border: 1px solid $medium-gray;
 }
 
 .bg-gray {
   background-color: $medium-gray;
   color: text-color-for($medium-gray);
+  fill: text-color-for($medium-gray);
 }
 
 .bg-medium-gray {
@@ -107,21 +116,25 @@
 .bg-dark-gray {
   background-color: $dark-gray;
   color: text-color-for($dark-gray);
+  fill: text-color-for($dark-gray);
 }
 
 .bg-blue-jeans {
   background-color: $blue-jeans;
   color: text-color-for($blue-jeans);
+  fill: text-color-for($blue-jeans);
 }
 
 .bg-pink-rose {
   background-color: $pink-rose;
   color: text-color-for($pink-rose);
+  fill: text-color-for($pink-rose);
 }
 
 .bg-bittersweet {
   background-color: $bittersweet;
   color: text-color-for($bittersweet);
+  fill: text-color-for($bittersweet);
 }
 
 // Buttons named after use case
@@ -135,6 +148,7 @@
 
   &:active {
     color: text-color-for(scale-color(white, $lightness: -40%)) !important;
+    fill: text-color-for(scale-color(white, $lightness: -40%)) !important;
     background-color: scale-color(white, $lightness: -40%);
   }
 }

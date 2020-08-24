@@ -13,12 +13,12 @@ defmodule PanWeb.EpisodeFrontendView do
     persona = Episode.author(episode)
 
     if persona do
-      link([fa_icon("user-o"), " ", persona.name],
+      link([la_icon("user-astronaut-solid"), " ", persona.name],
         to: persona_frontend_path(conn, :show, persona.id),
         class: "btn btn-xs truncate btn-lavender"
       )
     else
-      [fa_icon("user-o"), " Unknown"]
+      [la_icon("user-astronaut-solid"), " Unknown"]
     end
   end
 

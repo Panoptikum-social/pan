@@ -9,12 +9,12 @@ defmodule PanWeb.PodcastFrontendView do
     persona = Podcast.author(podcast)
 
     if persona do
-      link([fa_icon("user-o"), " ", persona.name],
+      link([la_icon("user-astronaut-solid"), " ", persona.name],
         to: persona_frontend_path(conn, :show, persona),
         class: "btn btn-xs truncate btn-lavender"
       )
     else
-      [fa_icon("user-o"), " Unknown"]
+      [la_icon("user-astronaut-solid"), " Unknown"]
     end
   end
 
@@ -81,14 +81,14 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-medium btn-info",
           data: [type: "podcast", action: "subscribe", event: "subscribe", id: podcast.id] do
-          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user-o"), " Subscribe"]
+          [Integer.to_string(podcast.subscriptions_count), " ", la_icon("user-astronaut-solid"), " Subscribe"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-medium btn-success",
           data: [type: "podcast", action: "unsubscribe", event: "subscribe", id: podcast.id] do
-          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user"), " Unsubscribe"]
+          [Integer.to_string(podcast.subscriptions_count), " ", la_icon("user"), " Unsubscribe"]
         end
     end
   end

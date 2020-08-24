@@ -31,7 +31,7 @@
     <%= for {engagement, index} <- Enum.with_index(@engagements) do %>
       <%= if index > 0, do: "·" %>
 
-      <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+      <%= link [la_icon("user-astronaut-solid"), " ", engagement.persona.name],
                to: persona_frontend_path(PanWeb.Endpoint, :show, engagement.persona),
                class: "btn btn-xs btn-lavender" %>
       <span class="label label-success"><%= engagement.role %></span>

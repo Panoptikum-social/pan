@@ -32,7 +32,7 @@
 
    <%= @podcast.followers_count %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
 
-   <%= @podcast.subscriptions_count %>  <%= fa_icon("user-o") %> Subscribers
+   <%= @podcast.subscriptions_count %>  <%= la_icon("user-astronaut-solid") %> Subscribers
 
   <p><i>
     <%= link "Sign up", to: user_frontend_path(@conn, :new) %> /

@@ -102,7 +102,7 @@ defmodule PanWeb.PersonaFrontendView do
 
   def persona_button(persona, path) do
     [
-      link([fa_icon("user-o"), " ", persona.name],
+      link([la_icon("user-astronaut-solid"), " ", persona.name],
         to: path.(Endpoint, :show, persona),
         class: "btn btn-xs btn-lavender"
       )

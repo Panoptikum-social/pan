@@ -25,7 +25,7 @@
                class: "visible-xs-inline" %>
     </li>
     <li>
-      <%= link fa_icon("sitemap"), to: category_frontend_path(@conn, :index),
+      <%= link la_icon("sitemap-solid"), to: category_frontend_path(@conn, :index),
                                    id: "category_link", title: "Categories", class: "hidden-xs" %>
       <%= link [fa_icon("sitemap", class: "fa-fw"), raw("&nbsp; &nbsp; Categories")],
                to: category_frontend_path(@conn, :index),
@@ -38,7 +38,7 @@
         <%= fa_icon("question-circle") %>
       </a>
       <a href="https://blog.panoptikum.io/" title="About" class="visible-xs-inline">
-        <%= fa_icon("question-circle", class: "fa-fw") %>&nbsp; &nbsp; About
+        <%= la_icon("question-circle") %>&nbsp; &nbsp; About
       </a>
     </li>
     <li>
@@ -46,29 +46,29 @@
         <%= fa_icon("newspaper-o") %>
       </a>
       <a href="https://blog.panoptikum.io/blog" title="Blog" class="visible-xs-inline">
-        <%= fa_icon("newspaper-o", class: "fa-fw") %>&nbsp; &nbsp; Blog
+        <%= la_icon("newspaper") %>&nbsp; &nbsp; Blog
       </a>
     </li>
     <li>
-      <%= link fa_icon("user-o"), to: persona_frontend_path(@conn, :index),
+      <%= link la_icon("user-astronaut-solid"), to: persona_frontend_path(@conn, :index),
                                   title: "Podcasters", class: "hidden-xs" %>
-      <%= link [fa_icon("user-o", class: "fa-fw"), raw("&nbsp; &nbsp; Podcasters")],
+      <%= link [la_icon("user-astronaut-solid"), raw("&nbsp; &nbsp; Podcasters")],
                to: persona_frontend_path(@conn, :index),
                title: "Podcasters",
                class: "visible-xs-inline" %>
     </li>
     <li>
-      <%= link fa_icon("user"), to: user_frontend_path(@conn, :index),
+      <%= link la_icon("user"), to: user_frontend_path(@conn, :index),
                                 title: "Users", class: "hidden-xs" %>
-      <%= link [fa_icon("user", class: "fa-fw"), raw("&nbsp; &nbsp; Users")],
+      <%= link [la_icon("user"), raw("&nbsp; &nbsp; Users")],
           to: user_frontend_path(@conn, :index),
           title: "Users",
           class: "visible-xs-inline" %>
     </li>
     <li>
-      <%= link fa_icon("magic"), to: recommendation_frontend_path(@conn, :random),
+      <%= link la_icon("magic-solid"), to: recommendation_frontend_path(@conn, :random),
                                    title: "Random", class: "hidden-xs" %>
-      <%= link [fa_icon("magic", class: "fa-fw"), raw("&nbsp; &nbsp; Random")],
+      <%= link [la_icon("magic-solid"), raw("&nbsp; &nbsp; Random")],
                to: recommendation_frontend_path(@conn, :random),
                title: "Random",
                class: "visible-xs-inline" %>
@@ -105,7 +105,7 @@
                  title: "Log out",
                  style: "color: #aab2bd;",
                  class: "hidden-xs"%>
-        <%= link [fa_icon("sign-out", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Out")],
+        <%= link [la_icon("sign-out-alt-solid"), raw("&nbsp; &nbsp; Sign Out")],
                  to: session_path(@conn, :delete, @current_user),
                  method: "delete",
                  title: "Log out",
@@ -116,7 +116,7 @@
       <li>
         <%= link fa_icon("pencil"), to: user_frontend_path(@conn, :new),
                                     title: "Sign up", class: "hidden-xs" %>
-        <%= link [fa_icon("pencil", class: "fa-fw"), raw("&nbsp; &nbsp; Sign Up")],
+        <%= link [la_icon("pen-solid"), raw("&nbsp; &nbsp; Sign Up")],
                  to: user_frontend_path(@conn, :new),
                  title: "Sign up",
                  class: "visible-xs-inline" %>
@@ -124,7 +124,7 @@
       <li>
         <%= link fa_icon("sign-in"), to: session_path(@conn, :new),
                                      title: "Log In", class: "hidden-xs" %>
-        <%= link [fa_icon("sign-in", class: "fa-fw"), raw("&nbsp; &nbsp; Log In")],
+        <%= link [la_icon("sign-in-alt-solid"), raw("&nbsp; &nbsp; Log In")],
                  to: session_path(@conn, :new),
                  title: "Log In",
                  class: "visible-xs-inline" %>

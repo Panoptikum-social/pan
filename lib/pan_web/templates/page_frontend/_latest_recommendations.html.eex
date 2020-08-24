@@ -46,7 +46,7 @@
 
         <br/>
 
-        <%= link [fa_icon("user"), " ", recommendation.user.name],
+        <%= link [la_icon("user"), " ", recommendation.user.name],
                  to: user_frontend_path(@conn, :show, recommendation.user),
                  class: "btn btn-xs btn-danger" %>
 

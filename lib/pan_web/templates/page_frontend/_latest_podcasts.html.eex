@@ -20,11 +20,11 @@
                   class: "btn btn-default btn-xs",
                   style: "color: #000;" %><br/>
         <%= if podcast.author_name do %>
-            <%= link [fa_icon("user-o"), " ", truncate_string(podcast.author_name, 75)],
+            <%= link [la_icon("user-astronaut-solid"), " ", truncate_string(podcast.author_name, 75)],
                 to: persona_frontend_path(@conn, :show, podcast.author_id),
                 class: "btn btn-xs btn-lavender" %>
           <% else %>
-            <%= fa_icon("user-o") %> Unknown
+            <%= la_icon("user-astronaut-solid") %> Unknown
           <% end %>
           <br/>
 

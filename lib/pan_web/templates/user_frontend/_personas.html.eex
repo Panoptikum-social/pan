@@ -27,7 +27,7 @@
           <%= fa_icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
         </a>
 
-        <%= link [fa_icon("user-o"), " ", persona.name],
+        <%= link [la_icon("user-astronaut-solid"), " ", persona.name],
                  to: persona_frontend_path(@conn, :show, persona),
                  class: "btn btn-xs btn-lavender pull-right" %>
       </div>
@@ -102,7 +102,7 @@
                     <li class="list-group-item">
                       <%= fa_icon("link") %>
 
-                      <%= link [fa_icon("user-o"), " ", delegate_persona.name],
+                      <%= link [la_icon("user-astronaut-solid"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
                                  class: "btn btn-default btn-xs"%>
 
@@ -124,7 +124,7 @@
                     <%= if delegate_persona != persona do %>
                       <li class="list-group-item">
                         <%= fa_icon("unlink") %>
-                        <%= link [fa_icon("user-o"), " ", delegate_persona.name],
+                        <%= link [la_icon("user-astronaut-solid"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
                                  class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
@@ -159,7 +159,7 @@
                 <%= if persona.redirect do %>
                   <li class="list-group-item">
                     <%= fa_icon("arrow-right") %>
-                    <%= link [fa_icon("user-o"), " ", persona.redirect.name],
+                    <%= link [la_icon("user-astronaut-solid"), " ", persona.redirect.name],
                               to: persona_frontend_path(@conn, :show, persona.redirect.pid),
                               class: "btn btn-default btn-xs" %>
                     <br/>  &nbsp; &nbsp; &nbsp;
@@ -180,7 +180,7 @@
                     <%= if target_persona.id != persona.id do %>
                       <li class="list-group-item">
                         <%= fa_icon("unlink") %>
-                        <%= link [fa_icon("user-o"), " ", target_persona.name],
+                        <%= link [la_icon("user-astronaut-solid"), " ", target_persona.name],
                                   to: persona_frontend_path(@conn, :show, target_persona.id),
                                   class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
