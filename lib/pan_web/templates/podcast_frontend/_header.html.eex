@@ -1,7 +1,7 @@
 <%= if @current_user && @current_user.admin do %>
   <%= link la_icon("cogs-solid"), to: podcast_path(@conn, :show, @podcast),
                             class: "btn btn-xs btn-default" %> &nbsp;
-  <%= link la_icon("rss"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
+  <%= link la_icon("rss-solid"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
                            class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
 
 <% end %>
