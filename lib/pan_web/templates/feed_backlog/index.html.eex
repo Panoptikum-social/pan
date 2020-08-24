@@ -6,7 +6,7 @@
   <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
                             class: "btn btn-info" %>
 
-  <%= link "Delete All (from Itunes user)", 
+  <%= link "Delete All (from Itunes user)",
            to: feed_backlog_path(@conn, :delete_all),
            method: :delete,
            data: [confirm: "Are you sure?"],
@@ -39,7 +39,7 @@
         <% end %>
 
         <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
-          <%= link [ fa_icon("feed"), " Create alternate feed"],
+          <%= link [ la_icon("rss-solid"), " Create alternate feed"],
                    to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
                                                                         url: feed_backlog.url,
                                                                         backlog_id: feed_backlog.id),

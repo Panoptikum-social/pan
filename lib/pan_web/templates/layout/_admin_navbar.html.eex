@@ -20,7 +20,7 @@
     <%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %>
 
     <li>
-      <%= link fa_icon("sign-out"), to: session_path(@conn, :delete, @current_user),
+      <%= link la_icon("sign-out-alt-solid"), to: session_path(@conn, :delete, @current_user),
                                     method: "delete",
                                     title: "Log out",
                                     style: "color: #aab2bd;" %>

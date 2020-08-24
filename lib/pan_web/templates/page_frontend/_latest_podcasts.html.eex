@@ -15,7 +15,7 @@
             class="input"/>
       <label for="tab-<%= podcast.id %>" class="label"><%= index + 1 %></label>
       <div class="tab">
-        <%= link [fa_icon("podcast"), " ", truncate_string(podcast.title, 75)],
+        <%= link [la_icon("podcast-solid"), " ", truncate_string(podcast.title, 75)],
                   to: podcast_frontend_path(@conn, :show, podcast.id),
                   class: "btn btn-default btn-xs",
                   style: "color: #000;" %><br/>
@@ -28,12 +28,12 @@
           <% end %>
           <br/>
 
-          <%= fa_icon("calendar") %>
+          <%= la_icon("calendar") %>
           <%= podcast.inserted_at && Timex.format!(podcast.inserted_at, "{ISOdate}") %><br/>
 
 
           <%= if podcast.description do %>
-            <%= fa_icon("image") %> <%= truncate_string(podcast.description, 500) %>
+            <%= la_icon("image") %> <%= truncate_string(podcast.description, 500) %>
           <% end %>
       </div>
     <% end %>

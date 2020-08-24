@@ -1,17 +1,17 @@
 <div class="content">
-  <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
+  <%= link [la_icon("folder"), " ", "Panoptikum"],
           to: category_frontend_path(@conn, :index) %>
   /
   <%= if @category.parent do %>
-    <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+    <%= link [la_icon("folder"), " ", @category.parent.title],
             to: category_frontend_path(@conn, :show, @category.parent.id) %>
     /
   <% end %>
-  <%= link [fa_icon("folder-open-o"), " ", @category.title],
+  <%= link [la_icon("folder-open"), " ", @category.title],
             to: category_frontend_path(@conn, :show, @category) %>
 
 
-  <h1><%= fa_icon("folder-open-o") %> <%= @category.title %></h1>
+  <h1><%= la_icon("folder-open") %> <%= @category.title %></h1>
 
   <br/>
 

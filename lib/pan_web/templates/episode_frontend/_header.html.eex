@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", function(){
 
 <div class="content">
   <h1>
-    <%= link [fa_icon("podcast"), " ", @episode.podcast.title],
+    <%= link [la_icon("podcast-solid"), " ", @episode.podcast.title],
             to: podcast_frontend_path(@conn, :show, @episode.podcast),
             class: "btn btn-default btn-xl" %>
     &nbsp; / &nbsp;
-    <span class="btn btn-primary btn-xl"><%= fa_icon("headphones") %> <%= @episode.title %></span>
+    <span class="btn btn-primary btn-xl"><%= la_icon("headphones-solid") %> <%= @episode.title %></span>
   </h1>
 
   <div class="row-responsive">

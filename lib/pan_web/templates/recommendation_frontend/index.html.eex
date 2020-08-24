@@ -14,44 +14,44 @@
                      class: "btn btn-xs btn-danger" %>
 
             <span class="pull-right">
-              <%= fa_icon("calendar") %>
+              <%= la_icon("calendar") %>
               <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
             </span>
           </div>
 
           <div class="panel-body">
             <%= if recommendation.podcast do %>
-              <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
+              <%= link [la_icon("podcast-solid"), " ", recommendation.podcast.title],
                        to: podcast_frontend_path(@conn, :show, recommendation.podcast),
                        class: "btn btn-default btn-xs",
                        style: "color: #000" %>
             <% end %>
 
             <%= if recommendation.episode do %>
-              <%= link [fa_icon("podcast"), " ", recommendation.episode.podcast.title],
+              <%= link [la_icon("podcast-solid"), " ", recommendation.episode.podcast.title],
                        to: podcast_frontend_path(@conn, :show, recommendation.episode.podcast),
                        class: "btn btn-default btn-xs truncate",
                        style: "color: #000" %>
               <hr style="margin-top: -15px; visibility:hidden;" />
-              <%= link [fa_icon("headphones"), " ", recommendation.episode.title],
+              <%= link [la_icon("headphones-solid"), " ", recommendation.episode.title],
                         to: episode_frontend_path(@conn, :show, recommendation.episode),
                         class: "btn btn-primary btn-xs truncate" %>
             <% end %>
 
             <%= if recommendation.chapter_id do %>
-              <%= link [fa_icon("podcast"), " ", recommendation.chapter.episode.podcast.title],
+              <%= link [la_icon("podcast-solid"), " ", recommendation.chapter.episode.podcast.title],
                        to: podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast),
                        class: "btn btn-default btn-xs truncate",
                        style: "color: #000" %> &nbsp;
               <hr style="margin-top: -15px; visibility:hidden;" />
-              <%= link [fa_icon("headphones"), " ", recommendation.chapter.episode.title],
+              <%= link [la_icon("headphones-solid"), " ", recommendation.chapter.episode.title],
                         to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
                         class: "btn btn-primary btn-xs truncate" %><br/>
-              <%= fa_icon("indent") %> <%= recommendation.chapter.title %>
+              <%= la_icon("indent-solid") %> <%= recommendation.chapter.title %>
             <% end %>
 
             <hr style="margin-top: -15px; visibility:hidden;" />
-            <%= fa_icon("thumbs-o-up") %> <i>„<%= recommendation.comment %>“</i>
+            <%= la_icon("thumbs-up") %> <i>„<%= recommendation.comment %>“</i>
           </div>
         </div>
       </div>

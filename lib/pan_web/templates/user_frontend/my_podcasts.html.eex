@@ -5,7 +5,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @user.podcasts_i_subscribed do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [la_icon("podcast-solid"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -13,12 +13,12 @@
           &nbsp; &nbsp; &nbsp;
         </p>
 
-        <%= link [fa_icon("heart"), " Like all subscribed"],
+        <%= link [la_icon("heart-solid"), " Like all subscribed"],
                  to: user_frontend_path(@conn, :like_all_subscribed),
                  class: "btn btn-primary",
                  method: :post %> &nbsp;
 
-        <%= link [fa_icon("heart"), " Follow all subscribed"],
+        <%= link [la_icon("heart-solid"), " Follow all subscribed"],
                  to: user_frontend_path(@conn, :follow_all_subscribed),
                  class: "btn btn-info",
                  method: :post %>
@@ -32,7 +32,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @podcasts_i_like do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [la_icon("podcast-solid"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -49,7 +49,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @user.podcasts_i_follow do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [la_icon("podcast-solid"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -69,7 +69,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+            <%= link [la_icon("podcast-solid"), " ", truncate_string(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
@@ -88,7 +88,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+            <%= link [la_icon("podcast-solid"), " ", truncate_string(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
@@ -108,7 +108,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("folder-o"), " ", truncate_string(title, 50)],
+            <%= link [la_icon("folder"), " ", truncate_string(title, 50)],
                      to: category_frontend_path(@conn, :show, id),
                      class: "btn btn-xs btn-light-gray" %>
             <span class="pull-right"><%= count %> <%= la_icon("user") %></span>

@@ -42,7 +42,7 @@
               <% end %>
             </td>
             <td id="episode-<%= episode.id %>" class="top">
-              <%= link [fa_icon("headphones"), " ", episode.title || "no title"],
+              <%= link [la_icon("headphones-solid"), " ", episode.title || "no title"],
                     to: episode_frontend_path(@conn, :show, episode),
                     class: "btn btn-primary btn-xs truncate",
                     id: "detail-#{episode.id}" %><br/>

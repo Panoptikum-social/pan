@@ -26,7 +26,7 @@
     <li>
       <strong>Best matching feed:</strong><br/>
       <%= @best_matching_feed.self_link_title %><br/>
-      <%= link [ fa_icon("feed"), " Create alternate feed"],
+      <%= link [ la_icon("rss-solid"), " Create alternate feed"],
                to: alternate_feed_path(@conn, :create_from_backlog, feed_id: @best_matching_feed.id,
                                                                     url: @feed_backlog.url,
                                                                     backlog_id: @feed_backlog.id),

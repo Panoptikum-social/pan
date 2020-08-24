@@ -1,6 +1,6 @@
 <%= if @current_user.admin do %>
   <li class="divider"></li>
-  <li class="uppercase text-right"><%= fa_icon("wrench") %> ADMINISTRATION</li>
+  <li class="uppercase text-right"><%= la_icon("wrench-solid") %> ADMINISTRATION</li>
   <li><%= link "Categories", to: category_path(@conn, :index) %></li>
   <li><%= link "Podcasts", to: podcast_path(@conn, :index) %></li>
   <li><%= link "Feeds", to: feed_path(@conn, :index) %></li>

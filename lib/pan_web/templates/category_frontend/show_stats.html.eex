@@ -1,22 +1,22 @@
 <div class="content">
   <div class="panel">
     <div class="panel-heading bg-success">
-      <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
+      <%= link [la_icon("folder"), " ", "Panoptikum"],
               to: category_frontend_path(@conn, :stats) %>
       /
       <%= if @category.parent do %>
-        <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+        <%= link [la_icon("folder"), " ", @category.parent.title],
                 to: category_frontend_path(@conn, :show, @category.parent) %>
         /
       <% end %>
-      <%= fa_icon("folder-open-o") %> <%= @category.title %>
+      <%= la_icon("folder-open") %> <%= @category.title %>
     </div>
     <div class="panel-body">
       <%= if @category.children != [] do %>
         <div class="button-flex-row">
           <%= for subcategory <- @category.children do %>
             <div class="col-md-2">
-              <%= link [fa_icon("folder-o"), " ", subcategory.title],
+              <%= link [la_icon("folder"), " ", subcategory.title],
                       to: category_frontend_path(@conn, :show_stats, subcategory),
                       class: "btn btn-xs btn-light-gray truncate" %>
             </div>
@@ -45,7 +45,7 @@
 
         <div class="button-flex-row">
           <%= for podcast <- podcasts do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [la_icon("podcast-solid"), " ", podcast.title],
                     to: podcast_frontend_path(@conn, :show, podcast.id),
                     class: "btn btn-default btn-xs truncate",
                     id: "podcast-#{podcast.id}" %>

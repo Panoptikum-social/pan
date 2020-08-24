@@ -7,7 +7,7 @@
                     [as: :search, class: "nav-form"],
                     fn f -> %>
   <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
-  <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
+  <%= submit [raw("&nbsp;"), la_icon("search-solid"), raw("&nbsp;")],
                             class: "btn btn-medium btn-gray",
                             title: "Submit" %>
 <% end %>

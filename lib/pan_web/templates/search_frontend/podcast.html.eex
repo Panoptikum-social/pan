@@ -15,7 +15,7 @@
 
   <div class="col-md-10">
     <h3 style="margin-bottom: 5px; margin-top: 0px;">
-      <%= fa_icon("podcast") %>
+      <%= la_icon("podcast-solid") %>
       Podcast &nbsp;
       <%= link @podcast.title, to: @podcast.url,
                                style: "color:#1a0dab" %>
@@ -41,7 +41,7 @@
 
     <%= for {category, index} <- Enum.with_index(@categories) do %>
       <%= if index > 0, do: "·" %>
-      <%= link [fa_icon("folder-o"), " ", category.title],
+      <%= link [la_icon("folder"), " ", category.title],
                to: category_frontend_path(PanWeb.Endpoint, :show, category),
                class: "btn btn-xs btn-light-gray" %>
     <% end %>

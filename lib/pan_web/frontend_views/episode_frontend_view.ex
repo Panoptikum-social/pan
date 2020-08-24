@@ -155,14 +155,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "episode", event: "like", action: "like", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart-o"), " Like"]
+          [Episode.likes(episode_id), " ", la_icon("heart-broken-solid"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "episode", event: "like", action: "unlike", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart"), " Unlike"]
+          [Episode.likes(episode_id), " ", la_icon("heart-solid"), " Unlike"]
         end
     end
   end
@@ -176,14 +176,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "like", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart-o"), " Like"]
+          [Chapter.likes(chapter_id), " ", la_icon("heart-broken-solid"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "unlike", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart"), " Unlike"]
+          [Chapter.likes(chapter_id), " ", la_icon("heart-solid"), " Unlike"]
         end
     end
   end
@@ -209,7 +209,7 @@ defmodule PanWeb.EpisodeFrontendView do
               class: "btn btn-inverse-lavender btn-xs",
               title: "Claim contribution for #{persona.pid}",
               data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [fa_icon("user-plus"), " ", persona.name]
+              [la_icon("user-plus-solid"), " ", persona.name]
             end
           ]
         end
@@ -222,7 +222,7 @@ defmodule PanWeb.EpisodeFrontendView do
               class: "btn btn-lavender btn-xs",
               title: "Withdraw contribution for #{persona.pid}",
               data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [fa_icon("user-times"), " ", persona.name]
+              [la_icon("user-times-solid"), " ", persona.name]
             end
           ]
         end

@@ -40,14 +40,14 @@ defmodule PanWeb.UserFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "user", event: "like", action: "like", id: user_id] do
-          [User.likes(user_id), " ", fa_icon("heart-o"), " Like"]
+          [User.likes(user_id), " ", la_icon("heart-broken-solid"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "user", event: "like", action: "unlike", id: user_id] do
-          [User.likes(user_id), " ", fa_icon("heart"), " Unlike"]
+          [User.likes(user_id), " ", la_icon("heart-solid"), " Unlike"]
         end
     end
   end
@@ -61,14 +61,14 @@ defmodule PanWeb.UserFrontendView do
         content_tag :button,
           class: "btn btn-primary",
           data: [type: "user", event: "follow", action: "follow", id: user_id] do
-          [User.follows(user_id), " ", fa_icon("commenting-o"), " Follow"]
+          [User.follows(user_id), " ", la_icon("comment-slash-solid"), " Follow"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "user", event: "follow", action: "unfollow", id: user_id] do
-          [User.follows(user_id), " ", fa_icon("commenting"), " Unfollow"]
+          [User.follows(user_id), " ", la_icon("comment-solid"), " Unfollow"]
         end
     end
   end
@@ -82,7 +82,7 @@ defmodule PanWeb.UserFrontendView do
   end
 
   def podcast_button(conn, podcast) do
-    link([fa_icon("podcast"), " ", podcast.title],
+    link([la_icon("podcast-solid"), " ", podcast.title],
       to: podcast_frontend_path(conn, :show, podcast),
       class: "btn btn-default btn-xs",
       style: "color: #000"
@@ -90,7 +90,7 @@ defmodule PanWeb.UserFrontendView do
   end
 
   def episode_button(conn, episode) do
-    link([fa_icon("headphones"), " ", truncate_string(episode.title, 40)],
+    link([la_icon("headphones-solid"), " ", truncate_string(episode.title, 40)],
       to: episode_frontend_path(conn, :show, episode),
       class: "btn btn-primary btn-xs",
       style: "color: #fff"
@@ -98,7 +98,7 @@ defmodule PanWeb.UserFrontendView do
   end
 
   def chapter_label(chapter) do
-    [fa_icon("indent"), " ", chapter.title]
+    [la_icon("indent-solid"), " ", chapter.title]
   end
 
   def format_date(date) do

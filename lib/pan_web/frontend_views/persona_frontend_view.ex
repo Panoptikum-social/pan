@@ -29,14 +29,14 @@ defmodule PanWeb.PersonaFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "persona", event: "like", action: "like", id: persona_id] do
-          [Persona.likes(persona_id), " ", fa_icon("heart-o"), " Like"]
+          [Persona.likes(persona_id), " ", la_icon("heart-broken-solid"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "persona", event: "like", action: "unlike", id: persona_id] do
-          [Persona.likes(persona_id), " ", fa_icon("heart"), " Unlike"]
+          [Persona.likes(persona_id), " ", la_icon("heart-solid"), " Unlike"]
         end
     end
   end
@@ -72,14 +72,14 @@ defmodule PanWeb.PersonaFrontendView do
         content_tag :button,
           class: "btn btn-primary",
           data: [type: "persona", event: "follow", action: "follow", id: persona_id] do
-          [Persona.follows(persona_id), " ", fa_icon("commenting-o"), " Follow"]
+          [Persona.follows(persona_id), " ", la_icon("comment-slash-solid"), " Follow"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "persona", event: "follow", action: "unfollow", id: persona_id] do
-          [Persona.follows(persona_id), " ", fa_icon("commenting"), " Unfollow"]
+          [Persona.follows(persona_id), " ", la_icon("comment-solid"), " Unfollow"]
         end
     end
   end

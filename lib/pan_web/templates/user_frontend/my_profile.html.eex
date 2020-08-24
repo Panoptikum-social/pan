@@ -76,7 +76,7 @@
       <dl class="dl-horizontal">
         <dt>Pro account until</dt>
         <dd>
-          <%= Timex.format!(@user.pro_until, "{ISOdate}") %> 
+          <%= Timex.format!(@user.pro_until, "{ISOdate}") %>
           <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
         </dd>
 
@@ -122,9 +122,9 @@
   <ul>
     <%= for invoice <- @user.invoices do %>
       <li>
-        <%= fa_icon("calendar") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+        <%= la_icon("calendar") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
         &nbsp; &nbsp;
-        <%= link [fa_icon("download"), " ", fa_icon("file-pdf-o"), " ", invoice.filename],
+        <%= link [la_icon("download-solid"), " ", la_icon("file-pdf"), " ", invoice.filename],
                  to: invoice_frontend_path(@conn, :download, invoice) %>
       </li>
     <% end %>

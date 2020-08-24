@@ -25,18 +25,18 @@
   <dt>Admin</dt>
   <dd>
     <%= if @user.admin do %>
-      <%= fa_icon("check-square-o") %>
+      <%= la_icon("check-square") %>
     <% else %>
-      <%= fa_icon("square-o") %>
+      <%= la_icon("stop-solid") %>
     <% end %>
   </dd>
 
   <dt>Podcaster</dt>
   <dd>
     <%= if @user.podcaster do %>
-      <%= fa_icon("check-square-o") %>
+      <%= la_icon("check-square") %>
     <% else %>
-      <%= fa_icon("square-o") %>
+      <%= la_icon("stop-solid") %>
     <% end %>
   </dd>
 

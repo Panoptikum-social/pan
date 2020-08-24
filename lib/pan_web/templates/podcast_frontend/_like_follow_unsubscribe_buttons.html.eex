@@ -7,7 +7,7 @@
 
   <%= if !@podcast.manually_updated_at or
          (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1) do %>
-    <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
+    <%= link [la_icon("cogs-solid"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
                                                   class: "btn btn-danger btn-xs" %>
 
     <button class="btn btn-primary btn-xs"
@@ -28,9 +28,9 @@
     </small>
   <% end %>
 <% else %>
-   <%= @podcast.likes_count %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
+   <%= @podcast.likes_count %>  <%= la_icon("heart-broken-solid") %> Likes &nbsp; &nbsp;
 
-   <%= @podcast.followers_count %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
+   <%= @podcast.followers_count %>  <%= la_icon("comment-slash-solid") %> Followers &nbsp; &nbsp;
 
    <%= @podcast.subscriptions_count %>  <%= la_icon("user-astronaut-solid") %> Subscribers
 

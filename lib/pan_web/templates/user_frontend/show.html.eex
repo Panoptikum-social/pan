@@ -17,7 +17,7 @@
         <div class="panel-body">
          <p style="line-height: 200%;">
             <%= for podcast <- @user.podcasts_i_subscribed do %>
-              <%= link [fa_icon("podcast"), " ", truncate_string(podcast.title, 50)],
+              <%= link [la_icon("podcast-solid"), " ", truncate_string(podcast.title, 50)],
                        to: podcast_frontend_path(@conn, :show, podcast),
                        class: "btn btn-default btn-xs",
                        style: "color: #000" %> &nbsp;
@@ -87,7 +87,7 @@
         <div class="panel-body">
           <p style="line-height: 200%;">
             <%= for category <- @user.categories_i_like do %>
-              <%= link [fa_icon("folder"), " ", category.title],
+              <%= link [la_icon("folder"), " ", category.title],
                        to: category_frontend_path(@conn, :show, category),
                        class: "btn btn-default btn-xs",
                        style: "color: #000" %> &nbsp;

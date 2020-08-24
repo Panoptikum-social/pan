@@ -24,7 +24,7 @@
                               border: 1px dotted #cccccc;">
       <div class="panel-heading">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= persona.id %>">
-          <%= fa_icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
+          <%= la_icon("search-plus-solid") %> <%= persona.name %> (<%= persona.pid %>)
         </a>
 
         <%= link [la_icon("user-astronaut-solid"), " ", persona.name],
@@ -100,7 +100,7 @@
                 <%= for delegate_persona <- @user.personas do %>
                   <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
                     <li class="list-group-item">
-                      <%= fa_icon("link") %>
+                      <%= la_icon("link-solid") %>
 
                       <%= link [la_icon("user-astronaut-solid"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
@@ -108,10 +108,10 @@
 
                       <br/>  &nbsp; &nbsp; &nbsp;
                       <label class="label label-default">
-                        <%= fa_icon("id-card-o") %> <%= delegate_persona.pid %>
+                        <%= la_icon("id-card") %> <%= delegate_persona.pid %>
                       </label><br/>
 
-                      <%= link [fa_icon("unlink"), " cancel"],
+                      <%= link [la_icon("unlink-solid"), " cancel"],
                                to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                          delegate_id: delegate_persona.id),
                                class: "btn btn-warning btn-xs " <> disabled(@user) %>
@@ -123,16 +123,16 @@
                   <%= unless delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
                     <%= if delegate_persona != persona do %>
                       <li class="list-group-item">
-                        <%= fa_icon("unlink") %>
+                        <%= la_icon("unlink-solid") %>
                         <%= link [la_icon("user-astronaut-solid"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
                                  class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
                         <label class="label label-default">
-                          <%= fa_icon("id-card-o") %> <%= delegate_persona.pid %>
+                          <%= la_icon("id-card") %> <%= delegate_persona.pid %>
                         </label><br/>
 
-                        <%= link [fa_icon("link"), " delegate"],
+                        <%= link [la_icon("link-solid"), " delegate"],
                                  to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                            delegate_id: delegate_persona.id),
                                  class: "btn btn-info btn-xs " <> disabled(@user) %>
@@ -158,16 +158,16 @@
               <ul class="list-group" style="line-height: 200%;">
                 <%= if persona.redirect do %>
                   <li class="list-group-item">
-                    <%= fa_icon("arrow-right") %>
+                    <%= la_icon("arrow-right-solid") %>
                     <%= link [la_icon("user-astronaut-solid"), " ", persona.redirect.name],
                               to: persona_frontend_path(@conn, :show, persona.redirect.pid),
                               class: "btn btn-default btn-xs" %>
                     <br/>  &nbsp; &nbsp; &nbsp;
                     <label class="label label-default">
-                      <%= fa_icon("id-card-o") %> <%= persona.redirect.pid %>
+                      <%= la_icon("id-card") %> <%= persona.redirect.pid %>
                     </label><br/>
 
-                    <%= link [fa_icon("unlink"), " cancel"],
+                    <%= link [la_icon("unlink-solid"), " cancel"],
                              to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
                              class: "btn btn-warning btn-xs " <> disabled(@user) %>
                   </li>
@@ -179,15 +179,15 @@
                   <%= for target_persona <- @user.personas do %>
                     <%= if target_persona.id != persona.id do %>
                       <li class="list-group-item">
-                        <%= fa_icon("unlink") %>
+                        <%= la_icon("unlink-solid") %>
                         <%= link [la_icon("user-astronaut-solid"), " ", target_persona.name],
                                   to: persona_frontend_path(@conn, :show, target_persona.id),
                                   class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
                         <label class="label label-default">
-                          <%= fa_icon("id-card-o") %> <%= target_persona.pid %>
+                          <%= la_icon("id-card") %> <%= target_persona.pid %>
                         </label><br/>
-                        <%= link [fa_icon("arrow-right"), " redirect"],
+                        <%= link [la_icon("arrow-right-solid"), " redirect"],
                                  to: persona_frontend_path(@conn, :redirect, persona.id,
                                                            target_id: target_persona.id),
                                  class: "btn btn-danger btn-xs " <> disabled(@user) %>

@@ -1,7 +1,7 @@
 <%= if @current_user && @current_user.admin do %>
-  <%= link fa_icon("cogs"), to: podcast_path(@conn, :show, @podcast),
+  <%= link la_icon("cogs-solid"), to: podcast_path(@conn, :show, @podcast),
                             class: "btn btn-xs btn-default" %> &nbsp;
-  <%= link fa_icon("rss"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
+  <%= link la_icon("rss"), to: feed_path(@conn, :edit, List.first(@podcast.feeds)),
                            class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
 
 <% end %>
@@ -86,12 +86,12 @@
       <dd><%= @podcast.explicit %></dd>
       <dt id="metadata">Number of Episodes</dt>
       <dd><%= @episode_count %></dd>
-      <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
+      <dt><%= la_icon("rss-solid") %> Rss-Feeds</dt>
       <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
       <dt>Categories</dt>
       <dd>
         <%= for category <- @podcast.categories do %>
-          <%= link [fa_icon("folder-o"), " ", category.title],
+          <%= link [la_icon("folder"), " ", category.title],
                     to: category_frontend_path(@conn, :show, category),
                     class: "btn btn-xs btn-light-gray" %>
           <% end %>

@@ -31,7 +31,7 @@
               <% end %>
 
               <dt>Business Cards</dt>
-              <dd><%= link [fa_icon("vcard-o"), " Show"], to: persona_frontend_url(@conn, :business_card, @persona) %></dd>
+              <dd><%= link [la_icon("address-card"), " Show"], to: persona_frontend_url(@conn, :business_card, @persona) %></dd>
             </dl>
             <span style="color: #fff;">Id: <%= @persona.id %></span></dd>
           </div>
@@ -161,7 +161,7 @@
         <tbody>
           <%= for {podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast)) do %>
             <tr>
-              <td> <%= link [fa_icon("podcast"), " ", truncate_string(podcast.title, 50)],
+              <td> <%= link [la_icon("podcast-solid"), " ", truncate_string(podcast.title, 50)],
                              to: podcast_frontend_path(@conn, :show, podcast),
                              class: "btn btn-default btn-xs",
                              style: "color: #000" %></td>
@@ -186,8 +186,8 @@
   </div>
 
   <div class="table-responsive" id="gigs">
-    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, 
-                                                       last: false, 
+    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs,
+                                                       last: false,
                                                        path: &slug_with_gigs/3) %>
     <table class="table table-striped table-condensed">
       <thead>
@@ -202,11 +202,11 @@
         <%= for episode <- ordered_episodes(@grouped_gigs) do %>
           <tr>
             <td align="right"><%= if episode.publishing_date, do: format_date(episode.publishing_date) %></td>
-            <td><%= link [fa_icon("podcast"), " ", episode.podcast.title],
+            <td><%= link [la_icon("podcast-solid"), " ", episode.podcast.title],
                            to: podcast_frontend_path(@conn, :show, episode.podcast),
                            class: "btn btn-default btn-xs truncate",
                            style: "color: #000" %></td></td>
-            <td><%= link [fa_icon("headphones"), " ", episode.title || ""],
+            <td><%= link [la_icon("headphones-solid"), " ", episode.title || ""],
                         to: episode_frontend_path(@conn, :show, episode),
                         class: "btn btn-primary btn-xs truncate" %></td>
             <td>
@@ -218,8 +218,8 @@
         <% end %>
       </tbody>
     </table>
-    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs, 
-                                                       last: false, 
+    <%= if @gigs.total_pages > 1, do: pagination_links(@conn, @gigs,
+                                                       last: false,
                                                        path: &slug_with_gigs/3) %>
   </div>
 <% end %>

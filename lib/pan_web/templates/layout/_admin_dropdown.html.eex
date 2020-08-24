@@ -3,7 +3,7 @@
     <a class="dropdown-toggle" href="#" role="button"
        aria-haspopup="true" aria-expanded="false"
        data-toggle="dropdown" title="Admin">
-      <%= fa_icon("wrench") %>
+      <%= la_icon("wrench-solid") %>
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu">
