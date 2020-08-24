@@ -1,5 +1,4 @@
 <div class="content">
-
   <h2>Latest Podcasts</h2>
 
   <%= pagination_links @conn, @podcasts, path: &podcast_frontend_path/3 %>

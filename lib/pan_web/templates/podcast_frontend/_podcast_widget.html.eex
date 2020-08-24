@@ -57,8 +57,8 @@
     </div>
 
     <%= if @podcast.payment_link_url do %>
-        <h5>Support</h5>
-        <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %>
+      <h5>Support</h5>
+      <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %>
     <% end %>
 
     <div class="row-responsive">

@@ -10,19 +10,19 @@
           <div class="panel-heading bg-default">
             <span class="truncate">
               <%= link [fa_icon("podcast"), " ", episode.podcast.title],
-                      to: podcast_frontend_path(@conn, :show, episode.podcast),
-                      class: "btn btn-xs btn-default" %> /
+                       to: podcast_frontend_path(@conn, :show, episode.podcast),
+                       class: "btn btn-xs btn-default" %> /
               <%= link [fa_icon("headphones"), " ", episode.title],
-                          to: episode_frontend_path(@conn, :show, episode.id),
-                          class: "btn btn-primary btn-xs" %>
+                       to: episode_frontend_path(@conn, :show, episode.id),
+                       class: "btn btn-primary btn-xs" %>
             </span>
           </div>
           <div class="panel-body">
             <p>
-            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate} {h24}:{m}") %>
-            <span class="pull-right"><%= fa_icon("clock-o") %> <%= episode.duration %></p>
+              <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate} {h24}:{m}") %>
+              <span class="pull-right"><%= fa_icon("clock-o") %> <%= episode.duration %></span></p>
             <p>
-            <label class="label bg-success">Author</label> <%= author_button(@conn, episode) %>
+              <label class="label bg-success">Author</label> <%= author_button(@conn, episode) %>
             </p>
             <p>
               <%= fa_icon("align-justify") %> <%= episode.subtitle || episode.description %>
