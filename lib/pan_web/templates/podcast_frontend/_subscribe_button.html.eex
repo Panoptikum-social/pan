@@ -1,4 +1,4 @@
-<div id="subscribe-button">
+<div class="content" id="subscribe-button">
     <script class="podlove-subscribe-button"
             src="/podlove-subscribe-button/javascripts/app.js"
             data-language="en"

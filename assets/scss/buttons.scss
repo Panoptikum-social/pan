@@ -1,7 +1,8 @@
 // Buttons // 
 
 .btn {
-  margin: 3px 3px 3px 0px;;
+  margin: 3px 3px 3px 0px;
+  ;
   display: inline-block;
   text-align: center;
   white-space: nowrap;
@@ -81,6 +82,10 @@
   background-color: $sunflower;
   color: text-color-for($sunflower);
   fill: text-color-for($sunflower);
+
+  a {
+    color: text-color-for($sunflower);
+  }
 }
 
 .bg-success {
@@ -240,9 +245,9 @@
 }
 
 .btn-inverse-lavender {
-background-color: white;
-border-color: #967adc;
-color: #967adc;
+  background-color: white;
+  border-color: #967adc;
+  color: #967adc;
 
   &:hover {
     background-color: hover-color-for(white);
