@@ -190,14 +190,15 @@ defmodule PanWeb.Router do
 
     get("/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence)
     resources("/episodes", EpisodeFrontendController, only: [:show, :index])
+    get("/episodes/:id/player", EpisodeFrontendController, :player)
+
+    resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
   end
 
   scope "/", PanWeb do
     pipe_through([:browser, :unset_cookie])
 
-    get("/episodes/:id/player", EpisodeFrontendController, :player)
-
-    resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
+    # resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
     get("/pro_features", PageFrontendController, :pro_features)
 
     get("/personas/datatable", PersonaFrontendController, :datatable)
