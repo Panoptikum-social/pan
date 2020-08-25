@@ -193,15 +193,13 @@ defmodule PanWeb.Router do
     get("/episodes/:id/player", EpisodeFrontendController, :player)
 
     resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
-
+    get("/pro_features", PageFrontendController, :pro_features)
+    # insert here!
     resources("/sessions", SessionController, only: [:new, :create, :delete])
   end
 
   scope "/", PanWeb do
     pipe_through([:browser, :unset_cookie])
-
-    # resources("/users", UserFrontendController, only: [:new, :create])
-    get("/pro_features", PageFrontendController, :pro_features)
 
     get("/personas/datatable", PersonaFrontendController, :datatable)
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
