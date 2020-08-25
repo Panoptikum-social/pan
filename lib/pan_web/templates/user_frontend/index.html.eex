@@ -9,9 +9,12 @@
         <input name="users_tabs"
               type="radio"
               id="tab-<%= to_charlist(letter) |> List.first() %>"
-              <%= if index == 0, do: 'checked="checked"'%>
+              <%= if index == 0, do: "checked" %>
               class="input"/>
-        <label for="tab-<%= to_charlist(letter) |> List.first() %>" class="label"><%= letter %></label>
+        <label for="tab-<%= to_charlist(letter) |> List.first() %>"
+               class="label">
+          <%= letter %>
+        </label>
         <div class="tab">
           <%= for {user, index} <- Enum.with_index(grouped_users[letter]) do %>
             <%= link [la_icon("user-astronaut-solid"), " ", user.name],

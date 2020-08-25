@@ -1,123 +1,95 @@
-<h1><%= @user.name %></h1>
+<div class="content">
+  <h1><%= @user.name %></h1>
 
-<%= if @current_user do %>
-  <p>
+  <%= if @current_user do %>
     <%= like_or_unlike(@current_user.id, @user.id) %>
     <%= follow_or_unfollow(@current_user.id, @user.id) %>
-  </p>
-<% end %>
+  <% end %>
 
-<div class="row">
   <%= if @user.share_subscriptions == true do %>
-    <div class="col-md-6">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Podcasts, <%= @user.name %> has subscribed to</h3>
-        </div>
-        <div class="panel-body">
-         <p style="line-height: 200%;">
-            <%= for podcast <- @user.podcasts_i_subscribed do %>
-              <%= link [la_icon("podcast-solid"), " ", truncate_string(podcast.title, 50)],
-                       to: podcast_frontend_path(@conn, :show, podcast),
-                       class: "btn btn-default btn-xs",
-                       style: "color: #000" %> &nbsp;
-            <% end %>
-          </p>
-        </div>
+    <div class="panel">
+      <div class="panel-heading bg-primary">Podcasts, <%= @user.name %> has subscribed to</div>
+      <div class="panel-body">
+        <%= for podcast <- @user.podcasts_i_subscribed do %>
+          <%= link [la_icon("podcast-solid"), " ", truncate_string(podcast.title, 50)],
+                  to: podcast_frontend_path(@conn, :show, podcast),
+                  class: "btn btn-default btn-xs",
+                  style: "color: #000" %> &nbsp;
+        <% end %>
       </div>
     </div>
   <% end %>
 
   <%= if @podcast_related_likes != [] do %>
-    <div class="col-md-12">
-      <div class="panel panel-danger">
-        <div class="panel-heading">
-          <h3 class="panel-title">Podcast, <%= @user.name %> likes</h3>
-        </div>
-        <div class="panel-body">
-          <%= for like <- @podcast_related_likes do %>
-            <p>
-              <%= cond do %>
-                <% like.chapter_id != nil -> %>
-                  <%= format_date(like.inserted_at) %>: &nbsp;
-                  <%= podcast_button(@conn, like.chapter.episode.podcast) %> /
-                  <%= episode_button(@conn, like.chapter.episode) %> /
-                  <%= chapter_label(like.chapter) %>
-                <% like.episode_id != nil -> %>
-                  <%= format_date(like.inserted_at) %>: &nbsp;
-                  <%= podcast_button(@conn, like.episode.podcast) %> /
-                  <%= episode_button(@conn, like.episode) %>
-                <% like.podcast_id != nil -> %>
-                  <%= format_date(like.inserted_at) %>: &nbsp;
-                  <%= podcast_button(@conn, like.podcast) %>
-              <% end %>
-            </p>
+    <div class="panel">
+      <div class="panel-heading bg-danger">Podcast, <%= @user.name %> likes</div>
+      <div class="panel-body">
+        <%= for like <- @podcast_related_likes do %>
+          <%= cond do %>
+            <% like.chapter_id != nil -> %>
+              <%= format_date(like.inserted_at) %>: &nbsp;
+              <%= podcast_button(@conn, like.chapter.episode.podcast) %> /
+              <%= episode_button(@conn, like.chapter.episode) %> /
+              <%= chapter_label(like.chapter) %>
+            <% like.episode_id != nil -> %>
+              <%= format_date(like.inserted_at) %>: &nbsp;
+              <%= podcast_button(@conn, like.episode.podcast) %> /
+              <%= episode_button(@conn, like.episode) %>
+            <% like.podcast_id != nil -> %>
+              <%= format_date(like.inserted_at) %>: &nbsp;
+              <%= podcast_button(@conn, like.podcast) %>
           <% end %>
-        </div>
+          <br/>
+        <% end %>
       </div>
     </div>
   <% end %>
 
   <%= if @user.users_i_like != [] do %>
-    <div class="col-md-6">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">Persons, <%= @user.name %> likes</h3>
-        </div>
-        <div class="panel-body">
-          <p style="line-height: 200%;">
-            <%= for user <- @user.users_i_like do %>
-              <%= link [la_icon("user"), " ", user.name],
-                       to: user_frontend_path(@conn, :show, user),
-                       class: "btn btn-default btn-xs",
-                       style: "color: #000" %> &nbsp;
-            <% end %>
-          </p>
-        </div>
+    <div class="panel">
+      <div class="panel-heading bg-info">Persons, <%= @user.name %> likes</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for user <- @user.users_i_like do %>
+            <%= link [la_icon("user"), " ", user.name],
+                    to: user_frontend_path(@conn, :show, user),
+                    class: "btn btn-default btn-xs",
+                    style: "color: #000" %> &nbsp;
+          <% end %>
+        </p>
       </div>
     </div>
   <% end %>
 
   <%= if @user.categories_i_like != [] do %>
-    <div class="col-md-6">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Categories, <%= @user.name %> likes</h3>
-        </div>
-        <div class="panel-body">
-          <p style="line-height: 200%;">
-            <%= for category <- @user.categories_i_like do %>
-              <%= link [la_icon("folder"), " ", category.title],
-                       to: category_frontend_path(@conn, :show, category),
-                       class: "btn btn-default btn-xs",
-                       style: "color: #000" %> &nbsp;
-            <% end %>
-          </p>
-        </div>
+    <div class="panel">
+      <div class="panel-heading bg-primary">Categories, <%= @user.name %> likes</div>
+      <div class="panel-body">
+        <%= for category <- @user.categories_i_like do %>
+          <%= link [la_icon("folder"), " ", category.title],
+                  to: category_frontend_path(@conn, :show, category),
+                  class: "btn btn-default btn-xs",
+                  style: "color: #000" %> &nbsp;
+        <% end %>
       </div>
     </div>
   <% end %>
 
   <%= if @messages.total_entries > 0 do %>
-    <div class="col-md-12">
-      <div class="panel panel-primary">
-        <div class="panel-heading">
-          <h3 class="panel-title">Messages created by <%= @user.name %></h3>
-        </div>
-        <div class="panel-body">
-          <%= pagination_links @conn, @messages, [Integer.to_string(@user.id)],
-                       path: &user_frontend_path/4,
-                       action: :show,
-                       view_style: :bootstrap %>
-          <ul class="list-group">
-            <%= for message <- @messages.entries do %>
-              <li class="list-group-item message-<%= message.type %>">
-                <i><%= if message.creator, do: message.creator.name, else: message.persona.name %>:</i> <%= raw message.content %>
-                <span class="pull-right"><%= message.inserted_at %></span>
-              </li>
-            <% end %>
-          </ul>
-        </div>
+    <div class="panel">
+      <div class="panel-heading bg-primary">Messages created by <%= @user.name %> </div>
+      <div class="panel-body">
+        <%= pagination_links @conn, @messages, [Integer.to_string(@user.id)],
+                    path: &user_frontend_path/4,
+                    action: :show,
+                    view_style: :bootstrap %>
+        <%= for message <- @messages.entries do %>
+          <p class="alert alert-<%= message.type %>">
+            <i><%= if message.creator, do: message.creator.name, else: message.persona.name %>:</i>
+            <%= raw message.content %>
+            <span class="pull-right"><%= message.inserted_at %></span>
+          </p>
+        <% end %>
       </div>
     </div>
   <% end %>

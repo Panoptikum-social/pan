@@ -1,4 +1,4 @@
-<div class="col-md-6 col-md-offset-3">
+<div class="content">
   <h1>Login</h1>
 
   <%= form_for @conn, session_path(@conn, :create), [as: :session], fn f-> %>
@@ -16,7 +16,7 @@
       <a href="https://blog.panoptikum.io/privacy">Privacy</a> for details.
     </p>
 
-    <%= submit "Log in", class: "btn btn-primary" %>
+    <%= submit "Log in", class: "btn btn-large btn-primary" %>
   <% end %>
 
   <ul>

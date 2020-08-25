@@ -1,0 +1,26 @@
+.alert {
+  padding: $single;
+  border-radius: 4px;
+  margin: $single;
+  display: block;
+}
+
+.alert-info {
+  color: $info-dark;
+  background-color: $info-light;
+}
+
+.alert-success {
+  color: $success-dark;
+  background-color: $success-light;
+}
+
+.alert-warning {
+  color: $warning-dark;
+  background-color: $warning-light;
+}
+
+.alert-danger {
+  color: $danger-dark;
+  background-color: $danger-light;
+}

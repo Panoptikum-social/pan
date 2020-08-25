@@ -1,0 +1,25 @@
+.form-group {
+  margin-top: $single;
+  margin-bottom: $single;
+}
+
+.control-label {
+ margin-top: $single;
+ margin-bottom: $single;
+ font-weight: 500; 
+ display: inline-block;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+}
+
+.help-block {
+  color: $danger-dark;
+  background-color: $danger-light;
+  padding: $single;
+  margin: $single;
+  border-radius: 4px;
+  display: inline-block;
+}

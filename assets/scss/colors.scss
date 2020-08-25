@@ -21,6 +21,20 @@ $medium-dark-gray: #656D78;
 $dark-gray: #434A54;
 $nav-background: rgb(67, 74, 84);
 
+// Messages
+$success-light : rgb(185, 223, 144);
+$success: rgb(140, 193, 82);
+$success-dark: rgb(60, 118, 61);
+$warning-light: rgb(255, 221, 135);
+$warning: rgb(246, 187, 66);
+$warning-dark: rgb(138, 109, 59);
+$danger-light: rgb(242, 131, 143);
+$danger: rgb(218, 68, 83);
+$danger-dark: rgb(169, 68, 66);
+$info-light: rgb(124, 209, 239);
+$info: rgb(59, 175, 218);
+$info-dark: rgb(49, 112, 143);
+
 // Color calculations
 
 @function text-color-for($color) {

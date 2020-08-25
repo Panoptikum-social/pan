@@ -1,4 +1,4 @@
-<div class="col-md-6 col-md-offset-3">
+<div class="content">
   <h1>Sign Up</h1>
 
   <%= form_for @changeset, user_frontend_path(@conn, :create), fn f -> %>
@@ -65,6 +65,6 @@
       before signing up!
     </p>
 
-    <%= submit "Create Account", class: "btn btn-primary" %>
+    <%= submit "Create Account", class: "btn btn-primary btn-large" %>
   <% end %>
 </div>

@@ -39,8 +39,12 @@
         <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
       </nav>
       <div class="alerts">
-        <div class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></div>
-        <div class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></div>
+        <%= if get_flash(@conn, :info) do %>
+          <div class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></div>
+        <% end %>
+        <%= if get_flash(@conn, :error) do %>
+          <div class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></div>
+        <% end %>
       </div>
       <%= @inner_content %>
       <div class="footer-branding">
