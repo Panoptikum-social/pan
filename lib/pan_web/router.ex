@@ -176,24 +176,28 @@ defmodule PanWeb.Router do
     pipe_through([:browser, :unset_cookie, :alternative_layout])
     get("/", PageFrontendController, :home)
     get("/home", PageFrontendController, :home)
+
     get("/categories/stats", CategoryFrontendController, :stats)
     get("/categories/:id/stats", CategoryFrontendController, :show_stats)
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
     resources("/categories", CategoryFrontendController, only: [:index, :show])
+
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)
-    resources("/podcasts", PodcastFrontendController, only: [:index, :show])
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
+    resources("/podcasts", PodcastFrontendController, only: [:index, :show])
     get("/qrcode/:code", QRCodeFrontendController, :generate)
 
     get("/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence)
-    resources("/episodes", EpisodeFrontendController, only: [:show, :index])
     get("/episodes/:id/player", EpisodeFrontendController, :player)
+    resources("/episodes", EpisodeFrontendController, only: [:show, :index])
 
     resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
     get("/pro_features", PageFrontendController, :pro_features)
+
+    get("/personas/datatable", PersonaFrontendController, :datatable)
     # insert here!
     resources("/sessions", SessionController, only: [:new, :create, :delete])
   end
@@ -201,7 +205,6 @@ defmodule PanWeb.Router do
   scope "/", PanWeb do
     pipe_through([:browser, :unset_cookie])
 
-    get("/personas/datatable", PersonaFrontendController, :datatable)
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
     get("/personas/:id/business_card", PersonaFrontendController, :business_card)
     resources("/personas", PersonaFrontendController, only: [:show, :index])
@@ -209,7 +212,7 @@ defmodule PanWeb.Router do
     get("/forgot_password", UserController, :forgot_password)
     post("/request_login_link", UserController, :request_login_link)
 
-    # resources("/sessions", SessionController, only: [:new, :create, :delete])
+    # resources("/sessions", SessionController, only: [:delete])
     get("/sessions/login_via_token", SessionController, :login_via_token)
     get("/sessions/confirm_email", SessionController, :confirm_email)
 
