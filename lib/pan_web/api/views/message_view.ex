@@ -3,7 +3,7 @@ defmodule PanWeb.Api.MessageView do
   use JaSerializer.PhoenixView
 
   location(:location)
-  attributes([:content, :type, :topic, :subtopic, :event])
+  attributes([:content, :msg_type, :topic, :subtopic, :event])
 
   def type(_, _), do: "message"
 
@@ -13,6 +13,10 @@ defmodule PanWeb.Api.MessageView do
   def location(message, conn) do
     api_message_url(conn, :show, message)
   end
+
+  def msg_type(message) do
+    message.type
+  end
 end
 
 defmodule PanWeb.Api.PlainMessageView do
@@ -20,11 +24,15 @@ defmodule PanWeb.Api.PlainMessageView do
   use JaSerializer.PhoenixView
 
   location(:location)
-  attributes([:content, :type, :topic, :subtopic, :event])
+  attributes([:content, :msg_type, :topic, :subtopic, :event])
 
   def type(_, _), do: "message"
 
   def location(message, conn) do
     api_message_url(conn, :show, message)
+  end
+
+  def msg_type(message) do
+    message.type
   end
 end

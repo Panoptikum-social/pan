@@ -67,7 +67,7 @@ defmodule Pan.Mixfile do
   defp deps do
     # web framework
     [
-      {:phoenix, "~> 1.5.1", override: true},
+      {:phoenix, "~> 1.5.4", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
       # database adapter
@@ -109,7 +109,7 @@ defmodule Pan.Mixfile do
       # pagination view helper
       {:scrivener_html, "~> 1.7"},
       # mailing smtp adapter,
-      {:bamboo_smtp, "~> 2.1"},
+      {:bamboo_smtp, "~> 3.0"},
       # mailing
       {:bamboo, "~> 1.4"},
       # Markdown parser

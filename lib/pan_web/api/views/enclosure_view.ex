@@ -3,7 +3,7 @@ defmodule PanWeb.Api.EnclosureView do
   use JaSerializer.PhoenixView
 
   location(:location)
-  attributes([:orig_url, :file_size, :type, :guid, :mime_type])
+  attributes([:orig_url, :file_size, :enclosure_type, :guid, :mime_type])
 
   def type(_, _), do: "enclosure"
 
@@ -24,6 +24,10 @@ defmodule PanWeb.Api.EnclosureView do
   def location(enclosure, conn) do
     api_enclosure_url(conn, :show, enclosure)
   end
+
+  def enclosure_type(enclosure) do
+    enclosure.type
+  end
 end
 
 defmodule PanWeb.Api.PlainEnclosureView do
@@ -31,7 +35,7 @@ defmodule PanWeb.Api.PlainEnclosureView do
   use JaSerializer.PhoenixView
 
   location(:location)
-  attributes([:orig_url, :file_size, :type, :guid, :mime_type])
+  attributes([:orig_url, :file_size, :enclosure_type, :guid, :mime_type])
 
   def type(_, _), do: "enclosure"
 
@@ -49,5 +53,9 @@ defmodule PanWeb.Api.PlainEnclosureView do
 
   def location(enclosure, conn) do
     api_enclosure_url(conn, :show, enclosure)
+  end
+
+  def enclosure_type(enclosure) do
+    enclosure.type
   end
 end
