@@ -93,6 +93,8 @@ defmodule PanWeb.Image do
       File.mkdir_p(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
+      Logger.info("=== Working on thumbnail #{id} ===")
+
       (target_dir <> "/" <> filename)
       |> Mogrify.open()
       |> Mogrify.resize_to_limit("150x150")
