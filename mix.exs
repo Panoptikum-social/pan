@@ -96,8 +96,6 @@ defmodule Pan.Mixfile do
       {:httpoison, "~> 1.6"},
       # erlang http client, had to increase version here
       {:hackney, "~> 1.15"},
-      # release manager
-      {:distillery, "~> 2.0", runtime: false},
       # XML parser (another one)
       {:quinn, "~> 1.1"},
       # UUID creation
