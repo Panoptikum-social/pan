@@ -159,8 +159,8 @@ defmodule PanWeb.ImageController do
   end
 
   def cache_missing(conn, _params) do
-    PanWeb.Image.cache_missing()
-    render(conn, "done.html")
+    Task.start(fn -> PanWeb.Image.cache_missing() end)
+    render(conn, "started.html")
   end
 
   def remove_duplicates(conn, _params) do
