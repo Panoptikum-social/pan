@@ -95,10 +95,15 @@ defmodule PanWeb.Image do
 
       Logger.info("=== Working on thumbnail #{id} ===")
 
-      (target_dir <> "/" <> filename)
-      |> Mogrify.open()
-      |> Mogrify.resize_to_limit("150x150")
-      |> Mogrify.save(in_place: true)
+      try do
+        (target_dir <> "/" <> filename)
+        |> Mogrify.open()
+        |> Mogrify.resize_to_limit("150x150")
+        |> Mogrify.save(in_place: true)
+      catch
+        # We fail silently, as we did before mogrify raised errors.
+        MatchError -> 0
+      end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
 
