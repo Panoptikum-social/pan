@@ -93,8 +93,6 @@ defmodule PanWeb.Image do
       File.mkdir_p(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
-      Logger.info("=== Working on thumbnail #{id} ===")
-
       try do
         (target_dir <> "/" <> filename)
         |> Mogrify.open()
@@ -102,7 +100,7 @@ defmodule PanWeb.Image do
         |> Mogrify.save(in_place: true)
       catch
         # We fail silently, as we did before mogrify raised errors.
-        MatchError -> 0
+        msg -> Logger.info("=== Failing on thumbnail #{id} with #{msg} ===")
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
