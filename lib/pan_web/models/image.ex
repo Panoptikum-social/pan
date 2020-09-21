@@ -100,7 +100,10 @@ defmodule PanWeb.Image do
         |> Mogrify.save(in_place: true)
       catch
         # We fail silently, as we did before mogrify raised errors.
-        msg -> Logger.info("=== Failing on thumbnail #{id} with #{msg} ===")
+        kind, {error, message} ->
+          Logger.info(
+            "=== Image for Episode #{id} #{kind}:#{error} (#{message}) ==="
+          )
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
