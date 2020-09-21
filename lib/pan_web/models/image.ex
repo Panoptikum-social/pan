@@ -93,6 +93,7 @@ defmodule PanWeb.Image do
       File.mkdir_p(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
+      Logger.info("=== Mogrifying image for episode #{id} ===")
       try do
         (target_dir <> "/" <> filename)
         |> Mogrify.open()
@@ -102,7 +103,7 @@ defmodule PanWeb.Image do
         # We fail silently, as we did before mogrify raised errors.
         kind, {error, message} ->
           Logger.info(
-            "=== Image for Episode #{id} #{kind}:#{error} (#{message}) ==="
+            "=== Image for episode #{id} #{kind}:#{error} (#{message}) ==="
           )
       end
 
