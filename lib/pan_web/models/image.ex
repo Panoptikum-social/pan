@@ -94,6 +94,7 @@ defmodule PanWeb.Image do
       File.write!(target_dir <> "/" <> filename, response.body)
 
       Logger.info("=== Mogrifying image for episode #{id} ===")
+
       try do
         (target_dir <> "/" <> filename)
         |> Mogrify.open()
@@ -101,10 +102,11 @@ defmodule PanWeb.Image do
         |> Mogrify.save(in_place: true)
       catch
         # We fail silently, as we did before mogrify raised errors.
+        kind, {error, {message, _}} ->
+          Logger.info("=== Image for episode #{id} #{kind}:#{error} (#{message}) ===")
+
         kind, {error, message} ->
-          Logger.info(
-            "=== Image for episode #{id} #{kind}:#{error} (#{message}) ==="
-          )
+          Logger.info("=== Image for episode #{id} #{kind}:#{error} (#{message}) ===")
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
