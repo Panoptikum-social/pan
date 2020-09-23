@@ -115,7 +115,7 @@ defmodule Pan.Parser.Analyzer do
         %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
 
       "me" ->
-        %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
+        %{}
 
       "current" ->
         %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
