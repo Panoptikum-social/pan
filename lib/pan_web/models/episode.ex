@@ -154,7 +154,7 @@ defmodule PanWeb.Episode do
   def cache_missing_thumbnail_images() do
     episode_ids =
       from(e in Episode,
-        where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+        where: not e.thumbnailed and not is_nil(e.image_url),
         limit: 250,
         select: e.id
       )

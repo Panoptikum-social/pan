@@ -202,11 +202,11 @@ defmodule PanWeb.MaintenanceController do
     total_delegations = Repo.aggregate(Delegation, :count, :id)
 
     episodes_without_image =
-      from(e in Episode, where: is_nil(e.thumbnailed) and not is_nil(e.image_url))
+      from(e in Episode, where: not e.thumbnailed and not is_nil(e.image_url))
       |> Repo.aggregate(:count)
 
     podcasts_without_image =
-      from(p in Podcast, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
+      from(p in Podcast, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
 
     podcasts_with_zero_publication_frequency =
@@ -218,7 +218,7 @@ defmodule PanWeb.MaintenanceController do
       |> Repo.aggregate(:count)
 
     personas_without_image =
-      from(p in Persona, where: is_nil(p.thumbnailed) and not is_nil(p.image_url))
+      from(p in Persona, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
 
     render(conn, "stats.html",
