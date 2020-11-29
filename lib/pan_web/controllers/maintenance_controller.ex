@@ -50,7 +50,7 @@ defmodule PanWeb.MaintenanceController do
   def catch_up_thumbnailed(conn, _paar) do
     podcast_candidates =
       from(e in Podcast,
-        where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+        where: not e.thumbnailed and not is_nil(e.image_url),
         limit: 1_000,
         select: e.id
       )
@@ -70,7 +70,7 @@ defmodule PanWeb.MaintenanceController do
 
     persona_candidates =
       from(e in Persona,
-        where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+        where: not e.thumbnailed and not is_nil(e.image_url),
         limit: 1_000,
         select: e.id
       )
@@ -91,7 +91,7 @@ defmodule PanWeb.MaintenanceController do
     for _i <- 1..10 do
       episode_candidates =
         from(e in Episode,
-          where: is_nil(e.thumbnailed) and not is_nil(e.image_url),
+          where: not e.thumbnailed and not is_nil(e.image_url),
           limit: 1_000,
           select: e.id
         )
