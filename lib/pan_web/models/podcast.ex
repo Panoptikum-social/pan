@@ -485,7 +485,7 @@ defmodule PanWeb.Podcast do
     podcast_ids =
       from(p in Podcast,
         where:
-            not p.thumbnailed and
+            is_false(p.thumbnailed) and
             not is_nil(p.image_url),
         limit: 250,
         select: p.id
