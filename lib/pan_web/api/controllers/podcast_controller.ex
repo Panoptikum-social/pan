@@ -117,62 +117,80 @@ defmodule PanWeb.Api.PodcastController do
   def trigger_update(conn, %{"id" => id} = params, _user) do
     podcast = Repo.get!(Podcast, id)
 
-    if !podcast.manually_updated_at or
-         Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
-      podcast
-      |> Podcast.changeset(%{manually_updated_at: Timex.now()})
-      |> Repo.update()
-
-      Pan.Parser.Podcast.update_from_feed(podcast)
-      show(conn, params, nil)
-    else
-      minutes =
-        podcast.manually_updated_at
-        |> Timex.shift(hours: 1)
-        |> Timex.Comparable.diff(Timex.now(), :minutes)
-
+    if podcast.update_paused do
       Helpers.send_error(
-        conn,
-        429,
-        "Too many requests",
-        "The next update on this podcast is available in #{minutes} minutes."
-      )
+          conn,
+          424,
+          "Podcast paused",
+          "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
+        )
+    else
+      if !podcast.manually_updated_at or
+          Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
+        podcast
+        |> Podcast.changeset(%{manually_updated_at: Timex.now()})
+        |> Repo.update()
+
+        Pan.Parser.Podcast.update_from_feed(podcast)
+        show(conn, params, nil)
+      else
+        minutes =
+          podcast.manually_updated_at
+          |> Timex.shift(hours: 1)
+          |> Timex.Comparable.diff(Timex.now(), :minutes)
+
+        Helpers.send_error(
+          conn,
+          429,
+          "Too many requests",
+          "The next update on this podcast is available in #{minutes} minutes."
+        )
+      end
     end
   end
 
   def trigger_episode_update(conn, %{"id" => id} = params, user) do
     podcast = Repo.get!(Podcast, id)
 
-    if !podcast.manually_updated_at or
-         Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
-      thirty_minutes_ago =
-        Timex.now()
-        |> Timex.shift(minutes: -30)
-
-      Podcast.changeset(podcast, %{manually_updated_at: thirty_minutes_ago})
-      |> Repo.update()
-
-      case Pan.Updater.Podcast.import_new_episodes(
-             podcast,
-             user,
-             :not_forced,
-             :no_failure_count_increase
-           ) do
-        {:ok, _} -> show(conn, params, nil)
-        {:error, message} -> send_504(conn, message)
-      end
-    else
-      minutes =
-        podcast.manually_updated_at
-        |> Timex.shift(hours: 1)
-        |> Timex.Comparable.diff(Timex.now(), :minutes)
-
+    if podcast.update_paused do
       Helpers.send_error(
-        conn,
-        429,
-        "Too many requests",
-        "The next update on this podcast is available in #{minutes} minutes."
-      )
+          conn,
+          424,
+          "Podcast paused",
+          "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
+        )
+    else
+      if !podcast.manually_updated_at or
+          Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
+        thirty_minutes_ago =
+          Timex.now()
+          |> Timex.shift(minutes: -30)
+
+        Podcast.changeset(podcast, %{manually_updated_at: thirty_minutes_ago})
+        |> Repo.update()
+
+        case Pan.Updater.Podcast.import_new_episodes(
+              podcast,
+              user,
+              :not_forced,
+              :no_failure_count_increase
+            ) do
+          {:ok, _} -> show(conn, params, nil)
+          {:error, message} -> send_504(conn, message)
+        end
+      else
+        minutes =
+          podcast.manually_updated_at
+          |> Timex.shift(hours: 1)
+          |> Timex.Comparable.diff(Timex.now(), :minutes)
+
+        Helpers.send_error(
+          conn,
+          429,
+          "Too many requests",
+          "The next update on this podcast is available in #{minutes} minutes."
+        )
+      end
     end
   end
 
