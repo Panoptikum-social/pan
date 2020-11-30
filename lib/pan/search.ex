@@ -8,7 +8,7 @@ defmodule Pan.Search do
   def push_missing do
     category_ids =
       from(c in Category,
-        where: is_false(c.elastic),
+        where: not c.elastic,
         limit: 100,
         select: c.id
       )
