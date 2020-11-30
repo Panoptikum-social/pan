@@ -50,7 +50,7 @@ defmodule PanWeb.MaintenanceController do
   def catch_up_thumbnailed(conn, _paar) do
     podcast_candidates =
       from(e in Podcast,
-        where: is_false(e.thumbnailed) and not is_nil(e.image_url),
+        where: not e.thumbnailed and not is_nil(e.image_url),
         limit: 1_000,
         select: e.id
       )
@@ -70,7 +70,7 @@ defmodule PanWeb.MaintenanceController do
 
     persona_candidates =
       from(e in Persona,
-        where: is_false(e.thumbnailed) and not is_nil(e.image_url),
+        where: not e.thumbnailed and not is_nil(e.image_url),
         limit: 1_000,
         select: e.id
       )
@@ -91,7 +91,7 @@ defmodule PanWeb.MaintenanceController do
     for _i <- 1..10 do
       episode_candidates =
         from(e in Episode,
-          where: is_false(e.thumbnailed) and not is_nil(e.image_url),
+          where: not e.thumbnailed and not is_nil(e.image_url),
           limit: 1_000,
           select: e.id
         )
@@ -158,7 +158,7 @@ defmodule PanWeb.MaintenanceController do
       |> delimit_integer(" ")
 
     unindexed_episodes =
-      from(e in Episode, where: is_false(e.elastic))
+      from(e in Episode, where: not e.elastic)
       |> Repo.aggregate(:count)
       |> delimit_integer(" ")
 
@@ -202,11 +202,11 @@ defmodule PanWeb.MaintenanceController do
     total_delegations = Repo.aggregate(Delegation, :count, :id)
 
     episodes_without_image =
-      from(e in Episode, where: is_false(e.thumbnailed) and not is_nil(e.image_url))
+      from(e in Episode, where: not e.thumbnailed and not is_nil(e.image_url))
       |> Repo.aggregate(:count)
 
     podcasts_without_image =
-      from(p in Podcast, where: is_false(p.thumbnailed) and not is_nil(p.image_url))
+      from(p in Podcast, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
 
     podcasts_with_zero_publication_frequency =
