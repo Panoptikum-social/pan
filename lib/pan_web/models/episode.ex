@@ -108,7 +108,7 @@ defmodule PanWeb.Episode do
       Repo.get(Episode, id)
       |> Repo.preload(:podcast)
 
-    if episode.podcast.blocked == true do
+    if episode.podcast.blocked do
       delete_search_index(id)
     else
       put(

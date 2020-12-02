@@ -212,7 +212,7 @@ defmodule PanWeb.Persona do
   end
 
   def create_user_persona(user) do
-    if user.podcaster == true and Enum.empty?(user.user_personas) do
+    if user.podcaster and Enum.empty?(user.user_personas) do
       case Repo.one(from(p in Persona, where: p.email == ^user.email)) do
         nil ->
           pid = UUID.uuid5(:url, Integer.to_string(user.id) <> user.username)

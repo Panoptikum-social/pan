@@ -243,7 +243,7 @@ defmodule PanWeb.Podcast do
   def update_search_index(id) do
     podcast = Repo.get(Podcast, id)
 
-    if podcast.blocked == true do
+    if podcast.blocked do
       delete_search_index(id)
     else
       put(
@@ -260,7 +260,7 @@ defmodule PanWeb.Podcast do
   def remove_unwanted_references(id) do
     podcast = Repo.get(Podcast, id)
 
-    if podcast.blocked == true do
+    if podcast.blocked do
       episode_ids =
         from(e in Episode,
           where: e.podcast_id == ^id,
@@ -349,7 +349,7 @@ defmodule PanWeb.Podcast do
   def unretire_all() do
     podcast_ids =
       from(p in Podcast,
-        where: p.retired == true,
+        where: p.retired,
         select: p.id
       )
       |> Repo.all()

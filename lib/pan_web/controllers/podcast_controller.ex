@@ -162,7 +162,7 @@ defmodule PanWeb.PodcastController do
         from(p in Podcast,
           where:
             p.next_update <= ^Timex.now() and
-              not p.update_paused and not p.retired)
+              not p.update_paused and not p.retired
         )
       end
 
