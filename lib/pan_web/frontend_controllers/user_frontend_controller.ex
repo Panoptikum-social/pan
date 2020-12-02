@@ -13,7 +13,7 @@ defmodule PanWeb.UserFrontendController do
       Repo.all(
         from(u in User,
           order_by: :name,
-          where: is_false(u.admin)
+          where: not u.admin
         )
       )
 

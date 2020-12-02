@@ -22,7 +22,7 @@ defmodule PanWeb.Api.UserController do
     offset = (page - 1) * size
 
     total =
-      from(u in User, where: is_false(u.admin))
+      from(u in User, where: not u.admin)
       |> Repo.aggregate(:count)
 
     total_pages = div(total - 1, size) + 1
@@ -37,7 +37,7 @@ defmodule PanWeb.Api.UserController do
         order_by: :name,
         limit: ^size,
         offset: ^offset,
-        where: is_false(u.admin)
+        where: not u.admin
       )
       |> Repo.all()
 

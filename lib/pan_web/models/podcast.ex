@@ -187,7 +187,7 @@ defmodule PanWeb.Podcast do
   def latest do
     from(p in Podcast,
       order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
-      where: is_false(p.blocked),
+      where: not p.blocked,
       left_join: e in assoc(p, :engagements),
       # where: e.role == "author",
       # we want to see podcasts here, even if they have no author
@@ -228,7 +228,7 @@ defmodule PanWeb.Podcast do
       from(p in Podcast,
         where:
           p.next_update <= ^Timex.now() and
-            is_false(p.update_paused) and is_false(p.retired),
+            not p.update_paused and not p.retired,
         order_by: [asc: :next_update],
         limit: 2000
       )

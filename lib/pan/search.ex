@@ -1,6 +1,5 @@
 defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
-  import Ecto.Convenience, only: [is_false: 1]
   alias Pan.Repo
   alias PanWeb.{Category, Episode, Persona, Podcast, User}
   require Logger
@@ -23,7 +22,7 @@ defmodule Pan.Search do
 
     user_ids =
       from(c in User,
-        where: is_false(c.elastic),
+        where: not c.elastic,
         limit: 100,
         select: c.id
       )
@@ -38,7 +37,7 @@ defmodule Pan.Search do
 
     persona_ids =
       from(c in Persona,
-        where: is_false(c.elastic),
+        where: not c.elastic,
         limit: 1000,
         select: c.id
       )
@@ -53,7 +52,7 @@ defmodule Pan.Search do
 
     podcast_ids =
       from(c in Podcast,
-        where: is_false(c.elastic),
+        where: not c.elastic,
         limit: 100,
         select: c.id
       )
@@ -68,7 +67,7 @@ defmodule Pan.Search do
 
     episode_ids =
       from(c in Episode,
-        where: is_false(c.elastic),
+        where: not c.elastic,
         limit: 1000,
         select: c.id
       )

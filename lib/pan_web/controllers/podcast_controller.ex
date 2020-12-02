@@ -23,7 +23,7 @@ defmodule PanWeb.PodcastController do
     unassigned_podcasts =
       from(p in Podcast,
         left_join: c in assoc(p, :categories),
-        where: is_nil(c.id) and is_false(p.blocked)
+        where: is_nil(c.id) and not p.blocked
       )
       |> Repo.all()
 
@@ -46,7 +46,7 @@ defmodule PanWeb.PodcastController do
       |> Repo.all()
 
     podcasts =
-      from(p in Podcast, where: p.id not in ^podcast_ids and is_false(p.blocked))
+      from(p in Podcast, where: p.id not in ^podcast_ids and not p.blocked)
       |> Repo.all()
 
     category =
@@ -153,7 +153,7 @@ defmodule PanWeb.PodcastController do
         from(p in Podcast,
           where:
             p.next_update <= ^Timex.now() and
-              is_false(p.update_paused) and is_false(p.retired) and
+              not p.update_paused and not p.retired and
               (ilike(p.title, ^searchfrag) or
                  ilike(p.website, ^searchfrag) or
                  ilike(fragment("cast (? as text)", p.id), ^searchfrag))
@@ -162,7 +162,7 @@ defmodule PanWeb.PodcastController do
         from(p in Podcast,
           where:
             p.next_update <= ^Timex.now() and
-              is_false(p.update_paused) and is_false(p.retired)
+              not p.update_paused and not p.retired)
         )
       end
 
@@ -201,7 +201,7 @@ defmodule PanWeb.PodcastController do
     podcasts =
       from(p in Podcast,
         order_by: [asc: :updated_at],
-        where: p.update_paused == true and is_false(p.retired),
+        where: p.update_paused == true and not p.retired,
         preload: :feeds
       )
       |> Repo.all()
@@ -354,7 +354,7 @@ defmodule PanWeb.PodcastController do
     podcasts_without_languages =
       from(p in Podcast,
         where:
-          is_false(p.update_paused) and
+          not p.update_paused and
             p.id not in ^podcast_ids
       )
       |> Repo.all()
@@ -377,7 +377,7 @@ defmodule PanWeb.PodcastController do
       from(p in Podcast,
         where:
           p.next_update <= ^Timex.now() and
-            is_false(p.update_paused) and is_false(p.retired),
+            not p.update_paused and not p.retired,
         order_by: [asc: :next_update],
         limit: 2000
       )
@@ -417,7 +417,7 @@ defmodule PanWeb.PodcastController do
   def retirement(conn, _params) do
     candidates =
       from(p in Podcast,
-        where: is_false(p.retired),
+        where: not p.retired,
         join: e in assoc(p, :episodes),
         group_by: p.id,
         having: max(e.publishing_date) < ago(1, "year"),

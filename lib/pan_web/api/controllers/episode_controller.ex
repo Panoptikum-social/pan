@@ -21,7 +21,7 @@ defmodule PanWeb.Api.EpisodeController do
       from(e in Episode,
         join: p in assoc(e, :podcast),
         where:
-          is_false(p.blocked) and
+          not p.blocked and
             e.publishing_date < ^NaiveDateTime.utc_now()
       )
       |> Repo.aggregate(:count)
@@ -37,7 +37,7 @@ defmodule PanWeb.Api.EpisodeController do
       from(e in Episode,
         join: p in assoc(e, :podcast),
         where:
-          is_false(p.blocked) and
+          not p.blocked and
             e.publishing_date < ^NaiveDateTime.utc_now(),
         order_by: [desc: :publishing_date],
         preload: [:podcast, :gigs, :contributors],

@@ -118,14 +118,14 @@ defmodule PanWeb.MaintenanceController do
       from(p in Podcast,
         where:
           p.next_update <= ^Timex.now() and
-            is_false(p.update_paused) and
-            is_false(p.retired)
+            not p.update_paused and
+            not p.retired
       )
       |> Repo.aggregate(:count)
       |> delimit_integer(" ")
 
     inactive_podcasts =
-      from(p in Podcast, where: p.update_paused == true and is_false(p.retired))
+      from(p in Podcast, where: p.update_paused == true and not p.retired)
       |> Repo.aggregate(:count)
 
     retired_podcasts =
@@ -133,7 +133,7 @@ defmodule PanWeb.MaintenanceController do
       |> Repo.aggregate(:count)
 
     average_update_intervall =
-      from(p in Podcast, where: is_false(p.update_paused) and is_false(p.retired))
+      from(p in Podcast, where: not p.update_paused and not p.retired)
       |> Repo.aggregate(:avg, :update_intervall)
       |> Decimal.round(2)
 

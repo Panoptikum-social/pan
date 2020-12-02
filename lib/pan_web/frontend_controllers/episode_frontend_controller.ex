@@ -65,7 +65,7 @@ defmodule PanWeb.EpisodeFrontendController do
         join: p in assoc(e, :podcast),
         where:
           e.id in ^episode_ids.entries and
-            is_false(p.blocked),
+            not p.blocked,
         order_by: [desc: :id],
         preload: :podcast
       )

@@ -84,7 +84,7 @@ defmodule PanWeb.Episode do
       order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
       join: p in assoc(e, :podcast),
       where:
-        is_false(p.blocked) and
+        not p.blocked and
           e.publishing_date < ^NaiveDateTime.utc_now(),
       preload: :podcast,
       limit: 10

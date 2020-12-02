@@ -108,7 +108,7 @@ defmodule PanWeb.FeedBacklogController do
   def import_100(conn, _params) do
     backlog_feeds =
       from(f in FeedBacklog,
-        where: is_false(f.in_progress),
+        where: not f.in_progress,
         order_by: [desc: :id],
         limit: 100
       )

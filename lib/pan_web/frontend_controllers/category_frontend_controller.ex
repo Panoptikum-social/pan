@@ -164,7 +164,7 @@ defmodule PanWeb.CategoryFrontendController do
           from(c in Category,
             join: p in assoc(c, :podcasts),
             where:
-              is_false(p.blocked) and
+              not p.blocked and
                 c.id == ^id,
             select: p.id
           )
@@ -205,7 +205,7 @@ defmodule PanWeb.CategoryFrontendController do
           from(c in Category,
             join: p in assoc(c, :podcasts),
             where:
-              is_false(p.blocked) and
+              not p.blocked and
                 c.id == ^id,
             select: p.id
           )

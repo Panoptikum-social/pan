@@ -1,8 +1,4 @@
 defmodule Ecto.Convenience do
-  defmacro is_false(arg) do
-    quote(do: fragment("? IS NOT TRUE", unquote(arg)))
-  end
-
   def total_estimated(model_name) do
     {:ok, %Postgrex.Result{rows: [[rows]]}} =
       Ecto.Adapters.SQL.query(
