@@ -474,7 +474,10 @@ defmodule PanWeb.PodcastController do
     podcast = Repo.get!(Podcast, id)
 
     case Pan.Parser.Podcast.update_from_feed(podcast) do
-      {:ok, message} -> put_flash(conn, :info, message)
+      {:ok, message} ->
+        Podcast.update_search_index(id)
+        Podcast.remove_unwanted_references(id)
+        put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, podcast.id))
