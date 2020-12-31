@@ -12,7 +12,7 @@ defmodule Pan.Updater.Podcast do
         forced \\ false,
         no_failure_count_increase \\ false
       ) do
-    Logger.info("\n\e[96m === #{podcast.id} ⬇ #{podcast.title} ===\e[0m")
+    Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
 
     with {:ok, _podcast} <- set_next_update(podcast),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),

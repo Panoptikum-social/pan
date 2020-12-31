@@ -437,9 +437,7 @@ defmodule PanWeb.Podcast do
     podcasts = Repo.all(Podcast)
 
     for podcast <- podcasts do
-      Logger.info(
-        "\n\e[33m === Updating counter for podcast: #{podcast.id} #{podcast.title} ===\e[0m"
-      )
+      Logger.info("=== Updating counter for podcast: #{podcast.id} #{podcast.title} ===")
 
       podcast
       |> PanWeb.Podcast.changeset()

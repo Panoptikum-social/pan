@@ -12,9 +12,9 @@ defmodule Pan.Parser.Helpers do
   end
 
   def inspect(argument) do
-    IO.puts("\n\e[33m === Debugger <<<\e[0m")
+    IO.puts("=== Debugger <<<")
     IO.inspect(argument)
-    IO.puts("\n\e[33m >>> Debugger ===\e[0m")
+    IO.puts(">>> Debugger ===")
   end
 
   def to_naive_datetime(feed_date) do
