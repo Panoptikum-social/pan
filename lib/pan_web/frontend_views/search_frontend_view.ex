@@ -75,16 +75,10 @@ defmodule PanWeb.SearchFrontendView do
         end
 
       "users" ->
-        render("user.html",
-          user: fields,
-          score: score
-        )
+        render("user.html", user: fields, score: score)
 
       "categories" ->
-        render("category.html",
-          category: fields,
-          score: score
-        )
+        render("category.html", category: fields, score: score)
     end
   end
 

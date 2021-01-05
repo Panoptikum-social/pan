@@ -27,10 +27,7 @@ defmodule PanWeb.Api.MessageController do
       |> Repo.one()
 
     if message do
-      render(conn, "show.json-api",
-        data: message,
-        opts: [include: "creator,persona"]
-      )
+      render(conn, "show.json-api", data: message, opts: [include: "creator,persona"])
     else
       Helpers.send_404(conn)
     end
@@ -55,22 +52,13 @@ defmodule PanWeb.Api.MessageController do
     subscribed_category_ids = User.subscribed_category_ids(user.id)
     subscribed_podcast_ids = User.subscribed_podcast_ids(user.id)
 
-    total =
-      from(m in Message,
-        where:
-          (m.topic == "mailboxes" and m.subtopic == ^user_id) or
-            (m.topic == "users" and m.subtopic in ^subscribed_user_ids) or
-            (m.topic == "podcasts" and m.subtopic in ^subscribed_podcast_ids) or
-            (m.topic == "category" and m.subtopic in ^subscribed_category_ids)
+    link =
+      pagination_links(
+        user_id,
+        subscribed_user_ids,
+        subscribed_podcast_ids,
+        subscribed_category_ids
       )
-      |> Repo.aggregate(:count)
-
-    total_pages = div(total - 1, size) + 1
-
-    links =
-      conn
-      |> api_message_url(:my)
-      |> Helpers.pagination_links({page, size, total_pages}, conn)
 
     messages =
       from(m in Message,
@@ -90,5 +78,28 @@ defmodule PanWeb.Api.MessageController do
       data: messages,
       opts: [page: links, include: "creator,persona"]
     )
+  end
+
+  defp pagination_links(
+         user_id,
+         subscribed_user_ids,
+         subscribed_podcast_ids,
+         subscribed_category_ids
+       ) do
+    total =
+      from(m in Message,
+        where:
+          (m.topic == "mailboxes" and m.subtopic == ^user_id) or
+            (m.topic == "users" and m.subtopic in ^subscribed_user_ids) or
+            (m.topic == "podcasts" and m.subtopic in ^subscribed_podcast_ids) or
+            (m.topic == "category" and m.subtopic in ^subscribed_category_ids)
+      )
+      |> Repo.aggregate(:count)
+
+    total_pages = div(total - 1, size) + 1
+
+    conn
+    |> api_message_url(:my)
+    |> Helpers.pagination_links({page, size, total_pages}, conn)
   end
 end
