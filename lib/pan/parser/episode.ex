@@ -148,23 +148,22 @@ defmodule Pan.Parser.Episode do
     first_enclosure = unwrap_first_enclosure(enclosures)
     plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
-    with {:ok, episode} <- get_or_insert(plain_episode_map, podcast.id) do
-      get_or_insert_enclosures(enclosures, episode.id)
+    case get_or_insert(plain_episode_map, podcast.id) do
+      {:ok, episode} ->
+        get_or_insert_enclosures(enclosures, episode.id)
 
-      if episode_map[:chapters] do
-        get_or_insert_chapters(episode_map.chapters, episode.id)
-      end
+        if episode_map[:chapters], do: get_or_insert_chapters(episode_map.chapters, episode.id)
 
-      if episode_map[:contributors] do
-        Contributor.persist_many(episode_map.contributors, episode)
-      end
+        if episode_map[:contributors] do
+          Contributor.persist_many(episode_map.contributors, episode)
+        end
 
-      if episode_map[:author] do
-        Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
-      end
+        if episode_map[:author] do
+          Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+        end
 
-      Logger.info("=== Importing new episode: #{episode.title} ===")
-    else
+        Logger.info("=== Importing new episode: #{episode.title} ===")
+
       {:exists, _episode} ->
         true
     end

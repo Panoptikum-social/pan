@@ -126,39 +126,41 @@ defmodule PanWeb.Api.RecommendationController do
     comment = H.to_255(comment)
     podcast_id = String.to_integer(podcast_id)
 
-    with %PanWeb.Podcast{} <- podcast = Repo.get(Podcast, podcast_id) do
-      podcast_title = podcast.title
-      notification_text = "Podcast <b> #{podcast_title}</b>"
+    case podcast = Repo.get(Podcast, podcast_id) do
+      %PanWeb.Podcast{} ->
+        podcast_title = podcast.title
+        notification_text = "Podcast <b> #{podcast_title}</b>"
 
-      {:ok, recommendation} =
-        %Recommendation{podcast_id: podcast_id, comment: comment, user_id: user.id}
-        |> Recommendation.changeset()
-        |> Repo.insert()
+        {:ok, recommendation} =
+          %Recommendation{podcast_id: podcast_id, comment: comment, user_id: user.id}
+          |> Recommendation.changeset()
+          |> Repo.insert()
 
-      recommendation = Repo.preload(recommendation, [:podcast, :episode, :chapter, :user])
+        recommendation = Repo.preload(recommendation, [:podcast, :episode, :chapter, :user])
 
-      e = %Event{
-        topic: "podcasts",
-        subtopic: params["podcast_id"],
-        podcast_id: podcast_id,
-        episode_id: nil,
-        chapter_id: nil,
-        notification_text: notification_text,
-        current_user_id: user.id,
-        type: "success",
-        event: "recommend",
-        content: H.to_255("« recommended #{notification_text} » #{comment}")
-      }
+        e = %Event{
+          topic: "podcasts",
+          subtopic: params["podcast_id"],
+          podcast_id: podcast_id,
+          episode_id: nil,
+          chapter_id: nil,
+          notification_text: notification_text,
+          current_user_id: user.id,
+          type: "success",
+          event: "recommend",
+          content: H.to_255("« recommended #{notification_text} » #{comment}")
+        }
 
-      Message.persist_event(e)
-      Event.notify_subscribers(e)
+        Message.persist_event(e)
+        Event.notify_subscribers(e)
 
-      render(conn, "show.json-api",
-        data: recommendation,
-        opts: [include: "podcast,user"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api",
+          data: recommendation,
+          opts: [include: "podcast,user"]
+        )
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 

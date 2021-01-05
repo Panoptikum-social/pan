@@ -56,7 +56,7 @@ defmodule Pan.Mixfile do
         :exactor,
         :jason,
         :plug_cowboy,
-        :httpotion
+        :httpotion,
       ]
     ]
   end
@@ -119,7 +119,7 @@ defmodule Pan.Mixfile do
       # elasticsearch connector
       {:tirexs, "~> 0.8"},
       # Code analysis
-      {:credo, "~> 1.2", only: [:dev, :test]},
+      {:credo, "~> 1.5", only: [:dev, :test]},
       # HTML parser
       {:floki, "~> 0.25"},
       # reuseable Erlang components

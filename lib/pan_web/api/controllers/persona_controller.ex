@@ -322,29 +322,31 @@ defmodule PanWeb.Api.PersonaController do
   end
 
   def claim(conn, %{"id" => id}, user) do
-    with %PanWeb.Persona{} <- persona = Repo.get(Persona, id) do
-      if persona.email do
-        PanWeb.Endpoint
-        |> Phoenix.Token.sign("persona", id)
-        |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
-        |> Pan.Mailer.deliver_now()
+    case persona = Repo.get(Persona, id) do
+      %PanWeb.Persona{} ->
+        if persona.email do
+          PanWeb.Endpoint
+          |> Phoenix.Token.sign("persona", id)
+          |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
+          |> Pan.Mailer.deliver_now()
 
-        conn
-        |> put_view(ErrorView)
-        |> put_status(200)
-        |> render(:errors,
-          data: %{
-            code: 200,
-            status: 200,
-            title: "OK",
-            detail: "An Email to the Persona has been sent"
-          }
-        )
-      else
-        Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
-      end
-    else
-      nil -> Helpers.send_404(conn)
+          conn
+          |> put_view(ErrorView)
+          |> put_status(200)
+          |> render(:errors,
+            data: %{
+              code: 200,
+              status: 200,
+              title: "OK",
+              detail: "An Email to the Persona has been sent"
+            }
+          )
+        else
+          Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
+        end
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 end

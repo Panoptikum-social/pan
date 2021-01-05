@@ -28,23 +28,22 @@ defmodule PanWeb.Api.SubscriptionController do
   end
 
   def toggle(conn, %{"podcast_id" => podcast_id}, user) do
-    with %PanWeb.Podcast{} <- Repo.get(Podcast, podcast_id) do
-      {:ok, subscription} =
-        podcast_id
-        |> String.to_integer()
-        |> Podcast.subscribe(user.id)
+    case Repo.get(Podcast, podcast_id) do
+      %PanWeb.Podcast{} ->
+        {:ok, subscription} =
+          podcast_id
+          |> String.to_integer()
+          |> Podcast.subscribe(user.id)
 
-      subscription =
-        subscription
-        |> Repo.preload([:user, :podcast])
-        |> mark_if_deleted()
+        subscription =
+          subscription
+          |> Repo.preload([:user, :podcast])
+          |> mark_if_deleted()
 
-      render(conn, "show.json-api",
-        data: subscription,
-        opts: [include: "user,podcast"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api", data: subscription, opts: [include: "user,podcast"])
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 end

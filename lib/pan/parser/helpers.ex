@@ -11,11 +11,11 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
-  def inspect(argument) do
-    IO.puts("=== Debugger <<<")
-    IO.inspect(argument)
-    IO.puts(">>> Debugger ===")
-  end
+  # def inspect(argument) do
+  #   IO.puts("=== Debugger <<<")
+  #   IO.inspect(argument)
+  #   IO.puts(">>> Debugger ===")
+  # end
 
   def to_naive_datetime(feed_date) do
     feed_date =
@@ -293,19 +293,19 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
-  def split_time() do
-    IO.inspect("=== Start === ")
-    :os.system_time(:millisecond)
-  end
+  # def split_time() do
+  #   IO.inspect("=== Start === ")
+  #   :os.system_time(:millisecond)
+  # end
 
-  def split_time(message, start_time) do
-    milliseconds =
-      (:os.system_time(:millisecond) - start_time)
-      |> Integer.to_string()
+  # def split_time(message, start_time) do
+  #   milliseconds =
+  #     (:os.system_time(:millisecond) - start_time)
+  #     |> Integer.to_string()
 
-    IO.inspect("=== " <> message <> " === " <> milliseconds)
-    :os.system_time(:millisecond)
-  end
+  #   IO.inspect("=== " <> message <> " === " <> milliseconds)
+  #   :os.system_time(:millisecond)
+  # end
 
   def scrub(value) when is_binary(value) do
     # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy

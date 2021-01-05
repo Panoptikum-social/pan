@@ -28,86 +28,82 @@ defmodule PanWeb.Api.FollowController do
   end
 
   def toggle(conn, %{"persona_id" => persona_id}, user) do
-    with %PanWeb.Persona{} <- Repo.get(Persona, persona_id) do
-      {:ok, follow} =
-        persona_id
-        |> String.to_integer()
-        |> Persona.follow(user.id)
+    case Repo.get(Persona, persona_id) do
+      %PanWeb.Persona{} ->
+        {:ok, follow} =
+          persona_id
+          |> String.to_integer()
+          |> Persona.follow(user.id)
 
-      follow =
-        follow
-        |> Repo.preload([:category, :follower, :user, :podcast, :persona])
-        |> mark_if_deleted()
+        follow =
+          follow
+          |> Repo.preload([:category, :follower, :user, :podcast, :persona])
+          |> mark_if_deleted()
 
-      render(conn, "show.json-api",
-        data: follow,
-        opts: [include: "persona"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api", data: follow, opts: [include: "persona"])
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 
   def toggle(conn, %{"user_id" => user_id}, current_user) do
-    with %PanWeb.User{} <- Repo.get(User, user_id) do
-      {:ok, follow} =
-        user_id
-        |> String.to_integer()
-        |> User.follow(current_user.id)
+    case Repo.get(User, user_id) do
+      %PanWeb.User{} ->
+        {:ok, follow} =
+          user_id
+          |> String.to_integer()
+          |> User.follow(current_user.id)
 
-      follow =
-        follow
-        |> Repo.preload([:category, :follower, :user, :podcast, :persona])
-        |> mark_if_deleted()
+        follow =
+          follow
+          |> Repo.preload([:category, :follower, :user, :podcast, :persona])
+          |> mark_if_deleted()
 
-      render(conn, "show.json-api",
-        data: follow,
-        opts: [include: "user"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api", data: follow, opts: [include: "user"])
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 
   def toggle(conn, %{"podcast_id" => podcast_id}, user) do
-    with %PanWeb.Podcast{} <- Repo.get(Podcast, podcast_id) do
-      {:ok, follow} =
-        podcast_id
-        |> String.to_integer()
-        |> Podcast.follow(user.id)
+    case Repo.get(Podcast, podcast_id) do
+      %PanWeb.Podcast{} ->
+        {:ok, follow} =
+          podcast_id
+          |> String.to_integer()
+          |> Podcast.follow(user.id)
 
-      follow =
-        follow
-        |> Repo.preload([:category, :follower, :user, :podcast, :persona])
-        |> mark_if_deleted()
+        follow =
+          follow
+          |> Repo.preload([:category, :follower, :user, :podcast, :persona])
+          |> mark_if_deleted()
 
-      render(conn, "show.json-api",
-        data: follow,
-        opts: [include: "podcast"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api", data: follow, opts: [include: "podcast"])
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 
   def toggle(conn, %{"category_id" => category_id}, user) do
-    with %PanWeb.Category{} <- Repo.get(Category, category_id) do
-      {:ok, follow} =
-        category_id
-        |> String.to_integer()
-        |> Category.follow(user.id)
+    case Repo.get(Category, category_id) do
+      %PanWeb.Category{} ->
+        {:ok, follow} =
+          category_id
+          |> String.to_integer()
+          |> Category.follow(user.id)
 
-      follow =
-        follow
-        |> Repo.preload([:category, :follower, :user, :podcast, :persona])
-        |> mark_if_deleted()
+        follow =
+          follow
+          |> Repo.preload([:category, :follower, :user, :podcast, :persona])
+          |> mark_if_deleted()
 
-      render(conn, "show.json-api",
-        data: follow,
-        opts: [include: "category"]
-      )
-    else
-      nil -> Helpers.send_404(conn)
+        render(conn, "show.json-api", data: follow, opts: [include: "category"])
+
+      nil ->
+        Helpers.send_404(conn)
     end
   end
 
