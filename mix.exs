@@ -65,8 +65,8 @@ defmodule Pan.Mixfile do
   defp elixirc_paths(_), do: ["lib"]
 
   defp deps do
-    # web framework
     [
+      # web framework
       {:phoenix, "~> 1.5.4", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
