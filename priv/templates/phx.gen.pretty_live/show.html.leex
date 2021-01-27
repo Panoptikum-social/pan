@@ -1,0 +1,32 @@
+<%%= if @live_action in [:edit] do %>
+  <%%= live_modal @socket, <%= inspect context.web_module %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %>Live.FormComponent,
+    id: @<%= schema.singular %>.id,
+    title: @page_title,
+    action: @live_action,
+    <%= schema.singular %>: @<%= schema.singular %>,
+    return_to: Routes.<%= schema.route_helper %>_show_path(@socket, :show, @<%= schema.singular %>) %>
+<%% end %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="card-title">
+          Show <%= schema.human_singular %>
+        </h5>
+      </div>
+      <div class="card-body prose">
+<%= for {k, _} <- schema.attrs do %>
+        <div>
+          <strong><%= Phoenix.Naming.humanize(Atom.to_string(k)) %>:</strong>
+          <%%= @<%= schema.singular %>.<%= k %> %>
+        </div>
+<% end %>
+      </div>
+      <div class="card-footer">
+        <%%= live_patch "Edit", to: Routes.<%= schema.route_helper %>_show_path(@socket, :edit, @<%= schema.singular %>), class: "btn btn-link btn-sm" %>
+        <%%= live_redirect "Back", to: Routes.<%= schema.route_helper %>_index_path(@socket, :index), class: "btn btn-link btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

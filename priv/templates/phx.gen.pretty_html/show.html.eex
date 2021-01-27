@@ -1,0 +1,23 @@
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="card-title">
+          Show <%= schema.human_singular %>
+        </h5>
+      </div>
+      <div class="card-body prose">
+<%= for {k, _} <- schema.attrs do %>
+        <div>
+          <strong><%= Phoenix.Naming.humanize(Atom.to_string(k)) %>:</strong>
+          <%%= @<%= schema.singular %>.<%= k %> %>
+        </div>
+<% end %>
+      </div>
+      <div class="card-footer">
+        <%%= link "Edit", to: Routes.<%= schema.route_helper %>_path(@conn, :edit, @<%= schema.singular %>), class: "btn btn-link btn-sm" %>
+        <%%= link "Back", to: Routes.<%= schema.route_helper %>_path(@conn, :index), class: "btn btn-link btn-sm" %>
+      </div>
+    </div>
+  </div>
+</div>

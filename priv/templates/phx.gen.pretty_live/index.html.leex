@@ -1,0 +1,47 @@
+<%%= if @live_action in [:new, :edit] do %>
+  <%%= live_modal @socket, <%= inspect context.web_module %>.<%= inspect Module.concat(schema.web_namespace, schema.alias) %>Live.FormComponent,
+    id: @<%= schema.singular %>.id || :new,
+    title: @page_title,
+    action: @live_action,
+    <%= schema.singular %>: @<%= schema.singular %>,
+    return_to: Routes.<%= schema.route_helper %>_index_path(@socket, :index) %>
+<%% end %>
+
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="card shadow">
+      <div class="card-header">
+        <h5 class="card-title">
+          Listing <%= schema.human_plural %>
+        </h5>
+        <%%= live_patch to: Routes.<%= schema.route_helper %>_index_path(@socket, :new), class: "btn btn-icon btn-sm btn-light" do %>
+          <svg fill="currentColor" width="24" height="24" viewBox="0 0 20 20" stroke-width="2"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+        <%% end %>
+      </div>
+      <div class="card-body prose max-w-full">
+        <table class="table">
+          <thead>
+            <tr>
+<%= for {k, _} <- schema.attrs do %>              <th><%= Phoenix.Naming.humanize(Atom.to_string(k)) %></th>
+<% end %>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="<%= schema.plural %>">
+<%%= for <%= schema.singular %> <- @<%= schema.plural %> do %>
+            <tr id="<%= schema.singular %>-<%%= <%= schema.singular %>.id %>">
+<%= for {k, _} <- schema.attrs do %>              <td><%%= <%= schema.singular %>.<%= k %> %></td>
+<% end %>
+              <td class="text-right">
+                <span><%%= live_redirect "Show", to: Routes.<%= schema.route_helper %>_show_path(@socket, :show, <%= schema.singular %>) %></span>
+                <span><%%= live_patch "Edit", to: Routes.<%= schema.route_helper %>_index_path(@socket, :edit, <%= schema.singular %>) %></span>
+                <span><%%= link "Delete", to: "#", phx_click: "delete", phx_value_id: <%= schema.singular %>.id, data: [confirm: "Are you sure?"] %></span>
+              </td>
+            </tr>
+<%% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

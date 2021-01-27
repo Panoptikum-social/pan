@@ -1,0 +1,38 @@
+<div class="flex flex-wrap">
+  <div class="w-full md:w-2/3">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">
+          Listing <%= schema.human_plural %>
+        </h5>
+        <%%= link to: Routes.<%= schema.route_helper %>_path(@conn, :new), class: "btn btn-icon btn-sm btn-light" do %>
+          <svg fill="currentColor" width="24" height="24" viewBox="0 0 20 20" stroke-width="2"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
+        <%% end %>
+      </div>
+      <div class="card-body prose max-w-full">
+        <table class="table">
+          <thead>
+            <tr>
+<%= for {k, _} <- schema.attrs do %>              <th><%= Phoenix.Naming.humanize(Atom.to_string(k)) %></th>
+<% end %>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="<%= schema.plural %>">
+<%%= for <%= schema.singular %> <- @<%= schema.plural %> do %>
+            <tr id="<%= schema.singular %>-<%%= <%= schema.singular %>.id %>">
+<%= for {k, _} <- schema.attrs do %>              <td><%%= <%= schema.singular %>.<%= k %> %></td>
+<% end %>
+              <td class="text-right">
+                <span><%%= link "Show", to: Routes.<%= schema.route_helper %>_path(@conn, :show, <%= schema.singular %>) %></span>
+                <span><%%= link "Edit", to: Routes.<%= schema.route_helper %>_path(@conn, :edit, <%= schema.singular %>) %></span>
+                <span><%%= link "Delete", to: Routes.<%= schema.route_helper %>_path(@conn, :delete, <%= schema.singular %>), method: :delete, data: [confirm: "Are you sure?"] %></span>
+              </td>
+            </tr>
+<%% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

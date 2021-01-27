@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Phoenix Framework" %>
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body class="flex flex-col h-full pt-32 bg-gray-100">
+    <header class="fixed top-0 left-0 right-0 z-30 px-2 py-4 bg-white shadow sm:px-4">
+      <div class="container flex items-center justify-between mx-auto">
+        <a href="/" title="Pan Home Page" class="flex items-center text-xl text-gray-900">
+          Pan
+        </a>
+        <div class="flex items-center space-x-1">
+          <div class="hidden md:inline-flex space-x-1">
+            <%= link "Home", to: Routes.page_path(@conn, :index), class: "btn btn-sm btn-link" %>
+            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+              <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "btn btn-sm btn-link" %>
+            <% end %>
+          </div>
+          <%= render "_user_menu.html", assigns %>
+          <div class="inline-flex md:hidden" x-data="{ open: false }">
+            <button class="flex-none px-2 btn btn-link btn-sm" @click="open = true">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                >
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+              <span class="sr-only">Open Menu</span>
+            </button>
+            <div class="absolute top-0 left-0 right-0 z-50 flex flex-col p-2 pb-4 m-2 bg-white rounded shadow space-y-3" x-show.transition="open" @click.away="open = false" x-cloak>
+              <button class="self-end flex-none px-2 ml-2 btn btn-link btn-icon" @click="open = false">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                <span class="sr-only">Close Menu</span>
+              </button>
+              <%= link "Home", to: Routes.page_path(@conn, :index), class: "btn btn-link w-full" %>
+              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "btn btn-link w-full" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <%= @inner_content %>
+
+    <footer class="py-6 mt-auto text-gray-600 bg-gray-800 footer">
+      <div class="container max-w-6xl px-4 mx-auto">
+        <span class="text-muted">Pan</span>
+      </div>
+    </footer>
+  </body>
+</html>
