@@ -1,6 +1,0 @@
-<h2>Edit category</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: category_path(@conn, :update, @category) %>
-
-<%= link "Back", to: category_path(@conn, :index) %>

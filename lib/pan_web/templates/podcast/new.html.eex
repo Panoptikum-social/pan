@@ -1,6 +1,0 @@
-<h2>New podcast</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: podcast_path(@conn, :create) %>
-
-<%= link "Back", to: podcast_path(@conn, :index) %>

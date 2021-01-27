@@ -1,9 +1,0 @@
-<div class="row">
-  <div class="col-md-12"
-       style="columns:         4 150px;
-              -moz-columns:    4 150px;
-              -webkit-columns: 4 150px;
-              line-height: 350%;">
-    <%= render "_category_stats_tree.html", categories: @categories, conn: @conn %>
-  </div>
-</div>
