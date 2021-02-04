@@ -52,12 +52,15 @@ defmodule PanWeb.Api.MessageController do
     subscribed_category_ids = User.subscribed_category_ids(user.id)
     subscribed_podcast_ids = User.subscribed_podcast_ids(user.id)
 
-    link =
+    links =
       pagination_links(
         user_id,
         subscribed_user_ids,
         subscribed_podcast_ids,
-        subscribed_category_ids
+        subscribed_category_ids,
+        page,
+        size,
+        conn
       )
 
     messages =
@@ -84,7 +87,10 @@ defmodule PanWeb.Api.MessageController do
          user_id,
          subscribed_user_ids,
          subscribed_podcast_ids,
-         subscribed_category_ids
+         subscribed_category_ids,
+         page,
+         size,
+         conn
        ) do
     total =
       from(m in Message,
