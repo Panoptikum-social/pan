@@ -4,45 +4,63 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Panoptikum Podcasting Social Network">
+    <meta name="author" content="Stefan Haslinger">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#d57a5b">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Phoenix Framework" %>
+    <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Panoptikum" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
-    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script defer phx-track-static
+      type="text/javascript"
+      src="<%= Routes.static_path(@conn, "/js/app.js") %>">
+    </script>
+    <script defer phx-track-static
+      type="text/javascript"
+      src="<%= Routes.static_path(@conn, "/js/vendor.js") %>">
+    </script>
+
+    <link rel="search"
+      type="application/opensearchdescription+xml"
+      title="Panoptikum"
+      href="https://panoptikum.io/opensearch.xml">
+
+    <script>window.userToken = "<%= assigns[:user_token] %>";
+            window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
-  <body class="flex flex-col h-full pt-32 bg-gray-100">
+
+  <body
+    class="flex flex-col h-full pt-32 bg-gray-100"
+    data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <header class="fixed top-0 left-0 right-0 z-30 px-2 py-4 bg-white shadow sm:px-4">
-      <div class="container flex items-center justify-between mx-auto">
-        <a href="/" title="Pan Home Page" class="flex items-center text-xl text-gray-900">
-          Pan
-        </a>
-        <div class="flex items-center space-x-1">
-          <div class="hidden md:inline-flex space-x-1">
-            <%= link "Home", to: Routes.page_path(@conn, :index), class: "btn btn-sm btn-link" %>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "btn btn-sm btn-link" %>
-            <% end %>
-          </div>
-          <%= render "_user_menu.html", assigns %>
-          <div class="inline-flex md:hidden" x-data="{ open: false }">
-            <button class="flex-none px-2 btn btn-link btn-sm" @click="open = true">
-              <span class="sr-only">Open Menu</span>
-            </button>
-            <div class="absolute top-0 left-0 right-0 z-50 flex flex-col p-2 pb-4 m-2 bg-white rounded shadow space-y-3" x-show.transition="open" @click.away="open = false" x-cloak>
-              <%= link "Home", to: Routes.page_path(@conn, :index), class: "btn btn-link w-full" %>
-              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-                <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "btn btn-link w-full" %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
+      <nav class="nav">
+        <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
+      </nav>
     </header>
 
     <%= @inner_content %>
 
     <footer class="py-6 mt-auto text-gray-600 bg-gray-800 footer">
       <div class="container max-w-6xl px-4 mx-auto">
-        <span class="text-muted">Pan</span>
+        <div class="footer-branding">
+          <a class="branding" href="/">
+            <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
+          </a>
+        </div>
+        <%= render "_footer.html", conn: @conn, current_user: @current_user %>
+      </div>
+      <div class="hosting text-center">
+        Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
       </div>
     </footer>
   </body>

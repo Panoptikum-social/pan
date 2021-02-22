@@ -8,10 +8,12 @@ defmodule PanWeb.Router do
     plug :put_root_layout, {PanWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
   scope "/", PanWeb do

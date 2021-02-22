@@ -37,7 +37,6 @@ defmodule Pan.MixProject do
       {:sobelow, "~> 0.8", only: :dev},
       # Code analysis
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
-
       # web framework
       {:phoenix, "~> 1.5.7"},
       # PubSub messaging
@@ -67,7 +66,9 @@ defmodule Pan.MixProject do
       # Json generation
       {:jason, "~> 1.0"},
       # web server plug
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      # algorithm used for comeonin
+      {:bcrypt_elixir, "~> 2.1"},
     ]
   end
 
