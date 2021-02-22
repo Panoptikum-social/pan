@@ -20,10 +20,11 @@ defmodule PanWeb.Router do
     live "/", PageLive, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", PanWeb do
-  #   pipe_through :api
-  # end
+  scope "/", PanWeb do
+    pipe_through([:browser, :unset_cookie])
+
+    get("/sandbox", PageFrontendController, :sandbox)
+  end
 
   # Enables LiveDashboard only for development
   #

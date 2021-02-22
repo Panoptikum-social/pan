@@ -66,6 +66,9 @@ defmodule PanWeb do
       import Plug.Conn
       import Phoenix.Controller
       import Phoenix.LiveView.Router
+
+      import PanWeb.Auth,
+      only: [unset_cookie: 2] #authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2, ]
     end
   end
 
