@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Panoptikum Podcasting Social Network">
+    <meta name="author" content="Stefan Haslinger">
+
+    <title>Panoptikum</title>
+    <link rel="stylesheet"
+          href="<%= static_path(@conn, "/css/app_alt.css") %>">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#d57a5b">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#00aba9">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <script>window.userToken = "<%= assigns[:user_token] %>";
+            window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
+    <script src="<%= static_path(@conn, "/js_alt/app_alt.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <%= render_existing @view_module, "scripts.html", assigns %>
+
+    <link rel="search"
+          type="application/opensearchdescription+xml"
+          title="Panoptikum"
+          href="https://panoptikum.io/opensearch.xml">
+  </head>
+
+  <body data-js-view-name="<%= js_view_name(@conn, @view_template) %>">
+    <main role="main" class="grid-container">
+      <nav class="nav">
+        <%= render "_navbar_alt.html", conn: @conn, current_user: @current_user %>
+      </nav>
+      <div class="alerts">
+        <%= if get_flash(@conn, :info) do %>
+          <div class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></div>
+        <% end %>
+        <%= if get_flash(@conn, :error) do %>
+          <div class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></div>
+        <% end %>
+      </div>
+      <%= @inner_content %>
+      <div class="footer-branding">
+        <a class="branding" href="/">
+        <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
+      </a>
+      </div>
+      <footer class="footer">
+        <%= render "_footer_alt.html", conn: @conn, current_user: @current_user %>
+      </footer>
+      <div class="hosting text-center">
+        Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
+      </div>
+    </main>
+  </body>
+</html>
