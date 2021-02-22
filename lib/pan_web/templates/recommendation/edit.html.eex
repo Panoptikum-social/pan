@@ -1,6 +1,0 @@
-<h2>Edit recommendation</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: recommendation_path(@conn, :update, @recommendation) %>
-
-<%= link "Back", to: recommendation_path(@conn, :index) %>

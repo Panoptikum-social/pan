@@ -1,6 +1,0 @@
-<h2>Edit feed backlog</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: feed_backlog_path(@conn, :update, @feed_backlog) %>
-
-<%= link "Back", to: feed_backlog_path(@conn, :index) %>

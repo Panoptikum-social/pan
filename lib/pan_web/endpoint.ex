@@ -1,56 +1,54 @@
 defmodule PanWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :pan
 
-  socket("/socket", PanWeb.UserSocket,
-    # or list of options
+  # The session will be stored in the cookie and signed,
+  # this means its contents can be read but not tampered with.
+  # Set :encryption_salt if you would also like to encrypt it.
+  @session_options [
+    store: :cookie,
+    key: "_pan_key",
+    signing_salt: "Aj0/QnEl"
+  ]
+
+  socket "/socket", PanWeb.UserSocket,
     websocket: true,
-    longpoll: [check_origin: ["https://panoptikum.io", "https://ansible.local"]]
-  )
+    longpoll: false
+
+  socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #
-  # You should set gzip to true if you are running phoenix.digest
+  # You should set gzip to true if you are running phx.digest
   # when deploying your static files in production.
-  #
-  # .well-known is for Let's Encrypt
-  plug(Plug.Static,
+  plug Plug.Static,
     at: "/",
     from: :pan,
-    brotli: false,
     gzip: false,
-    only: ~w(css fonts images img js favicon.ico robots.txt
-             podlove-webplayer podlove-subscribe-button podigee-podcast-player
-             .well-known opensearch.xml google0fe1c0bbe8862b06.html
-             css_alt js_alt)
-  )
-
-  plug(Plug.Static, at: "thumbnails/", from: "/var/phoenix/pan-uploads/images/", gzip: true)
+    only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket("/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket)
-    plug(Phoenix.LiveReloader)
-    plug(Phoenix.CodeReloader)
+    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
+    plug Phoenix.LiveReloader
+    plug Phoenix.CodeReloader
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :pan
   end
 
-  plug(Plug.RequestId)
-  plug(Plug.Logger)
+  plug Phoenix.LiveDashboard.RequestLogger,
+    param_key: "request_logger",
+    cookie_key: "request_logger"
 
-  plug(Plug.Parsers,
+  plug Plug.RequestId
+  plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
+
+  plug Plug.Parsers,
     parsers: [:urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Jason
-  )
+    json_decoder: Phoenix.json_library()
 
-  plug(Plug.MethodOverride)
-  plug(Plug.Head)
-
-  plug(Plug.Session,
-    store: :cookie,
-    key: "_pan_key",
-    signing_salt: "sQ/BrqCz"
-  )
-
-  plug(PanWeb.Router)
+  plug Plug.MethodOverride
+  plug Plug.Head
+  plug Plug.Session, @session_options
+  plug PanWeb.Router
 end

@@ -1,6 +1,0 @@
-<h2>Edit chapter</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: chapter_path(@conn, :update, @chapter) %>
-
-<%= link "Back", to: chapter_path(@conn, :index) %>

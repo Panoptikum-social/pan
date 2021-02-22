@@ -1,6 +1,0 @@
-<h2>New opml</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: opml_path(@conn, :create) %>
-
-<%= link "Back", to: opml_path(@conn, :index) %>

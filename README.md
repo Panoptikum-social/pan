@@ -1,5 +1,19 @@
 # Panoptikum
 
+## Warning: This is the branch for the major rewrite of Panoptikum.io
+
+We are
+* upgrading to the latest version of Phoenix
+* switching from Bootstrap + Bootflat to Tailwind.css
+* switching from jQuery to Alpine.js
+* switching for certain actions from MVC to LiveView
+* switching from master to main branch
+
+Currently the master branch is the one that is still used in production.
+This branch is work in progress!
+
+-----
+
 Panoptikum (or short Pan) is a webapplication written in [Phoenix](http://www.phoenixframework.org/)
 that represents a podcast discovery and community website.
 

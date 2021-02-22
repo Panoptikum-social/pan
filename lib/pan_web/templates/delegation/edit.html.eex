@@ -1,6 +1,0 @@
-<h2>Edit delegation</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: delegation_path(@conn, :update, @delegation) %>
-
-<%= link "Back", to: delegation_path(@conn, :index) %>

@@ -1,21 +1,9 @@
 defmodule Pan do
-  use Application
+  @moduledoc """
+  Pan keeps the contexts that define your domain
+  and business logic.
 
-  def start(_type, _args) do
-    import Supervisor.Spec, warn: false
-
-    children = [
-      {Phoenix.PubSub, [name: Pan.PubSub, adapter: Phoenix.PubSub.PG2]},
-      supervisor(PanWeb.Endpoint, []),
-      supervisor(Pan.Repo, [])
-    ]
-
-    opts = [strategy: :one_for_one, name: Pan.Supervisor]
-    Supervisor.start_link(children, opts)
-  end
-
-  def config_change(changed, _new, removed) do
-    PanWeb.Endpoint.config_change(changed, removed)
-    :ok
-  end
+  Contexts are also responsible for managing your data, regardless
+  if it comes from the database, an external API or others.
+  """
 end

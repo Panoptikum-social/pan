@@ -1,6 +1,0 @@
-<h2>New rss feed</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: rss_feed_path(@conn, :create) %>
-
-<%= link "Back", to: rss_feed_path(@conn, :index) %>

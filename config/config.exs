@@ -1,43 +1,30 @@
+# This file is responsible for configuring your application
+# and its dependencies with the aid of the Mix.Config module.
+#
+# This configuration file is loaded before any dependency and
+# is restricted to this project.
+
+# General application configuration
 use Mix.Config
 
+config :pan,
+  ecto_repos: [Pan.Repo]
+
+# Configures the endpoint
 config :pan, PanWeb.Endpoint,
   url: [host: "localhost"],
-  root: Path.dirname(__DIR__),
-  secret_key_base: "p+SVheqFHkj2Z89dxUo/PoRR696q9G+mY9IPIbpm1bBHL1BJOawyku/GKnhT6RAs",
-  render_errors: [accepts: ~w(html json)],
+  secret_key_base: "1f0hthq3qJUXrZc8qckUy4/TW/BUKzycT2MiYn+wrMBXwcnWj9oAx9IYgfRmp930",
+  render_errors: [view: PanWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Pan.PubSub,
-  http: [compress: false]
+  live_view: [signing_salt: "LMBJCcov"]
 
-config :pan, ecto_repos: [Pan.Repo]
-
-config :pan, Pan.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "localhost",
-  port: 25,
-  username: false,
-  password: false,
-  tls: :if_available,
-  ssl: false,
-  retries: 1
-
+# Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :phoenix, :generators,
-  migration: true,
-  binary_id: false
-
+# Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
-config :phoenix, :format_encoders, "json-api": Jason
-
-config :scrivener_html, routes_helper: PanWeb.Router.Helpers
-
-config :tirexs, :uri, "http://127.0.0.1:9200"
-
-config :mime, :types, %{
-  "application/vnd.api+json" => ["json-api"]
-}
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -1,6 +1,0 @@
-<h2>Edit enclosure</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: enclosure_path(@conn, :update, @enclosure) %>
-
-<%= link "Back", to: enclosure_path(@conn, :index) %>
