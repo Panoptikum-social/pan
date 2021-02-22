@@ -9,7 +9,7 @@
 
     <title>Panoptikum</title>
     <link rel="stylesheet"
-          href="<%= static_path(@conn, "/css/app_alt.css") %>">
+          href="<%= Routes.static_path(@conn, "/css/app_alt.css") %>">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -23,8 +23,8 @@
 
     <script>window.userToken = "<%= assigns[:user_token] %>";
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
-    <script src="<%= static_path(@conn, "/js_alt/app_alt.js") %>"></script>
-    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <script src="<%= Routes.static_path(@conn, "/js_alt/app_alt.js") %>"></script>
+    <script src="<%= Routes.static_path(@conn, "/js/vendor.js") %>"></script>
     <%= render_existing @view_module, "scripts.html", assigns %>
 
     <link rel="search"

@@ -87,6 +87,9 @@ defmodule PanWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
+      # These are our panoptkum-specific view helpers
+      import PanWeb.ViewHelpers
+
       import PanWeb.ErrorHelpers
       import PanWeb.Gettext
       alias PanWeb.Router.Helpers, as: Routes

@@ -1,10 +1,10 @@
 <li class="divider"></li>
 <li class="uppercase text-right"><%= la_icon("user") %> <%= @current_user.username %></div>
-<li><%= link [la_icon("user-circle"), " My Profile"],  to: user_frontend_path(@conn, :my_profile) %></li>
-<li><%= link [la_icon("user-secret-solid"), " Change Password"], to: user_frontend_path(@conn, :edit_password) %> </li>
-<li><%= link [la_icon("envelope-open"), " My Messages"], to: user_frontend_path(@conn, :my_messages) %></li>
-<li><%= link [la_icon("podcast-solid"), " My Podcasts"], to: user_frontend_path(@conn, :my_podcasts) %></li>
-<li><%= link [la_icon("gift-solid"), " My Recommendations"], to: recommendation_frontend_path(@conn, :my_recommendations) %></li>
-<li><%= link [la_icon("rss-solid"), " Suggest a Podcast"], to: feed_backlog_frontend_path(@conn, :new) %> </li>
-<li><%= link [la_icon("file-audio"), " My OPMLs"], to: opml_frontend_path(@conn, :index) %> </li>
-<li><%= link [la_icon("address-book"), " My Data"], to:  user_frontend_path(@conn, :my_data) %> </li>
+<li>My Profile<%#= link [la_icon("user-circle"), " My Profile"],  to: user_frontend_path(@conn, :my_profile) %></li>
+<li>Change Password<%#= link [la_icon("user-secret-solid"), " Change Password"], to: user_frontend_path(@conn, :edit_password) %> </li>
+<li>My Messages<%#= link [la_icon("envelope-open"), " My Messages"], to: user_frontend_path(@conn, :my_messages) %></li>
+<li>My Podcasts<%#= link [la_icon("podcast-solid"), " My Podcasts"], to: user_frontend_path(@conn, :my_podcasts) %></li>
+<li>My Recommendations<%#= link [la_icon("gift-solid"), " My Recommendations"], to: recommendation_frontend_path(@conn, :my_recommendations) %></li>
+<li>Suggest a Podcast<%#= link [la_icon("rss-solid"), " Suggest a Podcast"], to: feed_backlog_frontend_path(@conn, :new) %> </li>
+<li>My OPMLs<%#= link [la_icon("file-audio"), " My OPMLs"], to: opml_frontend_path(@conn, :index) %> </li>
+<li>My Data<%#= link [la_icon("address-book"), " My Data"], to:  user_frontend_path(@conn, :my_data) %> </li>
