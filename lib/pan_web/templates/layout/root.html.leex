@@ -48,12 +48,12 @@
     <div class="flex-1">
       <%= @inner_content %>
 
-      <footer class="w-full py-6 text-gray-600 bg-gray-800">
+      <footer class="flex w-full py-6 text-gray-100 bg-gray-500 justify-around">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
-        <div class="justify-center"
-          Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
-        </div>
       </footer>
+      <div class="flex justify-center w-full py-6 text-gray-100 bg-gray-500 font-medium">
+        <p>Hosted by <a class="text-blue-200" href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a></p>
+      </div>
     </div>
   </body>
 </html>
