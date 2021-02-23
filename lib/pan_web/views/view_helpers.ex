@@ -3,6 +3,8 @@ defmodule PanWeb.ViewHelpers do
 
   def la_icon(name), do: la_icon(name, class: "")
   def la_icon(name, class: class) do
+    class = if class == "", do: "h-8", else: class
+
     :code.priv_dir(:pan)
     |> Path.join("/static/svg/line_awesome_icons/#{name}.svg")
     |> File.read()

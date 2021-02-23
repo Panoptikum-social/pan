@@ -39,29 +39,21 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body
-    class="flex flex-col h-full pt-32 bg-gray-100"
+  <body class="flex flex-row"
     data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
-    <header class="fixed top-0 left-0 right-0 z-30 px-2 py-4 bg-white shadow sm:px-4">
-      <nav class="nav">
-        <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
-      </nav>
-    </header>
+    <nav class="flex-initial">
+      <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
+    </nav>
 
-    <%= @inner_content %>
+    <div class="flex-1">
+      <%= @inner_content %>
 
-    <footer class="py-6 mt-auto text-gray-600 bg-gray-800 footer">
-      <div class="container max-w-6xl px-4 mx-auto">
-        <div class="footer-branding">
-          <a class="branding" href="/">
-            <img src="/images/panoptikum.thumbnail.png"/> Panoptikum.io
-          </a>
-        </div>
+      <footer class="w-full py-6 text-gray-600 bg-gray-800">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
-      </div>
-      <div class="hosting text-center">
-        Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
-      </div>
-    </footer>
+        <div class="justify-center"
+          Hosted by <a href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a>
+        </div>
+      </footer>
+    </div>
   </body>
 </html>
