@@ -1,0 +1,27 @@
+<h1 class="text-2xl">Tailwind colors</h1>
+
+<div class="grid grid-cols-10 p-2">
+  <%= for color <- @tailwind_colors |> Map.keys |> Enum.sort do %>
+    <div class="flex flex-col p-2">
+      <div class="w-16 h-16 bg-<%= color %>"></div>
+      <span class="text-xs"><%= color %></span>
+    </div>
+  <% end %>
+</div>
+
+<h1 class="text-2xl">Bootflat colors</h1>
+
+  <div class="grid grid-cols-4 p-2">
+  <%= for {name, color, nearest_tailwind_color} <- @bootflat_with_nearest do %>
+    <div class="flex flex-row justify-center space-x-12">
+      <div class="flex flex-col p-2 items-center">
+        <div class="w-16 h-16" style="background-color: <%= color %>;"></div>
+        <span class="text-xs"><%= name %></span>
+      </div>
+      <div class="flex flex-col p-2 items-center">
+        <div class="w-16 h-16 bg-<%= nearest_tailwind_color%>"></div>
+        <span class="text-xs"><%= nearest_tailwind_color %></span>
+      </div>
+    </div>
+  <% end %>
+  </div>

@@ -69,6 +69,8 @@ defmodule Pan.MixProject do
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 2.1"},
+      # color calculations
+      {:tint, "~> 1.1"}
     ]
   end
 

@@ -26,6 +26,7 @@ defmodule PanWeb.Router do
     pipe_through([:browser, :unset_cookie])
 
     get("/sandbox", PageFrontendController, :sandbox)
+    get("/color-translator", PageFrontendController, :color_translator)
   end
 
   # Enables LiveDashboard only for development
