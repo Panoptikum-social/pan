@@ -1,5 +1,5 @@
 <%= if @current_user.admin do %>
-  <li class="divider"></li>
+  <li class="border-t-2 border-coolGray-500"></li>
   <li class="uppercase text-right"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
   <li>Categories
     <%#= link "Categories",

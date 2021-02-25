@@ -3,6 +3,8 @@
 ## Next Action
 
 * merge app_alt layout into app
+* make footer responsive
+* make sidebar responsive
 * merge in controllers and models
 * move nearest color & sandbox into admin
 * #FIXME! issues

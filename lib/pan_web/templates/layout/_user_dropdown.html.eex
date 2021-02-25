@@ -1,4 +1,4 @@
-<li class="divider"></li>
+<li class="border-t-2 border-coolGray-500"></li>
 <li class="uppercase text-right"><%= la_nav_icon("user") %> <%= @current_user.username %></div>
 <li>My Profile
   <%#= link [la_nav_icon("user-circle"), " My Profile"],
