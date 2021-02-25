@@ -6,7 +6,6 @@ defmodule PanWeb.PageFrontendController do
   end
 
   def color_translator(conn, _params) do
-    IO.inspect bootflat_colors()
     bootflat_with_nearest = bootflat_colors()
     |> Enum.map(fn {name, tint} -> {name, Tint.RGB.to_hex(tint), nearest_tailwind_name(tint)} end)
 

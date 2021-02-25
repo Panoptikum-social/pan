@@ -24,10 +24,6 @@
       type="text/javascript"
       src="<%= Routes.static_path(@conn, "/js/app.js") %>">
     </script>
-    <script defer phx-track-static
-      type="text/javascript"
-      src="<%= Routes.static_path(@conn, "/js/vendor.js") %>">
-    </script>
 
     <link rel="search"
       type="application/opensearchdescription+xml"
@@ -48,11 +44,16 @@
     <div class="flex-1">
       <%= @inner_content %>
 
-      <footer class="flex w-full py-6 text-gray-100 bg-gray-500 justify-around">
+      <footer class="flex w-full py-6 text-coolGray-200 bg-coolGray-600 justify-around">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
       </footer>
-      <div class="flex justify-center w-full py-6 text-gray-100 bg-gray-500 font-medium">
-        <p>Hosted by <a class="text-blue-200" href="https://www.informatom.com">Informatom EDV-Dienstleistungen e.U.</a></p>
+      <div class="flex justify-center w-full py-6 text-coolGray-200 bg-coolGray-600 font-medium">
+        <p>Hosted by
+          <a class="text-blue-200"
+            href="https://www.informatom.com">
+            Informatom EDV-Dienstleistungen e.U.
+          </a>
+        </p>
       </div>
     </div>
   </body>
