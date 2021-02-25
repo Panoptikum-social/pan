@@ -1,32 +1,113 @@
 <%= if @current_user.admin do %>
   <li class="divider"></li>
-  <li class="uppercase text-right"><%= la_icon("wrench-solid") %> ADMINISTRATION</li>
-  <li>Categories<%#= link "Categories", to: category_path(@conn, :index) %></li>
-  <li>Podcasts<%#= link "Podcasts", to: podcast_path(@conn, :index) %></li>
-  <li>Feeds<%#= link "Feeds", to: feed_path(@conn, :index) %></li>
-  <li>RssFeeds<%#= link "RssFeeds", to: rss_feed_path(@conn, :index) %></li>
-  <li>Feed Backlog<%#= link "Feed Backlog", to: feed_backlog_path(@conn, :index) %></li>
-  <li>OPMLs<%#= link "OPMLs", to: opml_path(@conn, :index) %></li>
-  <li>Users<%#= link "Users", to: user_path(@conn, :index) %></li>
-  <li>Invoices<%#= link "Invoices", to: invoice_path(@conn, :index) %></li>
-  <li>Messages<%#= link "Messages", to: message_path(@conn, :index) %></li>
-  <li>Likes<%#= link "Likes", to: like_path(@conn, :index) %></li>
-  <li>Follows<%#= link "Follows", to: follow_path(@conn, :index) %></li>
-  <li>Subscriptions<%#= link "Subscriptions", to: subscription_path(@conn, :index) %></li>
-  <li>Recommendations<%#= link "Recommendations", to: recommendation_path(@conn, :index) %></li>
-  <li>Personas<%#= link "Personas", to: persona_path(@conn, :index) %></li>
-  <li>Gigs<%#= link "Gigs", to: gig_path(@conn, :index) %></li>
-  <li>Engagements<%#= link "Engagements", to: engagement_path(@conn, :index) %></li>
-  <li>Manifestations<%#= link "Manifestations", to: manifestation_path(@conn, :index) %></li>
-  <li>Delegations<%#= link "Delegations", to: delegation_path(@conn, :index) %></li>
-  <li>Languages<%#= link "Languages", to: language_path(@conn, :index) %></li>
-  <li>Images<%#= link "Images", to: image_path(@conn, :index) %></li>
-  <li>Statistics<%#= link "Statistics", to: maintenance_path(@conn, :stats) %></li>
+  <li class="uppercase text-right"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
+  <li>Categories
+    <%#= link "Categories",
+      to: category_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Podcasts
+    <%#= link "Podcasts",
+      to: podcast_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Feeds
+    <%#= link "Feeds",
+      to: feed_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>RssFeeds
+    <%#= link "RssFeeds",
+      to: rss_feed_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Feed Backlog
+    <%#= link "Feed Backlog",
+      to: feed_backlog_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>OPMLs
+    <%#= link "OPMLs",
+      to: opml_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Users
+    <%#= link "Users",
+      to: user_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Invoices
+    <%#= link "Invoices",
+      to: invoice_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Messages
+    <%#= link "Messages",
+      to: message_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Likes
+    <%#= link "Likes",
+      to: like_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Follows
+    <%#= link "Follows",
+      to: follow_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Subscriptions
+    <%#= link "Subscriptions",
+      to: subscription_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Recommendations
+    <%#= link "Recommendations",
+      to: recommendation_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Personas
+    <%#= link "Personas",
+      to: persona_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Gigs
+    <%#= link "Gigs",
+      to: gig_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Engagements
+    <%#= link "Engagements",
+      to: engagement_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Manifestations
+    <%#= link "Manifestations",
+      to: manifestation_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Delegations
+    <%#= link "Delegations",
+      to: delegation_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Languages
+    <%#= link "Languages", to: language_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Images
+    <%#= link "Images", to: image_path(@conn, :index),
+      class: "text-coolGray-200" %>
+  </li>
+  <li>Statistics
+    <%#= link "Statistics", to: maintenance_path(@conn, :stats),
+      class: "text-coolGray-200" %>
+  </li>
   <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
     <li>
       <%= link "LiveDashboard",
         to: Routes.live_dashboard_path(@conn, :home),
-        class: "btn btn-sm btn-link"
+        class: "btn btn-sm btn-link text-coolGray-200"
       %>
     </li>
   <% end %>

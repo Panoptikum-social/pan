@@ -1,4 +1,4 @@
-<a href="/" class="branding">
+<a href="/" class="pt-4">
   <img alt="Logo, Home" src="/images/panoptikum.thumbnail.png">
   Panoptikum.io
 </a>
@@ -10,40 +10,47 @@
                     [as: :search, class: "nav-form"],
                     fn f -> %>
   <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
-  <%= submit [raw("&nbsp;"), la_icon("search-solid"), raw("&nbsp;")],
+  <%= submit [raw("&nbsp;"), la_nav_icon("search-solid"), raw("&nbsp;")],
                             class: "btn btn-medium btn-gray",
                             title: "Submit" %>
 <% end %>
 
 <ul>
-  <li>Categories<%#= link [la_icon("sitemap-solid"), "Categories"],
+  <li><a class="text-coolGray-200" href="#">Dummy Link</a>
+  <li>Categories<%#= link [la_nav_icon("sitemap-solid"), "Categories"],
             to: category_frontend_path(@conn, :index),
             title: "Categories",
-            class: "visible-xs-inline" %></li>
-  <li>Random<%#= link [la_icon("magic-solid"), "Random"],
-          to: recommendation_frontend_path(@conn, :random) %></li>
-  <li><a href="https://blog.panoptikum.io/">
-    <%= la_icon("question-circle") %> About
+            class: "visible-xs-inline text-coolGray-200" %></li>
+  <li>Random<%#= link [la_nav_icon("magic-solid"), "Random"],
+          to: recommendation_frontend_path(@conn, :random),
+          class: "text-coolGray-200" %></li>
+  <li><a class="text-coolGray-200" href="https://blog.panoptikum.io/">
+    <%= la_nav_icon("question-circle") %> About
   </a></li>
-  <li><a href="https://blog.panoptikum.io/blog">
-    <%= la_icon("newspaper") %> Blog
+  <li><a class="text-coolGray-200" href="https://blog.panoptikum.io/blog">
+    <%= la_nav_icon("newspaper") %> Blog
   </a></li>
-  <li>Podcasters<%#= link [la_icon("user-astronaut-solid"), "Podcasters"],
-            to: persona_frontend_path(@conn, :index) %></li>
-  <li>Users<%#= link [la_icon("user"), "Users"],
-      to: user_frontend_path(@conn, :index) %></li>
+  <li>Podcasters<%#= link [la_nav_icon("user-astronaut-solid"), "Podcasters"],
+            to: persona_frontend_path(@conn, :index),
+            class: "text-coolGray-200" %></li>
+  <li>Users<%#= link [la_nav_icon("user"), "Users"],
+      to: user_frontend_path(@conn, :index),
+      class: "text-coolGray-200" %></li>
 
   <%= if @current_user do %>
     <li><%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %></li>
     <li><%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %></li>
     <li class="divider"></li>
-    <li>Sign Out<%#= link [la_icon("sign-out-alt-solid"), "Sign Out"],
+    <li>Sign Out<%#= link [la_nav_icon("sign-out-alt-solid"), "Sign Out"],
               to: session_path(@conn, :delete, @current_user),
-              method: "delete" %></li>
+              method: "delete",
+              class: "text-coolGray-200" %></li>
   <% else %>
-    <li>Sign Up<%#= link [la_icon("pen-solid"), "Sign Up"],
-              to: user_frontend_path(@conn, :new) %></li>
-    <li>Log In<%#= link [la_icon("sign-in-alt-solid"), "Log In"],
-              to: session_path(@conn, :new) %></li>
+    <li>Sign Up<%#= link [la_nav_icon("pen-solid"), "Sign Up"],
+              to: user_frontend_path(@conn, :new),
+              class: "text-coolGray-200" %></li>
+    <li>Log In<%#= link [la_nav_icon("sign-in-alt-solid"), "Log In"],
+              to: session_path(@conn, :new),
+              class: "text-coolGray-200" %></li>
   <% end %>
 </ul>

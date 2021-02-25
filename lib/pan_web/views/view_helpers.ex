@@ -12,4 +12,8 @@ defmodule PanWeb.ViewHelpers do
     |> String.replace("<svg", "<svg class=\"#{class} line-awesome\"")
     |> raw()
   end
+
+  def la_nav_icon(name) do
+    la_icon name, class: "fill-current text-coolGray-200 h-8"
+  end
 end
