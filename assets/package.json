@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "alpinejs": "^2.7.3",
-    "kutty": "^0.4.1",
     "nprogress": "^0.2.0",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",

@@ -15,7 +15,6 @@ module.exports = {
     }
   },
   plugins: [
-    require("kutty"),
     require('@tailwindcss/forms'),
   ],
   darkMode: false, // or 'media' or 'class'
