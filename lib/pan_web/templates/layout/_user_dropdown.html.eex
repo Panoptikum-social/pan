@@ -1,42 +1,42 @@
-<li class="border-t-2 border-coolGray-500"></li>
-<li class="uppercase text-right"><%= la_nav_icon("user") %> <%= @current_user.username %></div>
-<li>My Profile
-  <%#= link [la_nav_icon("user-circle"), " My Profile"],
+<li class="border-t-2 border-coolGray-500 py-1"></li>
+<li class="uppercase text-right py-1"><%= la_nav_icon("user") %> <%= @current_user.username %></div>
+<li class="py-1">
+  <%= link [la_nav_icon("user-circle"), " My Profile"],
     to: user_frontend_path(@conn, :my_profile),
     class: "text-coolGray-200" %>
 </li>
-<li>Change Password
-  <%#= link [la_nav_icon("user-secret-solid"), " Change Password"],
+<li class="py-1">
+  <%= link [la_nav_icon("user-secret-solid"), " Change Password"],
     to: user_frontend_path(@conn, :edit_password),
     class: "text-coolGray-200" %>
 </li>
-<li>My Messages
-  <%#= link [la_nav_icon("envelope-open"), " My Messages"],
+<li class="py-1">
+  <%= link [la_nav_icon("envelope-open"), " My Messages"],
     to: user_frontend_path(@conn, :my_messages),
     class: "text-coolGray-200" %>
 </li>
-<li>My Podcasts
-  <%#= link [la_nav_icon("podcast-solid"), " My Podcasts"],
+<li class="py-1">
+  <%= link [la_nav_icon("podcast-solid"), " My Podcasts"],
     to: user_frontend_path(@conn, :my_podcasts),
     class: "text-coolGray-200" %>
 </li>
-<li>My Recommendations
-  <%#= link [la_nav_icon("gift-solid"), " My Recommendations"],
+<li class="py-1">
+  <%= link [la_nav_icon("gift-solid"), " My Recommendations"],
     to: recommendation_frontend_path(@conn, :my_recommendations),
     class: "text-coolGray-200" %>
 </li>
-<li>Suggest a Podcast
-  <%#= link [la_nav_icon("rss-solid"), " Suggest a Podcast"],
+<li class="py-1">
+  <%= link [la_nav_icon("rss-solid"), " Suggest a Podcast"],
     to: feed_backlog_frontend_path(@conn, :new),
     class: "text-coolGray-200" %>
 </li>
-<li>My OPMLs
-  <%#= link [la_nav_icon("file-audio"), " My OPMLs"],
+<li class="py-1">
+  <%= link [la_nav_icon("file-audio"), " My OPMLs"],
     to: opml_frontend_path(@conn, :index),
     class: "text-coolGray-200" %>
 </li>
-<li>My Data
-  <%#= link [la_nav_icon("address-book"), " My Data"],
+<li class="py-1">
+  <%= link [la_nav_icon("address-book"), " My Data"],
     to:  user_frontend_path(@conn, :my_data),
     class: "text-coolGray-200" %>
 </li>
