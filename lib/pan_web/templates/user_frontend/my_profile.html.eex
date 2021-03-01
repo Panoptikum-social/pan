@@ -1,0 +1,134 @@
+<script>
+  $(function() {
+    $('[data-toggle="popover"]').popover()
+  })
+</script>
+
+<h1>My Profile</h1>
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
+                               class: "btn btn-warning pull-right" %>
+
+    <dl class="dl-horizontal">
+      <dt>User Name</dt>
+      <dd><%= @user.username %></dd>
+
+      <dt>Full Name</dt>
+      <dd><%= @user.name %></dd>
+
+      <dt>Email</dt>
+      <dd><%= @user.email %></dd>
+
+      <%= if @user.admin do %>
+        <dt>Admin</dt>
+        <dd>
+          I have admin priviliges.
+        </dd>
+      <% end %>
+
+      <dt>Podcaster</dt>
+      <dd>
+        <%= if @user.podcaster do %>
+          I am a podcaster myself.
+        <% else %>
+          I am not a podcaster.
+        <% end %>
+      </dd>
+
+      <dt>Privacy</dt>
+      <dd>
+        <%= if @user.share_follows do %>
+          I do currently share my followings.
+        <% else %>
+          I do not share my followings.
+        <% end %>
+      </dd>
+
+      <dd>
+        <%= if @user.share_subscriptions do %>
+          I do currently share my subscriptions.
+        <% else %>
+          I do not share my subscriptions.
+        <% end %>
+      </dd>
+    </dl>
+
+    <%= if @user.pro_until do %>
+      <div class="row">
+        <div class="alert <%= alert_class(@user) %>">
+          <%= if pro_days_left(@user) > 0 do %>
+            <b>Your pro account is running for <b><%= pro_days_left(@user) %></b> more days.</b>
+          <% else %>
+            <b>Your pro account has expired.</b>
+          <% end %>
+          <p text-align="center">Get access to all pro features for one more year for 12 EUR only!</p>
+          <br/>
+
+          <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
+                                   class: "btn btn-primary" %>
+          <%= link "Payment information", to: user_frontend_path(@conn, :payment_info),
+                              class: "btn btn-warning pull-right" %>
+        </div>
+      </div>
+
+      <dl class="dl-horizontal">
+        <dt>Pro account until</dt>
+        <dd>
+          <%= Timex.format!(@user.pro_until, "{ISOdate}") %> 
+          <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
+        </dd>
+
+        <dt>Billing address</dt>
+        <dd><pre><%= @user.billing_address %></pre></dd>
+
+        <dt>Payment reference</dt>
+        <dd><%= @user.payment_reference %></dd>
+
+        <dt>Paper bill</dt>
+        <dd>
+          <%= if @user.paper_bill do %>
+            I want to receive a bill printed on paper via snail mail.
+          <% else %>
+            It's fine to get the bill via email and I can download it as pdf.
+          <% end %>
+        </dd>
+      </dl>
+    <% end %>
+  </div>
+</div>
+
+<%= unless @current_user.pro_until do %>
+  <div class="row">
+    <div class="alert alert-warning col-md-8 col-md-offset-2">
+      <h4>Try it free for 30 days!</h4>
+
+      Claim your free pro account without any further obligations!<br/>
+      Why? To to support Panoptikum or to unlock all pro features now!<br/><br/>
+
+      <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
+                               class: "btn btn-primary" %>
+      <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro),
+                                        class: "btn btn-warning pull-right",
+                                        method: :post %>
+    </div>
+  </div>
+<% end %>
+
+<%= if @user.invoices != [] do %>
+  <h2>My invoices</h2>
+  All invoices, that appear hear, have been paid already.
+  <ul>
+    <%= for invoice <- @user.invoices do %>
+      <li>
+        <%= fa_icon("calendar") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+        &nbsp; &nbsp;
+        <%= link [fa_icon("download"), " ", fa_icon("file-pdf-o"), " ", invoice.filename],
+                 to: invoice_frontend_path(@conn, :download, invoice) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render "_personas.html", conn: @conn, user: @user %>

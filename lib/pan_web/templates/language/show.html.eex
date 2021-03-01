@@ -1,0 +1,32 @@
+<h2>Show language</h2>
+
+<ul>
+
+  <li>
+    <strong>Shortcode:</strong>
+    <%= @language.shortcode %>
+  </li>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @language.name %>
+  </li>
+
+  <li>
+    <strong>Emoji:</strong>
+    <%= @language.emoji %>
+  </li>
+
+</ul>
+
+<h3>Up to 10 podcasts in this language</h3>
+
+<dl class="dl-horizontal">
+  <%= for podcast <- @language.podcasts do %>
+    <dt><%= podcast.id %></dt>
+    <dd><%= link podcast.title, to: podcast_path(@conn, :show, podcast) %></dd>
+  <% end %>
+</dl>
+
+<%= link "Edit", to: language_path(@conn, :edit, @language) %>
+<%= link "Back", to: language_path(@conn, :index) %>

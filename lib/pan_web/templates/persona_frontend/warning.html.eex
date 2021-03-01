@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-6">
+    <h4>On claiming this persona</h4>
+
+    <p>There hasn't been provided any email address alongside this persona within the feed(s).
+       So we basically have to trust you, that you claim this persona responsibly.</p>
+
+    <p>If you click claim, the following will happen:</p>
+
+    <ul>
+      <li>You will gain access to this persona.</li>
+      <li>Your email address will be added to this persona. It will be used to send emails to other
+           users aiming to claim this persona as well.</li>
+      <li>A permanent connection between your account and this persona will be established. That
+          connection will stay in place, also if you will change persona data later on.</li>
+    </ul>
+
+
+    <h4>A message of concern</h4>
+
+    <p><b>Please, only do claim this persona, if you are the person behind the persona yourself or
+    if you are a legitimite representative of the group or organisation represented by the persona.</b></p>
+
+    <p>If we would have to spend time to deal with conflicting persona claiming issues manually,
+       that time couldn't be available to bring the project forward. Worst case, this feature would
+       be disabled all together.</p>
+
+    <p>So please act responisbly.</p>
+  </div>
+
+  <div class="col-md-6">
+    <h4>Persona data</h4>
+
+    <p>You are about to claim the following persona:</p>
+
+    <dl class="dl-horizontal">
+      <dt>Pid</dt>
+      <dd><%= @persona.pid %></dd>
+
+      <dt>Name</dt>
+      <dd><%= @persona.name %></dd>
+
+      <dt>Uri</dt>
+      <dd><%= @persona.uri %></dd>
+
+      <dt>Description heading</dt>
+      <dd></dd>
+
+      <dt>Description</dt>
+      <dd></dd>
+
+      <dt>Image Url</dt>
+      <dd></dd>
+
+      <dt>Image Title</dt>
+      <dd></dd>
+    </dl>
+  </div>
+</div>
+
+<p><%= link "Claim", to: persona_frontend_path(@conn, :connect, @persona),
+                     class: "btn btn-normal",
+                     method: :post,
+                     data: [confirm: "Are you sure?"] %></p>

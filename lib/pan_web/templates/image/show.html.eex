@@ -1,0 +1,38 @@
+<h2>Show image</h2>
+
+<ul>
+
+  <li>
+    <strong>Filename:</strong>
+    <%= @image.filename %>
+  </li>
+
+  <li>
+    <strong>Content type:</strong>
+    <%= @image.content_type %>
+  </li>
+
+  <li>
+    <strong>Path:</strong>
+    <%= @image.path %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @image.podcast_id %>
+  </li>
+
+  <li>
+    <strong>Episode:</strong>
+    <%= @image.episode_id %>
+  </li>
+
+  <li>
+    <strong>Persona:</strong>
+    <%= @image.persona_id %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: image_path(@conn, :edit, @image) %>
+<%= link "Back", to: image_path(@conn, :index) %>

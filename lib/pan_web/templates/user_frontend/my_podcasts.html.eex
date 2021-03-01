@@ -1,0 +1,121 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-info">
+      <div class="panel-heading">Subscriptions</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @user.podcasts_i_subscribed do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
+
+        <%= link [fa_icon("heart"), " Like all subscribed"],
+                 to: user_frontend_path(@conn, :like_all_subscribed),
+                 class: "btn btn-primary",
+                 method: :post %> &nbsp;
+
+        <%= link [fa_icon("heart"), " Follow all subscribed"],
+                 to: user_frontend_path(@conn, :follow_all_subscribed),
+                 class: "btn btn-info",
+                 method: :post %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel panel-success">
+      <div class="panel-heading">Podcasts I like</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @podcasts_i_like do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">Podcasts I follow</div>
+      <div class="panel-body">
+        <p style="line-height: 200%;">
+          <%= for podcast <- @user.podcasts_i_follow do %>
+            <%= link [fa_icon("podcast"), " ", podcast.title],
+                     to: podcast_frontend_path(@conn, :show, podcast),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #666;" %>
+          <% end %>
+          &nbsp; &nbsp; &nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-warning">
+      <div class="panel-heading">Listeners of the podcasts you listen to, also listen to</div>
+      <div class="panel-body">
+        <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
+          <li class="list-group-item">
+            <b><%= rank + 1 %>.</b>:
+            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+                     to: podcast_frontend_path(@conn, :show, id),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %>
+            <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
+          </li>
+        <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="panel panel-danger">
+      <div class="panel-heading">Users, who like the same podcasts as you, also like</div>
+      <div class="panel-body">
+        <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
+          <li class="list-group-item">
+            <b><%= rank + 1 %>.</b>:
+            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+                     to: podcast_frontend_path(@conn, :show, id),
+                     class: "btn btn-default btn-xs",
+                     style: "color: #000" %>
+            <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
+          </li>
+        <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading">The categories my podcasts are assigned to</div>
+      <div class="panel-body">
+        <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
+          <li class="list-group-item">
+            <b><%= rank + 1 %>.</b>:
+            <%= link [fa_icon("folder-o"), " ", truncate_string(title, 50)],
+                     to: category_frontend_path(@conn, :show, id),
+                     class: "btn btn-xs btn-light-gray" %>
+            <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
+          </li>
+        <% end %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

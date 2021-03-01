@@ -1,0 +1,30 @@
+<ul class="media-list">
+  <%= if @toots do %>
+    <%= for toot <- @toots do %>
+      <li class="media" style="color: #14171a;">
+        <div class="pull-left">
+          <%= img_tag(toot.attributed_to_image, height: 70, alt: toot.name, class: "thumbnail") %>
+        </div>
+
+        <div class="media-body">
+          <b><%= toot.name %></b>
+          <span style="color: #657786;">
+            <%= link toot.preferred_username, to: toot.actor_url %> - <%= if toot.boosted, do: "boosted" %>
+            <%= toot.published %>
+          </span><br/>
+
+          <%= if toot.boosted do %>
+            <b><%= toot.attributed_to_name %></b>
+            <span style="color: #657786;">
+              <%= link toot.attributed_to_preferred_username, to: toot.attributed_to_url %> -
+            </span>
+          <% end %>
+
+          <%= toot.content %>
+        </div>
+      </li>
+    <% end %>
+  <% else %>
+    No toots so far.
+  <% end %>
+</ul>

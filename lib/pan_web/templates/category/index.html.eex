@@ -1,0 +1,40 @@
+<h2>Listing categories</h2>
+
+<p class="text-right">
+  <%= link "Merge Categories", to: category_path(@conn, :merge),
+                               class: "btn btn-warning" %>
+  <%= link "Assign Podcasts to Categories", to: category_path(@conn, :assign_podcasts),
+                                            class: "btn btn-primary" %>
+</p>
+
+<table id="datatable" class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Parent: Id</th>
+      <th>Parent: Title</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/categories/datatable',
+        dataSrc: 'categories'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'title'},
+        {data: 'parent_id'},
+        {data: 'parent_title'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
+
+<%= link "New category", to: category_path(@conn, :new) %>

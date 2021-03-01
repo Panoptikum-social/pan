@@ -1,0 +1,17 @@
+<h2>Show rss feed</h2>
+
+<ul>
+
+  <li>
+    <strong>Content:</strong>
+    <%= truncate_string(@rss_feed.content, 255) %>
+  </li>
+
+  <li>
+    <strong>Podcast:</strong>
+    <%= @rss_feed.podcast_id %>
+  </li>
+</ul>
+
+<%= link "Edit", to: rss_feed_path(@conn, :edit, @rss_feed) %> &nbsp;
+<%= link "Back", to: rss_feed_path(@conn, :index) %>

@@ -1,0 +1,29 @@
+<p class="text-right">
+  <%= link "Index", to: podcast_path(@conn, :index),
+                    class: "btn btn-primary" %>
+  <%= link "Factory", to: podcast_path(@conn, :factory), class: "btn btn-primary" %>
+  <%= link "Orphans", to: podcast_path(@conn, :orphans), class: "btn btn-primary" %>
+  <%= link "Retirement", to: podcast_path(@conn, :retirement), class: "btn btn-primary" %>
+
+</p>
+
+<div class="pull-right">
+  <%= link "Edit", to: podcast_path(@conn, :edit, @podcast), class: "btn btn-warning" %>
+  <%= link "Delete", to: podcast_path(@conn, :delete, @podcast),
+                     method: :delete,
+                     data: [confirm: "Are you sure?"],
+                     class: "btn btn-danger" %>
+  <%= link "Pause", to: podcast_path(@conn, :pause, @podcast), class: "btn btn-info" %>
+  <%= link "Delta import", to: podcast_path(@conn, :delta_import, @podcast), class: "btn btn-success" %>
+  <%= link "Forced delta import", to: podcast_path(@conn, :forced_delta_import, @podcast), class: "btn btn-success" %>
+  <%= link "Contributor import", to: podcast_path(@conn, :contributor_import, @podcast), class: "btn btn-success" %>
+  <%= link "Update from feed", to: podcast_path(@conn, :update_from_feed, @podcast), class: "btn btn-success" %>
+</div>
+
+<%= render "_podcast.html", podcast: @podcast, conn: @conn %>
+<hr/>
+<%= render PanWeb.FeedView, "index_table.html", feeds: @podcast.feeds, conn: @conn %>
+
+<h2>Episodes</h2>
+
+<%= render PanWeb.EpisodeView, "_episodes.html", episodes: @podcast.episodes, conn: @conn %>

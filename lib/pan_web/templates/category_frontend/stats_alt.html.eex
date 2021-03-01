@@ -1,0 +1,3 @@
+<div class="category-columns">
+  <%= render "_category_stats_tree_alt.html", categories: @categories, conn: @conn %>
+</div>

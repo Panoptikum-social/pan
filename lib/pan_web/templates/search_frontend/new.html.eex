@@ -1,0 +1,29 @@
+<script>
+  var currentState = history.state;
+  history.replaceState(currentState, "page 3", "/search?search[searchstring]=<%= @searchstring %>" +
+                                               "&page=<%= @page %>");
+</script>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+    <%= if @total > 0 do %>
+      Showing <%= @size %> results <%= @from + 1 %> to <%= @from + @size %> out of
+      <%= @total %> (<%= @took / 1000 %> Seconds)
+
+      <div style= "margin-bottom: -30px;">
+        <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size), page_number: @page},
+                             "search[searchstring]": @searchstring) %>
+      </div>
+
+      <%= for hit <- @hits.hits do %>
+        <hr/>
+        <%= hit_widget(hit, @searchstring) %>
+      <% end %>
+
+      <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size), page_number: @page},
+                           "search[searchstring]": @searchstring) %>
+    <% else %>
+      Sorry, nothing found.
+    <% end %>
+  </div>
+</div>

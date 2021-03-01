@@ -1,0 +1,39 @@
+<h1>Users</h1>
+
+<% grouped_users = Enum.group_by(@users, fn p -> (p.name |> String.first() |> String.upcase()) end) %>
+<% letters = Map.keys(grouped_users) |> Enum.sort %>
+
+<div class="panel">
+  <ul class="nav nav-tabs" role="tablist">
+    <%= for letter <- letters do %>
+      <li role="users" class=<%= if List.first(to_charlist(letter)) == 65, do: "active" %>>
+        <a href="#<%= to_charlist(letter) |> List.first() %>"
+           aria-controls="<%= to_charlist(letter) |> List.first %>"
+           role="tab"
+           data-toggle="tab">
+          <%= letter %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+
+  <div class="tab-content">
+    <%= for letter <- letters do %>
+
+      <div role="tabpanel" class="tab-pane fade <%= if List.first(to_charlist(letter)) == 65, do: 'in active' %>"
+                           id="<%= to_charlist(letter) |> List.first %>">
+        <%= for {group, outer} <- Enum.chunk_every(grouped_users[letter], 12, 12, []) |> Enum.with_index() do %>
+          <div class="row" style="line-height: 2.5;">
+            <%= for {user, inner} <- Enum.with_index(group) do %>
+              <div class="col-md-1">
+               <%= link [fa_icon("user-o"), " ", user.name],
+                        to: user_frontend_path(@conn, :show, user),
+                        class: "btn btn-xs " <> btn_cycle(outer * 12 + inner) %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<h2>Show message</h2>
+
+<ul>
+
+  <li>
+    <strong>Content:</strong>
+    <%= @message.content %>
+  </li>
+
+  <li>
+    <strong>Creator:</strong>
+    <%= @message.creator_id %>
+  </li>
+
+  <li>
+    <strong>Persona:</strong>
+    <%= @message.persona_id %>
+  </li>
+
+  <li>
+    <strong>Type:</strong>
+    <%= @message.type %>
+  </li>
+
+  <li>
+    <strong>Topic:</strong>
+    <%= @message.topic %>
+  </li>
+
+  <li>
+    <strong>Subtopic:</strong>
+    <%= @message.subtopic %>
+  </li>
+
+  <li>
+    <strong>Event:</strong>
+    <%= @message.event %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: message_path(@conn, :edit, @message) %>
+<%= link "Back", to: message_path(@conn, :index) %>

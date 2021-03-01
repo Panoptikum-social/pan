@@ -1,0 +1,35 @@
+<h2>Listing invoices</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Filename</th>
+      <th>Content type</th>
+      <th>Path</th>
+      <th>User Id</th>
+      <th>Username</th>
+      <th>User Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for invoice <- @invoices do %>
+    <tr>
+      <td><%= invoice.filename %></td>
+      <td><%= invoice.content_type %></td>
+      <td><%= invoice.path %></td>
+      <td><%= link invoice.user_id, to: user_path(@conn, :show, invoice.user) %></td>
+      <td><%= invoice.user.username %></td>
+      <td><%= invoice.user.name %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: invoice_path(@conn, :show, invoice), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: invoice_path(@conn, :edit, invoice), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: invoice_path(@conn, :delete, invoice), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New invoice", to: invoice_path(@conn, :new) %>

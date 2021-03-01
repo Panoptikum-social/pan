@@ -1,0 +1,101 @@
+<h2>Show podcast</h2>
+
+<dl class="dl-horizontal">
+
+  <dt>Title</dt>
+  <dd><%= @podcast.title %></dd>
+
+  <dt>Website</dt>
+  <dd><%= @podcast.website %></dd>
+
+  <dt>Description</dt>
+  <dd><%= @podcast.description %></dd>
+
+  <dt>Summary</dt>
+  <dd><%= @podcast.summary %></dd>
+
+  <dt>Image title</dt>
+  <dd><%= @podcast.image_title %></dd>
+
+  <dt>Image url</dt>
+  <dd><%= @podcast.image_url %></dd>
+
+  <dt>Last build date</dt>
+  <dd><%= @podcast.last_build_date && Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Updated at</dt>
+  <dd><%= @podcast.updated_at && Timex.format!(@podcast.updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Update intervall</dt>
+  <dd><%= @podcast.update_intervall %></dd>
+
+  <dt>Next update</dt>
+  <dd><%= @podcast.next_update && Timex.format!(@podcast.next_update, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Inserted at</dt>
+  <dd><%= @podcast.inserted_at && Timex.format!(@podcast.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Payment link title</dt>
+  <dd><%= @podcast.payment_link_title %></dd>
+
+  <dt>Payment link url</dt>
+  <dd><%= @podcast.payment_link_url %></dd>
+
+  <dt>Blocked</dt>
+  <dd><%= @podcast.blocked %></dd>
+
+  <dt>Contributors</dt>
+  <%= for owner <- @podcast.contributors do %>
+    <dd><%= owner.name %></dd>
+  <% end %>
+
+  <dt>Explicit</dt>
+  <dd><%= @podcast.explicit %></dd>
+
+  <dt>Unique identifier</dt>
+  <dd><%= @podcast.unique_identifier %></dd>
+
+  <dt>Update paused</dt>
+  <dd><%= @podcast.update_paused %></dd>
+
+  <dt>Failure count</dt>
+  <dd><%= @podcast.failure_count %></dd>
+
+  <dt>Retired</dt>
+  <dd><%= @podcast.retired %></dd>
+
+  <dt>Episodes count</dt>
+  <dd><%= @podcast.episodes_count %></dd>
+
+  <dt>Followers count</dt>
+  <dd><%= @podcast.followers_count %></dd>
+
+  <dt>Likes_count</dt>
+  <dd><%= @podcast.likes_count %></dd>
+
+  <dt>Subscriptions_count</dt>
+  <dd><%= @podcast.subscriptions_count %></dd>
+
+  <dt>Latest episode publishing date</dt>
+  <dd><%= @podcast.latest_episode_publishing_date && Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Publication frequency</dt>
+  <dd><%= if @podcast.publication_frequency, do: Float.round(@podcast.publication_frequency, 2) %> days</dd>
+
+  <dt>Manually updated at</dt>
+  <dd><%= @podcast.manually_updated_at && Timex.format!(@podcast.manually_updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
+
+  <dt>Indexed by Elatsicsearch</dt>
+  <dd><%= @podcast.elastic %></dd>
+
+  <dt>Thumbnail created</dt>
+  <dd><%= @podcast.thumbnailed %></dd>
+
+  <dt>Last error message</dt>
+  <dd><%= @podcast.last_error_message %></dd>
+
+  <dt>Last error occured</dt>
+  <dd><%= @podcast.last_error_occured && Timex.format!(@podcast.last_error_occured, "{ISOdate} {h24}:{m}:{s}") %></dd>
+</dl>
+
+<%= link "Show", to: podcast_path(@conn, :show, @podcast) %>

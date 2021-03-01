@@ -1,0 +1,9 @@
+<div class="panel panel-info">
+  <div class="panel-heading">Top 100 liked Podcasts
+  </div>
+    <%= render "_wide_top_list_table.html",
+          podcasts: @liked_podcasts,
+          icon: "user",
+          conn: @conn %>
+  </div>
+</div>

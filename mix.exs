@@ -38,7 +38,9 @@ defmodule Pan.MixProject do
       # Code analysis
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       # web framework
-      {:phoenix, "~> 1.5.7"},
+      # TODO: take this back, once scrivener is removed
+      # {:phoenix, "~> 1.5.7"},
+      {:phoenix, "~> 1.5.8", override: true },
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
       # phoenix support for ecto
@@ -70,7 +72,55 @@ defmodule Pan.MixProject do
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 2.1"},
       # color calculations
-      {:tint, "~> 1.1"}
+      {:tint, "~> 1.1"},
+
+      ### imported from old app from here on
+
+        # XML parser
+        {:sweet_xml, "~> 0.6"},
+        # time conversion
+        {:timex, "~> 3.4"},
+        # http client
+        {:httpoison, "~> 1.6"},
+        # erlang http client, had to increase version here
+        {:hackney, "~> 1.15"},
+        # XML parser (another one)
+        {:quinn, "~> 1.1"},
+        # UUID creation
+        {:uuid, "~> 1.1"},
+        # sanitizing html input (shownotes)
+        {:html_sanitize_ex, "~> 1.4"},
+        # pagination
+        {:scrivener_ecto, "~> 2.3"},
+        # pagination view helper
+        {:scrivener_html, "~> 1.7"},
+        # mailing smtp adapter,
+        {:bamboo_smtp, "~> 3.0"},
+        # TODO: Upgrade bamboo (only possible, when bamboo_smtp new version is ready)
+        # mailing
+        {:bamboo, "~> 1.4"},
+        # Markdown parser
+        {:earmark, "~> 1.4"},
+        # Cron like agent,
+        {:timelier, "~> 0.9"},
+        # Timezone information
+        {:tzdata, "~> 1.0"},
+        # elasticsearch connector
+        {:tirexs, "~> 0.8"},
+        # reuseable Erlang components
+        {:erlware_commons, "~> 1.3"},
+        # Jsonapi.org serializer
+        {:ja_serializer, "~> 0.15"},
+        # dependency for iconv
+        {:p1_utils, "~> 1.0.13"},
+        # Unicode converter
+        {:iconv, "~> 1.0.10", git: "https://github.com/processone/iconv"},
+        # Imagemagick wrapper
+        {:mogrify, "~> 0.7"},
+        # Simplifies implementation of GenServer based processes
+        {:exactor, "~> 2.2", warn_missing: false},
+        # HTTP Client
+        {:httpotion, "~> 3.1"}
     ]
   end
 

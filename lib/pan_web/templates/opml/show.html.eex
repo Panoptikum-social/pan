@@ -1,0 +1,28 @@
+<h2>Show opml</h2>
+
+<ul>
+
+  <li>
+    <strong>User:</strong>
+    <%= @opml.user_id %>
+  </li>
+
+  <li>
+    <strong>Content type:</strong>
+    <%= @opml.content_type %>
+  </li>
+
+  <li>
+    <strong>Filename:</strong>
+    <%= @opml.filename %>
+  </li>
+
+  <li>
+    <strong>Path:</strong>
+    <%= @opml.path %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: opml_path(@conn, :edit, @opml) %>
+<%= link "Back", to: opml_path(@conn, :index) %>

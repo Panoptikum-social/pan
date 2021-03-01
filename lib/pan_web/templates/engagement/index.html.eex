@@ -1,0 +1,43 @@
+<h2>Listing engagements</h2>
+
+<table id="datatable" class="table table-striped table-condensed table-bordered">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Persona: Id</th>
+      <th>Persona: Name</th>
+      <th>Podcast: Id</th>
+      <th>Podcast: Title</th>
+      <th>From</th>
+      <th>Until</th>
+      <th>Comment</th>
+      <th>Role</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+</table>
+
+<script>
+  $(function() {
+    $('#datatable').DataTable({
+      ajax: {
+        url: '/admin/engagements/datatable',
+        dataSrc: 'engagements'
+      },
+      columns: [
+        {data: 'id'},
+        {data: 'persona_id'},
+        {data: 'persona_name'},
+        {data: 'podcast_id'},
+        {data: 'podcast_title'},
+        {data: 'from'},
+        {data: 'until'},
+        {data: 'comment'},
+        {data: 'role'},
+        {data: 'actions'}
+      ]
+    })
+  })
+</script>
+
+<%= link "New engagement", to: engagement_path(@conn, :new) %>

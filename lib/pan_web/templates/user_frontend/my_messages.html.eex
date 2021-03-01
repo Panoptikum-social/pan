@@ -1,0 +1,29 @@
+<%= pagination_links @conn, @messages,
+                     path: &user_frontend_path/3,
+                     action: :my_messages,
+                     view_style: :bootstrap %>
+<table class="table table-striped table-condensed table-hover table-bordered">
+  <thead>
+  <tr>
+    <th class="hidden-xs hidden-sm">Type</td>
+    <th>Creator</td>
+    <th>Content</td>
+    <th class="hidden-xs">Date</td>
+  </tr>
+  </thead>
+  <tbody>
+    <%= for message <- @messages.entries do %>
+      <tr>
+        <td class="hidden-xs hidden-sm"><span class="label label-<%= message.type %>"><%= message.type %></span></td>
+        <td class="nobr"><%= if message.creator, do: message.creator.name, else: message.persona.name %></td>
+        <td><%= raw message.content %></td>
+        <td class="hidden-xs nobr"><%= Timex.format! message.inserted_at, "{ISOdate} {h24}:{m}:{s}" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= pagination_links @conn, @messages,
+                     path: &user_frontend_path/3,
+                     action: :my_messages,
+                     view_style: :bootstrap %>

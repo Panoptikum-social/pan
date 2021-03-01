@@ -71,7 +71,7 @@ defmodule PanWeb.Auth do
       {:error, :invalid} ->
         {:error, :invalid}
 
-      _ ->Helpers
+      _ ->
         no_user_verify()
         {:error, :not_found, conn}
     end
@@ -93,8 +93,8 @@ defmodule PanWeb.Auth do
     end
   end
 
-import Phoenix.Controller, only: [put_flash: 3, ]#!FIXME redirect: 2]
-#FIXME!  alias PanWeb.Router.Helpers
+  import Phoenix.Controller, only: [put_flash: 3, redirect: 2]
+  alias PanWeb.Router.Helpers
 
   def authenticate_user(conn, _opts) do
     if conn.assigns.current_user do
@@ -103,7 +103,7 @@ import Phoenix.Controller, only: [put_flash: 3, ]#!FIXME redirect: 2]
       conn
       |> put_flash(:error, "You must be logged in to access that page.")
       |> put_session(:desired_url, conn.request_path)
-#FIXME! |> redirect(to: Routes.session_path(conn, :new))
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end
@@ -118,7 +118,7 @@ import Phoenix.Controller, only: [put_flash: 3, ]#!FIXME redirect: 2]
       conn
       |> put_flash(:error, "You need to be logged in with a pro account to access that page.")
       |> put_session(:desired_url, conn.request_path)
-#FIXME! |> redirect(to: Routes.session_path(conn, :new))
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end
@@ -132,7 +132,7 @@ import Phoenix.Controller, only: [put_flash: 3, ]#!FIXME redirect: 2]
       conn
       |> put_flash(:error, "You must be logged in to access this page.")
       |> put_session(:desired_url, conn.request_path)
-#FIXME! |> redirect(to: Routes.session_path(conn, :new))
+      |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()
     end
   end

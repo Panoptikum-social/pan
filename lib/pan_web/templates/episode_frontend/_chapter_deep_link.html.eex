@@ -1,0 +1,10 @@
+<%=
+  case @player do
+    "podlove" ->
+      link @chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "?t=" <> @chapter.start),
+                           rel: "http://podlove.org/deep-link"
+    "podigee" ->
+      link @chapter.start, to: (episode_frontend_path(@conn, :player, @episode) <> "/#t=" <> seconds(@chapter.start))
+
+  end
+%>

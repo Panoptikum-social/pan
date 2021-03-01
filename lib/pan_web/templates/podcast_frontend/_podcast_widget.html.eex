@@ -1,0 +1,81 @@
+<div class="col-md-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <%= link [fa_icon("podcast"), " ", @podcast.title],
+                 to: podcast_frontend_path(@conn, :show, @podcast.id),
+                 class: "btn btn-default btn-xs truncate" %>
+      </h3>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-3">
+          <object data="<%= @podcast.image_url %>"
+                  alt="<%= @podcast.image_title%>"
+                  type="image/png"
+                  width="150"
+                  class="thumbnail">
+            <img src="/images/missing-podcast.png"
+                 alt="missing image"
+                 width="150"
+                 />
+          </object>
+        </div>
+        <div class="col-md-9">
+          <dl class="dl-horizontal">
+            <%= if @podcast.website do %>
+              <dt><label class="label label-danger">Website</label></dt>
+              <dd>
+                <%= try do
+                      link @podcast.website, to: @podcast.website, class: "truncate"
+                    rescue
+                      _ -> @podcast.website
+                    end %>
+              </dd>
+            <% end %>
+
+            <dt><label class="label label-info">Available since</label></dt>
+            <dd>
+              <%= fa_icon("calendar") %>
+              <%= Timex.format!(@podcast.inserted_at, "{ISOdate}") %>
+            </dd>
+
+            <dt><label class="label label-warning">Categories</label></dt>
+            <%= for category <- @podcast.categories do %>
+              <dd style="line-height: 200%;">
+                <%= link [fa_icon("folder-o"), " ", category.title],
+                         to: category_frontend_path(@conn, :show, category),
+                         class: "btn btn-xs btn-light-gray" %>
+              </dd>
+            <% end %>
+
+            <dt><label class="label label-info">Contributors</label></dt>
+            <%= for engagement <- @podcast.engagements do %>
+              <dd style="line-height: 200%;">
+                <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+                         to: persona_frontend_path(@conn, :show, engagement.persona),
+                         class: "btn btn-xs btn-lavender" %>
+                <span class="label label-success"><%= engagement.role %></span>
+              </dd>
+            <% end %>
+
+          </dl>
+
+
+          <%= if @podcast.payment_link_url do %>
+              <h5>Support</h5>
+              <%= link @podcast.payment_link_title, to: @podcast.payment_link_url %>
+          <% end %>
+        </div>
+      </div>
+
+      <h5>Description</h5>
+      <%= @podcast.description %>
+
+      <%= if @podcast.description != @podcast.summary do %>
+        <h5>Summary</h5>
+        <%= @podcast.summary %>
+      <% end %>
+    </div>
+  </div>
+</div>

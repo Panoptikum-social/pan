@@ -1,0 +1,32 @@
+<h2>Listing chapters</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Start</th>
+      <th>Title</th>
+      <th>Episode</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for chapter <- @chapters do %>
+    <tr>
+      <td><%= chapter.start %></td>
+      <td><%= chapter.title %></td>
+      <td><%= chapter.episode_id %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: chapter_path(@conn, :show, chapter), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: chapter_path(@conn, :edit, chapter), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: chapter_path(@conn, :delete, chapter), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= pagination_links @chapters %>
+
+<%= link "New chapter", to: chapter_path(@conn, :new) %>

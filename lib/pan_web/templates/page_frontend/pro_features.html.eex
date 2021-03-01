@@ -1,0 +1,5 @@
+<div class ="col-md-8 col-md-offset-2">
+  <%= content_for "pro_features", "div.content" %>
+
+  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
+</div>

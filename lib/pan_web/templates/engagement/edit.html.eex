@@ -1,0 +1,6 @@
+<h2>Edit engagement</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: engagement_path(@conn, :update, @engagement) %>
+
+<%= link "Back", to: engagement_path(@conn, :index) %>

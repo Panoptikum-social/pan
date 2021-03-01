@@ -1,0 +1,6 @@
+<h2>Edit persona</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: persona_path(@conn, :update, @persona) %>
+
+<%= link "Back", to: persona_path(@conn, :index) %>

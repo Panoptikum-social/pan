@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-2">
+    <%= if @podcast_thumbnail do %>
+      <%= img_tag(@podcast_thumbnail.path <> @podcast_thumbnail.filename,
+                  height: 120,
+                  alt: @podcast_image_title,
+                  class: "thumbnail",
+                  id: "photo",
+                  style: "margin-bottom:0px;") %>
+    <% else %>
+      <img src="/images/missing-podcast.png" alt="missing image" height="120"
+           class="thumbnail" syle="margin-bottom:0px;" />
+    <% end %>
+  </div>
+
+  <div class="col-md-10">
+    <h3 style="margin-bottom: 5px; margin-top: 0px;">
+      <%= fa_icon("podcast") %>
+      Podcast &nbsp;
+      <%= link @podcast.title, to: @podcast.url,
+                               style: "color:#1a0dab" %>
+      <%= for language <- @languages, do: language.emoji %>
+    </h3>
+
+    <p class="small">
+      <%= link "https://panoptikum.io" <> @podcast.url, to: @podcast.url,
+                                                        style: "color:#006621" %><br/>
+      <%= podcast_hit(@podcast, @searchstring) %>
+    </p>
+
+    <%= for {engagement, index} <- Enum.with_index(@engagements) do %>
+      <%= if index > 0, do: "·" %>
+
+      <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+               to: persona_frontend_path(PanWeb.Endpoint, :show, engagement.persona),
+               class: "btn btn-xs btn-lavender" %>
+      <span class="label label-success"><%= engagement.role %></span>
+    <% end %>
+
+    <hr style="margin-top: -15px; visibility:hidden;" />
+
+    <%= for {category, index} <- Enum.with_index(@categories) do %>
+      <%= if index > 0, do: "·" %>
+      <%= link [fa_icon("folder-o"), " ", category.title],
+               to: category_frontend_path(PanWeb.Endpoint, :show, category),
+               class: "btn btn-xs btn-light-gray" %>
+    <% end %>
+  </div>
+</div>
+
+<span class="h6 pull-right"><small><%= @score %></small></span>

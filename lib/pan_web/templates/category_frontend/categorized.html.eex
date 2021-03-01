@@ -1,0 +1,41 @@
+<%= link [fa_icon("folder-o"), " ", "Panoptikum"],
+         to: category_frontend_path(@conn, :index) %>
+/
+<%= if @category.parent do %>
+  <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+           to: category_frontend_path(@conn, :show, @category.parent.id) %>
+  /
+<% end %>
+<%= link [fa_icon("folder-open-o"), " ", @category.title],
+           to: category_frontend_path(@conn, :show, @category) %>
+
+
+<h1><%= fa_icon("folder-open-o") %> <%= @category.title %></h1>
+
+<br/>
+
+<ul class="nav nav-tabs">
+  <%= for {category, index} <- Enum.with_index(@categories) do %>
+    <li class="<%= if index == 0,do: 'active' %>">
+      <a href="#category-<%= category.id %>" data-toggle="tab">
+        <%= category.title%>
+      </a>
+    </li>
+  <% end %>
+</ul>
+
+<br/>
+<div class="tab-content">
+  <%= for {category, index} <- Enum.with_index(@categories) do %>
+    <div class="tab-pane fade <%= if index == 0,do: 'active in' %>" id="category-<%= category.id %>">
+      <%= for group <- Enum.chunk_every(category.podcasts, 2, 2, []) do %>
+        <div class="row">
+          <%= for podcast <- group do %>
+          <%= render PanWeb.PodcastFrontendView, "_podcast_widget.html",
+                     conn: @conn, podcast: podcast %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

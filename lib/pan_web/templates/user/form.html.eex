@@ -1,0 +1,91 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :username, class: "control-label" %>
+    <%= text_input f, :username, class: "form-control" %>
+    <%= error_tag f, :username %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :email, class: "control-label" %>
+    <%= email_input f, :email, class: "form-control" %>
+    <%= error_tag f, :email %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :admin, class: "control-label" %>
+    <%= checkbox f, :admin, class: "form-control" %>
+    <%= error_tag f, :admin %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :email_confirmed, class: "control-label" %>
+    <%= checkbox f, :email_confirmed, class: "form-control" %>
+    <%= error_tag f, :email_confirmed %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :podcaster, class: "control-label" %>
+    <%= checkbox f, :podcaster, class: "form-control" %>
+    <%= error_tag f, :podcaster %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :pro_until, class: "control-label" %>
+
+    <span class="form-control">
+    <%= datetime_select f, :pro_until, builder: fn b -> %>
+      Date: <%= b.(:day, [prompt: ""]) %> / <%= b.(:month, [prompt: ""]) %> / <%= b.(:year, [prompt: "", options: 2017..2027]) %>
+      Time: <%= b.(:hour, [prompt: ""]) %> : <%= b.(:minute, [prompt: ""]) %>
+    <% end %>
+
+    </span>
+    <%= error_tag f, :pro_until %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :share_subscriptions, class: "control-label" %>
+    <%= checkbox f, :share_subscriptions, class: "form-control" %>
+    <%= error_tag f, :share_subscriptions %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :share_follows, class: "control-label" %>
+    <%= checkbox f, :share_follows, class: "form-control" %>
+    <%= error_tag f, :share_follows %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :billing_address, class: "control-label" %>
+    <%= textarea f, :billing_address, [class: "form-control", rows: 7] %>
+    <%= error_tag f, :billing_address %>
+  </div>
+
+
+  <div class="form-group">
+    <%= label f, :payment_reference, class: "control-label" %>
+    <%= text_input f, :payment_reference, class: "form-control" %>
+    <%= error_tag f, :payment_reference %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :paper_bill, class: "control-label" %>
+    <%= checkbox f, :paper_bill, class: "form-control" %>
+    <%= error_tag f, :paper_bill %>
+  </div>
+
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>
