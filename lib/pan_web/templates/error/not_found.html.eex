@@ -42,7 +42,7 @@
               <li><%= link "Home", to: category_frontend_path(PanWeb.Endpoint, :index) %></li>
               <li><a href="https://blog.panoptikum.io/">About</a></li>
               <li><a href="https://blog.panoptikum.io/blog">Blog</a></li>
-              <li><%= link "Podcasters", to: Rout.persona_frontend_path(PanWeb.Endpoint, :index) %></li>
+              <li><%= link "Podcasters", to: persona_frontend_path(PanWeb.Endpoint, :index) %></li>
               <li><%= link "Users", to: user_frontend_path(PanWeb.Endpoint, :index) %></li>
               <li><%= link ["Random ", fa_icon("podcast")], to: recommendation_frontend_path(PanWeb.Endpoint, :random) %></li>
             </ul>

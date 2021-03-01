@@ -52,7 +52,7 @@ defmodule Pan.MixProject do
       # reactive view layer
       {:phoenix_live_view, "~> 0.15.0"},
       # HTML parser
-      {:floki, ">= 0.27.0", only: :test},
+      {:floki, ">= 0.27.0"},
       # classic view layer
       {:phoenix_html, "~> 2.11"},
       # live browser page reload on code changes
@@ -120,7 +120,9 @@ defmodule Pan.MixProject do
         # Simplifies implementation of GenServer based processes
         {:exactor, "~> 2.2", warn_missing: false},
         # HTTP Client
-        {:httpotion, "~> 3.1"}
+        {:httpotion, "~> 3.1"},
+        #QR Code generation
+        {:eqrcode, "~> 0.1.7"},
     ]
   end
 
