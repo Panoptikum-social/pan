@@ -1,12 +1,18 @@
 <div aria-label="panel" class="border rounded-xl my-4 w-full">
-  <div aria-label="panel heading" 
-    class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
-    {{ @heading }}
+  <div aria-label="panel heading" class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
+    <If condition={{ !@target }}>
+      {{@heading}}
+    </If>
+    <a :if={{ @target }} href={{ @target }} class="hover:text-gray-200">
+      {{ @heading }}
+    </a>
+    <a :if={{ @target }} href={{ @target }} class="float-right hover:text-gray-200">
+      {{ @heading_right }}
+    </a>
+    
   </div>
   
   <div class="p-3 rounded-b-xl">
-    <slot>
-      No content defined!
-    </slot>
+    <slot>No content defined!</slot>
   </div>
 </div>

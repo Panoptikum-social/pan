@@ -3,6 +3,9 @@ defmodule PanWeb.Surface.Panel do
 
   prop heading, :string, required: true
   prop purpose, :string, required: false, default: "default"
+  prop heading_right, :string
+  prop target, :fun
+
   slot default
 
   def heading_color_classes(purpose) do
