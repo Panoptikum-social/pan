@@ -138,7 +138,8 @@ defmodule PanWeb.Auth do
   end
 
   def unset_cookie(conn, _opts) do
-    # if not logged in yet or do not fill out a form, we can delete the cookie
+    # if not logged in yet or do not fill out a form, we earlier deleted the cookie
+    # unfortunately, we cannot use this features any more, as we want to use urface and LiveView from the very start
     if conn.assigns.current_user ||
          conn.path_info == ["sessions", "new"] ||
          conn.path_info == ["sessions"] ||

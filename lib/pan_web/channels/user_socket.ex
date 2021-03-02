@@ -11,7 +11,7 @@ defmodule PanWeb.UserSocket do
   @max_age 4 * 7 * 24 * 60 * 60
 
   @impl true
-  def connect(%{"token" => token}, socket) do
+  def connect(%{"token" => token}, socket, _connect_info) do
     case Phoenix.Token.verify(socket, "user socket", token, max_age: @max_age) do
       {:ok, user_id} ->
         {:ok, assign(socket, :current_user_id, user_id)}
@@ -21,9 +21,6 @@ defmodule PanWeb.UserSocket do
     end
   end
 
-  def connect(_params, _socket), do: :error
-
   @impl true
-  # def id(_socket), do: nil
   def id(socket), do: "users_socket:#{socket.assigns.current_user_id}"
 end

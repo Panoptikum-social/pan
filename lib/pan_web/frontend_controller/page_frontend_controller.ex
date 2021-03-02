@@ -19,30 +19,7 @@ defmodule PanWeb.PageFrontendController do
       )
       |> Repo.all()
 
-    render(conn, "home.html",
-      popular_podcasts: popular_podcasts,
-      liked_podcasts: liked_podcasts
-    )
-  end
-
-  def home_alt(conn, _params) do
-    popular_podcasts =
-      from(p in Podcast,
-        select: [p.subscriptions_count, p.id, p.title],
-        order_by: [fragment("? DESC NULLS LAST", p.subscriptions_count)],
-        limit: 15
-      )
-      |> Repo.all()
-
-    liked_podcasts =
-      from(p in Podcast,
-        select: [p.likes_count, p.id, p.title],
-        order_by: [fragment("? DESC NULLS LAST", p.likes_count)],
-        limit: 10
-      )
-      |> Repo.all()
-
-    render(conn, "home_alt.html",
+    render(conn, "home.sface",
       popular_podcasts: popular_podcasts,
       liked_podcasts: liked_podcasts
     )

@@ -4,20 +4,9 @@ defmodule PanWeb.Router do
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
-    plug(:fetch_flash)
     plug(:fetch_live_flash)
     plug(:put_root_layout, {PanWeb.LayoutView, :root})
     plug(:protect_from_forgery)
-    plug(:put_secure_browser_headers)
-    plug(PanWeb.Auth, repo: Pan.Repo)
-  end
-
-  pipeline :browser_without_csrf do
-    plug(:accepts, ["html"])
-    plug(:fetch_session)
-    plug(:fetch_flash)
-    plug(:fetch_live_flash)
-    plug(:put_root_layout, {PanWeb.LayoutView, :root})
     plug(:put_secure_browser_headers)
     plug(PanWeb.Auth, repo: Pan.Repo)
   end
@@ -32,7 +21,7 @@ defmodule PanWeb.Router do
   pipeline :json_download do
     plug(:accepts, ["json-api"])
     plug(:fetch_session)
-    plug(:fetch_flash)
+    plug(:fetch_live_flash)
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(PanWeb.Auth, repo: Pan.Repo)
@@ -48,10 +37,6 @@ defmodule PanWeb.Router do
 
   pipeline :admin_layout do
     plug(:put_layout, {PanWeb.LayoutView, :admin})
-  end
-
-  pipeline :alternative_layout do
-    plug(:put_layout, {PanWeb.LayoutView, :app_alt})
   end
 
   # allows us to visit `localhost:4000/sent_emails` while developing, to see sent emails
@@ -170,16 +155,16 @@ defmodule PanWeb.Router do
   end
 
   scope "/search", PanWeb do
-    pipe_through([:browser_without_csrf, :unset_cookie])
+    pipe_through([:browser])
 
     post("/", SearchFrontendController, :new)
     get("/", SearchFrontendController, :new)
   end
 
   scope "/", PanWeb do
-    pipe_through([:browser, :unset_cookie])
+    pipe_through([:browser])
 
-    get("/", PageFrontendController, :home)
+    live "/", Live.Home, :index, as: :page_frontend
     get("/categories/stats", CategoryFrontendController, :stats)
     get("/categories/:id/stats", CategoryFrontendController, :show_stats)
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)

@@ -19,3 +19,7 @@
 ## Things to reevalute
 
 * Switching away from contexts?
+
+## Extend cookie warning
+
+* LiveViews need cookies
