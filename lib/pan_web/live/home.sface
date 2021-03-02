@@ -3,21 +3,29 @@
     <Panel heading="Podcasts new in Panoptikum" 
            heading_right="more ..."
            target={{ Routes.podcast_frontend_path(@socket, :index) }}
-           purpose="podcast"></Panel>
+           purpose="podcast">
+      <TopList items={{@popular_podcasts}}
+               path={{ &Routes.podcast_frontend_path/3 }} 
+               icon="user" />
+    </Panel>
+
     <Panel heading="Top 15 subscribed Podcastss" 
       heading_right="more ..." 
       target={{ Routes.podcast_frontend_path(@socket, :popular) }}
       purpose="popular" />
   </div>
+
   <div aria-label="right column" class="flex-1">
     <Panel heading="Latest Episodes" 
       heading_right="more ..."
       target={{ Routes.episode_frontend_path(@socket, :index) }}
       purpose="episode" />
+
     <Panel heading="Latest Recommendations" 
       heading_right="more ..."
       target={{ Routes.recommendation_frontend_path(@socket, :index) }}
       purpose="recommendation"></Panel>
+
     <Panel heading="Liked Podcasts" 
       heading_right="more ..."
       target={{ Routes.podcast_frontend_path(@socket, :liked) }}

@@ -12,7 +12,7 @@
     
   </div>
   
-  <div class="p-3 rounded-b-xl">
+  <div class="rounded-b-xl">
     <slot>No content defined!</slot>
   </div>
 </div>
