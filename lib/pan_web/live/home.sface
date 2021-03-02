@@ -1,2 +1,12 @@
-home
-<Panel/>
+<div aria-label="columncontainer" class="flex flex-row space-x-4 p-4 justify-items-auto">
+  <div aria-label="left column" class="flex-1">
+    <Panel heading="Latest Podcasts" purpose="podcast"></Panel>
+    <Panel heading="Popular Podcasts" purpose="popular"></Panel>
+  </div>
+  <div aria-label="right column" class="flex-1">
+    <Panel heading="Latest Episodes" purpose="episode">
+    </Panel>
+    <Panel heading="Latest Recommendations" purpose="recommendation"></Panel>
+    <Panel heading="Liked Podcasts" purpose="like"></Panel>
+  </div>
+</div>
