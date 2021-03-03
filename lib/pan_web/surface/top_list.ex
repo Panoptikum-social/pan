@@ -36,4 +36,21 @@ defmodule PanWeb.Surface.TopList do
 
   # end of list, end loop and return acc
   defp add_rank([], {_rank, acc}), do: acc
+
+  def render(assigns) do
+    ~H"""
+    <table class="w-full">
+      <tr :for={{ {rank, count, items} <- prepare_for_toplist(@items) }}
+          class="odd:bg-gray-100 align-top" >
+        <td class="text-right py-2">{{ rank }}.</td>
+        <td class="px-4 py-1">
+          <For each={{ {id, title} <- items }}>
+            <p class="leading-loose"><PodcastButton :if={{ @purpose == "podcast" }} id={{ id }} title={{ title}} /></p>
+          </For>
+        </td>
+        <td class="text-right py-2">{{ count }} <Icon name={{ @icon }} />&nbsp;</td>
+      </tr>
+    </table>
+    """
+  end
 end
