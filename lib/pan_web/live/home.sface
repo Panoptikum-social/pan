@@ -4,15 +4,16 @@
            heading_right="more ..."
            target={{ Routes.podcast_frontend_path(@socket, :index) }}
            purpose="podcast">
-      <TopList items={{@popular_podcasts}}
-               path={{ &Routes.podcast_frontend_path/3 }} 
-               icon="user" />
     </Panel>
 
     <Panel heading="Top 15 subscribed Podcastss" 
       heading_right="more ..." 
       target={{ Routes.podcast_frontend_path(@socket, :popular) }}
-      purpose="popular" />
+      purpose="popular">
+      <TopList items={{@popular_podcasts}}
+          purpose="podcast"
+          icon="user" />
+    </Panel>
   </div>
 
   <div aria-label="right column" class="flex-1">

@@ -3,8 +3,8 @@ defmodule PanWeb.Surface.Panel do
 
   prop heading, :string, required: true
   prop purpose, :string, required: false, default: "default"
-  prop heading_right, :string
-  prop target, :fun
+  prop heading_right, :string, required: false
+  prop target, :fun, required: false
 
   slot default
 

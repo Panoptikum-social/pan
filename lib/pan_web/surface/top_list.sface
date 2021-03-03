@@ -1,13 +1,12 @@
 <table class="w-full">
   <tr :for={{ {rank, count, items} <- prepare_for_toplist(@items) }}
-      class="odd:bg-gray-100" >
-    <td class="text-right">{{ rank }}.</td>
-    <td>
-      <a :for={{ {id, title} <- items }}
-          href={{ @path.(@socket, :show, id)}}
-          class= "btn btn-default btn-xs"
-          style= "color: #000;">{{ la_icon("podcast-solid", class: "inline h-6") }} {{ title }}</a><br/>
+      class="odd:bg-gray-100 align-top" >
+    <td class="text-right py-2">{{ rank }}.</td>
+    <td class="px-4 py-1">
+      <For each={{ {id, title} <- items }}>
+        <p class="leading-loose"><PodcastButton :if={{ @purpose == "podcast" }} id={{ id }} title={{ title}} /></p>
+      </For>
     </td>
-    <td class="text-right">{{ count }} {{ la_icon(@icon, class: "inline h-6") }}</td>
+    <td class="text-right py-2">{{ count }} <Icon name={{ @icon }} /></td>
   </tr>
 </table>

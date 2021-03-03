@@ -1,10 +1,10 @@
 defmodule PanWeb.Surface.TopList do
   use Surface.Component
-  import PanWeb.ViewHelpers
+  alias PanWeb.Surface.{PodcastButton, Icon}
 
   prop items, :list, required: true
-  prop path, :fun, required: true
   prop icon, :string, required: false, default: "heart"
+  prop purpose, :string, required: false
 
   def prepare_for_toplist(items) do
     items

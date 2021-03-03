@@ -1,0 +1,1 @@
+{{ la_icon(@name, class: "inline h-5 w-5") }}<If condition={{ @spaced }}>&nbsp;</If>
