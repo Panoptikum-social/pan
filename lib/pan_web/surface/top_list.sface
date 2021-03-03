@@ -7,6 +7,6 @@
         <p class="leading-loose"><PodcastButton :if={{ @purpose == "podcast" }} id={{ id }} title={{ title}} /></p>
       </For>
     </td>
-    <td class="text-right py-2">{{ count }} <Icon name={{ @icon }} /></td>
+    <td class="text-right py-2">{{ count }} <Icon name={{ @icon }} />&nbsp;</td>
   </tr>
 </table>
