@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Home do
   use Surface.LiveView
   alias PanWeb.Router.Helpers, as: Routes
-  alias PanWeb.Surface.{Panel, TopList, Tab, PodcastCard}
+  alias PanWeb.Surface.{Panel, TopList, Tab, PodcastCard, EpisodeCard}
   use PanWeb, :controller
   alias PanWeb.Podcast
 
@@ -22,6 +22,8 @@ defmodule PanWeb.Live.Home do
 
     {:ok, assign(socket, popular_podcasts: popular_podcasts,
                          liked_podcasts: liked_podcasts,
-                         latest_podcasts: PanWeb.Podcast.latest())}
+                         latest_podcasts: PanWeb.Podcast.latest(),
+                         latest_episodes: PanWeb.Episode.latest()
+    )}
   end
 end
