@@ -4,7 +4,7 @@
            target={{ Routes.podcast_frontend_path(@socket, :index) }}
            purpose="podcast">
       <Tab items={{ podcast <- @latest_podcasts }}>
-        {{ podcast.title }}
+        <PodcastCard for={{ podcast }} />
       </Tab>
     </Panel>
 

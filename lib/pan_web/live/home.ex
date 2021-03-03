@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Home do
   use Surface.LiveView
   alias PanWeb.Router.Helpers, as: Routes
-  alias PanWeb.Surface.{Panel, TopList, Tab}
+  alias PanWeb.Surface.{Panel, TopList, Tab, PodcastCard}
   use PanWeb, :controller
   alias PanWeb.Podcast
 

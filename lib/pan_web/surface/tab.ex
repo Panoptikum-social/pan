@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Tab do
             :class="{ 'bg-white text-black border-l border-t border-r' : selectedTab === {{ index }} }"
             @click.prevent="selectedTab = {{ index }}"
             href="#">
-            {{ index }}
+            {{ index + 1 }}
           </a>
         </li>
       </ul>
