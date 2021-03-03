@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.EpisodeCard do
     <div aria-label="episode-card">
       <p><EpisodeButton for={{ @for }}/></p>
 
-      <p :if={{ author.name }} class="mt-4">
+      <p :if={{ author && author.name }} class="mt-4">
         <PersonaButton name={{ author.name }} id={{ author.id }} />
       </p>
 
@@ -22,7 +22,7 @@ defmodule PanWeb.Surface.EpisodeCard do
           {{ @for.publishing_date |> Timex.format!("{ISOdate}") }}
         </If>
         <If condition={{ @for.duration }}>
-          &npsb; <Icon name="stopwatch-solid" /> {{ @for.duration}}
+          &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
         </If>
       </p>
 
