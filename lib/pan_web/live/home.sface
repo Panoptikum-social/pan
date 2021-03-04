@@ -19,7 +19,8 @@
     </Panel>
   </div>
 
-  <div aria-label="right column" class="flex-1">
+  <div aria-label="right column" 
+       class="flex-1">
     <Panel heading="Latest Episodes" 
            heading_right="more ..."
            target={{ Routes.episode_frontend_path(@socket, :index) }}
@@ -33,7 +34,11 @@
     <Panel heading="Latest Recommendations" 
            heading_right="more ..."
            target={{ Routes.recommendation_frontend_path(@socket, :index) }}
-           purpose="recommendation"></Panel>
+           purpose="recommendation">
+      <Tab items={{ recommendation <- @latest_recommendations }}>
+        <RecommendationCard for={{ recommendation }} />
+    </Tab>
+    </Panel>
 
     <Panel heading="Liked Podcasts" 
            heading_right="more ..."

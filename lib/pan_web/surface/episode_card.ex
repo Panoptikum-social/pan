@@ -3,31 +3,28 @@ defmodule PanWeb.Surface.EpisodeCard do
   alias PanWeb.Surface.{EpisodeButton, Icon, PersonaButton}
 
   prop for, :map, required: true
-  data author, :map
 
   def render(assigns) do
     ~H"""
-    <div aria-label="episode-card">
-      <p><EpisodeButton for={{ @for }}/></p>
+    <p><EpisodeButton for={{ @for }}/></p>
 
-      <p :if={{ @for.author_name }} class="mt-4">
-        <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
-      </p>
+    <p :if={{ @for.author_name }} class="mt-4">
+      <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
+    </p>
 
-      <p class="mt-4">
-        <If condition={{ @for.publishing_date }}>
-          <Icon name="calendar" />
-          {{ @for.publishing_date |> Timex.format!("{ISOdate}") }}
-        </If>
-        <If condition={{ @for.duration }}>
-          &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
-        </If>
-      </p>
+    <p class="mt-4">
+      <If condition={{ @for.publishing_date }}>
+        <Icon name="calendar" />
+        {{ @for.publishing_date |> Timex.format!("{ISOdate}") }}
+      </If>
+      <If condition={{ @for.duration }}>
+        &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
+      </If>
+    </p>
 
-      <p :if={{ @for.subtitle }} class="mt-4">
-        <Icon name="image" /> {{ @for.subtitle }}
-      </p>
-    </div>
+    <p :if={{ @for.subtitle }} class="mt-4">
+      <Icon name="image" /> {{ @for.subtitle }}
+    </p>
     """
   end
 end

@@ -205,6 +205,22 @@ defmodule PanWeb.Podcast do
     |> Repo.all()
   end
 
+  def popular do
+    from(p in Podcast,
+      select: [p.subscriptions_count, p.id, p.title],
+      order_by: [fragment("? DESC NULLS LAST", p.subscriptions_count)],
+      limit: 15)
+    |> Repo.all()
+  end
+
+  def liked do
+    from(p in Podcast,
+      select: [p.likes_count, p.id, p.title],
+      order_by: [fragment("? DESC NULLS LAST", p.likes_count)],
+      limit: 10)
+    |> Repo.all()
+  end
+
   def author(podcast) do
     engagement =
       from(Engagement,
