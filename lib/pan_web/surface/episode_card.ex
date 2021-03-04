@@ -1,19 +1,17 @@
 defmodule PanWeb.Surface.EpisodeCard do
   use Surface.Component
   alias PanWeb.Surface.{EpisodeButton, Icon, PersonaButton}
-  alias PanWeb.Episode
 
   prop for, :map, required: true
   data author, :map
 
   def render(assigns) do
-    author = Episode.author(assigns.for)
     ~H"""
     <div aria-label="episode-card">
       <p><EpisodeButton for={{ @for }}/></p>
 
-      <p :if={{ author && author.name }} class="mt-4">
-        <PersonaButton name={{ author.name }} id={{ author.id }} />
+      <p :if={{ @for.author_name }} class="mt-4">
+        <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
       </p>
 
       <p class="mt-4">

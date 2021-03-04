@@ -86,12 +86,24 @@ defmodule PanWeb.Episode do
       where:
         not p.blocked and
           e.publishing_date < ^NaiveDateTime.utc_now(),
-      preload: :podcast,
+      left_join: g in assoc(e, :gigs),
+      where: g.role == "author",
+      left_join: persona in assoc(g, :persona),
+      select: %{
+        id: e.id,
+        title: e.title,
+        subtitle: e.subtitle,
+        publishing_date: e.publishing_date,
+        duration: e.duration,
+        author_id: persona.id,
+        author_name: persona.name
+      },
       limit: 10
     )
     |> Repo.all()
   end
 
+  #FIXME: Can be removed, when Episode FrontendView is cleaned up
   def author(episode) do
     gig =
       from(Gig,
