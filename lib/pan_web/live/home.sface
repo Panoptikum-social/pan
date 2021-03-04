@@ -1,5 +1,5 @@
 <div aria-label="columncontainer" 
-     class="flex flex-row space-x-4 p-4 justify-items-auto">
+     class="flex flex-col lg:flex-row space-x-4 p-4 justify-items-auto">
   <div aria-label="left column" 
        class="flex-1">
     <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."

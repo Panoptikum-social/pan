@@ -35,9 +35,10 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-row"
+  <body class="flex flex-col lg:flex-row"
     data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
-    <nav class="flex-initial flex flex-col text-blueGray-50 bg-coolGray-600 p-4 justify-start">
+    <nav x-data="{ navbarOpen: window.innerWidth >= 1024 }"
+         class="flex-initial flex flex-col text-blueGray-50 bg-coolGray-600 p-4 justify-start">
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 
