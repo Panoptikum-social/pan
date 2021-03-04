@@ -1,4 +1,4 @@
-<ul class="flex-initial">
+<ul class="flex-initial p-6">
   <li class="text-l font-medium pb-4">META</li>
   <li></li>
   <li><a href="https://blog.panoptikum.io/code_of_conduct">Code of Conduct</a></li>
@@ -7,7 +7,7 @@
   <li><a href="https://blog.panoptikum.io/community">Community</a></li>
   <li><a href="https://blog.panoptikum.io/imprint">Imprint</a></li>
 </ul>
-<ul>
+<ul class="flex-initial p-6">
   <li class="text-l font-medium pb-4">ABOUT</li>
   <li></li>
   <li><a href="https://blog.panoptikum.io/">About</a></li>
@@ -15,7 +15,7 @@
   <li><a href="https://blog.panoptikum.io/talks">Talks</a></li>
   <li><a href="https://blog.panoptikum.io/community">FAQ</a></li>
 </ul>
-<ul>
+<ul class="flex-initial p-6">
   <li class="text-l font-medium pb-4">DEMO</li>
   <li></li>
   <li><a href="/categories#start_tour"><i class="fa fa-bus"></i> Tour</a></li>
@@ -24,7 +24,7 @@
   <li><a href="/podcasts">New podcasts</a></li>
   <li><a href="/episodes">New episodes</a></li>
 </ul>
-<ul>
+<ul class="flex-initial p-6">
   <li class="text-l font-medium pb-4">SUPPORTED BY</li>
   <li></li>
   <li><a href="https://www.informatom.com">Stefan a.k.a. Informatom</a></li>

@@ -45,10 +45,11 @@
     <div class="flex-1">
       <%= @inner_content %>
 
-      <footer class="flex w-full py-6 text-blueGray-50 bg-coolGray-600 justify-around">
+      <footer class="w-full flex flex-col justify-around lg:flex-row
+                   text-blueGray-50 bg-coolGray-600">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
       </footer>
-      <div class="flex justify-center w-full py-6 text-blueGray-50 bg-coolGray-600 font-medium">
+      <div class="flex justify-center w-full text-blueGray-50 bg-coolGray-600 font-medium p-6">
         <p>Hosted by
           <a class="text-blue-200"
             href="https://www.informatom.com">

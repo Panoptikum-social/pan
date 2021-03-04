@@ -10,9 +10,9 @@ defmodule PanWeb.Surface.LinkButton do
   def render(assigns) do
     ~H"""
     <a href={{ @href }}
-       class={{ "text-sm fill-current border border-solid px-1 py-1 leading-normal truncate rounded", @class }}>
-      <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
-      {{ @title }}
+       class={{ "text-sm fill-current border border-solid px-1 py-1 leading-normal rounded", @class }}>
+        <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
+        {{ @title }}
     </a>
     """
   end
