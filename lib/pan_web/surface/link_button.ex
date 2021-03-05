@@ -11,12 +11,12 @@ defmodule PanWeb.Surface.LinkButton do
 
   def render(assigns) do
     ~H"""
-    <div :if={{ @truncate }} class="truncate py-1 inline-block">
+    <div :if={{ @truncate }} class="truncate inline-block py-0.5">
       <a href={{ @href }}
-        class={{ "fill-current border border-solid px-1 py-1 my-2 rounded",
+        class={{ "text-sm fill-current border border-solid rounded",
                  @class,
-                 "text-sm": !@large,
-                 "text-l": @large }}>
+                 "px-1.5 py-0.5": !@large,
+                 "px-2.5 py-1.5": @large }}>
           <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
           {{ @title }}
       </a>
@@ -24,10 +24,10 @@ defmodule PanWeb.Surface.LinkButton do
 
     <a :if={{ !@truncate}}
         href={{ @href }}
-        class={{ "fill-current border border-solid px-1 py-1 my-2 rounded leading-8",
+        class={{ "text-sm fill-current border border-solid my-2 rounded leading-8",
                  @class,
-                 "text-sm": !@large,
-                 "text-l": @large }}>
+                 "px-1.5 py-0.5": !@large,
+                 "px-2.5 py-1.5": @large }}>
         <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
         {{ @title }}
     </a>

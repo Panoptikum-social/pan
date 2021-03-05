@@ -25,11 +25,11 @@
 
   <ul>
     <li class="py-1"><a class="text-coolGray-200" href="#">Dummy Link</a>
-    <li class="py-1"><%= link [la_nav_icon("sitemap-solid"), "Categories"],
+    <li class="py-1"><%= link [la_nav_icon("sitemap-solid"), " Categories"],
               to: category_frontend_path(@conn, :index),
               title: "Categories",
               class: "visible-xs-inline text-coolGray-200" %></li>
-    <li class="py-1"><%= link [la_nav_icon("magic-solid"), "Random"],
+    <li class="py-1"><%= link [la_nav_icon("magic-solid"), " Random"],
             to: recommendation_frontend_path(@conn, :random),
             class: "text-coolGray-200" %></li>
     <li class="py-1"><a class="text-coolGray-200" href="https://blog.panoptikum.io/">
@@ -38,10 +38,10 @@
     <li class="py-1"><a class="text-coolGray-200" href="https://blog.panoptikum.io/blog">
       <%= la_nav_icon("newspaper") %> Blog
     </a></li>
-    <li class="py-1"><%= link [la_nav_icon("user-astronaut-solid"), "Podcasters"],
+    <li class="py-1"><%= link [la_nav_icon("user-astronaut-solid"), " Podcasters"],
               to: persona_frontend_path(@conn, :index),
               class: "text-coolGray-200" %></li>
-    <li class="py-1"><%= link [la_nav_icon("user"), "Users"],
+    <li class="py-1"><%= link [la_nav_icon("user"), " Users"],
         to: user_frontend_path(@conn, :index),
         class: "text-coolGray-200" %></li>
 
@@ -54,10 +54,10 @@
                 method: "delete",
                 class: "text-coolGray-200" %></li>
     <% else %>
-      <li class="py-1"><%= link [la_nav_icon("pen-solid"), "Sign Up"],
+      <li class="py-1"><%= link [la_nav_icon("pen-solid"), " Sign Up"],
                 to: user_frontend_path(@conn, :new),
                 class: "text-coolGray-200" %></li>
-      <li class="py-1"><%= link [la_nav_icon("sign-in-alt-solid"), "Log In"],
+      <li class="py-1"><%= link [la_nav_icon("sign-in-alt-solid"), " Log In"],
                 to: session_path(@conn, :new),
                 class: "text-coolGray-200" %></li>
     <% end %>

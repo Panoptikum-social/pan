@@ -16,9 +16,8 @@ defmodule PanWeb.ViewHelpers do
   end
 
   def la_nav_icon(name) do
-    la_icon name, class: "fill-current text-coolGray-200 h-6 w-6 inline"
+    la_icon(name, class: "fill-current text-coolGray-200 h-6 w-6 inline")
   end
-
 
   def btn_cycle(counter) do
     Enum.at(
@@ -42,28 +41,24 @@ defmodule PanWeb.ViewHelpers do
   end
 
   def color_class_cycle(counter) do
-    text_color = "text-gray-800"
-    text_hover_color = "text-white"
-    Enum.at(
-      [
-        "bg-white #{text_color} border-coolGray-2400 hover:bg-coolGray-800 hover:#{text_hover_color}",
-        "bg-amber-200 #{text_color} border-amber-400 hover:bg-amber-800 hover:#{text_hover_color}",
-        "bg-coolGray-100 #{text_color} border-coolGray-400 hover:bg-coolGray-800 hover:#{text_hover_color}",
-        "bg-blue-200 #{text_color} border-blue-400 hover:bg-blue-800 hover:#{text_hover_color}",
-        "bg-blueGray-200 #{text_color} border-blueGray-400 hover:bg-blueGray-800 hover:#{text_hover_color}",
-        "bg-cyan-200 #{text_color} border-cyan-400 hover:bg-cyan-800 hover:#{text_hover_color}",
-        "bg-green-200 #{text_color} border-green-400 hover:bg-green-800 hover:#{text_hover_color}",
-        "bg-lime-200 #{text_color} border-lime-400 hover:bg-lime-800 hover:#{text_hover_color}",
-        "bg-pink-200 #{text_color} border-pink-400 hover:bg-pink-800 hover:#{text_hover_color}",
-        "bg-red-200 #{text_color} border-red-400 hover:bg-red-800 hover:#{text_hover_color}",
-        "bg-lightBlue-200 #{text_color} border-lightBlue-400 hover:bg-lightBlue-800 hover:#{text_hover_color}",
-        "bg-rose-200 #{text_color} border-rose-400 hover:bg-rose-800 hover:#{text_hover_color}",
-        "bg-teal-200 #{text_color} border-teal-400 hover:bg-teal-800 hover:#{text_hover_color}",
-        "bg-violet-200 #{text_color} border-violet-400 hover:bg-violet-800 hover:#{text_hover_color}",
-        "bg-yellow-200 #{text_color} border-yellow-400 hover:bg-yellow-800 hover:#{text_hover_color}",
-      ],
-      rem(counter, 15)
-    )
+    Enum.at([
+        "bg-white text-gray-600 border-coolGray-300 hover:bg-coolGray-400 hover:text-white",
+        "bg-coolGray-100 text-gray-600 border-coolGray-300 hover:bg-white hover:text-gray-800",
+        "bg-coolGray-400 text-white hover:bg-coolGray-800 hover:text-gray-600",
+        "bg-coolGray-600 text-white hover:bg-coolGray-200 hover:text-gray-600",
+        "bg-lime-500 text-white hover:bg-lime-800 hover:text-gray-600",
+        "bg-teal-500 text-white hover:bg-teal-800 hover:text-gray-600",
+        "bg-lightBlue-400 text-white hover:bg-lightBlue-800 hover:text-gray-600",
+        "bg-blue-500 text-white hover:bg-blue-800 hover:text-gray-600",
+        "bg-violet-400 text-white hover:bg-violet-800 hover:text-gray-600",
+        "bg-pink-400 text-white hover:bg-pink-800 hover:text-gray-600",
+        "bg-rose-600 text-white hover:bg-rose-200 hover:text-gray-600",
+        "bg-red-500 text-white hover:bg-red-800 hover:text-gray-600",
+        "bg-amber-400 text-white hover:bg-amber-800 hover:text-gray-600",
+        "bg-cyan-400 text-white hover:bg-cyan-800 hover:text-gray-600",
+        "bg-green-500 text-white hover:bg-green-800 hover:text-gray-600",
+        "bg-yellow-400 text-white  hover:bg-yellow-800 hover:text-gray-600",
+    ], rem(counter, 15))
   end
 
   def truncate_string(string, len) do
