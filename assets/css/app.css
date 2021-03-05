@@ -1,5 +1,9 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* @tailwind base; */
+/* @tailwind components; */
 @import "../node_modules/nprogress/nprogress.css";
 
 [hidden] { @apply hidden; }
@@ -23,7 +27,7 @@
 .phx-disconnected{ cursor: wait; }
 .phx-disconnected *{ pointer-events: none; }
 
-@tailwind utilities;
+/* tailwind utilities; */
 
 .up-to-four-columns {
   @screen lg {columns: 2;}

@@ -2,12 +2,15 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   purge: {
-    enabled: process.env.MIX_ENV === "prod",
+    enabled: process.env.NODE_ENV === "production",
     content: [
       "../lib/**/*.eex",
       "../lib/**/*.leex",
       "../**/views/**/*.ex",
       "../**/live/**/*.ex",
+      "../**/live/**/*.sface",
+      "../**/surface/**/*.ex",
+      "../**/surface/**/*.sface",
       "./js/**/*.js",  
     ],
     options: {
