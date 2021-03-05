@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.CategoryButton do
   prop id, :integer, required: false
   prop title, :string, required: false
   prop class, :string, required: false
-  prop large, :boolean, required: true
+  prop large, :boolean, required: false, default: false
   prop for, :map, required: false
   prop index_on_page, :integer, default: 0
   prop truncate, :boolean, default: false

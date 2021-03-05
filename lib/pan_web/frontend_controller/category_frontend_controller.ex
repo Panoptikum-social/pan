@@ -2,18 +2,6 @@ defmodule PanWeb.CategoryFrontendController do
   use PanWeb, :controller
   alias PanWeb.{Category, Episode, Language, Podcast}
 
-  def index_alt(conn, _params) do
-    categories =
-      from(c in Category,
-        order_by: :title,
-        where: is_nil(c.parent_id)
-      )
-      |> Repo.all()
-      |> Repo.preload(children: from(cat in Category, order_by: cat.title))
-
-    render(conn, "index_alt.html", categories: categories)
-  end
-
   def show(conn, %{"id" => id}) do
     if category = Repo.get(Category, id) do
       category =
@@ -66,32 +54,6 @@ defmodule PanWeb.CategoryFrontendController do
       |> put_status(:not_found)
       |> render("not_found.html")
     end
-  end
-
-  def stats(conn, _params) do
-    categories =
-      from(c in Category,
-        order_by: :title,
-        where: is_nil(c.parent_id)
-      )
-      |> Repo.all()
-      |> Repo.preload(children: from(cat in Category, order_by: cat.title))
-      |> Repo.preload([:podcasts, children: :podcasts])
-
-    render(conn, "stats.html", categories: categories)
-  end
-
-  def stats_alt(conn, _params) do
-    categories =
-      from(c in Category,
-        order_by: :title,
-        where: is_nil(c.parent_id)
-      )
-      |> Repo.all()
-      |> Repo.preload(children: from(cat in Category, order_by: cat.title))
-      |> Repo.preload([:podcasts, children: :podcasts])
-
-    render(conn, "stats_alt.html", categories: categories)
   end
 
   def show_stats(conn, %{"id" => id}) do

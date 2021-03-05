@@ -185,12 +185,15 @@ defmodule PanWeb.Podcast do
   end
 
   def latest do
-    from(p in Podcast,
+    from(p in Podcast, as: :podcast,
       order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
       where: not p.blocked,
       left_join: e in assoc(p, :engagements),
-      # where: e.role == "author",
-      # we want to see podcasts here, even if they have no author
+      inner_lateral_join: first_engagement in subquery(
+          from(e in Engagement,
+          where: [podcast_id: parent_as(:podcast).id],
+          limit: 1)
+      ), on: first_engagement.id == e.id,
       left_join: persona in assoc(e, :persona),
       select: %{
         id: p.id,
