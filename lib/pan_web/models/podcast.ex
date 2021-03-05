@@ -190,9 +190,9 @@ defmodule PanWeb.Podcast do
       where: not p.blocked,
       left_join: e in assoc(p, :engagements),
       inner_lateral_join: first_engagement in subquery(
-          from(e in Engagement,
-          where: [podcast_id: parent_as(:podcast).id],
-          limit: 1)
+        from(e in Engagement,
+        where: [podcast_id: parent_as(:podcast).id],
+        limit: 1)
       ), on: first_engagement.id == e.id,
       left_join: persona in assoc(e, :persona),
       select: %{

@@ -17,7 +17,7 @@ defmodule PanWeb.Surface.RecommendationCard do
       </p>
     </If>
 
-    <If condition={{ @for.chapter_id }} >
+    <If condition={{ @for.chapter }} >
       <p><PodcastButton for={{ @for.chapter.episode.podcast }} /></p>
       <p class="mt-2">
         <EpisodeButton for={{ @for.chapter.episode }} />
