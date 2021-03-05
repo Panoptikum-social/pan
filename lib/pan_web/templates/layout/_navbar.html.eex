@@ -5,15 +5,15 @@
   </a>
 
   <button @click="navbarOpen = true" x-show="!navbarOpen">
-      <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
-        <path class="heroicon-ui"
-              d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"/>
-      </svg>
+    <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+      <path class="heroicon-ui"
+            d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"/>
+    </svg>
   </button>
   <button x-show="navbarOpen" @click="navbarOpen = false" class="text-4xl mr-3 mt-1 lg:hidden" >&times;</button>
 </div>
 
-<div x-show="navbarOpen" @click.away="navbarOpen = false">
+<div x-show="navbarOpen">
   <%= form_for @conn, search_frontend_path(@conn, :new),
                       [as: :search, class: "py-4"],
                       fn f -> %>
