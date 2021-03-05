@@ -165,11 +165,12 @@ defmodule PanWeb.Router do
     pipe_through([:browser])
 
     live "/", Live.Home, :index, as: :page_frontend
+    live "/categories", Live.Category.Tree, :index, as: :category_frontend
     get("/categories/stats", CategoryFrontendController, :stats)
     get("/categories/:id/stats", CategoryFrontendController, :show_stats)
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
-    resources("/categories", CategoryFrontendController, only: [:index, :show])
+    resources("/categories", CategoryFrontendController, only: [:show])
 
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)

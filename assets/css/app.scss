@@ -24,3 +24,9 @@
 .phx-disconnected *{ pointer-events: none; }
 
 @tailwind utilities;
+
+.up-to-four-columns {
+  @screen lg {columns: 2;}
+  @screen xl {columns: 3;}
+  @screen 2xl {columns: 4;}
+}

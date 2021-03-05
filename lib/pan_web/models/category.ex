@@ -115,4 +115,12 @@ defmodule PanWeb.Category do
 
     for deleted_id <- deleted_ids, do: delete_search_index(deleted_id)
   end
+
+  def tree do
+    from(c in Category,
+      order_by: :title,
+      where: is_nil(c.parent_id))
+    |> Repo.all()
+    |> Repo.preload(children: from(cat in Category, order_by: cat.title))
+  end
 end

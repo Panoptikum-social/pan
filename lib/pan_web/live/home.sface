@@ -4,8 +4,8 @@
     <div aria-label="left column" 
         class="flex-1">
       <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."
-            target={{ Routes.podcast_frontend_path(@socket, :index) }}
-            purpose="podcast">
+             target={{ Routes.podcast_frontend_path(@socket, :index) }}
+             purpose="podcast">
         <Tab items={{ podcast <- @latest_podcasts }}>
           <PodcastCard for={{ podcast }} />
         </Tab>

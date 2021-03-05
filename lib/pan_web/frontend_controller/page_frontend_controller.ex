@@ -1,6 +1,5 @@
 defmodule PanWeb.PageFrontendController do
   use PanWeb, :controller
-  alias PanWeb.Podcast
 
   def pro_features(conn, _params) do
     render(conn, "pro_features.html")
