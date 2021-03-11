@@ -11,22 +11,24 @@ defmodule PanWeb.Live.Category.StatsTree do
     ~H"""
     <div class="up-to-four-columns m-4">
       <div :for.with_index={{ {category, counter} <- @categories }}
-           class="block">
-        <div class="my-4 block">
+           class="inline-block">
+        <p class="my-4">
           <CategoryButton for={{ category }}
                           large=true
                           index_on_page={{ counter }} />
-          <div class="align-top inline">{{ length category.podcasts }}</div>
-        </div>
-        <div class="my-2 block">
+          <span class="align-top">{{ length category.podcasts }}</span>
+        </p>
+        <p class="my-4">
           <For each={{ subcategory <- category.children }}>
-            <CategoryButton for={{ subcategory }}
-                            index_on_page=1
-                            truncate= {{ true }}/>
-            <div class="align-top inline">{{ length subcategory.podcasts }}</div>
+            <nobr>
+              <CategoryButton for={{ subcategory }}
+                              index_on_page=1
+                              truncate= {{ true }}/>
+              <span class="align-top">{{ length subcategory.podcasts }}</span>
+            </nobr>
             &nbsp;
           </For>
-        </div>
+        </p>
         <hr class="myt-4 border-t-1 border-coolGray-200" style="break-before: avoid;" />
       </div>
     </div>
