@@ -22,13 +22,24 @@ defmodule PanWeb.Recommendation do
   def latest do
     from(r in Recommendation,
       order_by: [fragment("? DESC NULLS LAST", r.inserted_at)],
-      preload: [:user, :podcast, episode: :podcast, chapter: [episode: :podcast]],
-      select: [:comment, :inserted_at, :user_id, :podcast_id, :episode_id, :chapter_id,
+      left_join: u in assoc(r, :user),
+      left_join: p in assoc(r, :podcast),
+      left_join: e in assoc(r, :episode),
+      left_join: pe in assoc(e, :podcast),
+      left_join: c in assoc(r, :chapter),
+      left_join: ec in assoc(c, :episode),
+      left_join: pc in assoc(ec, :podcast),
+      preload: [user: u, podcast: p,
+                episode: {e, podcast: pe},
+                chapter: {c, episode: {ec, podcast: pc}}],
+      select: [:id, :comment, :inserted_at,
                user: [:id, :name],
                podcast: [:id, :title],
-               episode: [:id, :title, :podcast_id, podcast: [:id, :title]],
-               chapter: [:title, :episode_id, episode: [:id, :title, :podcast_id, podcast: [:id, :title]]]
-              ],
+               episode: [:id, :title, :podcast_id,
+                         podcast: [:id, :title]],
+               chapter: [:id, :title, :episode_id,
+                         episode: [:id, :title, :podcast_id,
+                         podcast: [:id, :title]]]],
       limit: 10
     )
     |> Repo.all()
