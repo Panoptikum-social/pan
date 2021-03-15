@@ -1,10 +1,6 @@
 defmodule PanWeb.SessionController do
   use PanWeb, :controller
 
-  def new(conn, _) do
-    render(conn, "new.html")
-  end
-
   def create(conn, %{"session" => %{"username" => user, "password" => given_pass}}) do
     case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass) do
       {:ok, conn} ->
