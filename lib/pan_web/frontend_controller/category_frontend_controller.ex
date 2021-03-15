@@ -254,5 +254,4 @@ defmodule PanWeb.CategoryFrontendController do
       render(conn, "no_community.html")
     end
   end
-
 end

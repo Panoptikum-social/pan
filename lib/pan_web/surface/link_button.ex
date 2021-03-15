@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.LinkButton do
   def render(assigns) do
     ~H"""
     <span :if={{ @truncate }} class=""
-          class={{ "fill-current border border-solid truncate inline-block",
+          class={{ "border border-solid truncate inline-block",
                    @class,
                    "p-0.5 rounded text-sm": !@large,
                    "p-1.5 rounded-lg font-medium": @large }}>
@@ -24,7 +24,7 @@ defmodule PanWeb.Surface.LinkButton do
 
     <a :if={{ !@truncate}}
         href={{ @href }}
-        class={{ "fill-current border border-solid my-2",
+        class={{ "border border-solid my-2",
                  @class,
                  "p-1 rounded text-sm": !@large,
                  "p-2 rounded-lg font-medium": @large }}>

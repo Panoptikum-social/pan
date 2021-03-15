@@ -4,7 +4,7 @@
     <div aria-label="left column" 
         class="flex-1">
       <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."
-             target={{ Routes.podcast_frontend_path(@socket, :index) }}
+             target={{ podcast_frontend_path(@socket, :index) }}
              purpose="podcast">
         <Tab items={{ podcast <- @latest_podcasts }}>
           <PodcastCard for={{ podcast }} />
@@ -12,7 +12,7 @@
       </Panel>
 
       <Panel heading="Top 15 subscribed Podcastss" heading_right="more ..." 
-            target={{ Routes.podcast_frontend_path(@socket, :popular) }}
+            target={{ podcast_frontend_path(@socket, :popular) }}
             purpose="popular">
         <TopList items={{@popular_podcasts}}
                 purpose="podcast"
@@ -24,7 +24,7 @@
         class="flex-1">
       <Panel heading="Latest Episodes" 
             heading_right="more ..."
-            target={{ Routes.episode_frontend_path(@socket, :index) }}
+            target={{ episode_frontend_path(@socket, :index) }}
             purpose="episode" >
       <Tab items={{ episode <- @latest_episodes }}>
           <EpisodeCard for={{ episode }} />
@@ -34,7 +34,7 @@
 
       <Panel heading="Latest Recommendations" 
             heading_right="more ..."
-            target={{ Routes.recommendation_frontend_path(@socket, :index) }}
+            target={{ recommendation_frontend_path(@socket, :index) }}
             purpose="recommendation">
         <Tab items={{ recommendation <- @latest_recommendations }}>
           <RecommendationCard for={{ recommendation }} />
@@ -43,7 +43,7 @@
 
       <Panel heading="Liked Podcasts" 
             heading_right="more ..."
-            target={{ Routes.podcast_frontend_path(@socket, :liked) }}
+            target={{ podcast_frontend_path(@socket, :liked) }}
             purpose="like">
         <TopList items={{@liked_podcasts}}
                 purpose="podcast"

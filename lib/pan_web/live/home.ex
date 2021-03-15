@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Home do
   use Surface.LiveView
-  alias PanWeb.Router.Helpers, as: Routes
+  import PanWeb.Router.Helpers
   alias PanWeb.Surface.{Panel, TopList, Tab, PodcastCard, EpisodeCard, RecommendationCard}
   alias PanWeb.{Podcast, Episode, Recommendation}
 
