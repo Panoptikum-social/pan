@@ -2,9 +2,11 @@ defmodule PanWeb.Live.Category.Show do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   alias PanWeb.Category
-  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton}
+  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton}
 
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => id}, session, socket) do
+    socket = assign(socket, current_user_id: session["user_id"])
+
     case Category.by_id_exists?(id) do
       true -> {:ok, assign(socket, Category.get_with_children_parent_and_podcasts(id))}
       false -> {:ok, assign(socket, error: "not_found")}
@@ -26,6 +28,28 @@ defmodule PanWeb.Live.Category.Show do
   def render(assigns) do
     ~H"""
     <div class="m-4">
+      <Panel :if={{ @category.parent && @category.parent.title == "👩 👨 Community" }}
+               purpose="episode"
+               heading="Welcome to the Test Laboratory!">
+
+        <div aria-label="panel-body" class="m-4">
+          <p class="my-4">We are currently testing different  and additional views for community categories!<br/>
+            Wanna give it a try?</p>
+          <p class="my-4">
+            <LinkButton href= {{ category_frontend_path @socket, :latest_episodes, @category }}
+                        title="Latest episodes"
+                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />
+            gives you a timeline view starting with the most current episode within this category.
+            <LinkButton href= {{ category_frontend_path @socket, :categorized, @category }}
+                        title="Categorized"
+                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />
+            sorts the podcasts within this categories by the other categories, they
+            are listed in. Further more we display a info card with the most relevant information
+            on this podcast.
+          </p>
+        </div>
+      </Panel>
+
       <Panel purpose="category">
         <PanelHeading>
           <a href={{ category_frontend_path(@socket, :index) }}
@@ -42,7 +66,7 @@ defmodule PanWeb.Live.Category.Show do
         </PanelHeading>
 
         <div aria-label="panel-body" class="m-4 divide-y-2 divide-gray-200">
-          <div class="flex flex-wrap">
+          <div :if={{ @category.children != [] }} class="flex flex-wrap">
             <CategoryButton :for={{ subcategory <- @category.children }}
                             for={{ subcategory }}
                             class="mx-2" />
@@ -76,6 +100,13 @@ defmodule PanWeb.Live.Category.Show do
             </div>
           </div>
         </div>
+
+        <If condition={{ @current_user_id }}>
+          logged in with user_id {{ @current_user_id }}
+        <!-- #FIXME! like_or_unlike(@current_user.id, @category.id) --> &nbsp;
+        <!-- #FIXME! follow_or_unfollow(@current_user.id, @category.id) -->
+        </If>
+
       </Panel>
     </div>
     """

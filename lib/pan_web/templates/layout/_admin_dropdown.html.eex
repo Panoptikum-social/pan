@@ -1,114 +1,116 @@
 <%= if @current_user.admin do %>
-  <li class="border-t-2 border-coolGray-500 py-1"></li>
-  <li class="uppercase text-right py-1"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
-  <li class="py-1">
-    <%= link "Categories",
-      to: category_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Podcasts",
-      to: podcast_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">Fees
-    <%= link "Feeds",
-      to: feed_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "RssFeeds",
-      to: rss_feed_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Feed Backlog",
-      to: feed_backlog_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "OPMLs",
-      to: opml_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Users",
-      to: user_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Invoices",
-      to: invoice_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Messages",
-      to: message_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Likes",
-      to: like_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Follows",
-      to: follow_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Subscriptions",
-      to: subscription_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Recommendations",
-      to: recommendation_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Personas",
-      to: persona_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Gigs",
-      to: gig_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Engagements",
-      to: engagement_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Manifestations",
-      to: manifestation_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">Delegaions
-    <%= link "Delegations",
-      to: delegation_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Languages", to: language_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Images", to: image_path(@conn, :index),
-      class: "text-coolGray-200" %>
-  </li>
-  <li class="py-1">
-    <%= link "Statistics", to: maintenance_path(@conn, :stats),
-      class: "text-coolGray-200" %>
-  </li>
-  <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+  <ul>
+    <li class="border-t-2 border-coolGray-500 py-1"></li>
+    <li class="uppercase text-right py-1"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
     <li class="py-1">
-      <%= link "LiveDashboard",
-        to: Routes.live_dashboard_path(@conn, :home),
-        class: "btn btn-sm btn-link text-coolGray-200"
-      %>
+      <%= link "Categories",
+        to: category_path(@conn, :index),
+        class: "text-coolGray-200" %>
     </li>
-  <% end %>
+    <li class="py-1">
+      <%= link "Podcasts",
+        to: podcast_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">Fees
+      <%= link "Feeds",
+        to: feed_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "RssFeeds",
+        to: rss_feed_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Feed Backlog",
+        to: feed_backlog_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "OPMLs",
+        to: opml_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Users",
+        to: user_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Invoices",
+        to: invoice_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Messages",
+        to: message_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Likes",
+        to: like_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Follows",
+        to: follow_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Subscriptions",
+        to: subscription_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Recommendations",
+        to: recommendation_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Personas",
+        to: persona_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Gigs",
+        to: gig_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Engagements",
+        to: engagement_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Manifestations",
+        to: manifestation_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">Delegaions
+      <%= link "Delegations",
+        to: delegation_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Languages", to: language_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Images", to: image_path(@conn, :index),
+        class: "text-coolGray-200" %>
+    </li>
+    <li class="py-1">
+      <%= link "Statistics", to: maintenance_path(@conn, :stats),
+        class: "text-coolGray-200" %>
+    </li>
+    <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+      <li class="py-1">
+        <%= link "LiveDashboard",
+          to: Routes.live_dashboard_path(@conn, :home),
+          class: "btn btn-sm btn-link text-coolGray-200"
+        %>
+      </li>
+    <% end %>
+  </ul>
 <% end %>

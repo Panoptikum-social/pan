@@ -19,7 +19,7 @@ defmodule PanWeb.Surface.LinkButton do
       <a href={{ @href }}>
         <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
         {{ @title }}
-      </a>
+      </a>&nbsp;
     </span>
 
     <a :if={{ !@truncate}}
@@ -30,7 +30,7 @@ defmodule PanWeb.Surface.LinkButton do
                  "p-2 rounded-lg font-medium": @large }}>
         <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
         {{ @title }}
-    </a>
+    </a>&nbsp;
     """
   end
 end
