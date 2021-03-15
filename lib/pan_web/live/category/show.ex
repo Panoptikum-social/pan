@@ -35,17 +35,16 @@ defmodule PanWeb.Live.Category.Show do
         <div aria-label="panel-body" class="m-4">
           <p class="my-4">We are currently testing different  and additional views for community categories!<br/>
             Wanna give it a try?</p>
-          <p class="my-4">
+          <p class="my-4 leading-8">
             <LinkButton href= {{ category_frontend_path @socket, :latest_episodes, @category }}
                         title="Latest episodes"
-                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />
-            gives you a timeline view starting with the most current episode within this category.
+                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />&nbsp;
+            gives you a timeline view starting with the most current episode within this category.<br/>
             <LinkButton href= {{ category_frontend_path @socket, :categorized, @category }}
                         title="Categorized"
-                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />
-            sorts the podcasts within this categories by the other categories, they
-            are listed in. Further more we display a info card with the most relevant information
-            on this podcast.
+                        class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />&nbsp;
+            sorts the podcasts within this categories by the other categories, they are listed in.<br/>
+            Further more we display a info card with the most relevant information on this podcast.
           </p>
         </div>
       </Panel>
