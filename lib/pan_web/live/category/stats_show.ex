@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Category.Show do
+defmodule PanWeb.Live.Category.StatsShow do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   alias PanWeb.Category
@@ -15,6 +15,18 @@ defmodule PanWeb.Live.Category.Show do
 
   def language(podcast) do
     podcast.language_name || "Language unknown"
+  end
+
+  def amount(language, podcasts) do
+    language =
+      case language do
+        "Language unknown" -> nil
+        language -> language
+      end
+
+    podcasts
+    |> Enum.filter(fn p -> p.language_name == language end)
+    |> length()
   end
 
   def render(%{error: "not_found"} = assigns) do
@@ -76,10 +88,10 @@ defmodule PanWeb.Live.Category.Show do
                                       |> Enum.uniq_by(fn p -> p.language_name end)
                                       |> Enum.sort_by(fn p -> p.language_name end) }}
                  class="mx-2">
-              {{ prototype.language_emoji || "🏳️" }} &nbsp;
+              {{ prototype.language_emoji || "🏳️"}} &nbsp;
               <a id={{ "lang#" <> language(prototype) }}
                  href={{ "#" <> language(prototype) }}>
-                {{ language(prototype) }}
+                {{ language(prototype) }} {{ language(prototype) |> amount(@podcasts) }}
               </a>
             </div>
           </div>
@@ -89,7 +101,7 @@ defmodule PanWeb.Live.Category.Show do
                                     |> Enum.sort_by(fn p -> p.language_name end) }}>
             <h2 id={{ language(prototype) }}
                 class="text-2xl mt-4">
-              {{ language(prototype) }}
+              {{ language(prototype) }} {{ language(prototype) |> amount(@podcasts) }}
             </h2>
             <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
               <PodcastButton :for={{ podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end) }}

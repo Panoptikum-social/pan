@@ -168,7 +168,7 @@ defmodule PanWeb.Router do
     live "/categories", Live.Category.Tree, :index, as: :category_frontend
     live "/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend
     live "/categories/:id", Live.Category.Show, :show, as: :category_frontend
-    get("/categories/:id/stats", CategoryFrontendController, :show_stats)
+    live "/categories/:id/stats", Live.Category.StatsShow, :show_stats, as: :category_frontend
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 
