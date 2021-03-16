@@ -27,7 +27,7 @@ defmodule PanWeb.Surface.Panel do
 
   def render(assigns) do
     ~H"""
-    <div aria-label="panel" class="border rounded-xl my-4 w-full">
+    <div aria-label="panel" class="border rounded-xl w-full">
       <div aria-label="panel heading" class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
         <slot name="panel_heading" />
 

@@ -21,7 +21,7 @@ defmodule PanWeb.Surface.Tab do
       </ul>
       <div class="content bg-white px-4 py-4 border-l border-r border-b pt-4">
         <div :for.with_index={{ {item, index} <- @items }}
-            x-show="selectedTab === {{ index }}">
+             x-show="selectedTab === {{ index }}">
           <slot :props={{ item: item }} />
         </div>
       </div>

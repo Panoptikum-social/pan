@@ -9,7 +9,7 @@ defmodule PanWeb.Live.Category.StatsTree do
 
   def render(assigns) do
     ~H"""
-    <div class="up-to-four-columns m-4">
+    <div class="up-to-four-columns">
       <div :for.with_index={{ {category, counter} <- @categories }}
            class="inline-block">
         <p class="my-4">

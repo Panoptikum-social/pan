@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Category.Tree do
     ~H"""
     <div class="up-to-four-columns w-full">
       <div :for.with_index={{ {category, counter} <- @categories }}
-           class="inline-block m-4">
+           class="inline-block mx-2 my-4">
         <p>
           <CategoryButton for={{ category }}
                           large=true

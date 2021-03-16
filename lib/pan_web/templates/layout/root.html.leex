@@ -35,21 +35,23 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-col lg:flex-row"
-    data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
+  <body class="flex flex-col lg:flex-row lg:h-full text-coolGray-200 bg-coolGray-600"
+        data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: window.innerWidth >= 1024 }"
-         class="flex-initial flex flex-col text-blueGray-50 bg-coolGray-600 p-4 justify-start">
+         class="min-h-full flex-r flex flex-col p-4 justify-start">
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 
-    <div class="flex-1">
-      <%= @inner_content %>
+    <div class="flex-1 min-h-full flex flex-col">
+      <div class="flex flex-1 bg-white justify-center items-center p-4 text-black">
+        <%= @inner_content %>
+      </div>
 
-      <footer class="w-full flex flex-col justify-around lg:flex-row
-                   text-blueGray-50 bg-coolGray-600">
+      <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
+                     justify-evenly place-self-center">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
       </footer>
-      <div class="flex justify-center w-full text-blueGray-50 bg-coolGray-600 font-medium p-6">
+      <div class="flex justify-center w-full font-medium pb-4">
         <p>Hosted by
           <a class="text-blue-200"
             href="https://www.informatom.com">
