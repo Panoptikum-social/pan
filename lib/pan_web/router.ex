@@ -183,7 +183,8 @@ defmodule PanWeb.Router do
     resources("/episodes", EpisodeFrontendController, only: [:show, :index])
     get("/episodes/:id/player", EpisodeFrontendController, :player)
 
-    resources("/users", UserFrontendController, only: [:show, :index, :new, :create])
+    live "/users/new", Live.User.New, :new, as: :user_frontend
+    resources("/users", UserFrontendController, only: [:show, :index, :create])
     get("/pro_features", PageFrontendController, :pro_features)
 
     get("/personas/datatable", PersonaFrontendController, :datatable)

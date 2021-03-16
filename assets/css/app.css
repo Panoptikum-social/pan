@@ -6,6 +6,26 @@
 /* @tailwind components; */
 @import "../node_modules/nprogress/nprogress.css";
 
+@layer base {
+  [type='text'],
+  [type='email'],
+  [type='url'],
+  [type='password'],
+  [type='number'],
+  [type='date'],
+  [type='datetime-local'],
+  [type='month'],
+  [type='search'],
+  [type='tel'],
+  [type='time'],
+  [type='week'],
+  [multiple],
+  textarea,
+  select {
+    @apply px-2 py-1 rounded-md border-gray-300 shadow-sm;
+  }
+}
+
 [hidden] { @apply hidden; }
 
 .alert:empty { @apply hidden; }

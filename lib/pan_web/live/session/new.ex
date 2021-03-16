@@ -6,7 +6,7 @@ defmodule PanWeb.Live.Session.New do
 
   def render(assigns) do
     ~H"""
-    <div class="max-w-prose">
+    <div class="max-w-96">
       <h1 class="text-3xl">Login</h1>
 
       <Form action="/sessions"
@@ -14,20 +14,18 @@ defmodule PanWeb.Live.Session.New do
             opts={{ autocomplete: "off" }}>
 
         <Field name="email"
-                class="my-6">
-          <Label field= {{ :username_or_email}}
+               class="my-6">
+          <Label field={{ :username_or_email}}
                   class="block font-medium text-gray-700"/>
-          <TextInput field= {{ :username }}
-                    opts={{ placeholder: "Username" }}
-                    class="w-full border-gray-300 rounded-lg shadow-sm" />
+          <TextInput field={{ :username }}
+                     class="w-full border-gray-300 rounded-lg shadow-sm" />
         </Field>
 
         <Field name="password" class="my-6">
-          <Label field= {{ :password}}
+          <Label field={{ :password}}
                 class="block font-medium text-gray-700"/>
-          <PasswordInput field= {{ :password }}
-                        opts={{ placeholder: "Password" }}
-                        class="w-full border-gray-300 rounded-lg shadow-sm" />
+          <PasswordInput field={{ :password }}
+                         class="w-full border-gray-300 rounded-lg shadow-sm" />
         </Field>
 
         <Field name="hint" class="mt-4">
