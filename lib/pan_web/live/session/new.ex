@@ -14,7 +14,7 @@ defmodule PanWeb.Live.Session.New do
             for={{ :session }}
             opts={{ autocomplete: "off" }}>
 
-        <Field name="email"
+        <Field name="username"
                class="my-6">
           <Label field={{ :username_or_email}}
                   class="block font-medium text-dark-gray"/>

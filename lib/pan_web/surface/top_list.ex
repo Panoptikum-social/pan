@@ -41,20 +41,21 @@ defmodule PanWeb.Surface.TopList do
     ~H"""
     <table class="w-full table-fixed">
       <tr :for={{ {rank, count, items} <- prepare_for_toplist(@items) }}
-          class="odd:bg-gray-100 align-top" >
-        <td class="text-right py-2 w-1/12">
+          class="odd:bg-very-light-gray align-top" >
+        <td class="text-right py-2 w-10">
           {{ rank }}.
         </td>
-        <td class="px-4 py-1 w-9/12">
+        <td class="px-4">
           <For each={{ {id, title} <- items }}>
-            <p class="leading-loose">
+            <p>
               <PodcastButton :if={{ @purpose == "podcast" }}
-                             id={{ id }}
-                             title={{ title}} />
+                              id={{ id }}
+                              title={{ title}}
+                              truncate={{ true }} />
             </p>
           </For>
         </td>
-        <td class="text-right py-2 w-2/12">
+        <td class="text-right py-2 w-20">
           {{ count }} <Icon name={{ @icon }} />&nbsp;
         </td>
       </tr>
