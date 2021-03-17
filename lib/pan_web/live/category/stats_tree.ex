@@ -23,7 +23,7 @@ defmodule PanWeb.Live.Category.StatsTree do
             <nobr>
               <CategoryButton for={{ subcategory }}
                               index_on_page=1
-                              truncate= {{ true }}/>
+                              truncate={{ true }}/>
               <span class="align-top">{{ length subcategory.podcasts }}</span>
             </nobr>
             &nbsp;

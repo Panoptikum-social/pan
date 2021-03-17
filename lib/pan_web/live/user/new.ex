@@ -15,7 +15,7 @@ defmodule PanWeb.Live.User.New do
     <div class="max-w-96">
       <h1 class="text-3xl">Sign Up</h1>
 
-      <Form action= {{ user_frontend_path(@socket, :create) }}
+      <Form action={{ user_frontend_path(@socket, :create) }}
             for={{ @changeset }}
             opts={{ autocomplete: "off" }}>
 
@@ -44,8 +44,7 @@ defmodule PanWeb.Live.User.New do
         <EmailField name="email" />
         <PasswordField name="password" />
         <PasswordField name="password_confirmation" />
-        <CheckBoxField name="podcaster"
-                       label="I am a podcaster" />
+        <CheckBoxField name="podcaster" label="I am a podcaster" />
 
         <Field name="bot_check" class="my-4">
           <Label class="block font-medium text-dark-gray">

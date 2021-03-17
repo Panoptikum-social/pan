@@ -36,11 +36,11 @@ defmodule PanWeb.Live.Category.Show do
         <p>We are currently testing different  and additional views for community categories!<br/>
           Wanna give it a try?</p>
         <p class="mt-4 leading-8">
-          <LinkButton href= {{ category_frontend_path @socket, :latest_episodes, @category }}
+          <LinkButton href={{ category_frontend_path @socket, :latest_episodes, @category }}
                       title="Latest episodes"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           gives you a timeline view starting with the most current episode within this category.<br/>
-          <LinkButton href= {{ category_frontend_path @socket, :categorized, @category }}
+          <LinkButton href={{ category_frontend_path @socket, :categorized, @category }}
                       title="Categorized"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           sorts the podcasts within this categories by the other categories, they are listed in.<br/>
@@ -94,7 +94,7 @@ defmodule PanWeb.Live.Category.Show do
           <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
             <PodcastButton :for={{ podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end) }}
                             for={{ podcast }}
-                            truncate= {{ true }}
+                            truncate={{ true }}
                             class="m-2"/>
           </div>
         </div>
