@@ -22,7 +22,7 @@
   [multiple],
   textarea,
   select {
-    @apply px-2 py-1 rounded-md border-gray-300 shadow-sm;
+    @apply px-2 py-1 rounded-md border-light-medium-gray  shadow-sm;
   }
 }
 

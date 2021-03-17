@@ -7,19 +7,20 @@ defmodule PanWeb.Surface.Tab do
 
   def render(assigns) do
     ~H"""
-    <div x-data="{ selectedTab: 0 }">
-      <ul class="flex flex-wrap border-b mt-0.5" >
+    <div x-data="{ selectedTab: 0 }" class="pt-0.5">
+      <ul class="flex flex-wrap border-b border-light-gray">
         <li :for.index={{ @items }}
-            class="-mb-px mr-1 bg-gray-200 text-gray-500">
-          <a class="inline-block rounded-t py-2 px-4 font-semibold hover:text-blue-800"
-            :class="{ 'bg-white text-black border-l border-t border-r' : selectedTab === {{ index }} }"
+            class="-mb-px ml-1.5">
+          <a class="inline-block rounded-t px-2 py-1.5 font-semibold text-medium-gray hover:text-link border-light-gray"
+            :class="{ 'bg-white border-l border-t border-r text-dark-gray' : selectedTab === {{ index }},
+                      'bg-light-gray' : selectedTab !== {{ index }} }"
             @click.prevent="selectedTab = {{ index }}"
             href="#">
             {{ index + 1 }}
           </a>
         </li>
       </ul>
-      <div class="content bg-white px-4 py-4 border-l border-r border-b pt-4">
+      <div class="p-4">
         <div :for.with_index={{ {item, index} <- @items }}
              x-show="selectedTab === {{ index }}">
           <slot :props={{ item: item }} />

@@ -18,14 +18,14 @@ defmodule PanWeb.Live.Session.New do
           <Label field={{ :username_or_email}}
                   class="block font-medium text-gray-700"/>
           <TextInput field={{ :username }}
-                     class="w-full border-gray-300 rounded-lg shadow-sm" />
+                     class="w-full border-light-medium-gray rounded-lg shadow-sm" />
         </Field>
 
         <Field name="password" class="my-6">
           <Label field={{ :password}}
                 class="block font-medium text-gray-700"/>
           <PasswordInput field={{ :password }}
-                         class="w-full border-gray-300 rounded-lg shadow-sm" />
+                         class="w-full border-light-medium-gray rounded-lg shadow-sm" />
         </Field>
 
         <Field name="hint" class="mt-4">

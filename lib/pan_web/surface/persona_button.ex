@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.PersonaButton do
     ~H"""
     <LinkButton
       href={{ Routes.persona_frontend_path(@socket, :show, @id || @for.id) }}
-      class="bg-violet-400 border-violet-500 text-white hover:bg-violet-300 hover:text-gray-800"
+      class="bg-lavender text-white hover:bg-lavender-light"
       icon="user-astronaut-solid"
       title={{ @name || @for.title }} />
     """

@@ -40,20 +40,21 @@ defmodule PanWeb.Live.Category.StatsShow do
   def render(assigns) do
     ~H"""
     <Panel :if={{ @category.parent && @category.parent.title == "👩 👨 Community" }}
-              purpose="episode"
-              heading="Welcome to the Test Laboratory!">
+           purpose="episode"
+           heading="Welcome to the Test Laboratory!"
+           class="mb-4">
 
-      <div aria-label="panel-body" class="m-4">
+      <div aria-label="panel-body" class="p-4">
         <p class="my-4">We are currently testing different  and additional views for community categories!<br/>
           Wanna give it a try?</p>
         <p class="my-4 leading-8">
           <LinkButton href= {{ category_frontend_path @socket, :latest_episodes, @category }}
                       title="Latest episodes"
-                      class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />&nbsp;
+                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           gives you a timeline view starting with the most current episode within this category.<br/>
           <LinkButton href= {{ category_frontend_path @socket, :categorized, @category }}
                       title="Categorized"
-                      class="bg-green-500 text-white hover:bg-green-200 hover:text-black" />&nbsp;
+                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           sorts the podcasts within this categories by the other categories, they are listed in.<br/>
           Further more we display a info card with the most relevant information on this podcast.
         </p>
@@ -75,7 +76,7 @@ defmodule PanWeb.Live.Category.StatsShow do
         <Icon name="folder-open" /> {{ @category. title }}
       </PanelHeading>
 
-      <div aria-label="panel-body" class="m-4 divide-y-2 divide-gray-200">
+      <div aria-label="panel-body" class="p-4 divide-y-2 divide-light-gray">
         <div :if={{ @category.children != [] }} class="flex flex-wrap">
           <CategoryButton :for={{ subcategory <- @category.children }}
                           for={{ subcategory }}

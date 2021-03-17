@@ -23,7 +23,7 @@ defmodule PanWeb.Live.Category.Tree do
                             truncate= {{ true }}/> &nbsp;
           </For>
         </p>
-        <hr class="mt-4 border-t-1 border-coolGray-200" style="break-before: avoid;" />
+        <hr class="mt-4 border-t-1 border-light-gray" style="break-before: avoid;" />
       </div>
     </div>
     """

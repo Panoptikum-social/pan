@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.EpisodeButton do
     ~H"""
     <LinkButton
       href={{ Routes.episode_frontend_path(@socket, :show, @id || @for.id) }}
-      class="bg-lightBlue-400 text-white border-lightBlue-500 hover:bg-lightBlue-300 hover:text-gray-800"
+      class="bg-aqua text-white hover:bg-aqua-light"
       icon="headphones-solid"
       title={{ @title || @for.title }} />
     """

@@ -35,7 +35,7 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-coolGray-200 bg-coolGray-600"
+  <body class="flex flex-col lg:flex-row lg:h-full text-light-gray bg-nav-background"
         data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: window.innerWidth >= 1024 }"
          class="min-h-full flex-r flex flex-col p-4 justify-start">
@@ -43,7 +43,7 @@
     </nav>
 
     <div class="flex-1 min-h-full flex flex-col">
-      <div class="flex flex-1 bg-white justify-center items-center p-4 text-black">
+      <div class="flex-1 flex bg-white justify-center items-center p-4 text-black">
         <%= @inner_content %>
       </div>
 
@@ -53,7 +53,7 @@
       </footer>
       <div class="flex justify-center w-full font-medium pb-4">
         <p>Hosted by
-          <a class="text-blue-200"
+          <a class="text-link"
             href="https://www.informatom.com">
             Informatom EDV-Dienstleistungen e.U.
           </a>

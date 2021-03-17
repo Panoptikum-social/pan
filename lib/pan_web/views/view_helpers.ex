@@ -42,23 +42,20 @@ defmodule PanWeb.ViewHelpers do
 
   def color_class_cycle(counter) do
     Enum.at([
-        "bg-white text-gray-600 border-coolGray-300 hover:bg-coolGray-400 hover:text-white",
-        "bg-coolGray-100 text-gray-600 border-coolGray-300 hover:bg-white hover:text-gray-800",
-        "bg-coolGray-400 text-white hover:bg-coolGray-800 hover:text-gray-600",
-        "bg-coolGray-600 text-white hover:bg-coolGray-200 hover:text-gray-600",
-        "bg-lime-500 text-white hover:bg-lime-800 hover:text-gray-600",
-        "bg-teal-500 text-white hover:bg-teal-800 hover:text-gray-600",
-        "bg-lightBlue-400 text-white hover:bg-lightBlue-800 hover:text-gray-600",
-        "bg-blue-500 text-white hover:bg-blue-800 hover:text-gray-600",
-        "bg-violet-400 text-white hover:bg-violet-800 hover:text-gray-600",
-        "bg-pink-400 text-white hover:bg-pink-800 hover:text-gray-600",
-        "bg-rose-600 text-white hover:bg-rose-200 hover:text-gray-600",
-        "bg-red-500 text-white hover:bg-red-800 hover:text-gray-600",
-        "bg-amber-400 text-white hover:bg-amber-800 hover:text-gray-600",
-        "bg-cyan-400 text-white hover:bg-cyan-800 hover:text-gray-600",
-        "bg-green-500 text-white hover:bg-green-800 hover:text-gray-600",
-        "bg-yellow-400 text-white  hover:bg-yellow-800 hover:text-gray-600",
-    ], rem(counter, 15))
+        "bg-white hover:bg-light-gray text-dark-gray border-medium-gray",
+        "bg-light-gray hover:bg-very-light-gray text-dark-gray border-medium-gray",
+        "bg-medium-gray hover:bg-light-medium-gray text-white",
+        "bg-dark-gray hover:bg-medium-dark-gray text-white",
+        "bg-success hover:bg-success-light text-white",
+        "bg-info hover:bg-info-light text-white",
+        "bg-primary hover:bg-primary-light text-white",
+        "bg-blue-jeans hover:bg-blue-jeans-light text-white",
+        "bg-lavender hover:bg-lavender-light text-white",
+        "bg-pink-rose hover:bg-pink-rose-light text-white",
+        "bg-danger hover:bg-danger-light text-white",
+        "bg-bittersweet hover:bg-bittersweet-light text-white",
+        "bg-warning hover:bg-warning-light text-white"
+    ], rem(counter, 13))
   end
 
   def truncate_string(string, len) do

@@ -14,8 +14,8 @@ defmodule PanWeb.Surface.LinkButton do
     <span :if={{ @truncate }} class=""
           class={{ "border border-solid truncate inline-block",
                    @class,
-                   "p-0.5 rounded text-sm": !@large,
-                   "p-1.5 rounded-lg font-medium": @large }}>
+                   "py-0.5 px-1.5 rounded text-sm": !@large,
+                   "py-1.5 px-2.5 rounded-md": @large }}>
       <a href={{ @href }}>
         <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
         {{ @title }}
@@ -26,8 +26,8 @@ defmodule PanWeb.Surface.LinkButton do
         href={{ @href }}
         class={{ "border border-solid my-2",
                  @class,
-                 "p-1 rounded text-sm": !@large,
-                 "p-2 rounded-lg font-medium": @large }}>
+                 "py-1 px-2 rounded text-sm": !@large,
+                 "py-2 px-3 rounded-md": @large }}>
         <Icon :if={{ @icon }} name={{ @icon }} spaced={{ true }}/>
         {{ @title }}
     </a>

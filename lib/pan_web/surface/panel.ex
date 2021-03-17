@@ -9,40 +9,41 @@ defmodule PanWeb.Surface.Panel do
   prop purpose, :string, required: false, default: "default"
   prop heading_right, :string, required: false
   prop target, :fun, required: false
+  prop class, :css_class, required: false
 
   slot default
   slot panel_heading, required: false
 
   def heading_color_classes(purpose) do
     case purpose do
-      "category" -> "bg-orange-400 text-white"
-      "podcast" -> "bg-blue-400 text-white"
-      "popular" -> "bg-teal-500 text-white"
-      "like" -> "bg-rose-600 text-white"
-      "episode" -> "bg-amber-400 text-white"
-      "recommendation" -> "bg-lime-500 text-white"
+      "category" -> "bg-category text-white"
+      "podcast" -> "bg-podcast text-white"
+      "popular" -> "bg-aqua text-white"
+      "like" -> "bg-grapefruit text-white"
+      "episode" -> "bg-episode text-white"
+      "recommendation" -> "bg-recommendation text-white"
       _ -> "bg-white"
     end
   end
 
   def render(assigns) do
     ~H"""
-    <div aria-label="panel" class="border rounded-xl w-full">
+    <div aria-label="panel" class={{ "rounded-xl w-full", @class }}>
       <div aria-label="panel heading" class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
         <slot name="panel_heading" />
 
         <If condition={{ !@target }}>
           {{@heading}}
         </If>
-        <a :if={{ @target }} href={{ @target }} class="hover:text-gray-200">
+        <a :if={{ @target }} href={{ @target }} class="hover:text-light-gray">
           {{ @heading }}
         </a>
-        <a :if={{ @target }} href={{ @target }} class="float-right hover:text-gray-200">
+        <a :if={{ @target }} href={{ @target }} class="float-right hover:text-light-gray">
           {{ @heading_right }}
         </a>
       </div>
 
-      <div class="rounded-b-xl">
+      <div class="border-l border-r border-b border-light-gray rounded-b-xl">
         <slot>No content defined!</slot>
       </div>
     </div>

@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.UserButton do
     ~H"""
     <LinkButton
       href={{ Routes.user_frontend_path(@socket, :show, @id || @for.id) }}
-      class="bg-rose-600 border-rose-800 text-white hover:bg-rose-200 hover:text-gray-800"
+      class="bg-bittersweet text-white hover:bg-bittersweet-light"
       icon="female-solid"
       title={{ @name || @for.name }} />
     """
