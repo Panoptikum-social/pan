@@ -1,9 +1,9 @@
 defmodule PanWeb.Live.User.New do
   use Surface.LiveView
   alias PanWeb.User
+  alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField}
   alias Surface.Components.Form
-  alias Surface.Components.Form.{Field, TextInput, Submit, Label, PasswordInput, ErrorTag,
-                                 NumberInput, Checkbox, EmailInput}
+  alias Surface.Components.Form.{Field, Label, ErrorTag, NumberInput}
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
@@ -39,86 +39,33 @@ defmodule PanWeb.Live.User.New do
           </p>
         </Field>
 
-        <Field name="name"
-               class="my-4">
-          <Label field={{ :name}}
-                 class="block font-medium text-gray-700"/>
-          <TextInput field={{ :name }}
-                      class="w-full" />
-          <ErrorTag field={{ :name }} />
-        </Field>
+        <TextField name="name" />
+        <TextField name="username" />
+        <EmailField name="email" />
+        <PasswordField name="password" />
+        <PasswordField name="password_confirmation" />
+        <CheckBoxField name="podcaster"
+                       label="I am a podcaster" />
 
-        <Field name="username"
-               class="my-4">
-          <Label field={{ :username }}
-                 class="block font-medium text-gray-700"/>
-          <TextInput field={{ :username }}
-                     class="w-full" />
-          <ErrorTag field={{ :username }} />
-        </Field>
-
-        <Field name="email"
-               class="my-4">
-          <Label field={{ :email}}
-                 class="block font-medium text-gray-700" />
-          <EmailInput field={{ :email }}
-                      class="w-full" />
-          <ErrorTag field={{ :email }} />
-        </Field>
-
-        <Field name="password"
-               class="my-4">
-          <Label field={{ :password }}
-                 class="block font-medium text-gray-700" />
-          <PasswordInput field={{ :password }}
-                         class="w-full" />
-          <ErrorTag field={{ :password }} />
-        </Field>
-
-        <Field name="password_confirmation"
-               class="my-4">
-          <Label field={{ :password_confirmation}}
-                 class="block font-medium text-gray-700"/>
-          <PasswordInput field={{ :password_confirmation }}
-                         class="w-full" />
-          <ErrorTag field={{ :password_confirmation }} />
-        </Field>
-
-        <Field name="podcaster"
-               class="my-4 flex items-center">
-          <Checkbox field={{ :podcaster }} />
-          <Label field={{ :podcaster}}
-                 class="font-medium text-gray-700 pl-4">
-                 I am a podcaster
-          </Label>
-          <ErrorTag field={{ :podcaster }} />
-        </Field>
-
-        <Field name="bot_check"
-               class="my-4">
-          <Label field={{ :bot_check}}
-                 class="block font-medium text-gray-700">
+        <Field name="bot_check" class="my-4">
+          <Label class="block font-medium text-dark-gray">
                  If you subtract two from 44, you get...
           </Label>
-          <NumberInput field={{ :bot_check }}
-                       class="w-full"
-                       opts={{ placeholder: "... sorry, we had too many bots sign up!" ,
-                       length: 2 }} />
+          <NumberInput class="w-full"
+                       opts={{ placeholder: "Are you a human? ;-)" }} />
           <ErrorTag field={{ :bot_check }} />
         </Field>
 
-        <Field name="cookie_warning">
+        <Field name="cookie_warning" class="text-dark-gray">
           Submitting this form will transfer a session cookie to the server.<br/>
           Please, read our
           <a href="https://blog.panoptikum.io/privacy"
-             class="text-teal-500 hover:text-teal-300">
+             class="text-link hover:link-dark">
             Privacy Policy
            </a> before signing up!
          </Field>
 
-         <Submit label="Create Account"
-                 class="my-4 py-2 px-4 font-medium text-white bg-lightBlue-500
-                        hover:text-gray-700 hover:bg-lightBlue-300" />
+         <Submit label="Create Account" />
        </Form>
     </div>
     """

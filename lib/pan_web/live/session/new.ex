@@ -1,7 +1,8 @@
 defmodule PanWeb.Live.Session.New do
   use Surface.LiveView
   alias Surface.Components.Form
-  alias Surface.Components.Form.{Field, TextInput, Submit, Label, PasswordInput}
+  alias PanWeb.Surface.{Submit, PasswordField}
+  alias Surface.Components.Form.{Field, TextInput, Label, PasswordInput}
   import PanWeb.Router.Helpers
 
   def render(assigns) do
@@ -16,42 +17,34 @@ defmodule PanWeb.Live.Session.New do
         <Field name="email"
                class="my-6">
           <Label field={{ :username_or_email}}
-                  class="block font-medium text-gray-700"/>
-          <TextInput field={{ :username }}
-                     class="w-full border-light-medium-gray rounded-lg shadow-sm" />
+                  class="block font-medium text-dark-gray"/>
+          <TextInput class="w-full border-light-medium-gray rounded-lg shadow-sm" />
         </Field>
 
-        <Field name="password" class="my-6">
-          <Label field={{ :password}}
-                class="block font-medium text-gray-700"/>
-          <PasswordInput field={{ :password }}
-                         class="w-full border-light-medium-gray rounded-lg shadow-sm" />
-        </Field>
+        <PasswordField name="password" />
 
-        <Field name="hint" class="mt-4">
+        <Field name="hint" class="mt-4 text-dark-gray">
           Submitting this form will transfer a session cookie to the server. See
           <a href="https://blog.panoptikum.io/privacy"
-              class="text-teal-500 hover:text-teal-300">
+              class="text-link hover:text-link-dark">
             Privacy
           </a> for details.
         </Field>
 
-        <Submit label="Log in"
-                class="my-4 py-2 px-4 rounded-lg font-medium text-white
-                        bg-lightBlue-500 hover:text-gray-700 hover:bg-lightBlue-700" />
+        <Submit label="Log in" />
       </Form>
 
       <ul class="list-disc mt-4 ml-8">
         <li>Forgot your password? -
           <a href={{ user_path(@socket, :forgot_password) }}
-            class="text-teal-500 hover:text-teal-300">
+            class="text-link hover:text-link-dark">
             Get an email with a login link
           </a>
         </li>
         <li>
           No account yet? -
           <a href={{ user_frontend_path(@socket, :new) }}
-            class="text-teal-500 hover:text-teal-300">
+            class="text-link hover:text-link-dark">
             Sign up
           </a>
         </li>

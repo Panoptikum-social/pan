@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.Tab do
       <ul class="flex flex-wrap border-b border-light-gray">
         <li :for.index={{ @items }}
             class="-mb-px ml-1.5">
-          <a class="inline-block rounded-t px-2 py-1.5 font-semibold text-medium-gray hover:text-link border-light-gray"
+          <a class="inline-block rounded-t px-2 py-1.5 font-semibold text-medium-gray hover:text-link-dark border-light-gray"
             :class="{ 'bg-white border-l border-t border-r text-dark-gray' : selectedTab === {{ index }},
                       'bg-light-gray' : selectedTab !== {{ index }} }"
             @click.prevent="selectedTab = {{ index }}"

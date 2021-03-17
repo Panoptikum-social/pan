@@ -57,7 +57,8 @@ module.exports = {
       black: '#000000',
       // Bootflat colors: functional colors
       'nav-background': '#434a54', // dark gray
-      'link': '#00c997', // mint-very-light
+      'link-dark': '#00644b', // mint-very-light
+      link: '#00c997', // mint-very-light
       'success-light': '#b9df90',
       success: '#8cc152', // grass
       'success-dark': '#3c763d',
