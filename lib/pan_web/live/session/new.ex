@@ -2,12 +2,12 @@ defmodule PanWeb.Live.Session.New do
   use Surface.LiveView
   alias Surface.Components.Form
   alias PanWeb.Surface.{Submit, PasswordField}
-  alias Surface.Components.Form.{Field, TextInput, Label, PasswordInput}
+  alias Surface.Components.Form.{Field, TextInput, Label}
   import PanWeb.Router.Helpers
 
   def render(assigns) do
     ~H"""
-    <div class="max-w-96">
+    <div class="max-w-lg">
       <h1 class="text-3xl">Login</h1>
 
       <Form action="/sessions"

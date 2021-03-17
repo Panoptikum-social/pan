@@ -12,7 +12,7 @@ defmodule PanWeb.Live.User.New do
 
   def render(assigns) do
     ~H"""
-    <div class="max-w-96">
+    <div class="max-w-lg">
       <h1 class="text-3xl">Sign Up</h1>
 
       <Form action={{ user_frontend_path(@socket, :create) }}
