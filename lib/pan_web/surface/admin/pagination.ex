@@ -22,7 +22,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
                       disabled={{ i == @current_page }}
                       page={{ i }}
                       per_page={{ @per_page }}
-                      class={{ "rounded-l-lg": (i==1) }}
+                      class={{ "rounded-l-lg": i==1 }}
                       target={{ @target }} >
         {{ i }}
       </PaginationLink>

@@ -1,11 +1,11 @@
 <div id={{ @id }} class="self-stretch">
   <h1 class="text-2xl">{{ @heading }}</h1>
 
-  <table class="table-auto mt-6">
+  <table class="table-full w-full mt-6">
     <thead>
       <tr>
         <th :for={{ column <- @columns }} 
-            class="border border-light-gray p-1">
+            class="border border-light-gray p-1 font-medium">
           <SortLink sort_by={{ @sort_by }} 
                     field={{ String.to_atom(column.field) }} 
                     sort_order={{ @sort_order }}
@@ -13,7 +13,7 @@
             {{ column.label }}
           </SortLink>
         </th>
-        <th class="border border-light-gray p-1">
+        <th class="border border-light-gray">
           Actions
         </th>
       </tr>
@@ -21,23 +21,26 @@
     <tbody>
       <tr>
         <td :for={{ column <- @columns }} 
-            class="border border-light-gray p-1">
+            class={{ "border border-light-gray",
+                     "text-right": column.type == :integer }}>
           <Form :if={{ column[:searchable] }} 
                 for={{ :search }} 
                 change={{"search", target: "#" <> @id }}
                 submit="save" 
                 opts={{ autocomplete: "off" }}>
             <TextInput field={{ String.to_atom(column.field) }}
-                        value={{ @search_options[String.to_atom(column.field)] }} 
-                        class="w-full p-1.5"
-                        opts={{ autofocus: "autofocus", 
-                                autocomplete: "off", 
-                                placeholder: column.field, 
-                                "phx-debounce": 300 }} />
+                       value={{ @search_options[String.to_atom(column.field)] }} 
+                       class={{ "p-0.5",
+                                "w-32": column.type == :string,
+                                "w-12": column.type == :integer,
+                                "w-32": column.type == :datetime }}
+                       opts={{ autofocus: "autofocus", 
+                               autocomplete: "off", 
+                               "phx-debounce": 300 }} />
           </Form>
         </td>
-        <td class="border border-light-gray p-1 text-center">
-          Search:
+        <td class="border border-light-gray text-center">
+          Search: <br/>
           <Link to="#"
                 click={{"toggle_search_mode", target: "#" <> @id }}
                 label={{ if @like_search, do: "contains", else: "exact" }}
@@ -47,17 +50,13 @@
 
       <tr :for={{ record <- @records }} 
           class="odd:bg-very-light-gray">
-        <td :for={{ column <- @columns }} 
-            class="border border-light-gray p-1">
-          <If condition={{ column[:presenter] }}>
-            {{ column.presenter.(record) }}
-          </If>
-          <If condition={{ !column[:presenter] }}>
-            {{ Map.get(record, String.to_atom(column.field)) }}
-          </If>
-        </td>
+        <TableData :for={{ column <- @columns }} 
+                   presenter={{ column[:presenter]}}
+                   record={{ record }}
+                   field ={{ column.field }} 
+                   type={{ column.type }} />
 
-        <td class="border border-light-gray p-1">
+        <td class="border border-light-gray">
           <nobr class="space-x-2">
             <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
                   class="text-info hover:text-info-light">

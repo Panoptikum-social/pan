@@ -10,10 +10,6 @@ defmodule PanWeb.Surface.Admin.SortLink do
 
   slot default, required: true
 
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns) |> Surface.init()}
-  end
-
   defp toggle_sort_order(:asc), do: :desc
   defp toggle_sort_order(:desc), do: :asc
 

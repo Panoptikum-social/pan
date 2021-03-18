@@ -3,13 +3,13 @@ defmodule PanWeb.Surface.Admin.Grid do
   import Ecto.Query
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{SortLink, Pagination}
+  alias PanWeb.Surface.Admin.{SortLink, Pagination, TableData}
   alias PanWeb.Surface.Icon
   alias Surface.Components.{Form, Link, Form.TextInput}
 
   prop heading, :string, required: false, default: "Records"
   prop current_page, :integer, required: false, default: 1
-  prop per_page, :integer, required: false, default: 10
+  prop per_page, :integer, required: false, default: 20
   prop sort_by, :atom, required: false, default: :id
   prop sort_order, :atom, required: false, default: :asc
   prop resource, :module, required: true
@@ -118,4 +118,5 @@ defmodule Column do
   prop sortable, :boolean, default: true
   prop searchable, :boolean, default: true
   prop presenter, :fun
+  prop type, :atom, values: [:string, :integer, :datetime], default: :string
 end
