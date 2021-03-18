@@ -7,16 +7,16 @@ defmodule PanWeb.Surface.Admin.Grid do
   alias PanWeb.Surface.Icon
   alias Surface.Components.{Form, Link, Form.TextInput}
 
-  prop heading, :string, default: "Records"
-  prop current_page, :integer, default: 1
-  prop per_page, :integer, default: 10
-  prop sort_by, :atom, default: :id
-  prop sort_order, :atom, default: :asc
+  prop heading, :string, required: false, default: "Records"
+  prop current_page, :integer, required: false, default: 1
+  prop per_page, :integer, required: false, default: 10
+  prop sort_by, :atom, required: false, default: :id
+  prop sort_order, :atom, required: false, default: :asc
   prop resource, :module, required: true
   prop path_helper, :atom, required: true
-  prop records_getter_params, :map, default: %{}
-  prop search_options, :map, default: %{}
-  prop like_search, :boolean, default: false
+  prop records_getter_params, :map, required: false, default: %{}
+  prop search_options, :map, required: false, default: %{}
+  prop like_search, :boolean, required: false, default: false
 
   data records, :list, default: []
   slot columns

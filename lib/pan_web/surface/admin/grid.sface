@@ -1,82 +1,92 @@
-<div id={{ @id }} class="m-12">
+<div id={{ @id }} class="self-stretch">
   <h1 class="text-2xl">{{ @heading }}</h1>
 
-  <div class="py-6">
-    <table class="table-auto">
-      <thead>
-        <tr>
-          <th :for={{ column <- @columns }} class="border p-2">
-            <SortLink sort_by={{ @sort_by }} 
-                      field={{ String.to_atom(column.field) }} 
-                      sort_order={{ @sort_order }}
-                      target={{ "#" <> @id }}>
-              {{ column.label }}
-            </SortLink>
-          </th>
-          <th class="border p-2">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td :for={{ column <- @columns }} class="border p-2">
-            <Form :if={{ column[:searchable] }} 
-                  for={{ :search }} 
-                  change={{"search", target: "#" <> @id }}
-                  submit="save" 
-                  opts={{ autocomplete: "off" }}>
-              <TextInput field={{ String.to_atom(column.field) }}
-                         value={{ @search_options[String.to_atom(column.field)] }} 
-                         class="w-20 p-1.5"
-                         opts={{ autofocus: "autofocus", 
-                                 autocomplete: "off", 
-                                 placeholder: column.field, 
-                                 "phx-debounce": 300 }} />
-            </Form>
-          </td>
-          <td class="border p-2 text-center">
-            Search mode:
-            <Link to="#"
-                  click={{"toggle_search_mode", target: "#" <> @id }}
-                  label={{ if @like_search, do: "contains", else: "exact" }}
-                  class="text-blue-500" />
-          </td>
-        </tr>
+  <table class="table-auto mt-6">
+    <thead>
+      <tr>
+        <th :for={{ column <- @columns }} 
+            class="border border-light-gray p-1">
+          <SortLink sort_by={{ @sort_by }} 
+                    field={{ String.to_atom(column.field) }} 
+                    sort_order={{ @sort_order }}
+                    target={{ "#" <> @id }}>
+            {{ column.label }}
+          </SortLink>
+        </th>
+        <th class="border border-light-gray p-1">
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td :for={{ column <- @columns }} 
+            class="border border-light-gray p-1">
+          <Form :if={{ column[:searchable] }} 
+                for={{ :search }} 
+                change={{"search", target: "#" <> @id }}
+                submit="save" 
+                opts={{ autocomplete: "off" }}>
+            <TextInput field={{ String.to_atom(column.field) }}
+                        value={{ @search_options[String.to_atom(column.field)] }} 
+                        class="w-full p-1.5"
+                        opts={{ autofocus: "autofocus", 
+                                autocomplete: "off", 
+                                placeholder: column.field, 
+                                "phx-debounce": 300 }} />
+          </Form>
+        </td>
+        <td class="border border-light-gray p-1 text-center">
+          Search:
+          <Link to="#"
+                click={{"toggle_search_mode", target: "#" <> @id }}
+                label={{ if @like_search, do: "contains", else: "exact" }}
+                class="text-link hover:text-link-dark" />
+        </td>
+      </tr>
 
-        <tr :for={{ record <- @records }} class="odd:bg-gray-100">
-          <td :for={{ column <- @columns }} class="border p-2">
-            <If condition={{ column[:presenter] }}>
-              {{ column.presenter.(record) }}
-            </If>
-            <If condition={{ !column[:presenter] }}>
-              {{ Map.get(record, String.to_atom(column.field)) }}
-            </If>
-          </td>
+      <tr :for={{ record <- @records }} 
+          class="odd:bg-gray-100">
+        <td :for={{ column <- @columns }} 
+            class="border border-light-gray p-1">
+          <If condition={{ column[:presenter] }}>
+            {{ column.presenter.(record) }}
+          </If>
+          <If condition={{ !column[:presenter] }}>
+            {{ Map.get(record, String.to_atom(column.field)) }}
+          </If>
+        </td>
 
-          <td class="border p-2 space-x-2">
+        <td class="border border-light-gray p-1">
+          <nobr class="space-x-2">
             <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
-                  class="text-green-500">
+                  class="text-info hover:text-info-light">
               <Icon name="eye-solid" />
-            </Link> &nbsp;
+            </Link>
 
             <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
-                  class="text-yellow-500">
+                  class="text-warning hover:text-warning-light">
               <Icon name="edit" /> 
-            </Link> &nbsp;
+            </Link>
 
             <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
                   opts={{ data: [confirm: "Are you sure?"], method: :delete }}
-                  class="text-red-500" >
+                  class="text-danger hover:text-danger-light" >
               <Icon name="trash-solid" /> 
             </Link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+          </nobr>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <Pagination per_page={{ @per_page}} current_page={{ @current_page }} />
+  <Pagination per_page={{ @per_page}} 
+              current_page={{ @current_page }}
+              class="mt-6" />
 
-  <Link to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
-        label="New Record"
-        class="text-blue-500" />
+  <p class="mt-6">
+    <Link to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
+          label="New Record"
+          class="text-link hover:text-link-dark" />
+  </p>
 </div>
