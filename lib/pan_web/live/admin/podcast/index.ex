@@ -15,7 +15,8 @@ defmodule PanWeb.Live.Admin.Podcast.Index do
       <Column field="title"
               label="Title" />
       <Column field="update_paused"
-              label="Update paused" />
+              label="Update paused"
+              type="boolean"/>
       <Column field="updated_at"
               label="Updated at"
               type="datetime" />

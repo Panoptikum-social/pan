@@ -1,83 +1,79 @@
 <div id={{ @id }} class="self-stretch">
   <h1 class="text-2xl">{{ @heading }}</h1>
 
-  <table class="table-full w-full mt-6">
-    <thead>
-      <tr>
-        <th :for={{ column <- @columns }} 
-            class="border border-light-gray p-1 font-medium">
-          <SortLink sort_by={{ @sort_by }} 
-                    field={{ String.to_atom(column.field) }} 
-                    sort_order={{ @sort_order }}
-                    target={{ "#" <> @id }}>
-            {{ column.label }}
-          </SortLink>
-        </th>
-        <th class="border border-light-gray">
-          Actions
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td :for={{ column <- @columns }} 
-            class={{ "border border-light-gray",
-                     "text-right": column.type == :integer }}>
-          <Form :if={{ column[:searchable] }} 
-                for={{ :search }} 
-                change={{"search", target: "#" <> @id }}
-                submit="save" 
-                opts={{ autocomplete: "off" }}>
-            <TextInput field={{ String.to_atom(column.field) }}
-                       value={{ @search_options[String.to_atom(column.field)] }} 
-                       class={{ "p-0.5",
-                                "w-32": column.type == :string,
-                                "w-12": column.type == :integer,
-                                "w-32": column.type == :datetime }}
-                       opts={{ autofocus: "autofocus", 
-                               autocomplete: "off", 
-                               "phx-debounce": 300 }} />
-          </Form>
-        </td>
-        <td class="border border-light-gray text-center">
-          Search: <br/>
-          <Link to="#"
-                click={{"toggle_search_mode", target: "#" <> @id }}
-                label={{ if @like_search, do: "contains", else: "exact" }}
-                class="text-link hover:text-link-dark" />
-        </td>
-      </tr>
+  <div class={{ "border border-light-gray grid mt-6 bg-very-light-gray gap-0.5" }}
+       style={{ "grid-template-columns: repeat(" <> 
+                Integer.to_string(length(@columns) + 1) <> 
+                ", minmax(0, auto));" }}>
+    <div :for={{ column <- @columns }} 
+         class={{ "bg-white p-1 font-medium grid place-content-center p-1 text-center", 
+                  width(column.type) }}>
+      <SortLink sort_by={{ @sort_by }} 
+                field={{ String.to_atom(column.field) }} 
+                sort_order={{ @sort_order }}
+                target={{ "#" <> @id }}>
+        {{ column.label }}
+      </SortLink>
+    </div>
+    <div class="bg-white p-1 font-medium grid place-content-center">
+      Actions
+    </div>
 
-      <tr :for={{ record <- @records }} 
-          class="odd:bg-very-light-gray">
-        <TableData :for={{ column <- @columns }} 
-                   presenter={{ column[:presenter]}}
-                   record={{ record }}
-                   field ={{ column.field }} 
-                   type={{ column.type }} />
+    <div :for={{ column <- @columns }} 
+         class={{ "bg-white p-1",
+                  width(column.type),
+                  "text-right": column.type == :integer}}>
+      <Form :if={{ column[:searchable] }} 
+            for={{ :search }} 
+            change={{"search", target: "#" <> @id }}
+            submit="save" 
+            opts={{ autocomplete: "off" }}>
+        <TextInput field={{ String.to_atom(column.field) }}
+                   value={{ @search_options[String.to_atom(column.field)] }} 
+                   class={{ "p-0.5 w-full"}}
+                    opts={{ autofocus: "autofocus", 
+                            autocomplete: "off", 
+                            "phx-debounce": 300 }} />
+      </Form>
+    </div>
 
-        <td class="border border-light-gray">
-          <nobr class="space-x-2">
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
-                  class="text-info hover:text-info-light">
-              <Icon name="eye-solid" />
-            </Link>
+    <div class="bg-white text-center p-1">
+      Search:
+      <Link to="#"
+            click={{"toggle_search_mode", target: "#" <> @id }}
+            label={{ if @like_search, do: "contains", else: "exact" }}
+            class="text-link hover:text-link-dark" />
+    </div>
 
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
-                  class="text-warning hover:text-warning-light">
-              <Icon name="edit" /> 
-            </Link>
+    <For each={{ {record, index} <- Enum.with_index(@records) }}>
+      <Presenter :for={{ column <- @columns }} 
+                  presenter={{ column[:presenter]}}
+                  record={{ record }}
+                  field ={{ column.field }} 
+                  type={{ column.type }}
+                  index={{ index}}
+                  width={{ width(column.type) }} />
 
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
-                  opts={{ data: [confirm: "Are you sure?"], method: :delete }}
-                  class="text-danger hover:text-danger-light" >
-              <Icon name="trash-solid" /> 
-            </Link>
-          </nobr>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <div class={{ "bg-white self-center flex space-x-4 justify-center",
+                    "bg-light-gray": Integer.is_odd(index) }}>
+        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
+              class="text-info hover:text-info-light p-1">
+          <Icon name="eye-solid" />
+        </Link>
+
+        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
+              class="text-warning hover:text-warning-light p-1">
+          <Icon name="edit" /> 
+        </Link>
+
+        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
+              opts={{ data: [confirm: "Are you sure?"], method: :delete }}
+              class="text-danger hover:text-danger-light p-1" >
+          <Icon name="trash-solid" /> 
+        </Link>
+      </div>
+    </For>
+  </div>
 
   <Pagination per_page={{ @per_page}} 
               current_page={{ @current_page }}

@@ -1,30 +1,45 @@
-defmodule PanWeb.Surface.Admin.TableData do
+defmodule PanWeb.Surface.Admin.Presenter do
   use Surface.Component
+  require Integer
 
   prop presenter, :fun, required: false
   prop record, :any, required: true
-  prop field, :string
-  prop type, :atom, values: [:string, :integer], default: :string
+  prop field, :string, required: true
+  prop type, :atom, required: false, values: [:string, :integer], default: :string
+  prop index, :integer, required: false, default: 0
+  prop width, :string, required: false, default: ""
 
-  def present(presenter, record, field, type) do
+  def present(presenter, record, field, format) do
     if presenter do
       presenter.(record)
     else
-      Map.get(record, String.to_atom(field))
+      data = Map.get(record, String.to_atom(field))
+      case format do
+        :boolean -> case data do
+          true -> "✔️"
+          false -> "❌"
+          _ -> "{}"
+        end
+        _ -> data
+      end
     end
   end
 
   def render(assigns) do
     ~H"""
-    <td class={{ "border border-light-gray text-very-dark-gray p-1",
-                 "text-right whitespace-nowrap": (@type == :integer),
-                 "text-center whitespace-nowrap": (@type == :datetime),
-                 "text-left truncate max-w-sm": (@type == :string) }}
+    <div class={{ "bg-white text-very-dark-gray px-1 grid content-center",
+                  @width,
+                  "text-right whitespace-nowrap": (@type == :integer),
+                  "text-right whitespace-nowrap": (@type == :boolean),
+                  "text-center whitespace-nowrap": (@type == :datetime),
+                  "text-left": (@type == :string),
+                  "bg-light-gray": Integer.is_odd(@index) }}
                  x-data="{ detailsOpen: false }">
-      <span @click="detailsOpen = !detailsOpen
-                    $nextTick(() => $refs.detailsCloseButton.focus())">
+      <div @click="detailsOpen = !detailsOpen
+                   $nextTick(() => $refs.detailsCloseButton.focus())"
+           class="truncate">
         {{ present(@presenter, @record, @field, @type) }}
-      </span>
+      </div>
       <div x-show="detailsOpen"
            class="absolute inset-52 mx-auto items-center bg-very-light-gray
                   border border-medium-gray p-4">
@@ -39,7 +54,7 @@ defmodule PanWeb.Surface.Admin.TableData do
           Close
         </button>
       </div>
-    </td>
+    </div>
     """
   end
 end

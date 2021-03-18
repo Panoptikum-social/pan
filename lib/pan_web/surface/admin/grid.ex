@@ -3,9 +3,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   import Ecto.Query
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{SortLink, Pagination, TableData}
+  alias PanWeb.Surface.Admin.{SortLink, Pagination, Presenter}
   alias PanWeb.Surface.Icon
   alias Surface.Components.{Form, Link, Form.TextInput}
+  require Integer
 
   prop heading, :string, required: false, default: "Records"
   prop current_page, :integer, required: false, default: 1
@@ -107,6 +108,15 @@ defmodule PanWeb.Surface.Admin.Grid do
       {:like_search, _}, query -> query
     end)
     |> Repo.all()
+  end
+
+  defp width(type) do
+    case type do
+      :integer -> "w-16"
+      :datetime -> "w-48"
+      :string -> "w-128"
+      :boolean -> "w-16"
+    end
   end
 end
 
