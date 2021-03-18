@@ -11,12 +11,11 @@ defmodule PanWeb.Surface.PodcastButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton
-      href={{ Routes.podcast_frontend_path(@socket, :show, @id || @for.id) }}
-      class={{ "bg-white hover:bg-light-gray text-black border-medium-gray", @class }}
-      icon="podcast-solid"
-      title={{ @title || @for.title }}
-      truncate={{ @truncate }} />
+    <LinkButton to={{ Routes.podcast_frontend_path(@socket, :show, @id || @for.id) }}
+                class={{ "bg-white hover:bg-light-gray text-black border-medium-gray", @class }}
+                icon="podcast-solid"
+                title={{ @title || @for.title }}
+                truncate={{ @truncate }} />
     """
   end
 end

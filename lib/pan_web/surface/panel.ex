@@ -4,6 +4,8 @@ end
 
 defmodule PanWeb.Surface.Panel do
   use Surface.Component
+  alias PanWeb.Surface.Link
+  alias Surface.Components.Link
 
   prop heading, :string, required: false
   prop purpose, :string, required: false, default: "default"
@@ -29,18 +31,21 @@ defmodule PanWeb.Surface.Panel do
   def render(assigns) do
     ~H"""
     <div aria-label="panel" class={{ "rounded-xl w-full", @class }}>
-      <div aria-label="panel heading" class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
+      <div aria-label="panel heading"
+           class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
         <slot name="panel_heading" />
 
         <If condition={{ !@target }}>
           {{@heading}}
         </If>
-        <a :if={{ @target }} href={{ @target }} class="hover:text-light-gray">
-          {{ @heading }}
-        </a>
-        <a :if={{ @target }} href={{ @target }} class="float-right hover:text-light-gray">
-          {{ @heading_right }}
-        </a>
+        <Link :if={{ @target }}
+              to={{ @target }}
+              class="hover:text-light-gray"
+              label={{ @heading }} />
+        <Link :if={{ @target }}
+              to={{ @target }}
+              class="float-right hover:text-light-gray"
+              label={{ @heading_right }} />
       </div>
 
       <div class="border-l border-r border-b border-light-gray rounded-b-xl">

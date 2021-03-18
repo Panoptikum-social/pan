@@ -9,11 +9,10 @@ defmodule PanWeb.Surface.UserButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton
-      href={{ Routes.user_frontend_path(@socket, :show, @id || @for.id) }}
-      class="bg-bittersweet text-white hover:bg-bittersweet-light"
-      icon="female-solid"
-      title={{ @name || @for.name }} />
+    <LinkButton to={{ Routes.user_frontend_path(@socket, :show, @id || @for.id) }}
+                class="bg-bittersweet text-white hover:bg-bittersweet-light"
+                icon="female-solid"
+                title={{ @name || @for.name }} />
     """
   end
 end

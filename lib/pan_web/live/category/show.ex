@@ -3,6 +3,7 @@ defmodule PanWeb.Live.Category.Show do
   import PanWeb.Router.Helpers
   alias PanWeb.Category
   alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton}
+  alias Surface.Components.Link
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
@@ -36,11 +37,11 @@ defmodule PanWeb.Live.Category.Show do
         <p>We are currently testing different  and additional views for community categories!<br/>
           Wanna give it a try?</p>
         <p class="mt-4 leading-8">
-          <LinkButton href={{ category_frontend_path @socket, :latest_episodes, @category }}
+          <LinkButton to={{ category_frontend_path @socket, :latest_episodes, @category }}
                       title="Latest episodes"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           gives you a timeline view starting with the most current episode within this category.<br/>
-          <LinkButton href={{ category_frontend_path @socket, :categorized, @category }}
+          <LinkButton to={{ category_frontend_path @socket, :categorized, @category }}
                       title="Categorized"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           sorts the podcasts within this categories by the other categories, they are listed in.<br/>
@@ -51,15 +52,15 @@ defmodule PanWeb.Live.Category.Show do
 
     <Panel purpose="category">
       <PanelHeading>
-        <a href={{ category_frontend_path(@socket, :index) }}
-          class="hover:text-blue-400">
+        <Link to={{ category_frontend_path(@socket, :index) }}
+              class="hover:text-blue-400">
           <Icon name="folder" /> Panoptikum
-        </a> /
+        </Link> /
         <If condition={{ @category.parent }}>
-          <a href={{ category_frontend_path(@socket, :show, @category.parent) }}
-            class="hover:text-blue-400">
+          <Link to={{ category_frontend_path(@socket, :show, @category.parent) }}
+                class="hover:text-blue-400">
             <Icon name="folder" /> {{ @category.parent.title }}
-          </a> /
+          </Link> /
         </If>
         <Icon name="folder-open" /> {{ @category. title }}
       </PanelHeading>
@@ -77,10 +78,9 @@ defmodule PanWeb.Live.Category.Show do
                                     |> Enum.sort_by(fn p -> p.language_name end) }}
                 class="mx-2">
             {{ prototype.language_emoji || "🏳️" }} &nbsp;
-            <a id={{ "lang#" <> language(prototype) }}
-                href={{ "#" <> language(prototype) }}>
-              {{ language(prototype) }}
-            </a>
+            <Link id={{ "lang#" <> language(prototype) }}
+                  to={{ "#" <> language(prototype) }}
+                  label= {{ language(prototype) }} />
           </div>
         </div>
 

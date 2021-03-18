@@ -3,6 +3,7 @@ defmodule PanWeb.Live.Session.New do
   alias Surface.Components.Form
   alias PanWeb.Surface.{Submit, PasswordField}
   alias Surface.Components.Form.{Field, TextInput, Label}
+  alias Surface.Components.Link
   import PanWeb.Router.Helpers
 
   def render(assigns) do
@@ -25,10 +26,9 @@ defmodule PanWeb.Live.Session.New do
 
         <Field name="hint" class="mt-4 text-dark-gray">
           Submitting this form will transfer a session cookie to the server. See
-          <a href="https://blog.panoptikum.io/privacy"
-              class="text-link hover:text-link-dark">
-            Privacy
-          </a> for details.
+          <Link to="https://blog.panoptikum.io/privacy"
+                class="text-link hover:text-link-dark"
+                label="Privacy" /> for details.
         </Field>
 
         <Submit label="Log in" />
@@ -36,17 +36,15 @@ defmodule PanWeb.Live.Session.New do
 
       <ul class="list-disc mt-4 ml-8">
         <li>Forgot your password? -
-          <a href={{ user_path(@socket, :forgot_password) }}
-            class="text-link hover:text-link-dark">
-            Get an email with a login link
-          </a>
+          <Link to={{ user_path(@socket, :forgot_password) }}
+                class="text-link hover:text-link-dark"
+                label="Get an email with a login link" />
         </li>
         <li>
           No account yet? -
-          <a href={{ user_frontend_path(@socket, :new) }}
-            class="text-link hover:text-link-dark">
-            Sign up
-          </a>
+          <Link to={{ user_frontend_path(@socket, :new) }}
+                class="text-link hover:text-link-dark"
+                label="Sign up" />
         </li>
       </ul>
     </div>

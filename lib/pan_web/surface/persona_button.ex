@@ -9,11 +9,10 @@ defmodule PanWeb.Surface.PersonaButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton
-      href={{ Routes.persona_frontend_path(@socket, :show, @id || @for.id) }}
-      class="bg-lavender text-white hover:bg-lavender-light"
-      icon="user-astronaut-solid"
-      title={{ @name || @for.title }} />
+    <LinkButton to={{ Routes.persona_frontend_path(@socket, :show, @id || @for.id) }}
+                class="bg-lavender text-white hover:bg-lavender-light"
+                icon="user-astronaut-solid"
+                title={{ @name || @for.title }} />
     """
   end
 end

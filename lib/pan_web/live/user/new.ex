@@ -2,7 +2,7 @@ defmodule PanWeb.Live.User.New do
   use Surface.LiveView
   alias PanWeb.User
   alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField}
-  alias Surface.Components.Form
+  alias Surface.Components.{Form, Link}
   alias Surface.Components.Form.{Field, Label, ErrorTag, NumberInput}
   import PanWeb.Router.Helpers
 
@@ -32,10 +32,10 @@ defmodule PanWeb.Live.User.New do
 
           <p>There is already a user account with this email address.<br/>
             Please
-            <a href={{ user_path(@socket, :forgot_password) }}
-               class="alert-link">
-              Request a login link
-            </a> via email to login to your existing account and reset your password.
+            <Link to={{ user_path(@socket, :forgot_password) }}
+                  class="alert-link"
+                  label="Request a login link" /> via email to login to your existing account and
+            reset your password.
           </p>
         </Field>
 
@@ -58,10 +58,9 @@ defmodule PanWeb.Live.User.New do
         <Field name="cookie_warning" class="text-dark-gray">
           Submitting this form will transfer a session cookie to the server.<br/>
           Please, read our
-          <a href="https://blog.panoptikum.io/privacy"
-             class="text-link hover:link-dark">
-            Privacy Policy
-           </a> before signing up!
+          <Link to="https://blog.panoptikum.io/privacy"
+                class="text-link hover:link-dark"
+                label="Privacy Policy" /> before signing up!
          </Field>
 
          <Submit label="Create Account" />
