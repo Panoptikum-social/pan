@@ -26,20 +26,20 @@
           heading_right="more ..."
           target={{ episode_frontend_path(@socket, :index) }}
           purpose="episode" >
-    <Tab items={{ episode <- @latest_episodes }}>
-        <EpisodeCard for={{ episode }} />
-    </Tab>
+      <Tab items={{ episode <- @latest_episodes }}>
+          <EpisodeCard for={{ episode }} />
+      </Tab>
 
     </Panel>
 
     <Panel heading="Latest Recommendations" 
-          heading_right="more ..."
-          target={{ recommendation_frontend_path(@socket, :index) }}
-          purpose="recommendation"
-          class="mt-4">
+           heading_right="more ..."
+           target={{ recommendation_frontend_path(@socket, :index) }}
+           purpose="recommendation"
+           class="mt-4">
       <Tab items={{ recommendation <- @latest_recommendations }}>
         <RecommendationCard for={{ recommendation }} />
-    </Tab>
+      </Tab>
     </Panel>
 
     <Panel heading="Liked Podcasts" 
