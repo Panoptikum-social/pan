@@ -46,7 +46,7 @@
       </tr>
 
       <tr :for={{ record <- @records }} 
-          class="odd:bg-gray-100">
+          class="odd:bg-very-light-gray">
         <td :for={{ column <- @columns }} 
             class="border border-light-gray p-1">
           <If condition={{ column[:presenter] }}>
@@ -82,7 +82,8 @@
 
   <Pagination per_page={{ @per_page}} 
               current_page={{ @current_page }}
-              class="mt-6" />
+              class="mt-6"
+              target={{ "#" <> @id }} />
 
   <p class="mt-6">
     <Link to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"

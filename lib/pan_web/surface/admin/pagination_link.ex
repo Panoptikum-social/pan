@@ -5,6 +5,7 @@ defmodule PanWeb.Surface.Admin.PaginationLink do
   prop per_page, :integer, required: true
   prop disabled, :css_class, required: false, default: false
   prop class, :css_class, required: false
+  prop target, :string, required: true
 
   slot default, required: true
 
@@ -14,9 +15,9 @@ defmodule PanWeb.Surface.Admin.PaginationLink do
        class={{ "p-2 text-white bg-info hover:bg-info-light",
                 @class,
                 disabled: @disabled }}
-       click="paginate"
-       phx_value_page={{ @page }}
-       phx_value_per_page={{ @per_page }}>
+       :on-click={{ "paginate", target: @target}}
+       phx-value-page={{ @page }}
+       phx-value-per-page={{ @per_page }}>
       <slot/>
     </a>
     """

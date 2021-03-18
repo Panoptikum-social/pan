@@ -2,11 +2,11 @@ defmodule PanWeb.Surface.Admin.SortLink do
   use Surface.Component
   alias PanWeb.Surface.Icon
 
-  prop sort_order, :atom
-  prop sort_by, :atom
-  prop field, :atom
-  prop disabled, :boolean
-  prop target, :string
+  prop sort_order, :atom, required: true
+  prop sort_by, :atom, required: true
+  prop field, :atom, required: true
+  prop disabled, :boolean, required: false, default: false
+  prop target, :string, required: true
 
   slot default, required: true
 

@@ -5,6 +5,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
   prop per_page, :integer, required: false, default: 10
   prop current_page, :integer, required: false, default: 1
   prop class, :css_class, required: false
+  prop target, :string, required: true
 
   def render(assigns) do
     ~H"""
@@ -12,7 +13,8 @@ defmodule PanWeb.Surface.Admin.Pagination do
       <PaginationLink :if={{ @current_page > 1 }}
                       page={{ @current_page - 1 }}
                       per_page={{ @per_page}}
-                      class="rounded-l-lg" >
+                      class="rounded-l-lg"
+                      target={{ @target }} >
         Previous
       </PaginationLink>
       &nbsp;
@@ -20,13 +22,15 @@ defmodule PanWeb.Surface.Admin.Pagination do
                       disabled={{ i == @current_page }}
                       page={{ i }}
                       per_page={{ @per_page }}
-                      class={{ "rounded-l-lg": (i==1) }}>
+                      class={{ "rounded-l-lg": (i==1) }}
+                      target={{ @target }} >
         {{ i }}
       </PaginationLink>
       &nbsp;
       <PaginationLink page={{ @current_page + 1 }}
                       per_page={{ @per_page }}
-                      class="rounded-r-lg">
+                      class="rounded-r-lg"
+                      target={{ @target }} >
         Next
       </PaginationLink>
     </div>
