@@ -90,7 +90,7 @@ defmodule PanWeb.Live.Category.StatsShow do
                                     |> Enum.sort_by(fn p -> p.language_name end) }}
                 class="mx-2">
             {{ prototype.language_emoji || "🏳️"}} &nbsp;
-            <Link id={{ "lang#" <> language(prototype) }}
+            <Link opts={{ id: "lang#" <> language(prototype) }}
                   to={{ "#" <> language(prototype) }}>
               {{ language(prototype) }} {{ language(prototype) |> amount(@podcasts) }}
             </Link>
