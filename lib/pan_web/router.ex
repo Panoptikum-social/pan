@@ -44,6 +44,16 @@ defmodule PanWeb.Router do
     forward("/sent_emails", Bamboo.SentEmailViewerPlug)
   end
 
+  if Mix.env() in [:dev, :test] do
+    import Phoenix.LiveDashboard.Router
+
+    scope "/" do
+      pipe_through :browser
+      live_dashboard "/dashboard", metrics: PanWeb.Telemetry
+    end
+  end
+
+
   scope "/jsonapi", PanWeb.Api, as: :api do
     pipe_through(:json_api)
 
@@ -421,14 +431,7 @@ defmodule PanWeb.Router do
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-  end
 
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
-
-    scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: PanWeb.Telemetry
-    end
+    live "/dashboard", Live.Admin.Dashboard, :index
   end
 end
