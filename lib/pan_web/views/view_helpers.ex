@@ -23,9 +23,9 @@ defmodule PanWeb.ViewHelpers do
     Enum.at(
       [
         "btn-default",
-        "btn-light-gray",
-        "btn-medium-gray",
-        "btn-dark-gray",
+        "btn-gray-lighter",
+        "btn-gray",
+        "btn-gray-darker",
         "btn-success",
         "btn-info",
         "btn-primary",
@@ -42,10 +42,10 @@ defmodule PanWeb.ViewHelpers do
 
   def color_class_cycle(counter) do
     Enum.at([
-        "bg-white hover:bg-light-gray text-dark-gray border-medium-gray",
-        "bg-light-gray hover:bg-very-light-gray text-dark-gray border-medium-gray",
-        "bg-medium-gray hover:bg-light-medium-gray text-white",
-        "bg-dark-gray hover:bg-medium-dark-gray text-white",
+        "bg-white hover:bg-gray-lighter text-gray-darker border-gray",
+        "bg-gray-lighter hover:bg-gray-lightest text-gray-darker border-gray",
+        "bg-gray hover:bg-gray-light text-white",
+        "bg-gray-darker hover:bg-gray-darker text-white",
         "bg-success hover:bg-success-light text-white",
         "bg-info hover:bg-info-light text-white",
         "bg-primary hover:bg-primary-light text-white",

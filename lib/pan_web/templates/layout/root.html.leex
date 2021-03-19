@@ -35,7 +35,7 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-light-gray bg-nav-background"
+  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background"
         data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: window.innerWidth >= 1024 }"
          class="min-h-full flex-r flex flex-col p-4 justify-start">

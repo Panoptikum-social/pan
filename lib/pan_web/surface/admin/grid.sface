@@ -1,7 +1,7 @@
 <div id={{ @id }} class="self-stretch">
   <h1 class="text-2xl">{{ @heading }}</h1>
 
-  <div class={{ "border border-light-gray grid mt-6 bg-very-light-gray gap-0.5" }}
+  <div class={{ "border border-gray-lighter grid mt-6 bg-gray-lightest gap-0.5" }}
        style={{ "grid-template-columns: repeat(" <> 
                 Integer.to_string(length(@columns) + 1) <> 
                 ", minmax(0, auto));" }}>
@@ -55,7 +55,7 @@
                   width={{ width(column.type) }} />
 
       <div class={{ "bg-white self-center flex space-x-4 justify-center",
-                    "bg-light-gray": Integer.is_odd(index) }}>
+                    "bg-gray-lighter": Integer.is_odd(index) }}>
         <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
               class="text-info hover:text-info-light p-1">
           <Icon name="eye-solid" />

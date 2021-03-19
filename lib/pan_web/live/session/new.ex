@@ -18,13 +18,13 @@ defmodule PanWeb.Live.Session.New do
         <Field name="username"
                class="my-6">
           <Label field={{ :username_or_email}}
-                  class="block font-medium text-dark-gray"/>
-          <TextInput class="w-full border-light-medium-gray rounded-lg shadow-sm" />
+                  class="block font-medium text-gray-darker"/>
+          <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
         </Field>
 
         <PasswordField name="password" />
 
-        <Field name="hint" class="mt-4 text-dark-gray">
+        <Field name="hint" class="mt-4 text-gray-darker">
           Submitting this form will transfer a session cookie to the server. See
           <Link to="https://blog.panoptikum.io/privacy"
                 class="text-link hover:text-link-dark"

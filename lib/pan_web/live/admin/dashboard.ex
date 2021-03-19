@@ -7,11 +7,11 @@ defmodule PanWeb.Live.Admin.Dashboard do
   end
 
 
-  def modules_with_schemas(app_name) do
+  def config() do
     {:ok, application} = :application.get_application(PanWeb.Live.Admin.Dashboard)
-    {:ok, config} = :application.get_all_key(:application)
+    {:ok, _config} = :application.get_all_key(:application)
     {:ok, modules} = :application.get_key(application, :modules)
-    schemas = Enum.filter(modules, &({:__schema__, 1} in &1.__info__(:functions)))
+    _schemas = Enum.filter(modules, &({:__schema__, 1} in &1.__info__(:functions)))
     # PanWeb.Podcast.__schema__
     # PanWeb.Podcast.__changeset__
     # PanWeb.Podcast.__struct__

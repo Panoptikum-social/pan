@@ -14,16 +14,16 @@ defmodule PanWeb.Live.Category.Tree do
            class="inline-block mx-2 my-4">
         <p>
           <CategoryButton for={{ category }}
-                          large=true
+                          large="true"
                           index_on_page={{ counter }} />
         </p>
         <p class="mt-6">
           <For each={{ subcategory <- category.children }}>
             <CategoryButton for={{ subcategory }}
-                            truncate={{ true }}/> &nbsp;
+                            truncate={{ true }} /> &nbsp;
           </For>
         </p>
-        <hr class="mt-4 border-t-1 border-light-gray" style="break-before: avoid;" />
+        <hr class="mt-4 border-t-1 border-gray-lighter" style="break-before: avoid;" />
       </div>
     </div>
     """

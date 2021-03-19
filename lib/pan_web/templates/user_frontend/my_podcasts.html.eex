@@ -110,7 +110,7 @@
             <b><%= rank + 1 %>.</b>:
             <%= link [fa_icon("folder-o"), " ", truncate_string(title, 50)],
                      to: category_frontend_path(@conn, :show, id),
-                     class: "btn btn-xs btn-light-gray" %>
+                     class: "btn btn-xs btn-gray-lighter" %>
             <span class="pull-right"><%= count %> <%= fa_icon("user") %></span>
           </li>
         <% end %>

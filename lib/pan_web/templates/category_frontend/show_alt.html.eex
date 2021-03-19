@@ -42,7 +42,7 @@
           <%= for subcategory <- @category.children do %>
             <%= link [fa_icon("folder-o"), " ", subcategory.title],
                     to: category_frontend_path(@conn, :show, subcategory),
-                    class: "btn btn-xs btn-light-gray truncate" %>
+                    class: "btn btn-xs btn-gray-lighter truncate" %>
           <% end %>
         </div>
       <hr class="divider" />

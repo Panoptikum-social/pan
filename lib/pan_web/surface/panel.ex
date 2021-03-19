@@ -40,15 +40,15 @@ defmodule PanWeb.Surface.Panel do
         </If>
         <Link :if={{ @target }}
               to={{ @target }}
-              class="hover:text-light-gray"
+              class="hover:text-gray-lighter"
               label={{ @heading }} />
         <Link :if={{ @target }}
               to={{ @target }}
-              class="float-right hover:text-light-gray"
+              class="float-right hover:text-gray-lighter"
               label={{ @heading_right }} />
       </div>
 
-      <div class="border-l border-r border-b border-light-gray rounded-b-xl">
+      <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
         <slot>No content defined!</slot>
       </div>
     </div>

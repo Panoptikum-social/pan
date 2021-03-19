@@ -27,13 +27,13 @@ defmodule PanWeb.Surface.Admin.Presenter do
 
   def render(assigns) do
     ~H"""
-    <div class={{ "bg-white text-very-dark-gray px-1 grid content-center",
+    <div class={{ "bg-white text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type == :integer),
                   "text-right whitespace-nowrap": (@type == :boolean),
                   "text-center whitespace-nowrap": (@type == :datetime),
                   "text-left": (@type == :string),
-                  "bg-light-gray": Integer.is_odd(@index) }}
+                  "bg-gray-lighter": Integer.is_odd(@index) }}
                  x-data="{ detailsOpen: false }">
       <div @click="detailsOpen = !detailsOpen
                    $nextTick(() => $refs.detailsCloseButton.focus())"
@@ -41,8 +41,8 @@ defmodule PanWeb.Surface.Admin.Presenter do
         {{ present(@presenter, @record, @field, @type) }}
       </div>
       <div x-show="detailsOpen"
-           class="absolute inset-52 mx-auto items-center bg-very-light-gray
-                  border border-medium-gray p-4">
+           class="absolute inset-52 mx-auto items-center bg-gray-lightest
+                  border border-gray p-4">
         <h1 class="text-2xl">Details</h1>
         <p class="mt-6">
           {{ present(@presenter, @record, @field, @type)}}

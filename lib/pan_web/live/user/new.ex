@@ -47,7 +47,7 @@ defmodule PanWeb.Live.User.New do
         <CheckBoxField name="podcaster" label="I am a podcaster" />
 
         <Field name="bot_check" class="my-4">
-          <Label class="block font-medium text-dark-gray">
+          <Label class="block font-medium text-gray-darker">
                  If you subtract two from 44, you get...
           </Label>
           <NumberInput class="w-full"
@@ -55,7 +55,7 @@ defmodule PanWeb.Live.User.New do
           <ErrorTag field={{ :bot_check }} />
         </Field>
 
-        <Field name="cookie_warning" class="text-dark-gray">
+        <Field name="cookie_warning" class="text-gray-darker">
           Submitting this form will transfer a session cookie to the server.<br/>
           Please, read our
           <Link to="https://blog.panoptikum.io/privacy"

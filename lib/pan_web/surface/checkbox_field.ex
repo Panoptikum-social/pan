@@ -10,7 +10,7 @@ defmodule PanWeb.Surface.CheckBoxField do
     <Form.Field name={{ @name |> String.to_atom() }}
                 class="my-4 flex items-center">
       <Form.Checkbox />
-      <Form.Label class="font-medium text-dark-gray pl-4">
+      <Form.Label class="font-medium text-gray-darker pl-4">
         {{ @label }}
       </Form.Label>
       <Form.ErrorTag />

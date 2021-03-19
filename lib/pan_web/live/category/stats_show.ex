@@ -77,7 +77,7 @@ defmodule PanWeb.Live.Category.StatsShow do
         <Icon name="folder-open" /> {{ @category. title }}
       </PanelHeading>
 
-      <div aria-label="panel-body" class="p-4 divide-y-2 divide-light-gray">
+      <div aria-label="panel-body" class="p-4 divide-y-2 divide-gray-lighter">
         <div :if={{ @category.children != [] }} class="flex flex-wrap">
           <CategoryButton :for={{ subcategory <- @category.children }}
                           for={{ subcategory }}

@@ -14,7 +14,7 @@ info-dark -> cyan-700
 info-light -> lightBlue-300
 lavender -> violet-400
 light-gray -> coolGray-200
-light-medium-gray -> coolGray-300
+gray-light -> coolGray-300
 medium-dark-gray -> coolGray-500
 medium-gray -> coolGray-400
 mint -> teal-500
