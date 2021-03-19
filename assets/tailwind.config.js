@@ -98,6 +98,11 @@ module.exports = {
         DEFAULT: '#da4453', // grapefruit
         dark: '#a94442'
       },
+      primary: {
+        light: '#7cd1ef',
+        DEFAULT: '#3bafda', // aqua
+        dark: '#31708f'
+      },
       info: {
         light: '#7cd1ef',
         DEFAULT: '#3bafda', // aqua

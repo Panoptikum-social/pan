@@ -20,7 +20,7 @@ defmodule PanWeb.Live.Category.Tree do
         <p class="mt-6">
           <For each={{ subcategory <- category.children }}>
             <CategoryButton for={{ subcategory }}
-                            truncate={{ true }} /> &nbsp;
+                            class="px-1.5 py-0.5" truncate /> &nbsp;
           </For>
         </p>
         <hr class="mt-4 border-t-1 border-gray-lighter" style="break-before: avoid;" />
