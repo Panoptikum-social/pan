@@ -35,15 +35,7 @@ npm-debug.log
 
 /uploads/opml/**
 
-# Since we are building assets from web/static,
-# we ignore priv/static. You may want to comment
-# this depending on your deployment strategy.
-
-/priv/static/
-
 # config secret files
 /config/dev.secret.exs
 /config/prod.secret.exs
 
-# excoveralls specific
-/cover
