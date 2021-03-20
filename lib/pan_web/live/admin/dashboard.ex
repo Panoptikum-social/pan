@@ -22,6 +22,8 @@ defmodule PanWeb.Live.Admin.Dashboard do
     <h1 class="text-2xl">Admin Dashboard</h1>
 
     <p class="mt-4">That's how it started. 😊</p>
+
+    <p class="mt-16">.jit-test</p>
     """
   end
 end
