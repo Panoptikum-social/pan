@@ -7,18 +7,18 @@ defmodule PanWeb.Surface.PodcastCard do
 
   def render(assigns) do
     ~H"""
-    <p><PodcastButton for={{ @for }}/></p>
+    <PodcastButton for={{ @for }}/>
 
-    <p :if={{ @for.inserted_at }} class="mt-2">
+    <p :if={{ @for.inserted_at }} class="mt-1">
       <Icon name="calendar" />
       {{ @for.inserted_at |> Timex.format!("{ISOdate}") }}
     </p>
 
-    <p if={{ @for.author_name }} class="mt-2">
-      <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
+    <p if={{ @for.author_name }} class="mt-1">
+      Author <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
     </p>
 
-    <p :if={{ @for.description }} class="mt-2">
+    <p :if={{ @for.description }} class="mt-1">
       <Icon name="image" /> {{ truncate_string(@for.description, 500) }}
     </p>
     """

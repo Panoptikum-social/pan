@@ -6,36 +6,42 @@ defmodule PanWeb.Surface.RecommendationCard do
 
   def render(assigns) do
     ~H"""
-    <p :if={{ @for.podcast }}>
-      <PodcastButton for={{ @for.podcast }} />
+    <p>
+      <span :if={{ @for.inserted_at }} class="float-right">
+        at <Icon name="calendar" />
+        {{ @for.inserted_at |> Timex.format!("{ISOdate}") }}
+      </span>
+      <UserButton for={{ @for.user}} /> recommended
+    </p>
+
+    <p :if={{ @for.podcast }}
+       class="mt-2">
+      the podcast <PodcastButton for={{ @for.podcast }} />
     </p>
 
     <If condition={{ @for.episode }} >
-      <p><PodcastButton for={{ @for.episode.podcast }} /></p>
       <p class="mt-2">
-        <EpisodeButton for={{ @for.episode }} />
+        the episode <EpisodeButton for={{ @for.episode }} />
+      </p>
+      <p >
+        from podcast <PodcastButton for={{ @for.episode.podcast }} />
       </p>
     </If>
 
     <If condition={{ @for.chapter }} >
-      <p><PodcastButton for={{ @for.chapter.episode.podcast }} /></p>
       <p class="mt-2">
-        <EpisodeButton for={{ @for.chapter.episode }} />
+        the chapter <Icon name="indent-solid" /> {{ @for.chapter.title }}
       </p>
       <p class="mt-2">
-        <Icon name="indent-solid" /> {{ @for.chapter.title }}
+        from episode  <EpisodeButton for={{ @for.chapter.episode }} />
+      </p>
+      <p class="mt-2">
+        from podcast <PodcastButton for={{ @for.chapter.episode.podcast }} />
       </p>
     </If>
 
     <p class="mt-2">
-      <span :if={{ @for.inserted_at }} class="float-right">
-        <Icon name="calendar" />
-        {{ @for.inserted_at |> Timex.format!("{ISOdate}") }}
-      </span>
-      <UserButton for={{ @for.user}} />
-    </p>
-    <p class="mt-2">
-      <Icon name="thumbs-up" /> <i>„{{ @for.comment }}“</i>
+      with <Icon name="thumbs-up" /> <i>„{{ @for.comment }}“</i>
     </p>
     """
   end

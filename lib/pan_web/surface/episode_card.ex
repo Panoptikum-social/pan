@@ -8,21 +8,21 @@ defmodule PanWeb.Surface.EpisodeCard do
     ~H"""
     <p><EpisodeButton for={{ @for }}/></p>
 
-    <p :if={{ @for.author_name }} class="mt-2">
-      <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
+    <p :if={{ @for.author_name }} class="mt-1">
+      Author <PersonaButton name={{ @for.author_name }} id={{ @for.author_id }} />
     </p>
 
-    <p class="mt-2">
+    <p class="mt-1">
       <If condition={{ @for.publishing_date }}>
-        <Icon name="calendar" />
+        published <Icon name="calendar" />
         {{ @for.publishing_date |> Timex.format!("{ISOdate}") }}
       </If>
       <If condition={{ @for.duration }}>
-        &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
+        Duration &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
       </If>
     </p>
 
-    <p :if={{ @for.subtitle }} class="mt-2">
+    <p :if={{ @for.subtitle }} class="mt-1">
       <Icon name="image" /> {{ @for.subtitle }}
     </p>
     """

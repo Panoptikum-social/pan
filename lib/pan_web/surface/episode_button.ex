@@ -10,7 +10,8 @@ defmodule PanWeb.Surface.EpisodeButton do
   def render(assigns) do
     ~H"""
     <LinkButton to={{ Routes.episode_frontend_path(@socket, :show, @id || @for.id) }}
-                class="bg-aqua text-white hover:bg-aqua-light"
+                class="bg-aqua text-white border-gray-dark
+                       hover:bg-aqua-light hover:border-aqua"
                 icon="headphones-solid"
                 title={{ @title || @for.title }} />
     """

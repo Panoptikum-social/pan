@@ -13,15 +13,15 @@ defmodule PanWeb.Surface.LinkButton do
   def render(assigns) do
     ~H"""
     <Link to={{ @to }}
-          class={{ "border border-solid my-0.5",
+          class={{ "border border-solid inline-block shadow",
                    @class,
-                   "truncate inline-block max-w-full": @truncate,
+                   "truncate max-w-full": @truncate,
                    "py-1 px-2 rounded text-sm": !@large,
                    "py-2 px-3 rounded-md": @large }}>
-       <Icon :if={{ @icon }}
-             name={{ @icon }}
-             spaced={{ true }}/>
-       {{ @title }}
+        <Icon :if={{ @icon }}
+              name={{ @icon }}
+              spaced={{ true }}/>
+        {{ @title }}
     </Link>
     """
   end

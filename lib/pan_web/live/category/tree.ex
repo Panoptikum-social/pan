@@ -17,13 +17,13 @@ defmodule PanWeb.Live.Category.Tree do
                           large="true"
                           index_on_page={{ counter }} />
         </p>
-        <p class="mt-6">
+        <p class="mt-6 -mx-0.5">
           <For each={{ subcategory <- category.children }}>
             <CategoryButton for={{ subcategory }}
-                            class="px-1.5 py-0.5" truncate /> &nbsp;
+                            class="px-1.5 py-0.5 mx-0.5" truncate />
           </For>
         </p>
-        <hr class="mt-4 border-t-1 border-gray-lighter" style="break-before: avoid;" />
+        <hr class="w-full mt-4 border-t-1 border-gray-lightest" style="break-before: avoid;" />
       </div>
     </div>
     """

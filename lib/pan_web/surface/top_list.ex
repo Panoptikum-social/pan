@@ -39,9 +39,9 @@ defmodule PanWeb.Surface.TopList do
 
   def render(assigns) do
     ~H"""
-    <table class="w-full table-fixed">
+    <table class="w-full table-fixed mt-2">
       <tr :for={{ {rank, count, items} <- prepare_for_toplist(@items) }}
-          class="odd:bg-gray-lightest align-top" >
+          class="odd:bg-gray-lightest" >
         <td class="text-right py-2 w-10">
           {{ rank }}.
         </td>
