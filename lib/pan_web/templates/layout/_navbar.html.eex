@@ -4,62 +4,24 @@
     Panoptikum.io
   </a>
 
-  <button @click="navbarOpen = true" x-show="!navbarOpen">
+  <button @click="navbarOpen = true"
+          x-show="!navbarOpen"
+          class="lg:hidden">
     <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
       <path class="heroicon-ui"
             d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"/>
     </svg>
   </button>
-  <button x-show="navbarOpen" @click="navbarOpen = false" class="text-4xl mr-3 mt-1 lg:hidden" >&times;</button>
+  <button @click="navbarOpen = false"
+          x-show="navbarOpen"
+          class="text-4xl mr-3 mt-1 lg:hidden" >&times;</button>
 </div>
 
-<div x-show="navbarOpen">
-  <%= form_for @conn, search_frontend_path(@conn, :new),
-                      [as: :search, class: "py-4"],
-                      fn f -> %>
-    <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
-    <%= submit la_nav_icon("search-solid"),
-          class: "p-2 text-white text-sm rounded bg-coolGray-400 hover:bg-coolGray-500 align-middle",
-          title: "Submit" %>
-  <% end %>
+<div x-show="navbarOpen"
+     class="lg:hidden">
+  <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
+</div>
 
-  <ul>
-    <li class="py-1"><a class="text-coolGray-200" href="#">Dummy Link</a>
-    <li class="py-1"><%= link [la_nav_icon("sitemap-solid"), " Categories"],
-              to: category_frontend_path(@conn, :index),
-              title: "Categories",
-              class: "visible-xs-inline text-coolGray-200" %></li>
-    <li class="py-1"><%= link [la_nav_icon("magic-solid"), " Random"],
-            to: recommendation_frontend_path(@conn, :random),
-            class: "text-coolGray-200" %></li>
-    <li class="py-1"><a class="text-coolGray-200" href="https://blog.panoptikum.io/">
-      <%= la_nav_icon("question-circle") %> About
-    </a></li>
-    <li class="py-1"><a class="text-coolGray-200" href="https://blog.panoptikum.io/blog">
-      <%= la_nav_icon("newspaper") %> Blog
-    </a></li>
-    <li class="py-1"><%= link [la_nav_icon("user-astronaut-solid"), " Podcasters"],
-              to: persona_frontend_path(@conn, :index),
-              class: "text-coolGray-200" %></li>
-    <li class="py-1"><%= link [la_nav_icon("user"), " Users"],
-        to: user_frontend_path(@conn, :index),
-        class: "text-coolGray-200" %></li>
-
-    <%= if @current_user do %>
-      <li class="py-1"><%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %></li>
-      <li class="py-1"><%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %></li>
-      <li class="border-t-2 border-coolGray-500"></li>
-      <li class="py-1"><%= link [la_nav_icon("sign-out-alt-solid"), "Log Out"],
-                to: session_path(@conn, :delete, @current_user),
-                method: "delete",
-                class: "text-coolGray-200" %></li>
-    <% else %>
-      <li class="py-1"><%= link [la_nav_icon("pen-solid"), " Sign Up"],
-                to: user_frontend_path(@conn, :new),
-                class: "text-coolGray-200" %></li>
-      <li class="py-1"><%= link [la_nav_icon("sign-in-alt-solid"), " Log In"],
-                to: session_path(@conn, :new),
-                class: "text-coolGray-200" %></li>
-    <% end %>
-  </ul>
+<div class="hidden lg:block">
+  <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
 </div>
