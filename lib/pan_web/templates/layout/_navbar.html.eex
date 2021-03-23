@@ -4,24 +4,15 @@
     Panoptikum.io
   </a>
 
-  <button @click="navbarOpen = true"
-          x-show="!navbarOpen"
-          class="lg:hidden">
-    <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+  <button @click="navbarOpen = !navbarOpen" class="lg:hidden focus:outline-none">
+    <span x-show="navbarOpen" class="text-4xl mr-3 mt-1">&times;</span>
+    <svg x-show="!navbarOpen" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
       <path class="heroicon-ui"
             d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"/>
     </svg>
   </button>
-  <button @click="navbarOpen = false"
-          x-show="navbarOpen"
-          class="text-4xl mr-3 mt-1 lg:hidden" >&times;</button>
 </div>
 
-<div x-show="navbarOpen"
-     class="lg:hidden">
-  <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
-</div>
-
-<div class="hidden lg:block">
+<div :class="{'hidden': !navbarOpen }" class="lg:block">
   <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
 </div>
