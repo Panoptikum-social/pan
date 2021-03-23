@@ -24,6 +24,12 @@
   select {
     @apply px-2 py-1 rounded-md border-gray-light  shadow-sm;
   }
+
+  .up-to-four-columns {
+    @screen lg {columns: 2;}
+    @screen xl {columns: 3;}
+    @screen 2xl {columns: 4;}
+  };
 }
 
 [hidden] { @apply hidden; }
@@ -46,11 +52,3 @@
 
 .phx-disconnected{ cursor: wait; }
 .phx-disconnected *{ pointer-events: none; }
-
-/* tailwind utilities; */
-
-.up-to-four-columns {
-  @screen lg {columns: 2;}
-  @screen xl {columns: 3;}
-  @screen 2xl {columns: 4;}
-}
