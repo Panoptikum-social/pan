@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Tree do
   use Surface.Component
 
-  prop for, :any, required: true
+  prop(for, :any, required: true)
 
   def render(assigns) do
     ~H"""
@@ -11,10 +11,10 @@ defmodule PanWeb.Surface.Tree do
 
   def recurse_tree(nodes, indent \\ "") do
     if is_atom(nodes) ||
-       is_bitstring(nodes) ||
-       is_integer(nodes) ||
-       (!Enumerable.impl_for(nodes) && Enum.all?(nodes, &is_integer/1)) do
-      Phoenix.HTML.Tag.content_tag(:div, class: "font-mono") do
+         is_bitstring(nodes) ||
+         is_integer(nodes) ||
+         (!Enumerable.impl_for(nodes) && Enum.all?(nodes, &is_integer/1)) do
+      Phoenix.HTML.Tag.content_tag :div, class: "font-mono" do
         [
           {:safe, indent},
           {:safe, my_indent(true)},
@@ -24,9 +24,10 @@ defmodule PanWeb.Surface.Tree do
       end
     else
       for {node, index} <- Enum.with_index(nodes) do
-        {node, children} = if(Keyword.keyword?(node) || is_tuple(node), do: node, else: {node, []})
+        {node, children} =
+          if(Keyword.keyword?(node) || is_tuple(node), do: node, else: {node, []})
 
-        Phoenix.HTML.Tag.content_tag(:div, class: "font-mono") do
+        Phoenix.HTML.Tag.content_tag :div, class: "font-mono" do
           [
             {:safe, indent},
             {:safe, is_last(index, nodes) |> my_indent()},
@@ -51,6 +52,7 @@ defmodule PanWeb.Surface.Tree do
   def presenter(label) when is_atom(label), do: Atom.to_string(label)
   def presenter(label) when is_integer(label), do: Integer.to_string(label)
   def presenter(label) when is_struct(label), do: Regex.source(label)
+
   def presenter(label) do
     html_escape(label)
   end
@@ -62,6 +64,7 @@ defmodule PanWeb.Surface.Tree do
   def type(value) when is_binary(value), do: :file
   def type(value) when is_atom(value), do: :file
   def type(value) when is_list(value), do: :directory
+
   def type(value) do
     if Enum.all?(value, &is_integer/1), do: :file, else: :unknown
   end

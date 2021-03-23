@@ -119,14 +119,14 @@ defmodule PanWeb.Api.PodcastController do
 
     if podcast.update_paused do
       Helpers.send_error(
-          conn,
-          424,
-          "Podcast paused",
-          "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
-        )
+        conn,
+        424,
+        "Podcast paused",
+        "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
+      )
     else
       if !podcast.manually_updated_at or
-          Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
+           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
         podcast
         |> Podcast.changeset(%{manually_updated_at: Timex.now()})
         |> Repo.update()
@@ -154,14 +154,14 @@ defmodule PanWeb.Api.PodcastController do
 
     if podcast.update_paused do
       Helpers.send_error(
-          conn,
-          424,
-          "Podcast paused",
-          "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
-        )
+        conn,
+        424,
+        "Podcast paused",
+        "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
+      )
     else
       if !podcast.manually_updated_at or
-          Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
+           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
         thirty_minutes_ago =
           Timex.now()
           |> Timex.shift(minutes: -30)
@@ -170,11 +170,11 @@ defmodule PanWeb.Api.PodcastController do
         |> Repo.update()
 
         case Pan.Updater.Podcast.import_new_episodes(
-              podcast,
-              user,
-              :not_forced,
-              :no_failure_count_increase
-            ) do
+               podcast,
+               user,
+               :not_forced,
+               :no_failure_count_increase
+             ) do
           {:ok, _} -> show(conn, params, nil)
           {:error, message} -> send_504(conn, message)
         end

@@ -72,7 +72,7 @@ defmodule PanWeb do
       import Phoenix.LiveView.Router
 
       import PanWeb.Auth,
-      only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2, ]
+        only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2]
 
       import PanWeb.Api.Auth, only: [authenticate_api_user: 2, authenticate_api_pro_user: 2]
     end

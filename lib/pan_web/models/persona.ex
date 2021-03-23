@@ -238,7 +238,7 @@ defmodule PanWeb.Persona do
     persona_ids =
       from(p in Persona,
         where:
-            not p.thumbnailed and
+          not p.thumbnailed and
             not is_nil(p.image_url),
         limit: 250,
         select: p.id

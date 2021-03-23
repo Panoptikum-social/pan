@@ -40,7 +40,7 @@ defmodule Pan.MixProject do
       # web framework
       # TODO: take this back, once scrivener is removed
       # {:phoenix, "~> 1.5.7"},
-      {:phoenix, "~> 1.5.8", override: true },
+      {:phoenix, "~> 1.5.8", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
       # phoenix support for ecto
@@ -75,7 +75,6 @@ defmodule Pan.MixProject do
       {:bcrypt_elixir, "~> 2.1"},
       # color calculations
       {:tint, "~> 1.1"},
-
 
       ### imported from old app from here on
 
@@ -124,8 +123,8 @@ defmodule Pan.MixProject do
       {:exactor, "~> 2.2", warn_missing: false},
       # HTTP Client
       {:httpotion, "~> 3.1"},
-      #QR Code generation
-      {:eqrcode, "~> 0.1.7"},
+      # QR Code generation
+      {:eqrcode, "~> 0.1.7"}
     ]
   end
 

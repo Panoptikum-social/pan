@@ -182,7 +182,6 @@ defmodule PanWeb.CategoryFrontendController do
     end
   end
 
-
   def categorized(conn, %{"id" => id}) do
     category =
       Category

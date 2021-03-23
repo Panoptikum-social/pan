@@ -103,7 +103,7 @@ defmodule PanWeb.Episode do
     |> Repo.all()
   end
 
-  #FIXME: Can be removed, when Episode FrontendView is cleaned up
+  # FIXME: Can be removed, when Episode FrontendView is cleaned up
   def author(episode) do
     gig =
       from(Gig,

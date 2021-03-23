@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.TextField do
   use Surface.Component
   alias Surface.Components.Form
 
-  prop name, :string, required: true
+  prop(name, :string, required: true)
 
   def render(assigns) do
     ~H"""

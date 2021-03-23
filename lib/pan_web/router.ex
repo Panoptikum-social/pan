@@ -53,7 +53,6 @@ defmodule PanWeb.Router do
     end
   end
 
-
   scope "/jsonapi", PanWeb.Api, as: :api do
     pipe_through(:json_api)
 

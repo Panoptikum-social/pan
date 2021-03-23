@@ -185,13 +185,15 @@ defmodule PanWeb.Podcast do
   end
 
   def latest do
-    first_engagement = from(e in Engagement,
-      where: parent_as(:podcast).id == e.podcast_id,
-      limit: 1,
-      select: [:persona_id]
-    )
+    first_engagement =
+      from(e in Engagement,
+        where: parent_as(:podcast).id == e.podcast_id,
+        limit: 1,
+        select: [:persona_id]
+      )
 
-    from(p in Podcast, as: :podcast,
+    from(p in Podcast,
+      as: :podcast,
       order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
       where: not p.blocked,
       inner_lateral_join: e in subquery(first_engagement),
@@ -213,7 +215,8 @@ defmodule PanWeb.Podcast do
     from(p in Podcast,
       select: [p.subscriptions_count, p.id, p.title],
       order_by: [fragment("? DESC NULLS LAST", p.subscriptions_count)],
-      limit: 15)
+      limit: 15
+    )
     |> Repo.all()
   end
 
@@ -221,7 +224,8 @@ defmodule PanWeb.Podcast do
     from(p in Podcast,
       select: [p.likes_count, p.id, p.title],
       order_by: [fragment("? DESC NULLS LAST", p.likes_count)],
-      limit: 10)
+      limit: 10
+    )
     |> Repo.all()
   end
 
@@ -503,7 +507,7 @@ defmodule PanWeb.Podcast do
     podcast_ids =
       from(p in Podcast,
         where:
-            not p.thumbnailed and
+          not p.thumbnailed and
             not is_nil(p.image_url),
         limit: 250,
         select: p.id

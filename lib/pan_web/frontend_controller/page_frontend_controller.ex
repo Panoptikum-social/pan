@@ -10,8 +10,11 @@ defmodule PanWeb.PageFrontendController do
   end
 
   def color_translator(conn, _params) do
-    bootflat_with_nearest = bootflat_colors()
-    |> Enum.map(fn {name, tint} -> {name, Tint.RGB.to_hex(tint), nearest_tailwind_name(tint)} end)
+    bootflat_with_nearest =
+      bootflat_colors()
+      |> Enum.map(fn {name, tint} ->
+        {name, Tint.RGB.to_hex(tint), nearest_tailwind_name(tint)}
+      end)
 
     render(conn, "color_translator.html",
       tailwind_colors: tailwind_colors(),
@@ -240,7 +243,7 @@ defmodule PanWeb.PageFrontendController do
       "rose-600": "#E11D48",
       "rose-700": "#BE123C",
       "rose-800": "#9F1239",
-      "rose-900": "#881337",
+      "rose-900": "#881337"
     }
     |> get_tints()
   end

@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.EpisodeCard do
   use Surface.Component
   alias PanWeb.Surface.{EpisodeButton, Icon, PersonaButton}
 
-  prop for, :map, required: true
+  prop(for, :map, required: true)
 
   def render(assigns) do
     ~H"""

@@ -6,7 +6,6 @@ defmodule PanWeb.Live.Admin.Dashboard do
     {:ok, assign(socket, config: config())}
   end
 
-
   def config() do
     {:ok, application} = :application.get_application(PanWeb.Live.Admin.Dashboard)
     {:ok, config} = :application.get_all_key(application)

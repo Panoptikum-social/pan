@@ -4,6 +4,7 @@ defmodule PanWeb.ViewHelpers do
   alias PanWeb.Endpoint
 
   def la_icon(name), do: la_icon(name, class: "")
+
   def la_icon(name, class: class) do
     class = if class == "", do: "h-6 w-6", else: class
 
@@ -41,7 +42,8 @@ defmodule PanWeb.ViewHelpers do
   end
 
   def color_class_cycle(counter) do
-    Enum.at([
+    Enum.at(
+      [
         "bg-white hover:bg-gray-lighter text-gray-darker border-gray",
         "bg-gray-lighter hover:bg-gray-lightest text-gray-darker border-gray",
         "bg-gray hover:bg-gray-light text-white",
@@ -55,7 +57,9 @@ defmodule PanWeb.ViewHelpers do
         "bg-danger hover:bg-danger-light text-white",
         "bg-bittersweet hover:bg-bittersweet-light text-white",
         "bg-warning hover:bg-warning-light text-white"
-    ], rem(counter, 13))
+      ],
+      rem(counter, 13)
+    )
   end
 
   def truncate_string(string, len) do

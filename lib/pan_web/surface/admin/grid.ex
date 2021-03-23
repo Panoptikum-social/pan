@@ -8,24 +8,26 @@ defmodule PanWeb.Surface.Admin.Grid do
   alias Surface.Components.{Form, Link, Form.TextInput}
   require Integer
 
-  prop heading, :string, required: false, default: "Records"
-  prop current_page, :integer, required: false, default: 1
-  prop per_page, :integer, required: false, default: 20
-  prop sort_by, :atom, required: false, default: :id
-  prop sort_order, :atom, required: false, default: :asc
-  prop resource, :module, required: true
-  prop path_helper, :atom, required: true
-  prop records_getter_params, :map, required: false, default: %{}
-  prop search_options, :map, required: false, default: %{}
-  prop like_search, :boolean, required: false, default: false
+  prop(heading, :string, required: false, default: "Records")
+  prop(current_page, :integer, required: false, default: 1)
+  prop(per_page, :integer, required: false, default: 20)
+  prop(sort_by, :atom, required: false, default: :id)
+  prop(sort_order, :atom, required: false, default: :asc)
+  prop(resource, :module, required: true)
+  prop(path_helper, :atom, required: true)
+  prop(records_getter_params, :map, required: false, default: %{})
+  prop(search_options, :map, required: false, default: %{})
+  prop(like_search, :boolean, required: false, default: false)
 
-  data records, :list, default: []
-  slot columns
+  data(records, :list, default: [])
+  slot(columns)
 
   def update(assigns, socket) do
-    socket = socket
-    |> assign(assigns)
-    |> get_records()
+    socket =
+      socket
+      |> assign(assigns)
+      |> get_records()
+
     {:ok, socket}
   end
 
@@ -33,31 +35,39 @@ defmodule PanWeb.Surface.Admin.Grid do
     [column_string | _] = Map.keys(search)
     column = String.to_atom(column_string)
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
-    socket = socket
+
+    socket =
+      socket
       |> assign(search_options: search_options, column: search[column_string])
       |> get_records()
 
     {:noreply, socket}
   end
 
-  def handle_event("sort", %{"sort-by"=> sort_by, "sort-order"=> sort_order}, socket) do
-    socket = socket
+  def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
+    socket =
+      socket
       |> assign(sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order))
       |> get_records()
+
     {:noreply, socket}
   end
 
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
-    socket = socket
+    socket =
+      socket
       |> assign(current_page: String.to_integer(page), per_page: String.to_integer(per_page))
       |> get_records()
+
     {:noreply, socket}
   end
 
   def handle_event("toggle_search_mode", _, socket) do
-    socket = socket
+    socket =
+      socket
       |> assign(like_search: !socket.assigns.like_search)
       |> get_records()
+
     {:noreply, socket}
   end
 
@@ -66,10 +76,12 @@ defmodule PanWeb.Surface.Admin.Grid do
       load(socket.assigns.resource,
         paginate: %{
           page: socket.assigns.current_page,
-          per_page: socket.assigns.per_page},
+          per_page: socket.assigns.per_page
+        },
         sort: %{
           sort_by: socket.assigns.sort_by,
-          sort_order: socket.assigns.sort_order },
+          sort_order: socket.assigns.sort_order
+        },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
         additional_params: socket.assigns[:records_getter_params]
@@ -79,7 +91,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp load(resource, criteria) when is_list(criteria) do
-    query = from r in resource
+    query = from(r in resource)
 
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
@@ -90,22 +102,27 @@ defmodule PanWeb.Surface.Admin.Grid do
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
         from q in query, order_by: [{^sort_order, ^sort_by}]
 
-      {:additional_params, _}, query -> query
+      {:additional_params, _}, query ->
+        query
 
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
             if value != "" do
               if criteria[:like_search] do
-                from q in query, where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%"<>value<>"%"))
+                from q in query,
+                  where:
+                    ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
               else
                 from q in query, where: ^[{column, value}]
               end
             else
               query
             end
-          end)
-      {:like_search, _}, query -> query
+        end)
+
+      {:like_search, _}, query ->
+        query
     end)
     |> Repo.all()
   end
@@ -123,10 +140,10 @@ end
 defmodule Column do
   use Surface.Component, slot: "columns"
 
-  prop field, :string
-  prop label, :string
-  prop sortable, :boolean, default: true
-  prop searchable, :boolean, default: true
-  prop presenter, :fun
-  prop type, :atom, values: [:string, :integer, :datetime], default: :string
+  prop(field, :string)
+  prop(label, :string)
+  prop(sortable, :boolean, default: true)
+  prop(searchable, :boolean, default: true)
+  prop(presenter, :fun)
+  prop(type, :atom, values: [:string, :integer, :datetime], default: :string)
 end

@@ -29,17 +29,26 @@ defmodule PanWeb.Recommendation do
       left_join: c in assoc(r, :chapter),
       left_join: ec in assoc(c, :episode),
       left_join: pc in assoc(ec, :podcast),
-      preload: [user: u, podcast: p,
-                episode: {e, podcast: pe},
-                chapter: {c, episode: {ec, podcast: pc}}],
-      select: [:id, :comment, :inserted_at,
-               user: [:id, :name],
-               podcast: [:id, :title],
-               episode: [:id, :title, :podcast_id,
-                         podcast: [:id, :title]],
-               chapter: [:id, :title, :episode_id,
-                         episode: [:id, :title, :podcast_id,
-                         podcast: [:id, :title]]]],
+      preload: [
+        user: u,
+        podcast: p,
+        episode: {e, podcast: pe},
+        chapter: {c, episode: {ec, podcast: pc}}
+      ],
+      select: [
+        :id,
+        :comment,
+        :inserted_at,
+        user: [:id, :name],
+        podcast: [:id, :title],
+        episode: [:id, :title, :podcast_id, podcast: [:id, :title]],
+        chapter: [
+          :id,
+          :title,
+          :episode_id,
+          episode: [:id, :title, :podcast_id, podcast: [:id, :title]]
+        ]
+      ],
       limit: 10
     )
     |> Repo.all()
