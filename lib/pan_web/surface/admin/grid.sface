@@ -76,7 +76,7 @@
   </div>
 
   <Pagination per_page={{ @per_page}} 
-              current_page={{ @current_page }}
+              page={{ @page }}
               class="mt-6"
               target={{ "#" <> @id }} />
 

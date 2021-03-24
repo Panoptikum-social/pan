@@ -9,16 +9,15 @@ defmodule PanWeb.Surface.Admin.Grid do
   require Integer
 
   prop(heading, :string, required: false, default: "Records")
-  prop(current_page, :integer, required: false, default: 1)
-  prop(per_page, :integer, required: false, default: 20)
-  prop(sort_by, :atom, required: false, default: :id)
-  prop(sort_order, :atom, required: false, default: :asc)
   prop(resource, :module, required: true)
   prop(path_helper, :atom, required: true)
 
-  prop(search_options, :map, required: false, default: %{})
-
+  data(page, :integer, default: 1)
+  data(per_page, :integer, default: 20)
+  data(search_options, :map, default: %{})
   data(like_search, :boolean, default: false)
+  data(sort_by, :atom, default: :id)
+  data(sort_order, :atom, default: :asc)
   data(records, :list, default: [])
   slot(columns)
 
@@ -38,7 +37,8 @@ defmodule PanWeb.Surface.Admin.Grid do
 
     socket =
       socket
-      |> assign(search_options: search_options, column: search[column_string])
+      |> assign(search_options: search_options,
+                column: search[column_string])
       |> get_records()
 
     {:noreply, socket}
@@ -47,7 +47,8 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
     socket =
       socket
-      |> assign(sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order))
+      |> assign(sort_by: String.to_atom(sort_by),
+                sort_order: String.to_atom(sort_order))
       |> get_records()
 
     {:noreply, socket}
@@ -56,7 +57,8 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
     socket =
       socket
-      |> assign(current_page: String.to_integer(page), per_page: String.to_integer(per_page))
+      |> assign(page: String.to_integer(page),
+                per_page: String.to_integer(per_page))
       |> get_records()
 
     {:noreply, socket}
@@ -72,26 +74,26 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp get_records(socket) do
-    records =
-      load(socket.assigns.resource,
-        paginate: %{
-          page: socket.assigns.current_page,
-          per_page: socket.assigns.per_page
-        },
-        sort: %{
-          sort_by: socket.assigns.sort_by,
-          sort_order: socket.assigns.sort_order
-        },
-        search: socket.assigns.search_options,
-        like_search: socket.assigns.like_search,
-      )
+    a = socket.assigns
 
-    assign(socket, records: records)
+    criteria = [
+      paginate: %{page: a.page, per_page: a.per_page},
+      sort: %{sort_by: a.sort_by, sort_order: a.sort_order},
+      search: a.search_options,
+      like_search: a.like_search
+    ]
+
+    assign(socket, records: load(a.resource, criteria, a.columns))
   end
 
-  defp load(resource, criteria) when is_list(criteria) do
-    query = from(r in resource)
+  defp load(resource, criteria, columns) when is_list(criteria) do
+    from(r in resource)
+    |> apply_criteria(criteria)
+    |> select_columns(columns)
+    |> Repo.all()
+  end
 
+  defp apply_criteria(query, criteria) do
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
         from q in query,
@@ -116,8 +118,15 @@ defmodule PanWeb.Surface.Admin.Grid do
               query
             end
         end)
+
+        # consumed by :search, no need to restrict anything here
+        {:like_search, _}, query -> query
     end)
-    |> Repo.all()
+  end
+
+  defp select_columns(query, columns) do
+    column_atoms = Enum.map(columns, &String.to_atom(&1.field))
+    from q in query, select: ^column_atoms
   end
 
   defp width(type) do
