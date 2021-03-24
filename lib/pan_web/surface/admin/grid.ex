@@ -15,10 +15,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(sort_order, :atom, required: false, default: :asc)
   prop(resource, :module, required: true)
   prop(path_helper, :atom, required: true)
-  prop(records_getter_params, :map, required: false, default: %{})
-  prop(search_options, :map, required: false, default: %{})
-  prop(like_search, :boolean, required: false, default: false)
 
+  prop(search_options, :map, required: false, default: %{})
+
+  data(like_search, :boolean, default: false)
   data(records, :list, default: [])
   slot(columns)
 
@@ -84,7 +84,6 @@ defmodule PanWeb.Surface.Admin.Grid do
         },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
-        additional_params: socket.assigns[:records_getter_params]
       )
 
     assign(socket, records: records)
@@ -102,9 +101,6 @@ defmodule PanWeb.Surface.Admin.Grid do
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
         from q in query, order_by: [{^sort_order, ^sort_by}]
 
-      {:additional_params, _}, query ->
-        query
-
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
@@ -120,9 +116,6 @@ defmodule PanWeb.Surface.Admin.Grid do
               query
             end
         end)
-
-      {:like_search, _}, query ->
-        query
     end)
     |> Repo.all()
   end
