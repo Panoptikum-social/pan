@@ -56,10 +56,10 @@
 
       <div class={{ "bg-white self-center flex space-x-4 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
-        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
-              class="text-info hover:text-info-light p-1">
+        <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
+                      class="text-info hover:text-info-light p-1">
           <Icon name="eye-solid" />
-        </Link>
+        </LiveRedirect>
 
         <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
               class="text-warning hover:text-warning-light p-1">

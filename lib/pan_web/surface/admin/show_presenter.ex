@@ -15,43 +15,28 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
     else
       data = Map.get(record, String.to_atom(field))
 
-      case format do
-        :boolean ->
-          case data do
-            true -> "✔️"
-            false -> "❌"
-            _ -> "∅"
-          end
+      if data == nil do
+        "∅"
+      else
+        case format do
+          :boolean ->
+            case data do
+              true -> "✔️"
+              false -> "❌"
+            end
 
-        :string ->
-          cond do
-            data == nil ->
-              "∅"
+          :string ->
+            cond do
+              String.starts_with?(data, ["http://", "https://"]) ->
+                raw("<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>")
 
-            String.starts_with?(data, ["http://", "https://"]) ->
-              raw("<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>")
+              true ->
+                data
+            end
 
-            true ->
-              data
-          end
-
-        :datetime ->
-          data
-
-        :naive_datetime ->
-          data
-
-        :integer ->
-          data
-
-        :float ->
-          data
-
-        :"Ecto.UUID" ->
-          data
-
-        type ->
-          "unknown data type: #{type}"
+          _ ->
+            data
+        end
       end
     end
   end

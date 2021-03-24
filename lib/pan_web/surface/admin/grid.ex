@@ -5,7 +5,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   alias Pan.Repo
   alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter}
   alias PanWeb.Surface.Icon
-  alias Surface.Components.{Form, Link, Form.TextInput}
+  alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
   require Integer
 
   prop(heading, :string, required: false, default: "Records")

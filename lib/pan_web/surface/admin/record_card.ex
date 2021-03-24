@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   def titelize(string) do
     string
     |> String.replace("_", " ")
-    |> String.upcase()
+    |> String.capitalize()
   end
 end
 
