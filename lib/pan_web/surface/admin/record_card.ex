@@ -1,6 +1,5 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
   use Surface.LiveComponent
-  alias PanWeb.Surface.Panel
   alias PanWeb.Surface.Admin.ShowPresenter
 
   prop(record, :map, required: true)

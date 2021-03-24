@@ -1,16 +1,17 @@
-<Panel heading="Show record: {{ @record.title }}"
-       purpose="podcast">
-  <dl class="my-4 grid lg:grid-cols-2 even:bg-gray-lighter">
+<div class="bg-white">
+  <h2 class="text-2xl">Show record: {{ @record.title }}</h2>
+
+  <div class="my-8 grid lg:grid-cols-2 odd:bg-mint">
     <div :for={{ column <- @columns }}
-          class=" grid gap-2 justify-center grid-cols-3">
-      <dt class="text-gray-dark py-0.5 px-2 justify-self-end text-right">
+          class="grid gap-2 justify-center grid-cols-3 border border-gray-lightest">
+      <div class="col-span-1 text-gray-dark py-0.5 px-2 justify-self-end text-right">
         {{ titelize(column.field) }} 
-      </dt>
-      <dd class="col-span-2 py-0.5 px-2">
+      </div>
+      <div class="col-span-2 py-0.5 px-2">
         <ShowPresenter record={{ @record }}
                         field={{ column.field }} 
                         type={{ column.type }} />
-      </dd>
+      </div>
     </div>
-  </dl>
-</Panel>
+  </div>
+</div>
