@@ -58,7 +58,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
 
   def render(assigns) do
     ~H"""
-    <div class="truncate">
+    <div>
       {{ present(@presenter, @record, @field, @type) }}
     </div>
     """
