@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Presenter do
+defmodule PanWeb.Surface.Admin.GridPresenter do
   use Surface.Component
   require Integer
 

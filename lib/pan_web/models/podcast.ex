@@ -535,4 +535,8 @@ defmodule PanWeb.Podcast do
     |> Podcast.changeset(%{image_url: nil})
     |> Repo.update()
   end
+
+  def get_by_id(id) do
+    Repo.get!(Podcast, id)
+  end
 end

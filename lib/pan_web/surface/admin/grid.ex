@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   import Ecto.Query
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{SortLink, Pagination, Presenter}
+  alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter}
   alias PanWeb.Surface.Icon
   alias Surface.Components.{Form, Link, Form.TextInput}
   require Integer
@@ -37,8 +37,10 @@ defmodule PanWeb.Surface.Admin.Grid do
 
     socket =
       socket
-      |> assign(search_options: search_options,
-                column: search[column_string])
+      |> assign(
+        search_options: search_options,
+        column: search[column_string]
+      )
       |> get_records()
 
     {:noreply, socket}
@@ -47,8 +49,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
     socket =
       socket
-      |> assign(sort_by: String.to_atom(sort_by),
-                sort_order: String.to_atom(sort_order))
+      |> assign(
+        sort_by: String.to_atom(sort_by),
+        sort_order: String.to_atom(sort_order)
+      )
       |> get_records()
 
     {:noreply, socket}
@@ -57,8 +61,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
     socket =
       socket
-      |> assign(page: String.to_integer(page),
-                per_page: String.to_integer(per_page))
+      |> assign(
+        page: String.to_integer(page),
+        per_page: String.to_integer(per_page)
+      )
       |> get_records()
 
     {:noreply, socket}
@@ -96,37 +102,40 @@ defmodule PanWeb.Surface.Admin.Grid do
   defp apply_criteria(query, criteria) do
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
-        from q in query,
+        from(q in query,
           offset: ^((page - 1) * per_page),
           limit: ^per_page
+        )
 
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
-        from q in query, order_by: [{^sort_order, ^sort_by}]
+        from(q in query, order_by: [{^sort_order, ^sort_by}])
 
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
             if value != "" do
               if criteria[:like_search] do
-                from q in query,
+                from(q in query,
                   where:
                     ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
+                )
               else
-                from q in query, where: ^[{column, value}]
+                from(q in query, where: ^[{column, value}])
               end
             else
               query
             end
         end)
 
-        # consumed by :search, no need to restrict anything here
-        {:like_search, _}, query -> query
+      # consumed by :search, no need to restrict anything here
+      {:like_search, _}, query ->
+        query
     end)
   end
 
   defp select_columns(query, columns) do
     column_atoms = Enum.map(columns, &String.to_atom(&1.field))
-    from q in query, select: ^column_atoms
+    from(q in query, select: ^column_atoms)
   end
 
   defp width(type) do

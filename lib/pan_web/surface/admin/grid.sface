@@ -46,10 +46,10 @@
     </div>
 
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
-      <Presenter :for={{ column <- @columns }} 
+      <GridPresenter :for={{ column <- @columns }} 
                   presenter={{ column[:presenter]}}
                   record={{ record }}
-                  field ={{ column.field }} 
+                  field={{ column.field }} 
                   type={{ column.type }}
                   index={{ index}}
                   width={{ width(column.type) }} />
