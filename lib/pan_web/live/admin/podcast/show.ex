@@ -11,6 +11,7 @@ defmodule PanWeb.Live.Admin.Podcast.Show do
   def render(assigns) do
     ~H"""
     <RecordCard record={{ @podcast }}>
+      <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />
       <Column field="description" />

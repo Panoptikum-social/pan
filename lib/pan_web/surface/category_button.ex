@@ -4,13 +4,13 @@ defmodule PanWeb.Surface.CategoryButton do
   alias PanWeb.Router.Helpers, as: Routes
   import PanWeb.ViewHelpers
 
-  prop(id, :integer, required: false)
-  prop(title, :string, required: false)
-  prop(class, :string, required: false)
-  prop(large, :boolean, required: false, default: false)
-  prop(for, :map, required: false)
-  prop(index_on_page, :integer, default: 1)
-  prop(truncate, :boolean, default: false)
+  prop id, :integer, required: false
+  prop title, :string, required: false
+  prop class, :string, required: false
+  prop large, :boolean, required: false, default: false
+  prop for, :map, required: false
+  prop index_on_page, :integer, default: 1
+  prop truncate, :boolean, default: false
 
   def render(assigns) do
     ~H"""

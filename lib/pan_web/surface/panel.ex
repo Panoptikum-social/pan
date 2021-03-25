@@ -7,14 +7,14 @@ defmodule PanWeb.Surface.Panel do
   alias PanWeb.Surface.Link
   alias Surface.Components.Link
 
-  prop(heading, :string, required: false)
-  prop(purpose, :string, required: false, default: "default")
-  prop(heading_right, :string, required: false)
-  prop(target, :fun, required: false)
-  prop(class, :css_class, required: false)
+  prop heading, :string, required: false
+  prop purpose, :string, required: false, default: "default"
+  prop heading_right, :string, required: false
+  prop target, :fun, required: false
+  prop class, :css_class, required: false
 
-  slot(default)
-  slot(panel_heading, required: false)
+  slot default
+  slot panel_heading, required: false
 
   def heading_color_classes(purpose) do
     case purpose do

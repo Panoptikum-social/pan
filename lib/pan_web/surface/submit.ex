@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.Submit do
   use Surface.Component
   alias Surface.Components.Form
 
-  prop(label, :string, required: false, default: "Submit")
+  prop label, :string, required: false, default: "Submit"
 
   def render(assigns) do
     ~H"""

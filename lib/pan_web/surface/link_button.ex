@@ -3,12 +3,12 @@ defmodule PanWeb.Surface.LinkButton do
   alias PanWeb.Surface.Icon
   alias Surface.Components.Link
 
-  prop(title, :string, required: true)
-  prop(to, :fun, required: true)
-  prop(class, :css_class, required: false)
-  prop(large, :boolean, required: false, default: false)
-  prop(icon, :string, required: false)
-  prop(truncate, :boolean, default: false)
+  prop title, :string, required: true
+  prop to, :fun, required: true
+  prop class, :css_class, required: false
+  prop large, :boolean, required: false, default: false
+  prop icon, :string, required: false
+  prop truncate, :boolean, default: false
 
   def render(assigns) do
     ~H"""

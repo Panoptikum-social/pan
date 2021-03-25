@@ -8,18 +8,18 @@ defmodule PanWeb.Surface.Admin.Grid do
   alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
   require Integer
 
-  prop(heading, :string, required: false, default: "Records")
-  prop(resource, :module, required: true)
-  prop(path_helper, :atom, required: true)
+  prop heading, :string, required: false, default: "Records"
+  prop resource, :module, required: true
+  prop path_helper, :atom, required: true
 
-  data(page, :integer, default: 1)
-  data(per_page, :integer, default: 20)
-  data(search_options, :map, default: %{})
-  data(like_search, :boolean, default: false)
-  data(sort_by, :atom, default: :id)
-  data(sort_order, :atom, default: :asc)
-  data(records, :list, default: [])
-  slot(columns)
+  data page, :integer, default: 1
+  data per_page, :integer, default: 20
+  data search_options, :map, default: %{}
+  data like_search, :boolean, default: false
+  data sort_by, :atom, default: :id
+  data sort_order, :atom, default: :asc
+  data records, :list, default: []
+  slot columns
 
   def update(assigns, socket) do
     socket =
@@ -151,10 +151,10 @@ end
 defmodule Column do
   use Surface.Component, slot: "columns"
 
-  prop(field, :string)
-  prop(label, :string)
-  prop(sortable, :boolean, default: true)
-  prop(searchable, :boolean, default: true)
-  prop(presenter, :fun)
-  prop(type, :atom, values: [:string, :integer, :datetime], default: :string)
+  prop field, :string
+  prop label, :string
+  prop sortable, :boolean, default: true
+  prop searchable, :boolean, default: true
+  prop presenter, :fun
+  prop type, :atom, values: [:string, :integer, :datetime], default: :string
 end

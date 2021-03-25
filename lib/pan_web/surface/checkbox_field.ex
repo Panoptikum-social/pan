@@ -2,8 +2,8 @@ defmodule PanWeb.Surface.CheckBoxField do
   use Surface.Component
   alias Surface.Components.Form
 
-  prop(name, :string, required: true)
-  prop(label, :string, required: true)
+  prop name, :string, required: true
+  prop label, :string, required: true
 
   def render(assigns) do
     ~H"""

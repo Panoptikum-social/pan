@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.PodcastCard do
   alias PanWeb.Surface.{PodcastButton, Icon, PersonaButton}
   import PanWeb.ViewHelpers
 
-  prop(for, :map, required: true)
+  prop for, :map, required: true
 
   def render(assigns) do
     ~H"""

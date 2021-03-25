@@ -2,12 +2,12 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
   use Surface.Component
   require Integer
 
-  prop(presenter, :fun, required: false)
-  prop(record, :any, required: true)
-  prop(field, :string, required: true)
-  prop(type, :atom, required: false, values: [:string, :integer], default: :string)
-  prop(index, :integer, required: false, default: 0)
-  prop(width, :string, required: false, default: "")
+  prop presenter, :fun, required: false
+  prop record, :any, required: true
+  prop field, :string, required: true
+  prop type, :atom, required: false, values: [:string, :integer], default: :string
+  prop index, :integer, required: false, default: 0
+  prop width, :string, required: false, default: ""
 
   def present(presenter, record, field, format) do
     if presenter do

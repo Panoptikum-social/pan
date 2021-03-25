@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Tree do
   use Surface.Component
 
-  prop(for, :any, required: true)
+  prop for, :any, required: true
 
   def render(assigns) do
     ~H"""

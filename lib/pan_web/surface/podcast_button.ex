@@ -3,11 +3,11 @@ defmodule PanWeb.Surface.PodcastButton do
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
 
-  prop(id, :integer, required: false)
-  prop(title, :string, required: false)
-  prop(for, :map, required: false)
-  prop(class, :string, required: false)
-  prop(truncate, :boolean, default: false)
+  prop id, :integer, required: false
+  prop title, :string, required: false
+  prop for, :map, required: false
+  prop class, :string, required: false
+  prop truncate, :boolean, default: false
 
   def render(assigns) do
     ~H"""
