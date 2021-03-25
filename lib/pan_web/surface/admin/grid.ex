@@ -147,14 +147,3 @@ defmodule PanWeb.Surface.Admin.Grid do
     end
   end
 end
-
-defmodule Column do
-  use Surface.Component, slot: "columns"
-
-  prop field, :string
-  prop label, :string
-  prop sortable, :boolean, default: true
-  prop searchable, :boolean, default: true
-  prop presenter, :fun
-  prop type, :atom, values: [:string, :integer, :datetime], default: :string
-end

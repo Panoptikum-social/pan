@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Podcast.Index do
   use Surface.LiveView
   alias PanWeb.Podcast
-  alias PanWeb.Surface.Admin.Grid
+  alias PanWeb.Surface.Admin.{Grid, Column}
 
   def render(assigns) do
     ~H"""

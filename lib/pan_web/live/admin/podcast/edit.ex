@@ -1,7 +1,7 @@
-defmodule PanWeb.Live.Admin.Podcast.Show do
+defmodule PanWeb.Live.Admin.Podcast.Edit do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Podcast
-  alias PanWeb.Surface.Admin.{RecordCard, Column}
+  alias PanWeb.Surface.Admin.{RecordForm, Column}
 
   def mount(%{"id" => id}, _session, socket) do
     podcast = Podcast.get_by_id(id)
@@ -10,7 +10,10 @@ defmodule PanWeb.Live.Admin.Podcast.Show do
 
   def render(assigns) do
     ~H"""
-    <RecordCard record={{ @podcast }}>
+    <RecordForm id="record_form"
+                record={{ @podcast }}
+                resource={{ Podcast }}
+                path_helper={{ :podcast_path }}>
       <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />
@@ -40,7 +43,7 @@ defmodule PanWeb.Live.Admin.Podcast.Show do
       <Column field="thumbnailed" type="boolean" />
       <Column field="last_error_message" />
       <Column field="last_error_occured" type="naive_datetime" />
-    </RecordCard>
+    </RecordForm>
     """
   end
 end
