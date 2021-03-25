@@ -43,7 +43,10 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
 
   def render(assigns) do
     ~H"""
-    {{ present(@presenter, @record, @field, @type) }}
+    <div class={{ "text-right": @type == :integer,
+                  "text-center": @type == :boolean }}>
+      {{ present(@presenter, @record, @field, @type) }}
+    </div>
     """
   end
 end
