@@ -14,9 +14,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   slot columns
 
   def update(assigns, socket) do
-    resource = assigns.resource
     {:ok, assign(socket |> assign(assigns),
-                 changeset: struct(resource) |> resource.changeset())}
+                 changeset: assigns.record |> assigns.resource.changeset())}
   end
 
   def name(struct) do
@@ -45,15 +44,25 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           An error occured. Please check the errors below!
         </Field>
 
-        <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
-                       name={{ column.field }}
-                       label={{ column.field }}/>
-        <NumberField :for={{ column <- number_columns(assigns) }}
-                     name={{ column.field }} />
-        <DateTimeField :for={{ column <- datetime_columns(assigns) }}
+        <div class="flex space-x-6">
+          <div>
+            <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
+                          name={{ column.field }}
+                          label={{ column.field }}/>
+          </div>
+          <div>
+            <NumberField :for={{ column <- number_columns(assigns) }}
+                         name={{ column.field }} />
+          </div>
+          <div>
+            <DateTimeField :for={{ column <- datetime_columns(assigns) }}
+                           name={{ column.field }} />
+          </div>
+          <div>
+            <TextField :for={{ column <- string_columns(assigns) }}
                        name={{ column.field }} />
-        <TextField :for={{ column <- string_columns(assigns) }}
-                   name={{ column.field }} />
+          </div>
+        </div>
         <Submit label="Save" />
       </Form>
     </div>
