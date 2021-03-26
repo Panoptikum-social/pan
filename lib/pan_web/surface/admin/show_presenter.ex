@@ -19,23 +19,22 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
         "∅"
       else
         case format do
-          :boolean ->
-            case data do
-              true -> "✅"
-              false -> "❌"
-            end
+          :boolean -> if data, do: "✅", else: "❌"
 
           :string ->
-            cond do
-              String.starts_with?(data, ["http://", "https://"]) ->
-                raw("<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>")
-
-              true ->
-                data
+            if String.starts_with?(data, ["http://", "https://"]) do
+              raw("<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>")
+            else
+              data
             end
 
           :float ->
-            Float.round(data, 2)
+            rounded = Float.round(data, 2)
+            if rounded == data do
+              data
+            else
+              "~ " <> Float.to_string(rounded)
+            end
 
           _ ->
             data
