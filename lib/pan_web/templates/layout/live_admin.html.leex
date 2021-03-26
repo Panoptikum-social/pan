@@ -1,11 +1,11 @@
 <main role="main" class="container px-4 mb-8 min-h-screen text-black">
-  <p id="alert-success" class="text-white bg-green-700 alert" role="alert"
+  <p id="alert-success" class="text-white bg-grass" role="alert"
     phx-click="lv:clear-flash"
-    phx-value-key="info"><%= live_flash(@flash, :info) %>flash-info</p>
+    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
-  <p id="alert-error" class="text-white bg-red-700 alert" role="alert"
+  <p id="alert-error" class="text-white bg-grapefruit" role="alert"
     phx-click="lv:clear-flash"
-    phx-value-key="error"><%= live_flash(@flash, :error) %>flash-error</p>
+    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
   <%= @inner_content %>
 </main>

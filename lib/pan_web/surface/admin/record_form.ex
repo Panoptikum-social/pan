@@ -4,7 +4,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
-  alias PanWeb.Surface.{TextField, CheckBoxField, NumberField, DateTimeField, Submit}
+  alias PanWeb.Surface.{TextField, Submit}
+  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField}
 
   prop record, :map, required: true
   prop resource, :module, required: true
@@ -27,45 +28,43 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   def render(assigns) do
     ~H"""
-    <div class="bg-white">
-      <h2 class="text-2xl">
-        <span class="text-gray">
-          Edit <span class="font-semibold">{{ name(@record) }}</span>
-        </span> &nbsp; {{ @record.title }}
-      </h2>
+    <h2 class="text-2xl">
+      <span class="text-gray">
+        Edit <span class="font-semibold">{{ name(@record) }}</span>
+      </span> &nbsp; {{ @record.title }}
+    </h2>
 
-      <Form action={{ Function.capture(Routes, @path_helper, 2).(@socket, :create) }}
-            for={{ @changeset }}
-            opts={{ autocomplete: "off" }}>
+    <Form action={{ Function.capture(Routes, @path_helper, 2).(@socket, :create) }}
+          for={{ @changeset }}
+          opts={{ autocomplete: "off", class: "mt-8" }}>
 
-        <Field :if={{ @changeset.action }}
-               name="error"
-               class="alert alert-danger">
-          An error occured. Please check the errors below!
-        </Field>
+      <Field :if={{ @changeset.action }}
+              name="error"
+              class="alert alert-danger">
+        An error occured. Please check the errors below!
+      </Field>
 
-        <div class="flex space-x-6">
-          <div>
-            <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
-                          name={{ column.field }}
-                          label={{ column.field }}/>
-          </div>
-          <div>
-            <NumberField :for={{ column <- number_columns(assigns) }}
-                         name={{ column.field }} />
-          </div>
-          <div>
-            <DateTimeField :for={{ column <- datetime_columns(assigns) }}
-                           name={{ column.field }} />
-          </div>
-          <div>
-            <TextField :for={{ column <- string_columns(assigns) }}
-                       name={{ column.field }} />
-          </div>
+      <div class="flex space-x-8">
+        <div>
+          <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
+                        name={{ column.field }}
+                        label={{ column.field }}/>
         </div>
-        <Submit label="Save" />
-      </Form>
-    </div>
+        <div>
+          <NumberField :for={{ column <- number_columns(assigns) }}
+                        name={{ column.field }} />
+        </div>
+        <div>
+          <DateTimeField :for={{ column <- datetime_columns(assigns) }}
+                          name={{ column.field }} />
+        </div>
+        <div>
+          <TextField :for={{ column <- string_columns(assigns) }}
+                      name={{ column.field }} />
+        </div>
+      </div>
+      <Submit label="Save" />
+    </Form>
     """
   end
 end
