@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Home do
-  use Surface.LiveView
+  use Surface.LiveView, container: {:div, class: "flex-1 justify-self-center"}
   import PanWeb.Router.Helpers
   alias PanWeb.Surface.{Panel, TopList, Tab, PodcastCard, EpisodeCard, RecommendationCard}
   alias PanWeb.{Podcast, Episode, Recommendation}

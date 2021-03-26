@@ -1,6 +1,7 @@
 <div aria-label="columncontainer" 
-    class="flex flex-col space-y-4 justify-items-auto max-w-screen-xl 
-           lg:flex-row lg:space-y-0 lg:space-x-4">
+    class="max-w-screen-xl mx-auto 
+           flex flex-col space-y-4 justify-items-auto 
+           lg:flex-row lg:space-y-0 lg:space-x-4 ">
   <div aria-label="left column" 
       class="flex-1">
     <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."

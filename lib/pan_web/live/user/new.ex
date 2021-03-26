@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.User.New do
-  use Surface.LiveView
+  use Surface.LiveView, container: {:div, class: "flex-1 justify-self-center"}
   alias PanWeb.User
   alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField}
   alias Surface.Components.{Form, Link}
@@ -12,7 +12,7 @@ defmodule PanWeb.Live.User.New do
 
   def render(assigns) do
     ~H"""
-    <div class="max-w-lg">
+    <div class="max-w-lg mx-auto">
       <h1 class="text-3xl">Sign Up</h1>
 
       <Form action={{ user_frontend_path(@socket, :create) }}
