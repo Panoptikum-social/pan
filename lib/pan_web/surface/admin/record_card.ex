@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
   use Surface.Component
   import PanWeb.Surface.Admin.ColumnsFilter
-  alias PanWeb.Surface.Admin.{DataBlock, StringBlock}
+  alias PanWeb.Surface.Admin.DataBlock
 
   prop record, :map, required: true
   slot columns
@@ -22,12 +22,12 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         </span> &nbsp; {{ @record.title }}
       </h2>
 
-      <div class="flex space-x-4">
+      <div class="flex space-x-4 items-start mt-8">
         <DataBlock columns={{ assigns |> number_columns() }} record={{ @record }} />
         <DataBlock columns={{ assigns |> boolean_columns() }} record={{ @record }} />
         <DataBlock columns={{ assigns |> datetime_columns() }} record={{ @record }} />
       </div>
-      <StringBlock columns={{ assigns |> string_columns() }} record={{ @record }} />
+      <DataBlock columns={{ assigns |> string_columns() }} record={{ @record }} />
     </div>
     """
   end

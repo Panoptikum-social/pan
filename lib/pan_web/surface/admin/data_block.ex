@@ -1,6 +1,7 @@
 defmodule PanWeb.Surface.Admin.DataBlock do
   use Surface.Component
   alias PanWeb.Surface.Admin.ShowPresenter
+  require Integer
 
   prop record, :map, required: true
   prop columns, :list, required: true
@@ -13,22 +14,20 @@ defmodule PanWeb.Surface.Admin.DataBlock do
 
   def render(assigns) do
     ~H"""
-    <div class="my-8 flex flex-row">
-      <div class="flex flex-col font-mono text-gray-darker text-right">
-        <div :for={{ column <- @columns }}
-            class="odd:bg-gray-lightest px-2">
+    <div class="mt-4 grid"
+         style="grid-template-columns: repeat(2, minmax(0, max-content));">
+      <For each={{ {column, index} <- @columns |> Enum.with_index() }}>
+        <div class={{ "px-2 text-gray-darker font-mono text-right",
+                      "bg-gray-lightest": Integer.is_even(index) }}>
           {{ titelize(column.field) }}
         </div>
-      </div>
-
-      <div class="flex flex-col">
-        <div :for={{ column <- @columns }}
-             class="odd:bg-gray-lightest px-2">
-            <ShowPresenter record={{ @record }}
+        <div class={{ "px-2",
+                      "bg-gray-lightest": Integer.is_even(index) }}>
+          <ShowPresenter record={{ @record }}
                           field={{ column.field }}
                           type={{ column.type }} />
         </div>
-      </div>
+      </For>
     </div>
     """
   end

@@ -47,12 +47,12 @@
 
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
       <GridPresenter :for={{ column <- @columns }} 
-                  presenter={{ column[:presenter]}}
-                  record={{ record }}
-                  field={{ column.field }} 
-                  type={{ column.type }}
-                  index={{ index}}
-                  width={{ width(column.type) }} />
+                     presenter={{ column[:presenter]}}
+                     record={{ record }}
+                     field={{ column.field }} 
+                     type={{ column.type }}
+                     index={{ index}}
+                     width={{ width(column.type) }} />
 
       <div class={{ "bg-white self-center flex space-x-4 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
