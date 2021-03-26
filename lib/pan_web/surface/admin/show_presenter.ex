@@ -36,6 +36,9 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
               "~ " <> Float.to_string(rounded)
             end
 
+          :integer ->
+              raw(Integer.to_string(data) <> "&nbsp;&nbsp;&nbsp;")
+
           _ ->
             data
         end
@@ -45,7 +48,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
 
   def render(assigns) do
     ~H"""
-    <div class={{ "text-right": @type in [:integer, :float],
+    <div class={{ "text-right font-mono": @type in [:integer, :float],
                   "text-center": @type == :boolean }}>
       {{ present(@presenter, @record, @field, @type) }}
     </div>
