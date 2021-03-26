@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.RecommendationCard do
   use Surface.Component
   alias PanWeb.Surface.{EpisodeButton, PodcastButton, Icon, UserButton}
 
-  prop for, :any, required: true
+  prop(for, :any, required: true)
 
   def render(assigns) do
     ~H"""

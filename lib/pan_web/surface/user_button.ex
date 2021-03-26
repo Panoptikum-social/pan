@@ -3,9 +3,9 @@ defmodule PanWeb.Surface.UserButton do
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
 
-  prop id, :integer, required: false
-  prop name, :string, required: false
-  prop for, :map, required: false
+  prop(id, :integer, required: false)
+  prop(name, :string, required: false)
+  prop(for, :map, required: false)
 
   def render(assigns) do
     ~H"""

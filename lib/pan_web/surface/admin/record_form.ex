@@ -7,16 +7,18 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias PanWeb.Surface.{TextField, Submit}
   alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField}
 
-  prop record, :map, required: true
-  prop resource, :module, required: true
-  prop path_helper, :atom, required: true
+  prop(record, :map, required: true)
+  prop(resource, :module, required: true)
+  prop(path_helper, :atom, required: true)
 
-  data changeset, :map
-  slot columns
+  data(changeset, :map)
+  slot(columns)
 
   def update(assigns, socket) do
-    {:ok, assign(socket |> assign(assigns),
-                 changeset: assigns.record |> assigns.resource.changeset())}
+    {:ok,
+     assign(socket |> assign(assigns),
+       changeset: assigns.record |> assigns.resource.changeset()
+     )}
   end
 
   def name(struct) do

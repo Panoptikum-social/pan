@@ -2,10 +2,10 @@ defmodule PanWeb.Surface.Admin.Pagination do
   use Surface.Component
   alias PanWeb.Surface.Admin.PaginationLink
 
-  prop per_page, :integer, required: false, default: 10
-  prop page, :integer, required: false, default: 1
-  prop class, :css_class, required: false
-  prop target, :string, required: true
+  prop(per_page, :integer, required: false, default: 10)
+  prop(page, :integer, required: false, default: 1)
+  prop(class, :css_class, required: false)
+  prop(target, :string, required: true)
 
   def render(assigns) do
     ~H"""

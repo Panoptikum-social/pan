@@ -1,13 +1,13 @@
 defmodule PanWeb.Surface.Admin.PaginationLink do
   use Surface.Component
 
-  prop page, :integer, required: true
-  prop per_page, :integer, required: true
-  prop disabled, :css_class, required: false, default: false
-  prop class, :css_class, required: false
-  prop target, :string, required: true
+  prop(page, :integer, required: true)
+  prop(per_page, :integer, required: true)
+  prop(disabled, :css_class, required: false, default: false)
+  prop(class, :css_class, required: false)
+  prop(target, :string, required: true)
 
-  slot default, required: true
+  slot(default, required: true)
 
   def render(assigns) do
     ~H"""

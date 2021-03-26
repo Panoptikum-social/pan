@@ -1,9 +1,9 @@
 defmodule PanWeb.Surface.Tab do
   use Surface.Component
 
-  prop items, :list, required: true
+  prop(items, :list, required: true)
 
-  slot default, props: [item: ^items]
+  slot(default, props: [item: ^items])
 
   def render(assigns) do
     ~H"""

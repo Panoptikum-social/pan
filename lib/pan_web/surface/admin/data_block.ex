@@ -3,8 +3,8 @@ defmodule PanWeb.Surface.Admin.DataBlock do
   alias PanWeb.Surface.Admin.ShowPresenter
   require Integer
 
-  prop record, :map, required: true
-  prop columns, :list, required: true
+  prop(record, :map, required: true)
+  prop(columns, :list, required: true)
 
   def titelize(string) do
     string

@@ -3,8 +3,8 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
 
-  prop record, :map, required: true
-  slot columns
+  prop(record, :map, required: true)
+  slot(columns)
 
   def name(struct) do
     struct.__struct__
