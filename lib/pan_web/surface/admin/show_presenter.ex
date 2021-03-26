@@ -41,6 +41,18 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
           :integer ->
             raw(Integer.to_string(data) <> "&nbsp;&nbsp;&nbsp;")
 
+          :datetime ->
+            raw("<span class=\"pr-2\">📅</span>" <> (data |> DateTime.to_date() |> Date.to_string()) <>
+                "<span class=\"pl-4 pr-2\">🕒</span>" <>
+                (data |> DateTime.to_time() |> Time.to_string())
+            )
+
+          :naive_datetime ->
+            raw("<span class=\"pr-2\">📅</span>" <> (data |> NaiveDateTime.to_date() |> Date.to_string()) <>
+            "<span class=\"pl-4 pr-2\">🕒</span>" <>
+                (data |> NaiveDateTime.to_time() |> Time.to_string())
+            )
+
           _ ->
             data
         end
@@ -50,7 +62,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
 
   def render(assigns) do
     ~H"""
-    <div class={{ "text-right font-mono": @type in [:integer, :float],
+    <div class={{ "text-right font-mono": @type in [:integer, :float, :datetime, :naive_datetime],
                   "text-center": @type == :boolean }}>
       {{ present(@presenter, @record, @field, @type) }}
     </div>
