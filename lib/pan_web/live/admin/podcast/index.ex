@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Podcast.Index do
-  use Surface.LiveView
+  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Podcast
   alias PanWeb.Surface.Admin.{Grid, Column}
 

@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Dashboard do
-  use Surface.LiveView
+  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Tree
 
   def mount(_params, _session, socket) do

@@ -32,7 +32,7 @@ defmodule PanWeb.User do
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
     field(:pro_until, :naive_datetime)
-    field(:billing_address, :string)
+    field(:billing_address, Ecto.EctoText)
     field(:payment_reference, :string)
     field(:paper_bill, :boolean)
     field(:elastic, :boolean)

@@ -4,8 +4,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Surface.Components.Form
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
-  alias PanWeb.Surface.{TextField, Submit}
-  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField, TextAreaField}
+  alias PanWeb.Surface.Submit
+  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField, TextAreaField, TextField}
 
   prop(record, :map, required: true)
   prop(resource, :module, required: true)
@@ -47,12 +47,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           An error occured. Please check the errors below!
         </Field>
 
-        <div class="flex space-x-8">
-          <div>
-            <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
-                          name={{ column.field }}
-                          label={{ column.field }}/>
-          </div>
+        <div class="flex flex-col lg:flex-row lg:space-x-16">
           <div>
             <NumberField :for={{ column <- number_columns(assigns) }}
                           name={{ column.field }} />
@@ -62,14 +57,16 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                             name={{ column.field }} />
           </div>
           <div>
-            <TextField :for={{ column <- string_columns(assigns) }}
-                        name={{ column.field }} />
+            <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
+                          name={{ column.field }}
+                          label={{ column.field }}/>
           </div>
         </div>
-        <div>
-          <TextAreaField :for={{ column <- text_columns(assigns) }}
-                         name={{ column.field }} />
-        </div>
+        <TextField :for={{ column <- string_columns(assigns) }}
+                   name={{ column.field }} />
+        <TextAreaField :for={{ column <- text_columns(assigns) }}
+                       name={{ column.field }} />
+
          <Submit label="Save" />
       </Form>
     </div>

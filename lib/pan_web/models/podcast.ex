@@ -26,7 +26,7 @@ defmodule PanWeb.Podcast do
     field(:title, :string)
     field(:website, :string)
     field(:description, Ecto.EctoText)
-    field(:summary, :string)
+    field(:summary, Ecto.EctoText)
     field(:image_title, :string)
     field(:image_url, :string)
     field(:last_build_date, :naive_datetime)

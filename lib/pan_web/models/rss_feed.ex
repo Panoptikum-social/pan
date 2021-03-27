@@ -2,7 +2,7 @@ defmodule PanWeb.RssFeed do
   use PanWeb, :model
 
   schema "rss_feeds" do
-    field(:content, :string)
+    field(:content, Ecto.EctoText)
     belongs_to(:podcast, PanWeb.Podcast)
 
     timestamps()

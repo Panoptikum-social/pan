@@ -23,11 +23,12 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       </h2>
 
       <div class="flex space-x-4 items-start mt-4">
-        <DataBlock columns={{ assigns |> number_columns() }} record={{ @record }} />
-        <DataBlock columns={{ assigns |> boolean_columns() }} record={{ @record }} />
-        <DataBlock columns={{ assigns |> datetime_columns() }} record={{ @record }} />
+        <DataBlock columns={{ number_columns(assigns) }} record={{ @record }} />
+        <DataBlock columns={{ datetime_columns(assigns) }} record={{ @record }} />
+        <DataBlock columns={{ boolean_columns(assigns) }} record={{ @record }} />
       </div>
-      <DataBlock columns={{ assigns |> string_columns() }} record={{ @record }} />
+      <DataBlock columns={{ string_columns(assigns) }} record={{ @record }} />
+      <DataBlock columns={{ text_columns(assigns) }} record={{ @record }} />
     </div>
     """
   end

@@ -14,8 +14,8 @@ defmodule PanWeb.Live.Admin.Podcast.Show do
       <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />
-      <Column field="description" />
-      <Column field="summary" />
+      <Column field="description" type="Ecto.EctoText"/>
+      <Column field="summary" type="Ecto.EctoText"/>
       <Column field="image_title" />
       <Column field="image_url" />
       <Column field="last_build_date" type="naive_datetime" />

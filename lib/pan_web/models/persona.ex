@@ -21,7 +21,7 @@ defmodule PanWeb.Persona do
     field(:uri, :string)
     field(:email, :string)
     field(:description, :string)
-    field(:long_description, :string)
+    field(:long_description, Ecto.EctoText)
     field(:image_url, :string)
     field(:image_title, :string)
     field(:elastic, :boolean)

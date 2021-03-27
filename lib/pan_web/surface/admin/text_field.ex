@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.TextAreaField do
+defmodule PanWeb.Surface.Admin.TextField do
   use Surface.Component
   alias Surface.Components.Form
 
@@ -6,9 +6,9 @@ defmodule PanWeb.Surface.Admin.TextAreaField do
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex flex-col sm:flex-row justify-end items-top">
+    <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex flex-col sm:flex-row justify-end sm:items-center">
       <Form.Label class="block italic w-40 sm:text-right flex-shrink-0"/>
-      <Form.TextArea class="w-full ml-3 px-2 py-0 rounded-none" rows=5 />
+      <Form.TextInput class="w-full ml-3 px-2 py-0 rounded-none" />
       <Form.ErrorTag />
     </Form.Field>
     """

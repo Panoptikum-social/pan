@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Admin.Podcast.Edit do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
+                        container: {:div, class: "flex-1 w-full"}
   alias PanWeb.Podcast
   alias PanWeb.Surface.Admin.{RecordForm, Column}
 
@@ -17,8 +18,8 @@ defmodule PanWeb.Live.Admin.Podcast.Edit do
       <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />
-      <Column field="description" type="Ecto.EctoText" />
-      <Column field="summary" />
+      <Column field="description" type="Ecto.EctoText"/>
+      <Column field="summary" type="Ecto.EctoText"/>
       <Column field="image_title" />
       <Column field="image_url" />
       <Column field="last_build_date" type="naive_datetime" />
