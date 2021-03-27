@@ -5,7 +5,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.{TextField, Submit}
-  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField}
+  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField, TextAreaField}
 
   prop(record, :map, required: true)
   prop(resource, :module, required: true)
@@ -66,7 +66,11 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                         name={{ column.field }} />
           </div>
         </div>
-        <Submit label="Save" />
+        <div>
+          <TextAreaField :for={{ column <- text_columns(assigns) }}
+                         name={{ column.field }} />
+        </div>
+         <Submit label="Save" />
       </Form>
     </div>
     """

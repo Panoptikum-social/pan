@@ -18,4 +18,9 @@ defmodule PanWeb.Surface.Admin.ColumnsFilter do
     assigns.columns
     |> Enum.filter(fn c -> c.type in [:string, :"Ecto.UUID"] end)
   end
+
+  def text_columns(assigns) do
+    assigns.columns
+    |> Enum.filter(fn c -> c.type in [:"Ecto.EctoText"] end)
+  end
 end

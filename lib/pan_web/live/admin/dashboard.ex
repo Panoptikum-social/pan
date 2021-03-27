@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
     {:ok, modules} = :application.get_key(application, :modules)
     _schemas = Enum.filter(modules, &({:__schema__, 1} in &1.__info__(:functions)))
-    # PanWeb.Podcast.__schema__
+    # PanWeb.Podcast.__schema__(:fields)
     # PanWeb.Podcast.__changeset__
     # PanWeb.Podcast.__struct__
     config

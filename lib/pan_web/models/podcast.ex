@@ -25,7 +25,7 @@ defmodule PanWeb.Podcast do
   schema "podcasts" do
     field(:title, :string)
     field(:website, :string)
-    field(:description, :string)
+    field(:description, Ecto.EctoText)
     field(:summary, :string)
     field(:image_title, :string)
     field(:image_url, :string)

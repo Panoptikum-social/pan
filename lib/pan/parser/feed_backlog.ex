@@ -1,7 +1,7 @@
 defmodule Pan.Parser.FeedBacklog do
   alias Pan.Repo
 
-  def upload do
+  def upload() do
     stream = File.stream!("materials/backlog.xml", [:read, :utf8])
 
     Enum.each(stream, fn url ->

@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Admin.Podcast.Edit do
       <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />
-      <Column field="description" />
+      <Column field="description" type="Ecto.EctoText" />
       <Column field="summary" />
       <Column field="image_title" />
       <Column field="image_url" />
