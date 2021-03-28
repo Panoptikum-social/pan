@@ -47,25 +47,37 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           An error occured. Please check the errors below!
         </Field>
 
-        <div class="flex flex-col lg:flex-row lg:space-x-16">
-          <div>
+        <div class="flex flex-col xl:flex-row xl:space-x-4">
+          <fieldset class="border border-gray bg-gray-lightest rounded p-2">
+            <legend class="px-4">Numeric Fields</legend>
             <NumberField :for={{ column <- number_columns(assigns) }}
                           name={{ column.field }} />
-          </div>
-          <div>
+          </fieldset>
+          <fieldset class="border border-gray bg-gray-lightest rounded p-2">
+            <legend class="px-4">Date & Time Fields</legend>
             <DateTimeField :for={{ column <- datetime_columns(assigns) }}
                             name={{ column.field }} />
-          </div>
-          <div>
+          </fieldset>
+          <fieldset class="border border-gray bg-gray-lightest rounded p-2">
+          <legend class="px-4">Boolean Fields</legend>
             <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
                           name={{ column.field }}
                           label={{ column.field }}/>
-          </div>
+          </fieldset>
         </div>
-        <TextField :for={{ column <- string_columns(assigns) }}
-                   name={{ column.field }} />
-        <TextAreaField :for={{ column <- text_columns(assigns) }}
-                       name={{ column.field }} />
+
+        <div class="flex flex-col xl:flex-row xl:space-x-4 w-full">
+          <fieldset class="flex-1 border border-gray bg-gray-lightest rounded p-2">
+            <legend class="px-4">String Fields</legend>
+            <TextField :for={{ column <- string_columns(assigns) }}
+                      name={{ column.field }} />
+          </fieldset>
+          <fieldset class="flex-1 border border-gray bg-gray-lightest rounded p-2">
+            <legend class="px-4">Text Fields</legend>
+            <TextAreaField :for={{ column <- text_columns(assigns) }}
+                          name={{ column.field }} />
+          </fieldset>
+        </div>
 
          <Submit label="Save" />
       </Form>

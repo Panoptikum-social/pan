@@ -6,9 +6,9 @@ defmodule PanWeb.Surface.Admin.TextField do
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex flex-col sm:flex-row justify-end sm:items-center">
-      <Form.Label class="block italic w-40 sm:text-right flex-shrink-0"/>
-      <Form.TextInput class="w-full ml-3 px-2 py-0 rounded-none" />
+    <Form.Field name={{ @name |> String.to_atom() }} class="my-2">
+      <Form.Label class="italic"/>
+      <Form.TextInput class="w-full px-2 py-0 rounded-none" />
       <Form.ErrorTag />
     </Form.Field>
     """
