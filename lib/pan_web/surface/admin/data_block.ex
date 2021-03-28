@@ -15,16 +15,18 @@ defmodule PanWeb.Surface.Admin.DataBlock do
   def render(assigns) do
     ~H"""
     <div class="mt-4 grid"
-         style="grid-template-columns: repeat(2, minmax(0, max-content));">
+         style="grid-template-columns: max-content 1fr;">
       <For each={{ {column, index} <- @columns |> Enum.with_index() }}>
         <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
-                      "bg-gray-lighter": Integer.is_even(index),
-                      "bg-gray-lightest": Integer.is_odd(index) }}>
+                      "bg-white": Integer.is_even(index),
+                      "bg-gray-lightest": Integer.is_odd(index),
+                      "border-t-2 border-gray-lighter": index > 0 }}>
           {{ titelize(column.field) }}
         </div>
-        <div class={{ "pl-4 pr-2 py-0.5",
-                      "bg-gray-lighter": Integer.is_even(index),
-                      "bg-gray-lightest": Integer.is_odd(index) }}>
+        <div class={{ "w-full pl-4 pr-2 py-0.5",
+                      "bg-white": Integer.is_even(index),
+                      "bg-gray-lightest": Integer.is_odd(index),
+                      "border-t-2 border-gray-lighter": index > 0 }}>
           <ShowPresenter record={{ @record }}
                           field={{ column.field }}
                           type={{ column.type }} />
