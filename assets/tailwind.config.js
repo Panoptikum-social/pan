@@ -4,7 +4,10 @@ module.exports = {
   purge: {
     enabled: process.env.NODE_ENV === "production",
     content: [
-      "../lib/**/*.{leex,eex,ex,sface}",
+      "../lib/**/*.leex",
+      "../lib/**/*.eex",
+      "../lib/**/*.ex",
+      "../lib/**/*.sface",
       "./js/**/*.js",  
     ],
     options: {
