@@ -66,7 +66,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           </fieldset>
         </div>
 
-        <div class="flex flex-col xl:flex-row xl:space-x-4 w-full">
+        <div class="mt-4 flex flex-col xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded p-2">
             <legend class="px-4">String Fields</legend>
             <TextField :for={{ column <- string_columns(assigns) }}
