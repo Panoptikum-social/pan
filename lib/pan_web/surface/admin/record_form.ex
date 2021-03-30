@@ -5,7 +5,15 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Submit
-  alias PanWeb.Surface.Admin.{CheckBoxField, NumberField, DateTimeField, TextAreaField, TextField}
+
+  alias PanWeb.Surface.Admin.{
+    CheckBoxField,
+    NumberField,
+    DateTimeField,
+    TextAreaField,
+    TextField,
+    DateTimeSelect
+  }
 
   prop(record, :map, required: true)
   prop(resource, :module, required: true)
@@ -55,7 +63,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
-            <DateTimeField :for={{ column <- datetime_columns(assigns) }}
+            <DateTimeSelect :for={{ column <- datetime_columns(assigns) }}
                             name={{ column.field }} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
