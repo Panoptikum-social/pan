@@ -1,6 +1,7 @@
 defmodule PanWeb.Surface.Admin.TextAreaField do
   use Surface.Component
   alias Surface.Components.Form
+  alias PanWeb.Surface.Admin.ErrorTag
 
   prop(name, :string, required: true)
 
@@ -9,7 +10,7 @@ defmodule PanWeb.Surface.Admin.TextAreaField do
     <Form.Field name={{ @name |> String.to_atom() }} class="my-2">
       <Form.Label class="italic"/>
       <Form.TextArea class="w-full px-2 py-0 rounded-none" rows=5 />
-      <Form.ErrorTag />
+      <ErrorTag />
     </Form.Field>
     """
   end

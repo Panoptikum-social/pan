@@ -1,6 +1,7 @@
 defmodule PanWeb.Surface.Admin.CheckBoxField do
   use Surface.Component
   alias Surface.Components.Form
+  alias PanWeb.Surface.Admin.ErrorTag
 
   prop(name, :string, required: true)
   prop(label, :string, required: true)
@@ -13,7 +14,7 @@ defmodule PanWeb.Surface.Admin.CheckBoxField do
       <Form.Label class="italic pl-2">
         {{ @label }}
       </Form.Label>
-      <Form.ErrorTag />
+      <ErrorTag />
     </Form.Field>
     """
   end
