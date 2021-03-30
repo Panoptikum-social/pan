@@ -19,8 +19,7 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
     <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex items-center justify-end">
       <Form.Label class="italic"/>
       <Context get={{ form: form, field: field }}>
-        {{ datetime_select(form, field,
-                           builder: fn b -> render_builder(assigns, b) end) }}
+        {{ datetime_select(form, field, builder: fn b -> render_builder(assigns, b) end) }}
       </Context>
       <Form.ErrorTag />
     </Form.Field>
