@@ -10,7 +10,10 @@ defmodule PanWeb.Surface.Admin.NumberField do
     <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex items-center justify-end">
       <Form.Label class="italic text-right"/>
       <div class="flex flex-col items-center">
-        <Form.NumberInput class="ml-3 w-32 text-right px-2 py-0 rounded-none" />
+        <Form.NumberInput class={{ "ml-3 w-32 text-right px-2 py-0 rounded-none
+                                   disabled:bg-gray-lighter",
+                                   "cursor-not-allowed": @name == "id" }}
+                          opts= {{ disabled: @name == "id" }} />
         <ErrorTag />
       </div>
     </Form.Field>
