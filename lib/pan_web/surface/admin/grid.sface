@@ -4,7 +4,6 @@
                 class="text-link hover:text-link-dark float-right underline" />
   <h1 class="text-2xl">{{ @heading }}</h1>
 
-
   <div class={{ "border border-gray-lighter grid mt-6 bg-gray-lightest gap-0.5" }}
        style={{ "grid-template-columns: repeat(" <> 
                 Integer.to_string(length(@columns) + 1) <> 
@@ -68,8 +67,10 @@
                       class="text-warning hover:text-warning-light text-medium underline"
                       label="Edit" />
 
-        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
-              opts={{ data: [confirm: "Are you sure?"], method: :delete }}
+        <Link to="#" 
+              click={{ "delete", target: "#" <> @id }}
+              opts={{ data: [confirm: "Are you sure?"], 
+                      "phx-value-id": record.id }}
               class="text-danger hover:text-danger-light text-medium underline" 
               label="Delete" />
       </div>

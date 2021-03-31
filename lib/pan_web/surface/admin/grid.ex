@@ -4,7 +4,6 @@ defmodule PanWeb.Surface.Admin.Grid do
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
   alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter}
-  alias PanWeb.Surface.Icon
   alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
   require Integer
 
@@ -77,6 +76,24 @@ defmodule PanWeb.Surface.Admin.Grid do
       |> get_records()
 
     {:noreply, socket}
+  end
+
+  def handle_event("delete", %{"id" => id_string}, socket) do
+    index_path = Function.capture(Routes, socket.assigns.path_helper, 2).(socket, :index)
+    id = String.to_integer(id_string)
+    resource = socket.assigns.resource
+    record = Repo.get!(resource, id)
+    require IEx
+
+    try do
+      Repo.delete(record)
+      if Map.has_key?(record, :elastic), do: resource.delete_search_index(id)
+      {:noreply, get_records(socket)}
+    rescue
+      e in Postgrex.Error ->
+        %Postgrex.Error{postgres: %{message: message}} = e
+        {:noreply, put_flash(socket, :error, message) |> redirect(to: index_path)}
+    end
   end
 
   defp get_records(socket) do
