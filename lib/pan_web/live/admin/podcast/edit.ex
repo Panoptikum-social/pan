@@ -9,6 +9,10 @@ defmodule PanWeb.Live.Admin.Podcast.Edit do
     {:ok, assign(socket, podcast: podcast)}
   end
 
+  def handle_info({:redirect, path}, socket) do
+    {:noreply, redirect(socket, to: path)}
+  end
+
   def render(assigns) do
     ~H"""
     <RecordForm id="record_form"

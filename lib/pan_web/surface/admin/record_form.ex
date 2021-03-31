@@ -5,6 +5,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Submit
+  alias Pan.Repo
 
   alias PanWeb.Surface.Admin.{
     CheckBoxField,
@@ -35,17 +36,42 @@ defmodule PanWeb.Surface.Admin.RecordForm do
     |> List.last()
   end
 
-  def handle_event("validate", full_params, socket) do
+  def handle_event("validate", params, socket) do
+    # "Elixir.PanWeb.Podcast"
     resource_string = socket.assigns.resource |> to_string()
+    # "podcast"
     resource_name = resource_string |> Phoenix.Naming.resource_name()
-    params = full_params[resource_name]
+    record_params = params[resource_name]
+    # %PanWeb.Podcast{...}
     named_struct = resource_string |> String.to_atom() |> Kernel.struct()
 
     changeset =
-      socket.assigns.resource.changeset(named_struct, params)
+      socket.assigns.resource.changeset(named_struct, record_params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("save", params, socket) do
+    resource_string = socket.assigns.resource |> to_string()
+    resource_name = resource_string |> Phoenix.Naming.resource_name()
+    record_params = params[resource_name]
+
+    record_id = record_params["id"]
+    record = Repo.get(socket.assigns.resource, record_id)
+    changeset = socket.assigns.resource.changeset(record, record_params)
+
+    case Repo.update(changeset) do
+      {:ok, record} ->
+        record_show_path =
+          Function.capture(Routes, socket.assigns.path_helper, 3).(socket, :show, record)
+
+        send(self(), {:redirect, record_show_path})
+        {:noreply, put_flash(socket, :info, to_string(socket.assigns.resource) <> "created")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
   end
 
   def render(assigns) do
