@@ -66,8 +66,10 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         record_show_path =
           Function.capture(Routes, socket.assigns.path_helper, 3).(socket, :show, record)
 
-        send(self(), {:redirect, record_show_path})
-        {:noreply, put_flash(socket, :info, to_string(socket.assigns.resource) <> "created")}
+        send(self(), {:redirect, %{path: record_show_path,
+                                   flash_type: :info,
+                                   message: to_string(socket.assigns.resource) <> " updated"}})
+        {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

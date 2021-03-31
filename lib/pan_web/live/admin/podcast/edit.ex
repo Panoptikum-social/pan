@@ -1,6 +1,8 @@
 defmodule PanWeb.Live.Admin.Podcast.Edit do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
-                        container: {:div, class: "flex-1 w-full"}
+  use Surface.LiveView,
+    layout: {PanWeb.LayoutView, "live_admin.html"},
+    container: {:div, class: "flex-1 w-full"}
+
   alias PanWeb.Podcast
   alias PanWeb.Surface.Admin.{RecordForm, Column}
 
@@ -9,8 +11,13 @@ defmodule PanWeb.Live.Admin.Podcast.Edit do
     {:ok, assign(socket, podcast: podcast)}
   end
 
-  def handle_info({:redirect, path}, socket) do
-    {:noreply, redirect(socket, to: path)}
+  def handle_info({:redirect, %{path: path,
+                                flash_type: flash_type,
+                                message: message}}, socket) do
+    {:noreply,
+     socket
+     |> put_flash(flash_type, message)
+     |> redirect(to: path)}
   end
 
   def render(assigns) do
