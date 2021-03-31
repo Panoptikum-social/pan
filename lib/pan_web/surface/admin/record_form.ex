@@ -25,7 +25,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   def update(assigns, socket) do
     {:ok,
      assign(socket |> assign(assigns),
-       changeset: assigns.record |> assigns.resource.changeset()
+       changeset: assigns.record |> assigns.resource.changeset() |> Map.put(:action, :insert)
      )}
   end
 
@@ -36,39 +36,44 @@ defmodule PanWeb.Surface.Admin.RecordForm do
     |> List.last()
   end
 
+  def updated_or_created(nil), do: " created"
+  def updated_or_created(_), do: " updated"
+
   def handle_event("validate", params, socket) do
-    # "Elixir.PanWeb.Podcast"
-    resource_string = socket.assigns.resource |> to_string()
-    # "podcast"
-    resource_name = resource_string |> Phoenix.Naming.resource_name()
-    record_params = params[resource_name]
-    # %PanWeb.Podcast{...}
-    named_struct = resource_string |> String.to_atom() |> Kernel.struct()
+    resource = socket.assigns.resource
+    resource_name = Phoenix.Naming.resource_name(resource)
 
     changeset =
-      socket.assigns.resource.changeset(named_struct, record_params)
+      resource.changeset(Kernel.struct(resource), params[resource_name])
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", params, socket) do
-    resource_string = socket.assigns.resource |> to_string()
-    resource_name = resource_string |> Phoenix.Naming.resource_name()
-    record_params = params[resource_name]
+    resource = socket.assigns.resource
+    resource_name = Phoenix.Naming.resource_name(resource)
+    record_id = params[resource_name]["id"]
 
-    record_id = record_params["id"]
-    record = Repo.get(socket.assigns.resource, record_id)
-    changeset = socket.assigns.resource.changeset(record, record_params)
+    record = if record_id, do: Repo.get(resource, record_id), else: Kernel.struct(resource)
+    changeset = resource.changeset(record, params[resource_name])
+    response = if record_id, do: Repo.update(changeset), else: Repo.insert(changeset)
 
-    case Repo.update(changeset) do
+    case response do
       {:ok, record} ->
         record_show_path =
           Function.capture(Routes, socket.assigns.path_helper, 3).(socket, :show, record)
 
-        send(self(), {:redirect, %{path: record_show_path,
-                                   flash_type: :info,
-                                   message: to_string(socket.assigns.resource) <> " updated"}})
+        send(
+          self(),
+          {:redirect,
+           %{
+             path: record_show_path,
+             flash_type: :info,
+             message: to_string(socket.assigns.resource) <> updated_or_created(record_id)
+           }}
+        )
+
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -88,11 +93,12 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         </span>
         <span>
           <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
-                        class="text-link hover:text-link-dark">
+                        class="text-link hover:text-link-dark underline">
             {{ module_name(@resource) }} List
-          </LiveRedirect> |
-          <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, @record) }}
-                        class="text-link hover:text-link-dark">
+          </LiveRedirect> &nbsp;
+          <LiveRedirect :if={{ @record.id }}
+                        to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, @record) }}
+                        class="text-link hover:text-link-dark underline">
             Show {{ module_name(@resource) }}
           </LiveRedirect>
         </span>
@@ -109,7 +115,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                 class="inline-block px-2 mb-2
                 text-grapefruit bg-grapefruit bg-opacity-20
                 border border-grapefruit border-dotted">
-          An error occured. Please check the errors below!
+          This record is not valid. Please check the errors below!
         </Field>
 
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">

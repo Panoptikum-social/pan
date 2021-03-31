@@ -392,6 +392,7 @@ defmodule PanWeb.Router do
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController)
 
+    live "/podcasts/new", Live.Admin.Podcast.New, :new, as: :podcast
     live "/podcasts/:id", Live.Admin.Podcast.Show, :show, as: :podcast
     live "/podcasts/:id/edit", Live.Admin.Podcast.Edit, :edit, as: :podcast
     live "/podcasts", Live.Admin.Podcast.Index, :index, as: :podcast
@@ -414,7 +415,7 @@ defmodule PanWeb.Router do
     get("/podcasts/factory", PodcastController, :factory)
     get("/podcasts/duplicates", PodcastController, :duplicates)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
-    resources("/podcasts", PodcastController, except: [:index, :show, :edit])
+    resources("/podcasts", PodcastController, except: [:index, :show, :edit, :new])
 
     get("/manifestations/datatable", ManifestationController, :datatable)
     post("/manifestations/toggle", ManifestationController, :toggle)

@@ -1,5 +1,9 @@
 <div id={{ @id }} class="self-stretch">
+  <LiveRedirect to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
+                label="New Record"
+                class="text-link hover:text-link-dark float-right underline" />
   <h1 class="text-2xl">{{ @heading }}</h1>
+
 
   <div class={{ "border border-gray-lighter grid mt-6 bg-gray-lightest gap-0.5" }}
        style={{ "grid-template-columns: repeat(" <> 
@@ -42,7 +46,7 @@
       <Link to="#"
             click={{"toggle_search_mode", target: "#" <> @id }}
             label={{ if @like_search, do: "contains", else: "exact" }}
-            class="text-link hover:text-link-dark" />
+            class="text-link hover:text-link-dark underline" />
     </div>
 
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
@@ -54,23 +58,20 @@
                      index={{ index}}
                      width={{ width(column.type) }} />
 
-      <div class={{ "bg-white self-center flex space-x-4 justify-center",
+      <div class={{ "bg-white self-center flex space-x-2 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
         <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
-                      class="text-info hover:text-info-light p-1">
-          <Icon name="eye-solid" />
-        </LiveRedirect>
+                      class="text-info hover:text-info-light text-medium underline"
+                      label="Show" />
 
         <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
-              class="text-warning hover:text-warning-light p-1">
-          <Icon name="edit" /> 
-        </LiveRedirect>
+                      class="text-warning hover:text-warning-light text-medium underline"
+                      label="Edit" />
 
         <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
               opts={{ data: [confirm: "Are you sure?"], method: :delete }}
-              class="text-danger hover:text-danger-light p-1" >
-          <Icon name="trash-solid" /> 
-        </Link>
+              class="text-danger hover:text-danger-light text-medium underline" 
+              label="Delete" />
       </div>
     </For>
   </div>
@@ -79,10 +80,4 @@
               page={{ @page }}
               class="mt-6"
               target={{ "#" <> @id }} />
-
-  <p class="mt-6">
-    <Link to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
-          label="New Record"
-          class="text-link hover:text-link-dark" />
-  </p>
 </div>

@@ -29,11 +29,11 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         </span>
         <span>
            <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
-                         class="text-link hover:text-link-dark">
+                         class="text-link hover:text-link-dark underline">
              {{ module_name(@resource) }} List
-          </LiveRedirect> |
+          </LiveRedirect> &nbsp;
           <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, @record) }}
-                        class="text-link hover:text-link-dark">
+                        class="text-link hover:text-link-dark underline">
             Edit {{ module_name(@resource) }}
           </LiveRedirect>
         </span>
