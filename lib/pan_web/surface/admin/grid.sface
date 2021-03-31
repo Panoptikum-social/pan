@@ -61,10 +61,10 @@
           <Icon name="eye-solid" />
         </LiveRedirect>
 
-        <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
+        <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
               class="text-warning hover:text-warning-light p-1">
           <Icon name="edit" /> 
-        </Link>
+        </LiveRedirect>
 
         <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
               opts={{ data: [confirm: "Are you sure?"], method: :delete }}

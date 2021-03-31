@@ -10,7 +10,9 @@ defmodule PanWeb.Live.Admin.Podcast.Show do
 
   def render(assigns) do
     ~H"""
-    <RecordCard record={{ @podcast }}>
+    <RecordCard record={{ @podcast }}
+                resource={{ Podcast }}
+                path_helper={{ :podcast_path }}>
       <Column field="id" type="integer" />
       <Column field="title" />
       <Column field="website" />

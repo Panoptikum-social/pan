@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.RecordForm do
   use Surface.LiveComponent
-#  alias PanWeb.Router.Helpers, as: Routes
-  alias Surface.Components.Form
+  alias PanWeb.Router.Helpers, as: Routes
+  alias Surface.Components.{Form, LiveRedirect}
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Submit
@@ -28,8 +28,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
      )}
   end
 
-  def name(struct) do
-    struct.__struct__
+  def module_name(resource) do
+    resource
     |> to_string()
     |> String.split(".")
     |> List.last()
@@ -51,11 +51,24 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   def render(assigns) do
     ~H"""
     <div id={{ @id }}>
-      <h2 class="text-2xl">
-        <span class="text-gray-dark">
-          Edit <span class="font-semibold">{{ name(@record) }}</span>
-        </span> &nbsp; {{ @record.title }}
-      </h2>
+      <div class="flex justify-between items-end">
+        <span class="flex items-end space-x-2 text-2xl">
+          <span class="text-gray-dark">
+            Edit <span class="font-semibold">{{ module_name(@resource) }}</span>
+          </span>
+          <h2>{{ @record.title }}</h2>
+        </span>
+        <span>
+          <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
+                        class="text-link hover:text-link-dark">
+            {{ module_name(@resource) }} List
+          </LiveRedirect> |
+          <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, @record) }}
+                        class="text-link hover:text-link-dark">
+            Show {{ module_name(@resource) }}
+          </LiveRedirect>
+        </span>
+      </div>
 
       <Form for={{ @changeset }}
             opts={{ autocomplete: "off",
@@ -90,7 +103,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           </fieldset>
         </div>
 
-        <div class="mt-4 flex flex-col xl:flex-row xl:space-x-4 w-full">
+        <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
             <TextField :for={{ column <- string_columns(assigns) }}
