@@ -23,7 +23,6 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
     <RecordCard id={{ "record_card_" <> @resource <> "_" <> Integer.to_string(@record.id) }}
                 record={{ @record }}
                 model={{ @model }}
-                path_helper={{ :podcast_path }}
                 cols={{ @cols }} />
     """
   end

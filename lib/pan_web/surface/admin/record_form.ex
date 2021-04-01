@@ -17,7 +17,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
-  prop(path_helper, :atom, required: true)
+  prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
 
   data(changeset, :map)

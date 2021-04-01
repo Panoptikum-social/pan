@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
-  prop(path_helper, :atom, required: true)
+  prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
 
   data(columns, :list, default: [])
@@ -15,7 +15,31 @@ defmodule PanWeb.Surface.Admin.RecordCard do
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
-    {:ok, assign(socket, assigns) |> assign(columns: columns)}
+    resource = Phoenix.Naming.resource_name(assigns.model)
+
+    index_path =
+      if assigns.path_helper do
+        Function.capture(Routes, assigns.path_helper, 2).(socket, :index)
+      else
+        Routes.databrowser_path(socket, :index, resource)
+      end
+
+    edit_path =
+      if assigns.path_helper do
+        Function.capture(Routes, assigns.path_helper, 2).(socket, :edit, assigns.record.id)
+      else
+        Routes.databrowser_path(socket, :edit, resource, assigns.record.id)
+      end
+
+    socket =
+      assign(socket, assigns)
+      |> assign(
+        columns: columns,
+        index_path: index_path,
+        edit_path: edit_path
+      )
+
+    {:ok, socket}
   end
 
   def module_name(model) do
@@ -36,11 +60,11 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h2>{{ @record.title }}</h2>
         </span>
         <span>
-           <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
+           <LiveRedirect to={{ @index_path }}
                          class="text-link hover:text-link-dark underline">
              {{ module_name(@model) }} List
           </LiveRedirect> &nbsp;
-          <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, @record) }}
+          <LiveRedirect to={{ @edit_path }}
                         class="text-link hover:text-link-dark underline">
             Edit {{ module_name(@model) }}
           </LiveRedirect>
