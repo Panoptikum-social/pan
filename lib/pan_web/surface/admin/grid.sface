@@ -59,11 +59,19 @@
 
       <div class={{ "bg-white self-center flex space-x-2 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
-        <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, path_helper: @path_helper, method: :show, record: record} }}
+        <LiveRedirect to={{ Naming.path %{socket: @socket, 
+                                          model: @model, 
+                                          path_helper: @path_helper, 
+                                          method: :show, 
+                                          record: record} }}
                       class="text-info hover:text-info-light text-medium underline"
                       label="Show" />
 
-        <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, path_helper: @path_helper, method: :edit, record: record} }}
+        <LiveRedirect to={{ Naming.path %{socket: @socket, 
+                                          model: @model, 
+                                          path_helper: @path_helper, 
+                                          method: :edit, 
+                                          record: record} }}
                       class="text-warning hover:text-warning-light text-medium underline"
                       label="Edit" />
 

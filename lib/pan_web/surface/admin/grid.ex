@@ -86,7 +86,7 @@ defmodule PanWeb.Surface.Admin.Grid do
     id = String.to_integer(id_string)
     model = socket.assigns.model
     record = Repo.get!(model, id)
-    require IEx
+    path_helper = socket.assigns.path_helper
 
     try do
       Repo.delete(record)
@@ -96,10 +96,10 @@ defmodule PanWeb.Surface.Admin.Grid do
       e in Postgrex.Error ->
         %Postgrex.Error{postgres: %{message: message}} = e
         index_path =
-          Naming.path(socket: socket,
-                      model: socket.assigns.model,
-                      method: :index,
-                      path_helper: socket.assigns.path_helper)
+          Naming.path(%{socket: socket,
+                        model: model,
+                        method: :index,
+                        path_helper: path_helper})
         socket =
           put_flash(socket, :error, message)
           |> redirect(to: index_path)

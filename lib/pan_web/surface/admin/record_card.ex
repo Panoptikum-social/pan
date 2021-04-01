@@ -1,9 +1,9 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
   use Surface.LiveComponent
-  alias PanWeb.Router.Helpers, as: Routes
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
   alias Surface.Components.LiveRedirect
+  alias PanWeb.Surface.Admin.Naming
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
@@ -17,28 +17,9 @@ defmodule PanWeb.Surface.Admin.RecordCard do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
     resource = Phoenix.Naming.resource_name(assigns.model)
 
-    index_path =
-      if assigns.path_helper do
-        Function.capture(Routes, assigns.path_helper, 2).(socket, :index)
-      else
-        Routes.databrowser_path(socket, :index, resource)
-      end
-
-    edit_path =
-      if assigns.path_helper do
-        Function.capture(Routes, assigns.path_helper, 2).(socket, :edit, assigns.record.id)
-      else
-        Routes.databrowser_path(socket, :edit, resource, assigns.record.id)
-      end
-
     socket =
       assign(socket, assigns)
-      |> assign(
-        columns: columns,
-        index_path: index_path,
-        edit_path: edit_path
-      )
-
+      |> assign(columns: columns)
     {:ok, socket}
   end
 
@@ -60,11 +41,18 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h2>{{ @record.title }}</h2>
         </span>
         <span>
-           <LiveRedirect to={{ @index_path }}
+           <LiveRedirect to={{ Naming.path %{socket: @socket,
+                                             model: @model,
+                                             method: :index,
+                                             path_helper: @path_helper} }}
                          class="text-link hover:text-link-dark underline">
              {{ module_name(@model) }} List
           </LiveRedirect> &nbsp;
-          <LiveRedirect to={{ @edit_path }}
+          <LiveRedirect to={{ Naming.path %{socket: @socket,
+                                            model: @model,
+                                            method: :edit,
+                                            path_helper: @path_helper,
+                                            record: @record} }}
                         class="text-link hover:text-link-dark underline">
             Edit {{ module_name(@model) }}
           </LiveRedirect>

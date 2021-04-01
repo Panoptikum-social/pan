@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.RecordForm do
   use Surface.LiveComponent
-  alias PanWeb.Router.Helpers, as: Routes
   alias Surface.Components.{Form, LiveRedirect}
+  alias PanWeb.Surface.Admin.Naming
   alias Surface.Components.Form.Field
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Submit
@@ -22,34 +22,15 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   data(changeset, :map)
   data(columns, :list, default: [])
-  data(index_path, :atom)
-  data(show_path, :atom)
   slot(slot_columns)
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
-    resource = Phoenix.Naming.resource_name(assigns.model)
-
-    index_path =
-      if assigns.path_helper do
-        Function.capture(Routes, assigns.path_helper, 2).(socket, :index)
-      else
-        Routes.databrowser_path(socket, :index, resource)
-      end
-
-    show_path =
-      if assigns.path_helper do
-        Function.capture(Routes, assigns.path_helper, 2).(socket, :show, assigns.record.id)
-      else
-        Routes.databrowser_path(socket, :show, resource, assigns.record.id)
-      end
 
     socket =
       assign(socket, assigns)
       |> assign(
         columns: columns,
-        index_path: index_path,
-        show_path: show_path,
         changeset: assigns.model.changeset(assigns.record)
       )
       |> Map.put(:action, :insert)
@@ -80,6 +61,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   def handle_event("save", params, socket) do
     model = socket.assigns.model
+    path_helper = socket.assigns.path_helper
     resource = Phoenix.Naming.resource_name(model)
     record_id = params[resource]["id"]
 
@@ -93,9 +75,12 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           self(),
           {:redirect,
            %{
-             path: socket.assigns.index_path,
+             path: Naming.path(%{socket: socket,
+                                 model: model,
+                                 method: :index,
+                                 path_helper: path_helper}),
              flash_type: :info,
-             message: to_string(socket.assigns.model) <> updated_or_created(record_id)
+             message: to_string(model) <> updated_or_created(record_id)
            }}
         )
 
@@ -117,12 +102,19 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <h2>{{ @record.title }}</h2>
         </span>
         <span>
-          <LiveRedirect to={{ @index_path }}
+          <LiveRedirect to={{ Naming.path %{socket: @socket,
+                                            model: @model,
+                                            method: :index,
+                                            path_helper: @path_helper} }}
                         class="text-link hover:text-link-dark underline">
             {{ module_name(@model) }} List
           </LiveRedirect> &nbsp;
           <LiveRedirect :if={{ @record.id }}
-                        to={{ @show_path }}
+                        to={{ Naming.path %{socket: @socket,
+                              model: @model,
+                              method: :show,
+                              path_helper: @path_helper,
+                              record: @record} }}
                         class="text-link hover:text-link-dark underline">
             Show {{ module_name(@model) }}
           </LiveRedirect>
