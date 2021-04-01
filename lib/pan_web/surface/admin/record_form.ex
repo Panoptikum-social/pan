@@ -97,16 +97,9 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <span class="text-gray-dark">
             Edit <span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
-          <h2>{{ @record.title }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{{ @record.title }}</h2>
         </span>
         <span>
-          <LiveRedirect to={{ Naming.path %{socket: @socket,
-                                            model: @model,
-                                            method: :index,
-                                            path_helper: @path_helper} }}
-                        class="text-link hover:text-link-dark underline">
-            {{ module_name(@model) }} List
-          </LiveRedirect> &nbsp;
           <LiveRedirect :if={{ @record.id }}
                         to={{ Naming.path %{socket: @socket,
                               model: @model,
@@ -114,8 +107,15 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                               path_helper: @path_helper,
                               record: @record} }}
                         class="text-link hover:text-link-dark underline">
-            Show {{ module_name(@model) }}
+            Show&nbsp;{{ module_name(@model) }}
           </LiveRedirect>
+          <LiveRedirect to={{ Naming.path %{socket: @socket,
+                                            model: @model,
+                                            method: :index,
+                                            path_helper: @path_helper} }}
+                        class="text-link hover:text-link-dark underline">
+            {{ module_name(@model) }}&nbsp;List
+          </LiveRedirect> &nbsp;
         </span>
       </div>
 

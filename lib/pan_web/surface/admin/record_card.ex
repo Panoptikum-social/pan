@@ -15,7 +15,6 @@ defmodule PanWeb.Surface.Admin.RecordCard do
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
-    resource = Phoenix.Naming.resource_name(assigns.model)
 
     socket =
       assign(socket, assigns)
@@ -36,9 +35,9 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <span class="text-gray-dark">
-            Show <span class="font-semibold">{{ module_name(@model) }}</span>
+            Show&nbsp;<span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
-          <h2>{{ @record.title }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{{ @record.title }}</h2>
         </span>
         <span>
            <LiveRedirect to={{ Naming.path %{socket: @socket,
@@ -46,7 +45,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                                              method: :index,
                                              path_helper: @path_helper} }}
                          class="text-link hover:text-link-dark underline">
-             {{ module_name(@model) }} List
+             {{ module_name(@model) }}&nbsp;List
           </LiveRedirect> &nbsp;
           <LiveRedirect to={{ Naming.path %{socket: @socket,
                                             model: @model,

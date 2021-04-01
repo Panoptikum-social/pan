@@ -2,10 +2,11 @@ defmodule PanWeb.Surface.Admin.Naming do
   alias PanWeb.Router.Helpers, as: Routes
 
   def model_from_resource(resource) do
-    module_string = resource
-    |> String.split("_")
-    |> Enum.map(&String.capitalize(&1))
-    |> Enum.join(" ")
+    module_string =
+      resource
+      |> String.split("_")
+      |> Enum.map(&String.capitalize(&1))
+      |> Enum.join(" ")
 
     String.to_atom("Elixir.PanWeb." <> module_string)
   end
@@ -45,15 +46,21 @@ defmodule PanWeb.Surface.Admin.Naming do
       |> Phoenix.Naming.resource_name()
 
     case resource do
-      "podcast" -> [:id,
-                    :title,
-                    :update_paused,
-                    :updated_at,
-                    :update_intervall,
-                    :next_update,
-                    :failure_count,
-                    :website,
-                    :episodes_count]
+      "podcast" ->
+        [
+          :id,
+          :title,
+          :update_paused,
+          :updated_at,
+          :update_intervall,
+          :next_update,
+          :failure_count,
+          :website,
+          :episodes_count
+        ]
+
+      "episode" ->
+        [:id, :guid, :publishing_date, :title, :podcast_id]
     end
   end
 
