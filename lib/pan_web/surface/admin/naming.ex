@@ -1,4 +1,6 @@
 defmodule PanWeb.Surface.Admin.Naming do
+  alias PanWeb.Router.Helpers, as: Routes
+
   def model_from_resource(resource) do
     module_string = resource
     |> String.split("_")
@@ -53,5 +55,21 @@ defmodule PanWeb.Surface.Admin.Naming do
                     :website,
                     :episodes_count]
     end
+  end
+
+  def path(%{socket: socket, model: model, method: method, path_helper: nil, record: record}) do
+    Routes.databrowser_path(socket, method, Phoenix.Naming.resource_name(model), record.id)
+  end
+
+  def path(%{socket: socket, model: _, method: method, path_helper: path_helper, record: record}) do
+    Function.capture(Routes, path_helper, 3).(socket, method, record.id)
+  end
+
+  def path(%{socket: socket, model: model, method: method, path_helper: nil}) do
+    Routes.databrowser_path(socket, method, Phoenix.Naming.resource_name(model))
+  end
+
+  def path(%{socket: socket, model: _, method: method, path_helper: path_helper}) do
+    Function.capture(Routes, path_helper, 2).(socket, method)
   end
 end

@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.Grid do
   use Surface.LiveComponent
   import Ecto.Query
-  alias PanWeb.Router.Helpers, as: Routes
+  alias PanWeb.Surface.Admin.Naming
   alias Pan.Repo
   alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter}
   alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   prop(heading, :string, required: false, default: "Records")
   prop(model, :module, required: true)
-  prop(path_helper, :atom, required: true)
+  prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
 
   data(page, :integer, default: 1)
@@ -24,10 +24,12 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
+
     socket =
       assign(socket, assigns)
       |> assign(columns: columns)
       |> get_records()
+
     {:ok, socket}
   end
 
@@ -81,7 +83,6 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   def handle_event("delete", %{"id" => id_string}, socket) do
-    index_path = Function.capture(Routes, socket.assigns.path_helper, 2).(socket, :index)
     id = String.to_integer(id_string)
     model = socket.assigns.model
     record = Repo.get!(model, id)
@@ -94,7 +95,15 @@ defmodule PanWeb.Surface.Admin.Grid do
     rescue
       e in Postgrex.Error ->
         %Postgrex.Error{postgres: %{message: message}} = e
-        {:noreply, put_flash(socket, :error, message) |> redirect(to: index_path)}
+        index_path =
+          Naming.path(socket: socket,
+                      model: socket.assigns.model,
+                      method: :index,
+                      path_helper: socket.assigns.path_helper)
+        socket =
+          put_flash(socket, :error, message)
+          |> redirect(to: index_path)
+        {:noreply, socket}
     end
   end
 
@@ -153,7 +162,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp select_columns(query, columns) do
-    column_atoms = Enum.map(columns, &(&1.field))
+    column_atoms = Enum.map(columns, & &1.field)
     from(q in query, select: ^column_atoms)
   end
 

@@ -1,5 +1,5 @@
 <div id={{ @id }} class="self-stretch">
-  <LiveRedirect to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
+  <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                 label="New Record"
                 class="text-link hover:text-link-dark float-right underline" />
   <h1 class="text-2xl">{{ @heading }}</h1>
@@ -59,11 +59,11 @@
 
       <div class={{ "bg-white self-center flex space-x-2 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
-        <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
+        <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, path_helper: @path_helper, method: :show, record: record} }}
                       class="text-info hover:text-info-light text-medium underline"
                       label="Show" />
 
-        <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}                  
+        <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, path_helper: @path_helper, method: :edit, record: record} }}
                       class="text-warning hover:text-warning-light text-medium underline"
                       label="Edit" />
 

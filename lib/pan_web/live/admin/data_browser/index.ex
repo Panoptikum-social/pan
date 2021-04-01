@@ -20,7 +20,6 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
     <Grid id="databrowser_grid"
           heading={{ "Listing " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
-          path_helper={{ :podcast_path }}
           cols={{ @cols }}>
     </Grid>
     """
