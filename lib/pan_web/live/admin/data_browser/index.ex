@@ -1,22 +1,25 @@
 defmodule PanWeb.Live.Admin.Databrowser.Index do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.{Grid}
+  alias PanWeb.Surface.Admin.Grid
 
   def mount(%{"resource" => resource}, _session, socket) do
-    {:ok, assign(socket, resource: resource)}
+    cols = Enum.map(Naming.index_fields(resource),
+                    &%{field: &1,
+                       label: Naming.title_from_field(&1),
+                       type: Naming.type_of_field(resource, &1),
+                       searchable: true,
+                       sortable: true})
+    {:ok, assign(socket, resource: resource, cols: cols)}
   end
 
   def render(assigns) do
     ~H"""
-    <Grid id="podcasts_grid"
-          heading="Listing Podcasts"
+    <Grid id="databrowser_grid"
+          heading={{ "Listing " <> Naming.model_in_plural(@resource) }}
           resource={{ String.to_atom(@resource) }}
-          path_helper={{ :podcast_path }}>
-      <Column :for={{ field <- Naming.index_fields(@resource) }}
-              field={{ field }}
-              label={{ Naming.title_from_field(field) }}
-              type={{ Naming.type_of_field(@resource, field) }} />
+          path_helper={{ :podcast_path }}
+          cols={{ @cols }}>
     </Grid>
     """
   end

@@ -1,16 +1,17 @@
 defmodule PanWeb.Surface.Admin.Naming do
-  def model_in_plural(model) do
-    model
-    |> Phoenix.Naming.resource_name()
-    |> to_string()
-    |> String.split("_")
-    |> Enum.map(&String.capitalize(&1))
-    |> Enum.join(" ")
-    |> pluralize()
-  end
+  def model_in_plural(model), do: model |> title_from_model() |> pluralize()
 
   def title_from_field(field) do
     field
+    |> String.split("_")
+    |> Enum.map(&String.capitalize(&1))
+    |> Enum.join(" ")
+  end
+
+  def title_from_model(model) do
+    model
+    |> Phoenix.Naming.resource_name()
+    |> to_string()
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")

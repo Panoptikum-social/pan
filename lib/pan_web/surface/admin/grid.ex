@@ -10,6 +10,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(heading, :string, required: false, default: "Records")
   prop(resource, :module, required: true)
   prop(path_helper, :atom, required: true)
+  prop(cols, :list, required: false, default: [])
 
   data(page, :integer, default: 1)
   data(per_page, :integer, default: 20)
@@ -18,14 +19,15 @@ defmodule PanWeb.Surface.Admin.Grid do
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(records, :list, default: [])
-  slot(columns)
+  data(columns, :list, default: [])
+  slot(slot_columns)
 
   def update(assigns, socket) do
+    columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
     socket =
-      socket
-      |> assign(assigns)
+      assign(socket, assigns)
+      |> assign(columns: columns)
       |> get_records()
-
     {:ok, socket}
   end
 
@@ -157,8 +159,10 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   defp width(type) do
     case type do
+      :id -> "w-16"
       :integer -> "w-16"
       :datetime -> "w-48"
+      :naive_datetime -> "w-48"
       :string -> "w-128"
       :boolean -> "w-16"
     end

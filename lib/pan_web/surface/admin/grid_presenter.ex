@@ -33,9 +33,9 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
     ~H"""
     <div class={{ "bg-white text-very-gray-darker px-1 grid content-center",
                   @width,
-                  "text-right whitespace-nowrap": (@type == :integer),
+                  "text-right whitespace-nowrap": (@type in [:integer, :id]),
                   "text-right whitespace-nowrap": (@type == :boolean),
-                  "text-center whitespace-nowrap": (@type == :datetime),
+                  "text-center whitespace-nowrap": (@type in [:datetime, :naive_datetime]),
                   "text-left": (@type == :string),
                   "bg-gray-lighter": Integer.is_odd(@index) }}
                  x-data="{ detailsOpen: false }">

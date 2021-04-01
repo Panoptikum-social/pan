@@ -60,7 +60,7 @@ defmodule Pan.MixProject do
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.4"},
       # Component library
-      {:surface, "~> 0.3.0"},
+      {:surface, "~> 0.3.2"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.4"},
       # telemetry poller
