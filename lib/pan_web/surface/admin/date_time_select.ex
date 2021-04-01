@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name |> String.to_atom() }} class="my-2 flex items-center justify-end">
+    <Form.Field name={{ @name }} class="my-2 flex items-center justify-end">
       <Form.Label class="italic"/>
       <div class="ml-3 flex flex-col items-start">
         <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>

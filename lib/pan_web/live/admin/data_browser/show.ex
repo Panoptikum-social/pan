@@ -9,8 +9,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
            |> Enum.map(&%{field: &1,
                           type: Naming.type_of_field(model, &1)})
     record =
-      id
-      |> String.to_integer()
+      String.to_integer(id)
       |> model.get_by_id()
 
     {:ok, assign(socket, resource: resource,

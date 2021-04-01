@@ -8,7 +8,7 @@ defmodule PanWeb.Surface.Admin.CheckBoxField do
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name |> String.to_atom() }}
+    <Form.Field name={{ @name }}
                 class="my-2 flex items-center">
       <Form.Checkbox />
       <Form.Label class="italic pl-2">
