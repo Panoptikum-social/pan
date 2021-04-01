@@ -33,7 +33,6 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
     <RecordForm id={{ "record_form_" <> @resource <> "_" <> Integer.to_string(@record.id) }}
                 record={{ @record }}
                 model={{ @model }}
-                path_helper={{ :podcast_path }}
                 cols={{ @cols }} />
     """
   end
