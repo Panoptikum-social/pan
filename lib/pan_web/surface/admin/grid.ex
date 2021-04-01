@@ -8,7 +8,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   require Integer
 
   prop(heading, :string, required: false, default: "Records")
-  prop(resource, :module, required: true)
+  prop(model, :module, required: true)
   prop(path_helper, :atom, required: true)
   prop(cols, :list, required: false, default: [])
 
@@ -83,13 +83,13 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("delete", %{"id" => id_string}, socket) do
     index_path = Function.capture(Routes, socket.assigns.path_helper, 2).(socket, :index)
     id = String.to_integer(id_string)
-    resource = socket.assigns.resource
-    record = Repo.get!(resource, id)
+    model = socket.assigns.model
+    record = Repo.get!(model, id)
     require IEx
 
     try do
       Repo.delete(record)
-      if Map.has_key?(record, :elastic), do: resource.delete_search_index(id)
+      if Map.has_key?(record, :elastic), do: model.delete_search_index(id)
       {:noreply, get_records(socket)}
     rescue
       e in Postgrex.Error ->
@@ -108,11 +108,11 @@ defmodule PanWeb.Surface.Admin.Grid do
       like_search: a.like_search
     ]
 
-    assign(socket, records: load(a.resource, criteria, a.columns))
+    assign(socket, records: load(a.model, criteria, a.columns))
   end
 
-  defp load(resource, criteria, columns) when is_list(criteria) do
-    from(r in resource)
+  defp load(model, criteria, columns) when is_list(criteria) do
+    from(r in model)
     |> apply_criteria(criteria)
     |> select_columns(columns)
     |> Repo.all()
@@ -153,7 +153,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp select_columns(query, columns) do
-    column_atoms = Enum.map(columns, &String.to_atom(&1.field))
+    column_atoms = Enum.map(columns, &(&1.field))
     from(q in query, select: ^column_atoms)
   end
 

@@ -13,7 +13,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
     if presenter do
       presenter.(record)
     else
-      data = Map.get(record, String.to_atom(field))
+      data = Map.get(record, field)
 
       case format do
         :boolean ->

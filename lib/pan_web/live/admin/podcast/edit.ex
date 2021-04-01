@@ -24,7 +24,7 @@ defmodule PanWeb.Live.Admin.Podcast.Edit do
     ~H"""
     <RecordForm id="record_form"
                 record={{ @podcast }}
-                resource={{ Podcast }}
+                model={{ Podcast }}
                 path_helper={{ :podcast_path }}>
       <Column field="id" type="integer" />
       <Column field="title" />

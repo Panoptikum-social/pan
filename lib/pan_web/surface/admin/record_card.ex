@@ -1,17 +1,25 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
-  use Surface.Component
+  use Surface.LiveComponent
   alias PanWeb.Router.Helpers, as: Routes
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
   alias Surface.Components.LiveRedirect
 
   prop(record, :map, required: true)
-  prop(resource, :module, required: true)
+  prop(model, :module, required: true)
   prop(path_helper, :atom, required: true)
-  slot(columns)
+  prop(cols, :list, required: false, default: [])
 
-  def module_name(resource) do
-    resource
+  data(columns, :list, default: [])
+  slot(slot_columns)
+
+  def update(assigns, socket) do
+    columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
+    {:ok, assign(socket, assigns) |> assign(columns: columns)}
+  end
+
+  def module_name(model) do
+    model
     |> to_string()
     |> String.split(".")
     |> List.last()
@@ -23,18 +31,18 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <span class="text-gray-dark">
-            Show <span class="font-semibold">{{ module_name(@resource) }}</span>
+            Show <span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
           <h2>{{ @record.title }}</h2>
         </span>
         <span>
            <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
                          class="text-link hover:text-link-dark underline">
-             {{ module_name(@resource) }} List
+             {{ module_name(@model) }} List
           </LiveRedirect> &nbsp;
           <LiveRedirect to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, @record) }}
                         class="text-link hover:text-link-dark underline">
-            Edit {{ module_name(@resource) }}
+            Edit {{ module_name(@model) }}
           </LiveRedirect>
         </span>
       </div>

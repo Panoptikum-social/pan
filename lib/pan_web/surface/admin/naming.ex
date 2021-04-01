@@ -1,8 +1,18 @@
 defmodule PanWeb.Surface.Admin.Naming do
+  def model_from_resource(resource) do
+    module_string = resource
+    |> String.split("_")
+    |> Enum.map(&String.capitalize(&1))
+    |> Enum.join(" ")
+
+    String.to_atom("Elixir.PanWeb." <> module_string)
+  end
+
   def model_in_plural(model), do: model |> title_from_model() |> pluralize()
 
   def title_from_field(field) do
     field
+    |> Atom.to_string()
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")
@@ -24,7 +34,7 @@ defmodule PanWeb.Surface.Admin.Naming do
   end
 
   def type_of_field(resource, field) do
-    String.to_atom(resource).__schema__(:type, String.to_atom(field))
+    resource.__schema__(:type, field)
   end
 
   def index_fields(model) do
@@ -33,15 +43,15 @@ defmodule PanWeb.Surface.Admin.Naming do
       |> Phoenix.Naming.resource_name()
 
     case resource do
-      "podcast" -> ["id",
-                    "title",
-                    "update_paused",
-                    "updated_at",
-                    "update_intervall",
-                    "next_update",
-                    "failure_count",
-                    "website",
-                    "episodes_count"]
+      "podcast" -> [:id,
+                    :title,
+                    :update_paused,
+                    :updated_at,
+                    :update_intervall,
+                    :next_update,
+                    :failure_count,
+                    :website,
+                    :episodes_count]
     end
   end
 end

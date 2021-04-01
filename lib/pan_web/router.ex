@@ -435,6 +435,7 @@ defmodule PanWeb.Router do
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
 
     live "/dashboard", Live.Admin.Dashboard, :index
-    live "/dashboard/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser
+    live "/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser
+    live "/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser
   end
 end

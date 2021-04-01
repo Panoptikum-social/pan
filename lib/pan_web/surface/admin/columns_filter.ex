@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.ColumnsFilter do
   def number_columns(assigns) do
     assigns.columns
-    |> Enum.filter(fn c -> c.type in [:integer, :float] end)
+    |> Enum.filter(fn c -> c.type in [:id, :integer, :float] end)
   end
 
   def boolean_columns(assigns) do
@@ -21,6 +21,6 @@ defmodule PanWeb.Surface.Admin.ColumnsFilter do
 
   def text_columns(assigns) do
     assigns.columns
-    |> Enum.filter(fn c -> c.type in [:"Ecto.EctoText"] end)
+    |> Enum.filter(fn c -> c.type in [Ecto.EctoText] end)
   end
 end

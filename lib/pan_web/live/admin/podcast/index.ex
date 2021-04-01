@@ -7,7 +7,7 @@ defmodule PanWeb.Live.Admin.Podcast.Index do
     ~H"""
     <Grid id="podcasts_grid"
           heading="Listing Podcasts"
-          resource={{ Podcast }}
+          model={{ Podcast }}
           path_helper={{ :podcast_path }}>
       <Column field="id"
               label="ID"

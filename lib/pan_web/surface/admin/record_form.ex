@@ -16,21 +16,27 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   }
 
   prop(record, :map, required: true)
-  prop(resource, :module, required: true)
+  prop(model, :module, required: true)
   prop(path_helper, :atom, required: true)
+  prop(cols, :list, required: false, default: [])
 
   data(changeset, :map)
-  slot(columns)
+  data(columns, :list, default: [])
+  slot(slot_columns)
 
   def update(assigns, socket) do
+    columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
+
+
     {:ok,
      assign(socket |> assign(assigns),
-       changeset: assigns.record |> assigns.resource.changeset() |> Map.put(:action, :insert)
+       columns: columns,
+       changeset: assigns.record |> assigns.model.changeset() |> Map.put(:action, :insert)
      )}
   end
 
-  def module_name(resource) do
-    resource
+  def module_name(model) do
+    model
     |> to_string()
     |> String.split(".")
     |> List.last()
@@ -40,23 +46,23 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   def updated_or_created(_), do: " updated"
 
   def handle_event("validate", params, socket) do
-    resource = socket.assigns.resource
-    resource_name = Phoenix.Naming.resource_name(resource)
+    model = socket.assigns.model
+    resource_name = Phoenix.Naming.resource_name(model)
 
     changeset =
-      resource.changeset(Kernel.struct(resource), params[resource_name])
+      model.changeset(Kernel.struct(model), params[resource_name])
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", params, socket) do
-    resource = socket.assigns.resource
-    resource_name = Phoenix.Naming.resource_name(resource)
+    model = socket.assigns.model
+    resource_name = Phoenix.Naming.resource_name(model)
     record_id = params[resource_name]["id"]
 
-    record = if record_id, do: Repo.get(resource, record_id), else: Kernel.struct(resource)
-    changeset = resource.changeset(record, params[resource_name])
+    record = if record_id, do: Repo.get(model, record_id), else: Kernel.struct(model)
+    changeset = model.changeset(record, params[resource_name])
     response = if record_id, do: Repo.update(changeset), else: Repo.insert(changeset)
 
     case response do
@@ -70,7 +76,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
            %{
              path: record_show_path,
              flash_type: :info,
-             message: to_string(socket.assigns.resource) <> updated_or_created(record_id)
+             message: to_string(socket.assigns.model) <> updated_or_created(record_id)
            }}
         )
 
@@ -87,19 +93,19 @@ defmodule PanWeb.Surface.Admin.RecordForm do
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <span class="text-gray-dark">
-            Edit <span class="font-semibold">{{ module_name(@resource) }}</span>
+            Edit <span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
           <h2>{{ @record.title }}</h2>
         </span>
         <span>
           <LiveRedirect to={{ Function.capture(Routes, @path_helper, 2).(@socket, :index) }}
                         class="text-link hover:text-link-dark underline">
-            {{ module_name(@resource) }} List
+            {{ module_name(@model) }} List
           </LiveRedirect> &nbsp;
           <LiveRedirect :if={{ @record.id }}
                         to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, @record) }}
                         class="text-link hover:text-link-dark underline">
-            Show {{ module_name(@resource) }}
+            Show {{ module_name(@model) }}
           </LiveRedirect>
         </span>
       </div>
