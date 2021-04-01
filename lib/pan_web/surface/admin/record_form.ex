@@ -31,10 +31,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
       assign(socket, assigns)
       |> assign(
         columns: columns,
-        changeset: assigns.model.changeset(assigns.record)
+        changeset: assigns.model.changeset(assigns.record) |> Map.put(:action, :insert)
       )
-      |> Map.put(:action, :insert)
-
     {:ok, socket}
   end
 
