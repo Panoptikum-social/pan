@@ -21,7 +21,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
     <ul class="mt-4">
       <li :for={{ schema <- schemas() }}>
-        <Link to={{Routes.databrowser_path(@socket, :index, schema)}}
+        <Link to={{Routes.databrowser_path(@socket, :index, Phoenix.Naming.resource_name(schema))}}
               label={{ Naming.model_in_plural(schema) }}
               class="text-link hover:text-link-dark" />
       </li>

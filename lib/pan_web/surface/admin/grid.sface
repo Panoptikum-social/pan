@@ -1,8 +1,11 @@
 <div id={{ @id }} class="self-stretch">
-  <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-                label="New Record"
-                class="text-link hover:text-link-dark float-right underline" />
-  <h1 class="text-2xl">{{ @heading }}</h1>
+  <div class="flex">
+    <h1 class="text-2xl whitespace-nowrap">{{ @heading }}</h1>
+    <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                  label="New Record"
+                  class="ml-8 text-link hover:text-link-dark underline" />
+  </div>
+  
 
   <div class={{ "border border-gray-lighter grid mt-6 bg-gray-lightest gap-0.5" }}
        style={{ "grid-template-columns: repeat(" <> 
@@ -57,8 +60,10 @@
                      index={{ index}}
                      width={{ width(column.type) }} />
 
-      <div class={{ "bg-white self-center flex space-x-2 justify-center",
+      <div :if={{ Map.has_key?(record, :id) }}
+           class={{ "bg-white self-center flex space-x-2 justify-center",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
+         
         <LiveRedirect to={{ Naming.path %{socket: @socket, 
                                           model: @model, 
                                           path_helper: @path_helper, 
@@ -81,6 +86,9 @@
                       "phx-value-id": record.id }}
               class="text-danger hover:text-danger-light text-medium underline" 
               label="Delete" />
+      </div>
+      <div :if={{ !Map.has_key?(record, :id) }} >
+        No id to link to.
       </div>
     </For>
   </div>

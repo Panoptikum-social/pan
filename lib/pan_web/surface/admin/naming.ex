@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.Admin.Naming do
       resource
       |> String.split("_")
       |> Enum.map(&String.capitalize(&1))
-      |> Enum.join(" ")
+      |> Enum.join("")
 
     String.to_atom("Elixir.PanWeb." <> module_string)
   end
@@ -32,6 +32,7 @@ defmodule PanWeb.Surface.Admin.Naming do
 
   def pluralize(word) do
     cond do
+      String.last(word) == "y" -> String.replace_suffix(word, "y", "ies")
       true -> word <> "s"
     end
   end
@@ -61,6 +62,7 @@ defmodule PanWeb.Surface.Admin.Naming do
 
       "episode" ->
         [:id, :guid, :publishing_date, :title, :podcast_id]
+      _ -> nil
     end
   end
 

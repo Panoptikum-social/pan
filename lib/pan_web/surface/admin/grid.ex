@@ -13,7 +13,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(cols, :list, required: false, default: [])
 
   data(page, :integer, default: 1)
-  data(per_page, :integer, default: 20)
+  data(per_page, :integer, default: 25)
   data(search_options, :map, default: %{})
   data(like_search, :boolean, default: false)
   data(sort_by, :atom, default: :id)
@@ -28,6 +28,7 @@ defmodule PanWeb.Surface.Admin.Grid do
     socket =
       assign(socket, assigns)
       |> assign(columns: columns)
+      |> assign(sort_by: List.first(columns)[:field])
       |> get_records()
 
     {:ok, socket}
@@ -170,9 +171,11 @@ defmodule PanWeb.Surface.Admin.Grid do
     case type do
       :id -> "w-16"
       :integer -> "w-16"
+      :date -> "w-24"
       :datetime -> "w-48"
       :naive_datetime -> "w-48"
       :string -> "w-128"
+      Ecto.EctoText -> "w-128"
       :boolean -> "w-16"
     end
   end
