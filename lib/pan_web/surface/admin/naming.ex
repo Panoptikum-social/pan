@@ -11,6 +11,25 @@ defmodule PanWeb.Surface.Admin.Naming do
     String.to_atom("Elixir.PanWeb." <> module_string)
   end
 
+  def application() do
+    {:ok, application} = :application.get_application(PanWeb.Surface.Admin.Naming)
+    application
+  end
+
+  def modules do
+    {:ok, modules} = :application.get_key(application(), :modules)
+    modules
+  end
+
+  def schemas() do
+    Enum.filter(modules(), &({:__schema__, 1} in &1.__info__(:functions)))
+  end
+
+  def model_from_join_through(join_through) do
+    Enum.filter(schemas(), &(&1.__schema__(:source) == join_through))
+    |> List.first()
+  end
+
   def model_in_plural(model), do: model |> title_from_model() |> pluralize()
 
   def title_from_field(field) do

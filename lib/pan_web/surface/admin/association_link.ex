@@ -33,6 +33,16 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
         )
         |> redirect(assigns, link_title)
 
+      %Ecto.Association.ManyToMany{} ->
+        Routes.databrowser_path(
+          assigns.socket,
+          :many_to_many,
+          Phoenix.Naming.resource_name(assigns.for.owner),
+          assigns.record.id,
+          assigns.for.field
+        )
+        |> redirect(assigns, link_title)
+
       other ->
         IO.inspect other
         link_title
@@ -53,21 +63,3 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
     """
   end
 end
-
-%Ecto.Association.Has{
-  cardinality: :many,
-  defaults: [],
-  field: :episodes,
-  on_cast: nil,
-  on_delete: :delete_all,
-  on_replace: :raise,
-  ordered: false,
-  owner: PanWeb.Podcast,
-  owner_key: :id,
-  queryable: PanWeb.Episode,
-  related: PanWeb.Episode,
-  related_key: :podcast_id,
-  relationship: :child,
-  unique: true,
-  where: []
-}

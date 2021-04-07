@@ -8,19 +8,12 @@ defmodule PanWeb.Live.Admin.Dashboard do
     {:ok, socket}
   end
 
-  def schemas() do
-    {:ok, application} = :application.get_application(PanWeb.Live.Admin.Dashboard)
-    {:ok, modules} = :application.get_key(application, :modules)
-    schemas = Enum.filter(modules, &({:__schema__, 1} in &1.__info__(:functions)))
-    schemas
-  end
-
   def render(assigns) do
     ~H"""
     <h1 class="text-2xl">Admin Dashboard</h1>
 
     <ul class="mt-4">
-      <li :for={{ schema <- schemas() }}>
+      <li :for={{ schema <- Naming.schemas() }}>
         <Link to={{Routes.databrowser_path(@socket, :index, Phoenix.Naming.resource_name(schema))}}
               label={{ Naming.model_in_plural(schema) }}
               class="text-link hover:text-link-dark" />

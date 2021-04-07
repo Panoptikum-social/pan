@@ -11,8 +11,9 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(model, :module, required: true)
   prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
-  prop(search_options, :map, default: %{})
+  prop(search_filter, :struct, default: %{})
 
+  data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
   data(per_page, :integer, default: 25)
   data(like_search, :boolean, default: false)
@@ -29,6 +30,7 @@ defmodule PanWeb.Surface.Admin.Grid do
       assign(socket, assigns)
       |> assign(columns: columns)
       |> assign(sort_by: List.first(columns)[:field])
+      |> assign(search_filter: assigns.search_filter)
       |> get_records()
 
     {:ok, socket}
@@ -96,14 +98,14 @@ defmodule PanWeb.Surface.Admin.Grid do
     rescue
       e in Postgrex.Error ->
         %Postgrex.Error{postgres: %{message: message}} = e
+
         index_path =
-          Naming.path(%{socket: socket,
-                        model: model,
-                        method: :index,
-                        path_helper: path_helper})
+          Naming.path(%{socket: socket, model: model, method: :index, path_helper: path_helper})
+
         socket =
           put_flash(socket, :error, message)
           |> redirect(to: index_path)
+
         {:noreply, socket}
     end
   end
@@ -115,6 +117,7 @@ defmodule PanWeb.Surface.Admin.Grid do
       paginate: %{page: a.page, per_page: a.per_page},
       sort: %{sort_by: a.sort_by, sort_order: a.sort_order},
       search: a.search_options,
+      search_filter: a.search_filter,
       like_search: a.like_search
     ]
 
@@ -139,6 +142,9 @@ defmodule PanWeb.Surface.Admin.Grid do
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
         from(q in query, order_by: [{^sort_order, ^sort_by}])
 
+      {:search_filter, {column, values}}, query ->
+        from(q in query, where: field(q, ^column) in ^values)
+
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
@@ -158,6 +164,9 @@ defmodule PanWeb.Surface.Admin.Grid do
 
       # consumed by :search, no need to restrict anything here
       {:like_search, _}, query ->
+        query
+
+      {:search_filter, %{}}, query ->
         query
     end)
   end
