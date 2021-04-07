@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.RelationsBlock do
   use Surface.Component
-  alias PanWeb.Surface.Admin.ShowPresenter
+  alias PanWeb.Surface.Admin.AssociationLink
   require Integer
 
   prop(record, :map, required: true)
@@ -28,7 +28,8 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),
                       "border-t-2 border-gray-lighter": index > 0 }}>
-          {{ association |> Atom.to_string() |> String.replace("_", " ") |> String.capitalize() }}
+          <AssociationLink for={{ @model.__schema__(:association, association) }}
+                           record={{ @record }} />
         </div>
       </For>
     </div>
