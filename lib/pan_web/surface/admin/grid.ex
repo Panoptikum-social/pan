@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(per_page, :integer, default: 25)
+  data(per_page, :integer, default: 30)
   data(like_search, :boolean, default: false)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)

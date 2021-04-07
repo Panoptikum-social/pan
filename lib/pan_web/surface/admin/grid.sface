@@ -1,18 +1,22 @@
 <div id={{ @id }} class="self-stretch">
-  <div class="flex">
-    <h1 class="text-2xl whitespace-nowrap">{{ @heading }}</h1>
-    <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-                  label="New Record"
-                  class="ml-8 text-link hover:text-link-dark underline" />
+  <div class="flex items-center bg-white border border-gray-lighter border-b-0">
+    <div class="px-0.5 py-0.5 w-28 border-r border-gray-lighter text-center">
+      <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                    label="New Record"
+                    class="text-link hover:text-link-dark underline " />
+    </div>
+    <h1 class="px-2 text-2xl whitespace-nowrap">{{ @heading }}</h1>
   </div>
   
-
-  <div class={{ "border border-gray-lighter grid mt-6 bg-gray-lightest gap-0.5" }}
+  <div class={{ "border border-gray-lighter grid bg-gray-lightest gap-0.5" }}
        style={{ "grid-template-columns: repeat(" <> 
                 Integer.to_string(length(@columns) + 1) <> 
                 ", minmax(0, auto));" }}>
+    <div class="bg-white italic grid place-content-center w-28">
+      Actions
+    </div>
     <div :for={{ column <- @columns }} 
-         class={{ "bg-white p-1 font-medium grid place-content-center p-1 text-center", 
+         class={{ "bg-white italic grid place-content-center text-sm text-center", 
                   width(column.type) }}>
       <SortLink sort_by={{ @sort_by }} 
                 field={{ column.field }} 
@@ -21,8 +25,13 @@
         {{ column.label }}
       </SortLink>
     </div>
-    <div class="bg-white p-1 font-medium grid place-content-center">
-      Actions
+
+    <div class="bg-white text-center p-1">
+      Search:
+      <Link to="#"
+            click={{"toggle_search_mode", target: "#" <> @id }}
+            label={{ if @like_search, do: "contains", else: "exact" }}
+            class="text-link hover:text-link-dark underline" />
     </div>
 
     <div :for={{ column <- @columns }} 
@@ -43,15 +52,35 @@
       </Form>
     </div>
 
-    <div class="bg-white text-center p-1">
-      Search:
-      <Link to="#"
-            click={{"toggle_search_mode", target: "#" <> @id }}
-            label={{ if @like_search, do: "contains", else: "exact" }}
-            class="text-link hover:text-link-dark underline" />
-    </div>
-
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
+      <div :if={{ Map.has_key?(record, :id) }}
+           class={{ "bg-white self-center flex justify-evenly w-full",
+                    "bg-gray-lighter": Integer.is_odd(index) }}>
+        <LiveRedirect to={{ Naming.path %{socket: @socket, 
+                                        model: @model, 
+                                        path_helper: @path_helper, 
+                                        method: :show, 
+                                        record: record} }}
+                      label="🔍" />
+
+        <LiveRedirect to={{ Naming.path %{socket: @socket, 
+                                          model: @model, 
+                                          path_helper: @path_helper, 
+                                          method: :edit, 
+                                          record: record} }}
+                      label="🖊️" />
+
+        <Link to="#" 
+              click={{ "delete", target: "#" <> @id }}
+              opts={{ data: [confirm: "Are you sure?"], 
+                      "phx-value-id": record.id }}
+              class="block"
+              label="🗑️" />
+      </div>
+      <div :if={{ !Map.has_key?(record, :id) }} >
+        No id to link to.
+      </div>
+
       <GridPresenter :for={{ column <- @columns }} 
                      presenter={{ column[:presenter]}}
                      record={{ record }}
@@ -59,37 +88,6 @@
                      type={{ column.type }}
                      index={{ index}}
                      width={{ width(column.type) }} />
-
-      <div :if={{ Map.has_key?(record, :id) }}
-           class={{ "bg-white self-center flex space-x-2 justify-center",
-                    "bg-gray-lighter": Integer.is_odd(index) }}>
-         
-        <LiveRedirect to={{ Naming.path %{socket: @socket, 
-                                          model: @model, 
-                                          path_helper: @path_helper, 
-                                          method: :show, 
-                                          record: record} }}
-                      class="text-info hover:text-info-light text-medium underline"
-                      label="Show" />
-
-        <LiveRedirect to={{ Naming.path %{socket: @socket, 
-                                          model: @model, 
-                                          path_helper: @path_helper, 
-                                          method: :edit, 
-                                          record: record} }}
-                      class="text-warning hover:text-warning-light text-medium underline"
-                      label="Edit" />
-
-        <Link to="#" 
-              click={{ "delete", target: "#" <> @id }}
-              opts={{ data: [confirm: "Are you sure?"], 
-                      "phx-value-id": record.id }}
-              class="text-danger hover:text-danger-light text-medium underline" 
-              label="Delete" />
-      </div>
-      <div :if={{ !Map.has_key?(record, :id) }} >
-        No id to link to.
-      </div>
     </For>
   </div>
 

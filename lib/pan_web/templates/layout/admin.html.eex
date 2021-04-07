@@ -1,5 +1,5 @@
 <main role="main"
-      class="bg-gray-lightest mb-8 p-4 min-h-screen text-black">
+      class="-m-4 bg-gray-lightest mb-8 min-h-screen text-black">
   <p x-data="{}"
      x-show="<%= !is_nil(get_flash(@conn, :info))%>"
      class="alert alert-info alert-left toast" role="alert">
