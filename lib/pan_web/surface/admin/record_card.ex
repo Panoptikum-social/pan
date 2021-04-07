@@ -19,7 +19,28 @@ defmodule PanWeb.Surface.Admin.RecordCard do
     socket =
       assign(socket, assigns)
       |> assign(columns: columns)
+
     {:ok, socket}
+  end
+
+  def title(record) do
+    cond do
+      Map.has_key?(record, :title) ->
+        record.title
+
+      Map.has_key?(record, :name) ->
+        record.name
+
+      Map.has_key?(record, :username) ->
+        record.username
+
+      Map.has_key?(record, :id) ->
+        record.id
+
+      true ->
+        first_key = Map.keys(record) |> List.first()
+        Map.get(record, first_key)
+    end
   end
 
   def module_name(model) do
@@ -37,7 +58,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <span class="text-gray-dark">
             Show&nbsp;<span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
-          <h2 class="max-w-screen-lg w-full truncate">{{ @record.title }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{{ title(@record) }}</h2>
         </span>
         <span>
            <LiveRedirect to={{ Naming.path %{socket: @socket,
@@ -61,24 +82,38 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       <div class="flex space-x-4 items-start mt-4">
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Numeric Fields</legend>
-          <DataBlock columns={{ number_columns(assigns) }} record={{ @record }} />
+          <DataBlock columns={{ number_columns(assigns) }}
+                     record={{ @record }}
+                     model={{ @model }} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Date & Time Fields</legend>
-          <DataBlock columns={{ datetime_columns(assigns) }} record={{ @record }} />
+          <DataBlock columns={{ datetime_columns(assigns) }}
+                     record={{ @record }}
+                     model={{ @model }} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Boolean Fields</legend>
-          <DataBlock columns={{ boolean_columns(assigns) }} record={{ @record }} />
+          <DataBlock columns={{ boolean_columns(assigns) }}
+                     record={{ @record }}
+                     model={{ @model }} />
+        </fieldset>
+        <fieldset class="border border-gray bg-white rounded p-1">
+          <legend class="bg-white px-4 border border-gray rounded-lg">Relations</legend>
+          relations here ...
         </fieldset>
       </div>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">String Fields</legend>
-        <DataBlock columns={{ string_columns(assigns) }} record={{ @record }} />
+        <DataBlock columns={{ string_columns(assigns) }}
+                   record={{ @record }}
+                   model={{ @model }} />
       </fieldset>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">Text Fields</legend>
-        <DataBlock columns={{ text_columns(assigns) }} record={{ @record }} />
+        <DataBlock columns={{ text_columns(assigns) }}
+                   record={{ @record }}
+                   model={{ @model }} />
       </fieldset>
     </div>
     """

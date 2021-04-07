@@ -6,6 +6,7 @@ defmodule PanWeb.Surface.Admin.DataBlock do
 
   prop(record, :map, required: true)
   prop(columns, :list, required: true)
+  prop(model, :module, required: true)
 
   def render(assigns) do
     ~H"""
@@ -23,8 +24,9 @@ defmodule PanWeb.Surface.Admin.DataBlock do
                       "bg-gray-lightest": Integer.is_odd(index),
                       "border-t-2 border-gray-lighter": index > 0 }}>
           <ShowPresenter record={{ @record }}
-                          field={{ column.field }}
-                          type={{ column.type }} />
+                         field={{ column.field }}
+                         type={{ column.type }}
+                         redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field)}} />
         </div>
       </For>
     </div>

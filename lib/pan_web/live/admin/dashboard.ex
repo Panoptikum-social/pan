@@ -29,9 +29,3 @@ defmodule PanWeb.Live.Admin.Dashboard do
     """
   end
 end
-
-#TODO: More Introspection
-  # {:ok, config} = :application.get_all_key(application)
-  # PanWeb.Podcast.__schema__(:fields)
-  # PanWeb.Podcast.__changeset__
-  # PanWeb.Podcast.__struct__

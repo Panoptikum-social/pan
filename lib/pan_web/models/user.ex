@@ -24,7 +24,7 @@ defmodule PanWeb.User do
     field(:username, :string)
     field(:password, :string, virtual: true)
     field(:password_confirmation, :string, virtual: true)
-    field(:password_hash, :string)
+    field(:password_hash, :string, redact: true)
     field(:email, :string)
     field(:admin, :boolean)
     field(:podcaster, :boolean)

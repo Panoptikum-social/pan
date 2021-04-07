@@ -1,4 +1,6 @@
 defmodule PanWeb.Surface.Admin.ColumnsFilter do
+  alias PanWeb.Surface.Admin.Naming
+
   def number_columns(assigns) do
     assigns.columns
     |> Enum.filter(fn c -> c.type in [:id, :integer, :float] end)
