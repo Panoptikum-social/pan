@@ -7,10 +7,10 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
   prop(model, :module, required: true)
 
   def type(model, association) do
-    case model.__schema__(:association, association).cardinality do
-      :many -> "Has many"
-      :one -> "Belongs to"
-    end
+    model.__schema__(:association, association).__struct__
+    |> Atom.to_string
+    |> String.split(".")
+    |> List.last()
   end
 
   def render(assigns) do

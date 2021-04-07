@@ -439,5 +439,6 @@ defmodule PanWeb.Router do
     live "/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser
     live "/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser
     live "/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser
+    live "/databrowser/:parent_column/:parent_id/:resource", Live.Admin.Databrowser.HasMany, :has_many, as: :databrowser
   end
 end
