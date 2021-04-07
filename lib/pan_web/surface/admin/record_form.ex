@@ -91,12 +91,12 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   def render(assigns) do
     ~H"""
-    <div id={{ @id }}>
+    <div class="m-2" id={{ @id }}>
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
-          <span class="text-gray-dark">
+          <div class="text-gray-dark whitespace-nowrap">
             Edit <span class="font-semibold">{{ module_name(@model) }}</span>
-          </span>
+          </div>
           <h2 class="max-w-screen-lg w-full truncate">{{ @record.title }}</h2>
         </span>
         <span>

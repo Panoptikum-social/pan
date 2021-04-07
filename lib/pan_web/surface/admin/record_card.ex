@@ -53,7 +53,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
 
   def render(assigns) do
     ~H"""
-    <div class="mt-2">
+    <div class="m-2">
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <span class="text-gray-dark">
