@@ -2,6 +2,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   use Surface.LiveComponent
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
+  alias PanWeb.Surface.Admin.RelationsBlock
   alias Surface.Components.LiveRedirect
   alias PanWeb.Surface.Admin.Naming
 
@@ -100,7 +101,8 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Relations</legend>
-          relations here ...
+          <RelationsBlock record={{ @record }}
+                          model={{ @model }} />
         </fieldset>
       </div>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
