@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(per_page, :integer, default: 30)
+  data(per_page, :integer, default: 29)
   data(like_search, :boolean, default: false)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
@@ -178,14 +178,14 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   defp width(type) do
     case type do
-      :id -> "w-16"
-      :integer -> "w-16"
-      :date -> "w-24"
-      :datetime -> "w-48"
-      :naive_datetime -> "w-48"
-      :string -> "w-128"
-      Ecto.EctoText -> "w-128"
-      :boolean -> "w-16"
+      :id -> "4rem"
+      :integer -> "4rem"
+      :date -> "6rem"
+      :datetime -> "12rem"
+      :naive_datetime -> "12rem"
+      :string -> "16rem"
+      Ecto.EctoText -> "16rem"
+      :boolean -> "4rem"
     end
   end
 end

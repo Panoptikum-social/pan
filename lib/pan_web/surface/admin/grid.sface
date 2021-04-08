@@ -1,6 +1,6 @@
-<div id={{ @id }} class="self-stretch">
-  <div class="flex items-center bg-white border border-gray-lighter border-b-0">
-    <div class="px-0.5 py-0.5 w-28 border-r border-gray-lighter text-center">
+<div id={{ @id }}>
+  <div class="max-w-grid mx-auto flex items-center">
+    <div class="p-1 w-28">
       <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                     label="New Record"
                     class="text-link hover:text-link-dark underline " />
@@ -8,16 +8,15 @@
     <h1 class="px-2 text-2xl whitespace-nowrap">{{ @heading }}</h1>
   </div>
   
-  <div class={{ "border border-gray-lighter grid bg-gray-lightest gap-0.5" }}
-       style={{ "grid-template-columns: repeat(" <> 
-                Integer.to_string(length(@columns) + 1) <> 
-                ", minmax(0, auto));" }}>
+  <div class={{ "max-w-grid mx-auto overflow-auto flex-grow-0 grid bg-gray-lightest gap-0.5" }}
+      style={{ "grid-template-columns: 7rem" <> " " <>
+                (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> 
+                ";" }}>
     <div class="bg-white italic grid place-content-center w-28">
       Actions
     </div>
     <div :for={{ column <- @columns }} 
-         class={{ "bg-white italic grid place-content-center text-sm text-center", 
-                  width(column.type) }}>
+        class="bg-white italic grid place-content-center text-sm text-center">
       <SortLink sort_by={{ @sort_by }} 
                 field={{ column.field }} 
                 sort_order={{ @sort_order }}
@@ -35,8 +34,7 @@
     </div>
 
     <div :for={{ column <- @columns }} 
-         class={{ "bg-white p-1",
-                  width(column.type),
+        class={{ "bg-white p-1",                  
                   "text-right": column.type == :integer}}>
       <Form :if={{ column[:searchable] }} 
             for={{ :search }} 
@@ -44,8 +42,8 @@
             submit="save" 
             opts={{ autocomplete: "off" }}>
         <TextInput field={{ column.field }}
-                   value={{ @search_options[column.field] }} 
-                   class={{ "p-0.5 w-full"}}
+                  value={{ @search_options[column.field] }} 
+                  class={{ "p-0.5 w-full"}}
                     opts={{ autofocus: "autofocus", 
                             autocomplete: "off", 
                             "phx-debounce": 300 }} />
@@ -54,7 +52,7 @@
 
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
       <div :if={{ Map.has_key?(record, :id) }}
-           class={{ "bg-white self-center flex justify-evenly w-full",
+          class={{ "bg-white self-center flex justify-evenly w-full",
                     "bg-gray-lighter": Integer.is_odd(index) }}>
         <LiveRedirect to={{ Naming.path %{socket: @socket, 
                                         model: @model, 
@@ -82,12 +80,11 @@
       </div>
 
       <GridPresenter :for={{ column <- @columns }} 
-                     presenter={{ column[:presenter]}}
-                     record={{ record }}
-                     field={{ column.field }} 
-                     type={{ column.type }}
-                     index={{ index}}
-                     width={{ width(column.type) }} />
+                    presenter={{ column[:presenter]}}
+                    record={{ record }}
+                    field={{ column.field }} 
+                    type={{ column.type }}
+                    index={{ index}} />
     </For>
   </div>
 

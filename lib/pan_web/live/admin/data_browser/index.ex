@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Admin.Databrowser.Index do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
+                        container: {:div, class: "flex-1"}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.Grid
 

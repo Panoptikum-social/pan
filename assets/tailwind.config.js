@@ -125,10 +125,16 @@ module.exports = {
         DEFAULT: '#967adc' // lavender
       }
     },
+    extend: { 
+      maxWidth: {
+        grid: '1630px',
+      }
+    }
   },
   variants: {
     extend: {
       backgroundColor: ['odd', 'even'],
     },
   },
+  
 }

@@ -38,17 +38,17 @@
   <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background"
         data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: false }"
-         class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto">
+        class="flex-none h-full flex flex-col p-4 justify-start lg:overflow-y-auto">
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 
-    <div class="flex-1 min-h-full flex flex-col">
+    <div class="flex-1 flex-shrink min-h-full flex flex-col">
       <div class="bg-gray-lightest flex-1 flex p-4 text-black">
         <%= @inner_content %>
       </div>
 
       <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
-                     justify-evenly place-self-center">
+                    justify-evenly place-self-center">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
       </footer>
       <div class="flex justify-center w-full font-medium pb-4">
