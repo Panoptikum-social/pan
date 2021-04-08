@@ -38,7 +38,7 @@
   <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background"
         data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: false }"
-         class="min-h-full flex-r flex flex-col p-4 justify-start">
+         class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto">
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 

@@ -1,14 +1,13 @@
 <%= form_for @conn, search_frontend_path(@conn, :new),
-                    [as: :search, class: "py-4"],
+                    [as: :search, class: "py-4 flex"],
                     fn f -> %>
-  <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
+  <%= text_input f, :searchstring, size: "15", placeholder: "Search", class: "flex-1" %> &nbsp;
   <%= submit la_nav_icon("search-solid"),
         class: "p-2 text-white text-sm rounded bg-coolGray-400 hover:bg-coolGray-500 align-middle",
         title: "Submit" %>
 <% end %>
 
 <ul>
-  <li class="py-1"><a class="text-coolGray-200" href="#">Dummy Link</a>
   <li class="py-1"><%= link [la_nav_icon("sitemap-solid"), " Categories"],
             to: category_frontend_path(@conn, :index),
             title: "Categories",
