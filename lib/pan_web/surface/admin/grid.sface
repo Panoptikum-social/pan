@@ -1,5 +1,5 @@
 <div id={{ @id }}>
-  <div class="max-w-grid mx-auto flex items-center">
+  <div class="flex items-center">
     <div class="p-1 w-28">
       <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                     label="New Record"
@@ -8,7 +8,7 @@
     <h1 class="px-2 text-2xl whitespace-nowrap">{{ @heading }}</h1>
   </div>
   
-  <div class={{ "max-w-grid mx-auto overflow-auto flex-grow-0 grid bg-gray-lightest gap-0.5" }}
+  <div class="grid bg-gray-lightest gap-0.5 overflow-x-auto"
       style={{ "grid-template-columns: 7rem" <> " " <>
                 (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> 
                 ";" }}>

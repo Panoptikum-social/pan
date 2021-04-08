@@ -42,8 +42,8 @@
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 
-    <div class="flex-1 flex-shrink min-h-full flex flex-col">
-      <div class="bg-gray-lightest flex-1 flex p-4 text-black">
+    <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
+      <div class="bg-gray-lightest flex-1 p-4 text-black">
         <%= @inner_content %>
       </div>
 
