@@ -30,8 +30,8 @@
       class: "text-coolGray-200" %></li>
 
   <%= if @current_user do %>
-    <li class="py-1"><%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %></li>
     <li class="py-1"><%= render "_admin_dropdown.html", conn: @conn, current_user: @current_user %></li>
+    <li class="py-1"><%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %></li>
     <li class="border-t-2 border-coolGray-500"></li>
     <li class="py-1"><%= link [la_nav_icon("sign-out-alt-solid"), "Log Out"],
               to: session_path(@conn, :delete, @current_user),
