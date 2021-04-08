@@ -35,15 +35,15 @@
     <%= render_existing @view_module, "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background"
+  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
         data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
     <nav x-data="{ navbarOpen: false }"
-        class="flex-none h-full flex flex-col p-4 justify-start lg:overflow-y-auto">
+        class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto">
       <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
     </nav>
 
     <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
-      <div class="bg-gray-lightest flex-1 p-4 text-black">
+      <div class="bg-gray-lightest flex-1 text-black">
         <%= @inner_content %>
       </div>
 

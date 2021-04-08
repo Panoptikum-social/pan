@@ -30,6 +30,8 @@
     @screen xl {columns: 3;}
     @screen 2xl {columns: 4;}
   };
+
+  .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
 }
 
 [hidden] { @apply hidden; }
