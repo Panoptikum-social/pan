@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   import Ecto.Query
   alias PanWeb.Surface.Admin.Naming
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter}
+  alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter, PerPageLink}
   alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
   require Integer
 
@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(per_page, :integer, default: 29)
+  data(per_page, :integer, default: 20)
   data(like_search, :boolean, default: false)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
@@ -34,6 +34,14 @@ defmodule PanWeb.Surface.Admin.Grid do
       |> get_records()
 
     {:ok, socket}
+  end
+
+  def handle_event("per_page", %{"delta" => delta}, socket) do
+    socket =
+      assign(socket, per_page: socket.assigns.per_page + String.to_integer(delta))
+      |> get_records()
+
+    {:noreply, socket}
   end
 
   def handle_event("search", %{"search" => search}, socket) do

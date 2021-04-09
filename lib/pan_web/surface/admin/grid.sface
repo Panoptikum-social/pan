@@ -1,11 +1,20 @@
 <div id={{ @id }}>
-  <div class="ml-0.5 flex items-center bg-white">
+  <div class="ml-0.5 flex justify-between items-center bg-white max-w-screen-lg lg-mt-0">
     <div class="px-2 w-28 text-center">
       <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                     label="New Record"
                     class="text-link hover:text-link-dark underline " />
     </div>
-    <h1 class="px-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
+    <h1 class="py-1 px-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
+    <div>
+    <PerPageLink delta="-5" target={{ "#" <> @id }}/>
+    <PerPageLink delta="-3" target={{ "#" <> @id }}/>
+    <PerPageLink delta="-1" target={{ "#" <> @id }}/>
+    Records
+    <PerPageLink delta="+1" target={{ "#" <> @id }}/>
+    <PerPageLink delta="+3" target={{ "#" <> @id }}/>
+    <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+    </div>
   </div>
   
   <div class="grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
