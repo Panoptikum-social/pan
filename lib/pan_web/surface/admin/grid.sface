@@ -5,12 +5,12 @@
                     label="New Record"
                     class="text-link hover:text-link-dark underline " />
     </div>
-    <h1 class="py-1 px-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
-    <div>
+    <h1 class="p-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
+    <div class="border-l border-gray-lightest">
     <PerPageLink delta="-5" target={{ "#" <> @id }}/>
     <PerPageLink delta="-3" target={{ "#" <> @id }}/>
     <PerPageLink delta="-1" target={{ "#" <> @id }}/>
-    Records
+    <span class="hidden sm:inline">Records</span>
     <PerPageLink delta="+1" target={{ "#" <> @id }}/>
     <PerPageLink delta="+3" target={{ "#" <> @id }}/>
     <PerPageLink delta="+5" target={{ "#" <> @id }}/>

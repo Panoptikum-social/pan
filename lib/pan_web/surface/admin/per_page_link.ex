@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.PerPageLink do
     <a href="#"
       :on-click={{ "per_page", target: @target }}
       phx-value-delta={{ @delta }}
-      class="bg-mint text-white hover:bg-mint-light px-2 py-0.5 rounded ml-2 inline-block">
+      class="bg-mint text-white hover:bg-mint-light px-1 py-0.5 rounded ml-1 inline-block">
       {{ @delta }}
     </a>
     """
