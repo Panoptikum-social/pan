@@ -44,7 +44,6 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
         |> redirect(assigns, link_title)
 
       other ->
-        IO.inspect other
         link_title
     end
   end

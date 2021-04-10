@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(model, :module, required: true)
   prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
-  prop(search_filter, :struct, default: %{})
+  prop(search_filter, :tuple, default: {})
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
@@ -140,43 +140,46 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp apply_criteria(query, criteria) do
-    Enum.reduce(criteria, query, fn
-      {:paginate, %{page: page, per_page: per_page}}, query ->
-        from(q in query,
-          offset: ^((page - 1) * per_page),
-          limit: ^per_page
-        )
+    Enum.reduce(criteria, query, &apply_criterium(&1, &2, criteria[:like_search]))
+  end
 
-      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
-        from(q in query, order_by: [{^sort_order, ^sort_by}])
+  defp apply_criterium({:paginate, %{page: page, per_page: per_page}}, query, _like_search) do
+    from(q in query, offset: ^((page - 1) * per_page), limit: ^per_page)
+  end
 
-      {:search_filter, {column, values}}, query ->
-        from(q in query, where: field(q, ^column) in ^values)
+  defp apply_criterium({:sort, %{sort_by: sort_by, sort_order: sort_order}}, query, _like_search) do
+    from(q in query, order_by: [{^sort_order, ^sort_by}])
+  end
 
-      {:search, search_options}, query ->
-        Enum.reduce(search_options, query, fn
-          {column, value}, query ->
-            if value != "" do
-              if criteria[:like_search] do
-                from(q in query,
-                  where:
-                    ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
-                )
-              else
-                from(q in query, where: ^[{column, value}])
-              end
-            else
-              query
-            end
-        end)
+  defp apply_criterium({:search_filter, {column, values}}, query, _like_search)
+       when is_list(values) do
+    from(q in query, where: field(q, ^column) in ^values)
+  end
 
-      # consumed by :search, no need to restrict anything here
-      {:like_search, _}, query ->
-        query
+  defp apply_criterium({:search_filter, {column, value}}, query, _like_search)
+       when is_integer(value) do
+    from(q in query, where: field(q, ^column) == ^value)
+  end
 
-      {:search_filter, %{}}, query ->
-        query
-    end)
+  defp apply_criterium({:search, search_options}, query, like_search) do
+    Enum.reduce(search_options, query, &apply_search_option(&1, &2, like_search))
+  end
+
+  defp apply_criterium({:search_filter, {}}, query, _like_search), do: query
+
+  # consumed by :search, no need to restrict anything here
+  defp apply_criterium({:like_search, _like_search_type}, query, _like_search), do: query
+
+  defp apply_search_option({_column, ""}, query, _like_search), do: query
+
+  defp apply_search_option({column, value}, query, true = _like_search) do
+    from(q in query,
+      where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
+    )
+  end
+
+  defp apply_search_option({column, value}, query, false = _like_search) do
+    from(q in query, where: ^[{column, value}])
   end
 
   defp select_columns(query, columns) do

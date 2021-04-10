@@ -27,7 +27,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
      assign(socket,
        model: model,
        cols: cols,
-       search_options: %{String.to_atom(parent_column) => String.to_integer(parent_id)}
+       search_filter: {String.to_atom(parent_column), String.to_integer(parent_id)}
      )}
   end
 
@@ -37,7 +37,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
           heading={{ "Listing " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}
-          search_options={{ @search_options }}>
+          search_filter={{ @search_filter }}>
     </Grid>
     """
   end
