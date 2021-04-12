@@ -15,13 +15,17 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
 
     case assigns.for do
       %Ecto.Association.BelongsTo{} ->
-        Routes.databrowser_path(
-          assigns.socket,
-          :show,
-          Phoenix.Naming.resource_name(assigns.for.related),
-          Map.get(assigns.record, assigns.for.owner_key)
-        )
-        |> redirect(assigns, link_title)
+        if Map.get(assigns.record, assigns.for.owner_key) do
+          Routes.databrowser_path(
+              assigns.socket,
+              :show,
+              Phoenix.Naming.resource_name(assigns.for.related),
+              Map.get(assigns.record, assigns.for.owner_key)
+            )
+            |> redirect(assigns, link_title)
+        else
+          "∅ " <> Phoenix.Naming.resource_name(assigns.for.related)
+        end
 
       %Ecto.Association.Has{} ->
         Routes.databrowser_path(
@@ -43,7 +47,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
         )
         |> redirect(assigns, link_title)
 
-      other ->
+      _other ->
         link_title
     end
   end

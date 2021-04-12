@@ -30,6 +30,7 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
                       "border-t-2 border-gray-lighter": index > 0 }}>
           <AssociationLink for={{ @model.__schema__(:association, association) }}
                            record={{ @record }} />
+          <div :if={{ !@record }}>no record</div>
         </div>
       </For>
     </div>
