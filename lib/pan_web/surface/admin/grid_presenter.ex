@@ -3,6 +3,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
   require Integer
 
   prop(presenter, :fun, required: false)
+  prop(model, :module, required: true)
   prop(record, :any, required: true)
   prop(field, :string, required: true)
   prop(type, :atom, required: false, values: [:string, :integer], default: :string)
@@ -31,7 +32,8 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
 
   def render(assigns) do
     ~H"""
-    <div class={{ "bg-white text-very-gray-darker px-1 grid content-center",
+    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not() }}
+         class={{ "bg-white text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type in [:integer, :id]),
                   "text-right whitespace-nowrap": (@type == :boolean),
@@ -58,6 +60,14 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
           Close
         </button>
       </div>
+    </div>
+
+    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) }}
+    class={{ "bg-white text-very-gray-darker px-1 grid content-center text-center whitespace-nowrap",
+             @width,
+             "bg-gray-lighter": Integer.is_odd(@index) }}
+            x-data="{ detailsOpen: false }">
+    ** redacted **
     </div>
     """
   end

@@ -45,7 +45,7 @@
     <div :for={{ column <- @columns }} 
         class={{ "bg-white p-1",                  
                   "text-right": column.type == :integer}}>
-      <Form :if={{ column[:searchable] }} 
+      <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not() }} 
             for={{ :search }} 
             change={{"search", target: "#" <> @id }}
             submit="save" 
@@ -89,11 +89,12 @@
       </div>
 
       <GridPresenter :for={{ column <- @columns }} 
-                    presenter={{ column[:presenter]}}
-                    record={{ record }}
-                    field={{ column.field }} 
-                    type={{ column.type }}
-                    index={{ index}} />
+                     presenter={{ column[:presenter]}}
+                     record={{ record }}
+                     field={{ column.field }} 
+                     type={{ column.type }}
+                     index={{ index }} 
+                     model={{ @model }}/>
     </For>
   </div>
 
