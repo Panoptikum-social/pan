@@ -1,18 +1,54 @@
-<div class="flex justify-between">
+<div class="flex justify-between items-start lg:items-center" :class="{'lg:flex-col': !navbarOpen}">
   <a href="/" class="text-2xl font-bold">
-    <img alt="Logo, Home" src="/images/panoptikum.thumbnail.png" class="align-middle inline" />
-    Panoptikum.io
+    <img :class="{'lg:w-5 lg:h-5': !navbarOpen}"
+         alt="Logo, Home"
+         src="/images/panoptikum.thumbnail.png"
+         class="align-middle inline" />
+    <span :class="{'lg:hidden': !navbarOpen}">Panoptikum.io</span>
   </a>
 
-  <button @click="navbarOpen = !navbarOpen" class="lg:hidden focus:outline-none">
-    <span x-show="navbarOpen" class="text-4xl mr-3 mt-1">&times;</span>
-    <svg x-show="!navbarOpen" fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
-      <path class="heroicon-ui"
-            d="M4 5h16a1 1 0 010 2H4a1 1 0 110-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2zm0 6h16a1 1 0 010 2H4a1 1 0 010-2z"/>
+  <button @click="navbarOpen = !navbarOpen" class="focus:outline-none">
+    <svg x-show="navbarOpen"
+         xmlns="http://www.w3.org/2000/svg"
+         class="h-6 w-6 lg:hidden"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor"
+         id="heroicon-x">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+    </svg>
+
+    <svg x-show="navbarOpen"
+         xmlns="http://www.w3.org/2000/svg"
+         class="h-6 w-6 hidden lg:block"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor"
+         id="heroicon-chevron-double-left">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+    </svg>
+
+    <svg x-show="!navbarOpen"
+         xmlns="http://www.w3.org/2000/svg"
+         class="h-6 w-6"
+         fill="none"
+         viewBox="0 0 24 24"
+         stroke="currentColor"
+         id="heroicon-menu">
+      <path stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
 </div>
 
-<div :class="{'hidden': !navbarOpen }" class="lg:block">
+<div :class="{'hidden': !navbarOpen}">
   <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
 </div>

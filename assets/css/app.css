@@ -5,7 +5,7 @@
 /* @tailwind base; */
 /* @tailwind components; */
 @import "../node_modules/nprogress/nprogress.css";
-
+ 
 @layer base {
   [type='text'],
   [type='email'],
