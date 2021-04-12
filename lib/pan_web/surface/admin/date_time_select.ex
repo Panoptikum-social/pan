@@ -6,15 +6,22 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
   import Phoenix.HTML.Form
 
   prop(name, :string, required: true)
+  prop(redact, :boolean, required: false, default: false)
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name }} class="my-2 flex items-center justify-end">
+    <Form.Field name={{ @name }} class={{ "my-2 flex items-center", "justify-end": !@redact }}>
       <Form.Label class="italic"/>
       <div class="ml-3 flex flex-col items-start">
-        <InputContext assigns={{ assigns }} :let={{ form: form, field: field }}>
+        <InputContext :if={{ !@redact }}
+                      assigns={{ assigns }}
+                      :let={{ form: form, field: field }}>
           {{ datetime_select(form, field, builder: fn b -> render_builder(assigns, b) end) }}
         </InputContext>
+        <Form.TextInput :if={{ @redact }}
+                        value="** redacted **"
+                        class="w-32 px-2 py-0 rounded-none"
+                        opts={{ disabled: true }} />
         <ErrorTag/>
       </div>
     </Form.Field>

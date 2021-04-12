@@ -97,7 +97,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <div class="text-gray-dark whitespace-nowrap">
             Edit <span class="font-semibold">{{ module_name(@model) }}</span>
           </div>
-          <h2 class="max-w-screen-lg w-full truncate">{{ @record.title }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{{ Naming.title_from_record(@record) }}</h2>
         </span>
         <span>
           <LiveRedirect :if={{ @record.id }}
@@ -137,18 +137,21 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
             <NumberField :for={{ column <- number_columns(assigns) }}
-                          name={{ column.field }} />
+                          name={{ column.field }}
+                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
             <DateTimeSelect :for={{ column <- datetime_columns(assigns) }}
-                            name={{ column.field }} />
+                            name={{ column.field }}
+                            redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
           <legend class="px-4 border border-gray rounded-lg bg-white">Boolean Fields</legend>
             <CheckBoxField :for={{ column <- boolean_columns(assigns) }}
                           name={{ column.field }}
-                          label={{ column.field }}/>
+                          label={{ column.field }}
+                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
           </fieldset>
         </div>
 
@@ -156,12 +159,14 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
             <TextField :for={{ column <- string_columns(assigns) }}
-                      name={{ column.field }} />
+                       name={{ column.field }}
+                       redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
           </fieldset>
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
             <TextAreaField :for={{ column <- text_columns(assigns) }}
-                          name={{ column.field }} />
+                          name={{ column.field }}
+                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
           </fieldset>
         </div>
 

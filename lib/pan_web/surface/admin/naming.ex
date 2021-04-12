@@ -100,4 +100,24 @@ defmodule PanWeb.Surface.Admin.Naming do
   def path(%{socket: socket, model: _, method: method, path_helper: path_helper}) do
     Function.capture(Routes, path_helper, 2).(socket, method)
   end
+
+  def title_from_record(record) do
+    cond do
+      Map.has_key?(record, :title) ->
+        record.title
+
+      Map.has_key?(record, :name) ->
+        record.name
+
+      Map.has_key?(record, :username) ->
+        record.username
+
+      Map.has_key?(record, :id) ->
+        record.id
+
+      true ->
+        first_key = Map.keys(record) |> List.first()
+        Map.get(record, first_key)
+    end
+  end
 end

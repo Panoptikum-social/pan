@@ -24,26 +24,6 @@ defmodule PanWeb.Surface.Admin.RecordCard do
     {:ok, socket}
   end
 
-  def title(record) do
-    cond do
-      Map.has_key?(record, :title) ->
-        record.title
-
-      Map.has_key?(record, :name) ->
-        record.name
-
-      Map.has_key?(record, :username) ->
-        record.username
-
-      Map.has_key?(record, :id) ->
-        record.id
-
-      true ->
-        first_key = Map.keys(record) |> List.first()
-        Map.get(record, first_key)
-    end
-  end
-
   def module_name(model) do
     model
     |> to_string()
@@ -59,7 +39,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <span class="text-gray-dark">
             Show&nbsp;<span class="font-semibold">{{ module_name(@model) }}</span>
           </span>
-          <h2 class="max-w-screen-lg w-full truncate">{{ title(@record) }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{{ Naming.title_from_record(@record) }}</h2>
         </span>
         <span>
            <LiveRedirect to={{ Naming.path %{socket: @socket,
