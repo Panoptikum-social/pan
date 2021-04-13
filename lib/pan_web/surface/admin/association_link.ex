@@ -31,9 +31,9 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
         Routes.databrowser_path(
           assigns.socket,
           :has_many,
-          assigns.for.related_key,
+          Phoenix.Naming.resource_name(assigns.for.owner),
           assigns.record.id,
-          Phoenix.Naming.resource_name(assigns.for.related)
+          assigns.for.field
         )
         |> redirect(assigns, link_title)
 

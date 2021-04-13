@@ -12,10 +12,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
   prop(search_filter, :tuple, default: {})
+  prop(per_page, :integer, default: 20)
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(per_page, :integer, default: 20)
   data(like_search, :boolean, default: false)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
@@ -189,7 +189,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
   defp width(type) do
     case type do
-      :id -> "4rem"
+      :id -> "6rem"
       :integer -> "4rem"
       :date -> "6rem"
       :datetime -> "12rem"
