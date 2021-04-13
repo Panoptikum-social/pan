@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.Admin.PaginationLink do
   def render(assigns) do
     ~H"""
     <a href="#"
-       class={{ "p-2 text-white bg-info hover:bg-info-light",
+       class={{ "px-2 py-1 text-white bg-lavender hover:bg-lavender-light",
                 @class,
                 disabled: @disabled }}
        :on-click={{ "paginate", target: @target}}

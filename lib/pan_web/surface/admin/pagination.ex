@@ -13,7 +13,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
       <PaginationLink :if={{ @page > 1 }}
                       page={{ @page - 1 }}
                       per_page={{ @per_page}}
-                      class="rounded-l-lg"
+                      class="rounded-l"
                       target={{ @target }} >
         Previous
       </PaginationLink>
@@ -29,7 +29,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
       &nbsp;
       <PaginationLink page={{ @page + 1 }}
                       per_page={{ @per_page }}
-                      class="rounded-r-lg"
+                      class="rounded-r"
                       target={{ @target }} >
         Next
       </PaginationLink>

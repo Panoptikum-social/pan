@@ -1,19 +1,27 @@
-<div id={{ @id }}>
-  <div class="ml-0.5 flex justify-between items-center bg-white max-w-screen-lg lg-mt-0">
-    <div class="px-2 w-28 text-center">
+<div id={{ @id }} class={{ @class }}>
+  <div class="ml-0.5 flex flex-col sm:flex-row justify-start space-x-5 items-center w-max bg-white lg-mt-0">
+    <h1 class="p-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
+    <div :if={{ @navigation }}
+         class="border-l border-gray-lightest">
+      <PerPageLink delta="-5" target={{ "#" <> @id }}/>
+      <PerPageLink delta="-3" target={{ "#" <> @id }}/>
+      <PerPageLink delta="-1" target={{ "#" <> @id }}/>
+      <span class="hidden sm:inline">Records</span>
+      <PerPageLink delta="+1" target={{ "#" <> @id }}/>
+      <PerPageLink delta="+3" target={{ "#" <> @id }}/>
+      <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+    </div>
+    <div :if={{ @navigation }}
+         class="px-2 w-28 text-center">
       <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                     label="New Record"
                     class="text-link hover:text-link-dark underline " />
     </div>
-    <h1 class="p-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
-    <div class="border-l border-gray-lightest">
-    <PerPageLink delta="-5" target={{ "#" <> @id }}/>
-    <PerPageLink delta="-3" target={{ "#" <> @id }}/>
-    <PerPageLink delta="-1" target={{ "#" <> @id }}/>
-    <span class="hidden sm:inline">Records</span>
-    <PerPageLink delta="+1" target={{ "#" <> @id }}/>
-    <PerPageLink delta="+3" target={{ "#" <> @id }}/>
-    <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+    <div :if={{ @navigation }}>
+      <Link to="#"
+            click={{"toggle_hide_filtered", target: "#" <> @id }}
+            label={{ if @hide_filtered, do: "hid unrelated", else: "dyed assigned" }}
+            class="text-link hover:text-link-dark underline" />
     </div>
   </div>
   
@@ -34,7 +42,8 @@
       </SortLink>
     </div>
 
-    <div class="bg-white text-center p-1">
+    <div :if={{ @navigation }}
+         class="bg-white text-center p-1">
       Search:
       <Link to="#"
             click={{"toggle_search_mode", target: "#" <> @id }}
@@ -42,8 +51,9 @@
             class="text-link hover:text-link-dark underline" />
     </div>
 
-    <div :for={{ column <- @columns }} 
-        class={{ "bg-white p-1",                  
+    <div :if={{ @navigation }}
+         :for={{ column <- @columns }} 
+         class={{ "bg-white p-1",                  
                   "text-right": column.type == :integer}}>
       <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not() }} 
             for={{ :search }} 
@@ -61,8 +71,10 @@
 
     <For each={{ {record, index} <- Enum.with_index(@records) }}>
       <div :if={{ Map.has_key?(record, :id) }}
-          class={{ "bg-white self-center flex justify-evenly w-full",
-                    "bg-gray-lighter": Integer.is_odd(index) }}>
+           class={{ "self-center flex justify-evenly w-full",
+                    "bg-gray-lighter": Integer.is_odd(index) && !to_be_dyed?(record, assigns),
+                    "bg-white": Integer.is_even(index) && !to_be_dyed?(record, assigns),
+                    "bg-sunflower-light": to_be_dyed?(record, assigns) }}>
         <LiveRedirect to={{ Naming.path %{socket: @socket, 
                                         model: @model, 
                                         path_helper: @path_helper, 
@@ -94,11 +106,13 @@
                      field={{ column.field }} 
                      type={{ column.type }}
                      index={{ index }} 
-                     model={{ @model }}/>
+                     model={{ @model }} 
+                     dye={{ to_be_dyed?(record, assigns) }}/>
     </For>
   </div>
 
-  <Pagination per_page={{ @per_page}} 
+  <Pagination :if={{ @navigation }}
+              per_page={{ @per_page}} 
               page={{ @page }}
               class="mt-6"
               target={{ "#" <> @id }} />

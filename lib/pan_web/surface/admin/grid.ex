@@ -13,10 +13,13 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(cols, :list, required: false, default: [])
   prop(search_filter, :tuple, default: {})
   prop(per_page, :integer, default: 20)
+  prop(navigation, :boolean, required: false, default: true)
+  prop(class, :css_class, required: false)
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
   data(like_search, :boolean, default: false)
+  prop(hide_filtered, :boolean, default: true )
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(records, :list, default: [])
@@ -93,6 +96,15 @@ defmodule PanWeb.Surface.Admin.Grid do
     {:noreply, socket}
   end
 
+  def handle_event("toggle_hide_filtered", _, socket) do
+    socket =
+      socket
+      |> assign(hide_filtered: !socket.assigns.hide_filtered)
+      |> get_records()
+
+    {:noreply, socket}
+  end
+
   def handle_event("delete", %{"id" => id_string}, socket) do
     id = String.to_integer(id_string)
     model = socket.assigns.model
@@ -126,7 +138,8 @@ defmodule PanWeb.Surface.Admin.Grid do
       sort: %{sort_by: a.sort_by, sort_order: a.sort_order},
       search: a.search_options,
       search_filter: a.search_filter,
-      like_search: a.like_search
+      like_search: a.like_search,
+      hide_filtered: a.hide_filtered,
     ]
 
     assign(socket, records: load(a.model, criteria, a.columns))
@@ -140,45 +153,48 @@ defmodule PanWeb.Surface.Admin.Grid do
   end
 
   defp apply_criteria(query, criteria) do
-    Enum.reduce(criteria, query, &apply_criterium(&1, &2, criteria[:like_search]))
+    Enum.reduce(criteria, query, &apply_criterium(&1, &2, criteria[:like_search], criteria[:hide_filtered]))
   end
 
-  defp apply_criterium({:paginate, %{page: page, per_page: per_page}}, query, _like_search) do
+  defp apply_criterium({:paginate, %{page: page, per_page: per_page}}, query, _, _) do
     from(q in query, offset: ^((page - 1) * per_page), limit: ^per_page)
   end
 
-  defp apply_criterium({:sort, %{sort_by: sort_by, sort_order: sort_order}}, query, _like_search) do
+  defp apply_criterium({:sort, %{sort_by: sort_by, sort_order: sort_order}}, query, _, _) do
     from(q in query, order_by: [{^sort_order, ^sort_by}])
   end
 
-  defp apply_criterium({:search_filter, {column, values}}, query, _like_search)
+  defp apply_criterium({:search_filter, {_, _}}, query, _, false = _hide_filtered), do: query
+
+  defp apply_criterium({:search_filter, {column, values}}, query, _, true = _hide_filtered)
        when is_list(values) do
     from(q in query, where: field(q, ^column) in ^values)
   end
 
-  defp apply_criterium({:search_filter, {column, value}}, query, _like_search)
+  defp apply_criterium({:search_filter, {column, value}}, query, _, true = _hide_filtered)
        when is_integer(value) do
     from(q in query, where: field(q, ^column) == ^value)
   end
 
-  defp apply_criterium({:search, search_options}, query, like_search) do
-    Enum.reduce(search_options, query, &apply_search_option(&1, &2, like_search))
+  defp apply_criterium({:search, search_options}, query, like_search, hide_filtered) do
+    Enum.reduce(search_options, query, &apply_search_option(&1, &2, like_search, hide_filtered))
   end
 
-  defp apply_criterium({:search_filter, {}}, query, _like_search), do: query
+  defp apply_criterium({:search_filter, {}}, query, _, _), do: query
 
   # consumed by :search, no need to restrict anything here
-  defp apply_criterium({:like_search, _like_search_type}, query, _like_search), do: query
+  defp apply_criterium({:like_search, _}, query, _, _), do: query
+  defp apply_criterium({:hide_filtered, _}, query, _, _), do: query
 
-  defp apply_search_option({_column, ""}, query, _like_search), do: query
+  defp apply_search_option({_column, ""}, query, _, _), do: query
 
-  defp apply_search_option({column, value}, query, true = _like_search) do
+  defp apply_search_option({column, value}, query, true = _, _) do
     from(q in query,
       where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
     )
   end
 
-  defp apply_search_option({column, value}, query, false = _like_search) do
+  defp apply_search_option({column, value}, query, false = _, _) do
     from(q in query, where: ^[{column, value}])
   end
 
@@ -197,6 +213,15 @@ defmodule PanWeb.Surface.Admin.Grid do
       :string -> "16rem"
       Ecto.EctoText -> "16rem"
       :boolean -> "4rem"
+    end
+  end
+
+  defp to_be_dyed?(record, assigns) do
+    if assigns.search_filter != {} do
+      {column, value} = assigns.search_filter
+      !assigns.hide_filtered && Map.get(record, column) == value
+    else
+      false
     end
   end
 end

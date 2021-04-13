@@ -65,21 +65,21 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
     ~H"""
     <div class="p-2">
       <Grid id="owner_grid"
-            heading={{ "Record " <> module_name(@owner_model) }}
+            heading={{ module_name(@owner_model) }}
             model={{ @owner_model }}
             cols={{ @owner_cols }}
             search_filter={{ @owner_search_filter }}
-            per_page=1>
+            per_page=1
+            navigation=false>
       </Grid>
 
-      <h2 class="text-3xl pb-8 italic text-bittersweet">has many</h2>
-
       <Grid id="has_many_grid"
-            heading={{ "Listing " <> Naming.model_in_plural(@model) }}
+            class="pt-8"
+            heading={{ raw("<span class=\"italic\">has many</span> &nbsp;" <> Naming.model_in_plural(@model)) }}
             model={{ @model }}
             cols={{ @cols }}
             search_filter={{ @search_filter }}
-            per_page=10>
+            per_page=20>
       </Grid>
     </div>
     """

@@ -9,6 +9,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
   prop(type, :atom, required: false, values: [:string, :integer], default: :string)
   prop(index, :integer, required: false, default: 0)
   prop(width, :string, required: false, default: "")
+  prop(dye, :boolean, required: false, default: false)
 
   def present(presenter, record, field, format) do
     if presenter do
@@ -33,13 +34,15 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
   def render(assigns) do
     ~H"""
     <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not() }}
-         class={{ "bg-white text-very-gray-darker px-1 grid content-center",
+         class={{ "text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type in [:integer, :id]),
                   "text-right whitespace-nowrap": (@type == :boolean),
                   "text-center whitespace-nowrap": (@type in [:datetime, :naive_datetime]),
                   "text-left": (@type == :string),
-                  "bg-gray-lighter": Integer.is_odd(@index) }}
+                  "bg-gray-lighter": Integer.is_odd(@index) && !@dye,
+                  "bg-white": Integer.is_even(@index) && !@dye,
+                  "bg-sunflower-light": @dye }}
                  x-data="{ detailsOpen: false }">
       <div @click="detailsOpen = !detailsOpen
                    $nextTick(() => $refs.detailsCloseButton.focus())"
