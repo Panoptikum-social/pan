@@ -60,7 +60,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         </span>
       </div>
 
-      <div class="flex space-x-4 items-start mt-4">
+      <div class="flex flex-col md:flex-row space-x-4 items-start mt-4">
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Numeric Fields</legend>
           <DataBlock columns={{ number_columns(assigns) }}

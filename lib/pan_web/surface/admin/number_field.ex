@@ -12,14 +12,14 @@ defmodule PanWeb.Surface.Admin.NumberField do
       <Form.Label class="italic text-right"/>
       <div class="flex flex-col items-center">
         <Form.NumberInput :if={{ !@redact }}
-                          class={{ "ml-3 w-32 text-right px-2 py-0 rounded-none
-                                   disabled:bg-gray-lighter",
-                                   "cursor-not-allowed": @name == "id" }}
-                          opts= {{ disabled: @name == :id }} />
+                          class={{ "ml-3 w-32 text-right px-2 py-0 rounded-none",
+                                   "cursor-not-allowed bg-gray-lighter": @name == :id }}
+                          opts= {{ readonly: @name == :id }} />
         <Form.TextInput :if={{ @redact }}
                         value="** redacted **"
-                        class="ml-3 w-32 px-2 py-0 rounded-none"
-                        opts={{ disabled: true }} />
+                        class={{ "readonly:disabled ml-3 w-32 px-2 py-0 rounded-none
+                                  cursor-not-allowed bg-gray-lighter" }}
+                        opts={{ readonly: true }} />
         <ErrorTag />
       </div>
     </Form.Field>
