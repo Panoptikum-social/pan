@@ -2,6 +2,8 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.Grid
+  alias Phoenix.HTML
+  alias Phoenix.HTML.Tag
 
   def mount(
     %{"owner" => owner_string, "owner_id" => owner_id_string, "association" => association_name},
@@ -63,25 +65,23 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
 
   def render(assigns) do
     ~H"""
-    <div class="p-2">
-      <Grid id="owner_grid"
-            heading={{ module_name(@owner_model) }}
-            model={{ @owner_model }}
-            cols={{ @owner_cols }}
-            search_filter={{ @owner_search_filter }}
-            per_page=1
-            navigation=false>
-      </Grid>
+    <Grid id="owner_grid"
+          heading={{ module_name(@owner_model) }}
+          model={{ @owner_model }}
+          cols={{ @owner_cols }}
+          search_filter={{ @owner_search_filter }}
+          per_page=1
+          navigation=false>
+    </Grid>
 
-      <Grid id="has_many_grid"
-            class="pt-8"
-            heading={{ raw("<span class=\"italic\">has many</span> &nbsp;" <> Naming.model_in_plural(@model)) }}
-            model={{ @model }}
-            cols={{ @cols }}
-            search_filter={{ @search_filter }}
-            per_page=20>
-      </Grid>
-    </div>
+    <Grid id="has_many_grid"
+          heading={{ raw(HTML.safe_to_string(Tag.content_tag(:span, "has many", class: "italic mr-2")) <>
+                     Naming.model_in_plural(@model)) }}
+          model={{ @model }}
+          cols={{ @cols }}
+          search_filter={{ @search_filter }}
+          per_page=20>
+    </Grid>
     """
   end
 end

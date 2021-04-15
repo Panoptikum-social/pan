@@ -42,7 +42,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
                   "text-left": (@type == :string),
                   "bg-gray-lighter": Integer.is_odd(@index) && !@dye,
                   "bg-white": Integer.is_even(@index) && !@dye,
-                  "bg-sunflower-light": @dye }}
+                  "bg-sunflower-lighter": @dye }}
                  x-data="{ detailsOpen: false }">
       <div @click="detailsOpen = !detailsOpen
                    $nextTick(() => $refs.detailsCloseButton.focus())"

@@ -47,6 +47,7 @@ module.exports = {
       },
       sunflower: {
         light: '#ffce54', 
+        lighter: '#ffe299',
         DEFAULT: '#f6bb42'
       },
       bittersweet: {
