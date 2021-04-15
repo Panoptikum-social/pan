@@ -6,12 +6,11 @@ defmodule PanWeb.Surface.Admin.PerPageLink do
 
   def render(assigns) do
     ~H"""
-    <a href="#"
-      :on-click={{ "per_page", target: @target }}
-      phx-value-delta={{ @delta }}
-      class="bg-mint text-white hover:bg-mint-light px-1 py-0.5 lg:px-2 lg:py-1 rounded ml-1 inline-block">
-      {{ @delta }}
-    </a>
+    <button :on-click={{ "per_page", target: @target }}
+            phx-value-delta={{ @delta }}
+            class="border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded">
+            {{ @delta }}
+    </button>
     """
   end
 end

@@ -19,7 +19,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
   data(like_search, :boolean, default: false)
-  prop(hide_filtered, :boolean, default: true )
+  prop(hide_filtered, :boolean, default: true)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(records, :list, default: [])

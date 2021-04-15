@@ -38,7 +38,7 @@ module.exports = {
       },
       mint: {
         light: '#48cfad', 
-        'mint-very-light': '#00c997',
+        lighter: '#00c997',
         DEFAULT: '#37bc9b'
       },      
       grass: { 
@@ -81,8 +81,8 @@ module.exports = {
       // Bootflat colors: functional colors
       'nav-background': '#434a54', // dark gray
       link: {
-        dark: '#00644b', // mint-very-light
-        DEFAULT: '#00c997' // mint-very-light
+        dark: '#00644b', // mint-lighter
+        DEFAULT: '#00c997' // mint-lighter
       },
       success: {
         light: '#b9df90',

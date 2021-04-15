@@ -11,15 +11,15 @@ defmodule PanWeb.Surface.Admin.PaginationLink do
 
   def render(assigns) do
     ~H"""
-    <a href="#"
-       class={{ "px-2 py-1 text-white bg-lavender hover:bg-lavender-light",
-                @class,
-                disabled: @disabled }}
-       :on-click={{ "paginate", target: @target}}
-       phx-value-page={{ @page }}
-       phx-value-per-page={{ @per_page }}>
+    <button href="#"
+            class={{ "border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
+                      @class,
+                      disabled: @disabled }}
+            :on-click={{ "paginate", target: @target}}
+            phx-value-page={{ @page }}
+            phx-value-per-page={{ @per_page }}>
       <slot/>
-    </a>
+    </button>
     """
   end
 end

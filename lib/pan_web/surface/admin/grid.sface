@@ -1,8 +1,11 @@
-<div id={{ @id }} class={{ @class }}>
-  <div class="ml-0.5 flex flex-col sm:flex-row justify-start space-x-5 items-center w-max bg-white lg-mt-0">
-    <h1 class="p-2 text-2xl whitespace-nowrap border-l border-gray-lightest">{{ @heading }}</h1>
+<div id={{ @id }} class={{ "m-2 border border-gray rounded", @class }}>
+  <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
+    {{ @heading }}
+  </h2>
+
+  <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light space-x-6 border-b border-gray">
     <div :if={{ @navigation }}
-         class="border-l border-gray-lightest">
+         class="mx-2 border-l border-gray-lightest">
       <PerPageLink delta="-5" target={{ "#" <> @id }}/>
       <PerPageLink delta="-3" target={{ "#" <> @id }}/>
       <PerPageLink delta="-1" target={{ "#" <> @id }}/>
@@ -11,21 +14,19 @@
       <PerPageLink delta="+3" target={{ "#" <> @id }}/>
       <PerPageLink delta="+5" target={{ "#" <> @id }}/>
     </div>
-    <div :if={{ @navigation }}
-         class="px-2 w-28 text-center">
-      <LiveRedirect to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-                    label="New Record"
-                    class="text-link hover:text-link-dark underline " />
-    </div>
-    <div :if={{ @navigation }}>
-      <Link to="#"
-            click={{"toggle_hide_filtered", target: "#" <> @id }}
-            label={{ if @hide_filtered, do: "hid unrelated", else: "dyed assigned" }}
-            class="text-link hover:text-link-dark underline" />
-    </div>
+    <LiveRedirect :if={{ @navigation }}
+                  to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                  label="New Record"
+                  class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded" />
+
+    <button :if={{ @navigation }} 
+            :on-click={{"toggle_hide_filtered", target: "#" <> @id }}
+            class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
+      {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
+    </button>
   </div>
-  
-  <div class="grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
+
+  <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
       style={{ "grid-template-columns: 7rem" <> " " <>
                 (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> 
                 ";" }}>
@@ -51,7 +52,7 @@
             class="text-link hover:text-link-dark underline" />
     </div>
 
-    <div :if={{ @navigation }}
+    <div :if={{ @navigation }}border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light
          :for={{ column <- @columns }} 
          class={{ "bg-white p-1",                  
                   "text-right": column.type == :integer}}>
@@ -113,7 +114,7 @@
 
   <Pagination :if={{ @navigation }}
               per_page={{ @per_page}} 
+              class="border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light"
               page={{ @page }}
-              class="mt-6"
               target={{ "#" <> @id }} />
 </div>

@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
 
   def render(assigns) do
     ~H"""
-    <div class={{"pb-6", @class}}>
+    <div class={{ @class}}>
       <PaginationLink :if={{ @page > 1 }}
                       page={{ @page - 1 }}
                       per_page={{ @per_page}}
