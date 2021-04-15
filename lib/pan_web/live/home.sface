@@ -1,5 +1,5 @@
 <div aria-label="columncontainer" 
-    class="max-w-screen-xl mx-auto mt-2
+    class="max-w-screen-xl mx-auto
            flex flex-col space-y-4 justify-items-auto 
            lg:flex-row lg:space-y-0 lg:space-x-4 ">
   <div aria-label="left column" 

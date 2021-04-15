@@ -2,14 +2,12 @@
 
 ## Next Action
 
-* make footer responsive
-* make sidebar responsive and dropdownable on mobile
 * move nearest color & sandbox into admin
 * #FIXME! issues
 
 ## Longer Term
 
-* Leverage svg-Logo
+* Leverage svg-Logo and remove old png-assets.
 * Move away from window.userToken and window.currentUserID
 
 ## Warnings
