@@ -1,54 +1,89 @@
 <div class="flex justify-between items-start lg:items-center" :class="{'lg:flex-col': !navbarOpen}">
   <a href="/" class="text-2xl font-bold">
-    <img :class="{'lg:w-5 lg:h-5': !navbarOpen}"
-         alt="Logo, Home"
-         src="/images/panoptikum.thumbnail.png"
-         class="align-middle inline" />
+    <svg class="w-10 h-10 align-middle inline"
+         :class="{'lg:w-5 lg:h-5': !navbarOpen}"
+         alt="Panoptikum Logo, Link to Home"
+      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <g>
+        <path fill="#a0d468" d="M256.071 256.154l253.604 68.077V188.129zm0-68.025zm253.604 136.102z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14236 7672l4831 1295V6378z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#ec87c0" d="M256.439 256.154L2.835 324.23V188.129zm0-68.025zM2.835 324.231z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14243 7672L9412 8967V6378z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#8cc152" d="M256.176 256.259l253.604-67.972-67.981-117.913zm-33.964-58.878zm287.568-9.094z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14238 7674l4831-1293-1295-2243z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#ed5565" d="M256.439 256.048L70.816 441.985 2.887 324.073zm-33.965-58.93zM70.816 441.986z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14243 7670l-3536 3537-1294-2243z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#48cfad" d="M256.281 256.101L442.01 70.217 324.262 2.192zm-58.794-34.012zM442.009 70.217z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14240 7671l3538-3536-2243-1294z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#da4453" d="M256.334 256.048L188.457 510.01 70.711 441.933zm-58.795-34.012zm-9.082 287.974z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14241 7670l-1293 4831-2243-1295z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#ac92ec" d="M256.439 256.259L70.816 70.269 2.887 188.182zm-33.965 58.877zM70.816 70.27z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14243 7674l-3536-3538-1294 2243z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#ffce54" d="M256.124 256.048l253.603 68.025-67.98 117.912zm-33.965 58.93zm287.568 9.095z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14237 7670l4831 1294-1295 2243z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#5d9cec" d="M256.439 256.154L188.509 2.192 70.764 70.27zm-58.847 34.012zM188.51 2.192z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14243 7672l-1294-4831-2243 1295z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#fc6e51" d="M256.229 255.996L441.904 441.88l-117.747 68.025zm-58.847 34.012zM441.904 441.88z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14239 7669l3537 3536-2243 1294z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <g>
+        <path fill="#4fc1e9" d="M256.281 256.311l67.981-253.96h-135.91zm-67.929 0zm135.91-253.96z" />
+        <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14240 7675l1295-4831h-2589z"
+          transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
+      </g>
+      <path fill="#e9573f" d="M256.229 255.943l67.98 253.962H188.3zm-67.93 0zm135.91 253.962z" />
+      <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="4.158"
+        d="M256.229 244.493l67.98 242.501H188.3z" transform="matrix(1 0 0 1.04726 0 -.104)" />
+    </svg>
     <span :class="{'lg:hidden': !navbarOpen}">Panoptikum.io</span>
   </a>
 
   <button @click="navbarOpen = !navbarOpen" class="focus:outline-none">
-    <svg x-show="navbarOpen"
-         xmlns="http://www.w3.org/2000/svg"
-         class="h-6 w-6 lg:hidden"
-         fill="none"
-         viewBox="0 0 24 24"
-         stroke="currentColor"
-         id="heroicon-x">
-      <path stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12" />
+    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:hidden" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" id="heroicon-x">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
 
-    <svg x-show="navbarOpen"
-         xmlns="http://www.w3.org/2000/svg"
-         class="h-6 w-6 hidden lg:block"
-         fill="none"
-         viewBox="0 0 24 24"
-         stroke="currentColor"
-         id="heroicon-chevron-double-left">
-      <path stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden lg:block" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" id="heroicon-chevron-double-left">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
     </svg>
 
-    <svg x-show="!navbarOpen"
-         xmlns="http://www.w3.org/2000/svg"
-         class="h-6 w-6"
-         fill="none"
-         viewBox="0 0 24 24"
-         stroke="currentColor"
-         id="heroicon-menu">
-      <path stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 6h16M4 12h16M4 18h16" />
+    <svg x-show="!navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor" id="heroicon-menu">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
 </div>
 
 <div :class="{'hidden': !navbarOpen}">
-  <%= render "_navbar_items.html", conn: @conn, current_user: @current_user %>
+  <%= render "_navbar_items.html" , conn: @conn, current_user: @current_user %>
 </div>

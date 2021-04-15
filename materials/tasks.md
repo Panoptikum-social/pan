@@ -9,6 +9,7 @@
 
 ## Longer Term
 
+* Leverage svg-Logo
 * Move away from window.userToken and window.currentUserID
 
 ## Warnings
