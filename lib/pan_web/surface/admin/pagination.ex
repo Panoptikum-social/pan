@@ -9,7 +9,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
 
   def render(assigns) do
     ~H"""
-    <div class={{ @class}}>
+    <div class={{ "flex items-center space-x-2", @class}}>
       <PaginationLink :if={{ @page > 1 }}
                       page={{ @page - 1 }}
                       per_page={{ @per_page}}
@@ -17,16 +17,16 @@ defmodule PanWeb.Surface.Admin.Pagination do
                       target={{ @target }} >
         Previous
       </PaginationLink>
-      &nbsp;
-      <PaginationLink :for={{ i <- 1..@page }}
-                      disabled={{ i == @page }}
-                      page={{ i }}
-                      per_page={{ @per_page }}
-                      class={{ "rounded-l-lg": i==1 }}
-                      target={{ @target }} >
-        {{ i }}
-      </PaginationLink>
-      &nbsp;
+      <For each={{ i <- 1..@page }}>
+        <PaginationLink :if={{ i != @page }}
+                        page={{ i }}
+                        per_page={{ @per_page }}
+                        class={{ "rounded-l-lg": i==1 }}
+                        target={{ @target }} >
+          {{ i }}
+        </PaginationLink>
+        <span :if={{ i == @page}}>{{ i }}</span>
+      </For>
       <PaginationLink page={{ @page + 1 }}
                       per_page={{ @per_page }}
                       class="rounded-r"
