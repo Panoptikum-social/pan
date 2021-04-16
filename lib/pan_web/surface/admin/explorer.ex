@@ -1,5 +1,6 @@
 defmodule PanWeb.Surface.Admin.Explorer do
   use Surface.LiveComponent
+  alias PanWeb.Surface.Admin.Tools
 
   prop(title, :string, required: false, default: "Items")
   prop(class, :css_class, required: false)
@@ -12,13 +13,13 @@ defmodule PanWeb.Surface.Admin.Explorer do
   def update(assigns, socket) do
     items =
       assigns.items
-      |> Enum.with_index()
-      |> Enum.map(fn {item, index} -> Map.put_new(item, :id, index) end)
+      |> Tools.ensure_ids_and_selected()
+
+    send self(), {:items, items}
 
     socket =
       assign(socket, assigns)
-      |> assign(items: items)
-      |> assign(toolbar_content: :toolbar_content)
+      |> assign(toolbar_content: :toolbar_content, items: items)
 
     {:ok, socket}
   end
@@ -47,9 +48,11 @@ defmodule PanWeb.Surface.Admin.Explorer do
           </tr>
         </thead>
         <tbody>
-          <tr :for={{ item <- @items }}>
+          <tr :for={{ item <- @items }}
+              phx-click="select" phx-value-id={{ item.id }}
+              class={{ "bg-sunflower-lighter": item.selected, "bg-white": !item.selected }}>
             <td :for.with_index={{ {col, index} <- @cols }}
-                class={{ "px-1 border border-gray-lightest bg-white", col.class}}>
+                class={{ "px-1 border border-gray-lightest", col.class}}>
                <slot name="cols"
                     index={{ index }}
                     :props={{ item: item }} />
