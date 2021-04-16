@@ -7,11 +7,19 @@ defmodule PanWeb.Surface.Admin.Explorer do
 
   slot(cols, props: [item: ^items])
   slot(toolbar, as: :toolbar_content)
+  data(selected, :integer)
 
   def update(assigns, socket) do
+    items =
+      assigns.items
+      |> Enum.with_index()
+      |> Enum.map(fn {item, index} -> Map.put_new(item, :id, index) end)
+
     socket =
       assign(socket, assigns)
+      |> assign(items: items)
       |> assign(toolbar_content: :toolbar_content)
+
     {:ok, socket}
   end
 
