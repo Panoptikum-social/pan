@@ -28,6 +28,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
     ~H"""
     <Explorer id="schemas"
               title="Schemas"
+              class="m-2"
               items={{ schema <- @schemas }}>
       <Col title="Schema">
         {{ schema.title |> Naming.model_in_plural }}

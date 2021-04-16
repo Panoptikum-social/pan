@@ -38,7 +38,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
         <slot name="toolbar"/>
       </div>
 
-      <table>
+      <table class="m-1">
         <thead>
           <tr>
             <th :for={{ col <- @cols }}
