@@ -3,73 +3,14 @@
     <li class="border-t-2 border-coolGray-500 py-1"></li>
     <li class="uppercase text-right py-1"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
     <li class="py-1">
-      <%= link "Categories", to: databrowser_path(@conn, :index, :category), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Podcasts", to: databrowser_path(@conn, :index, :podcast), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">Fees
-      <%= link "Feeds", to: databrowser_path(@conn, :index, :feed), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "RssFeeds", to: databrowser_path(@conn, :index, :rss_feed), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Feed Backlog", to: databrowser_path(@conn, :index, :feed_backlog), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "OPMLs", to: databrowser_path(@conn, :index, :opml), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Users", to: databrowser_path(@conn, :index, :user), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Invoices", to: databrowser_path(@conn, :index, :invoice), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Messages", to: databrowser_path(@conn, :index, :message), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Likes", to: databrowser_path(@conn, :index, :like), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Follows", to: databrowser_path(@conn, :index, :follow), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Subscriptions", to: databrowser_path(@conn, :index, :subscription), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Recommendations", to: databrowser_path(@conn, :index, :recommendation), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Personas", to: databrowser_path(@conn, :index, :persona), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Gigs", to: databrowser_path(@conn, :index, :gig), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Engagements", to: databrowser_path(@conn, :index, :engagement), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Manifestations", to: databrowser_path(@conn, :index, :manifestation), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Delegations", to: databrowser_path(@conn, :index, :delegation), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Languages", to: databrowser_path(@conn, :index, :language), class: "text-coolGray-200" %>
-    </li>
-    <li class="py-1">
-      <%= link "Images", to: databrowser_path(@conn, :index, :image), class: "text-coolGray-200" %>
+      <%= link "Dashboard", to: dashboard_path(@conn, :home), class: "text-coolGray-200" %>
     </li>
     <li class="py-1">
       <%= link "Statistics", to: maintenance_path(@conn, :stats), class: "text-coolGray-200" %>
     </li>
-    <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-      <li class="py-1">
-        <%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "btn btn-sm btn-link text-coolGray-200"
-        %>
-      </li>
-    <% end %>
+    <li class="py-1">
+      <%= link "LiveDashboard", to: live_dashboard_path(@conn, :home),
+                                class: "btn btn-sm btn-link text-coolGray-200" %>
+    </li>
   </ul>
 <% end %>
