@@ -24,20 +24,13 @@ defmodule PanWeb.Surface.Admin.RecordCard do
     {:ok, socket}
   end
 
-  def module_name(model) do
-    model
-    |> to_string()
-    |> String.split(".")
-    |> List.last()
-  end
-
   def render(assigns) do
     ~H"""
     <div class="m-2">
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <span class="text-gray-dark">
-            Show&nbsp;<span class="font-semibold">{{ module_name(@model) }}</span>
+            Show&nbsp;<span class="font-semibold">{{ Naming.module_without_namespace(@model) }}</span>
           </span>
           <h2 class="max-w-screen-lg w-full truncate">{{ Naming.title_from_record(@record) }}</h2>
         </span>
@@ -47,7 +40,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                                              method: :index,
                                              path_helper: @path_helper} }}
                          class="text-link hover:text-link-dark underline">
-             {{ module_name(@model) }}&nbsp;List
+             {{ Naming.module_without_namespace(@model) }}&nbsp;List
           </LiveRedirect> &nbsp;
           <LiveRedirect to={{ Naming.path %{socket: @socket,
                                             model: @model,
@@ -55,7 +48,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                                             path_helper: @path_helper,
                                             record: @record} }}
                         class="text-link hover:text-link-dark underline">
-            Edit {{ module_name(@model) }}
+            Edit {{ Naming.module_without_namespace(@model) }}
           </LiveRedirect>
         </span>
       </div>

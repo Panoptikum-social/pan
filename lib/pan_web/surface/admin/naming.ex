@@ -120,4 +120,11 @@ defmodule PanWeb.Surface.Admin.Naming do
         Map.get(record, first_key)
     end
   end
+
+  def module_without_namespace(model) do
+    model
+    |> to_string()
+    |> String.split(".")
+    |> List.last()
+  end
 end
