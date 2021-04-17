@@ -10,14 +10,14 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
     model.__schema__(:association, association).__struct__
     |> Atom.to_string
     |> String.split(".")
-    |> List.last()
+    |> List.last
   end
 
   def render(assigns) do
     ~H"""
     <div class="mt-4 grid"
          style="grid-template-columns: max-content 1fr;">
-      <For each={{ {association, index} <- @model.__schema__(:associations) |> Enum.with_index() }}>
+      <For each={{ {association, index} <- @model.__schema__(:associations) |> Enum.with_index }}>
         <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),

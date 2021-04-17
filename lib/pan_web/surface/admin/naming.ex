@@ -27,14 +27,14 @@ defmodule PanWeb.Surface.Admin.Naming do
 
   def model_from_join_through(join_through) do
     Enum.filter(schemas(), &(&1.__schema__(:source) == join_through))
-    |> List.first()
+    |> List.first
   end
 
-  def model_in_plural(model), do: model |> title_from_model() |> pluralize()
+  def model_in_plural(model), do: model |> title_from_model |> pluralize
 
   def title_from_field(field) do
     field
-    |> Atom.to_string()
+    |> Atom.to_string
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")
@@ -42,8 +42,8 @@ defmodule PanWeb.Surface.Admin.Naming do
 
   def title_from_model(model) do
     model
-    |> Phoenix.Naming.resource_name()
-    |> to_string()
+    |> Phoenix.Naming.resource_name
+    |> to_string
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")
@@ -116,15 +116,15 @@ defmodule PanWeb.Surface.Admin.Naming do
         record.id
 
       true ->
-        first_key = Map.keys(record) |> List.first()
+        first_key = Map.keys(record) |> List.first
         Map.get(record, first_key)
     end
   end
 
   def module_without_namespace(model) do
     model
-    |> to_string()
+    |> to_string
     |> String.split(".")
-    |> List.last()
+    |> List.last
   end
 end

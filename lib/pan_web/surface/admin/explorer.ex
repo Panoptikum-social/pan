@@ -5,15 +5,15 @@ defmodule PanWeb.Surface.Admin.Explorer do
   prop(title, :string, required: false, default: "Items")
   prop(class, :css_class, required: false)
   prop(items, :list, required: true)
+  prop(toolbar, :map, required: false, default: %{})
 
   slot(cols, props: [item: ^items])
-  slot(toolbar, as: :toolbar_content)
   data(selected, :integer)
 
   def update(assigns, socket) do
     items =
       assigns.items
-      |> Tools.ensure_ids_and_selected()
+      |> Tools.ensure_ids_and_selected
 
     send self(), {:items, items}
 
@@ -32,10 +32,12 @@ defmodule PanWeb.Surface.Admin.Explorer do
         {{ @title }}
       </h2>
 
-      <div :if={{ @toolbar_content }}
+      <div :if={{ @toolbar }}
            class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                   via-gray-lighter to-gray-light space-x-6 border-b border-gray">
-        <slot name="toolbar"/>
+        <div :for.with_index={{ {message, title} <- @toolbar }}>
+          {{ title }}
+        </div>
       </div>
 
       <table class="m-1">

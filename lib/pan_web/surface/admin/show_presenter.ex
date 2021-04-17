@@ -50,17 +50,17 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
             :datetime ->
               raw(
                 "<span class=\"pr-2\">📅</span>" <>
-                  (data |> DateTime.to_date() |> Date.to_string()) <>
+                  (data |> DateTime.to_date |> Date.to_string) <>
                   "<span class=\"pl-4 pr-2\">🕒</span>" <>
-                  (data |> DateTime.to_time() |> Time.to_string())
+                  (data |> DateTime.to_time |> Time.to_string)
               )
 
             :naive_datetime ->
               raw(
                 "<span class=\"pr-2\">📅</span>" <>
-                  (data |> NaiveDateTime.to_date() |> Date.to_string()) <>
+                  (data |> NaiveDateTime.to_date |> Date.to_string) <>
                   "<span class=\"pl-4 pr-2\">🕒</span>" <>
-                  (data |> NaiveDateTime.to_time() |> Time.to_string())
+                  (data |> NaiveDateTime.to_time |> Time.to_string)
               )
 
             _ ->

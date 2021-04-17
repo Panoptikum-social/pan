@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.DateTimeField do
 
   def render(assigns) do
     ~H"""
-    <Form.Field name={{ @name |> String.to_atom() }} class="my-4">
+    <Form.Field name={{ @name |> String.to_atom }} class="my-4">
       <Form.Label class="block font-medium text-gray-darker"/>
       <Form.DateTimeLocalInput class="w-full" />
       <Form.ErrorTag />

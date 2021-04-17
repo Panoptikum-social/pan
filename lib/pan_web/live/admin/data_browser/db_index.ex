@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
   end
 
   def get_indices(assigns) do
-    table_name = assigns.resource |> Naming.pluralize()
+    table_name = assigns.resource |> Naming.pluralize
     response =
       Ecto.Adapters.SQL.query(Pan.Repo, "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = '#{table_name}' ORDER BY indexname;")
     {:ok, %Postgrex.Result{rows: indices}} = response
@@ -28,7 +28,7 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
            style="grid-template-columns: max-content 1fr;">
           <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">Index Name</div>
           <div class="w-full font-semibold pl-4 pr-2 py-0.5">Index Definition</div>
-        <For each={{ {[name, definition], index} <- Enum.with_index(get_indices(assigns)) }}>
+        <For each={{ {[name, definition], index} <- get_indices(assigns) |> Enum.with_index }}>
           <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
                         "bg-white": Integer.is_even(index),
                         "bg-gray-lightest": Integer.is_odd(index),

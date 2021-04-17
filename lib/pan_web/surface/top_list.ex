@@ -9,10 +9,10 @@ defmodule PanWeb.Surface.TopList do
   def prepare_for_toplist(items) do
     items
     |> Enum.group_by(&select_count/1, &id_title_tuple/1)
-    |> Map.to_list()
+    |> Map.to_list
     # sort by count, descending
     |> Enum.sort_by(fn {count, _} -> count end, &>=/2)
-    |> add_rank()
+    |> add_rank
   end
 
   defp select_count([count, _id, _title]), do: count

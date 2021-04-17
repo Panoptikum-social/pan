@@ -15,15 +15,15 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
     owner =  Naming.model_from_resource(owner_string)
     owner_id = String.to_integer(owner_id_string)
     association = owner.__schema__(:association, association_atom)
-    join_keys = association.join_keys |> Keyword.keys()
+    join_keys = association.join_keys |> Keyword.keys
     join_through = Naming.model_from_join_through(association.join_through)
-    children_id_column = join_keys |> List.last()
+    children_id_column = join_keys |> List.last
 
     children_ids =
       from(join_through,
         where: ^[{List.first(join_keys), owner_id}],
         select: ^[children_id_column])
-      |> Repo.all()
+      |> Repo.all
       |> Enum.map(&Map.get(&1, children_id_column))
 
     model = association.related

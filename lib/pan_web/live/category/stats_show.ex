@@ -27,7 +27,7 @@ defmodule PanWeb.Live.Category.StatsShow do
 
     podcasts
     |> Enum.filter(fn p -> p.language_name == language end)
-    |> length()
+    |> length
   end
 
   def render(%{error: "not_found"} = assigns) do

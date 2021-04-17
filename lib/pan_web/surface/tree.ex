@@ -30,7 +30,7 @@ defmodule PanWeb.Surface.Tree do
         Phoenix.HTML.Tag.content_tag :div, class: "font-mono" do
           [
             {:safe, indent},
-            {:safe, is_last(index, nodes) |> my_indent()},
+            {:safe, is_last(index, nodes) |> my_indent},
             {:safe, symbol(children)},
             presenter(node),
             "\n",

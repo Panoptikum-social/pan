@@ -38,9 +38,9 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   def module_name(model) do
     model
-    |> to_string()
+    |> to_string
     |> String.split(".")
-    |> List.last()
+    |> List.last
   end
 
   def updated_or_created(nil), do: " created"

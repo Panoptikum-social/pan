@@ -9,9 +9,9 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
   def present(assigns) do
     link_title =
       assigns.for.field
-      |> Atom.to_string()
+      |> Atom.to_string
       |> String.replace("_", " ")
-      |> String.capitalize()
+      |> String.capitalize
 
     case assigns.for do
       %Ecto.Association.BelongsTo{} ->

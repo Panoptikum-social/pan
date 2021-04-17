@@ -7,11 +7,11 @@ defmodule PanWeb.Live.Home do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       popular_podcasts: Podcast.popular(),
-       liked_podcasts: Podcast.liked(),
-       latest_podcasts: Podcast.latest(),
-       latest_episodes: Episode.latest(),
-       latest_recommendations: Recommendation.latest()
+       popular_podcasts: Podcast.popular,
+       liked_podcasts: Podcast.liked,
+       latest_podcasts: Podcast.latest,
+       latest_episodes: Episode.latest,
+       latest_recommendations: Recommendation.latest
      )}
   end
 end

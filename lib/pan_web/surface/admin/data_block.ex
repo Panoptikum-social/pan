@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.Admin.DataBlock do
     ~H"""
     <div class="mt-4 grid"
          style="grid-template-columns: max-content 1fr;">
-      <For each={{ {column, index} <- @columns |> Enum.with_index() }}>
+      <For each={{ {column, index} <- @columns |> Enum.with_index }}>
         <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),

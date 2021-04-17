@@ -34,7 +34,7 @@ defmodule PanWeb.Surface.Admin.Grid do
       |> assign(columns: columns)
       |> assign(sort_by: List.first(columns)[:field])
       |> assign(search_filter: assigns.search_filter)
-      |> get_records()
+      |> get_records
 
     {:ok, socket}
   end
@@ -42,7 +42,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   def handle_event("per_page", %{"delta" => delta}, socket) do
     socket =
       assign(socket, per_page: socket.assigns.per_page + String.to_integer(delta))
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -58,7 +58,7 @@ defmodule PanWeb.Surface.Admin.Grid do
         search_options: search_options,
         column: search[column_string]
       )
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -70,7 +70,7 @@ defmodule PanWeb.Surface.Admin.Grid do
         sort_by: String.to_atom(sort_by),
         sort_order: String.to_atom(sort_order)
       )
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -82,7 +82,7 @@ defmodule PanWeb.Surface.Admin.Grid do
         page: String.to_integer(page),
         per_page: String.to_integer(per_page)
       )
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -91,7 +91,7 @@ defmodule PanWeb.Surface.Admin.Grid do
     socket =
       socket
       |> assign(like_search: !socket.assigns.like_search)
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -100,7 +100,7 @@ defmodule PanWeb.Surface.Admin.Grid do
     socket =
       socket
       |> assign(hide_filtered: !socket.assigns.hide_filtered)
-      |> get_records()
+      |> get_records
 
     {:noreply, socket}
   end
@@ -149,7 +149,7 @@ defmodule PanWeb.Surface.Admin.Grid do
     from(r in model)
     |> apply_criteria(criteria)
     |> select_columns(columns)
-    |> Repo.all()
+    |> Repo.all
   end
 
   defp apply_criteria(query, criteria) do

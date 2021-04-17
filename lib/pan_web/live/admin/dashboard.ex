@@ -7,7 +7,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
   def mount(_params, _session, socket) do
     schemas =
-      Naming.schemas()
+      Naming.schemas
       |> Enum.map(&%{title: &1})
     {:ok, assign(socket, id: "admin_dashboard", schemas: schemas)}
   end
@@ -29,7 +29,8 @@ defmodule PanWeb.Live.Admin.Dashboard do
     <Explorer id="schemas"
               title="Schemas"
               class="m-2"
-              items={{ schema <- @schemas }}>
+              items={{ schema <- @schemas }}
+              toolbar={{ %{index: "Data", db_index: "Database Index"} }}>
       <Col title="Schema">
         {{ schema.title |> Naming.model_in_plural }}
       </Col>

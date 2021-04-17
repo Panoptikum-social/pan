@@ -58,9 +58,9 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
 
   def module_name(model) do
     model
-    |> to_string()
+    |> to_string
     |> String.split(".")
-    |> List.last()
+    |> List.last
   end
 
   def render(assigns) do

@@ -33,7 +33,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
 
   def render(assigns) do
     ~H"""
-    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not() }}
+    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not }}
          class={{ "text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type in [:integer, :id]),
