@@ -124,7 +124,7 @@ defmodule PanWeb.Surface.Admin.Grid do
 
         socket =
           put_flash(socket, :error, message)
-          |> redirect(to: index_path)
+          |> push_redirect(to: index_path)
 
         {:noreply, socket}
     end

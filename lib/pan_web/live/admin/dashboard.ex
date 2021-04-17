@@ -39,7 +39,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
     index_path =
       Routes.databrowser_path(socket, :index, Phoenix.Naming.resource_name(selected_schema.title))
-      {:noreply, redirect(socket, to: index_path)}
+      {:noreply, push_redirect(socket, to: index_path)}
   end
 
   def handle_event("db_index", _, socket) do
@@ -50,14 +50,14 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
       index_path =
         Routes.databrowser_path(socket, :db_indices, Phoenix.Naming.resource_name(selected_schema.title))
-        {:noreply, redirect(socket, to: index_path)}
+        {:noreply, push_redirect(socket, to: index_path)}
   end
 
   def render(assigns) do
     ~H"""
     <Explorer id="schemas"
               title="Schemas"
-              class="m-2"
+              class="m-2 max-w-xs"
               items={{ schema <- @schemas }}
               selected_count={{ @selected_count }}>
       <ToolbarItem message="index"

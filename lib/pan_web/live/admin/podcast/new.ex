@@ -16,7 +16,7 @@ defmodule PanWeb.Live.Admin.Podcast.New do
     {:noreply,
      socket
      |> put_flash(flash_type, message)
-     |> redirect(to: path)}
+     |> push_redirect(to: path)}
   end
 
   def render(assigns) do

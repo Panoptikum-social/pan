@@ -22,7 +22,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
               Phoenix.Naming.resource_name(assigns.for.related),
               Map.get(assigns.record, assigns.for.owner_key)
             )
-            |> redirect(assigns, link_title)
+            |> styled_live_redirect(assigns, link_title)
         else
           "∅ " <> Phoenix.Naming.resource_name(assigns.for.related)
         end
@@ -35,7 +35,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
           assigns.record.id,
           assigns.for.field
         )
-        |> redirect(assigns, link_title)
+        |> styled_live_redirect(assigns, link_title)
 
       %Ecto.Association.ManyToMany{} ->
         Routes.databrowser_path(
@@ -45,14 +45,14 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
           assigns.record.id,
           assigns.for.field
         )
-        |> redirect(assigns, link_title)
+        |> styled_live_redirect(assigns, link_title)
 
       _other ->
         link_title
     end
   end
 
-  def redirect(to, assigns, link_title) do
+  def styled_live_redirect(to, assigns, link_title) do
     ~H"""
     <LiveRedirect to={{ to }}
                       class="text-link hover:text-link-dark text-medium underline"
