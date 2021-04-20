@@ -437,6 +437,7 @@ defmodule PanWeb.Router do
     live "/dashboard", Live.Admin.Dashboard, :home, as: :dashboard
     live "/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser
     live "/databrowser/:resource/db_indices", Live.Admin.Databrowser.DbIndex, :db_indices, as: :databrowser
+    live "/databrowser/:resource/schema_definition", Live.Admin.Databrowser.SchemaDefinition, :schema_definition, as: :databrowser
     live "/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser
     live "/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser
     live "/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser

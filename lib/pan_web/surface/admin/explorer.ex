@@ -6,6 +6,8 @@ defmodule PanWeb.Surface.Admin.Explorer do
   prop(class, :css_class, required: false)
   prop(items, :list, required: true)
   prop(selected_count, :integer, required: false, default: 0)
+  prop(format, :atom, required: false, values: [:grid, :table], default: :grid)
+  prop(grid_columns, :integer, required: false, values: [1, 2, 3, 4, 5, 6], default: 5)
 
   slot(toolbar_items)
   slot(cols, props: [item: ^items])
@@ -17,11 +19,15 @@ defmodule PanWeb.Surface.Admin.Explorer do
       assigns.items
       |> Tools.ensure_ids_and_selected()
 
-    send self(), {:items, items}
-    {:ok, socket
-          |> assign(assigns)
-          |> assign(id: assigns.id,
-                    items: items)}
+    send(self(), {:items, items})
+
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign(
+       id: assigns.id,
+       items: items
+     )}
   end
 
   def render(assigns) do
@@ -44,7 +50,8 @@ defmodule PanWeb.Surface.Admin.Explorer do
         </button>
       </div>
 
-      <table class="m-1">
+      <table :if={{ @format == :table}}
+             class="m-1 w-full">
         <thead>
           <tr>
             <th :for={{ col <- @cols }}
@@ -68,6 +75,25 @@ defmodule PanWeb.Surface.Admin.Explorer do
           </tr>
         </tbody>
       </table>
+
+      <div :if={{ @format == :grid}}
+           class={{ "grid",
+                    "grid-cols-1": (@grid_columns == 1),
+                    "grid-cols-2": (@grid_columns == 2),
+                    "grid-cols-3": (@grid_columns == 3),
+                    "grid-cols-4": (@grid_columns == 4),
+                    "grid-cols-5": (@grid_columns == 5),
+                    "grid-cols-6": (@grid_columns == 6) }} >
+        <div :for={{ item <- @items }}
+             phx-click="select" phx-value-id={{ item.id }}
+             class={{ "cursor-pointer m-1",
+                      "bg-sunflower-lighter": item.selected,
+                      "bg-white": !item.selected }}>
+          <slot name="cols"
+                index=0
+                :props={{ item: item }} />
+        </div>
+      </div>
     </div>
     """
   end
@@ -81,6 +107,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
         :two -> selected_count == 2
         :nonzero -> selected_count > 0
       end
+
     !enabled
   end
 end

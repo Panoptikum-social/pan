@@ -53,20 +53,36 @@ defmodule PanWeb.Live.Admin.Dashboard do
         {:noreply, push_redirect(socket, to: index_path)}
   end
 
+  def handle_event("schema_definition", _, socket) do
+    selected_schema =
+      socket.assigns.schemas
+      |> Enum.filter(&Map.get(&1, :selected))
+      |> List.first
+
+      index_path =
+        Routes.databrowser_path(socket, :schema_definition, Phoenix.Naming.resource_name(selected_schema.title))
+        {:noreply, push_redirect(socket, to: index_path)}
+  end
+
   def render(assigns) do
     ~H"""
     <Explorer id="schemas"
               title="Schemas"
-              class="m-2 max-w-xs"
+              class="m-2 max-w-2xl"
               items={{ schema <- @schemas }}
-              selected_count={{ @selected_count }}>
+              selected_count={{ @selected_count }}
+              format={{ :grid }}
+              grid_columns=4>
       <ToolbarItem message="index"
                    title="Data"
                    when_selected_count={{ :one }} />
-      <ToolbarItem message="db_index"
-                   title="Database Index"
+      <ToolbarItem message="schema_definition"
+                   title="Schema Definition"
                    when_selected_count={{ :one }} />
-      <Col title="Schema">
+      <ToolbarItem message="db_index"
+                   title="Database Indices"
+                   when_selected_count={{ :one }} />
+      <Col title="title">
         {{ schema.title |> Naming.model_in_plural }}
       </Col>
     </Explorer>
