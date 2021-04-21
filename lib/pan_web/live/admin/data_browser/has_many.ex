@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.Grid
+  alias PanWeb.Surface.Admin.IndexTable
   alias Phoenix.HTML
   alias Phoenix.HTML.Tag
 
@@ -65,23 +65,23 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
 
   def render(assigns) do
     ~H"""
-    <Grid id="owner_grid"
+    <IndexTable id="owner_table"
           heading={{ module_name(@owner_model) }}
           model={{ @owner_model }}
           cols={{ @owner_cols }}
           search_filter={{ @owner_search_filter }}
           per_page=1
           navigation=false>
-    </Grid>
+    </IndexTable>
 
-    <Grid id="has_many_grid"
+    <IndexTable id="has_many_table"
           heading={{ raw(HTML.safe_to_string(Tag.content_tag(:span, "has many", class: "italic mr-2")) <>
                      Naming.model_in_plural(@model)) }}
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}
           per_page=20>
-    </Grid>
+    </IndexTable>
     """
   end
 end

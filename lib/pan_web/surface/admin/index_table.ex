@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Grid do
+defmodule PanWeb.Surface.Admin.IndexTable do
   use Surface.LiveComponent
   import Ecto.Query
   alias PanWeb.Surface.Admin.Naming

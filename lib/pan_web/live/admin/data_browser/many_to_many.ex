@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.Grid
+  alias PanWeb.Surface.Admin.IndexTable
   import Ecto.Query
   alias Pan.Repo
 
@@ -48,12 +48,12 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
   def render(assigns) do
     ~H"""
-    <Grid id="databrowser_grid"
+    <IndexTable id="many_to_many_table"
           heading={{ "Listing " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}>
-    </Grid>
+    </IndexTable>
     """
   end
 end
