@@ -83,7 +83,6 @@ defmodule PanWeb.Surface.Admin.Grid do
       <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not }}
             for={{ :search }}
             change={{"search", target: "#" <> @target }}
-            submit="save"
             opts={{ autocomplete: "off" }}>
         <TextInput field={{ column.field }}
                   value={{ @search_options[column.field] }}
