@@ -19,7 +19,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
 
   def render(assigns) do
     ~H"""
-    <IndexTable id="indextable"
+    <IndexTable id="index_table"
           heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}>

@@ -3,9 +3,8 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   import Ecto.Query
   alias PanWeb.Surface.Admin.Naming
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{SortLink, Pagination, GridPresenter, PerPageLink}
-  alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
-  require Integer
+  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, Grid}
+  alias Surface.Components.LiveRedirect
 
   prop(heading, :string, required: false, default: "Records")
   prop(model, :module, required: true)
@@ -19,20 +18,15 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
   data(like_search, :boolean, default: false)
-  prop(hide_filtered, :boolean, default: true)
+  data(hide_filtered, :boolean, default: true)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(records, :list, default: [])
-  data(columns, :list, default: [])
-  slot(slot_columns)
 
   def update(assigns, socket) do
-    columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
-
     socket =
       assign(socket, assigns)
-      |> assign(columns: columns)
-      |> assign(sort_by: List.first(columns)[:field])
+      |> assign(sort_by: List.first(assigns.cols)[:field])
       |> assign(search_filter: assigns.search_filter)
       |> get_records
 
@@ -139,21 +133,25 @@ defmodule PanWeb.Surface.Admin.IndexTable do
       search: a.search_options,
       search_filter: a.search_filter,
       like_search: a.like_search,
-      hide_filtered: a.hide_filtered,
+      hide_filtered: a.hide_filtered
     ]
 
-    assign(socket, records: load(a.model, criteria, a.columns))
+    assign(socket, records: load(a.model, criteria, a.cols))
   end
 
-  defp load(model, criteria, columns) when is_list(criteria) do
+  defp load(model, criteria, cols) when is_list(criteria) do
     from(r in model)
     |> apply_criteria(criteria)
-    |> select_columns(columns)
-    |> Repo.all
+    |> select_columns(cols)
+    |> Repo.all()
   end
 
   defp apply_criteria(query, criteria) do
-    Enum.reduce(criteria, query, &apply_criterium(&1, &2, criteria[:like_search], criteria[:hide_filtered]))
+    Enum.reduce(
+      criteria,
+      query,
+      &apply_criterium(&1, &2, criteria[:like_search], criteria[:hide_filtered])
+    )
   end
 
   defp apply_criterium({:paginate, %{page: page, per_page: per_page}}, query, _, _) do
@@ -198,30 +196,66 @@ defmodule PanWeb.Surface.Admin.IndexTable do
     from(q in query, where: ^[{column, value}])
   end
 
-  defp select_columns(query, columns) do
-    column_atoms = Enum.map(columns, & &1.field)
+  defp select_columns(query, cols) do
+    column_atoms = Enum.map(cols, & &1.field)
     from(q in query, select: ^column_atoms)
   end
 
-  defp width(type) do
-    case type do
-      :id -> "6rem"
-      :integer -> "4rem"
-      :date -> "6rem"
-      :datetime -> "12rem"
-      :naive_datetime -> "12rem"
-      :string -> "16rem"
-      Ecto.EctoText -> "16rem"
-      :boolean -> "4rem"
-    end
-  end
+  def render(assigns) do
+    ~H"""
+    <div id={{ @id }} class={{ "m-2 border border-gray rounded", @class }}>
+      <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
+                via-gray-lighter to-gray-light font-mono">
+        {{ @heading }}
+      </h2>
 
-  defp to_be_dyed?(record, assigns) do
-    if assigns.search_filter != {} do
-      {column, value} = assigns.search_filter
-      !assigns.hide_filtered && Map.get(record, column) == value
-    else
-      false
-    end
+      <div :if={{ @navigation }}
+          class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
+                  via-gray-lighter to-gray-light space-x-6 border-b border-gray">
+        <div class="mx-2 border-l border-gray-lightest">
+          <PerPageLink delta="-5" target={{ "#" <> @id }}/>
+          <PerPageLink delta="-3" target={{ "#" <> @id }}/>
+          <PerPageLink delta="-1" target={{ "#" <> @id }}/>
+          <span class="hidden sm:inline">Records</span>
+          <PerPageLink delta="+1" target={{ "#" <> @id }}/>
+          <PerPageLink delta="+3" target={{ "#" <> @id }}/>
+          <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+        </div>
+        <LiveRedirect :if={{ @navigation }}
+                      to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                      label="New Record"
+                      class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                            lg:px-2 lg:py-0 m-1 rounded" />
+
+        <button :if={{ @navigation }}
+                :on-click={{"toggle_hide_filtered", target: "#" <> @id }}
+                class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
+          {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
+        </button>
+      </div>
+
+      <Grid id="index_table_grid"
+            cols={{ @cols }}
+            sort_by={{ @sort_by}}
+            sort_order={{ @sort_order }}
+            navigation={{ @navigation }}
+            search_options={{ @search_options }}
+            page={{ @page }}
+            like_search={{ @like_search }}
+            hide_filtered={{ @hide_filtered }}
+            model={{ @model }}
+            records={{ @records }}
+            path_helper={{ @path_helper }}
+            target={{ @id }}
+            search_filter={{ @search_filter }} />
+
+      <Pagination :if={{ @navigation }}
+                  per_page={{ @per_page}}
+                  class="pl-2 border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest
+                        via-gray-lighter to-gray-light"
+                  page={{ @page }}
+                  target={{ "#" <> @id }} />
+    </div>
+    """
   end
 end
