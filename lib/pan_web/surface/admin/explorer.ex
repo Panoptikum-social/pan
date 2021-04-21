@@ -8,6 +8,8 @@ defmodule PanWeb.Surface.Admin.Explorer do
   prop(selected_count, :integer, required: false, default: 0)
   prop(format, :atom, required: false, values: [:grid, :table], default: :grid)
   prop(grid_columns, :integer, required: false, values: [1, 2, 3, 4, 5, 6], default: 5)
+  prop(caller, :module, required: false)
+  prop(caller_id, :string, required: false)
 
   slot(toolbar_items)
   slot(cols, props: [item: ^items])

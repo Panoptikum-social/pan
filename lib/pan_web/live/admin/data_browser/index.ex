@@ -17,6 +17,11 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
     {:ok, assign(socket, model: model, cols: cols, resource: resource)}
   end
 
+  def handle_info({:items, records}, socket) do
+    send_update(IndexTable, id: "index_table", records: records)
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <IndexTable id="index_table"

@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   import Ecto.Query
   alias PanWeb.Surface.Admin.Naming
   alias Pan.Repo
-  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, Grid}
+  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, Explorer, ToolbarItem}
   alias Surface.Components.LiveRedirect
 
   prop(heading, :string, required: false, default: "Records")
@@ -21,17 +21,27 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   data(hide_filtered, :boolean, default: true)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
-  data(records, :list, default: [])
+  prop(records, :list, default: [])
 
   def update(assigns, socket) do
     socket =
-      assign(socket, assigns)
-      |> assign(sort_by: List.first(assigns.cols)[:field])
-      |> assign(search_filter: assigns.search_filter)
-      |> get_records
+      socket
+      |> assign(assigns)
+      |> derive_and_assign_sort_by(assigns)
+
+    socket = if socket.assigns.records == [], do: get_records(socket), else: socket
 
     {:ok, socket}
   end
+
+  defp derive_and_assign_sort_by(socket, assigns) do
+    if Map.has_key?(assigns, :cols) do
+      socket |> assign(sort_by: List.first(assigns.cols)[:field])
+    else
+      socket
+    end
+  end
+
 
   def handle_event("per_page", %{"delta" => delta}, socket) do
     socket =
@@ -203,58 +213,68 @@ defmodule PanWeb.Surface.Admin.IndexTable do
 
   def render(assigns) do
     ~H"""
-    <div id={{ @id }} class={{ "m-2 border border-gray rounded", @class }}>
-      <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
-                via-gray-lighter to-gray-light font-mono">
-        {{ @heading }}
-      </h2>
+    <div id={{ @id }}>
+      <Explorer title={{ @heading}}
+                items={{ @records }}
+                id="index_table_explorer">
+        <ToolbarItem title="New Record"
+                     message="new_record"
+                     when_selected_count={{ :any }}/>
+      </Explorer>
 
-      <div :if={{ @navigation }}
-          class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
-                  via-gray-lighter to-gray-light space-x-6 border-b border-gray">
-        <div class="mx-2 border-l border-gray-lightest">
-          <PerPageLink delta="-5" target={{ "#" <> @id }}/>
-          <PerPageLink delta="-3" target={{ "#" <> @id }}/>
-          <PerPageLink delta="-1" target={{ "#" <> @id }}/>
-          <span class="hidden sm:inline">Records</span>
-          <PerPageLink delta="+1" target={{ "#" <> @id }}/>
-          <PerPageLink delta="+3" target={{ "#" <> @id }}/>
-          <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+      <div class={{ "m-2 border border-gray rounded", @class }}>
+        <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
+                  via-gray-lighter to-gray-light font-mono">
+          {{ @heading }}
+        </h2>
+
+        <div :if={{ @navigation }}
+            class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
+                    via-gray-lighter to-gray-light space-x-6 border-b border-gray">
+          <div class="mx-2 border-l border-gray-lightest">
+            <PerPageLink delta="-5" target={{ "#" <> @id }}/>
+            <PerPageLink delta="-3" target={{ "#" <> @id }}/>
+            <PerPageLink delta="-1" target={{ "#" <> @id }}/>
+            <span class="hidden sm:inline">Records</span>
+            <PerPageLink delta="+1" target={{ "#" <> @id }}/>
+            <PerPageLink delta="+3" target={{ "#" <> @id }}/>
+            <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+          </div>
+          <LiveRedirect :if={{ @navigation }}
+                        to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                        label="New Record"
+                        class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                              lg:px-2 lg:py-0 m-1 rounded" />
+
+          <button :if={{ @navigation }}
+                  :on-click={{"toggle_hide_filtered", target: "#" <> @id }}
+                  class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
+            {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
+          </button>
         </div>
-        <LiveRedirect :if={{ @navigation }}
-                      to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-                      label="New Record"
-                      class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                            lg:px-2 lg:py-0 m-1 rounded" />
 
-        <button :if={{ @navigation }}
-                :on-click={{"toggle_hide_filtered", target: "#" <> @id }}
-                class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
-          {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
-        </button>
+        <DataTable id="index_table"
+              cols={{ @cols }}
+              sort_by={{ @sort_by}}
+              sort_order={{ @sort_order }}
+              navigation={{ @navigation }}
+              search_options={{ @search_options }}
+              page={{ @page }}
+              like_search={{ @like_search }}
+              hide_filtered={{ @hide_filtered }}
+              model={{ @model }}
+              records={{ @records }}
+              path_helper={{ @path_helper }}
+              target={{ @id }}
+              search_filter={{ @search_filter }} />
+
+        <Pagination :if={{ @navigation }}
+                    per_page={{ @per_page}}
+                    class="pl-2 border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest
+                          via-gray-lighter to-gray-light"
+                    page={{ @page }}
+                    target={{ "#" <> @id }} />
       </div>
-
-      <Grid id="index_table_grid"
-            cols={{ @cols }}
-            sort_by={{ @sort_by}}
-            sort_order={{ @sort_order }}
-            navigation={{ @navigation }}
-            search_options={{ @search_options }}
-            page={{ @page }}
-            like_search={{ @like_search }}
-            hide_filtered={{ @hide_filtered }}
-            model={{ @model }}
-            records={{ @records }}
-            path_helper={{ @path_helper }}
-            target={{ @id }}
-            search_filter={{ @search_filter }} />
-
-      <Pagination :if={{ @navigation }}
-                  per_page={{ @per_page}}
-                  class="pl-2 border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest
-                        via-gray-lighter to-gray-light"
-                  page={{ @page }}
-                  target={{ "#" <> @id }} />
     </div>
     """
   end
