@@ -25,7 +25,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
                         target={{ @target }} >
           {{ i }}
         </PaginationLink>
-        <span :if={{ i == @page}}>{{ i }}</span>
+        <span :if={{ i == @page}}>Page {{ i }}</span>
       </For>
       <PaginationLink page={{ @page + 1 }}
                       per_page={{ @per_page }}

@@ -392,10 +392,6 @@ defmodule PanWeb.Router do
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController)
 
-    live "/podcasts/new", Live.Admin.Podcast.New, :new, as: :podcast
-    live "/podcasts/:id", Live.Admin.Podcast.Show, :show, as: :podcast
-    live "/podcasts/:id/edit", Live.Admin.Podcast.Edit, :edit, as: :podcast
-    live "/podcasts", Live.Admin.Podcast.Index, :index, as: :podcast
     get("/podcasts/datatable", PodcastController, :datatable)
     get("/podcasts/datatable_stale", PodcastController, :datatable_stale)
     get("/podcasts/delta_import_all", PodcastController, :delta_import_all)

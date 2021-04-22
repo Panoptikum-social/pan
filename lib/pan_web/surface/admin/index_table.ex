@@ -1,7 +1,6 @@
 defmodule PanWeb.Surface.Admin.IndexTable do
   use Surface.LiveComponent
   alias PanWeb.Surface.Admin.Naming
-  alias Pan.Repo
   alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, Explorer, ToolbarItem, QueryBuilder}
   alias Surface.Components.LiveRedirect
 
@@ -188,27 +187,27 @@ defmodule PanWeb.Surface.Admin.IndexTable do
           </button>
         </div>
 
-        <DataTable id="index_table"
-              cols={{ @cols }}
-              sort_by={{ @sort_by}}
-              sort_order={{ @sort_order }}
-              navigation={{ @navigation }}
-              search_options={{ @search_options }}
-              page={{ @page }}
-              like_search={{ @like_search }}
-              hide_filtered={{ @hide_filtered }}
-              model={{ @model }}
-              records={{ @records }}
-              path_helper={{ @path_helper }}
-              target={{ @id }}
-              search_filter={{ @search_filter }} />
-
         <Pagination :if={{ @navigation }}
                     per_page={{ @per_page}}
-                    class="pl-2 border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest
-                          via-gray-lighter to-gray-light"
+                    class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
+                           via-gray-lighter to-gray-light"
                     page={{ @page }}
                     target={{ "#" <> @id }} />
+
+        <DataTable id="index_table"
+                   target={{ @id }}
+                   cols={{ @cols }}
+                   model={{ @model }}
+                   records={{ @records }}
+                   path_helper={{ @path_helper }}
+                   sort_by={{ @sort_by}}
+                   sort_order={{ @sort_order }}
+                   navigation={{ @navigation }}
+                   page={{ @page }}
+                   like_search={{ @like_search }}
+                   hide_filtered={{ @hide_filtered }}
+                   search_options={{ @search_options }}
+                   search_filter={{ @search_filter }} />
       </div>
     </div>
     """

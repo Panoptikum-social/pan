@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.GridPresenter do
+defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
   use Surface.Component
   require Integer
 
@@ -34,7 +34,7 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
   def render(assigns) do
     ~H"""
     <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not }}
-         class={{ "text-very-gray-darker px-1 grid content-center truncate",
+         class={{ "text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type in [:integer, :id]),
                   "text-right whitespace-nowrap": (@type == :boolean),
@@ -44,7 +44,25 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
                   "bg-white": Integer.is_even(@index) && !@dye,
                   "bg-sunflower-lighter": @dye }}
                  x-data="{ detailsOpen: false }">
-      {{ present(@presenter, @record, @field, @type) }}
+      <div @click="detailsOpen = !detailsOpen
+                   $nextTick(() => $refs.detailsCloseButton.focus())"
+           class="truncate">
+        {{ present(@presenter, @record, @field, @type) }}
+      </div>
+      <div x-show="detailsOpen"
+           class="absolute inset-52 mx-auto items-center bg-gray-lightest
+                  border border-gray p-4">
+        <h1 class="text-2xl">Details</h1>
+        <p class="mt-6">
+          {{ present(@presenter, @record, @field, @type)}}
+        </p>
+        <button @click="detailsOpen = false"
+                class="absolute bottom-4 left-4 bg-info hover:bg-info-light text-white p-2 rounded mt-6
+                       focus:ring-2 focus:ring-info-light"
+                x-ref="detailsCloseButton">
+          Close
+        </button>
+      </div>
     </div>
 
     <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) }}
