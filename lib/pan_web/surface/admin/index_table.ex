@@ -1,7 +1,16 @@
 defmodule PanWeb.Surface.Admin.IndexTable do
   use Surface.LiveComponent
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, Explorer, ToolbarItem, QueryBuilder}
+
+  alias PanWeb.Surface.Admin.{
+    Pagination,
+    PerPageLink,
+    DataTable,
+    Explorer,
+    ToolbarItem,
+    QueryBuilder
+  }
+
   alias Surface.Components.LiveRedirect
 
   prop(heading, :string, required: false, default: "Records")
@@ -39,7 +48,6 @@ defmodule PanWeb.Surface.Admin.IndexTable do
       socket
     end
   end
-
 
   def handle_event("per_page", %{"delta" => delta}, socket) do
     socket =
@@ -135,11 +143,13 @@ defmodule PanWeb.Surface.Admin.IndexTable do
 
     criteria = [
       paginate: %{page: a.page, per_page: a.per_page},
-      sort: %{sort_by: a.sort_by, sort_order: a.sort_order},
-      search: a.search_options,
-      search_filter: a.search_filter,
-      like_search: a.like_search,
-      hide_filtered: a.hide_filtered
+      sort: %{by: a.sort_by, order: a.sort_order},
+      search: %{
+        options: a.search_options,
+        filter: a.search_filter,
+        like: a.like_search,
+        hide: a.hide_filtered
+      }
     ]
 
     assign(socket, records: QueryBuilder.load(a.model, criteria, a.cols))
