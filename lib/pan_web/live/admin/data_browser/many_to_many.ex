@@ -1,29 +1,33 @@
 defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.IndexTable
+  alias PanWeb.Surface.Admin.IndexGrid
   import Ecto.Query
   alias Pan.Repo
 
   def mount(
-        %{"owner" => owner_string, "owner_id" => owner_id_string, "association" => association_name},
+        %{
+          "owner" => owner_string,
+          "owner_id" => owner_id_string,
+          "association" => association_name
+        },
         _session,
         socket
       ) do
-
     association_atom = String.to_atom(association_name)
-    owner =  Naming.model_from_resource(owner_string)
+    owner = Naming.model_from_resource(owner_string)
     owner_id = String.to_integer(owner_id_string)
     association = owner.__schema__(:association, association_atom)
-    join_keys = association.join_keys |> Keyword.keys
+    join_keys = association.join_keys |> Keyword.keys()
     join_through = Naming.model_from_join_through(association.join_through)
-    children_id_column = join_keys |> List.last
+    children_id_column = join_keys |> List.last()
 
     children_ids =
       from(join_through,
         where: ^[{List.first(join_keys), owner_id}],
-        select: ^[children_id_column])
-      |> Repo.all
+        select: ^[children_id_column]
+      )
+      |> Repo.all()
       |> Enum.map(&Map.get(&1, children_id_column))
 
     model = association.related
@@ -41,19 +45,22 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
         }
       )
 
-    {:ok, assign(socket, model: model,
-                         cols: cols,
-                         search_filter: {:id, children_ids})}
+    {:ok,
+     assign(socket,
+       model: model,
+       cols: cols,
+       search_filter: {:id, children_ids}
+     )}
   end
 
   def render(assigns) do
     ~H"""
-    <IndexTable id="many_to_many_table"
+    <IndexGrid id="many_to_many_table"
           heading={{ "Listing " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}>
-    </IndexTable>
+    </IndexGrid>
     """
   end
 end

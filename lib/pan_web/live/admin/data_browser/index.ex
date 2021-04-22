@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
                         container: {:div, class: "flex-1"}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.IndexTable
+  alias PanWeb.Surface.Admin.IndexGrid
   require Integer
 
   def mount(%{"resource" => resource}, _session, socket) do
@@ -18,17 +18,17 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   end
 
   def handle_info({:items, records}, socket) do
-    send_update(IndexTable, id: "index_table", records: records)
+    send_update(IndexGrid, id: "index_table", records: records)
     {:noreply, socket}
   end
 
   def render(assigns) do
     ~H"""
-    <IndexTable id="index_table"
+    <IndexGrid id="index_table"
           heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}>
-    </IndexTable>
+    </IndexGrid>
     """
   end
 end

@@ -1,16 +1,7 @@
-defmodule PanWeb.Surface.Admin.IndexTable do
+defmodule PanWeb.Surface.Admin.IndexGrid do
   use Surface.LiveComponent
   alias PanWeb.Surface.Admin.Naming
-
-  alias PanWeb.Surface.Admin.{
-    Pagination,
-    PerPageLink,
-    DataTable,
-    Explorer,
-    ToolbarItem,
-    QueryBuilder
-  }
-
+  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder}
   alias Surface.Components.LiveRedirect
 
   prop(heading, :string, required: false, default: "Records")
@@ -63,11 +54,7 @@ defmodule PanWeb.Surface.Admin.IndexTable do
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
 
     socket =
-      socket
-      |> assign(
-        search_options: search_options,
-        column: search[column_string]
-      )
+      assign(socket, search_options: search_options)
       |> get_records
 
     {:noreply, socket}
@@ -158,14 +145,6 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   def render(assigns) do
     ~H"""
     <div id={{ @id }}>
-      <Explorer title={{ @heading}}
-                items={{ @records }}
-                id="index_table_explorer">
-        <ToolbarItem title="New Record"
-                     message="new_record"
-                     when_selected_count={{ :any }}/>
-      </Explorer>
-
       <div class={{ "m-2 border border-gray rounded", @class }}>
         <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
                   via-gray-lighter to-gray-light font-mono">
@@ -204,7 +183,7 @@ defmodule PanWeb.Surface.Admin.IndexTable do
                     page={{ @page }}
                     target={{ "#" <> @id }} />
 
-        <DataTable id="index_table"
+        <DataTable id={{ "index_table-" <> @id }}
                    target={{ @id }}
                    cols={{ @cols }}
                    model={{ @model }}
