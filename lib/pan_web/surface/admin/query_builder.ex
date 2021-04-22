@@ -2,6 +2,13 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
   import Ecto.Query
   alias Pan.Repo
 
+  def delete(model, id) do
+    record = Repo.get!(model, id)
+    Repo.delete(record)
+
+    if Map.has_key?(record, :elastic), do: model.delete_search_index(id)
+  end
+
   def load(model, criteria, cols) when is_list(criteria) do
     from(r in model)
     |> apply_criteria(criteria)

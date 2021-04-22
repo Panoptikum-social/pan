@@ -111,12 +111,10 @@ defmodule PanWeb.Surface.Admin.IndexTable do
   def handle_event("delete", %{"id" => id_string}, socket) do
     id = String.to_integer(id_string)
     model = socket.assigns.model
-    record = Repo.get!(model, id)
     path_helper = socket.assigns.path_helper
 
     try do
-      Repo.delete(record)
-      if Map.has_key?(record, :elastic), do: model.delete_search_index(id)
+      QueryBuilder.delete(model, id)
       {:noreply, get_records(socket)}
     rescue
       e in Postgrex.Error ->
