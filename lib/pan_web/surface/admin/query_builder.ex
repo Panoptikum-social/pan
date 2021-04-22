@@ -29,25 +29,39 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
   end
 
   defp apply_criterium(
-         {:search, %{options: options, filter: filter, hide: hide, like: like}},
+         {:search, %{options: options, filter: filter, hide: hide, mode: mode}},
          query
        ) do
-    Enum.reduce(options, query, &apply_option(&1, &2, like))
+    Enum.reduce(options, query, &apply_option(&1, &2, mode))
     |> apply_filter(filter, hide)
   end
 
   # No or initial search term given
-  defp apply_option({_column, ""}, query, _like), do: query
+  defp apply_option({_column, ""}, query, _mode), do: query
 
-  # Search term given & like search
-  defp apply_option({column, value}, query, true = _like) do
+  # Search term given & contains search mode
+  defp apply_option({column, value}, query, :contains = _mode) do
     from(q in query,
       where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
     )
   end
 
-  # Search term given & exact match
-  defp apply_option({column, value}, query, false = _like) do
+  # Search term given & starts_with search mode
+  defp apply_option({column, value}, query, :starts_with = _mode) do
+    from(q in query,
+      where: ilike(fragment("cast (? as text)", field(q, ^column)), ^(value <> "%"))
+    )
+  end
+
+  # Search term given & ends with search mode
+  defp apply_option({column, value}, query, :ends_with = _mode) do
+    from(q in query,
+      where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value))
+    )
+  end
+
+  # Search term given & exact match search mode
+  defp apply_option({column, value}, query, :exact = _mode) do
     from(q in query, where: ^[{column, value}])
   end
 

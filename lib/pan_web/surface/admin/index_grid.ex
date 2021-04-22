@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(like_search, :boolean, default: false)
+  data(search_mode, :atom, values: [:exact, :starts_with, :ends_with, :contains], default: :exact)
   data(hide_filtered, :boolean, default: true)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
@@ -62,8 +62,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
     socket =
-      socket
-      |> assign(
+      assign(socket,
         sort_by: String.to_atom(sort_by),
         sort_order: String.to_atom(sort_order)
       )
@@ -74,8 +73,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
     socket =
-      socket
-      |> assign(
+      assign(socket,
         page: String.to_integer(page),
         per_page: String.to_integer(per_page)
       )
@@ -84,10 +82,17 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-  def handle_event("toggle_search_mode", _, socket) do
+  def handle_event("cycle_search_mode", _, socket) do
+    search_mode =
+      case socket.assigns.search_mode do
+        :exact -> :starts_with
+        :starts_with -> :ends_with
+        :ends_with -> :contains
+        :contains -> :exact
+      end
+
     socket =
-      socket
-      |> assign(like_search: !socket.assigns.like_search)
+      assign(socket, search_mode: search_mode)
       |> get_records
 
     {:noreply, socket}
@@ -134,7 +139,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
       search: %{
         options: a.search_options,
         filter: a.search_filter,
-        like: a.like_search,
+        mode: a.search_mode,
         hide: a.hide_filtered
       }
     ]
@@ -155,13 +160,13 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light space-x-6 border-b border-gray">
           <div class="mx-2 border-l border-gray-lightest">
-            <PerPageLink delta="-5" target={{ "#" <> @id }}/>
-            <PerPageLink delta="-3" target={{ "#" <> @id }}/>
-            <PerPageLink delta="-1" target={{ "#" <> @id }}/>
+            <PerPageLink delta="-5" target={{ @myself }}/>
+            <PerPageLink delta="-3" target={{ @myself }}/>
+            <PerPageLink delta="-1" target={{ @myself }}/>
             <span class="hidden sm:inline">Records</span>
-            <PerPageLink delta="+1" target={{ "#" <> @id }}/>
-            <PerPageLink delta="+3" target={{ "#" <> @id }}/>
-            <PerPageLink delta="+5" target={{ "#" <> @id }}/>
+            <PerPageLink delta="+1" target={{ @myself }}/>
+            <PerPageLink delta="+3" target={{ @myself }}/>
+            <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
           <LiveRedirect :if={{ @navigation }}
                         to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
@@ -170,7 +175,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                               lg:px-2 lg:py-0 m-1 rounded" />
 
           <button :if={{ @navigation }}
-                  :on-click={{"toggle_hide_filtered", target: "#" <> @id }}
+                  :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
           </button>
@@ -181,7 +186,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
                     page={{ @page }}
-                    target={{ "#" <> @id }} />
+                    target={{ @myself }} />
 
         <DataTable id={{ "index_table-" <> @id }}
                    target={{ @id }}
@@ -193,7 +198,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    sort_order={{ @sort_order }}
                    navigation={{ @navigation }}
                    page={{ @page }}
-                   like_search={{ @like_search }}
+                   search_mode={{ @search_mode }}
                    hide_filtered={{ @hide_filtered }}
                    search_options={{ @search_options }}
                    search_filter={{ @search_filter }} />

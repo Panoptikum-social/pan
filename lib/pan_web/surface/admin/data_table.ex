@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(model, :module, required: true)
   prop(search_options, :map, required: false, default: %{})
   prop(page, :integer, required: false, default: 1)
-  prop(like_search, :boolean, required: false, default: false)
+  prop(search_mode, :atom, required: false, default: :exact)
   prop(hide_filtered, :boolean, required: false, default: true)
   prop(records, :list, required: false, default: [])
   prop(path_helper, :atom, required: false)
@@ -68,11 +68,11 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
 
       <div :if={{ @navigation }}
-        class="bg-white text-center p-1">
-      Search:
+           class="bg-white text-center p-1">
+      Search Mode:
       <Link to="#"
-            click={{"toggle_search_mode", target: "#" <> @target }}
-            label={{ if @like_search, do: "contains", else: "exact" }}
+            click={{"cycle_search_mode", target: "#" <> @target }}
+            label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
             class="text-link hover:text-link-dark underline" />
       </div>
 
