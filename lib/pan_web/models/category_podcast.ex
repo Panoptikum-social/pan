@@ -5,8 +5,8 @@ defmodule PanWeb.CategoryPodcast do
   @primary_key false
 
   schema "categories_podcasts" do
-    belongs_to(:podcast, PanWeb.Podcast)
-    belongs_to(:category, PanWeb.Category)
+    belongs_to(:podcast, PanWeb.Podcast, primary_key: true)
+    belongs_to(:category, PanWeb.Category, primary_key: true)
   end
 
   def get_or_insert(category_id, podcast_id) do

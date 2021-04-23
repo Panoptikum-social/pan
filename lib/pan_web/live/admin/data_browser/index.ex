@@ -23,14 +23,11 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   end
 
   def render(assigns) do
-    IO.inspect (Naming.primary_key(assigns.model))
     ~H"""
     <IndexGrid id="index_table"
-          heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
-          model={{ @model }}
-          cols={{ @cols }}
-          primary_key={{ Naming.primary_key(@model) }}>
-    </IndexGrid>
+               heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
+               model={{ @model }}
+               cols={{ @cols }} />
     """
   end
 end

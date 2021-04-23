@@ -12,7 +12,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(per_page, :integer, default: 20)
   prop(navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
-  prop(primary_key, :list, required: false, default: [:id])
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
@@ -204,8 +203,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    search_options={{ @search_options }}
                    search_filter={{ @search_filter }} />
       </div>
-
-      Index: <span :for={{ index <- @primary_key }}>{{ index |> Atom.to_string() }}</span>
     </div>
     """
   end
