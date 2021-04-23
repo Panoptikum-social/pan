@@ -12,6 +12,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(per_page, :integer, default: 20)
   prop(navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
+  prop(primary_key, :list, required: false, default: [:id])
 
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
@@ -174,7 +175,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                         class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                               lg:px-2 lg:py-0 m-1 rounded" />
 
-          <button :if={{ @navigation }}
+          <button :if={{ tuple_size(@search_filter) > 0 && @navigation }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
@@ -203,6 +204,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    search_options={{ @search_options }}
                    search_filter={{ @search_filter }} />
       </div>
+
+      Index: <span :for={{ index <- @primary_key }}>{{ index |> Atom.to_string() }}</span>
     </div>
     """
   end

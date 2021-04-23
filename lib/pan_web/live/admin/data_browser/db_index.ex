@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
   end
 
   def get_indices(assigns) do
-    table_name = assigns.resource |> Naming.pluralize
+    table_name = Naming.table_name(assigns.model)
     response =
       Ecto.Adapters.SQL.query(Pan.Repo, "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = '#{table_name}' ORDER BY indexname;")
     {:ok, %Postgrex.Result{rows: indices}} = response

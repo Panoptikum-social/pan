@@ -56,6 +56,10 @@ defmodule PanWeb.Surface.Admin.Naming do
     end
   end
 
+  def table_name(model) do
+    model.__schema__(:source)
+  end
+
   def type_of_field(resource, field) do
     resource.__schema__(:type, field)
   end
@@ -126,5 +130,9 @@ defmodule PanWeb.Surface.Admin.Naming do
     |> to_string
     |> String.split(".")
     |> List.last
+  end
+
+  def primary_key(model) do
+    @model.__schema__(:primary_key)
   end
 end
