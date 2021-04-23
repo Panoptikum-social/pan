@@ -1,8 +1,9 @@
 defmodule PanWeb.Surface.Admin.IndexGrid do
   use Surface.LiveComponent
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder}
-  alias Surface.Components.LiveRedirect
+  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
+  alias Surface.Components.{LiveRedirect}
+  alias PanWeb.Router.Helpers, as: Routes
 
   prop(heading, :string, required: false, default: "Records")
   prop(model, :module, required: true)
@@ -13,6 +14,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
 
+  data(selected_records, :list, default: [])
+  data(request_confirmation, :boolean, default: false)
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
   data(search_mode, :atom, values: [:exact, :starts_with, :ends_with, :contains], default: :exact)
@@ -107,8 +110,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-  def handle_event("delete", %{"id" => id_string}, socket) do
-    id = String.to_integer(id_string)
+
+  def handle_event("delete", _, socket) do
+    id =
+      socket.assigns.selected_records
+      |> List.first
+      |> Map.get(:id)
     model = socket.assigns.model
     path_helper = socket.assigns.path_helper
 
@@ -128,6 +135,45 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
         {:noreply, socket}
     end
+  end
+
+  def handle_event("select", %{"id" => id}, socket) do
+    clicked_record = %{id: String.to_integer(id)}
+    selected_records = socket.assigns.selected_records
+
+    selected_records =
+      if Enum.member?(selected_records, clicked_record) do
+        List.delete(selected_records, clicked_record)
+      else
+        [clicked_record | selected_records]
+      end
+
+    {:noreply, assign(socket, selected_records: selected_records)}
+  end
+
+  def handle_event("show", _, socket) do
+    id =
+      socket.assigns.selected_records
+      |> List.first
+      |> Map.get(:id)
+    resource = Phoenix.Naming.resource_name(socket.assigns.model)
+    show_path = Routes.databrowser_path(socket, :show, resource, id)
+    {:noreply, push_redirect(socket, to: show_path)}
+  end
+
+  def handle_event("edit", _, socket) do
+    id =
+      socket.assigns.selected_records
+      |> List.first
+      |> Map.get(:id)
+    resource = Phoenix.Naming.resource_name(socket.assigns.model)
+    edit_path = Routes.databrowser_path(socket, :edit, resource, id)
+
+    {:noreply, push_redirect(socket, to: edit_path)}
+  end
+
+  def handle_event("toggle_request_confirmation", _, socket) do
+    {:noreply, assign(socket, request_confirmation: !socket.assigns.request_confirmation)}
   end
 
   def get_records(socket) do
@@ -158,8 +204,59 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
         <div :if={{ @navigation }}
             class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
-                    via-gray-lighter to-gray-light space-x-6 border-b border-gray">
-          <div class="mx-2 border-l border-gray-lightest">
+                    via-gray-lighter to-gray-light border-b border-gray items-center">
+          <div class="border-r border-gray px-4 flex">
+            <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                           lg:px-2 lg:py-0 m-1 rounded
+                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="show"
+                    phx-target={{ @myself }}>
+                    🔍 Show
+            </button>
+
+            <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                           lg:px-2 lg:py-0 m-1 rounded
+                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="edit"
+                    phx-target={{ @myself }}>
+                    🖊️ Edit
+            </button>
+
+            <button :if={{ !@request_confirmation }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                           lg:px-2 lg:py-0 m-1 rounded
+                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="toggle_request_confirmation"
+                    phx-target={{ @myself }}>
+              🗑️ Delete
+            </button>
+
+            <div :if={{ @request_confirmation }}
+                 class="px-2">
+              Are you sure?
+              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                            lg:px-2 lg:py-0 m-1 rounded
+                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                      :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                      phx-click="delete"
+                      phx-target={{ @myself }}>
+                Yes
+              </button>
+              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                            lg:px-2 lg:py-0 m-1 rounded
+                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                      :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                      phx-click="toggle_request_confirmation"
+                      phx-target={{ @myself }}>
+                No
+              </button>
+            </div>
+          </div>
+
+          <div class="px-4 border-r border-gray">
             <PerPageLink delta="-5" target={{ @myself }}/>
             <PerPageLink delta="-3" target={{ @myself }}/>
             <PerPageLink delta="-1" target={{ @myself }}/>
@@ -171,8 +268,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           <LiveRedirect :if={{ @navigation }}
                         to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                         label="New Record"
-                        class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                              lg:px-2 lg:py-0 m-1 rounded" />
+                        class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                              lg:mx-4 px-2 lg:py-0 m-1 rounded border-r border-gray" />
 
           <button :if={{ tuple_size(@search_filter) > 0 && @navigation }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
@@ -193,6 +290,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    cols={{ @cols }}
                    model={{ @model }}
                    records={{ @records }}
+                   selected_records={{ @selected_records }}
                    path_helper={{ @path_helper }}
                    sort_by={{ @sort_by}}
                    sort_order={{ @sort_order }}

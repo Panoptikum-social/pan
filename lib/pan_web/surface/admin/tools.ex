@@ -22,4 +22,16 @@ defmodule PanWeb.Surface.Admin.Tools do
       Map.put(item, :selected, false)
     end
   end
+
+  def disabled?(multiplicity, selected_count) do
+    enabled =
+      case multiplicity do
+        :any -> true
+        :zero -> selected_count == 0
+        :one -> selected_count == 1
+        :two -> selected_count == 2
+        :nonzero -> selected_count > 0
+      end
+    !enabled
+  end
 end

@@ -1,8 +1,7 @@
 defmodule PanWeb.Surface.Admin.DataTable do
   use Surface.LiveComponent
-  alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
-  alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
+  alias Surface.Components.{Form, Link, Form.TextInput}
   require Integer
 
   prop(cols, :list, required: true)
@@ -18,6 +17,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(path_helper, :atom, required: false)
   prop(target, :string, required: false)
   prop(search_filter, :tuple, default: {})
+  prop(selected_records, :list, default: [])
 
   data(columns, :list, default: [])
   slot(slot_columns)
@@ -40,7 +40,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
     end
   end
 
-  defp to_be_dyed?(record, assigns) do
+  defp dyed?(record, assigns) do
     if assigns.search_filter != {} do
       {column, value} = assigns.search_filter
       !assigns.hide_filtered && Map.get(record, column) == value
@@ -49,13 +49,21 @@ defmodule PanWeb.Surface.Admin.DataTable do
     end
   end
 
+  defp selected?(record, selected_records) do
+    Enum.any?(selected_records, &(all_keys_maching?(record, &1)))
+  end
+
+  defp all_keys_maching?(record, selected_record) do
+    Enum.all?(Map.keys(selected_record), &(Map.get(record, &1) == Map.get(selected_record, &1)))
+  end
+
   def render(assigns) do
     ~H"""
     <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={{ "grid-template-columns: 7rem" <> " " <>
+         style={{ "grid-template-columns: 6rem" <> " " <>
                   (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";" }}>
-      <div class="bg-white italic grid place-content-center w-28">
-        Actions
+      <div class="bg-white italic grid place-content-center text-sm text-center px-1">
+       Search Mode
       </div>
       <div :for={{ column <- @columns }}
            class="bg-white italic grid place-content-center text-sm text-center">
@@ -69,7 +77,6 @@ defmodule PanWeb.Surface.Admin.DataTable do
 
       <div :if={{ @navigation }}
            class="bg-white text-center p-1">
-      Search Mode:
       <Link to="#"
             click={{"cycle_search_mode", target: "#" <> @target }}
             label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
@@ -94,44 +101,30 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
 
       <For each={{ {record, index} <- Enum.with_index(@records) }}>
-      <div :if={{ Map.has_key?(record, :id) }}
-          class={{ "self-center flex justify-evenly w-full",
-                    "bg-gray-lighter": Integer.is_odd(index) && !to_be_dyed?(record, assigns),
-                    "bg-white": Integer.is_even(index) && !to_be_dyed?(record, assigns),
-                    "bg-sunflower-lighter": to_be_dyed?(record, assigns) }}>
-        <LiveRedirect to={{ Naming.path %{socket: @socket,
-                                        model: @model,
-                                        path_helper: @path_helper,
-                                        method: :show,
-                                        record: record} }}
-                      label="🔍" />
+        <div :if={{ Map.has_key?(record, :id) }}
+             class={{ "text-center",
+                      "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
+                      "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
+                     "bg-sunflower-lighter": dyed?(record, assigns) }}>
+          <input type="checkbox"
+                 class="p-2"
+                 :attrs={{ checked: selected?(record, @selected_records) }}
+                 phx-click="select"
+                 phx-value-id={{ record.id }}
+                 phx-target={{"#" <> @target }} />
+        </div>
+        <div :if={{ !Map.has_key?(record, :id) }} >
+          No id to link to.
+        </div>
 
-        <LiveRedirect to={{ Naming.path %{socket: @socket,
-                                          model: @model,
-                                          path_helper: @path_helper,
-                                          method: :edit,
-                                          record: record} }}
-                      label="🖊️" />
-
-        <Link to="#"
-              click={{ "delete", target: "#" <> @target }}
-              opts={{ data: [confirm: "Are you sure?"],
-                      "phx-value-id": record.id }}
-              class="block"
-              label="🗑️" />
-      </div>
-      <div :if={{ !Map.has_key?(record, :id) }} >
-        No id to link to.
-      </div>
-
-      <GridPresenter :for={{ column <- @columns }}
-                      presenter={{ column[:presenter]}}
-                      record={{ record }}
-                      field={{ column.field }}
-                      type={{ column.type }}
-                      index={{ index }}
-                      model={{ @model }}
-                      dye={{ to_be_dyed?(record, assigns) }}/>
+        <GridPresenter :for={{ column <- @columns }}
+                        presenter={{ column[:presenter]}}
+                        record={{ record }}
+                        field={{ column.field }}
+                        type={{ column.type }}
+                        index={{ index }}
+                        model={{ @model }}
+                        dye={{ dyed?(record, assigns) }}/>
       </For>
     </div>
     """

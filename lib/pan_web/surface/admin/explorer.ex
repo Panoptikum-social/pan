@@ -45,7 +45,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
                   via-gray-lighter to-gray-light space-x-5 border-b border-gray">
         <button :for={{ toolbar_item <- @toolbar_items }}
                 phx-click={{ toolbar_item.message }}
-                :attrs={{ disabled: disabled?(toolbar_item, @selected_count) }}
+                :attrs={{ disabled: Tools.disabled?(toolbar_item.when_selected_count, @selected_count) }}
                 class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                        lg:px-2 lg:py-0 m-1 rounded disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none">
           {{ toolbar_item.title }}
@@ -98,18 +98,5 @@ defmodule PanWeb.Surface.Admin.Explorer do
       </div>
     </div>
     """
-  end
-
-  def disabled?(item, selected_count) do
-    enabled =
-      case item.when_selected_count do
-        :any -> true
-        :zero -> selected_count == 0
-        :one -> selected_count == 1
-        :two -> selected_count == 2
-        :nonzero -> selected_count > 0
-      end
-
-    !enabled
   end
 end
