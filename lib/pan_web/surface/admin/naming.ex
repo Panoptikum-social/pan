@@ -133,6 +133,6 @@ defmodule PanWeb.Surface.Admin.Naming do
   end
 
   def primary_key(model) do
-    @model.__schema__(:primary_key)
+    model.__schema__(:primary_key)
   end
 end
