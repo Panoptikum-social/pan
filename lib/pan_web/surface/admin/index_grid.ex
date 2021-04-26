@@ -22,16 +22,18 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   data(hide_filtered, :boolean, default: true)
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
+  data(primary_key, :list, default: [])
   prop(records, :list, default: [])
 
   def update(assigns, socket) do
+    primary_key = assigns.model.__schema__(:primary_key)
     socket =
       socket
       |> assign(assigns)
+      |> assign(primary_key: primary_key)
       |> derive_and_assign_sort_by(assigns)
 
     socket = if socket.assigns.records == [], do: get_records(socket), else: socket
-
     {:ok, socket}
   end
 
@@ -150,6 +152,22 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, assign(socket, selected_records: selected_records)}
   end
 
+  def handle_event("select", %{"one" => one, "two" => two}, socket) do
+    primary_key = socket.assigns.model.__schema__(:primary_key)
+    clicked_record = %{primary_key |> List.first => one |> String.to_integer,
+                       primary_key |> List.last => two |> String.to_integer}
+    selected_records = socket.assigns.selected_records
+
+    selected_records =
+      if Enum.member?(selected_records, clicked_record) do
+        List.delete(selected_records, clicked_record)
+      else
+        [clicked_record | selected_records]
+      end
+
+    {:noreply, assign(socket, selected_records: selected_records)}
+  end
+
   def handle_event("show", _, socket) do
     id =
       socket.assigns.selected_records
@@ -204,7 +222,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         <div :if={{ @show_navigation }}
             class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
-          <div class="border-r border-gray px-4 flex">
+          <div class="border-r border-gray flex">
             <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
@@ -255,10 +273,10 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             </div>
 
             <LiveRedirect :if={{ @show_navigation }}
-            to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-            label="🆕 New"
-            class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                  lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />
+                          to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+                          label="🆕 New"
+                          class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                                lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />
           </div>
 
           <div class="px-4 border-r border-gray">
@@ -289,6 +307,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    target={{ @id }}
                    cols={{ @cols }}
                    model={{ @model }}
+                   primary_key={{ @primary_key }}
                    records={{ @records }}
                    selected_records={{ @selected_records }}
                    path_helper={{ @path_helper }}

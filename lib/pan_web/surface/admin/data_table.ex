@@ -18,6 +18,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(target, :string, required: false)
   prop(search_filter, :tuple, default: {})
   prop(selected_records, :list, default: [])
+  prop(primary_key, :list, default: [:id])
 
   data(columns, :list, default: [])
   slot(slot_columns)
@@ -109,20 +110,27 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
 
       <For each={{ {record, index} <- Enum.with_index(@records) }}>
-        <div :if={{ Map.has_key?(record, :id) && @show_navigation }}
+        <div :if={{ @show_navigation }}
              class={{ "text-center",
                       "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
                       "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
-                     "bg-sunflower-lighter": dyed?(record, assigns) }}>
-          <input type="checkbox"
+                      "bg-sunflower-lighter": dyed?(record, assigns) }}>
+          <input :if={{ Map.has_key?(record, :id) }}
+                 type="checkbox"
                  class="my-1.5"
                  :attrs={{ checked: selected?(record, @selected_records) }}
                  phx-click="select"
                  phx-value-id={{ record.id }}
                  phx-target={{"#" <> @target }} />
-        </div>
-        <div :if={{ !Map.has_key?(record, :id) }} >
-          No id to link to.
+
+          <input :if={{ length(@primary_key) == 2 }}
+                 type="checkbox"
+                 class="my-1.5"
+                 :attrs={{ checked: selected?(record, @selected_records) }}
+                 phx-click="select"
+                 phx-value-one={{ Map.get(record, List.first(@primary_key)) }}
+                 phx-value-two={{ Map.get(record, List.last(@primary_key)) }}
+                 phx-target={{"#" <> @target }} />
         </div>
 
         <GridPresenter :for={{ column <- @columns }}
