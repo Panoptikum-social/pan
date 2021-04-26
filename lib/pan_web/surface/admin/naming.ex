@@ -120,8 +120,9 @@ defmodule PanWeb.Surface.Admin.Naming do
         record.id
 
       true ->
-        first_key = Map.keys(record) |> List.first
+        first_key = Map.keys(record) |> List.last
         Map.get(record, first_key)
+        |> Integer.to_string()
     end
   end
 

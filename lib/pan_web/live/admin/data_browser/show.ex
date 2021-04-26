@@ -1,7 +1,6 @@
 defmodule PanWeb.Live.Admin.Databrowser.Show do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
-  alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.RecordCard
+  alias PanWeb.Surface.Admin.{Naming, RecordCard}
   alias Pan.Repo
 
   def mount(%{"resource" => resource, "id" => id}, _session, socket) do

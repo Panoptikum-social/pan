@@ -169,13 +169,23 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def handle_event("show", _, socket) do
-    id =
+    selected_record =
       socket.assigns.selected_records
       |> List.first
-      |> Map.get(:id)
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
-    show_path = Routes.databrowser_path(socket, :show, resource, id)
-    {:noreply, push_redirect(socket, to: show_path)}
+
+    if Map.has_key?(selected_record,:id) do
+      id = selected_record |> Map.get(:id)
+      show_path = Routes.databrowser_path(socket, :show, resource, id)
+      {:noreply, push_redirect(socket, to: show_path)}
+    else
+      first_column = socket.assigns.primary_key |> List.first
+      first_id = Map.get(selected_record, first_column)
+      second_column = socket.assigns.primary_key |> List.last
+      second_id = Map.get(selected_record, second_column)
+      show_mediating_path = Routes.databrowser_path(socket, :show_mediating, resource, first_column, first_id, second_column, second_id)
+      {:noreply, push_redirect(socket, to: show_mediating_path)}
+    end
   end
 
   def handle_event("edit", _, socket) do

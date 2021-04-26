@@ -42,7 +42,8 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                          class="text-link hover:text-link-dark underline">
              {{ Naming.module_without_namespace(@model) }}&nbsp;List
           </LiveRedirect> &nbsp;
-          <LiveRedirect to={{ Naming.path %{socket: @socket,
+          <LiveRedirect :if={{ Map.has_key?(@record, :id) }}
+                        to={{ Naming.path %{socket: @socket,
                                             model: @model,
                                             method: :edit,
                                             path_helper: @path_helper,
@@ -50,6 +51,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                         class="text-link hover:text-link-dark underline">
             Edit {{ Naming.module_without_namespace(@model) }}
           </LiveRedirect>
+          <span :if={{ !Map.has_key?(@record, :id) }}> FIXME! </span>
         </span>
       </div>
 

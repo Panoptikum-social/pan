@@ -48,8 +48,8 @@ defmodule PanWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
-      live_dashboard "/dashboard", metrics: PanWeb.Telemetry
+      pipe_through(:browser)
+      live_dashboard("/dashboard", metrics: PanWeb.Telemetry)
     end
   end
 
@@ -173,11 +173,11 @@ defmodule PanWeb.Router do
   scope "/", PanWeb do
     pipe_through([:browser])
 
-    live "/", Live.Home, :index, as: :page_frontend
-    live "/categories", Live.Category.Tree, :index, as: :category_frontend
-    live "/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend
-    live "/categories/:id", Live.Category.Show, :show, as: :category_frontend
-    live "/categories/:id/stats", Live.Category.StatsShow, :show_stats, as: :category_frontend
+    live("/", Live.Home, :index, as: :page_frontend)
+    live("/categories", Live.Category.Tree, :index, as: :category_frontend)
+    live("/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend)
+    live("/categories/:id", Live.Category.Show, :show, as: :category_frontend)
+    live("/categories/:id/stats", Live.Category.StatsShow, :show_stats, as: :category_frontend)
     get("/categories/:id/latest_episodes", CategoryFrontendController, :latest_episodes)
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 
@@ -192,7 +192,7 @@ defmodule PanWeb.Router do
     resources("/episodes", EpisodeFrontendController, only: [:show, :index])
     get("/episodes/:id/player", EpisodeFrontendController, :player)
 
-    live "/users/new", Live.User.New, :new, as: :user_frontend
+    live("/users/new", Live.User.New, :new, as: :user_frontend)
     resources("/users", UserFrontendController, only: [:show, :index, :create])
     get("/pro_features", PageFrontendController, :pro_features)
 
@@ -204,7 +204,7 @@ defmodule PanWeb.Router do
     get("/forgot_password", UserController, :forgot_password)
     post("/request_login_link", UserController, :request_login_link)
 
-    live "/sessions/new", Live.Session.New, :new, as: :session
+    live("/sessions/new", Live.Session.New, :new, as: :session)
     resources("/sessions", SessionController, only: [:create, :delete])
     get("/sessions/login_via_token", SessionController, :login_via_token)
     get("/sessions/confirm_email", SessionController, :confirm_email)
@@ -430,14 +430,43 @@ defmodule PanWeb.Router do
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
 
-    live "/dashboard", Live.Admin.Dashboard, :home, as: :dashboard
-    live "/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser
-    live "/databrowser/:resource/db_indices", Live.Admin.Databrowser.DbIndex, :db_indices, as: :databrowser
-    live "/databrowser/:resource/schema_definition", Live.Admin.Databrowser.SchemaDefinition, :schema_definition, as: :databrowser
-    live "/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser
-    live "/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser
-    live "/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser
-    live "/databrowser/:owner/:owner_id/has_many/:association", Live.Admin.Databrowser.HasMany, :has_many, as: :databrowser
-    live "/databrowser/:owner/:owner_id/many_to_many/:association", Live.Admin.Databrowser.ManyToMany, :many_to_many, as: :databrowser
+    live("/dashboard", Live.Admin.Dashboard, :home, as: :dashboard)
+    live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
+
+    live("/databrowser/:resource/db_indices", Live.Admin.Databrowser.DbIndex, :db_indices,
+      as: :databrowser
+    )
+
+    live(
+      "/databrowser/:resource/schema_definition",
+      Live.Admin.Databrowser.SchemaDefinition,
+      :schema_definition,
+      as: :databrowser
+    )
+
+    live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
+    live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
+    live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
+
+    live(
+      "/databrowser/:owner/:owner_id/has_many/:association",
+      Live.Admin.Databrowser.HasMany,
+      :has_many,
+      as: :databrowser
+    )
+
+    live(
+      "/databrowser/:owner/:owner_id/many_to_many/:association",
+      Live.Admin.Databrowser.ManyToMany,
+      :many_to_many,
+      as: :databrowser
+    )
+
+    live(
+      "/databrowser/show_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
+      Live.Admin.Databrowser.ShowMediating,
+      :show_mediating,
+      as: :databrowser
+    )
   end
 end

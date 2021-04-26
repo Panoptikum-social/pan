@@ -81,10 +81,21 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
   end
 
   # No or initial filter to be applied
-  defp apply_filter(query, {}=_filter, _hide), do: query
+  defp apply_filter(query, {} = _filter, _hide), do: query
 
   defp select_columns(query, cols) do
     column_atoms = Enum.map(cols, & &1.field)
     from(q in query, select: ^column_atoms)
+  end
+
+  def single_record(model, first_column, first_id, second_column, second_id) do
+    from(r in model,
+      where:
+        ^[
+          {first_column |> String.to_atom, first_id |> String.to_integer},
+          {second_column |> String.to_atom, second_id |> String.to_integer}
+        ]
+    )
+    |> Repo.one!()
   end
 end
