@@ -253,6 +253,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                 No
               </button>
             </div>
+
+            <LiveRedirect :if={{ @navigation }}
+            to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
+            label="🆕 New"
+            class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                  lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />
           </div>
 
           <div class="px-4 border-r border-gray">
@@ -264,11 +270,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <PerPageLink delta="+3" target={{ @myself }}/>
             <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
-          <LiveRedirect :if={{ @navigation }}
-                        to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
-                        label="New Record"
-                        class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                              lg:mx-4 px-2 lg:py-0 m-1 rounded border-r border-gray" />
 
           <button :if={{ tuple_size(@search_filter) > 0 && @navigation }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
