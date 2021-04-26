@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
           cols={{ @owner_cols }}
           search_filter={{ @owner_search_filter }}
           per_page=1
-          navigation=false>
+          show_navigation={{ false }}>
     </IndexGrid>
 
     <IndexGrid id="has_many_table"

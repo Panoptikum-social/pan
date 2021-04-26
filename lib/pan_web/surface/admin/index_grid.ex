@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(cols, :list, required: false, default: [])
   prop(search_filter, :tuple, default: {})
   prop(per_page, :integer, default: 20)
-  prop(navigation, :boolean, required: false, default: true)
+  prop(show_navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
 
   data(selected_records, :list, default: [])
@@ -201,7 +201,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           {{ @heading }}
         </h2>
 
-        <div :if={{ @navigation }}
+        <div :if={{ @show_navigation }}
             class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="border-r border-gray px-4 flex">
@@ -254,7 +254,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               </button>
             </div>
 
-            <LiveRedirect :if={{ @navigation }}
+            <LiveRedirect :if={{ @show_navigation }}
             to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
             label="🆕 New"
             class="border border-gray bg-white hover:bg-gray-lightest py-0.5
@@ -271,14 +271,14 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
 
-          <button :if={{ tuple_size(@search_filter) > 0 && @navigation }}
+          <button :if={{ tuple_size(@search_filter) > 0 && @show_navigation }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
           </button>
         </div>
 
-        <Pagination :if={{ @navigation }}
+        <Pagination :if={{ @show_navigation }}
                     per_page={{ @per_page}}
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
@@ -294,7 +294,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    path_helper={{ @path_helper }}
                    sort_by={{ @sort_by}}
                    sort_order={{ @sort_order }}
-                   navigation={{ @navigation }}
+                   show_navigation={{ @show_navigation }}
                    page={{ @page }}
                    search_mode={{ @search_mode }}
                    hide_filtered={{ @hide_filtered }}

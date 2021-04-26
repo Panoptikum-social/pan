@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(cols, :list, required: true)
   prop(sort_by, :atom, required: false, default: :id)
   prop(sort_order, :atom, required: false, default: :asc)
-  prop(navigation, :boolean, required: false, default: true)
+  prop(show_navigation, :boolean, required: false, default: true)
   prop(model, :module, required: true)
   prop(search_options, :map, required: false, default: %{})
   prop(page, :integer, required: false, default: 1)
@@ -57,13 +57,21 @@ defmodule PanWeb.Surface.Admin.DataTable do
     Enum.all?(Map.keys(selected_record), &(Map.get(record, &1) == Map.get(selected_record, &1)))
   end
 
+  defp grid_style(columns, show_navigation) do
+    if show_navigation do
+      "grid-template-columns: 6rem " <> (Enum.map(columns, &width(&1.type)) |> Enum.join(" ")) <> ";"
+    else
+      "grid-template-columns: " <> (Enum.map(columns, &width(&1.type)) |> Enum.join(" ")) <> ";"
+    end
+  end
+
   def render(assigns) do
     ~H"""
     <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={{ "grid-template-columns: 6rem" <> " " <>
-                  (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";" }}>
-      <div class="bg-white italic grid place-content-center text-sm text-center px-1">
-       Search Mode
+         style={{ grid_style(@columns, @show_navigation) }}>
+      <div :if={{ @show_navigation}}
+           class="bg-white italic grid place-content-center text-sm text-center px-1">
+         Search Mode
       </div>
       <div :for={{ column <- @columns }}
            class="bg-white italic grid place-content-center text-sm text-center">
@@ -75,7 +83,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </SortLink>
       </div>
 
-      <div :if={{ @navigation }}
+      <div :if={{ @show_navigation }}
            class="bg-gray-lighter text-center p-1">
       <Link to="#"
             click={{"cycle_search_mode", target: "#" <> @target }}
@@ -83,7 +91,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
             class="text-link hover:text-link-dark underline" />
       </div>
 
-      <div :if={{ @navigation }}
+      <div :if={{ @show_navigation }}
            :for={{ column <- @columns }}
            class={{ "bg-gray-lighter p-1",
                     "text-right": column.type == :integer}}>
@@ -101,7 +109,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
 
       <For each={{ {record, index} <- Enum.with_index(@records) }}>
-        <div :if={{ Map.has_key?(record, :id) }}
+        <div :if={{ Map.has_key?(record, :id) && @show_navigation }}
              class={{ "text-center",
                       "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
                       "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
