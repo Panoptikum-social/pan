@@ -110,7 +110,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-
   def handle_event("delete", _, socket) do
     id =
       socket.assigns.selected_records

@@ -76,17 +76,17 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
 
       <div :if={{ @navigation }}
-           class="bg-white text-center p-1">
+           class="bg-gray-lighter text-center p-1">
       <Link to="#"
             click={{"cycle_search_mode", target: "#" <> @target }}
             label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
             class="text-link hover:text-link-dark underline" />
       </div>
 
-      <div :if={{ @navigation }}border-t border-gray rounded-b bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light
-        :for={{ column <- @columns }}
-        class={{ "bg-white p-1",
-                  "text-right": column.type == :integer}}>
+      <div :if={{ @navigation }}
+           :for={{ column <- @columns }}
+           class={{ "bg-gray-lighter p-1",
+                    "text-right": column.type == :integer}}>
       <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not }}
             for={{ :search }}
             change={{"search", target: "#" <> @target }}
@@ -94,9 +94,9 @@ defmodule PanWeb.Surface.Admin.DataTable do
         <TextInput field={{ column.field }}
                   value={{ @search_options[column.field] }}
                   class={{ "p-0.5 w-full"}}
-                    opts={{ autofocus: "autofocus",
-                            autocomplete: "off",
-                            "phx-debounce": 300 }} />
+                  opts={{ autofocus: "autofocus",
+                          autocomplete: "off",
+                          "phx-debounce": 300 }} />
       </Form>
       </div>
 
@@ -107,7 +107,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
                       "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
                      "bg-sunflower-lighter": dyed?(record, assigns) }}>
           <input type="checkbox"
-                 class="p-2"
+                 class="my-1.5"
                  :attrs={{ checked: selected?(record, @selected_records) }}
                  phx-click="select"
                  phx-value-id={{ record.id }}
