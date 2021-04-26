@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
                          model: model,
                          cols: cols,
                          ids_string: first_id <> "_" <> second_id,
-                         record: QueryBuilder.single_record(model, first_column, first_id, second_column, second_id))}
+                         record: QueryBuilder.get_single_record(model, first_column, first_id, second_column, second_id))}
   end
 
   def render(assigns) do

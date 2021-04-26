@@ -2,11 +2,9 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
   import Ecto.Query
   alias Pan.Repo
 
-  def delete(model, id) do
-    record = Repo.get!(model, id)
+  def delete(model, record) do
     Repo.delete(record)
-
-    if Map.has_key?(record, :elastic), do: model.delete_search_index(id)
+    if Map.has_key?(record, :elastic), do: model.delete_search_index(record.id)
   end
 
   def load(model, criteria, cols) when is_list(criteria) do
@@ -88,7 +86,7 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     from(q in query, select: ^column_atoms)
   end
 
-  def single_record(model, first_column, first_id, second_column, second_id) do
+  def read_single_record(model, first_column, first_id, second_column, second_id) do
     from(r in model,
       where:
         ^[

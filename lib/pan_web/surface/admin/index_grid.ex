@@ -4,6 +4,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
   alias Surface.Components.{LiveRedirect}
   alias PanWeb.Router.Helpers, as: Routes
+  import Ecto.Query
+  alias Pan.Repo
 
   prop(heading, :string, required: false, default: "Records")
   prop(model, :module, required: true)
@@ -113,15 +115,29 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def handle_event("delete", _, socket) do
-    id =
+    model = socket.assigns.model
+    selected_record =
       socket.assigns.selected_records
       |> List.first
-      |> Map.get(:id)
-    model = socket.assigns.model
+
+    record =
+      if Map.has_key?(selected_record, :id) do
+        id = selected_record |> Map.get(:id)
+        Repo.get!(model, id)
+      else
+        first_column = socket.assigns.primary_key |> List.first
+        first_id = Map.get(selected_record, first_column)
+        second_column = socket.assigns.primary_key |> List.last
+        second_id = Map.get(selected_record, second_column)
+
+        from(r in model, where: ^[{first_column, first_id}, {second_column, second_id}])
+        |> Repo.one!()
+      end
+
     path_helper = socket.assigns.path_helper
 
     try do
-      QueryBuilder.delete(model, id)
+      QueryBuilder.delete(model, record)
       {:noreply, get_records(socket)}
     rescue
       e in Postgrex.Error ->
