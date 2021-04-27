@@ -128,8 +128,8 @@ defmodule PanWeb.Surface.Admin.DataTable do
                  class="my-1.5"
                  :attrs={{ checked: selected?(record, @selected_records) }}
                  phx-click="select"
-                 phx-value-one={{ Map.get(record, List.first(@primary_key)) }}
-                 phx-value-two={{ Map.get(record, List.last(@primary_key)) }}
+                 phx-value-one={{ Map.get(record, hd(@primary_key)) }}
+                 phx-value-two={{ Map.get(record, hd(tl(@primary_key))) }}
                  phx-target={{"#" <> @target }} />
         </div>
 

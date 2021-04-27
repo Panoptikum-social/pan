@@ -120,7 +120,7 @@ defmodule PanWeb.Surface.Admin.Naming do
         record.id
 
       true ->
-        last_key = Map.keys(record) |> List.last
+        last_key = hd(tl(Map.keys(record)))
         value = Map.get(record, last_key)
         if value, do: Integer.to_string(value), else: "New record"
     end

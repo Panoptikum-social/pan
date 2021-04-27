@@ -24,7 +24,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
     children_ids =
       from(join_through,
-        where: ^[{List.first(join_keys), owner_id}],
+        where: ^[{hd(join_keys), owner_id}],
         select: ^[children_id_column]
       )
       |> Repo.all()

@@ -41,7 +41,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   defp derive_and_assign_sort_by(socket, assigns) do
     if Map.has_key?(assigns, :cols) do
-      socket |> assign(sort_by: List.first(assigns.cols)[:field])
+      socket |> assign(sort_by: hd(assigns.cols)[:field])
     else
       socket
     end
@@ -120,8 +120,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
     record =
       if Map.has_key?(selected_record, :id) do
-        id = selected_record |> Map.get(:id)
-        Repo.get!(model, id)
+        Repo.get!(model, selected_record.id)
       else
         [first_column, second_column] = socket.assigns.primary_key
 
@@ -170,8 +169,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     primary_key = socket.assigns.model.__schema__(:primary_key)
 
     clicked_record = %{
-      (primary_key |> List.first()) => one |> String.to_integer(),
-      (primary_key |> List.last()) => two |> String.to_integer()
+      hd(primary_key) => String.to_integer(one),
+      hd(tl(primary_key)) => String.to_integer(two)
     }
 
     selected_records = socket.assigns.selected_records
@@ -187,7 +186,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def handle_event("show", _, socket) do
-    selected_record = socket.assigns.selected_records |> List.first()
+    selected_record = hd(socket.assigns.selected_records)
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
 
     if Map.has_key?(selected_record, :id) do
@@ -213,18 +212,15 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def handle_event("edit", _, socket) do
-    selected_record = socket.assigns.selected_records |> List.first()
+    selected_record = hd(socket.assigns.selected_records)
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
 
     if Map.has_key?(selected_record, :id) do
-      id = selected_record |> Map.get(:id)
+      id = selected_record.id
       edit_path = Routes.databrowser_path(socket, :edit, resource, id)
       {:noreply, push_redirect(socket, to: edit_path)}
     else
-      first_column = socket.assigns.primary_key |> List.first()
-      first_id = Map.get(selected_record, first_column)
-      second_column = socket.assigns.primary_key |> List.last()
-      second_id = Map.get(selected_record, second_column)
+      [first_column, second_column] = socket.assigns.primary_key
 
       edit_mediating_path =
         Routes.databrowser_path(
@@ -232,9 +228,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           :edit_mediating,
           resource,
           first_column,
-          first_id,
+          Map.get(selected_record, first_column),
           second_column,
-          second_id
+          Map.get(selected_record, second_column)
         )
 
       {:noreply, push_redirect(socket, to: edit_mediating_path)}

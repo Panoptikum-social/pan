@@ -60,10 +60,10 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                           @socket,
                           :edit_mediating,
                           Phoenix.Naming.resource_name(@model),
-                          @primary_key |> List.first |> Atom.to_string,
-                          Map.get(@record, @primary_key |> List.first),
-                          @primary_key |> List.last |> Atom.to_string,
-                          Map.get(@record, @primary_key |> List.last)
+                          hd(@primary_key) |> Atom.to_string,
+                          Map.get(@record, hd(@primary_key)),
+                          hd(tl(@primary_key)) |> Atom.to_string,
+                          Map.get(@record, hd(tl(@primary_key)))
                         ) }}
                         class="text-link hover:text-link-dark underline">
             Edit {{ Naming.module_without_namespace(@model) }}
