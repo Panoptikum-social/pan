@@ -2,17 +2,10 @@ defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
   alias PanWeb.{
-    AlternateFeed,
-    Chapter,
     Category,
-    Enclosure,
     Episode,
     Feed,
-    Gig,
-    Image,
-    Like,
     Podcast,
-    Recommendation
   }
 
   require Logger
@@ -209,24 +202,6 @@ defmodule PanWeb.PodcastController do
     render(conn, "factory.html", podcasts: podcasts)
   end
 
-  def new(conn, _params) do
-    changeset = Podcast.changeset(%Podcast{})
-    render(conn, "new.html", changeset: changeset)
-  end
-
-  def create(conn, %{"podcast" => podcast_params}) do
-    changeset = Podcast.changeset(%Podcast{}, podcast_params)
-
-    case Repo.insert(changeset) do
-      {:ok, _podcast} ->
-        put_flash(conn, :info, "Podcast created successfully.")
-        |> redirect(to: podcast_path(conn, :index))
-
-      {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-  end
-
   def show(conn, %{"id" => id}) do
     podcast =
       Repo.get!(Podcast, id)
@@ -248,62 +223,6 @@ defmodule PanWeb.PodcastController do
     podcast = Repo.get!(Podcast, id)
     changeset = Podcast.changeset(podcast)
     render(conn, "edit.html", podcast: podcast, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "podcast" => podcast_params}) do
-    id = String.to_integer(id)
-    podcast = Repo.get!(Podcast, id)
-    changeset = Podcast.changeset(podcast, podcast_params)
-
-    case Repo.update(changeset) do
-      {:ok, podcast} ->
-        Podcast.update_search_index(id)
-        Podcast.remove_unwanted_references(id)
-
-        put_flash(conn, :info, "Podcast updated successfully.")
-        |> redirect(to: podcast_path(conn, :show, podcast))
-
-      {:error, changeset} ->
-        render(conn, "edit.html", podcast: podcast, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    id = String.to_integer(id)
-
-    podcast =
-      Repo.get!(Podcast, id)
-      |> Repo.preload(episodes: :chapters)
-      |> Repo.preload(:feeds)
-
-    for episode <- podcast.episodes do
-      for chapter <- episode.chapters do
-        Repo.delete_all(from(l in Like, where: l.chapter_id == ^chapter.id))
-        Repo.delete_all(from(r in Recommendation, where: r.chapter_id == ^chapter.id))
-      end
-
-      Repo.delete_all(from(c in Chapter, where: c.episode_id == ^episode.id))
-      Repo.delete_all(from(e in Enclosure, where: e.episode_id == ^episode.id))
-      Repo.delete_all(from(g in Gig, where: g.episode_id == ^episode.id))
-
-      images = Repo.all(from(i in Image, where: i.episode_id == ^episode.id))
-
-      for image <- images do
-        File.rm(image.path)
-        Repo.delete!(image)
-      end
-    end
-
-    for feed <- podcast.feeds do
-      Repo.delete_all(from(a in AlternateFeed, where: a.feed_id == ^feed.id))
-    end
-
-    Repo.delete!(podcast)
-    Podcast.delete_search_index(id)
-
-    conn
-    |> put_flash(:info, "Podcast deleted successfully.")
-    |> redirect(to: podcast_path(conn, :index))
   end
 
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
@@ -340,7 +259,7 @@ defmodule PanWeb.PodcastController do
 
     conn
     |> put_flash(:info, "Owner fixed successfully.")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
   def fix_languages(conn, _params) do
@@ -367,7 +286,7 @@ defmodule PanWeb.PodcastController do
 
     conn
     |> put_flash(:info, "Languages fixed successfully.")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
   def delta_import_all(conn, _params) do
@@ -403,7 +322,7 @@ defmodule PanWeb.PodcastController do
     |> Repo.update(force: true)
 
     put_flash(conn, :info, "Podcast touched.")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
   def pause(conn, %{"id" => id}) do
@@ -411,7 +330,7 @@ defmodule PanWeb.PodcastController do
     |> Repo.update_all(set: [update_paused: true])
 
     put_flash(conn, :info, "Podcast paused.")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
   def retirement(conn, _params) do
