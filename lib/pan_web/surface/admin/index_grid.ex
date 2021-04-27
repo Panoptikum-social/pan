@@ -29,6 +29,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def update(assigns, socket) do
     primary_key = assigns.model.__schema__(:primary_key)
+
     socket =
       socket
       |> assign(assigns)
@@ -118,16 +119,16 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     model = socket.assigns.model
     selected_record =
       socket.assigns.selected_records
-      |> List.first
+      |> List.first()
 
     record =
       if Map.has_key?(selected_record, :id) do
         id = selected_record |> Map.get(:id)
         Repo.get!(model, id)
       else
-        first_column = socket.assigns.primary_key |> List.first
+        first_column = socket.assigns.primary_key |> List.first()
         first_id = Map.get(selected_record, first_column)
-        second_column = socket.assigns.primary_key |> List.last
+        second_column = socket.assigns.primary_key |> List.last()
         second_id = Map.get(selected_record, second_column)
 
         from(r in model, where: ^[{first_column, first_id}, {second_column, second_id}])
@@ -138,6 +139,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
     try do
       QueryBuilder.delete(model, record)
+      socket = assign(socket, selected_records: [])
       {:noreply, get_records(socket)}
     rescue
       e in Postgrex.Error ->
@@ -170,8 +172,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("select", %{"one" => one, "two" => two}, socket) do
     primary_key = socket.assigns.model.__schema__(:primary_key)
-    clicked_record = %{primary_key |> List.first => one |> String.to_integer,
-                       primary_key |> List.last => two |> String.to_integer}
+
+    clicked_record = %{
+      (primary_key |> List.first()) => one |> String.to_integer(),
+      (primary_key |> List.last()) => two |> String.to_integer()
+    }
+
     selected_records = socket.assigns.selected_records
 
     selected_records =
@@ -185,34 +191,61 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def handle_event("show", _, socket) do
-    selected_record =
-      socket.assigns.selected_records
-      |> List.first
+    selected_record = socket.assigns.selected_records |> List.first()
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
 
-    if Map.has_key?(selected_record,:id) do
+    if Map.has_key?(selected_record, :id) do
       id = selected_record |> Map.get(:id)
       show_path = Routes.databrowser_path(socket, :show, resource, id)
       {:noreply, push_redirect(socket, to: show_path)}
     else
-      first_column = socket.assigns.primary_key |> List.first
+      first_column = socket.assigns.primary_key |> List.first()
       first_id = Map.get(selected_record, first_column)
-      second_column = socket.assigns.primary_key |> List.last
+      second_column = socket.assigns.primary_key |> List.last()
       second_id = Map.get(selected_record, second_column)
-      show_mediating_path = Routes.databrowser_path(socket, :show_mediating, resource, first_column, first_id, second_column, second_id)
+
+      show_mediating_path =
+        Routes.databrowser_path(
+          socket,
+          :show_mediating,
+          resource,
+          first_column,
+          first_id,
+          second_column,
+          second_id
+        )
+
       {:noreply, push_redirect(socket, to: show_mediating_path)}
     end
   end
 
   def handle_event("edit", _, socket) do
-    id =
-      socket.assigns.selected_records
-      |> List.first
-      |> Map.get(:id)
+    selected_record = socket.assigns.selected_records |> List.first()
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
-    edit_path = Routes.databrowser_path(socket, :edit, resource, id)
 
-    {:noreply, push_redirect(socket, to: edit_path)}
+    if Map.has_key?(selected_record, :id) do
+      id = selected_record |> Map.get(:id)
+      edit_path = Routes.databrowser_path(socket, :edit, resource, id)
+      {:noreply, push_redirect(socket, to: edit_path)}
+    else
+      first_column = socket.assigns.primary_key |> List.first()
+      first_id = Map.get(selected_record, first_column)
+      second_column = socket.assigns.primary_key |> List.last()
+      second_id = Map.get(selected_record, second_column)
+
+      edit_mediating_path =
+        Routes.databrowser_path(
+          socket,
+          :edit_mediating,
+          resource,
+          first_column,
+          first_id,
+          second_column,
+          second_id
+        )
+
+      {:noreply, push_redirect(socket, to: edit_mediating_path)}
+    end
   end
 
   def handle_event("toggle_request_confirmation", _, socket) do

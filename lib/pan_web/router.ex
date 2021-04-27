@@ -468,5 +468,12 @@ defmodule PanWeb.Router do
       :show_mediating,
       as: :databrowser
     )
+
+    live(
+      "/databrowser/edit_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
+      Live.Admin.Databrowser.EditMediating,
+      :edit_mediating,
+      as: :databrowser
+    )
   end
 end

@@ -1,6 +1,9 @@
-defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
-  alias PanWeb.Surface.Admin.{Naming, RecordCard, QueryBuilder}
+defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
+  use Surface.LiveView,
+    layout: {PanWeb.LayoutView, "live_admin.html"},
+    container: {:div, class: "flex-1 w-full"}
+
+  alias PanWeb.Surface.Admin.{Naming, RecordForm, QueryBuilder}
 
   def mount(
         %{
@@ -30,9 +33,19 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
      )}
   end
 
+  def handle_info(
+        {:redirect, %{path: path, flash_type: flash_type, message: message}},
+        socket
+      ) do
+    {:noreply,
+     socket
+     |> put_flash(flash_type, message)
+     |> push_redirect(to: path)}
+  end
+
   def render(assigns) do
     ~H"""
-    <RecordCard id={{ "record_card_" <> @resource <> "_" <> @ids_string }}
+    <RecordForm id={{ "record_form_" <> @resource <> "_" <> @ids_string }}
                 record={{ @record }}
                 model={{ @model }}
                 cols={{ @cols }} />

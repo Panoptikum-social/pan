@@ -90,9 +90,18 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     from(r in model,
       where:
         ^[
-          {first_column |> String.to_atom, first_id |> String.to_integer},
-          {second_column |> String.to_atom, second_id |> String.to_integer}
+          {first_column |> String.to_atom(), first_id |> String.to_integer()},
+          {second_column |> String.to_atom(), second_id |> String.to_integer()}
         ]
+    )
+    |> Repo.one!()
+  end
+
+  def read_via_primary_key(model, resource_params) do
+    primary_key = model.__schema__(:primary_key)
+
+    from(r in model,
+      where: ^Enum.map(primary_key, &{&1, resource_params[&1 |> Atom.to_string] |> String.to_integer()})
     )
     |> Repo.one!()
   end
