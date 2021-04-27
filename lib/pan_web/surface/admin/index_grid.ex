@@ -14,6 +14,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(per_page, :integer, default: 20)
   prop(show_navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
+  prop(additional_actions, :list, required: false, default: [])
+  prop(records, :list, default: [])
 
   data(selected_records, :list, default: [])
   data(request_confirmation, :boolean, default: false)
@@ -24,7 +26,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(primary_key, :list, default: [])
-  prop(records, :list, default: [])
+  data(link_or_unlink, :atom, values: [:link, :unlink, :unknown], default: :unknown)
 
   def update(assigns, socket) do
     primary_key = assigns.model.__schema__(:primary_key)
@@ -162,7 +164,22 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         [clicked_record | selected_records]
       end
 
-    {:noreply, assign(socket, selected_records: selected_records)}
+    link_or_unlink =
+      if length(selected_records) == 1 do
+        if belongs_to?(clicked_record, socket.assigns) do
+          :unlink
+        else
+          :link
+        end
+      else
+        :unknown
+      end
+
+    {:noreply,
+     assign(socket,
+       selected_records: selected_records,
+       link_or_unlink: link_or_unlink
+     )}
   end
 
   def handle_event("select", %{"one" => one, "two" => two}, socket) do
@@ -241,6 +258,29 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, assign(socket, request_confirmation: !socket.assigns.request_confirmation)}
   end
 
+  def handle_event("toggle_link", _, socket) do
+    assigns = socket.assigns
+    selected_record = hd(assigns.selected_records)
+    record = Enum.filter(assigns.records, fn record -> record.id == selected_record.id end) |> hd
+
+    {column, value} = assigns.search_filter
+
+    changeset =
+      if Map.get(record, column) == value do
+        assigns.model.changeset(record, %{column => nil})
+      else
+        assigns.model.changeset(record, %{column => value})
+      end
+
+    case  Repo.update(changeset) do
+      {:ok, _} ->
+        {:noreply, get_records(socket)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
   def get_records(socket) do
     a = socket.assigns
 
@@ -256,6 +296,19 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     ]
 
     assign(socket, records: QueryBuilder.load(a.model, criteria, a.cols))
+  end
+
+  defp belongs_to?(clicked_record, assigns) do
+    case assigns.search_filter do
+      {column, value} ->
+        Enum.filter(assigns.records, fn record ->
+          Map.get(record, column) == value && record.id == clicked_record.id
+        end)
+        |> length == 1
+
+      _ ->
+        false
+    end
   end
 
   def render(assigns) do
@@ -319,6 +372,35 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                 No
               </button>
             </div>
+
+            <button :if={{ :link in @additional_actions && @link_or_unlink == :link }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="toggle_link"
+                    phx-target={{ @myself }}>
+              🔗 Link
+            </button>
+
+            <button :if={{ :link in @additional_actions && @link_or_unlink == :unlink }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="toggle_link"
+                    phx-target={{ @myself }}>
+              ✂️ Unlink
+            </button>
+
+            <button :if={{ :link in @additional_actions && @link_or_unlink == :unknown }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    disabled>
+              🔗 / ✂️
+            </button>
+
 
             <LiveRedirect :if={{ @show_navigation }}
                           to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}

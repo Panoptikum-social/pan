@@ -70,21 +70,6 @@ defmodule PanWeb.Surface.Admin.Naming do
       |> Phoenix.Naming.resource_name()
 
     case resource do
-      "podcast" ->
-        [
-          :id,
-          :title,
-          :update_paused,
-          :updated_at,
-          :update_intervall,
-          :next_update,
-          :failure_count,
-          :website,
-          :episodes_count
-        ]
-
-      "episode" ->
-        [:id, :guid, :publishing_date, :title, :podcast_id]
       _ -> nil
     end
   end

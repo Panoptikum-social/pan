@@ -31,7 +31,9 @@ defmodule PanWeb.Surface.Admin.DataTable do
   defp width(type) do
     case type do
       :id -> "6rem"
+      Ecto.UUID -> "6rem"
       :integer -> "4rem"
+      :float -> "5rem"
       :date -> "6rem"
       :datetime -> "12rem"
       :naive_datetime -> "12rem"

@@ -80,7 +80,8 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}
-          per_page=20>
+          per_page=20
+          additional_actions={{ [:link] }} >
     </IndexGrid>
     """
   end
