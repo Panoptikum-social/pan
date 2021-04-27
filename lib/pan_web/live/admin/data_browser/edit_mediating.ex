@@ -29,7 +29,10 @@ defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
        cols: cols,
        ids_string: first_id <> "_" <> second_id,
        record:
-         QueryBuilder.read_single_record(model, first_column, first_id, second_column, second_id)
+         QueryBuilder.read_via_primary_key(model, %{
+           first_column => first_id,
+           second_column => second_id
+         })
      )}
   end
 
