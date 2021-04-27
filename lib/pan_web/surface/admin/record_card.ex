@@ -5,6 +5,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   alias PanWeb.Surface.Admin.RelationsBlock
   alias Surface.Components.LiveRedirect
   alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Router.Helpers, as: Routes
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
@@ -12,15 +13,17 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   prop(cols, :list, required: false, default: [])
 
   data(columns, :list, default: [])
+  data(primary_key, :list, default: [])
   slot(slot_columns)
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
+    primary_key = assigns.model.__schema__(:primary_key)
 
     socket =
       assign(socket, assigns)
       |> assign(columns: columns)
-
+      |> assign(primary_key: primary_key)
     {:ok, socket}
   end
 
@@ -51,7 +54,20 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                         class="text-link hover:text-link-dark underline">
             Edit {{ Naming.module_without_namespace(@model) }}
           </LiveRedirect>
-          <span :if={{ !Map.has_key?(@record, :id) }}> FIXME! </span>
+
+          <LiveRedirect :if={{ !Map.has_key?(@record, :id) }}
+                        to={{ Routes.databrowser_path(
+                          @socket,
+                          :edit_mediating,
+                          Phoenix.Naming.resource_name(@model),
+                          @primary_key |> List.first |> Atom.to_string,
+                          Map.get(@record, @primary_key |> List.first),
+                          @primary_key |> List.last |> Atom.to_string,
+                          Map.get(@record, @primary_key |> List.last)
+                        ) }}
+                        class="text-link hover:text-link-dark underline">
+            Edit {{ Naming.module_without_namespace(@model) }}
+          </LiveRedirect>
         </span>
       </div>
 

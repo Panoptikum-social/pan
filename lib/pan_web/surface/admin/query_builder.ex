@@ -86,7 +86,7 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     from(q in query, select: ^column_atoms)
   end
 
-  def read_via_primary_key(model, resource_params) do
+  def read_by_params(model, resource_params) do
     primary_key = model.__schema__(:primary_key)
 
     from(r in model,
@@ -96,6 +96,13 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
           &{&1, resource_params[&1 |> Atom.to_string()] |> String.to_integer()}
         )
     )
+    |> Repo.one!()
+  end
+
+  def read_by_values(model, values) do
+    primary_key = model.__schema__(:primary_key)
+
+    from(r in model, where: ^Enum.map(primary_key, &{&1, values[&1]}))
     |> Repo.one!()
   end
 end

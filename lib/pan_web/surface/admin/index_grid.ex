@@ -4,7 +4,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
   alias Surface.Components.{LiveRedirect}
   alias PanWeb.Router.Helpers, as: Routes
-  import Ecto.Query
   alias Pan.Repo
 
   prop(heading, :string, required: false, default: "Records")
@@ -117,22 +116,19 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("delete", _, socket) do
     model = socket.assigns.model
-    selected_record =
-      socket.assigns.selected_records
-      |> List.first()
+    [selected_record | _] = socket.assigns.selected_records
 
     record =
       if Map.has_key?(selected_record, :id) do
         id = selected_record |> Map.get(:id)
         Repo.get!(model, id)
       else
-        first_column = socket.assigns.primary_key |> List.first()
-        first_id = Map.get(selected_record, first_column)
-        second_column = socket.assigns.primary_key |> List.last()
-        second_id = Map.get(selected_record, second_column)
+        [first_column, second_column] = socket.assigns.primary_key
 
-        from(r in model, where: ^[{first_column, first_id}, {second_column, second_id}])
-        |> Repo.one!()
+        QueryBuilder.read_by_values(model, %{
+          first_column => selected_record[first_column],
+          second_column => selected_record[second_column]
+        })
       end
 
     path_helper = socket.assigns.path_helper
@@ -199,10 +195,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
       show_path = Routes.databrowser_path(socket, :show, resource, id)
       {:noreply, push_redirect(socket, to: show_path)}
     else
-      first_column = socket.assigns.primary_key |> List.first()
-      first_id = Map.get(selected_record, first_column)
-      second_column = socket.assigns.primary_key |> List.last()
-      second_id = Map.get(selected_record, second_column)
+      [first_column, second_column] = socket.assigns.primary_key
 
       show_mediating_path =
         Routes.databrowser_path(
@@ -210,9 +203,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           :show_mediating,
           resource,
           first_column,
-          first_id,
+          selected_record[first_column],
           second_column,
-          second_id
+          selected_record[second_column]
         )
 
       {:noreply, push_redirect(socket, to: show_mediating_path)}

@@ -26,7 +26,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
        cols: cols,
        ids_string: first_id <> "_" <> second_id,
        record:
-         QueryBuilder.read_via_primary_key(model, %{
+         QueryBuilder.read_by_params(model, %{
            first_column => first_id,
            second_column => second_id
          })
