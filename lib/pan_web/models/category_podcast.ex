@@ -9,6 +9,12 @@ defmodule PanWeb.CategoryPodcast do
     belongs_to(:category, PanWeb.Category, primary_key: true)
   end
 
+  def changeset(struct, params \\ %{}) do
+    struct
+    |> cast(params, [:podcast_id, :category_id])
+    |> validate_required([:podcast_id, :category_id])
+  end
+
   def get_or_insert(category_id, podcast_id) do
     category_podcast =
       Repo.get_by(PanWeb.CategoryPodcast,
