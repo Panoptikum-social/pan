@@ -256,6 +256,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, get_records(socket)}
   end
 
+  def handle_event("associate", _, socket) do
+    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    send self(), {:associate_to, selected_record_id}
+    {:noreply, socket}
+  end
+
   def get_records(socket) do
     a = socket.assigns
 
@@ -355,6 +361,16 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               ✂️ Unlink
             </button>
 
+            <button :if={{ :new_mediating in @additional_actions }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
+                    phx-click="associate"
+                    phx-target={{ @myself }}>
+              ↔️ New association
+            </button>
+
             <LiveRedirect :if={{ @show_navigation }}
                           to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                           label="🆕 New"
@@ -372,7 +388,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
 
-          <button :if={{ @show_navigation && :link in @additional_actions }}
+          <button :if={{ @show_navigation && :assignment_filter in @additional_actions }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Show unassigned", else: "Hide unassigned" }}

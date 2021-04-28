@@ -445,6 +445,14 @@ defmodule PanWeb.Router do
     )
 
     live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
+
+    live(
+      "/databrowser/:resource/new/:first_column/:first_id/:second_column/:second_id",
+      Live.Admin.Databrowser.NewAssociation,
+      :new_association,
+      as: :databrowser
+    )
+
     live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
     live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
 

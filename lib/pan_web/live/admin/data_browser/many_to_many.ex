@@ -4,6 +4,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   alias PanWeb.Surface.Admin.IndexGrid
   import Ecto.Query
   alias Pan.Repo
+  alias PanWeb.Router.Helpers, as: Routes
 
   def mount(
         %{
@@ -20,7 +21,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
     owner_model = Naming.model_from_resource(owner_string)
     association = owner.__schema__(:association, association_atom)
     join_keys = association.join_keys |> Keyword.keys()
-    join_through = Naming.model_from_join_through(association.join_through)
+    join_through = association.join_through
+    join_through_model = Naming.model_from_join_through(association.join_through)
     children_id_column = join_keys |> List.last()
 
     children_ids =
@@ -32,7 +34,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       |> Enum.map(&Map.get(&1, children_id_column))
 
     model = association.related
-    join_through_model = Naming.model_from_join_through(association.join_through)
+
 
     cols =
       (Naming.index_fields(model) || model.__schema__(:fields))
@@ -50,6 +52,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
      assign(socket,
        owner_model: owner_model,
        owner_cols: owner_cols,
+       join_through: join_through,
+       join_keys: join_keys,
        join_through_model: join_through_model,
        join_through_cols: join_through_cols,
        model: model,
@@ -57,7 +61,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
        owner_search_filter: {:id, owner_id},
        join_search_filter: {elem(hd(association.join_keys), 0), owner_id},
        search_filter: {:id, children_ids}
-    )}
+     )}
   end
 
   defp map_to_cols(model, column) do
@@ -68,6 +72,23 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       searchable: true,
       sortable: true
     }
+  end
+
+  def handle_info({:associate_to, related_id}, socket) do
+    {:id, owner_id} = socket.assigns.owner_search_filter
+
+    new_association_path =
+      Routes.databrowser_path(
+        socket,
+        :new_association,
+        socket.assigns.join_through,
+        hd(socket.assigns.join_keys),
+        owner_id,
+        hd(tl(socket.assigns.join_keys)),
+        related_id
+      )
+
+    {:noreply, push_redirect(socket, to: new_association_path)}
   end
 
   def render(assigns) do
@@ -96,7 +117,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
                model={{ @model }}
                cols={{ @cols }}
-               search_filter={{ @search_filter }}>
+               search_filter={{ @search_filter }}
+               additional_actions={{ [:new_mediating, :assignment_filter] }}>
     </IndexGrid>
     """
   end

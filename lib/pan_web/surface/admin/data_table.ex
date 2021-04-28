@@ -45,11 +45,19 @@ defmodule PanWeb.Surface.Admin.DataTable do
 
   defp dyed?(record, assigns) do
     if assigns.search_filter != {} do
-      {column, value} = assigns.search_filter
-      !assigns.hide_filtered && Map.get(record, column) == value
+      {column, value_s} = assigns.search_filter
+      !assigns.hide_filtered && associated?(record, column, value_s)
     else
       false
     end
+  end
+
+  def associated?(record, column, values) when is_list(values) do
+    Map.get(record, column) in values
+  end
+
+  def associated?(record, column, value) when is_integer(value) do
+    Map.get(record, column) == value
   end
 
   defp selected?(record, selected_records) do
