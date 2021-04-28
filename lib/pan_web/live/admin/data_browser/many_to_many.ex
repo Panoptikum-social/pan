@@ -108,7 +108,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                model={{ @join_through_model }}
                cols={{ @join_through_cols }}
                search_filter={{ @join_search_filter }}
-               buttons={{ [:show, :edit, :delete, :new, :pagination, :number_of_records] }}>
+               buttons={{ [:show, :edit, :delete, :new, :pagination,
+                           :number_of_records, :search] }}>
     </IndexGrid>
 
     <hr class="border-gray" />
@@ -119,7 +120,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                cols={{ @cols }}
                search_filter={{ @search_filter }}
                buttons={{ [:show, :edit, :pagination, :number_of_records,
-                           :new_mediating, :assignment_filter] }}>
+                           :new_mediating, :assignment_filter, :search] }}>
     </IndexGrid>
     """
   end

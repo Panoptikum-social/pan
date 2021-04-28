@@ -28,7 +28,8 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
                heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
                model={{ @model }}
                cols={{ @cols }}
-               buttons={{ [:show, :edit, :delete, :new, :pagination, :number_of_records] }}/>
+               buttons={{ [:show, :edit, :delete, :new, :pagination,
+                           :number_of_records, :search] }}/>
     """
   end
 end

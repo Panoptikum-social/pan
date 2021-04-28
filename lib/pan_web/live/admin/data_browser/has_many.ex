@@ -68,7 +68,8 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
           cols={{ @cols }}
           search_filter={{ @search_filter }}
           per_page=20
-          buttons={{ [:show, :edit, :delete, :new, :pagination, :number_of_records, :link, :assignment_filter, :search] }} >
+          buttons={{ [:show, :edit, :delete, :new, :pagination,
+                      :number_of_records, :link, :assignment_filter, :search] }} >
     </IndexGrid>
     """
   end
