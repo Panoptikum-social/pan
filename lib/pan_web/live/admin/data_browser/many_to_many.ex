@@ -32,10 +32,15 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       |> Enum.map(&Map.get(&1, children_id_column))
 
     model = association.related
+    join_through_model = Naming.model_from_join_through(association.join_through)
 
     cols =
       (Naming.index_fields(model) || model.__schema__(:fields))
       |> Enum.map(&map_to_cols(model, &1))
+
+    join_through_cols =
+      (Naming.index_fields(join_through_model) || join_through_model.__schema__(:fields))
+      |> Enum.map(&map_to_cols(join_through_model, &1))
 
     owner_cols =
       (Naming.index_fields(owner_model) || owner_model.__schema__(:fields))
@@ -43,13 +48,16 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
     {:ok,
      assign(socket,
-       model: model,
-       cols: cols,
        owner_model: owner_model,
        owner_cols: owner_cols,
-       search_filter: {:id, children_ids},
-       owner_search_filter: {:id, owner_id}
-     )}
+       join_through_model: join_through_model,
+       join_through_cols: join_through_cols,
+       model: model,
+       cols: cols,
+       owner_search_filter: {:id, owner_id},
+       join_search_filter: {elem(hd(association.join_keys), 0), owner_id},
+       search_filter: {:id, children_ids}
+    )}
   end
 
   defp map_to_cols(model, column) do
@@ -75,15 +83,20 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
     <hr class="border-gray" />
 
-    join_through Grid
+    <IndexGrid id="join_through_table"
+               heading={{ "Join Through " <> Naming.model_in_plural(@join_through_model) }}
+               model={{ @join_through_model }}
+               cols={{ @join_through_cols }}
+               search_filter={{ @join_search_filter }}>
+    </IndexGrid>
 
     <hr class="border-gray" />
 
     <IndexGrid id="many_to_many_table"
-          heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
-          model={{ @model }}
-          cols={{ @cols }}
-          search_filter={{ @search_filter }}>
+               heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
+               model={{ @model }}
+               cols={{ @cols }}
+               search_filter={{ @search_filter }}>
     </IndexGrid>
     """
   end

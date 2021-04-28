@@ -372,7 +372,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
 
-          <button :if={{ tuple_size(@search_filter) > 0 && @show_navigation }}
+          <button :if={{ @show_navigation && :link in @additional_actions }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Show unassigned", else: "Hide unassigned" }}
