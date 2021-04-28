@@ -135,7 +135,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
     try do
       QueryBuilder.delete(model, record)
-      socket = assign(socket, selected_records: [])
+      socket = assign(socket, selected_records: [], request_confirmation: false)
       {:noreply, get_records(socket)}
     rescue
       e in Postgrex.Error ->
