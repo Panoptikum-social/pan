@@ -105,4 +105,18 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     from(r in model, where: ^Enum.map(primary_key, &{&1, values[&1]}))
     |> Repo.one!()
   end
+
+  def set_belongs_to(assigns, ids) do
+    {column, value} = assigns.search_filter
+
+    from(r in assigns.model, where: r.id in ^ids)
+    |> Repo.update_all(set: [{column, value}])
+  end
+
+  def clear_belongs_to(assigns, ids) do
+    {column, _} = assigns.search_filter
+
+    from(r in assigns.model, where: r.id in ^ids)
+    |> Repo.update_all(set: [{column, nil}])
+  end
 end
