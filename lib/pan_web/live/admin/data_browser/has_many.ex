@@ -19,35 +19,15 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
     owner_id = String.to_integer(owner_id_string)
     association = owner_model.__schema__(:association, association_atom)
     related_key = association.related_key
-
     model = association.related
-    columns = Naming.index_fields(model) || model.__schema__(:fields)
 
     cols =
-      Enum.map(
-        columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(model, &1),
-          searchable: true,
-          sortable: true
-        }
-      )
-
-    owner_columns = Naming.index_fields(owner_model) || owner_model.__schema__(:fields)
+      (Naming.index_fields(model) || model.__schema__(:fields))
+      |> Enum.map(&map_to_cols(model, &1))
 
     owner_cols =
-      Enum.map(
-        owner_columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(owner_model, &1),
-          searchable: true,
-          sortable: true
-        }
-      )
+      (Naming.index_fields(owner_model) || owner_model.__schema__(:fields))
+      |> Enum.map(&map_to_cols(owner_model, &1))
 
     {:ok,
      assign(socket,
@@ -59,6 +39,16 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
        search_filter: {related_key, owner_id},
        owner_search_filter: {:id, owner_id}
      )}
+  end
+
+  defp map_to_cols(model, column) do
+    %{
+      field: column,
+      label: Naming.title_from_field(column),
+      type: Naming.type_of_field(model, column),
+      searchable: true,
+      sortable: true
+    }
   end
 
   def render(assigns) do
@@ -73,8 +63,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
     </IndexGrid>
 
     <IndexGrid id="has_many_table"
-          heading={{ raw(HTML.safe_to_string(Tag.content_tag(:span, "has many", class: "italic mr-2")) <>
-                     Naming.model_in_plural(@model)) }}
+          heading={{ "Has Many " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}
