@@ -6,19 +6,23 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   alias Phoenix.HTML.Tag
 
   def mount(
-    %{"owner" => owner_string, "owner_id" => owner_id_string, "association" => association_name},
-    _session,
-    socket
-  ) do
-
+        %{
+          "owner" => owner_string,
+          "owner_id" => owner_id_string,
+          "association" => association_name
+        },
+        _session,
+        socket
+      ) do
     association_atom = String.to_atom(association_name)
-    owner_model =  Naming.model_from_resource(owner_string)
+    owner_model = Naming.model_from_resource(owner_string)
     owner_id = String.to_integer(owner_id_string)
     association = owner_model.__schema__(:association, association_atom)
     related_key = association.related_key
 
     model = association.related
     columns = Naming.index_fields(model) || model.__schema__(:fields)
+
     cols =
       Enum.map(
         columns,
@@ -31,18 +35,19 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
         }
       )
 
-      owner_columns = Naming.index_fields(owner_model) || owner_model.__schema__(:fields)
-      owner_cols =
-        Enum.map(
-          owner_columns,
-          &%{
-            field: &1,
-            label: Naming.title_from_field(&1),
-            type: Naming.type_of_field(owner_model, &1),
-            searchable: true,
-            sortable: true
-          }
-        )
+    owner_columns = Naming.index_fields(owner_model) || owner_model.__schema__(:fields)
+
+    owner_cols =
+      Enum.map(
+        owner_columns,
+        &%{
+          field: &1,
+          label: Naming.title_from_field(&1),
+          type: Naming.type_of_field(owner_model, &1),
+          searchable: true,
+          sortable: true
+        }
+      )
 
     {:ok,
      assign(socket,
@@ -56,17 +61,10 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
      )}
   end
 
-  def module_name(model) do
-    model
-    |> to_string
-    |> String.split(".")
-    |> List.last
-  end
-
   def render(assigns) do
     ~H"""
     <IndexGrid id="owner_table"
-          heading={{ module_name(@owner_model) }}
+          heading={{ Naming.module_without_namespace(@owner_model) }}
           model={{ @owner_model }}
           cols={{ @owner_cols }}
           search_filter={{ @owner_search_filter }}

@@ -17,6 +17,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
     association_atom = String.to_atom(association_name)
     owner = Naming.model_from_resource(owner_string)
     owner_id = String.to_integer(owner_id_string)
+    owner_model = Naming.model_from_resource(owner_string)
     association = owner.__schema__(:association, association_atom)
     join_keys = association.join_keys |> Keyword.keys()
     join_through = Naming.model_from_join_through(association.join_through)
@@ -45,18 +46,50 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
         }
       )
 
+    owner_columns = Naming.index_fields(owner_model) || owner_model.__schema__(:fields)
+
+    owner_cols =
+      Enum.map(
+        owner_columns,
+        &%{
+          field: &1,
+          label: Naming.title_from_field(&1),
+          type: Naming.type_of_field(owner_model, &1),
+          searchable: true,
+          sortable: true
+        }
+      )
+
     {:ok,
      assign(socket,
        model: model,
        cols: cols,
-       search_filter: {:id, children_ids}
+       owner_model: owner_model,
+       owner_cols: owner_cols,
+       search_filter: {:id, children_ids},
+       owner_search_filter: {:id, owner_id}
      )}
   end
 
   def render(assigns) do
     ~H"""
+    <IndexGrid id="owner_table"
+               heading={{ Naming.module_without_namespace(@owner_model) }}
+               model={{ @owner_model }}
+               cols={{ @owner_cols }}
+               search_filter={{ @owner_search_filter }}
+               per_page=1
+               show_navigation={{ false }}>
+    </IndexGrid>
+
+    <hr class="border-gray" />
+
+    join_through Grid
+
+    <hr class="border-gray" />
+
     <IndexGrid id="many_to_many_table"
-          heading={{ "Listing " <> Naming.model_in_plural(@model) }}
+          heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
           model={{ @model }}
           cols={{ @cols }}
           search_filter={{ @search_filter }}>
