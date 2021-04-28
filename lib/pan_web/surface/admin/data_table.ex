@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(cols, :list, required: true)
   prop(sort_by, :atom, required: false, default: :id)
   prop(sort_order, :atom, required: false, default: :asc)
-  prop(show_navigation, :boolean, required: false, default: true)
+  prop(buttons, :list, required: true)
   prop(model, :module, required: true)
   prop(search_options, :map, required: false, default: %{})
   prop(page, :integer, required: false, default: 1)
@@ -68,21 +68,12 @@ defmodule PanWeb.Surface.Admin.DataTable do
     Enum.all?(Map.keys(selected_record), &(Map.get(record, &1) == Map.get(selected_record, &1)))
   end
 
-  defp grid_style(columns, show_navigation) do
-    if show_navigation do
-      "grid-template-columns: 6rem " <> (Enum.map(columns, &width(&1.type)) |> Enum.join(" ")) <> ";"
-    else
-      "grid-template-columns: " <> (Enum.map(columns, &width(&1.type)) |> Enum.join(" ")) <> ";"
-    end
-  end
-
   def render(assigns) do
     ~H"""
     <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={{ grid_style(@columns, @show_navigation) }}>
-      <div :if={{ @show_navigation}}
-           class="bg-white italic grid place-content-center text-sm text-center px-1">
-         Search Mode
+         style={{ "grid-template-columns: 6rem " <> (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";" }}>
+      <div class="bg-white italic grid place-content-center text-sm text-center px-1">
+         <span :if={{ :search in @buttons }}>Search Mode</span>
       </div>
       <div :for={{ column <- @columns }}
            class="bg-white italic grid place-content-center text-sm text-center">
@@ -94,34 +85,33 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </SortLink>
       </div>
 
-      <div :if={{ @show_navigation }}
+      <div :if={{ :search in @buttons }}
            class="bg-gray-lighter text-center p-1">
-      <Link to="#"
-            click={{"cycle_search_mode", target: "#" <> @target }}
-            label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
-            class="text-link hover:text-link-dark underline" />
+        <Link to="#"
+              click={{"cycle_search_mode", target: "#" <> @target }}
+              label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
+              class="text-link hover:text-link-dark underline" />
       </div>
 
-      <div :if={{ @show_navigation }}
+      <div :if={{ :search in @buttons }}
            :for={{ column <- @columns }}
            class={{ "bg-gray-lighter p-1",
                     "text-right": column.type == :integer}}>
-      <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not }}
-            for={{ :search }}
-            change={{"search", target: "#" <> @target }}
-            opts={{ autocomplete: "off" }}>
-        <TextInput field={{ column.field }}
-                  value={{ @search_options[column.field] }}
-                  class={{ "p-0.5 w-full"}}
-                  opts={{ autofocus: "autofocus",
-                          autocomplete: "off",
-                          "phx-debounce": 300 }} />
-      </Form>
+        <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not }}
+              for={{ :search }}
+              change={{"search", target: "#" <> @target }}
+              opts={{ autocomplete: "off" }}>
+          <TextInput field={{ column.field }}
+                    value={{ @search_options[column.field] }}
+                    class={{ "p-0.5 w-full"}}
+                    opts={{ autofocus: "autofocus",
+                            autocomplete: "off",
+                            "phx-debounce": 300 }} />
+        </Form>
       </div>
 
       <For each={{ {record, index} <- Enum.with_index(@records) }}>
-        <div :if={{ @show_navigation }}
-             class={{ "text-center",
+        <div class={{ "text-center",
                       "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
                       "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
                       "bg-sunflower-lighter": dyed?(record, assigns) }}>

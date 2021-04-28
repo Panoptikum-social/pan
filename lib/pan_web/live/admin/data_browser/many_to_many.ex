@@ -35,7 +35,6 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
     model = association.related
 
-
     cols =
       (Naming.index_fields(model) || model.__schema__(:fields))
       |> Enum.map(&map_to_cols(model, &1))
@@ -99,7 +98,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                cols={{ @owner_cols }}
                search_filter={{ @owner_search_filter }}
                per_page=1
-               show_navigation={{ false }}>
+               buttons={{ [:show, :edit] }}>
     </IndexGrid>
 
     <hr class="border-gray" />
@@ -108,7 +107,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                heading={{ "Join Through " <> Naming.model_in_plural(@join_through_model) }}
                model={{ @join_through_model }}
                cols={{ @join_through_cols }}
-               search_filter={{ @join_search_filter }}>
+               search_filter={{ @join_search_filter }}
+               buttons={{ [:show, :edit, :delete, :new, :pagination, :number_of_records] }}>
     </IndexGrid>
 
     <hr class="border-gray" />
@@ -118,7 +118,8 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                model={{ @model }}
                cols={{ @cols }}
                search_filter={{ @search_filter }}
-               additional_actions={{ [:new_mediating, :assignment_filter] }}>
+               buttons={{ [:show, :edit, :pagination, :number_of_records,
+                           :new_mediating, :assignment_filter] }}>
     </IndexGrid>
     """
   end

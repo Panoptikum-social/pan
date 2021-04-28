@@ -12,9 +12,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(cols, :list, required: false, default: [])
   prop(search_filter, :tuple, default: {})
   prop(per_page, :integer, default: 20)
-  prop(show_navigation, :boolean, required: false, default: true)
   prop(class, :css_class, required: false)
-  prop(additional_actions, :list, required: false, default: [])
+  prop(buttons, :list, required: true)
   prop(records, :list, default: [])
 
   data(selected_records, :list, default: [])
@@ -288,11 +287,11 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           {{ @heading }}
         </h2>
 
-        <div :if={{ @show_navigation }}
-            class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
+        <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="border-r border-gray flex">
-            <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button :if={{ :show in @buttons }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
@@ -301,7 +300,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     🔍 Show
             </button>
 
-            <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button :if={{ :edit in @buttons }}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     :attrs={{ disabled: Tools.disabled?(:one, @selected_records |> length) }}
@@ -310,7 +310,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     🖊️ Edit
             </button>
 
-            <button :if={{ !@request_confirmation }}
+            <button :if={{ !@request_confirmation && :delete in @buttons }}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
@@ -341,7 +341,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               </button>
             </div>
 
-            <button :if={{ :link in @additional_actions }}
+            <button :if={{ :link in @buttons }}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
@@ -351,7 +351,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               🔗 Link
             </button>
 
-            <button :if={{ :link in @additional_actions }}
+            <button :if={{ :link in @buttons }}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
@@ -361,7 +361,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               ✂️ Unlink
             </button>
 
-            <button :if={{ :new_mediating in @additional_actions }}
+            <button :if={{ :new_mediating in @buttons }}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
@@ -371,14 +371,15 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               ↔️ New association
             </button>
 
-            <LiveRedirect :if={{ @show_navigation }}
+            <LiveRedirect :if={{ :new in @buttons }}
                           to={{ Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper} }}
                           label="🆕 New"
                           class="border border-gray bg-white hover:bg-gray-lightest py-0.5
                                 lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />
           </div>
 
-          <div class="px-4 border-r border-gray">
+          <div :if={{ :number_of_records in @buttons }}
+               class="px-4 border-r border-gray">
             <PerPageLink delta="-5" target={{ @myself }}/>
             <PerPageLink delta="-3" target={{ @myself }}/>
             <PerPageLink delta="-1" target={{ @myself }}/>
@@ -388,14 +389,14 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <PerPageLink delta="+5" target={{ @myself }}/>
           </div>
 
-          <button :if={{ @show_navigation && :assignment_filter in @additional_actions }}
+          <button :if={{ :assignment_filter in @buttons }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {{ if @hide_filtered, do: "Show unassigned", else: "Hide unassigned" }}
           </button>
         </div>
 
-        <Pagination :if={{ @show_navigation }}
+        <Pagination :if={{ :pagination in @buttons }}
                     per_page={{ @per_page}}
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
@@ -412,7 +413,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    path_helper={{ @path_helper }}
                    sort_by={{ @sort_by}}
                    sort_order={{ @sort_order }}
-                   show_navigation={{ @show_navigation }}
+                   buttons={{ @buttons }}
                    page={{ @page }}
                    search_mode={{ @search_mode }}
                    hide_filtered={{ @hide_filtered }}
