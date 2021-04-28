@@ -375,7 +375,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           <button :if={{ tuple_size(@search_filter) > 0 && @show_navigation }}
                   :on-click={{"toggle_hide_filtered", target: @myself }}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
-            {{ if @hide_filtered, do: "Unrelated are hidden", else: "Assigned are dyed" }}
+            {{ if @hide_filtered, do: "Show unassigned", else: "Hide unassigned" }}
           </button>
         </div>
 
