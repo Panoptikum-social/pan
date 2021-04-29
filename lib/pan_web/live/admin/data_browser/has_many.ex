@@ -57,22 +57,25 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   def render(assigns) do
     ~H"""
     <IndexGrid id="owner_table"
-          heading={{ Naming.module_without_namespace(@owner_model) }}
-          model={{ @owner_model }}
-          cols={{ @owner_cols }}
-          search_filter={{ @owner_search_filter }}
-          per_page=1
-          buttons={{ [:show, :edit] }}>
+               color_class="from-grapefruit-light via-grapefruit to-grapefruit-light"
+               heading={{ Naming.module_without_namespace(@owner_model) }}
+               model={{ @owner_model }}
+               cols={{ @owner_cols }}
+               search_filter={{ @owner_search_filter }}
+               per_page=1
+               buttons={{ [:show, :edit] }}>
     </IndexGrid>
 
     <IndexGrid id="has_many_table"
-          heading={{ "Has Many " <> Naming.model_in_plural(@model) }}
-          model={{ @model }}
-          cols={{ @cols }}
-          search_filter={{ @search_filter }}
-          per_page=20
-          buttons={{ [:show, :edit, :delete, :new, :pagination,
-                      :number_of_records, :link, :assignment_filter, :search] }} >
+               class="mt-8"
+               color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
+               heading={{ "Has Many " <> Naming.model_in_plural(@model) }}
+               model={{ @model }}
+               cols={{ @cols }}
+               search_filter={{ @search_filter }}
+               per_page=20
+               buttons={{ [:show, :edit, :delete, :new, :pagination,
+                           :number_of_records, :link, :assignment_filter, :search] }} >
     </IndexGrid>
     """
   end

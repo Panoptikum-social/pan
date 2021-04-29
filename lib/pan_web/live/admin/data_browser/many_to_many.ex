@@ -98,6 +98,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   def render(assigns) do
     ~H"""
     <IndexGrid id="owner_table"
+               color_class="from-pink-rose-light via-pink-rose to-pink-rose-light"
                heading={{ Naming.module_without_namespace(@owner_model) }}
                model={{ @owner_model }}
                cols={{ @owner_cols }}
@@ -106,9 +107,9 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                buttons={{ [:show, :edit] }}>
     </IndexGrid>
 
-    <hr class="border-gray" />
-
     <IndexGrid id="join_through_table"
+               class="mt-8"
+               color_class="from-lavender-light via-lavender to-lavender-light"
                heading={{ "Join Through " <> Naming.model_in_plural(@join_through_model) }}
                model={{ @join_through_model }}
                cols={{ @join_through_cols }}
@@ -117,9 +118,9 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                            :number_of_records, :search] }}>
     </IndexGrid>
 
-    <hr class="border-gray" />
-
     <IndexGrid id="many_to_many_table"
+               class="mt-8"
+               color_class="from-mint-light via-mint to-mint-light"
                heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
                model={{ @model }}
                cols={{ @cols }}

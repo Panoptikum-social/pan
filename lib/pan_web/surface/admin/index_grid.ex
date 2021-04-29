@@ -15,6 +15,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(class, :css_class, required: false)
   prop(buttons, :list, required: true)
   prop(records, :list, default: [])
+  prop(color_class, :css_class, required: false, default: "from-bittersweet-light via-bittersweet to-bittersweet-light")
 
   data(selected_records, :list, default: [])
   data(request_confirmation, :boolean, default: false)
@@ -310,9 +311,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   def render(assigns) do
     ~H"""
     <div id={{ @id }}>
-      <div class={{ "m-2 border border-gray rounded", @class }}>
-        <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
-                  via-gray-lighter to-gray-light font-mono">
+      <div class={{ "m-2 border border-gray rounded shadow-lg", @class }}>
+        <h2 class={{ "p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
+                      font-mono text-white font-semibold rounded-t", @color_class }}>
           {{ @heading }}
         </h2>
 
