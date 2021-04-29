@@ -7,12 +7,24 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     if Map.has_key?(record, :elastic), do: model.delete_search_index(record.id)
   end
 
-  def load(model, criteria, cols) when is_list(criteria) do
+  def load(model, criteria, cols) do
     from(r in model)
     |> apply_criteria(criteria)
     |> select_columns(cols)
     |> Repo.all()
   end
+
+  def count_filtered(model, criteria) do
+    from(r in model)
+    |> apply_criteria(criteria)
+    |> Repo.aggregate(:count)
+  end
+
+  def count_unfiltered(model) do
+    from(r in model)
+    |> Repo.aggregate(:count)
+  end
+
 
   defp apply_criteria(query, criteria) do
     Enum.reduce(criteria, query, &apply_criterium(&1, &2))

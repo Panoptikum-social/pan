@@ -17,8 +17,8 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
     {:ok, assign(socket, model: model, cols: cols, resource: resource)}
   end
 
-  def handle_info({:items, records}, socket) do
-    send_update(IndexGrid, id: "index_table", records: records)
+  def handle_info({:count, id: id, module: module}, socket) do
+    send_update(module, id: id, count: :now)
     {:noreply, socket}
   end
 

@@ -2,8 +2,11 @@ defmodule PanWeb.Surface.Admin.Pagination do
   use Surface.Component
   alias PanWeb.Surface.Admin.PaginationLink
 
-  prop(per_page, :integer, required: false, default: 10)
-  prop(page, :integer, required: false, default: 1)
+  prop(page, :integer, required: true)
+  prop(per_page, :integer, required: true)
+  prop(nr_of_pages, :integer, required: true)
+  prop(nr_of_unfiltered, :integer, required: true)
+  prop(nr_of_filtered, :integer, required: true)
   prop(class, :css_class, required: false)
   prop(target, :string, required: true)
 
@@ -25,7 +28,9 @@ defmodule PanWeb.Surface.Admin.Pagination do
                         target={{ @target }} >
           {{ i }}
         </PaginationLink>
-        <span :if={{ i == @page}}>Page {{ i }}</span>
+        <span :if={{ i == @page}}>
+          Page {{ i }} of {{ if @nr_of_pages > 0, do: @nr_of_pages, else: "?? " }}
+        </span>
       </For>
       <PaginationLink page={{ @page + 1 }}
                       per_page={{ @per_page }}
@@ -33,6 +38,12 @@ defmodule PanWeb.Surface.Admin.Pagination do
                       target={{ @target }} >
         Next
       </PaginationLink>
+
+      <span>
+        Records {{ (@page - 1) * @per_page + 1 }} to {{ min((@page * @per_page), @nr_of_filtered) }} of
+        {{ if @nr_of_filtered > 0, do: @nr_of_filtered, else: "??" }}
+        ({{ if @nr_of_unfiltered > 0, do: @nr_of_unfiltered, else: "??" }} unfiltered)
+      </span>
     </div>
     """
   end

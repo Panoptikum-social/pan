@@ -2,8 +2,6 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.IndexGrid
-  alias Phoenix.HTML
-  alias Phoenix.HTML.Tag
 
   def mount(
         %{

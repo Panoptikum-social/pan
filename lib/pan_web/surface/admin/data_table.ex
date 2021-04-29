@@ -10,7 +10,6 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(buttons, :list, required: true)
   prop(model, :module, required: true)
   prop(search_options, :map, required: false, default: %{})
-  prop(page, :integer, required: false, default: 1)
   prop(search_mode, :atom, required: false, default: :exact)
   prop(hide_filtered, :boolean, required: false, default: true)
   prop(records, :list, required: false, default: [])

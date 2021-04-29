@@ -25,6 +25,31 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(primary_key, :list, default: [])
+  data(nr_of_pages, :integer, default: -1)
+  data(nr_of_unfiltered, :integer, default: -1)
+  data(nr_of_filtered, :integer, default: -1)
+
+  def update(%{count: :now}, socket) do
+    search_criteria = [
+      search: %{
+        options: socket.assigns.search_options,
+        filter: socket.assigns.search_filter,
+        mode: socket.assigns.search_mode,
+        hide: false
+      }
+    ]
+
+    nr_of_filtered = QueryBuilder.count_filtered(socket.assigns.model, search_criteria)
+    nr_of_pages = round(nr_of_filtered / socket.assigns.per_page + 0.5)
+    nr_of_unfiltered = QueryBuilder.count_unfiltered(socket.assigns.model)
+
+    {:ok,
+     assign(socket,
+       nr_of_filtered: nr_of_filtered,
+       nr_of_unfiltered: nr_of_unfiltered,
+       nr_of_pages: nr_of_pages
+     )}
+  end
 
   def update(assigns, socket) do
     primary_key = assigns.model.__schema__(:primary_key)
@@ -257,25 +282,29 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("associate", _, socket) do
     selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send self(), {:associate_to, selected_record_id}
+    send(self(), {:associate_to, selected_record_id})
     {:noreply, socket}
   end
 
   def get_records(socket) do
-    a = socket.assigns
+    records =
+      QueryBuilder.load(socket.assigns.model, criteria(socket.assigns), socket.assigns.cols)
 
-    criteria = [
-      paginate: %{page: a.page, per_page: a.per_page},
-      sort: %{by: a.sort_by, order: a.sort_order},
+    send(self(), {:count, id: socket.assigns.id, module: __MODULE__})
+    assign(socket, records: records)
+  end
+
+  def criteria(assigns) do
+    [
+      paginate: %{page: assigns.page, per_page: assigns.per_page},
+      sort: %{by: assigns.sort_by, order: assigns.sort_order},
       search: %{
-        options: a.search_options,
-        filter: a.search_filter,
-        mode: a.search_mode,
-        hide: a.hide_filtered
+        options: assigns.search_options,
+        filter: assigns.search_filter,
+        mode: assigns.search_mode,
+        hide: assigns.hide_filtered
       }
     ]
-
-    assign(socket, records: QueryBuilder.load(a.model, criteria, a.cols))
   end
 
   def render(assigns) do
@@ -400,8 +429,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     per_page={{ @per_page}}
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
+                    target={{ @myself }}
                     page={{ @page }}
-                    target={{ @myself }} />
+                    per_page={{ @per_page }}
+                    nr_of_pages={{ @nr_of_pages }}
+                    nr_of_unfiltered={{ @nr_of_unfiltered }}
+                    nr_of_filtered={{ @nr_of_filtered }} />
 
         <DataTable id={{ "index_table-" <> @id }}
                    target={{ @id }}
@@ -414,7 +447,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                    sort_by={{ @sort_by}}
                    sort_order={{ @sort_order }}
                    buttons={{ @buttons }}
-                   page={{ @page }}
                    search_mode={{ @search_mode }}
                    hide_filtered={{ @hide_filtered }}
                    search_options={{ @search_options }}
