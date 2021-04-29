@@ -90,6 +90,11 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
     {:noreply, push_redirect(socket, to: new_association_path)}
   end
 
+  def handle_info({:count, id: id, module: module}, socket) do
+    send_update(module, id: id, count: :now)
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <IndexGrid id="owner_table"

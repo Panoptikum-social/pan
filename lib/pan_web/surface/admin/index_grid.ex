@@ -35,7 +35,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         options: socket.assigns.search_options,
         filter: socket.assigns.search_filter,
         mode: socket.assigns.search_mode,
-        hide: false
+        hide: socket.assigns.hide_filtered
       }
     ]
 
