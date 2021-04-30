@@ -349,7 +349,7 @@ defmodule PanWeb.Router do
     get("/images/datatable", ImageController, :datatable)
     get("/images/cache_missing", ImageController, :cache_missing)
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
-    resources("/images", ImageController)
+    resources("/images", ImageController, only: [:create])
 
     get("/podcasts/datatable_stale", PodcastController, :datatable_stale)
     get("/podcasts/delta_import_all", PodcastController, :delta_import_all)

@@ -32,26 +32,9 @@ defmodule PanWeb.UserView do
         method: :post
       ),
       " ",
-      link("Show",
-        to: path.(Endpoint, :show, record.id),
-        class: "btn btn-default btn-xs"
-      ),
-      " ",
-      link("Edit",
-        to: path.(Endpoint, :edit, record.id),
-        class: "btn btn-warning btn-xs"
-      ),
-      " ",
       link("Edit Password",
         to: path.(Endpoint, :edit_password, record.id),
         class: "btn btn-info btn-xs"
-      ),
-      " ",
-      link("Delete",
-        to: path.(Endpoint, :delete, record.id),
-        class: "btn btn-danger btn-xs",
-        method: :delete,
-        data: [confirm: "Are you sure?"]
       ),
       "</nobr>"
     ]

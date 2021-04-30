@@ -1,6 +1,0 @@
-<h2>Edit image</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: image_path(@conn, :update, @image) %>
-
-<%= link "Back", to: image_path(@conn, :index) %>

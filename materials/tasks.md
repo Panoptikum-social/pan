@@ -3,9 +3,13 @@
 ## Next Action
 
 * move nearest color & sandbox into admin
+* uploading images
+* uploading invoices
 * Feed:    <%= link "Make primary", to: feed_path(@conn, :make_only, feed),
                                     class: "btn btn-warning btn-xs",
                                     method: :post %>
+* A way to inspect the images (thumbnails) visually
+* Check all routes, if they are accessible by a link / menu item, ...
 * #FIXME! issues
 
 ## Longer Term
