@@ -4,6 +4,9 @@
 
 * move nearest color & sandbox into admin
 * Podcast: other admin views: factory, orphans, retirement, stale, duplicates
+* Feed:    <%= link "Make primary", to: feed_path(@conn, :make_only, feed),
+                                    class: "btn btn-warning btn-xs",
+                                    method: :post %>
 * #FIXME! issues
 
 ## Longer Term

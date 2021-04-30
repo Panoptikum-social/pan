@@ -304,9 +304,6 @@ defmodule PanWeb.Router do
       :remove_javascript_from_shownotes
     )
 
-    get("/rss_feeds/datatable", RssFeedController, :datatable)
-    resources("/rss_feeds", RssFeedController)
-
     get("/messages/datatable", MessageController, :datatable)
     resources("/messages", MessageController)
 
@@ -357,11 +354,8 @@ defmodule PanWeb.Router do
     resources("/users", UserController)
 
     post("/feeds/:id/make_only", FeedController, :make_only)
-    get("/feeds/datatable", FeedController, :datatable)
-    resources("/feeds", FeedController)
 
     post("/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog)
-    resources("/alternate_feeds", AlternateFeedController)
 
     get("/categories/datatable", CategoryController, :datatable)
     get("/categories/assign_podcasts", CategoryController, :assign_podcasts)
