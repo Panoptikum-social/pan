@@ -2,6 +2,7 @@
 
 ## Next Action
 
+* Translate (frontend) templates to Tailwind
 * move nearest color & sandbox into admin
 * uploading images
 * uploading invoices
