@@ -307,15 +307,6 @@ defmodule PanWeb.Router do
     get("/messages/datatable", MessageController, :datatable)
     resources("/messages", MessageController)
 
-    get("/recommendations/datatable", RecommendationController, :datatable)
-    resources("/recommendations", RecommendationController)
-
-    get("/likes/datatable", LikeController, :datatable)
-    resources("/likes", LikeController)
-
-    get("/follows/datatable", FollowController, :datatable)
-    resources("/follows", FollowController)
-
     get("/delegations/datatable", DelegationController, :datatable)
     resources("/delegations", DelegationController)
 
@@ -373,7 +364,6 @@ defmodule PanWeb.Router do
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController)
 
-    get("/podcasts/datatable", PodcastController, :datatable)
     get("/podcasts/datatable_stale", PodcastController, :datatable_stale)
     get("/podcasts/delta_import_all", PodcastController, :delta_import_all)
     get("/podcasts/:id/pause", PodcastController, :pause)
@@ -392,7 +382,6 @@ defmodule PanWeb.Router do
     get("/podcasts/factory", PodcastController, :factory)
     get("/podcasts/duplicates", PodcastController, :duplicates)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
-    resources("/podcasts", PodcastController, except: [:index, :show, :edit, :new])
 
     get("/manifestations/datatable", ManifestationController, :datatable)
     post("/manifestations/toggle", ManifestationController, :toggle)

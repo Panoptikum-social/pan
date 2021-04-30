@@ -1,13 +1,7 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{
-    Category,
-    Episode,
-    Feed,
-    Podcast,
-  }
-
+  alias PanWeb.{Category, Feed, Podcast}
   require Logger
 
   plug(:scrub_params, "podcast" when action in [:create, :update])
@@ -52,71 +46,6 @@ defmodule PanWeb.PodcastController do
 
     put_flash(conn, :info, "Podcasts assigned successfully.")
     |> redirect(to: podcast_path(conn, :orphans))
-  end
-
-  def index(conn, _params) do
-    render(conn, "index.html")
-  end
-
-  def datatable(conn, params) do
-    search = params["search"]["value"]
-    searchfrag = "%#{params["search"]["value"]}%"
-
-    limit = String.to_integer(params["length"])
-    offset = String.to_integer(params["start"])
-    draw = String.to_integer(params["draw"])
-
-    columns = params["columns"]
-
-    order_by =
-      Enum.map(params["order"], fn {_key, value} ->
-        column_number = value["column"]
-        {String.to_atom(value["dir"]), String.to_atom(columns[column_number]["data"])}
-      end)
-
-    records_total = Repo.aggregate(Podcast, :count, :id)
-
-    query =
-      if search != "" do
-        from(p in Podcast,
-          where:
-            ilike(p.title, ^searchfrag) or
-              ilike(p.website, ^searchfrag) or
-              ilike(fragment("cast (? as text)", p.id), ^searchfrag)
-        )
-      else
-        from(p in Podcast)
-      end
-
-    records_filtered =
-      query
-      |> Repo.aggregate(:count)
-
-    podcasts =
-      from(p in query,
-        limit: ^limit,
-        offset: ^offset,
-        order_by: ^order_by,
-        select: %{
-          id: p.id,
-          title: p.title,
-          update_paused: p.update_paused,
-          updated_at: p.updated_at,
-          update_intervall: p.update_intervall,
-          next_update: p.next_update,
-          website: p.website,
-          episodes_count: p.episodes_count,
-          failure_count: p.failure_count
-        }
-      )
-      |> Repo.all()
-
-    render(conn, "datatable.json",
-      podcasts: podcasts,
-      draw: draw,
-      records_total: records_total,
-      records_filtered: records_filtered
-    )
   end
 
   def stale(conn, _params) do
@@ -200,29 +129,6 @@ defmodule PanWeb.PodcastController do
       |> Repo.all()
 
     render(conn, "factory.html", podcasts: podcasts)
-  end
-
-  def show(conn, %{"id" => id}) do
-    podcast =
-      Repo.get!(Podcast, id)
-      |> Repo.preload(
-        episodes:
-          from(e in Episode,
-            order_by: [desc: e.publishing_date],
-            limit: 100
-          )
-      )
-      |> Repo.preload(episodes: :podcast)
-      |> Repo.preload(feeds: :podcast)
-      |> Repo.preload([:languages, :categories, :contributors])
-
-    render(conn, "show.html", podcast: podcast)
-  end
-
-  def edit(conn, %{"id" => id}) do
-    podcast = Repo.get!(Podcast, id)
-    changeset = Podcast.changeset(podcast)
-    render(conn, "edit.html", podcast: podcast, changeset: changeset)
   end
 
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do

@@ -86,10 +86,43 @@ defmodule PanWeb.Live.Admin.Dashboard do
       </Explorer>
 
       <div class="m-4">
+        <h2 class="text-2xl">Podcasts</h2>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Factory"
+                  to={{ Routes.podcast_path(@socket, :factory) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Orphans"
+                  to={{ Routes.podcast_path(@socket, :orphans) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Retirement"
+                  to={{ Routes.podcast_path(@socket, :retirement) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Stale"
+                  to={{ Routes.podcast_path(@socket, :stale) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Duplicates"
+                  to={{ Routes.podcast_path(@socket, :duplicates) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+        </ul>
+
         <h2 class="text-2xl">Episodes</h2>
-        <Link label="Remove duplicates"
-              to={{ Routes.episode_path(@socket, :remove_duplicates) }}
-              class="text-link hover:text-link-dark underline"/>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Remove duplicates"
+                  to={{ Routes.episode_path(@socket, :remove_duplicates) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+        </ul>
       </div>
     </div>
     """

@@ -1,6 +1,0 @@
-<h2>New like</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: like_path(@conn, :create) %>
-
-<%= link "Back", to: like_path(@conn, :index) %>
