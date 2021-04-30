@@ -304,12 +304,6 @@ defmodule PanWeb.Router do
       :remove_javascript_from_shownotes
     )
 
-    get("/messages/datatable", MessageController, :datatable)
-    resources("/messages", MessageController)
-
-    get("/delegations/datatable", DelegationController, :datatable)
-    resources("/delegations", DelegationController)
-
     get("/personas/datatable", PersonaController, :datatable)
     get("/personas/merge_candidates", PersonaController, :merge_candidates)
     get("/personas/merge_candidate_group", PersonaController, :merge_candidate_group)
