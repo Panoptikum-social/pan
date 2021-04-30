@@ -86,20 +86,8 @@ defmodule PanWeb.Surface.Admin.Naming do
       "episode" ->
         [:id, :guid, :title, :publishing_date]
 
-      "chapter" ->
-        [:id, :start, :title, :episode_id]
-
-      "enclosure" ->
-        [:id, :url, :length, :type, :guid, :episode_id]
-
       "feed" ->
         [:id, :self_link_title, :self_link_url, :feed_generator, :podcast_id]
-
-      "alternate_feed" ->
-        [:id, :title, :url, :feed_id]
-
-      "rss_feed" ->
-        [:id, :content, :podcast_id]
 
       _ ->
         nil

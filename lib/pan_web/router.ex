@@ -316,12 +316,6 @@ defmodule PanWeb.Router do
     get("/follows/datatable", FollowController, :datatable)
     resources("/follows", FollowController)
 
-    get("/subscriptions/datatable", SubscriptionController, :datatable)
-    resources("/subscriptions", SubscriptionController)
-
-    get("/engagements/datatable", EngagementController, :datatable)
-    resources("/engagements", EngagementController)
-
     get("/delegations/datatable", DelegationController, :datatable)
     resources("/delegations", DelegationController)
 
@@ -333,9 +327,6 @@ defmodule PanWeb.Router do
 
     get("/languages/datatable", LanguageController, :datatable)
     resources("/languages", LanguageController)
-
-    get("/gigs/datatable", GigController, :datatable)
-    resources("/gigs", GigController)
 
     get("/edit_password/:id", UserController, :edit_password)
     put("/update_password/:id", UserController, :update_password)
