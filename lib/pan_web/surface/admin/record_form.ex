@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.RecordForm do
   use Surface.LiveComponent
   alias Surface.Components.{Form, LiveRedirect}
-  alias PanWeb.Surface.Admin.{Naming, ColumnsFilter, QueryBuilder}
+  alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
   alias Surface.Components.Form.Field
   alias PanWeb.Surface.Submit
   alias Pan.Repo

@@ -3,6 +3,7 @@
 ## Next Action
 
 * move nearest color & sandbox into admin
+* Podcast: other admin views: factory, orphans, retirement, stale, duplicates
 * #FIXME! issues
 
 ## Longer Term

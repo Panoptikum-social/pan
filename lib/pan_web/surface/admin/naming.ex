@@ -27,14 +27,14 @@ defmodule PanWeb.Surface.Admin.Naming do
 
   def model_from_join_through(join_through) do
     Enum.filter(schemas(), &(&1.__schema__(:source) == join_through))
-    |> List.first
+    |> List.first()
   end
 
   def model_in_plural(model), do: model |> title_from_model |> pluralize
 
   def title_from_field(field) do
     field
-    |> Atom.to_string
+    |> Atom.to_string()
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
     |> Enum.join(" ")
@@ -42,7 +42,7 @@ defmodule PanWeb.Surface.Admin.Naming do
 
   def title_from_model(model) do
     model
-    |> Phoenix.Naming.resource_name
+    |> Phoenix.Naming.resource_name()
     |> to_string
     |> String.split("_")
     |> Enum.map(&String.capitalize(&1))
@@ -70,7 +70,29 @@ defmodule PanWeb.Surface.Admin.Naming do
       |> Phoenix.Naming.resource_name()
 
     case resource do
-      _ -> nil
+      "podcast" ->
+        [
+          :id,
+          :title,
+          :update_paused,
+          :updated_at,
+          :update_intervall,
+          :next_update,
+          :failure_count,
+          :website,
+          :episodes_count
+        ]
+
+      "episode" ->
+        [:id, :guid, :title, :publishing_date]
+
+      "chapter" ->
+        [:id, :start, :title, :episode_id]
+
+      "enclosure" ->
+        [:id, :url, :length, :type, :guid, :episode_id]
+      _ ->
+        nil
     end
   end
 
@@ -106,14 +128,14 @@ defmodule PanWeb.Surface.Admin.Naming do
 
       true ->
         "without id or title field"
-      end
+    end
   end
 
   def module_without_namespace(model) do
     model
     |> to_string
     |> String.split(".")
-    |> List.last
+    |> List.last()
   end
 
   def primary_key(model) do

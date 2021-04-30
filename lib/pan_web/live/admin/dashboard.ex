@@ -1,8 +1,8 @@
 defmodule PanWeb.Live.Admin.Dashboard do
-  alias PanWeb.Surface.Admin.Naming
+  alias Surface.Components.Link
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Router.Helpers, as: Routes
-  alias PanWeb.Surface.Admin.{Explorer, Col, Tools, ToolbarItem}
+  alias PanWeb.Surface.Admin.{Explorer, Col, Tools, ToolbarItem, Naming}
 
   def mount(_params, _session, socket) do
     schemas =
@@ -63,26 +63,35 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
   def render(assigns) do
     ~H"""
-    <Explorer id="schemas"
-              title="Schemas"
-              class="m-2 max-w-2xl"
-              items={{ schema <- @schemas }}
-              selected_count={{ @selected_count }}
-              format={{ :grid }}
-              grid_columns=4>
-      <ToolbarItem message="index"
-                   title="Data"
-                   when_selected_count={{ :one }} />
-      <ToolbarItem message="schema_definition"
-                   title="Schema Definition"
-                   when_selected_count={{ :one }} />
-      <ToolbarItem message="db_index"
-                   title="Database Indices"
-                   when_selected_count={{ :one }} />
-      <Col title="title">
-        {{ schema.title |> Naming.model_in_plural }}
-      </Col>
-    </Explorer>
+    <div>
+      <Explorer id="schemas"
+                title="Schemas"
+                class="m-2 max-w-2xl"
+                items={{ schema <- @schemas }}
+                selected_count={{ @selected_count }}
+                format={{ :grid }}
+                grid_columns=4>
+        <ToolbarItem message="index"
+                    title="Data"
+                    when_selected_count={{ :one }} />
+        <ToolbarItem message="schema_definition"
+                    title="Schema Definition"
+                    when_selected_count={{ :one }} />
+        <ToolbarItem message="db_index"
+                    title="Database Indices"
+                    when_selected_count={{ :one }} />
+        <Col title="title">
+          {{ schema.title |> Naming.model_in_plural }}
+        </Col>
+      </Explorer>
+
+      <div class="m-4">
+        <h2 class="text-2xl">Episodes</h2>
+        <Link label="Remove duplicates"
+              to={{ Routes.episode_path(@socket, :remove_duplicates) }}
+              class="text-link hover:text-link-dark underline"/>
+      </div>
+    </div>
     """
   end
 end
