@@ -8,59 +8,6 @@ defmodule PanWeb.UserController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def index(conn, _params, _user) do
-    render(conn, "index.html")
-  end
-
-  def datatable(conn, _params, _user) do
-    users = Repo.all(User)
-    render(conn, "datatable.json", users: users)
-  end
-
-  def show(conn, %{"id" => id}, _user) do
-    user =
-      Repo.get!(PanWeb.User, id)
-      |> Repo.preload(:user_personas)
-
-    render(conn, "show.html", user: user)
-  end
-
-  def edit(conn, %{"id" => id}, _user) do
-    user = Repo.get!(User, id)
-    changeset = User.changeset(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
-  end
-
-  def update(conn, %{"id" => id, "user" => user_params}, _user) do
-    id = String.to_integer(id)
-    user = Repo.get!(User, id)
-    changeset = User.changeset(user, user_params)
-
-    case Repo.update(changeset) do
-      {:ok, user} ->
-        User.update_search_index(id)
-
-        conn
-        |> put_flash(:info, "User updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
-
-      {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
-    end
-  end
-
-  def delete(conn, %{"id" => id}, _user) do
-    id = String.to_integer(id)
-    user = Repo.get!(User, id)
-
-    Repo.delete!(user)
-    User.delete_search_index(id)
-
-    conn
-    |> put_flash(:info, "User deleted successfully.")
-    |> redirect(to: user_path(conn, :index))
-  end
-
   def unset_pro(conn, %{"id" => id}, _user) do
     Repo.get(User, id)
     |> User.changeset(%{pro_until: nil})

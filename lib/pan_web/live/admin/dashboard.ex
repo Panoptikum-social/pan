@@ -132,6 +132,21 @@ defmodule PanWeb.Live.Admin.Dashboard do
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
+
+        <h2 class="text-2xl">Users</h2>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Merge Users"
+                  to={{ Routes.user_path(@socket, :merge) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Manifest Users"
+                  to={{ Routes.manifestation_path(@socket, :manifest) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+        </ul>
+
       </div>
     </div>
     """

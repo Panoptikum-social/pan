@@ -92,6 +92,9 @@ defmodule PanWeb.Surface.Admin.Naming do
       "persona" ->
         [:id, :pid, :name, :uri, :email, :description, :image_url, :image_title]
 
+      "user" ->
+        [:id, :name, :username, :email, :email_confirmed, :podcaster, :admin, :pro_until, :inserted_at, :updated_at]
+
       _ ->
         nil
     end
