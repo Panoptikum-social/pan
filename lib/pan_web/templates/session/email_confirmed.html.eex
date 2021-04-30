@@ -1,3 +1,5 @@
-<p> Thank you for confirming your email address! </p>
+<div class="m-4">
+  <p> Thank you for confirming your email address! </p>
 
-<p>You can close this tab or window now.</p>
+  <p>You can close this tab or window now.</p>
+</div>

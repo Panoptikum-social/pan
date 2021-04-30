@@ -147,6 +147,31 @@ defmodule PanWeb.Live.Admin.Dashboard do
           </li>
         </ul>
 
+        <h2 class="text-2xl">Feed Backlog</h2>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Import 100"
+                  to={{ Routes.feed_backlog_path(@socket, :import_100) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Subscribe All"
+                  to={{ Routes.feed_backlog_path(@socket, :subscribe) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Subscribe 50"
+                  to={{ Routes.feed_backlog_path(@socket, :subscribe50) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+          <li>
+            <Link label="Delete All (from Itunes user)"
+                  to={{ Routes.feed_backlog_path(@socket, :delete_all) }}
+                  class="text-link hover:text-link-dark underline"
+                  opts={{ method: :delete,
+                          data: [confirm: "Are you sure?"] }} />
+          </li>
+        </ul>
       </div>
     </div>
     """

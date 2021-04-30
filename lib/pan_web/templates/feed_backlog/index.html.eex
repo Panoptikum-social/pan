@@ -6,7 +6,7 @@
   <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
                             class: "btn btn-info" %>
 
-  <%= link "Delete All (from Itunes user)", 
+  <%= link "Delete All (from Itunes user)",
            to: feed_backlog_path(@conn, :delete_all),
            method: :delete,
            data: [confirm: "Are you sure?"],
