@@ -89,6 +89,9 @@ defmodule PanWeb.Surface.Admin.Naming do
       "feed" ->
         [:id, :self_link_title, :self_link_url, :feed_generator, :podcast_id]
 
+      "persona" ->
+        [:id, :pid, :name, :uri, :email, :description, :image_url, :image_title]
+
       _ ->
         nil
     end

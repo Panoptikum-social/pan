@@ -304,11 +304,9 @@ defmodule PanWeb.Router do
       :remove_javascript_from_shownotes
     )
 
-    get("/personas/datatable", PersonaController, :datatable)
     get("/personas/merge_candidates", PersonaController, :merge_candidates)
     get("/personas/merge_candidate_group", PersonaController, :merge_candidate_group)
     get("/personas/merge", PersonaController, :merge)
-    resources("/personas", PersonaController)
 
     get("/languages/datatable", LanguageController, :datatable)
     resources("/languages", LanguageController)
@@ -377,12 +375,10 @@ defmodule PanWeb.Router do
     get("/podcasts/duplicates", PodcastController, :duplicates)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
 
-    get("/manifestations/datatable", ManifestationController, :datatable)
     post("/manifestations/toggle", ManifestationController, :toggle)
     get("/manifestations/manifest", ManifestationController, :manifest)
     get("/manifestations/:id/get_by_user", ManifestationController, :get_by_user)
     get("/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona)
-    resources("/manifestations", ManifestationController)
 
     get("/search/push", SearchController, :elasticsearch_push_missing)
     get("/search/push_all", SearchController, :elasticsearch_push_all)
@@ -408,6 +404,8 @@ defmodule PanWeb.Router do
       as: :databrowser
     )
 
+    live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
+    live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
     live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
 
     live(
@@ -416,9 +414,6 @@ defmodule PanWeb.Router do
       :new_association,
       as: :databrowser
     )
-
-    live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
-    live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
 
     live(
       "/databrowser/:owner/:owner_id/has_many/:association",

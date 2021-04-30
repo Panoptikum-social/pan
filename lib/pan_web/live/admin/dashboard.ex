@@ -123,6 +123,15 @@ defmodule PanWeb.Live.Admin.Dashboard do
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
+
+        <h2 class="text-2xl">Personas</h2>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Merge Candidates"
+                  to={{ Routes.persona_path(@socket, :merge_candidates) }}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+        </ul>
       </div>
     </div>
     """
