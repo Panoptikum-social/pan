@@ -1,7 +1,7 @@
 <%= if @current_user.admin do %>
   <ul>
     <li class="border-t-2 border-coolGray-500 py-1"></li>
-    <li class="uppercase text-right py-1"><%= la_nav_icon("wrench-solid") %> ADMINISTRATION</li>
+    <li class="uppercase text-right py-1"><%= la_nav_icon("adjustments-heroicons-outline") %> ADMINISTRATION</li>
     <li class="py-1">
       <%= link "Dashboard", to: dashboard_path(@conn, :home), class: "text-coolGray-200" %>
     </li>

@@ -88,7 +88,7 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-success",
           data: [type: "podcast", action: "unsubscribe", event: "subscribe", id: podcast.id] do
-          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user"), " Unsubscribe"]
+          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user-heroicons-outline"), " Unsubscribe"]
         end
     end
   end

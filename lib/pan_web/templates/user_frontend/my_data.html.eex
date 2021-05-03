@@ -9,7 +9,7 @@
 
 <p class="pull-right">
   Manage &nbsp;
-  <%= link [fa_icon("user-circle"), " My Profile"],
+  <%= link [fa_icon("user-circle-heroicons-outline"), " My Profile"],
            to: user_frontend_path(@conn, :my_profile),
            class: "btn btn-default",
            target: "_blank" %>
