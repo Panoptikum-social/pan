@@ -108,7 +108,7 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("folder-o"), " ", truncate_string(title, 50)],
+            <%= link [fa_icon("folder-open-heroicons-outline"), " ", truncate_string(title, 50)],
                      to: category_frontend_path(@conn, :show, id),
                      class: "btn btn-xs btn-gray-lighter" %>
             <span class="pull-right"><%= count %> <%= fa_icon("user-heroicons-outline") %></span>

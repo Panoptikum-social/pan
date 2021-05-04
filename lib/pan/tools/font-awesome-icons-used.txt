@@ -3,7 +3,7 @@ bus
 calendar check-square-o clock-o cogs commenting commenting-o 
 download 
 inbox-heroicons-outline
-feed file-audio-o file-o file-text-o folder folder-o folder-open-o
+feed file-audio-o file-o file-text-o folder folder-o folder-open-heroicons-outline-o
 gift
 headphones heart heart-o home
 id-card-o image indent info-circle

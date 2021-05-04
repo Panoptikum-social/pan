@@ -28,15 +28,15 @@
 <div class="panel panel-success">
   <div class="panel-heading">
     <h3 class="panel-title">
-      <%= link [fa_icon("folder-o"), " ", "Panoptikum"],
+      <%= link [fa_icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
                to: category_frontend_path(@conn, :index) %>
       /
       <%= if @category.parent do %>
-        <%= link [fa_icon("folder-o"), " ", @category.parent.title],
+        <%= link [fa_icon("folder-open-heroicons-outline"), " ", @category.parent.title],
                  to: category_frontend_path(@conn, :show, @category.parent) %>
         /
       <% end %>
-      <%= fa_icon("folder-open-o") %> <%= @category.title %>
+      <%= fa_icon("folder-open-heroicons-outlinepen-heroicons-outline-o") %> <%= @category.title %>
     </h3>
   </div>
   <div class="panel-body" style="line-height: 2.5;">
@@ -45,7 +45,7 @@
         <div class="row">
           <%= for subcategory <- group do %>
             <div class="col-md-2">
-              <%= link [fa_icon("folder-o"), " ", subcategory.title],
+              <%= link [fa_icon("folder-open-heroicons-outline"), " ", subcategory.title],
                        to: category_frontend_path(@conn, :show, subcategory),
                        class: "btn btn-xs btn-gray-lighter truncate" %>
             </div>

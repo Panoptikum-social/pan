@@ -31,7 +31,7 @@ defmodule PanWeb.Live.Category.Show do
     <Panel :if={{ @category.parent && @category.parent.title == "👩 👨 Community" }}
            purpose="episode"
            heading="Welcome to the Test Laboratory!"
-           class="mb-4">
+           class="m-4">
 
       <div aria-label="panel-body" class="p-4">
         <p>We are currently testing different  and additional views for community categories!<br/>
@@ -50,19 +50,19 @@ defmodule PanWeb.Live.Category.Show do
       </div>
     </Panel>
 
-    <Panel purpose="category">
+    <Panel purpose="category" class="m-4">
       <PanelHeading>
         <Link to={{ category_frontend_path(@socket, :index) }}
               class="hover:text-blue-400">
-          <Icon name="folder" /> Panoptikum
+          <Icon name="folder-heroicons-outline" /> Panoptikum
         </Link> /
         <If condition={{ @category.parent }}>
           <Link to={{ category_frontend_path(@socket, :show, @category.parent) }}
                 class="hover:text-blue-400">
-            <Icon name="folder" /> {{ @category.parent.title }}
+            <Icon name="folder-heroicons-outline" /> {{ @category.parent.title }}
           </Link> /
         </If>
-        <Icon name="folder-open" /> {{ @category. title }}
+        <Icon name="folder-open-heroicons-outline" /> {{ @category. title }}
       </PanelHeading>
 
       <div aria-label="panel-body" class="p-4 divide-y-2 divide-gray-lighter">

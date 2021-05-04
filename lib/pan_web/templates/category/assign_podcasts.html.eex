@@ -26,7 +26,7 @@
     <a class="btn btn-primary" onclick="execute_assign()">
       <%= fa_icon "podcast" %>
       <%= fa_icon "arrow-right " %>
-      <%= fa_icon "folder-open-o" %>
+      <%= fa_icon "folder-open-heroicons-outlinepen-heroicons-outline-o" %>
       <%= fa_icon "arrow-right " %>
       <%= fa_icon "podcast" %> &nbsp;
       Update Assignments

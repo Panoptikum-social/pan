@@ -43,7 +43,7 @@
             <dt><label class="label label-warning">Categories</label></dt>
             <%= for category <- @podcast.categories do %>
               <dd style="line-height: 200%;">
-                <%= link [fa_icon("folder-o"), " ", category.title],
+                <%= link [fa_icon("folder-open-heroicons-outline"), " ", category.title],
                          to: category_frontend_path(@conn, :show, category),
                          class: "btn btn-xs btn-gray-lighter" %>
               </dd>

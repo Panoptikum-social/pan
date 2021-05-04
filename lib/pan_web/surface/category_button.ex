@@ -17,7 +17,7 @@ defmodule PanWeb.Surface.CategoryButton do
     <LinkButton to={{ Routes.category_frontend_path(@socket, :show, @id || @for.id) }}
                 class={{ color_class_cycle(@index_on_page), @class }}
                 large={{ @large }}
-                icon="folder"
+                icon="folder-heroicons-outline"
                 title={{ @title || @for.title }}
                 truncate={{ @truncate }} />
     """
