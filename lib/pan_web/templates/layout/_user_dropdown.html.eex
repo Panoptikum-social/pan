@@ -22,22 +22,22 @@
       class: "text-coolGray-200" %>
   </li>
   <li class="py-1">
-    <%= link [la_nav_icon("gift-solid"), " My Recommendations"],
+    <%= link [la_nav_icon("gift-heroicons-outline"), " My Recommendations"],
       to: recommendation_frontend_path(@conn, :my_recommendations),
       class: "text-coolGray-200" %>
   </li>
   <li class="py-1">
-    <%= link [la_nav_icon("rss-solid"), " Suggest a Podcast"],
+    <%= link [la_nav_icon("rss-heroicons-outline"), " Suggest a Podcast"],
       to: feed_backlog_frontend_path(@conn, :new),
       class: "text-coolGray-200" %>
   </li>
   <li class="py-1">
-    <%= link [la_nav_icon("file-audio"), " My OPMLs"],
+    <%= link [la_nav_icon("file-audio-lineawesome"), " My OPMLs"],
       to: opml_frontend_path(@conn, :index),
       class: "text-coolGray-200" %>
   </li>
   <li class="py-1">
-    <%= link [la_nav_icon("address-book"), " My Data"],
+    <%= link [la_nav_icon("briefcase-heroicons-outline"), " My Data"],
       to:  user_frontend_path(@conn, :my_data),
       class: "text-coolGray-200" %>
   </li>

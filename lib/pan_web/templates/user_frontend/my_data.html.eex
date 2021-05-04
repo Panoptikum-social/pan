@@ -44,7 +44,7 @@
 
 <p class="pull-right">
   Manage &nbsp;
-  <%= link [fa_icon("file-audio-o"), " My OPMLs"],
+  <%= link [fa_icon("file-audio-lineawesome-o"), " My OPMLs"],
            to: opml_frontend_path(@conn, :index),
            class: "btn btn-default",
            target: "_blank" %>
