@@ -9,7 +9,7 @@
            to: podcast_frontend_path(@conn, :show, @episode.podcast),
            class: "btn btn-default btn-lg" %>
   &nbsp; / &nbsp;
-  <span class="btn btn-primary btn-lg"><%= fa_icon("headphones") %> <%= @episode.title %></span>
+  <span class="btn btn-primary btn-lg"><%= fa_icon("headphones-lineawesome-solid") %> <%= @episode.title %></span>
 </h1>
 
 <div class="row">

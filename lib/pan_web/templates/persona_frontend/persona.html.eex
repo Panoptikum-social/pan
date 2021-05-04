@@ -206,7 +206,7 @@
                            to: podcast_frontend_path(@conn, :show, episode.podcast),
                            class: "btn btn-default btn-xs truncate",
                            style: "color: #000" %></td></td>
-            <td><%= link [fa_icon("headphones"), " ", episode.title || ""],
+            <td><%= link [fa_icon("headphones-lineawesome-solid"), " ", episode.title || ""],
                         to: episode_frontend_path(@conn, :show, episode),
                         class: "btn btn-primary btn-xs truncate" %></td>
             <td>

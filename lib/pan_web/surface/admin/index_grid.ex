@@ -427,7 +427,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         </div>
 
         <Pagination :if={{ :pagination in @buttons }}
-                    per_page={{ @per_page}}
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
                     target={{ @myself }}

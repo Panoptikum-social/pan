@@ -13,14 +13,14 @@
               <%= link [fa_icon("podcast"), " ", episode.podcast.title],
                        to: podcast_frontend_path(@conn, :show, episode.podcast),
                        class: "btn btn-xs btn-default" %> /
-              <%= link [fa_icon("headphones"), " ", episode.title],
+              <%= link [fa_icon("headphones-lineawesome-solid"), " ", episode.title],
                           to: episode_frontend_path(@conn, :show, episode.id),
                           class: "btn btn-primary btn-xs" %>
             </span>
           </div>
           <div class="panel-body">
             <hr style="margin-top: -15px; visibility:hidden;" />
-            <%= fa_icon("calendar") %> <%= Timex.format!(episode.publishing_date, "{ISOdate} {h24}:{m}") %>
+            <%= fa_icon("calendar-heroicons-outline") %> <%= Timex.format!(episode.publishing_date, "{ISOdate} {h24}:{m}") %>
             <span class="pull-right"><%= fa_icon("clock-o") %> <%= episode.duration %></span>
             <hr style="margin-top: -15px; visibility:hidden;" />
             <label class="label label-success">Author</label> <%= author_button(@conn, episode) %>

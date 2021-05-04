@@ -8,7 +8,7 @@ defmodule PanWeb.Surface.RecommendationCard do
     ~H"""
     <p>
       <span :if={{ @for.inserted_at }} class="float-right">
-        at <Icon name="calendar" />
+        at <Icon name="calendar-heroicons-outline" />
         {{ @for.inserted_at |> Timex.format!("{ISOdate}") }}
       </span>
       <UserButton for={{ @for.user}} /> recommended

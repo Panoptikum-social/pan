@@ -14,7 +14,7 @@
                      class: "btn btn-xs btn-danger" %>
 
             <span class="pull-right">
-              <%= fa_icon("calendar") %>
+              <%= fa_icon("calendar-heroicons-outline") %>
               <%= recommendation.inserted_at && Timex.format!(recommendation.inserted_at, "{ISOdate}") %>
             </span>
           </div>
@@ -33,7 +33,7 @@
                        class: "btn btn-default btn-xs truncate",
                        style: "color: #000" %>
               <hr style="margin-top: -15px; visibility:hidden;" />
-              <%= link [fa_icon("headphones"), " ", recommendation.episode.title],
+              <%= link [fa_icon("headphones-lineawesome-solid"), " ", recommendation.episode.title],
                         to: episode_frontend_path(@conn, :show, recommendation.episode),
                         class: "btn btn-primary btn-xs truncate" %>
             <% end %>
@@ -44,7 +44,7 @@
                        class: "btn btn-default btn-xs truncate",
                        style: "color: #000" %> &nbsp;
               <hr style="margin-top: -15px; visibility:hidden;" />
-              <%= link [fa_icon("headphones"), " ", recommendation.chapter.episode.title],
+              <%= link [fa_icon("headphones-lineawesome-solid"), " ", recommendation.chapter.episode.title],
                         to: episode_frontend_path(@conn, :show, recommendation.chapter.episode),
                         class: "btn btn-primary btn-xs truncate" %><br/>
               <%= fa_icon("indent") %> <%= recommendation.chapter.title %>

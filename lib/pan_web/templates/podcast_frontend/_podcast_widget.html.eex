@@ -36,7 +36,7 @@
 
             <dt><label class="label label-info">Available since</label></dt>
             <dd>
-              <%= fa_icon("calendar") %>
+              <%= fa_icon("calendar-heroicons-outline") %>
               <%= Timex.format!(@podcast.inserted_at, "{ISOdate}") %>
             </dd>
 

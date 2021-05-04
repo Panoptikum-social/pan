@@ -14,16 +14,16 @@ defmodule PanWeb.Surface.EpisodeCard do
 
     <p class="mt-1">
       <If condition={{ @for.publishing_date }}>
-        published <Icon name="calendar" />
+        published <Icon name="calendar-heroicons-outline" />
         {{ @for.publishing_date |> Timex.format!("{ISOdate}") }}
       </If>
       <If condition={{ @for.duration }}>
-        Duration &nbsp; <Icon name="stopwatch-solid" /> {{ @for.duration}}
+        Duration &nbsp; <Icon name="stopwatch-lineawesome-solid" /> {{ @for.duration}}
       </If>
     </p>
 
     <p :if={{ @for.subtitle }} class="mt-1">
-      <Icon name="image" /> {{ @for.subtitle }}
+      <Icon name="photograph-heroicons-outline" /> {{ @for.subtitle }}
     </p>
     """
   end

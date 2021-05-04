@@ -10,7 +10,7 @@ defmodule PanWeb.Surface.PodcastCard do
     <PodcastButton for={{ @for }}/>
 
     <p :if={{ @for.inserted_at }} class="mt-1">
-      <Icon name="calendar" />
+      <Icon name="calendar-heroicons-outline" />
       {{ @for.inserted_at |> Timex.format!("{ISOdate}") }}
     </p>
 
@@ -19,7 +19,7 @@ defmodule PanWeb.Surface.PodcastCard do
     </p>
 
     <p :if={{ @for.description }} class="mt-1">
-      <Icon name="image" /> {{ truncate_string(@for.description, 500) }}
+      <Icon name="photograph-heroicons-outline" /> {{ truncate_string(@for.description, 500) }}
     </p>
     """
   end
