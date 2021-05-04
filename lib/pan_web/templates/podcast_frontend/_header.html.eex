@@ -15,8 +15,7 @@
   </p>
 <% end %>
 
-
-<div class="flex flex-row">
+<div class="flex flex-row bg-white">
   <div class="flex flex-row">
     <div>
       <div class="flex flex-row">
@@ -45,28 +44,33 @@
       </p>
     </div>
 
-    <div class="col-md-7" style="border-left: dotted 1px #ccc;
-                                  border-right: dotted 1px #ccc;">
-      <dl class="dl-horizontal">
+    <div class="border-l border-r border-dotted border-gray">
+      <dl class="grid grid-cols-3 gap-2">
         <%= if @podcast.website do %>
-          <dt>Website</dt>
-          <dd><%= link @podcast.website, to: String.downcase(@podcast.website) %></dd>
+          <dt class="justify-self-end font-semibold">Website</dt>
+          <dd class="col-span-2">
+            <%= link @podcast.website, to: String.downcase(@podcast.website),
+                                       class: "text-link hover:text-link-dark" %>
+          </dd>
         <% end %>
-        <dt>Description</dt>
-        <dd><%= @podcast.description %></dd>
+        <dt class="justify-self-end font-semibold">Description</dt>
+        <dd class="col-span-2"><%= @podcast.description %></dd>
         <%= if @podcast.payment_link_url do %>
-          <dt>Support</dt>
-          <dd><%= link @podcast.payment_link_title || "Support", to: String.trim(@podcast.payment_link_url) %></dd>
+          <dt class="justify-self-end font-semibold">Support</dt>
+          <dd class="col-span-2">
+            <%= link @podcast.payment_link_title || "Support", to: String.trim(@podcast.payment_link_url),
+                                                               class: "text-link hover:text-link-dark" %>
+          </dd>
         <% end %>
-        <dt>Language</dt>
-        <dd>
+        <dt class="justify-self-end font-semibold">Language</dt>
+        <dd class="col-span-2">
           <%= for language <- @podcast.languages do %>
             <%= language.emoji %> <%= language.name %>
           <% end %>
         </dd>
         <%= if @podcast.last_build_date do %>
-          <dt>last modified</dt>
-          <dd><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
+          <dt class="justify-self-end font-semibold">last modified</dt>
+          <dd class="col-span-2"><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
         <% end %>
         <%= if @podcast.latest_episode_publishing_date do %>
           <dt>last episode published</dt>
