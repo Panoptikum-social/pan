@@ -107,33 +107,11 @@
 
   </div>
 
-  <div class="">
-    <div id="qrcode"></div>
-    QR Code
-    <script type="text/javascript">
-      function whenAvailable(name, callback) {
-          var interval = 10; // ms
-          window.setTimeout(function() {
-              if (window[name]) {
-                  callback(window[name]);
-              } else {
-                  window.setTimeout(arguments.callee, interval);
-              }
-          }, interval);
-      }
-
-      whenAvailable("QRCode", function(t) {
-        document.getElementById("qrcode").innerHTML = ""
-        new QRCode(document.getElementById("qrcode"), {
-                   text: "<%= podcast_frontend_url(@conn, :subscribe_button, @podcast) %>",
-                   width:  142,
-                   height: 142,
-                 });
-      });
-    </script>
-
-    <br/>
-
+  <div role="qrcode" class="flex flex-col m-4 w-auto">
+    <div class="w-40 h-40">
+      <%= img_tag ["/qrcode/", URI.encode_www_form(podcast_frontend_url(@conn, :subscribe_button, @podcast))],
+                  width: 150, height: 150 %>
+    </div>
     <%= render "_subscribe_button.html",
                podcast: @podcast, conn: @conn %>
   </div>
