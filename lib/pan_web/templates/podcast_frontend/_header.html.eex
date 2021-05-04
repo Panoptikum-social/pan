@@ -1,9 +1,10 @@
 <%= if @current_user && @current_user.admin do %>
-  <%= link icon("cog-heroicons-outline"), to: databrowser_path(@conn, :show, "podcast", @podcast),
-                            class: "btn btn-xs btn-default" %> &nbsp;
-  <%= link icon("rss-heroicons-outline"), to: databrowser_path(@conn, :edit, "feed", List.first(@podcast.feeds)),
-                           class: "btn btn-xs btn-default" %> &nbsp; &nbsp;
-
+  <div class="fixed top-0 right-0 mt-4 mr-8">
+    <%= link(icon("cog-heroicons-outline", class: "inline h-6 w-6"),
+             to: databrowser_path(@conn, :show, "podcast", @podcast)) %>
+    <%= link(icon("rss-heroicons-outline", class: "inline h-6 w-6"),
+             to: databrowser_path(@conn, :edit, "feed", @podcast.feeds |> hd)) %>
+  </div>
 <% end %>
 
 <h1 class="text-3xl"><%= @podcast.title %></h1>
