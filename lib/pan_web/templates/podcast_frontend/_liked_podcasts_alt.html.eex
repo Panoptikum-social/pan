@@ -6,6 +6,6 @@
   </div>
   <%= render "_top_list_table_alt.html",
         podcasts: @liked_podcasts,
-        icon: "heart",
+        icon: "heart-heroicons-outline",
         conn: @conn %>
 </div>

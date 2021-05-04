@@ -51,7 +51,7 @@
           class="mt-4">
       <TopList items={{@liked_podcasts}}
               purpose="podcast"
-              icon="heart" />
+              icon="heart-heroicons-outline" />
     </Panel>
   </div>
 </div>

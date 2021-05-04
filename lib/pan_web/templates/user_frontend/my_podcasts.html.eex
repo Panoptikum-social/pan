@@ -13,12 +13,12 @@
           &nbsp; &nbsp; &nbsp;
         </p>
 
-        <%= link [fa_icon("heart"), " Like all subscribed"],
+        <%= link [fa_icon("heart-heroicons-outline"), " Like all subscribed"],
                  to: user_frontend_path(@conn, :like_all_subscribed),
                  class: "btn btn-primary",
                  method: :post %> &nbsp;
 
-        <%= link [fa_icon("heart"), " Follow all subscribed"],
+        <%= link [fa_icon("heart-heroicons-outline"), " Follow all subscribed"],
                  to: user_frontend_path(@conn, :follow_all_subscribed),
                  class: "btn btn-info",
                  method: :post %>

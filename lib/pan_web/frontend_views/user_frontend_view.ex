@@ -40,14 +40,14 @@ defmodule PanWeb.UserFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "user", event: "like", action: "like", id: user_id] do
-          [User.likes(user_id), " ", fa_icon("heart-o"), " Like"]
+          [User.likes(user_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "user", event: "like", action: "unlike", id: user_id] do
-          [User.likes(user_id), " ", fa_icon("heart"), " Unlike"]
+          [User.likes(user_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end

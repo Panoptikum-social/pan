@@ -41,7 +41,7 @@ defmodule PanWeb.Surface.RecommendationCard do
     </If>
 
     <p class="mt-2">
-      with <Icon name="thumbs-up" /> <i>„{{ @for.comment }}“</i>
+      with <Icon name="thumb-up-heroicons-outline" /> <i>„{{ @for.comment }}“</i>
     </p>
     """
   end

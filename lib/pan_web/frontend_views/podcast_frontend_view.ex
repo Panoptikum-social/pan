@@ -39,14 +39,14 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "podcast", event: "like", action: "like", id: podcast.id] do
-          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-o"), " ", " Like"]
+          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-heroicons-outline-o"), " ", " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "podcast", event: "like", action: "unlike", id: podcast.id] do
-          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart"), " Unlike"]
+          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end

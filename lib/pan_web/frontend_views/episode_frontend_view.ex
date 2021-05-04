@@ -155,14 +155,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "episode", event: "like", action: "like", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart-o"), " Like"]
+          [Episode.likes(episode_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "episode", event: "like", action: "unlike", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart"), " Unlike"]
+          [Episode.likes(episode_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end
@@ -176,14 +176,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "like", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart-o"), " Like"]
+          [Chapter.likes(chapter_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "unlike", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart"), " Unlike"]
+          [Chapter.likes(chapter_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end

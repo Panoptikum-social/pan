@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.TopList do
   alias PanWeb.Surface.{PodcastButton, Icon}
 
   prop(items, :list, required: true)
-  prop(icon, :string, required: false, default: "heart")
+  prop(icon, :string, required: false, default: "heart-heroicons-outline")
   prop(purpose, :string, required: false)
 
   def prepare_for_toplist(items) do

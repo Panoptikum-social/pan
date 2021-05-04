@@ -28,7 +28,7 @@
     </small>
   <% end %>
 <% else %>
-   <%= @podcast.likes_count %>  <%= fa_icon("heart-o") %> Likes &nbsp; &nbsp;
+   <%= @podcast.likes_count %>  <%= fa_icon("heart-heroicons-outline-o") %> Likes &nbsp; &nbsp;
 
    <%= @podcast.followers_count %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
 

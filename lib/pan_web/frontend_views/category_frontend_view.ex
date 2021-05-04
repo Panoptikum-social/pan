@@ -28,14 +28,14 @@ defmodule PanWeb.CategoryFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "category", event: "like", action: "like", id: category_id] do
-          [Category.likes(category_id), " ", fa_icon("heart-o"), " Like"]
+          [Category.likes(category_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "category", event: "like", action: "unlike", id: category_id] do
-          [Category.likes(category_id), " ", fa_icon("heart"), " Unlike"]
+          [Category.likes(category_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end

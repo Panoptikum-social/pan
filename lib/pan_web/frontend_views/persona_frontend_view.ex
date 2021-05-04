@@ -29,14 +29,14 @@ defmodule PanWeb.PersonaFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "persona", event: "like", action: "like", id: persona_id] do
-          [Persona.likes(persona_id), " ", fa_icon("heart-o"), " Like"]
+          [Persona.likes(persona_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "persona", event: "like", action: "unlike", id: persona_id] do
-          [Persona.likes(persona_id), " ", fa_icon("heart"), " Unlike"]
+          [Persona.likes(persona_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end
