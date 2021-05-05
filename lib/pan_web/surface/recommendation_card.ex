@@ -30,7 +30,7 @@ defmodule PanWeb.Surface.RecommendationCard do
 
     <If condition={{ @for.chapter }} >
       <p class="mt-2">
-        the chapter <Icon name="indent-solid" /> {{ @for.chapter.title }}
+        the chapter <Icon name="indent-lineawesome-solid" /> {{ @for.chapter.title }}
       </p>
       <p class="mt-2">
         from episode  <EpisodeButton for={{ @for.chapter.episode }} />
