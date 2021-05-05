@@ -15,18 +15,14 @@
   </p>
 <% end %>
 
-<div class="flex flex-row bg-white">
+<div class="flex flex-row mt-4">
   <div class="flex flex-row">
     <div>
       <div class="flex flex-row">
-        <div>
+        <div class="flex-none p-2 mr-4 my-2 border border-gray-light shadow">
           <%= if @podcast_thumbnail do %>
-            <%= img_tag(@podcast_thumbnail.path <> @podcast_thumbnail.filename,
-                        width: 150,
-                        height: 150,
-                        alt: @podcast.image_title,
-                        class: "thumbnail",
-                        id: "photo") %>
+            <%= img_tag("https://panoptikum.io/" <> @podcast_thumbnail.path <> @podcast_thumbnail.filename,
+                        width: 150, height: 150, alt: @podcast.image_title, id: "photo") %>
           <% else %>
             <img src="/images/missing-podcast.png"
                   alt="missing image"
@@ -44,7 +40,7 @@
       </p>
     </div>
 
-    <div class="border-l border-r border-dotted border-gray">
+    <div class="border-l border-r border-dotted border-gray-light">
       <dl class="grid grid-cols-3 gap-2">
         <%= if @podcast.website do %>
           <dt class="justify-self-end font-medium">Website</dt>
@@ -114,11 +110,9 @@
 
   </div>
 
-  <div role="qrcode" class="flex flex-col m-4 w-auto">
-    <div class="w-40 h-40">
-      <%= img_tag ["/qrcode/", URI.encode_www_form(podcast_frontend_url(@conn, :subscribe_button, @podcast))],
-                  width: 150, height: 150 %>
-    </div>
+  <div role="qrcode" class="flex flex-col">
+    <%= img_tag ["/qrcode/", URI.encode_www_form(podcast_frontend_url(@conn, :subscribe_button, @podcast))],
+                class: "max-w-none", width: 150, height: 150 %>
     <%= render "_subscribe_button.html",
                podcast: @podcast, conn: @conn %>
   </div>
