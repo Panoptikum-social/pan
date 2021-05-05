@@ -19,18 +19,18 @@
           <td style="width: 8em;">
             <nobr>
               <%= if episode.publishing_date do %>
-                <%= fa_icon("calendar-heroicons-outline") %> <%= Timex.format!(episode.publishing_date, "{ISOdate}") %>
+                <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(episode.publishing_date, "{ISOdate}") %>
               <% end %>
             </nobr> <br/>
             <%= if episode.duration do %>
-              <%= fa_icon("clock-o") %>: <%= episode.duration %>
+              <%= icon("clock-o") %>: <%= episode.duration %>
             <% end %>
           </td>
           <td style="width: 60%;">
-            <%= link [fa_icon("headphones-lineawesome-solid"), " ", episode.title],
+            <%= link [icon("headphones-lineawesome-solid"), " ", episode.title],
                     to: episode_frontend_path(@conn, :show, episode.id),
                     class: "btn btn-primary btn-xs" %><br/>
-            <%= link [fa_icon("podcast"), " ", episode.podcast.title],
+            <%= link [icon("podcast"), " ", episode.podcast.title],
                     to: podcast_frontend_path(@conn, :show, episode.podcast_id),
                     class: "btn btn-default btn-xs" %>
 
@@ -42,7 +42,7 @@
         <%= if episode.subtitle do %>
           <tr>
             <td colspan=3>
-              <%= fa_icon("photograph-heroicons-outline") %> <%= episode.subtitle %>
+              <%= icon("photograph-heroicons-outline") %> <%= episode.subtitle %>
             </td>
           </tr>
         <% end %>

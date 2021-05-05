@@ -5,7 +5,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @user.podcasts_i_subscribed do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -13,12 +13,12 @@
           &nbsp; &nbsp; &nbsp;
         </p>
 
-        <%= link [fa_icon("heart-heroicons-outline"), " Like all subscribed"],
+        <%= link [icon("heart-heroicons-outline"), " Like all subscribed"],
                  to: user_frontend_path(@conn, :like_all_subscribed),
                  class: "btn btn-primary",
                  method: :post %> &nbsp;
 
-        <%= link [fa_icon("heart-heroicons-outline"), " Follow all subscribed"],
+        <%= link [icon("heart-heroicons-outline"), " Follow all subscribed"],
                  to: user_frontend_path(@conn, :follow_all_subscribed),
                  class: "btn btn-info",
                  method: :post %>
@@ -32,7 +32,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @podcasts_i_like do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -49,7 +49,7 @@
       <div class="panel-body">
         <p style="line-height: 200%;">
           <%= for podcast <- @user.podcasts_i_follow do %>
-            <%= link [fa_icon("podcast"), " ", podcast.title],
+            <%= link [icon("podcast"), " ", podcast.title],
                      to: podcast_frontend_path(@conn, :show, podcast),
                      class: "btn btn-default btn-xs",
                      style: "color: #666;" %>
@@ -69,11 +69,11 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+            <%= link [icon("podcast"), " ", truncate_string(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
-            <span class="pull-right"><%= count %> <%= fa_icon("user-heroicons-outline") %></span>
+            <span class="pull-right"><%= count %> <%= icon("user-heroicons-outline") %></span>
           </li>
         <% end %>
         </p>
@@ -88,11 +88,11 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("podcast"), " ", truncate_string(title, 50)],
+            <%= link [icon("podcast"), " ", truncate_string(title, 50)],
                      to: podcast_frontend_path(@conn, :show, id),
                      class: "btn btn-default btn-xs",
                      style: "color: #000" %>
-            <span class="pull-right"><%= count %> <%= fa_icon("user-heroicons-outline") %></span>
+            <span class="pull-right"><%= count %> <%= icon("user-heroicons-outline") %></span>
           </li>
         <% end %>
         </p>
@@ -108,10 +108,10 @@
         <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
           <li class="list-group-item">
             <b><%= rank + 1 %>.</b>:
-            <%= link [fa_icon("folder-open-heroicons-outline"), " ", truncate_string(title, 50)],
+            <%= link [icon("folder-open-heroicons-outline"), " ", truncate_string(title, 50)],
                      to: category_frontend_path(@conn, :show, id),
                      class: "btn btn-xs btn-gray-lighter" %>
-            <span class="pull-right"><%= count %> <%= fa_icon("user-heroicons-outline") %></span>
+            <span class="pull-right"><%= count %> <%= icon("user-heroicons-outline") %></span>
           </li>
         <% end %>
         </p>

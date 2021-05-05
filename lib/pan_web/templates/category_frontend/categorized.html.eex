@@ -1,16 +1,16 @@
-<%= link [fa_icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
+<%= link [icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
          to: category_frontend_path(@conn, :index) %>
 /
 <%= if @category.parent do %>
-  <%= link [fa_icon("folder-open-heroicons-outline"), " ", @category.parent.title],
+  <%= link [icon("folder-open-heroicons-outline"), " ", @category.parent.title],
            to: category_frontend_path(@conn, :show, @category.parent.id) %>
   /
 <% end %>
-<%= link [fa_icon("folder-open-heroicons-outlinepen-heroicons-outline-o"), " ", @category.title],
+<%= link [icon("folder-open-heroicons-outlinepen-heroicons-outline-o"), " ", @category.title],
            to: category_frontend_path(@conn, :show, @category) %>
 
 
-<h1><%= fa_icon("folder-open-heroicons-outlinepen-heroicons-outline-o") %> <%= @category.title %></h1>
+<h1><%= icon("folder-open-heroicons-outlinepen-heroicons-outline-o") %> <%= @category.title %></h1>
 
 <br/>
 

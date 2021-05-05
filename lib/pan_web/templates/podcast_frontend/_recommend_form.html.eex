@@ -11,7 +11,7 @@
     <%= hidden_input f, :podcast_id, value: @podcast.id  %>
 
     <div class="form-group">
-      <%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %>
+      <%= submit [icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %>
     </div>
   <% end %>
 <% end %>

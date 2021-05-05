@@ -122,9 +122,9 @@
   <ul>
     <%= for invoice <- @user.invoices do %>
       <li>
-        <%= fa_icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+        <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
         &nbsp; &nbsp;
-        <%= link [fa_icon("download"), " ", fa_icon("file-pdf-o"), " ", invoice.filename],
+        <%= link [icon("download"), " ", icon("file-pdf-o"), " ", invoice.filename],
                  to: invoice_frontend_path(@conn, :download, invoice) %>
       </li>
     <% end %>

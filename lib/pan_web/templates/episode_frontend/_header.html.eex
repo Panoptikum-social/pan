@@ -5,11 +5,11 @@
 </script>
 
 <h1 style="line-height: 200%;">
-  <%= link [fa_icon("podcast"), " ", @episode.podcast.title],
+  <%= link [icon("podcast"), " ", @episode.podcast.title],
            to: podcast_frontend_path(@conn, :show, @episode.podcast),
            class: "btn btn-default btn-lg" %>
   &nbsp; / &nbsp;
-  <span class="btn btn-primary btn-lg"><%= fa_icon("headphones-lineawesome-solid") %> <%= @episode.title %></span>
+  <span class="btn btn-primary btn-lg"><%= icon("headphones-lineawesome-solid") %> <%= @episode.title %></span>
 </h1>
 
 <div class="row">
@@ -65,7 +65,7 @@
       <dt>Contributors</dt>
       <%= for {persona, gigs} <- Enum.group_by(@episode.gigs, &Map.get(&1, :persona)) do %>
         <dd style="line-height: 200%;">
-          <%= link [fa_icon("user-o"), " ", persona.name],
+          <%= link [icon("user-heroicons-outline"), " ", persona.name],
                    to: persona_frontend_path(@conn, :show, persona),
                    class: "btn btn-xs btn-lavender" %>
           <%= for gig <- gigs do %>
@@ -77,7 +77,7 @@
                    data-html="true"
                    data-content="This contribution is claimed by a user and not source of
                                  the podcast feed.">
-                <%= fa_icon "info-circle", class: "icon-lavender" %>
+                <%= icon "info-circle", class: "icon-lavender" %>
               </sup>
             <% end %>
             &nbsp;

@@ -15,7 +15,7 @@
 
   <div class="col-md-10">
     <h3 style="margin-bottom: 5px; margin-top: 0px;">
-      <%= fa_icon("user-o") %> Persona &nbsp;
+      <%= icon("user-heroicons-outline") %> Persona &nbsp;
       <%= link @persona.name, to: @persona.url,
                               style: "color:#1a0dab" %>
     </h3>
@@ -29,7 +29,7 @@
 
     <%= for {engagement, index} <- Enum.with_index(@engagements) do %>
       <%= if index > 0, do: "·" %>
-        <%= link [fa_icon("podcast"), " ", truncate_string(engagement.podcast.title, 50)],
+        <%= link [icon("podcast"), " ", truncate_string(engagement.podcast.title, 50)],
                          to: podcast_frontend_path(PanWeb.Endpoint, :show, engagement.podcast),
                          class: "btn btn-default btn-xs",
                          style: "color: #000" %>

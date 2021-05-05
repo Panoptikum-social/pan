@@ -1,11 +1,11 @@
 address-book align-justify arrow-left arrow-right
 bus
-calendar check-square-o clock-o cogs commenting commenting-o 
+calendar check-square-o clock-o cogs commenting annotation-heroicons-outline 
 download 
 inbox-heroicons-outline
 feed file-audio-o file-o file-text-o folder folder-o folder-open-heroicons-outline-o
 gift
-headphones heart-heroicons-outline heart-heroicons-outline-o home
+headphones heart-heroicons-outline heart-heroicons-outline home
 id-card-o image indent info-circle
 link
 magic
@@ -15,6 +15,6 @@ question-mark-circle-heroicons-solid
 rss
 search search-plus sign-in sign-out sitemap square-o
 thumbs-o-up trash
-unlink user user-circle-heroicons-outline user-o user-plus user-secret user-times
+unlink user user-circle-heroicons-outline user-heroicons-outline user-plus user-secret user-times
 vcard-o
 warning wrench

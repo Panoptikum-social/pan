@@ -80,7 +80,7 @@
         <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
 
           <dd style="line-height: 200%;">
-            <%= link [fa_icon("user-o"), " ", persona.name],
+            <%= link [icon("user-heroicons-outline"), " ", persona.name],
                       to: persona_frontend_path(@conn, :show, persona),
                       class: "btn btn-xs btn-lavender" %>
             <%= for engagement <- engagements do %>
@@ -92,12 +92,12 @@
         <dd><%= @podcast.explicit %></dd>
         <dt id="metadata">Number of Episodes</dt>
         <dd><%= @episode_count %></dd>
-        <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
+        <dt><%= icon("rss-heroicons-outline") %> Rss-Feeds</dt>
         <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
         <dt>Categories</dt>
         <dd style="line-height: 200%;">
           <%= for category <- @podcast.categories do %>
-            <%= link [fa_icon("folder-open-heroicons-outline"), " ", category.title],
+            <%= link [icon("folder-open-heroicons-outline"), " ", category.title],
                       to: category_frontend_path(@conn, :show, category),
                       class: "btn btn-xs btn-gray-lighter" %>
             <% end %>

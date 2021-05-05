@@ -9,12 +9,12 @@ defmodule PanWeb.PodcastFrontendView do
     persona = Podcast.author(podcast)
 
     if persona do
-      link([fa_icon("user-o"), " ", persona.name],
+      link([icon("user-heroicons-outline"), " ", persona.name],
         to: persona_frontend_path(conn, :show, persona),
         class: "btn btn-xs truncate btn-lavender"
       )
     else
-      [fa_icon("user-o"), " Unknown"]
+      [icon("user-heroicons-outline"), " Unknown"]
     end
   end
 
@@ -39,14 +39,14 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "podcast", event: "like", action: "like", id: podcast.id] do
-          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-heroicons-outline-o"), " ", " Like"]
+          [Integer.to_string(podcast.likes_count), " ", icon("heart-heroicons-outline"), " ", " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "podcast", event: "like", action: "unlike", id: podcast.id] do
-          [Integer.to_string(podcast.likes_count), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
+          [Integer.to_string(podcast.likes_count), " ", icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end
@@ -60,14 +60,14 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-primary",
           data: [type: "podcast", event: "follow", action: "follow", id: podcast.id] do
-          [Integer.to_string(podcast.followers_count), " ", fa_icon("commenting-o"), " Follow"]
+          [Integer.to_string(podcast.followers_count), " ", icon("annotation-heroicons-outline"), " Follow"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "podcast", event: "follow", action: "unfollow", id: podcast.id] do
-          [Integer.to_string(podcast.followers_count), " ", fa_icon("commenting"), " Unfollow"]
+          [Integer.to_string(podcast.followers_count), " ", icon("commenting"), " Unfollow"]
         end
     end
   end
@@ -81,14 +81,14 @@ defmodule PanWeb.PodcastFrontendView do
         content_tag :button,
           class: "btn btn-info",
           data: [type: "podcast", action: "subscribe", event: "subscribe", id: podcast.id] do
-          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user-o"), " Subscribe"]
+          [Integer.to_string(podcast.subscriptions_count), " ", icon("user-heroicons-outline"), " Subscribe"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "podcast", action: "unsubscribe", event: "subscribe", id: podcast.id] do
-          [Integer.to_string(podcast.subscriptions_count), " ", fa_icon("user-heroicons-outline"), " Unsubscribe"]
+          [Integer.to_string(podcast.subscriptions_count), " ", icon("user-heroicons-outline"), " Unsubscribe"]
         end
     end
   end

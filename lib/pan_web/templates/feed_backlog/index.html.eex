@@ -39,7 +39,7 @@
         <% end %>
 
         <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
-          <%= link [ fa_icon("feed"), " Create alternate feed"],
+          <%= link [ icon("rss-heroicons-outline"), " Create alternate feed"],
                    to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
                                                                         url: feed_backlog.url,
                                                                         backlog_id: feed_backlog.id),

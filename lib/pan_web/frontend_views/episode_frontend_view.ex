@@ -13,12 +13,12 @@ defmodule PanWeb.EpisodeFrontendView do
     persona = Episode.author(episode)
 
     if persona do
-      link([fa_icon("user-o"), " ", persona.name],
+      link([icon("user-heroicons-outline"), " ", persona.name],
         to: persona_frontend_path(conn, :show, persona.id),
         class: "btn btn-xs truncate btn-lavender"
       )
     else
-      [fa_icon("user-o"), " Unknown"]
+      [icon("user-heroicons-outline"), " Unknown"]
     end
   end
 
@@ -155,14 +155,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning",
           data: [type: "episode", event: "like", action: "like", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
+          [Episode.likes(episode_id), " ", icon("heart-heroicons-outline"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success",
           data: [type: "episode", event: "like", action: "unlike", id: episode_id] do
-          [Episode.likes(episode_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
+          [Episode.likes(episode_id), " ", icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end
@@ -176,14 +176,14 @@ defmodule PanWeb.EpisodeFrontendView do
         content_tag :button,
           class: "btn btn-warning btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "like", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart-heroicons-outline-o"), " Like"]
+          [Chapter.likes(chapter_id), " ", icon("heart-heroicons-outline"), " Like"]
         end
 
       _ ->
         content_tag :button,
           class: "btn btn-success btn-xs",
           data: [type: "chapter", event: "like-chapter", action: "unlike", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", fa_icon("heart-heroicons-outline"), " Unlike"]
+          [Chapter.likes(chapter_id), " ", icon("heart-heroicons-outline"), " Unlike"]
         end
     end
   end
@@ -209,7 +209,7 @@ defmodule PanWeb.EpisodeFrontendView do
               class: "btn btn-inverse-lavender btn-xs",
               title: "Claim contribution for #{persona.pid}",
               data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [fa_icon("user-plus"), " ", persona.name]
+              [icon("user-plus"), " ", persona.name]
             end
           ]
         end
@@ -222,7 +222,7 @@ defmodule PanWeb.EpisodeFrontendView do
               class: "btn btn-lavender btn-xs",
               title: "Withdraw contribution for #{persona.pid}",
               data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [fa_icon("user-times"), " ", persona.name]
+              [icon("user-times"), " ", persona.name]
             end
           ]
         end

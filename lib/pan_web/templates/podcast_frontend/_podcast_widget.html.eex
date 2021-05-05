@@ -2,7 +2,7 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">
-        <%= link [fa_icon("podcast"), " ", @podcast.title],
+        <%= link [icon("podcast"), " ", @podcast.title],
                  to: podcast_frontend_path(@conn, :show, @podcast.id),
                  class: "btn btn-default btn-xs truncate" %>
       </h3>
@@ -36,14 +36,14 @@
 
             <dt><label class="label label-info">Available since</label></dt>
             <dd>
-              <%= fa_icon("calendar-heroicons-outline") %>
+              <%= icon("calendar-heroicons-outline") %>
               <%= Timex.format!(@podcast.inserted_at, "{ISOdate}") %>
             </dd>
 
             <dt><label class="label label-warning">Categories</label></dt>
             <%= for category <- @podcast.categories do %>
               <dd style="line-height: 200%;">
-                <%= link [fa_icon("folder-open-heroicons-outline"), " ", category.title],
+                <%= link [icon("folder-open-heroicons-outline"), " ", category.title],
                          to: category_frontend_path(@conn, :show, category),
                          class: "btn btn-xs btn-gray-lighter" %>
               </dd>
@@ -52,7 +52,7 @@
             <dt><label class="label label-info">Contributors</label></dt>
             <%= for engagement <- @podcast.engagements do %>
               <dd style="line-height: 200%;">
-                <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+                <%= link [icon("user-heroicons-outline"), " ", engagement.persona.name],
                          to: persona_frontend_path(@conn, :show, engagement.persona),
                          class: "btn btn-xs btn-lavender" %>
                 <span class="label label-success"><%= engagement.role %></span>

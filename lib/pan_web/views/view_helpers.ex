@@ -6,7 +6,7 @@ defmodule PanWeb.ViewHelpers do
   def icon(name), do: icon(name, class: "")
 
   def icon(name, class: class) do
-    class = if class == "", do: "h-6 w-6", else: class
+    class = if class == "", do: "h-6 w-6 inline", else: class
 
     icon_string =
       case name do
@@ -440,6 +440,20 @@ defmodule PanWeb.ViewHelpers do
             </svg>
             """
 
+          "annotation-heroicons-outline" ->
+            """
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="#{class}"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+              <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+            </svg>
+            """
+
         _ ->
           raise "An icon is missing: " <> name
       end
@@ -447,7 +461,7 @@ defmodule PanWeb.ViewHelpers do
       raw(icon_string)
   end
 
-  def la_nav_icon(name) do
+  def nav_icon(name) do
     icon(name, class: "h-6 w-6 inline")
   end
 
@@ -536,13 +550,5 @@ defmodule PanWeb.ViewHelpers do
     ]
     |> Enum.map(&my_safe_to_string/1)
     |> Enum.join()
-  end
-
-  def fa_icon(name) do
-    ~s(<i class="fa fa-#{name}"></i>) |> raw()
-  end
-
-  def fa_icon(name, class: class) do
-    ~s(<i class="fa fa-#{name} #{class}"></i>) |> raw()
   end
 end

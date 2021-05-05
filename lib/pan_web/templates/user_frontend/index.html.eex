@@ -26,7 +26,7 @@
           <div class="row" style="line-height: 2.5;">
             <%= for {user, inner} <- Enum.with_index(group) do %>
               <div class="col-md-1">
-               <%= link [fa_icon("user-o"), " ", user.name],
+               <%= link [icon("user-heroicons-outline"), " ", user.name],
                         to: user_frontend_path(@conn, :show, user),
                         class: "btn btn-xs " <> btn_cycle(outer * 12 + inner) %>
               </div>

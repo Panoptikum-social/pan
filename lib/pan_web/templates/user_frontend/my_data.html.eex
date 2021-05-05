@@ -1,7 +1,7 @@
 <h2>Account</h2>
 
 <p>
-  <%= link [fa_icon("download"), " Download"],
+  <%= link [icon("download"), " Download"],
            to: user_json_download_path(@conn, :download),
            class: "btn btn-primary" %>
    all my data as JSON-File
@@ -9,7 +9,7 @@
 
 <p class="pull-right">
   Manage &nbsp;
-  <%= link [fa_icon("user-circle-heroicons-outline"), " My Profile"],
+  <%= link [icon("user-circle-heroicons-outline"), " My Profile"],
            to: user_frontend_path(@conn, :my_profile),
            class: "btn btn-default",
            target: "_blank" %>
@@ -44,7 +44,7 @@
 
 <p class="pull-right">
   Manage &nbsp;
-  <%= link [fa_icon("file-audio-lineawesome-o"), " My OPMLs"],
+  <%= link [icon("file-audio-lineawesome-o"), " My OPMLs"],
            to: opml_frontend_path(@conn, :index),
            class: "btn btn-default",
            target: "_blank" %>
@@ -60,7 +60,7 @@
 <h2>Personas</h2>
 
 You can even delete all manifestations as personas, you created so far, at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Delete all subscriptions"],
+<%= link [icon("warning"), " Delete all subscriptions"],
          to: manifestation_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All manifestations will be deleted!"],
@@ -143,7 +143,7 @@ Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
 You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Delete all subscriptions"],
+<%= link [icon("warning"), " Delete all subscriptions"],
          to: subscription_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All messages will be deleted!"],
@@ -162,7 +162,7 @@ Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
 You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unfollow all podcasts"],
+<%= link [icon("warning"), " Unfollow all podcasts"],
          to: follow_frontend_path(@conn, :unfollow_all_podcasts),
          method: :delete,
          data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
@@ -181,7 +181,7 @@ Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
 You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all podcasts"],
+<%= link [icon("warning"), " Unlike all podcasts"],
          to: like_frontend_path(@conn, :unlike_all_podcasts),
          method: :delete,
          data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
@@ -200,7 +200,7 @@ Click on the episode link to open the episode show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
 You can even unlike all the episodes, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all episodes"],
+<%= link [icon("warning"), " Unlike all episodes"],
          to: like_frontend_path(@conn, :unlike_all_episodes),
          method: :delete,
          data: [confirm: "Are you sure? All episodes will be unfollowed!"],
@@ -219,7 +219,7 @@ Click on the chaptere link to open the episode show page in a new tab
 to un/like, un/subscribe, un/follow.<br/>
 
 You can even unlike all the chapters, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all chapters"],
+<%= link [icon("warning"), " Unlike all chapters"],
          to: like_frontend_path(@conn, :unlike_all_chapters),
          method: :delete,
          data: [confirm: "Are you sure? All chapters will be unfollowed!"],
@@ -238,7 +238,7 @@ Click on the user link to open the user show page in a new tab
 to un/like, un/follow.<br/>
 
 You can even unlike all the users, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all users"],
+<%= link [icon("warning"), " Unlike all users"],
          to: like_frontend_path(@conn, :unlike_all_users),
          method: :delete,
          data: [confirm: "Are you sure? All users will be unfollowed!"],
@@ -256,7 +256,7 @@ Click on the user link to open the user show page in a new tab
 to un/like, un/follow.<br/>
 
 You can even unfollow all the users, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unfollow all users"],
+<%= link [icon("warning"), " Unfollow all users"],
          to: follow_frontend_path(@conn, :unfollow_all_users),
          method: :delete,
          data: [confirm: "Are you sure? All users will be unfollowed!"],
@@ -274,7 +274,7 @@ Click on the persona link to open the persona show page in a new tab
 to un/like, un/follow. <br/>
 
 You can even unfollow all the personas, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unfollow all personas"],
+<%= link [icon("warning"), " Unfollow all personas"],
          to: follow_frontend_path(@conn, :unfollow_all_personas),
          method: :delete,
          data: [confirm: "Are you sure? All personas will be unfollowed!"],
@@ -293,7 +293,7 @@ Click on the persona link to open the persona show page in a new tab
 to un/like, un/follow.<br/>
 
 You can even unlike all the personas, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all personas"],
+<%= link [icon("warning"), " Unlike all personas"],
          to: like_frontend_path(@conn, :unlike_all_personas),
          method: :delete,
          data: [confirm: "Are you sure? All personas will be unfollowed!"],
@@ -312,7 +312,7 @@ Click on the category link to open the category show page in a new tab
 to un/like, un/follow.<br/>
 
 You can even unfollow all the categories, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unfollow all categories"],
+<%= link [icon("warning"), " Unfollow all categories"],
          to: follow_frontend_path(@conn, :unfollow_all_categories),
          method: :delete,
          data: [confirm: "Are you sure? All categories will be unfollowed!"],
@@ -331,7 +331,7 @@ Click on the category link to open the category show page in a new tab
 to un/like, un/follow.<br/>
 
 You can even unlike all the categories, you followed so far at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Unlike all categories"],
+<%= link [icon("warning"), " Unlike all categories"],
          to: like_frontend_path(@conn, :unlike_all_categories),
          method: :delete,
          data: [confirm: "Are you sure? All categories will be unfollowed!"],
@@ -348,7 +348,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
 
 You can delete a message by clicking the Delete button next to it.<br/>
 You can even safely delete all the messages, you created so far, at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Delete all messages"],
+<%= link [icon("warning"), " Delete all messages"],
          to: message_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All messages will be deleted!"],
@@ -394,7 +394,7 @@ You can double check the context by clicking the podcast or episode link, that w
 podcast or episode in a new tab, respectively.<br/>
 
 You can even delete all the recommendations, you created so far, at once, by clicking &nbsp;
-<%= link [fa_icon("warning"), " Delete all recommendations"],
+<%= link [icon("warning"), " Delete all recommendations"],
          to: recommendation_frontend_path(@conn, :delete_all),
          method: :delete,
          data: [confirm: "Are you sure? All recommendations will be deleted!"],
@@ -450,7 +450,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
   We would be really sad to see you leave.
   But you can always sign up for a new account.<br/><br/>
 
-  <%= link [fa_icon("warning"), " Delete my account"],
+  <%= link [icon("warning"), " Delete my account"],
            to: user_frontend_path(@conn, :delete_my_account),
            method: :delete,
            data: [confirm: "Are you sure? Your account would be deleted!"],

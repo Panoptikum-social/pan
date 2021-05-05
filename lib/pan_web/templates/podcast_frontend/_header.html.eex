@@ -1,8 +1,8 @@
 <%= if @current_user && @current_user.admin do %>
   <div class="fixed top-0 right-0 mt-4 mr-8">
-    <%= link(icon("cog-heroicons-outline", class: "inline h-6 w-6"),
+    <%= link(icon("cog-heroicons-outline"),
              to: databrowser_path(@conn, :show, "podcast", @podcast)) %>
-    <%= link(icon("rss-heroicons-outline", class: "inline h-6 w-6"),
+    <%= link(icon("rss-heroicons-outline"),
              to: databrowser_path(@conn, :edit, "feed", @podcast.feeds |> hd)) %>
   </div>
 <% end %>
@@ -47,62 +47,64 @@
     <div class="border-l border-r border-dotted border-gray">
       <dl class="grid grid-cols-3 gap-2">
         <%= if @podcast.website do %>
-          <dt class="justify-self-end font-semibold">Website</dt>
+          <dt class="justify-self-end font-medium">Website</dt>
           <dd class="col-span-2">
             <%= link @podcast.website, to: String.downcase(@podcast.website),
                                        class: "text-link hover:text-link-dark" %>
           </dd>
         <% end %>
-        <dt class="justify-self-end font-semibold">Description</dt>
+        <dt class="justify-self-end font-medium">Description</dt>
         <dd class="col-span-2"><%= @podcast.description %></dd>
         <%= if @podcast.payment_link_url do %>
-          <dt class="justify-self-end font-semibold">Support</dt>
+          <dt class="justify-self-end font-medium">Support</dt>
           <dd class="col-span-2">
             <%= link @podcast.payment_link_title || "Support", to: String.trim(@podcast.payment_link_url),
                                                                class: "text-link hover:text-link-dark" %>
           </dd>
         <% end %>
-        <dt class="justify-self-end font-semibold">Language</dt>
+        <dt class="justify-self-end font-medium">Language</dt>
         <dd class="col-span-2">
           <%= for language <- @podcast.languages do %>
             <%= language.emoji %> <%= language.name %>
           <% end %>
         </dd>
         <%= if @podcast.last_build_date do %>
-          <dt class="justify-self-end font-semibold">last modified</dt>
+          <dt class="justify-self-end font-medium">last modified</dt>
           <dd class="col-span-2"><%= Timex.format!(@podcast.last_build_date, "{ISOdate} {h24}:{m}") %></dd>
         <% end %>
         <%= if @podcast.latest_episode_publishing_date do %>
-          <dt>last episode published</dt>
-          <dd><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}") %></dd>
+          <dt class="justify-self-end font-medium">last episode published</dt>
+          <dd class="col-span-2"><%= Timex.format!(@podcast.latest_episode_publishing_date, "{ISOdate} {h24}:{m}") %></dd>
         <% end %>
         <%= if @podcast.publication_frequency > 0 do %>
-          <dt>publication frequency</dt>
-          <dd><%= Float.round(@podcast.publication_frequency, 2) %> days</dd>
+          <dt class="justify-self-end font-medium">publication frequency</dt>
+          <dd class="col-span-2"><%= Float.round(@podcast.publication_frequency, 2) %> days</dd>
         <% end %>
 
-        <dt>Contributors</dt>
+        <dt class="justify-self-end font-medium">Contributors</dt>
         <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
-
-          <dd style="line-height: 200%;">
-            <%= link [fa_icon("user-o"), " ", persona.name],
+          <dd class="col-start-2">
+            <%= link [icon("user-heroicons-outline"), " ", persona.name],
                       to: persona_frontend_path(@conn, :show, persona),
                       class: "btn btn-xs btn-lavender" %>
+          </dd>
+          <dd class="col-start-3">
             <%= for engagement <- engagements do %>
               <span class="label label-success"><%= engagement.role %></span> &nbsp;
             <% end %>
           </dd>
         <% end %>
-        <dt>Explicit</dt>
-        <dd><%= @podcast.explicit %></dd>
-        <dt id="metadata">Number of Episodes</dt>
-        <dd><%= @episode_count %></dd>
-        <dt><%= fa_icon("feed") %> Rss-Feeds</dt>
-        <dd><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
-        <dt>Categories</dt>
-        <dd style="line-height: 200%;">
+        <dt class="justify-self-end font-medium">Explicit</dt>
+        <dd class="col-span-2"><%= @podcast.explicit %></dd>
+        <dt id="metadata"
+            class="justify-self-end font-medium">Number of Episodes</dt>
+        <dd class="col-span-2"><%= @episode_count %></dd>
+        <dt class="justify-self-end font-medium"><%= icon("rss-heroicons-outline") %> Rss-Feeds</dt>
+        <dd class="col-span-2"><%= link "Detail page", to: podcast_frontend_path(@conn, :feeds, @podcast) %></dd>
+        <dt class="justify-self-end font-medium">Categories</dt>
+        <dd class="col-span-2" style="line-height: 200%;">
           <%= for category <- @podcast.categories do %>
-            <%= link [fa_icon("folder-open-heroicons-outline"), " ", category.title],
+            <%= link [icon("folder-open-heroicons-outline"), " ", category.title],
                       to: category_frontend_path(@conn, :show, category),
                       class: "btn btn-xs btn-gray-lighter" %>
             <% end %>

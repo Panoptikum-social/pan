@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.Icon do
 
   def render(assigns) do
     ~H"""
-    {{ icon(@name, class: "inline h-5 w-5 align-text-bottom") }}<If condition={{ @spaced }}>&nbsp;</If>
+    {{ icon(@name, class: "h-5 w-5 align-text-bottom") }}<If condition={{ @spaced }}>&nbsp;</If>
     """
   end
 end

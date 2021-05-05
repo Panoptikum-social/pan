@@ -8,7 +8,7 @@
             You might be podcasting in the name of an organisation, a group or use an alias,
             when you appear contributing to a podcast. <br/> We call all these different identities
             personas.">
-    <%= fa_icon "info-circle" %> Help
+    <%= icon "info-circle" %> Help
   </button>
 </h2>
 
@@ -24,10 +24,10 @@
                               border: 1px dotted #cccccc;">
       <div class="panel-heading">
         <a data-toggle="collapse" data-parent="#accordion" href="#collapse-<%= persona.id %>">
-          <%= fa_icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
+          <%= icon("search-plus") %> <%= persona.name %> (<%= persona.pid %>)
         </a>
 
-        <%= link [fa_icon("user-o"), " ", persona.name],
+        <%= link [icon("user-heroicons-outline"), " ", persona.name],
                  to: persona_frontend_path(@conn, :show, persona),
                  class: "btn btn-xs btn-lavender pull-right" %>
       </div>
@@ -92,7 +92,7 @@
                       data-content="A delegation lets the gigs (i.e. contributions to episodes) and
                         engagements (i.e. contributions to podcasts) of the persona also appear on the
                         profile page of the target persona.">
-                  <%= fa_icon "info-circle" %> Help
+                  <%= icon "info-circle" %> Help
                 </button>
               </h4>
 
@@ -100,18 +100,18 @@
                 <%= for delegate_persona <- @user.personas do %>
                   <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
                     <li class="list-group-item">
-                      <%= fa_icon("link") %>
+                      <%= icon("link") %>
 
-                      <%= link [fa_icon("user-o"), " ", delegate_persona.name],
+                      <%= link [icon("user-heroicons-outline"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
                                  class: "btn btn-default btn-xs"%>
 
                       <br/>  &nbsp; &nbsp; &nbsp;
                       <label class="label label-default">
-                        <%= fa_icon("id-card-o") %> <%= delegate_persona.pid %>
+                        <%= icon("id-card-o") %> <%= delegate_persona.pid %>
                       </label><br/>
 
-                      <%= link [fa_icon("unlink"), " cancel"],
+                      <%= link [icon("unlink"), " cancel"],
                                to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                          delegate_id: delegate_persona.id),
                                class: "btn btn-warning btn-xs " <> disabled(@user) %>
@@ -123,16 +123,16 @@
                   <%= unless delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
                     <%= if delegate_persona != persona do %>
                       <li class="list-group-item">
-                        <%= fa_icon("unlink") %>
-                        <%= link [fa_icon("user-o"), " ", delegate_persona.name],
+                        <%= icon("unlink") %>
+                        <%= link [icon("user-heroicons-outline"), " ", delegate_persona.name],
                                  to: persona_frontend_path(@conn, :show, delegate_persona),
                                  class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
                         <label class="label label-default">
-                          <%= fa_icon("id-card-o") %> <%= delegate_persona.pid %>
+                          <%= icon("id-card-o") %> <%= delegate_persona.pid %>
                         </label><br/>
 
-                        <%= link [fa_icon("link"), " delegate"],
+                        <%= link [icon("link"), " delegate"],
                                  to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                            delegate_id: delegate_persona.id),
                                  class: "btn btn-info btn-xs " <> disabled(@user) %>
@@ -151,23 +151,23 @@
                     data-title="Redirection"
                     data-content="The redirection redirects the persona profile page to the profile
                       page of the target persona.">
-                <%= fa_icon "info-circle" %> Help
+                <%= icon "info-circle" %> Help
               </button>
               </h4>
 
               <ul class="list-group" style="line-height: 200%;">
                 <%= if persona.redirect do %>
                   <li class="list-group-item">
-                    <%= fa_icon("arrow-right") %>
-                    <%= link [fa_icon("user-o"), " ", persona.redirect.name],
+                    <%= icon("arrow-right") %>
+                    <%= link [icon("user-heroicons-outline"), " ", persona.redirect.name],
                               to: persona_frontend_path(@conn, :show, persona.redirect.pid),
                               class: "btn btn-default btn-xs" %>
                     <br/>  &nbsp; &nbsp; &nbsp;
                     <label class="label label-default">
-                      <%= fa_icon("id-card-o") %> <%= persona.redirect.pid %>
+                      <%= icon("id-card-o") %> <%= persona.redirect.pid %>
                     </label><br/>
 
-                    <%= link [fa_icon("unlink"), " cancel"],
+                    <%= link [icon("unlink"), " cancel"],
                              to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
                              class: "btn btn-warning btn-xs " <> disabled(@user) %>
                   </li>
@@ -179,15 +179,15 @@
                   <%= for target_persona <- @user.personas do %>
                     <%= if target_persona.id != persona.id do %>
                       <li class="list-group-item">
-                        <%= fa_icon("unlink") %>
-                        <%= link [fa_icon("user-o"), " ", target_persona.name],
+                        <%= icon("unlink") %>
+                        <%= link [icon("user-heroicons-outline"), " ", target_persona.name],
                                   to: persona_frontend_path(@conn, :show, target_persona.id),
                                   class: "btn btn-default btn-xs" %>
                         <br/>  &nbsp; &nbsp; &nbsp;
                         <label class="label label-default">
-                          <%= fa_icon("id-card-o") %> <%= target_persona.pid %>
+                          <%= icon("id-card-o") %> <%= target_persona.pid %>
                         </label><br/>
-                        <%= link [fa_icon("arrow-right"), " redirect"],
+                        <%= link [icon("arrow-right"), " redirect"],
                                  to: persona_frontend_path(@conn, :redirect, persona.id,
                                                            target_id: target_persona.id),
                                  class: "btn btn-danger btn-xs " <> disabled(@user) %>

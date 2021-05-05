@@ -5,7 +5,7 @@
       <ul class="list-group">
         <%= for recommendation <- @podcast_recommendations do %>
           <li class="list-group-item">
-            <%= link [fa_icon("podcast"), " ", recommendation.podcast.title],
+            <%= link [icon("podcast"), " ", recommendation.podcast.title],
                 to: podcast_frontend_path(@conn, :show, recommendation.podcast),
                 class: "btn btn-default btn-xs",
                 style: "color: #666;" %>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="col-md-3">
-                  <p><br/><%= submit [fa_icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %></p>
+                  <p><br/><%= submit [icon("thumbs-o-up"), " Recommend"], class: "btn btn-primary" %></p>
                 </div>
               </div>
             <% end %>

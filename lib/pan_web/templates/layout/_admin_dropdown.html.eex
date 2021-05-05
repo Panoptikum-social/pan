@@ -2,7 +2,7 @@
   <ul>
     <li class="border-t-2 py-1"></li>
     <li class="uppercase text-right py-1">
-      <%= la_nav_icon "adjustments-heroicons-outline" %> ADMINISTRATION
+      <%= nav_icon "adjustments-heroicons-outline" %> ADMINISTRATION
     </li>
     <li class="py-1">
       <%= link "Dashboard", to: dashboard_path(@conn, :home) %>

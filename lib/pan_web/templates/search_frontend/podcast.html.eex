@@ -15,7 +15,7 @@
 
   <div class="col-md-10">
     <h3 style="margin-bottom: 5px; margin-top: 0px;">
-      <%= fa_icon("podcast") %>
+      <%= icon("podcast") %>
       Podcast &nbsp;
       <%= link @podcast.title, to: @podcast.url,
                                style: "color:#1a0dab" %>
@@ -31,7 +31,7 @@
     <%= for {engagement, index} <- Enum.with_index(@engagements) do %>
       <%= if index > 0, do: "·" %>
 
-      <%= link [fa_icon("user-o"), " ", engagement.persona.name],
+      <%= link [icon("user-heroicons-outline"), " ", engagement.persona.name],
                to: persona_frontend_path(PanWeb.Endpoint, :show, engagement.persona),
                class: "btn btn-xs btn-lavender" %>
       <span class="label label-success"><%= engagement.role %></span>
@@ -41,7 +41,7 @@
 
     <%= for {category, index} <- Enum.with_index(@categories) do %>
       <%= if index > 0, do: "·" %>
-      <%= link [fa_icon("folder-open-heroicons-outline"), " ", category.title],
+      <%= link [icon("folder-open-heroicons-outline"), " ", category.title],
                to: category_frontend_path(PanWeb.Endpoint, :show, category),
                class: "btn btn-xs btn-gray-lighter" %>
     <% end %>

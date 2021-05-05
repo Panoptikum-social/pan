@@ -7,7 +7,7 @@
 
   <%= if !@podcast.manually_updated_at or
          (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1) do %>
-    <%= link [fa_icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
+    <%= link [icon("cogs"), " Metadata Update"], to: podcast_frontend_path(@conn, :trigger_update, @podcast),
                                                   class: "btn btn-danger btn-xs" %>
 
     <button class="btn btn-primary btn-xs"
@@ -18,7 +18,7 @@
             data-content="You can manually trigger a metadata update for this podcast once an hour,
                           if you are impatient. This still will take some time, so keep track of
                           the status updates. And refresh the page with [F5] when told so.">
-      <%= fa_icon "info-circle" %> Help
+      <%= icon "info-circle" %> Help
     </button>
   <% else %>
     <small>
@@ -28,11 +28,11 @@
     </small>
   <% end %>
 <% else %>
-   <%= @podcast.likes_count %>  <%= fa_icon("heart-heroicons-outline-o") %> Likes &nbsp; &nbsp;
+   <%= @podcast.likes_count %>  <%= icon("heart-heroicons-outline") %> Likes &nbsp; &nbsp;
 
-   <%= @podcast.followers_count %>  <%= fa_icon("commenting-o") %> Followers &nbsp; &nbsp;
+   <%= @podcast.followers_count %>  <%= icon("annotation-heroicons-outline") %> Followers &nbsp; &nbsp;
 
-   <%= @podcast.subscriptions_count %>  <%= fa_icon("user-o") %> Subscribers
+   <%= @podcast.subscriptions_count %>  <%= icon("user-heroicons-outline") %> Subscribers
 
   <p><i>
     <%= link "Sign up", to: user_frontend_path(@conn, :new) %> /
@@ -44,4 +44,4 @@
   $(function() {
     $('[data-toggle="popover"]').popover()
   })
-</script
+</script>
