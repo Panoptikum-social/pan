@@ -2,7 +2,7 @@ defmodule Pan.Updater.Podcast do
   alias Pan.Repo
   alias Pan.Parser.Helpers, as: H
   alias Pan.Parser.{Download, Feed, Persistor}
-  alias Pan.Updater.{RssFeed}
+  alias Pan.Updater.RssFeed
   alias PanWeb.{Endpoint, Podcast}
   require Logger
 
