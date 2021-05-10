@@ -13,18 +13,6 @@
 </h1>
 
 <div class="row">
-  <div class="col-md-2">
-    <%= if @episode_thumbnail do %>
-      <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
-                  width: 150,
-                  alt: @episode.image_title || @episode.podcast.image_title,
-                  class: "thumbnail",
-                  id: "photo") %>
-    <% else %>
-      <img src="/images/missing-episode.png" alt="missing episode" width="150" />
-    <% end %>
-  </div>
-
   <%= if (@episode.description && @episode.description != @episode.shownotes) ||
          (@episode.summary && @episode.summary != @episode.description) do %>
     <div class="<%= if @episode.image_url, do: 'col-md-5', else: 'col-md-7' %>" style="border-right: 1px dotted #ccc;">

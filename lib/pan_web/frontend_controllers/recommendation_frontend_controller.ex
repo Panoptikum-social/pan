@@ -107,10 +107,6 @@ defmodule PanWeb.RecommendationFrontendController do
         [gigs: :persona]
       ])
 
-    episode_thumbnail =
-      Repo.get_by(Image, episode_id: episode.id) ||
-        Repo.get_by(Image, podcast_id: episode.podcast.id)
-
     changeset = Recommendation.changeset(%Recommendation{})
 
     render(conn, "random.html",
@@ -118,7 +114,6 @@ defmodule PanWeb.RecommendationFrontendController do
       podcast: podcast,
       podcast_thumbnail: podcast_thumbnail,
       episode: episode,
-      episode_thumbnail: episode_thumbnail,
       player: "podigee",
       podcasts: podcasts,
       changeset: changeset

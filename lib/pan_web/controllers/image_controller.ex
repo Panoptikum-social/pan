@@ -29,7 +29,6 @@ defmodule PanWeb.ImageController do
         from(i in Image,
           where:
             ilike(fragment("cast (? as text)", i.persona_id), ^searchfrag) or
-              ilike(fragment("cast (? as text)", i.episode_id), ^searchfrag) or
               ilike(fragment("cast (? as text)", i.podcast_id), ^searchfrag) or
               ilike(fragment("cast (? as text)", i.id), ^searchfrag)
         )
@@ -52,7 +51,6 @@ defmodule PanWeb.ImageController do
           content_type: i.content_type,
           path: i.path,
           podcast_id: i.podcast_id,
-          episode_id: i.episode_id,
           persona_id: i.persona_id
         }
       )
@@ -75,7 +73,6 @@ defmodule PanWeb.ImageController do
     record_slug =
       cond do
         image_params["podcast_id"] -> "persona-" <> image_params["podcast_id"]
-        image_params["episode_id"] -> "episode-" <> image_params["episode_id"]
         image_params["persona_id"] -> "persona-" <> image_params["persona_id"]
       end
 
@@ -96,7 +93,6 @@ defmodule PanWeb.ImageController do
           filename: upload.filename,
           path: destination_path,
           podcast_id: image_params["podcast_id"],
-          episode_id: image_params["episode_id"],
           persona_id: image_params["persona_id"]
         })
       else
@@ -105,7 +101,6 @@ defmodule PanWeb.ImageController do
           filename: nil,
           path: destination_path,
           podcast_id: image_params["podcast_id"],
-          episode_id: image_params["episode_id"],
           persona_id: image_params["persona_id"]
         })
       end
@@ -164,24 +159,6 @@ defmodule PanWeb.ImageController do
   end
 
   def remove_duplicates(conn, _params) do
-    duplicate_images =
-      from(i in Image,
-        group_by: [i.episode_id],
-        having: count(i.episode_id) > 1,
-        select: i.episode_id
-      )
-      |> Repo.all()
-
-    for episode_id <- duplicate_images do
-      from(i in Image,
-        where: i.episode_id == ^episode_id,
-        limit: 1
-      )
-      |> Repo.all()
-      |> List.first()
-      |> Repo.delete()
-    end
-
     duplicate_images =
       from(i in Image,
         group_by: [i.podcast_id],

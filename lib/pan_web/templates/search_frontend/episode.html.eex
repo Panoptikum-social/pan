@@ -1,48 +1,32 @@
 <div class="row">
-  <div class="col-md-2">
-    <%= if @episode_thumbnail do %>
-      <%= img_tag(@episode_thumbnail.path <> @episode_thumbnail.filename,
-                  height: 120,
-                  alt: @episode_image_title || @podcast_image_title,
-                  class: "thumbnail",
-                  id: "photo",
-                  style: "margin-bottom:0px;") %>
-    <% else %>
-      <img src="/images/missing-episode.png" alt="missing image" height="120"
-           class="thumbnail" syle="margin-bottom:0px;" />
-    <% end %>
-  </div>
+  <h3 style="margin-bottom: 5px; margin-top: 0px;">
+    <%= fa_icon("headphones") %> Episode &nbsp;
+    <%= link @episode.title, to: @episode.url,
+                              style: "color:#1a0dab" %>
+    <%= for language <- @languages, do: language.emoji %>
+  </h3>
 
-  <div class="col-md-10">
-    <h3 style="margin-bottom: 5px; margin-top: 0px;">
-      <%= fa_icon("headphones") %> Episode &nbsp;
-      <%= link @episode.title, to: @episode.url,
-                               style: "color:#1a0dab" %>
-      <%= for language <- @languages, do: language.emoji %>
-    </h3>
+  <p class="small">
+    <%= link "https://panoptikum.io" <> @episode.url, to: @episode.url,
+                                                      style: "color:#006621" %><br/>
+    <%= episode_hit(@episode, @searchstring) %>
+  </p>
 
-    <p class="small">
-      <%= link "https://panoptikum.io" <> @episode.url, to: @episode.url,
-                                                        style: "color:#006621" %><br/>
-      <%= episode_hit(@episode, @searchstring) %>
-    </p>
+  <%= for {gig, index} <- Enum.with_index(@gigs) do %>
+    <%= if index > 0, do: "·" %>
 
-    <%= for {gig, index} <- Enum.with_index(@gigs) do %>
-      <%= if index > 0, do: "·" %>
+    <%= link [fa_icon("user-o"), " ", gig.persona.name],
+              to: persona_frontend_path(PanWeb.Endpoint, :show, gig.persona),
+              class: "btn btn-xs btn-lavender" %>
+    <span class="label label-success"><%= gig.role %></span>
+  <% end %>
 
-      <%= link [fa_icon("user-o"), " ", gig.persona.name],
-               to: persona_frontend_path(PanWeb.Endpoint, :show, gig.persona),
-               class: "btn btn-xs btn-lavender" %>
-      <span class="label label-success"><%= gig.role %></span>
-    <% end %>
+  <hr style="margin-top: -15px; visibility:hidden;" />
 
-    <hr style="margin-top: -15px; visibility:hidden;" />
-
-    <%= link [fa_icon("podcast"), " ", truncate_string(@podcast_title, 50)],
-                     to: @podcast_url,
-                     class: "btn btn-default btn-xs",
-                     style: "color: #000" %>
-  </div>
+  <%= link [fa_icon("podcast"), " ", truncate_string(@podcast_title, 50)],
+                    to: @podcast_url,
+                    class: "btn btn-default btn-xs",
+                    style: "color: #000" %>
 </div>
 
 <span class="h6 pull-right"><small><%= @score %></small></span>

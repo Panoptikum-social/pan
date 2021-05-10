@@ -23,11 +23,6 @@
   </li>
 
   <li>
-    <strong>Episode:</strong>
-    <%= @image.episode_id %>
-  </li>
-
-  <li>
     <strong>Persona:</strong>
     <%= @image.persona_id %>
   </li>

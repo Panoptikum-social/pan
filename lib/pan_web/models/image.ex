@@ -1,6 +1,6 @@
 defmodule PanWeb.Image do
   use Pan.Web, :model
-  alias PanWeb.{Episode, Image, Persona, Podcast}
+  alias PanWeb.{Image, Persona, Podcast}
   alias Pan.Repo
   require Logger
 
@@ -9,7 +9,6 @@ defmodule PanWeb.Image do
     field(:content_type, :string)
     field(:path, :string)
     belongs_to(:podcast, PanWeb.Podcast)
-    belongs_to(:episode, PanWeb.Episode)
     belongs_to(:persona, PanWeb.Persona)
 
     timestamps()
@@ -20,7 +19,7 @@ defmodule PanWeb.Image do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:filename, :content_type, :path, :podcast_id, :episode_id, :persona_id])
+    |> cast(params, [:filename, :content_type, :path, :podcast_id, :persona_id])
     |> validate_required([:filename, :path])
   end
 
@@ -93,7 +92,7 @@ defmodule PanWeb.Image do
       File.mkdir_p(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
-      Logger.info("=== Mogrifying image for episode #{id} ===")
+      Logger.info("=== Mogrifying image with id #{id} ===")
 
       try do
         (target_dir <> "/" <> filename)
@@ -103,10 +102,10 @@ defmodule PanWeb.Image do
       catch
         # We fail silently, as we did before mogrify raised errors.
         kind, {error, {message, _}} ->
-          Logger.info("=== Image for episode #{id} #{kind}:#{error} (#{message}) ===")
+          Logger.info("=== Image with id #{id} #{kind}:#{error} (#{message}) ===")
 
         kind, {error, message} ->
-          Logger.info("=== Image for episode #{id} #{kind}:#{error} (#{message}) ===")
+          Logger.info("=== Image with id #{id} #{kind}:#{error} (#{message}) ===")
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
@@ -117,8 +116,7 @@ defmodule PanWeb.Image do
           filename: filename,
           path: asset_path,
           persona_id: (type == "persona" && id) || nil,
-          podcast_id: (type == "podcast" && id) || nil,
-          episode_id: (type == "episode" && id) || nil
+          podcast_id: (type == "podcast" && id) || nil
         }
         |> Image.changeset()
         |> Repo.insert()
@@ -149,7 +147,6 @@ defmodule PanWeb.Image do
 
   def cache_missing() do
     Persona.cache_missing_thumbnail_images()
-    Episode.cache_missing_thumbnail_images()
     Podcast.cache_missing_thumbnail_images()
     Logger.info("=== Thumbnail image caching job finished ===")
   end

@@ -22,7 +22,6 @@ defmodule PanWeb.ImageView do
       content_type: image.content_type,
       path: image.path,
       podcast_id: image.podcast_id,
-      episode_id: image.episode_id,
       persona_id: image.persona_id,
       thumbnail: thumbnail(image),
       actions: datatable_actions(image.id, &image_path/3)

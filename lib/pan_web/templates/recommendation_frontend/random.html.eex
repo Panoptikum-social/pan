@@ -3,7 +3,6 @@
 
 <%= render PanWeb.EpisodeFrontendView, "show.html",
            episode: @episode,
-           episode_thumbnail: @episode_thumbnail,
            current_user: @current_user,
            player: @player,
            changeset: @changeset,

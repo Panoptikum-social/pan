@@ -60,9 +60,6 @@
   <dt>Elastic</dt>
   <dd><%= @episode.elastic %></dd>
 
-  <dt>Thumbnail created</dt>
-  <dd><%= @episode.thumbnailed %></dd>
-
   <dt>Inserted at</dt>
   <dd><%= @episode.inserted_at %></dd>
 

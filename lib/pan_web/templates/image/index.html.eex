@@ -8,7 +8,6 @@
       <th>Content type</th>
       <th>Path</th>
       <th><%= fa_icon "search" %> Podcast</th>
-      <th><%= fa_icon "search" %> Episode</th>
       <th><%= fa_icon "search" %> Persona</th>
       <th>Thumbnail</th>
       <th></th>
@@ -27,7 +26,6 @@
         { data: 'content_type' },
         { data: 'path' },
         { data: 'podcast_id' },
-        { data: 'episode_id' },
         { data: 'persona_id' },
         { data: 'thumbnail', sortable: false },
         { data: 'actions', sortable: false}
