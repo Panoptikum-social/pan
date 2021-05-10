@@ -18,17 +18,8 @@ defmodule PanWeb.MaintenanceController do
     Podcast,
     Recommendation,
     Subscription,
-    User,
-    Image
+    User
   }
-
-  def remove_episode_image_entries(conn, _params) do
-    _episode_image_entries =
-      from(i in Image, where: is_nil(i.podcast_id) and is_nil(i.persona_id))
-      |> Repo.delete_all()
-
-    render(conn, "done.html")
-  end
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")

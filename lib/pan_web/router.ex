@@ -425,8 +425,6 @@ defmodule PanWeb.Router do
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-
-    get("/maintenance/remove_episode_image_entries", MaintenanceController, :remove_episode_image_entries)
   end
 
   scope "/alt", PanWeb do
