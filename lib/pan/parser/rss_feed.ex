@@ -1,5 +1,4 @@
 defmodule Pan.Parser.RssFeed do
-  alias Pan.Repo
   alias Pan.Parser.{AlternateFeed, Download, Iterator, Persistor}
   require Logger
 
@@ -32,7 +31,7 @@ defmodule Pan.Parser.RssFeed do
     end
   end
 
-  def import_to_map(url, logging_id \\ 0, check_changes \\ false) do
+  def import_to_map(url, logging_id \\ 0) do
     url = String.trim(url)
     Logger.info("=== #{logging_id} ⬇ #{url} ===")
 
@@ -45,8 +44,7 @@ defmodule Pan.Parser.RssFeed do
           |> Pan.Parser.Helpers.fix_character_code_strings()
           |> String.trim()
 
-        with {:ok, "go on"} <- check_for_changes(feed_xml, logging_id, check_changes),
-             {:ok, feed_map} <- xml_to_map(feed_xml) do
+        with {:ok, feed_map} <- xml_to_map(feed_xml) do
           parse_to_map(feed_map, url)
         else
           {:exit, error} -> {:exit, error}
@@ -59,49 +57,6 @@ defmodule Pan.Parser.RssFeed do
 
       {:error, reason} ->
         {:error, reason}
-    end
-  end
-
-  def check_for_changes(feed_xml, podcast_id, check_changes) do
-    if check_changes do
-      feed_xml =
-        if String.valid?(feed_xml) do
-          feed_xml
-        else
-          :iconv.convert("ISO-8859-1", "utf-8", feed_xml)
-        end
-
-      case Pan.Repo.get_by(PanWeb.RssFeed, podcast_id: podcast_id) do
-        nil ->
-          %PanWeb.RssFeed{content: feed_xml, podcast_id: podcast_id}
-          |> Repo.insert()
-
-          {:ok, "go on"}
-
-        rss_feed ->
-          if count_changes(rss_feed.content, feed_xml) > 3 do
-            rss_feed
-            |> PanWeb.RssFeed.changeset(%{content: feed_xml})
-            |> Repo.update()
-
-            {:ok, "go on"}
-          else
-            {:done, "nothing to do"}
-          end
-      end
-    else
-      {:ok, "go on"}
-    end
-  end
-
-  def count_changes(old, new) do
-    if old do
-      String.splitter(old, "\n")
-      |> Enum.zip(String.splitter(new, "\n"))
-      |> Enum.count(fn {oldone, newone} -> oldone != newone end)
-    else
-      # catch the case where for whatever reason the old content is empty
-      999
     end
   end
 
