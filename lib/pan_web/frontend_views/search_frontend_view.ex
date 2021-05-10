@@ -12,10 +12,6 @@ defmodule PanWeb.SearchFrontendView do
         if episode = Repo.get(Episode, hit._id) do
           episode = Repo.preload(episode, podcast: :languages, gigs: :persona)
 
-          episode_thumbnail =
-            Repo.get_by(Image, episode_id: episode.id) ||
-              Repo.get_by(Image, podcast_id: episode.podcast_id)
-
           render("episode.html",
             episode: fields,
             searchstring: searchstring,
@@ -25,7 +21,6 @@ defmodule PanWeb.SearchFrontendView do
             podcast_url: podcast_frontend_url(PanWeb.Endpoint, :show, episode.podcast.id),
             gigs: episode.gigs,
             languages: episode.podcast.languages,
-            episode_thumbnail: episode_thumbnail,
             score: score
           )
         else

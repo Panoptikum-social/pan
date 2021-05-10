@@ -3,5 +3,5 @@
 
 <script>
   podlovePlayer('#podlove-webplayer',
-                <%= podlove_episodestruct(@conn, @episode, @episode_thumbnail) %>)
+                <%= podlove_episodestruct(@conn, @episode) %>)
 </script>

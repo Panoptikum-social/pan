@@ -22,13 +22,8 @@ defmodule PanWeb.EpisodeFrontendView do
     end
   end
 
-  def podlove_episodestruct(conn, episode, episode_thumbnail) do
-    poster =
-      if episode_thumbnail do
-        PanWeb.Endpoint.url() <> episode_thumbnail.path <> episode_thumbnail.filename
-      else
-        PanWeb.Endpoint.url() <> "/images/missing-podcast.png"
-      end
+  def podlove_episodestruct(conn, episode) do
+    poster = PanWeb.Endpoint.url() <> "/images/missing-podcast.png"
 
     %{
       show: %{

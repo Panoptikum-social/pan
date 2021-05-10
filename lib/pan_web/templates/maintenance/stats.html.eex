@@ -41,9 +41,6 @@
       <tr><th></th>
           <td>categorizations</td>
           <td class="text-right"><%= @total_categorizations %></td></tr>
-      <tr><th>Thumbnails</th>
-          <td>episodes_missing</td>
-          <td class="text-right"><%= @episodes_without_image %></td></tr>
       <tr><th></th>
           <td>podcasts_missing</td>
           <td class="text-right"><%= @podcasts_without_image %></td></tr>

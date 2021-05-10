@@ -2,7 +2,6 @@
   This episode may not be published here, sorry.
 <% else %>
   <%= render "_header.html", episode: @episode,
-                             episode_thumbnail: @episode_thumbnail,
                              current_user: @current_user,
                              conn: @conn %>
 
@@ -25,7 +24,6 @@
           <%= case @player do %>
             <% "podlove" -> %>
               <%= render "_podlove_webplayer4.html", episode: @episode,
-                                                     episode_thumbnail: @episode_thumbnail,
                                                      conn: @conn %>
             <% "podigee" -> %>
               <script>

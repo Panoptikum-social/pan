@@ -1,6 +1,6 @@
 defmodule PanWeb.EpisodeFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{Chapter, Episode, Image, Recommendation}
+  alias PanWeb.{Chapter, Episode, Recommendation}
 
   def show(conn, %{"id" => id}) do
     episode =
@@ -14,15 +14,10 @@ defmodule PanWeb.EpisodeFrontendController do
           )
       )
 
-    episode_thumbnail =
-      Repo.get_by(Image, episode_id: episode.id) ||
-        Repo.get_by(Image, podcast_id: episode.podcast.id)
-
     changeset = Recommendation.changeset(%Recommendation{})
     # options for player: "podlove", "podigee"
     render(conn, "show.html",
       episode: episode,
-      episode_thumbnail: episode_thumbnail,
       player: "podlove",
       changeset: changeset
     )
@@ -34,16 +29,11 @@ defmodule PanWeb.EpisodeFrontendController do
       |> Repo.preload([:podcast, :enclosures, gigs: :persona, recommendations: :user])
       |> Repo.preload(chapters: from(chapter in Chapter, order_by: chapter.start))
 
-    episode_thumbnail =
-      Repo.get_by(Image, episode_id: episode.id) ||
-        Repo.get_by(Image, podcast_id: episode.podcast.id)
-
     # options for player: "podlove", "podigee"
     conn
     |> put_layout("minimal.html")
     |> render("player.html",
       episode: episode,
-      episode_thumbnail: episode_thumbnail,
       player: "podlove"
     )
   end

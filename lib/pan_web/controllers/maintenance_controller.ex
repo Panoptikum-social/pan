@@ -49,19 +49,19 @@ defmodule PanWeb.MaintenanceController do
 
   def catch_up_thumbnailed(conn, _paar) do
     podcast_candidates =
-      from(e in Podcast,
-        where: not e.thumbnailed and not is_nil(e.image_url),
+      from(p in Podcast,
+        where: not p.thumbnailed and not is_nil(p.image_url),
         limit: 1_000,
-        select: e.id
+        select: p.id
       )
       |> Repo.all()
 
     podcasts_missing_thumbnailed =
-      from(e in Podcast,
-        where: e.id in ^podcast_candidates,
-        left_join: i in assoc(e, :thumbnails),
+      from(p in Podcast,
+        where: p.id in ^podcast_candidates,
+        left_join: i in assoc(p, :thumbnails),
         where: not is_nil(i.podcast_id),
-        select: e.id
+        select: p.id
       )
       |> Repo.all()
 
@@ -69,46 +69,24 @@ defmodule PanWeb.MaintenanceController do
     |> Repo.update_all(set: [thumbnailed: true])
 
     persona_candidates =
-      from(e in Persona,
-        where: not e.thumbnailed and not is_nil(e.image_url),
+      from(p in Persona,
+        where: not p.thumbnailed and not is_nil(p.image_url),
         limit: 1_000,
-        select: e.id
+        select: p.id
       )
       |> Repo.all()
 
     personas_missing_thumbnailed =
-      from(e in Persona,
-        where: e.id in ^persona_candidates,
-        left_join: i in assoc(e, :thumbnails),
+      from(p in Persona,
+        where: p.id in ^persona_candidates,
+        left_join: i in assoc(p, :thumbnails),
         where: not is_nil(i.persona_id),
-        select: e.id
+        select: p.id
       )
       |> Repo.all()
 
     from(p in Persona, where: p.id in ^personas_missing_thumbnailed)
     |> Repo.update_all(set: [thumbnailed: true])
-
-    for _i <- 1..10 do
-      episode_candidates =
-        from(e in Episode,
-          where: not e.thumbnailed and not is_nil(e.image_url),
-          limit: 1_000,
-          select: e.id
-        )
-        |> Repo.all()
-
-      episodes_missing_thumbnailed =
-        from(e in Episode,
-          where: e.id in ^episode_candidates,
-          left_join: i in assoc(e, :thumbnails),
-          where: not is_nil(i.episode_id),
-          select: e.id
-        )
-        |> Repo.all()
-
-      from(e in Episode, where: e.id in ^episodes_missing_thumbnailed)
-      |> Repo.update_all(set: [thumbnailed: true])
-    end
 
     render(conn, "done.html")
   end
@@ -201,10 +179,6 @@ defmodule PanWeb.MaintenanceController do
     total_manifestations = Repo.aggregate(Manifestation, :count, :id)
     total_delegations = Repo.aggregate(Delegation, :count, :id)
 
-    episodes_without_image =
-      from(e in Episode, where: not e.thumbnailed and not is_nil(e.image_url))
-      |> Repo.aggregate(:count)
-
     podcasts_without_image =
       from(p in Podcast, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
@@ -245,7 +219,6 @@ defmodule PanWeb.MaintenanceController do
       total_manifestations: total_manifestations,
       total_delegations: total_delegations,
       unindexed_episodes: unindexed_episodes,
-      episodes_without_image: episodes_without_image,
       podcasts_without_image: podcasts_without_image,
       personas_without_image: personas_without_image,
       feeds_without_headers: feeds_without_headers,
