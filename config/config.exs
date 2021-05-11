@@ -11,16 +11,6 @@ config :pan, PanWeb.Endpoint,
   live_view: [signing_salt: "LMBJCcov"],
   http: [compress: false]
 
-config :pan, Pan.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "localhost",
-  port: 25,
-  username: false,
-  password: false,
-  tls: :if_available,
-  ssl: false,
-  retries: 1
-
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
