@@ -55,7 +55,6 @@ defmodule PanWeb.Podcast do
 
     has_many(:episodes, Episode, on_delete: :delete_all)
     has_many(:feeds, Feed, on_delete: :delete_all)
-    has_many(:rss_feeds, RssFeed, on_delete: :delete_all)
     has_many(:recommendations, Recommendation, on_delete: :delete_all)
     has_many(:engagements, Engagement, on_delete: :delete_all)
     has_many(:thumbnails, Image, on_delete: :delete_all)
