@@ -15,7 +15,6 @@ defmodule PanWeb.Podcast do
     Persona,
     Podcast,
     Recommendation,
-    RssFeed,
     Subscription,
     User
   }
