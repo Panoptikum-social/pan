@@ -17,34 +17,19 @@ defmodule Pan.Search do
       |> Enum.map(&Jason.encode!(&1))
       |> Enum.join("\n")
 
-    {:ok, %Response{status_code: response_code, body: response_body}} =
+    {:ok, %Response{status_code: response_code, body: _response_body}} =
       HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
         {"Content-Type", "application/x-ndjson"}
       ])
 
-    IO.inspect(response_body)
-
     if response_code == 200 do
       from(c in Category, where: c.id in ^category_ids)
       |> Repo.update_all(set: [full_text: true])
+
+      Logger.info("=== Indexed #{length(category_ids)} categories ===")
     end
 
-    Logger.info("=== Indexed #{length(category_ids)} categories ===")
-
-    #  persona_ids =
-    #   from(c in Persona,
-    #     where: not c.full_text,
-    #     limit: 1000,
-    #     select: c.id
-    #   )
-    #   |> Repo.all()
-
-    # for id <- persona_ids, do: Persona.update_search_index(id)
-
-    # from(c in Persona, where: c.id in ^persona_ids)
-    # |> Repo.update_all(set: [full_text: true])
-
-    # Logger.info("=== Indexed #{length(persona_ids)} personas ===")
+    Persona.batch_index()
 
     # podcast_ids =
     #   from(c in Podcast,

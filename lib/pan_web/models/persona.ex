@@ -1,6 +1,8 @@
 defmodule PanWeb.Persona do
   use PanWeb, :model
   alias Pan.Repo
+  alias HTTPoison.Response
+  require Logger
 
   alias PanWeb.{
     Engagement,
@@ -265,5 +267,77 @@ defmodule PanWeb.Persona do
     persona
     |> Persona.changeset(%{image_url: nil, uri: persona.uri || persona.pid})
     |> Repo.update()
+  end
+
+  def batch_index do
+    persona_ids =
+      from(p in Persona, where: not p.full_text, limit: 1_000, select: p.id)
+      |> Repo.all()
+
+    manticore_data =
+      from(p in Persona,
+        where: p.id in ^persona_ids,
+        preload: [:episodes, :podcasts, :thumbnails],
+        select: [
+          :id,
+          :name,
+          :pid,
+          :uri,
+          :description,
+          :long_description,
+          :image_title,
+          podcasts: :id,
+          episodes: :id,
+          thumbnails: [:path, :filename]
+        ]
+      )
+      |> Repo.all()
+      |> Enum.map(
+        &%{
+          insert: %{
+            index: "personas",
+            id: &1.id,
+            doc: %{
+              name: &1.name || "",
+              pid: &1.pid || "",
+              uri: &1.uri || "",
+              description: &1.description || "",
+              long_description: &1.long_description || "",
+              thumbnail_url: thumbnail_url(&1),
+              image_title: &1.image_title || "",
+              podcast_ids: Enum.map(&1.podcasts, fn podcast -> podcast.id end),
+              episode_ids: Enum.map(&1.episodes, fn episode -> episode.id end)
+            }
+          }
+        }
+      )
+      |> Enum.map(&Jason.encode!(&1))
+      |> Enum.join("\n")
+
+    {:ok, %Response{status_code: response_code, body: response_body}} =
+      HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
+        {"Content-Type", "application/x-ndjson"}
+      ])
+
+    if response_code == 200 do
+      from(p in Persona, where: p.id in ^persona_ids)
+      |> Repo.update_all(set: [full_text: true])
+
+      Logger.info("=== Indexed #{length(persona_ids)} personas ===")
+    else
+      IO.inspect response_body
+    end
+
+    if response_code == 200 && length(persona_ids) > 0 do
+      batch_index()
+    end
+  end
+
+  defp thumbnail_url(image) do
+    if length(image.thumbnails) > 0 do
+      hd(image.thumbnails).path <> hd(image.thumbnails).filename
+    else
+      ""
+    end
   end
 end
