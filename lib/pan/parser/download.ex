@@ -1,6 +1,7 @@
 defmodule Pan.Parser.Download do
   require Logger
   alias Pan.Parser.Feed
+  alias HTTPoison.{Error, Response}
 
   def check_for_rss(feed_xml) do
     if String.contains?(feed_xml, "<rss") do
@@ -12,137 +13,137 @@ defmodule Pan.Parser.Download do
 
   def download(url, option \\ nil, feed_id \\ nil) do
     case get(url, option) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} ->
+      {:ok, %Response{status_code: 200, body: feed_xml}} ->
         check_for_rss(feed_xml)
 
-      {:ok, %HTTPoison.Response{status_code: 203, body: feed_xml}} ->
+      {:ok, %Response{status_code: 203, body: feed_xml}} ->
         check_for_rss(feed_xml)
 
-      {:ok, %HTTPoison.Response{status_code: 206, body: feed_xml}} ->
+      {:ok, %Response{status_code: 206, body: feed_xml}} ->
         check_for_rss(feed_xml)
 
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %Response{status_code: 400}} ->
         {:error, "400: bad request"}
 
-      {:ok, %HTTPoison.Response{status_code: 401}} ->
+      {:ok, %Response{status_code: 401}} ->
         {:error, "401: unauthorized"}
 
-      {:ok, %HTTPoison.Response{status_code: 402}} ->
+      {:ok, %Response{status_code: 402}} ->
         {:error, "402: Payment required"}
 
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
+      {:ok, %Response{status_code: 404}} ->
         {:error, "404: feed not found"}
 
-      {:ok, %HTTPoison.Response{status_code: 406}} ->
+      {:ok, %Response{status_code: 406}} ->
         {:error, "406: not acceptable"}
 
-      {:ok, %HTTPoison.Response{status_code: 408}} ->
+      {:ok, %Response{status_code: 408}} ->
         {:error, "408: Request timeout"}
 
-      {:ok, %HTTPoison.Response{status_code: 410}} ->
+      {:ok, %Response{status_code: 410}} ->
         {:error, "410: Gone"}
 
-      {:ok, %HTTPoison.Response{status_code: 416}} ->
+      {:ok, %Response{status_code: 416}} ->
         {:error, "416: Range Not Satisfiable"}
 
-      {:ok, %HTTPoison.Response{status_code: 422}} ->
+      {:ok, %Response{status_code: 422}} ->
         {:error, "422: Unprocessible entity"}
 
-      {:ok, %HTTPoison.Response{status_code: 423}} ->
+      {:ok, %Response{status_code: 423}} ->
         {:error, "423: Locked"}
 
-      {:ok, %HTTPoison.Response{status_code: 429}} ->
+      {:ok, %Response{status_code: 429}} ->
         {:error, "429: To many requests"}
 
-      {:ok, %HTTPoison.Response{status_code: 451}} ->
+      {:ok, %Response{status_code: 451}} ->
         {:error, "451: Unavailable For Legal Reasons"}
 
-      {:ok, %HTTPoison.Response{status_code: 479}} ->
+      {:ok, %Response{status_code: 479}} ->
         {:error, "479: Not a standard status code"}
 
-      {:ok, %HTTPoison.Response{status_code: 500}} ->
+      {:ok, %Response{status_code: 500}} ->
         {:error, "500: internal server error"}
 
-      {:ok, %HTTPoison.Response{status_code: 501}} ->
+      {:ok, %Response{status_code: 501}} ->
         {:error, "501: not implemented"}
 
-      {:ok, %HTTPoison.Response{status_code: 502}} ->
+      {:ok, %Response{status_code: 502}} ->
         {:error, "502: bad gateway"}
 
-      {:ok, %HTTPoison.Response{status_code: 503}} ->
+      {:ok, %Response{status_code: 503}} ->
         {:error, "503: service unavailable"}
 
-      {:ok, %HTTPoison.Response{status_code: 504}} ->
+      {:ok, %Response{status_code: 504}} ->
         {:error, "504: gateway time-out"}
 
-      {:ok, %HTTPoison.Response{status_code: 508}} ->
+      {:ok, %Response{status_code: 508}} ->
         {:error, "508: loop detected"}
 
-      {:ok, %HTTPoison.Response{status_code: 509}} ->
+      {:ok, %Response{status_code: 509}} ->
         {:error, "509: Bandwidth Limit Exceeded"}
 
-      {:ok, %HTTPoison.Response{status_code: 520}} ->
+      {:ok, %Response{status_code: 520}} ->
         {:error, "520: Unknown Error"}
 
-      {:ok, %HTTPoison.Response{status_code: 521}} ->
+      {:ok, %Response{status_code: 521}} ->
         {:error, "521: Web server is down"}
 
-      {:ok, %HTTPoison.Response{status_code: 523}} ->
+      {:ok, %Response{status_code: 523}} ->
         {:error, "523: Origin is unreachable"}
 
-      {:ok, %HTTPoison.Response{status_code: 526}} ->
+      {:ok, %Response{status_code: 526}} ->
         {:error, "526: Invalid SSL certificate"}
 
-      {:ok, %HTTPoison.Response{status_code: 301, headers: headers}} ->
+      {:ok, %Response{status_code: 301, headers: headers}} ->
         redirect(url, headers, feed_id)
 
-      {:ok, %HTTPoison.Response{status_code: 302, headers: headers}} ->
+      {:ok, %Response{status_code: 302, headers: headers}} ->
         redirect(url, headers, feed_id)
 
-      {:ok, %HTTPoison.Response{status_code: 303, headers: headers}} ->
+      {:ok, %Response{status_code: 303, headers: headers}} ->
         redirect(url, headers, feed_id)
 
-      {:ok, %HTTPoison.Response{status_code: 307}} ->
+      {:ok, %Response{status_code: 307}} ->
         {:error, "307: Temporary redirect"}
 
-      {:ok, %HTTPoison.Response{status_code: 403}} ->
+      {:ok, %Response{status_code: 403}} ->
         if option == "no_headers" do
           {:error, "403: forbidden"}
         else
           download(url, "no_headers")
         end
 
-      {:ok, %HTTPoison.Response{status_code: code}} ->
+      {:ok, %Response{status_code: code}} ->
         Logger.error("status_code unknown #{inspect(code)}")
 
-      {:error, %HTTPoison.Error{id: nil, reason: :timeout}} ->
+      {:error, %Error{id: nil, reason: :timeout}} ->
         {:error, "Timeout"}
 
-      {:error, %HTTPoison.Error{id: nil, reason: :ehostunreach}} ->
+      {:error, %Error{id: nil, reason: :ehostunreach}} ->
         {:error, "Host unreachable"}
 
-      {:error, %HTTPoison.Error{id: nil, reason: :nxdomain}} ->
+      {:error, %Error{id: nil, reason: :nxdomain}} ->
         {:error, "Domain not resolveable"}
 
-      {:error, %HTTPoison.Error{id: nil, reason: :connect_timeout}} ->
+      {:error, %Error{id: nil, reason: :connect_timeout}} ->
         {:error, "Connection timeout"}
 
-      {:error, %HTTPoison.Error{id: nil, reason: :econnrefused}} ->
+      {:error, %Error{id: nil, reason: :econnrefused}} ->
         {:error, "Connection refused"}
 
-      {:error, %HTTPoison.Error{id: nil, reason: :closed}} ->
+      {:error, %Error{id: nil, reason: :closed}} ->
         try_without_tls_set(url, option)
 
-      {:error, %HTTPoison.Error{id: nil, reason: {:closed, _feed_xml}}} ->
+      {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
         try_without_tls_set(url, option)
 
-      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'handshake failure'}}} ->
+      {:error, %Error{id: nil, reason: {:tls_alert, 'handshake failure'}}} ->
         try_without_tls_set(url, option)
 
-      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
+      {:error, %Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
         try_without_tls_set(url, option)
 
-      {:error, %HTTPoison.Error{id: nil, reason: {:tls_alert, 'unrecognised name'}}} ->
+      {:error, %Error{id: nil, reason: {:tls_alert, 'unrecognised name'}}} ->
         try_without_tls_set(url, option)
 
       {:error, reason} ->

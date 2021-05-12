@@ -8,11 +8,6 @@ defmodule PanWeb.SearchController do
     render(conn, "done.html", %{})
   end
 
-  def full_text_search_push_all(conn, _params) do
-    Search.push_all()
-    render(conn, "done.html", %{})
-  end
-
   def full_text_search_reset_all(conn, _params) do
     Search.reset_all()
     render(conn, "done.html", %{})
