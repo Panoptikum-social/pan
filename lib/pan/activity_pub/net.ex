@@ -1,4 +1,5 @@
 defmodule Pan.ActivityPub.Net do
+  alias HTTPoison.Response
   # download and pretty print actor feed
   # curl -H "Accept: application/activity+json" https://pleroma.panoptikum.io/users/informatom | python -m json.tool
 
@@ -14,7 +15,7 @@ defmodule Pan.ActivityPub.Net do
   end
 
   def get(url) do
-    {:ok, %HTTPoison.Response{body: body}} = HTTPoison.get(url, @headers, @options)
+    {:ok, %Response{body: body}} = HTTPoison.get(url, @headers, @options)
     Jason.decode(body)
   end
 end

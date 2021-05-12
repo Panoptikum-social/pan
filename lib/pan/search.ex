@@ -1,140 +1,139 @@
 defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
-  alias PanWeb.{Category, Episode, Persona, Podcast, User}
+  alias PanWeb.{Category, Episode, Persona, Podcast}
   require Logger
+  alias HTTPoison.Response
 
   def push_missing do
     category_ids =
-      from(c in Category,
-        where: not c.full_text,
-        limit: 100,
-        select: c.id
-      )
+      from(c in Category, where: not c.full_text, select: c.id)
       |> Repo.all()
 
-    for id <- category_ids, do: Category.update_search_index(id)
+    manticore_data =
+      from(c in Category, where: c.id in ^category_ids)
+      |> Repo.all()
+      |> Enum.map(&%{insert: %{index: "categories", id: &1.id, doc: %{title: &1.title}}})
+      |> Enum.map(&Jason.encode!(&1))
+      |> Enum.join("\n")
 
-    from(c in Category, where: c.id in ^category_ids)
-    |> Repo.update_all(set: [full_text: true])
+    {:ok, %Response{status_code: response_code, body: response_body}} =
+      HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
+        {"Content-Type", "application/x-ndjson"}
+      ])
+
+    IO.inspect(response_body)
+
+    if response_code == 200 do
+      from(c in Category, where: c.id in ^category_ids)
+      |> Repo.update_all(set: [full_text: true])
+    end
 
     Logger.info("=== Indexed #{length(category_ids)} categories ===")
 
-    user_ids =
-      from(c in User,
-        where: not c.full_text,
-        limit: 100,
-        select: c.id
-      )
-      |> Repo.all()
+    #  persona_ids =
+    #   from(c in Persona,
+    #     where: not c.full_text,
+    #     limit: 1000,
+    #     select: c.id
+    #   )
+    #   |> Repo.all()
 
-    for id <- user_ids, do: User.update_search_index(id)
+    # for id <- persona_ids, do: Persona.update_search_index(id)
 
-    from(c in User, where: c.id in ^user_ids)
-    |> Repo.update_all(set: [full_text: true])
+    # from(c in Persona, where: c.id in ^persona_ids)
+    # |> Repo.update_all(set: [full_text: true])
 
-    Logger.info("=== Indexed #{length(user_ids)} users ===")
+    # Logger.info("=== Indexed #{length(persona_ids)} personas ===")
 
-    persona_ids =
-      from(c in Persona,
-        where: not c.full_text,
-        limit: 1000,
-        select: c.id
-      )
-      |> Repo.all()
+    # podcast_ids =
+    #   from(c in Podcast,
+    #     where: not c.full_text,
+    #     limit: 100,
+    #     select: c.id
+    #   )
+    #   |> Repo.all()
 
-    for id <- persona_ids, do: Persona.update_search_index(id)
+    # for id <- podcast_ids, do: Podcast.update_search_index(id)
 
-    from(c in Persona, where: c.id in ^persona_ids)
-    |> Repo.update_all(set: [full_text: true])
+    # from(c in Podcast, where: c.id in ^podcast_ids)
+    # |> Repo.update_all(set: [full_text: true])
 
-    Logger.info("=== Indexed #{length(persona_ids)} personas ===")
+    # Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
 
-    podcast_ids =
-      from(c in Podcast,
-        where: not c.full_text,
-        limit: 100,
-        select: c.id
-      )
-      |> Repo.all()
+    # episode_ids =
+    #   from(c in Episode,
+    #     where: not c.full_text,
+    #     limit: 1000,
+    #     select: c.id
+    #   )
+    #   |> Repo.all()
 
-    for id <- podcast_ids, do: Podcast.update_search_index(id)
+    # for id <- episode_ids, do: Episode.update_search_index(id)
 
-    from(c in Podcast, where: c.id in ^podcast_ids)
-    |> Repo.update_all(set: [full_text: true])
+    # from(c in Episode, where: c.id in ^episode_ids)
+    # |> Repo.update_all(set: [full_text: true])
 
-    Logger.info("=== Indexed #{length(podcast_ids)} podcasts ===")
-
-    episode_ids =
-      from(c in Episode,
-        where: not c.full_text,
-        limit: 1000,
-        select: c.id
-      )
-      |> Repo.all()
-
-    for id <- episode_ids, do: Episode.update_search_index(id)
-
-    from(c in Episode, where: c.id in ^episode_ids)
-    |> Repo.update_all(set: [full_text: true])
-
-    Logger.info("=== Indexed #{length(episode_ids)} episodes ===")
-    Logger.info("=== Indexing finished ===")
+    # Logger.info("=== Indexed #{length(episode_ids)} episodes ===")
+    # Logger.info("=== Indexing finished ===")
   end
 
   def reset_all do
-    Repo.update_all(Category, full_text: false)
-    Repo.update_all(Podcast, full_text: false)
-    Repo.update_all(Episode, full_text: false)
-    Repo.update_all(Persona, full_text: false)
+    IO.puts("resetting all categories")
+    Repo.update_all(Category, set: [full_text: false])
+    reset_podcasts()
+    reset_personas()
+    reset_episodes()
   end
 
-  def push_all do
-    Logger.info("=== Indexing categories (all) ===")
-    categories_query = from(c in Category, select: c.id)
+  defp reset_podcasts do
+    IO.puts("resetting up to 10_000 podcasts")
 
-    categories_query
-    |> Repo.all()
-    |> Enum.each(fn id ->
-      Category.update_search_index(id)
-    end)
+    podcast_ids =
+      from(p in Podcast,
+        where: p.full_text == true,
+        select: p.id,
+        limit: 10_000
+      )
+      |> Repo.all()
 
-    Logger.info("=== Indexing users ===")
-    users_query = from(u in User, select: u.id)
+    from(p in Podcast, where: p.id in ^podcast_ids)
+    |> Repo.update_all(set: [full_text: false])
 
-    users_query
-    |> Repo.all()
-    |> Enum.each(fn id ->
-      User.update_search_index(id)
-    end)
+    if length(podcast_ids) > 0, do: reset_podcasts()
+  end
 
-    Logger.info("=== Indexing personas ===")
-    personas_query = from(p in Persona, select: p.id)
+  defp reset_personas do
+    IO.puts("resetting up to 10_000 personas")
 
-    personas_query
-    |> Repo.all()
-    |> Enum.each(fn id ->
-      Persona.update_search_index(id)
-    end)
+    persona_ids =
+      from(p in Persona,
+        where: p.full_text == true,
+        select: p.id,
+        limit: 10_000
+      )
+      |> Repo.all()
 
-    Logger.info("=== Indexing podcasts ===")
-    podcasts_query = from(p in Podcast, select: p.id)
+    from(p in Persona, where: p.id in ^persona_ids)
+    |> Repo.update_all(set: [full_text: false])
 
-    podcasts_query
-    |> Repo.all()
-    |> Enum.each(fn id ->
-      Podcast.update_search_index(id)
-    end)
+    if length(persona_ids) > 0, do: reset_personas()
+  end
 
-    Logger.info("=== Indexing episodes ===")
-    episodes_query = from(e in Episode, select: e.id)
+  defp reset_episodes do
+    IO.puts("resetting up to 10_000 episodes")
 
-    episodes_query
-    |> Repo.all()
-    |> Enum.each(fn id ->
-      Episode.update_search_index(id)
-    end)
+    episode_ids =
+      from(e in Episode,
+        where: e.full_text == true,
+        select: e.id,
+        limit: 10_000
+      )
+      |> Repo.all()
 
-    Logger.info("=== Indexing finished ===")
+    from(e in Episode, where: e.id in ^episode_ids)
+    |> Repo.update_all(set: [full_text: false])
+
+    if length(episode_ids) > 0, do: reset_episodes()
   end
 end

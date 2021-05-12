@@ -56,7 +56,6 @@ defmodule Pan.Mixfile do
         :exactor,
         :jason,
         :plug_cowboy,
-        :httpotion,
       ]
     ]
   end
@@ -116,10 +115,10 @@ defmodule Pan.Mixfile do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # Manticoresearch connector
-      {:manticoresearch, "~> 1.0.1"},
       # We have to override manually, as manticoresearch would want to see 3.0
       {:poison, "~> 4.0.1", override: true},
+      #FIXME: remove tirexs
+      {:tirexs, "~> 0.8"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       # HTML parser
@@ -138,7 +137,6 @@ defmodule Pan.Mixfile do
       {:exactor, "~> 2.2", warn_missing: false},
       # Json generation,
       {:jason, "~> 1.1"},
-      {:httpotion, "~> 3.1"}
     ]
   end
 

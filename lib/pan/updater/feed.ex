@@ -3,6 +3,7 @@ defmodule Pan.Updater.Feed do
   alias PanWeb.Feed
   import Pan.Parser.Helpers, only: [md5hash: 1, to_naive_datetime: 1]
   require Logger
+  alias HTTPoison.Response
 
   def needs_update(feed, podcast, forced \\ false) do
     if forced != false || feed.no_headers_available do
@@ -15,7 +16,7 @@ defmodule Pan.Updater.Feed do
       options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
 
       case HTTPoison.head(feed.self_link_url, headers, options) do
-        {:ok, %HTTPoison.Response{headers: headers}} ->
+        {:ok, %Response{headers: headers}} ->
           headermap = Enum.into(headers, %{})
           check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
 
