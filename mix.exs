@@ -107,8 +107,12 @@ defmodule Pan.MixProject do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # elasticsearch connector
-      {:tirexs, "~> 0.8"},
+      # Manticoresearch connector
+      {:manticoresearch, "~> 1.0.1"},
+      # Code analysis
+      {:credo, "~> 1.5", only: [:dev, :test]},
+      # HTML parser
+      {:floki, "~> 0.25"},
       # reuseable Erlang components
       {:erlware_commons, "~> 1.3"},
       # Jsonapi.org serializer

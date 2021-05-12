@@ -136,7 +136,7 @@ defmodule PanWeb.MaintenanceController do
       |> delimit_integer(" ")
 
     unindexed_episodes =
-      from(e in Episode, where: not e.elastic)
+      from(e in Episode, where: not e.full_text)
       |> Repo.aggregate(:count)
       |> delimit_integer(" ")
 

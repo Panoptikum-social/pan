@@ -1,1 +1,1 @@
-../../../jekyll/panoptikum.io/pages/api.md
+/daten/DATA/jekyll/panoptikum.io/pages/api.md

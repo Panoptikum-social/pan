@@ -29,7 +29,7 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 * Make sure you have [Elixir](https://elixir-lang.org) installed.
 * Make sure you have [Node.js](https://nodejs.org) installed.
 * Make sure you have [PostgreSQL](https://www.postgresql.org) installed and running.
-* Make sure you have [Elasticsearch](https://www.elastic.co/products/elasticsearch) installed and running.
+* Make sure you have [ManticoreSearch](https://manticoresearch.com/) installed and running.
 
 ### 📦 Install dependencies
 

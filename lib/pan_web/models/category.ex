@@ -5,7 +5,7 @@ defmodule PanWeb.Category do
 
   schema "categories" do
     field(:title, :string)
-    field(:elastic, :boolean)
+    field(:full_text, :boolean)
 
     has_many(:children, PanWeb.Category, foreign_key: :parent_id)
 
@@ -21,7 +21,7 @@ defmodule PanWeb.Category do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :parent_id, :elastic])
+    |> cast(params, [:title, :parent_id, :full_text])
     |> validate_required([:title])
   end
 
