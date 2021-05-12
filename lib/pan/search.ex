@@ -82,7 +82,14 @@ defmodule Pan.Search do
     Logger.info("=== Indexing finished ===")
   end
 
-  def push_all() do
+  def reset_all do
+    Repo.update_all(Category, full_text: false)
+    Repo.update_all(Podcast, full_text: false)
+    Repo.update_all(Episode, full_text: false)
+    Repo.update_all(Persona, full_text: false)
+  end
+
+  def push_all do
     Logger.info("=== Indexing categories (all) ===")
     categories_query = from(c in Category, select: c.id)
 

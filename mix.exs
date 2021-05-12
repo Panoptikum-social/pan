@@ -118,6 +118,8 @@ defmodule Pan.Mixfile do
       {:tzdata, "~> 1.0"},
       # Manticoresearch connector
       {:manticoresearch, "~> 1.0.1"},
+      # We have to override manually, as manticoresearch would want to see 3.0
+      {:poison, "~> 4.0.1", override: true},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       # HTML parser
