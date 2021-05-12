@@ -116,8 +116,8 @@ defmodule Pan.Mixfile do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # Manticoresearch connector
-      {:manticoresearch, "~> 1.0.1"},
+      # elasticsearch connector
+      {:tirexs, "~> 0.8"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       # HTML parser

@@ -18,7 +18,7 @@ defmodule PanWeb.Episode do
     field(:summary, :string)
     field(:image_title, :string)
     field(:image_url, :string)
-    field(:full_text, :boolean)
+    field(:elastic, :boolean)
     timestamps()
 
     belongs_to(:podcast, Podcast)
@@ -50,7 +50,7 @@ defmodule PanWeb.Episode do
       :podcast_id,
       :image_title,
       :image_url,
-      :full_text,
+      :elastic,
     ])
     |> validate_required([:title, :link, :publishing_date, :podcast_id])
     |> unique_constraint(:guid)

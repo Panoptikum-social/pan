@@ -30,7 +30,7 @@ defmodule PanWeb.Api.PodcastView do
     :latest_episode_publishing_date,
     :publication_frequency,
     :manually_updated_at,
-    :full_text,
+    :elastic,
     :last_error_message,
     :last_error_occured
   ])

@@ -85,8 +85,8 @@
   <dt>Manually updated at</dt>
   <dd><%= @podcast.manually_updated_at && Timex.format!(@podcast.manually_updated_at, "{ISOdate} {h24}:{m}:{s}") %></dd>
 
-  <dt>Indexed by Full Text Indexed</dt>
-  <dd><%= @podcast.full_text %></dd>
+  <dt>Indexed by Elatsicsearch</dt>
+  <dd><%= @podcast.elastic %></dd>
 
   <dt>Thumbnail created</dt>
   <dd><%= @podcast.thumbnailed %></dd>

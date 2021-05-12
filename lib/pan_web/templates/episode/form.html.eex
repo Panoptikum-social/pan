@@ -91,9 +91,9 @@
   </div>
 
   <div class="form-group">
-    <%= label f, :full_text, class: "control-label" %>
-    <%= checkbox f, :full_text, class: "form-control" %>
-    <%= error_tag f, :full_text %>
+    <%= label f, :elastic, class: "control-label" %>
+    <%= checkbox f, :elastic, class: "form-control" %>
+    <%= error_tag f, :elastic %>
   </div>
 
   <div class="form-group">

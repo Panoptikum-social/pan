@@ -46,7 +46,7 @@ defmodule PanWeb.Podcast do
     field(:latest_episode_publishing_date, :naive_datetime)
     field(:publication_frequency, :float)
     field(:manually_updated_at, :naive_datetime)
-    field(:full_text, :boolean)
+    field(:elastic, :boolean)
     field(:thumbnailed, :boolean)
     field(:last_error_message, :string)
     field(:last_error_occured, :naive_datetime)
@@ -116,7 +116,7 @@ defmodule PanWeb.Podcast do
       :publication_frequency,
       :failure_count,
       :manually_updated_at,
-      :full_text,
+      :elastic,
       :thumbnailed,
       :last_error_message,
       :last_error_occured

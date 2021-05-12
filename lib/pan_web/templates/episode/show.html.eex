@@ -57,8 +57,8 @@
   <dt>Podcast</dt>
   <dd><%= @episode.podcast.title %></dd>
 
-  <dt>Full Text Indexed</dt>
-  <dd><%= @episode.full_text %></dd>
+  <dt>Elastic</dt>
+  <dd><%= @episode.elastic %></dd>
 
   <dt>Inserted at</dt>
   <dd><%= @episode.inserted_at %></dd>
