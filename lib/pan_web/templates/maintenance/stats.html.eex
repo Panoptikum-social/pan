@@ -33,7 +33,7 @@
           <td>total</td>
           <td class="text-right"><%= @total_episodes %></td></tr>
       <tr><th></th>
-          <td>unindexed by Elastic Search</td>
+          <td>not indexed by full text search ngine</td>
           <td class="text-right"><%= @unindexed_episodes %></td></tr>
       <tr><th>Category</th>
           <td>total</td>
@@ -111,8 +111,8 @@
 <div class="col-md-3">
   <ul class="list-group">
     <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Elasticsearch push missing",
-               to: search_path(@conn, :elasticsearch_push_missing),
+      <%= link "Full text search push missing",
+               to: search_path(@conn, :fullt_text_search_push_missing),
                class: "btn btn-primary" %>
     </li>
 

@@ -35,7 +35,6 @@ defmodule PanWeb.User do
     field(:billing_address, :string)
     field(:payment_reference, :string)
     field(:paper_bill, :boolean)
-    field(:elastic, :boolean)
     field(:bot_check, :integer, virtual: true)
     timestamps()
 
@@ -121,8 +120,7 @@ defmodule PanWeb.User do
       :pro_until,
       :billing_address,
       :payment_reference,
-      :paper_bill,
-      :elastic
+      :paper_bill
     ])
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)

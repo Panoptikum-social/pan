@@ -24,7 +24,7 @@ defmodule PanWeb.Persona do
     field(:long_description, :string)
     field(:image_url, :string)
     field(:image_title, :string)
-    field(:elastic, :boolean)
+    field(:full_text, :boolean)
     field(:thumbnailed, :boolean)
     field(:fediverse_address, :string)
 
@@ -65,7 +65,7 @@ defmodule PanWeb.Persona do
       :redirect_id,
       :long_description,
       :user_id,
-      :elastic,
+      :full_text,
       :thumbnailed,
       :fediverse_address
     ])
