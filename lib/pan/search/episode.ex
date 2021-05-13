@@ -24,20 +24,21 @@ defmodule Pan.Search.Episode do
   end
 
   def manticore_struct(episode) do
+    e = episode
     %{
       insert: %{
         index: "episodes",
-        id: episode.id,
+        id: e.id,
         doc: %{
-          title: episode.title || "",
-          subtitle: episode.subtitle || "",
-          description: episode.description || "",
-          summary: episode.summary || "",
-          shownotes: episode.shownotes || "",
-          inserted_at: to_unix(episode.inserted_at),
-          podcast_id: episode.podcast.id || 0,
-          language_ids: Enum.map(episode.podcast.languages, & &1.id),
-          category_ids: Enum.map(episode.podcast.categories, & &1.id)
+          title: e.title || "",
+          subtitle: e.subtitle || "",
+          description: e.description || "",
+          summary: e.summary || "",
+          shownotes: e.shownotes || "",
+          inserted_at: to_unix(e.inserted_at),
+          podcast_id: (e.podcast && e.podcast.id) || 0,
+          language_ids: (e.podcast && Enum.map(e.podcast.languages, & &1.id)) || [],
+          category_ids: (e.podcast && Enum.map(e.podcast.categories, & &1.id)) || []
         }
       }
     }
