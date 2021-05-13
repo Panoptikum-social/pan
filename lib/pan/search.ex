@@ -6,9 +6,9 @@ defmodule Pan.Search do
   alias HTTPoison.Response
 
   def push_missing do
-    #    Search.Category.batch_index()
-    #    Search.Persona.batch_index()
-    #    Search.Podcast.batch_index()
+    Search.Category.batch_index()
+    Search.Persona.batch_index()
+    Search.Podcast.batch_index()
     Search.Episode.batch_index()
   end
 
@@ -26,37 +26,54 @@ defmodule Pan.Search do
         struct_function: struct_function
       ) do
     record_ids =
-      from(r in model, where: not r.full_text, limit: 1_000, select: r.id)
+      from(r in model, where: not r.full_text, limit: 100, select: r.id)
       |> Repo.all()
 
-    manticore_data =
-      from(r in model, where: r.id in ^record_ids, preload: ^preloads, select: ^selects)
-      |> Repo.all()
-      |> Enum.map(&struct_function.(&1))
-      |> Enum.map(&Jason.encode!(&1))
-      |> Enum.join("\n")
+    if record_ids != [] do
+      manticore_data =
+        from(r in model, where: r.id in ^record_ids, preload: ^preloads, select: ^selects)
+        |> Repo.all()
+        |> Enum.map(&struct_function.(&1))
+        |> Enum.map(&Jason.encode!(&1))
+        |> Enum.join("\n")
 
-    {:ok, %Response{status_code: response_code, body: response_body}} =
-      HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
-        {"Content-Type", "application/x-ndjson"}
-      ])
+      {:ok, %Response{status_code: response_code, body: response_body}} =
+        HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
+          {"Content-Type", "application/x-ndjson"}
+        ])
 
-    if response_code >= 200 && response_code <= 299 do
-      from(r in model, where: r.id in ^record_ids)
-      |> Repo.update_all(set: [full_text: true])
+      if response_code in [200, 201] do
+        from(r in model, where: r.id in ^record_ids)
+        |> Repo.update_all(set: [full_text: true])
 
-      Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
+        Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
+      else
+        {:ok, response} = Jason.decode(response_body)
+        IO.inspect response
+        error = hd(response["items"] |> Enum.reverse())["insert"]["error"]["type"]
+
+        error_id =
+          error
+          |> String.split()
+          |> tl()
+          |> tl()
+          |> hd()
+          |> String.replace("'", "")
+          |> String.to_integer()
+
+        Repo.get!(model, error_id) |> Ecto.Changeset.change(full_text: true) |> Repo.update()
+      end
+
+      if response_code in [200, 201, 500] && length(record_ids) > 0 do
+        batch_index(
+          model: model,
+          preloads: preloads,
+          selects: selects,
+          struct_function: struct_function
+        )
+      end
     else
-      IO.inspect(response_body)
-    end
-
-    if response_code >= 200 && response_code <= 299 && length(record_ids) > 0 do
-      batch_index(
-        model: model,
-        preloads: preloads,
-        selects: selects,
-        struct_function: struct_function
-      )
+      Logger.info("=== Done with type #{model} ===")
     end
   end
 end
