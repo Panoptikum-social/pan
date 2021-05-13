@@ -6,17 +6,17 @@ defmodule Pan.Search do
   alias HTTPoison.Response
 
   def push_missing do
-    Search.Category.batch_index()
-    Search.Persona.batch_index()
+#    Search.Category.batch_index()
+#    Search.Persona.batch_index()
     Search.Podcast.batch_index()
-    Search.Episode.batch_index()
+#    Search.Episode.batch_index()
   end
 
   def reset_all do
-    #    Search.Category.batch_reset()
-    #    Search.Persona.batch_reset()
-    #    Search.Podcast.batch_reset()
-    Search.Episode.batch_reset()
+#    Search.Category.batch_reset()
+#    Search.Persona.batch_reset()
+    Search.Podcast.batch_reset()
+#    Search.Episode.batch_reset()
   end
 
   def batch_index(
@@ -26,7 +26,7 @@ defmodule Pan.Search do
         struct_function: struct_function
       ) do
     record_ids =
-      from(r in model, where: not r.full_text, limit: 100, select: r.id)
+      from(r in model, where: not r.full_text, limit: 1_000, select: r.id)
       |> Repo.all()
 
     if record_ids != [] do
@@ -48,9 +48,9 @@ defmodule Pan.Search do
 
         Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
       else
-        {:ok, response} = Jason.decode(response_body)
-        IO.inspect response
-        error = hd(response["items"] |> Enum.reverse())["insert"]["error"]["type"]
+        {:ok, query_result} = Jason.decode(response_body)
+        IO.inspect(query_result)
+        error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
         error_id =
           error
@@ -75,5 +75,29 @@ defmodule Pan.Search do
     else
       Logger.info("=== Done with type #{model} ===")
     end
+  end
+
+  def query(index: index, search_term: search_term, limit: limit, offset: offset) do
+    manticore_data =
+      %{
+        index: index,
+        query: %{match: %{*: search_term}},
+        limit: limit,
+        offset: offset,
+        highlight: %{fields: ["description"]}
+      }
+      |> Jason.encode!()
+
+    response =
+      HTTPoison.post("http://localhost:9308/search", manticore_data, [
+        {"Content-Type", "application/x-ndjson"}
+      ])
+
+    {:ok, %Response{body: response_body}} = response
+    {:ok, search_result} = Jason.decode(response_body)
+
+    IO.inspect hd(search_result["hits"]["hits"])
+
+    search_result["hits"]
   end
 end

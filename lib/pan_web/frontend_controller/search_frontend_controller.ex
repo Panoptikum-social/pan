@@ -2,56 +2,27 @@ defmodule PanWeb.SearchFrontendController do
   use PanWeb, :controller
   require Logger
 
-  def new(conn, params) do
-    size = 10
+  def new(conn, %{"page" => page, "search" => %{"searchstring" => search_term} }) do
+    limit = 10
 
-    from =
-      if params["page"] in ["", nil] do
+    offset =
+      if page in ["", nil] do
         0
       else
-        (String.to_integer(params["page"]) - 1) * size
+        (String.to_integer(page) - 1) * limit
       end
 
-    page = round((from + 10) / size)
+    _page = round((offset + 10) / limit)
 
-    query = [
-      index: "/panoptikum_" <> Application.get_env(:pan, :environment),
-      search: [
-        size: size,
-        from: from,
-        query: [
-          function_score: [
-            query: [match: [_all: [query: params["search"]["searchstring"]]]],
-            boost_mode: "multiply",
-            functions: [
-              %{filter: [term: [_type: "categories"]], weight: 20},
-              %{filter: [term: [_type: "podcasts"]], weight: 10},
-              %{filter: [term: [_type: "personas"]], weight: 3},
-              %{filter: [term: [_type: "episodes"]], weight: 2},
-              %{filter: [term: [_type: "users"]], weight: 1}
-            ]
-          ]
-        ]
-      ]
-    ]
+    Pan.Search.query(index: "category", search_term: search_term, limit: limit, offset: offset)
+    render(conn, "done.html")
+  end
 
-    case Tirexs.Query.create_resource(query) do
-      {:ok, 200, %{hits: hits, took: took}} ->
-        total = Enum.min([hits.total, 10_000])
+  def new(conn, %{"search" => %{"searchstring" => search_term} }) do
+    limit = 10
+    index = "episodes"
 
-        render(conn, "new.html",
-          searchstring: params["search"]["searchstring"],
-          hits: hits,
-          took: took,
-          from: from,
-          size: size,
-          page: page,
-          total: total
-        )
-
-      {:error, _number, %{error: %{caused_by: %{reason: reason}}}} ->
-        render(conn, "error.html")
-        raise reason
-    end
+    hits = Pan.Search.query(index: index, search_term: search_term, limit: limit, offset: 0)
+    render(conn, "#{index}.html", hits: hits)
   end
 end

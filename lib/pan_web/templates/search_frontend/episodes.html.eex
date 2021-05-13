@@ -1,0 +1,21 @@
+<h1> Search results - Episodes (<%= @hits["total"] %>) </h1>
+
+<%= for hit <- @hits["hits"] do %>
+  <p><%= link [fa_icon("podcast"), " ", hit["_source"]["title"]],
+                to: episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+                class: "btn btn-xs btn-lavender" %></p>
+  <p><b>Description:</b> <%= raw(hit["highlight"]["description"]) %></p>
+  <p><b>Summary:</b> <%= hit["_source"]["summary"] %></p>
+  <p><b>Podcast:</b> <%= hit["_source"]["podcast_id"] %></p>
+  <p><b>Inserted at:</b> <%= format_datetime(hit["_source"]["inserted_at"]) %></p>
+  <p><b>Categories:<b>
+    <%= for id <- hit["_source"]["category_ids"] do %>
+      <%= id %>
+    <% end %>
+  </p>
+  <p><b>Languages:<b>
+    <%= for id <- hit["_source"]["language_ids"] do %>
+      <%= id %>
+    <% end %>
+  </p>
+<% end %>
