@@ -4,6 +4,13 @@ defmodule PanWeb.SearchFrontendView do
   alias PanWeb.{Episode, Image, Podcast, Persona}
   import Scrivener.HTML
 
+  def format_datetime(timestamp) do
+    {:ok, date_time} = DateTime.from_unix(timestamp)
+
+    Timex.to_date(date_time)
+    |> Timex.format!("%e.%m.%Y", :strftime)
+  end
+
   def hit_widget(hit, searchstring) do
     %{_source: fields, _type: type, _score: score} = hit
 

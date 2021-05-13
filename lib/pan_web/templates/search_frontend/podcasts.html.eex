@@ -1,0 +1,19 @@
+<h1> Search results - Podcasts </h1>
+
+<%= for hit <- @hits["hits"] do %>
+  <p><%= link [fa_icon("podcast"), " ", hit["_source"]["title"]],
+                to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+                class: "btn btn-xs btn-lavender" %></p>
+  <p><b>Description:</b> <%= hit["_source"]["description"] %></p>
+  <p><b>Summary:</b> <%= hit["_source"]["summary"] %></p>
+  <p><b>Categories:<b>
+    <%= for id <- hit["_source"]["category_ids"] do %>
+      <%= id %>
+    <% end %>
+  </p>
+  <p><b>Languages:<b>
+    <%= for id <- hit["_source"]["language_ids"] do %>
+      <%= id %>
+    <% end %>
+  </p>
+<% end %>
