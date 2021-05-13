@@ -12,12 +12,12 @@ defmodule Pan.Search.Podcast do
         :id,
         :title,
         :description,
-        :thumbnail_url,
         :summary,
         languages: :id,
         categories: :id,
         thumbnails: [:path, :filename]
-      ]
+      ],
+      struct_function: &manticore_struct/1
     )
   end
 
@@ -27,10 +27,10 @@ defmodule Pan.Search.Podcast do
         index: "podcasts",
         id: podcast.id,
         doc: %{
-          title: podcast.title,
-          description: podcast.description,
+          title: podcast.title || "",
+          description: podcast.description || "",
           thumbnail_url: thumbnail_url(podcast),
-          summary: podcast.summary,
+          summary: podcast.summary || "",
           language_ids: Enum.map(podcast.languages, & &1.id),
           category_ids: Enum.map(podcast.categories, & &1.id)
         }

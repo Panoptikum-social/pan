@@ -6,8 +6,9 @@ defmodule Pan.Search.Category do
   def batch_index() do
     Pan.Search.batch_index(
       model: Category,
-      preloads: [:episodes, :podcasts, :thumbnails],
-      selects: [:id, :title]
+      preloads: [],
+      selects: [:id, :title],
+      struct_function: &manticore_struct/1
     )
   end
 

@@ -19,7 +19,8 @@ defmodule Pan.Search.Persona do
         podcasts: :id,
         episodes: :id,
         thumbnails: [:path, :filename]
-      ]
+      ],
+      struct_function: &manticore_struct/1
     )
   end
 
