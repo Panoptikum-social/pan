@@ -7,7 +7,7 @@ defmodule Pan.Search.Episode do
   def batch_index do
     Pan.Search.batch_index(
       model: Episode,
-      preloads: [:languages, :categories, :podcasts],
+      preloads: [podcast: [:languages, :categories]],
       selects: [
         :id,
         :title,
@@ -15,11 +15,11 @@ defmodule Pan.Search.Episode do
         :description,
         :summary,
         :shownotes,
-        :created_at,
-        podcast: [:id, languages: :id, categories: :id],
-        languages: :id,
-        categories: :id
-      ]
+        :inserted_at,
+        :podcast_id,
+        podcast: [:id, languages: :id, categories: :id]
+      ],
+      struct_function: &manticore_struct/1
     )
   end
 
@@ -29,13 +29,13 @@ defmodule Pan.Search.Episode do
         index: "episodes",
         id: episode.id,
         doc: %{
-          title: episode.title,
-          subtitle: episode.subtitle,
-          description: episode.description,
-          summary: episode.summary,
-          shownotes: episode.shownotes,
-          created_at: to_unix(episode.created_at),
-          podcast_ids: Enum.map(episode.podcasts, & &1.id),
+          title: episode.title || "",
+          subtitle: episode.subtitle || "",
+          description: episode.description || "",
+          summary: episode.summary || "",
+          shownotes: episode.shownotes || "",
+          inserted_at: to_unix(episode.inserted_at),
+          podcast_id: episode.podcast.id || 0,
           language_ids: Enum.map(episode.podcast.languages, & &1.id),
           category_ids: Enum.map(episode.podcast.categories, & &1.id)
         }

@@ -4,13 +4,13 @@ defmodule PanWeb.SearchController do
   require Logger
 
   def full_text_search_push_missing(conn, _params) do
-    Search.push_missing()
-    render(conn, "done.html", %{})
+    Task.start(fn -> Search.push_missing() end)
+    render(conn, "started.html", %{})
   end
 
   def full_text_search_reset_all(conn, _params) do
-    Search.reset_all()
-    render(conn, "done.html", %{})
+    Task.start(fn -> Search.reset_all() end)
+    render(conn, "started.html", %{})
   end
 
   def full_text_search_delete_orphans(conn, _params) do
