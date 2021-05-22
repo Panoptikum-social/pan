@@ -3,17 +3,23 @@ defmodule PanWeb.SearchController do
   alias Pan.Search
   require Logger
 
-  def full_text_search_push_missing(conn, _params) do
+  def migrate(conn, _params) do
+    # Pan.Search.Category.migrate()
+
+    render(conn, "started.html", %{})
+  end
+
+  def push_missing(conn, _params) do
     Task.start(fn -> Search.push_missing() end)
     render(conn, "started.html", %{})
   end
 
-  def full_text_search_reset_all(conn, _params) do
+  def reset_all(conn, _params) do
     Task.start(fn -> Search.reset_all() end)
     render(conn, "started.html", %{})
   end
 
-  def full_text_search_delete_orphans(conn, _params) do
+  def delete_orphans(conn, _params) do
     Logger.info("=== Full text search orphans deletion started ===")
     PanWeb.Category.delete_search_index_orphans()
     Logger.info("=== Category orphans deleted ===")

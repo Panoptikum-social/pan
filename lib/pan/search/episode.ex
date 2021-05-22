@@ -4,7 +4,29 @@ defmodule Pan.Search.Episode do
   alias PanWeb.Episode
   require Logger
 
-  def batch_index do
+  def create_index() do
+    # index episodes {
+    #   type = rt
+    #   path = /var/lib/manticore/data/episodes
+    #   rt_field = title
+    #   rt_field = subtitle
+    #   rt_field = description
+    #   rt_field = summary
+    #   rt_field = shownotes
+    #   rt_attr_timestamp = inserted_at
+    #   rt_attr_uint = podcast_id
+    #   rt_attr_multi = language_ids
+    #   rt_attr_multi = category_ids
+    #   min_word_len = 3
+    #   min_infix_len = 3
+    #   html_strip = 1
+    #   html_remove_elements = 'style, script'
+    #   stored_fields = 'title, subtitle, description, summary, shownotes'
+    #   charset_table = non_cjk
+    # }
+  end
+
+  def batch_index() do
     Pan.Search.batch_index(
       model: Episode,
       preloads: [podcast: [:languages, :categories]],
