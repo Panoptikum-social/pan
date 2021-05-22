@@ -3,21 +3,27 @@ defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
   require Logger
-  alias Pan.Search.Manticore
   alias HTTPoison.Response
 
+  def migrate do
+    Search.Category.migrate()
+    Search.Podcast.migrate()
+    Search.Episode.migrate()
+    Search.Persona.migrate()
+  end
+
   def push_missing do
-    #    Search.Category.batch_index()
-    #    Search.Persona.batch_index()
-    Search.Podcast.batch_index()
-    #    Search.Episode.batch_index()
+    #  Search.Category.batch_index()
+    #  Search.Persona.batch_index()
+    #  Search.Podcast.batch_index()
+    #  Search.Episode.batch_index()
   end
 
   def reset_all do
-    #    Search.Category.batch_reset()
-    #    Search.Persona.batch_reset()
-    Search.Podcast.batch_reset()
-    #    Search.Episode.batch_reset()
+    #  Search.Category.batch_reset()
+    #  Search.Persona.batch_reset()
+    # Search.Podcast.batch_reset()
+    #  Search.Episode.batch_reset()
   end
 
   def batch_index(
@@ -39,7 +45,7 @@ defmodule Pan.Search do
         |> Enum.join("\n")
 
       {:ok, %Response{status_code: response_code, body: response_body}} =
-        Manticore.post(endpoint: "bulk", data: data)
+        Search.Manticore.post(data, "bulk")
 
       if response_code in [200, 201] do
         from(r in model, where: r.id in ^record_ids)

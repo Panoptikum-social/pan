@@ -2,28 +2,17 @@ defmodule Pan.Search.Persona do
   alias PanWeb.Persona
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
+  alias Pan.Search.Manticore
   require Logger
 
-  def create_index() do
-    # index personas {
-    #   type = rt
-    #   path = /var/lib/manticore/data/personas
-    #   rt_field = name
-    #   rt_attr_string = pid
-    #   rt_attr_string = uri
-    #   rt_field = description
-    #   rt_field = long_description
-    #   rt_attr_string = thumbnail_url
-    #   rt_field = image_title
-    #   rt_attr_multi = podcast_ids
-    #   rt_attr_multi = episode_ids
-    #   min_word_len = 3
-    #   min_infix_len = 3
-    #   html_strip = 1
-    #   html_remove_elements = 'style, script'
-    #   stored_fields='name, description, long_description, image_title'
-    #   charset_table = non_cjk
-    # }
+  def migrate() do
+    Manticore.post("mode=raw&query=DROP TABLE personas", "sql")
+
+    ("mode=raw&query=CREATE TABLE personas(name text, pid string, uri string, " <>
+       "description text, long_description text, thumbnail_url string, " <>
+       "image_title text, podcast_ids multi, episode_ids multi) " <>
+       "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
+    |> Manticore.post("sql")
   end
 
   def batch_index() do

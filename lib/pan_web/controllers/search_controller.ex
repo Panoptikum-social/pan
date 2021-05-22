@@ -4,8 +4,7 @@ defmodule PanWeb.SearchController do
   require Logger
 
   def migrate(conn, _params) do
-    # Pan.Search.Category.migrate()
-
+    Pan.Search.migrate()
     render(conn, "started.html", %{})
   end
 
