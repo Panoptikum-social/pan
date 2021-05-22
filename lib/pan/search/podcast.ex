@@ -2,25 +2,16 @@ defmodule Pan.Search.Podcast do
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
   alias PanWeb.Podcast
+  alias Pan.Search.Manticore
   require Logger
 
-  def create_index() do
-    # index podcasts {
-    #   type = rt
-    #   path = /var/lib/manticore/data/podcasts
-    #   rt_field = title
-    #   rt_field = description
-    #   rt_attr_string = thumbnail_url
-    #   rt_field = summary
-    #   rt_attr_multi = language_ids
-    #   rt_attr_multi = category_ids
-    #   min_word_len = 3
-    #   min_infix_len = 3
-    #   html_strip = 1
-    #   html_remove_elements = 'style, script'
-    #   stored_fields = 'title, description, summary'
-    #   charset_table = non_cjk
-    # }
+  def migrate() do
+    Manticore.post("mode=raw&query=DROP TABLE podcasts", "sql")
+
+    ("mode=raw&query=CREATE TABLE podcasts(title text, description text, thumbnail_url string, " <>
+       "summary text, language_ids multi, category_ids multi) " <>
+       "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
+    |> Manticore.post("sql")
   end
 
   def batch_index() do
