@@ -3,20 +3,21 @@ defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
   require Logger
+  alias Pan.Search.Manticore
   alias HTTPoison.Response
 
   def push_missing do
-#    Search.Category.batch_index()
-#    Search.Persona.batch_index()
+    #    Search.Category.batch_index()
+    #    Search.Persona.batch_index()
     Search.Podcast.batch_index()
-#    Search.Episode.batch_index()
+    #    Search.Episode.batch_index()
   end
 
   def reset_all do
-#    Search.Category.batch_reset()
-#    Search.Persona.batch_reset()
+    #    Search.Category.batch_reset()
+    #    Search.Persona.batch_reset()
     Search.Podcast.batch_reset()
-#    Search.Episode.batch_reset()
+    #    Search.Episode.batch_reset()
   end
 
   def batch_index(
@@ -30,7 +31,7 @@ defmodule Pan.Search do
       |> Repo.all()
 
     if record_ids != [] do
-      manticore_data =
+      data =
         from(r in model, where: r.id in ^record_ids, preload: ^preloads, select: ^selects)
         |> Repo.all()
         |> Enum.map(&struct_function.(&1))
@@ -38,9 +39,7 @@ defmodule Pan.Search do
         |> Enum.join("\n")
 
       {:ok, %Response{status_code: response_code, body: response_body}} =
-        HTTPoison.post("http://localhost:9308/bulk", manticore_data, [
-          {"Content-Type", "application/x-ndjson"}
-        ])
+        Manticore.post(endpoint: "bulk", data: data)
 
       if response_code in [200, 201] do
         from(r in model, where: r.id in ^record_ids)
@@ -49,7 +48,6 @@ defmodule Pan.Search do
         Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
       else
         {:ok, query_result} = Jason.decode(response_body)
-        IO.inspect(query_result)
         error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
         error_id =
@@ -95,8 +93,6 @@ defmodule Pan.Search do
 
     {:ok, %Response{body: response_body}} = response
     {:ok, search_result} = Jason.decode(response_body)
-
-    IO.inspect hd(search_result["hits"]["hits"])
 
     search_result["hits"]
   end

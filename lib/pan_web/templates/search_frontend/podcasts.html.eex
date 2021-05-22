@@ -1,10 +1,15 @@
 <h1> Search results - Podcasts </h1>
 
 <%= for hit <- @hits["hits"] do %>
-  <p><%= link [fa_icon("podcast"), " ", hit["_source"]["title"]],
-                to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
-                class: "btn btn-xs btn-lavender" %></p>
-  <p><b>Description:</b> <%= hit["_source"]["description"] %></p>
+  <h3 class="text-xl">
+    <%= fa_icon("podcast") %> Podcast
+    <%= link hit["_source"]["title"], to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
+  </h3>
+  <a class="text-sm">
+    <%= link podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+          to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
+  </a>
+  <p><b>Description:</b> <%= raw(hit["highlight"]["description"]) %></p>
   <p><b>Summary:</b> <%= hit["_source"]["summary"] %></p>
   <p><b>Categories:<b>
     <%= for id <- hit["_source"]["category_ids"] do %>

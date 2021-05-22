@@ -408,9 +408,10 @@ defmodule PanWeb.Router do
     get("/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona)
     resources("/manifestations", ManifestationController)
 
-    get("/search/push", SearchController, :full_text_search_push_missing)
-    get("/search/reset_all", SearchController, :full_text_search_reset_all)
-    get("/search/delete_orphans", SearchController, :full_text_search_delete_orphans)
+    get("/search/push", SearchController, :push_missing)
+    get("/search/reset_all", SearchController, :reset_all)
+    get("/search/delete_orphans", SearchController, :delete_orphans)
+    get("/search/migrate", SearchController, :migrate)
 
     get("/maintenance/stats", MaintenanceController, :stats)
     get("/maintenance/sandbox", MaintenanceController, :sandbox)
