@@ -29,7 +29,7 @@ defmodule Pan.Search.Episode do
         :shownotes,
         :inserted_at,
         :podcast_id,
-        podcast: [:id, languages: [:id, :shortcode, :name], categories: [:id, :title]],
+        podcast: [:id, :title, languages: [:id, :shortcode, :emoji, :name], categories: [:id, :title]],
         gigs: [:id, :episode_id, :persona_id, :role, persona: :name]
       ],
       struct_function: &manticore_struct/1

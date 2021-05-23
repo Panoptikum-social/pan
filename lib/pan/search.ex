@@ -23,7 +23,7 @@ defmodule Pan.Search do
     # Search.Category.batch_reset()
     # Search.Persona.batch_reset()
     # Search.Podcast.batch_reset()
-    # Search.Episode.batch_reset()
+    Search.Episode.batch_reset()
   end
 
   def batch_index(
@@ -93,7 +93,7 @@ defmodule Pan.Search do
         query: %{match: %{*: search_term}},
         limit: limit,
         offset: offset,
-        highlight: %{fields: ["description"]}
+        highlight: %{no_match_size: 0}
       }
       |> Jason.encode!()
 
