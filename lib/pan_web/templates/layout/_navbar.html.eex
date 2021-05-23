@@ -79,7 +79,7 @@
                       [as: :search, class: "navbar-form navbar-left"],
                       fn f -> %>
     <div class="form-group">
-      &nbsp;&nbsp;&nbsp;<%= text_input f, :searchstring, class: "form-control", placeholder: "Search" %>
+      &nbsp;&nbsp;&nbsp;<%= text_input f, :term, class: "form-control", placeholder: "Search" %>
     </div>
     <%= submit fa_icon("search"), class: "btn", title: "Submit" %>
   <% end %>

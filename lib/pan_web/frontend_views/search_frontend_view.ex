@@ -11,7 +11,7 @@ defmodule PanWeb.SearchFrontendView do
     |> Timex.format!("%e.%m.%Y", :strftime)
   end
 
-  def hit_widget(hit, searchstring) do
+  def hit_widget(hit, term) do
     %{_source: fields, _type: type, _score: score} = hit
 
     case type do
@@ -21,7 +21,7 @@ defmodule PanWeb.SearchFrontendView do
 
           render("episode.html",
             episode: fields,
-            searchstring: searchstring,
+            term: term,
             podcast_title: episode.podcast.title,
             episode_image_title: episode.image_title,
             podcast_image_title: episode.podcast.image_title,
@@ -44,7 +44,7 @@ defmodule PanWeb.SearchFrontendView do
 
           render("podcast.html",
             podcast: fields,
-            searchstring: searchstring,
+            term: term,
             categories: podcast.categories,
             engagements: podcast.engagements,
             languages: podcast.languages,
@@ -84,16 +84,16 @@ defmodule PanWeb.SearchFrontendView do
     end
   end
 
-  def podcast_hit(podcast, searchstring) do
+  def podcast_hit(podcast, term) do
     hit(
       [Title: podcast[:title], Description: podcast[:description], Summary: podcast[:summary]],
-      searchstring,
+      term,
       ""
     )
     |> raw()
   end
 
-  def episode_hit(episode, searchstring) do
+  def episode_hit(episode, term) do
     hit(
       [
         Title: episode[:title],
@@ -102,40 +102,40 @@ defmodule PanWeb.SearchFrontendView do
         Summary: episode[:summary],
         Shownotes: episode[:shownotes]
       ],
-      searchstring,
+      term,
       ""
     )
     |> raw
   end
 
-  def hit([head | tail], searchstring, output) do
+  def hit([head | tail], term, output) do
     {type, content} = head
 
-    regex = Regex.escape(searchstring)
+    regex = Regex.escape(term)
 
     case content != nil and String.match?(content, ~r/#{regex}/i) do
       true ->
         hit(
           tail,
-          searchstring,
+          term,
           output <>
             "<i>" <>
             Atom.to_string(type) <>
             ":</i> " <>
-            highlight(content, searchstring) <> "<br/>"
+            highlight(content, term) <> "<br/>"
         )
 
       false ->
-        hit(tail, searchstring, output)
+        hit(tail, term, output)
     end
   end
 
-  def hit([], _searchstring, output) do
+  def hit([], _term, output) do
     output
   end
 
-  def highlight(result, searchstring) do
-    regex = Regex.escape(searchstring)
+  def highlight(result, term) do
+    regex = Regex.escape(term)
 
     [left, match, right] = Regex.split(~r/#{regex}/i, result, include_captures: true, parts: 2)
 

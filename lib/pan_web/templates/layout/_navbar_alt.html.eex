@@ -6,7 +6,7 @@
 <%= form_for @conn, search_frontend_path(@conn, :new),
                     [as: :search, class: "nav-form"],
                     fn f -> %>
-  <%= text_input f, :searchstring, size: "15", placeholder: "Search" %> &nbsp;
+  <%= text_input f, :term, size: "15", placeholder: "Search" %> &nbsp;
   <%= submit [raw("&nbsp;"), fa_icon("search"), raw("&nbsp;")],
                             class: "btn btn-medium btn-gray",
                             title: "Submit" %>
