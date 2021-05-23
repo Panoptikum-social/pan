@@ -9,14 +9,14 @@ defmodule Pan.Search do
     # Search.Category.migrate()
     # Search.Persona.migrate()
     # Search.Podcast.migrate()
-    # Search.Episode.migrate()
+    Search.Episode.migrate()
   end
 
   def push_missing do
     # Search.Category.batch_index()
     # Search.Persona.batch_index()
     # Search.Podcast.batch_index()
-    # Search.Episode.batch_index()
+    Search.Episode.batch_index()
   end
 
   def reset_all do
@@ -33,10 +33,8 @@ defmodule Pan.Search do
         struct_function: struct_function
       ) do
     record_ids =
-      from(r in model, where: not r.full_text, limit: 1000, select: r.id)
+      from(r in model, where: not r.full_text, limit: 1_000, select: r.id)
       |> Repo.all()
-
-    # Process.sleep(100)
 
     if record_ids != [] do
       data =
@@ -56,9 +54,10 @@ defmodule Pan.Search do
         Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
       else
         {:ok, query_result} = Jason.decode(response_body)
-        error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
-        IO.inspect error
+        IO.inspect query_result
+
+        error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
         error_id =
           error

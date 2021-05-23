@@ -44,8 +44,8 @@
         <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
           <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
 
-          <%= link [fa_icon("user-astronaut-solid"), " ", truncate_string(engagement["contributor_name"], 75)],
-                  to: persona_frontend_path(PanWeb.Endpoint, :show, engagement["contributor_id"]),
+          <%= link [fa_icon("user-astronaut-solid"), " ", truncate_string(engagement["persona_name"], 75)],
+                  to: persona_frontend_path(PanWeb.Endpoint, :show, engagement["persona_id"]),
                   class: "btn btn-xs btn-lavender" %>
           <span class="label label-success"><%= engagement["role"] %></span>
         <% end %>

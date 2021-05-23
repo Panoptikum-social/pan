@@ -53,7 +53,7 @@ defmodule Pan.Search.Podcast do
           engagements:
             Enum.map(
               podcast.engagements,
-              &%{contributor_name: &1.persona.name, contributor_id: &1.persona_id, role: &1.role}
+              &%{persona_name: &1.persona.name, persona_id: &1.persona_id, role: &1.role}
             )
             |> Jason.encode!(),
           languages:
