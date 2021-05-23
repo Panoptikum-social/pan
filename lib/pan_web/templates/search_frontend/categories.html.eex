@@ -1,3 +1,10 @@
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>
+
+
 <h1> Search results - Categories </h1>
 
 <%= for hit <- @hits["hits"] do %>
