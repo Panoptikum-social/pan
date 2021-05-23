@@ -7,8 +7,6 @@ defmodule Pan.Search.Manticore do
         {"Content-Type", "application/x-ndjson"}
       ])
 
-    IO.inspect(response_code)
-    IO.inspect(response_body)
     {:ok, %Response{status_code: response_code, body: response_body}}
   end
 end

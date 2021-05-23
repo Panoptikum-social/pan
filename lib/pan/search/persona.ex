@@ -10,7 +10,7 @@ defmodule Pan.Search.Persona do
 
     ("mode=raw&query=CREATE TABLE personas(name text, pid string, uri string, " <>
        "description text, long_description text, thumbnail_url string, " <>
-       "image_title text, podcast_ids multi, episode_ids multi) " <>
+       "image_title text, podcast_ids multi, episode_ids multi, engagements json) " <>
        "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
@@ -18,7 +18,7 @@ defmodule Pan.Search.Persona do
   def batch_index() do
     Pan.Search.batch_index(
       model: Persona,
-      preloads: [:episodes, :podcasts, :thumbnails],
+      preloads: [:episodes, :podcasts, :thumbnails, engagements: :podcast],
       selects: [
         :id,
         :name,
@@ -29,7 +29,8 @@ defmodule Pan.Search.Persona do
         :image_title,
         podcasts: :id,
         episodes: :id,
-        thumbnails: [:path, :filename]
+        thumbnails: [:path, :filename],
+        engagements: [:persona_id, :podcast_id, :role, podcast: :title]
       ],
       struct_function: &manticore_struct/1
     )
@@ -49,7 +50,16 @@ defmodule Pan.Search.Persona do
           thumbnail_url: thumbnail_url(persona),
           image_title: persona.image_title || "",
           podcast_ids: Enum.map(persona.podcasts, & &1.id),
-          episode_ids: Enum.map(persona.episodes, & &1.id)
+          episode_ids: Enum.map(persona.episodes, & &1.id),
+          engagements:
+            Enum.map(persona.engagements, fn engagement ->
+              %{
+                podcast_title: engagement.podcast.title,
+                podcast_id: engagement.podcast_id,
+                role: engagement.role
+              }
+            end)
+            |> Jason.encode!()
         }
       }
     }

@@ -1,0 +1,47 @@
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>
+
+
+<h1> Search results - Personas </h1>
+
+<%= for hit <- @hits["hits"] do %>
+  <div class="row">
+    <hr/>
+    <div class="col-md-2">
+      <%= if String.length(hit["_source"]["thumbnail_url"]) > 0 do %>
+        <%= img_tag("https://panoptikum.io/" <> hit["_source"]["thumbnail_url"],
+                    height: 120,
+                    alt: hit["image_title"],
+                    class: "thumbnail",
+                    id: "photo",
+                    style: "margin-bottom:0px;") %>
+      <% else %>
+        <img src="/images/missing-persona.png" alt="missing image" height="120"
+            class="thumbnail" syle="margin-bottom:0px;" />
+      <% end %>
+    </div>
+
+    <div class="col-md-10">
+      <h3 style="margin-bottom: 5px; margin-top: 5px;">
+        <%= fa_icon("user-o") %> Persona
+        <%= link hit["_source"]["name"], to: persona_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
+      </h3>
+      <p class="small"><%= link persona_frontend_url(PanWeb.Endpoint, :show, hit["_id"]),
+                  to: persona_frontend_url(PanWeb.Endpoint, :show, hit["_id"]) %></p>
+      <%= if String.length(hit["_source"]["long_description"]) > 0 do %>
+        <p>Description: <%= truncate_string(hit["_source"]["long_description"], 750) %></p>
+      <% end %>
+      <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
+        <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
+        <%= link [fa_icon("podcast"), " ", truncate_string(engagement["podcast_title"], 50)],
+                 to: podcast_frontend_path(PanWeb.Endpoint, :show, engagement["podcast_id"]),
+                 class: "btn btn-default btn-xs",
+                style: "color: #000" %>
+        <span class="label label-success"><%= engagement["role"] %></span>
+      <% end %>
+    </div>
+  </div>
+<% end %>
