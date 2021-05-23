@@ -93,7 +93,7 @@ defmodule Pan.Search do
         query: %{match: %{*: search_term}},
         limit: limit,
         offset: offset,
-        highlight: %{no_match_size: 0}
+        highlight: %{no_match_size: 0, around: 8}
       }
       |> Jason.encode!()
 
