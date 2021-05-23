@@ -9,7 +9,9 @@ defmodule Pan.Search.Podcast do
     Manticore.post("mode=raw&query=DROP TABLE podcasts", "sql")
 
     ("mode=raw&query=CREATE TABLE podcasts(title text, description text, thumbnail_url string, " <>
-       "summary text, language_ids multi, category_ids multi) " <>
+       "summary text, image_title string, "<>
+       "language_ids multi, category_ids multi, contributor_ids multi, " <>
+       "languages json, categories json, engagements json) " <>
        "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
@@ -17,15 +19,18 @@ defmodule Pan.Search.Podcast do
   def batch_index() do
     Pan.Search.batch_index(
       model: Podcast,
-      preloads: [:languages, :categories, :thumbnails],
+      preloads: [:languages, :categories, :thumbnails, :contributors, engagements: :persona],
       selects: [
         :id,
         :title,
         :description,
         :summary,
-        languages: :id,
-        categories: :id,
-        thumbnails: [:path, :filename]
+        :image_title,
+        languages: [:id, :shortcode, :name, :emoji],
+        categories: [:id, :title],
+        contributors: :id,
+        thumbnails: [:path, :filename],
+        engagements: [:podcast_id, :persona_id, :role, persona: :name]
       ],
       struct_function: &manticore_struct/1
     )
@@ -41,8 +46,24 @@ defmodule Pan.Search.Podcast do
           description: podcast.description || "",
           thumbnail_url: thumbnail_url(podcast),
           summary: podcast.summary || "",
+          image_title: podcast.image_title || "",
           language_ids: Enum.map(podcast.languages, & &1.id),
-          category_ids: Enum.map(podcast.categories, & &1.id)
+          category_ids: Enum.map(podcast.categories, & &1.id),
+          contributor_ids: Enum.map(podcast.contributors, & &1.id),
+          engagements:
+            Enum.map(
+              podcast.engagements,
+              &%{contributor_name: &1.persona.name, contributor_id: &1.persona_id, role: &1.role}
+            )
+            |> Jason.encode!(),
+          languages:
+            Enum.map(
+              podcast.languages,
+              &%{id: &1.id, shortcode: &1.shortcode, name: &1.name, emoji: &1.emoji}
+            )
+            |> Jason.encode!(),
+          categories:
+            Enum.map(podcast.categories, &%{id: &1.id, title: &1.title}) |> Jason.encode!()
         }
       }
     }

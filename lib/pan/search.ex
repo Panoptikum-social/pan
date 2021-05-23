@@ -58,6 +58,8 @@ defmodule Pan.Search do
         {:ok, query_result} = Jason.decode(response_body)
         error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
+        IO.inspect error
+
         error_id =
           error
           |> String.split()

@@ -52,13 +52,10 @@ defmodule Pan.Search.Persona do
           podcast_ids: Enum.map(persona.podcasts, & &1.id),
           episode_ids: Enum.map(persona.episodes, & &1.id),
           engagements:
-            Enum.map(persona.engagements, fn engagement ->
-              %{
-                podcast_title: engagement.podcast.title,
-                podcast_id: engagement.podcast_id,
-                role: engagement.role
-              }
-            end)
+            Enum.map(
+              persona.engagements,
+              &%{podcast_title: &1.podcast.title, podcast_id: &1.podcast_id, role: &1.role}
+            )
             |> Jason.encode!()
         }
       }
