@@ -10,7 +10,8 @@ defmodule Pan.Search.Episode do
 
     ("mode=raw&query=CREATE TABLE episodes(title text, subtitle text, description text, " <>
        "summary text, shownotes text, inserted_at timestamp, " <>
-       "podcast_id int, language_ids multi, category_ids multi) " <>
+       "podcast_id int, language_ids multi, category_ids multi, gig_ids multi," <>
+       "podcast json, languages json, categories json, gigs json) " <>
        "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
@@ -18,7 +19,7 @@ defmodule Pan.Search.Episode do
   def batch_index() do
     Pan.Search.batch_index(
       model: Episode,
-      preloads: [podcast: [:languages, :categories]],
+      preloads: [gigs: :persona, podcast: [:languages, :categories]],
       selects: [
         :id,
         :title,
@@ -28,29 +29,44 @@ defmodule Pan.Search.Episode do
         :shownotes,
         :inserted_at,
         :podcast_id,
-        podcast: [:id, languages: :id, categories: :id]
+        podcast: [:id, languages: [:id, :shortcode, :name], categories: [:id, :title]],
+        gigs: [:id, :episode_id, :persona_id, :role, persona: :name]
       ],
       struct_function: &manticore_struct/1
     )
   end
 
   def manticore_struct(episode) do
-    e = episode
-
     %{
       insert: %{
         index: "episodes",
-        id: e.id,
+        id: episode.id,
         doc: %{
-          title: e.title || "",
-          subtitle: e.subtitle || "",
-          description: e.description || "",
-          summary: e.summary || "",
-          shownotes: e.shownotes || "",
-          inserted_at: to_unix(e.inserted_at),
-          podcast_id: (e.podcast && e.podcast.id) || 0,
-          language_ids: (e.podcast && Enum.map(e.podcast.languages, & &1.id)) || [],
-          category_ids: (e.podcast && Enum.map(e.podcast.categories, & &1.id)) || []
+          title: episode.title || "",
+          subtitle: episode.subtitle || "",
+          description: episode.description || "",
+          summary: episode.summary || "",
+          shownotes: episode.shownotes || "",
+          inserted_at: to_unix(episode.inserted_at),
+          podcast_id: (episode.podcast && episode.podcast.id) || 0,
+          language_ids: (episode.podcast && Enum.map(episode.podcast.languages, & &1.id)) || [],
+          category_ids: (episode.podcast && Enum.map(episode.podcast.categories, & &1.id)) || [],
+          gig_ids: Enum.map(episode.gigs, & &1.id) || [],
+          gigs:
+            Enum.map(
+              episode.gigs,
+              &%{persona_name: &1.persona.name, persona_id: &1.persona_id, role: &1.role}
+            )
+            |> Jason.encode!(),
+          languages:
+            Enum.map(
+              episode.podcast.languages,
+              &%{id: &1.id, shortcode: &1.shortcode, name: &1.name, emoji: &1.emoji}
+            )
+            |> Jason.encode!(),
+          categories:
+            Enum.map(episode.podcast.categories, &%{id: &1.id, title: &1.title}) |> Jason.encode!(),
+          podcast: %{id: episode.podcast.id, title: episode.podcast.title} |> Jason.encode!()
         }
       }
     }

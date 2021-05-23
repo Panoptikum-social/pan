@@ -1,0 +1,11 @@
+    <%= truncate_string(@persona.long_description, 750) %>
+
+    <%= for {engagement, index} <- Enum.with_index(@engagements) do %>
+      <%= if index > 0, do: "·" %>
+        <%= link [fa_icon("podcast"), " ", truncate_string(engagement.podcast.title, 50)],
+                         to: podcast_frontend_path(PanWeb.Endpoint, :show, engagement.podcast),
+                         class: "btn btn-default btn-xs",
+                         style: "color: #000" %>
+
+      <span class="label label-success"><%= engagement.role %></span>
+    <% end %>
