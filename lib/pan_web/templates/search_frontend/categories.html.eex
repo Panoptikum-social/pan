@@ -4,8 +4,7 @@
   So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
 </p>
 
-
-<h1> Search results - Categories </h1>
+<h2> Search results - Categories </h2>
 
 <%= for hit <- @hits["hits"] do %>
   <h3 style="margin-bottom: 5px;">

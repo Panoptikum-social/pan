@@ -1,24 +1,64 @@
-<h1> Search results - Podcasts </h1>
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>
+
+<h2> Search results - Podcasts </h2>
 
 <%= for hit <- @hits["hits"] do %>
-  <h3 class="text-xl">
-    <%= fa_icon("podcast") %> Podcast
-    <%= link hit["_source"]["title"], to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
-  </h3>
-  <a class="text-sm">
-    <%= link podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
-          to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
-  </a>
-  <p><b>Description:</b> <%= raw(hit["highlight"]["description"]) %></p>
-  <p><b>Summary:</b> <%= hit["_source"]["summary"] %></p>
-  <p><b>Categories:<b>
-    <%= for id <- hit["_source"]["category_ids"] do %>
-      <%= id %>
-    <% end %>
-  </p>
-  <p><b>Languages:<b>
-    <%= for id <- hit["_source"]["language_ids"] do %>
-      <%= id %>
-    <% end %>
-  </p>
+  <hr/>
+  <div class="row">
+    <div class="col-md-2">
+      <%= if String.length(hit["_source"]["thumbnail_url"]) > 0 do %>
+        <%= img_tag("https://panoptikum.io" <> hit["_source"]["thumbnail_url"],
+                    height: 120,
+                    alt: hit["_source"]["image_title"],
+                    class: "thumbnail",
+                    id: "photo",
+                    style: "margin-bottom:0px;") %>
+      <% else %>
+        <img src="/images/missing-podcast.png" alt="missing image" height="120"
+            class="thumbnail" syle="margin-bottom:0px;" />
+      <% end %>
+    </div>
+
+    <div class="col-md-10">
+      <h3 style="margin-bottom: 5px; margin-top: 0px;">
+        <%= fa_icon("podcast-solid") %>
+        Podcast &nbsp;
+        <%= link hit["_source"]["title"], to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+                                          style: "color:#1a0dab" %>
+        <%= for language <- hit["_source"]["languages"], do: language["emoji"] %>
+      </h3>
+
+      <p class="small">
+        <%= link "https://panoptikum.io" <> podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+              to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
+              style: "color:#006621" %><br/>
+      </p>
+      <p>Description: <%= truncate_string(hit["_source"]["description"], 750) %></p>
+      <p>Summary: <%= truncate_string(hit["_source"]["summary"], 750) %></p>
+
+      <p style="line-height: 175%;">
+        <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
+          <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
+
+          <%= link [fa_icon("user-astronaut-solid"), " ", truncate_string(engagement["contributor_name"], 75)],
+                  to: persona_frontend_path(PanWeb.Endpoint, :show, engagement["contributor_id"]),
+                  class: "btn btn-xs btn-lavender" %>
+          <span class="label label-success"><%= engagement["role"] %></span>
+        <% end %>
+      </p>
+
+      <hr style="margin-top: -15px; visibility:hidden;" />
+
+      <%= for {category, index} <- Enum.with_index(hit["_source"]["categories"]) do %>
+        <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
+        <%= link [fa_icon("folder"), " ", category["title"]],
+                to: category_frontend_path(PanWeb.Endpoint, :show, category["id"]),
+                class: "btn btn-xs btn-light-gray" %>
+      <% end %>
+    </div>
+  </div>
 <% end %>
