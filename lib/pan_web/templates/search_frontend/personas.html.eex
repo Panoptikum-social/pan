@@ -30,9 +30,18 @@
       </h3>
       <p class="small"><%= link persona_frontend_url(PanWeb.Endpoint, :show, hit["_id"]),
                   to: persona_frontend_url(PanWeb.Endpoint, :show, hit["_id"]) %></p>
-      <%= if String.length(hit["_source"]["long_description"]) > 0 do %>
-        <p>Description: <%= truncate_string(hit["_source"]["long_description"], 750) %></p>
+
+      <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
+        <%= if highlight_values != [] do %>
+          <ul>
+            <b><%= String.capitalize(highlight_key) %>:</b>
+            <%= for highlight_value <- highlight_values do %>
+                <li><%= raw(highlight_value) %></li>
+            <% end %>
+          </ul>
+        <% end %>
       <% end %>
+
       <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
         <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
         <%= link [fa_icon("podcast"), " ", truncate_string(engagement["podcast_title"], 50)],
