@@ -86,11 +86,11 @@ defmodule Pan.Search do
     end
   end
 
-  def query(index: index, search_term: search_term, limit: limit, offset: offset) do
+  def query(index: index, term: term, limit: limit, offset: offset) do
     manticore_data =
       %{
         index: index,
-        query: %{match: %{*: search_term}},
+        query: %{match: %{*: term}},
         limit: limit,
         offset: offset,
         highlight: %{no_match_size: 0, around: 8}

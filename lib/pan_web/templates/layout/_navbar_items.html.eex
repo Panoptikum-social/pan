@@ -1,7 +1,7 @@
 <%= form_for @conn, search_frontend_path(@conn, :new),
                     [as: :search, class: "py-4 flex"],
                     fn f -> %>
-  <%= text_input f, :searchstring, size: "15", placeholder: "Search", class: "flex-1" %> &nbsp;
+  <%= text_input f, :term, size: "15", placeholder: "Search", class: "flex-1" %> &nbsp;
   <%= submit nav_icon("search-heroicons-outline"),
         class: "p-2 text-white text-sm rounded bg-gray hover:bg-gray-light align-middle",
         title: "Submit" %>

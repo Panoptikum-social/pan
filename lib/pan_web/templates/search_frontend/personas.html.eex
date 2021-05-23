@@ -25,7 +25,7 @@
 
     <div class="col-md-10">
       <h3 style="margin-bottom: 5px; margin-top: 5px;">
-        <%= fa_icon("user-o") %> Persona
+        <%= icon("user-heroicons-outline") %> Persona
         <%= link hit["_source"]["name"], to: persona_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
       </h3>
       <p class="small"><%= link persona_frontend_url(PanWeb.Endpoint, :show, hit["_id"]),
@@ -44,7 +44,7 @@
 
       <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
         <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
-        <%= link [fa_icon("podcast"), " ", truncate_string(engagement["podcast_title"], 50)],
+        <%= link [icon("podcast-lineawesome-solid"), " ", truncate_string(engagement["podcast_title"], 50)],
                  to: podcast_frontend_path(PanWeb.Endpoint, :show, engagement["podcast_id"]),
                  class: "btn btn-default btn-xs",
                 style: "color: #000" %>

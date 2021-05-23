@@ -1,16 +1,17 @@
-<p>
-  You can mask your search terms with an asterisk at the end or the beginning of the search term,
-  as long as there are 3 characters left.<br/>
-  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+<p> Showing <%= @hits_count %> Episodes
+     (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>)
 </p>
 
-<h1> Search results - Episodes (<%= @hits["total"] %>) </h1>
+<div style= "margin-bottom: -30px; margin-top: -20px;">
+    <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size + 0.5), page_number: @page},
+                          "search[term]": @term) %>
+</div>
 
 <%= for hit <- @hits["hits"] do %>
   <hr/>
 
   <h3 style="margin-bottom: 5px; margin-top: 0px;">
-    <%= fa_icon("headphones") %> Episode &nbsp;
+    <%= icon("headphones-lineawesome-solid") %> Episode &nbsp;
     <%= link hit["_source"]["title"], to: episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
                                           style: "color:#1a0dab" %>
     <%= for language <- hit["_source"]["languages"], do: language["emoji"] <> " " %>
@@ -19,26 +20,26 @@
   <p class="small">
     <%= link "https://panoptikum.io" <> episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
           to: episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
-          style: "color:#006621" %><br/>
+          style: "color:#006621" %>
+  </p>
 
-    <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
-      <%= if highlight_values != [] do %>
-        <ul>
-          <b><%= String.capitalize(highlight_key) %>:</b>
-          <%= for highlight_value <- highlight_values do %>
-              <li><%= raw(highlight_value) %></li>
-          <% end %>
-        </ul>
+  <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
+    <%= if highlight_values != [] do %>
+      <%= for highlight_value <- highlight_values do %>
+        <p class="small" style="margin-bottom: 1px;">
+          <i><%= String.capitalize(highlight_key) %>:</i>
+          <%= raw(highlight_value) %>
+        </p>
       <% end %>
     <% end %>
+  <% end %>
 
-    <p><b>Inserted at:</b> <%= format_datetime(hit["_source"]["inserted_at"]) %></p>
-  </p>
+  <p class="small"><i>Episode captured:</i> <%= format_datetime(hit["_source"]["inserted_at"]) %></p>
 
   <%= for {gig, index} <- Enum.with_index(hit["_source"]["gigs"]) do %>
     <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
 
-    <%= link [fa_icon("user-astronaut-solid"), " ", gig["persona_name"]],
+    <%= link [icon("user-astronaut-lineawesome-solid"), " ", gig["persona_name"]],
             to: persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"]),
             class: "btn btn-xs btn-lavender" %>
     <span class="label label-success"><%= gig["role"] %></span>
@@ -46,8 +47,18 @@
 
   <hr style="margin-top: -15px; visibility:hidden;" />
 
-  <%= link [fa_icon("podcast-solid"), " ", truncate_string(hit["_source"]["podcast"]["title"], 50)],
+  <%= link [icon("podcast-lineawesome-solid"), " ", truncate_string(hit["_source"]["podcast"]["title"], 50)],
                   to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"]),
                   class: "btn btn-default btn-xs",
                   style: "color: #000" %>
 <% end %>
+
+<hr/>
+<%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size + 0.5), page_number: @page},
+                      "search[term]": @term) %>
+
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>

@@ -25,7 +25,7 @@
 
     <div class="col-md-10">
       <h3 style="margin-bottom: 5px; margin-top: 0px;">
-        <%= fa_icon("podcast-solid") %>
+        <%= icon("podcast-lineawesome-solid") %>
         Podcast &nbsp;
         <%= link hit["_source"]["title"], to: podcast_frontend_path(PanWeb.Endpoint, :show, hit["_id"]),
                                           style: "color:#1a0dab" %>
@@ -53,7 +53,7 @@
         <%= for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"]) do %>
           <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
 
-          <%= link [fa_icon("user-astronaut-solid"), " ", truncate_string(engagement["persona_name"], 75)],
+          <%= link [icon("user-astronaut-lineawesome-solid"), " ", truncate_string(engagement["persona_name"], 75)],
                   to: persona_frontend_path(PanWeb.Endpoint, :show, engagement["persona_id"]),
                   class: "btn btn-xs btn-lavender" %>
           <span class="label label-success"><%= engagement["role"] %></span>
@@ -64,7 +64,7 @@
 
       <%= for {category, index} <- Enum.with_index(hit["_source"]["categories"]) do %>
         <%= if index > 0, do: raw("&nbsp;·&nbsp;") %>
-        <%= link [fa_icon("folder"), " ", category["title"]],
+        <%= link [icon("folder-heroicons-outline"), " ", category["title"]],
                 to: category_frontend_path(PanWeb.Endpoint, :show, category["id"]),
                 class: "btn btn-xs btn-light-gray" %>
       <% end %>

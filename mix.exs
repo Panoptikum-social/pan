@@ -35,11 +35,8 @@ defmodule Pan.MixProject do
     [
       # security-focused static analysis tool
       {:sobelow, "~> 0.8", only: :dev},
-      # Code analysis
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       # web framework
       # TODO: take this back, once scrivener is removed
-      # {:phoenix, "~> 1.5.7"},
       {:phoenix, "~> 1.5.8", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
@@ -68,7 +65,7 @@ defmodule Pan.MixProject do
       # i18n library
       {:gettext, "~> 0.11"},
       # Json generation
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       # web server plug
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
@@ -113,8 +110,6 @@ defmodule Pan.MixProject do
       {:tirexs, "~> 0.8"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
-      # HTML parser
-      {:floki, "~> 0.25"},
       # reuseable Erlang components
       {:erlware_commons, "~> 1.3"},
       # Jsonapi.org serializer
@@ -130,9 +125,7 @@ defmodule Pan.MixProject do
       # HTTP Client
       {:httpotion, "~> 3.1"},
       # QR Code generation
-      {:eqrcode, "~> 0.1.7"}
-      # Json generation,
-      {:jason, "~> 1.1"},
+      {:eqrcode, "~> 0.1.7"},
     ]
   end
 

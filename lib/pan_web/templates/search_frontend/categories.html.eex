@@ -8,7 +8,7 @@
 
 <%= for hit <- @hits["hits"] do %>
   <h3 style="margin-bottom: 5px;">
-    <%= fa_icon("folder-o") %> Category
+    <%= icon("folder-heroicons-outline") %> Category
     <%= link hit["_source"]["title"], to: category_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
   </h3>
   <p class="small"><%= link category_frontend_url(PanWeb.Endpoint, :show, hit["_id"]),
