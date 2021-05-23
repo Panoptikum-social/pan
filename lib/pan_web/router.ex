@@ -370,7 +370,7 @@ defmodule PanWeb.Router do
     get("/manifestations/:id/get_by_user", ManifestationController, :get_by_user)
     get("/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona)
 
-    get("/search/push", SearchController, :push_missing)
+    get("/search/push_missing", SearchController, :push_missing)
     get("/search/reset_all", SearchController, :reset_all)
     get("/search/delete_orphans", SearchController, :delete_orphans)
     get("/search/migrate", SearchController, :migrate)
