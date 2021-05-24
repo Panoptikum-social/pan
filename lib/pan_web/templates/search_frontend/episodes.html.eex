@@ -1,5 +1,9 @@
-<p> Showing <%= @hits_count %> Episodes
-     (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>)
+<p>Showing <%= @hits_count %> Episodes
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
+   <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
 </p>
 
 <div style= "margin-bottom: -30px; margin-top: -20px;">
@@ -54,7 +58,14 @@
 <% end %>
 
 <hr/>
-<div style= "margin-bottom: -20px; margin-top: -20px;">
+<p>Showing <%= @hits_count %> Episodes
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
+   <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
+</p>
+<div style= "margin-top: -20px;">
   <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
                        ["episodes", @term], path: &search_frontend_path/5, action: :search) %>
 
