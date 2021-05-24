@@ -3,8 +3,8 @@
 </p>
 
 <div style= "margin-bottom: -30px; margin-top: -20px;">
-    <%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size + 0.5), page_number: @page},
-                          "search[term]": @term) %>
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["episodes", @term], path: &search_frontend_path/5, action: :search) %>
 </div>
 
 <%= for hit <- @hits["hits"] do %>
@@ -54,9 +54,11 @@
 <% end %>
 
 <hr/>
-<%= pagination_links(%Scrivener.Page{total_pages: round(@total / @size + 0.5), page_number: @page},
-                      "search[term]": @term) %>
+<div style= "margin-bottom: -20px; margin-top: -20px;">
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["episodes", @term], path: &search_frontend_path/5, action: :search) %>
 
+</div>
 <p>
   You can mask your search terms with an asterisk at the end or the beginning of the search term,
   as long as there are 3 characters left.<br/>

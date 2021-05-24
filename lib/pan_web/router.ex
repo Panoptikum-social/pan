@@ -162,7 +162,7 @@ defmodule PanWeb.Router do
     pipe_through([:browser])
 
     post("/", SearchFrontendController, :new)
-    get("/", SearchFrontendController, :new)
+    get("/:index/:term", SearchFrontendController, :search)
   end
 
   scope "/", PanWeb do
