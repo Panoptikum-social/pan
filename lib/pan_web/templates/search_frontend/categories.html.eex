@@ -1,12 +1,19 @@
-<p>
-  You can mask your search terms with an asterisk at the end or the beginning of the search term,
-  as long as there are 3 characters left.<br/>
-  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+<p>Showing <%= @hits_count %> Categories
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
+   <%= link "episodes", to: search_frontend_path(@conn, :search, "episodes", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
 </p>
 
-<h2> Search results - Categories </h2>
+<div style= "margin-bottom: -30px; margin-top: -20px;">
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["personas", @term], path: &search_frontend_path/5, action: :search) %>
+</div>
 
 <%= for hit <- @hits["hits"] do %>
+  <hr/>
+
   <h3 style="margin-bottom: 5px;">
     <%= icon("folder-heroicons-outline") %> Category
     <%= link hit["_source"]["title"], to: category_frontend_path(PanWeb.Endpoint, :show, hit["_id"]) %>
@@ -14,3 +21,24 @@
   <p class="small"><%= link category_frontend_url(PanWeb.Endpoint, :show, hit["_id"]),
                to: category_frontend_url(PanWeb.Endpoint, :show, hit["_id"]) %></p>
 <% end %>
+
+<hr/>
+
+<p>Showing <%= @hits_count %> Categories
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
+   <%= link "episodes", to: search_frontend_path(@conn, :search, "episodes", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
+</p>
+
+<div style= "margin-top: -20px;">
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["categories", @term], path: &search_frontend_path/5, action: :search) %>
+
+</div>
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>

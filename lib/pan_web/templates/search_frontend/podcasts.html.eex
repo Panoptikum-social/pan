@@ -1,10 +1,15 @@
-<p>
-  You can mask your search terms with an asterisk at the end or the beginning of the search term,
-  as long as there are 3 characters left.<br/>
-  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+<p>Showing <%= @hits_count %> Podcasts
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
+   <%= link "episodes", to: search_frontend_path(@conn, :search, "episodes", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
 </p>
 
-<h2> Search results - Podcasts </h2>
+<div style= "margin-bottom: -30px; margin-top: -20px;">
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["podcasts", @term], path: &search_frontend_path/5, action: :search) %>
+</div>
 
 <%= for hit <- @hits["hits"] do %>
   <hr/>
@@ -40,12 +45,12 @@
 
       <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
         <%= if highlight_values != [] do %>
-          <ul>
-            <b><%= String.capitalize(highlight_key) %>:</b>
-            <%= for highlight_value <- highlight_values do %>
-                <li><%= raw(highlight_value) %></li>
-            <% end %>
-          </ul>
+          <%= for highlight_value <- highlight_values do %>
+            <p class="small" style="margin-bottom: 1px;">
+              <i><%= String.capitalize(highlight_key) %>:</i>
+              <%= raw(highlight_value) %>
+            </p>
+          <% end %>
         <% end %>
       <% end %>
 
@@ -71,3 +76,24 @@
     </div>
   </div>
 <% end %>
+
+<hr/>
+
+<p>Showing <%= @hits_count %> Podcasts
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
+   <%= link "episodes", to: search_frontend_path(@conn, :search, "episodes", @term, page: 1) %> |
+   <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
+   instead.
+</p>
+
+<div style= "margin-top: -20px;">
+  <%= pagination_links(@conn, %Scrivener.Page{total_pages: min(100, round(@total / @size + 0.5)), page_number: @page},
+                       ["podcasts", @term], path: &search_frontend_path/5, action: :search) %>
+</div>
+
+<p>
+  You can mask your search terms with an asterisk at the end or the beginning of the search term,
+  as long as there are 3 characters left.<br/>
+  So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+</p>

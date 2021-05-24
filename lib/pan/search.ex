@@ -55,7 +55,7 @@ defmodule Pan.Search do
       else
         {:ok, query_result} = Jason.decode(response_body)
 
-        IO.inspect query_result
+        IO.inspect(query_result)
 
         error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
@@ -68,7 +68,7 @@ defmodule Pan.Search do
           |> String.replace("'", "")
           |> String.to_integer()
 
-        IO.inspect error_id
+        IO.inspect(error_id)
 
         Repo.get!(model, error_id) |> Ecto.Changeset.change(full_text: true) |> Repo.update()
       end
@@ -93,7 +93,12 @@ defmodule Pan.Search do
         query: %{match: %{*: term}},
         limit: limit,
         offset: offset,
-        highlight: %{no_match_size: 0, around: 8}
+        highlight: %{
+          no_match_size: 0,
+          around: 8,
+          before_match: "<strong style=\"color: #DA4453;\">",
+          after_match: "</strong>"
+        }
       }
       |> Jason.encode!()
 
