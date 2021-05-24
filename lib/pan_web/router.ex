@@ -164,7 +164,7 @@ defmodule PanWeb.Router do
     pipe_through([:browser_without_csrf, :unset_cookie])
 
     post("/", SearchFrontendController, :new)
-    get("/", SearchFrontendController, :new)
+    get("/:index/:term", SearchFrontendController, :search)
   end
 
   scope "/", PanWeb do
