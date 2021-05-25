@@ -1,6 +1,6 @@
 defmodule PanWeb.Podcast do
   use Pan.Web, :model
-  alias Pan.Repo
+  alias Pan.{Repo, Search}
 
   alias PanWeb.{
     Category,
@@ -238,23 +238,6 @@ defmodule PanWeb.Podcast do
     Logger.info("=== Import job finished ===")
   end
 
-  def update_search_index(id) do
-    podcast = Repo.get(Podcast, id)
-
-    if podcast.blocked do
-      delete_search_index(id)
-    else
-      put(
-        "/panoptikum_" <>
-          Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(id),
-        title: podcast.title,
-        description: podcast.description,
-        summary: podcast.summary,
-        url: podcast_frontend_path(PanWeb.Endpoint, :show, id)
-      )
-    end
-  end
-
   def remove_unwanted_references(id) do
     podcast = Repo.get(Podcast, id)
 
@@ -270,7 +253,7 @@ defmodule PanWeb.Podcast do
       |> Repo.delete_all()
 
       for episode_id <- episode_ids do
-        Episode.delete_search_index(episode_id)
+        Search.Episode.delete_index(episode_id)
       end
 
       from(e in Engagement, where: e.podcast_id == ^id)
@@ -357,26 +340,6 @@ defmodule PanWeb.Podcast do
       |> Podcast.changeset(%{retired: false})
       |> Repo.update()
     end
-  end
-
-  def delete_search_index(id) do
-    delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/podcasts/" <> Integer.to_string(id)
-    )
-  end
-
-  def delete_search_index_orphans() do
-    podcast_ids =
-      from(c in Podcast, select: c.id)
-      |> Repo.all()
-
-    max_podcast_id = Enum.max(podcast_ids)
-    all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
-    deleted_ids = all_ids -- podcast_ids
-
-    for deleted_id <- deleted_ids, do: delete_search_index(deleted_id)
   end
 
   def update_counters(podcast_changeset) do

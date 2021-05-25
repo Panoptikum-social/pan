@@ -1,6 +1,7 @@
 defmodule PanWeb.EpisodeController do
   use Pan.Web, :controller
   alias PanWeb.Episode
+  alias Pan.Search
   require Logger
 
   plug(:scrub_params, "episode" when action in [:create, :update])
@@ -54,7 +55,7 @@ defmodule PanWeb.EpisodeController do
 
     case Repo.update(changeset) do
       {:ok, episode} ->
-        Episode.update_search_index(id)
+        Search.Episode.update_index(id)
 
         conn
         |> put_flash(:info, "Episode updated successfully.")
@@ -72,7 +73,7 @@ defmodule PanWeb.EpisodeController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(episode)
-    Episode.delete_search_index(id)
+    Search.Episode.delete_index(id)
 
     conn
     |> put_flash(:info, "Episode deleted successfully.")
@@ -98,7 +99,7 @@ defmodule PanWeb.EpisodeController do
         |> List.first()
 
       Repo.delete(episode)
-      Episode.delete_search_index(episode.id)
+      Search.Episode.delete_index(episode.id)
     end
 
     render(conn, "duplicates.html", duplicate_episodes: duplicate_episodes)

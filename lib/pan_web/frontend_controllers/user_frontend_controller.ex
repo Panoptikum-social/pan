@@ -93,8 +93,6 @@ defmodule PanWeb.UserFrontendController do
 
     case Repo.update(changeset) do
       {:ok, _user} ->
-        User.update_search_index(user.id)
-
         conn
         |> put_flash(:info, "Account updated successfully.")
         |> redirect(to: user_frontend_path(conn, :my_profile))
@@ -402,7 +400,6 @@ defmodule PanWeb.UserFrontendController do
     user = Repo.get!(User, user.id)
 
     Repo.delete!(user)
-    User.delete_search_index(user.id)
 
     conn
     |> put_flash(:info, "User deleted successfully.")

@@ -1,7 +1,7 @@
 defmodule PanWeb.Category do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.{Category, Follow, Like}
+  alias PanWeb.{Follow, Like}
 
   schema "categories" do
     field(:title, :string)
@@ -78,41 +78,5 @@ defmodule PanWeb.Category do
     from(l in Follow, where: l.category_id == ^id)
     |> Repo.aggregate(:count)
     |> Integer.to_string()
-  end
-
-  def update_search_index(id) do
-    category = Repo.get(Category, id)
-
-    put(
-      "/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/categories/" <> Integer.to_string(id),
-      title: category.title,
-      url: category_frontend_path(PanWeb.Endpoint, :show, id)
-    )
-  end
-
-  def delete_search_index(id) do
-    delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/categories/" <> Integer.to_string(id)
-    )
-  end
-
-  def delete_search_index_orphans() do
-    category_ids =
-      from(c in Category, select: c.id)
-      |> Repo.all()
-
-    max_category_id = Enum.max(category_ids)
-
-    all_ids =
-      Range.new(1, max_category_id)
-      |> Enum.to_list()
-
-    deleted_ids = all_ids -- category_ids
-
-    for deleted_id <- deleted_ids, do: delete_search_index(deleted_id)
   end
 end

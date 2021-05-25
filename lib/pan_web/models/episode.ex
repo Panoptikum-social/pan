@@ -100,54 +100,6 @@ defmodule PanWeb.Episode do
     if gig, do: gig.persona
   end
 
-  def update_search_index(id) do
-    episode =
-      Repo.get(Episode, id)
-      |> Repo.preload(:podcast)
-
-    if episode.podcast.blocked do
-      delete_search_index(id)
-    else
-      put(
-        "/panoptikum_" <>
-          Application.get_env(:pan, :environment) <>
-          "/episodes/" <> Integer.to_string(id),
-        title: episode.title,
-        subtitle: episode.subtitle,
-        description: episode.description,
-        summary: episode.summary,
-        shownotes: episode.shownotes,
-        url: episode_frontend_path(PanWeb.Endpoint, :show, id)
-      )
-    end
-  end
-
-  def delete_search_index(id) do
-    delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/episodes/" <> Integer.to_string(id)
-    )
-  end
-
-  def delete_search_index_orphans() do
-    episode_ids =
-      from(e in Episode, select: e.id)
-      |> Repo.all()
-
-    max_episode_id = Enum.max(episode_ids)
-
-    all_ids =
-      Range.new(1, max_episode_id)
-      |> Enum.to_list()
-
-    for id <- all_ids do
-      unless Enum.member?(episode_ids, id) do
-        delete_search_index(id)
-      end
-    end
-  end
-
   def clear_image_url(episode) do
     episode
     |> Episode.changeset(%{image_url: nil, link: episode.link || "https://example.com"})

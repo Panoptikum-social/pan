@@ -86,4 +86,52 @@ defmodule Pan.Search.Persona do
 
     if length(persona_ids) > 0, do: batch_reset()
   end
+
+  def update_index(id) do
+    # FIXME
+    # persona = Repo.get(Persona, id)
+
+    # if persona.redirect_id do
+    #   delete(
+    #     "http://localhost:9200/panoptikum_" <>
+    #       Application.get_env(:pan, :environment) <>
+    #       "/personas/" <> Integer.to_string(id)
+    #   )
+    # else
+    #   put(
+    #     "/panoptikum_" <>
+    #       Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
+    #     name: persona.name,
+    #     pid: persona.pid,
+    #     uri: persona.uri,
+    #     description: persona.description,
+    #     long_description: persona.long_description,
+    #     image_url: persona.image_url,
+    #     image_title: persona.image_title,
+    #     url: persona_frontend_path(PanWeb.Endpoint, :show, id)
+    #   )
+    # end
+  end
+
+  def delete_index(id) do
+    # FIXME
+    # delete(
+    #   "http://127.0.0.1:9200/panoptikum_" <>
+    #     Application.get_env(:pan, :environment) <>
+    #     "/personas/" <> Integer.to_string(id)
+    # )
+  end
+
+  def delete_index_orphans() do
+    # FIXME
+    # persona_ids =
+    #   from(c in Persona, select: c.id)
+    #   |> Repo.all()
+
+    # max_persona_id = Enum.max(persona_ids)
+    # all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
+    # deleted_ids = all_ids -- persona_ids
+
+    # for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+  end
 end

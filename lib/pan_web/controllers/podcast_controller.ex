@@ -1,5 +1,6 @@
 defmodule PanWeb.PodcastController do
   use Pan.Web, :controller
+  alias Pan.Search
 
   alias PanWeb.{
     AlternateFeed,
@@ -257,7 +258,7 @@ defmodule PanWeb.PodcastController do
 
     case Repo.update(changeset) do
       {:ok, podcast} ->
-        Podcast.update_search_index(id)
+        Search.Podcast.update_index(id)
         Podcast.remove_unwanted_references(id)
 
         put_flash(conn, :info, "Podcast updated successfully.")
@@ -299,7 +300,7 @@ defmodule PanWeb.PodcastController do
     end
 
     Repo.delete!(podcast)
-    Podcast.delete_search_index(id)
+    Search.Podcast.delete_index(id)
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")
@@ -475,7 +476,7 @@ defmodule PanWeb.PodcastController do
 
     case Pan.Parser.Podcast.update_from_feed(podcast) do
       {:ok, message} ->
-        Podcast.update_search_index(id)
+        Search.Podcast.update_index(id)
         Podcast.remove_unwanted_references(id)
         put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)

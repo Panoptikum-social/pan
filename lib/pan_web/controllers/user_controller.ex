@@ -38,8 +38,6 @@ defmodule PanWeb.UserController do
 
     case Repo.update(changeset) do
       {:ok, user} ->
-        User.update_search_index(id)
-
         conn
         |> put_flash(:info, "User updated successfully.")
         |> redirect(to: user_path(conn, :show, user))
@@ -52,9 +50,7 @@ defmodule PanWeb.UserController do
   def delete(conn, %{"id" => id}, _user) do
     id = String.to_integer(id)
     user = Repo.get!(User, id)
-
     Repo.delete!(user)
-    User.delete_search_index(id)
 
     conn
     |> put_flash(:info, "User deleted successfully.")
@@ -132,9 +128,6 @@ defmodule PanWeb.UserController do
 
     Repo.get!(User, from_id)
     |> Repo.delete!()
-
-    User.delete_search_index(from_id)
-    User.update_search_index(into_id)
 
     render(conn, "merge.html")
   end

@@ -93,4 +93,55 @@ defmodule Pan.Search.Episode do
 
     if length(episode_ids) > 0, do: batch_reset()
   end
+
+  def update_index(id) do
+    # FIXME
+    # episode =
+    #   Repo.get(Episode, id)
+    #   |> Repo.preload(:podcast)
+
+    # if episode.podcast.blocked do
+    #   delete_index(id)
+    # else
+    #   put(
+    #     "/panoptikum_" <>
+    #       Application.get_env(:pan, :environment) <>
+    #       "/episodes/" <> Integer.to_string(id),
+    #     title: episode.title,
+    #     subtitle: episode.subtitle,
+    #     description: episode.description,
+    #     summary: episode.summary,
+    #     shownotes: episode.shownotes,
+    #     url: episode_frontend_path(PanWeb.Endpoint, :show, id)
+    #   )
+    # end
+  end
+
+  def delete_index(id) do
+    # FIXME
+    # delete(
+    #   "http://127.0.0.1:9200/panoptikum_" <>
+    #     Application.get_env(:pan, :environment) <>
+    #     "/episodes/" <> Integer.to_string(id)
+    # )
+  end
+
+  def delete_index_orphans() do
+    # FIXME
+    # episode_ids =
+    #   from(e in Episode, select: e.id)
+    #   |> Repo.all()
+
+    # max_episode_id = Enum.max(episode_ids)
+
+    # all_ids =
+    #   Range.new(1, max_episode_id)
+    #   |> Enum.to_list()
+
+    # for id <- all_ids do
+    #   unless Enum.member?(episode_ids, id) do
+    #     delete_index(id)
+    #   end
+    # end
+  end
 end
