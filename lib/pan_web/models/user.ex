@@ -339,40 +339,6 @@ defmodule PanWeb.User do
     end
   end
 
-  def update_search_index(id) do
-    user = Repo.get(User, id)
-
-    put(
-      "/panoptikum_" <>
-        Application.get_env(:pan, :environment) <> "/users/" <> Integer.to_string(id),
-      name: user.name,
-      username: user.username,
-      url: user_frontend_path(PanWeb.Endpoint, :show, id)
-    )
-  end
-
-  def delete_search_index(id) do
-    delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/users/" <> Integer.to_string(id)
-    )
-  end
-
-  def delete_search_index_orphans() do
-    user_ids =
-      from(c in User, select: c.id)
-      |> Repo.all()
-
-    max_user_id = Enum.max(user_ids)
-    all_ids = Range.new(1, max_user_id) |> Enum.to_list()
-    deleted_ids = all_ids -- user_ids
-
-    for deleted_id <- deleted_ids do
-      delete_search_index(deleted_id)
-    end
-  end
-
   def pro_expiration() do
     in_seven_days =
       Timex.now()

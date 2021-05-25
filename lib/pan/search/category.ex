@@ -34,4 +34,43 @@ defmodule Pan.Search.Category do
     Logger.info("=== full_text resetting all categories ===")
     Repo.update_all(Category, set: [full_text: false])
   end
+
+  def update_index(id) do
+    # FIXME
+    # category = Repo.get(Category, id)
+
+    # put(
+    #   "/panoptikum_" <>
+    #     Application.get_env(:pan, :environment) <>
+    #     "/categories/" <> Integer.to_string(id),
+    #   title: category.title,
+    #   url: category_frontend_path(PanWeb.Endpoint, :show, id)
+    # )
+  end
+
+  def delete_index(id) do
+    # FIXME
+    # delete(
+    #   "http://127.0.0.1:9200/panoptikum_" <>
+    #     Application.get_env(:pan, :environment) <>
+    #     "/categories/" <> Integer.to_string(id)
+    # )
+  end
+
+  def delete_index_orphans() do
+    #FIXME
+    # category_ids =
+    #   from(c in Category, select: c.id)
+    #   |> Repo.all()
+
+    # max_category_id = Enum.max(category_ids)
+
+    # all_ids =
+    #   Range.new(1, max_category_id)
+    #   |> Enum.to_list()
+
+    # deleted_ids = all_ids -- category_ids
+
+    # for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+  end
 end

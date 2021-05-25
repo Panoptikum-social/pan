@@ -80,9 +80,6 @@ defmodule PanWeb.UserController do
     Repo.get!(User, from_id)
     |> Repo.delete!()
 
-    User.delete_search_index(from_id)
-    User.update_search_index(into_id)
-
     render(conn, "merge.html")
   end
 

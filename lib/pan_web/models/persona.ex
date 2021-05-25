@@ -154,63 +154,6 @@ defmodule PanWeb.Persona do
     |> Integer.to_string()
   end
 
-  def update_search_index(id) do
-    persona = Repo.get(Persona, id)
-
-    if persona.redirect_id do
-      delete(
-        "http://localhost:9200/panoptikum_" <>
-          Application.get_env(:pan, :environment) <>
-          "/personas/" <> Integer.to_string(id)
-      )
-
-      # fallback, in case Tirexs brakes again:
-      # url = "http://localhost:9200/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id)
-      # :httpc.request(:delete, {to_charlist(url), [],'application/json', ""}, [], [])
-    else
-      put(
-        "/panoptikum_" <>
-          Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
-        name: persona.name,
-        pid: persona.pid,
-        uri: persona.uri,
-        description: persona.description,
-        long_description: persona.long_description,
-        image_url: persona.image_url,
-        image_title: persona.image_title,
-        url: persona_frontend_path(PanWeb.Endpoint, :show, id)
-      )
-    end
-  end
-
-  def update_search_all() do
-    persona_ids = Repo.all(from(p in Persona, select: p.id))
-
-    for persona_id <- persona_ids do
-      update_search_index(persona_id)
-    end
-  end
-
-  def delete_search_index(id) do
-    delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/personas/" <> Integer.to_string(id)
-    )
-  end
-
-  def delete_search_index_orphans() do
-    persona_ids =
-      from(c in Persona, select: c.id)
-      |> Repo.all()
-
-    max_persona_id = Enum.max(persona_ids)
-    all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
-    deleted_ids = all_ids -- persona_ids
-
-    for deleted_id <- deleted_ids, do: delete_search_index(deleted_id)
-  end
-
   def create_user_persona(user) do
     if user.podcaster and Enum.empty?(user.user_personas) do
       case Repo.one(from(p in Persona, where: p.email == ^user.email)) do

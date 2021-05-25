@@ -1,6 +1,7 @@
 defmodule PanWeb.EpisodeController do
   use PanWeb, :controller
   alias PanWeb.Episode
+  alias Pan.Search
   require Logger
 
   plug(:scrub_params, "episode" when action in [:create, :update])
@@ -24,7 +25,7 @@ defmodule PanWeb.EpisodeController do
         |> List.first()
 
       Repo.delete(episode)
-      Episode.delete_search_index(episode.id)
+      Search.Episode.delete_index(episode.id)
     end
 
     render(conn, "duplicates.html", duplicate_episodes: duplicate_episodes)

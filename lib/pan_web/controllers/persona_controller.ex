@@ -1,6 +1,7 @@
 defmodule PanWeb.PersonaController do
   use PanWeb, :controller
   alias PanWeb.Persona
+  alias Pan.Search
 
   def merge_candidates(conn, _params) do
     non_unique_names =
@@ -166,8 +167,8 @@ defmodule PanWeb.PersonaController do
     end
 
     Repo.delete!(from_persona)
-    Persona.delete_search_index(from_id)
-    Persona.update_search_index(to_id)
+    Search.Persona.delete_index(from_id)
+    Search.Persona.update_index(to_id)
     render(conn, "merge.html")
   end
 end

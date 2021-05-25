@@ -1,6 +1,6 @@
 defmodule PanWeb.CategoryController do
   use PanWeb, :controller
-  alias Pan.Repo
+  alias Pan.{Repo, Search}
   alias PanWeb.{Category, Follow, Like, Podcast}
 
   plug(:scrub_params, "category" when action in [:create, :update])
@@ -59,7 +59,7 @@ defmodule PanWeb.CategoryController do
 
     case Repo.update(changeset) do
       {:ok, category} ->
-        Category.update_search_index(id)
+        Search.Category.update_index(id)
 
         conn
         |> put_flash(:info, "Category updated successfully.")
@@ -77,7 +77,7 @@ defmodule PanWeb.CategoryController do
     # Here we use delete! (with a bang) because we expect
     # it to always work (and if it does not, it will raise).
     Repo.delete!(category)
-    Category.delete_search_index(id)
+    Search.Category.delete_index(id)
 
     conn
     |> put_flash(:info, "Category deleted successfully.")
@@ -166,8 +166,8 @@ defmodule PanWeb.CategoryController do
       |> Repo.preload(children: from(c in Category, order_by: c.title))
       |> Repo.preload(children: :children)
 
-    Category.delete_search_index(from_id)
-    Category.update_search_index(to_id)
+    Search.Category.delete_index(from_id)
+    Search.Category.update_index(to_id)
 
     render(conn, "merge.html", categories: categories)
   end

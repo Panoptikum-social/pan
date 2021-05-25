@@ -1,5 +1,6 @@
 defmodule PanWeb.PersonaFrontendController do
   use PanWeb, :controller
+  alias Pan.Search
   alias PanWeb.{Delegation, Engagement, Gig, Image, Manifestation, Message, Persona}
 
   def action(conn, _) do
@@ -206,7 +207,7 @@ defmodule PanWeb.PersonaFrontendController do
 
         case Repo.update(changeset) do
           {:ok, _persona} ->
-            Persona.update_search_index(manifestation.persona.id)
+            Search.Persona.update_index(manifestation.persona.id)
 
             conn
             |> put_flash(:info, "Persona updated successfully.")
@@ -233,7 +234,7 @@ defmodule PanWeb.PersonaFrontendController do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: target_id])
 
-      Persona.delete_search_index(id)
+      Search.Persona.delete_index(id)
 
       conn
       |> put_flash(:info, "Persona redirected successfully.")
@@ -257,7 +258,7 @@ defmodule PanWeb.PersonaFrontendController do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: nil])
 
-      Persona.update_search_index(id)
+      Search.Persona.update_index(id)
 
       conn
       |> put_flash(:info, "Redirect cancelled successfully.")

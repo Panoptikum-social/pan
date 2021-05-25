@@ -131,6 +131,45 @@ defmodule PanWeb.PodcastController do
     render(conn, "factory.html", podcasts: podcasts)
   end
 
+  def delete(conn, %{"id" => id}) do
+    # FIXME: Recursive deletion of several Resources, not only podcasts
+    id = String.to_integer(id)
+
+    podcast =
+      Repo.get!(Podcast, id)
+      |> Repo.preload(episodes: :chapters)
+      |> Repo.preload(:feeds)
+
+    for episode <- podcast.episodes do
+      for chapter <- episode.chapters do
+        Repo.delete_all(from(l in Like, where: l.chapter_id == ^chapter.id))
+        Repo.delete_all(from(r in Recommendation, where: r.chapter_id == ^chapter.id))
+      end
+
+      Repo.delete_all(from(c in Chapter, where: c.episode_id == ^episode.id))
+      Repo.delete_all(from(e in Enclosure, where: e.episode_id == ^episode.id))
+      Repo.delete_all(from(g in Gig, where: g.episode_id == ^episode.id))
+
+      images = Repo.all(from(i in Image, where: i.episode_id == ^episode.id))
+
+      for image <- images do
+        File.rm(image.path)
+        Repo.delete!(image)
+      end
+    end
+
+    for feed <- podcast.feeds do
+      Repo.delete_all(from(a in AlternateFeed, where: a.feed_id == ^feed.id))
+    end
+
+    Repo.delete!(podcast)
+    Search.Podcast.delete_index(id)
+
+    conn
+    |> put_flash(:info, "Podcast deleted successfully.")
+    |> redirect(to: podcast_path(conn, :index))
+  end
+
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
     podcast = Repo.get!(Podcast, id)
     current_user = conn.assigns.current_user
@@ -300,7 +339,7 @@ defmodule PanWeb.PodcastController do
 
     case Pan.Parser.Podcast.update_from_feed(podcast) do
       {:ok, message} ->
-        Podcast.update_search_index(id)
+        Search.Podcast.update_index(id)
         Podcast.remove_unwanted_references(id)
         put_flash(conn, :info, message)
 
