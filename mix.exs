@@ -19,51 +19,8 @@ defmodule Pan.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-<<<<<<< HEAD
       mod: {Pan.Application, []},
       extra_applications: [:logger, :runtime_tools]
-=======
-      mod: {Pan, []},
-      applications: [
-        :phoenix,
-        :phoenix_pubsub,
-        :phoenix_html,
-        :cowboy,
-        :logger,
-        :gettext,
-        :phoenix_ecto,
-        :postgrex,
-        :httpoison,
-        :mogrify,
-        :comeonin,
-        :sweet_xml,
-        :timex,
-        :earmark,
-        :exactor,
-        :ecto_sql,
-        :quinn,
-        :uuid,
-        :html_sanitize_ex,
-        :parse_trans,
-        :scrivener_ecto,
-        :scrivener_html,
-        :bamboo,
-        :bamboo_smtp,
-        :timelier,
-        :tzdata,
-        :tirexs,
-        :floki,
-        :erlware_commons,
-        :ja_serializer,
-        :bcrypt_elixir,
-        :elixir_make,
-        :p1_utils,
-        :iconv,
-        :exactor,
-        :jason,
-        :plug_cowboy,
-      ]
->>>>>>> 6b402e11... indexing categories into manticore successfully
     ]
   end
 
@@ -170,15 +127,12 @@ defmodule Pan.MixProject do
       {:mogrify, "~> 0.7"},
       # Simplifies implementation of GenServer based processes
       {:exactor, "~> 2.2", warn_missing: false},
-<<<<<<< HEAD
       # HTTP Client
       {:httpotion, "~> 3.1"},
       # QR Code generation
       {:eqrcode, "~> 0.1.7"}
-=======
       # Json generation,
       {:jason, "~> 1.1"},
->>>>>>> 6b402e11... indexing categories into manticore successfully
     ]
   end
 
