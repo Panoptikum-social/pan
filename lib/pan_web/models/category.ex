@@ -79,4 +79,63 @@ defmodule PanWeb.Category do
     |> Repo.aggregate(:count)
     |> Integer.to_string()
   end
+
+  def tree do
+    from(c in Category,
+      order_by: :title,
+      join: subcategories in assoc(c, :children),
+      order_by: subcategories.title,
+      preload: [children: subcategories],
+      where: is_nil(c.parent_id),
+      select: [:id, :title, children: [:id, :title]]
+    )
+    |> Repo.all()
+  end
+
+  def stats_tree do
+    from(c in Category,
+      order_by: :title,
+      join: subcategories in assoc(c, :children),
+      order_by: subcategories.title,
+      where: is_nil(c.parent_id),
+      preload: [children: subcategories],
+      preload: [:podcasts, children: :podcasts],
+      select: [:id, :title, podcasts: :id, children: [:id, :title, podcasts: :id]]
+    )
+    |> Repo.all()
+  end
+
+  def by_id_exists?(id) do
+    from(Category,
+      where: [id: ^id],
+      select: [:id]
+    )
+    |> Repo.one()
+    |> is_nil()
+    |> Kernel.not()
+  end
+
+  def get_with_children_parent_and_podcasts(id) do
+    category =
+      from(c in Category,
+        where: [id: ^id],
+        left_join: children in assoc(c, :children),
+        left_join: p in assoc(c, :parent),
+        order_by: children.title,
+        preload: [parent: p, children: children],
+        select: [:id, :title, children: [:id, :title], parent: [:id, :title]]
+      )
+      |> Repo.one()
+
+    podcasts =
+      from(l in Language,
+        right_join: p in assoc(l, :podcasts),
+        join: c in assoc(p, :categories),
+        where: c.id == ^id,
+        select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
+      )
+      |> Repo.all()
+
+    %{category: category, podcasts: podcasts}
+  end
 end
