@@ -1,7 +1,7 @@
 defmodule PanWeb.Category do
   use Pan.Web, :model
   alias Pan.Repo
-  alias PanWeb.{Follow, Like}
+  alias PanWeb.{Follow, Like, Category, Language}
 
   schema "categories" do
     field(:title, :string)

@@ -9,21 +9,21 @@ defmodule Pan.Search do
     # Search.Category.migrate()
     # Search.Persona.migrate()
     # Search.Podcast.migrate()
-    Search.Episode.migrate()
+    # Search.Episode.migrate()
   end
 
   def push_missing do
     # Search.Category.batch_index()
     # Search.Persona.batch_index()
     # Search.Podcast.batch_index()
-    Search.Episode.batch_index()
+    # Search.Episode.batch_index()
   end
 
   def reset_all do
     # Search.Category.batch_reset()
     # Search.Persona.batch_reset()
     # Search.Podcast.batch_reset()
-    Search.Episode.batch_reset()
+    # Search.Episode.batch_reset()
   end
 
   def batch_index(
