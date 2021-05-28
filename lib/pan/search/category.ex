@@ -1,5 +1,6 @@
 defmodule Pan.Search.Category do
   alias Pan.Repo
+  import Ecto.Query, only: [from: 2]
   alias PanWeb.Category
   require Logger
   alias Pan.Search.Manticore
@@ -49,28 +50,24 @@ defmodule Pan.Search.Category do
   end
 
   def delete_index(id) do
-    # FIXME
-    # delete(
-    #   "http://127.0.0.1:9200/panoptikum_" <>
-    #     Application.get_env(:pan, :environment) <>
-    #     "/categories/" <> Integer.to_string(id)
-    # )
+    %{index: "categories", id: id}
+    |> Jason.encode!()
+    |> Manticore.post("delete")
   end
 
   def delete_index_orphans() do
-    #FIXME
-    # category_ids =
-    #   from(c in Category, select: c.id)
-    #   |> Repo.all()
+    category_ids =
+      from(c in Category, select: c.id)
+      |> Repo.all()
 
-    # max_category_id = Enum.max(category_ids)
+    max_category_id = Enum.max(category_ids)
 
-    # all_ids =
-    #   Range.new(1, max_category_id)
-    #   |> Enum.to_list()
+    all_ids =
+      Range.new(1, max_category_id)
+      |> Enum.to_list()
 
-    # deleted_ids = all_ids -- category_ids
+    deleted_ids = all_ids -- category_ids
 
-    # for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
   end
 end

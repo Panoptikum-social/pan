@@ -114,24 +114,20 @@ defmodule Pan.Search.Persona do
   end
 
   def delete_index(id) do
-    # FIXME
-    # delete(
-    #   "http://127.0.0.1:9200/panoptikum_" <>
-    #     Application.get_env(:pan, :environment) <>
-    #     "/personas/" <> Integer.to_string(id)
-    # )
+    %{index: "personas", id: id}
+    |> Jason.encode!()
+    |> Manticore.post("delete")
   end
 
   def delete_index_orphans() do
-    # FIXME
-    # persona_ids =
-    #   from(c in Persona, select: c.id)
-    #   |> Repo.all()
+    persona_ids =
+      from(c in Persona, select: c.id)
+      |> Repo.all()
 
-    # max_persona_id = Enum.max(persona_ids)
-    # all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
-    # deleted_ids = all_ids -- persona_ids
+    max_persona_id = Enum.max(persona_ids)
+    all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
+    deleted_ids = all_ids -- persona_ids
 
-    # for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
   end
 end

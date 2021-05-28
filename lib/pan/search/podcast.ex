@@ -113,24 +113,20 @@ defmodule Pan.Search.Podcast do
   end
 
   def delete_index(id) do
-    #FIXME
-    # delete(
-    #   "http://127.0.0.1:9200/panoptikum_" <>
-    #     Application.get_env(:pan, :environment) <>
-    #     "/podcasts/" <> Integer.to_string(id)
-    # )
+    %{index: "podcasts", id: id}
+    |> Jason.encode!()
+    |> Manticore.post("delete")
   end
 
   def delete_index_orphans() do
-    #FIXME
-    # podcast_ids =
-    #   from(c in Podcast, select: c.id)
-    #   |> Repo.all()
+    podcast_ids =
+      from(c in Podcast, select: c.id)
+      |> Repo.all()
 
-    # max_podcast_id = Enum.max(podcast_ids)
-    # all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
-    # deleted_ids = all_ids -- podcast_ids
+    max_podcast_id = Enum.max(podcast_ids)
+    all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
+    deleted_ids = all_ids -- podcast_ids
 
-    # for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
   end
 end
