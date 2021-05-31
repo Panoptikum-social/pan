@@ -9,29 +9,38 @@ defmodule Pan.Search.Podcast do
     Manticore.post("mode=raw&query=DROP TABLE podcasts", "sql")
 
     ("mode=raw&query=CREATE TABLE podcasts(title text, description text, thumbnail_url string, " <>
-       "summary text, image_title string, "<>
+       "summary text, image_title string, " <>
        "language_ids multi, category_ids multi, contributor_ids multi, " <>
        "languages json, categories json, engagements json) " <>
        "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
 
+  def preloads() do
+    [:languages, :categories, :thumbnails, :contributors, engagements: :persona]
+  end
+
+  def selects() do
+    [
+      :id,
+      :blocked,
+      :title,
+      :description,
+      :summary,
+      :image_title,
+      languages: [:id, :shortcode, :name, :emoji],
+      categories: [:id, :title],
+      contributors: :id,
+      thumbnails: [:path, :filename],
+      engagements: [:podcast_id, :persona_id, :role, persona: :name]
+    ]
+  end
+
   def batch_index() do
     Pan.Search.batch_index(
       model: Podcast,
-      preloads: [:languages, :categories, :thumbnails, :contributors, engagements: :persona],
-      selects: [
-        :id,
-        :title,
-        :description,
-        :summary,
-        :image_title,
-        languages: [:id, :shortcode, :name, :emoji],
-        categories: [:id, :title],
-        contributors: :id,
-        thumbnails: [:path, :filename],
-        engagements: [:podcast_id, :persona_id, :role, persona: :name]
-      ],
+      preloads: preloads(),
+      selects: selects(),
       struct_function: &manticore_struct/1
     )
   end
@@ -95,21 +104,17 @@ defmodule Pan.Search.Podcast do
   end
 
   def update_index(id) do
-    #FIXME
-    # podcast = Repo.get(Podcast, id)
+    podcast =
+      from(p in Podcast, where: p.id == ^id, preload: ^preloads(), select: ^selects())
+      |> Repo.one()
 
-    # if podcast.blocked do
-    #   delete_index(id)
-    # else
-    #   put(
-    #     "/panoptikum_" <>
-    #       Application.get_env(:pan, :environment) <> "/podcasts/" <> Integer.to_string(id),
-    #     title: podcast.title,
-    #     description: podcast.description,
-    #     summary: podcast.summary,
-    #     url: podcast_frontend_path(PanWeb.Endpoint, :show, id)
-    #   )
-    # end
+    if podcast.blocked do
+      delete_index(id)
+    else
+      manticore_struct(podcast)[:insert]
+      |> Jason.encode!()
+      |> Manticore.post("replace")
+    end
   end
 
   def delete_index(id) do
