@@ -1,0 +1,1 @@
+../../pan-config/staging.secret.exs
