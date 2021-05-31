@@ -244,11 +244,7 @@ defmodule PanWeb.PersonaController do
     from(m in PanWeb.Manifestation, where: m.persona_id == ^to_id)
     |> Repo.delete_all()
 
-    Tirexs.HTTP.delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/personas/" <> Integer.to_string(from_id)
-    )
+    Pan.Search.Persona.delete_index(from_id)
 
     to_persona = Repo.get!(Persona, to_id)
     from_persona = Repo.get!(Persona, from_id)

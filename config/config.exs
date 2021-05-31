@@ -23,8 +23,6 @@ config :phoenix, :format_encoders, "json-api": Jason
 
 config :scrivener_html, routes_helper: PanWeb.Router.Helpers
 
-config :tirexs, :uri, "http://127.0.0.1:9200"
-
 config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }

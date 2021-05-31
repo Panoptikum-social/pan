@@ -92,14 +92,8 @@ defmodule Pan.Bot do
   end
 
   defp podcasts_from_query(message) do
-    query = [
-      index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/podcasts",
-      search: [size: 5, from: 0, query: [match: [_all: message]]]
-    ]
-
-    {:ok, 200, %{hits: hits, took: _took}} = Tirexs.Query.create_resource(query)
-
-    podcast_ids = Enum.map(hits.hits, fn hit -> hit._id end)
+    hits = Pan.Search.query(index: "podcasts", term: message, limit: 5, offset: 0)
+    podcast_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
 
     from(p in Podcast, where: p.id in ^podcast_ids, preload: :episodes)
     |> Repo.all()

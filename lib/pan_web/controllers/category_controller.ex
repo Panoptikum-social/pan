@@ -147,11 +147,7 @@ defmodule PanWeb.CategoryController do
     from(c in Category, where: c.parent_id == ^from_id)
     |> Repo.update_all(set: [parent_id: to_id])
 
-    Tirexs.HTTP.delete(
-      "http://127.0.0.1:9200/panoptikum_" <>
-        Application.get_env(:pan, :environment) <>
-        "/categories/" <> Integer.to_string(from_id)
-    )
+    Pan.Search.Category.delete_index(from_id)
 
     Repo.get!(Category, from_id)
     |> Repo.delete!()
