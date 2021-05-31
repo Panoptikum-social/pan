@@ -8,7 +8,6 @@ defmodule PanWeb do
       import Ecto.Query, only: [from: 1, from: 2, where: 2, select: 2]
       import Ecto.Convenience, only: [total_estimated: 1]
       import PanWeb.Router.Helpers
-      import Tirexs.HTTP
     end
   end
 

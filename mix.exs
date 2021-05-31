@@ -106,8 +106,6 @@ defmodule Pan.MixProject do
       {:tzdata, "~> 1.0"},
       # We have to override manually, as manticoresearch would want to see 3.0
       {:poison, "~> 4.0.1", override: true},
-      #FIXME: remove tirexs
-      {:tirexs, "~> 0.8"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       # reuseable Erlang components
