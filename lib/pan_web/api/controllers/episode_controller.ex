@@ -88,54 +88,37 @@ defmodule PanWeb.Api.EpisodeController do
 
     offset = (page - 1) * size
 
-    query = [
-      index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/episodes",
-      search: [size: size, from: offset, query: [match: [_all: params["filter"]]]]
-    ]
+    hits = Pan.Search.query(index: "episodes", term: params["filter"], limit: size, offset: offset)
+    
+    if hits["total"] > 0 do
+      total = Enum.min([hits["total"], 10_000])
+      total_pages = div(total - 1, size) + 1
 
-    case Tirexs.Query.create_resource(query) do
-      {:ok, 200, %{hits: hits}} ->
-        if hits.total > 0 do
-          total = Enum.min([hits.total, 10_000])
-          total_pages = div(total - 1, size) + 1
+      links =
+        conn
+        |> api_episode_url(:search)
+        |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-          links =
-            conn
-            |> api_episode_url(:search)
-            |> Helpers.pagination_links({page, size, total_pages}, conn)
+      episode_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
 
-          episode_ids = Enum.map(hits[:hits], fn hit -> String.to_integer(hit[:_id]) end)
-
-          episodes =
-            from(e in Episode,
-              where: e.id in ^episode_ids,
-              preload: [:podcast, :gigs, :contributors]
-            )
-            |> Repo.all()
-
-          render(conn, "index.json-api",
-            data: episodes,
-            opts: [page: links, include: "podcast,gigs,contributors"]
-          )
-        else
-          Helpers.send_error(
-            conn,
-            404,
-            "Nothing found",
-            "No matching episodes found in the data base."
-          )
-        end
-
-      {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        Helpers.send_401(conn, reason)
-
-      :error ->
-        Helpers.send_error(
-          conn,
-          500,
-          "Server error",
-          "The search engine seams to be broken right now."
+      episodes =
+        from(e in Episode,
+          where: e.id in ^episode_ids,
+          preload: [:podcast, :gigs, :contributors]
         )
+        |> Repo.all()
+
+      render(conn, "index.json-api",
+        data: episodes,
+        opts: [page: links, include: "podcast,gigs,contributors"]
+      )
+    else
+      Helpers.send_error(
+        conn,
+        404,
+        "Nothing found",
+        "No matching episodes found in the data base."
+      )
     end
   end
 end
