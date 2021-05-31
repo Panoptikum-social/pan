@@ -158,54 +158,37 @@ defmodule PanWeb.Api.PersonaController do
 
     offset = (page - 1) * size
 
-    query = [
-      index: "/panoptikum_" <> Application.get_env(:pan, :environment) <> "/personas",
-      search: [size: size, from: offset, query: [match: [_all: params["filter"]]]]
-    ]
+    hits = Pan.Search.query(index: "personas", term: params["filter"], limit: size, offset: offset)
 
-    case Tirexs.Query.create_resource(query) do
-      {:ok, 200, %{hits: hits}} ->
-        if hits.total > 0 do
-          total = Enum.min([hits.total, 10_000])
-          total_pages = div(total - 1, size) + 1
+    if hits["total"] > 0 do
+      total = Enum.min([hits["total"], 10_000])
+      total_pages = div(total - 1, size) + 1
 
-          links =
-            conn
-            |> api_persona_url(:search)
-            |> Helpers.pagination_links({page, size, total_pages}, conn)
+      links =
+        conn
+        |> api_persona_url(:search)
+        |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-          persona_ids = Enum.map(hits[:hits], fn hit -> String.to_integer(hit[:_id]) end)
+      persona_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
 
-          personas =
-            from(p in Persona,
-              where: p.id in ^persona_ids,
-              preload: [:redirect, :delegates, :podcasts]
-            )
-            |> Repo.all()
-
-          render(conn, "index.json-api",
-            data: personas,
-            opts: [page: links, include: "redirect,delegates,podcasts"]
-          )
-        else
-          Helpers.send_error(
-            conn,
-            404,
-            "Nothing found",
-            "No matching personas found in the data base."
-          )
-        end
-
-      {:error, 500, %{error: %{caused_by: %{reason: reason}}}} ->
-        Helpers.send_401(conn, reason)
-
-      :error ->
-        Helpers.send_error(
-          conn,
-          500,
-          "Server error",
-          "The search engine seams to be broken right now."
+      personas =
+        from(p in Persona,
+          where: p.id in ^persona_ids,
+          preload: [:redirect, :delegates, :podcasts]
         )
+        |> Repo.all()
+
+      render(conn, "index.json-api",
+        data: personas,
+        opts: [page: links, include: "redirect,delegates,podcasts"]
+      )
+    else
+      Helpers.send_error(
+        conn,
+        404,
+        "Nothing found",
+        "No matching personas found in the data base."
+      )
     end
   end
 
