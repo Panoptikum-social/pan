@@ -1,5 +1,5 @@
 <p>Showing <%= @hits_count %> Episodes
-   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). You might want to search for
    <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
    <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
    <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
@@ -59,7 +59,7 @@
 
 <hr/>
 <p>Showing <%= @hits_count %> Episodes
-   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). Search for
+   (Nr. <%= @offset + 1 %> to <%= @offset + @hits_count %> of <%= @total %>). You might want to search for
    <%= link "categories", to: search_frontend_path(@conn, :search, "categories", @term, page: 1) %> |
    <%= link "podcasts", to: search_frontend_path(@conn, :search, "podcasts", @term, page: 1) %> |
    <%= link "personas", to: search_frontend_path(@conn, :search, "personas", @term, page: 1) %>
