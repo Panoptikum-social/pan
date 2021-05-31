@@ -12,11 +12,15 @@ defmodule Pan.Search.Category do
     |> Manticore.post("sql")
   end
 
+  def selects() do
+    [:id, :title]
+  end
+
   def batch_index() do
     Pan.Search.batch_index(
       model: Category,
       preloads: [],
-      selects: [:id, :title],
+      selects: selects(),
       struct_function: &manticore_struct/1
     )
   end
@@ -37,16 +41,11 @@ defmodule Pan.Search.Category do
   end
 
   def update_index(id) do
-    # FIXME
-    # category = Repo.get(Category, id)
+    category = from(c in Category, where: c.id == ^id, select: ^selects())
 
-    # put(
-    #   "/panoptikum_" <>
-    #     Application.get_env(:pan, :environment) <>
-    #     "/categories/" <> Integer.to_string(id),
-    #   title: category.title,
-    #   url: category_frontend_path(PanWeb.Endpoint, :show, id)
-    # )
+    manticore_struct(category)[:insert]
+    |> Jason.encode!()
+    |> Manticore.post("replace")
   end
 
   def delete_index(id) do

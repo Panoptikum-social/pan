@@ -15,23 +15,31 @@ defmodule Pan.Search.Persona do
     |> Manticore.post("sql")
   end
 
+  def preloads() do
+    [:episodes, :podcasts, :thumbnails, engagements: :podcast]
+  end
+
+  def selects() do
+    [
+      :id,
+      :name,
+      :pid,
+      :uri,
+      :description,
+      :long_description,
+      :image_title,
+      podcasts: :id,
+      episodes: :id,
+      thumbnails: [:path, :filename],
+      engagements: [:persona_id, :podcast_id, :role, podcast: :title]
+    ]
+  end
+
   def batch_index() do
     Pan.Search.batch_index(
       model: Persona,
-      preloads: [:episodes, :podcasts, :thumbnails, engagements: :podcast],
-      selects: [
-        :id,
-        :name,
-        :pid,
-        :uri,
-        :description,
-        :long_description,
-        :image_title,
-        podcasts: :id,
-        episodes: :id,
-        thumbnails: [:path, :filename],
-        engagements: [:persona_id, :podcast_id, :role, podcast: :title]
-      ],
+      preloads: preloads(),
+      selects: selects(),
       struct_function: &manticore_struct/1
     )
   end
@@ -88,29 +96,17 @@ defmodule Pan.Search.Persona do
   end
 
   def update_index(id) do
-    # FIXME
-    # persona = Repo.get(Persona, id)
+    persona =
+      from(p in Persona, where: p.id == ^id, preload: ^preloads(), select: ^selects())
+      |> Repo.one()
 
-    # if persona.redirect_id do
-    #   delete(
-    #     "http://localhost:9200/panoptikum_" <>
-    #       Application.get_env(:pan, :environment) <>
-    #       "/personas/" <> Integer.to_string(id)
-    #   )
-    # else
-    #   put(
-    #     "/panoptikum_" <>
-    #       Application.get_env(:pan, :environment) <> "/personas/" <> Integer.to_string(id),
-    #     name: persona.name,
-    #     pid: persona.pid,
-    #     uri: persona.uri,
-    #     description: persona.description,
-    #     long_description: persona.long_description,
-    #     image_url: persona.image_url,
-    #     image_title: persona.image_title,
-    #     url: persona_frontend_path(PanWeb.Endpoint, :show, id)
-    #   )
-    # end
+    if persona.redirect_id do
+      delete_index(id)
+    else
+      manticore_struct(persona)[:insert]
+      |> Jason.encode!()
+      |> Manticore.post("replace")
+    end
   end
 
   def delete_index(id) do
