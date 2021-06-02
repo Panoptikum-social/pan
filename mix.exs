@@ -124,6 +124,8 @@ defmodule Pan.MixProject do
       {:httpotion, "~> 3.1"},
       # QR Code generation
       {:eqrcode, "~> 0.1.7"},
+      # Creating a pidfile
+      {:pid_file, "~> 0.1.1"},
     ]
   end
 
