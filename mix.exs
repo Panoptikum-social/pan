@@ -55,6 +55,7 @@ defmodule Pan.Mixfile do
         :exactor,
         :jason,
         :plug_cowboy,
+        :pid_file,
       ]
     ]
   end
