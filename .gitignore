@@ -4,6 +4,7 @@
 /deps
 /*.ez
 /uploads/opml/**
+pan.pid
 
 # Generate on crash by the VM
 erl_crash.dump

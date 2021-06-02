@@ -7,7 +7,8 @@ defmodule Pan do
     children = [
       {Phoenix.PubSub, [name: Pan.PubSub, adapter: Phoenix.PubSub.PG2]},
       supervisor(PanWeb.Endpoint, []),
-      supervisor(Pan.Repo, [])
+      supervisor(Pan.Repo, []),
+      worker(PidFile.Worker, [[file: "pan.pid"]])
     ]
 
     opts = [strategy: :one_for_one, name: Pan.Supervisor]

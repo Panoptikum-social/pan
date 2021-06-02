@@ -132,6 +132,8 @@ defmodule Pan.Mixfile do
       {:exactor, "~> 2.2", warn_missing: false},
       # Json generation,
       {:jason, "~> 1.1"},
+      # Creating a pidfile
+      {:pid_file, "~> 0.1.1"},
     ]
   end
 
