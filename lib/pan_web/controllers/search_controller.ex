@@ -4,7 +4,7 @@ defmodule PanWeb.SearchController do
   require Logger
 
   def migrate(conn, _params) do
-    Pan.Search.migrate()
+    Task.start(fn -> Pan.Search.migrate() end)
     render(conn, "started.html", %{})
   end
 
