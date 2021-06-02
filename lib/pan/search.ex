@@ -55,7 +55,8 @@ defmodule Pan.Search do
       else
         {:ok, query_result} = Jason.decode(response_body)
 
-        IO.inspect(query_result)
+        Logger.info("=== Query Result ===")
+        Logger.info(query_result)
 
         error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
 
@@ -68,8 +69,7 @@ defmodule Pan.Search do
           |> String.replace("'", "")
           |> String.to_integer()
 
-        IO.inspect(error_id)
-
+        Logger.error("=== Error: #{error_id} ===")
         Repo.get!(model, error_id) |> Ecto.Changeset.change(full_text: true) |> Repo.update()
       end
 
