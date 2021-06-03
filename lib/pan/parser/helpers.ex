@@ -186,7 +186,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("CST", "-0600")
     |> String.replace("CMT", "-0600")
     |> String.replace("PST", "-0700")
-    |> String.replace("PdT", "-0700")
+    |> String.replace("PDT", "-0700")
     |> String.replace("PCT", "-0700")
     |> String.replace("GMT+1", "+0100")
     |> String.replace("BST", "+0100")
