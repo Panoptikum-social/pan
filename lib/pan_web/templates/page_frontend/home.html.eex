@@ -1,3 +1,20 @@
+  <div class="panel panel-warning">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        Migrating ....
+      </h3>
+    </div>
+    <div class="panel-body" style="line-height: 2.5;">
+      <p>
+        Currently login is disabled as we are migrating to a new infrastructure.<br/>
+        Sorry for the inconvenience.
+      </p>
+      <p>
+        If you come back later and this message has disappeared, we are on the new hardware.
+      </p>
+    </div>
+  </div>
+
 <div class="row">
   <div class="col-md-6">
     <%= render "_latest_podcasts.html", conn: @conn  %></br>
