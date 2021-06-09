@@ -115,7 +115,7 @@ defmodule Pan.MixProject do
       # dependency for iconv
       {:p1_utils, "~> 1.0.13"},
       # Unicode converter
-      {:iconv, "~> 1.0.10", git: "https://github.com/processone/iconv"},
+      {:iconv, "~> 1.0.12"},
       # Imagemagick wrapper
       {:mogrify, "~> 0.7"},
       # Simplifies implementation of GenServer based processes
