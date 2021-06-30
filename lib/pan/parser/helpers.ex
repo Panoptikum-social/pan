@@ -182,6 +182,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("NZST", "+1200")
     |> String.replace("NZDT", "+1300")
     |> String.replace("EST", "-0500")
+    |> String.replace("CDT", "-0500")
     |> String.replace("EDT", "-0400")
     |> String.replace("CST", "-0600")
     |> String.replace("CMT", "-0600")
