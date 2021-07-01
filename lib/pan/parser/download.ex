@@ -103,6 +103,9 @@ defmodule Pan.Parser.Download do
       {:ok, %Response{status_code: 303, headers: headers}} ->
         redirect(url, headers, feed_id)
 
+      {:ok, %Response{status_code: 308, headers: headers}} ->
+        redirect(url, headers, feed_id)
+
       {:ok, %Response{status_code: 307}} ->
         {:error, "307: Temporary redirect"}
 
