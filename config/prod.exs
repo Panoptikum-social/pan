@@ -10,7 +10,7 @@ config :pan, PanWeb.Endpoint,
   version: Mix.Project.config()[:version]
 
 config :logger,
-  backends: [:console, {Logger.Backends.ExceptionNotification, :exeception_notification}]
+  backends: [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]
 
 config :logger, level: :info
 config :phoenix, :serve_endpoints, true

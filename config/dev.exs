@@ -32,7 +32,7 @@ config :pan, PanWeb.Endpoint,
   ]
 
 config :logger,
-  backends: [:console, {Logger.Backends.ExceptionNotification, :exeception_notification}]
+  backends: [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]
 
 
 # Set a higher stacktrace during development.
@@ -56,4 +56,4 @@ import_config "dev.secret.exs"
 # Uncomment the next two lines to send emails from dev as well
 
 # config :logger, backends:
-#   [:console, {Logger.Backends.ExceptionNotification, :exeception_notification}]
+#   [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]

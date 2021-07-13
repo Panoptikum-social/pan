@@ -17,10 +17,7 @@ defmodule Logger.Backends.ExceptionNotification do
       Logger.Formatter.compile("$time $metadata[$level] $message\n")
       |> Logger.Formatter.format(:error, message, timestamp, old_metadata_format)
       |> IO.chardata_to_string()
-      |> Pan.Email.error_notification(
-        "exeception_notification@panoptikum.io",
-        "stefan@panoptikum.io"
-      )
+      |> Pan.Email.error_notification("robot@informatom.com", "robot@informatom.com")
       |> Pan.Mailer.deliver_now()
     end
 
