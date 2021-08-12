@@ -22,7 +22,7 @@ defmodule Pan.Email do
   def confirm_persona_claim_link_html_email(token, user, email_address) do
     new_email()
     |> to(email_address)
-    |> from(user.email)
+    |> from("noreply@panoptikum.io")
     |> subject("Panoptikum - Persona manifestation confirmation request")
     |> put_html_layout({PanWeb.LayoutView, "email.html"})
     |> render("confirm_persona_claim_link.html", token: token, user: user)
