@@ -12,7 +12,7 @@ defmodule Pan.Search.Episode do
        "summary text, shownotes text, inserted_at timestamp, " <>
        "podcast_id int, language_ids multi, category_ids multi, gig_ids multi," <>
        "podcast json, languages json, categories json, gigs json) " <>
-       "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
+       "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
 

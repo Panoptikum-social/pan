@@ -12,7 +12,7 @@ defmodule Pan.Search.Podcast do
        "summary text, image_title string, " <>
        "language_ids multi, category_ids multi, contributor_ids multi, " <>
        "languages json, categories json, engagements json) " <>
-       "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
+       "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
 
