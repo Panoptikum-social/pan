@@ -90,7 +90,7 @@ defmodule Pan.Search do
     manticore_data =
       %{
         index: index,
-        query: %{match: %{*: term}},
+        query: %{match_phrase: %{_all: term}},
         limit: limit,
         offset: offset,
         highlight: %{
