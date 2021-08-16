@@ -11,7 +11,7 @@ defmodule Pan.Search.Persona do
     ("mode=raw&query=CREATE TABLE personas(name text, pid string, uri string, " <>
        "description text, long_description text, thumbnail_url string, " <>
        "image_title text, podcast_ids multi, episode_ids multi, engagements json) " <>
-       "min_word_len='3' min_infix_len='3' html_strip='1' html_remove_elements = 'style, script'")
+       "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'")
     |> Manticore.post("sql")
   end
 

@@ -8,7 +8,7 @@ defmodule Pan.Search.Category do
   def migrate() do
     Manticore.post("mode=raw&query=DROP TABLE categories", "sql")
 
-    "mode=raw&query=CREATE TABLE categories(title text) min_word_len='3' min_infix_len='3'"
+    "mode=raw&query=CREATE TABLE categories(title text) min_infix_len='2'"
     |> Manticore.post("sql")
   end
 
