@@ -5,18 +5,18 @@
   <div aria-label="left column" 
       class="flex-1">
     <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."
-           target={{ podcast_frontend_path(@socket, :index) }}
+           target={podcast_frontend_path(@socket, :index)}
            purpose="podcast">
-      <Tab items={{ podcast <- @latest_podcasts }}>
-        <PodcastCard for={{ podcast }} />
+      <Tab items={podcast <- @latest_podcasts}>
+        <PodcastCard for={podcast} />
       </Tab>
     </Panel>
 
     <Panel heading="Top 15 subscribed Podcasts" heading_right="more ..." 
-           target={{ podcast_frontend_path(@socket, :popular) }}
+           target={podcast_frontend_path(@socket, :popular)}
            purpose="popular"
            class="mt-4">
-      <TopList items={{@popular_podcasts}}
+      <TopList items={@popular_podcasts}
               purpose="podcast"
               icon="user-heroicons-outline" />
     </Panel>
@@ -26,30 +26,30 @@
        class="flex-1">
     <Panel heading="Latest Episodes" 
           heading_right="more ..."
-          target={{ episode_frontend_path(@socket, :index) }}
+          target={episode_frontend_path(@socket, :index)}
           purpose="episode" >
-      <Tab items={{ episode <- @latest_episodes }}>
-          <EpisodeCard for={{ episode }} />
+      <Tab items={episode <- @latest_episodes}>
+          <EpisodeCard for={episode} />
       </Tab>
 
     </Panel>
 
     <Panel heading="Latest Recommendations" 
            heading_right="more ..."
-           target={{ recommendation_frontend_path(@socket, :index) }}
+           target={recommendation_frontend_path(@socket, :index)}
            purpose="recommendation"
            class="mt-4">
-      <Tab items={{ recommendation <- @latest_recommendations }}>
-        <RecommendationCard for={{ recommendation }} />
+      <Tab items={recommendation <- @latest_recommendations}>
+        <RecommendationCard for={recommendation} />
       </Tab>
     </Panel>
 
     <Panel heading="Liked Podcasts" 
           heading_right="more ..."
-          target={{ podcast_frontend_path(@socket, :liked) }}
+          target={podcast_frontend_path(@socket, :liked)}
           purpose="like"
           class="mt-4">
-      <TopList items={{@liked_podcasts}}
+      <TopList items={@liked_podcasts}
               purpose="podcast"
               icon="heart-heroicons-outline" />
     </Panel>

@@ -49,11 +49,11 @@ defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
   end
 
   def render(assigns) do
-    ~H"""
-    <RecordForm id={{ "record_form_" <> @resource <> "_new" }}
-                record={{ @record }}
-                model={{ @model }}
-                cols={{ @cols }} />
+    ~F"""
+    <RecordForm id={"record_form_" <> @resource <> "_new"}
+                record={@record}
+                model={@model}
+                cols={@cols} />
     """
   end
 end

@@ -34,11 +34,11 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
   end
 
   def render(assigns) do
-    ~H"""
-    <RecordCard id={{ "record_card_" <> @resource <> "_" <> @ids_string }}
-                record={{ @record }}
-                model={{ @model }}
-                cols={{ @cols }} />
+    ~F"""
+    <RecordCard id={"record_card_" <> @resource <> "_" <> @ids_string}
+                record={@record}
+                model={@model}
+                cols={@cols} />
     """
   end
 end

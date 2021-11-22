@@ -96,37 +96,37 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <IndexGrid id="owner_table"
                color_class="from-pink-rose-light via-pink-rose to-pink-rose-light"
-               heading={{ Naming.module_without_namespace(@owner_model) }}
-               model={{ @owner_model }}
-               cols={{ @owner_cols }}
-               search_filter={{ @owner_search_filter }}
-               per_page=1
-               buttons={{ [:show, :edit] }}>
+               heading={Naming.module_without_namespace(@owner_model)}
+               model={@owner_model}
+               cols={@owner_cols}
+               search_filter={@owner_search_filter}
+               per_page={1}
+               buttons={[:show, :edit]}>
     </IndexGrid>
 
     <IndexGrid id="join_through_table"
                class="mt-8"
                color_class="from-lavender-light via-lavender to-lavender-light"
-               heading={{ "Join Through " <> Naming.model_in_plural(@join_through_model) }}
-               model={{ @join_through_model }}
-               cols={{ @join_through_cols }}
-               search_filter={{ @join_search_filter }}
-               buttons={{ [:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :search] }}>
+               heading={"Join Through " <> Naming.model_in_plural(@join_through_model)}
+               model={@join_through_model}
+               cols={@join_through_cols}
+               search_filter={@join_search_filter}
+               buttons={[:show, :edit, :delete, :new, :pagination,
+                           :number_of_records, :search]}>
     </IndexGrid>
 
     <IndexGrid id="many_to_many_table"
                class="mt-8"
                color_class="from-mint-light via-mint to-mint-light"
-               heading={{ "Many To Many " <> Naming.model_in_plural(@model) }}
-               model={{ @model }}
-               cols={{ @cols }}
-               search_filter={{ @search_filter }}
-               buttons={{ [:show, :edit, :pagination, :number_of_records,
-                           :new_mediating, :assignment_filter, :search] }}>
+               heading={"Many To Many " <> Naming.model_in_plural(@model)}
+               model={@model}
+               cols={@cols}
+               search_filter={@search_filter}
+               buttons={[:show, :edit, :pagination, :number_of_records,
+                           :new_mediating, :assignment_filter, :search]}>
     </IndexGrid>
     """
   end

@@ -13,13 +13,13 @@ defmodule PanWeb.Surface.CategoryButton do
   prop(truncate, :boolean, default: false)
 
   def render(assigns) do
-    ~H"""
-    <LinkButton to={{ Routes.category_frontend_path(@socket, :show, @id || @for.id) }}
-                class={{ color_class_cycle(@index_on_page), @class }}
-                large={{ @large }}
+    ~F"""
+    <LinkButton to={Routes.category_frontend_path(@socket, :show, @id || @for.id)}
+                class={color_class_cycle(@index_on_page), @class}
+                large={@large}
                 icon="folder-heroicons-outline"
-                title={{ @title || @for.title }}
-                truncate={{ @truncate }} />
+                title={@title || @for.title}
+                truncate={@truncate} />
     """
   end
 end

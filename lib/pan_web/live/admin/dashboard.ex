@@ -62,26 +62,26 @@ defmodule PanWeb.Live.Admin.Dashboard do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div>
       <Explorer id="schemas"
                 title="Schemas"
                 class="m-2 max-w-2xl"
-                items={{ schema <- @schemas }}
-                selected_count={{ @selected_count }}
-                format={{ :grid }}
-                grid_columns=4>
+                items={schema <- @schemas}
+                selected_count={@selected_count}
+                format={:grid}
+                grid_columns={4}>
         <ToolbarItem message="index"
                     title="Data"
-                    when_selected_count={{ :one }} />
+                    when_selected_count={:one} />
         <ToolbarItem message="schema_definition"
                     title="Schema Definition"
-                    when_selected_count={{ :one }} />
+                    when_selected_count={:one} />
         <ToolbarItem message="db_index"
                     title="Database Indices"
-                    when_selected_count={{ :one }} />
+                    when_selected_count={:one} />
         <Col title="title">
-          {{ schema.title |> Naming.model_in_plural }}
+          {schema.title |> Naming.model_in_plural}
         </Col>
       </Explorer>
 
@@ -90,27 +90,27 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <ul class="list-disc m-4">
           <li>
             <Link label="Factory"
-                  to={{ Routes.podcast_path(@socket, :factory) }}
+                  to={Routes.podcast_path(@socket, :factory)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Orphans"
-                  to={{ Routes.podcast_path(@socket, :orphans) }}
+                  to={Routes.podcast_path(@socket, :orphans)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Retirement"
-                  to={{ Routes.podcast_path(@socket, :retirement) }}
+                  to={Routes.podcast_path(@socket, :retirement)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Stale"
-                  to={{ Routes.podcast_path(@socket, :stale) }}
+                  to={Routes.podcast_path(@socket, :stale)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Duplicates"
-                  to={{ Routes.podcast_path(@socket, :duplicates) }}
+                  to={Routes.podcast_path(@socket, :duplicates)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
@@ -119,7 +119,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <ul class="list-disc m-4">
           <li>
             <Link label="Remove duplicates"
-                  to={{ Routes.episode_path(@socket, :remove_duplicates) }}
+                  to={Routes.episode_path(@socket, :remove_duplicates)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
@@ -128,7 +128,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <ul class="list-disc m-4">
           <li>
             <Link label="Merge Candidates"
-                  to={{ Routes.persona_path(@socket, :merge_candidates) }}
+                  to={Routes.persona_path(@socket, :merge_candidates)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
@@ -137,12 +137,12 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <ul class="list-disc m-4">
           <li>
             <Link label="Merge Users"
-                  to={{ Routes.user_path(@socket, :merge) }}
+                  to={Routes.user_path(@socket, :merge)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Manifest Users"
-                  to={{ Routes.manifestation_path(@socket, :manifest) }}
+                  to={Routes.manifestation_path(@socket, :manifest)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
         </ul>
@@ -151,25 +151,25 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <ul class="list-disc m-4">
           <li>
             <Link label="Import 100"
-                  to={{ Routes.feed_backlog_path(@socket, :import_100) }}
+                  to={Routes.feed_backlog_path(@socket, :import_100)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Subscribe All"
-                  to={{ Routes.feed_backlog_path(@socket, :subscribe) }}
+                  to={Routes.feed_backlog_path(@socket, :subscribe)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Subscribe 50"
-                  to={{ Routes.feed_backlog_path(@socket, :subscribe50) }}
+                  to={Routes.feed_backlog_path(@socket, :subscribe50)}
                   class="text-link hover:text-link-dark underline"/>
           </li>
           <li>
             <Link label="Delete All (from Itunes user)"
-                  to={{ Routes.feed_backlog_path(@socket, :delete_all) }}
+                  to={Routes.feed_backlog_path(@socket, :delete_all)}
                   class="text-link hover:text-link-dark underline"
-                  opts={{ method: :delete,
-                          data: [confirm: "Are you sure?"] }} />
+                  opts={method: :delete,
+                          data: [confirm: "Are you sure?"]} />
           </li>
         </ul>
       </div>

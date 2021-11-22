@@ -91,42 +91,42 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   end
 
   def render(assigns) do
-    ~H"""
-    <div class="m-2" id={{ @id }}>
+    ~F"""
+    <div class="m-2" id={@id}>
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <div class="text-gray-dark whitespace-nowrap">
-            Edit <span class="font-semibold">{{ module_name(@model) }}</span>
+            Edit <span class="font-semibold">{module_name(@model)}</span>
           </div>
-          <h2 class="max-w-screen-lg w-full truncate">{{ Naming.title_from_record(@record) }}</h2>
+          <h2 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h2>
         </span>
         <span>
-          <LiveRedirect :if={{ Map.has_key?(@record, :id) && @record.id }}
-                        to={{ Naming.path %{socket: @socket,
+          <LiveRedirect :if={Map.has_key?(@record, :id) && @record.id}
+                        to={Naming.path %{socket: @socket,
                               model: @model,
                               method: :show,
                               path_helper: @path_helper,
-                              record: @record} }}
+                              record: @record}}
                         class="text-link hover:text-link-dark underline">
-            Show&nbsp;{{ module_name(@model) }}
+            Show&nbsp;{module_name(@model)}
           </LiveRedirect>
-          <LiveRedirect to={{ Naming.path %{socket: @socket,
+          <LiveRedirect to={Naming.path %{socket: @socket,
                                             model: @model,
                                             method: :index,
-                                            path_helper: @path_helper} }}
+                                            path_helper: @path_helper}}
                         class="text-link hover:text-link-dark underline">
-            {{ module_name(@model) }}&nbsp;List
+            {module_name(@model)}&nbsp;List
           </LiveRedirect> &nbsp;
         </span>
       </div>
 
-      <Form for={{ @changeset }}
-            opts={{ autocomplete: "off",
+      <Form for={@changeset}
+            opts={autocomplete: "off",
                     class: "mt-4",
                     phx_change: :validate,
                     phx_submit: :save,
-                    phx_target: "#" <> @id }}>
-        <Field :if={{ !@changeset.valid? }}
+                    phx_target: "#" <> @id}>
+        <Field :if={!@changeset.valid?}
                 name="error"
                 class="inline-block px-2 mb-2
                 text-grapefruit bg-grapefruit bg-opacity-20
@@ -137,37 +137,37 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
-            <NumberField :for={{ column <- ColumnsFilter.number_columns(assigns) }}
-                          name={{ column.field }}
-                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
+            <NumberField :for={column <- ColumnsFilter.number_columns(assigns)}
+                          name={column.field}
+                          redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
-            <DateTimeSelect :for={{ column <- ColumnsFilter.datetime_columns(assigns) }}
-                            name={{ column.field }}
-                            redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
+            <DateTimeSelect :for={column <- ColumnsFilter.datetime_columns(assigns)}
+                            name={column.field}
+                            redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
           <legend class="px-4 border border-gray rounded-lg bg-white">Boolean Fields</legend>
-            <CheckBoxField :for={{ column <- ColumnsFilter.boolean_columns(assigns) }}
-                          name={{ column.field }}
-                          label={{ column.field }}
-                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
+            <CheckBoxField :for={column <- ColumnsFilter.boolean_columns(assigns)}
+                          name={column.field}
+                          label={column.field}
+                          redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
         </div>
 
         <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
-            <TextField :for={{ column <- ColumnsFilter.string_columns(assigns) }}
-                       name={{ column.field }}
-                       redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
+            <TextField :for={column <- ColumnsFilter.string_columns(assigns)}
+                       name={column.field}
+                       redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
-            <TextAreaField :for={{ column <- ColumnsFilter.text_columns(assigns) }}
-                          name={{ column.field }}
-                          redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field) }} />
+            <TextAreaField :for={column <- ColumnsFilter.text_columns(assigns)}
+                          name={column.field}
+                          redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
         </div>
 

@@ -23,13 +23,13 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <IndexGrid id="index_table"
-               heading={{ "Listing records for " <> Naming.model_in_plural(@model) }}
-               model={{ @model }}
-               cols={{ @cols }}
-               buttons={{ [:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :search] }}/>
+               heading={"Listing records for " <> Naming.model_in_plural(@model)}
+               model={@model}
+               cols={@cols}
+               buttons={[:show, :edit, :delete, :new, :pagination,
+                           :number_of_records, :search]}/>
     """
   end
 end

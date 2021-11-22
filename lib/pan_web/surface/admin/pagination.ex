@@ -21,41 +21,41 @@ defmodule PanWeb.Surface.Admin.Pagination do
   end
 
   def render(assigns) do
-    ~H"""
-    <div class={{ "flex items-center justify-between", @class}}>
+    ~F"""
+    <div class={"flex items-center justify-between", @class}>
       <div class="flex items-center space-x-2">
-        <PaginationLink :if={{ @page > 1 }}
-                        page={{ @page - 1 }}
-                        per_page={{ @per_page}}
+        <PaginationLink :if={@page > 1}
+                        page={@page - 1}
+                        per_page={@per_page}
                         class="rounded-l"
-                        target={{ @target }} >
+                        target={@target} >
           Previous
         </PaginationLink>
-        <For each={{ i <- 1..@page }}>
-          <PaginationLink :if={{ i != @page }}
-                          page={{ i }}
-                          per_page={{ @per_page }}
-                          class={{ "rounded-l-lg": i==1 }}
-                          target={{ @target }} >
-            {{ i }}
+        {#for i <- 1..@page}
+          <PaginationLink :if={i != @page}
+                          page={i}
+                          per_page={@per_page}
+                          class={"rounded-l-lg": i==1}
+                          target={@target} >
+            {i}
           </PaginationLink>
-          <span :if={{ i == @page}}>
-            Page {{ i }} of {{ if @nr_of_pages > 0, do: @nr_of_pages, else: "?? " }}
+          <span :if={i == @page}>
+            Page {i} of {if @nr_of_pages > 0, do: @nr_of_pages, else: "?? "}
           </span>
-        </For>
-        <PaginationLink :if={{ @page < @nr_of_pages }}
-                        page={{ @page + 1 }}
-                        per_page={{ @per_page }}
+        {/for}
+        <PaginationLink :if={@page < @nr_of_pages}
+                        page={@page + 1}
+                        per_page={@per_page}
                         class="rounded-r"
-                        target={{ @target }} >
+                        target={@target} >
           Next
         </PaginationLink>
       </div>
 
       <div class="border-l border-gray px-4 py-1">
-        Records {{ (@page - 1) * @per_page + 1 }} to {{ min((@page * @per_page), @nr_of_filtered) }} of
-        {{ if @nr_of_filtered > 0, do: format(@nr_of_filtered), else: "??" }}
-        ({{ if @nr_of_unfiltered > 0, do: format(@nr_of_unfiltered), else: "??" }} unfiltered)
+        Records {(@page - 1) * @per_page + 1} to {min((@page * @per_page), @nr_of_filtered)} of
+        {if @nr_of_filtered > 0, do: format(@nr_of_filtered), else: "??"}
+        ({if @nr_of_unfiltered > 0, do: format(@nr_of_unfiltered), else: "??"} unfiltered)
       </div>
     </div>
     """

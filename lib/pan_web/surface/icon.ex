@@ -6,8 +6,8 @@ defmodule PanWeb.Surface.Icon do
   prop(spaced, :boolean, required: false, default: false)
 
   def render(assigns) do
-    ~H"""
-    {{ icon(@name, class: "h-5 w-5 inline align-text-bottom") }}<If condition={{ @spaced }}>&nbsp;</If>
+    ~F"""
+    {icon(@name, class: "h-5 w-5 inline align-text-bottom")}{#if @spaced}&nbsp;{/if}
     """
   end
 end

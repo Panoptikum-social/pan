@@ -7,15 +7,15 @@ defmodule PanWeb.Surface.Admin.TextField do
   prop(redact, :boolean, required: false, default: false)
 
   def render(assigns) do
-    ~H"""
-    <Form.Field name={{ @name }} class="my-2">
+    ~F"""
+    <Form.Field name={@name} class="my-2">
       <Form.Label class="italic"/>
-      <Form.TextInput :if={{ !@redact }}
+      <Form.TextInput :if={!@redact}
                       class="w-full px-2 py-0 rounded-none" />
-      <Form.TextInput :if={{ @redact }}
+      <Form.TextInput :if={@redact}
                       value="** redacted **"
                       class="w-full px-2 py-0 rounded-none"
-                      opts={{ disabled: true }} />
+                      opts={disabled: true} />
      <ErrorTag />
     </Form.Field>
     """

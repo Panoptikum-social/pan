@@ -8,12 +8,12 @@ defmodule PanWeb.Surface.EpisodeButton do
   prop(for, :map, required: false)
 
   def render(assigns) do
-    ~H"""
-    <LinkButton to={{ Routes.episode_frontend_path(@socket, :show, @id || @for.id) }}
+    ~F"""
+    <LinkButton to={Routes.episode_frontend_path(@socket, :show, @id || @for.id)}
                 class="bg-aqua text-white border-gray-dark
                        hover:bg-aqua-light hover:border-aqua"
                 icon="headphones-lineawesome-solid"
-                title={{ @title || @for.title }} />
+                title={@title || @for.title} />
     """
   end
 end

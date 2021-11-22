@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.ErrorTag do
   alias Surface.Components.Form
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <Form.ErrorTag class="inline-block px-2 mt-2
                           text-grapefruit bg-grapefruit bg-opacity-20
                           border border-dotted border-grapefruit" />

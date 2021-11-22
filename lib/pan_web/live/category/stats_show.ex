@@ -31,7 +31,7 @@ defmodule PanWeb.Live.Category.StatsShow do
   end
 
   def render(%{error: "not_found"} = assigns) do
-    ~H"""
+    ~F"""
     <div class="m-12">
       A category with this id could not be found
     </div>
@@ -39,8 +39,8 @@ defmodule PanWeb.Live.Category.StatsShow do
   end
 
   def render(assigns) do
-    ~H"""
-    <Panel :if={{ @category.parent && @category.parent.title == "👩 👨 Community" }}
+    ~F"""
+    <Panel :if={@category.parent && @category.parent.title == "👩 👨 Community"}
            purpose="episode"
            heading="Welcome to the Test Laboratory!"
            class="mb-4">
@@ -49,11 +49,11 @@ defmodule PanWeb.Live.Category.StatsShow do
         <p class="my-4">We are currently testing different  and additional views for community categories!<br/>
           Wanna give it a try?</p>
         <p class="my-4 leading-8">
-          <LinkButton to={{ category_frontend_path @socket, :latest_episodes, @category }}
+          <LinkButton to={category_frontend_path @socket, :latest_episodes, @category}
                       title="Latest episodes"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           gives you a timeline view starting with the most current episode within this category.<br/>
-          <LinkButton to={{ category_frontend_path @socket, :categorized, @category }}
+          <LinkButton to={category_frontend_path @socket, :categorized, @category}
                       title="Categorized"
                       class="bg-mint text-white hover:bg-mint-light" />&nbsp;
           sorts the podcasts within this categories by the other categories, they are listed in.<br/>
@@ -64,60 +64,60 @@ defmodule PanWeb.Live.Category.StatsShow do
 
     <Panel purpose="category">
       <PanelHeading>
-        <Link to={{ category_frontend_path(@socket, :index) }}
+        <Link to={category_frontend_path(@socket, :index)}
               class="hover:text-blue-400">
           <Icon name="folder-heroicons-outline" /> Panoptikum
         </Link> /
-        <If condition={{ @category.parent }}>
-          <Link to={{ category_frontend_path(@socket, :show, @category.parent) }}
+        {#if @category.parent}
+          <Link to={category_frontend_path(@socket, :show, @category.parent)}
                 class="hover:text-blue-400">
-            <Icon name="folder-heroicons-outline" /> {{ @category.parent.title }}
+            <Icon name="folder-heroicons-outline" /> {@category.parent.title}
           </Link> /
-        </If>
-        <Icon name="folder-open-heroicons-outline" /> {{ @category. title }}
+        {/if}
+        <Icon name="folder-open-heroicons-outline" /> {@category. title}
       </PanelHeading>
 
       <div aria-label="panel-body" class="p-4 divide-y-2 divide-gray-lighter">
-        <div :if={{ @category.children != [] }} class="flex flex-wrap">
-          <CategoryButton :for={{ subcategory <- @category.children }}
-                          for={{ subcategory }}
+        <div :if={@category.children != []} class="flex flex-wrap">
+          <CategoryButton :for={subcategory <- @category.children}
+                          for={subcategory}
                           class="mx-2" />
         </div>
 
         <div class="flex flex-wrap py-4">
-          <div :for={{ prototype <- @podcasts
+          <div :for={prototype <- @podcasts
                                     |> Enum.uniq_by(fn p -> p.language_name end)
-                                    |> Enum.sort_by(fn p -> p.language_name end) }}
+                                    |> Enum.sort_by(fn p -> p.language_name end)}
                 class="mx-2">
-            {{ prototype.language_emoji || "🏳️"}} &nbsp;
-            <Link opts={{ id: "lang#" <> language(prototype) }}
-                  to={{ "#" <> language(prototype) }}>
-              {{ language(prototype) }} {{ language(prototype) |> amount(@podcasts) }}
+            {prototype.language_emoji || "🏳️"} &nbsp;
+            <Link opts={id: "lang#" <> language(prototype)}
+                  to={"#" <> language(prototype)}>
+              {language(prototype)} {language(prototype) |> amount(@podcasts)}
             </Link>
           </div>
         </div>
 
-        <div :for={{ prototype <- @podcasts
+        <div :for={prototype <- @podcasts
                                   |> Enum.uniq_by(fn p -> p.language_name end)
-                                  |> Enum.sort_by(fn p -> p.language_name end) }}>
-          <h2 id={{ language(prototype) }}
+                                  |> Enum.sort_by(fn p -> p.language_name end)}>
+          <h2 id={language(prototype)}
               class="text-2xl mt-4">
-            {{ language(prototype) }} {{ language(prototype) |> amount(@podcasts) }}
+            {language(prototype)} {language(prototype) |> amount(@podcasts)}
           </h2>
           <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-            <PodcastButton :for={{ podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end) }}
-                            for={{ podcast }}
-                            truncate={{ true }}
+            <PodcastButton :for={podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end)}
+                            for={podcast}
+                            truncate={true}
                             class="m-2"/>
           </div>
         </div>
       </div>
 
-      <If condition={{ @current_user_id }}>
-        logged in with user_id {{ @current_user_id }}
+      {#if @current_user_id}
+        logged in with user_id {@current_user_id}
       <!-- #FIXME! like_or_unlike(@current_user.id, @category.id) --> &nbsp;
       <!-- #FIXME! follow_or_unfollow(@current_user.id, @category.id) -->
-      </If>
+      {/if}
 
     </Panel>
     """

@@ -29,27 +29,27 @@ defmodule PanWeb.Surface.Panel do
   end
 
   def render(assigns) do
-    ~H"""
-    <div aria-label="panel" class={{ "rounded-xl shadow", @class }}>
+    ~F"""
+    <div aria-label="panel" class={"rounded-xl shadow", @class}>
       <div aria-label="panel heading"
-           class={{ "p-3 rounded-t-xl", heading_color_classes(@purpose) }}>
-        <slot name="panel_heading" />
+           class={"p-3 rounded-t-xl", heading_color_classes(@purpose)}>
+        <#slot name="panel_heading" />
 
-        <If condition={{ !@target }}>
-          {{@heading}}
-        </If>
-        <Link :if={{ @target }}
-              to={{ @target }}
+        {#if !@target}
+          {@heading}
+        {/if}
+        <Link :if={@target}
+              to={@target}
               class="hover:text-gray-lighter"
-              label={{ @heading }} />
-        <Link :if={{ @target }}
-              to={{ @target }}
+              label={@heading} />
+        <Link :if={@target}
+              to={@target}
               class="float-right hover:text-gray-lighter"
-              label={{ @heading_right }} />
+              label={@heading_right} />
       </div>
 
       <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
-        <slot>No content defined!</slot>
+        <#slot>No content defined!</#slot>
       </div>
     </div>
     """

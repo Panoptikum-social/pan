@@ -9,19 +9,19 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
   prop(redact, :boolean, required: false, default: false)
 
   def render(assigns) do
-    ~H"""
-    <Form.Field name={{ @name }} class={{ "my-2 flex items-center", "justify-end": !@redact }}>
+    ~F"""
+    <Form.Field name={@name} class={"my-2 flex items-center", "justify-end": !@redact}>
       <Form.Label class="italic"/>
       <div class="ml-3 flex flex-col items-start">
-        <InputContext :if={{ !@redact }}
-                      assigns={{ assigns }}
-                      :let={{ form: form, field: field }}>
-          {{ datetime_select(form, field, builder: fn b -> render_builder(assigns, b) end) }}
+        <InputContext :if={!@redact}
+                      assigns={assigns}
+                      :let={form: form, field: field}>
+          {datetime_select(form, field, builder: fn b -> render_builder(assigns, b) end)}
         </InputContext>
-        <Form.TextInput :if={{ @redact }}
+        <Form.TextInput :if={@redact}
                         value="** redacted **"
                         class="w-32 px-2 py-0 rounded-none"
-                        opts={{ disabled: true }} />
+                        opts={disabled: true} />
         <ErrorTag/>
       </div>
     </Form.Field>
@@ -29,13 +29,13 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
   end
 
   def render_builder(assigns, b) do
-    ~H"""
+    ~F"""
     <div class="py-0 rounded-none">
-      📅 {{ b.(:day, [class: "w-16 px-2 py-0 rounded-none"]) }}
-          {{ b.(:month, [class: "w-32 px-2 py-0 rounded-none"]) }}
-          {{ b.(:year, [class: "w-20 px-2 py-0 rounded-none"]) }}
-      🕒 {{ b.(:hour, [class: "w-16 px-2 py-0 rounded-none"]) }} :
-          {{ b.(:minute, [class: "w-16 px-2 py-0 rounded-none"]) }}
+      📅 {b.(:day, [class: "w-16 px-2 py-0 rounded-none"])}
+          {b.(:month, [class: "w-32 px-2 py-0 rounded-none"])}
+          {b.(:year, [class: "w-20 px-2 py-0 rounded-none"])}
+      🕒 {b.(:hour, [class: "w-16 px-2 py-0 rounded-none"])} :
+          {b.(:minute, [class: "w-16 px-2 py-0 rounded-none"])}
     </div>
     """
   end

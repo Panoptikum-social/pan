@@ -32,9 +32,9 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
   end
 
   def render(assigns) do
-    ~H"""
-    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not }}
-         class={{ "text-very-gray-darker px-1 grid content-center",
+    ~F"""
+    <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not}
+         class={"text-very-gray-darker px-1 grid content-center",
                   @width,
                   "text-right whitespace-nowrap": (@type in [:integer, :id]),
                   "text-right whitespace-nowrap": (@type == :boolean),
@@ -42,19 +42,19 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
                   "text-left": (@type == :string),
                   "bg-gray-lighter": Integer.is_odd(@index) && !@dye,
                   "bg-white": Integer.is_even(@index) && !@dye,
-                  "bg-sunflower-lighter": @dye }}
+                  "bg-sunflower-lighter": @dye}
                  x-data="{ detailsOpen: false }">
       <div @click="detailsOpen = !detailsOpen
                    $nextTick(() => $refs.detailsCloseButton.focus())"
            class="truncate">
-        {{ present(@presenter, @record, @field, @type) }}
+        {present(@presenter, @record, @field, @type)}
       </div>
       <div x-show="detailsOpen"
            class="absolute inset-52 mx-auto items-center bg-gray-lightest
                   border border-gray p-4">
         <h1 class="text-2xl">Details</h1>
         <p class="mt-6">
-          {{ present(@presenter, @record, @field, @type)}}
+          {present(@presenter, @record, @field, @type)}
         </p>
         <button @click="detailsOpen = false"
                 class="absolute bottom-4 left-4 bg-info hover:bg-info-light text-white p-2 rounded mt-6
@@ -65,10 +65,10 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
       </div>
     </div>
 
-    <div :if={{ @model.__schema__(:redact_fields) |> Enum.member?(@field) }}
-    class={{ "bg-white text-very-gray-darker px-1 grid content-center text-center whitespace-nowrap",
+    <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field)}
+    class={"bg-white text-very-gray-darker px-1 grid content-center text-center whitespace-nowrap",
              @width,
-             "bg-gray-lighter": Integer.is_odd(@index) }}
+             "bg-gray-lighter": Integer.is_odd(@index)}
             x-data="{ detailsOpen: false }">
     ** redacted **
     </div>

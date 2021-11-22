@@ -38,25 +38,25 @@ defmodule PanWeb.Surface.TopList do
   defp add_rank([], {_rank, acc}), do: acc
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <table class="w-full table-fixed mt-2">
-      <tr :for={{ {rank, count, items} <- prepare_for_toplist(@items) }}
+      <tr :for={{rank, count, items} <- prepare_for_toplist(@items)}
           class="odd:bg-gray-lightest" >
         <td class="text-right py-2 w-10">
-          {{ rank }}.
+          {rank}.
         </td>
         <td class="px-4">
-          <For each={{ {id, title} <- items }}>
+          {#for {id, title} <- items}
             <p>
-              <PodcastButton :if={{ @purpose == "podcast" }}
-                              id={{ id }}
-                              title={{ title}}
-                              truncate={{ true }} />
+              <PodcastButton :if={@purpose == "podcast"}
+                              id={id}
+                              title={title}
+                              truncate={true} />
             </p>
-          </For>
+          {/for}
         </td>
         <td class="text-right py-2 w-20">
-          {{ count }} <Icon name={{ @icon }} />&nbsp;
+          {count} <Icon name={@icon} />&nbsp;
         </td>
       </tr>
     </table>

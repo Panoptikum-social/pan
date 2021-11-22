@@ -8,15 +8,15 @@ defmodule PanWeb.Surface.Admin.CheckBoxField do
   prop(redact, :boolean, required: false, default: false)
 
   def render(assigns) do
-    ~H"""
-    <Form.Field name={{ @name }}
+    ~F"""
+    <Form.Field name={@name}
                class="my-2 flex items-center">
-      <Form.Checkbox :if={{ !@redact }} />
-      <div :if={{ @redact }}>**</div>
+      <Form.Checkbox :if={!@redact} />
+      <div :if={@redact}>**</div>
       <Form.Label class="italic pl-2">
-        {{ @label }}
+        {@label}
       </Form.Label>
-      <div :if={{ @redact }} class="pl-2"> (redacted)</div>
+      <div :if={@redact} class="pl-2"> (redacted)</div>
       <ErrorTag />
     </Form.Field>
     """

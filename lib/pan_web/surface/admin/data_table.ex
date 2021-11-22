@@ -68,79 +68,79 @@ defmodule PanWeb.Surface.Admin.DataTable do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={{ "grid-template-columns: 6rem " <> (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";" }}>
+         style={"grid-template-columns: 6rem " <> (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";"}>
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
-         <span :if={{ :search in @buttons }}>Search Mode</span>
+         <span :if={:search in @buttons}>Search Mode</span>
       </div>
-      <div :for={{ column <- @columns }}
+      <div :for={column <- @columns}
            class="bg-white italic grid place-content-center text-sm text-center">
-      <SortLink sort_by={{ @sort_by }}
-                field={{ column.field }}
-                sort_order={{ @sort_order }}
-                target={{ "#" <> @target }}>
-        {{ column.label }}
+      <SortLink sort_by={@sort_by}
+                field={column.field}
+                sort_order={@sort_order}
+                target={"#" <> @target}>
+        {column.label}
       </SortLink>
       </div>
 
-      <div :if={{ :search in @buttons }}
+      <div :if={:search in @buttons}
            class="bg-gray-lighter text-center p-1">
         <Link to="#"
-              click={{"cycle_search_mode", target: "#" <> @target }}
-              label={{ @search_mode |> Atom.to_string |> String.replace("_", " ") }}
+              click={"cycle_search_mode", target: "#" <> @target}
+              label={@search_mode |> Atom.to_string |> String.replace("_", " ")}
               class="text-link hover:text-link-dark underline" />
       </div>
 
-      <div :if={{ :search in @buttons }}
-           :for={{ column <- @columns }}
-           class={{ "bg-gray-lighter p-1",
-                    "text-right": column.type == :integer}}>
-        <Form :if={{ column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not }}
-              for={{ :search }}
-              change={{"search", target: "#" <> @target }}
-              opts={{ autocomplete: "off" }}>
-          <TextInput field={{ column.field }}
-                    value={{ @search_options[column.field] }}
-                    class={{ "p-0.5 w-full"}}
-                    opts={{ autofocus: "autofocus",
+      <div :if={:search in @buttons}
+           :for={column <- @columns}
+           class={"bg-gray-lighter p-1",
+                    "text-right": column.type == :integer}>
+        <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
+              for={:search}
+              change={"search", target: "#" <> @target}
+              opts={autocomplete: "off"}>
+          <TextInput field={column.field}
+                    value={@search_options[column.field]}
+                    class={"p-0.5 w-full"}
+                    opts={autofocus: "autofocus",
                             autocomplete: "off",
-                            "phx-debounce": 300 }} />
+                            "phx-debounce": 300} />
         </Form>
       </div>
 
-      <For each={{ {record, index} <- Enum.with_index(@records) }}>
-        <div class={{ "text-center",
+      {#for {record, index} <- Enum.with_index(@records)}
+        <div class={"text-center",
                       "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
                       "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
-                      "bg-sunflower-lighter": dyed?(record, assigns) }}>
-          <input :if={{ Map.has_key?(record, :id) }}
+                      "bg-sunflower-lighter": dyed?(record, assigns)}>
+          <input :if={Map.has_key?(record, :id)}
                  type="checkbox"
                  class="my-1.5"
-                 :attrs={{ checked: selected?(record, @selected_records) }}
+                 :attrs={checked: selected?(record, @selected_records)}
                  phx-click="select"
-                 phx-value-id={{ record.id }}
-                 phx-target={{"#" <> @target }} />
+                 phx-value-id={record.id}
+                 phx-target={"#" <> @target} />
 
-          <input :if={{ length(@primary_key) == 2 }}
+          <input :if={length(@primary_key) == 2}
                  type="checkbox"
                  class="my-1.5"
-                 :attrs={{ checked: selected?(record, @selected_records) }}
+                 :attrs={checked: selected?(record, @selected_records)}
                  phx-click="select"
-                 phx-value-one={{ Map.get(record, hd(@primary_key)) }}
-                 phx-value-two={{ Map.get(record, hd(tl(@primary_key))) }}
-                 phx-target={{"#" <> @target }} />
+                 phx-value-one={Map.get(record, hd(@primary_key))}
+                 phx-value-two={Map.get(record, hd(tl(@primary_key)))}
+                 phx-target={"#" <> @target} />
         </div>
 
-        <GridPresenter :for={{ column <- @columns }}
-                        presenter={{ column[:presenter]}}
-                        record={{ record }}
-                        field={{ column.field }}
-                        type={{ column.type }}
-                        index={{ index }}
-                        model={{ @model }}
-                        dye={{ dyed?(record, assigns) }}/>
-      </For>
+        <GridPresenter :for={column <- @columns}
+                        presenter={column[:presenter]}
+                        record={record}
+                        field={column.field}
+                        type={column.type}
+                        index={index}
+                        model={@model}
+                        dye={dyed?(record, assigns)}/>
+      {/for}
     </div>
     """
   end

@@ -26,11 +26,11 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
   end
 
   def render(assigns) do
-    ~H"""
-    <RecordForm id={{ "record_form_" <> @resource <> "_" <> Integer.to_string(@record.id) }}
-                record={{ @record }}
-                model={{ @model }}
-                cols={{ @cols }} />
+    ~F"""
+    <RecordForm id={"record_form_" <> @resource <> "_" <> Integer.to_string(@record.id)}
+                record={@record}
+                model={@model}
+                cols={@cols} />
     """
   end
 end

@@ -11,28 +11,28 @@ defmodule PanWeb.Live.User.New do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="max-w-lg mx-auto">
       <h1 class="text-3xl">Sign Up</h1>
 
-      <Form action={{ user_frontend_path(@socket, :create) }}
-            for={{ @changeset }}
-            opts={{ autocomplete: "off" }}>
+      <Form action={user_frontend_path(@socket, :create)}
+            for={@changeset}
+            opts={autocomplete: "off"}>
 
-        <Field :if={{ @changeset.action }}
+        <Field :if={@changeset.action}
                name="error"
                class="alert alert-danger">
           An error occured. Please check the errors below!
         </Field>
 
-        <Field :if={{ {"has already been taken", []} == @changeset.errors[:email] }}
+        <Field :if={{"has already been taken", []} == @changeset.errors[:email]}
                name="welcome_back"
                class="alert alert-warning alert-dismissable">
           <h4>Welcome back!</h4>
 
           <p>There is already a user account with this email address.<br/>
             Please
-            <Link to={{ user_path(@socket, :forgot_password) }}
+            <Link to={user_path(@socket, :forgot_password)}
                   class="alert-link"
                   label="Request a login link" /> via email to login to your existing account and
             reset your password.
@@ -51,8 +51,8 @@ defmodule PanWeb.Live.User.New do
                  If you subtract two from 44, you get...
           </Label>
           <NumberInput class="w-full"
-                       opts={{ placeholder: "Are you a human? ;-)" }} />
-          <ErrorTag field={{ :bot_check }} />
+                       opts={placeholder: "Are you a human? ;-)"} />
+          <ErrorTag field={:bot_check} />
         </Field>
 
         <Field name="cookie_warning" class="text-gray-darker">

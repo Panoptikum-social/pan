@@ -7,17 +7,17 @@ defmodule PanWeb.Live.Session.New do
   import PanWeb.Router.Helpers
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="mx-auto max-w-lg mt-12">
       <h1 class="text-3xl">Login</h1>
 
       <Form action="/sessions"
-            for={{ :session }}
-            opts={{ autocomplete: "off" }}>
+            for={:session}
+            opts={autocomplete: "off"}>
 
         <Field name="username"
                class="my-6">
-          <Label field={{ :username_or_email}}
+          <Label field={:username_or_email}
                   class="block font-medium text-gray-darker"/>
           <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
         </Field>
@@ -36,13 +36,13 @@ defmodule PanWeb.Live.Session.New do
 
       <ul class="list-disc mt-4 ml-8">
         <li>Forgot your password? -
-          <Link to={{ user_path(@socket, :forgot_password) }}
+          <Link to={user_path(@socket, :forgot_password)}
                 class="text-link hover:text-link-dark"
                 label="Get an email with a login link" />
         </li>
         <li>
           No account yet? -
-          <Link to={{ user_frontend_path(@socket, :new) }}
+          <Link to={user_frontend_path(@socket, :new)}
                 class="text-link hover:text-link-dark"
                 label="Sign up" />
         </li>

@@ -9,26 +9,26 @@ defmodule PanWeb.Surface.Admin.DataBlock do
   prop(model, :module, required: true)
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="mt-4 grid"
          style="grid-template-columns: max-content 1fr;">
-      <For each={{ {column, index} <- @columns |> Enum.with_index }}>
-        <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
+      {#for {column, index} <- @columns |> Enum.with_index}
+        <div class={"px-2 py-0.5 text-gray-darker italic text-right",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0 }}>
-          {{ Naming.title_from_field(column.field) }}
+                      "border-t-2 border-gray-lighter": index > 0}>
+          {Naming.title_from_field(column.field)}
         </div>
-        <div class={{ "w-full pl-4 pr-2 py-0.5",
+        <div class={"w-full pl-4 pr-2 py-0.5",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0 }}>
-          <ShowPresenter record={{ @record }}
-                         field={{ column.field }}
-                         type={{ column.type }}
-                         redact={{ @model.__schema__(:redact_fields) |> Enum.member?(column.field)}} />
+                      "border-t-2 border-gray-lighter": index > 0}>
+          <ShowPresenter record={@record}
+                         field={column.field}
+                         type={column.type}
+                         redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
         </div>
-      </For>
+      {/for}
     </div>
     """
   end

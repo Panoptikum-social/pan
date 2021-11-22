@@ -16,11 +16,11 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
   end
 
   def render(assigns) do
-    ~H"""
-    <RecordCard id={{ "record_card_" <> @resource <> "_" <> Integer.to_string(@record.id) }}
-                record={{ @record }}
-                model={{ @model }}
-                cols={{ @cols }} />
+    ~F"""
+    <RecordCard id={"record_card_" <> @resource <> "_" <> Integer.to_string(@record.id)}
+                record={@record}
+                model={@model}
+                cols={@cols} />
     """
   end
 end

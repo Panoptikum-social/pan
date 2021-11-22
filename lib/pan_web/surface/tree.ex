@@ -4,8 +4,8 @@ defmodule PanWeb.Surface.Tree do
   prop(for, :any, required: true)
 
   def render(assigns) do
-    ~H"""
-    {{ recurse_tree(@for) }}
+    ~F"""
+    {recurse_tree(@for)}
     """
   end
 

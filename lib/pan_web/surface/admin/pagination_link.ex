@@ -10,14 +10,14 @@ defmodule PanWeb.Surface.Admin.PaginationLink do
   slot(default, required: true)
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <button href="#"
-            class={{ "border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
-                      @class }}
-            :on-click={{ "paginate", target: @target}}
-            phx-value-page={{ @page }}
-            phx-value-per-page={{ @per_page }}>
-      <slot/>
+            class={"border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
+                      @class}
+            :on-click={"paginate", target: @target}
+            phx-value-page={@page}
+            phx-value-per-page={@per_page}>
+      <#slot/>
     </button>
     """
   end

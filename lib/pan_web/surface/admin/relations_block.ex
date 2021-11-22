@@ -14,25 +14,25 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <div class="mt-4 grid"
          style="grid-template-columns: max-content 1fr;">
-      <For each={{ {association, index} <- @model.__schema__(:associations) |> Enum.with_index }}>
-        <div class={{ "px-2 py-0.5 text-gray-darker italic text-right",
+      {#for {association, index} <- @model.__schema__(:associations) |> Enum.with_index}
+        <div class={"px-2 py-0.5 text-gray-darker italic text-right",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0 }}>
-          {{ type(@model, association) }}
+                      "border-t-2 border-gray-lighter": index > 0}>
+          {type(@model, association)}
         </div>
-        <div class={{ "w-full pl-4 pr-2 py-0.5",
+        <div class={"w-full pl-4 pr-2 py-0.5",
                       "bg-white": Integer.is_even(index),
                       "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0 }}>
-          <AssociationLink for={{ @model.__schema__(:association, association) }}
-                           record={{ @record }} />
-          <div :if={{ !@record }}>no record</div>
+                      "border-t-2 border-gray-lighter": index > 0}>
+          <AssociationLink for={@model.__schema__(:association, association)}
+                           record={@record} />
+          <div :if={!@record}>no record</div>
         </div>
-      </For>
+      {/for}
     </div>
     """
   end

@@ -14,18 +14,18 @@ defmodule PanWeb.Surface.Admin.SortLink do
   defp toggle_sort_order(:desc), do: :asc
 
   def render(assigns) do
-    ~H"""
+    ~F"""
     <a href="#"
-      :on-click={{ "sort", target: @target }}
-      phx-value-sort-by={{ @field }}
-      phx-value-sort-order={{ toggle_sort_order(@sort_order) }}>
-      <If condition= {{ @sort_by == @field }}>
-        <Icon :if={{ @sort_order == :asc }}
+      :on-click={"sort", target: @target}
+      phx-value-sort-by={@field}
+      phx-value-sort-order={toggle_sort_order(@sort_order)}>
+      {#if @sort_by == @field}
+        <Icon :if={@sort_order == :asc}
               name="sort-amount-down-alt-solid" />
-        <Icon :if={{ @sort_order == :desc }}
+        <Icon :if={@sort_order == :desc}
               name="sort-amount-down-solid" />
-      </If>
-      <slot/>
+      {/if}
+      <#slot/>
     </a>
     """
   end
