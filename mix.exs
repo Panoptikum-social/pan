@@ -37,31 +37,32 @@ defmodule Pan.MixProject do
       {:sobelow, "~> 0.8", only: :dev},
       # web framework
       # TODO: take this back, once scrivener is removed
-      {:phoenix, "~> 1.5.8", override: true},
+      {:phoenix, "~> 1.6.0", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
       # phoenix support for ecto
-      {:phoenix_ecto, "~> 4.1"},
+      {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.7.1"},
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.15.0"},
+      {:phoenix_live_view, "~> 0.16.0"},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
-      {:phoenix_html, "~> 2.11"},
+      # TODO: take this back, once scrivener is removed
+      {:phoenix_html, "~> 3.1", override: true},
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # live metrics dashboard
-      {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_dashboard, "~> 0.5.0"},
       # Component library
-      {:surface, "~> 0.4"},
+      {:surface, "~> 0.6.1"},
       # telemetry_metrics
-      {:telemetry_metrics, "~> 0.4"},
+      {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
-      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_poller, "~> 0.5"},
       # i18n library
       {:gettext, "~> 0.11"},
       # Json generation
