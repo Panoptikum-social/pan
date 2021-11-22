@@ -3,6 +3,7 @@ defmodule PanWeb.Surface.CategoryButton do
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
   import PanWeb.ViewHelpers
+  alias PanWeb.Endpoint
 
   prop(id, :integer, required: false)
   prop(title, :string, required: false)
@@ -14,7 +15,7 @@ defmodule PanWeb.Surface.CategoryButton do
 
   def render(assigns) do
     ~F"""
-    <LinkButton to={Routes.category_frontend_path(@socket, :show, @id || @for.id)}
+    <LinkButton to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
                 class={color_class_cycle(@index_on_page), @class}
                 large={@large}
                 icon="folder-heroicons-outline"

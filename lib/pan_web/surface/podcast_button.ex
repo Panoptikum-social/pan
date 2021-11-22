@@ -2,6 +2,7 @@ defmodule PanWeb.Surface.PodcastButton do
   use Surface.Component
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
+  alias PanWeb.Endpoint
 
   prop(id, :integer, required: false)
   prop(title, :string, required: false)
@@ -11,7 +12,7 @@ defmodule PanWeb.Surface.PodcastButton do
 
   def render(assigns) do
     ~F"""
-    <LinkButton to={Routes.podcast_frontend_path(@socket, :show, @id || @for.id)}
+    <LinkButton to={Routes.podcast_frontend_path(Endpoint, :show, @id || @for.id)}
                 class={"bg-white hover:bg-gray-lighter text-black border-gray", @class}
                 icon="podcast-lineawesome-solid"
                 title={@title || @for.title}

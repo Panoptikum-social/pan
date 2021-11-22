@@ -402,7 +402,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             </button>
 
             <LiveRedirect :if={:new in @buttons}
-                          to={Naming.path %{socket: @socket, model: @model, method: :new, path_helper: @path_helper}}
+                          to={Naming.path %{model: @model, method: :new, path_helper: @path_helper}}
                           label="🆕 New"
                           class="border border-gray bg-white hover:bg-gray-lightest py-0.5
                                 lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />

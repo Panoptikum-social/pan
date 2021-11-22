@@ -5,6 +5,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   alias PanWeb.Surface.Admin.RelationsBlock
   alias Surface.Components.LiveRedirect
   alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Endpoint
   alias PanWeb.Router.Helpers, as: Routes
 
   prop(record, :map, required: true)
@@ -38,7 +39,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h2 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h2>
         </span>
         <span>
-           <LiveRedirect to={Naming.path %{socket: @socket,
+           <LiveRedirect to={Naming.path %{
                                              model: @model,
                                              method: :index,
                                              path_helper: @path_helper}}
@@ -46,8 +47,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
              {Naming.module_without_namespace(@model)}&nbsp;List
           </LiveRedirect> &nbsp;
           <LiveRedirect :if={Map.has_key?(@record, :id)}
-                        to={Naming.path %{socket: @socket,
-                                            model: @model,
+                        to={Naming.path %{  model: @model,
                                             method: :edit,
                                             path_helper: @path_helper,
                                             record: @record}}
@@ -57,7 +57,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
 
           <LiveRedirect :if={!Map.has_key?(@record, :id)}
                         to={Routes.databrowser_path(
-                          @socket,
+                          Endpoint,
                           :edit_mediating,
                           Phoenix.Naming.resource_name(@model),
                           hd(@primary_key) |> Atom.to_string,

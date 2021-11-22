@@ -99,15 +99,14 @@ defmodule PanWeb.Surface.Admin.Grid do
                     "bg-gray-lighter": Integer.is_odd(index) && !to_be_dyed?(record, assigns),
                     "bg-white": Integer.is_even(index) && !to_be_dyed?(record, assigns),
                     "bg-sunflower-lighter": to_be_dyed?(record, assigns)}>
-        <LiveRedirect to={Naming.path %{socket: @socket,
+        <LiveRedirect to={Naming.path %{
                                         model: @model,
                                         path_helper: @path_helper,
                                         method: :show,
                                         record: record}}
                       label="🔍" />
 
-        <LiveRedirect to={Naming.path %{socket: @socket,
-                                          model: @model,
+        <LiveRedirect to={Naming.path %{  model: @model,
                                           path_helper: @path_helper,
                                           method: :edit,
                                           record: record}}

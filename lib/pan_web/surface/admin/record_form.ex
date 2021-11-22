@@ -4,6 +4,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
   alias Surface.Components.Form.Field
   alias PanWeb.Surface.Submit
+  alias PanWeb.Endpoint
   alias Pan.Repo
 
   alias PanWeb.Surface.Admin.{
@@ -32,6 +33,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         columns: columns,
         changeset: assigns.model.changeset(assigns.record) |> Map.put(:action, :insert)
       )
+
     {:ok, socket}
   end
 
@@ -39,7 +41,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
     model
     |> to_string
     |> String.split(".")
-    |> List.last
+    |> List.last()
   end
 
   def updated_or_created(:loaded), do: " updated"
@@ -63,10 +65,12 @@ defmodule PanWeb.Surface.Admin.RecordForm do
     record_state = socket.assigns.record.__meta__.state
     record = socket.assigns.record
     changeset = model.changeset(record, params[resource])
-    response = case record_state do
-      :loaded -> Repo.update(changeset)
-      :built -> Repo.insert(changeset)
-    end
+
+    response =
+      case record_state do
+        :loaded -> Repo.update(changeset)
+        :built -> Repo.insert(changeset)
+      end
 
     case response do
       {:ok, _} ->
@@ -74,10 +78,13 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           self(),
           {:redirect,
            %{
-             path: Naming.path(%{socket: socket,
-                                 model: model,
-                                 method: :index,
-                                 path_helper: path_helper}),
+             path:
+               Naming.path(%{
+                 socket: socket,
+                 model: model,
+                 method: :index,
+                 path_helper: path_helper
+               }),
              flash_type: :info,
              message: to_string(model) <> updated_or_created(record_state)
            }}
@@ -102,7 +109,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         </span>
         <span>
           <LiveRedirect :if={Map.has_key?(@record, :id) && @record.id}
-                        to={Naming.path %{socket: @socket,
+                        to={Naming.path %{socket: Endpoint,
                               model: @model,
                               method: :show,
                               path_helper: @path_helper,
@@ -110,8 +117,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                         class="text-link hover:text-link-dark underline">
             Show&nbsp;{module_name(@model)}
           </LiveRedirect>
-          <LiveRedirect to={Naming.path %{socket: @socket,
-                                            model: @model,
+          <LiveRedirect to={Naming.path %{model: @model,
                                             method: :index,
                                             path_helper: @path_helper}}
                         class="text-link hover:text-link-dark underline">

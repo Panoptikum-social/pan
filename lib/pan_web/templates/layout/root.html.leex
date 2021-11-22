@@ -32,11 +32,11 @@
 
     <script>window.userToken = "<%= assigns[:user_token] %>";
             window.currentUserID = "<%= if @current_user, do: @current_user.id %>"</script>
-    <%= render_existing @view_module, "scripts.html", assigns %>
+    <%= render_existing view_module(@conn), "scripts.html", assigns %>
   </head>
 
   <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-        data-js-view-name="<%= js_view_name(@conn, @view_template) %>" >
+        data-js-view-name="<%= js_view_name(@conn, view_template(@conn)) %>" >
     <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
         class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
         :class="{'lg:p-1': !navbarOpen}">

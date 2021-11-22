@@ -1,5 +1,6 @@
 defmodule PanWeb.Surface.Admin.Naming do
   alias PanWeb.Router.Helpers, as: Routes
+  alias PanWeb.Endpoint
 
   def model_from_resource(resource) do
     module_string =
@@ -100,20 +101,20 @@ defmodule PanWeb.Surface.Admin.Naming do
     end
   end
 
-  def path(%{socket: socket, model: model, method: method, path_helper: nil, record: record}) do
-    Routes.databrowser_path(socket, method, Phoenix.Naming.resource_name(model), record.id)
+  def path(%{model: model, method: method, path_helper: nil, record: record}) do
+    Routes.databrowser_path(Endpoint, method, Phoenix.Naming.resource_name(model), record.id)
   end
 
-  def path(%{socket: socket, model: _, method: method, path_helper: path_helper, record: record}) do
-    Function.capture(Routes, path_helper, 3).(socket, method, record.id)
+  def path(%{model: _, method: method, path_helper: path_helper, record: record}) do
+    Function.capture(Routes, path_helper, 3).(Endpoint, method, record.id)
   end
 
-  def path(%{socket: socket, model: model, method: method, path_helper: nil}) do
-    Routes.databrowser_path(socket, method, Phoenix.Naming.resource_name(model))
+  def path(%{model: model, method: method, path_helper: nil}) do
+    Routes.databrowser_path(Endpoint, method, Phoenix.Naming.resource_name(model))
   end
 
-  def path(%{socket: socket, model: _, method: method, path_helper: path_helper}) do
-    Function.capture(Routes, path_helper, 2).(socket, method)
+  def path(%{model: _, method: method, path_helper: path_helper}) do
+    Function.capture(Routes, path_helper, 2).(Endpoint, method)
   end
 
   def title_from_record(record) do
