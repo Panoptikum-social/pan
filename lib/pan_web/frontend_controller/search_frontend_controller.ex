@@ -3,7 +3,7 @@ defmodule PanWeb.SearchFrontendController do
   require Logger
 
   def search(conn, %{"index" => index, "page" => page, "term" => term}) do
-    page = String.to_integer(page) || 1
+    page = String.to_integer(page || "1")
     limit = 10
     offset = (page - 1) * limit
     hits = Pan.Search.query(index: index, term: term, limit: limit, offset: offset)

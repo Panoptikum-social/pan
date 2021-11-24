@@ -1,7 +1,8 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{Category, Feed, Podcast}
+  alias PanWeb.{AlternateFeed, Category, Chapter, Enclosure, Feed, Gig, Image, Like, Podcast, Recommendation}
+  alias Pan.Search
   require Logger
 
   plug(:scrub_params, "podcast" when action in [:create, :update])
@@ -156,6 +157,8 @@ defmodule PanWeb.PodcastController do
         File.rm(image.path)
         Repo.delete!(image)
       end
+
+      true
     end
 
     for feed <- podcast.feeds do
