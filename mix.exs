@@ -36,23 +36,25 @@ defmodule Pan.MixProject do
       # security-focused static analysis tool
       {:sobelow, "~> 0.8", only: :dev},
       # web framework
-      # TODO: take this back, once scrivener is removed
+      # TODO: remove override: true, once scrivener is removed
       {:phoenix, "~> 1.6.0", override: true},
       # PubSub messaging
       {:phoenix_pubsub, "~> 2.0"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
+      # TODO: remove the explicit ecto dependency, once scrivener is removed
+      {:ecto, "~> 3.7.1", override: true},
       # ecto sql adapter
       {:ecto_sql, "~> 3.7.1"},
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.16.0"},
+      {:phoenix_live_view, "~> 0.16.0", override: true},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
-      # TODO: take this back, once scrivener is removed
-      {:phoenix_html, "~> 3.1", override: true},
+      # TODO: remove override: true, once scrivener is removed
+      {:phoenix_html, "~> 3.0", override: true},
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # live metrics dashboard
@@ -91,7 +93,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # pagination
-      {:scrivener_ecto, "~> 2.3"},
+      {:scrivener_ecto, "~> 2.7"},
       # pagination view helper
       {:scrivener_html, "~> 1.7"},
       # mailing smtp adapter,
