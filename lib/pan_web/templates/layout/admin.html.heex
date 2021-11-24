@@ -1,0 +1,15 @@
+<main role="main"
+      class="bg-gray-lightest mb-8 min-h-screen text-black">
+  <p x-data="{}"
+     x-show={!is_nil(get_flash(@conn, :info))}
+     class="alert alert-info alert-left toast" role="alert">
+    <%= get_flash(@conn, :info) %>
+  </p>
+  <p x-data="{}"
+     x-show={!is_nil(get_flash(@conn, :error))}
+     class="alert alert-danger alert-left toast" role="alert">
+    <%= get_flash(@conn, :error) %>
+  </p>
+
+  <%= @inner_content %>
+</main>

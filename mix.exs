@@ -49,7 +49,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.16.0", override: true},
+      {:phoenix_live_view, "~> 0.16.4", override: true},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer

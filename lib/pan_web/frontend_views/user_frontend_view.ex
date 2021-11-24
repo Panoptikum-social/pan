@@ -82,7 +82,7 @@ defmodule PanWeb.UserFrontendView do
   end
 
   def podcast_button(conn, podcast) do
-    link([icon("podcast"), " ", podcast.title],
+    link([icon("podcast-lineawesome-solid"), " ", podcast.title],
       to: podcast_frontend_path(conn, :show, podcast),
       class: "btn btn-default btn-xs",
       style: "color: #000"

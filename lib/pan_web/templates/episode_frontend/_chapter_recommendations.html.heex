@@ -1,0 +1,33 @@
+<%= if @chapter.recommendations != [] do %>
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      Recommendations  <span class="pull-right"><%= complain_link() %></span>
+    </div>
+    <ul class="list-group">
+      <%= for recommendation <- @chapter.recommendations do %>
+        <li class="list-group-item" id={"chapter-" <> @chapter.id}>
+          <%= if @current_user && @current_user.id == recommendation.user_id do %>
+            <% text = "👍 " <> @chapter.title <> "%0A💬 " <> truncate_string(recommendation.comment, 220) <> "%0A🔊 " %>
+            <% url = URI.encode_www_form(episode_frontend_url(@conn, :show, @episode.id)) %>
+            <%= link "",  to: "https://twitter.com/intent/tweet?text=" <> text <>
+                              "&url=" <> url <> "%23chapter-#{@chapter.id}",
+                          class: "social-button twitter-button",
+                          title: "Tweet it" %>
+            <%= link "",  to: "https://www.facebook.com/sharer/sharer.php?u=" <> url  <>
+                              "%23chapter-#{@chapter.id}",
+                          class: "social-button facebook-button",
+                          title: "Share on facebook" %>
+            <%= link "",  to: "mailto:?subject=" <> text <> "&body=" <> url <>
+                              "%23chapter-#{@chapter.id}",
+                          class: "social-button email-button",
+                          title: "Send an E-Mail" %>
+            <br/>
+          <% end %>
+
+          <b><%= recommendation.user.name %>:</b> <%= recommendation.comment %>
+          <span class="pull-right"><%= Timex.format!(recommendation.inserted_at, "{ISOdate} {h24}:{m}") %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

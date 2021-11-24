@@ -1,0 +1,26 @@
+<table class="top-list table table-striped" style="margin: 0;">
+  <tbody>
+    <%= for {rank, count, podcasts} <- prepare_for_toplist(@podcasts) do %>
+      <tr>
+        <th scope="row">
+          <%= rank %>.
+        </th>
+
+        <td class="podcasts" style="line-height: 200%;">
+          <%= for {id, title} <- podcasts do %>
+            <%= link [icon("podcast-lineawesome-solid"), " ", truncate_string(title, 50)],
+                  to: podcast_frontend_path(@conn, :show, id),
+                  class: "btn btn-default btn-xs",
+                  style: "color: #000;" %>
+          <% end %>
+        </td>
+
+        <td>
+          <span class="pull-right">
+            <nobr><%= count %> <%= icon(@icon) %></nobr>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
