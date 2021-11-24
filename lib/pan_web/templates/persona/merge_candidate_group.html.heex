@@ -82,8 +82,7 @@
         var i = 0;
         var row_copy = $(this).clone().removeAttr("id").empty();
         $(this).children().each(function(){
-          // FIXME: Rename file to heex again (and fix the 'expected tag name'-issue)
-          if (newrows.length <= i) {
+          if ($(newrows.length) <= i) {
             newrows.push($(row_copy[0].outerHTML));
           }
           update_id(this)
