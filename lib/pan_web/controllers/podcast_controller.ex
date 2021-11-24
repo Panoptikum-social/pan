@@ -157,8 +157,6 @@ defmodule PanWeb.PodcastController do
         File.rm(image.path)
         Repo.delete!(image)
       end
-
-      true
     end
 
     for feed <- podcast.feeds do

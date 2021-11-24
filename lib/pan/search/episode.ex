@@ -65,7 +65,7 @@ defmodule Pan.Search.Episode do
           podcast_id: (episode.podcast && episode.podcast.id) || 0,
           language_ids: (episode.podcast && Enum.map(episode.podcast.languages, & &1.id)) || [],
           category_ids: (episode.podcast && Enum.map(episode.podcast.categories, & &1.id)) || [],
-          gig_ids: Enum.map(episode.gigs, & &1.id) || [],
+          gig_ids: (episode.gigs && Enum.map(episode.gigs, & &1.id)) || [],
           gigs:
             Enum.map(
               episode.gigs,
