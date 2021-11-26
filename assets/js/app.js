@@ -1,5 +1,5 @@
 // Import the CSS so that webpack will load it and use the MiniCssExtractPlugin.
-import "../css/app.css"
+// import "../css/app.css"
 
 // Configure module entry points in "webpack.config.js".
 // Import deps with the dep name or local files with a relative path, for example:

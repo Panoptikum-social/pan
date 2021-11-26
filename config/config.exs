@@ -24,6 +24,14 @@ config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
+config :esbuild,
+  version: "0.13.10",
+  default: [
+    args: ~w(js/app.js --bundle --target=es2016 --outdir=../priv/static/assets),
+    cd: Path.expand("../assets", __DIR__),
+    env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
+  ]
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 config :pid_file, file: "./pan.pid"

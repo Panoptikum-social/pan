@@ -75,6 +75,8 @@ defmodule Pan.MixProject do
       {:bcrypt_elixir, "~> 2.1"},
       # color calculations
       {:tint, "~> 1.1"},
+      # Mix task invoking esbuild
+      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
 
       ### imported from old app from here on
 
@@ -128,7 +130,7 @@ defmodule Pan.MixProject do
       # QR Code generation
       {:eqrcode, "~> 0.1.7"},
       # Creating a pidfile
-      {:pid_file, "~> 0.1.1"},
+      {:pid_file, "~> 0.1.1"}
     ]
   end
 
@@ -143,7 +145,12 @@ defmodule Pan.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "assets.deploy": [
+        "cmd --cd assets npm run deploy",
+        "esbuild default --minify",
+        "phx.digest"
+      ]
     ]
   end
 end

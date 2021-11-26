@@ -1,3 +1,4 @@
+<%# make this file a .heex after updating surface (liveview compat issue with 0.17) %>
 <h2>Merge personas</h2>
 
 <div class="table_wraper">
@@ -82,7 +83,7 @@
         var i = 0;
         var row_copy = $(this).clone().removeAttr("id").empty();
         $(this).children().each(function(){
-          if ($(newrows.length) <= i) {
+          if newrows.length <= i) {
             newrows.push($(row_copy[0].outerHTML));
           }
           update_id(this)
