@@ -1,6 +1,8 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "tailwindcss/screens";
+
 @import "../node_modules/nprogress/nprogress.css";
  
 @layer base {
@@ -22,15 +24,9 @@
     @apply px-2 py-1 rounded-md border-gray-light shadow-sm;
   }
 
-  .xup-to-four-columns {
-    @screen lg {columns: 2;}
-    @screen xl {columns: 3;}
-    @screen 2xl {columns: 4;}
-  };
-
-  .up-to-four-columns {
-    @screen 2xl {columns: 4;};
-  };
+  @screen lg { .up-to-four-columns { columns: 2; } }
+  @screen xl { .up-to-four-columns { columns: 3; } }
+  @screen 2xl { .up-to-four-columns { columns: 4; } }
 
   .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
 }
