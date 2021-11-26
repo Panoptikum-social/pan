@@ -2,6 +2,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
   use Surface.Component
   alias Surface.Components.LiveRedirect
   alias PanWeb.Router.Helpers, as: Routes
+  alias PanWeb.Endpoint
 
   prop(for, :map, required: true)
   prop(record, :map, required: true)
@@ -17,7 +18,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
       %Ecto.Association.BelongsTo{} ->
         if Map.get(assigns.record, assigns.for.owner_key) do
           Routes.databrowser_path(
-              assigns.socket,
+            Endpoint,
               :show,
               Phoenix.Naming.resource_name(assigns.for.related),
               Map.get(assigns.record, assigns.for.owner_key)
@@ -29,7 +30,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
 
       %Ecto.Association.Has{} ->
         Routes.databrowser_path(
-          assigns.socket,
+          Endpoint,
           :has_many,
           Phoenix.Naming.resource_name(assigns.for.owner),
           assigns.record.id,
@@ -39,7 +40,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
 
       %Ecto.Association.ManyToMany{} ->
         Routes.databrowser_path(
-          assigns.socket,
+          Endpoint,
           :many_to_many,
           Phoenix.Naming.resource_name(assigns.for.owner),
           assigns.record.id,
