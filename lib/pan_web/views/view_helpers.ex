@@ -329,139 +329,163 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
-          "folder-open-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2
-                       2v5a2 2 0 01-2 2z" />
-            </svg>
-            """
+        "folder-open-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2
+                     2v5a2 2 0 01-2 2z" />
+          </svg>
+          """
 
-          "calendar-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            """
+        "calendar-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          """
 
-          "photograph-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0
-                       00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            """
+        "photograph-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0
+                     00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          """
 
-          "headphones-lineawesome-solid" ->
+        "headphones-lineawesome-solid" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="currentColor"
+               viewBox="0 0 32 32">
+            <path d="M16 5C9.94 5 5 9.94 5 16v8c0 1.64 1.36 3 3 3h3v-9H7v-2c0-4.98 4.02-9 9-9s9 4.02 9 9v2h-4v9h3c1.64 0 3-1.36
+                     3-3v-8c0-6.06-4.94-11-11-11zM7 20h2v5H8c-.57 0-1-.43-1-1zm16 0h2v4c0 .57-.43 1-1 1h-1z"/>
+          </svg>
+          """
+
+        "stopwatch-lineawesome-solid" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="currentColor"
+               viewBox="0 0 32 32">
+            <path d="M13 4v2h6V4zm3 3C9.94 7 5 11.94 5 18s4.94 11 11 11a11.02 11.02 0 008-18.56l1.72-1.72-1.44-1.44-1.81 1.81A10.97 10.97 0 0016
+                     7zm0 2c4.98 0 9 4.02 9 9s-4.02 9-9 9-9-4.02-9-9 4.02-9 9-9zm-1 2v5.28a1.98 1.98 0 000 3.44V21h2v-1.28a1.98 1.98 0
+                     000-3.44V11z"/>
+          </svg>
+          """
+
+        "female-lineawesome-solid" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="currentColor"
+               viewBox="0 0 32 32">
+            <path d="M16 2a3.98 3.98 0 00-2.75 6.88c-.24.17-.46.35-.66.56A6.54 6.54 0 0011 12.8h.03l-2 10L8.78
+                     24H13v6h2v-6h2v6h2v-6h4.22l-.25-1.19-2-10A6.65 6.65 0 0019.4 9.5c-.21-.23-.44-.44-.7-.63A3.95 3.95 0 0016 2zm0
+                     2c1.12 0 2 .88 2 2s-.88 2-2 2-2-.88-2-2 .88-2 2-2zm0 6c.83 0 1.42.32 1.94.88.51.55.92 1.38 1.1 2.3L20.77
+                     22h-9.56l1.75-8.81H13c.18-1 .56-1.84 1.06-2.38.5-.53 1.1-.81 1.94-.81z"/>
+          </svg>
+          """
+
+        "thumb-up-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0
+                     00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0
+                     012-2h2.5" />
+          </svg>
+          """
+
+        "heart-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0
+                     00-6.364 0z" />
+          </svg>
+          """
+
+        "annotation-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="none"
+               viewBox="0 0 24 24"
+               stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
+          """
+
+        "indent-lineawesome-solid" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="currentColor"
+               viewBox="0 0 32 32">
+            <path d="M 3 7 L 3 9 L 29 9 L 29 7 Z M 3 11 L 3 13 L 22 13 L 22 11 Z M 29 11 L 24 16 L 29 21 Z M 3 15 L 3 17 L 22 17 L 22 15 Z M 3 19 L 3 21 L 22 21
+                     L 22 19 Z M 3 23 L 3 25 L 29 25 L 29 23 Z"/>
+          </svg>
+          """
+
+        "sort-amount-down-alt-solid" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+               class="#{class}"
+               fill="currentColor"
+               viewBox="0 0 32 32">
+            <path d="M 4 5 L 4 7 L 6 7 L 6 5 Z M 21 5 L 21 23.6875 L 18.40625 21.09375 L 17 22.5 L 21.28125 26.8125 L 22 27.5 L 22.71875 26.8125 L 27 22.5 L
+                     25.59375 21.09375 L 23 23.6875 L 23 5 Z M 4 9 L 4 11 L 8 11 L 8 9 Z M 4 13 L 4 15 L 10 15 L 10 13 Z M 4 17 L 4 19 L 12 19 L 12 17 Z M 4 21 L 4
+                     23 L 14 23 L 14 21 Z M 4 25 L 4 27 L 16 27 L 16 25 Z"/>
+          </svg>
+          """
+
+          "sort-amount-down-solid" ->
             """
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="#{class}"
                  fill="currentColor"
                  viewBox="0 0 32 32">
-              <path d="M16 5C9.94 5 5 9.94 5 16v8c0 1.64 1.36 3 3 3h3v-9H7v-2c0-4.98 4.02-9 9-9s9 4.02 9 9v2h-4v9h3c1.64 0 3-1.36
-                       3-3v-8c0-6.06-4.94-11-11-11zM7 20h2v5H8c-.57 0-1-.43-1-1zm16 0h2v4c0 .57-.43 1-1 1h-1z"/>
-            </svg>
-            """
-
-          "stopwatch-lineawesome-solid" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="currentColor"
-                 viewBox="0 0 32 32">
-              <path d="M13 4v2h6V4zm3 3C9.94 7 5 11.94 5 18s4.94 11 11 11a11.02 11.02 0 008-18.56l1.72-1.72-1.44-1.44-1.81 1.81A10.97 10.97 0 0016
-                       7zm0 2c4.98 0 9 4.02 9 9s-4.02 9-9 9-9-4.02-9-9 4.02-9 9-9zm-1 2v5.28a1.98 1.98 0 000 3.44V21h2v-1.28a1.98 1.98 0
-                       000-3.44V11z"/>
-            </svg>
-            """
-
-          "female-lineawesome-solid" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="currentColor"
-                 viewBox="0 0 32 32">
-              <path d="M16 2a3.98 3.98 0 00-2.75 6.88c-.24.17-.46.35-.66.56A6.54 6.54 0 0011 12.8h.03l-2 10L8.78
-                       24H13v6h2v-6h2v6h2v-6h4.22l-.25-1.19-2-10A6.65 6.65 0 0019.4 9.5c-.21-.23-.44-.44-.7-.63A3.95 3.95 0 0016 2zm0
-                       2c1.12 0 2 .88 2 2s-.88 2-2 2-2-.88-2-2 .88-2 2-2zm0 6c.83 0 1.42.32 1.94.88.51.55.92 1.38 1.1 2.3L20.77
-                       22h-9.56l1.75-8.81H13c.18-1 .56-1.84 1.06-2.38.5-.53 1.1-.81 1.94-.81z"/>
-            </svg>
-            """
-
-          "thumb-up-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0
-                       00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0
-                       012-2h2.5" />
-            </svg>
-            """
-
-          "heart-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0
-                       00-6.364 0z" />
-            </svg>
-            """
-
-          "annotation-heroicons-outline" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-              <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-            </svg>
-            """
-
-          "indent-lineawesome-solid" ->
-            """
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="#{class}"
-                 fill="currentColor"
-                 viewBox="0 0 32 32">
-              <path d="M 3 7 L 3 9 L 29 9 L 29 7 Z M 3 11 L 3 13 L 22 13 L 22 11 Z M 29 11 L 24 16 L 29 21 Z M 3 15 L 3 17 L 22 17 L 22 15 Z M 3 19 L 3 21 L 22 21
-                    L 22 19 Z M 3 23 L 3 25 L 29 25 L 29 23 Z"/>
+              <path d="M 4 5 L 4 7 L 16 7 L 16 5 Z M 21 5 L 21 23.6875 L 18.40625 21.09375 L 17 22.5 L 21.28125 26.8125 L 22 27.5 L 22.71875 26.8125 L 27 22.5
+                       L 25.59375 21.09375 L 23 23.6875 L 23 5 Z M 4 9 L 4 11 L 14 11 L 14 9 Z M 4 13 L 4 15 L 12 15 L 12 13 Z M 4 17 L 4 19 L 10 19 L 10 17 Z
+                       M 4 21 L 4 23 L 8 23 L 8 21 Z M 4 25 L 4 27 L 6 27 L 6 25 Z"/>
             </svg>
             """
 
@@ -469,7 +493,7 @@ defmodule PanWeb.ViewHelpers do
           raise "An icon is missing: " <> name
       end
 
-      raw(icon_string)
+    raw(icon_string)
   end
 
   def nav_icon(name) do
