@@ -73,7 +73,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   def render(assigns) do
     ~F"""
     <div class={"text-right font-mono": @type in [:integer, :float, :datetime, :naive_datetime],
-                  "text-center": @type == :boolean}>
+                "text-center": @type == :boolean}>
       {present @presenter, @record, @field, @type, @redact}
     </div>
     """

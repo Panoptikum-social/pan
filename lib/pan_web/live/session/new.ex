@@ -18,7 +18,7 @@ defmodule PanWeb.Live.Session.New do
         <Field name="username"
                class="my-6">
           <Label field={:username_or_email}
-                  class="block font-medium text-gray-darker"/>
+                 class="block font-medium text-gray-darker"/>
           <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
         </Field>
 

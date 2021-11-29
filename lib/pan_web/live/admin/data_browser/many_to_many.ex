@@ -122,9 +122,9 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                class="mt-8"
                color_class="from-mint-light via-mint to-mint-light"
                heading={"Many To Many " <> Naming.model_in_plural(@model)}
-               model={@model}
-               cols={@cols}
-               search_filter={@search_filter}
+               {=@model}
+               {=@cols}
+               {=@search_filter}
                buttons={[:show, :edit, :pagination, :number_of_records,
                            :new_mediating, :assignment_filter, :search]}>
     </IndexGrid>

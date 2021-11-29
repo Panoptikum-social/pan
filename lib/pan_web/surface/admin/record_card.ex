@@ -39,31 +39,30 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h2 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h2>
         </span>
         <span>
-           <LiveRedirect to={Naming.path %{
-                                             model: @model,
-                                             method: :index,
-                                             path_helper: @path_helper}}
+           <LiveRedirect to={Naming.path %{model: @model,
+                                           method: :index,
+                                           path_helper: @path_helper}}
                          class="text-link hover:text-link-dark underline">
              {Naming.module_without_namespace(@model)}&nbsp;List
           </LiveRedirect> &nbsp;
           <LiveRedirect :if={Map.has_key?(@record, :id)}
-                        to={Naming.path %{  model: @model,
-                                            method: :edit,
-                                            path_helper: @path_helper,
-                                            record: @record}}
+                        to={Naming.path %{model: @model,
+                                          method: :edit,
+                                          path_helper: @path_helper,
+                                          record: @record}}
                         class="text-link hover:text-link-dark underline">
             Edit {Naming.module_without_namespace(@model)}
           </LiveRedirect>
 
           <LiveRedirect :if={!Map.has_key?(@record, :id)}
                         to={Routes.databrowser_path(
-                          Endpoint,
-                          :edit_mediating,
-                          Phoenix.Naming.resource_name(@model),
-                          hd(@primary_key) |> Atom.to_string,
-                          Map.get(@record, hd(@primary_key)),
-                          hd(tl(@primary_key)) |> Atom.to_string,
-                          Map.get(@record, hd(tl(@primary_key)))
+                            Endpoint,
+                            :edit_mediating,
+                            Phoenix.Naming.resource_name(@model),
+                            @primary_key |> hd |> Atom.to_string,
+                            Map.get(@record, hd(@primary_key)),
+                            @primary_key |> tl |> hd |> Atom.to_string,
+                            Map.get(@record, hd(tl(@primary_key)))
                         )}
                         class="text-link hover:text-link-dark underline">
             Edit {Naming.module_without_namespace(@model)}
@@ -75,38 +74,38 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Numeric Fields</legend>
           <DataBlock columns={number_columns(assigns)}
-                     record={@record}
-                     model={@model} />
+                     {=@record}
+                     {=@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Date & Time Fields</legend>
           <DataBlock columns={datetime_columns(assigns)}
-                     record={@record}
-                     model={@model} />
+                     {=@record}
+                     {=@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Boolean Fields</legend>
           <DataBlock columns={boolean_columns(assigns)}
-                     record={@record}
-                     model={@model} />
+                     {=@record}
+                     {=@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Relations</legend>
-          <RelationsBlock record={@record}
-                          model={@model} />
+          <RelationsBlock {=@record}
+                          {=@model} />
         </fieldset>
       </div>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">String Fields</legend>
         <DataBlock columns={string_columns(assigns)}
-                   record={@record}
-                   model={@model} />
+                   {=@record}
+                   {=@model} />
       </fieldset>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">Text Fields</legend>
         <DataBlock columns={text_columns(assigns)}
-                   record={@record}
-                   model={@model} />
+                   {=@record}
+                   {=@model} />
       </fieldset>
     </div>
     """

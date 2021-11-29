@@ -18,9 +18,7 @@ defmodule PanWeb.Surface.LinkButton do
                    "truncate max-w-full": @truncate,
                    "py-1 px-2 rounded text-sm": !@large,
                    "py-2 px-3 rounded-md": @large}>
-        <Icon :if={@icon}
-              name={@icon}
-              spaced={true}/>
+        <Icon :if={@icon} name={@icon} spaced/>
         {@title}
     </Link>
     """

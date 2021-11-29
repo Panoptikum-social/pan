@@ -8,7 +8,8 @@ defmodule PanWeb.Surface.EpisodeCard do
     ~F"""
     <p><EpisodeButton for={@for}/></p>
 
-    <p :if={@for.author_name} class="mt-1">
+    <p :if={@for.author_name}
+       class="mt-1">
       Author <PersonaButton name={@for.author_name} id={@for.author_id} />
     </p>
 

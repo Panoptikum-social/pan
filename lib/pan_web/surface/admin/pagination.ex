@@ -26,17 +26,17 @@ defmodule PanWeb.Surface.Admin.Pagination do
       <div class="flex items-center space-x-2">
         <PaginationLink :if={@page > 1}
                         page={@page - 1}
-                        per_page={@per_page}
+                        {=@per_page}
                         class="rounded-l"
-                        target={@target} >
+                        {=@target} >
           Previous
         </PaginationLink>
         {#for i <- 1..@page}
           <PaginationLink :if={i != @page}
                           page={i}
-                          per_page={@per_page}
+                          {=@per_page}
                           class={"rounded-l-lg": i==1}
-                          target={@target} >
+                          {=@target} >
             {i}
           </PaginationLink>
           <span :if={i == @page}>
@@ -45,9 +45,9 @@ defmodule PanWeb.Surface.Admin.Pagination do
         {/for}
         <PaginationLink :if={@page < @nr_of_pages}
                         page={@page + 1}
-                        per_page={@per_page}
+                        {=@per_page}
                         class="rounded-r"
-                        target={@target} >
+                        {=@target} >
           Next
         </PaginationLink>
       </div>

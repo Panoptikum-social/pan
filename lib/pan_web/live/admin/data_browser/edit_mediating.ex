@@ -49,9 +49,9 @@ defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
   def render(assigns) do
     ~F"""
     <RecordForm id={"record_form_" <> @resource <> "_" <> @ids_string}
-                record={@record}
-                model={@model}
-                cols={@cols} />
+                {=@record}
+                {=@model}
+                {=@cols} />
     """
   end
 end

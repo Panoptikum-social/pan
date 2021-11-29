@@ -40,25 +40,23 @@ defmodule PanWeb.Surface.TopList do
   def render(assigns) do
     ~F"""
     <table class="w-full table-fixed mt-2">
-      <tr :for={{rank, count, items} <- prepare_for_toplist(@items)}
-          class="odd:bg-gray-lightest" >
-        <td class="text-right py-2 w-10">
-          {rank}.
-        </td>
-        <td class="px-4">
-          {#for {id, title} <- items}
-            <p>
-              <PodcastButton :if={@purpose == "podcast"}
-                              id={id}
-                              title={title}
-                              truncate={true} />
-            </p>
-          {/for}
-        </td>
-        <td class="text-right py-2 w-20">
-          {count} <Icon name={@icon} />&nbsp;
-        </td>
-      </tr>
+      {#for {rank, count, items} <- prepare_for_toplist(@items)}
+        <tr class="odd:bg-gray-lightest" >
+          <td class="text-right py-2 w-10">
+            {rank}.
+          </td>
+          <td class="px-4">
+            {#for {id, title} <- items}
+              <p>
+                <PodcastButton :if={@purpose == "podcast"} {=id} {=title} truncate />
+              </p>
+            {/for}
+          </td>
+          <td class="text-right py-2 w-20">
+            {count} <Icon name={@icon} />&nbsp;
+          </td>
+        </tr>
+      {/for}
     </table>
     """
   end

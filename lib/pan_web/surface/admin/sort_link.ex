@@ -16,9 +16,9 @@ defmodule PanWeb.Surface.Admin.SortLink do
   def render(assigns) do
     ~F"""
     <a href="#"
-      :on-click={"sort", target: @target}
-      phx-value-sort-by={@field}
-      phx-value-sort-order={toggle_sort_order(@sort_order)}>
+       :on-click={"sort", target: @target}
+       phx-value-sort-by={@field}
+       phx-value-sort-order={toggle_sort_order(@sort_order)}>
       {#if @sort_by == @field}
         <Icon :if={@sort_order == :asc}
               name="sort-amount-down-alt-solid" />

@@ -68,15 +68,15 @@ defmodule PanWeb.Live.Admin.Dashboard do
                 title="Schemas"
                 class="m-2 max-w-2xl"
                 items={schema <- @schemas}
-                selected_count={@selected_count}
+                {=@selected_count}
                 format={:grid}
                 grid_columns={4}>
         <ToolbarItem message="index"
                     title="Data"
                     when_selected_count={:one} />
         <ToolbarItem message="schema_definition"
-                    title="Schema Definition"
-                    when_selected_count={:one} />
+                     title="Schema Definition"
+                     when_selected_count={:one} />
         <ToolbarItem message="db_index"
                     title="Database Indices"
                     when_selected_count={:one} />
@@ -169,7 +169,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
                   to={Routes.feed_backlog_path(@socket, :delete_all)}
                   class="text-link hover:text-link-dark underline"
                   opts={method: :delete,
-                          data: [confirm: "Are you sure?"]} />
+                        data: [confirm: "Are you sure?"]} />
           </li>
         </ul>
       </div>

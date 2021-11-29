@@ -11,15 +11,16 @@ defmodule PanWeb.Surface.Admin.NumberField do
     <Form.Field name={@name} class="my-2 flex items-center justify-end">
       <Form.Label class="italic text-right"/>
       <div class="flex flex-col items-center">
-        <Form.NumberInput :if={!@redact}
-                          class={"ml-3 w-32 text-right px-2 py-0 rounded-none",
+        {#if @redact}
+          <Form.TextInput value="** redacted **"
+                          class={"readonly:disabled ml-3 w-32 px-2 py-0 rounded-none
+                          cursor-not-allowed bg-gray-lighter"}
+          opts={readonly: true} />
+        {#else}
+          <Form.NumberInput class={"ml-3 w-32 text-right px-2 py-0 rounded-none",
                                    "cursor-not-allowed bg-gray-lighter": @name == :id}
-                          opts= {readonly: @name == :id} />
-        <Form.TextInput :if={@redact}
-                        value="** redacted **"
-                        class={"readonly:disabled ml-3 w-32 px-2 py-0 rounded-none
-                                  cursor-not-allowed bg-gray-lighter"}
-                        opts={readonly: true} />
+                            opts= {readonly: @name == :id} />
+        {/if}
         <ErrorTag />
       </div>
     </Form.Field>

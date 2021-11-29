@@ -23,7 +23,7 @@ defmodule PanWeb.Surface.Tree do
         ]
       end
     else
-      for {node, index} <- Enum.with_index(nodes) do
+      for {node, index} <- nodes |> Enum.with_index do
         {node, children} =
           if(Keyword.keyword?(node) || is_tuple(node), do: node, else: {node, []})
 

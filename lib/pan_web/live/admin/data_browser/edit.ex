@@ -28,9 +28,9 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
   def render(assigns) do
     ~F"""
     <RecordForm id={"record_form_" <> @resource <> "_" <> Integer.to_string(@record.id)}
-                record={@record}
-                model={@model}
-                cols={@cols} />
+                {=@record}
+                {=@model}
+                {=@cols} />
     """
   end
 end

@@ -79,38 +79,39 @@ defmodule PanWeb.Live.Category.StatsShow do
 
       <div aria-label="panel-body" class="p-4 divide-y-2 divide-gray-lighter">
         <div :if={@category.children != []} class="flex flex-wrap">
-          <CategoryButton :for={subcategory <- @category.children}
-                          for={subcategory}
-                          class="mx-2" />
+          {#for subcategory <- @category.children}
+            <CategoryButton for={subcategory}
+                            class="mx-2" />
+          {/for}
         </div>
 
         <div class="flex flex-wrap py-4">
-          <div :for={prototype <- @podcasts
-                                    |> Enum.uniq_by(fn p -> p.language_name end)
-                                    |> Enum.sort_by(fn p -> p.language_name end)}
-                class="mx-2">
-            {prototype.language_emoji || "🏳️"} &nbsp;
-            <Link opts={id: "lang#" <> language(prototype)}
-                  to={"#" <> language(prototype)}>
-              {language(prototype)} {language(prototype) |> amount(@podcasts)}
-            </Link>
-          </div>
+          {#for prototype <- @podcasts |> Enum.uniq_by(fn p -> p.language_name end)
+                                       |> Enum.sort_by(fn p -> p.language_name end)}
+            <div class="mx-2">
+              {prototype.language_emoji || "🏳️"} &nbsp;
+              <Link opts={id: "lang#" <> language(prototype)}
+                    to={"#" <> language(prototype)}>
+                {language(prototype)} {language(prototype) |> amount(@podcasts)}
+              </Link>
+            </div>
+          {/for}
         </div>
 
-        <div :for={prototype <- @podcasts
-                                  |> Enum.uniq_by(fn p -> p.language_name end)
-                                  |> Enum.sort_by(fn p -> p.language_name end)}>
-          <h2 id={language(prototype)}
-              class="text-2xl mt-4">
-            {language(prototype)} {language(prototype) |> amount(@podcasts)}
-          </h2>
-          <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-            <PodcastButton :for={podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end)}
-                            for={podcast}
-                            truncate={true}
-                            class="m-2"/>
+        {#for prototype <- @podcasts |> Enum.uniq_by(fn p -> p.language_name end)
+                                     |> Enum.sort_by(fn p -> p.language_name end)}
+          <div>
+            <h2 id={language(prototype)}
+                class="text-2xl mt-4">
+              {language(prototype)} {language(prototype) |> amount(@podcasts)}
+            </h2>
+            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
+              {#for podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end)}
+                <PodcastButton for={podcast} class="m-2" truncate/>
+              {/for}
+            </div>
           </div>
-        </div>
+        {/for}
       </div>
 
       {#if @current_user_id}

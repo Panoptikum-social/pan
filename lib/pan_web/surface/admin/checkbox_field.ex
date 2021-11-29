@@ -9,14 +9,19 @@ defmodule PanWeb.Surface.Admin.CheckBoxField do
 
   def render(assigns) do
     ~F"""
-    <Form.Field name={@name}
-               class="my-2 flex items-center">
-      <Form.Checkbox :if={!@redact} />
-      <div :if={@redact}>**</div>
+    <Form.Field {=@name}
+                class="my-2 flex items-center">
+      {#if @redact}
+        <div>**</div>
+      {#else}
+        <Form.Checkbox />
+      {/if}
       <Form.Label class="italic pl-2">
         {@label}
       </Form.Label>
-      <div :if={@redact} class="pl-2"> (redacted)</div>
+      {#if @redact}
+        <div class="pl-2"> (redacted)</div>
+      {/if}
       <ErrorTag />
     </Form.Field>
     """

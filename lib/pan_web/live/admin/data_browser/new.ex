@@ -28,9 +28,9 @@ defmodule PanWeb.Live.Admin.Databrowser.New do
   def render(assigns) do
     ~F"""
     <RecordForm id={"record_form_" <> @resource <> "_new"}
-                record={@record}
-                model={@model}
-                cols={@cols} />
+                {=@record}
+                {=@model}
+                {=@cols} />
     """
   end
 end

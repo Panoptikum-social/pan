@@ -310,10 +310,10 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def render(assigns) do
     ~F"""
-    <div id={@id}>
+    <div {=@id}>
       <div class={"m-2 border border-gray rounded shadow-lg", @class}>
         <h2 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
-                      font-mono text-white font-semibold rounded-t", @color_class}>
+                    font-mono text-white font-semibold rounded-t", @color_class}>
           {@heading}
         </h2>
 
@@ -362,8 +362,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                 Yes
               </button>
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                            lg:px-2 lg:py-0 m-1 rounded
-                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                             lg:px-2 lg:py-0 m-1 rounded
+                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                       :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
                       phx-click="toggle_request_confirmation"
                       phx-target={@myself}>
@@ -373,8 +373,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
             <button :if={:link in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                          lg:px-2 lg:py-0 m-1 rounded
-                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                           lg:px-2 lg:py-0 m-1 rounded
+                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     :attrs={disabled: Tools.disabled?(:nonzero, @selected_records |> length)}
                     phx-click="link"
                     phx-target={@myself}>
@@ -430,27 +430,27 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
                     target={@myself}
-                    page={@page}
-                    per_page={@per_page}
-                    nr_of_pages={@nr_of_pages}
-                    nr_of_unfiltered={@nr_of_unfiltered}
-                    nr_of_filtered={@nr_of_filtered} />
+                    {=@page}
+                    {=@per_page}
+                    {=@nr_of_pages}
+                    {=@nr_of_unfiltered}
+                    {=@nr_of_filtered} />
 
         <DataTable id={"index_table-" <> @id}
                    target={@id}
-                   cols={@cols}
-                   model={@model}
-                   primary_key={@primary_key}
-                   records={@records}
-                   selected_records={@selected_records}
-                   path_helper={@path_helper}
-                   sort_by={@sort_by}
-                   sort_order={@sort_order}
-                   buttons={@buttons}
-                   search_mode={@search_mode}
-                   hide_filtered={@hide_filtered}
-                   search_options={@search_options}
-                   search_filter={@search_filter} />
+                   {=@cols}
+                   {=@model}
+                   {=@primary_key}
+                   {=@records}
+                   {=@selected_records}
+                   {=@path_helper}
+                   {=@sort_by}
+                   {=@sort_order}
+                   {=@buttons}
+                   {=@search_mode}
+                   {=@hide_filtered}
+                   {=@search_options}
+                   {=@search_filter} />
       </div>
     </div>
     """

@@ -38,15 +38,16 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
 
       <div x-data="{ selectedTab: 0 }">
         <ul class="flex flex-wrap border-b border-gray bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light">
-          <li :for.with_index={{title, index} <- tabs}
-              class="-mb-px ml-1.5 mt-1">
-            <a class="inline-block rounded-t px-1 border-gray"
-              :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
-                        selectedTab === #{index},
-                        'bg-gray-light text-gray-dark hover:text-gray-darker': selectedTab !== #{index} }"}
-              @click.prevent={"selectedTab = #{index}"}
-              to="#">{title}</a>
-          </li>
+          {#for {title, index} <- tabs |> Enum.with_index}
+            <li class="-mb-px ml-1.5 mt-1">
+                <a class="inline-block rounded-t px-1 border-gray"
+                   :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+                            selectedTab === #{index},
+                            'bg-gray-light text-gray-dark hover:text-gray-darker': selectedTab !== #{index} }"}
+                  @click.prevent={"selectedTab = #{index}"}
+                  to="#">{title}</a>
+            </li>
+          {/for}
         </ul>
         <div class="p-4">
           <div x-show="selectedTab === 0">
@@ -73,9 +74,9 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
 
           <div x-show="selectedTab === 2">
             Columns:
-            <span :for={key <- @model.__schema__(:primary_key)}>
+            {#for key <- @model.__schema__(:primary_key)}
               {key |> Atom.to_string}
-            </span>
+            {/for}
           </div>
 
           <table x-show="selectedTab === 3">
@@ -87,29 +88,31 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
               </tr>
             </thead>
             <tbody>
-              <tr :for.with_index={{field, index} <- @model.__schema__(:fields)}>
-                <td>
-                  <div class={"mx-1",
+              {#for {field, index} <- @model.__schema__(:fields) |> Enum.with_index}
+                <tr>
+                  <td>
+                    <div class={"mx-1",
                                 "bg-white": Integer.is_odd(index),
                                 "bg-gray-lighter": Integer.is_even(index)}>
-                    {field |> Atom.to_string()}
-                  </div>
-                </td>
-                <td>
-                  <div class={"mx-1",
+                      {field |> Atom.to_string()}
+                    </div>
+                  </td>
+                  <td>
+                    <div class={"mx-1",
                                 "bg-white": Integer.is_odd(index),
                                 "bg-gray-lighter": Integer.is_even(index)}>
-                    {@model.__schema__(:field_source, field) |> Atom.to_string()}
-                  </div>
-                </td>
-                <td>
-                  <div class={"mx-1",
-                      "bg-white": Integer.is_odd(index),
-                      "bg-gray-lighter": Integer.is_even(index)}>
-                    {@model.__schema__(:type, field) |> Atom.to_string()}
-                  </div>
-                </td>
-              </tr>
+                      {@model.__schema__(:field_source, field) |> Atom.to_string()}
+                    </div>
+                  </td>
+                  <td>
+                    <div class={"mx-1",
+                                "bg-white": Integer.is_odd(index),
+                                "bg-gray-lighter": Integer.is_even(index)}>
+                      {@model.__schema__(:type, field) |> Atom.to_string()}
+                    </div>
+                  </td>
+                </tr>
+              {/for}
             </tbody>
           </table>
 
@@ -117,144 +120,164 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
             <div x-data="{ selectedAssociation: 0 }"
                  class="-mt-3">
               <ul class="flex flex-wrap border-b border-gray bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light">
-                <li :for.with_index={{association, assoc_index} <- @model.__schema__(:associations)}
-                    class="-mb-px ml-1.5 mt-1">
-                  <a class="inline-block rounded-t px-1 border-gray"
-                    :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
-                              selectedAssociation === #{assoc_index},
-                              'bg-gray-light text-gray-dark hover:text-gray-darker': selectedAssociation !== #{assoc_index} }"}
-                    @click.prevent={"selectedAssociation = #{assoc_index}"}
-                    to="#">{association |> Atom.to_string}</a>
-                </li>
+                {#for {association, assoc_index} <- @model.__schema__(:associations) |> Enum.with_index}
+                  <li class="-mb-px ml-1.5 mt-1">
+                    <a class="inline-block rounded-t px-1 border-gray"
+                      :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+                                selectedAssociation === #{assoc_index},
+                                'bg-gray-light text-gray-dark hover:text-gray-darker': selectedAssociation !== #{assoc_index} }"}
+                      @click.prevent={"selectedAssociation = #{assoc_index}"}
+                      to="#">{association |> Atom.to_string}</a>
+                  </li>
+                {/for}
               </ul>
-              <div :for.with_index={{details, assoc_index} <- @model.__schema__(:associations) |> Enum.map(&@model.__schema__(:association, &1))}
-                   x-show={"selectedAssociation === #{assoc_index}"}
-                   class="p-4 border-l border-r border-b border-gray">
+              {#for {details, assoc_index} <- @model.__schema__(:associations) |> Enum.map(&@model.__schema__(:association, &1)) |> Enum.with_index}
+                <div x-show={"selectedAssociation === #{assoc_index}"}
+                     class="p-4 border-l border-r border-b border-gray">
 
-                <table cellspacing="4px" class="border-separate">
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Type</div></td>
-                    <td class="bg-white"><div>{type(details)}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Cardinality</div></td>
-                    <td class="bg-white"><div>{details.cardinality |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Defaults</div></td>
-                    <td class="bg-white">
-                      <div class="mx-1 flex space-x-2 justify-start" :for={default <- details.defaults}>
-                        {default |> Atom.to_string}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Field</div></td>
-                    <td class="bg-white"><div>{details.field |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :join_defaults)}>
-                    <td class="bg-white"><div class="font-mono">Join Defaults</div></td>
-                    <td class="bg-white">
-                      <div class="mx-1 flex space-x-2 justify-start" :for={default <- details.join_defaults}>
-                        {default |> Atom.to_string}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :join_keys)}>
-                    <td class="bg-white"><div class="font-mono">Join Keys</div></td>
-                    <td class="bg-white">
-                      <div class="mx-1 flex space-x-4" >
-                        <div :for={{key, value} <- details.join_keys}>{key |> Atom.to_string}: {value |> Atom.to_string}</div>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :join_through)}>
-                    <td class="bg-white"><div class="font-mono">Join Through</div></td>
-                    <td class="bg-white"><div>{details.join_through}</div></td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :join_where)}>
-                    <td class="bg-white"><div class="font-mono">Join Where</div></td>
-                    <td class="bg-white">
-                      <div class="mx-1 flex space-x-2 justify-start" :for={{key, value} <- details.join_where}>
-                        {key |> Atom.to_string}: {value |> Atom.to_string}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">On Cast</div></td>
-                    <td class="bg-white"><div>{details.on_cast |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">On Replace</div></td>
-                    <td class="bg-white"><div>{details.on_replace |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :on_delete)}>
-                    <td class="bg-white"><div class="font-mono">On Delete</div></td>
-                    <td class="bg-white"><div>{details.on_delete |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Ordered</div></td>
-                    <td class="bg-white"><div>{details.ordered |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Owner</div></td>
-                    <td class="bg-white"><div>{details.owner |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Owner Key</div></td>
-                    <td class="bg-white"><div>{details.owner_key |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Queryable</div></td>
-                    <td class="bg-white"><div>{details.queryable |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Related</div></td>
-                    <td class="bg-white"><div>{details.related |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr :if={Map.has_key?(details, :related_key)}>
-                    <td class="bg-white"><div class="font-mono">Related Key</div></td>
-                    <td class="bg-white"><div>{details.related_key |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Relationship</div></td>
-                    <td class="bg-white"><div>{details.relationship |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Unique</div></td>
-                    <td class="bg-white"><div>{details.unique |> Atom.to_string}</div></td>
-                  </tr>
-                  <tr>
-                    <td class="bg-white"><div class="font-mono">Where</div></td>
-                    <td>
-                      <div class="flex space-x-2 justify-start" :for={where <- details.where}>
-                      {where |> Atom.to_string}
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
+                  <table cellspacing="4px" class="border-separate">
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Type</div></td>
+                      <td class="bg-white"><div>{type(details)}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Cardinality</div></td>
+                      <td class="bg-white"><div>{details.cardinality |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Defaults</div></td>
+                      <td class="bg-white">
+                        {#for default <- details.defaults}
+                          <div class="mx-1 flex space-x-2 justify-start">
+                            {default |> Atom.to_string}
+                          </div>
+                        {/for}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Field</div></td>
+                      <td class="bg-white"><div>{details.field |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :join_defaults)}>
+                      <td class="bg-white"><div class="font-mono">Join Defaults</div></td>
+                      <td class="bg-white">
+                        {#for default <- details.join_defaults}
+                          <div class="mx-1 flex space-x-2 justify-start">
+                            {default |> Atom.to_string}
+                          </div>
+                        {/for}
+                      </td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :join_keys)}>
+                      <td class="bg-white"><div class="font-mono">Join Keys</div></td>
+                      <td class="bg-white">
+                        <div class="mx-1 flex space-x-4" >
+                          {#for {key, value} <- details.join_keys}
+                            <div>
+                              {key |> Atom.to_string}: {value |> Atom.to_string}
+                            </div>
+                          {/for}
+                        </div>
+                      </td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :join_through)}>
+                      <td class="bg-white"><div class="font-mono">Join Through</div></td>
+                      <td class="bg-white"><div>{details.join_through}</div></td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :join_where)}>
+                      <td class="bg-white"><div class="font-mono">Join Where</div></td>
+                      <td class="bg-white">
+                        {#for {key, value} <- details.join_where}
+                          <div class="mx-1 flex space-x-2 justify-start">
+                            {key |> Atom.to_string}: {value |> Atom.to_string}
+                          </div>
+                        {/for}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">On Cast</div></td>
+                      <td class="bg-white"><div>{details.on_cast |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">On Replace</div></td>
+                      <td class="bg-white"><div>{details.on_replace |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :on_delete)}>
+                      <td class="bg-white"><div class="font-mono">On Delete</div></td>
+                      <td class="bg-white"><div>{details.on_delete |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Ordered</div></td>
+                      <td class="bg-white"><div>{details.ordered |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Owner</div></td>
+                      <td class="bg-white"><div>{details.owner |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Owner Key</div></td>
+                      <td class="bg-white"><div>{details.owner_key |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Queryable</div></td>
+                      <td class="bg-white"><div>{details.queryable |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Related</div></td>
+                      <td class="bg-white"><div>{details.related |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr :if={Map.has_key?(details, :related_key)}>
+                      <td class="bg-white"><div class="font-mono">Related Key</div></td>
+                      <td class="bg-white"><div>{details.related_key |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Relationship</div></td>
+                      <td class="bg-white"><div>{details.relationship |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Unique</div></td>
+                      <td class="bg-white"><div>{details.unique |> Atom.to_string}</div></td>
+                    </tr>
+                    <tr>
+                      <td class="bg-white"><div class="font-mono">Where</div></td>
+                      <td>
+                        {#for where <- details.where}
+                          <div class="flex space-x-2 justify-start">
+                          {where |> Atom.to_string}
+                          </div>
+                        {/for}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              {/for}
             </div>
           </div>
 
           <div x-show="selectedTab === 5">
-            <div :for={field <- @model.__schema__(:redact_fields)}>
-              {field |> Atom.to_string()}
-            </div>
+            {#for field <- @model.__schema__(:redact_fields)}
+              <div>
+                {field |> Atom.to_string()}
+              </div>
+            {/for}
             <div :if={@model.__schema__(:redact_fields) == []}>none</div>
           </div>
 
           <div x-show="selectedTab === 6">
-            <div :for={field <- @model.__schema__(:embeds)}>
-              {field |> Atom.to_string()}
-            </div>
+            {#for field <- @model.__schema__(:embeds)}
+              <div>
+                {field |> Atom.to_string()}
+              </div>
+            {/for}
             <div :if={@model.__schema__(:embeds) == []}>none</div>
           </div>
 
           <div x-show="selectedTab === 7">
-            <div :for={field <- @model.__schema__(:read_after_writes)}>
-              {field |> Atom.to_string()}
-            </div>
+            {#for field <- @model.__schema__(:read_after_writes)}
+              <div>
+                {field |> Atom.to_string()}
+              </div>
+            {/for}
             <div :if={@model.__schema__(:read_after_writes) == []}>none</div>
           </div>
 

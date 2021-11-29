@@ -9,22 +9,24 @@ defmodule PanWeb.Surface.Tab do
     ~F"""
     <div x-data="{ selectedTab: 0 }" class="pt-0.5">
       <ul class="flex flex-wrap border-b border-gray-lighter">
-        <li :for.index={@items}
-            class="-mb-px ml-1.5">
-          <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-             :class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r text-gray-darker' :
-                        selectedTab === #{index},
-                       'bg-gray-lighter text-gray-dark' :
-                       selectedTab !== #{index} }"}
-             @click.prevent={"selectedTab = #{index}"}
-             to="#">{index + 1}</a>
-        </li>
+        {#for {_item, index} <- @items |> Enum.with_index}
+          <li class="-mb-px ml-1.5">
+            <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
+              :class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r text-gray-darker' :
+                          selectedTab === #{index},
+                        'bg-gray-lighter text-gray-dark' :
+                        selectedTab !== #{index} }"}
+              @click.prevent={"selectedTab = #{index}"}
+              to="#">{index + 1}</a>
+          </li>
+        {/for}
       </ul>
       <div class="p-4">
-        <div :for.with_index={{item, index} <- @items}
-             x-show={"selectedTab === #{index}"}>
-          <#slot :args={item: item} />
-        </div>
+        {#for {item, index} <- @items |> Enum.with_index}
+          <div x-show={"selectedTab === #{index}"}>
+            <#slot :args={item: item} />
+          </div>
+        {/for}
       </div>
     </div>
     """

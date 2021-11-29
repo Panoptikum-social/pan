@@ -10,21 +10,20 @@ defmodule PanWeb.Live.Category.Tree do
   def render(assigns) do
     ~F"""
     <div class="up-to-four-columns w-full">
-      <div :for.with_index={{category, counter} <- @categories}
-           class="inline-block mx-2 my-4">
-        <p>
-          <CategoryButton for={category}
-                          large="true"
-                          index_on_page={counter} />
-        </p>
-        <p class="mt-6 -mx-0.5">
-          {#for subcategory <- category.children}
-            <CategoryButton for={subcategory}
-                            class="px-1.5 py-0.5 mx-0.5" truncate />
-          {/for}
-        </p>
-        <hr class="w-full mt-4 border-t-1 border-gray-lightest" style="break-before: avoid;" />
-      </div>
+      {#for {category, counter} <- @categories |> Enum.with_index}
+        <div class="inline-block mx-2 my-4">
+          <p>
+            <CategoryButton for={category} index_on_page={counter} large/>
+          </p>
+          <p class="mt-6 -mx-0.5">
+            {#for subcategory <- category.children}
+              <CategoryButton for={subcategory}
+                              class="px-1.5 py-0.5 mx-0.5" truncate />
+            {/for}
+          </p>
+          <hr class="w-full mt-4 border-t-1 border-gray-lightest" style="break-before: avoid;" />
+        </div>
+      {/for}
     </div>
     """
   end

@@ -55,9 +55,9 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
 
   def styled_live_redirect(to, assigns, link_title) do
     ~F"""
-    <LiveRedirect to={to}
-                      class="text-link hover:text-link-dark text-medium underline"
-                      label={link_title} />
+    <LiveRedirect {=to}
+                  class="text-link hover:text-link-dark text-medium underline"
+                  label={link_title} />
     """
   end
 

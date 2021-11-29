@@ -26,8 +26,8 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
     ~F"""
     <IndexGrid id="index_table"
                heading={"Listing records for " <> Naming.model_in_plural(@model)}
-               model={@model}
-               cols={@cols}
+               {=@model}
+               {=@cols}
                buttons={[:show, :edit, :delete, :new, :pagination,
                            :number_of_records, :search]}/>
     """

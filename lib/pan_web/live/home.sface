@@ -17,17 +17,17 @@
            purpose="popular"
            class="mt-4">
       <TopList items={@popular_podcasts}
-              purpose="podcast"
-              icon="user-heroicons-outline" />
+               purpose="podcast"
+               icon="user-heroicons-outline" />
     </Panel>
   </div>
 
   <div aria-label="right column" 
        class="flex-1">
     <Panel heading="Latest Episodes" 
-          heading_right="more ..."
-          target={episode_frontend_path(@socket, :index)}
-          purpose="episode" >
+           heading_right="more ..."
+           target={episode_frontend_path(@socket, :index)}
+           purpose="episode" >
       <Tab items={episode <- @latest_episodes}>
           <EpisodeCard for={episode} />
       </Tab>
@@ -50,8 +50,8 @@
           purpose="like"
           class="mt-4">
       <TopList items={@liked_podcasts}
-              purpose="podcast"
-              icon="heart-heroicons-outline" />
+               purpose="podcast"
+               icon="heart-heroicons-outline" />
     </Panel>
   </div>
 </div>

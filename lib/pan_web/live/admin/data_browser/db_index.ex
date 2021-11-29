@@ -26,19 +26,23 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
       </h3>
       <div class="grid mb-1"
            style="grid-template-columns: max-content 1fr;">
-          <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">Index Name</div>
-          <div class="w-full font-semibold pl-4 pr-2 py-0.5">Index Definition</div>
+          <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">
+            Index Name
+          </div>
+          <div class="w-full font-semibold pl-4 pr-2 py-0.5">
+            Index Definition
+          </div>
         {#for {[name, definition], index} <- get_indices(assigns) |> Enum.with_index}
           <div class={"px-2 py-0.5 text-gray-darker italic text-right",
-                        "bg-white": Integer.is_even(index),
-                        "bg-gray-lightest": Integer.is_odd(index),
-                        "border-t-2 border-gray-lighter": index > 0}>
+                      "bg-white": Integer.is_even(index),
+                      "bg-gray-lightest": Integer.is_odd(index),
+                      "border-t-2 border-gray-lighter": index > 0}>
             {name}
           </div>
           <div class={"w-full pl-4 pr-2 py-0.5",
-                        "bg-white": Integer.is_even(index),
-                        "bg-gray-lightest": Integer.is_odd(index),
-                        "border-t-2 border-gray-lighter": index > 0}>
+                      "bg-white": Integer.is_even(index),
+                      "bg-gray-lightest": Integer.is_odd(index),
+                      "border-t-2 border-gray-lighter": index > 0}>
             {definition}
           </div>
         {/for}

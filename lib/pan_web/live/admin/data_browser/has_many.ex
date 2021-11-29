@@ -70,9 +70,9 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
                class="mt-8"
                color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
                heading={"Has Many " <> Naming.model_in_plural(@model)}
-               model={@model}
-               cols={@cols}
-               search_filter={@search_filter}
+               {=@model}
+               {=@cols}
+               {=@search_filter}
                per_page={20}
                buttons={[:show, :edit, :delete, :new, :pagination,
                            :number_of_records, :link, :assignment_filter, :search]} >

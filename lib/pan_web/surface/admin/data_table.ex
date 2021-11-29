@@ -74,15 +74,16 @@ defmodule PanWeb.Surface.Admin.DataTable do
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
          <span :if={:search in @buttons}>Search Mode</span>
       </div>
-      <div :for={column <- @columns}
-           class="bg-white italic grid place-content-center text-sm text-center">
-      <SortLink sort_by={@sort_by}
-                field={column.field}
-                sort_order={@sort_order}
-                target={"#" <> @target}>
-        {column.label}
-      </SortLink>
-      </div>
+      {#for column <- @columns}
+        <div class="bg-white italic grid place-content-center text-sm text-center">
+          <SortLink {=@sort_by}
+                    field={column.field}
+                    {=@sort_order}
+                    target={"#" <> @target}>
+            {column.label}
+          </SortLink>
+        </div>
+      {/for}
 
       <div :if={:search in @buttons}
            class="bg-gray-lighter text-center p-1">
@@ -92,28 +93,29 @@ defmodule PanWeb.Surface.Admin.DataTable do
               class="text-link hover:text-link-dark underline" />
       </div>
 
-      <div :if={:search in @buttons}
-           :for={column <- @columns}
-           class={"bg-gray-lighter p-1",
-                    "text-right": column.type == :integer}>
-        <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
-              for={:search}
-              change={"search", target: "#" <> @target}
-              opts={autocomplete: "off"}>
-          <TextInput field={column.field}
-                    value={@search_options[column.field]}
-                    class={"p-0.5 w-full"}
-                    opts={autofocus: "autofocus",
-                            autocomplete: "off",
-                            "phx-debounce": 300} />
-        </Form>
-      </div>
+      {#for column <- @columns}
+        <div :if={:search in @buttons}
+            class={"bg-gray-lighter p-1",
+                      "text-right": column.type == :integer}>
+          <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
+                for={:search}
+                change={"search", target: "#" <> @target}
+                opts={autocomplete: "off"}>
+            <TextInput field={column.field}
+                       value={@search_options[column.field]}
+                       class={"p-0.5 w-full"}
+                       opts={autofocus: "autofocus",
+                             autocomplete: "off",
+                             "phx-debounce": 300} />
+          </Form>
+        </div>
+      {/for}
 
-      {#for {record, index} <- Enum.with_index(@records)}
+      {#for {record, index} <- @records |> Enum.with_index}
         <div class={"text-center",
-                      "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
-                      "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
-                      "bg-sunflower-lighter": dyed?(record, assigns)}>
+                    "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
+                    "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
+                    "bg-sunflower-lighter": dyed?(record, assigns)}>
           <input :if={Map.has_key?(record, :id)}
                  type="checkbox"
                  class="my-1.5"
@@ -132,14 +134,15 @@ defmodule PanWeb.Surface.Admin.DataTable do
                  phx-target={"#" <> @target} />
         </div>
 
-        <GridPresenter :for={column <- @columns}
-                        presenter={column[:presenter]}
-                        record={record}
-                        field={column.field}
-                        type={column.type}
-                        index={index}
-                        model={@model}
-                        dye={dyed?(record, assigns)}/>
+        {#for column <- @columns}
+          <GridPresenter presenter={column[:presenter]}
+                         {=record}
+                         field={column.field}
+                         type={column.type}
+                         {=index}
+                         {=@model}
+                         dye={dyed?(record, assigns)}/>
+        {/for}
       {/for}
     </div>
     """

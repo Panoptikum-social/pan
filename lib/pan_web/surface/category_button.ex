@@ -17,10 +17,10 @@ defmodule PanWeb.Surface.CategoryButton do
     ~F"""
     <LinkButton to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
                 class={color_class_cycle(@index_on_page), @class}
-                large={@large}
+                {=@large}
                 icon="folder-heroicons-outline"
                 title={@title || @for.title}
-                truncate={@truncate} />
+                {=@truncate} />
     """
   end
 end

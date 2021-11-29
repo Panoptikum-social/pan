@@ -6,8 +6,8 @@ defmodule PanWeb.Surface.Submit do
 
   def render(assigns) do
     ~F"""
-    <Form.Submit label={@label}
-            class="my-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light" />
+    <Form.Submit {=@label}
+                 class="my-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light" />
     """
   end
 end
