@@ -10,20 +10,20 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
   def present(assigns) do
     link_title =
       assigns.for.field
-      |> Atom.to_string
+      |> Atom.to_string()
       |> String.replace("_", " ")
-      |> String.capitalize
+      |> String.capitalize()
 
     case assigns.for do
       %Ecto.Association.BelongsTo{} ->
         if Map.get(assigns.record, assigns.for.owner_key) do
           Routes.databrowser_path(
             Endpoint,
-              :show,
-              Phoenix.Naming.resource_name(assigns.for.related),
-              Map.get(assigns.record, assigns.for.owner_key)
-            )
-            |> styled_live_redirect(assigns, link_title)
+            :show,
+            Phoenix.Naming.resource_name(assigns.for.related),
+            Map.get(assigns.record, assigns.for.owner_key)
+          )
+          |> styled_live_redirect(assigns, link_title)
         else
           "∅ " <> Phoenix.Naming.resource_name(assigns.for.related)
         end
