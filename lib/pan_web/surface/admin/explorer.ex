@@ -67,7 +67,8 @@ defmodule PanWeb.Surface.Admin.Explorer do
         </thead>
         <tbody>
           {#for item <- @items}
-            <tr phx-click="select" phx-value-id={item.id}
+            <tr phx-click="select"
+                phx-value-id={item.id}
                 class={"cursor-pointer",
                         "bg-sunflower-lighter": item.selected,
                         "bg-white": !item.selected}>

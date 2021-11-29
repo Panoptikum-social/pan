@@ -104,12 +104,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-  def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
+  def handle_event("paginate", %{"page" => page}, socket) do
     socket =
-      assign(socket,
-        page: String.to_integer(page),
-        per_page: String.to_integer(per_page)
-      )
+      assign(socket, page: String.to_integer(page))
       |> get_records
 
     {:noreply, socket}
