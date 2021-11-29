@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.CheckBoxField do
 
   def render(assigns) do
     ~F"""
-    <Form.Field name={@name |> String.to_atom}
+    <Form.Field {=@name}
                 class="my-4 flex items-center">
       <Form.Checkbox />
       <Form.Label class="font-medium text-gray-darker pl-4">

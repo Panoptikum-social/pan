@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.EmailField do
 
   def render(assigns) do
     ~F"""
-    <Form.Field name={@name |> String.to_atom} class="my-4">
+    <Form.Field {=@name} class="my-4">
       <Form.Label class="block font-medium text-gray-darker"/>
       <Form.EmailInput class="w-full" />
       <Form.ErrorTag />
