@@ -324,7 +324,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
                     phx-click="show"
                     phx-target={@myself}>
                     🔍 Show
@@ -334,7 +334,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
                     phx-click="edit"
                     phx-target={@myself}>
                     🖊️ Edit
@@ -344,7 +344,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
                     phx-click="toggle_request_confirmation"
                     phx-target={@myself}>
               🗑️ Delete
@@ -356,7 +356,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                      :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                      disabled={Tools.disabled?(:one, @selected_records |> length)}
                       phx-click="delete"
                       phx-target={@myself}>
                 Yes
@@ -364,7 +364,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
                              disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                      :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                      disabled={Tools.disabled?(:one, @selected_records |> length)}
                       phx-click="toggle_request_confirmation"
                       phx-target={@myself}>
                 No
@@ -375,7 +375,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:nonzero, @selected_records |> length)}
+                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                     phx-click="link"
                     phx-target={@myself}>
               🔗 Link
@@ -385,7 +385,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:nonzero, @selected_records |> length)}
+                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                     phx-click="unlink"
                     phx-target={@myself}>
               ✂️ Unlink
@@ -395,7 +395,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    :attrs={disabled: Tools.disabled?(:one, @selected_records |> length)}
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
                     phx-click="associate"
                     phx-target={@myself}>
               ↔️ New association

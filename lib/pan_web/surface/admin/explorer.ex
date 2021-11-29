@@ -46,7 +46,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
                   via-gray-lighter to-gray-light space-x-5 border-b border-gray">
         {#for toolbar_item <- @toolbar_items}
           <button phx-click={toolbar_item.message}
-                  :attrs={disabled: Tools.disabled?(toolbar_item.when_selected_count, @selected_count)}
+                  disabled={Tools.disabled?(toolbar_item.when_selected_count, @selected_count)}
                   class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                          lg:px-2 lg:py-0 m-1 rounded disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none">
             {toolbar_item.title}

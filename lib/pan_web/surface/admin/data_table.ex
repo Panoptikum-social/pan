@@ -119,7 +119,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
           <input :if={Map.has_key?(record, :id)}
                  type="checkbox"
                  class="my-1.5"
-                 :attrs={checked: selected?(record, @selected_records)}
+                 checked={selected?(record, @selected_records)}
                  phx-click="select"
                  phx-value-id={record.id}
                  phx-target={"#" <> @target} />
@@ -127,7 +127,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
           <input :if={length(@primary_key) == 2}
                  type="checkbox"
                  class="my-1.5"
-                 :attrs={checked: selected?(record, @selected_records)}
+                 checked={selected?(record, @selected_records)}
                  phx-click="select"
                  phx-value-one={Map.get(record, hd(@primary_key))}
                  phx-value-two={Map.get(record, hd(tl(@primary_key)))}
