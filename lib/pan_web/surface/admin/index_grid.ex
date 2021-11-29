@@ -325,8 +325,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show"
-                    phx-target={@myself}>
+                    :on-click={"show"}>
                     🔍 Show
             </button>
 
@@ -335,8 +334,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit"
-                    phx-target={@myself}>
+                    :on-click={"edit"}>
                     🖊️ Edit
             </button>
 
@@ -345,8 +343,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="toggle_request_confirmation"
-                    phx-target={@myself}>
+                    :on-click={"toggle_request_confirmation"}>
               🗑️ Delete
             </button>
 
@@ -357,16 +354,14 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                             lg:px-2 lg:py-0 m-1 rounded
                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                       disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      phx-click="delete"
-                      phx-target={@myself}>
+                      :on-click={"delete"}>
                 Yes
               </button>
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
                              disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                       disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      phx-click="toggle_request_confirmation"
-                      phx-target={@myself}>
+                      :on-click={"toggle_request_confirmation"}>
                 No
               </button>
             </div>
@@ -376,8 +371,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    phx-click="link"
-                    phx-target={@myself}>
+                    :on-click={"link"}>
               🔗 Link
             </button>
 
@@ -386,8 +380,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    phx-click="unlink"
-                    phx-target={@myself}>
+                    :on-click={"unlink"}>
               ✂️ Unlink
             </button>
 
@@ -396,8 +389,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="associate"
-                    phx-target={@myself}>
+                    :on-click={"associate"}>
               ↔️ New association
             </button>
 
@@ -420,7 +412,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           </div>
 
           <button :if={:assignment_filter in @buttons}
-                  :on-click={"toggle_hide_filtered", target: @myself}
+                  :on-click={"toggle_hide_filtered"}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
           </button>
