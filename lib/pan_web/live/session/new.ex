@@ -22,7 +22,7 @@ defmodule PanWeb.Live.Session.New do
           <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
         </Field>
 
-        <PasswordField name="password" />
+        <PasswordField name={:password} />
 
         <Field name="hint" class="mt-4 text-gray-darker">
           Submitting this form will transfer a session cookie to the server. See
