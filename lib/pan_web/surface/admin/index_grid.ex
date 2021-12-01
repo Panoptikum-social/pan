@@ -426,6 +426,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     {=@nr_of_filtered} />
 
         <DataTable id={"index_table-#{@id}"}
+                   sort="sort"
+                   cycle_search_mode="cycle_search_mode"
                    target={@id}
                    {=@cols}
                    {=@model}

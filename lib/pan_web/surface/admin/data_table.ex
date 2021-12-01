@@ -17,6 +17,8 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(records, :list, required: false, default: [])
   prop(path_helper, :atom, required: false)
   prop(target, :string, required: false)
+  prop(sort, :event, required: true)
+  prop(cycle_search_mode, :event, required: true)
   prop(search_filter, :tuple, default: {})
   prop(selected_records, :list, default: [])
   prop(primary_key, :list, default: [:id])
@@ -62,7 +64,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   end
 
   defp selected?(record, selected_records) do
-    Enum.any?(selected_records, &(all_keys_maching?(record, &1)))
+    Enum.any?(selected_records, &all_keys_maching?(record, &1))
   end
 
   defp all_keys_maching?(record, selected_record) do
@@ -78,10 +80,10 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
       {#for column <- @columns}
         <div class="bg-white italic grid place-content-center text-sm text-center">
-          <SortLink {=@sort_by}
-                    field={column.field}
+          <SortLink click={@sort}
+                    {=@sort_by}
                     {=@sort_order}
-                    target={"##{@target}"}>
+                    field={column.field}>
             {column.label}
           </SortLink>
         </div>
@@ -89,10 +91,10 @@ defmodule PanWeb.Surface.Admin.DataTable do
 
       <div :if={:search in @buttons}
            class="bg-gray-lighter text-center p-1">
-        <Link to="#"
-              click={"cycle_search_mode", target: "##{@target}"}
-              label={@search_mode |> Atom.to_string |> String.replace("_", " ")}
-              class="text-link hover:text-link-dark underline" />
+        <a :on-click={@cycle_search_mode}
+           class="text-link hover:text-link-dark underline">
+          {@search_mode |> Atom.to_string |> String.replace("_", " ")}
+        </a>
       </div>
 
       {#for column <- @columns}

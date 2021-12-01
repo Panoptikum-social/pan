@@ -8,7 +8,6 @@ defmodule PanWeb.Surface.Admin.Pagination do
   prop(nr_of_unfiltered, :integer, required: true)
   prop(nr_of_filtered, :integer, required: true)
   prop(class, :css_class, required: false)
-  prop(target, :string, required: true)
   prop(click, :event, required: true)
 
   def format(number) do

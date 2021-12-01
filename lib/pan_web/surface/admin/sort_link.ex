@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.Admin.SortLink do
   prop(sort_by, :atom, required: true)
   prop(field, :atom, required: true)
   prop(disabled, :boolean, required: false, default: false)
-  prop(target, :string, required: true)
+  prop(click, :event, required: true)
 
   slot(default, required: true)
 
@@ -16,7 +16,7 @@ defmodule PanWeb.Surface.Admin.SortLink do
   def render(assigns) do
     ~F"""
     <a href="#"
-       :on-click={"sort", target: @target}
+       :on-click={@click}
        phx-value-sort-by={@field}
        phx-value-sort-order={toggle_sort_order(@sort_order)}>
       {#if @sort_by == @field}
