@@ -9,6 +9,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
   prop(nr_of_filtered, :integer, required: true)
   prop(class, :css_class, required: false)
   prop(target, :string, required: true)
+  prop(click, :event, required: true)
 
   def format(number) do
     number
@@ -25,16 +26,16 @@ defmodule PanWeb.Surface.Admin.Pagination do
     <div class={"flex items-center justify-between", @class}>
       <div class="flex items-center space-x-2">
         <PaginationLink :if={@page > 1}
+                        click={@click}
                         page={@page - 1}
-                        class="rounded-l"
-                        {=@target} >
+                        class="rounded-l">
           Previous
         </PaginationLink>
         {#for i <- 1..@page}
           <PaginationLink :if={i != @page}
+                          click={@click}
                           page={i}
-                          class={"rounded-l-lg": i==1}
-                          {=@target} >
+                          class={"rounded-l-lg": i==1}>
             {i}
           </PaginationLink>
           <span :if={i == @page}>
@@ -42,9 +43,9 @@ defmodule PanWeb.Surface.Admin.Pagination do
           </span>
         {/for}
         <PaginationLink :if={@page < @nr_of_pages}
+                        click={@click}
                         page={@page + 1}
-                        class="rounded-r"
-                        {=@target} >
+                        class="rounded-r">
           Next
         </PaginationLink>
       </div>

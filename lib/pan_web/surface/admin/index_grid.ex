@@ -399,13 +399,13 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
           <div :if={:number_of_records in @buttons}
                class="px-4 border-r border-gray">
-            <PerPageLink delta="-5" target={@myself}/>
-            <PerPageLink delta="-3" target={@myself}/>
-            <PerPageLink delta="-1" target={@myself}/>
+            <PerPageLink delta="-5" click="per_page"/>
+            <PerPageLink delta="-3" click="per_page"/>
+            <PerPageLink delta="-1" click="per_page"/>
             <span class="hidden sm:inline">Records</span>
-            <PerPageLink delta="+1" target={@myself}/>
-            <PerPageLink delta="+3" target={@myself}/>
-            <PerPageLink delta="+5" target={@myself}/>
+            <PerPageLink delta="+1" click="per_page"/>
+            <PerPageLink delta="+3" click="per_page"/>
+            <PerPageLink delta="+5" click="per_page"/>
           </div>
 
           <button :if={:assignment_filter in @buttons}
@@ -418,7 +418,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         <Pagination :if={:pagination in @buttons}
                     class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
-                    target={@myself}
+                    click="paginate"
                     {=@page}
                     {=@per_page}
                     {=@nr_of_pages}
