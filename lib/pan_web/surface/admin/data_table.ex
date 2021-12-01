@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   on_mount PanWeb.Live.Admin.Auth
 
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
-  alias Surface.Components.{Form, Link, Form.TextInput}
+  alias Surface.Components.{Form, Form.TextInput}
   require Integer
 
   prop(cols, :list, required: true)
@@ -16,8 +16,9 @@ defmodule PanWeb.Surface.Admin.DataTable do
   prop(hide_filtered, :boolean, required: false, default: true)
   prop(records, :list, required: false, default: [])
   prop(path_helper, :atom, required: false)
-  prop(target, :string, required: false)
   prop(sort, :event, required: true)
+  prop(select, :event, required: true)
+  prop(search, :event, required: true)
   prop(cycle_search_mode, :event, required: true)
   prop(search_filter, :tuple, default: {})
   prop(selected_records, :list, default: [])
@@ -103,7 +104,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
                       "text-right": column.type == :integer}>
           <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
                 for={:search}
-                change={"search", target: "##{@target}"}
+                change={@search}
                 opts={autocomplete: "off"}>
             <TextInput field={column.field}
                        value={@search_options[column.field]}
@@ -124,18 +125,16 @@ defmodule PanWeb.Surface.Admin.DataTable do
                  type="checkbox"
                  class="my-1.5"
                  checked={selected?(record, @selected_records)}
-                 phx-click="select"
-                 phx-value-id={record.id}
-                 phx-target={"##{@target}"} />
+                 :on-click={@select}
+                 phx-value-id={record.id} />
 
           <input :if={length(@primary_key) == 2}
                  type="checkbox"
                  class="my-1.5"
                  checked={selected?(record, @selected_records)}
-                 phx-click="select"
+                 :on-click={@select}
                  phx-value-one={Map.get(record, hd(@primary_key))}
-                 phx-value-two={Map.get(record, hd(tl(@primary_key)))}
-                 phx-target={"##{@target}"} />
+                 phx-value-two={Map.get(record, hd(tl(@primary_key)))} />
         </div>
 
         {#for column <- @columns}
