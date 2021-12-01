@@ -18,7 +18,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   end
 
   def handle_info({:count, id: id, module: module}, socket) do
-    send_update(module, id: id, count: :now)
+    if socket.assigns.admin, do: send_update(module, id: id, count: :now)
     {:noreply, socket}
   end
 

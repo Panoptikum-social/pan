@@ -1,5 +1,6 @@
 defmodule PanWeb.Surface.Admin.PaginationLink do
   use Surface.Component
+  on_mount PanWeb.Live.Admin.Auth
 
   prop(page, :integer, required: true)
   prop(disabled, :boolean, required: false, default: false)

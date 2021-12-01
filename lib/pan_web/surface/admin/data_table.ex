@@ -1,5 +1,7 @@
 defmodule PanWeb.Surface.Admin.DataTable do
   use Surface.LiveComponent
+  on_mount PanWeb.Live.Admin.Auth
+
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
   alias Surface.Components.{Form, Link, Form.TextInput}
   require Integer
