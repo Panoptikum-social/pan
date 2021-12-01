@@ -62,7 +62,7 @@ defmodule PanWeb.Surface.Admin.Grid do
           <SortLink {=@sort_by}
                     field={column.field}
                     {=@sort_order}
-                    target={"#" <> @target}>
+                    target={"##{@target}"}>
             {column.label}
           </SortLink>
         </div>
@@ -72,7 +72,7 @@ defmodule PanWeb.Surface.Admin.Grid do
         class="bg-white text-center p-1">
       Search:
       <Link to="#"
-            click={"toggle_search_mode", target: "#" <> @target}
+            click={"toggle_search_mode", target: "##{@target}"}
             label={if @like_search, do: "contains", else: "exact"}
             class="text-link hover:text-link-dark underline" />
       </div>
@@ -83,7 +83,7 @@ defmodule PanWeb.Surface.Admin.Grid do
                    "text-right": column.type == :integer}>
         <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
               for={:search}
-              change={"search", target: "#" <> @target}
+              change={"search", target: "##{@target}"}
               opts={autocomplete: "off"}>
           <TextInput field={column.field}
                     value={@search_options[column.field]}
@@ -112,7 +112,7 @@ defmodule PanWeb.Surface.Admin.Grid do
                         label="🖊️" />
 
           <Link to="#"
-                click={"delete", target: "#" <> @target}
+                click={"delete", target: "##{@target}"}
                 opts={data: [confirm: "Are you sure?"],
                         "phx-value-id": record.id}
                 class="block"

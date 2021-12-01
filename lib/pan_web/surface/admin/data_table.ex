@@ -70,7 +70,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
   def render(assigns) do
     ~F"""
     <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={"grid-template-columns: 6rem " <> (Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")) <> ";"}>
+         style={"grid-template-columns: 6rem #{Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")};"}>
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
          <span :if={:search in @buttons}>Search Mode</span>
       </div>
@@ -79,7 +79,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
           <SortLink {=@sort_by}
                     field={column.field}
                     {=@sort_order}
-                    target={"#" <> @target}>
+                    target={"##{@target}"}>
             {column.label}
           </SortLink>
         </div>
@@ -88,7 +88,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
       <div :if={:search in @buttons}
            class="bg-gray-lighter text-center p-1">
         <Link to="#"
-              click={"cycle_search_mode", target: "#" <> @target}
+              click={"cycle_search_mode", target: "##{@target}"}
               label={@search_mode |> Atom.to_string |> String.replace("_", " ")}
               class="text-link hover:text-link-dark underline" />
       </div>
@@ -99,7 +99,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
                       "text-right": column.type == :integer}>
           <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
                 for={:search}
-                change={"search", target: "#" <> @target}
+                change={"search", target: "##{@target}"}
                 opts={autocomplete: "off"}>
             <TextInput field={column.field}
                        value={@search_options[column.field]}
@@ -122,7 +122,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
                  checked={selected?(record, @selected_records)}
                  phx-click="select"
                  phx-value-id={record.id}
-                 phx-target={"#" <> @target} />
+                 phx-target={"##{@target}"} />
 
           <input :if={length(@primary_key) == 2}
                  type="checkbox"
@@ -131,7 +131,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
                  phx-click="select"
                  phx-value-one={Map.get(record, hd(@primary_key))}
                  phx-value-two={Map.get(record, hd(tl(@primary_key)))}
-                 phx-target={"#" <> @target} />
+                 phx-target={"##{@target}"} />
         </div>
 
         {#for column <- @columns}

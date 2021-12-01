@@ -425,7 +425,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     {=@nr_of_unfiltered}
                     {=@nr_of_filtered} />
 
-        <DataTable id={"index_table-" <> @id}
+        <DataTable id={"index_table-#{@id}"}
                    target={@id}
                    {=@cols}
                    {=@model}
