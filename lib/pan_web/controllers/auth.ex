@@ -28,6 +28,7 @@ defmodule PanWeb.Auth do
     conn
     |> put_current_user(user)
     |> put_session(:user_id, user.id)
+    |> put_session(:admin, user.admin)
     |> configure_session(renew: true)
   end
 
@@ -125,7 +126,6 @@ defmodule PanWeb.Auth do
 
   def authenticate_admin(conn, _opts) do
     current_user = conn.assigns.current_user
-
     if current_user && current_user.admin do
       conn
     else
