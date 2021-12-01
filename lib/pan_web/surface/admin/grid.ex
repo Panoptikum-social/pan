@@ -17,7 +17,10 @@ defmodule PanWeb.Surface.Admin.Grid do
   prop(hide_filtered, :boolean, required: false, default: true)
   prop(records, :list, required: false, default: [])
   prop(path_helper, :atom, required: false)
-  prop(target, :string, required: false)
+  prop(sort, :event, required: true)
+  prop(search, :event, required: true)
+  prop(delete, :event, required: true)
+  prop(cycle_search_mode, :event, required: true)
   prop(search_filter, :tuple, default: {})
 
   data(columns, :list, default: [])
@@ -60,10 +63,10 @@ defmodule PanWeb.Surface.Admin.Grid do
       </div>
       {#for column <- @columns}
         <div class="bg-white italic grid place-content-center text-sm text-center">
-          <SortLink {=@sort_by}
-                    field={column.field}
+          <SortLink click={@sort}
+                    {=@sort_by}
                     {=@sort_order}
-                    target={"##{@target}"}>
+                    field={column.field}>
             {column.label}
           </SortLink>
         </div>
@@ -72,10 +75,10 @@ defmodule PanWeb.Surface.Admin.Grid do
       <div :if={@navigation}
         class="bg-white text-center p-1">
       Search:
-      <Link to="#"
-            click={"toggle_search_mode", target: "##{@target}"}
-            label={if @like_search, do: "contains", else: "exact"}
-            class="text-link hover:text-link-dark underline" />
+      <a :on-click={@cycle_search_mode}
+         class="text-link hover:text-link-dark underline" >
+         {if @like_search, do: "contains", else: "exact"}
+      </a>
       </div>
 
       {#for column <- @columns}
@@ -84,7 +87,7 @@ defmodule PanWeb.Surface.Admin.Grid do
                    "text-right": column.type == :integer}>
         <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
               for={:search}
-              change={"search", target: "##{@target}"}
+              change={@search}
               opts={autocomplete: "off"}>
           <TextInput field={column.field}
                     value={@search_options[column.field]}
@@ -112,8 +115,7 @@ defmodule PanWeb.Surface.Admin.Grid do
                                           record: record}}
                         label="🖊️" />
 
-          <Link to="#"
-                click={"delete", target: "##{@target}"}
+          <Link click={@delete}
                 opts={data: [confirm: "Are you sure?"],
                         "phx-value-id": record.id}
                 class="block"

@@ -35,17 +35,16 @@ defmodule PanWeb.Surface.Panel do
            class={"p-3 rounded-t-xl", heading_color_classes(@purpose)}>
         <#slot name="panel_heading" />
 
-        {#if !@target}
+        {#if @target}
+          <Link to={@target}
+                class="hover:text-gray-lighter"
+                label={@heading} />
+          <Link to={@target}
+                class="float-right hover:text-gray-lighter"
+                label={@heading_right} />
+        {#else}
           {@heading}
         {/if}
-        <Link :if={@target}
-              to={@target}
-              class="hover:text-gray-lighter"
-              label={@heading} />
-        <Link :if={@target}
-              to={@target}
-              class="float-right hover:text-gray-lighter"
-              label={@heading_right} />
       </div>
 
       <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
