@@ -4,7 +4,6 @@ defmodule PanWeb.CategoryFrontendView do
   alias Pan.Repo
   alias PanWeb.Like
   alias PanWeb.Follow
-  import Scrivener.HTML
 
   def list_group_item_cycle(counter) do
     Enum.at(

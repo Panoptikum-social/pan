@@ -138,4 +138,10 @@ defmodule PanWeb.Category do
 
     %{category: category, podcasts: podcasts}
   end
+
+  def get_by_id_with_parent(id) do
+    Category
+    |> Repo.get!(id)
+    |> Repo.preload(:parent)
+  end
 end

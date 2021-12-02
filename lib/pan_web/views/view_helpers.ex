@@ -358,7 +358,21 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
-        "photograph-heroicons-outline" ->
+        "clock-horoicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+                class="#{class}"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+            <path strokeLinecap="round"
+                  strokeLinejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          """
+
+          "photograph-heroicons-outline" ->
           """
           <svg xmlns="http://www.w3.org/2000/svg"
                class="#{class}"
@@ -465,7 +479,7 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
-        "sort-amount-down-alt-solid" ->
+        "sort-up-lineawesome-solid" ->
           """
           <svg xmlns="http://www.w3.org/2000/svg"
                class="#{class}"
@@ -477,7 +491,7 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
-          "sort-amount-down-solid" ->
+          "sort-down-lineawesome-solid" ->
             """
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="#{class}"
@@ -488,7 +502,6 @@ defmodule PanWeb.ViewHelpers do
                        M 4 21 L 4 23 L 8 23 L 8 21 Z M 4 25 L 4 27 L 6 27 L 6 25 Z"/>
             </svg>
             """
-
         _ ->
           raise "An icon is missing: " <> name
       end

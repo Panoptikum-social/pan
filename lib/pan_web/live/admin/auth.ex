@@ -4,8 +4,7 @@ defmodule PanWeb.Live.Admin.Auth do
   def mount(_params, %{"user_id" => user_id, "admin" => admin} = _session, socket) do
     socket =
       socket
-      |> assign(:current_user_id, user_id)
-      |> assign(:admin, admin)
+      |> assign(current_user_id: user_id, admin: admin)
     {:cont, socket}
   end
 

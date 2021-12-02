@@ -117,4 +117,17 @@ defmodule PanWeb.Episode do
     |> Episode.changeset(%{image_url: nil, link: episode.link || "https://example.com"})
     |> Repo.update()
   end
+
+  def latest_episodes_by_podcast_ids(podcast_ids, page, per_page) do
+    from(e in Episode,
+      order_by: [desc: :publishing_date],
+      where:
+        e.publishing_date < ^NaiveDateTime.utc_now() and
+          e.podcast_id in ^podcast_ids,
+      preload: :podcast,
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+   |> Repo.all()
+  end
 end

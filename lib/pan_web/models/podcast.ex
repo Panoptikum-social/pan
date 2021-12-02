@@ -500,4 +500,13 @@ defmodule PanWeb.Podcast do
   def get_by_id(id) do
     Repo.get!(Podcast, id)
   end
+
+  def ids_by_category_id(id) do
+    from(c in Category,
+      join: p in assoc(c, :podcasts),
+      where: not p.blocked and c.id == ^id,
+      select: p.id
+    )
+    |> Repo.all()
+  end
 end

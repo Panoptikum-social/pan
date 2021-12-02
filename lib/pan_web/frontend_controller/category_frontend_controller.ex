@@ -1,6 +1,6 @@
 defmodule PanWeb.CategoryFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{Category, Episode, Language, Podcast}
+  alias PanWeb.{Category, Language, Podcast}
 
   def show(conn, %{"id" => id}) do
     if category = Repo.get(Category, id) do
@@ -98,88 +98,6 @@ defmodule PanWeb.CategoryFrontendController do
       category: category,
       podcasts: podcasts
     )
-  end
-
-  def latest_episodes(conn, %{"id" => id} = params) do
-    if params["page"] && String.to_integer(params["page"]) > 1000 do
-      redirect(conn, to: category_frontend_path(conn, :latest_episodes, id))
-    else
-      category =
-        Category
-        |> Repo.get!(id)
-        |> Repo.preload(:parent)
-
-      if category.parent.title == "👩 👨 Community" do
-        podcast_ids =
-          from(c in Category,
-            join: p in assoc(c, :podcasts),
-            where:
-              not p.blocked and
-                c.id == ^id,
-            select: p.id
-          )
-          |> Repo.all()
-
-        latest_episodes =
-          from(e in Episode,
-            order_by: [desc: :publishing_date],
-            where:
-              e.publishing_date < ^NaiveDateTime.utc_now() and
-                e.podcast_id in ^podcast_ids,
-            preload: :podcast
-          )
-          |> Repo.paginate(params)
-
-        render(conn, "latest_episodes.html",
-          latest_episodes: latest_episodes,
-          category_id: category.id,
-          category_title: category.title
-        )
-      else
-        render(conn, "no_community.html")
-      end
-    end
-  end
-
-  def latest_episodes_alt(conn, %{"id" => id} = params) do
-    if params["page"] && String.to_integer(params["page"]) > 1000 do
-      redirect(conn, to: category_frontend_path(conn, :latest_episodes, id))
-    else
-      category =
-        Category
-        |> Repo.get!(id)
-        |> Repo.preload(:parent)
-
-      if category.parent.title == "👩 👨 Community" do
-        podcast_ids =
-          from(c in Category,
-            join: p in assoc(c, :podcasts),
-            where:
-              not p.blocked and
-                c.id == ^id,
-            select: p.id
-          )
-          |> Repo.all()
-
-        latest_episodes =
-          from(e in Episode,
-            order_by: [desc: :publishing_date],
-            where:
-              e.publishing_date < ^NaiveDateTime.utc_now() and
-                e.podcast_id in ^podcast_ids,
-            preload: :podcast
-          )
-          |> Repo.paginate(params)
-
-        render(conn, "latest_episodes_alt.html",
-          latest_episodes: latest_episodes,
-          category_id: category.id,
-          category_title: category.title
-        )
-      else
-        render(conn, "no_community.html")
-      end
-    end
   end
 
   def categorized(conn, %{"id" => id}) do
