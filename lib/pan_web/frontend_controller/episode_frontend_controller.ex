@@ -38,32 +38,6 @@ defmodule PanWeb.EpisodeFrontendController do
     )
   end
 
-  def index(conn, params) do
-    episode_ids =
-      from(e in Episode,
-        order_by: [desc: :id],
-        select: e.id
-      )
-      |> Repo.paginate(
-        page: params["page"],
-        page_size: 10,
-        options: [total_entries: total_estimated(Episode)]
-      )
-
-    episodes =
-      from(e in Episode,
-        join: p in assoc(e, :podcast),
-        where:
-          e.id in ^episode_ids.entries and
-            not p.blocked,
-        order_by: [desc: :id],
-        preload: :podcast
-      )
-      |> Repo.all()
-
-    render(conn, "index.html", episode_ids: episode_ids, episodes: episodes)
-  end
-
   def silence(conn, _params) do
     # Just here to silence a weird request from the podlove webplayer
     text(conn, nil)

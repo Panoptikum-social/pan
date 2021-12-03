@@ -50,7 +50,7 @@ defmodule PanWeb.Episode do
       :podcast_id,
       :image_title,
       :image_url,
-      :full_text,
+      :full_text
     ])
     |> validate_required([:title, :link, :publishing_date, :podcast_id])
     |> unique_constraint(:guid)
@@ -77,6 +77,10 @@ defmodule PanWeb.Episode do
   end
 
   def latest do
+    latest(1, 10)
+  end
+
+  def latest(page, per_page) do
     from(e in PanWeb.Episode,
       order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
       join: p in assoc(e, :podcast),
@@ -93,9 +97,12 @@ defmodule PanWeb.Episode do
         publishing_date: e.publishing_date,
         duration: e.duration,
         author_id: persona.id,
-        author_name: persona.name
+        author_name: persona.name,
+        podcast_id: e.podcast_id,
+        podcast_title: p.title
       },
-      limit: 10
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
     )
     |> Repo.all()
   end
@@ -125,7 +132,7 @@ defmodule PanWeb.Episode do
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )
-   |> Repo.all()
+    |> Repo.all()
   end
 
   # FIXME: Can be removed, when Episode FrontendView is cleaned up

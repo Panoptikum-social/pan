@@ -184,8 +184,9 @@ defmodule PanWeb.Router do
     get("/qrcode/:code", QRCodeFrontendController, :generate)
 
     get("/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence)
-    resources("/episodes", EpisodeFrontendController, only: [:show, :index])
+    resources("/episodes", EpisodeFrontendController, only: [:show])
     get("/episodes/:id/player", EpisodeFrontendController, :player)
+    live("/episodes", Live.Episode.Index, :index, as: :episode_frontend)
 
     live("/users/new", Live.User.New, :new, as: :user_frontend)
     resources("/users", UserFrontendController, only: [:show, :index, :create])
