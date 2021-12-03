@@ -100,6 +100,34 @@ defmodule PanWeb.Episode do
     |> Repo.all()
   end
 
+  def latest_episodes_by_podcast_ids(podcast_ids, page, per_page) do
+    from(e in Episode,
+      order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
+      join: p in assoc(e, :podcast),
+      where:
+        not p.blocked and
+          e.publishing_date < ^NaiveDateTime.utc_now() and
+          e.podcast_id in ^podcast_ids,
+      left_join: g in assoc(e, :gigs),
+      where: g.role == "author",
+      left_join: persona in assoc(g, :persona),
+      select: %{
+        id: e.id,
+        title: e.title,
+        subtitle: e.subtitle,
+        publishing_date: e.publishing_date,
+        duration: e.duration,
+        author_id: persona.id,
+        author_name: persona.name,
+        podcast_id: e.podcast_id,
+        podcast_title: p.title
+      },
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+   |> Repo.all()
+  end
+
   # FIXME: Can be removed, when Episode FrontendView is cleaned up
   def author(episode) do
     gig =
@@ -116,18 +144,5 @@ defmodule PanWeb.Episode do
     episode
     |> Episode.changeset(%{image_url: nil, link: episode.link || "https://example.com"})
     |> Repo.update()
-  end
-
-  def latest_episodes_by_podcast_ids(podcast_ids, page, per_page) do
-    from(e in Episode,
-      order_by: [desc: :publishing_date],
-      where:
-        e.publishing_date < ^NaiveDateTime.utc_now() and
-          e.podcast_id in ^podcast_ids,
-      preload: :podcast,
-      limit: ^per_page,
-      offset: (^page - 1) * ^per_page
-    )
-   |> Repo.all()
   end
 end
