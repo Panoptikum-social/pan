@@ -42,8 +42,8 @@ defmodule PanWeb.Live.User.New do
         <TextField name="name" />
         <TextField name="username" />
         <EmailField name="email" />
-        <PasswordField name="password" />
-        <PasswordField name="password_confirmation" />
+        <PasswordField name={:password} />
+        <PasswordField name={:password_confirmation} />
         <CheckBoxField name="podcaster" label="I am a podcaster" />
 
         <Field name="bot_check" class="my-4">

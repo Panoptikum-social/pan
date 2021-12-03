@@ -1,6 +1,5 @@
 defmodule PanWeb.EpisodeFrontendView do
   use PanWeb, :view
-  import Scrivener.HTML
   alias Pan.Repo
   alias PanWeb.Like
   alias PanWeb.Episode
