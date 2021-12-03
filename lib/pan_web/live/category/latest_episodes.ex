@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
      socket
      |> assign(
        page: 1,
-       per_page: 10,
+       per_page: 12,
        category: Category.get_by_id_with_parent(id),
        podcast_ids: podcast_ids
      )
@@ -29,11 +29,11 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   def render(assigns) do
     ~F"""
     <Panel heading={"Latest Episodes for #{@category.title}"} purpose="episode" class="m-4">
-      <div id="latest_episodes" phx-update="append" class="m-4">
+      <div id="latest_episodes" phx-update="append" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
         {#for episode <- @latest_episodes }
-          <div id={"episode-#{episode.id}"} class="mt-4 p-4 rounded-xl shadow">
+          <div id={"episode-#{episode.id}"} class="p-2 rounded-xl shadow">
+            <p class="mb-1">Podcast <PodcastButton id={episode.podcast_id} title={episode.podcast_title} /></p>
             <EpisodeCard for={episode}/>
-            <PodcastButton id={episode.podcast_id} title={episode.podcast_title} />
           </div>
         {/for}
       </div>
