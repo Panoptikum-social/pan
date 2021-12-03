@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
      socket
      |> assign(
        page: 1,
-       per_page: 12,
+       per_page: 15,
        category: Category.get_by_id_with_parent(id),
        podcast_ids: podcast_ids
      )
