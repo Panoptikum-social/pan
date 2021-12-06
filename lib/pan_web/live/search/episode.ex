@@ -1,7 +1,8 @@
 defmodule PanWeb.Live.Search.Episode do
   use Surface.LiveView
   import PanWeb.Router.Helpers
-  import PanWeb.ViewHelpers, only: [icon: 1, truncate_string: 2]
+  import PanWeb.ViewHelpers, only: [icon: 1]
+  alias PanWeb.Surface.LinkButton
   alias Pan.Search
   alias PanWeb.Endpoint
 
@@ -30,78 +31,87 @@ defmodule PanWeb.Live.Search.Episode do
 
   def render(assigns) do
     ~F"""
-    <p>Showing {@hits_count} Episodes
-      (Nr. {(@page - 1) * @per_page + 1} to {(@page - 1) * @per_page + @hits_count} of {@total}). You might want to search for
-      <a href={search_frontend_path(Endpoint, :search, "categories", @term, page: 1)}>categories</a> |
-      <a href={search_frontend_path(Endpoint, :search, "podcasts", @term, page: 1)}>podcasts</a> |
-      <a href={search_frontend_path(Endpoint, :search, "personas", @term, page: 1)}>personas</a>
-      instead.
-    </p>
-
-    <p>
+    <p class="m-4">Found {@total} Episodes.<br/>
+      You might want to search for
+      <a href={search_frontend_path(Endpoint, :search, "categories", @term, page: 1)}
+         class="text-link hover:text-link-dark visited:text-mint">
+         categories
+      </a> |
+      <a href={search_frontend_path(Endpoint, :search, "podcasts", @term, page: 1)}
+         class="text-link hover:text-link-dark visited:text-mint">
+        podcasts
+      </a> |
+      <a href={search_frontend_path(Endpoint, :search, "personas", @term, page: 1)}
+         class="text-link hover:text-link-dark visited:text-mint">
+        personas
+      </a>
+      instead.<br/>
       You can mask your search terms with an asterisk at the end or the beginning of the search term,
-      as long as there are 3 characters left.<br/>
-      So "sciece", "sci*", "*sci" or "*ien*" will work, while "*ce" will not.
+      as long as there are at least 3 characters left.
     </p>
 
     <div id="search_results" phx-update="append">
       {#for hit <- @hits["hits"]}
-        <div id={"episode-#{hit["_id"]}"}>
-          <hr/>
-
-          <h3 style="margin-bottom: 5px; margin-top: 0px;">
+        <div id={"episode-#{hit["_id"]}"}
+             class="m-8">
+          <h3 class="text-2xl"
+              style="margin-bottom: 5px; margin-top: 0px;">
             {icon("headphones-lineawesome-solid")} Episode &nbsp;
-            <a href={episode_frontend_path(Endpoint, :show, hit["_id"])} style="color:#1a0dab">
-              {hit["_source"]["title"]},
+            <a href={episode_frontend_path(Endpoint, :show, hit["_id"])}
+              class="text-link hover:text-link-dark visited:text-mint">
+              {hit["_source"]["title"]}
             </a>
-            {#for language <- hit["_source"]["languages"]}>
-            {language["emoji"]}
-            {/for}
+            {#for language <- hit["_source"]["languages"]} {language["emoji"]} {/for}
           </h3>
 
-          <p class="small">
-            <a href={episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"])} style="color:#006621">
-              https://panoptikum.io {episode_frontend_path(PanWeb.Endpoint, :show, hit["_id"])}
+          <p class="text-sm">
+            <a href={episode_frontend_path(Endpoint, :show, hit["_id"])}
+              class="text-mint hover:text-mint-light">
+              https://panoptikum.io {episode_frontend_path(Endpoint, :show, hit["_id"])}
             </a>
           </p>
 
-          {#for {highlight_key, highlight_values} <- hit["highlight"]}
-            {#if highlight_values != []}
+          <table class="text-sm">
+            {#for {highlight_key, highlight_values} <- hit["highlight"]}
               {#for highlight_value <- highlight_values}
-                <p class="small" style="margin-bottom: 1px;">
-                  <i>{String.capitalize(highlight_key)}:</i>
-                  {raw(highlight_value)}
-                </p>
+                <tr>
+                  <td class="text-right pr-4">{String.capitalize(highlight_key)}</td>
+                  <td>{raw(highlight_value)}</td>
+                </tr>
               {/for}
-            {/if}
-          {/for}
+            {/for}
 
-          <p class="small">
-            <i>Episode captured:</i> {format_datetime(hit["_source"]["inserted_at"])}
-          </p>
+            <tr>
+              <td class="text-right pr-4">Imported</td>
+              <td>{format_datetime(hit["_source"]["inserted_at"])}</td>
+            </tr>
+          </table>
 
-          {#for {gig, index} <- Enum.with_index(hit["_source"]["gigs"])}
-            {#if index > 0}
-              &nbsp;·&nbsp;
-            {/if}
+          {#if hit["_source"]["gigs"]}
+            <p>
+              {#for {gig, index} <- Enum.with_index(hit["_source"]["gigs"])}
+                {#if index > 0}&nbsp;·&nbsp;{/if}
 
-            <a href={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])} class="btn btn-xs btn-lavender">
-              {icon("user-astronaut-lineawesome-solid")} {gig["persona_name"]}
-            </a>
-            <span class="label label-success">{gig["role"]}</span>
-          {/for}
+                <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
+                            class="my-2 bg-lavender text-white border border-gray-dark
+                                  hover:bg-lavender-light hover:border-lavender"
+                            icon="user-astronaut-lineawesome-solid"
+                            title={gig["persona_name"]} />
+                <span class="label label-success">{gig["role"]}</span>
+              {/for}
+            </p>
+          {/if}
 
-          <hr style="margin-top: -15px; visibility:hidden;" />
-
-          <a href={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
-            class="btn btn-default btn-xs"
-            style="color: #000">
-            {icon("podcast-lineawesome-solid")} {truncate_string(hit["_source"]["podcast"]["title"], 50)}
-          </a>
+          <LinkButton to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
+                      class={"bg-white hover:bg-gray-lighter text-black border-gray"}
+                      icon="podcast-lineawesome-solid"
+                      title={hit["_source"]["podcast"]["title"]}
+                      truncate={true} />
         </div>
       {/for}
     </div>
-    <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+    <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
+    {#for _index <- 1..8}<p class="h-24"/>{/for}
     """
   end
 end
