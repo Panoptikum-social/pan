@@ -113,7 +113,11 @@ defmodule PanWeb.Live.Search do
                   class="text-link hover:text-link-dark visited:text-mint">
                   {hit["_source"]["title"]}
                 </a>
-                {#for language <- hit["_source"]["languages"]} {language["emoji"]} {/for}
+                {#if hit["_source"]["languages"]}
+                  {#for language <- hit["_source"]["languages"]}
+                    {language["emoji"]}
+                  {/for}
+                {/if}
               </h3>
 
               <p class="text-sm">
@@ -123,7 +127,7 @@ defmodule PanWeb.Live.Search do
                 </a>
               </p>
 
-              <table class="text-sm">format_date
+              <table class="text-sm">
                 {#for {highlight_key, highlight_values} <- hit["highlight"]}
                   {#for highlight_value <- highlight_values}
                     <tr>

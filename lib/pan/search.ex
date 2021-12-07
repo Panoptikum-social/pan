@@ -13,10 +13,10 @@ defmodule Pan.Search do
   end
 
   def push_missing do
-    # Search.Category.batch_index()
-    # Search.Persona.batch_index()
-    # Search.Podcast.batch_index()
-    # Search.Episode.batch_index()
+    Search.Category.batch_index()
+    Search.Persona.batch_index()
+    Search.Podcast.batch_index()
+    Search.Episode.batch_index()
   end
 
   def reset_all do
