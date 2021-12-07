@@ -3,14 +3,12 @@ defmodule PanWeb.Live.Search do
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [icon: 1]
   alias PanWeb.Surface.LinkButton
+  alias Surface.Components.LivePatch
   alias Pan.Search
   alias PanWeb.Endpoint
 
-  def mount(%{"index" => index, "term" => term} = params, _session, socket) do
-    page = String.to_integer(params["page"] || "1")
-
-    {:ok, assign(socket, page: page, per_page: 10, index: index, term: term) |> fetch()
-     }
+  def mount(_params, _session, socket) do
+    {:ok, socket}
   end
 
   defp fetch(%{assigns: %{page: page, per_page: per_page, index: index, term: term}} = socket) do
@@ -18,8 +16,18 @@ defmodule PanWeb.Live.Search do
     assign(socket, hits: hits, total: hits["total"], hits_count: hits["hits"] |> length)
   end
 
+  def handle_params(
+        %{"index" => index, "term" => term} = _params,
+        _session,
+        socket
+      ) do
+    {:noreply,
+     assign(socket, page: 1, per_page: 10, index: index, term: term, update: "replace")
+     |> fetch()}
+  end
+
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+    {:noreply, assign(socket, page: assigns.page + 1, update: "append") |> fetch()}
   end
 
   defp format_datetime(timestamp) do
@@ -33,10 +41,13 @@ defmodule PanWeb.Live.Search do
     case index do
       "episodes" ->
         episode_frontend_path(Endpoint, :show, id)
+
       "personas" ->
         persona_frontend_path(Endpoint, :show, id)
+
       "categories" ->
         category_frontend_path(Endpoint, :show, id)
+
       "podcasts" ->
         podcast_frontend_path(Endpoint, :show, id)
     end
@@ -44,18 +55,18 @@ defmodule PanWeb.Live.Search do
 
   defp heading(index) do
     {:safe, icon} =
-    case index do
-      "episodes" -> icon("headphones-lineawesome-solid")
-      "podcasts" -> icon("podcast-lineawesome-solid")
-      "categories" -> icon("folder-heroicons-outline")
-      "personas" -> icon("user-astronaut-lineawesome-solid")
-    end
+      case index do
+        "episodes" -> icon("headphones-lineawesome-solid")
+        "podcasts" -> icon("podcast-lineawesome-solid")
+        "categories" -> icon("folder-heroicons-outline")
+        "personas" -> icon("user-astronaut-lineawesome-solid")
+      end
 
     case index do
-      "episodes" -> icon <> " Episode &nbsp;" |> raw
-      "podcasts" -> icon <> " Podcast &nbsp;" |> raw
-      "categories" -> icon <> " Category &nbsp;" |> raw
-      "personas" -> icon <> " Persona &nbsp;" |> raw
+      "episodes" -> (icon <> " Episode &nbsp;") |> raw
+      "podcasts" -> (icon <> " Podcast &nbsp;") |> raw
+      "categories" -> (icon <> " Category &nbsp;") |> raw
+      "personas" -> (icon <> " Persona &nbsp;") |> raw
     end
   end
 
@@ -64,36 +75,36 @@ defmodule PanWeb.Live.Search do
     <h1 class="text-2xl m-4">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
     <p class="m-4">
       You might want to search for
-      <a :if={@index != "categories"}
-         href={search_frontend_path(Endpoint, :search, "categories", @term, page: 1)}
-         class="text-link hover:text-link-dark visited:text-mint">
-         categories
-      </a>
+      <LivePatch :if={@index != "categories"}
+                 to={search_frontend_path(Endpoint, :search, "categories", @term)}
+                 class="text-link hover:text-link-dark visited:text-mint">
+        categories
+      </LivePatch>
       {#if @index != "categories"} | {/if}
-      <a :if={@index != "podcasts"}
-         href={search_frontend_path(Endpoint, :search, "podcasts", @term, page: 1)}
-         class="text-link hover:text-link-dark visited:text-mint">
+      <LivePatch :if={@index != "podcasts"}
+                 to={search_frontend_path(Endpoint, :search, "podcasts", @term)}
+                 class="text-link hover:text-link-dark visited:text-mint">
         podcasts
-      </a>
+      </LivePatch>
       {#if @index != "podcasts"} | {/if}
-      <a :if={@index != "personas"}
-         href={search_frontend_path(Endpoint, :search, "personas", @term, page: 1)}
-         class="text-link hover:text-link-dark visited:text-mint">
+      <LivePatch :if={@index != "personas"}
+                 to={search_frontend_path(Endpoint, :search, "personas", @term)}
+                 class="text-link hover:text-link-dark visited:text-mint">
         personas
-      </a>
+      </LivePatch>
       {#if @index not in ["personas", "episodes"] } | {/if}
-      <a :if={@index != "episodes"}
-          href={search_frontend_path(Endpoint, :search, "episodes", @term, page: 1)}
+      <LivePatch :if={@index != "episodes"}
+          to={search_frontend_path(Endpoint, :search, "episodes", @term)}
           class="text-link hover:text-link-dark visited:text-mint">
         episodes
-      </a>
+      </LivePatch>
       instead.<br/>
       You can mask your search terms with an asterisk at the end or the beginning of the search term,
       as long as there are at least 3 characters left.
     </p>
 
     <table>
-      <tbody id="search_results" phx-update="append">
+      <tbody id="search_results" phx-update={@update}>
         {#for hit <- @hits["hits"]}
           <tr id={"result-#{hit["_id"]}"}>
             <td class="p-4 align-top">
