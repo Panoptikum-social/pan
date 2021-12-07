@@ -72,42 +72,44 @@ defmodule PanWeb.Live.Search do
 
   def render(assigns) do
     ~F"""
-    <h1 class="text-2xl m-4">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
-    <p class="m-4">
-      You might want to search for
-      <LivePatch :if={@index != "categories"}
-                 to={search_frontend_path(Endpoint, :search, "categories", @term)}
-                 class="text-link hover:text-link-dark visited:text-mint">
-        categories
-      </LivePatch>
-      {#if @index != "categories"} | {/if}
-      <LivePatch :if={@index != "podcasts"}
-                 to={search_frontend_path(Endpoint, :search, "podcasts", @term)}
-                 class="text-link hover:text-link-dark visited:text-mint">
-        podcasts
-      </LivePatch>
-      {#if @index != "podcasts"} | {/if}
-      <LivePatch :if={@index != "personas"}
-                 to={search_frontend_path(Endpoint, :search, "personas", @term)}
-                 class="text-link hover:text-link-dark visited:text-mint">
-        personas
-      </LivePatch>
-      {#if @index not in ["personas", "episodes"] } | {/if}
-      <LivePatch :if={@index != "episodes"}
-          to={search_frontend_path(Endpoint, :search, "episodes", @term)}
-          class="text-link hover:text-link-dark visited:text-mint">
-        episodes
-      </LivePatch>
-      instead.<br/>
-      You can mask your search terms with an asterisk at the end or the beginning of the search term,
-      as long as there are at least 3 characters left.
-    </p>
+    <div class="sticky top-0 z-50 bg-gray-lightest pb-2 m-6">
+      <h1 class="text-2xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
+      <p class="mt-2">
+        You might want to search for
+        <LivePatch :if={@index != "categories"}
+                  to={search_frontend_path(Endpoint, :search, "categories", @term)}
+                  class="text-link hover:text-link-dark visited:text-mint">
+          categories
+        </LivePatch>
+        {#if @index != "categories"} | {/if}
+        <LivePatch :if={@index != "podcasts"}
+                  to={search_frontend_path(Endpoint, :search, "podcasts", @term)}
+                  class="text-link hover:text-link-dark visited:text-mint">
+          podcasts
+        </LivePatch>
+        {#if @index != "podcasts"} | {/if}
+        <LivePatch :if={@index != "personas"}
+                  to={search_frontend_path(Endpoint, :search, "personas", @term)}
+                  class="text-link hover:text-link-dark visited:text-mint">
+          personas
+        </LivePatch>
+        {#if @index not in ["personas", "episodes"] } | {/if}
+        <LivePatch :if={@index != "episodes"}
+            to={search_frontend_path(Endpoint, :search, "episodes", @term)}
+            class="text-link hover:text-link-dark visited:text-mint">
+          episodes
+        </LivePatch>
+        instead.<br/>
+        You can mask your search terms with an asterisk at the end or the beginning of the search term,
+        as long as there are at least 3 characters left.
+      </p>
+    </div>
 
     <table>
       <tbody id="search_results" phx-update={@update}>
         {#for hit <- @hits["hits"]}
           <tr id={"result-#{hit["_id"]}"}>
-            <td class="p-4 align-top">
+            <td class="p-2 align-top">
               <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}>
                 <img src={"https://panoptikum.io#{hit["_source"]["thumbnail_url"]}"}
                     class="ring-4 ring-gray rounded-xl"
@@ -116,7 +118,7 @@ defmodule PanWeb.Live.Search do
                     id={"photo-#{hit["_id"]}"}/>
               </div>
             </td>
-            <td class="p-4 align-top max-w-screen-lg">
+            <td class="p-2 align-top max-w-screen-lg">
               <h3 class="text-2xl">
                 {heading(@index)}
                 <a href={show_path(@index, hit["_id"])}
