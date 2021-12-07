@@ -61,26 +61,27 @@ defmodule PanWeb.Live.Search do
 
   def render(assigns) do
     ~F"""
-    <p class="m-4">Found {@total} {@index |> String.capitalize()}.<br/>
+    <h1 class="text-2xl m-4">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
+    <p class="m-4">
       You might want to search for
       <a :if={@index != "categories"}
          href={search_frontend_path(Endpoint, :search, "categories", @term, page: 1)}
          class="text-link hover:text-link-dark visited:text-mint">
          categories
       </a>
-      {#if @index in ["personas", "episodes"]} | {/if}
+      {#if @index != "categories"} | {/if}
       <a :if={@index != "podcasts"}
          href={search_frontend_path(Endpoint, :search, "podcasts", @term, page: 1)}
          class="text-link hover:text-link-dark visited:text-mint">
         podcasts
       </a>
-      {#if @index in ["categories", "episodes"]} | {/if}
+      {#if @index != "podcasts"} | {/if}
       <a :if={@index != "personas"}
          href={search_frontend_path(Endpoint, :search, "personas", @term, page: 1)}
          class="text-link hover:text-link-dark visited:text-mint">
         personas
       </a>
-      {#if @index in ["categories", "podcasts"]} | {/if}
+      {#if @index not in ["personas", "episodes"] } | {/if}
       <a :if={@index != "episodes"}
           href={search_frontend_path(Endpoint, :search, "episodes", @term, page: 1)}
           class="text-link hover:text-link-dark visited:text-mint">
@@ -91,23 +92,21 @@ defmodule PanWeb.Live.Search do
       as long as there are at least 3 characters left.
     </p>
 
-    <div id="search_results" phx-update="append">
-      {#for hit <- @hits["hits"]}
-        <div id={"result-#{hit["_id"]}"}
-             class="m-8">
-
-          <div class="flex justify-center">
-            <div :if={hit["_source"]["thumbnail_url"]}
-                 class="w-1/12 justify-self-end">
-              <img src={"https://panoptikum.io" <> hit["_source"]["thumbnail_url"]}
-                  height="120" width="120"
-                  alt={hit["_source"]["image_title"]}
-                  id={"photo-#{hit["_id"]}"}/>
-            </div>
-
-            <div class="w-1/2">
-              <h3 class="text-2xl"
-                  style="margin-bottom: 5px; margin-top: 0px;">
+    <table>
+      <tbody id="search_results" phx-update="append">
+        {#for hit <- @hits["hits"]}
+          <tr id={"result-#{hit["_id"]}"}>
+            <td class="p-4 align-top">
+              <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}>
+                <img src={"https://panoptikum.io#{hit["_source"]["thumbnail_url"]}"}
+                    class="ring-4 ring-gray rounded-xl"
+                    height="120" width="120"
+                    alt={hit["_source"]["image_title"]}
+                    id={"photo-#{hit["_id"]}"}/>
+              </div>
+            </td>
+            <td class="p-4 align-top max-w-screen-lg">
+              <h3 class="text-2xl">
                 {heading(@index)}
                 <a href={show_path(@index, hit["_id"])}
                   class="text-link hover:text-link-dark visited:text-mint">
@@ -171,11 +170,18 @@ defmodule PanWeb.Live.Search do
                 {#for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"])}
                   {#if index > 0} &nbsp;·&nbsp; {/if}
 
-                  <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, engagement["persona_id"])}
-                              class="my-2 bg-lavender text-white border border-gray-dark
-                                    hover:bg-lavender-light hover:border-lavender"
-                              icon="user-astronaut-lineawesome-solid"
-                              title={engagement["persona_name"]} />
+                  {#if @index == "podcasts"}
+                    <LinkButton to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
+                                class="my-2 bg-lavender text-white border border-gray-dark
+                                      hover:bg-lavender-light hover:border-lavender"
+                                icon="user-astronaut-lineawesome-solid"
+                                title={engagement["persona_name"]} />
+                  {#else}
+                    <LinkButton to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
+                                class="bg-white hover:bg-gray-lighter text-black border-gray"
+                                icon="podcast-lineawesome-solid"
+                                title={engagement["podcast_title"]} />
+                  {/if}
 
                   <span class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light uppercase mr-1">
                     {engagement["role"]}
@@ -194,13 +200,12 @@ defmodule PanWeb.Live.Search do
                               truncate={false} />
                 {/for}
               </p>
-            </div>
-          </div>
-        </div>
-      {/for}
-    </div>
+            </td>
+          </tr>
+        {/for}
+      </tbody>
+    </table>
     <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
-    {#for _index <- 1..8}<p class="h-24"/>{/for}
     """
   end
 end
