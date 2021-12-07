@@ -1,6 +1,5 @@
 defmodule PanWeb.SearchFrontendView do
   use PanWeb, :view
-  import Scrivener.HTML
 
   def format_datetime(timestamp) do
     {:ok, date_time} = DateTime.from_unix(timestamp)
