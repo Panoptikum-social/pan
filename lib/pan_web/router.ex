@@ -162,8 +162,7 @@ defmodule PanWeb.Router do
     pipe_through([:browser])
 
     post("/", SearchFrontendController, :new)
-    live("/:index/:term", Live.Search, :search)
-    get("/:index/:term", SearchFrontendController, :search)
+    live("/:index/:term", Live.Search, :search, as: :search_frontend)
   end
 
   scope "/", PanWeb do
