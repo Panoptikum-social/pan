@@ -209,6 +209,18 @@ defmodule PanWeb.Podcast do
     |> Repo.all()
   end
 
+  def latest_for_index(page, per_page) do
+    from(p in Podcast,
+      order_by: [desc: :inserted_at],
+      where: not p.blocked,
+      preload: [:categories, [engagements: :persona], :thumbnails],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
+
+
   def popular do
     from(p in Podcast,
       select: [p.subscriptions_count, p.id, p.title],

@@ -178,7 +178,8 @@ defmodule PanWeb.Router do
 
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)
-    resources("/podcasts", PodcastFrontendController, only: [:index, :show])
+    resources("/podcasts", PodcastFrontendController, only: [:show])
+    live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
     get("/qrcode/:code", QRCodeFrontendController, :generate)

@@ -7,14 +7,15 @@ defmodule PanWeb.Surface.PersonaButton do
   prop(id, :integer, required: false)
   prop(name, :string, required: false)
   prop(for, :map, required: false)
+  prop(class, :css_class, required: false)
 
   def render(assigns) do
     ~F"""
     <LinkButton to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
-                class="bg-lavender text-white border border-gray-dark
-                       hover:bg-lavender-light hover:border-lavender"
+                class={"bg-lavender text-white border border-gray-dark
+                       hover:bg-lavender-light hover:border-lavender", @class}
                 icon="user-astronaut-lineawesome-solid"
-                title={@name || @for.title} />
+                title={@name || @for.name} />
     """
   end
 end

@@ -165,9 +165,9 @@ defmodule PanWeb.Live.Search do
                                       hover:bg-lavender-light hover:border-lavender"
                                 icon="user-astronaut-lineawesome-solid"
                                 title={gig["persona_name"]} />
-                    <span class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light uppercase mr-1">
+                    <label class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light mr-1">
                       {gig["role"]}
-                    </span>
+                    </label>
                   {/for}
                 </p>
               {/if}
@@ -196,9 +196,9 @@ defmodule PanWeb.Live.Search do
                                 title={engagement["podcast_title"]} />
                   {/if}
 
-                  <span class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light uppercase mr-1">
+                  <label class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light mr-1">
                     {engagement["role"]}
-                  </span>
+                  </label>
                 {/for}
               </p>
 

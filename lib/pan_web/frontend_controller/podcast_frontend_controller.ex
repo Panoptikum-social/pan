@@ -2,18 +2,6 @@ defmodule PanWeb.PodcastFrontendController do
   use PanWeb, :controller
   alias PanWeb.{Episode, Image, Podcast, Recommendation}
 
-  def index(conn, params) do
-    podcasts =
-      from(p in Podcast,
-        order_by: [desc: :inserted_at],
-        where: not p.blocked,
-        preload: [:categories, [engagements: :persona]]
-      )
-      |> Repo.paginate(page: params["page"], page_size: 10)
-
-    render(conn, "index.html", podcasts: podcasts)
-  end
-
   def show(conn, %{"id" => id} = params) do
     changeset = Recommendation.changeset(%Recommendation{})
 
