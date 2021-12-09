@@ -150,4 +150,8 @@ defmodule PanWeb.Image do
     Podcast.cache_missing_thumbnail_images()
     Logger.info("=== Thumbnail image caching job finished ===")
   end
+
+  def get_by_podcast_id(podcast_id) do
+    Repo.get_by(Image, podcast_id: podcast_id)
+  end
 end

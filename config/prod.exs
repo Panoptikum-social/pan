@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :pan, PanWeb.Endpoint,
   # url: [host: "example.com", port: 80],

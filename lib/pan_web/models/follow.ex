@@ -1,5 +1,7 @@
 defmodule PanWeb.Follow do
   use PanWeb, :model
+  alias Pan.Repo
+  alias PanWeb.Follow
 
   schema "follows" do
     belongs_to(:follower, PanWeb.User)
@@ -15,5 +17,12 @@ defmodule PanWeb.Follow do
     struct
     |> cast(params, [:user_id, :persona_id, :follower_id, :podcast_id, :category_id])
     |> validate_required([:follower_id])
+  end
+
+  def find_podcast_follow(user_id, podcast_id) do
+    Repo.get_by(Follow,
+      follower_id: user_id,
+      podcast_id: podcast_id
+    )
   end
 end

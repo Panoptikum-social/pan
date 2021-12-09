@@ -1,9 +1,8 @@
 defmodule PanWeb.Live.Podcast.Index do
   use Surface.LiveView
   import PanWeb.Router.Helpers
-  import PanWeb.ViewHelpers, only: [icon: 1]
   alias PanWeb.{Podcast, Endpoint}
-  alias PanWeb.Surface.{Panel, CategoryButton, PersonaButton}
+  alias PanWeb.Surface.{Panel, CategoryButton, PersonaButton, Icon}
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page: 1, per_page: 15)
@@ -55,7 +54,7 @@ defmodule PanWeb.Live.Podcast.Index do
                     </nobr>
                   </td>
                   <td>
-                    {icon("calendar-heroicons-outline")}
+                    <Icon name="calendar-heroicons-outline"/>
                     {Timex.format!(podcast.inserted_at, "{ISOdate}")}
                   </td>
                 </tr>

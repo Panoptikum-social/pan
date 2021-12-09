@@ -115,7 +115,8 @@ defmodule PanWeb.Surface.Admin.Grid do
                                           record: record}}
                         label="🖊️" />
 
-          <Link click={@delete}
+          <Link to="#"
+                click={@delete}
                 opts={data: [confirm: "Are you sure?"],
                         "phx-value-id": record.id}
                 class="block"

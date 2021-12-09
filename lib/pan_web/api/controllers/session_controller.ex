@@ -22,7 +22,7 @@ defmodule PanWeb.Api.SessionController do
         data = %{
           id: current_user.id,
           token: token,
-          created_at: Timex.now(),
+          inserted_at: Timex.now(),
           valid_for: "1 hour",
           valid_until: Timex.shift(Timex.now(), hours: 1)
         }

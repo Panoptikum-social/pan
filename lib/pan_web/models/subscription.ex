@@ -29,4 +29,11 @@ defmodule PanWeb.Subscription do
         {:ok, subscription}
     end
   end
+
+  def find_podcast_subscription(user_id, podcast_id) do
+    Repo.get_by(PanWeb.Subscription,
+      user_id: user_id,
+      podcast_id: podcast_id
+    )
+  end
 end

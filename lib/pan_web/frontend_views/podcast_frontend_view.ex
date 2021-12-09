@@ -1,6 +1,5 @@
 defmodule PanWeb.PodcastFrontendView do
   use PanWeb, :view
-  import Scrivener.HTML
   alias PanWeb.Like
   alias Pan.Repo
   alias PanWeb.Podcast

@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :pan,
   ecto_repos: [Pan.Repo]

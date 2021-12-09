@@ -1,32 +1,6 @@
 defmodule PanWeb.PodcastFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{Episode, Image, Podcast, Recommendation}
-
-  def show(conn, %{"id" => id} = params) do
-    changeset = Recommendation.changeset(%Recommendation{})
-
-    podcast =
-      Repo.get!(Podcast, id)
-      |> Repo.preload([:languages, :feeds, :categories, recommendations: :user])
-      |> Repo.preload(engagements: :persona)
-
-    episodes =
-      from(e in Episode,
-        where: e.podcast_id == ^id,
-        order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
-        preload: [[gigs: :persona]]
-      )
-      |> Repo.paginate(page: params["page"], page_size: 50)
-
-    podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
-
-    render(conn, "show.html",
-      podcast: podcast,
-      episodes: episodes,
-      podcast_thumbnail: podcast_thumbnail,
-      changeset: changeset
-    )
-  end
+  alias PanWeb.Podcast
 
   def subscribe_button(conn, %{"id" => id}) do
     podcast =

@@ -152,4 +152,15 @@ defmodule PanWeb.Episode do
     |> Episode.changeset(%{image_url: nil, link: episode.link || "https://example.com"})
     |> Repo.update()
   end
+
+  def get_by_podcast_id(podcast_id, page, per_page) do
+    from(e in Episode,
+      where: e.podcast_id == ^podcast_id,
+      order_by: [fragment("? DESC NULLS LAST", e.publishing_date)],
+      preload: [[gigs: :persona]],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
 end

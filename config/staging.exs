@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :pan, PanWeb.Endpoint,
   http: [port: 8888, compress: false],
