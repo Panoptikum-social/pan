@@ -31,12 +31,12 @@ defmodule PanWeb.Live.Podcast.FollowOrUnfollowButton do
       <span>
         {#if @following}
           <button :on-click={"toggle-follow"}
-                  class="text-white rounded py-1 px-2 bg-success">
+                  class="text-white rounded py-1 px-2 bg-success border border-gray-darker rounded">
             {@podcast.followers_count} <Icon name="chat-heroicons-solid"/> Unfollow
           </button>
         {#else}
           <button :on-click={"toggle-follow"}
-                  class="text-white rounded py-1 px-2 bg-danger">
+                  class="text-white rounded py-1 px-2 bg-danger border border-gray-darker rounded">
             {@podcast.followers_count} <Icon name="chat-heroicons-outline"/> Follow
           </button>
         {/if}

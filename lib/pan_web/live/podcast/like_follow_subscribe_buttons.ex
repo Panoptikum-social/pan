@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   alias PanWeb.Endpoint
   alias PanWeb.Live.Podcast.{LikeOrUnlikeButton, FollowOrUnfollowButton, SubscribeOrUnsubscribeButton}
   import PanWeb.Router.Helpers
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Surface.{Icon, LinkButton}
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)
@@ -25,21 +25,19 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
 
         {#if !@podcast.manually_updated_at or
               (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1)}
-          <a link href={podcast_frontend_path(Endpoint, :trigger_update, @podcast)}
-                  class="btn btn-danger btn-xs">
-            <Icon name="cog-heroicons-outline"/> Metadata Update
-          </a>
-          <button class="btn btn-primary btn-xs"
-                  data-toggle="popover"
-                  data-placement="left"
-                  data-title="Metadata update"
-                  data-html="true"
-                  data-content="You can manually trigger a metadata update for this podcast once an hour,
-                                if you are impatient. This still will take some time, so keep track of
-                                the status updates. And refresh the page with [F5] when told so.">
-            <Icon name="information-circle-heroicons"/> Help
-          </button>
-        {#else}
+          <p class="mt-8">
+            You can manually trigger a metadata update for this podcast once an hour,
+                                  if you are impatient. This still will take some time, so keep track of
+                                  the status updates. And refresh the page with [F5] when told so.
+
+          </p>
+          <p class="mt-4">
+            <LinkButton to={podcast_frontend_path(Endpoint, :trigger_update, @podcast)}
+                        class="border border-gray-darker rounded text-white bg-danger hover:bg-danger-light"
+                        icon="cog-heroicons-outline"
+                        title="Metadata Update"/>
+          </p>
+          {#else}
           <small>
             A manual update will be available in
             {Timex.Comparable.diff(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now(), :minutes)}
@@ -51,9 +49,11 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         {@podcast.followers_count}  <Icon name="annotation-heroicons-outline"/> Followers &nbsp; &nbsp;
         {@podcast.subscriptions_count} <Icon name="user-heroicons-outline"/> Subscribers
 
-        <p><i>
-          <a href={user_frontend_path(Endpoint, :new)}>Sign up</a> /
-          <a href={session_path(Endpoint, :new)}>Log in</a> to like, follow, recommend and subscribe!
+        <p class="mt-4"><i>
+          <a href={user_frontend_path(Endpoint, :new)}
+             class="text-link hover:text-link-dark">Sign up</a> /
+          <a href={session_path(Endpoint, :new)}
+             class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
         </i></p>
       {/if}
 

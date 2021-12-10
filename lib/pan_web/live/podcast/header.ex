@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Podcast.Header do
   use Surface.Component
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Surface.{Icon, CategoryButton, PersonaButton}
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, SubscribeOrUnsubscribeButton}
 
@@ -49,7 +49,7 @@ defmodule PanWeb.Live.Podcast.Header do
               <p>{@podcast.summary |> raw}</p>
             </div>
           </div>
-          <p>
+          <p class="mt-4">
             <ListFollowSubscribeButtons current_user_id={@current_user_id}
                                         podcast={@podcast} />
           </p>
@@ -97,8 +97,7 @@ defmodule PanWeb.Live.Podcast.Header do
             <dt class="justify-self-end font-medium">Contributors</dt>
             {#for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona))}
               <dd class="col-start-2">
-                <a href={persona_frontend_path(Endpoint, :show, persona)}
-                   class="btn btn-xs btn-lavender"><Icon name="user-heroicons-outline"/> {persona.name}</a>
+                <PersonaButton for={persona}/>
               </dd>
               <dd class="col-start-3">
                 {#for engagement <- engagements}
@@ -113,14 +112,12 @@ defmodule PanWeb.Live.Podcast.Header do
             <dd class="col-span-2">{@episodes_count}</dd>
             <dt class="justify-self-end font-medium"><Icon name="rss-heroicons-outline"/> Rss-Feeds</dt>
             <dd class="col-span-2">
-              <a href={podcast_frontend_path(Endpoint, :feeds, @podcast)}>Detail page</a></dd>
+              <a href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
+                 class="text-link hover:text-link-dark">Detail page</a></dd>
             <dt class="justify-self-end font-medium">Categories</dt>
             <dd class="col-span-2" style="line-height: 200%;">
               {#for category <- @podcast.categories}
-                <a href={category_frontend_path(Endpoint, :show, category)}
-                   class="btn btn-xs btn-gray-lighter">
-                  <Icon name="folder-open-heroicons-outline"/> {category.title}
-                </a>
+                <CategoryButton for={category}/>
               {/for}
             </dd>
           </dl>
@@ -129,8 +126,8 @@ defmodule PanWeb.Live.Podcast.Header do
       </div>
 
       <div role="qrcode" class="flex flex-col">
-        <img src={"/qrcode/#{podcast_frontend_url(Endpoint, :subscribe_button, @podcast) |> URI.encode_www_form}"},
-                    class: "max-w-none", width: 150, height: 150 %>
+        <img src={"/qrcode/#{podcast_frontend_url(Endpoint, :subscribe_button, @podcast) |> URI.encode_www_form}"}
+                    class="max-w-none" width="150" height="150" %>
         <SubscribeOrUnsubscribeButton :if={@current_user_id}
                                       id="qr_code_subscribe_or_unsubscribe_button"
                                       current_user_id={@current_user_id}

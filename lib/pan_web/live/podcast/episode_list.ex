@@ -1,18 +1,17 @@
 defmodule PanWeb.Live.Podcast.EpisodeList do
   use Surface.Component
-  alias PanWeb.Endpoint
-  import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Surface.{Icon, PersonaButton, EpisodeButton}
+  require Integer
 
   prop(episodes, :list, required: false, default: [])
 
   def render(assigns) do
     ~F"""
-    <h2>Episodes</h2>
+    <h2 class="text-2xl">Episodes</h2>
 
     <div class="table-responsive">
-      <table class="table table-bordered table-condensed table-striped">
+      <table class="border border-separate border-gray-lighter">
         <thead>
           <tr>
             <th>Date</th>
@@ -21,31 +20,28 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
           </tr>
         </thead>
         <tbody>
-          {#for episode <- @episodes}
+          {#for {episode, index} <- @episodes |> Enum.with_index}
             <tr>
-              <td align="right">
+              <td class={"p-2",
+                         "bg-gray-lighter": Integer.is_even(index)}
+                  align="right">
                 {#if episode.publishing_date}
                   {episode.publishing_date |> Timex.to_date |> Timex.format!("%e.%m.%Y", :strftime)}
                 {/if}
               </td>
-              <td id={"episode-#{episode.id}"}>
-                <p style="line-height: 200%;">
-                  <a href={episode_frontend_path(Endpoint, :show, episode)}
-                     class="btn btn-primary btn-xs truncate"
-                     id="detail-#{episode.id}">
-                    <Icon name="headphones-lineawesome-solid"/> {episode.title || "no title"}</a>
-                </p>
+              <td class={"p-2",
+                         "bg-gray-lighter": Integer.is_even(index)}
+                  id={"episode-#{episode.id}"}>
+                <EpisodeButton for={episode}/><br/>
                 {episode.description |> HtmlSanitizeEx.strip_tags |> truncate_string(255)}
               </td>
-              <td style="line-height: 200%;">
+              <td class={"p-2",
+                         "bg-gray-lighter": Integer.is_even(index)}>
                 {#for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona))}
                   <nobr>
-                    <a href={persona_frontend_path(Endpoint, :show, persona)},
-                       class="btn btn-xs btn-lavender" >
-                       <Icon name="user-heroicons-outline"/> {persona.name}
-                    </a>
+                    <PersonaButton for={persona}/>
                     {#for gig <- gigs}
-                      <span class="label label-success" id={"gig-#{gig.id}"}>{gig.role}</span>
+                      <span class="bg-lavender-light rounded text-white p-1 text-sm" id={"gig-#{gig.id}"}>{gig.role}</span>
                       {#if gig.self_proclaimed}
                         <sup data-toggle="popover"
                              data-placement="right"

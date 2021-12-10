@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Podcast.RecommendForm do
   use Surface.Component
   alias Surface.Components.Form
-  alias Surface.Components.Form.TextInput
+  alias Surface.Components.Form.{TextInput, HiddenInput}
   alias PanWeb.Endpoint
   alias PanWeb.Surface.Submit
   import PanWeb.Router.Helpers
@@ -15,11 +15,12 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
   ~F"""
     {#if @current_user_id}
       <Form for={@changeset}
+            class="m-4"
             action={recommendation_frontend_path(Endpoint, :create)}>
         <TextInput field={:comment}
-                  opts={maxlength: 255, placeholder: "Your recommendation"} />
+                   opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} />
           <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
-        <TextInput field={:podcast_id } value={@podcast.id} />
+        <HiddenInput field={:podcast_id } value={@podcast.id} />
         <Submit label={"Recommend"} />
       </Form>
     {/if}

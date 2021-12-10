@@ -1,51 +1,68 @@
 defmodule PanWeb.Live.Podcast.RecommendationsList do
   use Surface.Component
   alias PanWeb.Live.Podcast.RecommendForm
+  alias PanWeb.Endpoint
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
+  require Integer
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)
   prop(changeset, :map, required: true)
   prop(recommendations, :list, required: true)
 
+  def social(podcast, recommendation) do
+    "👍 #{podcast.title}%0A💬 #{truncate_string(recommendation.comment, 220)}%0A🔊 "
+  end
+
+  def social_url(podcast) do
+    URI.encode_www_form(podcast_frontend_url(Endpoint, :show, podcast))
+  end
+
+  defp facebook(podcast, recommendation) do
+    podcast.title <> "%0A" <> truncate_string(recommendation.comment, 220)
+  end
+
   def render(assigns) do
     ~F"""
     <h2 id="recommendations" class="text-2xl">Recommendations</h2>
 
     {#if @recommendations != []}
-      <span class="pull-right"><a href="https://panoptikum.io/complaints">Complain</a></span>
+      <p class="text-right">
+        <a href="https://panoptikum.io/complaints"
+           class="text-link hover-text-link-dark">Complain</a>
+      </p>
 
-      <table class="table table-condensed table-bordered table-striped">
+      <table class="border border-separate border-gray-lighter">
         <thead>
           <tr>
-            <th>User</th>
-            <th>Recommendation</th>
-            <th>Date</th>
+            <th class="p-2">User</th>
+            <th class="p-2">Recommendation</th>
+            <th class="p-2">Date</th>
           </tr>
         </thead>
         <tbody>
-          {#for recommendation <- @recommendations}
+          {#for {recommendation, index} <- @recommendations |> Enum.with_index}
             <tr>
-              <td>
+              <td class={"p-2",
+                         "bg-gray-lighter": Integer.is_even(index)}>
                 {#if @current_user_id == recommendation.user_id}
-                  <nobr>
-                    {social_text = "👍 " <> @podcast.title <> "%0A💬 " <> truncate_string(recommendation.comment, 220) <> "%0A🔊 "}
-                    {facebook_text = @podcast.title <> "%0A" <> truncate_string(recommendation.comment, 220)}
-                    {social_url = URI.encode_www_form(podcast_frontend_url(Endpoint, :show, @podcast))}
-
-                    <a href={"https://twitter.com/intent/tweet?text=#{social_text}&url=#{social_url}"}
-                       class="social-button twitter-button">Tweet it</a>
-                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url}&quote=#{facebook_text}"},
-                       class="social-button facebook-button">Share on Facebook</a>
-                    <a href={"mailto:?subject=#{social_text}&body=#{social_url}"}
-                       class="social-button email-button">Send an E-Mail</a>
-                  </nobr><br/>
+                  <p class="mb-2"><nobr>
+                    <a href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
+                       class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
+                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@podcast)}&quote=#{facebook(@podcast, recommendation)}"},
+                       class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white" alt="post on facebook">fb</a>
+                    <a href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
+                       class="bg-grass bg-grass-light px-3 py-2 my-4 rounded-full text-white" alt="send an email">mail</a></nobr>
+                  </p>
                 {/if}
                 {recommendation.user.name}
               </td>
-              <td>{recommendation.comment}</td>
-              <td align="right">
+              <td class={"p-2",
+                         "bg-gray-lighter": Integer.is_even(index)}>{recommendation.comment}</td>
+              <td  class={"p-2",
+                          "bg-gray-lighter": Integer.is_even(index)}
+                   align="right">
                 {recommendation.inserted_at |> Timex.to_date |> Timex.format!("%e.%m.%Y", :strftime)}
               </td>
             </tr>
