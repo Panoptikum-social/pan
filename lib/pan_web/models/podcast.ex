@@ -159,7 +159,7 @@ defmodule PanWeb.Podcast do
   end
 
   def subscribe(podcast_id, user_id) do
-    case Repo.get_by(Subscription,
+    response = case Repo.get_by(Subscription,
            user_id: user_id,
            podcast_id: podcast_id
          ) do
@@ -170,6 +170,9 @@ defmodule PanWeb.Podcast do
       subscription ->
         {:ok, Repo.delete!(subscription)}
     end
+
+    Podcast.update_subscriptions_count(podcast_id)
+    response
   end
 
   def follower_mailboxes(podcast_id) do

@@ -7,23 +7,40 @@ defmodule PanWeb.Live.Podcast.SubscribeOrUnsubscribeButton do
   prop(podcast, :map, required: true)
   data(subscribed, :boolean, default: false)
 
-  def subscribed(user_id, podcast_id) do
-    Subscription.find_podcast_subscription(user_id, podcast_id) |> is_nil |> Kernel.not
-  end
-
-  def handle_event("subscribe", _params, %{assigns: assigns} = socket) do
+  def handle_event("toggle-subscribe", _params, %{assigns: assigns} = socket) do
     Podcast.subscribe(assigns.podcast.id, assigns.current_user_id)
+
+    socket =
+      assign(socket,
+        subscribed: !assigns.subscribed,
+        podcast: Podcast.get_by_id(assigns.podcast.id)
+      )
+
     {:noreply, socket}
   end
 
   def render(assigns) do
+    subscribed =
+      Subscription.find_podcast_subscription(assigns.current_user_id, assigns.podcast.id)
+      |> is_nil
+      |> Kernel.not()
+
+    assigns = assign(assigns, subscribed: subscribed)
+
     ~F"""
-      <button :on-click={"subscribe"}
-              class={"text-white",
-                     "bg-success": subscribed(@current_user_id, @podcast.id),
-                     "bg-danger": !subscribed(@current_user_id, @podcast.id)}>
-        {@podcast.subscriptions_count} <Icon name="user-heroicons-outline"/>
-      </button>
+      <span>
+        {#if @subscribed}
+          <button :on-click={"toggle-subscribe"}
+                  class="text-white rounded py-1 px-2 bg-success">
+            {@podcast.subscriptions_count} <Icon name="user-heroicons-solid"/> Unsubscribe
+          </button>
+        {#else}
+          <button :on-click={"toggle-subscribe"}
+                  class="text-white rounded py-1 px-2 bg-danger">
+            {@podcast.subscriptions_count} <Icon name="user-heroicons-outline"/> Subscribe
+          </button>
+        {/if}
+      </span>
     """
   end
 end
