@@ -7,23 +7,40 @@ defmodule PanWeb.Live.Podcast.FollowOrUnfollowButton do
   prop(podcast, :map, required: true)
   data(following, :boolean, default: false)
 
-  def following(user_id, podcast_id) do
-    Follow.find_podcast_follow(user_id, podcast_id) |> is_nil |> Kernel.not
-  end
-
-  def handle_event("follow", _params, %{assigns: assigns} = socket) do
+  def handle_event("toggle-follow", _params, %{assigns: assigns} = socket) do
     Podcast.follow(assigns.podcast.id, assigns.current_user_id)
+
+    socket =
+      assign(socket,
+        following: !assigns.following,
+        podcast: Podcast.get_by_id(assigns.podcast.id)
+      )
+
     {:noreply, socket}
   end
 
   def render(assigns) do
+    following =
+      Follow.find_podcast_follow(assigns.current_user_id, assigns.podcast.id)
+      |> is_nil
+      |> Kernel.not()
+
+    assigns = assign(assigns, following: following)
+
     ~F"""
-      <button :on-click={"follow"}
-              class={"text-white",
-                     "bg-success": following(@current_user_id, @podcast.id),
-                     "bg-danger": !following(@current_user_id, @podcast.id)}>
-        {@podcast.followers_count} <Icon name="user-heroicons-outline"/>
-      </button>
+      <span>
+        {#if @following}
+          <button :on-click={"toggle-follow"}
+                  class="text-white rounded py-1 px-2 bg-success">
+            {@podcast.followers_count} <Icon name="chat-heroicons-solid"/> Unfollow
+          </button>
+        {#else}
+          <button :on-click={"toggle-follow"}
+                  class="text-white rounded py-1 px-2 bg-danger">
+            {@podcast.followers_count} <Icon name="chat-heroicons-outline"/> Follow
+          </button>
+        {/if}
+      </span>
     """
   end
 end

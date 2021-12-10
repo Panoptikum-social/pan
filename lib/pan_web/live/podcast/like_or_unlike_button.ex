@@ -21,12 +21,12 @@ defmodule PanWeb.Live.Podcast.LikeOrUnlikeButton do
       <span>
         {#if @liking}
           <button :on-click={"toggle-like"}
-                  class="text-white rounded px-1 bg-success">
+                  class="text-white rounded py-1 px-2 bg-success">
             {@podcast.likes_count} <Icon name="heart-heroicons-solid"/> Unlike
           </button>
         {#else}
           <button :on-click={"toggle-like"}
-                  class="text-white rounded px-1 bg-danger">
+                  class="text-white rounded py-1 px-2 bg-danger">
             {@podcast.likes_count} <Icon name="heart-heroicons-outline"/> Like
           </button>
         {/if}
