@@ -64,4 +64,9 @@ defmodule PanWeb.Recommendation do
   )
   |> Repo.all()
   end
+
+  def count_by_podcast_id(podcast_id) do
+    from(r in Recommendation, where: r.podcast_id == ^podcast_id)
+    |> Repo.aggregate(:count)
+  end
 end
