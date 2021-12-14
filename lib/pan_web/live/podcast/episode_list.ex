@@ -5,6 +5,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
   require Integer
 
   prop(episodes, :list, required: false, default: [])
+  prop(page, :integer, required: false, default: 1)
 
   def render(assigns) do
     ~F"""
@@ -19,9 +20,10 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
             <th>Contributors</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="table-body-episodes"
+               phx-update="append">
           {#for {episode, index} <- @episodes |> Enum.with_index}
-            <tr>
+            <tr id={"episode-#{episode.id}"}>
               <td class={"p-2",
                          "bg-gray-lighter": Integer.is_even(index)}
                   align="right">
@@ -30,8 +32,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                 {/if}
               </td>
               <td class={"p-2",
-                         "bg-gray-lighter": Integer.is_even(index)}
-                  id={"episode-#{episode.id}"}>
+                         "bg-gray-lighter": Integer.is_even(index)}>
                 <EpisodeButton for={episode}/><br/>
                 {episode.description |> HtmlSanitizeEx.strip_tags |> truncate_string(255)}
               </td>
@@ -61,6 +62,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
           {/for}
         </tbody>
       </table>
+      <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
     </div>
     """
   end
