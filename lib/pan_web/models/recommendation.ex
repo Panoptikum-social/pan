@@ -69,4 +69,14 @@ defmodule PanWeb.Recommendation do
     from(r in Recommendation, where: r.podcast_id == ^podcast_id)
     |> Repo.aggregate(:count)
   end
+
+  def latest(page, per_page) do
+    from(p in Recommendation,
+      order_by: [desc: :inserted_at],
+      preload: [:user, :podcast, episode: :podcast, chapter: [episode: :podcast]],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
 end

@@ -17,17 +17,6 @@ defmodule PanWeb.RecommendationFrontendController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def index(conn, params, _) do
-    recommendations =
-      from(p in Recommendation,
-        order_by: [desc: :inserted_at],
-        preload: [:user, :podcast, episode: :podcast, chapter: [episode: :podcast]]
-      )
-      |> Repo.paginate(page: params["page"], page_size: 15)
-
-    render(conn, "index.html", recommendations: recommendations)
-  end
-
   def my_recommendations(conn, _params, user) do
     podcast_recommendations =
       Repo.all(

@@ -22,14 +22,13 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
           <HiddenInput field={:podcast_id } value={@podcast.id} />
           <Submit label={"Recommend"} />
         </Form>
-      {/if}
 
-      <script>
-        document.getElementById('recommendation_comment').onkeyup = function(){
-            document.getElementById("remaining").innerHTML = 255 - this.value.length;
-        }
-      </script>
-
+        <script>
+          document.getElementById('recommendation_comment').onkeyup = function(){
+              document.getElementById("remaining").innerHTML = 255 - this.value.length;
+          }
+        </script>
+        {/if}
       <br/>
     """
   end

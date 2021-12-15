@@ -206,8 +206,8 @@ defmodule PanWeb.Router do
     get("/sessions/login_via_token", SessionController, :login_via_token)
     get("/sessions/confirm_email", SessionController, :confirm_email)
 
+    live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
     get("/recommendations/random", RecommendationFrontendController, :random)
-    resources("/recommendations", RecommendationFrontendController, only: [:index])
 
     get("/vienna-beamers", MaintenanceController, :vienna_beamers)
     get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)
