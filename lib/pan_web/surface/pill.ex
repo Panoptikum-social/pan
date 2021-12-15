@@ -5,8 +5,8 @@ defmodule PanWeb.Surface.Pill do
 
   def render(assigns) do
     ~F"""
-    <span class={"text-xs inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap
-                 align-baseline font-bold rounded-full bg-#{@type} hover:bg-#{@type}-dark text-white"}>
+    <span class={"text-xs inline-block p-1 leading-none text-center whitespace-nowrap
+                 align-baseline rounded-md bg-#{@type} hover:bg-#{@type}-dark text-white"}>
       <#slot />
     </span>
     """
