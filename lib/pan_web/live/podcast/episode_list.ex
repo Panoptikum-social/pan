@@ -44,14 +44,25 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                     {#for gig <- gigs}
                       <span class="bg-lavender-light rounded text-white p-1 text-sm" id={"gig-#{gig.id}"}>{gig.role}</span>
                       {#if gig.self_proclaimed}
-                        <sup data-toggle="popover"
-                             data-placement="right"
-                             data-title="Claimed contribution"
-                             data-html="true"
-                             data-content="This contribution is claimed by a user and not source of
-                                           the podcast feed.">
-                          <Icon name="information-circle-heroicons"/>
-                        </sup>
+                        <span class="relative"
+                              x-data="{ detailsOpen: false }">
+                          <div class="inline"
+                               @click="detailsOpen = !detailsOpen
+                                       $nextTick(() => $refs.detailsCloseButton.focus())">
+                            <Icon name="information-circle-heroicons" />
+                          </div>
+                          <div x-show="detailsOpen"
+                                class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4">
+                            <h1 class="text-2xl">Info</h1>
+                            <p class="mt-4">This contribution is claimed by a user and not source of the podcast feed.</p>
+                            <button @click="detailsOpen = false"
+                                    class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
+                                            focus:ring-2 focus:ring-info-light"
+                                    x-ref="detailsCloseButton">
+                              Close
+                            </button>
+                          </div>
+                        </span>
                       {/if}
                       <br/>
                     {/for}

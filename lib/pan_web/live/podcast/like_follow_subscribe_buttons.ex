@@ -25,19 +25,36 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
 
         {#if !@podcast.manually_updated_at or
               (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1)}
-          <p class="mt-8">
-            You can manually trigger a metadata update for this podcast once an hour,
-                                  if you are impatient. This still will take some time, so keep track of
-                                  the status updates. And refresh the page with [F5] when told so.
-
-          </p>
-          <p class="mt-4">
+          <div class="mt-4">
             <LinkButton to={podcast_frontend_path(Endpoint, :trigger_update, @podcast)}
                         class="border border-gray-darker rounded text-white bg-danger hover:bg-danger-light"
                         icon="cog-heroicons-outline"
                         title="Metadata Update"/>
-          </p>
-          {#else}
+            <span class="relative"
+                  x-data="{ metadataOpen: false }">
+              <div class="inline"
+                   @click="metadataOpen = !metadataOpen
+                          $nextTick(() => $refs.metadataCloseButton.focus())">
+                <Icon name="information-circle-heroicons" />
+              </div>
+              <div x-show="metadataOpen"
+                    class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96">
+                <h1 class="text-2xl">Info</h1>
+                <p class="mt-4">
+                  You can manually trigger a metadata update for this podcast once an hour,
+                  if you are impatient. This still will take some time, so keep track of
+                  the status updates. And refresh the page with [F5] when told so..
+                </p>
+                <button @click="metadataOpen = false"
+                        class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
+                              focus:ring-2 focus:ring-info-light"
+                        x-ref="metadataCloseButton">
+                  Close
+                </button>
+              </div>
+            </span>
+          </div>
+        {#else}
           <small>
             A manual update will be available in
             {Timex.Comparable.diff(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now(), :minutes)}
@@ -56,12 +73,6 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
              class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
         </i></p>
       {/if}
-
-      <script>
-        $(function() {
-          $('[data-toggle="popover"]').popover()
-        })
-      </script>
     """
     end
   end
