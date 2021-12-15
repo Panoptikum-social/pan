@@ -1,7 +1,7 @@
 defmodule PanWeb.Message do
   use PanWeb, :model
   alias Pan.Repo
-  alias PanWeb.Message
+  alias PanWeb.{Message, User}
 
   schema "messages" do
     field(:content, :string)
@@ -31,5 +31,24 @@ defmodule PanWeb.Message do
       type: event.type
     }
     |> Repo.insert()
+  end
+
+  def latest_by_user(user_id, page, per_page) do
+    subscribed_user_ids = User.subscribed_user_ids(user_id)
+    subscribed_category_ids = User.subscribed_category_ids(user_id)
+    subscribed_podcast_ids = User.subscribed_podcast_ids(user_id)
+
+    from(m in Message,
+      where:
+        (m.topic == "mailboxes" and m.subtopic == ^Integer.to_string(user_id)) or
+          (m.topic == "users" and m.subtopic in ^subscribed_user_ids) or
+          (m.topic == "podcasts" and m.subtopic in ^subscribed_podcast_ids) or
+          (m.topic == "category" and m.subtopic in ^subscribed_category_ids),
+      order_by: [desc: :inserted_at],
+      preload: [:creator, :persona],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
   end
 end

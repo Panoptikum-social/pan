@@ -162,32 +162,6 @@ defmodule PanWeb.UserFrontendController do
     render(conn, "my_profile.html", user: user)
   end
 
-  def my_messages(conn, params, user) do
-    user_id = Integer.to_string(user.id)
-
-    subscribed_user_ids = User.subscribed_user_ids(user.id)
-    subscribed_category_ids = User.subscribed_category_ids(user.id)
-    subscribed_podcast_ids = User.subscribed_podcast_ids(user.id)
-
-    messages =
-      from(m in Message,
-        where:
-          (m.topic == "mailboxes" and m.subtopic == ^user_id) or
-            (m.topic == "users" and m.subtopic in ^subscribed_user_ids) or
-            (m.topic == "podcasts" and m.subtopic in ^subscribed_podcast_ids) or
-            (m.topic == "category" and m.subtopic in ^subscribed_category_ids),
-        order_by: [desc: :inserted_at],
-        preload: [:creator, :persona]
-      )
-      |> Repo.paginate(params)
-
-    render(conn, "my_messages.html",
-      user: user,
-      messages: messages,
-      page_number: messages.page_number
-    )
-  end
-
   def my_podcasts(conn, _params, user) do
     user =
       Repo.get(User, user.id)

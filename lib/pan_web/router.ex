@@ -231,7 +231,7 @@ defmodule PanWeb.Router do
     post("/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed)
     get("/my_podcasts", UserFrontendController, :my_podcasts)
     get("/my_profile", UserFrontendController, :my_profile)
-    get("/my_messages", UserFrontendController, :my_messages)
+    live("/my_messages", Live.User.MyMessages, :my_messages, as: :user_frontend)
     get("/my_data", UserFrontendController, :my_data)
     delete("/delete_my_account", UserFrontendController, :delete_my_account)
 
