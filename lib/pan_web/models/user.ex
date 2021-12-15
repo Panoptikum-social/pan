@@ -362,4 +362,13 @@ defmodule PanWeb.User do
       |> Pan.Mailer.deliver_now()
     end
   end
+
+  def get_for_show(id) do
+    Repo.get!(User, id)
+    |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
+  end
+
+  def get_by_id(id) do
+    Repo.get!(User, id)
+  end
 end

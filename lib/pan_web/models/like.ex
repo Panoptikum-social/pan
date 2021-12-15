@@ -46,4 +46,22 @@ defmodule PanWeb.Like do
     )
     |> Repo.one()
   end
+
+  def find_user_like(enjoyer_id, liked_user_id) do
+    from(l in Like,
+      where:
+        l.enjoyer_id == ^enjoyer_id and
+          l.user_id == ^liked_user_id
+    )
+    |> Repo.one()
+  end
+
+  def get_podcast_related(user_id) do
+    from(l in Like,
+      where: l.enjoyer_id == ^user_id and not is_nil(l.podcast_id),
+      order_by: [desc: :inserted_at]
+    )
+    |> Repo.all()
+    |> Repo.preload([:podcast, [episode: :podcast], [chapter: [episode: :podcast]]])
+  end
 end

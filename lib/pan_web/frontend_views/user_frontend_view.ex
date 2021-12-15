@@ -1,6 +1,5 @@
 defmodule PanWeb.UserFrontendView do
   use PanWeb, :view
-  import Scrivener.HTML
   alias Pan.Repo
   alias PanWeb.Follow
   alias PanWeb.Like
@@ -95,10 +94,6 @@ defmodule PanWeb.UserFrontendView do
       class: "btn btn-primary btn-xs",
       style: "color: #fff"
     )
-  end
-
-  def chapter_label(chapter) do
-    [icon("indent"), " ", chapter.title]
   end
 
   def format_date(date) do
