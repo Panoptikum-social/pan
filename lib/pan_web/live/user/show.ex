@@ -1,8 +1,8 @@
 defmodule PanWeb.Live.User.Show do
   use Surface.LiveView
-  on_mount PanWeb.Live.Auth
+  on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like, Message}
-  alias PanWeb.Surface.{PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon}
+  alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon}
   alias PanWeb.Live.User.{LikeOrUnlikeButton, FollowOrUnfollowButton}
 
   def mount(%{"id" => id}, _session, socket) do
@@ -29,122 +29,107 @@ defmodule PanWeb.Live.User.Show do
     |> Timex.format!("%e.%m.%Y", :strftime)
   end
 
+  defp format_datetime(date_time) do
+    Timex.to_date(date_time)
+    |> Timex.format!("%e.%m.%Y", :strftime)
+  end
+
   def render(assigns) do
     ~F"""
-    <h1 class="text-3xl">{@user.name}</h1>
+    <div class="m-4">
+      <h1 class="text-3xl">{@user.name}</h1>
 
-    <p :if={@current_user_id}>
-      <LikeOrUnlikeButton id="like_or_unlike_button"
-                          current_user_id={@current_user_id}
-                          user={@user} />
-      <FollowOrUnfollowButton id="follow_or_unfollow_button"
-                               current_user_id={@current_user_id}
-                               user={@user} />
-    </p>
+      <p :if={@current_user_id}>
+        <LikeOrUnlikeButton id="like_or_unlike_button"
+                            current_user_id={@current_user_id}
+                            user={@user} />
+        <FollowOrUnfollowButton id="follow_or_unfollow_button"
+                                current_user_id={@current_user_id}
+                                user={@user} />
+      </p>
 
-    <div class="row">
-      {#if @user.share_subscriptions}
-        <div class="col-md-6">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Podcasts, {@user.name} has subscribed to</h3>
-            </div>
-            <div class="panel-body">
-            <p style="line-height: 200%;">
-                {#for podcast <- @user.podcasts_i_subscribed}
-                  <PodcastButton for={podcast} /> &nbsp;
-                {/for}
-              </p>
-            </div>
-          </div>
+      <Panel :if={@user.share_subscriptions}
+             purpose="podcast"
+             heading={"Podcasts, #{@user.name} has subscribed to"}
+             class="my-4">
+        <p class="leading-10 m-4">
+          {#for podcast <- @user.podcasts_i_subscribed}
+            <PodcastButton for={podcast}
+                           truncate={true}/> &nbsp;
+          {/for}
+        </p>
+      </Panel>
+
+      <Panel :if={@podcast_related_likes != []}
+             purpose="like"
+             heading={"Podcast, #{@user.name} likes"}
+             class="my-4">
+        <div class="m-4">
+          {#for like <- @podcast_related_likes}
+            <p class="leading-10">
+              {#if like.chapter_id != nil}
+                {like.inserted_at |> format_date}: &nbsp;
+                <PodcastButton for={like.chapter.episode.podcast} /> /
+                <EpisodeButton for={like.chapter.episode} /> /
+                <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
+              {#elseif like.episode_id != nil}
+                {like.inserted_at |> format_date}: &nbsp;
+                <PodcastButton for={like.episode.podcast} /> /
+                <EpisodeButton for={like.episode} />
+              {#elseif like.podcast_id != nil}
+                {like.inserted_at |> format_date}: &nbsp;
+                <PodcastButton for={like.podcast} />
+              {/if}
+            </p>
+          {/for}
         </div>
-      {/if}
+      </Panel>
 
-      {#if @podcast_related_likes != []}
-        <div class="col-md-12">
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <h3 class="panel-title">Podcast, {@user.name} likes</h3>
-            </div>
-            <div class="panel-body">
-              {#for like <- @podcast_related_likes}
-                <p>
-                  {#if like.chapter_id != nil}
-                    {like.inserted_at |> format_date}: &nbsp;
-                    <PodcastButton for={like.chapter.episode.podcast} /> /
-                    <EpisodeButton for={like.chapter.episode} /> /
-                    <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
-                  {#elseif like.episode_id != nil}
-                    {like.inserted_at |> format_date}: &nbsp;
-                    <PodcastButton for={like.episode.podcast} /> /
-                    <EpisodeButton for={like.episode} />
-                  {#elseif like.podcast_id != nil}
-                    {like.inserted_at |> format_date}: &nbsp;
-                    <PodcastButton for={like.podcast} />
-                  {/if}
-                </p>
-              {/for}
-            </div>
-          </div>
-        </div>
-      {/if}
+      <Panel :if={@user.users_i_like != []}
+             purpose="popular"
+             heading={"Persons, #{@user.name} likes"}
+             class="my-4">
+        <p class="leading-10 m-4">
+          {#for user <- @user.users_i_like}
+            <UserButton for={user} /> &nbsp;
+          {/for}
+        </p>
+      </Panel>
 
-      {#if @user.users_i_like != []}
-        <div class="col-md-6">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Persons, {@user.name} likes</h3>
-            </div>
-            <div class="panel-body">
-              <p style="line-height: 200%;">
-                {#for user <- @user.users_i_like}
-                  <UserButton for={user} /> &nbsp;
-                {/for}
-              </p>
-            </div>
-          </div>
-        </div>
-      {/if}
+      <Panel :if={@user.categories_i_like != []}
+             purpose="category"
+             heading={"Categories, #{@user.name} likes"}
+             class="my-4">
+        <p class="leading-10 m-4">
+          {#for category <- @user.categories_i_like}
+            <CategoryButton for={category} /> &nbsp;
+          {/for}
+        </p>
+      </Panel>
 
-      {#if @user.categories_i_like != []}
-        <div class="col-md-6">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Categories, {@user.name} likes</h3>
-            </div>
-            <div class="panel-body">
-              <p style="line-height: 200%;">
-                {#for category <- @user.categories_i_like}
-                  <CategoryButton for={category} /> &nbsp;
-                {/for}
-              </p>
-            </div>
-          </div>
-        </div>
-      {/if}
-
-      {#if @latest_messages != [] > 0}
-        <div class="col-md-12">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              <h3 class="panel-title">Messages created by {@user.name}</h3>
-            </div>
-            <div class="panel-body">
-              <ul class="list-group">
-                {#for message <- @latest_messages}
-                  <li class={"list-group-item message-#{message.type}"}>
-                    <i>{#if message.creator} {message.creator.name} {#else} {message.persona.name} {/if}:</i>
-                    {raw message.content}
-                    <span class="pull-right">{message.inserted_at}</span>
-                  </li>
-                {/for}
-              </ul>
-              <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
-            </div>
-          </div>
-        </div>
-      {/if}
+      <Panel :if={@latest_messages != []}
+             purpose="message"
+             heading={"Messages created by #{@user.name}"}
+             class="my-4">
+        <ul class="leading-10"
+            phx-update="append"
+            id="message-list">
+          {#for message <- @latest_messages}
+            <li id={"message-#{message.id}"}
+                class="flex justify-between border-t border-gray-light">
+              <div class="mx-4">
+                <i class={"p-1 bg-success-light bg-#{message.type}-light"}>{#if message.creator} {message.creator.name} {#else} {message.persona.name} {/if}:</i>
+                {raw message.content}
+              </div>
+              <div class="mx-4">
+                {message.inserted_at |> format_datetime}
+              </div>
+            </li>
+          {/for}
+        </ul>
+      </Panel>
     </div>
+    <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
 end

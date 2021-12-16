@@ -25,6 +25,7 @@ defmodule PanWeb.Surface.Panel do
       "like" -> "bg-grapefruit text-white"
       "episode" -> "bg-episode text-white"
       "recommendation" -> "bg-recommendation text-white"
+      "message" -> "bg-success text-white"
       _ -> "bg-white"
     end
   end
