@@ -1,6 +1,5 @@
 defmodule PanWeb.PersonaFrontendView do
   use PanWeb, :view
-  import Scrivener.HTML
   alias Pan.Repo
   alias PanWeb.Follow
   alias PanWeb.Like
@@ -82,13 +81,6 @@ defmodule PanWeb.PersonaFrontendView do
           [Persona.follows(persona_id), " ", icon("commenting"), " Unfollow"]
         end
     end
-  end
-
-  def ordered_episodes(grouped_gigs) do
-    grouped_gigs
-    |> Map.keys()
-    |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
-    |> Enum.reverse()
   end
 
   def format_date(date) do

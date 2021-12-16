@@ -47,6 +47,15 @@ defmodule PanWeb.Like do
     |> Repo.one()
   end
 
+  def find_persona_like(user_id, persona_id) do
+    from(l in Like,
+      where:
+        l.enjoyer_id == ^user_id and
+          l.persona_id == ^persona_id
+    )
+    |> Repo.one()
+  end
+
   def find_user_like(enjoyer_id, liked_user_id) do
     from(l in Like,
       where:

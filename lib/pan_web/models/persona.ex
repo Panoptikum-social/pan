@@ -209,4 +209,13 @@ defmodule PanWeb.Persona do
     |> Persona.changeset(%{image_url: nil, uri: persona.uri || persona.pid})
     |> Repo.update()
   end
+
+  def get_by_pid(pid) do
+    from(p in Persona, where: p.pid == ^pid)
+    |> Repo.one()
+  end
+
+  def get_by_id(id) do
+    Repo.get!(Persona, id)
+  end
 end

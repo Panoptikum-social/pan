@@ -1,5 +1,7 @@
 defmodule PanWeb.Engagement do
   use PanWeb, :model
+  alias Pan.Repo
+  alias PanWeb.Engagement
 
   schema "engagements" do
     field(:from, :date)
@@ -16,5 +18,13 @@ defmodule PanWeb.Engagement do
     struct
     |> cast(params, [:from, :until, :comment, :role, :persona_id, :podcast_id])
     |> validate_required([:role])
+  end
+
+  def get_by_persona_ids(persona_ids) do
+    from(e in Engagement,
+      where: e.persona_id in ^persona_ids,
+      preload: :podcast
+    )
+    |> Repo.all()
   end
 end

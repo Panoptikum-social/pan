@@ -30,7 +30,7 @@ defmodule PanWeb.Message do
       creator_id: event.current_user_id,
       type: event.type
     }
-    |> Repo.insert
+    |> Repo.insert()
   end
 
   def latest_by_user(user_id, page, per_page) do
@@ -49,7 +49,7 @@ defmodule PanWeb.Message do
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )
-    |> Repo.all
+    |> Repo.all()
   end
 
   def created_by_user(user_id, page, per_page) do
@@ -60,6 +60,17 @@ defmodule PanWeb.Message do
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )
-    |> Repo.all
+    |> Repo.all()
+  end
+
+  def get_by_persona_ids(persona_ids, page, per_page) do
+    from(m in Message,
+      where: m.persona_id in ^persona_ids,
+      order_by: [desc: :inserted_at],
+      preload: :persona,
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
   end
 end

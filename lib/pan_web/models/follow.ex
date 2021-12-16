@@ -26,6 +26,13 @@ defmodule PanWeb.Follow do
     )
   end
 
+  def find_persona_follow(user_id, persona_id) do
+    Repo.get_by(Follow,
+      follower_id: user_id,
+      persona_id: persona_id
+    )
+  end
+
   def find_user_follow(follower_id, user_id) do
     Repo.get_by(Follow,
       follower_id: follower_id,

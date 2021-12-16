@@ -62,4 +62,25 @@ defmodule PanWeb.Gig do
         {:error, "not your persona"}
     end
   end
+
+  def get_by_persona_ids(persona_ids, page, per_page) do
+    from(g in Gig,
+      where: g.persona_id in ^persona_ids,
+      join: e in assoc(g, :episode),
+      order_by: [desc: e.publishing_date],
+      select: g.id,
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
+
+  def grouped_gigs(gigs) do
+    from(g in Gig,
+      where: g.id in ^gigs,
+      preload: [episode: :podcast]
+    )
+    |> Repo.all()
+    |> Enum.group_by(&Map.get(&1, :episode))
+  end
 end

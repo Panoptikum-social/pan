@@ -1,7 +1,7 @@
 defmodule PanWeb.PersonaFrontendController do
   use PanWeb, :controller
   alias Pan.Search
-  alias PanWeb.{Delegation, Engagement, Gig, Image, Manifestation, Message, Persona}
+  alias PanWeb.{Delegation, Image, Manifestation, Persona}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -71,74 +71,6 @@ defmodule PanWeb.PersonaFrontendController do
       redirect_id ->
         persona = Repo.get!(Persona, redirect_id)
         redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
-    end
-  end
-
-  def persona(conn, params, _user) do
-    pid = params["pid"]
-    persona = Repo.one(from(p in Persona, where: p.pid == ^pid))
-
-    if persona do
-      delegator_ids =
-        from(d in Delegation,
-          where: d.delegate_id == ^persona.id,
-          select: d.persona_id
-        )
-        |> Repo.all()
-
-      persona_ids = [persona.id | delegator_ids]
-
-      gigs =
-        from(g in Gig,
-          where: g.persona_id in ^persona_ids,
-          join: e in assoc(g, :episode),
-          order_by: [desc: e.publishing_date],
-          select: g.id
-        )
-        |> Repo.paginate(page: params["page"], page_size: 50)
-
-      grouped_gigs =
-        from(g in Gig,
-          where: g.id in ^gigs.entries,
-          preload: [episode: :podcast]
-        )
-        |> Repo.all()
-        |> Enum.group_by(&Map.get(&1, :episode))
-
-      engagements =
-        from(e in Engagement,
-          where: e.persona_id in ^persona_ids,
-          preload: :podcast
-        )
-        |> Repo.all()
-
-      persona_thumbnail = Repo.get_by(Image, persona_id: persona.id)
-
-      case persona.redirect_id do
-        nil ->
-          messages =
-            from(m in Message,
-              where: m.persona_id in ^persona_ids,
-              order_by: [desc: :inserted_at],
-              preload: :persona
-            )
-            |> Repo.paginate(params)
-
-          render(conn, "persona.html",
-            persona: persona,
-            messages: messages,
-            gigs: gigs,
-            grouped_gigs: grouped_gigs,
-            engagements: engagements,
-            persona_thumbnail: persona_thumbnail
-          )
-
-        redirect_id ->
-          persona = Repo.get!(Persona, redirect_id)
-          redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
-      end
-    else
-      render(conn, "not_found.html")
     end
   end
 

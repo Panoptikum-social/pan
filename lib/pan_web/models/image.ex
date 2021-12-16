@@ -154,4 +154,8 @@ defmodule PanWeb.Image do
   def get_by_podcast_id(podcast_id) do
     Repo.get_by(Image, podcast_id: podcast_id)
   end
+
+  def get_by_persona_id(persona_id) do
+    Repo.get_by(Image, persona_id: persona_id)
+  end
 end
