@@ -21,9 +21,13 @@ defmodule PanWeb.Surface.Panel do
     case purpose do
       "category" -> "bg-category text-white"
       "podcast" -> "bg-podcast text-white"
+      "persona" -> "bg-warning text-white"
       "popular" -> "bg-aqua text-white"
       "like" -> "bg-grapefruit text-white"
+      "user" -> "bg-lavender text-white"
       "episode" -> "bg-episode text-white"
+      "engagement" -> "bg-bittersweet text-white"
+      "gig" -> "bg-mint text-white"
       "recommendation" -> "bg-recommendation text-white"
       "message" -> "bg-success text-white"
       _ -> "bg-white"

@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Persona.Show do
   import PanWeb.Router.Helpers
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, Message, User}
-  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon}
+  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon, Panel}
   alias PanWeb.Live.Persona.{FollowOrUnfollowButton, LikeOrUnlikeButton}
 
   def mount(%{"pid" => pid}, _session, socket) do
@@ -107,7 +107,7 @@ defmodule PanWeb.Live.Persona.Show do
 
   def render(%{not_found: true} = assigns) do
     ~F"""
-    <div class="m-4">
+    <div class="m-4">get_by_persona_ids
       We don't know a persona with that name.
     </div>
     """
@@ -121,169 +121,156 @@ defmodule PanWeb.Live.Persona.Show do
       })
     </script>
 
-    <div class="row">
-      <div class="col-md-8" >
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              {@persona.name}
-            </h3>
-          </div>
-          <div class="panel-body ">
-            <div class="row">
-              <div class="col-md-8">
-                <dl class="dl-horizontal">
-                  <dt>Panoptikum-ID</dt>
-                  <dd>{@persona.pid}</dd>
+    <div class="m-4 flex space-x-4">
+      <Panel heading={@persona.name}
+             purpose="user">
+        <div class="flex m-4">
+          <table>
+            <tr>
+              <td class="px-4 text-right font-semibold">Panoptikum-ID</td>
+              <td>{@persona.pid}</td>
+            </tr>
+            <tr>
+              <td class="px-4 text-right font-semibold">Permalink (URI)</td>
+              <td>{Endpoint.url}/{@persona.pid}</td>
+            </tr>
+            <tr>
+              <td class="px-4 text-right font-semibold">Name</td>
+              <td>{@persona.name}</td>
+            </tr>
+            <tr>
+              {#if @persona.uri}
+                <td class="px-4 text-right font-semibold">Uri</td>
+                <td>{ @persona.uri}</td>
+              {/if}
+            </tr>
+            <tr>
+              <td class="px-4 text-right font-semibold">Business Cards</td>
+              <td>
+                <a href={persona_frontend_url(Endpoint, :business_card, @persona)}>
+                  <Icon name="credit-card-heroicons-outline"/> Show
+                </a>
+              </td>
+            </tr>
+          </table>
 
-                  <dt>Permalink (URI)</dt>
-                  <dd>{Endpoint.url}/{@persona.pid}</dd>
+          <img :if={@persona_thumbnail}
+                alt={@persona.image_title}
+                class="rounded shadow ml-4"
+                id="photo" />
+          <img :if={!@persona_thumbnail}
+                src="/images/missing-persona.png"
+                alt="missing image"
+                width="150"
+                class="rounded shadow ml-4" />
+        </div>
 
-                  <dt>Name</dt>
-                  <dd>{@persona.name}</dd>
-
-                  {#if @persona.uri}
-                    <dt>Uri</dt>
-                    <dd>{ @persona.uri}</dd>
-                  {/if}
-
-                  <dt>Business Cards</dt>
-                  <dd>
-                    <a href={persona_frontend_url(Endpoint, :business_card, @persona)}>
-                      <Icon name="credit-card-heroicons-outline"/> Show
-                    </a>
-                  </dd>
-                </dl>
-                <span style="color: #fff;">Id: {@persona.id}</span>
-              </div>
-
-              <div class="col-md-4" >
-                {#if @persona_thumbnail}
-                  <img src={"#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
-                       width="150"
-                       alt={@persona.image_title}
-                       class="thumbnail"
-                       id="photo" />
-                {#else}
-                  <img src="/images/missing-persona.png"
-                       alt="missing image"
-                       width="150"
-                       class="thumbnail" />
-                {/if}
-              </div>
-            </div>
-
-            <p :if={@current_user_id}>
-              <LikeOrUnlikeButton id="like_or_unlike_button"
+        <p :if={@current_user_id}
+           class="m-4">
+          <LikeOrUnlikeButton id="like_or_unlike_button"
+                              persona={@persona}
+                              current_user_id={@current_user_id} />
+          <FollowOrUnfollowButton id="follow_or_unfollow_button"
                                   persona={@persona}
                                   current_user_id={@current_user_id} />
-              <FollowOrUnfollowButton id="follow_or_unfollow_button"
-                                      persona={@persona}
-                                      current_user_id={@current_user_id} />
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4" >
+        </p>
+      </Panel>
+
+      <div>
         {#if !@current_user}
-          <div class="alert alert-warning">
-            <h4>Claiming not available</h4>
-            <p>You can only claim personas, if you are logged in.</p>
-          </div>
+          <Panel heading="Claiming not available" purpose="persona">
+            <p class="m-4">You can only claim personas, if you are logged in.</p>
+          </Panel>
 
         {#elseif !@current_user.podcaster}
-          <div class="alert alert-warning">
-            <h4>Claiming not available</h4>
-            <p>You didn't say you are a podcaster in
+          <Panel heading="Claiming not available" purpose="persona">
+            <p class="m-4">You didn't say you are a podcaster in
               <a href={user_frontend_path(Endpoint, :my_profile)}
                  class="btn btn-sm btn-default">My Profile</a> yet.</p>
-          </div>
+          </Panel>
 
         {#elseif !@current_user.email_confirmed}
-          <div class="alert alert-warning">
-            <h4>Claiming not available</h4>
-            <p>You didn't confirm your email address by clicking on the
-              confirmation link in the email sent to you after login.</p>
-          </div>
+          <Panel heading="Claiming not available" purpose="persona">
+            <p class="m-4">You didn't confirm your email address by clicking on the
+                           confirmation link in the email sent to you after login.</p>
+          </Panel>
 
         {#elseif !@persona.email}
-          <h4>Claiming</h4>
-
-          <p>Please take the time to read the text on the following screen carefully.</p>
-
-          <p><a href={persona_frontend_path(Endpoint, :warning, @persona)}
-                class: "btn btn-normal">Start claiming process</a></p>
+          <Panel heading="Claiming" purpose="persona">
+            <div class="m-4">
+              <p>Please take the time to read the text on the following screen carefully.</p>
+              <p>
+                <a href={persona_frontend_path(Endpoint, :warning, @persona)}
+                  class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light">
+                  Start claiming process
+                </a>
+              </p>
+            </div>
+          </Panel>
 
         {#else}
-          <h4>Claiming</h4>
+          <Panel heading="Claiming" purpose="persona">
 
-          {#if Pan.Repo.get_by(PanWeb.Manifestation, persona_id: @persona.id,
-                                                     user_id: @current_user.id)}
-            <p>You have claimed this persona already.</p>
-          {#else}
-            <p>You can send an email to the owner of this persona and ask her for permission
-              to add you as a manifestation of this persona.<br/>
-              Your name, username and email address will be sent alongside in the email
-              to give the owner a chance to get in contact with you.</p>
+            {#if Pan.Repo.get_by(PanWeb.Manifestation, persona_id: @persona.id,
+                                                      user_id: @current_user.id)}
+              <p class="m-4">You have claimed this persona already.</p>
+            {#else}
+              <div class="m-4">
+                <p>You can send an email to the owner of this persona and ask her for permission
+                  to add you as a manifestation of this persona.<br/>
+                  Your name, username and email address will be sent alongside in the email
+                  to give the owner a chance to get in contact with you.</p>
 
-            <p>
-              <a href={persona_frontend_path(Endpoint, :claim, @persona)}
-                 class="btn btn-normal",
-                 method="post"
-                 data={[confirm: "Are you sure?"]} >Claim</a>
-            </p>
-          {/if}
+                <a href={persona_frontend_path(Endpoint, :claim, @persona)}
+                   class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light",
+                   method="post"
+                   data={[confirm: "Are you sure?"]} >Claim</a>
+
+              </div>
+            {/if}
+          </Panel>
         {/if}
       </div>
     </div>
 
-    <div :if={@persona.description || @persona.long_description}
-          class="panel panel-success">
-      <div class="panel-heading">
-        <h3 class="panel-title">{@persona.description}</h3>
-      </div>
-      <div class="panel-body">
-        {@persona.long_description |> markdown}
-      </div>
-    </div>
+    <Panel :if={@persona.description || @persona.long_description}
+           heading={@persona.description}
+           purpose="persona"
+           class="m-4 max-w-screen-xl">
+        <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
+    </Panel>
 
-    <div :if={@engagements != []}
-          class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Engagements, {@persona.name} has entered</h3>
-      </div>
-      <div class="table-responsive">
-        <table class="table table-striped table-condensed">
-          <thead>
+    <Panel :if={@engagements != []}
+           heading={"Engagements, #{@persona.name} has entered"}
+           purpose="engagement"
+           class="m-4">
+      <table class="m-4">
+        <thead>
+          <tr>
+            <th>Podcast</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {#for {podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast))}
             <tr>
-              <th>Podcast</th>
-              <th>Role</th>
+              <td class="px-2"><PodcastButton for={podcast} /></td>
+              <td class="px-2">
+                {#for engagement <- engagements}
+                  <Pill type="success">{engagement.role}</Pill>
+                {/for}
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {#for {podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast))}
-              <tr>
-                <td><PodcastButton for={podcast} /></td>
-                <td>
-                  {#for engagement <- engagements}
-                    <Pill type="success">{engagement.role}</Pill> &nbsp;
-                  {/for}
-                </td>
-              </tr>
-            {/for}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          {/for}
+        </tbody>
+      </table>
+    </Panel>
 
-    {#if @gigs != []}
-      <div class="panel panel-primary" id="gigs">
-        <div class="panel-heading">
-          <h3 class="panel-title">Gigs, {@persona.name} has been engaged in</h3>
-        </div>
-      </div>
-
-      <table class="table table-striped table-condensed">
+    <Panel :if={@gigs != []}
+           heading={"Gigs, #{@persona.name} has been engaged in"}
+           purpose="gig"
+           class="m-4">
+      <table class="m-4">
         <thead>
           <tr>
             <th>Date</th>
@@ -295,10 +282,10 @@ defmodule PanWeb.Live.Persona.Show do
         <tbody>
           {#for episode <- ordered_episodes(@grouped_gigs)}
             <tr>
-              <td align="right">{episode.publishing_date |> format_date}</td>
-              <td><PodcastButton for={episode.podcast} /></td>
-              <td><EpisodeButton for={episode} /></td>
-              <td>
+              <td align="right" class="px-2">{episode.publishing_date |> format_date}</td>
+              <td class="px-2"><PodcastButton for={episode.podcast} /></td>
+              <td class="px-2"><EpisodeButton for={episode} /></td>
+              <td class="px-2">
                 {#for gig <- @grouped_gigs[episode]}
                   <Pill type="success">{gig.role}</Pill>
                 {/for}
@@ -307,27 +294,24 @@ defmodule PanWeb.Live.Persona.Show do
           {/for}
         </tbody>
       </table>
-    {/if}
+    </Panel>
 
-    <div if={@messages != []}
-          class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Messages created by {@persona.name}</h3>
-      </div>
-      <div class="panel-body">
-        <ul class="list-group">
-          {#for message <- @messages}
-            <li class={"list-group-item message-#{message.type}"}>
-              <i>
-                {message.creator && message.creator.name || message.persona.name}:
-              </i>
-              {raw message.content}
-              <span class="pull-right">{message.inserted_at |> format_datetime}</span>
-            </li>
-          {/for}
-        </ul>
-      </div>
-    </div>
+    <Panel :if={@messages != []}
+           heading={"Messages created by #{@persona.name}"}
+           purpose="message"
+           class="m-4">
+      <table class="m-4">
+        {#for message <- @messages}
+          <tr>
+            <td class={"bg-#{message.type} px-2"}>
+              <i>{message.creator && message.creator.name || message.persona.name}</i>
+            </td>
+            <td class="px-2">{raw message.content}</td>
+            <td class="px-2 text-right">{message.inserted_at |> format_datetime}</td>
+          </tr>
+        {/for}
+      </table>
+    </Panel>
     """
   end
 end

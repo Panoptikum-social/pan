@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.3.4",
+    "@tailwindcss/typography": "^0.4.1",
     "alpinejs": "^2.8.2",
     "nprogress": "^0.2.0"
   }

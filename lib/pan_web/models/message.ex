@@ -17,7 +17,7 @@ defmodule PanWeb.Message do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:content, :type, :topic, :subtopic, :event])
+    |> cast(params, [:content, :type, :topic, :subtopic, :event, :persona_id, :creator_id])
     |> validate_required([:content, :type, :topic, :subtopic, :event])
   end
 
@@ -67,7 +67,7 @@ defmodule PanWeb.Message do
     from(m in Message,
       where: m.persona_id in ^persona_ids,
       order_by: [desc: :inserted_at],
-      preload: :persona,
+      preload: [:persona, :creator],
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )
