@@ -257,7 +257,7 @@ defmodule PanWeb.Live.Persona.Show do
     <button :if={@messages_page * @messages_per_page < @messages_count}
             :on-click="load-more-messages"
             class="border border-solid inline-block shadow m-4 py-1 px-2 rounded text-sm bg-info
-                  hove:bg-info-light text-white border-gray-dark">
+                  hover:bg-info-light text-white border-gray-dark">
       Load more
     </button>
 

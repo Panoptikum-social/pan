@@ -530,4 +530,8 @@ defmodule PanWeb.Podcast do
     )
     |> Repo.all()
   end
+
+  def all do
+    Repo.all(Podcast, order_by: :title)
+  end
 end

@@ -29,6 +29,21 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
+        "arrow-sm-right-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+                class="#{class}"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          """
+
         "rss-heroicons-outline" ->
           """
           <svg xmlns="http://www.w3.org/2000/svg"

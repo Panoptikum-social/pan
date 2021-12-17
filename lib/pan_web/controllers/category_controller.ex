@@ -98,21 +98,6 @@ defmodule PanWeb.CategoryController do
     render(conn, "merge.html", categories: categories)
   end
 
-  def assign_podcasts(conn, _params) do
-    categories =
-      Repo.all(
-        from(category in Category,
-          where: is_nil(category.parent_id),
-          order_by: :title,
-          preload: [children: :children]
-        )
-      )
-
-    podcasts = Repo.all(Podcast, order_by: :title)
-
-    render(conn, "assign_podcasts.html", categories: categories, podcasts: podcasts)
-  end
-
   def execute_merge(conn, %{"from" => from, "to" => to}) do
     from_id = String.to_integer(from)
     to_id = String.to_integer(to)
