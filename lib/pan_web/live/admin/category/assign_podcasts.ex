@@ -5,7 +5,20 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
   alias PanWeb.Surface.{Icon, Tree}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.tree_for_assign_podcasts(), podcasts: Podcast.all())}
+    {:ok,
+     assign(socket,
+       categories: Category.tree_for_assign_podcasts(),
+       podcasts: Podcast.all(),
+       selected_id: 0
+     )}
+  end
+
+  def handle_event("select", %{"node-id" => node_id}, %{assigns: assigns} = socket) do
+    if assigns.selected_id != String.to_integer(node_id) do
+      {:noreply, assign(socket, :selected_id, String.to_integer(node_id))}
+    else
+      {:noreply, assign(socket, :selected_id, 0)}
+    end
   end
 
   def render(assigns) do
@@ -16,8 +29,11 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
       <div class="flex">
         <div>
           <h3 class="text-2xl">Select category</h3>
-          <Tree nodes={@categories}
-                class="m-4"/>
+          <Tree id="category_tree"
+                nodes={@categories}
+                class="m-4"
+                selected_id={@selected_id}
+                select="select" />
         </div>
 
         <div>
@@ -63,10 +79,7 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
             { data: 'title', title: "Title of podcasts assigned" }
           ],
           select: true
-        })
-
-        $('#unassigned_podcasts').DataTable({
-          serverSide: false,
+        })a component may render more than one DOM element s
           data: [{ id: 0,
                   title: "Select category first, then select podcasts to add." +
                           " CTRL + Click to select several!" }],

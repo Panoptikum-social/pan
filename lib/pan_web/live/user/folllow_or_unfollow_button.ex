@@ -36,12 +36,12 @@ defmodule PanWeb.Live.User.FollowOrUnfollowButton do
     ~F"""
     <span>
       {#if @following}
-        <button :on-click={"toggle-follow"}
+        <button :on-click="toggle-follow"
                 class="text-white rounded py-1 px-2 bg-success border border-gray-darker rounded">
           {@followers_count} <Icon name="chat-heroicons-solid"/> Unfollow
         </button>
       {#else}
-        <button :on-click={"toggle-follow"}
+        <button :on-click="toggle-follow"
                 class="text-white rounded py-1 px-2 bg-danger border border-gray-darker rounded">
           {@followers_count} <Icon name="chat-heroicons-outline"/> Follow
         </button>
