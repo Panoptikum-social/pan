@@ -241,7 +241,7 @@ defmodule PanWeb.Live.Persona.Show do
            purpose="message"
            class="m-4">
        <table class="m-4">
-         <tbody phx-update="append">
+         <tbody phx-update="append" id="message-table-body">
            {#for message <- @messages}
              <tr id={"message-#{message.id}"}>
                <td class={"bg-#{message.type} px-2"}>
@@ -300,7 +300,7 @@ defmodule PanWeb.Live.Persona.Show do
             <th>Role</th>
           </tr>
         </thead>
-        <tbody phx-update="append">
+        <tbody phx-update="append" id="gigs-table-body">
           {#for episode <- ordered_episodes(@grouped_gigs)}
             <tr id={"episode-#{episode.id}"}>
               <td align="right" class="px-2">{episode.publishing_date |> format_date}</td>
