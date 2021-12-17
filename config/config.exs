@@ -15,8 +15,6 @@ config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-config :scrivener_html, routes_helper: PanWeb.Router.Helpers
-
 config :phoenix, :json_library, Jason
 config :phoenix, :format_encoders, "json-api": Jason
 
