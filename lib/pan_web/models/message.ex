@@ -73,4 +73,9 @@ defmodule PanWeb.Message do
     )
     |> Repo.all()
   end
+
+  def count_by_persona_id(persona_id) do
+    from(r in Message, where: r.persona_id == ^persona_id)
+    |> Repo.aggregate(:count)
+  end
 end

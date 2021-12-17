@@ -17,6 +17,7 @@ defmodule PanWeb.Live.Persona.Show do
       persona_ids = [persona.id | delegator_ids]
       engagements = Engagement.get_by_persona_ids(persona_ids)
       persona_thumbnail = Image.get_by_persona_id(persona.id)
+      messages_count = Message.count_by_persona_id(persona.id)
 
       if persona.redirect_id do
         persona = Persona.get_by_id(persona.redirect_id)
@@ -31,7 +32,8 @@ defmodule PanWeb.Live.Persona.Show do
           gigs_page: 1,
           gigs_per_page: 10,
           messages_page: 1,
-          messages_per_page: 20,
+          messages_per_page: 10,
+          messages_count: messages_count,
           persona_thumbnail: persona_thumbnail,
           engagements: engagements
         )
@@ -70,11 +72,11 @@ defmodule PanWeb.Live.Persona.Show do
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch_gigs()}
+    {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
   end
 
   def handle_event("load-more-messages", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch_messages()}
+    {:noreply, assign(socket, messages_page: assigns.messages_page + 1) |> fetch_messages()}
   end
 
   defp markdown(content) do
@@ -107,7 +109,7 @@ defmodule PanWeb.Live.Persona.Show do
 
   def render(%{not_found: true} = assigns) do
     ~F"""
-    <div class="m-4">get_by_persona_ids
+    <div class="m-4">
       We don't know a persona with that name.
     </div>
     """
@@ -115,12 +117,6 @@ defmodule PanWeb.Live.Persona.Show do
 
   def render(assigns) do
     ~F"""
-    <script>
-      $(function() {
-        $('[data-toggle="popover"]').popover()
-      })
-    </script>
-
     <div class="m-4 flex space-x-4">
       <Panel heading={@persona.name}
              purpose="user">
@@ -240,6 +236,31 @@ defmodule PanWeb.Live.Persona.Show do
         <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
     </Panel>
 
+    <Panel :if={@messages != []}
+           heading={"Messages created by #{@persona.name}"}
+           purpose="message"
+           class="m-4">
+       <table class="m-4">
+         <tbody phx-update="append">
+           {#for message <- @messages}
+             <tr id={"message-#{message.id}"}>
+               <td class={"bg-#{message.type} px-2"}>
+                 <i>{message.creator && message.creator.name || message.persona.name}</i>
+               </td>
+               <td class="px-2">{raw message.content}</td>
+               <td class="px-2 text-right">{message.inserted_at |> format_datetime}</td>
+             </tr>
+           {/for}
+         </tbody>
+       </table>
+    </Panel>
+    <button :if={@messages_page * @messages_per_page < @messages_count}
+            :on-click="load-more-messages"
+            class="border border-solid inline-block shadow m-4 py-1 px-2 rounded text-sm bg-info
+                  hove:bg-info-light text-white border-gray-dark">
+      Load more
+    </button>
+
     <Panel :if={@engagements != []}
            heading={"Engagements, #{@persona.name} has entered"}
            purpose="engagement"
@@ -279,38 +300,22 @@ defmodule PanWeb.Live.Persona.Show do
             <th>Role</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody phx-update="append">
           {#for episode <- ordered_episodes(@grouped_gigs)}
-            <tr>
+            <tr id={"episode-#{episode.id}"}>
               <td align="right" class="px-2">{episode.publishing_date |> format_date}</td>
               <td class="px-2"><PodcastButton for={episode.podcast} /></td>
               <td class="px-2"><EpisodeButton for={episode} /></td>
               <td class="px-2">
                 {#for gig <- @grouped_gigs[episode]}
-                  <Pill type="success">{gig.role}</Pill>
+                  <Pill id={"gig-#{gig.id}"} type="success">{gig.role}</Pill>
                 {/for}
               </td>
             </tr>
           {/for}
         </tbody>
       </table>
-    </Panel>
-
-    <Panel :if={@messages != []}
-           heading={"Messages created by #{@persona.name}"}
-           purpose="message"
-           class="m-4">
-      <table class="m-4">
-        {#for message <- @messages}
-          <tr>
-            <td class={"bg-#{message.type} px-2"}>
-              <i>{message.creator && message.creator.name || message.persona.name}</i>
-            </td>
-            <td class="px-2">{raw message.content}</td>
-            <td class="px-2 text-right">{message.inserted_at |> format_datetime}</td>
-          </tr>
-        {/for}
-      </table>
+      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-gigs-page={@gigs_page}></div>
     </Panel>
     """
   end
