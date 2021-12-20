@@ -12,13 +12,88 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
        podcasts: Podcast.all(),
        selected_id: 0,
        delete_ids: [],
-       add_ids: []
+       add_ids: [],
+       assigned_page: 1,
+       assigned_per_page: 10,
+       assigned_sort_by: :id,
+       assigned_sort_order: :asc,
+       assigned_podcasts: [],
+       unassigned_page: 1,
+       unassigned_per_page: 10,
+       unassigned_sort_by: :id,
+       unassigned_sort_order: :asc,
+       unassigned_podcasts: []
      )}
+  end
+
+  defp fetch(
+         %{
+           assigns: %{
+             selected_id: selected_id,
+             assigned_page: assigned_page,
+             assigned_per_page: assigned_per_page,
+             assigned_sort_by: assigned_sort_by,
+             assigned_sort_order: assigned_sort_order,
+             unassigned_page: unassigned_page,
+             unassigned_per_page: unassigned_per_page,
+             unassigned_sort_by: unassigned_sort_by,
+             unassigned_sort_order: unassigned_sort_order
+           }
+         } = socket
+       ) do
+
+    assigned_podcasts =
+      Podcast.assigned_for_assign_podcast(
+        selected_id,
+        assigned_page,
+        assigned_per_page,
+        assigned_sort_by,
+        assigned_sort_order
+      )
+
+    unassigned_podcasts =
+      Podcast.unassigned_for_assign_podcast(
+        selected_id,
+        unassigned_page,
+        unassigned_per_page,
+        unassigned_sort_by,
+        unassigned_sort_order
+      )
+
+    assign(socket, assigned_podcasts: assigned_podcasts, unassigned_podcasts: unassigned_podcasts)
+  end
+
+  def handle_event(
+        "sort_assigned",
+        %{"sort-by" => assigned_sort_by, "sort-order" => assigned_sort_order},
+        socket
+      ) do
+    {:noreply,
+     assign(socket,
+       assigned_sort_by: assigned_sort_by |> String.to_atom(),
+       assigned_sort_order: assigned_sort_order |> String.to_atom()
+     )
+     |> fetch}
+  end
+
+  def handle_event(
+        "sort_unassigned",
+        %{"sort-by" => unassigned_sort_by, "sort-order" => unassigned_sort_order},
+        socket
+      ) do
+    IO.inspect(unassigned_sort_order |> String.to_atom())
+
+    {:noreply,
+     assign(socket,
+       unassigned_sort_by: unassigned_sort_by |> String.to_atom(),
+       unassigned_sort_order: unassigned_sort_order |> String.to_atom()
+     )
+     |> fetch}
   end
 
   def handle_event("select_category", %{"node-id" => node_id}, %{assigns: assigns} = socket) do
     if assigns.selected_id != String.to_integer(node_id) do
-      {:noreply, assign(socket, :selected_id, String.to_integer(node_id))}
+      {:noreply, assign(socket, :selected_id, String.to_integer(node_id)) |> fetch}
     else
       {:noreply, assign(socket, :selected_id, 0)}
     end
@@ -42,10 +117,14 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
         <div class="flex flex-col space-y-4">
           <h3 class="text-2xl">Podcasts assigned</h3>
           <DataTable id="assigned_podcasts"
-                     cols={[%{field: :id, type: :id, label: "Id"}, %{field: :title, type: :string, label: "Title of assigned podcast"}]}
+                     cols={[%{field: :id, type: :id, label: "Id"},
+                            %{field: :title, type: :string, label: "Title of assigned podcast"}]}
                      model={PanWeb.Podcast}
+                     records={@assigned_podcasts}
                      buttons={[]}
                      sort="sort_assigned"
+                     sort_by={@assigned_sort_by}
+                     sort_order={@assigned_sort_order}
                      search="search_assigned"
                      select="select_assigned"
                      cycle_search_mode="cycle_search_mode_assigned" />
@@ -53,10 +132,14 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
 
           <h3 class="text-2xl">Podcasts unassigned</h3>
           <DataTable id="unassigned_podcasts"
-                     cols={[%{field: :id, type: :id, label: "Id"}, %{field: :title, type: :string, label: "Title of assigned podcast"}]}
+                     cols={[%{field: :id, type: :id, label: "Id"},
+                            %{field: :title, type: :string, label: "Title of assigned podcast"}]}
                      model={PanWeb.Podcast}
+                     records={@unassigned_podcasts}
                      buttons={[]}
                      sort="sort_unassigned"
+                     sort_by={@unassigned_sort_by}
+                     sort_order={@unassigned_sort_order}
                      search="search_unassigned"
                      select="select_unassigned"
                      cycle_search_mode="cycle_search_mode_unassigned" />

@@ -19,7 +19,7 @@ defmodule PanWeb.Live.Podcast.Show do
     {:ok, socket, temporary_assigns: [episodes: []]}
   end
 
-  defp fetch( %{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket ) do
+  defp fetch(%{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket) do
     assign(socket, episodes: Episode.get_by_podcast_id(podcast.id, page, per_page))
   end
 
