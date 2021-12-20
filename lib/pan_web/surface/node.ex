@@ -31,7 +31,7 @@ defmodule PanWeb.Surface.Node do
       </div>
       <Tree :if={@expanded && is_list(@node.children)}
             nodes={@node.children}
-            id="subtree-#{node.id}"
+            id={"subtree-#{@node.id}"}
             select={@select}
             selected_id={@selected_id}
             indentation_level={@indentation_level + 1}/>

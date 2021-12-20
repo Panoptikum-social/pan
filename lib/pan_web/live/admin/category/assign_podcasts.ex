@@ -3,17 +3,20 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
   on_mount PanWeb.Live.Admin.Auth
   alias PanWeb.{Category, Podcast}
   alias PanWeb.Surface.{Icon, Tree}
+  alias PanWeb.Surface.Admin.DataTable
 
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
        categories: Category.tree_for_assign_podcasts(),
        podcasts: Podcast.all(),
-       selected_id: 0
+       selected_id: 0,
+       delete_ids: [],
+       add_ids: []
      )}
   end
 
-  def handle_event("select", %{"node-id" => node_id}, %{assigns: assigns} = socket) do
+  def handle_event("select_category", %{"node-id" => node_id}, %{assigns: assigns} = socket) do
     if assigns.selected_id != String.to_integer(node_id) do
       {:noreply, assign(socket, :selected_id, String.to_integer(node_id))}
     else
@@ -26,34 +29,43 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
     <div class="m-4">
       <h2 class="text-3xl">Assigning podcasts to categories</h2>
 
-      <div class="flex">
+      <div class="flex my-4">
         <div>
           <h3 class="text-2xl">Select category</h3>
           <Tree id="category_tree"
                 nodes={@categories}
                 class="m-4"
                 selected_id={@selected_id}
-                select="select" />
+                select="select_category" />
         </div>
 
-        <div>
-          <h3>Podcasts assigned</h3>
-          <table id="assigned_podcasts"
-                class="table table-striped table-condensed table-bordered dataTable"
-                cellspacing="0"
-                width="100%">
-          </table>
+        <div class="flex flex-col space-y-4">
+          <h3 class="text-2xl">Podcasts assigned</h3>
+          <DataTable id="assigned_podcasts"
+                     cols={[%{field: :id, type: :id, label: "Id"}, %{field: :title, type: :string, label: "Title of assigned podcast"}]}
+                     model={PanWeb.Podcast}
+                     buttons={[]}
+                     sort="sort_assigned"
+                     search="search_assigned"
+                     select="select_assigned"
+                     cycle_search_mode="cycle_search_mode_assigned" />
+          <p>Select category first, then select podcasts to remove</p>
 
-          <hr/>
+          <h3 class="text-2xl">Podcasts unassigned</h3>
+          <DataTable id="unassigned_podcasts"
+                     cols={[%{field: :id, type: :id, label: "Id"}, %{field: :title, type: :string, label: "Title of assigned podcast"}]}
+                     model={PanWeb.Podcast}
+                     buttons={[]}
+                     sort="sort_unassigned"
+                     search="search_unassigned"
+                     select="select_unassigned"
+                     cycle_search_mode="cycle_search_mode_unassigned" />
+          <p>Select category first, then select podcasts to add</p>
 
-          <h3>Podcasts unassigned</h3>
-          <table id="unassigned_podcasts"
-                class="table table-striped table-condensed table-bordered table-dataTable"
-                cellspacing="0"
-                width="100%">
-          </table>
-
-          <a onclick="execute_assign()"
+          <a :on-click="execute_assign"
+             phx-category-id={@selected_id}
+             phx-delete-ids={@delete_ids}
+             phx-add-ids={@add_ids}
             class="border border-solid inline-block shadow m-4 py-1 px-2 rounded text-sm bg-info
                    hover:bg-info-light text-white border-gray-dark">
             <Icon name="podcast-lineawesome-solid" />
@@ -66,72 +78,6 @@ defmodule PanWeb.Live.Admin.Category.AssignPodcasts do
         </div>
       </div>
     </div>
-
-    <script>
-      $(function() {
-        $('#assigned_podcasts').DataTable({
-          serverSide: false,
-          data: [{ id: 0,
-                  title: "Select category first, then select podcasts to remove." +
-                          " CTRL + Click to select several!" }],
-          columns: [
-            { data: 'id', title: "ID"},
-            { data: 'title', title: "Title of podcasts assigned" }
-          ],
-          select: true
-        })a component may render more than one DOM element s
-          data: [{ id: 0,
-                  title: "Select category first, then select podcasts to add." +
-                          " CTRL + Click to select several!" }],
-          columns: [
-            { data: 'title', title: "Title of unassigned podcasts" },
-            { data: 'id', title: "ID"}
-          ],
-          select: true
-        })
-      })
-
-      function execute_assign(){
-        var categoryID = $('#category_tree').treeview('getSelected')[0].categoryId
-        var delete_ids = $('#assigned_podcasts').DataTable()
-                                                .rows({ selected: true })
-                                                .data()
-                                                .toArray()
-                                                .map(function(podcast) {return podcast.id})
-        var add_ids =  $('#unassigned_podcasts').DataTable()
-                                                .rows({ selected: true })
-                                                .data()
-                                                .toArray()
-                                                .map(function(podcast) {return podcast.id})
-
-        $.ajax({
-          type: "POST",
-          url: "<%= category_url(@conn, :execute_assign) %>",
-          data: { category_id: categoryID,
-                  delete_ids: delete_ids,
-                  add_ids: add_ids},
-          headers: {"X-CSRF-TOKEN": "<%= get_csrf_token() %>" },
-          success: function(data) {
-            get_podcasts()
-          }
-        })
-      }
-
-      function get_podcasts(){
-        var categoryID = $('#category_tree').treeview('getSelected')[0].categoryId
-        $.ajax({
-          url: "/api/categories/" + categoryID + "/get_podcasts",
-          success: function (data) {
-            $('#assigned_podcasts').dataTable().fnClearTable();
-            if (data["podcasts_assigned"].length > 0) {
-              $('#assigned_podcasts').dataTable().fnAddData(data["podcasts_assigned"]);
-            }
-            $('#unassigned_podcasts').dataTable().fnClearTable();
-            $('#unassigned_podcasts').dataTable().fnAddData(data["podcasts_unassigned"]);
-          }
-        })
-      }
-    </script>
     """
   end
 end
