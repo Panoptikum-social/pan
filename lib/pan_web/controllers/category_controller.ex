@@ -1,7 +1,7 @@
 defmodule PanWeb.CategoryController do
   use PanWeb, :controller
   alias Pan.{Repo, Search}
-  alias PanWeb.{Category, Follow, Like, Podcast}
+  alias PanWeb.{Category, Podcast}
 
   plug(:scrub_params, "category" when action in [:create, :update])
 
@@ -78,75 +78,6 @@ defmodule PanWeb.CategoryController do
     conn
     |> put_flash(:info, "Category deleted successfully.")
     |> redirect(to: category_path(conn, :index))
-  end
-
-  def merge(conn, _params) do
-    categories =
-      Repo.all(
-        from(category in Category,
-          where: is_nil(category.parent_id),
-          order_by: :title
-        )
-      )
-      |> Repo.preload(children: from(c in Category, order_by: c.title))
-      |> Repo.preload(children: :children)
-
-    render(conn, "merge.html", categories: categories)
-  end
-
-  def execute_merge(conn, %{"from" => from, "to" => to}) do
-    from_id = String.to_integer(from)
-    to_id = String.to_integer(to)
-
-    from(f in Follow, where: f.category_id == ^from_id)
-    |> Repo.update_all(set: [category_id: to_id])
-
-    from(l in Like, where: l.category_id == ^from_id)
-    |> Repo.update_all(set: [category_id: to_id])
-
-    already_in_to_ids =
-      from(r in "categories_podcasts",
-        where: r.category_id == ^to_id,
-        select: [r.podcast_id]
-      )
-      |> Repo.all()
-
-    from(r in "categories_podcasts",
-      where:
-        r.category_id == ^from_id and
-          r.podcast_id not in ^already_in_to_ids
-    )
-    |> Repo.update_all(set: [category_id: to_id])
-
-    from(r in "categories_podcasts",
-      where:
-        r.category_id == ^from_id and
-          r.podcast_id in ^already_in_to_ids
-    )
-    |> Repo.delete_all()
-
-    from(c in Category, where: c.parent_id == ^from_id)
-    |> Repo.update_all(set: [parent_id: to_id])
-
-    Pan.Search.Category.delete_index(from_id)
-
-    Repo.get!(Category, from_id)
-    |> Repo.delete!()
-
-    categories =
-      Repo.all(
-        from(category in Category,
-          where: is_nil(category.parent_id),
-          order_by: :title
-        )
-      )
-      |> Repo.preload(children: from(c in Category, order_by: c.title))
-      |> Repo.preload(children: :children)
-
-    Search.Category.delete_index(from_id)
-    Search.Category.update_index(to_id)
-
-    render(conn, "merge.html", categories: categories)
   end
 
   def get_podcasts(conn, %{"id" => id}) do

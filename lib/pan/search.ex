@@ -20,10 +20,10 @@ defmodule Pan.Search do
   end
 
   def reset_all do
-    # Search.Category.batch_reset()
-    # Search.Persona.batch_reset()
-    # Search.Podcast.batch_reset()
-    # Search.Episode.batch_reset()
+    Search.Category.batch_reset()
+    Search.Persona.batch_reset()
+    Search.Podcast.batch_reset()
+    Search.Episode.batch_reset()
   end
 
   def batch_index(

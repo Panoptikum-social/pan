@@ -326,7 +326,7 @@ defmodule PanWeb.Router do
 
     get("/categories/datatable", CategoryController, :datatable)
     post("/categories/execute_assign", CategoryController, :execute_assign)
-    get("/categories/merge", CategoryController, :merge)
+    live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
     get("/categories/execute_merge", CategoryController, :execute_merge)
     resources("/categories", CategoryController)
 
