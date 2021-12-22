@@ -534,36 +534,4 @@ defmodule PanWeb.Podcast do
   def all do
     Repo.all(Podcast, order_by: :title)
   end
-
-  def assigned_for_assign_podcast(category_id, page, per_page, sort_by, sort_order) do
-    from(p in Podcast,
-      join: c in assoc(p, :categories),
-      where: c.id == ^category_id,
-      select: %{id: p.id, title: p.title},
-      limit: ^per_page,
-      offset: (^page - 1) * ^per_page,
-      order_by: {^sort_order, ^sort_by}
-    )
-    |> Repo.all()
-  end
-
-  def unassigned_for_assign_podcast(category_id, page, per_page, sort_by, sort_order) do
-    assigned_podcast_ids =
-      from(p in Podcast,
-        join: c in assoc(p, :categories),
-        where: c.id == ^category_id,
-        select: p.id,
-        order_by: {^sort_order, ^sort_by}
-      )
-      |> Repo.all()
-
-    from(p in Podcast,
-      where: p.id not in ^assigned_podcast_ids,
-      select: %{id: p.id, title: p.title},
-      limit: ^per_page,
-      offset: (^page - 1) * ^per_page,
-      order_by: {^sort_order, ^sort_by}
-    )
-    |> Repo.all()
-  end
 end
