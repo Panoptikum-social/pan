@@ -144,13 +144,4 @@ defmodule PanWeb.Category do
     |> Repo.get!(id)
     |> Repo.preload(:parent)
   end
-
-  def tree_for_assign_podcasts() do
-    from(category in Category,
-      where: is_nil(category.parent_id),
-      order_by: :title,
-      preload: [children: :children]
-    )
-    |> Repo.all()
-  end
 end

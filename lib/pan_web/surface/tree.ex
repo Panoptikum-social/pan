@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Tree do
   use Surface.LiveComponent
-  alias PanWeb.Surface.{Icon, Tree}
+  alias PanWeb.Surface.Icon
 
   prop(nodes, :list, required: true)
   prop(class, :css_class)
