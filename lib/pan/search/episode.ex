@@ -101,10 +101,10 @@ defmodule Pan.Search.Episode do
         select: e.id,
         limit: 10_000
       )
-      |> Repo.all()
+      |> Repo.all([timeout: 999_999])
 
     from(e in Episode, where: e.id in ^episode_ids)
-    |> Repo.update_all([set: [full_text: false]], [timeout: 60_000])
+    |> Repo.update_all([set: [full_text: false]])
 
     if length(episode_ids) > 0, do: batch_reset()
   end
