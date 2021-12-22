@@ -86,6 +86,15 @@ defmodule PanWeb.Live.Admin.Dashboard do
       </Explorer>
 
       <div class="m-4">
+        <h2 class="text-2xl">Categories</h2>
+        <ul class="list-disc m-4">
+          <li>
+            <Link label="Merge Categories"
+                  to={Routes.category_path(@socket, :merge)}
+                  class="text-link hover:text-link-dark underline"/>
+          </li>
+        </ul>
+
         <h2 class="text-2xl">Podcasts</h2>
         <ul class="list-disc m-4">
           <li>

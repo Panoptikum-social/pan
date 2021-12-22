@@ -55,7 +55,7 @@ defmodule PanWeb.Router do
     resources("/chapters", ChapterController, only: [:show])
 
     get("/categories/search", CategoryController, :search)
-    resources("/categories", CategoryController, only: [:index, :show])
+    resources("/categories", CategoryController, only: [:show])
 
     resources("/enclosures", EnclosureController, only: [:show])
     resources("/engagements", EngagementController, only: [:show])

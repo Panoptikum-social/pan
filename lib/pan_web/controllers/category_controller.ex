@@ -5,10 +5,6 @@ defmodule PanWeb.CategoryController do
 
   plug(:scrub_params, "category" when action in [:create, :update])
 
-  def index(conn, _params) do
-    render(conn, "index.html")
-  end
-
   def datatable(conn, _params) do
     categories =
       from(Category, preload: :parent)
