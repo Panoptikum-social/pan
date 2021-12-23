@@ -34,7 +34,7 @@ defmodule Pan.Search do
       ) do
     record_ids =
       from(r in model, where: not r.full_text, limit: 1_000, select: r.id)
-      |> Repo.all()
+      |> Repo.all(timeout: 999_999)
 
     if record_ids != [] do
       data =
@@ -58,19 +58,17 @@ defmodule Pan.Search do
         Logger.info("=== Query Result ===")
         Logger.info(query_result)
 
-        error = hd(query_result["items"] |> Enum.reverse())["insert"]["error"]["type"]
+        with last_item_result <- query_result["items"] |> Enum.reverse() |> hd,
+             error_type <- last_item_result["insert"]["error"]["type"],
+             ["duplicate", "id", duplicate_id_string] <- error_type |> String.split() do
+          duplicate_id = duplicate_id_string |> String.replace("'", "") |> String.to_integer()
+          Logger.info("=== Updating full text status for #{model} with id #{duplicate_id} ===")
 
-        error_id =
-          error
-          |> String.split()
-          |> tl()
-          |> tl()
-          |> hd()
-          |> String.replace("'", "")
-          |> String.to_integer()
-
-        Logger.error("=== Error: #{error_id} ===")
-        Repo.get!(model, error_id) |> Ecto.Changeset.change(full_text: true) |> Repo.update()
+          from(r in model, where: r.id == ^duplicate_id)
+          |> Repo.update_all(set: [full_text: true])
+        else
+          _ -> Logger.error("=== Error: #{hd(query_result["items"])["insert"]["error"]} ===")
+        end
       end
 
       if response_code in [200, 201, 500] && length(record_ids) > 0 do
