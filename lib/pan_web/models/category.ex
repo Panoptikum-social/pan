@@ -7,7 +7,7 @@ defmodule PanWeb.Category do
     field(:title, :string)
     field(:full_text, :boolean)
 
-    has_many(:children, PanWeb.Category, foreign_key: :parent_id)
+    has_many(:children, PanWeb.Category, foreign_key: :parent_id , preload_order: [asc: :title])
 
     belongs_to(:parent, PanWeb.Category)
 
@@ -83,9 +83,7 @@ defmodule PanWeb.Category do
   def tree do
     from(c in Category,
       order_by: :title,
-      join: subcategories in assoc(c, :children),
-      order_by: subcategories.title,
-      preload: [children: subcategories],
+      preload: [children: :children],
       where: is_nil(c.parent_id),
       select: [:id, :title, children: [:id, :title]]
     )
@@ -95,10 +93,8 @@ defmodule PanWeb.Category do
   def stats_tree do
     from(c in Category,
       order_by: :title,
-      join: subcategories in assoc(c, :children),
-      order_by: subcategories.title,
       where: is_nil(c.parent_id),
-      preload: [children: subcategories],
+      preload: [children: :children],
       preload: [:podcasts, children: :podcasts],
       select: [:id, :title, podcasts: :id, children: [:id, :title, podcasts: :id]]
     )
