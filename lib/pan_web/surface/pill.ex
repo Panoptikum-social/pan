@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Pill do
   use Surface.Component
-  prop type, :string, required: false, default: "info", values!: ["link", "info", "primary", "warning", "danger", "success"]
+  prop type, :string, required: false, default: "info", values!: ["link", "info", "primary", "warning", "danger", "success", "lavender"]
   prop id, :string, required: false
   slot default, required: true
 
