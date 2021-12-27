@@ -5,20 +5,20 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   alias PanWeb.Surface.{Icon, Tree, EventButton}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.tree(), selected_from_id: nil, selected_into_id: nil)}
+    {:ok, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
   end
 
   def handle_event("merge", _, %{assigns: assigns} = socket) do
-    Category.merge(assigns.from, assigns.to)
+    Category.merge(assigns.from_id, assigns.into_id)
     {:noreply, assign(socket, categories: Category.tree())}
   end
 
-  def handle_event("selectFrom", %{"node-id" => selected_from_id}, socket) do
-    {:noreply, assign(socket, selected_from_id: selected_from_id |> String.to_integer())}
+  def handle_event("selectFrom", %{"node-id" => from_id}, socket) do
+    {:noreply, assign(socket, from_id: from_id |> String.to_integer())}
   end
 
-  def handle_event("selectInto", %{"node-id" => selected_into_id}, socket) do
-    {:noreply, assign(socket, selected_into_id: selected_into_id |> String.to_integer())}
+  def handle_event("selectInto", %{"node-id" => into_id}, socket) do
+    {:noreply, assign(socket, into_id: into_id |> String.to_integer())}
   end
 
   def render(assigns) do
@@ -29,11 +29,11 @@ defmodule PanWeb.Live.Admin.Category.Merge do
       <Tree id="fromTree"
             nodes={@categories}
             select="selectFrom"
-            selected_id={@selected_from_id}/>
+            selected_id={@from_id}/>
       <Tree id="intoTree"
             nodes={@categories}
             select="selectInto"
-            selected_id={@selected_into_id} />
+            selected_id={@into_id} />
 
       <div>
         <EventButton event="merge">
@@ -44,14 +44,6 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         </EventButton>
       </div>
     </div>
-
-    <script>
-    function merge_selected(){
-      var from_id = $("#tree1").treeview('getSelected')[0].categoryId
-      var to_id = $("#tree2").treeview('getSelected')[0].categoryId
-      window.location = "<%= category_url(@conn, :execute_merge) %>?from=" + from_id + "&to=" + to_id
-    }
-    </script>
     """
   end
 end
