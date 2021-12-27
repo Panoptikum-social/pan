@@ -1,7 +1,10 @@
 defmodule PanWeb.Live.Category.StatsShow do
   use Surface.LiveView
+  on_mount PanWeb.Live.AssignUserAndAdmin
+
   import PanWeb.Router.Helpers
   alias PanWeb.Category
+  alias PanWeb.Live.Category.{LikeOrUnlikeButton, FollowOrUnfollowButton}
   alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton}
   alias Surface.Components.Link
 
@@ -114,11 +117,14 @@ defmodule PanWeb.Live.Category.StatsShow do
         {/for}
       </div>
 
-      {#if @current_user_id}
-        logged in with user_id {@current_user_id}
-      <!-- #FIXME! like_or_unlike(@current_user.id, @category.id) --> &nbsp;
-      <!-- #FIXME! follow_or_unfollow(@current_user.id, @category.id) -->
-      {/if}
+      <div :if={@current_user_id} class="m-4">
+        <LikeOrUnlikeButton id="like_or_unlike_button"
+                            current_user_id={@current_user_id}
+                            category={@category}/> &nbsp;
+        <FollowOrUnfollowButton id="followr_or_unfollow_button"
+                                current_user_id={@current_user_id}
+                                category={@category}/> &nbsp;
+      </div>
 
     </Panel>
     """
