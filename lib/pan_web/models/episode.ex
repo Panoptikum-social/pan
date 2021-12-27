@@ -23,7 +23,7 @@ defmodule PanWeb.Episode do
 
     belongs_to(:podcast, Podcast)
 
-    has_many(:chapters, Chapter, on_delete: :delete_all)
+    has_many(:chapters, Chapter, on_delete: :delete_all, preload_order: [asc: :start])
     has_many(:enclosures, Enclosure, on_delete: :delete_all)
     has_many(:recommendations, Recommendation, on_delete: :delete_all)
     has_many(:gigs, Gig, on_delete: :delete_all)
@@ -162,5 +162,16 @@ defmodule PanWeb.Episode do
       offset: (^page - 1) * ^per_page
     )
     |> Repo.all()
+  end
+
+  def get_by_id_for_episode_show(id) do
+    Repo.get!(Episode, id)
+    |> Repo.preload([
+      :podcast,
+      :enclosures,
+      gigs: :persona,
+      recommendations: :user,
+      chapters: [recommendations: :user]
+    ])
   end
 end

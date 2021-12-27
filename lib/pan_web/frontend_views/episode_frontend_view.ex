@@ -50,40 +50,6 @@ defmodule PanWeb.EpisodeFrontendView do
     |> raw
   end
 
-  def podigee_episodestruct(episode) do
-    %{
-      options: %{
-        theme: "default",
-        startPanel: "ChapterMarks",
-        sslProxy: "https://cdn.podigee.com/ssl-proxy/"
-      },
-      extensions: %{
-        ChapterMarks: %{},
-        EpisodeInfo: %{},
-        Playlist: %{},
-        Share: %{},
-        Transcript: %{},
-        Waveform: %{}
-      },
-      title: ej(episode.podcast.title),
-      episode: %{
-        media: enclosuremap(episode.enclosures),
-        coverUrl: episode.podcast.image_url,
-        title: ej(episode.title),
-        subtitle: ej(episode.subtitle),
-        url: episode.deep_link || episode.link,
-        description:
-          episode.description
-          |> HtmlSanitizeEx.strip_tags()
-          |> truncate_string(1000)
-          |> ej(),
-        chaptermarks: chapterlist(episode.chapters)
-      }
-    }
-    |> Jason.encode!()
-    |> raw
-  end
-
   defp filetype(enclosure) do
     enclosure.url |> String.split(".") |> List.last() |> String.to_atom()
   end
@@ -115,17 +81,6 @@ defmodule PanWeb.EpisodeFrontendView do
         mimeType: enclosure.type,
         size: enclosure.length,
         title: String.split(enclosure.url, "/") |> List.last()
-      }
-    end)
-  end
-
-  # for podigee
-  def downloadlist(enclosures) do
-    Enum.map(enclosures, fn enclosure ->
-      %{
-        assetTitle: String.split(enclosure.url, "/") |> List.last(),
-        size: enclosure.length,
-        downloadUrl: enclosure.url
       }
     end)
   end

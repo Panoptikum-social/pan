@@ -103,7 +103,6 @@ defmodule PanWeb.RecommendationFrontendController do
       podcast: podcast,
       podcast_thumbnail: podcast_thumbnail,
       episode: episode,
-      player: "podigee",
       podcasts: podcasts,
       changeset: changeset
     )
