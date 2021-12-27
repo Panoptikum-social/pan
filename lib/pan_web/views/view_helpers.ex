@@ -72,6 +72,21 @@ defmodule PanWeb.ViewHelpers do
           </svg>
           """
 
+        "document-search-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+                class="#{class}"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2
+                     2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z" />
+          </svg>
+          """
+
         "chat-heroicons-outline" ->
           """
           <svg xmlns="http://www.w3.org/2000/svg"
@@ -579,6 +594,37 @@ defmodule PanWeb.ViewHelpers do
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          """
+
+        "link-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+                class="#{class}"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4
+                     4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </svg>
+          """
+
+        "scissors-heroicons-outline" ->
+          """
+          <svg xmlns="http://www.w3.org/2000/svg"
+                class="#{class}"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+            <path stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3
+                      3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0
+                      004.243 4.243z" />
           </svg>
           """
 
