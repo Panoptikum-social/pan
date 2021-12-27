@@ -33,6 +33,13 @@ defmodule PanWeb.Follow do
     )
   end
 
+  def find_category_follow(user_id, category_id) do
+    Repo.get_by(Follow,
+      follower_id: user_id,
+      category_id: category_id
+    )
+  end
+
   def find_user_follow(follower_id, user_id) do
     Repo.get_by(Follow,
       follower_id: follower_id,

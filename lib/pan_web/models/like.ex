@@ -56,6 +56,15 @@ defmodule PanWeb.Like do
     |> Repo.one()
   end
 
+  def find_category_like(user_id, category_id) do
+    from(l in Like,
+      where:
+        l.enjoyer_id == ^user_id and
+          l.category_id == ^category_id
+    )
+    |> Repo.one()
+  end
+
   def find_user_like(enjoyer_id, liked_user_id) do
     from(l in Like,
       where:

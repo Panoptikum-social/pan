@@ -7,7 +7,7 @@ defmodule PanWeb.Category do
     field(:title, :string)
     field(:full_text, :boolean)
 
-    has_many(:children, PanWeb.Category, foreign_key: :parent_id , preload_order: [asc: :title])
+    has_many(:children, PanWeb.Category, foreign_key: :parent_id, preload_order: [asc: :title])
 
     belongs_to(:parent, PanWeb.Category)
 
@@ -133,6 +133,10 @@ defmodule PanWeb.Category do
       |> Repo.all()
 
     %{category: category, podcasts: podcasts}
+  end
+
+  def get_by_id(id) do
+    Repo.get!(Category, id)
   end
 
   def get_by_id_with_parent(id) do
