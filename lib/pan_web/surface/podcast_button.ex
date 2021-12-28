@@ -6,6 +6,7 @@ defmodule PanWeb.Surface.PodcastButton do
 
   prop(id, :integer, required: false)
   prop(title, :string, required: false)
+  prop(large, :boolean, default: false)
   prop(for, :map, required: false)
   prop(class, :string, required: false)
   prop(truncate, :boolean, default: false)
@@ -16,6 +17,7 @@ defmodule PanWeb.Surface.PodcastButton do
                 class={"bg-white hover:bg-gray-lighter text-black border-gray", @class}
                 icon="podcast-lineawesome-solid"
                 title={@title || @for.title}
+                {=@large}
                 truncate={@truncate} />
     """
   end

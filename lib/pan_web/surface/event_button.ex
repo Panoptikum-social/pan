@@ -15,8 +15,9 @@ defmodule PanWeb.Surface.EventButton do
     ~F"""
     <a :on-click={@event}
        alt={@alt}
-       class={"border border-solid inline-block shadow bg-gray-lighter hover:bg-gray-lightest",
+       class={"border border-solid inline-block shadow",
               @class,
+              "bg-gray-lighter hover:bg-gray-lightest": !@class,
               "truncate max-w-full": @truncate,
               "py-1 px-2 rounded text-sm": !@large,
               "py-2 px-3 rounded-md": @large}>

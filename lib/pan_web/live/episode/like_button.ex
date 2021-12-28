@@ -4,9 +4,9 @@ defmodule PanWeb.Live.Episode.LikeButton do
   alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
-
   prop(episode, :map, required: true)
   data(liking, :boolean, default: false)
+  data(likes_count, :integer, default: 0)
 
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Episode.like(assigns.episode.id, assigns.current_user_id)
@@ -14,7 +14,8 @@ defmodule PanWeb.Live.Episode.LikeButton do
     socket =
       assign(socket,
         liking: !assigns.liking,
-        episode: Episode.get_by_id(assigns.episode.id)
+        episode: Episode.get_by_id(assigns.episode.id),
+        likes_count: Episode.likes(assigns.episode.id)
       )
 
     {:noreply, socket}
@@ -26,19 +27,19 @@ defmodule PanWeb.Live.Episode.LikeButton do
       |> is_nil
       |> Kernel.not()
 
-    assigns = assign(assigns, liking: liking)
+    assigns = assign(assigns, liking: liking, likes_count: Episode.likes(assigns.episode.id))
 
     ~F"""
       <span>
         {#if @liking}
           <button :on-click="toggle-like"
                   class="text-white rounded py-1 px-2 bg-success border border-gray-darker rounded">
-            {@episode.likes_count} <Icon name="heart-heroicons-solid"/> Unlike
+            {@likes_count} <Icon name="heart-heroicons-solid"/> Unlike
           </button>
         {#else}
           <button :on-click="toggle-like"
                   class="text-white rounded py-1 px-2 bg-danger border border-gray-darker rounded">
-            {@episode.likes_count} <Icon name="heart-heroicons-outline"/> Like
+            {@likes_count} <Icon name="heart-heroicons-outline"/> Like
           </button>
         {/if}
       </span>

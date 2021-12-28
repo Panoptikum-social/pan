@@ -30,42 +30,44 @@ defmodule PanWeb.Live.Episode.Show do
 
   def render(assigns) do
     ~F"""
-    {#if @episode.podcast.blocked}
-      This episode may not be published here, sorry.
-    {#else}
-      <Header episode={@episode}
-              current_user_id={@current_user_id} />
-      <RecommendationList id="recommendation_list"
-                          episode={@episode}
-                          current_user_id={@current_user_id}
-                          changeset={@changeset} />
+    <div class="m-4">
+      {#if @episode.podcast.blocked}
+        This episode may not be published here, sorry.
+      {#else}
+        <Header episode={@episode}
+                current_user_id={@current_user_id} />
+        <RecommendationList id="recommendation_list"
+                            episode={@episode}
+                            current_user_id={@current_user_id}
+                            changeset={@changeset} />
 
-      <div class="flex">
-        <div id="player">
-          {#if major_mimetype(@episode) == "video"}
-            <video width="640" height="480" controls>
-              {#for enclosure <- @episode.enclosures}
-                <source src={enclosure.url}>
-              {/for}
-              Your browser does not support the video tag.
-            </video>
-          {#else}
-            <PodloveWebplayer episode={@episode} />
-          {/if}
+        <div class="flex">
+          <div id="player">
+            {#if major_mimetype(@episode) == "video"}
+              <video width="640" height="480" controls>
+                {#for enclosure <- @episode.enclosures}
+                  <source src={enclosure.url}>
+                {/for}
+                Your browser does not support the video tag.
+              </video>
+            {#else}
+              <PodloveWebplayer episode={@episode} />
+            {/if}
+          </div>
+
+          <div class="col-md-6" id="shownotes">
+            {#if @episode.shownotes}
+              <h3>Shownotes</h3>
+              <p>{raw(@episode.shownotes)}</p>
+            {/if}
+          </div>
         </div>
 
-        <div class="col-md-6" id="shownotes">
-          {#if @episode.shownotes}
-            <h3>Shownotes</h3>
-            <p>{raw(@episode.shownotes)}</p>
-          {/if}
-        </div>
-      </div>
-
-      <ChapterList current_user_id={@current_user_id}
-                   episode={@episode}
-                   changeset={@changeset} />
-    {/if}
+        <ChapterList current_user_id={@current_user_id}
+                    episode={@episode}
+                    changeset={@changeset} />
+      {/if}
+    </div>
     """
   end
 end
