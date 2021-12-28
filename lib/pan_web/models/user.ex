@@ -10,7 +10,6 @@ defmodule PanWeb.User do
     Invoice,
     Like,
     Manifestation,
-    Message,
     Opml,
     Persona,
     Podcast,
@@ -42,7 +41,6 @@ defmodule PanWeb.User do
     has_many(:invoices, Invoice, on_delete: :nilify_all)
     has_many(:user_personas, Persona, foreign_key: :user_id)
     has_many(:recommendations, Recommendation, on_delete: :delete_all)
-    has_many(:messages_created, Message, foreign_key: :creator_id, on_delete: :delete_all)
     has_many(:opmls, Opml, on_delete: :delete_all)
 
     many_to_many(:personas, Persona, join_through: "manifestations")

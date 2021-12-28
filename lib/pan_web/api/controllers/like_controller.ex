@@ -7,7 +7,6 @@ defmodule PanWeb.Api.LikeController do
     Chapter,
     Episode,
     Like,
-    Message,
     Persona,
     Podcast,
     Subscription,
@@ -52,28 +51,7 @@ defmodule PanWeb.Api.LikeController do
           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
           |> mark_if_deleted()
 
-        e = %Event{
-          topic: "personas",
-          subtopic: persona_id,
-          current_user_id: user.id,
-          persona_id: String.to_integer(persona_id),
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the persona <b>" <> Repo.get!(Persona, e.persona_id).name <> "</b> »"
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
-
-        render(conn, "show.json-api",
-          data: like,
-          opts: [include: "persona"]
-        )
+        render(conn, "show.json-api", data: like, opts: [include: "persona"])
 
       nil ->
         Helpers.send_404(conn)
@@ -93,24 +71,6 @@ defmodule PanWeb.Api.LikeController do
           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
           |> mark_if_deleted()
 
-        e = %Event{
-          topic: "users",
-          subtopic: user_id,
-          current_user_id: current_user.id,
-          user_id: String.to_integer(user_id),
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the user <b>" <>
-                Repo.get!(User, e.user_id).name <> "</b> »"
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
         render(conn, "show.json-api", data: like, opts: [include: "user"])
 
       nil ->
@@ -131,23 +91,6 @@ defmodule PanWeb.Api.LikeController do
           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
           |> mark_if_deleted()
 
-        e = %Event{
-          topic: "chapters",
-          subtopic: chapter_id,
-          current_user_id: user.id,
-          chapter_id: String.to_integer(chapter_id),
-          type: "success",
-          event: "like-chapter"
-        }
-
-        chapter_title =
-          Repo.get!(Chapter, e.chapter_id).title
-          |> PanWeb.ViewHelpers.truncate_string(40)
-
-        e = %{e | content: "« liked the chapter <b> »" <> chapter_title <> "</b>"}
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
         render(conn, "show.json-api", data: like, opts: [include: "chapter"])
 
       nil ->
@@ -168,24 +111,6 @@ defmodule PanWeb.Api.LikeController do
           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
           |> mark_if_deleted()
 
-        e = %Event{
-          topic: "episodes",
-          subtopic: episode_id,
-          current_user_id: user.id,
-          episode_id: String.to_integer(episode_id),
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the episode <b>" <>
-                Repo.get!(Episode, e.episode_id).title <> "</b> »"
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
         render(conn, "show.json-api", data: like, opts: [include: "episode"])
 
       nil ->
@@ -206,24 +131,6 @@ defmodule PanWeb.Api.LikeController do
           |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
           |> mark_if_deleted()
 
-        e = %Event{
-          topic: "podcasts",
-          subtopic: podcast_id,
-          current_user_id: user.id,
-          podcast_id: String.to_integer(podcast_id),
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the podcast <b>" <>
-                Repo.get!(Podcast, e.podcast_id).title <> "</b> »"
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
         render(conn, "show.json-api", data: like, opts: [include: "podcast"])
 
       nil ->
@@ -239,29 +146,6 @@ defmodule PanWeb.Api.LikeController do
           |> String.to_integer()
           |> Category.like(user.id)
 
-        like =
-          like
-          |> Repo.preload([:category, :enjoyer, :user, :podcast, :chapter, :persona, :episode])
-          |> mark_if_deleted()
-
-        e = %Event{
-          topic: "categories",
-          subtopic: category_id,
-          current_user_id: user.id,
-          category_id: String.to_integer(category_id),
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the category <b>" <>
-                Repo.get!(Category, e.category_id).title <> "</b> »"
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
         render(conn, "show.json-api", data: like, opts: [include: "category"])
 
       nil ->
@@ -287,25 +171,7 @@ defmodule PanWeb.Api.LikeController do
 
     for id <- subscribed_podcast_ids do
       unless Enum.member?(liked_ids, id) do
-        e = %Event{
-          topic: "podcast",
-          subtopic: Integer.to_string(id),
-          current_user_id: user.id,
-          podcast_id: id,
-          type: "success",
-          event: "like"
-        }
-
-        e = %{
-          e
-          | content:
-              "« liked the podcast <b>" <>
-                Repo.get!(Podcast, e.podcast_id).title <> "</b> »"
-        }
-
-        Podcast.like(e.podcast_id, e.current_user_id)
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
+        Podcast.like(id, user.id)
       end
     end
 

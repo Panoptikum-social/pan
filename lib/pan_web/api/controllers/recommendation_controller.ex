@@ -1,7 +1,7 @@
 defmodule PanWeb.Api.RecommendationController do
   use PanWeb, :controller
   use JaSerializer
-  alias PanWeb.{Api.Helpers, Category, Chapter, Episode, Message, Podcast, Recommendation}
+  alias PanWeb.{Api.Helpers, Category, Episode, Podcast, Recommendation}
   alias Pan.Parser.Helpers, as: H
 
   def action(conn, _) do
@@ -122,37 +122,18 @@ defmodule PanWeb.Api.RecommendationController do
     )
   end
 
-  def create(conn, %{"podcast_id" => podcast_id, "comment" => comment} = params, user) do
+  def create(conn, %{"podcast_id" => podcast_id, "comment" => comment} = _params, user) do
     comment = H.to_255(comment)
     podcast_id = String.to_integer(podcast_id)
 
-    case podcast = Repo.get(Podcast, podcast_id) do
+    case Repo.get(Podcast, podcast_id) do
       %PanWeb.Podcast{} ->
-        podcast_title = podcast.title
-        notification_text = "Podcast <b> #{podcast_title}</b>"
-
         {:ok, recommendation} =
           %Recommendation{podcast_id: podcast_id, comment: comment, user_id: user.id}
           |> Recommendation.changeset()
           |> Repo.insert()
 
         recommendation = Repo.preload(recommendation, [:podcast, :episode, :chapter, :user])
-
-        e = %Event{
-          topic: "podcasts",
-          subtopic: params["podcast_id"],
-          podcast_id: podcast_id,
-          episode_id: nil,
-          chapter_id: nil,
-          notification_text: notification_text,
-          current_user_id: user.id,
-          type: "success",
-          event: "recommend",
-          content: H.to_255("« recommended #{notification_text} » #{comment}")
-        }
-
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
 
         render(conn, "show.json-api",
           data: recommendation,
@@ -168,34 +149,12 @@ defmodule PanWeb.Api.RecommendationController do
     comment = H.to_255(comment)
     episode_id = String.to_integer(episode_id)
 
-    episode =
-      Repo.get!(Episode, episode_id)
-      |> Repo.preload(:podcast)
-
-    notification_text = "Episode <b>#{episode.title}</b> from <b>#{episode.podcast.title}</b>"
-
     {:ok, recommendation} =
       %Recommendation{episode_id: episode_id, comment: comment, user_id: user.id}
       |> Recommendation.changeset()
       |> Repo.insert()
 
     recommendation = Repo.preload(recommendation, [:podcast, :episode, :chapter, :user])
-
-    e = %Event{
-      topic: "podcasts",
-      subtopic: Integer.to_string(episode.podcast.id),
-      podcast_id: episode.podcast.id,
-      episode_id: episode_id,
-      chapter_id: nil,
-      notification_text: notification_text,
-      current_user_id: user.id,
-      type: "success",
-      event: "recommend",
-      content: H.to_255("« recommended #{notification_text} » #{comment}")
-    }
-
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
 
     render(conn, "show.json-api",
       data: recommendation,
@@ -207,40 +166,12 @@ defmodule PanWeb.Api.RecommendationController do
     comment = H.to_255(comment)
     chapter_id = String.to_integer(chapter_id)
 
-    chapter =
-      Repo.get!(Chapter, chapter_id)
-      |> Repo.preload(episode: :podcast)
-
-    notification_text =
-      "Chapter <b>" <>
-        chapter.title <>
-        "</b> in <b>" <>
-        chapter.episode.title <>
-        "</b> from <b>" <>
-        chapter.episode.podcast.title <> "</b>"
-
     {:ok, recommendation} =
       %Recommendation{chapter_id: chapter_id, comment: comment, user_id: user.id}
       |> Recommendation.changeset()
       |> Repo.insert()
 
     recommendation = Repo.preload(recommendation, [:podcast, :episode, :chapter, :user])
-
-    e = %Event{
-      topic: "podcasts",
-      subtopic: Integer.to_string(chapter.episode.podcast.id),
-      podcast_id: chapter.episode.podcast.id,
-      episode_id: chapter.episode.id,
-      chapter_id: chapter_id,
-      notification_text: notification_text,
-      current_user_id: user.id,
-      type: "success",
-      event: "recommend",
-      content: H.to_255("« recommended #{notification_text} » #{comment}")
-    }
-
-    Message.persist_event(e)
-    Event.notify_subscribers(e)
 
     render(conn, "show.json-api",
       data: recommendation,

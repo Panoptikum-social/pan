@@ -146,7 +146,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
 <%= link [icon("warning"), " Delete all subscriptions"],
          to: subscription_frontend_path(@conn, :delete_all),
          method: :delete,
-         data: [confirm: "Are you sure? All messages will be deleted!"],
+         data: [confirm: "Are you sure? All subscriptions will be deleted!"],
          class: "btn btn-danger btn-sm" %>
 
 <ul>
@@ -342,50 +342,6 @@ You can even unlike all the categories, you followed so far at once, by clicking
     <li><%= link category.title, to: category_frontend_path(@conn, :show, category), target: "_blank" %></li>
   <% end %>
 </ul>
-
-
-<h2>Messages</h2>
-
-You can delete a message by clicking the Delete button next to it.<br/>
-You can even safely delete all the messages, you created so far, at once, by clicking &nbsp;
-<%= link [icon("warning"), " Delete all messages"],
-         to: message_frontend_path(@conn, :delete_all),
-         method: :delete,
-         data: [confirm: "Are you sure? All messages will be deleted!"],
-         class: "btn btn-danger btn-sm" %>
-
-<br/><br/>
-
-<table class="table table-striped table-condensed table-bordered">
-  <thead>
-    <th>Content</th>
-    <th>Type</th>
-    <th>Topic</th>
-    <th>Subtopic</th>
-    <th>Event</th>
-    <th>Date</th>
-    <th>Actions</th>
-  </thead>
-
-  <tbody>
-    <%= for message <- @user.messages_created do %>
-      <tr>
-        <td><%= message.content %></td>
-        <td><%= message.type %></td>
-        <td><%= message.topic %></td>
-        <td><%= message.subtopic %></td>
-        <td><%= message.event %></td>
-        <td><nobr><%= Timex.format!(message.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></nobr></td>
-        <td>
-          <%= link "Delete", to: message_frontend_path(@conn, :delete, message),
-                             method: :delete,
-                             data: [confirm: "Are you sure?"],
-                             class: "btn btn-danger btn-xs" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
 <h2>Recommendations</h2>
 

@@ -38,6 +38,5 @@ defmodule PanWeb.UserJsonDownloadView do
   has_many(:categories_i_follow, serializer: PanWeb.Api.PlainCategoryView, include: true)
   has_many(:categories_i_like, serializer: PanWeb.Api.PlainCategoryView, include: true)
 
-  has_many(:messages_created, serializer: PanWeb.Api.PlainMessageView, include: true)
   has_many(:recommendations, serializer: PanWeb.Api.PlainRecommendationView, include: true)
 end

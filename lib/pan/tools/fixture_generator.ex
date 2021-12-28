@@ -17,7 +17,6 @@ defmodule Pan.Tools.FixtureGenerator do
     Invoice,
     Like,
     Manifestation,
-    Message,
     Opml,
     Persona,
     Podcast,
@@ -30,7 +29,6 @@ defmodule Pan.Tools.FixtureGenerator do
     Repo.delete_all(Like)
     Repo.delete_all(Subscription)
     Repo.delete_all(Recommendation)
-    Repo.delete_all(Message)
     Repo.delete_all(Manifestation)
     Repo.delete_all(Opml)
     Repo.delete_all(FeedBacklog)

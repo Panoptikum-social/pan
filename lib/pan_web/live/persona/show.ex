@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Persona.Show do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, Message, User}
+  alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
   alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon, Panel}
   alias PanWeb.Live.Persona.{FollowButton, LikeButton}
 
@@ -17,7 +17,6 @@ defmodule PanWeb.Live.Persona.Show do
       persona_ids = [persona.id | delegator_ids]
       engagements = Engagement.get_by_persona_ids(persona_ids)
       persona_thumbnail = Image.get_by_persona_id(persona.id)
-      messages_count = Message.count_by_persona_id(persona.id)
 
       if persona.redirect_id do
         persona = Persona.get_by_id(persona.redirect_id)
@@ -31,14 +30,10 @@ defmodule PanWeb.Live.Persona.Show do
           persona_ids: persona_ids,
           gigs_page: 1,
           gigs_per_page: 10,
-          messages_page: 1,
-          messages_per_page: 10,
-          messages_count: messages_count,
           persona_thumbnail: persona_thumbnail,
           engagements: engagements
         )
         |> fetch_gigs
-        |> fetch_messages
 
       {:ok, socket, temporary_assigns: [gigs: [], grouped_gigs: []]}
     end
@@ -57,26 +52,8 @@ defmodule PanWeb.Live.Persona.Show do
     assign(socket, gigs: gigs, grouped_gigs: Gig.grouped_gigs(gigs))
   end
 
-  defp fetch_messages(
-         %{
-           assigns: %{
-             persona_ids: persona_ids,
-             messages_page: messages_page,
-             messages_per_page: messages_per_page
-           }
-         } = socket
-       ) do
-    assign(socket,
-      messages: Message.get_by_persona_ids(persona_ids, messages_page, messages_per_page)
-    )
-  end
-
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
-  end
-
-  def handle_event("load-more-messages", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, messages_page: assigns.messages_page + 1) |> fetch_messages()}
   end
 
   defp markdown(content) do
@@ -100,11 +77,6 @@ defmodule PanWeb.Live.Persona.Show do
       Timex.to_date(date)
       |> Timex.format!("%e.%m.%Y", :strftime)
     end
-  end
-
-  defp format_datetime(date_time) do
-    Timex.to_date(date_time)
-    |> Timex.format!("%e.%m.%Y", :strftime)
   end
 
   def render(%{not_found: true} = assigns) do
@@ -235,31 +207,6 @@ defmodule PanWeb.Live.Persona.Show do
            class="m-4 max-w-screen-xl">
         <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
     </Panel>
-
-    <Panel :if={@messages != []}
-           heading={"Messages created by #{@persona.name}"}
-           purpose="message"
-           class="m-4">
-       <table class="m-4">
-         <tbody phx-update="append" id="message-table-body">
-           {#for message <- @messages}
-             <tr id={"message-#{message.id}"}>
-               <td class={"bg-#{message.type} px-2"}>
-                 <i>{message.creator && message.creator.name || message.persona.name}</i>
-               </td>
-               <td class="px-2">{raw message.content}</td>
-               <td class="px-2 text-right">{message.inserted_at |> format_datetime}</td>
-             </tr>
-           {/for}
-         </tbody>
-       </table>
-    </Panel>
-    <button :if={@messages_page * @messages_per_page < @messages_count}
-            :on-click="load-more-messages"
-            class="border border-solid inline-block shadow m-4 py-1 px-2 rounded text-sm bg-info
-                  hover:bg-info-light text-white border-gray-dark">
-      Load more
-    </button>
 
     <Panel :if={@engagements != []}
            heading={"Engagements, #{@persona.name} has entered"}

@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.User.Show do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{User, Like, Message}
+  alias PanWeb.{User, Like}
   alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon}
   alias PanWeb.Live.User.{LikeButton, FollowButton}
 
@@ -9,28 +9,12 @@ defmodule PanWeb.Live.User.Show do
     {:ok,
      assign(socket,
        user: User.get_for_show(id),
-       podcast_related_likes: Like.get_podcast_related(id),
-       page: 1,
-       per_page: 15
-     )
-     |> fetch(), temporary_assigns: [latest_messages: []]}
-  end
-
-  defp fetch(%{assigns: %{user: user, page: page, per_page: per_page}} = socket) do
-    assign(socket, latest_messages: Message.created_by_user(user.id, page, per_page))
-  end
-
-  def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+       podcast_related_likes: Like.get_podcast_related(id)
+     )}
   end
 
   defp format_date(date) do
     Timex.to_date(date)
-    |> Timex.format!("%e.%m.%Y", :strftime)
-  end
-
-  defp format_datetime(date_time) do
-    Timex.to_date(date_time)
     |> Timex.format!("%e.%m.%Y", :strftime)
   end
 
@@ -106,30 +90,7 @@ defmodule PanWeb.Live.User.Show do
           {/for}
         </p>
       </Panel>
-
-      <Panel :if={@latest_messages != []}
-             purpose="message"
-             heading={"Messages created by #{@user.name}"}
-             class="my-4">
-        <ul class="leading-10"
-            phx-update="append"
-            id="message-list">
-          {#for message <- @latest_messages}
-            <li id={"message-#{message.id}"}
-                class="flex justify-between border-t border-gray-light">
-              <div class="mx-4">
-                <i class={"p-1 bg-success-light bg-#{message.type}-light"}>{#if message.creator} {message.creator.name} {#else} {message.persona.name} {/if}:</i>
-                {raw message.content}
-              </div>
-              <div class="mx-4">
-                {message.inserted_at |> format_datetime}
-              </div>
-            </li>
-          {/for}
-        </ul>
-      </Panel>
     </div>
-    <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
 end

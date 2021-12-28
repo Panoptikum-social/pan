@@ -120,9 +120,6 @@ defmodule PanWeb.Router do
 
     get("/users/my", UserController, :my)
 
-    get("/messages/my", MessageController, :my)
-    resources("/messages", MessageController, only: [:show])
-
     patch("/update_password", UserController, :update_password)
     put("/update_password", UserController, :update_password)
     patch("/update_user", UserController, :update_user)
@@ -232,7 +229,6 @@ defmodule PanWeb.Router do
     post("/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed)
     get("/my_podcasts", UserFrontendController, :my_podcasts)
     get("/my_profile", UserFrontendController, :my_profile)
-    live("/my_messages", Live.User.MyMessages, :my_messages, as: :user_frontend)
     get("/my_data", UserFrontendController, :my_data)
     delete("/delete_my_account", UserFrontendController, :delete_my_account)
 
@@ -259,9 +255,6 @@ defmodule PanWeb.Router do
     get("/my_recommendations", RecommendationFrontendController, :my_recommendations)
     delete("/my_recommendations/delete_all", RecommendationFrontendController, :delete_all)
     resources("/recommendations", RecommendationFrontendController, only: [:create, :delete])
-
-    resources("/messages", MessageFrontendController, only: [:delete])
-    delete("/messages/", MessageFrontendController, :delete_all)
 
     delete("/subscriptions/", SubscriptionFrontendController, :delete_all)
 

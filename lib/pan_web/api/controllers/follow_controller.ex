@@ -1,6 +1,6 @@
 defmodule PanWeb.Api.FollowController do
   use PanWeb, :controller
-  alias PanWeb.{Api.Helpers, Category, Follow, Message, Persona, Podcast, Subscription, User}
+  alias PanWeb.{Api.Helpers, Category, Follow, Persona, Podcast, Subscription, User}
   import Pan.Parser.Helpers, only: [mark_if_deleted: 1]
 
   def action(conn, _) do
@@ -126,25 +126,7 @@ defmodule PanWeb.Api.FollowController do
 
     for id <- subscribed_podcast_ids do
       unless Enum.member?(followed_ids, id) do
-        e = %Event{
-          topic: "podcast",
-          subtopic: Integer.to_string(id),
-          current_user_id: user.id,
-          podcast_id: id,
-          type: "success",
-          event: "follow"
-        }
-
-        e = %{
-          e
-          | content:
-              "« followed the podcast <b>" <>
-                Repo.get!(Podcast, e.podcast_id).title <> "</b> »"
-        }
-
-        Podcast.follow(e.podcast_id, e.current_user_id)
-        Message.persist_event(e)
-        Event.notify_subscribers(e)
+        Podcast.follow(id, user.id)
       end
     end
 

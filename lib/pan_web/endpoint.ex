@@ -10,10 +10,6 @@ defmodule PanWeb.Endpoint do
     signing_salt: "Aj0/QnEl"
   ]
 
-  socket "/socket", PanWeb.UserSocket,
-    websocket: true,
-    longpoll: false
-
   socket "/live", Phoenix.LiveView.Socket,
     websocket: [
       connect_info: [session: @session_options]

@@ -65,9 +65,6 @@ defmodule PanWeb.UserController do
     from(l in PanWeb.Like, where: l.enjoyer_id == ^from_id)
     |> Repo.update_all(set: [enjoyer_id: into_id])
 
-    from(m in PanWeb.Message, where: m.creator_id == ^from_id)
-    |> Repo.update_all(set: [creator_id: into_id])
-
     from(o in PanWeb.Opml, where: o.user_id == ^from_id)
     |> Repo.update_all(set: [user_id: into_id])
 
