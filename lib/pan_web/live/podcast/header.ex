@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Podcast.Header do
   alias PanWeb.Endpoint
   alias PanWeb.Surface.{Icon, CategoryButton, PersonaButton, Pill}
   import PanWeb.Router.Helpers
-  alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, SubscribeOrUnsubscribeButton}
+  alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, SubscribeButton}
 
   prop(current_user_id, :integer, required: true)
   prop(admin, :boolean, required: true)
@@ -128,10 +128,10 @@ defmodule PanWeb.Live.Podcast.Header do
       <div role="qrcode" class="flex flex-col">
         <img src={"/qrcode/#{podcast_frontend_url(Endpoint, :subscribe_button, @podcast) |> URI.encode_www_form}"}
                     class="max-w-none" width="150" height="150" %>
-        <SubscribeOrUnsubscribeButton :if={@current_user_id}
-                                      id="qr_code_subscribe_or_unsubscribe_button"
-                                      current_user_id={@current_user_id}
-                                      podcast={@podcast} />
+        <SubscribeButton :if={@current_user_id}
+                         id="qr_code_subscribe_button"
+                         current_user_id={@current_user_id}
+                         podcast={@podcast} />
       </div>
     </div>
 

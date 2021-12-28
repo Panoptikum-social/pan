@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Category.StatsShow do
 
   import PanWeb.Router.Helpers
   alias PanWeb.Category
-  alias PanWeb.Live.Category.{LikeOrUnlikeButton, FollowOrUnfollowButton}
+  alias PanWeb.Live.Category.{LikeButton, FollowButton}
   alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton}
   alias Surface.Components.Link
 
@@ -118,12 +118,12 @@ defmodule PanWeb.Live.Category.StatsShow do
       </div>
 
       <div :if={@current_user_id} class="m-4">
-        <LikeOrUnlikeButton id="like_or_unlike_button"
-                            current_user_id={@current_user_id}
-                            category={@category}/> &nbsp;
-        <FollowOrUnfollowButton id="followr_or_unfollow_button"
-                                current_user_id={@current_user_id}
-                                category={@category}/> &nbsp;
+        <LikeButton id="like_button"
+                    current_user_id={@current_user_id}
+                    category={@category}/> &nbsp;
+        <FollowButton id="follow_button"
+                      current_user_id={@current_user_id}
+                      category={@category}/> &nbsp;
       </div>
 
     </Panel>

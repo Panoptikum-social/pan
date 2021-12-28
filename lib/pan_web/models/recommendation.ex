@@ -56,13 +56,35 @@ defmodule PanWeb.Recommendation do
 
   def get_by_podcast_id(podcast_id, page, per_page) do
     from(r in Recommendation,
-    where: r.podcast_id == ^podcast_id,
-    order_by: [fragment("? DESC NULLS LAST", r.inserted_at)],
-    preload: [:user],
-    limit: ^per_page,
-    offset: (^page - 1) * ^per_page
-  )
-  |> Repo.all()
+      where: r.podcast_id == ^podcast_id,
+      order_by: [fragment("? DESC NULLS LAST", r.inserted_at)],
+      preload: [:user],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
+
+  def get_by_episode_id(episode_id, page, per_page) do
+    from(r in Recommendation,
+      where: r.episode_id == ^episode_id,
+      order_by: [fragment("? DESC NULLS LAST", r.inserted_at)],
+      preload: [:user],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
+
+  def get_by_chapter_id(chapter_id, page, per_page) do
+    from(r in Recommendation,
+      where: r.chapter_id == ^chapter_id,
+      order_by: [fragment("? DESC NULLS LAST", r.inserted_at)],
+      preload: [:user],
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
   end
 
   def count_by_podcast_id(podcast_id) do

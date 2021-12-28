@@ -1,6 +1,6 @@
 defmodule PanWeb.EpisodeFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{Chapter, Episode, Recommendation}
+  alias PanWeb.{Chapter, Episode}
 
   def player(conn, %{"id" => id}) do
     episode =

@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Persona.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, Message, User}
   alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon, Panel}
-  alias PanWeb.Live.Persona.{FollowOrUnfollowButton, LikeOrUnlikeButton}
+  alias PanWeb.Live.Persona.{FollowButton, LikeButton}
 
   def mount(%{"pid" => pid}, _session, socket) do
     current_user = socket.assigns.current_user_id && User.get_by_id(socket.assigns.current_user_id)
@@ -163,12 +163,12 @@ defmodule PanWeb.Live.Persona.Show do
 
         <p :if={@current_user_id}
            class="m-4">
-          <LikeOrUnlikeButton id="like_or_unlike_button"
-                              persona={@persona}
-                              current_user_id={@current_user_id} />
-          <FollowOrUnfollowButton id="follow_or_unfollow_button"
-                                  persona={@persona}
-                                  current_user_id={@current_user_id} />
+          <LikeButton id="like_button"
+                      persona={@persona}
+                      current_user_id={@current_user_id} />
+          <FollowButton id="follow_button"
+                        persona={@persona}
+                        current_user_id={@current_user_id} />
         </p>
       </Panel>
 

@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   use Surface.Component
   alias PanWeb.Endpoint
-  alias PanWeb.Live.Podcast.{LikeOrUnlikeButton, FollowOrUnfollowButton, SubscribeOrUnsubscribeButton}
+  alias PanWeb.Live.Podcast.{LikeButton, FollowButton, SubscribeButton}
   import PanWeb.Router.Helpers
   alias PanWeb.Surface.{Icon, LinkButton}
 
@@ -12,15 +12,15 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
     ~F"""
       {#if @current_user_id}
         <p>
-          <LikeOrUnlikeButton id="like_or_unlike_button"
-                              current_user_id={@current_user_id}
-                              podcast={@podcast} />
-          <FollowOrUnfollowButton id="follow_or_unfollow_button"
-                                  current_user_id={@current_user_id}
-                                  podcast={@podcast} />
-          <SubscribeOrUnsubscribeButton id="subscribe_or_unsubscribe_button"
-                                        current_user_id={@current_user_id}
-                                        podcast={@podcast} />
+          <LikeButton id="like_button"
+                      current_user_id={@current_user_id}
+                      podcast={@podcast} />
+          <FollowButton id="follow_button"
+                        current_user_id={@current_user_id}
+                        podcast={@podcast} />
+          <SubscribeButton id="subscribe_button"
+                           current_user_id={@current_user_id}
+                           podcast={@podcast} />
         </p>
 
         {#if !@podcast.manually_updated_at or

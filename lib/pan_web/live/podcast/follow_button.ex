@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Podcast.FollowOrUnfollowButton do
+defmodule PanWeb.Live.Podcast.FollowButton do
   use Surface.LiveComponent
   alias PanWeb.{Follow, Podcast}
   alias PanWeb.Surface.Icon

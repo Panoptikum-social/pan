@@ -1,12 +1,7 @@
 defmodule PanWeb.EpisodeFrontendView do
   use PanWeb, :view
-  alias Pan.Repo
   alias PanWeb.Like
   alias PanWeb.Episode
-  alias PanWeb.Chapter
-  alias PanWeb.Gig
-  alias PanWeb.User
-  alias PanWeb.Persona
 
   def author_button(conn, episode) do
     persona = Episode.author(episode)
@@ -19,70 +14,6 @@ defmodule PanWeb.EpisodeFrontendView do
     else
       [icon("user-heroicons-outline"), " Unknown"]
     end
-  end
-
-  def podlove_episodestruct(conn, episode) do
-    poster = PanWeb.Endpoint.url() <> "/images/missing-podcast.png"
-
-    %{
-      show: %{
-        title: episode.podcast.title,
-        subtitle: episode.podcast.summary,
-        summary: episode.podcast.description,
-        poster: poster,
-        link: episode.podcast.website
-      },
-      title: episode.title,
-      subtitle: HtmlSanitizeEx.strip_tags(episode.description),
-      summary: HtmlSanitizeEx.strip_tags(episode.summary),
-      poster: poster,
-      publicationDate: episode.publishing_date,
-      duration: episode.duration,
-      link: episode_frontend_url(conn, :show, episode.id),
-      theme: %{main: "#eee"},
-      tabs: %{chapters: true},
-      contributors: contributorlist(episode.gigs),
-      chapters: chapterlist(episode.chapters),
-      audio: audiolist(episode.enclosures),
-      reference: %{base: PanWeb.Endpoint.url() <> "/podlove-webplayer/"}
-    }
-    |> Jason.encode!()
-    |> raw
-  end
-
-  defp filetype(enclosure) do
-    enclosure.url |> String.split(".") |> List.last() |> String.to_atom()
-  end
-
-  defp chapterlist(chapters) do
-    Enum.map(chapters, fn chapter ->
-      %{start: ej(chapter.start), title: ej(chapter.title)}
-    end)
-  end
-
-  defp contributorlist(gigs) do
-    Enum.map(gigs, fn gig ->
-      %{name: gig.persona.name, role: %{id: 1, slug: gig.role, title: gig.role}}
-    end)
-  end
-
-  defp enclosuremap(enclosures) do
-    Enum.map(enclosures, fn enclosure ->
-      %{filetype(enclosure) => enclosure.url}
-    end)
-    |> List.first()
-  end
-
-  # for podlove
-  def audiolist(enclosures) do
-    Enum.map(enclosures, fn enclosure ->
-      %{
-        url: enclosure.url,
-        mimeType: enclosure.type,
-        size: enclosure.length,
-        title: String.split(enclosure.url, "/") |> List.last()
-      }
-    end)
   end
 
   def list_group_item_cycle(counter) do
@@ -116,81 +47,6 @@ defmodule PanWeb.EpisodeFrontendView do
     end
   end
 
-  def like_or_unlike_chapter(user_id, chapter_id) do
-    case Repo.get_by(PanWeb.Like,
-           enjoyer_id: user_id,
-           chapter_id: chapter_id
-         ) do
-      nil ->
-        content_tag :button,
-          class: "btn btn-warning btn-xs",
-          data: [type: "chapter", event: "like-chapter", action: "like", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", icon("heart-heroicons-outline"), " Like"]
-        end
-
-      _ ->
-        content_tag :button,
-          class: "btn btn-success btn-xs",
-          data: [type: "chapter", event: "like-chapter", action: "unlike", id: chapter_id] do
-          [Chapter.likes(chapter_id), " ", icon("heart-heroicons-outline"), " Unlike"]
-        end
-    end
-  end
-
-  def proclaim_or_not_buttons(user_id, episode_id) do
-    user =
-      Repo.get!(User, user_id)
-      |> Repo.preload(:personas)
-
-    for persona <- user.personas do
-      proclaim_or_not(episode_id, persona)
-      # [proclaim_or_not(episode_id, persona), tag(:br)]
-    end
-  end
-
-  def proclaim_or_not(episode_id, persona) do
-    case Gig.find_self_proclaimed(persona.id, episode_id) do
-      nil ->
-        content_tag :span do
-          [
-            " ",
-            content_tag :button,
-              class: "btn btn-inverse-lavender btn-xs",
-              title: "Claim contribution for #{persona.pid}",
-              data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [icon("user-plus"), " ", persona.name]
-            end
-          ]
-        end
-
-      _ ->
-        content_tag :span do
-          [
-            " ",
-            content_tag :button,
-              class: "btn btn-lavender btn-xs",
-              title: "Withdraw contribution for #{persona.pid}",
-              data: [type: "persona", event: "proclaim", personaid: persona.id, id: episode_id] do
-              [icon("user-times"), " ", persona.name]
-            end
-          ]
-        end
-    end
-  end
-
-  def render("like_button.html", %{user_id: user_id, episode_id: episode_id}) do
-    like_or_unlike(user_id, episode_id)
-  end
-
-  def render("like_chapter_button.html", %{user_id: user_id, chapter_id: chapter_id}) do
-    like_or_unlike_chapter(user_id, chapter_id)
-  end
-
-  def render("proclaim_button.html", %{episode_id: episode_id, persona_id: persona_id}) do
-    persona = Repo.get(Persona, persona_id)
-    proclaim_or_not(episode_id, persona)
-  end
-
   def seconds(time), do: String.split(time, ":") |> splitseconds()
   def to_i(string), do: String.to_integer(string)
   def to_s(integer), do: Integer.to_string(integer)
@@ -214,21 +70,5 @@ defmodule PanWeb.EpisodeFrontendView do
 
   def complain_link() do
     link("Complain", to: "https://panoptikum.io/complaints")
-  end
-
-  def major_mimetype(episode) do
-    if mimetype(episode) do
-      mimetype(episode)
-      |> String.split("/")
-      |> List.first()
-    end
-  end
-
-  def mimetype(episode) do
-    if episode.enclosures != [] do
-      episode.enclosures
-      |> List.first()
-      |> Map.get(:type)
-    end
   end
 end

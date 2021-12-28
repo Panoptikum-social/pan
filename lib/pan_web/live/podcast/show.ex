@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Podcast.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Recommendation, Podcast, Episode, Image}
-  alias PanWeb.Live.Podcast.{Header, RecommendationsList, EpisodeList}
+  alias PanWeb.Live.Podcast.{Header, RecommendationList, EpisodeList}
 
   def mount(%{"id" => id}, _session, socket) do
     socket =
@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Podcast.Show do
         podcast: Podcast.get_by_id_for_show(id),
         page: 1,
         per_page: 10,
-        recommendation_changeset: Recommendation.changeset(%Recommendation{}),
+        changeset: %Recommendation{} |> Recommendation.changeset,
         podcast_thumbnail: Image.get_by_podcast_id(id)
       )
       |> fetch
@@ -38,10 +38,10 @@ defmodule PanWeb.Live.Podcast.Show do
                 podcast={@podcast}
                 podcast_thumbnail={@podcast_thumbnail}
                 episodes_count={@episodes |> length}/>
-        <RecommendationsList id="recommendations_list"
-                             current_user_id={@current_user_id}
-                             podcast={@podcast}
-                             changeset={@recommendation_changeset} />
+        <RecommendationList id="recommendations_list"
+                            current_user_id={@current_user_id}
+                            podcast={@podcast}
+                            changeset={@changeset} />
         <EpisodeList episodes={@episodes}
                      page={@page} />
       {/if}

@@ -3,7 +3,7 @@ defmodule PanWeb.Live.User.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like, Message}
   alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon}
-  alias PanWeb.Live.User.{LikeOrUnlikeButton, FollowOrUnfollowButton}
+  alias PanWeb.Live.User.{LikeButton, FollowButton}
 
   def mount(%{"id" => id}, _session, socket) do
     {:ok,
@@ -40,12 +40,12 @@ defmodule PanWeb.Live.User.Show do
       <h1 class="text-3xl">{@user.name}</h1>
 
       <p :if={@current_user_id}>
-        <LikeOrUnlikeButton id="like_or_unlike_button"
-                            current_user_id={@current_user_id}
-                            user={@user} />
-        <FollowOrUnfollowButton id="follow_or_unfollow_button"
-                                current_user_id={@current_user_id}
-                                user={@user} />
+        <LikeButton id="like_button"
+                    current_user_id={@current_user_id}
+                    user={@user} />
+        <FollowButton id="follow_button"
+                      current_user_id={@current_user_id}
+                      user={@user} />
       </p>
 
       <Panel :if={@user.share_subscriptions}

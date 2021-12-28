@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.User.LikeOrUnlikeButton do
+defmodule PanWeb.Live.User.LikeButton do
   use Surface.LiveComponent
   alias PanWeb.{Like, User}
   alias PanWeb.Surface.Icon

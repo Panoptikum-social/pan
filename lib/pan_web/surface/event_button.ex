@@ -8,11 +8,13 @@ defmodule PanWeb.Surface.EventButton do
   prop(large, :boolean, required: false, default: false)
   prop(icon, :string, required: false)
   prop(truncate, :boolean, default: false)
+  prop(alt, :string, required: false)
   slot(default)
 
   def render(assigns) do
     ~F"""
     <a :on-click={@event}
+       alt={@alt}
        class={"border border-solid inline-block shadow bg-gray-lighter hover:bg-gray-lightest",
               @class,
               "truncate max-w-full": @truncate,

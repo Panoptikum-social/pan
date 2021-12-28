@@ -371,4 +371,9 @@ defmodule PanWeb.User do
   def get_by_id(id) do
     Repo.get!(User, id)
   end
+
+  def get_by_id_with_personas(id) do
+    Repo.get!(User, id)
+    |> Repo.preload(:personas)
+  end
 end

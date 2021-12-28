@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Persona.FollowOrUnfollowButton do
+defmodule PanWeb.Live.Persona.FollowButton do
   use Surface.LiveComponent
   alias PanWeb.{Follow, Persona}
   alias PanWeb.Surface.Icon

@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Podcast.RecommendationsList do
+defmodule PanWeb.Live.Podcast.RecommendationList do
   use Surface.LiveComponent
   alias PanWeb.Live.Podcast.RecommendForm
   alias PanWeb.{Endpoint, Recommendation}
@@ -27,7 +27,8 @@ defmodule PanWeb.Live.Podcast.RecommendationsList do
   end
 
   def social_url(podcast) do
-    URI.encode_www_form(podcast_frontend_url(Endpoint, :show, podcast))
+    podcast_frontend_url(Endpoint, :show, podcast)
+    |> URI.encode_www_form
   end
 
   defp facebook(podcast, recommendation) do
@@ -59,22 +60,19 @@ defmodule PanWeb.Live.Podcast.RecommendationsList do
               <th class="p-2">Date</th>
             </tr>
           </thead>
-          <tbody id="latest_episodes"
-                phx-update="append">
+          <tbody id="latest_recommendations" phx-update="append">
             {#for {recommendation, index} <- @recommendations |> Enum.with_index}
               <tr id={"recommendation-row-#{recommendation.id}"}>
                 <td class={"p-2",
                           "bg-gray-lighter": Integer.is_even(index)}>
-                  {#if @current_user_id == recommendation.user_id}
-                    <p class="mb-2"><nobr>
-                      <a href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
-                        class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
-                      <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@podcast)}&quote=#{facebook(@podcast, recommendation)}"},
-                        class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white" alt="post on facebook">fb</a>
-                      <a href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
-                        class="bg-grass bg-grass-light px-3 py-2 my-4 rounded-full text-white" alt="send an email">mail</a></nobr>
-                    </p>
-                  {/if}
+                  <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
+                    <a href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
+                      class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
+                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@podcast)}&quote=#{facebook(@podcast, recommendation)}"},
+                      class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white" alt="post on facebook">fb</a>
+                    <a href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
+                      class="bg-grass bg-grass-light px-3 py-2 my-4 rounded-full text-white" alt="send an email">mail</a></nobr>
+                  </p>
                   {recommendation.user.name}
                 </td>
                 <td class={"p-2",
@@ -97,8 +95,8 @@ defmodule PanWeb.Live.Podcast.RecommendationsList do
       {/if}
 
       <RecommendForm current_user_id={@current_user_id}
-                    changeset={@changeset}
-                    podcast={@podcast} />
+                     changeset={@changeset}
+                     podcast={@podcast} />
     </div>
     """
   end

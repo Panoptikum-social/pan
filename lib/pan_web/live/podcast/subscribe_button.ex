@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Podcast.SubscribeOrUnsubscribeButton do
+defmodule PanWeb.Live.Podcast.SubscribeButton do
   use Surface.LiveComponent
   alias PanWeb.{Subscription, Podcast}
   alias PanWeb.Surface.Icon

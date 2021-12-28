@@ -39,4 +39,8 @@ defmodule PanWeb.Chapter do
     |> Repo.aggregate(:count)
     |> Integer.to_string()
   end
+
+  def get_by_id(id) do
+    Repo.get!(Chapter, id)
+  end
 end

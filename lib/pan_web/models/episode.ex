@@ -174,4 +174,8 @@ defmodule PanWeb.Episode do
       chapters: [recommendations: :user]
     ])
   end
+
+  def get_by_id(id) do
+    Repo.get!(Episode, id)
+  end
 end

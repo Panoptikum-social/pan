@@ -1,4 +1,4 @@
-defmodule PanWeb.Live.Podcast.LikeOrUnlikeButton do
+defmodule PanWeb.Live.Podcast.LikeButton do
   use Surface.LiveComponent
   alias PanWeb.{Like, Podcast}
   alias PanWeb.Surface.Icon
