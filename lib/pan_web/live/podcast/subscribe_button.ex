@@ -7,6 +7,19 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
   prop(podcast, :map, required: true)
   data(subscribed, :boolean, default: false)
 
+  def update(assigns, socket) do
+    subscribed =
+      Subscription.find_podcast_subscription(assigns.current_user_id, assigns.podcast.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(subscribed: subscribed)
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-subscribe", _params, %{assigns: assigns} = socket) do
     Podcast.subscribe(assigns.podcast.id, assigns.current_user_id)
 
@@ -20,13 +33,6 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
   end
 
   def render(assigns) do
-    subscribed =
-      Subscription.find_podcast_subscription(assigns.current_user_id, assigns.podcast.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns = assign(assigns, subscribed: subscribed)
-
     ~F"""
       <span>
         {#if @subscribed}

@@ -8,6 +8,20 @@ defmodule PanWeb.Live.Category.FollowButton do
   data(following, :boolean, default: false)
   data(followers_count, :integer, default: 0)
 
+  def update(assigns, socket) do
+    following =
+      Follow.find_category_follow(assigns.current_user_id, assigns.category.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(socket, following: following)
+      |> assign(socket, followers_count: Category.follows(assigns.category.id))
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-follow", _params, %{assigns: assigns} = socket) do
     Category.follow(assigns.category.id, assigns.current_user_id)
 
@@ -22,17 +36,6 @@ defmodule PanWeb.Live.Category.FollowButton do
   end
 
   def render(assigns) do
-    following =
-      Follow.find_category_follow(assigns.current_user_id, assigns.category.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns =
-      assign(assigns,
-        following: following,
-        followers_count: Category.follows(assigns.category.id)
-      )
-
     ~F"""
     <span>
       {#if @following}

@@ -7,6 +7,19 @@ defmodule PanWeb.Live.Podcast.FollowButton do
   prop(podcast, :map, required: true)
   data(following, :boolean, default: false)
 
+  def update(assigns, socket) do
+    following =
+      Follow.find_podcast_follow(assigns.current_user_id, assigns.podcast.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(following: following)
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-follow", _params, %{assigns: assigns} = socket) do
     Podcast.follow(assigns.podcast.id, assigns.current_user_id)
 
@@ -20,13 +33,6 @@ defmodule PanWeb.Live.Podcast.FollowButton do
   end
 
   def render(assigns) do
-    following =
-      Follow.find_podcast_follow(assigns.current_user_id, assigns.podcast.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns = assign(assigns, following: following)
-
     ~F"""
       <span>
         {#if @following}

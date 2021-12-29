@@ -8,6 +8,20 @@ defmodule PanWeb.Live.Episode.LikeButton do
   data(liking, :boolean, default: false)
   data(likes_count, :integer, default: 0)
 
+  def update(assigns, socket) do
+    liking =
+      Like.find_episode_like(assigns.current_user_id, assigns.episode.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(liking: liking)
+      |> assign(likes_count: Episode.likes(assigns.episode.id))
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Episode.like(assigns.episode.id, assigns.current_user_id)
 
@@ -22,13 +36,6 @@ defmodule PanWeb.Live.Episode.LikeButton do
   end
 
   def render(assigns) do
-    liking =
-      Like.find_episode_like(assigns.current_user_id, assigns.episode.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns = assign(assigns, liking: liking, likes_count: Episode.likes(assigns.episode.id))
-
     ~F"""
       <span>
         {#if @liking}

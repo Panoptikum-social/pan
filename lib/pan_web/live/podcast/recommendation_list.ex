@@ -14,6 +14,20 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   prop(page, :integer, default: 1)
   prop(per_page, :integer, default: 10)
 
+  def update(assigns, socket) do
+    recommendations =
+      Recommendation.get_by_podcast_id(assigns.podcast.id, assigns.page, assigns.per_page)
+
+    recommendations_count = Recommendation.count_by_podcast_id(assigns.podcast.id)
+
+    socket =
+      assign(socket, assigns)
+      |> assign(recommendations: recommendations)
+      |> assign(recommendations_count: recommendations_count)
+
+    {:ok, socket}
+  end
+
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
   end
@@ -28,7 +42,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
 
   def social_url(podcast) do
     podcast_frontend_url(Endpoint, :show, podcast)
-    |> URI.encode_www_form
+    |> URI.encode_www_form()
   end
 
   defp facebook(podcast, recommendation) do
@@ -36,12 +50,6 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   end
 
   def render(assigns) do
-    recommendations = Recommendation.get_by_podcast_id(assigns.podcast.id, assigns.page, assigns.per_page)
-    assigns = assign(assigns, recommendations: recommendations)
-
-    recommendations_count = Recommendation.count_by_podcast_id(assigns.podcast.id)
-    assigns = assign(assigns, recommendations_count: recommendations_count)
-
     ~F"""
     <div class="my-4">
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>

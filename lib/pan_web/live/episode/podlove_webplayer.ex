@@ -1,11 +1,19 @@
 defmodule PanWeb.Live.Episode.PodloveWebplayer do
   use Surface.Component
   alias PanWeb.Endpoint
-  import  Phoenix.HTML, only: [javascript_escape: 1, raw: 1]
+  import Phoenix.HTML, only: [javascript_escape: 1, raw: 1]
   import PanWeb.Router.Helpers
 
   prop(episode, :map, required: true)
   data(episodestruct, :map)
+
+  def update(%{episode: episode} = assigns, socket) do
+    socket =
+      assign(socket, assigns)
+      |> assign(episodestruct: episode |> podlove_episodestruct)
+
+    {:ok, socket}
+  end
 
   defp podlove_episodestruct(episode) do
     poster = Endpoint.url() <> "/images/missing-podcast.png"
@@ -63,8 +71,6 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
   defp escape_javascript(string), do: javascript_escape(string)
 
   def render(assigns) do
-    assign(assigns, episodestruct: assigns.episode |> podlove_episodestruct)
-
     ~F"""
     <div id="podlove-webplayer"></div>
     <script src="/podlove-webplayer/embed.js"></script>

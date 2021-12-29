@@ -23,15 +23,12 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
 
   def render(assigns) do
     ~F"""
-    <div if={@chapter.recommendations != []}
-          class="panel panel-info">
-      <div class="panel-heading">
-        Recommendations
-        <span class="text-right">
+    <div :if={@chapter.recommendations != []} class="my-4">
+      <h2 class="text-2xl"> Recommendations</h2>
+      <p class="text-right">
           <a href="https://panoptikum.io/complaints"
              class="text-link hover-text-link-dark">Complain</a>
-        </span>
-      </div>
+      </p>
       <ul class="list-group">
         {#for recommendation <- @chapter.recommendations}
           <li class="list-group-item"

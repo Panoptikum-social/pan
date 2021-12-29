@@ -8,6 +8,20 @@ defmodule PanWeb.Live.Persona.LikeButton do
   data(liking, :boolean, default: false)
   data(likes_count, :integer, default: 0)
 
+  def update(assigns, socket) do
+    liking =
+      Like.find_persona_like(assigns.current_user_id, assigns.persona.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(liking: liking)
+      |> assign(likes_count: Persona.likes(assigns.persona.id))
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Persona.like(assigns.persona.id, assigns.current_user_id)
 
@@ -22,17 +36,6 @@ defmodule PanWeb.Live.Persona.LikeButton do
   end
 
   def render(assigns) do
-    liking =
-      Like.find_persona_like(assigns.current_user_id, assigns.persona.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns =
-      assign(assigns,
-        liking: liking,
-        likes_count: Persona.likes(assigns.persona.id)
-      )
-
     ~F"""
       <span>
         {#if @liking}

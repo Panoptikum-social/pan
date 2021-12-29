@@ -8,6 +8,19 @@ defmodule PanWeb.Live.Category.LikeButton do
   data(liking, :boolean, default: false)
   data(likes_count, :integer, default: 0)
 
+  def update(assigns, socket) do
+    liking =
+      Like.find_category_like(assigns.current_user_id, assigns.category.id)
+      |> is_nil
+      |> Kernel.not()
+
+      socket =
+        assign(socket, assigns)
+        |> assign(socket, liking: liking)
+        |> assign(socket, likes_count: Category.likes(assigns.category.id))
+      {:ok, socket}
+  end
+
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Category.like(assigns.category.id, assigns.current_user_id)
 
@@ -22,17 +35,6 @@ defmodule PanWeb.Live.Category.LikeButton do
   end
 
   def render(assigns) do
-    liking =
-      Like.find_category_like(assigns.current_user_id, assigns.category.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns =
-      assign(assigns,
-        liking: liking,
-        likes_count: Category.likes(assigns.category.id)
-      )
-
     ~F"""
       <span>
         {#if @liking}

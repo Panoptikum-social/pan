@@ -14,7 +14,7 @@ defmodule PanWeb.Live.Episode.RecommendForm do
     ~F"""
     {#if @current_user_id}
       <Form for={@changeset}
-            class="m-4"
+            class="my-4"
             action={recommendation_frontend_path(Endpoint, :create)}>
         <TextInput field={:comment}
                     opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} />

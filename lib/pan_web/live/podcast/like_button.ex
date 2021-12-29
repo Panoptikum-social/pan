@@ -7,6 +7,19 @@ defmodule PanWeb.Live.Podcast.LikeButton do
   prop(podcast, :map, required: true)
   data(liking, :boolean, default: false)
 
+  def update(assigns, socket) do
+    liking =
+      Like.find_podcast_like(assigns.current_user_id, assigns.podcast.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(liking: liking)
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Podcast.like(assigns.podcast.id, assigns.current_user_id)
 
@@ -20,13 +33,6 @@ defmodule PanWeb.Live.Podcast.LikeButton do
   end
 
   def render(assigns) do
-    liking =
-      Like.find_podcast_like(assigns.current_user_id, assigns.podcast.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns = assign(assigns, liking: liking)
-
     ~F"""
       <span>
         {#if @liking}

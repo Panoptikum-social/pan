@@ -37,9 +37,9 @@ defmodule PanWeb.Live.Episode.RecommendationList do
 
   def render(assigns) do
     ~F"""
-    <span>
+    <div class="my-4">
       {#if @episode.recommendations != [] or @current_user_id}
-        <h2>Recommendations</h2>
+        <h2 class="text-2xl">Recommendations</h2>
 
         {#if @episode.recommendations != []}
           <p class="text-right">
@@ -86,10 +86,10 @@ defmodule PanWeb.Live.Episode.RecommendationList do
         {/if}
 
         <RecommendForm current_user_id={@current_user_id}
-                      changeset={@changeset}
-                      episode={@episode} />
+                       changeset={@changeset}
+                       episode={@episode} />
       {/if}
-    </span>
+    </div>
     """
   end
 end

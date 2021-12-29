@@ -34,14 +34,15 @@ defmodule PanWeb.Live.Episode.Show do
       {#if @episode.podcast.blocked}
         This episode may not be published here, sorry.
       {#else}
-        <Header episode={@episode}
+        <Header id="header"
+                episode={@episode}
                 current_user_id={@current_user_id} />
         <RecommendationList id="recommendation_list"
                             episode={@episode}
                             current_user_id={@current_user_id}
                             changeset={@changeset} />
 
-        <div class="flex">
+        <div class="flex my-4">
           <div id="player">
             {#if major_mimetype(@episode) == "video"}
               <video width="640" height="480" controls>
@@ -55,17 +56,17 @@ defmodule PanWeb.Live.Episode.Show do
             {/if}
           </div>
 
-          <div class="col-md-6" id="shownotes">
+          <div id="shownotes">
             {#if @episode.shownotes}
-              <h3>Shownotes</h3>
+              <h2 class="text-2xl">Shownotes</h2>
               <p>{raw(@episode.shownotes)}</p>
             {/if}
           </div>
         </div>
 
         <ChapterList current_user_id={@current_user_id}
-                    episode={@episode}
-                    changeset={@changeset} />
+                     episode={@episode}
+                     changeset={@changeset} />
       {/if}
     </div>
     """

@@ -8,6 +8,20 @@ defmodule PanWeb.Live.Chapter.LikeButton do
   data(liking, :boolean, default: false)
   data(likes_count, :integer, default: 0)
 
+  def update(assigns, socket) do
+    liking =
+      Like.find_chapter_like(assigns.current_user_id, assigns.chapter.id)
+      |> is_nil
+      |> Kernel.not()
+
+    socket =
+      assign(socket, assigns)
+      |> assign(assigns, liking: liking)
+      |> assign(assigns, likes_count: Chapter.likes(assigns.chapter.id))
+
+    {:ok, socket}
+  end
+
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
     Chapter.like(assigns.chapter.id, assigns.current_user_id)
 
@@ -22,13 +36,6 @@ defmodule PanWeb.Live.Chapter.LikeButton do
   end
 
   def render(assigns) do
-    liking =
-      Like.find_chapter_like(assigns.current_user_id, assigns.chapter.id)
-      |> is_nil
-      |> Kernel.not()
-
-    assigns = assign(assigns, liking: liking, likes_count: Chapter.likes(assigns.chapter.id))
-
     ~F"""
       <span>
         {#if @liking}
