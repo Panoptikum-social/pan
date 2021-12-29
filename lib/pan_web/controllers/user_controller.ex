@@ -15,7 +15,7 @@ defmodule PanWeb.UserController do
 
     conn
     |> put_flash(:info, "User pro_until date deleted.")
-    |> redirect(to: user_path(conn, :index))
+    |> redirect(to: user_frontend_path(conn, :index))
   end
 
   def forgot_password(conn, _params, _user) do
@@ -109,7 +109,7 @@ defmodule PanWeb.UserController do
       {:ok, _user} ->
         conn
         |> put_flash(:info, "Password updated successfully.")
-        |> redirect(to: user_path(conn, :show, user))
+        |> redirect(to: user_frontend_path(conn, :show, user))
 
       {:error, changeset} ->
         render(conn, "edit_password.html", user: user, changeset: changeset)

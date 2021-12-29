@@ -42,7 +42,7 @@ defmodule PanWeb.ImageController do
       {:ok, _image} ->
         conn
         |> put_flash(:info, "Image uploaded successfully.")
-        |> redirect(to: image_path(conn, :index))
+        |> redirect(to: image_path(conn, :datatable))
 
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)

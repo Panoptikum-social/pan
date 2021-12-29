@@ -168,7 +168,7 @@ defmodule PanWeb.PodcastController do
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")
-    |> redirect(to: podcast_path(conn, :index))
+    |> redirect(to: podcast_frontend_path(conn, :index))
   end
 
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
