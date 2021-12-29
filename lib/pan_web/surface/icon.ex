@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Icon do
   import PanWeb.ViewHelpers, only: [icon: 2]
 
   prop(name, :string, required: true)
-  prop(class, :css_class, required: false)
+  prop(class, :css_class, required: false, default: "")
   prop(spaced, :boolean, required: false, default: false)
 
   def render(assigns) do

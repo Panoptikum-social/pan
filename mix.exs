@@ -46,7 +46,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.16.4", override: true},
+      {:phoenix_live_view, "~> 0.17.5", override: true},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
@@ -54,13 +54,16 @@ defmodule Pan.MixProject do
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # live metrics dashboard
-      {:phoenix_live_dashboard, "~> 0.5.0"},
+      {:phoenix_live_dashboard, "~> 0.6.2"},
       # Component library
-      {:surface, "~> 0.6.1"},
+      # {:surface, "~> 0.6.1"},
+      {:surface, github: "surface-ui/surface", branch: "ms-support-lv-0.17"},
+      # telemetry
+      {:telemetry, "~> 1.0", override: true},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
-      {:telemetry_poller, "~> 0.5"},
+      {:telemetry_poller, "~> 1.0"},
       # i18n library
       {:gettext, "~> 0.11"},
       # Json generation
@@ -91,18 +94,18 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing smtp adapter,
-      {:bamboo_smtp, "~> 3.0"},
-      # TODO: Upgrade bamboo (only possible, when bamboo_smtp new version is ready)
+      {:bamboo_smtp, "~> 4.1.0"},
       # mailing
-      {:bamboo, "~> 1.4"},
+      {:bamboo, "~> 2.2"},
+      # bamboo phoenix integration
+      {:bamboo_phoenix, "~> 1.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
       # Cron like agent,
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # We have to override manually, as manticoresearch would want to see 3.0
-      {:poison, "~> 4.0.1", override: true},
+      {:poison, "~> 5.0"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       # reuseable Erlang components
