@@ -44,6 +44,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     "fastq" "^1.6.0"
 
+"@podlove/web-player@^5.7.4":
+  "integrity" "sha512-K8BCQLvjJ7ovq8YHRqm7JfQQVJOojTj+Z0XKGSdfC6DghA+tgEpMcWKnLyGjVVZu7v+qiROzeTwBI7253fXiZw=="
+  "resolved" "https://registry.npmjs.org/@podlove/web-player/-/web-player-5.7.4.tgz"
+  "version" "5.7.4"
+
 "@tailwindcss/forms@^0.3.4":
   "integrity" "sha512-vlAoBifNJUkagB+PAdW4aHMe4pKmSLroH398UPgIogBFc91D2VlHUxe4pjxQhiJl0Nfw53sHSJSQBSTQBZP3vA=="
   "resolved" "https://registry.npmjs.org/@tailwindcss/forms/-/forms-0.3.4.tgz"

@@ -38,7 +38,7 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
       audio: audiolist(episode.enclosures),
-      reference: %{base: PanWeb.Endpoint.url() <> "/podlove-webplayer/"}
+      reference: %{base: PanWeb.Endpoint.url() <> "/web-player/"}
     }
     |> Jason.encode!()
     |> raw
@@ -72,10 +72,10 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
 
   def render(assigns) do
     ~F"""
-    <div id="podlove-webplayer"></div>
-    <script src="/podlove-webplayer/embed.js"></script>
+    <div id="web-player"></div>
+    <script src="/web-player/embed.js"></script>
     <script>
-      podlovePlayer('#podlove-webplayer', {@episodestruct})
+      podlovePlayer('#web-player', {@episodestruct})
     </script>
     """
   end
