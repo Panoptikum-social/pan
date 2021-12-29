@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.Panel do
   prop(purpose, :string, required: false, default: "default")
   prop(heading_right, :string, required: false)
   prop(target, :fun, required: false)
-  prop(class, :css_class, required: false)
+  prop(class, :css_class, required: false, default: "")
   prop(id, :string, required: false)
 
   slot(default)

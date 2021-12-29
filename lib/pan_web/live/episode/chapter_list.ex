@@ -32,7 +32,8 @@ defmodule PanWeb.Live.Episode.ChapterList do
                         chapter={chapter} />
           </div>
 
-          <RecommendForm current_user_id={@current_user_id}
+          <RecommendForm id={"recommend-form-#{chapter.id}"}
+                         current_user_id={@current_user_id}
                          changeset={@changeset}
                          chapter={chapter} />
 
