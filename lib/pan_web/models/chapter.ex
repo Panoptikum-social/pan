@@ -1,7 +1,7 @@
 defmodule PanWeb.Chapter do
   use PanWeb, :model
   alias Pan.Repo
-  alias PanWeb.Like
+  alias PanWeb.{Like, Chapter}
 
   schema "chapters" do
     field(:start, :string)

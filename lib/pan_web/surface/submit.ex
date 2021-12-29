@@ -3,11 +3,13 @@ defmodule PanWeb.Surface.Submit do
   alias Surface.Components.Form
 
   prop(label, :string, required: false, default: "Submit")
+  prop(class, :css_class, required: false)
 
   def render(assigns) do
     ~F"""
     <Form.Submit {=@label}
-                 class="my-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light" />
+                 class={@class,
+                        "my-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light": !@class} />
     """
   end
 end

@@ -10,55 +10,38 @@ defmodule PanWeb.Live.Episode.ChapterList do
 
   def render(assigns) do
     ~F"""
-    {#if @episode.chapters != []}
-      <h3 id="chapters">Deeplinks to Chapters</h3>
+    <div :if={@episode.chapters != []}
+          class="my-4">
+      <h3 class="text-xl"
+          id="chapters">Deeplinks to Chapters</h3>
 
-      {#if @current_user_id}
-        <div class="row">
-          <div class="col-md-8 col-md-offset-4">
-            <b>Your recommendation:</b>
-          </div>
-        </div>
-      {/if}
+      <div class="grid grid-cols-3 gap-2">
+        <h4 :if={@current_user_id}
+            class="text-lg col-start-2 col-span-2">Your recommendation:</h4>
 
-      {#if @current_user_id}
         {#for chapter <- @episode.chapters}
-          <div class="row">
-            <div class="col-md-4">
-              <a href={episode_frontend_path(Endpoint, :player, @episode, t: chapter.start)}
-                 rel="http://podlove.org/deep-link">{chapter.start}</a>
-              <br/>
-              <LikeButton id={"chapter_#{chapter.id}_like_button"}
-                          current_user_id={@current_user_id}
-                          chapter={chapter} />
-              {chapter.title}
-            </div>
-
-
-            <div class="col-md-8">
-              <RecommendForm current_user_id={@current_user_id}
-                             changeset={@changeset}
-                             chapter={chapter} />
-            </div>
+          <div>
+            <a href={episode_frontend_path(Endpoint, :player, @episode, t: chapter.start)}
+               class="text-link hover:text-link-dark"
+               rel="http://podlove.org/deep-link">{chapter.start}</a>
+            {chapter.title}
+            <br :if={@current_user_id} />
+            <LikeButton :if={@current_user_id}
+                        id={"chapter_#{chapter.id}_like_button"}
+                        current_user_id={@current_user_id}
+                        chapter={chapter} />
           </div>
+
+          <RecommendForm current_user_id={@current_user_id}
+                         changeset={@changeset}
+                         chapter={chapter} />
+
           <RecommendationList current_user_id={@current_user_id}
                               chapter={chapter}
                               episode={@episode} />
         {/for}
-      {#else}
-        {#for group <- Enum.chunk_every(@episode.chapters, 4, 4, [])}
-          <div class="row">
-            {#for chapter <- group}
-              <div class="col-md-3">
-                <a href={episode_frontend_path(Endpoint, :player, @episode, t: chapter.start)}
-                   rel="http://podlove.org/deep-link">{chapter.start}</a>
-                {chapter.title}
-              </div>
-            {/for}
-          </div>
-        {/for}
-      {/if}
-    {/if}
+      </div>
+    </div>
     """
   end
 end

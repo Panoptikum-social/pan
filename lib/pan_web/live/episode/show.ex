@@ -59,7 +59,7 @@ defmodule PanWeb.Live.Episode.Show do
           <div id="shownotes">
             {#if @episode.shownotes}
               <h2 class="text-2xl">Shownotes</h2>
-              <p>{raw(@episode.shownotes)}</p>
+              <p class="prose">{raw(@episode.shownotes)}</p>
             {/if}
           </div>
         </div>

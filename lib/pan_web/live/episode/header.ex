@@ -11,8 +11,12 @@ defmodule PanWeb.Live.Episode.Header do
 
   def update(%{current_user_id: current_user_id} = assigns, socket) do
     socket =
+    if current_user_id do
       assign(socket, assigns)
       |> assign(current_user: User.get_by_id_with_personas(current_user_id))
+    else
+      assign(socket, assigns)
+    end
 
     {:ok, socket}
   end

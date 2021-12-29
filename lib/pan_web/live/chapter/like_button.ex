@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Chapter.LikeButton do
       assign(socket,
         liking: !assigns.liking,
         chapter: Chapter.get_by_id(assigns.chapter.id),
-        likes_count: Chapter.likes(assigns.category.id)
+        likes_count: Chapter.likes(assigns.chapter.id)
       )
 
     {:noreply, socket}
