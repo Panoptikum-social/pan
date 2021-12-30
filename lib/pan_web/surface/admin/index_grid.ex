@@ -234,6 +234,19 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     end
   end
 
+  def handle_event("show_frontend", _, socket) do
+    selected_record = hd(socket.assigns.selected_records)
+    resource = Phoenix.Naming.resource_name(socket.assigns.model)
+
+    if Map.has_key?(selected_record, :id) do
+      path_helper = socket.assigns.path_helper
+      id = selected_record |> Map.get(:id)
+      show_path =
+        Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
+      {:noreply, push_redirect(socket, to: show_path)}
+    end
+  end
+
   def handle_event("edit", _, socket) do
     selected_record = hd(socket.assigns.selected_records)
     resource = Phoenix.Naming.resource_name(socket.assigns.model)
@@ -321,6 +334,15 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
+                    :on-click="show">
+                    🔍 Show
+            </button>
+
+            <button :if={:show_frontend in @buttons}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
                     :on-click="show">
                     🔍 Show

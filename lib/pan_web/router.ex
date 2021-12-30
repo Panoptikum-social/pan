@@ -191,10 +191,10 @@ defmodule PanWeb.Router do
     resources("/users", UserFrontendController, only: [:index, :create])
     get("/pro_features", PageFrontendController, :pro_features)
 
-    get("/personas/datatable", PersonaFrontendController, :datatable)
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
     get("/personas/:id/business_card", PersonaFrontendController, :business_card)
-    resources("/personas", PersonaFrontendController, only: [:show, :index])
+    live("/personas", Live.Persona.Index, :index, as: :persona_frontend)
+    resources("/personas", PersonaFrontendController, only: [:show])
 
     get("/forgot_password", UserController, :forgot_password)
     post("/request_login_link", UserController, :request_login_link)
