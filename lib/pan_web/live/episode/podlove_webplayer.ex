@@ -5,20 +5,11 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
   import PanWeb.Router.Helpers
 
   prop(episode, :map, required: true)
-  data(episodestruct, :map)
 
-  def update(%{episode: episode} = assigns, socket) do
-    socket =
-      assign(socket, assigns)
-      |> assign(episodestruct: episode |> podlove_episodestruct)
-
-    {:ok, socket}
-  end
-
-  defp podlove_episodestruct(episode) do
+  defp episode_config(episode) do
     poster = Endpoint.url() <> "/images/missing-podcast.png"
 
-    %{
+    %{version: 5,
       show: %{
         title: episode.podcast.title,
         subtitle: episode.podcast.summary,
@@ -37,11 +28,9 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
       tabs: %{chapters: true},
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
-      audio: audiolist(episode.enclosures),
-      reference: %{base: PanWeb.Endpoint.url() <> "/web-player/"}
+      audio: audiolist(episode.enclosures)
     }
-    |> Jason.encode!()
-    |> raw
+    |> Jason.encode!
   end
 
   defp contributorlist(gigs) do
@@ -67,16 +56,30 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
     end)
   end
 
+  defp playerconfig() do
+    %{version: 5,
+      activeTab: "chapters",
+      base: PanWeb.Endpoint.url <> "/web-player/"}
+    |> Jason.encode!
+  end
+
   defp escape_javascript(nil), do: ""
   defp escape_javascript(string), do: javascript_escape(string)
 
+  defp render_script(episode) do
+    """
+    <script>
+      window.podlovePlayer("#app", #{episode_config(episode)}, #{playerconfig()});
+    </script>
+    """
+    |> raw
+  end
+
   def render(assigns) do
     ~F"""
-    <div id="web-player"></div>
+    <div id="app" class="app"></div>
     <script src="/web-player/embed.js"></script>
-    <script>
-      podlovePlayer('#web-player', {@episodestruct})
-    </script>
+    {render_script(@episode)}
     """
   end
 end
