@@ -43,18 +43,16 @@ defmodule PanWeb.Live.Episode.Show do
                             changeset={@changeset} />
 
         <div class="flex my-4">
-          <div id="player">
-            {#if major_mimetype(@episode) == "video"}
-              <video width="640" height="480" controls>
-                {#for enclosure <- @episode.enclosures}
-                  <source src={enclosure.url}>
-                {/for}
-                Your browser does not support the video tag.
-              </video>
-            {#else}
-              <PodloveWebplayer episode={@episode} />
-            {/if}
-          </div>
+          {#if major_mimetype(@episode) == "video"}
+            <video width="640" height="480" controls>
+              {#for enclosure <- @episode.enclosures}
+                <source src={enclosure.url}>
+              {/for}
+              Your browser does not support the video tag.
+            </video>
+          {#else}
+            <PodloveWebplayer episode={@episode} />
+          {/if}
 
           <div id="shownotes">
             {#if @episode.shownotes}

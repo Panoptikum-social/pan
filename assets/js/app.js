@@ -10,6 +10,7 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import {InfiniteScroll} from "./infinite_scroll"
+import podlovePlayer from "./web-player/embed.js"
 
 let Hooks = {InfiniteScroll}
 
@@ -37,3 +38,5 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
+
+window.podlovePlayer("#app", episode, config);

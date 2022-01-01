@@ -69,7 +69,11 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
   defp render_script(episode) do
     """
     <script>
-      window.podlovePlayer("#app", #{episode_config(episode)}, #{playerconfig()});
+      var episode = #{episode_config(episode)};
+      var config = #{playerconfig()};
+      window.onload = () => {
+        window.podlovePlayer("#app", episode, config);
+      };
     </script>
     """
     |> raw
@@ -78,7 +82,6 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
   def render(assigns) do
     ~F"""
     <div id="app" class="app"></div>
-    <script src="/web-player/embed.js"></script>
     {render_script(@episode)}
     """
   end
