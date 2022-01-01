@@ -175,7 +175,7 @@ defmodule PanWeb.Router do
 
     get("/podcasts/liked", PodcastFrontendController, :liked)
     get("/podcasts/popular", PodcastFrontendController, :popular)
-    live("/podcast/:id", Live.Podcast.Show, :show, as: :podcast_frontend)
+    live("/podcasts/:id", Live.Podcast.Show, :show, as: :podcast_frontend)
     live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)

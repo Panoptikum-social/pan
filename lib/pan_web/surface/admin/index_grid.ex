@@ -236,7 +236,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("show_frontend", _, socket) do
     selected_record = hd(socket.assigns.selected_records)
-    resource = Phoenix.Naming.resource_name(socket.assigns.model)
 
     if Map.has_key?(selected_record, :id) do
       path_helper = socket.assigns.path_helper
