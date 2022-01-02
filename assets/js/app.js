@@ -11,6 +11,7 @@ import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import {InfiniteScroll} from "./infinite_scroll"
 import podlovePlayer from "./web-player/embed.js"
+import Hooks from "./_hooks"
 
 let Hooks = {InfiniteScroll}
 
@@ -24,7 +25,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: {_csrf_token: csrfToken},
   hooks: Hooks
 })
-
 
 // Show progress bar on live navigation and form submits
 window.addEventListener("phx:page-loading-start", info => NProgress.start())
