@@ -59,7 +59,24 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
   end
 
   defp playerconfig() do
-    %{version: 5, activeTab: "chapters", base: PanWeb.Endpoint.url() <> "/web-player/"}
+    %{
+      version: 5,
+      activeTab: "chapters",
+      base: PanWeb.Endpoint.url() <> "/web-player/",
+      share: %{
+        channels: [
+          "facebook",
+          "twitter",
+          "whats-app",
+          "linkedin",
+          "pinterest",
+          "xing",
+          "mail",
+          "link"
+        ],
+        sharePlaytime: true
+      }
+    }
     |> Jason.encode!()
   end
 

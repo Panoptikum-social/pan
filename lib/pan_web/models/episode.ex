@@ -175,6 +175,16 @@ defmodule PanWeb.Episode do
     ])
   end
 
+  def get_by_id_for_episode_player(id) do
+    Repo.get!(Episode, id)
+    |> Repo.preload([
+      :podcast,
+      :enclosures,
+      gigs: :persona,
+      chapters: [recommendations: :user]
+    ])
+  end
+
   def get_by_id(id) do
     Repo.get!(Episode, id)
   end

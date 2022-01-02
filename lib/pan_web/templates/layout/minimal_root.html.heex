@@ -21,40 +21,10 @@
     <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Panoptikum" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
-
-    <link rel="search"
-      type="application/opensearchdescription+xml"
-      title="Panoptikum"
-      href="https://panoptikum.io/opensearch.xml">
-
     <%= render_existing view_module(@conn), "scripts.html", assigns %>
   </head>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-        data-js-view-name={js_view_name(@conn, view_template(@conn))}>
-    <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
-        class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-        :class="{'lg:p-1': !navbarOpen}">
-      <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
-    </nav>
-
-    <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
-      <div class="bg-gray-lightest flex-1 text-black">
-        <%= @inner_content %>
-      </div>
-
-      <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
-                    justify-evenly place-self-center">
-        <%= render "_footer.html", conn: @conn, current_user: @current_user %>
-      </footer>
-      <div class="flex justify-center w-full font-medium pb-4">
-        <p>Hosted by
-          <a class="text-link hover:text-link-dark"
-            href="https://www.informatom.com">
-            Informatom EDV-Dienstleistungen e.U.
-          </a>
-        </p>
-      </div>
-    </div>
+  <body data-js-view-name={js_view_name(@conn, view_template(@conn))}>
+    <%= @inner_content %>
   </body>
 </html>

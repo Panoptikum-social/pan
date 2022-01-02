@@ -11,6 +11,16 @@ defmodule PanWeb.Router do
     plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
+  pipeline :browser_minimal_root_layout do
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {PanWeb.LayoutView, :minimal_root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
+    plug(PanWeb.Auth, repo: Pan.Repo)
+  end
+
   pipeline :json_api do
     plug(:accepts, ["json-api"])
     plug(:fetch_session)
@@ -181,9 +191,7 @@ defmodule PanWeb.Router do
     get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
     get("/qrcode/:code", QRCodeFrontendController, :generate)
 
-    get("/episodes/iframeResizer.contentWindow.map", EpisodeFrontendController, :silence)
     live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
-    get("/episodes/:id/player", EpisodeFrontendController, :player)
     live("/episodes", Live.Episode.Index, :index, as: :episode_frontend)
 
     live("/users/new", Live.User.New, :new, as: :user_frontend)
@@ -213,6 +221,12 @@ defmodule PanWeb.Router do
     live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
     get("/sandbox", PageFrontendController, :sandbox)
     get("/color-translator", PageFrontendController, :color_translator)
+  end
+
+  scope "/", PanWeb do
+    pipe_through([:browser_minimal_root_layout])
+
+    live("/episodes/:id/player", Live.Episode.Player, :player, as: :episode_frontend)
   end
 
   scope "/mydata", PanWeb do
