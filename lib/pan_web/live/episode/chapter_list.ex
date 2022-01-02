@@ -1,8 +1,6 @@
 defmodule PanWeb.Live.Episode.ChapterList do
   use Surface.Component
   alias PanWeb.Live.Chapter.{LikeButton, RecommendForm, RecommendationList}
-  alias PanWeb.Endpoint
-  import PanWeb.Router.Helpers
 
   prop(current_user_id, :integer, required: true)
   prop(changeset, :map, required: true)
@@ -21,9 +19,12 @@ defmodule PanWeb.Live.Episode.ChapterList do
 
         {#for chapter <- @episode.chapters}
           <div>
-            <a href={episode_frontend_path(Endpoint, :player, @episode, t: chapter.start)}
-               class="text-link hover:text-link-dark"
-               rel="http://podlove.org/deep-link">{chapter.start}</a>
+            <a href="javascript:void(0)"
+               rel="podlove-web-player"
+               data-ref="podlove-player"
+               data-action="play"
+               data-time={chapter.start}
+               class="text-link hover:text-link-dark">{chapter.start}</a>
             {chapter.title}
             <br :if={@current_user_id} />
             <LikeButton :if={@current_user_id}
