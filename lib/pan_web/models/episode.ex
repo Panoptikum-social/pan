@@ -167,8 +167,8 @@ defmodule PanWeb.Episode do
   def get_by_id_for_episode_show(id) do
     Repo.get!(Episode, id)
     |> Repo.preload([
-      :podcast,
       :enclosures,
+      podcast: :feeds,
       gigs: :persona,
       recommendations: :user,
       chapters: [recommendations: :user]
@@ -178,8 +178,8 @@ defmodule PanWeb.Episode do
   def get_by_id_for_episode_player(id) do
     Repo.get!(Episode, id)
     |> Repo.preload([
-      :podcast,
       :enclosures,
+      podcast: :feeds,
       gigs: :persona,
       chapters: [recommendations: :user]
     ])

@@ -58,7 +58,9 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
     end)
   end
 
-  defp playerconfig() do
+  defp playerconfig(podcast) do
+    feed_url = podcast.feeds |> List.first() |> Map.get(:self_link_url)
+
     %{
       version: 5,
       activeTab: "chapters",
@@ -75,6 +77,32 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
           "link"
         ],
         sharePlaytime: true
+      },
+      "subscribe-button": %{
+        feed: feed_url,
+        clients: [
+          %{id: "antenna-pod"},
+          %{id: "beyond-pod"},
+          %{id: "castro"},
+          %{id: "clementine"},
+          %{id: "downcast"},
+          %{id: "google-podcasts", service: feed_url},
+          %{id: "gpodder"},
+          %{id: "itunes"},
+          %{id: "i-catcher"},
+          %{id: "instacast"},
+          %{id: "overcast"},
+          %{id: "player-fm"},
+          %{id: "pocket-casts"},
+          %{id: "pocket-casts", service: feed_url},
+          %{id: "pod-grasp"},
+          %{id: "podcast-addict"},
+          %{id: "podcast-republic"},
+          %{id: "podcat"},
+          %{id: "podscout"},
+          %{id: "rss-radio"},
+          %{id: "rss"}
+        ]
       }
     }
     |> Jason.encode!()
@@ -87,7 +115,7 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
     ~H"""
     <script>
       var episode = <%= episode_config(assigns.episode) |> raw %> ;
-      var config = <%= playerconfig() |> raw %>;
+      var config = <%= playerconfig(assigns.episode.podcast) |> raw %>;
     </script>
     """
   end

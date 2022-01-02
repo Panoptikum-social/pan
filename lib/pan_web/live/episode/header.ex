@@ -151,7 +151,6 @@ defmodule PanWeb.Live.Episode.Header do
                        current_user_id={@current_user_id}
                        episode={@episode} />
       </p>
-      <hr class="border-gray border-dotted"/>
     </div>
     """
   end
