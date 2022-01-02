@@ -1,15 +1,17 @@
-defmodule PanWeb.Live.Episode.PodloveWebplayer do
+defmodule PanWeb.Live.Episode.PodlovePlayer do
   use Surface.Component
   alias PanWeb.Endpoint
   import Phoenix.HTML, only: [javascript_escape: 1, raw: 1]
   import PanWeb.Router.Helpers
 
   prop(episode, :map, required: true)
+  prop(class, :css_class, default: "")
 
   defp episode_config(episode) do
     poster = Endpoint.url() <> "/images/missing-podcast.png"
 
-    %{version: 5,
+    %{
+      version: 5,
       show: %{
         title: episode.podcast.title,
         subtitle: episode.podcast.summary,
@@ -30,7 +32,7 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
       chapters: chapterlist(episode.chapters),
       audio: audiolist(episode.enclosures)
     }
-    |> Jason.encode!
+    |> Jason.encode!()
   end
 
   defp contributorlist(gigs) do
@@ -57,32 +59,28 @@ defmodule PanWeb.Live.Episode.PodloveWebplayer do
   end
 
   defp playerconfig() do
-    %{version: 5,
-      activeTab: "chapters",
-      base: PanWeb.Endpoint.url <> "/web-player/"}
-    |> Jason.encode!
+    %{version: 5, activeTab: "chapters", base: PanWeb.Endpoint.url() <> "/web-player/"}
+    |> Jason.encode!()
   end
 
   defp escape_javascript(nil), do: ""
   defp escape_javascript(string), do: javascript_escape(string)
 
-  defp render_script(episode) do
-    """
+  defp render_script(assigns) do
+    ~H"""
     <script>
-      var episode = #{episode_config(episode)};
-      var config = #{playerconfig()};
-      window.onload = () => {
-        window.podlovePlayer("#app", episode, config);
-      };
+      var episode = <%= episode_config(assigns.episode) |> raw %> ;
+      var config = <%= playerconfig() |> raw %>;
     </script>
     """
-    |> raw
   end
 
   def render(assigns) do
     ~F"""
-    <div id="app" class="app"></div>
-    {render_script(@episode)}
+    <div id="podlove-player"
+         class={"podlove-player", @class}
+         :hook="PodlovePlayer"></div>
+    {render_script(assigns)}
     """
   end
 end

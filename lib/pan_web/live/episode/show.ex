@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Episode.Show do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Episode, Recommendation}
-  alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodloveWebplayer}
+  alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodlovePlayer}
 
   def mount(%{"id" => id}, _session, socket) do
     {:ok,
@@ -51,7 +51,7 @@ defmodule PanWeb.Live.Episode.Show do
               Your browser does not support the video tag.
             </video>
           {#else}
-            <PodloveWebplayer episode={@episode} />
+            <PodlovePlayer episode={@episode} class="m-4" />
           {/if}
 
           <div id="shownotes">

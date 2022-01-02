@@ -10,10 +10,9 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import {InfiniteScroll} from "./infinite_scroll"
-import podlovePlayer from "./web-player/embed.js"
 import Hooks from "./_hooks"
 
-let Hooks = {InfiniteScroll}
+Hooks.InfiniteScroll = InfiniteScroll
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -38,5 +37,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-
-window.podlovePlayer("#app", episode, config);
