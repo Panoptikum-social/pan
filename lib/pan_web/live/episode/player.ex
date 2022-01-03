@@ -10,7 +10,9 @@ defmodule PanWeb.Live.Episode.Player do
   def render(assigns) do
     ~F"""
     <div class="h-full">
-      <PodlovePlayer episode={@episode} class="mx-auto max-w-screen-lg" />
+      <PodlovePlayer id="webplayer"
+                     episode={@episode}
+                     class="mx-auto max-w-screen-lg" />
     </div>
     """
   end

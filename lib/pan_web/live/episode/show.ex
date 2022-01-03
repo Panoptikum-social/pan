@@ -51,7 +51,9 @@ defmodule PanWeb.Live.Episode.Show do
               Your browser does not support the video tag.
             </video>
           {#else}
-            <PodlovePlayer episode={@episode} class="mr-4 w-1/2" />
+            <PodlovePlayer id="player"
+                           episode={@episode}
+                           class="mr-4 w-1/2" />
           {/if}
 
           <div id="shownotes">
