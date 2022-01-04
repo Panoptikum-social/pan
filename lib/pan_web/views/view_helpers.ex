@@ -1,6 +1,6 @@
 defmodule PanWeb.ViewHelpers do
-  import Phoenix.HTML
-  import Phoenix.HTML.Link
+  alias Phoenix.HTML
+  alias Phoenix.HTML.Link
   alias PanWeb.Endpoint
 
   def icon(name), do: icon(name, class: "")
@@ -694,7 +694,7 @@ defmodule PanWeb.ViewHelpers do
           raise "An icon is missing: " <> name
       end
 
-    raw(icon_string)
+    HTML.raw(icon_string)
   end
 
   def nav_icon(name) do
@@ -757,26 +757,23 @@ defmodule PanWeb.ViewHelpers do
     end
   end
 
-  def ej(nil), do: ""
-  def ej(string), do: javascript_escape(string)
-
-  def my_safe_to_string({:safe, string}), do: safe_to_string({:safe, string})
+  def my_safe_to_string({:safe, string}), do: HTML.safe_to_string({:safe, string})
   def my_safe_to_string(string), do: string
 
   def datatable_actions(record_id, path) do
     [
       "<nobr>",
-      link("Show",
+      Link.link("Show",
         to: path.(Endpoint, :show, record_id),
         class: "btn btn-default btn-xs"
       ),
       " ",
-      link("Edit",
+      Link.link("Edit",
         to: path.(Endpoint, :edit, record_id),
         class: "btn btn-warning btn-xs"
       ),
       " ",
-      link("Delete",
+      Link.link("Delete",
         to: path.(Endpoint, :delete, record_id),
         method: :delete,
         data: [confirm: "Are you sure?"],

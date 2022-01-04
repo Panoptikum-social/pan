@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Episode.PodlovePlayer do
   use Surface.LiveComponent
   alias PanWeb.Endpoint
-  import Phoenix.HTML, only: [javascript_escape: 1]
+  alias Phoenix.HTML
   import PanWeb.Router.Helpers
 
   prop(episode, :map, required: true)
@@ -51,7 +51,8 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
 
   defp chapterlist(chapters) do
     Enum.map(chapters, fn chapter ->
-      %{start: escape_javascript(chapter.start), title: escape_javascript(chapter.title)}
+      %{start: HTML.javascript_escape(chapter.start || ""),
+        title: HTML.javascript_escape(chapter.title || "")}
     end)
   end
 
@@ -114,9 +115,6 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
       }
     }
   end
-
-  defp escape_javascript(nil), do: ""
-  defp escape_javascript(string), do: javascript_escape(string)
 
   def render(assigns) do
     ~F"""

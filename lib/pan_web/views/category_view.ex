@@ -1,5 +1,6 @@
 defmodule PanWeb.CategoryView do
   use PanWeb, :view
+  alias Phoenix.HTML
 
   def category_tree(categories) do
     Enum.map(categories, fn category ->
@@ -31,7 +32,7 @@ defmodule PanWeb.CategoryView do
     do: %{categories: Enum.map(categories, &category_json/1)}
 
   def podcast_json(podcast) do
-    %{title: ej(podcast.title || " "), id: podcast.id}
+    %{title: HTML.javascript_escape(podcast.title || " "), id: podcast.id}
   end
 
   def category_json(category) do

@@ -10,7 +10,8 @@ defmodule PanWeb.Live.Podcast.Subscribe do
   def render(assigns) do
     ~F"""
     <PodloveSubscribeButton id="podlove_subscribe_button"
-                            for={@podcast} />
+                            {=@podcast}
+                            class="m-4" />
     """
   end
 end

@@ -129,7 +129,7 @@ defmodule PanWeb.Live.Podcast.Header do
         <img src={"/qrcode/#{podcast_frontend_url(Endpoint, :subscribe_button, @podcast) |> URI.encode_www_form}"}
                     class="max-w-none" width="150" height="150" %>
         <PodloveSubscribeButton id="podlove_subscribe_button"
-                                for={@podcast} />
+                                {=@podcast} />
       </div>
     </div>
     """

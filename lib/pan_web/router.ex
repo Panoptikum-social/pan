@@ -193,10 +193,6 @@ defmodule PanWeb.Router do
     live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
 
-    live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
-      as: :podcast_frontend
-    )
-
     get("/qrcode/:code", QRCodeFrontendController, :generate)
 
     live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
@@ -236,6 +232,9 @@ defmodule PanWeb.Router do
     pipe_through([:browser_minimal_root_layout])
 
     live("/episodes/:id/player", Live.Episode.Player, :player, as: :episode_frontend)
+    live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
+    as: :podcast_frontend
+  )
   end
 
   scope "/mydata", PanWeb do
