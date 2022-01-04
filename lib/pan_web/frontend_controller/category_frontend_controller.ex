@@ -1,55 +1,6 @@
 defmodule PanWeb.CategoryFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{Category, Language, Podcast}
-
-  def show(conn, %{"id" => id}) do
-    if category = Repo.get(Category, id) do
-      category =
-        category
-        |> Repo.preload(children: from(c in Category, order_by: c.title))
-        |> Repo.preload(:parent)
-
-      podcasts =
-        from(l in Language,
-          right_join: p in assoc(l, :podcasts),
-          join: c in assoc(p, :categories),
-          where: c.id == ^id,
-          select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
-        )
-        |> Repo.all()
-
-      render(conn, "show.html",
-        category: category,
-        podcasts: podcasts
-      )
-    else
-      conn
-      |> put_status(:not_found)
-      |> render("not_found.html")
-    end
-  end
-
-  def show_stats(conn, %{"id" => id}) do
-    category =
-      Category
-      |> Repo.get!(id)
-      |> Repo.preload(children: from(c in Category, order_by: c.title))
-      |> Repo.preload(:parent)
-
-    podcasts =
-      from(l in Language,
-        right_join: p in assoc(l, :podcasts),
-        join: c in assoc(p, :categories),
-        where: c.id == ^id,
-        select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
-      )
-      |> Repo.all()
-
-    render(conn, "show_stats.html",
-      category: category,
-      podcasts: podcasts
-    )
-  end
+  alias PanWeb.{Category, Podcast}
 
   def categorized(conn, %{"id" => id}) do
     category =
