@@ -1,6 +1,6 @@
 defmodule PanWeb.PersonaController do
   use PanWeb, :controller
-  alias PanWeb.Persona
+  alias PanWeb.{Persona, PageFrontendView}
   alias Pan.Search
 
   def merge_candidates(conn, _params) do
@@ -165,6 +165,6 @@ defmodule PanWeb.PersonaController do
     Repo.delete!(from_persona)
     Search.Persona.delete_index(from_id)
     Search.Persona.update_index(to_id)
-    render(conn, "merge.html")
+    render(conn, PageFrontendView, "done.html")
   end
 end

@@ -1,6 +1,6 @@
 defmodule PanWeb.EpisodeController do
   use PanWeb, :controller
-  alias PanWeb.Episode
+  alias PanWeb.{PageFrontendView, Episode}
   alias Pan.Search
   require Logger
 
@@ -64,7 +64,7 @@ defmodule PanWeb.EpisodeController do
     end
 
     Logger.info("=== Sanitized #{length(episodes)} episodes ... ===")
-    render(conn, "done.html")
+    render(conn, PageFrontendView, "done.html")
   end
 
   defp fallback_link(episode) do

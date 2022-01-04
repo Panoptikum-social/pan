@@ -1,7 +1,20 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{AlternateFeed, Category, Chapter, Enclosure, Feed, Gig, Image, Like, Podcast, Recommendation}
+  alias PanWeb.{
+    AlternateFeed,
+    Category,
+    Chapter,
+    Enclosure,
+    Feed,
+    Gig,
+    Image,
+    Like,
+    Podcast,
+    Recommendation,
+    PageFrontendView
+  }
+
   alias Pan.Search
   require Logger
 
@@ -361,7 +374,7 @@ defmodule PanWeb.PodcastController do
       |> Repo.all()
 
     Task.start(fn -> update_missing_counters_async(podcasts) end)
-    render(conn, "done.html")
+    render(conn, PageFrontendView, "done.html")
   end
 
   defp update_missing_counters_async(podcasts) do

@@ -18,7 +18,8 @@ defmodule PanWeb.MaintenanceController do
     Podcast,
     Recommendation,
     Subscription,
-    User
+    User,
+    PageFrontendView
   }
 
   def vienna_beamers(conn, _params) do
@@ -40,11 +41,7 @@ defmodule PanWeb.MaintenanceController do
   def update_podcast_counters(conn, _params) do
     Podcast.update_all_counters()
 
-    render(conn, "done.html")
-  end
-
-  def sandbox(conn, _params) do
-    render(conn, "sandbox.html")
+    render(conn, PageFrontendView, "done.html")
   end
 
   def catch_up_thumbnailed(conn, _paar) do
@@ -88,7 +85,7 @@ defmodule PanWeb.MaintenanceController do
     from(p in Persona, where: p.id in ^personas_missing_thumbnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
-    render(conn, "done.html")
+    render(conn, PageFrontendView, "done.html")
   end
 
   def stats(conn, _params) do

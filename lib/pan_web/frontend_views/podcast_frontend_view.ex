@@ -93,7 +93,7 @@ defmodule PanWeb.PodcastFrontendView do
   end
 
   def complain_link() do
-    PanWeb.EpisodeFrontendView.complain_link()
+    link("Complain", to: "https://panoptikum.io/complaints")
   end
 
   def prepare_for_toplist(podcasts) do

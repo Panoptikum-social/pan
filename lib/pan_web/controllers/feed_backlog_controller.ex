@@ -1,6 +1,6 @@
 defmodule PanWeb.FeedBacklogController do
   use PanWeb, :controller
-  alias PanWeb.{Feed, FeedBacklog}
+  alias PanWeb.{Feed, FeedBacklog, PageFrontendView}
   require Logger
 
   def index(conn, _params) do
@@ -101,7 +101,7 @@ defmodule PanWeb.FeedBacklogController do
 
         conn
         |> put_flash(:error, error)
-        |> render("import.html")
+        |> render(PageFrontendView, "done.html")
     end
   end
 

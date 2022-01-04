@@ -1,21 +1,22 @@
 defmodule PanWeb.SearchController do
   use PanWeb, :controller
   alias Pan.Search
+  alias PanWeb.PageFrontendView
   require Logger
 
   def migrate(conn, _params) do
     Task.start(fn -> Pan.Search.migrate() end)
-    render(conn, "started.html", %{})
+    render(conn, PageFrontendView, "started.html", %{})
   end
 
   def push_missing(conn, _params) do
     Task.start(fn -> Search.push_missing() end)
-    render(conn, "started.html", %{})
+    render(conn, PageFrontendView, "started.html", %{})
   end
 
   def reset_all(conn, _params) do
     Task.start(fn -> Search.reset_all() end)
-    render(conn, "started.html", %{})
+    render(conn, PageFrontendView, "started.html", %{})
   end
 
   def delete_orphans(conn, _params) do
@@ -33,6 +34,6 @@ defmodule PanWeb.SearchController do
     Logger.info("=== Persona orphans deleted ===")
 
     Logger.info("===  Full text search orphans deletion finished ===")
-    render(conn, "done.html", %{})
+    render(conn, PageFrontendView, "done.html", %{})
   end
 end

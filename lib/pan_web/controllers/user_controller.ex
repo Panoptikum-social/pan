@@ -1,6 +1,6 @@
 defmodule PanWeb.UserController do
   use PanWeb, :controller
-  alias PanWeb.{Subscription, User}
+  alias PanWeb.{Subscription, User, PageFrontendView}
 
   plug(:authenticate_user when action in [:index, :show])
 
@@ -92,7 +92,7 @@ defmodule PanWeb.UserController do
       PanWeb.CategoryPodcast.get_or_insert(String.to_integer(category_id), podcast_id)
     end
 
-    render(conn, "done.html")
+    render(conn, PageFrontendView, "done.html")
   end
 
   def edit_password(conn, %{"id" => id}, _user) do

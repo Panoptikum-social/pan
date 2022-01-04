@@ -219,6 +219,7 @@ defmodule PanWeb.Router do
     get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)
     get("/2017/:month/:day/:file", MaintenanceController, :blog_2017)
     live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
+
   end
 
   scope "/", PanWeb do
@@ -383,7 +384,6 @@ defmodule PanWeb.Router do
     get("/search/migrate", SearchController, :migrate)
 
     get("/maintenance/stats", MaintenanceController, :stats)
-    get("/maintenance/sandbox", MaintenanceController, :sandbox)
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)

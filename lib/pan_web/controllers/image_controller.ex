@@ -1,6 +1,6 @@
 defmodule PanWeb.ImageController do
   use PanWeb, :controller
-  alias PanWeb.Image
+  alias PanWeb.{PageFrontendView, Image}
 
   def create(conn, %{"image" => image_params}) do
     record_slug =
@@ -51,7 +51,7 @@ defmodule PanWeb.ImageController do
 
   def cache_missing(conn, _params) do
     Task.start(fn -> PanWeb.Image.cache_missing() end)
-    render(conn, "started.html")
+    render(conn, PageFrontendView, "started.html")
   end
 
   def remove_duplicates(conn, _params) do
@@ -91,6 +91,6 @@ defmodule PanWeb.ImageController do
       |> Repo.delete()
     end
 
-    render(conn, "done.html")
+    render(conn, PageFrontendView, "done.html")
   end
 end
