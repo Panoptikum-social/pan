@@ -213,7 +213,7 @@ defmodule PanWeb.Router do
     get("/sessions/confirm_email", SessionController, :confirm_email)
 
     live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
-    get("/recommendations/random", RecommendationFrontendController, :random)
+    live("/recommendations/random", Live.Recommendation.Random, :random, as: :recommendation_frontend)
 
     get("/vienna-beamers", MaintenanceController, :vienna_beamers)
     get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)

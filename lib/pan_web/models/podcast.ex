@@ -534,4 +534,13 @@ defmodule PanWeb.Podcast do
   def all do
     Repo.all(Podcast, order_by: :title)
   end
+
+  def random do
+    from(p in Podcast,
+      order_by: fragment("RANDOM()"),
+      limit: 1,
+      preload: [:episodes, :categories]
+    )
+    |> Repo.one()
+  end
 end

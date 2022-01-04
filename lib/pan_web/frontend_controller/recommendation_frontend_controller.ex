@@ -57,55 +57,6 @@ defmodule PanWeb.RecommendationFrontendController do
     )
   end
 
-  def random(conn, _params, _user) do
-    podcast =
-      from(p in Podcast,
-        order_by: fragment("RANDOM()"),
-        limit: 1,
-        preload: [:episodes, :languages, :categories, :feeds, engagements: :persona]
-      )
-      |> Repo.one()
-
-    category =
-      Repo.get(Category, List.first(podcast.categories).id)
-      |> Repo.preload([:parent, :children])
-
-    podcasts =
-      from(l in Language,
-        right_join: p in assoc(l, :podcasts),
-        join: c in assoc(p, :categories),
-        where: c.id == ^category.id,
-        select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
-      )
-      |> Repo.all()
-
-    podcast_thumbnail = Repo.get_by(Image, podcast_id: podcast.id)
-
-    episode = Enum.random(podcast.episodes)
-
-    episode =
-      Repo.get(Episode, episode.id)
-      |> Repo.preload([
-        :podcast,
-        :enclosures,
-        [chapters: :recommendations],
-        :contributors,
-        :recommendations,
-        [gigs: :persona]
-      ])
-
-    changeset = Recommendation.changeset(%Recommendation{})
-
-    render(conn, "random.html",
-      category: category,
-      podcast: podcast,
-      podcast_thumbnail: podcast_thumbnail,
-      episode: episode,
-      podcasts: podcasts,
-      changeset: changeset
-    )
-  end
-
   def create(conn, %{"recommendation" => recommendation_params}, user) do
     recommendation_params = Map.put(recommendation_params, "user_id", user.id)
     changeset = Recommendation.changeset(%Recommendation{}, recommendation_params)
