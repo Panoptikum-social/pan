@@ -219,8 +219,6 @@ defmodule PanWeb.Router do
     get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)
     get("/2017/:month/:day/:file", MaintenanceController, :blog_2017)
     live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
-    get("/sandbox", PageFrontendController, :sandbox)
-    get("/color-translator", PageFrontendController, :color_translator)
   end
 
   scope "/", PanWeb do
