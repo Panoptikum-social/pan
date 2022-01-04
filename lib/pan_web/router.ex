@@ -180,7 +180,11 @@ defmodule PanWeb.Router do
     live("/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend)
     live("/categories/:id", Live.Category.Show, :show, as: :category_frontend)
     live("/categories/:id/stats", Live.Category.StatsShow, :show_stats, as: :category_frontend)
-    live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend)
+
+    live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes,
+      as: :category_frontend
+    )
+
     get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 
     get("/podcasts/liked", PodcastFrontendController, :liked)
@@ -188,7 +192,11 @@ defmodule PanWeb.Router do
     live("/podcasts/:id", Live.Podcast.Show, :show, as: :podcast_frontend)
     live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
     get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
-    get("/podcasts/:id/subscribe_button", PodcastFrontendController, :subscribe_button)
+
+    live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
+      as: :podcast_frontend
+    )
+
     get("/qrcode/:code", QRCodeFrontendController, :generate)
 
     live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
@@ -213,13 +221,15 @@ defmodule PanWeb.Router do
     get("/sessions/confirm_email", SessionController, :confirm_email)
 
     live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
-    live("/recommendations/random", Live.Recommendation.Random, :random, as: :recommendation_frontend)
+
+    live("/recommendations/random", Live.Recommendation.Random, :random,
+      as: :recommendation_frontend
+    )
 
     get("/vienna-beamers", MaintenanceController, :vienna_beamers)
     get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)
     get("/2017/:month/:day/:file", MaintenanceController, :blog_2017)
     live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
-
   end
 
   scope "/", PanWeb do
@@ -408,6 +418,7 @@ defmodule PanWeb.Router do
 
       live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
       live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
+
       live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
 
       live(

@@ -23,7 +23,7 @@ defmodule PanWeb.Endpoint do
     at: "/",
     from: :pan,
     gzip: false,
-    only: ~w(assets fonts images web-player favicon.ico robots.txt .well-known)
+    only: ~w(assets fonts images web-player subscribe-button favicon.ico robots.txt .well-known)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

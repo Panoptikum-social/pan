@@ -516,6 +516,11 @@ defmodule PanWeb.Podcast do
     Repo.get!(Podcast, id)
   end
 
+  def get_by_id_with_feeds(id) do
+    Repo.get!(Podcast, id)
+    |> Repo.preload(:feeds)
+  end
+
   def get_by_id_for_show(id) do
     Repo.get!(Podcast, id)
     |> Repo.preload([:languages, :feeds, :categories])

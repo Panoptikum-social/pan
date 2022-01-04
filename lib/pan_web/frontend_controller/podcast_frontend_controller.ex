@@ -2,15 +2,6 @@ defmodule PanWeb.PodcastFrontendController do
   use PanWeb, :controller
   alias PanWeb.Podcast
 
-  def subscribe_button(conn, %{"id" => id}) do
-    podcast =
-      Repo.get!(Podcast, id)
-      |> Repo.preload(:feeds)
-
-    conn
-    |> render("_subscribe_button.html", podcast: podcast)
-  end
-
   def feeds(conn, %{"id" => id}) do
     podcast =
       Repo.get!(Podcast, id)
