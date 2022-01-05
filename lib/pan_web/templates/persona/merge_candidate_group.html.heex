@@ -52,7 +52,7 @@
           <%= for persona_to <- @personas do %>
             <%= unless persona.id == persona_to.id do
                   link(persona_to.id, to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id),
-                                      class: "border border-black rounded p-1 text-link hover:text-link-dark")
+                                      class: "border border-black rounded p-0.5 hover:text-gray-dark")
                 end %>
           <% end %>
         </td>
