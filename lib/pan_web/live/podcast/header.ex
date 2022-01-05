@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Podcast.Header do
   use Surface.Component
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.{Icon, CategoryButton, PersonaButton, Pill}
+  alias PanWeb.Surface.{Icon, CategoryButton, PersonaButton, Pill, QRCode}
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, PodloveSubscribeButton}
 
@@ -126,8 +126,7 @@ defmodule PanWeb.Live.Podcast.Header do
       </div>
 
       <div role="qrcode" class="flex flex-col">
-        <img src={"/qrcode/#{podcast_frontend_url(Endpoint, :subscribe_button, @podcast) |> URI.encode_www_form}"}
-                    class="max-w-none" width="150" height="150" %>
+        <QRCode for={podcast_frontend_url(Endpoint, :subscribe_button, @podcast)} />
         <PodloveSubscribeButton id="podlove_subscribe_button"
                                 {=@podcast} />
       </div>
