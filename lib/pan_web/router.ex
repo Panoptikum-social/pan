@@ -383,7 +383,7 @@ defmodule PanWeb.Router do
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
 
     post("/manifestations/toggle", ManifestationController, :toggle)
-    get("/manifestations/manifest", ManifestationController, :manifest)
+    live("/manifestations/manifest", Live.Admin.Manfestations.Merge, :manifest, as: :manifestation)
     get("/manifestations/:id/get_by_user", ManifestationController, :get_by_user)
     get("/manifestations/:id/get_by_persona", ManifestationController, :get_by_persona)
 

@@ -1,16 +1,6 @@
 defmodule PanWeb.ManifestationController do
   use PanWeb, :controller
-  alias PanWeb.{Manifestation, Persona, User}
-
-  def manifest(conn, _params) do
-    users = Repo.all(User)
-    personas = Repo.all(Persona)
-
-    render(conn, "manifest.html",
-      users: users,
-      personas: personas
-    )
-  end
+  alias PanWeb.Manifestation
 
   def get_by_user(conn, %{"id" => id}) do
     manifestations =
