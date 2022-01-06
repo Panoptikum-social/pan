@@ -1,9 +1,0 @@
-<%= if @manifestations == [] do %>
-  none
-<% end %>
-
-<%= for manifestation <- @manifestations do %>
-  <%= link [icon("user-heroicons-outline"), " ", manifestation.user.name],
-          to: user_frontend_path(@conn, :show, manifestation.user),
-          class: "btn btn-xs" %> &nbsp;
-<% end %>

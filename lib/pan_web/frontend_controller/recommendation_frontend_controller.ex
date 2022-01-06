@@ -1,15 +1,7 @@
 defmodule PanWeb.RecommendationFrontendController do
   use PanWeb, :controller
 
-  alias PanWeb.{
-    Category,
-    Episode,
-    Image,
-    Language,
-    Podcast,
-    Recommendation,
-    Subscription
-  }
+  alias PanWeb.{Podcast, Recommendation, Subscription}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
