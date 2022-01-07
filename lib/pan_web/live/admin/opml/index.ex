@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, sort_by: :inserted_at, sort_order: :desc, page: 1, per_page: 10)
+    socket = assign(socket, sort_by: :inserted_at, sort_order: :desc, page: 1, per_page: 10, filter_by: nil)
 
     {:ok, socket |> fetch() |> paginate()}
   end
@@ -37,6 +37,15 @@ defmodule PanWeb.Live.Admin.Opml.Index do
     assign(socket, opmls: sorted_opmls)
   end
 
+  defp filter(%{assigns: %{filter_by: filter_by, opmls: opmls}} = socket) do
+    filtered_opmls = Enum.filter(opmls, &opml_contains?(&1, filter_by))
+    assign(socket, opmls: filtered_opmls, nr_of_filtered: Enum.count(filtered_opmls))
+  end
+
+  defp opml_contains?(opml, value) do
+    Enum.any?(Map.values(opml), &String.contains?(&1 |> inspect(), value))
+  end
+
   def handle_event("paginate", %{"page" => page}, socket) do
     {:noreply, assign(socket, page: String.to_integer(page)) |> paginate()}
   end
@@ -48,9 +57,21 @@ defmodule PanWeb.Live.Admin.Opml.Index do
      |> paginate()}
   end
 
+  def handle_event("filter", %{"value" => value}, socket) do
+    {:noreply,
+     assign(socket, page: 1, filter_by: value)
+     |> fetch()
+     |> filter()
+     |> sort()
+     |> paginate()}
+  end
+
   def render(assigns) do
     ~F"""
-    <h2 class="text-2xl">Listing opmls</h2>
+    <div class="flex justify-between max-w-7xl">
+      <h2 class="text-2xl">Listing opmls</h2>
+      <input type="text"  placeholder="Filter" phx-keyup="filter" value={@filter_by} />
+    </div>
 
     <table cellpadding="4" class="my-4">
       <thead>
@@ -105,7 +126,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
       </tbody>
     </table>
 
-    <Pagination nr_of_pages={Integer.floor_div(@nr_of_filtered, @per_page)}
+    <Pagination nr_of_pages={Float.ceil(@nr_of_filtered / @per_page) |> round}
                 {=@nr_of_unfiltered} {=@nr_of_filtered} {=@page} {=@per_page}
                 click="paginate" class="mb-4 max-w-3xl" />
 
