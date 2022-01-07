@@ -51,3 +51,5 @@
 
 .phx-disconnected{ cursor: wait; }
 .phx-disconnected *{ pointer-events: none; }
+
+.invalid-feedback{ @apply border border-danger bg-danger-light text-white px-2 py-0.5 my-1 rounded}
