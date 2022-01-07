@@ -1,73 +1,76 @@
-<p class="pull-right">
-  <%= link "Import 100", to: feed_backlog_path(@conn, :import_100),
-                         class: "btn btn-danger" %>
-  <%= link "Subscribe All", to: feed_backlog_path(@conn, :subscribe),
-                            class: "btn btn-info" %>
-  <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
-                            class: "btn btn-info" %>
+<div class="m-4">
+  <div class="flex justify-end space-x-4">
+    <%= link "Import 100", to: feed_backlog_path(@conn, :import_100),
+                           class: "border border-black bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md" %>
+    <%= link "Subscribe All", to: feed_backlog_path(@conn, :subscribe),
+                              class: "border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md" %>
+    <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
+                              class: "border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md" %>
 
-  <%= link "Delete All (from Itunes user)",
-           to: feed_backlog_path(@conn, :delete_all),
-           method: :delete,
-           data: [confirm: "Are you sure?"],
-           class: "btn btn-danger" %>
-</p>
+    <%= link "Delete All (from Itunes user)",
+            to: feed_backlog_path(@conn, :delete_all),
+            method: :delete,
+            data: [confirm: "Are you sure?"],
+            class: "border border-black bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md" %>
+  </div>
 
-<h2>Listing the last <%= length(@backlog_feeds) %> of <%= @feedcount %> backlog feeds</h2>
+  <h2 class="text-2xl">Listing the last <%= length(@backlog_feeds) %> of <%= @feedcount %> backlog feeds</h2>
 
-<table class="table table-condensed table-striped table-bordered">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Url</th>
-      <th>Feed generator</th>
-      <th>In progress</th>
-      <th>User</th>
+  <table cellpadding="4" class="my-4 border border-gray-light rounded-lg">
+    <thead>
+      <tr>
+        <th class="border border-gray-light">ID</th>
+        <th class="border border-gray-light">Url</th>
+        <th class="border border-gray-light">Feed generator</th>
+        <th class="border border-gray-light">In progress</th>
+        <th class="border border-gray-light">User</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for feed_backlog <- @backlog_feeds do %>
-    <tr>
-      <td><%= feed_backlog.id %></td>
-      <td>
-        <%= if URI.parse(feed_backlog.url).scheme do %>
-          <%= link feed_backlog.url, to: String.downcase(feed_backlog.url), target: "_blank" %><br/>
-        <% else %>
-          Error: <%= feed_backlog.url %>
-        <% end %>
+        <th class="border border-gray-light"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for feed_backlog <- @backlog_feeds do %>
+        <tr class="odd:bg-gray-lighter">
+          <td class="border border-gray-light"><%= feed_backlog.id %></td>
+          <td class="leading-6 border border-gray-light">
+            <%= if URI.parse(feed_backlog.url).scheme do %>
+              <%= link feed_backlog.url, to: String.downcase(feed_backlog.url), 
+                                         target: "_blank",
+                                         class: "text-link hover:text-link-dark" %><br/>
+            <% else %>
+              Error: <%= feed_backlog.url %>
+            <% end %>
 
-        <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
-          <%= link [ icon("rss-heroicons-outline"), " Create alternate feed"],
-                   to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
-                                                                        url: feed_backlog.url,
-                                                                        backlog_id: feed_backlog.id),
-                   method: :post,
-                   class: "btn btn-info btn-xs" %> for <%= feed.self_link_url %>
-        <% end %>
-      </td>
-      <td><%= feed_backlog.feed_generator %></td>
-      <td><%= feed_backlog.in_progress %></td>
-      <td><%= feed_backlog.user_id %></td>
+            <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
+              <%= link [ icon("rss-heroicons-outline"), " Create alternate feed"],
+                      to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
+                                                                            url: feed_backlog.url,
+                                                                            backlog_id: feed_backlog.id),
+                      method: :post,
+                      class: "border border-black bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %> 
+              for <%= feed.self_link_url %>
+            <% end %>
+          </td>
+          <td class="border border-gray-light"><%= feed_backlog.feed_generator %></td>
+          <td class="border border-gray-light"><%= feed_backlog.in_progress %></td>
+          <td class="border border-gray-light"><%= feed_backlog.user_id %></td>
 
-      <td class="text-right">
-        <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), class: "btn btn-default btn-xs" %>
-        <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), class: "btn btn-default btn-xs" %>
-        <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete,
-                                                                                data: [confirm: "Are you sure?"],
-                                                                                class: "btn btn-danger btn-xs" %>
-        <%= link "Import", to: feed_backlog_path(@conn, :import, feed_backlog), class: "btn btn-default btn-xs" %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+          <td class="border border-gray-light">
+            <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), 
+                             class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+            <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), 
+                             class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+            <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete,
+                                                                                    data: [confirm: "Are you sure?"],
+                               class: "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %>
+            <%= link "Import", to: feed_backlog_path(@conn, :import, feed_backlog),
+                               class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<script>
-  $(function() {
-      $('#datatable').DataTable();
-  } );
-</script>
-
-<%= link "New feed backlog", to: feed_backlog_path(@conn, :new) %>
+  <%= link "New feed backlog", to: feed_backlog_path(@conn, :new), 
+                               class: "text-link hover:text-link-dark" %>
+</div>
