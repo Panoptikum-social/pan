@@ -9,15 +9,19 @@ defmodule PanWeb.Surface.LinkButton do
   prop(large, :boolean, required: false, default: false)
   prop(icon, :string, required: false)
   prop(truncate, :boolean, default: false)
+  prop(method, :atom, default: :get)
+  prop(opts, :keyword, default: [])
 
   def render(assigns) do
     ~F"""
     <Link to={@to}
           class={"border border-solid inline-block shadow",
-                   @class,
-                   "truncate max-w-full": @truncate,
-                   "py-1 px-2 rounded text-sm": !@large,
-                   "py-2 px-3 rounded-md": @large}>
+                 @class,
+                 "truncate max-w-full": @truncate,
+                 "py-1 px-2 rounded text-sm": !@large,
+                 "py-2 px-3 rounded-md": @large}
+          {=@method}
+          {=@opts}>
         <Icon :if={@icon} name={@icon} spaced/>
         {@title}
     </Link>

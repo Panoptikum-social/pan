@@ -352,9 +352,9 @@ defmodule PanWeb.Router do
     delete("/feed_backlogs/delete_all", FeedBacklogController, :delete_all)
     resources("/backlog_feeds", FeedBacklogController)
 
-    get("/opmls/datatable", OpmlController, :datatable)
     get("/opmls/:id/import", OpmlController, :import)
-    resources("/opmls", OpmlController)
+    live("/opmls", Live.Admin.Opml.Index, :index, as: :opml)
+    resources("/opmls", OpmlController, only: [:new, :create, :show, :update, :edit, :delete])
 
     resources("/invoices", InvoiceController)
 

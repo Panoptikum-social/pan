@@ -94,7 +94,7 @@ module.exports = {
       warning: {
         light: '#ffdd87',
         DEFAULT: '#f6bb42', // sunflower
-        dark: '#8a6d3b'
+        dark: '#c3880f'
       },
       danger: {
         light: '#f2838f',
@@ -102,10 +102,10 @@ module.exports = {
         dark: '#a94442'
       },
       primary: {
-        light: '#7cd1ef',
-        DEFAULT: '#3bafda', // aqua
-        dark: '#31708f'
-      },
+        light: '#48cfad', 
+        DEFAULT: '#37bc98', // mint
+        dark: '#048965', 
+      },      
       info: {
         light: '#7cd1ef',
         DEFAULT: '#3bafda', // aqua

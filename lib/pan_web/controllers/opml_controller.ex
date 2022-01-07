@@ -2,22 +2,6 @@ defmodule PanWeb.OpmlController do
   use PanWeb, :controller
   alias PanWeb.Opml
 
-  def index(conn, _params) do
-    render(conn, "index.html")
-  end
-
-  def datatable(conn, _params) do
-    opmls =
-      Repo.all(
-        from(o in Opml,
-          order_by: [desc: :inserted_at],
-          preload: :user
-        )
-      )
-
-    render(conn, "datatable.json", opmls: opmls)
-  end
-
   def new(conn, _params) do
     changeset = Opml.changeset(%Opml{})
     render(conn, "new.html", changeset: changeset)

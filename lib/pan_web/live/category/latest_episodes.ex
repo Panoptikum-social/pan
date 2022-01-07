@@ -6,15 +6,15 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   def mount(%{"id" => id}, _session, socket) do
     podcast_ids = Podcast.ids_by_category_id(id)
 
-    {:ok,
-     socket
-     |> assign(
-       page: 1,
-       per_page: 15,
-       category: Category.get_by_id_with_parent(id),
-       podcast_ids: podcast_ids
-     )
-     |> fetch(), temporary_assigns: [latest_episodes: []]}
+    socket =
+      assign(socket,
+        page: 1,
+        per_page: 15,
+        category: Category.get_by_id_with_parent(id),
+        podcast_ids: podcast_ids
+      )
+
+    {:ok, socket |> fetch(), temporary_assigns: [latest_episodes: []]}
   end
 
   defp fetch(%{assigns: %{page: page, per_page: per_page, podcast_ids: podcast_ids}} = socket) do

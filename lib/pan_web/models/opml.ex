@@ -1,5 +1,7 @@
 defmodule PanWeb.Opml do
   use PanWeb, :model
+  alias PanWeb.Opml
+  alias Pan.Repo
 
   schema "opmls" do
     field(:content_type, :string)
@@ -14,5 +16,13 @@ defmodule PanWeb.Opml do
     struct
     |> cast(params, [:content_type, :filename, :path, :user_id, :inserted_at])
     |> validate_required([:content_type, :filename, :path])
+  end
+
+  def all_with_user(sort_by, sort_order) do
+    from(o in Opml,
+      order_by: [{^sort_order, ^sort_by}],
+      preload: :user
+    )
+    |> Repo.all()
   end
 end
