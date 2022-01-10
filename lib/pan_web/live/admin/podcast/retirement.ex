@@ -21,28 +21,25 @@ defmodule PanWeb.Live.Admin.Podcast.Retirement do
     ~F"""
     <h2 class="text-2xl">Candidates for Retirement</h2>
 
-    <table id="candidates" class="table table-striped table-condensed table-bordered">
+    <table cellpadding="4" class="table table-striped table-condensed table-bordered">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Author</th>
-          <th>Last build date</th>
-          <th>latest Episode: publishing_date</th>
-
-          <th></th>
+          <th class="border border-gray-light">ID</th>
+          <th class="border border-gray-light">Title</th>
+          <th class="border border-gray-light">Last build date</th>
+          <th class="border border-gray-light">Latest episode publishing date</th>
+          <th class="border border-gray-light"></th>
         </tr>
       </thead>
       <tbody>
         {#for podcast <- @candidates}
           <tr>
-            <td>{podcast.id}</td>
-            <td>{podcast.title}</td>
-            <td>{PanWeb.PodcastFrontendView.author_button(Endpoint, podcast)}</td>
-            <td>{podcast.last_build_date}</td>
-            <td>{podcast.last_episode_date}</td>
+            <td class="border border-gray-light">{podcast.id}</td>
+            <td class="border border-gray-light">{podcast.title}</td>
+            <td class="border border-gray-light">{podcast.last_build_date}</td>
+            <td class="border border-gray-light">{podcast.latest_episode_publishing_date}</td>
 
-            <td>
+            <td class="border border-gray-light">
               <nobr>
                 <LinkButton title="Show"
                             to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
@@ -62,24 +59,20 @@ defmodule PanWeb.Live.Admin.Podcast.Retirement do
 
     <h2 class="mt-4 text-2xl">Retired Podcasts</h2>
 
-    <table id="retired" class="table table-striped table-condensed table-bordered">
+    <table cellpadding="4" class="table table-striped table-condensed table-bordered">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Author</th>
-
-          <th></th>
+          <th class="border border-gray-light">ID</th>
+          <th class="border border-gray-light">Title</th>
+          <th class="border border-gray-light"></th>
         </tr>
       </thead>
       <tbody>
         {#for podcast <- @retired}
           <tr>
-            <td>{podcast.id}</td>
-            <td>{podcast.title}</td>
-            <td>{PanWeb.PodcastFrontendView.author_button(Endpoint, podcast)}</td>
-
-            <td>
+            <td class="border border-gray-light">{podcast.id}</td>
+            <td class="border border-gray-light">{podcast.title}</td>
+            <td class="border border-gray-light">
               <nobr>
                 <LinkButton title="Show"
                             to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}

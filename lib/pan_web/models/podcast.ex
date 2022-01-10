@@ -552,26 +552,20 @@ defmodule PanWeb.Podcast do
   def retirement_candidates() do
     from(p in Podcast,
       where: not p.retired,
-      join: e in assoc(p, :episodes),
-      group_by: p.id,
-      having: max(e.publishing_date) < ago(1, "year"),
+      having: p.latest_episode_publishing_date < ago(1, "year"),
       select: %{
         id: p.id,
         title: p.title,
         last_build_date: p.last_build_date,
-        last_episode_date: max(e.publishing_date)
+        latest_episode_publishing_date: p.latest_episode_publishing_date
       },
-      order_by: max(e.publishing_date),
-      limit: 10
+      order_by: p.latest_episode_publishing_date
     )
     |> Repo.all()
   end
 
   def retired() do
-    from(p in Podcast,
-      where: p.retired == true,
-      limit: 10
-    )
+    from(p in Podcast, where: p.retired == true)
     |> Repo.all()
   end
 end
