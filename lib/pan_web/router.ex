@@ -372,7 +372,6 @@ defmodule PanWeb.Router do
     get("/podcasts/:id/forced_delta_import", PodcastController, :forced_delta_import)
     get("/podcasts/:id/fix_owner", PodcastController, :fix_owner)
     get("/podcasts/fix_languages", PodcastController, :fix_languages)
-    get("/podcasts/:id/retire", PodcastController, :retire)
     get("/podcasts/:id/update_from_feed", PodcastController, :update_from_feed)
     live("/podcasts/retirement", Live.Admin.Podcast.Retirement, :retirement, as: :podcast)
     get("/podcasts/stale", PodcastController, :stale)

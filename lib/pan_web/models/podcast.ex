@@ -366,21 +366,6 @@ defmodule PanWeb.Podcast do
     end
   end
 
-  def unretire_all() do
-    podcast_ids =
-      from(p in Podcast,
-        where: p.retired,
-        select: p.id
-      )
-      |> Repo.all()
-
-    for podcast_id <- podcast_ids do
-      Repo.get(Podcast, podcast_id)
-      |> Podcast.changeset(%{retired: false})
-      |> Repo.update()
-    end
-  end
-
   def update_counters(podcast_changeset) do
     podcast_id = podcast_changeset.data.id
 
@@ -547,25 +532,5 @@ defmodule PanWeb.Podcast do
       preload: [:episodes, :categories]
     )
     |> Repo.one()
-  end
-
-  def retirement_candidates() do
-    from(p in Podcast,
-      where: not p.retired,
-      having: p.latest_episode_publishing_date < ago(1, "year"),
-      select: %{
-        id: p.id,
-        title: p.title,
-        last_build_date: p.last_build_date,
-        latest_episode_publishing_date: p.latest_episode_publishing_date
-      },
-      order_by: p.latest_episode_publishing_date
-    )
-    |> Repo.all()
-  end
-
-  def retired() do
-    from(p in Podcast, where: p.retired == true)
-    |> Repo.all()
   end
 end

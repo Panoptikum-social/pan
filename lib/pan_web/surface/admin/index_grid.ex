@@ -15,7 +15,11 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(class, :css_class, required: false)
   prop(buttons, :list, required: true)
   prop(records, :list, default: [])
-  prop(color_class, :css_class, required: false, default: "from-bittersweet-light via-bittersweet to-bittersweet-light")
+
+  prop(color_class, :css_class,
+    required: false,
+    default: "from-bittersweet-light via-bittersweet to-bittersweet-light"
+  )
 
   data(selected_records, :list, default: [])
   data(request_confirmation, :boolean, default: false)
@@ -87,7 +91,10 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
 
     socket =
-      assign(socket, search_options: search_options)
+      assign(socket,
+        page: 1,
+        search_options: search_options
+      )
       |> get_records
 
     {:noreply, socket}
@@ -240,8 +247,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     if Map.has_key?(selected_record, :id) do
       path_helper = socket.assigns.path_helper
       id = selected_record |> Map.get(:id)
-      show_path =
-        Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
+      show_path = Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
       {:noreply, push_redirect(socket, to: show_path)}
     end
   end

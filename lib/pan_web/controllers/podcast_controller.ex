@@ -292,15 +292,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
-  def retire(conn, %{"id" => id}) do
-    from(p in Podcast, where: p.id == ^id)
-    |> Repo.update_all(set: [retired: true])
-
-    conn
-    |> put_flash(:info, "Podcast retired.")
-    |> redirect(to: podcast_path(conn, :retirement))
-  end
-
   def duplicates(conn, _params) do
     duplicate_feeds =
       from(f in Feed,
