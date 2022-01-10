@@ -363,7 +363,6 @@ defmodule PanWeb.Router do
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController, only: [:create])
 
-    get("/podcasts/datatable_stale", PodcastController, :datatable_stale)
     get("/podcasts/delta_import_all", PodcastController, :delta_import_all)
     get("/podcasts/:id/pause", PodcastController, :pause)
     get("/podcasts/:id/touch", PodcastController, :touch)
@@ -374,7 +373,7 @@ defmodule PanWeb.Router do
     get("/podcasts/fix_languages", PodcastController, :fix_languages)
     get("/podcasts/:id/update_from_feed", PodcastController, :update_from_feed)
     live("/podcasts/retirement", Live.Admin.Podcast.Retirement, :retirement, as: :podcast)
-    get("/podcasts/stale", PodcastController, :stale)
+    live("/podcasts/stale", Live.Admin.Podcast.Stale, :stale, as: :podcast)
     get("/podcasts/orphans", PodcastController, :orphans)
     get("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)
     get("/podcasts/factory", PodcastController, :factory)

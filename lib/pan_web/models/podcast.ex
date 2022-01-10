@@ -533,4 +533,34 @@ defmodule PanWeb.Podcast do
     )
     |> Repo.one()
   end
+
+  def stale(sort_by, sort_order, limit) do
+    from(p in Podcast,
+      where:
+        p.next_update <= ^Timex.now() and
+          not p.update_paused and not p.retired,
+      join: f in assoc(p, :feeds),
+      limit: ^limit,
+      order_by: [{^sort_order, ^sort_by}],
+      select: %{
+        id: p.id,
+        title: p.title,
+        updated_at: p.updated_at,
+        update_intervall: p.update_intervall,
+        feed_url: f.self_link_url,
+        next_update: p.next_update,
+        failure_count: p.failure_count
+      }
+    )
+    |> Repo.all()
+  end
+
+  def count_stale() do
+    from(p in Podcast,
+      where:
+        p.next_update <= ^Timex.now() and
+          not p.update_paused and not p.retired
+    )
+    |> Repo.aggregate(:count)
+  end
 end
