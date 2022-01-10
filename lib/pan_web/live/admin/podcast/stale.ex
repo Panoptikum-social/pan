@@ -9,11 +9,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
-    {:ok,
-     assign(socket,
-       sort_order: :desc,
-       sort_by: :next_update
-     ) |> fetch()}
+    {:ok, assign(socket, sort_order: :asc, sort_by: :next_update ) |> fetch()}
   end
 
   defp fetch(%{assigns: %{sort_by: sort_by, sort_order: sort_order}} = socket) do
