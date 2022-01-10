@@ -374,7 +374,7 @@ defmodule PanWeb.Router do
     get("/podcasts/fix_languages", PodcastController, :fix_languages)
     get("/podcasts/:id/retire", PodcastController, :retire)
     get("/podcasts/:id/update_from_feed", PodcastController, :update_from_feed)
-    get("/podcasts/retirement", PodcastController, :retirement)
+    live("/podcasts/retirement", Live.Admin.Podcast.Retirement, :retirement, as: :podcast)
     get("/podcasts/stale", PodcastController, :stale)
     get("/podcasts/orphans", PodcastController, :orphans)
     get("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)

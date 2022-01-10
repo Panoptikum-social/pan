@@ -292,33 +292,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
-  def retirement(conn, _params) do
-    candidates =
-      from(p in Podcast,
-        where: not p.retired,
-        join: e in assoc(p, :episodes),
-        group_by: p.id,
-        having: max(e.publishing_date) < ago(1, "year"),
-        select: %{
-          id: p.id,
-          title: p.title,
-          last_build_date: p.last_build_date,
-          last_episode_date: max(e.publishing_date)
-        },
-        order_by: max(e.publishing_date)
-      )
-      |> Repo.all()
-
-    retired =
-      from(p in Podcast, where: p.retired == true)
-      |> Repo.all()
-
-    render(conn, "retirement.html",
-      candidates: candidates,
-      retired: retired
-    )
-  end
-
   def retire(conn, %{"id" => id}) do
     from(p in Podcast, where: p.id == ^id)
     |> Repo.update_all(set: [retired: true])
