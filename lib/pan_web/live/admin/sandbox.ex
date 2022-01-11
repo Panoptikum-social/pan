@@ -5,8 +5,8 @@ defmodule PanWeb.Live.Admin.Sandbox do
     ~F"""
     <div class="m-4"
          x-data="{isShow: false}">
-      <button class="bg-gray hover:bg-gray-lighter px-6 py-1"
-              x-on:click="isShow = true">Trigger</button>
+      <button class="bg-gray-light rounded hover:bg-gray-lighter px-6 py-1"
+              x-on:click="isShow = true; setTimeout(() => isShow = false, 5000)">Trigger</button>
       <div x-show="isShow"
            class="absolute top-0 right-4 m-3 w-2/3 md:w-1/3">
         <div class="bg-white border-gray border p-3 flex items-start shadow-md rounded-md space-x-2">
@@ -15,7 +15,6 @@ defmodule PanWeb.Live.Admin.Sandbox do
             <p class="text-base leading-6 font-medium text-gray-700">Heading</p>
             <p class="text-sm leading-5 text-gray-600">Some Text</p>
           </div>
-          <div class="flex-shrink-0 text-lg cursor-pointer" x-on:click="isShow = false">❎</div>
         </div>
       </div>
     </div>
