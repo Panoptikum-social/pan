@@ -394,6 +394,7 @@ defmodule PanWeb.Router do
   live_session :admin, on_mount: PanWeb.Live.Admin.Auth do
     scope "/admin", PanWeb do
       pipe_through([:browser, :authenticate_admin, :admin_layout])
+      live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
       live("/dashboard", Live.Admin.Dashboard, :home, as: :dashboard)
       live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
 
