@@ -16,11 +16,21 @@ defmodule PanWeb.Live.Podcast.Show do
       )
       |> fetch
 
+    Phoenix.PubSub.subscribe(:pan_pubsub, "podcasts:#{id}")
+
     {:ok, socket, temporary_assigns: [episodes: []]}
   end
 
   defp fetch(%{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket) do
     assign(socket, episodes: Episode.get_by_podcast_id(podcast.id, page, per_page))
+  end
+
+  def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast}} = socket) do
+    {:noreply, assign(socket, podcast: Podcast.get_by_id_for_show(podcast.id)) |> fetch()}
+  end
+
+  def handle_info(payload, socket) do
+    {:noreply, push_event(socket, "notification", payload)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
@@ -29,7 +39,9 @@ defmodule PanWeb.Live.Podcast.Show do
 
   def render(assigns) do
     ~F"""
-    <div class="bg-white m-4 p-4 rounded shadow">
+    <div class="bg-white m-4 p-4 rounded shadow"
+         phx-hook="Notification"
+         id="notification-hook-target">
       {#if @podcast && @podcast.blocked == true}
         This podcast may not be published here, sorry.
       {#else}

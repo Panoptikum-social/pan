@@ -1,15 +1,24 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
-  use Surface.Component
-  alias PanWeb.Endpoint
+  use Surface.LiveComponent
   alias PanWeb.Live.Podcast.{LikeButton, FollowButton, SubscribeButton}
   import PanWeb.Router.Helpers
-  alias PanWeb.Surface.{Icon, LinkButton}
+  alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)
 
+  def handle_event("trigger-update", _, %{assigns: %{podcast: podcast}} = socket) do
+    Task.start(fn ->
+      Pan.Parser.Podcast.update_from_feed(podcast)
+      Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{podcast.id}", %{reload: :now})
+    end)
+
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~F"""
+    <div>
       {#if @current_user_id}
         <p>
           <LikeButton id="like_button"
@@ -19,21 +28,22 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                         current_user_id={@current_user_id}
                         podcast={@podcast} />
           <SubscribeButton id="subscribe_button"
-                           current_user_id={@current_user_id}
-                           podcast={@podcast} />
+                          current_user_id={@current_user_id}
+                          podcast={@podcast} />
         </p>
 
         {#if !@podcast.manually_updated_at or
               (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), Timex.now()) == -1)}
           <div class="mt-4">
-            <LinkButton to={podcast_frontend_path(Endpoint, :trigger_update, @podcast)}
-                        class="border border-gray-darker rounded text-white bg-danger hover:bg-danger-light"
-                        icon="cog-heroicons-outline"
-                        title="Metadata Update"/>
+            <button :on-click="trigger-update"
+                    class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1">
+                    <Icon name="cog-heroicons-outline" />
+                    Metadata Update
+            </button>
             <span class="relative"
                   x-data="{ metadataOpen: false }">
               <div class="inline"
-                   @click="metadataOpen = !metadataOpen
+                  @click="metadataOpen = !metadataOpen
                           $nextTick(() => $refs.metadataCloseButton.focus())">
                 <Icon name="information-circle-heroicons" />
               </div>
@@ -68,11 +78,12 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
 
         <p class="mt-4"><i>
           <a href={user_frontend_path(Endpoint, :new)}
-             class="text-link hover:text-link-dark">Sign up</a> /
+            class="text-link hover:text-link-dark">Sign up</a> /
           <a href={session_path(Endpoint, :new)}
-             class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
+            class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
         </i></p>
       {/if}
+    </div>
     """
-    end
   end
+end

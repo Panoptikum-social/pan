@@ -50,7 +50,8 @@ defmodule PanWeb.Live.Podcast.Header do
             </div>
           </div>
           <p class="mt-4">
-            <ListFollowSubscribeButtons current_user_id={@current_user_id}
+            <ListFollowSubscribeButtons id="list_follow_subscribe_button"
+                                        current_user_id={@current_user_id}
                                         podcast={@podcast} />
           </p>
         </div>

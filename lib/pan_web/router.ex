@@ -254,8 +254,6 @@ defmodule PanWeb.Router do
     get("/my_data", UserFrontendController, :my_data)
     delete("/delete_my_account", UserFrontendController, :delete_my_account)
 
-    get("/podcasts/:id/trigger_update", PodcastFrontendController, :trigger_update)
-
     get("/edit", UserFrontendController, :edit)
     put("/update", UserFrontendController, :update)
     get("/edit_password", UserFrontendController, :edit_password)

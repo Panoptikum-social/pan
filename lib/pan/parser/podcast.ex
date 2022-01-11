@@ -26,7 +26,8 @@ defmodule Pan.Parser.Podcast do
   end
 
   def update_from_feed(podcast) do
-    with {:ok, _} <- send_download_message(podcast.id),
+    with {:ok, _} <- update_manually_updated_at(podcast),
+         {:ok, _} <- send_download_message(podcast.id),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, _} <- send_parsing_message(podcast.id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, podcast.id),
@@ -57,37 +58,24 @@ defmodule Pan.Parser.Podcast do
     end
   end
 
-  defp send_download_message(id) do
-    PanWeb.Endpoint.broadcast("podcasts:#{id}", "notification", %{
-      content: "<i class='fa fa-download'></i> ...",
-      type: "success"
-    })
+  defp update_manually_updated_at(podcast) do
+    Podcast.changeset(podcast, %{manually_updated_at: Timex.now()})
+    |> Repo.update()
+  end
 
+  defp send_download_message(id) do
+    Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{id}", %{content: "Downloading Feed"})
     {:ok, :done}
   end
 
   defp send_parsing_message(id) do
-    PanWeb.Endpoint.broadcast("podcasts:#{id}", "notification", %{
-      content: "<i class='fa fa-feed'></i> ...",
-      type: "success"
-    })
-
+    Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{id}", %{content: "Parsing feed"})
     {:ok, :done}
   end
 
   defp send_final_messages_to_browser(podcast) do
-    PanWeb.Endpoint.broadcast("podcasts:#{podcast.id}", "notification", %{
-      content:
-        "<i class='fa fa-refresh'></i> #{podcast.id} " <>
-          "<i class='fa fa-podcast'></i> #{podcast.title}",
-      type: "info"
-    })
-
-    PanWeb.Endpoint.broadcast("podcasts:#{podcast.id}", "notification", %{
-      content: "You want to refresh your browser window now [F5]!",
-      type: "warning"
-    })
-
+    Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{podcast.id}", %{
+      content: "Finished updating Podcast #{podcast.title}"})
     {:ok, :done}
   end
 

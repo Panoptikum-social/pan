@@ -3,15 +3,10 @@ defmodule Pan.Updater.Podcast do
   alias Pan.Parser.Helpers, as: H
   alias Pan.Parser.{Download, Feed, Persistor}
   alias Pan.Updater.RssFeed
-  alias PanWeb.{Endpoint, Podcast}
+  alias PanWeb.Podcast
   require Logger
 
-  def import_new_episodes(
-        podcast,
-        current_user \\ nil,
-        forced \\ false,
-        no_failure_count_increase \\ false
-      ) do
+  def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false) do
     Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
 
     with {:ok, _podcast} <- set_next_update(podcast),
@@ -21,33 +16,33 @@ defmodule Pan.Updater.Podcast do
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
-      notify_user(current_user, {:ok, "imported"}, podcast)
+      notify({:ok, "imported"}, podcast)
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
       {:redirect, redirect_target} ->
         case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
           {:ok, _} ->
-            import_new_episodes(podcast, current_user, forced, no_failure_count_increase)
+            import_new_episodes(podcast, forced, no_failure_count_increase)
 
           {:error, message} ->
-            handle_message(podcast, current_user, message, no_failure_count_increase)
+            handle_message(podcast, message, no_failure_count_increase)
         end
 
       {:error, message} ->
-        handle_message(podcast, current_user, message, no_failure_count_increase)
+        handle_message(podcast, message, no_failure_count_increase)
 
       {:done, "nothing to do"} ->
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
   end
 
-  defp handle_message(podcast, current_user, message, no_failure_count_increase) do
+  defp handle_message(podcast, message, no_failure_count_increase) do
     unless no_failure_count_increase == :no_failure_count_increase do
       increase_failure_count_and_persist_error(podcast, message)
     end
 
     Logger.warn(message)
-    notify_user(current_user, {:error, message}, podcast)
+    notify({:error, message}, podcast)
     {:error, message}
   end
 
@@ -61,34 +56,18 @@ defmodule Pan.Updater.Podcast do
     |> Repo.update()
   end
 
-  defp notify_user(nil, _, _), do: nil
-
-  defp notify_user(current_user, {status, message}, podcast) do
-    notification = build_notification(podcast, {status, message}, current_user)
-    Endpoint.broadcast("admin", "notification", notification)
+  defp notify({status, message}, podcast) do
+    Phoenix.PubSub.broadcast(:pan_pubsub, "admin", build_notification(podcast, {status, message}))
   end
 
-  defp build_notification(podcast, {:ok, _}, current_user) do
-    %{
-      content:
-        "Podcast #{podcast.id}: #{podcast.title}",
-      type: "success",
-      user_name: current_user && current_user.name
-    }
-  end
+  defp build_notification(podcast, {:ok, _}),
+    do: %{content: "Podcast #{podcast.id}: #{podcast.title}"}
 
-  defp build_notification(podcast, {:error, message}, current_user) do
-    %{
-      content:
-        "Error: #{message} | <i class='fa fa-refresh'></i> #{podcast.id} " <>
-          "<i class='fa fa-podcast'></i> #{podcast.title}",
-      type: "danger",
-      user_name: current_user && current_user.name
-    }
-  end
+  defp build_notification(podcast, {:error, message}),
+    do: %{content: "Error: #{message} | Podcast #{podcast.id}: #{podcast.title}"}
 
   def unpause_and_reset_failure_count(podcast) do
-    PanWeb.Podcast.changeset(podcast, %{update_paused: false, retired: false, failure_count: 0})
+    Podcast.changeset(podcast, %{update_paused: false, retired: false, failure_count: 0})
     |> Repo.update(force: true)
   end
 

@@ -7,8 +7,7 @@ defmodule Pan.Application do
     children = [
       Pan.Repo,
       PanWeb.Telemetry,
-      #     {Phoenix.PubSub, name: Pan.PubSub},
-      {Phoenix.PubSub, name: Pan.PubSub, adapter: Phoenix.PubSub.PG2},
+      {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
       PanWeb.Endpoint,
       {PidFile.Worker, file: "pan.pid"}
     ]

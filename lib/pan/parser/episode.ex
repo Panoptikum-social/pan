@@ -79,17 +79,7 @@ defmodule Pan.Parser.Episode do
   end
 
   def update_from_feed_many(episodes_map, podcast) do
-    PanWeb.Endpoint.broadcast("admin", "notification", %{
-      content: "started: update from feed many",
-      type: "info"
-    })
-
     for {_, episode_map} <- episodes_map, do: update_from_feed_one(episode_map, podcast)
-
-    PanWeb.Endpoint.broadcast("admin", "notification", %{
-      content: "started:  handling orphans",
-      type: "info"
-    })
 
     # delete derprecated episodes
     one_hour_ago =
@@ -214,11 +204,6 @@ defmodule Pan.Parser.Episode do
     plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
     with {:ok, episode} <- insert_or_update(plain_episode_map, podcast.id) do
-      PanWeb.Endpoint.broadcast("admin", "notification", %{
-        content: "created/updated Episode #{episode.id}: #{episode.title} ...",
-        type: "success"
-      })
-
       get_or_insert_enclosures(enclosures, episode.id)
 
       if episode_map[:chapters] do

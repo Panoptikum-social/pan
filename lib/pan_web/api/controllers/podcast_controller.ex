@@ -149,7 +149,7 @@ defmodule PanWeb.Api.PodcastController do
     end
   end
 
-  def trigger_episode_update(conn, %{"id" => id} = params, user) do
+  def trigger_episode_update(conn, %{"id" => id} = params, _user) do
     podcast = Repo.get!(Podcast, id)
 
     if podcast.update_paused do
@@ -171,7 +171,6 @@ defmodule PanWeb.Api.PodcastController do
 
         case Pan.Updater.Podcast.import_new_episodes(
                podcast,
-               user,
                :not_forced,
                :no_failure_count_increase
              ) do
@@ -278,7 +277,8 @@ defmodule PanWeb.Api.PodcastController do
 
     offset = (page - 1) * size
 
-    hits = Pan.Search.query(index: "podcasts", term: params["filter"], limit: size, offset: offset)
+    hits =
+      Pan.Search.query(index: "podcasts", term: params["filter"], limit: size, offset: offset)
 
     if hits["total"] > 0 do
       total = Enum.min([hits["total"], 10_000])

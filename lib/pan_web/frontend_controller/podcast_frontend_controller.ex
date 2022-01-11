@@ -10,29 +10,6 @@ defmodule PanWeb.PodcastFrontendController do
     render(conn, "feeds.html", podcast: podcast)
   end
 
-  def trigger_update(conn, %{"id" => id}) do
-    podcast = Repo.get!(Podcast, id)
-
-    if !podcast.manually_updated_at or
-         Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
-      podcast
-      |> Podcast.changeset(%{manually_updated_at: Timex.now()})
-      |> Repo.update()
-
-      Pan.Parser.Podcast.update_from_feed(podcast)
-
-      conn
-      |> put_flash(:info, "Podcast metadata update started")
-    else
-      conn
-      |> put_flash(
-        :error,
-        "This podcast has been updated manually within the last hour. Please try again in an hour."
-      )
-    end
-    |> redirect(to: podcast_frontend_path(conn, :show, podcast.id))
-  end
-
   def liked(conn, _params) do
     liked_podcasts =
       from(p in Podcast,

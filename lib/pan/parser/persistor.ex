@@ -74,10 +74,7 @@ defmodule Pan.Parser.Persistor do
   end
 
   def update_from_feed(map, podcast) do
-    PanWeb.Endpoint.broadcast("admin", "notification", %{
-      content: "started: update from feed",
-      type: "info"
-    })
+    Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{podcast.id}", %{content: "Updating from feed"})
 
     podcast_map =
       Map.drop(map, [

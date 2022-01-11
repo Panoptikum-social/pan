@@ -7,7 +7,7 @@ config :pan, PanWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "1f0hthq3qJUXrZc8qckUy4/TW/BUKzycT2MiYn+wrMBXwcnWj9oAx9IYgfRmp930",
   render_errors: [view: PanWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Pan.PubSub,
+  pubsub_server: :pan_pubsub,
   live_view: [signing_salt: "LMBJCcov"],
   http: [compress: false]
 

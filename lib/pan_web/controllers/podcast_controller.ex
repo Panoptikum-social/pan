@@ -115,11 +115,9 @@ defmodule PanWeb.PodcastController do
 
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
     podcast = Repo.get!(Podcast, id)
-    current_user = conn.assigns.current_user
 
     case Pan.Updater.Podcast.import_new_episodes(
            podcast,
-           current_user,
            forced,
            no_failure_count_increase
          ) do
@@ -178,8 +176,6 @@ defmodule PanWeb.PodcastController do
   end
 
   def delta_import_all(conn, _params) do
-    current_user = conn.assigns.current_user
-
     podcasts =
       from(p in Podcast,
         where:
@@ -190,15 +186,15 @@ defmodule PanWeb.PodcastController do
       )
       |> Repo.all()
 
-    Task.start(fn -> trigger_import_new_episodes(podcasts, current_user) end)
+    Task.start(fn -> trigger_import_new_episodes(podcasts) end)
 
     put_flash(conn, :info, "Async podcasts update Task started .")
     |> redirect(to: podcast_path(conn, :stale))
   end
 
-  defp trigger_import_new_episodes(podcasts, current_user) do
+  defp trigger_import_new_episodes(podcasts) do
     for podcast <- podcasts do
-      Pan.Updater.Podcast.import_new_episodes(podcast, current_user)
+      Pan.Updater.Podcast.import_new_episodes(podcast)
     end
 
     Logger.info("=== Manual triggered podcast update finished ===")

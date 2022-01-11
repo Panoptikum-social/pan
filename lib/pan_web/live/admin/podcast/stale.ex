@@ -4,12 +4,12 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     container: {:div, class: "m-4"}
 
   on_mount PanWeb.Live.Admin.Auth
-  alias PanWeb.{Endpoint, Podcast}
+  alias PanWeb.{Podcast, Endpoint}
   alias PanWeb.Surface.{LinkButton, Admin.SortLink}
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
-    Endpoint.subscribe("admin", link: true)
+    Phoenix.PubSub.subscribe(:pan_pubsub, "admin")
     {:ok, assign(socket, sort_order: :asc, sort_by: :next_update ) |> fetch()}
   end
 
@@ -20,8 +20,8 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     )
   end
 
-  def handle_info(%{event: event, payload: payload, topic: "admin"}, socket) do
-    {:noreply, push_event(socket, event, payload)}
+  def handle_info(payload, socket) do
+    {:noreply, push_event(socket, "notification", payload) |> fetch()}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
