@@ -71,8 +71,7 @@ defmodule Pan.Updater.Podcast do
   defp build_notification(podcast, {:ok, _}, current_user) do
     %{
       content:
-        "<i class='fa fa-refresh'></i> #{podcast.id} " <>
-          "<i class='fa fa-podcast'></i> #{podcast.title}",
+        "Podcast #{podcast.id}: #{podcast.title}",
       type: "success",
       user_name: current_user && current_user.name
     }

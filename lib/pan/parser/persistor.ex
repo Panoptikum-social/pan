@@ -74,9 +74,9 @@ defmodule Pan.Parser.Persistor do
   end
 
   def update_from_feed(map, podcast) do
-    PanWeb.Endpoint.broadcast("podcasts: #{podcast.id}", "notification", %{
-      content: "<i class='fa fa-refresh'></i> <i class='fa fa-podcast'></i>...",
-      type: "success"
+    PanWeb.Endpoint.broadcast("admin", "notification", %{
+      content: "started: update from feed",
+      type: "info"
     })
 
     podcast_map =
