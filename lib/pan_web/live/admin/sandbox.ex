@@ -1,24 +1,25 @@
 defmodule PanWeb.Live.Admin.Sandbox do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  alias PanWeb.Endpoint
 
   def mount(_params, _session, socket) do
-    Phoenix.PubSub.subscribe(Pan.PubSub, "admin", link: true)
+    Endpoint.subscribe("admin", link: true)
     {:ok, socket}
   end
 
-  def handle_info(message, socket) do
-    IO.inspect "got #{message}"
-    {:noreply, socket}
+  def handle_info(%{event: event, payload: payload, topic: "admin"}, socket) do
+    {:noreply, push_event(socket, event, payload)}
   end
 
   def handle_event("send", _params, socket)  do
-    Phoenix.PubSub.broadcast(Pan.PubSub, "admin", "I am the message")
+    Endpoint.broadcast("admin", "notification", %{content: "I am the message"})
     {:noreply, socket}
   end
 
   def render(assigns) do
     ~F"""
-    <button :on-click="send"
+    <button id="send_button"phx-hook="Notification"
+            :on-click="send"
             class="m-4 bg-lavender rounded hover:bg-lavender-light px-6 py-1">
       Send Message
     </button>

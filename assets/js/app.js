@@ -10,9 +10,11 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import {InfiniteScroll} from "./infinite_scroll"
+import {Notification} from "./notification"
 import Hooks from "./_hooks"
 
 Hooks.InfiniteScroll = InfiniteScroll
+Hooks.Notification = Notification
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {

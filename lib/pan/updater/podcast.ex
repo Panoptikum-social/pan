@@ -65,7 +65,7 @@ defmodule Pan.Updater.Podcast do
 
   defp notify_user(current_user, {status, message}, podcast) do
     notification = build_notification(podcast, {status, message}, current_user)
-    Endpoint.broadcast("mailboxes:#{current_user.id}", "notification", notification)
+    Endpoint.broadcast("admin", "notification", notification)
   end
 
   defp build_notification(podcast, {:ok, _}, current_user) do

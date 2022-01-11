@@ -9,6 +9,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
+    Endpoint.subscribe("admin", link: true)
     {:ok, assign(socket, sort_order: :asc, sort_by: :next_update ) |> fetch()}
   end
 
@@ -17,6 +18,10 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       stale_podcasts: Podcast.stale(sort_by, sort_order, 10),
       stale_podcasts_count: Podcast.count_stale()
     )
+  end
+
+  def handle_info(%{event: event, payload: payload, topic: "admin"}, socket) do
+    {:noreply, push_event(socket, event, payload)}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
@@ -28,7 +33,9 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   def render(assigns) do
     ~F"""
-    <p class="flex justify-end space-x-4">
+    <p class="flex justify-end space-x-4"
+       phx-hook="Notification"
+       id="notification-hook-target">
       <LinkButton title="Episode import"
                   to={podcast_path(Endpoint, :delta_import_all)}
                   class="border-gray text-white bg-info hover:bg-info-light" />
