@@ -22,14 +22,6 @@ defmodule PanWeb.UserFrontendView do
     end
   end
 
-  def disabled(user) do
-    if user.pro_until == nil || compare(user.pro_until, utc_now()) == :lt do
-      "disabled"
-    else
-      ""
-    end
-  end
-
   def like_or_unlike(enjoyer_id, user_id) do
     case Repo.get_by(Like,
            enjoyer_id: enjoyer_id,

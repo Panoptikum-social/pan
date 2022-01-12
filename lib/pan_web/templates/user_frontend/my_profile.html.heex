@@ -1,9 +1,3 @@
-<script>
-  $(function() {
-    $('[data-toggle="popover"]').popover()
-  })
-</script>
-
 <h1 class="text-3xl">My Profile</h1>
 
 <p class="text-right">
@@ -12,23 +6,23 @@
 </p>
 
   <div class="grid grid-cols-2 gap-4">
-    <div class="text-right">User Name</div>
+    <div class="justify-self-end">User Name</div>
     <div><%= @user.username %></div>
 
-    <div class="text-right">Full Name</div>
+    <div class="justify-self-end">Full Name</div>
     <div><%= @user.name %></div>
 
-    <div class="text-right">Email</div>
+    <div class="justify-self-end">Email</div>
     <div><%= @user.email %></div>
 
     <%= if @user.admin do %>
-      <div class="text-right">Admin</div>
+      <div class="justify-self-end">Admin</div>
       <div>
         I have admin priviliges.
       </div>
     <% end %>
 
-    <div class="text-right">Podcaster</div>
+    <div class="justify-self-end">Podcaster</div>
     <div>
       <%= if @user.podcaster do %>
         I am a podcaster myself.
@@ -37,7 +31,7 @@
       <% end %>
     </div>
 
-    <div class="text-right">Privacy</div>
+    <div class="justify-self-end">Privacy</div>
     <div>
       <%= if @user.share_follows do %>
         I do currently share my followings.
@@ -74,21 +68,21 @@
         </p>
       </div>
 
-      <div class="text-right">Pro account until</div>
+      <div class="justify-self-end">Pro account until</div>
       <div>
         <%= Timex.format!(@user.pro_until, "{ISOdate}") %>
         <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
       </div>
 
-      <div class="text-right">Billing address</div>
+      <div class="justify-self-end">Billing address</div>
       <pre class="font-mono bg-gray-lighter rounded p-4 border border-gray max-w-2xl">
         <%= @user.billing_address %>
        </pre>
 
-      <div class="text-right">Payment reference</div>
+      <div class="justify-self-end">Payment reference</div>
       <div><%= @user.payment_reference %></div>
 
-      <div class="text-right">Paper bill</div>
+      <div class="justify-self-end">Paper bill</div>
       <div>
         <%= if @user.paper_bill do %>
           I want to receive a bill printed on paper via snail mail.

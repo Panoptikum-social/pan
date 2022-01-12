@@ -26,174 +26,154 @@
                 to: persona_frontend_path(@conn, :show, persona),
                 class: "bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm" %>
     </div>
-    <div x-show="expanded">
-      <div class="panel-body">
-        <div class="row">
-          <div class="col-md-4">
-            <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
-                              class: "btn btn-warning pull-right" %>
+    <div x-show="expanded" class="grid grid-cols-4 gap-4">
+      <div class="mt-2">
+        <div class="flex justify-between">
+          <%= if thumbnail = List.first(persona.thumbnails) do %>
+            <%= img_tag(thumbnail.path <> thumbnail.filename,
+                        width: 150,
+                        alt: persona.image_title,
+                        class: "p-1 border border-gray-light rounded",
+                        id: "photo") %>
+          <% else %>
+              <img src="/images/missing-persona.png"
+                    alt="missing image"
+                    width="150"
+                    class="p-1 border border-gray-light rounded" />
+          <% end %>
 
-            <%= if thumbnail = List.first(persona.thumbnails) do %>
-              <%= img_tag(thumbnail.path <> thumbnail.filename,
-                          width: 150,
-                          alt: persona.image_title,
-                          class: "thumbnail",
-                          id: "photo") %>
-            <% else %>
-                <img src="/images/missing-persona.png"
-                      alt="missing image"
-                      width="150"
-                      class="thumbnail" />
-            <% end %>
+          <%= link "Edit persona", to: persona_frontend_path(@conn, :edit, persona),
+                            class: "self-start bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm" %>
+        </div>
 
-            <dl class="dl-horizontal">
-              <dt>Pid</dt>
-              <dd><%= persona.pid %></dd>
+        <dl class="grid grid-cols-3 gap-x-4">
+          <dt class="justify-self-end">Pid</dt>
+          <dd class="col-span-2"><%= persona.pid %></dd>
 
-              <dt>Name</dt>
-              <dd><%= persona.name %></dd>
+          <dt class="justify-self-end">Name</dt>
+          <dd class="col-span-2"><%= persona.name %></dd>
 
-              <dt>Uri</dt>
-              <dd><%= persona.uri %></dd>
+          <dt class="justify-self-end">Uri</dt>
+          <dd class="col-span-2"><%= persona.uri %></dd>
 
-              <dt>Email</dt>
-              <dd><%= persona.email %></dd>
+          <dt class="justify-self-end">Email</dt>
+          <dd class="col-span-2"><%= persona.email %></dd>
 
-              <dt>Description</dt>
-              <dd><%= persona.description %></dd>
+          <dt class="justify-self-end">Description</dt>
+          <dd class="col-span-2"><%= persona.description %></dd>
 
-              <dt>Image url</dt>
-              <dd><%= if persona.image_url, do: truncate_string(persona.image_url, 40) %></dd>
+          <dt class="justify-self-end">Image url</dt>
+          <dd class="col-span-2"><%= if persona.image_url, do: truncate_string(persona.image_url, 40) %></dd>
 
-              <dt>Image title</dt>
-              <dd><%= persona.image_title %></dd>
+          <dt class="justify-self-end">Image title</dt>
+          <dd class="col-span-2"><%= persona.image_title %></dd>
 
-              <dt>Fediverse Address</dt>
-              <dd><%= persona.fediverse_address %></dd>
-            </dl>
+          <dt class="justify-self-end text-right">Fediverse<br/>Address</dt>
+          <dd class="col-span-2"><%= persona.fediverse_address %></dd>
+        </dl>
 
-          <%= if persona.user_id do %>
+        <%= if persona.user_id do %>
+          <p class="my-4">
             This persona has been generated automatically, because you checked the podcaster
             checkbox.
+          </p>
+        <% end %>
+      </div>
+
+      <div class="col-span-3">
+        <h3 class="text-xl">Delegations</h3>
+        <p class="mt-2">
+          A delegation lets the gigs (i.e. contributions to episodes) and engagements (i.e. 
+          contributions to podcasts) of the persona also appear on the profile page of the target persona.
+          Delegation Management is only available for pro users.
+        </p>
+
+        <ul class="flex flex-col space-y-1 mt-2">
+          <%= for delegate_persona <- @user.personas do %>
+            <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
+              <li class="flex space-x-2 items-center">
+                <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                  <%= link [icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"), " Cancel Delegation"],
+                          to: persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
+                          class: "bg-warning text-white border border-gray-dark hover:bg-warning-light 
+                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
+                <% end %>
+                <%= icon("link-lineawesome-solid") %>
+                <%= link [icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", delegate_persona.name],
+                    to: persona_frontend_path(@conn, :show, delegate_persona),
+                    class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                            inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"%> 
+                <span>(pid: <%= delegate_persona.pid %>)</span>
+              </li>
+            <% end %>
           <% end %>
-          </div>
 
-          <div class="col-md-4">
-            <h4>Delegations
-              <button class="btn btn-primary btn-xs pull-right"
-                    data-toggle="popover"
-                    data-placement="left"
-                    data-title="Delegation"
-                    data-content="A delegation lets the gigs (i.e. contributions to episodes) and
-                      engagements (i.e. contributions to podcasts) of the persona also appear on the
-                      profile page of the target persona.">
-                <%= icon "information-circle-heroicons" %> Help
-              </button>
-            </h4>
-
-            <ul class="list-group" style="line-height: 200%;">
-              <%= for delegate_persona <- @user.personas do %>
-                <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
-                  <li class="list-group-item">
-                    <%= icon("link-heroicons-outline") %>
-
-                    <%= link [icon("user-heroicons-outline"), " ", delegate_persona.name],
-                                to: persona_frontend_path(@conn, :show, delegate_persona),
-                                class: "btn btn-default btn-xs"%>
-
-                    <br/>  &nbsp; &nbsp; &nbsp;
-                    <label class="label label-default">
-                      <%= icon("credit-card-heroicons-outline") %> <%= delegate_persona.pid %>
-                    </label><br/>
-
-                    <%= link [icon("scissors-heroicons-outline"), " cancel"],
+          <%= for delegate_persona <- @user.personas do %>
+            <%= unless delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
+              <%= if delegate_persona != persona do %>
+                <li class="flex space-x-2 items-center">
+                  <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                    <%= link [icon("link-heroicons-outline", class: "h-4 w-4 inline"), " Delegate"],
                               to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                         delegate_id: delegate_persona.id),
-                              class: "btn btn-warning btn-xs " <> disabled(@user) %>
-                  </li>
-                <% end %>
-              <% end %>
-
-              <%= for delegate_persona <- @user.personas do %>
-                <%= unless delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
-                  <%= if delegate_persona != persona do %>
-                    <li class="list-group-item">
-                      <%= icon("scissors-heroicons-outline") %>
-                      <%= link [icon("user-heroicons-outline"), " ", delegate_persona.name],
-                                to: persona_frontend_path(@conn, :show, delegate_persona),
-                                class: "btn btn-default btn-xs" %>
-                      <br/>  &nbsp; &nbsp; &nbsp;
-                      <label class="label label-default">
-                        <%= icon("credit-card-heroicons-outline") %> <%= delegate_persona.pid %>
-                      </label><br/>
-
-                      <%= link [icon("link-heroicons-outline"), " delegate"],
-                                to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
-                                                          delegate_id: delegate_persona.id),
-                                class: "btn btn-info btn-xs " <> disabled(@user) %>
-                    </li>
+                              class: "bg-primary text-white border border-gray-dark hover:bg-primary-light 
+                                      inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
                   <% end %>
-                <% end %>
+                  <%= icon("unlink-lineawesome-solid") %>
+                  <%= link [icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", delegate_persona.name],
+                            to: persona_frontend_path(@conn, :show, delegate_persona),
+                            class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                                    inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
+                  <span>(pid: <%= delegate_persona.pid %>)</span>
+                </li>
               <% end %>
-            </ul>
-          </div>
+            <% end %>
+          <% end %>
+        </ul>
 
-          <div class="col-md-4">
-            <h4>Redirection
-              <button class="btn btn-primary btn-xs pull-right"
-                  data-toggle="popover"
-                  data-placement="left"
-                  data-title="Redirection"
-                  data-content="The redirection redirects the persona profile page to the profile
-                    page of the target persona.">
-              <%= icon "information-circle-heroicons" %> Help
-            </button>
-            </h4>
+        <h3 class="text-xl pt-4">Redirection</h3>
+        <p>The redirection redirects the persona profile page to the profile page of the target persona.</p>
 
-            <ul class="list-group" style="line-height: 200%;">
-              <%= if persona.redirect do %>
-                <li class="list-group-item">
-                  <%= icon("arrow-sm-right-heroicons-outline") %>
-                  <%= link [icon("user-heroicons-outline"), " ", persona.redirect.name],
-                            to: persona_frontend_path(@conn, :show, persona.redirect.pid),
-                            class: "btn btn-default btn-xs" %>
-                  <br/>  &nbsp; &nbsp; &nbsp;
-                  <label class="label label-default">
-                    <%= icon("credit-card-heroicons-outline") %> <%= persona.redirect.pid %>
-                  </label><br/>
+        <ul class="flex flex-col space-y-1">
+          <%= if persona.redirect do %>
+            <li class="flex space-x-2 items-center">
+              <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                <%= link [icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"), " Cancel Redirection"],
+                          to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
+                          class: "bg-warning text-white border border-gray-dark hover:bg-warning-light 
+                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
+              <% end %>
+              <%= icon("arrow-sm-right-heroicons-outline") %>
+              <%= link [icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", persona.redirect.name],
+                        to: persona_frontend_path(@conn, :show, persona.redirect.pid),
+                        class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                                inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
+              <span>(pid: <%= persona.redirect.pid %>)</span>
+            </li>
+          <% else %>
+            <li>This persona is currently not redirected.</li>
 
-                  <%= link [icon("scissors-heroicons-outline"), " cancel"],
-                            to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
-                            class: "btn btn-warning btn-xs " <> disabled(@user) %>
-                </li>
-              <% else %>
-                <li class="list-group-item">
-                  This persona is not redirected.<br/>
-                </li>
-
-                <%= for target_persona <- @user.personas do %>
-                  <%= if target_persona.id != persona.id do %>
-                    <li class="list-group-item">
-                      <%= icon("scissors-heroicons-outline") %>
-                      <%= link [icon("user-heroicons-outline"), " ", target_persona.name],
-                                to: persona_frontend_path(@conn, :show, target_persona.id),
-                                class: "btn btn-default btn-xs" %>
-                      <br/>  &nbsp; &nbsp; &nbsp;
-                      <label class="label label-default">
-                        <%= icon("credit-card-heroicons-outline") %> <%= target_persona.pid %>
-                      </label><br/>
-                      <%= link [icon("arrow-sm-right-heroicons-outline"), " redirect"],
-                                to: persona_frontend_path(@conn, :redirect, persona.id,
-                                                          target_id: target_persona.id),
-                                class: "btn btn-danger btn-xs " <> disabled(@user) %>
-
-                    </li>
+            <%= for target_persona <- @user.personas do %>
+              <%= if target_persona.id != persona.id do %>
+                <li class="flex space-x-2 items-center">
+                  <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                    <%= link [icon("arrow-sm-right-heroicons-outline", class: "h-4 w-4 inline"), " Redirect"],
+                              to: persona_frontend_path(@conn, :redirect, persona.id,
+                                                        target_id: target_persona.id),
+                              class: "bg-danger text-white border border-gray-dark hover:bg-danger-light 
+                                      inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
                   <% end %>
-                <% end %>
+                  <%= icon("unlink-lineawesome-solid") %>
+                  <%= link [icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", target_persona.name],
+                            to: persona_frontend_path(@conn, :show, target_persona.id),
+                            class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                                    inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm" %>
+                  <span>(pid: <%= target_persona.pid %>)</span>
+                </li>
               <% end %>
-            </ul>
-          </div>
-        </div>
+            <% end %>
+          <% end %>
+        </ul>
       </div>
     </div>
   </div>
