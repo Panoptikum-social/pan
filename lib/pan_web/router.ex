@@ -337,11 +337,9 @@ defmodule PanWeb.Router do
 
     post("/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog)
 
-    get("/categories/datatable", CategoryController, :datatable)
     post("/categories/execute_assign", CategoryController, :execute_assign)
     live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
     get("/categories/execute_merge", CategoryController, :execute_merge)
-    resources("/categories", CategoryController)
 
     get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
     get("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)
