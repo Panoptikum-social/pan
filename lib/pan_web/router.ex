@@ -361,7 +361,6 @@ defmodule PanWeb.Router do
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController, only: [:create])
 
-    get("/podcasts/delta_import_all", PodcastController, :delta_import_all)
     get("/podcasts/:id/pause", PodcastController, :pause)
     get("/podcasts/:id/touch", PodcastController, :touch)
     get("/podcasts/:id/contributor_import", PodcastController, :contributor_import)

@@ -31,14 +31,20 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     )|> fetch()}
   end
 
+  def handle_event("trigger-update", _, socket) do
+    Task.start(fn -> Podcast.import_stale_podcasts() end)
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~F"""
     <p class="flex justify-end space-x-4"
        phx-hook="Notification"
        id="notification-hook-target">
-      <LinkButton title="Episode import"
-                  to={podcast_path(Endpoint, :delta_import_all)}
-                  class="border-gray text-white bg-info hover:bg-info-light" />
+      <button :on-click="trigger-update"
+              class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1">
+        Episode import
+      </button>
       <LinkButton title="Factory"
                   to={podcast_path(Endpoint, :factory)}
                   class="border-gray text-white bg-primary hover:bg-primary-light" />

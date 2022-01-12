@@ -175,23 +175,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
-  def delta_import_all(conn, _params) do
-    podcasts =
-      from(p in Podcast,
-        where:
-          p.next_update <= ^Timex.now() and
-            not p.update_paused and not p.retired,
-        order_by: [asc: :next_update],
-        limit: 2000
-      )
-      |> Repo.all()
-
-    Task.start(fn -> trigger_import_new_episodes(podcasts) end)
-
-    put_flash(conn, :info, "Async podcasts update Task started .")
-    |> redirect(to: podcast_path(conn, :stale))
-  end
-
   defp trigger_import_new_episodes(podcasts) do
     for podcast <- podcasts do
       Pan.Updater.Podcast.import_new_episodes(podcast)
