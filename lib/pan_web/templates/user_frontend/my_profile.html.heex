@@ -4,131 +4,135 @@
   })
 </script>
 
-<h1 class="text-3xl m-4">My Profile</h1>
+<h1 class="text-3xl">My Profile</h1>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
-                               class: "btn btn-warning pull-right" %>
+<p class="text-right">
+  <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
+                             class: "bg-warning hover:bg-warning-light border border-gray px-3 py-2 text-white rounded" %>
+</p>
 
-    <dl class="dl-horizontal">
-      <dt>User Name</dt>
-      <dd><%= @user.username %></dd>
+  <div class="grid grid-cols-2 gap-4">
+    <div class="text-right">User Name</div>
+    <div><%= @user.username %></div>
 
-      <dt>Full Name</dt>
-      <dd><%= @user.name %></dd>
+    <div class="text-right">Full Name</div>
+    <div><%= @user.name %></div>
 
-      <dt>Email</dt>
-      <dd><%= @user.email %></dd>
+    <div class="text-right">Email</div>
+    <div><%= @user.email %></div>
 
-      <%= if @user.admin do %>
-        <dt>Admin</dt>
-        <dd>
-          I have admin priviliges.
-        </dd>
+    <%= if @user.admin do %>
+      <div class="text-right">Admin</div>
+      <div>
+        I have admin priviliges.
+      </div>
+    <% end %>
+
+    <div class="text-right">Podcaster</div>
+    <div>
+      <%= if @user.podcaster do %>
+        I am a podcaster myself.
+      <% else %>
+        I am not a podcaster.
       <% end %>
+    </div>
 
-      <dt>Podcaster</dt>
-      <dd>
-        <%= if @user.podcaster do %>
-          I am a podcaster myself.
-        <% else %>
-          I am not a podcaster.
-        <% end %>
-      </dd>
+    <div class="text-right">Privacy</div>
+    <div>
+      <%= if @user.share_follows do %>
+        I do currently share my followings.
+      <% else %>
+        I do not share my followings.
+      <% end %>
+    </div>
 
-      <dt>Privacy</dt>
-      <dd>
-        <%= if @user.share_follows do %>
-          I do currently share my followings.
-        <% else %>
-          I do not share my followings.
-        <% end %>
-      </dd>
-
-      <dd>
-        <%= if @user.share_subscriptions do %>
-          I do currently share my subscriptions.
-        <% else %>
-          I do not share my subscriptions.
-        <% end %>
-      </dd>
-    </dl>
+    <div class="col-start-2">
+      <%= if @user.share_subscriptions do %>
+        I do currently share my subscriptions.
+      <% else %>
+        I do not share my subscriptions.
+      <% end %>
+    </div>
 
     <%= if @user.pro_until do %>
-      <div class="row">
-        <div class={"alert" <> alert_class(@user)}>
-          <%= if pro_days_left(@user) > 0 do %>
-            <b>Your pro account is running for <b><%= pro_days_left(@user) %></b> more days.</b>
-          <% else %>
-            <b>Your pro account has expired.</b>
-          <% end %>
-          <p text-align="center">Get access to all pro features for one more year for 12 EUR only!</p>
-          <br/>
+      <div class={"max-w-2xl p-4 col-span-2 justify-self-center bg-#{alert_class(@user)}-light rounded text-#{alert_class(@user)}-dark"}>
+        <span class="bg-success-light ext-success-dark"/> 
+        <span class="bg-warning-light text-warning-dark"/> 
+        <span class="bg-danger-light text-danger-dark"/>
+        <%= if pro_days_left(@user) > 0 do %>
+          <b>Your pro account is running for <b><%= pro_days_left(@user) %></b> more days.</b>
+        <% else %>
+          <b>Your pro account has expired.</b>
+        <% end %>
+        <p text-align="center">Get access to all pro features for one more year for 12 EUR only!</p>
 
+        <p class="mt-4 flex justify-between">
           <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
-                                   class: "btn btn-primary" %>
+                  class: "bg-info hover:bg-info-light border border-gray px-3 py-2 text-white rounded" %>
           <%= link "Payment information", to: user_frontend_path(@conn, :payment_info),
-                              class: "btn btn-warning pull-right" %>
-        </div>
+                  class: "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded" %>
+        </p>
       </div>
 
-      <dl class="dl-horizontal">
-        <dt>Pro account until</dt>
-        <dd>
-          <%= Timex.format!(@user.pro_until, "{ISOdate}") %>
-          <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
-        </dd>
+      <div class="text-right">Pro account until</div>
+      <div>
+        <%= Timex.format!(@user.pro_until, "{ISOdate}") %>
+        <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
+      </div>
 
-        <dt>Billing address</dt>
-        <dd><pre><%= @user.billing_address %></pre></dd>
+      <div class="text-right">Billing address</div>
+      <pre class="font-mono bg-gray-lighter rounded p-4 border border-gray max-w-2xl">
+        <%= @user.billing_address %>
+       </pre>
 
-        <dt>Payment reference</dt>
-        <dd><%= @user.payment_reference %></dd>
+      <div class="text-right">Payment reference</div>
+      <div><%= @user.payment_reference %></div>
 
-        <dt>Paper bill</dt>
-        <dd>
-          <%= if @user.paper_bill do %>
-            I want to receive a bill printed on paper via snail mail.
-          <% else %>
-            It's fine to get the bill via email and I can download it as pdf.
-          <% end %>
-        </dd>
-      </dl>
+      <div class="text-right">Paper bill</div>
+      <div>
+        <%= if @user.paper_bill do %>
+          I want to receive a bill printed on paper via snail mail.
+        <% else %>
+          It's fine to get the bill via email and I can download it as pdf.
+        <% end %>
+      </div>
     <% end %>
-  </div>
-</div>
 
-<%= unless @current_user.pro_until do %>
-  <div class="row">
-    <div class="alert alert-warning col-md-8 col-md-offset-2">
-      <h4>Try it free for 30 days!</h4>
+  <%= unless @current_user.pro_until do %>
+    <div class="max-w-2xl p-4 col-span-2 justify-self-center bg-warning-light rounded text-warning-dark">
+      <h4 class="text-lg">Try it free for 30 days!</h4>
 
       Claim your free pro account without any further obligations!<br/>
-      Why? To to support Panoptikum or to unlock all pro features now!<br/><br/>
+      Why? To either support Panoptikum or to unlock all pro features now!
 
-      <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
-                               class: "btn btn-primary" %>
-      <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro),
-                                        class: "btn btn-warning pull-right",
-                                        method: :post %>
+      <p class="mt-4 flex justify-between">
+        <%= link "Pro features", to: page_frontend_path(@conn, :pro_features),
+                                class: "bg-info hover:bg-info-light border border-gray px-3 py-2 text-white rounded" %>
+        <%= link "Start your free trail", to: user_frontend_path(@conn, :go_pro),
+                                          class: "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded",
+                                          method: :post %>
+      </p>
     </div>
+  <% end %>
+</div>
+
+<%= if @user.invoices != [] do %>
+  <div class="my-8">
+    <h2 class="text-2xl">My invoices</h2>
+    All invoices, that appear hear, have been paid already.
+    <ul class="list-disc my-4">
+      <%= for invoice <- @user.invoices do %>
+        <li>
+          <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+          &nbsp; &nbsp;
+          <%= link [icon("document-download-heroicons-outline"), " ", invoice.filename],
+                   to: invoice_frontend_path(@conn, :download, invoice),
+                   class: "text-link hover:text-link-dark" %>
+        </li>
+      <% end %>
+    </ul>
   </div>
 <% end %>
 
-<%= if @user.invoices != [] do %>
-  <h2>My invoices</h2>
-  All invoices, that appear hear, have been paid already.
-  <ul>
-    <%= for invoice <- @user.invoices do %>
-      <li>
-        <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
-        &nbsp; &nbsp;
-        <%= link [icon("download"), " ", icon("file-pdf-o"), " ", invoice.filename],
-                 to: invoice_frontend_path(@conn, :download, invoice) %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
 
 <%= render "_personas.html", conn: @conn, user: @user %>

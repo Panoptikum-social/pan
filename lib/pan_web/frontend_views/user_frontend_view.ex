@@ -16,9 +16,9 @@ defmodule PanWeb.UserFrontendView do
 
   def alert_class(user) do
     cond do
-      pro_days_left(user) > 30 -> "alert-success"
-      pro_days_left(user) > 7 -> "alert-warning"
-      pro_days_left(user) < 7 -> "alert-danger"
+      pro_days_left(user) > 30 -> "success"
+      pro_days_left(user) > 7 -> "warning"
+      pro_days_left(user) < 7 -> "danger"
     end
   end
 
