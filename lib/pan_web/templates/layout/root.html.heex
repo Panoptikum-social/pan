@@ -27,7 +27,9 @@
       title="Panoptikum"
       href="https://panoptikum.io/opensearch.xml">
 
-    <%= render_existing view_module(@conn), "scripts.html", assigns %>
+    <%= if function_exported?(view_module(@conn), :scripts, 1) do %>
+      <%= view_module(@conn).scripts(assigns) %>
+    <% end %>
   </head>
 
   <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"

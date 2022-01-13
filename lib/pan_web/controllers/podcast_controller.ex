@@ -175,14 +175,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: databrowser_path(conn, :index, "podcast"))
   end
 
-  defp trigger_import_new_episodes(podcasts) do
-    for podcast <- podcasts do
-      Pan.Updater.Podcast.import_new_episodes(podcast)
-    end
-
-    Logger.info("=== Manual triggered podcast update finished ===")
-  end
-
   def touch(conn, %{"id" => id}) do
     Repo.get!(Podcast, id)
     |> PanWeb.Podcast.changeset()

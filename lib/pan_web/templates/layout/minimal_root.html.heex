@@ -21,7 +21,9 @@
     <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Panoptikum" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
-    <%= render_existing view_module(@conn), "scripts.html", assigns %>
+    <%= if function_exported?(view_module(@conn), :scripts, 1) do %>
+      <%= view_module(@conn).scripts(assigns) %>
+    <% end %>
   </head>
 
   <body data-js-view-name={js_view_name(@conn, view_template(@conn))}>
