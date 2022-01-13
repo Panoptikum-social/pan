@@ -32,7 +32,10 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   end
 
   def handle_event("trigger-update", _, socket) do
-    Task.start(fn -> Podcast.import_stale_podcasts() end)
+    Task.start(fn ->
+      Podcast.get_one_stale()
+      |> Podcast.import_stale()
+    end)
     {:noreply, socket}
   end
 

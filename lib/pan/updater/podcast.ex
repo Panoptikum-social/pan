@@ -63,8 +63,22 @@ defmodule Pan.Updater.Podcast do
   defp build_notification(podcast, {:ok, _}),
     do: %{content: "Podcast #{podcast.id}: #{podcast.title}"}
 
-  defp build_notification(podcast, {:error, message}),
-    do: %{content: "Error: #{message} | Podcast #{podcast.id}: #{podcast.title}"}
+  defp build_notification(
+         podcast,
+         {:error,
+          %HTTPoison.Error{
+            reason:
+              {:tls_alert,
+               {:internal_error,
+                'TLS client: In state hello received SERVER ALERT: Fatal - Internal Error\n'}}
+          }}
+       ) do
+    %{content: "TLS Error | Podcast #{podcast.id}: #{podcast.title}"}
+  end
+
+  defp build_notification(podcast, {:error, message}) do
+    %{content: "Error: #{message} | Podcast #{podcast.id}: #{podcast.title}"}
+  end
 
   def unpause_and_reset_failure_count(podcast) do
     Podcast.changeset(podcast, %{update_paused: false, retired: false, failure_count: 0})

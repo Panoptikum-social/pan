@@ -260,21 +260,22 @@ defmodule PanWeb.Podcast do
     if author, do: author.name
   end
 
-  def import_stale_podcasts() do
-    podcasts =
-      from(p in Podcast,
-        where:
-          p.next_update <= ^Timex.now() and
-            not p.update_paused and not p.retired,
-        order_by: [asc: :next_update],
-        limit: 2000
-      )
-      |> Repo.all()
+  def get_one_stale do
+    from(p in Podcast,
+      where:
+        p.next_update <= ^Timex.now() and
+          not p.update_paused and not p.retired,
+      order_by: [asc: :next_update],
+      limit: 1
+    )
+    |> Repo.one()
+  end
 
-    Logger.info("=== Started importing #{length(podcasts)} podcasts ===")
-
-    for podcast <- podcasts, do: Pan.Updater.Podcast.import_new_episodes(podcast)
-    Logger.info("=== Import job finished ===")
+  def import_stale(nil), do: Logger.info("=== Import job finished ===")
+  def import_stale(podcast) do
+    Pan.Updater.Podcast.import_new_episodes(podcast)
+    get_one_stale()
+    |> import_stale()
   end
 
   def remove_unwanted_references(id) do
