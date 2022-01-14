@@ -1,22 +1,24 @@
-<div class="col-md-8 col-md-offset-2">
-  <h2>Upload OPML File</h2>
+<div class="m-4">
+  <h2  class="text-2xl">Upload OPML File</h2>
 
-  <%= form_for @changeset, opml_frontend_path(@conn, :create), [multipart: true], fn f -> %>
+  <%= form_for @changeset, opml_frontend_path(@conn, :create), [multipart: true,
+                                                                class: "p-4 mb-4 flex flex-col items-start space-y-4"], fn f -> %>
     <%= if @changeset.action do %>
       <div class="alert alert-danger">
         <p>Oops, something went wrong! Please check the errors below.</p>
       </div>
     <% end %>
 
-    <div class="form-group">
+    <div class="flex flex-col">
       <label>OPML-File</label>
       <%= file_input f, :file, class: "form-control" %>
     </div>
 
-    <div class="form-group">
-      <%= submit "Submit", class: "btn btn-primary" %>
+    <div class="flex flex-col">
+      <%= submit "Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
     </div>
   <% end %>
 
-  <%= link "Back", to: opml_frontend_path(@conn, :index) %>
+  <%= link "Back", to: opml_frontend_path(@conn, :index), 
+                   class: "text-link hover:text-link-dark" %>
 </div>
