@@ -1,11 +1,12 @@
 # Templates to be converted to Taiwind
 
-./category_frontend/categorized.html.heex
-./category_frontend/no_community.html.heex
 ./opml/form.html.heex
 ./opml/show.html.heex
 ./opml/new.html.heex
 ./opml/edit.html.heex
+
+./category_frontend/categorized.html.heex
+./category_frontend/no_community.html.heex
 ./podcast_frontend/liked.html.heex
 ./podcast_frontend/_top_list_table.html.heex
 ./podcast_frontend/_popular_podcasts.html.heex
