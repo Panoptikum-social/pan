@@ -189,7 +189,7 @@ defmodule PanWeb.PodcastController do
     |> Repo.update_all(set: [update_paused: true])
 
     put_flash(conn, :info, "Podcast paused.")
-    |> redirect(to: databrowser_path(conn, :index, "podcast"))
+    |> redirect(to: databrowser_path(conn, :show, "podcast", id))
   end
 
   def duplicates(conn, _params) do

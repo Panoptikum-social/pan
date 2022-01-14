@@ -90,30 +90,21 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
           </SortLink>
           </th>
           <th class="border border-gray-light">Feed url</th>
-          <th class="border border-gray-light">Actions</th>
         </tr>
       </thead>
       <tbody>
         {#for podcast <- @stale_podcasts}
           <tr>
-            <td class="border border-gray-light">{podcast.id}</td>
+            <td class="border border-gray-light text-right">
+              <LinkButton title={podcast.id}
+                          to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
+                          class="border-gray text-white bg-primary hover:bg-primary-light rounded" /></td>
             <td class="border border-gray-light">{podcast.title}</td>
             <td class="border border-gray-light whitespace-nowrap">{podcast.updated_at |> Timex.format!("{ISOdate} {h24}:{m}:{s}")}</td>
             <td class="border border-gray-light">{podcast.update_intervall}</td>
             <td class="border border-gray-light whitespace-nowrap">{podcast.next_update |> Timex.format!("{ISOdate} {h24}:{m}:{s}")}</td>
             <td class="border border-gray-light">{podcast.failure_count}</td>
             <td class="border border-gray-light">{podcast.feed_url}</td>
-            <td class="border border-gray-light"><nobr>
-              <LinkButton title="Show"
-                          to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
-                          class="border-gray text-black bg-default hover:bg-default-light" />
-              <LinkButton title="Edit"
-                          to={databrowser_path(Endpoint, :edit, "podcast", podcast.id)}
-                          class="border-gray text-white bg-warning hover:bg-warning-light" />
-              <LinkButton title="Pause"
-                          to={podcast_path(Endpoint, :pause, podcast.id)}
-                          class="border-gray text-white bg-primary hover:bg-primary-light" />
-            </nobr></td>
           </tr>
         {/for}
       </tbody>
