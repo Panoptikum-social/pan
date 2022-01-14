@@ -41,11 +41,6 @@
 ./user_frontend/edit_password.html.heex
 ./user_frontend/edit.html.heex
 ./feed_backlog_frontend/new.html.heex
-./invoice/form.html.heex
-./invoice/index.html.heex
-./invoice/show.html.heex
-./invoice/new.html.heex
-./invoice/edit.html.heex
 ./recommendation_frontend/my_recommendations.html.heex
 ./error/not_found.html.heex
 ./page_frontend/done.html.heex

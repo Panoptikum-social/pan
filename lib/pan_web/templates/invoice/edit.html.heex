@@ -1,6 +1,9 @@
-<h2>Edit invoice</h2>
-
-<%= render "form.html", changeset: @changeset,
-                        action: invoice_path(@conn, :update, @invoice) %>
-
-<%= link "Back", to: invoice_path(@conn, :index) %>
+<div class="m-4">
+  <h2 class="text-2xl">Edit invoice</h2>
+  
+  <%= render "form.html", changeset: @changeset,
+                          action: invoice_path(@conn, :update, @invoice) %>
+  
+  <%= link "Back", to: invoice_path(@conn, :index),
+                   class: "text-link hover:text-link-dark" %>
+</div>
