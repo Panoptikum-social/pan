@@ -1,5 +1,5 @@
 <div class="m-4">
-  <h2  class="text-2xl">Upload OPML File</h2>
+  <h2 class="text-2xl">Upload OPML File</h2>
 
   <%= form_for @changeset, opml_frontend_path(@conn, :create), [multipart: true,
                                                                 class: "p-4 mb-4 flex flex-col items-start space-y-4"], fn f -> %>
