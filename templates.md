@@ -1,9 +1,10 @@
-# Templates to be converted to Taiwind
+# Templates to be converted to Tailwind
 
-./opml/form.html.heex
-./opml/show.html.heex
-./opml/new.html.heex
-./opml/edit.html.heex
+./feed_backlog/form.html.heex
+./feed_backlog/index.html.heex
+./feed_backlog/show.html.heex
+./feed_backlog/new.html.heex
+./feed_backlog/edit.html.heex
 
 ./category_frontend/categorized.html.heex
 ./category_frontend/no_community.html.heex
@@ -28,11 +29,6 @@
 ./podcast/factory.html.heex
 ./layout/admin.html.heex
 ./layout/app.html.heex
-./feed_backlog/form.html.heex
-./feed_backlog/index.html.heex
-./feed_backlog/show.html.heex
-./feed_backlog/new.html.heex
-./feed_backlog/edit.html.heex
 ./maintenance/stats.html.heex
 ./user_frontend/payment_info.html.heex
 ./user_frontend/my_data.html.heex
