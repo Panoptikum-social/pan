@@ -1,5 +1,8 @@
-<div class ="col-md-8 col-md-offset-2">
+<div class="prose max-w-none prose-a:text-link prose-a:hover:text-link-dark">
   <%= content_for "pro_features", "div.content" %>
-
-  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
 </div>
+
+<p class="my-4">
+  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), 
+                         class: "border border-black bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
+</p>

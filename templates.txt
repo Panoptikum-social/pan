@@ -1,10 +1,6 @@
-# Templates to be converted to Tailwind
-
-./feed_backlog/form.html.heex
-./feed_backlog/index.html.heex
-./feed_backlog/show.html.heex
-./feed_backlog/new.html.heex
-./feed_backlog/edit.html.heex
+./opml_frontend/index.html.heex
+./opml_frontend/new.html.heex
+./feed_backlog_frontend/new.html.heex
 
 ./category_frontend/categorized.html.heex
 ./category_frontend/no_community.html.heex
@@ -20,8 +16,6 @@
 ./activity_pub/widget.html.heex
 ./persona/merge_candidate_group.html.heex
 ./persona/merge_candidates.html.heex
-./opml_frontend/index.html.heex
-./opml_frontend/new.html.heex
 ./podcast/duplicates.html.heex
 ./podcast/show.html.heex
 ./podcast/_podcast.html.heex
@@ -37,13 +31,8 @@
 ./user_frontend/nan.html.heex
 ./user_frontend/edit_password.html.heex
 ./user_frontend/edit.html.heex
-./feed_backlog_frontend/new.html.heex
 ./recommendation_frontend/my_recommendations.html.heex
 ./error/not_found.html.heex
-./page_frontend/done.html.heex
-./page_frontend/started.html.heex
-./page_frontend/error.html.heex
-./page_frontend/pro_features.html.heex
 ./persona_frontend/not_found.html.heex
 ./persona_frontend/grant_access.html.heex
 ./persona_frontend/business_card.html.heex

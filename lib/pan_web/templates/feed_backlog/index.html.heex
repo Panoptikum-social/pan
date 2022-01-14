@@ -1,12 +1,11 @@
 <div class="m-4">
   <div class="flex justify-end space-x-4">
     <%= link "Import 100", to: feed_backlog_path(@conn, :import_100),
-                           class: "border border-black bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md" %>
+                           class: "border border-black bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md" %>
     <%= link "Subscribe All", to: feed_backlog_path(@conn, :subscribe),
-                              class: "border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md" %>
+                              class: "border border-black bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
     <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
-                              class: "border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md" %>
-
+                              class: "border border-black bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
     <%= link "Delete All (from Itunes user)",
             to: feed_backlog_path(@conn, :delete_all),
             method: :delete,
@@ -47,7 +46,7 @@
                                                                             url: feed_backlog.url,
                                                                             backlog_id: feed_backlog.id),
                       method: :post,
-                      class: "border border-black bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %> 
+                      class: "border border-black bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %> 
               for <%= feed.self_link_url %>
             <% end %>
           </td>
@@ -57,14 +56,14 @@
 
           <td class="border border-gray-light">
             <%= link "Show", to: feed_backlog_path(@conn, :show, feed_backlog), 
-                             class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+                             class: "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %>
             <%= link "Edit", to: feed_backlog_path(@conn, :edit, feed_backlog), 
-                             class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+                             class: "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-1 px-2 rounded" %>
             <%= link "Delete", to: feed_backlog_path(@conn, :delete, feed_backlog), method: :delete,
                                                                                     data: [confirm: "Are you sure?"],
-                               class: "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %>
+                               class: "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded" %>
             <%= link "Import", to: feed_backlog_path(@conn, :import, feed_backlog),
-                               class: "border border-gray-dark bg-white hover:bg-gray-lightest text-black text-sm py-1 px-2 rounded" %>
+                               class: "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %>
           </td>
         </tr>
       <% end %>
