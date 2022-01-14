@@ -48,11 +48,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
               class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1">
         Episode import
       </button>
-      <LinkButton title="Factory"
-                  to={podcast_path(Endpoint, :factory)}
-                  class="border-gray text-white bg-primary hover:bg-primary-light" />
     </p>
-
 
     <h2 class="text-2xl">{@stale_podcasts_count} stale podcasts</h2>
 

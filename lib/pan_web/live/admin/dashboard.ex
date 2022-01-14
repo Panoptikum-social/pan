@@ -101,11 +101,6 @@ defmodule PanWeb.Live.Admin.Dashboard do
           <h2 class="text-lg">Podcasts</h2>
           <ul class="list-disc ml-4 mb-4">
             <li>
-              <Link label="Factory"
-                    to={Routes.podcast_path(@socket, :factory)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
               <Link label="Orphans"
                     to={Routes.podcast_path(@socket, :orphans)}
                     class="text-link hover:text-link-dark underline"/>

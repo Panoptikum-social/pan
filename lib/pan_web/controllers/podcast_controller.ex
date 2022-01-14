@@ -62,18 +62,6 @@ defmodule PanWeb.PodcastController do
     |> redirect(to: podcast_path(conn, :orphans))
   end
 
-  def factory(conn, _params) do
-    podcasts =
-      from(p in Podcast,
-        order_by: [asc: :updated_at],
-        where: p.update_paused == true and not p.retired,
-        preload: :feeds
-      )
-      |> Repo.all()
-
-    render(conn, "factory.html", podcasts: podcasts)
-  end
-
   def delete(conn, %{"id" => id}) do
     # FIXME: Recursive deletion of several Resources, not only podcasts
     id = String.to_integer(id)
