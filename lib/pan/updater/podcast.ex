@@ -63,7 +63,10 @@ defmodule Pan.Updater.Podcast do
   defp build_notification(podcast, {:ok, _}),
     do: %{content: "Podcast #{podcast.id}: #{podcast.title}"}
 
-  defp build_notification(podcast,{:error, %HTTPoison.Error{ reason: {:tls_alert, {error, message}} }}) do
+  defp build_notification(
+         podcast,
+         {:error, %HTTPoison.Error{reason: {:tls_alert, {error, message}}}}
+       ) do
     %{content: "TLS Error: #{error} / #{message} | Podcast #{podcast.id}: #{podcast.title}"}
   end
 

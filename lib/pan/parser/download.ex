@@ -100,6 +100,9 @@ defmodule Pan.Parser.Download do
       {:ok, %Response{status_code: 526}} ->
         {:error, "526: invalid SSL certificate"}
 
+      {:ok, %Response{status_code: 530}} ->
+        {:error, "530: origin DNS error with cloudflare"}
+
       {:ok, %Response{status_code: 301, headers: headers}} ->
         redirect(url, headers, feed_id)
 
