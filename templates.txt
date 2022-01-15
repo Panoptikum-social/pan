@@ -12,8 +12,6 @@
 ./podcast_frontend/_liked_podcasts.html.heex
 ./podcast_frontend/_wide_top_list_table.html.heex
 ./activity_pub/widget.html.heex
-./persona/merge_candidate_group.html.heex
-./persona/merge_candidates.html.heex
 ./layout/admin.html.heex
 ./layout/app.html.heex
 ./maintenance/stats.html.heex
@@ -24,7 +22,6 @@
 ./user_frontend/nan.html.heex
 ./user_frontend/edit_password.html.heex
 ./user_frontend/edit.html.heex
-./recommendation_frontend/my_recommendations.html.heex
 ./error/not_found.html.heex
 ./persona_frontend/not_found.html.heex
 ./persona_frontend/grant_access.html.heex

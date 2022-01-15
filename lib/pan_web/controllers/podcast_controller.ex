@@ -112,7 +112,7 @@ defmodule PanWeb.PodcastController do
       {:ok, message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
-    |> redirect(to: podcast_path(conn, :show, id))
+    |> redirect(to: databrowser_path(conn, :show, "podcast", id))
   end
 
   def forced_delta_import(conn, %{"id" => id}) do
