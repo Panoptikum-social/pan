@@ -1,3 +1,9 @@
+./user_frontend/edit.html.heex
+./user_frontend/edit_password.html.heex
+
+./user/forgot_password.html.heex
+./user/edit_password.html.heex
+
 ./category_frontend/categorized.html.heex
 ./category_frontend/no_community.html.heex
 ./podcast_frontend/liked.html.heex
@@ -16,9 +22,6 @@
 ./user_frontend/my_data.html.heex
 ./user_frontend/my_podcasts.html.heex
 ./user_frontend/index.html.heex
-./user_frontend/nan.html.heex
-./user_frontend/edit_password.html.heex
-./user_frontend/edit.html.heex
 ./error/not_found.html.heex
 ./persona_frontend/not_found.html.heex
 ./persona_frontend/grant_access.html.heex
@@ -27,6 +30,4 @@
 ./persona_frontend/warning.html.heex
 ./persona_frontend/email_sent.html.heex
 ./persona_frontend/not_allowed.html.heex
-./user/forgot_password.html.heex
 ./user/merge.html.heex
-./user/edit_password.html.heex
