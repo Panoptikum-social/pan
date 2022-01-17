@@ -33,7 +33,7 @@ defmodule PanWeb.SessionController do
       {:error, _reason, conn} ->
         conn
         |> put_flash(:error, "Invalid username/password combination!")
-        |> render("new.html")
+        |> redirect(to: session_path(conn, :new))
     end
   end
 
