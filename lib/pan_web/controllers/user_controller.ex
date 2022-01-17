@@ -109,7 +109,7 @@ defmodule PanWeb.UserController do
       {:ok, _user} ->
         conn
         |> put_flash(:info, "Password updated successfully.")
-        |> redirect(to: user_frontend_path(conn, :show, user))
+        |> redirect(to: databrowser_path(conn, :show, "user", user))
 
       {:error, changeset} ->
         render(conn, "edit_password.html", user: user, changeset: changeset)

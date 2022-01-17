@@ -1,11 +1,22 @@
 defmodule PanWeb.Surface.Admin.ActionButtons do
   use Surface.Component
-  alias PanWeb.{Endpoint, Podcast}
+  alias PanWeb.{Endpoint, Podcast, User}
   alias PanWeb.Surface.LinkButton
   import PanWeb.Router.Helpers
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
+
+  def render(%{model: User} = assigns) do
+    ~F"""
+    <div class="m-4 flex space-x-4">
+      <LinkButton title="Edit Password"
+                  to={user_path(Endpoint, :edit_password, @record)}
+                  large
+                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
+    </div>
+    """
+  end
 
   def render(%{model: Podcast} = assigns) do
     ~F"""

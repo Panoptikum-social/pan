@@ -1,5 +1,3 @@
-./user/edit_password.html.heex
-
 ./category_frontend/categorized.html.heex
 ./category_frontend/no_community.html.heex
 ./podcast_frontend/liked.html.heex
