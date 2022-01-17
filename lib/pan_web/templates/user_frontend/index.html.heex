@@ -3,7 +3,7 @@
 <% grouped_users = Enum.group_by(@users, fn p -> (p.name |> String.first() |> String.upcase()) end) %>
 <% letters = Map.keys(grouped_users) |> Enum.sort %>
 
-<div x-data={"{ selectedTab: #{Enum.find_index(letters, &(&1 == "A"))} }"} class="pt-0.5">
+<div x-data={"{ selectedTab: #{Enum.find_index(letters, &(&1 == "A"))} }"} class="pt-4">
   <ul class="flex flex-wrap border-b border-gray-lighter">
     <%= for {letter, index} <- letters |> Enum.with_index do %>
       <li class="-mb-px ml-1.5">

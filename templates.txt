@@ -1,6 +1,6 @@
 ./user_frontend/my_data.html.heex
 ./user_frontend/my_podcasts.html.heex
-./user_frontend/index.html.heex
+./maintenance/stats.html.heex
 
 ./category_frontend/categorized.html.heex
 ./category_frontend/no_community.html.heex
@@ -15,7 +15,6 @@
 ./activity_pub/widget.html.heex
 ./layout/admin.html.heex
 ./layout/app.html.heex
-./maintenance/stats.html.heex
 ./error/not_found.html.heex
 ./persona_frontend/not_found.html.heex
 ./persona_frontend/grant_access.html.heex

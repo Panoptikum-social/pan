@@ -1,155 +1,130 @@
-<div class="col-md-3">
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr><td>Module</td><td>Kind</td><td>Number</td></tr>
-    </thead>
+<div class="m-4">
+  <h2 class="text-2xl">Statistics</h2>
+  <div class="flex space-x-12 my-4">
+    <table cellpadding="4">
+        <thead>
+        <tr><td class="border border-gray-light">Module</td>
+            <td class="border border-gray-light">Kind</td>
+            <td class="border border-gray-light">Number</td></tr>
+        </thead>
 
-    <tbody>
-      <tr><th>Podcasts</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_podcasts %></td></tr>
-      <tr><td></td>
-          <td>stale</td>
-          <td class="text-right"><%= @stale_podcasts %></td></tr>
-      <tr><td></td>
-          <td>inactive</td>
-          <td class="text-right"><%= @inactive_podcasts %></td></tr>
-      <tr><td></td>
-          <td>retired</td>
-          <td class="text-right"><%= @retired_podcasts %></td></tr>
-      <tr><td></td>
-          <td>average update intervall</td>
-          <td class="text-right"><%= @average_update_intervall %> h ø</td></tr>
-      <tr><td></td>
-          <td>update frequency</td>
-          <td class="text-right"><%= @podcasts_per_hour %> p/h</td></tr>
-      <tr><td></td>
-          <td>backlog</td>
-          <td class="text-right"><%= @total_feed_backlogs %></td></tr>
-      <tr><td></td>
-          <td>zero publication frequency</td>
-          <td class="text-right"><%= @podcasts_with_zero_publication_frequency %></td></tr>
-      <tr><th>Episodes</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_episodes %></td></tr>
-      <tr><th></th>
-          <td>not indexed by full text search engine</td>
-          <td class="text-right"><%= @unindexed_episodes %></td></tr>
-      <tr><th>Category</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_categories %></td></tr>
-      <tr><th></th>
-          <td>categorizations</td>
-          <td class="text-right"><%= @total_categorizations %></td></tr>
-      <tr><th></th>
-          <td>podcasts_missing</td>
-          <td class="text-right"><%= @podcasts_without_image %></td></tr>
-      <tr><th></th>
-          <td>personas_missing</td>
-          <td class="text-right"><%= @personas_without_image %></td></tr>
+        <tbody>
+        <tr><th class="border border-gray-light">Podcasts</th>
+            <td class="border border-gray-light">total</td>
+            <td class="text-right border border-gray-light"><%= @total_podcasts %></td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">stale</td>
+            <td class="text-right border border-gray-light"><%= @stale_podcasts %></td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">inactive</td>
+            <td class="text-right border border-gray-light"><%= @inactive_podcasts %></td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">retired</td>
+            <td class="text-right border border-gray-light"><%= @retired_podcasts %></td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">average update intervall</td>
+            <td class="text-right border border-gray-light"><%= @average_update_intervall %> h ø</td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">update frequency</td>
+            <td class="text-right border border-gray-light"><%= @podcasts_per_hour %> p/h</td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">backlog</td>
+            <td class="text-right border border-gray-light"><%= @total_feed_backlogs %></td></tr>
+        <tr><td></td>
+            <td class="border border-gray-light">zero publication frequency</td>
+            <td class="text-right border border-gray-light"><%= @podcasts_with_zero_publication_frequency %></td></tr>
+        <tr><th class="border border-gray-light">Episodes</th>
+            <td class="border border-gray-light">total</td>
+            <td class="text-right border border-gray-light"><%= @total_episodes %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">not indexed by full text search engine</td>
+            <td class="text-right border border-gray-light"><%= @unindexed_episodes %></td></tr>
+        <tr><th class="border border-gray-light">Category</th>
+            <td>total</td>
+            <td class="text-right border border-gray-light"><%= @total_categories %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">categorizations</td>
+            <td class="text-right border border-gray-light"><%= @total_categorizations %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">podcasts_missing</td>
+            <td class="text-right border border-gray-light"><%= @podcasts_without_image %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">personas_missing</td>
+            <td class="text-right border border-gray-light"><%= @personas_without_image %></td></tr>
 
-    </tbody>
-  </table>
-</div>
+        </tbody>
+    </table>
 
-<div class="col-md-3">
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr><td>Module</td><td>Kind</td><td>Number</td></tr>
-    </thead>
+    <table cellpadding="4">
+      <thead>
+        <tr><td class="border border-gray-light">Module</td>
+            <td class="border border-gray-light">Kind</td>
+            <td class="border border-gray-light">Number</td></tr>
+      </thead>
+        <tbody>
+        <tr><th class="border border-gray-light">Users</th>
+            <td class="border border-gray-light">total</td>
+            <td class="text-right border border-gray-light"><%= @total_users %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">subscriptions</td>
+            <td class="text-right border border-gray-light"><%= @total_subscriptions %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">likes</td>
+            <td class="text-right border border-gray-light"><%= @total_likes %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">recommendations</td>
+            <td class="text-right border border-gray-light"><%= @total_recommendations %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">follows</td>
+            <td class="text-right border border-gray-light"><%= @total_follows %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">opmls</td>
+            <td class="text-right border border-gray-light"><%= @total_opmls %></td></tr>
+        <tr><th class="border border-gray-light">Personas</th>
+            <td class="border border-gray-light">total</td>
+            <td class="text-right border border-gray-light"><%= @total_personas %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">engagements</td>
+            <td class="text-right border border-gray-light"><%= @total_engagements %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">gigs</td>
+            <td class="text-right border border-gray-light"><%= @total_gigs %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">manifestations</td>
+            <td class="text-right border border-gray-light"><%= @total_manifestations %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">delegations</td>
+            <td class="text-right border border-gray-light"><%= @total_delegations %></td></tr>
+        <tr><th class="border border-gray-light">Languages</th>
+            <td class="border border-gray-light">total</td>
+            <td class="text-right border border-gray-light"><%= @total_languages %></td></tr>
+        <tr><th class="border border-gray-light">Feeds</th>
+            <td class="border border-gray-light">without headers</td>
+            <td class="text-right border border-gray-light"><%= @feeds_without_headers %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">with etag</td>
+            <td class="text-right border border-gray-light"><%= @feeds_with_etag %></td></tr>
+        <tr><th></th>
+            <td class="border border-gray-light">with last modified</td>
+            <td class="text-right border border-gray-light"><%= @feeds_with_last_modified %></td></tr>
+        </tbody>
+    </table>
 
-    <tbody>
-      <tr><th>Users</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_users %></td></tr>
-      <tr><th></th>
-          <td>subscriptions</td>
-          <td class="text-right"><%= @total_subscriptions %></td></tr>
-      <tr><th></th>
-          <td>likes</td>
-          <td class="text-right"><%= @total_likes %></td></tr>
-      <tr><th></th>
-          <td>recommendations</td>
-          <td class="text-right"><%= @total_recommendations %></td></tr>
-      <tr><th></th>
-          <td>follows</td>
-          <td class="text-right"><%= @total_follows %></td></tr>
-      <tr><th></th>
-          <td>opmls</td>
-          <td class="text-right"><%= @total_opmls %></td></tr>
-      <tr><th>Personas</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_personas %></td></tr>
-      <tr><th></th>
-          <td>engagements</td>
-          <td class="text-right"><%= @total_engagements %></td></tr>
-      <tr><th></th>
-          <td>gigs</td>
-          <td class="text-right"><%= @total_gigs %></td></tr>
-      <tr><th></th>
-          <td>manifestations</td>
-          <td class="text-right"><%= @total_manifestations %></td></tr>
-      <tr><th></th>
-          <td>delegations</td>
-          <td class="text-right"><%= @total_delegations %></td></tr>
-      <tr><th>Languages</th>
-          <td>total</td>
-          <td class="text-right"><%= @total_languages %></td></tr>
-      <tr><th>Feeds</th>
-          <td>without headers</td>
-          <td class="text-right"><%= @feeds_without_headers %></td></tr>
-      <tr><th></th>
-          <td>with etag</td>
-          <td class="text-right"><%= @feeds_with_etag %></td></tr>
-      <tr><th></th>
-          <td>with last modified</td>
-          <td class="text-right"><%= @feeds_with_last_modified %></td></tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="col-md-3">
-  <ul class="list-group">
-    <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Full text search push missing",
-               to: search_path(@conn, :push_missing),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item">
-      <%= link "Cache missing images",
-               to: image_path(@conn, :cache_missing),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item">
-      <%= link "Remove duplicate images",
-               to: image_path(@conn, :remove_duplicates),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Update missing podcast counters",
-               to: podcast_path(@conn, :update_missing_counters),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Remove javascript from shownotes",
-               to: episode_path(@conn, :remove_javascript_from_shownotes),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Catch up missing thumbnailed booleans",
-               to: maintenance_path(@conn, :catch_up_thumbnailed),
-               class: "btn btn-primary" %>
-    </li>
-
-    <li class="list-group-item" style="border-top: 1px solid #ddd;">
-      <%= link "Trigger exception notification",
-               to: maintenance_path(@conn, :exception_notification),
-               class: "btn btn-primary" %>
-    </li>
-  </ul>
+    <div class="flex flex-col space-y-4 items-start">
+      <%= link "Full text search push missing", to: search_path(@conn, :push_missing),
+                                                class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Cache missing images", to: image_path(@conn, :cache_missing),
+                                       class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Remove duplicate images", to: image_path(@conn, :remove_duplicates),
+                                          class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Update missing podcast counters", to: podcast_path(@conn, :update_missing_counters),
+                                                  class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Remove javascript from shownotes", to: episode_path(@conn, :remove_javascript_from_shownotes),
+                                                   class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Catch up missing thumbnailed booleans", to: maintenance_path(@conn, :catch_up_thumbnailed),
+                                                        class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+      <%= link "Trigger exception notification", to: maintenance_path(@conn, :exception_notification),
+                                                class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
+    </div>
+  </div>
 </div>
