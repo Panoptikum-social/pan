@@ -1,7 +1,3 @@
-./user_frontend/edit.html.heex
-./user_frontend/edit_password.html.heex
-
-./user/forgot_password.html.heex
 ./user/edit_password.html.heex
 
 ./category_frontend/categorized.html.heex
