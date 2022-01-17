@@ -1,8 +1,10 @@
-<div class ="col-md-8 col-md-offset-2">
-  <%= PanWeb.PageFrontendView.unsafe_content_for("payment_info", "div.content")
-      |> String.replace("[your payment reference]", @user.payment_reference || "You haven't upgraded to pro yet!")
-      |> String.replace("[your billing address]", @user.billing_address || "You haven't upgraded to pro yet!")
-      |> Phoenix.HTML.raw() %>
-
-  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), class: "btn btn-primary" %>
+<div class ="m-4 ">
+  <div class="prose max-w-none prose-a:text-link prose-a:hover:text-link-dark">
+    <%= PanWeb.PageFrontendView.unsafe_content_for("payment_info", "div.content")
+        |> String.replace("[your payment reference]", @user.payment_reference || "You haven't upgraded to pro yet!")
+        |> String.replace("[your billing address]", @user.billing_address || "You haven't upgraded to pro yet!")
+        |> Phoenix.HTML.raw() %>
+  </div>
+  <%= link "My profile", to: user_frontend_path(@conn, :my_profile), 
+                         class: "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-2 px-3 rounded" %>
 </div>
