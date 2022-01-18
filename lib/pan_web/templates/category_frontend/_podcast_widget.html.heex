@@ -1,0 +1,77 @@
+<div class="rounded-xl shadow">
+  <div class="p-3 rounded-t-xl bg-primary">
+    <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"), " ", @podcast.title],
+                to: podcast_frontend_path(@conn, :show, @podcast.id),
+                class: "truncate text-white hover:text-gray-lighter" %>
+  </div>
+
+  <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
+    <div class="flex p-4">
+      <div>
+        <%= if podcast_thumbnail = (@podcast.thumbnails != [] && List.first(@podcast.thumbnails)) do %>
+          <a href={"https://panoptikum.io#{podcast_thumbnail.path}#{podcast_thumbnail.filename}"}
+              width="150" height="150" alt="@podcast.image_title" id="photo" />
+        <% else %>
+          <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
+        <% end %>
+      </div>
+      <div class="grid grid-cols-3 gap-x-4 gap-y-2">
+        <%= if @podcast.website do %>
+          <div class="text-right"><label class="label label-danger">Website</label></div>
+          <div class="col-span-2">
+            <%= try do
+                  link @podcast.website, to: @podcast.website, 
+                                         class: "text-link truncate hover:text-link-dark"
+                rescue
+                  _ -> @podcast.website
+                end %>
+          </div>
+        <% end %>
+
+        <div class="text-right" ><label class="label label-info">Available since</label></div>
+        <div class="col-span-2">
+          <%= icon("calendar-heroicons-outline") %>
+          <%= Timex.format!(@podcast.inserted_at, "{ISOdate}") %>
+        </div>
+
+        <div class="text-right"><label class="label label-warning">Categories</label></div>
+        <div class="col-span-2 flex flex-col space-y-1"> 
+          <%= for category <- @podcast.categories do %>
+              <%= link [icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top"), " ", category.title],
+                        to: category_frontend_path(@conn, :show, category),
+                        class: "self-start border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 rounded-md truncate max-w-full" %>
+          <% end %>
+        </div>
+
+        <div class="text-right"><label class="label label-info">Contributors</label></div>
+        <div class="col-span-2 grid grid-cols-3 gap-1 place-items-start">
+          <%= for engagement <- @podcast.engagements do %>
+            <%= link [icon("user-heroicons-outline", class: "w-4 h-4 inline align-text-top"), " ", engagement.persona.name],
+                      to: persona_frontend_path(@conn, :show, engagement.persona),
+                      class: "self-start border border-gray-dark bg-lavender hover:bg-lavender-light text-white text-sm py-1 px-2 rounded-md truncate max-w-full col-span-2" %>
+            <span class="inline-block eading-none text-center whitespace-nowrap
+                        align-baseline bg-success hover:bg-success-dark text-white p-1 rounded-md text-xs">
+              <%= engagement.role %>
+            </span>
+          <% end %>
+        </div>
+
+        <%= if @podcast.payment_link_url do %>
+            <div class="text-right">Support</div>
+            <%= link @podcast.payment_link_title, class: "col-span-2 text-link hover:text-link-dark", 
+                                                  to: @podcast.payment_link_url %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="m-4">
+      <h5 class="text-lg">Description</h5>
+      <%= @podcast.description %>
+
+      <%= if @podcast.description != @podcast.summary do %>
+        <h5 class="text-lg">Summary</h5>
+        <%= @podcast.summary %>
+      <% end %>
+    </div>
+  </div>
+</div>
