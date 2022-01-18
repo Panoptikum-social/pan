@@ -97,7 +97,6 @@ defmodule PanWeb.UserFrontendController do
         :categories_i_follow,
         :podcasts_i_like,
         :users_i_follow,
-        :messages_created,
         :episodes_i_like,
         :personas_i_follow,
         :personas_i_like,
