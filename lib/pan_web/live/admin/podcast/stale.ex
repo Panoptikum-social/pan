@@ -41,14 +41,12 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   def render(assigns) do
     ~F"""
-    <p class="flex justify-end space-x-4"
-       phx-hook="Notification"
-       id="notification-hook-target">
-      <button :on-click="trigger-update"
-              class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1">
-        Episode import
-      </button>
-    </p>
+      <button id="notification-hook-target"
+              phx-hook="Notification"
+              :on-click="trigger-update"
+              class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1 float-right">
+      Episode import
+    </button>
 
     <h2 class="text-2xl">{@stale_podcasts_count} stale podcasts</h2>
 
