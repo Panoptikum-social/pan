@@ -46,8 +46,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      # {:phoenix_live_view, "~> 0.17.5", override: true},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view", override: true},
+      {:phoenix_live_view, "~> 0.17.5"},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
@@ -57,10 +56,9 @@ defmodule Pan.MixProject do
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.6.2"},
       # Component library
-      # {:surface, "~> 0.6.1"},
-      {:surface, github: "surface-ui/surface", branch: "ms-support-lv-0.17"},
+      {:surface, "~> 0.7"},
       # telemetry
-      {:telemetry, "~> 1.0", override: true},
+      {:telemetry, "~> 1.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller

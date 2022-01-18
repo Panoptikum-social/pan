@@ -1,4 +1,3 @@
-./user_frontend/my_data.html.heex
 ./user_frontend/my_podcasts.html.heex
 
 ./category_frontend/categorized.html.heex
