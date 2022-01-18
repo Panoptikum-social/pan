@@ -1,12 +1,6 @@
-./category_frontend/categorized.html.heex
-./category_frontend/no_community.html.heex
 ./podcast_frontend/liked.html.heex
-./podcast_frontend/_top_list_table.html.heex
-./podcast_frontend/_popular_podcasts.html.heex
-./podcast_frontend/_podcast_widget.html.heex
 ./podcast_frontend/popular.html.heex
 ./podcast_frontend/feeds.html.heex
-./podcast_frontend/_liked_podcasts.html.heex
 ./podcast_frontend/_wide_top_list_table.html.heex
 ./activity_pub/widget.html.heex
 ./layout/admin.html.heex
