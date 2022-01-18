@@ -50,9 +50,6 @@
 
     <%= if @user.pro_until do %>
       <div class={"max-w-2xl p-4 col-span-2 justify-self-center bg-#{alert_class(@user)}-light rounded text-#{alert_class(@user)}-dark"}>
-        <span class="bg-success-light ext-success-dark"/> 
-        <span class="bg-warning-light text-warning-dark"/> 
-        <span class="bg-danger-light text-danger-dark"/>
         <%= if pro_days_left(@user) > 0 do %>
           <b>Your pro account is running for <b><%= pro_days_left(@user) %></b> more days.</b>
         <% else %>
@@ -114,7 +111,7 @@
   <div class="my-8">
     <h2 class="text-2xl">My invoices</h2>
     All invoices, that appear hear, have been paid already.
-    <ul class="list-disc my-4">
+    <ul class="list-disc my-4 ml-4">
       <%= for invoice <- @user.invoices do %>
         <li>
           <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>

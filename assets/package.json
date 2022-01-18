@@ -1,17 +1,17 @@
 {
   "devDependencies": {
-    "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.1",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
     "postcss-import": "^14.0.2",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^3.0.15"
   },
   "scripts": {
     "deploy": "NODE_ENV=production tailwindcss --postcss --minify --input=css/app.css --output=../priv/static/assets/app.css"
   },
   "dependencies": {
     "@podlove/web-player": "^5.7.4",
-    "@tailwindcss/forms": "^0.3.4",
-    "@tailwindcss/typography": "^0.4.1",
+    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.0",
     "alpinejs": "^2.8.2",
     "nprogress": "^0.2.0"
   }

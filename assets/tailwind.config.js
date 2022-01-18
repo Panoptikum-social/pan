@@ -1,25 +1,23 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  mode: 'jit',
-  purge: {
-    enabled: process.env.NODE_ENV === "production",
-    content: [
-      "../lib/**/*.eex",
-      "../lib/**/*.heex",
-      "../lib/**/*.ex",
-      "../lib/**/*.sface",
-      "./js/**/*.js",  
-    ],
-    options: {
-      whitelist: []
-    }
-  },
+  enabled: process.env.NODE_ENV === "production",
+  content: [
+    "../lib/**/*.{ex,eex,heex,sface}",
+    "./js/**/*.js",
+  ],
+  safelist: [
+    "bg-success-light",
+    "text-success-dark",
+    "bg-warning-light",
+    "text-warning-dark",
+    "bg-danger-light",
+    "text-danger-dark",
+  ],
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
   ],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     fontFamily: {
       sans: ['Ubuntu'],
@@ -30,41 +28,41 @@ module.exports = {
       current: 'currentColor',
       // Bootflat colors: base
       'blue-jeans': {
-        light: '#5d9cec', 
+        light: '#5d9cec',
         DEFAULT: '#4a89dc'
       },
       aqua: {
-        light: '#4fc1e9', 
+        light: '#4fc1e9',
         DEFAULT: '#3bafda'
       },
       mint: {
-        light: '#48cfad', 
+        light: '#48cfad',
         lighter: '#00c997',
         DEFAULT: '#37bc9b'
-      },      
-      grass: { 
-        light: '#a0d468', 
+      },
+      grass: {
+        light: '#a0d468',
         DEFAULT: '#8cc152'
       },
       sunflower: {
-        light: '#ffce54', 
+        light: '#ffce54',
         lighter: '#ffe299',
         DEFAULT: '#f6bb42'
       },
       bittersweet: {
-        light: '#fc6e51', 
+        light: '#fc6e51',
         DEFAULT: '#e9573f'
       },
       grapefruit: {
-        light: '#ed5565', 
+        light: '#ed5565',
         DEFAULT: '#da4453'
       },
       lavender: {
-        light: '#ac92ec', 
+        light: '#ac92ec',
         DEFAULT: '#967adc'
       },
       'pink-rose': {
-        light: '#ec87c0', 
+        light: '#ec87c0',
         DEFAULT: '#d770ad'
       },
 
@@ -102,10 +100,10 @@ module.exports = {
         dark: '#a94442'
       },
       primary: {
-        light: '#48cfad', 
+        light: '#48cfad',
         DEFAULT: '#37bc98', // mint
-        dark: '#048965', 
-      },      
+        dark: '#048965',
+      },
       info: {
         light: '#7cd1ef',
         DEFAULT: '#3bafda', // aqua
@@ -128,16 +126,10 @@ module.exports = {
         DEFAULT: '#967adc' // lavender
       }
     },
-    extend: { 
+    extend: {
       maxWidth: {
         grid: '1630px',
       }
     }
   },
-  variants: {
-    extend: {
-      backgroundColor: ['odd', 'even'],
-    },
-  },
-  
 }
