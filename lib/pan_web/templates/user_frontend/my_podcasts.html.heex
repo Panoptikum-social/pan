@@ -6,19 +6,19 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
       <p class="flex flex-wrap mb-4">
         <%= for podcast <- @user.podcasts_i_subscribed do %>
-          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4"), " ", podcast.title],
+          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top"), " ", podcast.title],
                     to: podcast_frontend_path(@conn, :show, podcast),
                     class: "border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate" %>
         <% end %>
       </p>
-      <%= link [icon("heart-heroicons-outline"), " Like all subscribed"],
+      <%= link [icon("heart-heroicons-outline", class: "w-4 h-4 inline align-baseline"), " Like all subscribed"],
                 to: user_frontend_path(@conn, :like_all_subscribed),
-                class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md",
+                class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md",
                 method: :post %> &nbsp;
 
-      <%= link [icon("heart-heroicons-outline"), " Follow all subscribed"],
+      <%= link [icon("heart-heroicons-outline", class: "w-4 h-4 inline align-baseline"), " Follow all subscribed"],
                 to: user_frontend_path(@conn, :follow_all_subscribed),
-                class: "bg-info hover:bg-info-light text-white py-2 px-3 rounded-md",
+                class: "border border-gray bg-info hover:bg-info-light text-white py-2 px-3 rounded-md",
                 method: :post %>
     </div>
   </div>
@@ -30,7 +30,7 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
       <p class="flex flex-wrap">
         <%= for podcast <- @podcasts_i_like do %>
-          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4"), " ", podcast.title],
+          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top"), " ", podcast.title],
                     to: podcast_frontend_path(@conn, :show, podcast),
                     class: "border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate" %>
         <% end %>
@@ -45,7 +45,7 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
       <p class="flex flex-wrap">
         <%= for podcast <- @user.podcasts_i_follow do %>
-          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4"), " ", podcast.title],
+          <%= link [icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top"), " ", podcast.title],
                     to: podcast_frontend_path(@conn, :show, podcast),
                     class: "border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate" %>
         <% end %>
@@ -62,7 +62,7 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
         <b class="justify-self-end"><%= rank + 1 %>.</b>
-        <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline"), " ", truncate_string(title, 50)],
+        <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"), " ", truncate_string(title, 50)],
                  to: podcast_frontend_path(@conn, :show, id),
                  class: "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate" %>
         <div class="col-span-2 justify-self-end"><%= count %> <%= icon("user-heroicons-outline", class: "w-4 h-4 inline") %></div>
@@ -77,7 +77,7 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
         <b class="justify-self-end"><%= rank + 1 %>.</b>
-        <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline"), " ", truncate_string(title, 50)],
+        <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"), " ", truncate_string(title, 50)],
                  to: podcast_frontend_path(@conn, :show, id),
                  class: "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate" %>
         <div class="col-span-2 justify-self-end"><%= count %> <%= icon("user-heroicons-outline", class: "w-4 h-4 inline") %></div>
@@ -92,7 +92,7 @@
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
         <b class="justify-self-end"><%= rank + 1 %>.</b>
-        <%= link [icon("folder-open-heroicons-outline", class: "w-4 h-4 inline"), " ", truncate_string(title, 50)],
+        <%= link [icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top"), " ", truncate_string(title, 50)],
                  to: category_frontend_path(@conn, :show, id),
                  class: "justify-self-start col-span-9 border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate" %>
         <div class="col-span-2 justify-self-end"><%= count %> <%= icon("user-heroicons-outline", class: "w-4 h-4 inline") %></div>
