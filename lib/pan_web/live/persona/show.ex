@@ -200,6 +200,13 @@ defmodule PanWeb.Live.Persona.Show do
         <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
     </Panel>
 
+    <Panel :if={false && @persona.fediverse_address}
+           heading={"#{@persona.fediverse_address} in the Fediverse"}
+           purpose="gig"
+           class="m-4 max-w-screen-xl">
+      {Pan.ActivityPub.View.widget(@persona.fediverse_address)}
+    </Panel>
+
     <Panel :if={@engagements != []}
            heading={"Engagements, #{@persona.name} has entered"}
            purpose="engagement"
