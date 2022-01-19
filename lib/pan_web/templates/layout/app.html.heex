@@ -1,6 +1,12 @@
 <main role="main" class="mx-auto mb-8 p-4">
-  <p class="alert alert-info alert-left toast" role="alert"><%= get_flash(@conn, :info) %></p>
-  <p class="alert alert-danger alert-left toast" role="alert"><%= get_flash(@conn, :error) %></p>
-
+  <p class="alert alert-info alert-left toast" 
+            role="alert">
+    <%= get_flash(@conn, :info) %>
+  </p>
+  <p class="alert alert-danger alert-left toast" 
+     role="alert">
+    <%= get_flash(@conn, :error) %>
+  </p>
+  
   <%= @inner_content %>
 </main>

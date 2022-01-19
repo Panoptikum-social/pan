@@ -1,6 +1,2 @@
-./activity_pub/widget.html.heex
-
 ./layout/admin.html.heex
 ./layout/app.html.heex
-
-./error/not_found.html.heex
