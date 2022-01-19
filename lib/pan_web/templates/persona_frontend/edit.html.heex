@@ -1,6 +1,8 @@
-<h2>Edit persona</h2>
+<h2 class="text-2xl">Edit persona</h2>
 
-<%= form_for @changeset, persona_frontend_path(@conn, :update, @persona), fn f -> %>
+<%= form_for @changeset, persona_frontend_path(@conn, :update, @persona), 
+                         [class: "p-4 mb-4 flex flex-col items-start space-y-4"],
+                         fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -13,45 +15,45 @@
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :pid, class: "control-label" %>
     <%= text_input f, :pid, class: "form-control",
                             disabled: not pro(@current_user) %>
     <%= error_tag f, :pid %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :name, class: "control-label" %>
     <%= text_input f, :name, class: "form-control" %>
     <%= error_tag f, :name %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :uri, class: "control-label" %>
     <%= text_input f, :uri, class: "form-control" %>
     <%= error_tag f, :uri %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :email, class: "control-label" %>
     <%= text_input f, :email, class: "form-control" %>
     <%= error_tag f, :email %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :fediverse_address, class: "control-label" %>
     <%= text_input f, :fediverse_address, placeholder: "@username@domain.social", class: "form-control" %>
     <%= error_tag f, :fediverse_address %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :image_url, class: "control-label" %>
     <%= text_input f, :image_url, class: "form-control",
                                   disabled: not pro(@current_user)%>
     <%= error_tag f, :image_url %>
   </div>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :image_title, class: "control-label" %>
     <%= text_input f, :image_title, class: "form-control",
                                     disabled: not pro(@current_user) %>
@@ -59,7 +61,7 @@
   </div>
 
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :description_header, class: "control-label" %>
     <%= text_input f, :description, class: "form-control",
                                     disabled: not pro(@current_user) %>
@@ -67,10 +69,11 @@
   </div>
 
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <%= label f, :description, class: "control-label" %>
     <%= textarea f, :long_description, class: "form-control",
                                        id: "simplemde",
+                                       cols: 80,
                                        disabled: not pro(@current_user) %>
     <%= error_tag f, :long_description %>
   </div>
@@ -81,10 +84,11 @@
     </script>
   <% end %>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+  <div class="flex flex-col">
+    <%= submit "Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
   </div>
 <% end %>
 
 
-<%= link "Back", to: user_frontend_path(@conn, :my_profile) %>
+<%= link "Back", to: user_frontend_path(@conn, :my_profile),
+                 class: "text-link hover:text-link-dark" %>
