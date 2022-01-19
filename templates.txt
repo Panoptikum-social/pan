@@ -1,9 +1,11 @@
-./podcast_frontend/feeds.html.heex
 ./persona_frontend/grant_access.html.heex
 ./persona_frontend/business_card.html.heex
 ./persona_frontend/edit.html.heex
 ./persona_frontend/warning.html.heex
+
 ./activity_pub/widget.html.heex
+
 ./layout/admin.html.heex
 ./layout/app.html.heex
+
 ./error/not_found.html.heex
