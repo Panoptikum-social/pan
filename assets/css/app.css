@@ -33,23 +33,18 @@
 
 [hidden] { @apply hidden; }
 
+/* Classes used by phoenix forms*/
 .alert:empty { @apply hidden; }
-
-.alert.toast {
-  @apply z-40 fixed top-0 right-0 w-64 mt-20 shadow-xl cursor-pointer text-sm ease-out duration-300;
-}
+.alert-info { @apply p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4; }
+.alert-danger {@apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4; }
+.invalid-feedback{ @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded}
 
 /* LiveView specific classes for your customizations */
 .phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback {
   display: none;
 }
 
-.phx-click-loading {
-  opacity: 0.5;
-  transition: opacity 1s ease-out;
-}
 
+.phx-click-loading {opacity: 0.5; transition: opacity 1s ease-out; }
 .phx-disconnected{ cursor: wait; }
 .phx-disconnected *{ pointer-events: none; }
-
-.invalid-feedback{ @apply border border-danger bg-danger-light text-white px-2 py-0.5 my-1 rounded}

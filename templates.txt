@@ -1,2 +1,0 @@
-./layout/admin.html.heex
-./layout/app.html.heex
