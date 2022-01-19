@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Persona.Show do
   import PanWeb.Router.Helpers
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
-  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon, Panel}
+  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Panel}
   alias PanWeb.Live.Persona.{FollowButton, LikeButton}
   import Phoenix.HTML.Link, only: [link: 2]
 
