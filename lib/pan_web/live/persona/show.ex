@@ -113,14 +113,6 @@ defmodule PanWeb.Live.Persona.Show do
                 <td>{ @persona.uri}</td>
               {/if}
             </tr>
-            <tr>
-              <td class="px-4 text-right font-semibold">Business Cards</td>
-              <td>
-                <a href={persona_frontend_url(Endpoint, :business_card, @persona)}>
-                  <Icon name="credit-card-heroicons-outline"/> Show
-                </a>
-              </td>
-            </tr>
           </table>
 
           <img :if={@persona_thumbnail}

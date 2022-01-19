@@ -1,7 +1,3 @@
-./persona_frontend/warning.html.heex
-
-./persona_frontend/business_card.html.heex
-
 ./activity_pub/widget.html.heex
 
 ./layout/admin.html.heex
