@@ -5,6 +5,7 @@ defmodule PanWeb.Live.Persona.Show do
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
   alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Icon, Panel}
   alias PanWeb.Live.Persona.{FollowButton, LikeButton}
+  import Phoenix.HTML.Link, only: [link: 2]
 
   def mount(%{"pid" => pid}, _session, socket) do
     current_user = socket.assigns.current_user_id && User.get_by_id(socket.assigns.current_user_id)
@@ -189,11 +190,10 @@ defmodule PanWeb.Live.Persona.Show do
                   Your name, username and email address will be sent alongside in the email
                   to give the owner a chance to get in contact with you.</p>
 
-                <a href={persona_frontend_path(Endpoint, :claim, @persona)}
-                   class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light",
-                   method="post"
-                   data={[confirm: "Are you sure?"]} >Claim</a>
-
+                {link "Claim", to: persona_frontend_path(Endpoint, :claim, @persona),
+                               class: "mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light",
+                               method: :post,
+                               data: [confirm: "Are you sure?"]}
               </div>
             {/if}
           </Panel>
@@ -203,7 +203,7 @@ defmodule PanWeb.Live.Persona.Show do
 
     <Panel :if={@persona.description || @persona.long_description}
            heading={@persona.description}
-           purpose="persona"
+           purpose="info"
            class="m-4 max-w-screen-xl">
         <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
     </Panel>
@@ -234,7 +234,7 @@ defmodule PanWeb.Live.Persona.Show do
       </table>
     </Panel>
 
-    <Panel :if={@gigs != []}
+    <Panel :if={@grouped_gigs != []}
            heading={"Gigs, #{@persona.name} has been engaged in"}
            purpose="gig"
            class="m-4">

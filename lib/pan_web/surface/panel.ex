@@ -19,6 +19,7 @@ defmodule PanWeb.Surface.Panel do
 
   def heading_color_classes(purpose) do
     case purpose do
+      "info" -> "bg-info text-white"
       "category" -> "bg-category text-white"
       "podcast" -> "bg-podcast text-white"
       "persona" -> "bg-warning text-white"

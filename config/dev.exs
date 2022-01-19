@@ -69,14 +69,7 @@ config :pan, PanWeb.Endpoint,
   ]
 
 config :pan, Pan.Mailer,
-  adapter: Bamboo.SMTPAdapter,
-  server: "localhost",
-  port: 25,
-  username: false,
-  password: false,
-  tls: :if_available,
-  ssl: false,
-  retries: 1
+  adapter: Bamboo.LocalAdapter
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
