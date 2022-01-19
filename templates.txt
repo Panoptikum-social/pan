@@ -1,6 +1,3 @@
-./podcast_frontend/liked.html.heex
-./podcast_frontend/_wide_top_list_table.html.heex
-./podcast_frontend/popular.html.heex
 ./podcast_frontend/feeds.html.heex
 ./persona_frontend/grant_access.html.heex
 ./persona_frontend/business_card.html.heex

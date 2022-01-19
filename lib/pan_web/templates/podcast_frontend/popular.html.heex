@@ -1,6 +1,10 @@
-<div class="panel panel-info">
-  <div class="panel-heading">Top 100 subscribed Podcasts</div>
+<div class="rounded-xl shadow">
+  <div class="p-3 rounded-t-xl bg-info text-white">
+    Top 100 subscribed Podcasts
+  </div>
+  <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
     <%= render "_wide_top_list_table.html", podcasts: @popular_podcasts,
-                                            icon: "user",
+                                            icon: "user-heroicons-solid",
                                             conn: @conn %>
+  </div>
 </div>
