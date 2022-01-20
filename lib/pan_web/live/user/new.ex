@@ -12,7 +12,7 @@ defmodule PanWeb.Live.User.New do
 
   def render(assigns) do
     ~F"""
-    <div class="max-w-lg mx-auto">
+    <div class="max-w-lg m-4">
       <h1 class="text-3xl">Sign Up</h1>
 
       <Form action={user_frontend_path(@socket, :create)}
@@ -39,14 +39,14 @@ defmodule PanWeb.Live.User.New do
           </p>
         </Field>
 
-        <TextField name="name" />
-        <TextField name="username" />
-        <EmailField name="email" />
+        <TextField name={:name} />
+        <TextField name={:username} />
+        <EmailField name={:email} />
         <PasswordField name={:password} />
         <PasswordField name={:password_confirmation} />
-        <CheckBoxField name="podcaster" label="I am a podcaster" />
+        <CheckBoxField name={:podcaster} label="I am a podcaster" />
 
-        <Field name="bot_check" class="my-4">
+        <Field name={:bot_check} class="my-4">
           <Label class="block font-medium text-gray-darker">
                  If you subtract two from 44, you get...
           </Label>

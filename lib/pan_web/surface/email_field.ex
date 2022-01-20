@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.EmailField do
   use Surface.Component
   alias Surface.Components.Form
 
-  prop(name, :string, required: true)
+  prop(name, :atom, required: true)
 
   def render(assigns) do
     ~F"""
