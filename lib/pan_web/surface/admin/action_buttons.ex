@@ -1,11 +1,20 @@
 defmodule PanWeb.Surface.Admin.ActionButtons do
   use Surface.Component
-  alias PanWeb.{Endpoint, Podcast, User, Feed}
+  alias PanWeb.{Endpoint, Podcast, User, Feed, Image}
   alias PanWeb.Surface.LinkButton
   import PanWeb.Router.Helpers
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
+
+  def render(%{model: Image} = assigns) do
+    ~F"""
+    <div class="m-4 flex space-x-4">
+      <h3 class="text-xl">Preview</h3>
+      <img src={"https://panoptikum.io#{@record.path}#{@record.filename}"} />
+    </div>
+    """
+  end
 
   def render(%{model: Feed} = assigns) do
     ~F"""
