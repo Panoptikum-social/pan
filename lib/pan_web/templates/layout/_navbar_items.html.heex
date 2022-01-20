@@ -26,17 +26,12 @@
       to: user_frontend_path(@conn, :index) %></li>
 
   <%= if @current_user do %>
-    <li class="py-1">
-      <%= if @current_user.admin do %>
-        <ul>
-          <li class="border-t-2 py-1"></li>
-          <li class="uppercase text-right py-1">
-            <%= nav_icon "adjustments-heroicons-outline" %> 
-            <%= link "ADMINISTRATION", to: dashboard_path(@conn, :home) %>
-          </li>
-        </ul>
-      <% end %>
-    </li>
+    <%= if @current_user.admin do %>
+      <li class="py-1">
+        <%= nav_icon "adjustments-heroicons-outline" %> 
+        <%= link "Administration", to: dashboard_path(@conn, :home) %>
+      </li>
+    <% end %>
     <li class="py-1"><%= render "_user_dropdown.html", conn: @conn, current_user: @current_user %></li>
     <li class="border-t-2"></li>
     <li class="py-1"><%= link [nav_icon("logout-heroicons-outline"), "Log Out"],
