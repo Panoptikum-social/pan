@@ -8,7 +8,6 @@ defmodule PanWeb.PodcastController do
     Enclosure,
     Feed,
     Gig,
-    Image,
     Like,
     Podcast,
     Recommendation,
@@ -80,13 +79,6 @@ defmodule PanWeb.PodcastController do
       Repo.delete_all(from(c in Chapter, where: c.episode_id == ^episode.id))
       Repo.delete_all(from(e in Enclosure, where: e.episode_id == ^episode.id))
       Repo.delete_all(from(g in Gig, where: g.episode_id == ^episode.id))
-
-      images = Repo.all(from(i in Image, where: i.episode_id == ^episode.id))
-
-      for image <- images do
-        File.rm(image.path)
-        Repo.delete!(image)
-      end
     end
 
     for feed <- podcast.feeds do
@@ -213,6 +205,15 @@ defmodule PanWeb.PodcastController do
         put_flash(conn, :error, message)
     end
     |> redirect(to: podcast_path(conn, :show, podcast.id))
+  end
+
+  def update_counters(conn, %{"id" => id}) do
+    Repo.get!(Podcast, id)
+    |> Podcast.changeset()
+    |> Podcast.update_counters()
+    |> Repo.update()
+
+    redirect(conn, to: databrowser_path(conn, :show, "podcast", id))
   end
 
   def update_missing_counters(conn, _params) do

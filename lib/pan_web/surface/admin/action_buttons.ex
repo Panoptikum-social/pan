@@ -57,6 +57,11 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
                   to={podcast_path(Endpoint, :update_from_feed, @record)}
                   large
                   class="bg-primary hover:bg-primary-dark text-white border-gray" />
+
+      <LinkButton title="Update counters"
+                  to={podcast_path(Endpoint, :update_counters, @record)}
+                  large
+                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
     </div>
     <div class="m-4 flex space-x-4 items-center">
       <h3 class="text-xl">Lists</h3>
@@ -74,6 +79,11 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
                   to={podcast_path(Endpoint, :retirement)}
                   large
                   class="bg-white hover:bg-gray-light border-gray" />
+
+      <LinkButton title="Update missing counters"
+                  to={podcast_path(Endpoint, :update_missing_counters)}
+                  large
+                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
     </div>
     """
   end

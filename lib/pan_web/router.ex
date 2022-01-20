@@ -371,6 +371,7 @@ defmodule PanWeb.Router do
     get("/podcasts/orphans", PodcastController, :orphans)
     get("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)
     get("/podcasts/duplicates", PodcastController, :duplicates)
+    get("/podcasts/:id/update_counters/", PodcastController, :update_counters)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
     resources("/podcasts", PodcastController, only: [:delete])
 
