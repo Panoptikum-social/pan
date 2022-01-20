@@ -42,7 +42,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.17.5"},
+      {:phoenix_live_view, "~> 0.17.6"},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
@@ -59,26 +59,20 @@ defmodule Pan.MixProject do
       {:telemetry_poller, "~> 1.0"},
       # i18n library
       {:gettext, "~> 0.11"},
-      # Json generation
-      {:jason, "~> 1.1"},
       # web server plug
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
-      {:bcrypt_elixir, "~> 2.1"},
+      {:bcrypt_elixir, "~> 3.0"},
       # Mix task invoking esbuild
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
 
       ### imported from old app from here on
 
-      # XML parser
-      {:sweet_xml, "~> 0.6"},
       # time conversion
       {:timex, "~> 3.4"},
       # http client
       {:httpoison, "~> 1.6"},
-      # erlang http client, had to increase version here
-      {:hackney, "~> 1.15"},
-      # XML parser (another one)
+      # XML parser
       {:quinn, "~> 1.1"},
       # UUID creation
       {:uuid, "~> 1.1"},
@@ -86,8 +80,6 @@ defmodule Pan.MixProject do
       {:html_sanitize_ex, "~> 1.4"},
       # mailing smtp adapter,
       {:bamboo_smtp, "~> 4.1.0"},
-      # mailing
-      {:bamboo, "~> 2.2"},
       # bamboo phoenix integration
       {:bamboo_phoenix, "~> 1.0"},
       # Markdown parser
@@ -96,24 +88,14 @@ defmodule Pan.MixProject do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # Elixir JSON library
-      {:poison, "~> 5.0"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
-      # reuseable Erlang components
-      {:erlware_commons, "~> 1.3"},
       # Jsonapi.org serializer
       {:ja_serializer, "~> 0.15"},
-      # dependency for iconv
-      {:p1_utils, "~> 1.0.13"},
       # Unicode converter
       {:iconv, "~> 1.0.12"},
       # Imagemagick wrapper
       {:mogrify, "~> 0.7"},
-      # Simplifies implementation of GenServer based processes
-      {:exactor, "~> 2.2", warn_missing: false},
-      # HTTP Client
-      {:httpotion, "~> 3.1"},
       # QR Code generation
       {:eqrcode, "~> 0.1.7"},
       # Creating a pidfile
