@@ -116,8 +116,6 @@ defmodule Pan.Parser.Helpers do
   end
 
   defp try_format(feed_date, format) do
-    IO.inspect feed_date
-    IO.inspect format
     case Timex.parse(feed_date, format) do
       {:ok, datetime} -> datetime
       {:error, _} -> nil
@@ -164,7 +162,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/t[ui][er]?s?[du]?[an]?y?/i, "Tue")
     |> String.replace("Di", "Tue")
     |> String.replace("tor", "Tue")
-    |> String.replace(~r/we[db]?n?e?s?d?a?y?/i, "Wed")
+    |> String.replace(~r/we[db]?n?e?é?s?d?a?y?/i, "Wed")
     |> String.replace("MWed", "Wed")
     |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
