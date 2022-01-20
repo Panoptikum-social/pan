@@ -65,9 +65,6 @@ defmodule Pan.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       # Mix task invoking esbuild
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
-
-      ### imported from old app from here on
-
       # time conversion
       {:timex, "~> 3.4"},
       # http client
