@@ -205,6 +205,23 @@ defmodule PanWeb.Live.Admin.Dashboard do
             </li>
           </ul>
         </div>
+
+        <div>
+          <h2 class="text-lg">Maintenance</h2>
+          <ul class="list-disc ml-4 mb-4">
+          <li>
+            LiveDashboard disabled
+            <!--<Link label="LiveDashboard"
+                  to={Routes.live_dashboard_path(@socket, :home)}
+                  class="text-link hover:text-link-dark underline"/> %> -->
+          </li>
+          <li>
+              <Link label="Statistics"
+                    to={Routes.maintenance_path(@socket, :stats)}
+                    class="text-link hover:text-link-dark underline"/>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     """
