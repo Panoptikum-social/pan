@@ -1,11 +1,23 @@
 defmodule PanWeb.Surface.Admin.ActionButtons do
   use Surface.Component
-  alias PanWeb.{Endpoint, Podcast, User}
+  alias PanWeb.{Endpoint, Podcast, User, Feed}
   alias PanWeb.Surface.LinkButton
   import PanWeb.Router.Helpers
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
+
+  def render(%{model: Feed} = assigns) do
+    ~F"""
+    <div class="m-4 flex space-x-4">
+      <LinkButton title="Make primary"
+                  to={feed_path(Endpoint, :make_only, @record)}
+                  large
+                  class="bg-warning hover:bg-warning-dark text-white border-gray"
+                  method={:post} />
+    </div>
+    """
+  end
 
   def render(%{model: User} = assigns) do
     ~F"""

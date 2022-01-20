@@ -30,6 +30,6 @@ defmodule PanWeb.FeedController do
 
     conn
     |> put_flash(:info, "Feed made primary successfully.")
-    |> redirect(to: podcast_path(conn, :show, primary_feed.podcast_id))
+    |> redirect(to: databrowser_path(conn, :show, "podcast", primary_feed.podcast_id))
   end
 end
