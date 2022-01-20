@@ -10,65 +10,56 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   prop(width, :string, required: false, default: "")
   prop(redact, :boolean, required: false, default: false)
 
-  def present(presenter, record, field, format, redact) do
-    cond do
-      redact ->
-        "** redacted **"
+  def present(_presenter, _record, _field, _format, true = _redact), do: "** redacted **"
+  def present(nil, record, field, format, false), do: present(record, field, format)
+  def present(presenter, record, _field, _format, false), do: presenter.(record)
 
-      presenter ->
-        presenter.(record)
+  def present(record, field, format) do
+    if data = Map.get(record, field), do: present(format, data), else: "∅"
+  end
+  def present(:boolean, nil), do: "❌"
+  def present(:boolean, _data), do: "✅"
 
-      true ->
-        data = Map.get(record, field)
-
-        if data == nil do
-          "∅"
-        else
-          case format do
-            :boolean ->
-              if data, do: "✅", else: "❌"
-
-            :string ->
-              if String.starts_with?(data, ["http://", "https://"]) do
-                raw("<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>")
-              else
-                data
-              end
-
-            :float ->
-              rounded = Float.round(data, 2)
-
-              if rounded == data do
-                data
-              else
-                "~ " <> Float.to_string(rounded)
-              end
-
-            :integer ->
-              raw(Integer.to_string(data) <> "&nbsp;&nbsp;&nbsp;")
-
-            :datetime ->
-              raw(
-                "<span class=\"pr-2\">📅</span>" <>
-                  (data |> DateTime.to_date |> Date.to_string) <>
-                  "<span class=\"pl-4 pr-2\">🕒</span>" <>
-                  (data |> DateTime.to_time |> Time.to_string)
-              )
-
-            :naive_datetime ->
-              raw(
-                "<span class=\"pr-2\">📅</span>" <>
-                  (data |> NaiveDateTime.to_date |> Date.to_string) <>
-                  "<span class=\"pl-4 pr-2\">🕒</span>" <>
-                  (data |> NaiveDateTime.to_time |> Time.to_string)
-              )
-
-            _ ->
-              data
-          end
-        end
+  def present(:string, data) do
+    if String.starts_with?(data, ["http://", "https://"]) do
+      "<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>"
+      |> raw
+    else
+      data
     end
   end
+
+  def present(:float, data) do
+    rounded = Float.round(data, 2)
+
+    if rounded == data do
+      data
+    else
+      "~ " <> Float.to_string(rounded)
+    end
+  end
+
+  def present(:integer, data), do: raw(Integer.to_string(data) <> "&nbsp;&nbsp;&nbsp;")
+
+  def present(:datetime, data) do
+    raw(
+      "<span class=\"pr-2\">📅</span>" <>
+        (data |> DateTime.to_date() |> Date.to_string()) <>
+        "<span class=\"pl-4 pr-2\">🕒</span>" <>
+        (data |> DateTime.to_time() |> Time.to_string())
+    )
+  end
+
+  def present(:naive_datetime, data) do
+    raw(
+      "<span class=\"pr-2\">📅</span>" <>
+        (data |> NaiveDateTime.to_date() |> Date.to_string()) <>
+        "<span class=\"pl-4 pr-2\">🕒</span>" <>
+        (data |> NaiveDateTime.to_time() |> Time.to_string())
+    )
+  end
+
+  def present(_unknown_format, data), do: data
 
   def render(assigns) do
     ~F"""

@@ -32,20 +32,16 @@ defmodule PanWeb.Surface.Admin.DataTable do
     {:ok, assign(socket, assigns) |> assign(columns: columns)}
   end
 
-  defp width(type) do
-    case type do
-      :id -> "6rem"
-      Ecto.UUID -> "6rem"
-      :integer -> "4rem"
-      :float -> "5rem"
-      :date -> "6rem"
-      :datetime -> "12rem"
-      :naive_datetime -> "12rem"
-      :string -> "16rem"
-      Ecto.EctoText -> "16rem"
-      :boolean -> "4rem"
-    end
-  end
+  defp width(:id), do: "6rem"
+  defp width(Ecto.UUID), do: "4rem"
+  defp width(:integer), do: "4rem"
+  defp width(:float), do: "5rem"
+  defp width(:date), do: "6rem"
+  defp width(:datetime), do: "12rem"
+  defp width(:naive_datetime), do: "12rem"
+  defp width(:string), do: "16rem"
+  defp width(Ecto.EctoText), do: "16rem"
+  defp width(:boolean), do: "4rem"
 
   defp dyed?(record, assigns) do
     if assigns.search_filter != {} do
