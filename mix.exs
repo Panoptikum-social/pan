@@ -33,12 +33,8 @@ defmodule Pan.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      # security-focused static analysis tool
-      {:sobelow, "~> 0.8", only: :dev},
       # web framework
       {:phoenix, "~> 1.6.0"},
-      # PubSub messaging
-      {:phoenix_pubsub, "~> 2.0"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
@@ -57,8 +53,6 @@ defmodule Pan.MixProject do
       {:phoenix_live_dashboard, "~> 0.6.2"},
       # Component library
       {:surface, "~> 0.7"},
-      # telemetry
-      {:telemetry, "~> 1.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
@@ -71,8 +65,6 @@ defmodule Pan.MixProject do
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 2.1"},
-      # color calculations
-      {:tint, "~> 1.1"},
       # Mix task invoking esbuild
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
 
@@ -104,6 +96,7 @@ defmodule Pan.MixProject do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
+      # Elixir JSON library
       {:poison, "~> 5.0"},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
