@@ -1,5 +1,0 @@
-* Feed: <%= link "Make primary", to: feed_path(@conn, :make_only, feed), class: "btn btn-warning btn-xs", method: :post %>
-* Find way to inspect the images (thumbnails) visually
-* Check all routes, if they are accessible by a link / menu item, ...
-* remove old png-assets.
-* Extend cookie warning: LiveViews need cookies
