@@ -24,13 +24,6 @@ defmodule PanWeb.Live.Session.New do
 
         <PasswordField name={:password} />
 
-        <Field name="hint" class="mt-4 text-gray-darker">
-          Submitting this form will transfer a session cookie to the server. See
-          <Link to="https://blog.panoptikum.io/privacy"
-                class="text-link hover:text-link-dark"
-                label="Privacy" /> for details.
-        </Field>
-
         <Submit label="Log in" />
       </Form>
 

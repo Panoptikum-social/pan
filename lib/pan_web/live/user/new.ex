@@ -55,14 +55,6 @@ defmodule PanWeb.Live.User.New do
           <ErrorTag field={:bot_check} />
         </Field>
 
-        <Field name="cookie_warning" class="text-gray-darker">
-          Submitting this form will transfer a session cookie to the server.<br/>
-          Please, read our
-          <Link to="https://blog.panoptikum.io/privacy"
-                class="text-link hover:link-dark"
-                label="Privacy Policy" /> before signing up!
-         </Field>
-
          <Submit label="Create Account" />
        </Form>
     </div>
