@@ -879,7 +879,6 @@ defmodule PanWeb.ViewHelpers do
       ),
       "</nobr>"
     ]
-    |> Enum.map(&my_safe_to_string/1)
-    |> Enum.join()
+    |> Enum.map_join(&my_safe_to_string/1)
   end
 end

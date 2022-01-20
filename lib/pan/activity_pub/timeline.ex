@@ -22,7 +22,6 @@ defmodule Pan.ActivityPub.Timeline do
   end
 
   defp to_map(toot, pid) do
-    IO.inspect toot
     %{
       published: View.published(toot),
       content: View.content(toot, pid),

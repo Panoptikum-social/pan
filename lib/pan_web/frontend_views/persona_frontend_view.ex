@@ -99,8 +99,7 @@ defmodule PanWeb.PersonaFrontendView do
         class: "btn btn-xs btn-lavender"
       )
     ]
-    |> Enum.map(&my_safe_to_string/1)
-    |> Enum.join()
+    |> Enum.map_join(&my_safe_to_string/1)
   end
 
   def slug_with_gigs(conn, action, []) do

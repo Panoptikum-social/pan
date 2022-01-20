@@ -41,8 +41,7 @@ defmodule Pan.Search do
         from(r in model, where: r.id in ^record_ids, preload: ^preloads, select: ^selects)
         |> Repo.all()
         |> Enum.map(&struct_function.(&1))
-        |> Enum.map(&Jason.encode!(&1))
-        |> Enum.join("\n")
+        |> Enum.map_join("\n", &Jason.encode!(&1))
 
       {:ok, %Response{status_code: response_code, body: response_body}} =
         Search.Manticore.post(data, "bulk")

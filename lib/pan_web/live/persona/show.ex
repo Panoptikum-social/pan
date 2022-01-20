@@ -11,9 +11,7 @@ defmodule PanWeb.Live.Persona.Show do
     current_user = socket.assigns.current_user_id && User.get_by_id(socket.assigns.current_user_id)
     persona = Persona.get_by_pid(pid)
 
-    unless persona do
-      {:ok, assign(socket, not_found: true)}
-    else
+    if persona do
       delegator_ids = Delegation.get_by_delegate_id(persona.id)
       persona_ids = [persona.id | delegator_ids]
       engagements = Engagement.get_by_persona_ids(persona_ids)
@@ -37,6 +35,8 @@ defmodule PanWeb.Live.Persona.Show do
         |> fetch_gigs
 
       {:ok, socket, temporary_assigns: [gigs: [], grouped_gigs: []]}
+    else
+      {:ok, assign(socket, not_found: true)}
     end
   end
 

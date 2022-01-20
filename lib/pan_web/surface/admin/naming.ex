@@ -6,8 +6,7 @@ defmodule PanWeb.Surface.Admin.Naming do
     module_string =
       resource
       |> String.split("_")
-      |> Enum.map(&String.capitalize(&1))
-      |> Enum.join("")
+      |> Enum.map_join(&String.capitalize(&1))
 
     String.to_atom("Elixir.PanWeb." <> module_string)
   end
@@ -37,8 +36,7 @@ defmodule PanWeb.Surface.Admin.Naming do
     field
     |> Atom.to_string()
     |> String.split("_")
-    |> Enum.map(&String.capitalize(&1))
-    |> Enum.join(" ")
+    |> Enum.map_join(" ", &String.capitalize(&1))
   end
 
   def title_from_model(model) do
@@ -46,14 +44,14 @@ defmodule PanWeb.Surface.Admin.Naming do
     |> Phoenix.Naming.resource_name()
     |> to_string
     |> String.split("_")
-    |> Enum.map(&String.capitalize(&1))
-    |> Enum.join(" ")
+    |> Enum.map_join(" ", &String.capitalize(&1))
   end
 
   def pluralize(word) do
-    cond do
-      String.last(word) == "y" -> String.replace_suffix(word, "y", "ies")
-      true -> word <> "s"
+    if String.last(word) == "y" do
+      String.replace_suffix(word, "y", "ies")
+    else
+      word <> "s"
     end
   end
 

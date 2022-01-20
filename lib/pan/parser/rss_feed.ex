@@ -44,9 +44,8 @@ defmodule Pan.Parser.RssFeed do
           |> Pan.Parser.Helpers.fix_character_code_strings()
           |> String.trim()
 
-        with {:ok, feed_map} <- xml_to_map(feed_xml) do
-          parse_to_map(feed_map, url)
-        else
+        case xml_to_map(feed_xml) do
+          {:ok, feed_map} -> parse_to_map(feed_map, url)
           {:exit, error} -> {:exit, error}
           {:done, "nothing to do"} -> {:done, "nothing to do"}
           {:error, reason} -> {:error, reason}
