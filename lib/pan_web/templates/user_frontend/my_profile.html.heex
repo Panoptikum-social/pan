@@ -1,9 +1,9 @@
 <h1 class="text-3xl">My Profile</h1>
 
-<p class="text-right">
+<div class="float-right">
   <%= link "Edit your data", to: user_frontend_path(@conn, :edit),
                              class: "bg-warning hover:bg-warning-light border border-gray px-3 py-2 text-white rounded" %>
-</p>
+</div>
 
   <div class="grid grid-cols-2 gap-4">
     <div class="justify-self-end">User Name</div>

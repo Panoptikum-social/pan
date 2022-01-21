@@ -97,7 +97,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
       {#for column <- @columns}
         <div :if={:search in @buttons}
             class={"bg-gray-lighter p-1",
-                      "text-right": column.type == :integer}>
+                   "text-right": column.type == :integer}>
           <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
                 for={:search}
                 change={@search}

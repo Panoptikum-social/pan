@@ -25,10 +25,10 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
     ~F"""
     <div :if={@chapter.recommendations != []} class="my-4">
       <h2 class="text-2xl"> Recommendations</h2>
-      <p class="text-right">
+      <div class="float-right">
           <a href="https://panoptikum.io/complaints"
              class="text-link hover-text-link-dark">Complain</a>
-      </p>
+      </div>
       <ul class="list-group">
         {#for recommendation <- @chapter.recommendations}
           <li class="list-group-item"

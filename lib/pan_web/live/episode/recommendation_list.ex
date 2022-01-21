@@ -42,10 +42,10 @@ defmodule PanWeb.Live.Episode.RecommendationList do
         <h2 class="text-2xl">Recommendations</h2>
 
         {#if @episode.recommendations != []}
-          <p class="text-right">
+          <div class="float-right">
             <a href="https://panoptikum.io/complaints"
               class="text-link hover-text-link-dark">Complain</a>
-          </p>
+          </div>
 
           <table class="border border-separate border-gray-lighter">
             <thead>

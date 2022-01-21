@@ -1,8 +1,8 @@
 <div class="m-4">
-  <p class="text-right">
+  <div class="float-right">
     <%= link "Assign all to 'Unsorted'", to: podcast_path(@conn, :assign_to_unsorted),
                                          class: "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-2 px-3 rounded" %>
-  </p>
+  </div>
   
   <h2 class="text-2xl">Listing <%= length(@unassigned_podcasts) %> podcasts without categories</h2>
   
