@@ -47,8 +47,6 @@ defmodule Pan.MixProject do
       {:floki, ">= 0.27.0"},
       # classic view layer
       {:phoenix_html, "~> 3.0"},
-      # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.6.2"},
       # Component library
@@ -63,8 +61,6 @@ defmodule Pan.MixProject do
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 3.0"},
-      # Mix task invoking esbuild
-      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       # time conversion
       {:timex, "~> 3.4"},
       # http client
@@ -85,8 +81,6 @@ defmodule Pan.MixProject do
       {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
-      # Code analysis
-      {:credo, "~> 1.5", only: [:dev, :test]},
       # Jsonapi.org serializer
       {:ja_serializer, "~> 0.15"},
       # Unicode converter
@@ -96,7 +90,14 @@ defmodule Pan.MixProject do
       # QR Code generation
       {:eqrcode, "~> 0.1.7"},
       # Creating a pidfile
-      {:pid_file, "~> 0.1.1"}
+      {:pid_file, "~> 0.1.1"},
+
+      # Mix task invoking esbuild
+      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
+      # live browser page reload on code changes
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      # Code analysis
+      {:credo, "~> 1.5", only: [:dev, :test]}
     ]
   end
 
