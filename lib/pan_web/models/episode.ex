@@ -135,18 +135,6 @@ defmodule PanWeb.Episode do
     |> Repo.all()
   end
 
-  # FIXME: Can be removed, when Episode FrontendView is cleaned up
-  def author(episode) do
-    gig =
-      from(Gig,
-        where: [role: "author", episode_id: ^episode.id],
-        preload: :persona
-      )
-      |> Repo.one()
-
-    if gig, do: gig.persona
-  end
-
   def clear_image_url(episode) do
     episode
     |> Episode.changeset(%{image_url: nil, link: episode.link || "https://example.com"})
