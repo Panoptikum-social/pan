@@ -392,7 +392,6 @@ defmodule PanWeb.Router do
     get("/users/merge", UserController, :merge)
     post("/users/execute_merge", UserController, :execute_merge)
     post("/users/:id/unset_pro", UserController, :unset_pro)
-    get("/users/datatable", UserController, :datatable)
 
     post("/feeds/:id/make_only", FeedController, :make_only)
 
@@ -415,7 +414,6 @@ defmodule PanWeb.Router do
 
     resources("/invoices", InvoiceController)
 
-    get("/images/datatable", ImageController, :datatable)
     get("/images/cache_missing", ImageController, :cache_missing)
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController, only: [:create])

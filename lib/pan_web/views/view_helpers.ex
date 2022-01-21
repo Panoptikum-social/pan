@@ -1,7 +1,5 @@
 defmodule PanWeb.ViewHelpers do
   alias Phoenix.HTML
-  alias Phoenix.HTML.Link
-  alias PanWeb.Endpoint
 
   def icon(name), do: icon(name, class: "")
 
@@ -820,27 +818,6 @@ defmodule PanWeb.ViewHelpers do
     )
   end
 
-  def color_class_cycle(counter) do
-    Enum.at(
-      [
-        "bg-white hover:bg-gray-lighter text-gray-darker border-gray",
-        "bg-gray-lighter hover:bg-gray-lightest text-gray-darker border-gray",
-        "bg-gray hover:bg-gray-light text-white",
-        "bg-gray-darker hover:bg-gray-darker text-white",
-        "bg-success hover:bg-success-light text-white",
-        "bg-mint hover:bg-mint-light text-white",
-        "bg-info hover:bg-info-light text-white",
-        "bg-blue-jeans hover:bg-blue-jeans-light text-white",
-        "bg-lavender hover:bg-lavender-light text-white",
-        "bg-pink-rose hover:bg-pink-rose-light text-white",
-        "bg-danger hover:bg-danger-light text-white",
-        "bg-bittersweet hover:bg-bittersweet-light text-white",
-        "bg-warning hover:bg-warning-light text-white"
-      ],
-      rem(counter, 13)
-    )
-  end
-
   def truncate_string(string, len) do
     length = len - 3
 
@@ -857,28 +834,4 @@ defmodule PanWeb.ViewHelpers do
 
   def my_safe_to_string({:safe, string}), do: HTML.safe_to_string({:safe, string})
   def my_safe_to_string(string), do: string
-
-  def datatable_actions(record_id, path) do
-    [
-      "<nobr>",
-      Link.link("Show",
-        to: path.(Endpoint, :show, record_id),
-        class: "btn btn-default btn-xs"
-      ),
-      " ",
-      Link.link("Edit",
-        to: path.(Endpoint, :edit, record_id),
-        class: "btn btn-warning btn-xs"
-      ),
-      " ",
-      Link.link("Delete",
-        to: path.(Endpoint, :delete, record_id),
-        method: :delete,
-        data: [confirm: "Are you sure?"],
-        class: "btn btn-danger btn-xs"
-      ),
-      "</nobr>"
-    ]
-    |> Enum.map_join(&my_safe_to_string/1)
-  end
 end
