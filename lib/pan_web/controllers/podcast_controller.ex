@@ -1,19 +1,7 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{
-    AlternateFeed,
-    Category,
-    Chapter,
-    Enclosure,
-    Feed,
-    Gig,
-    Like,
-    Podcast,
-    Recommendation,
-    PageFrontendView
-  }
-
+  alias PanWeb.{Category, Feed, Podcast, PageFrontendView}
   alias Pan.Search
   require Logger
 
@@ -62,31 +50,15 @@ defmodule PanWeb.PodcastController do
   end
 
   def delete(conn, %{"id" => id}) do
-    # FIXME: Recursive deletion of several Resources, not only podcasts
     id = String.to_integer(id)
 
     podcast =
       Repo.get!(Podcast, id)
-      |> Repo.preload(episodes: :chapters)
-      |> Repo.preload(:feeds)
+      |> Repo.preload(:episodes)
 
-    for episode <- podcast.episodes do
-      for chapter <- episode.chapters do
-        Repo.delete_all(from(l in Like, where: l.chapter_id == ^chapter.id))
-        Repo.delete_all(from(r in Recommendation, where: r.chapter_id == ^chapter.id))
-      end
-
-      Repo.delete_all(from(c in Chapter, where: c.episode_id == ^episode.id))
-      Repo.delete_all(from(e in Enclosure, where: e.episode_id == ^episode.id))
-      Repo.delete_all(from(g in Gig, where: g.episode_id == ^episode.id))
-    end
-
-    for feed <- podcast.feeds do
-      Repo.delete_all(from(a in AlternateFeed, where: a.feed_id == ^feed.id))
-    end
-
-    Repo.delete!(podcast)
+    for episode <- podcast.episodes, do: Search.Episode.delete_index(episode.id)
     Search.Podcast.delete_index(id)
+    Repo.delete!(podcast)
 
     conn
     |> put_flash(:info, "Podcast deleted successfully.")

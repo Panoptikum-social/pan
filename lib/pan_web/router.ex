@@ -172,6 +172,67 @@ defmodule PanWeb.Router do
     live("/:index/:term", Live.Search, :search, as: :search_frontend)
   end
 
+  live_session :admin, on_mount: PanWeb.Live.Admin.Auth do
+    scope "/admin", PanWeb do
+      pipe_through([:browser, :authenticate_admin, :admin_layout])
+      live("/", Live.Admin.Dashboard, :home, as: :dashboard)
+      live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
+
+      live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
+
+      live("/databrowser/:resource/db_indices", Live.Admin.Databrowser.DbIndex, :db_indices,
+        as: :databrowser
+      )
+
+      live(
+        "/databrowser/:resource/schema_definition",
+        Live.Admin.Databrowser.SchemaDefinition,
+        :schema_definition,
+        as: :databrowser
+      )
+
+      live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
+      live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
+
+      live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
+
+      live(
+        "/databrowser/:resource/new/:first_column/:first_id/:second_column/:second_id",
+        Live.Admin.Databrowser.NewAssociation,
+        :new_association,
+        as: :databrowser
+      )
+
+      live(
+        "/databrowser/:owner/:owner_id/has_many/:association",
+        Live.Admin.Databrowser.HasMany,
+        :has_many,
+        as: :databrowser
+      )
+
+      live(
+        "/databrowser/:owner/:owner_id/many_to_many/:association",
+        Live.Admin.Databrowser.ManyToMany,
+        :many_to_many,
+        as: :databrowser
+      )
+
+      live(
+        "/databrowser/show_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
+        Live.Admin.Databrowser.ShowMediating,
+        :show_mediating,
+        as: :databrowser
+      )
+
+      live(
+        "/databrowser/edit_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
+        Live.Admin.Databrowser.EditMediating,
+        :edit_mediating,
+        as: :databrowser
+      )
+    end
+  end
+
   scope "/", PanWeb do
     pipe_through([:browser])
 
@@ -231,9 +292,10 @@ defmodule PanWeb.Router do
     pipe_through([:browser_minimal_root_layout])
 
     live("/episodes/:id/player", Live.Episode.Player, :player, as: :episode_frontend)
+
     live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
-    as: :podcast_frontend
-  )
+      as: :podcast_frontend
+    )
   end
 
   scope "/mydata", PanWeb do
@@ -384,65 +446,5 @@ defmodule PanWeb.Router do
     get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-  end
-
-  live_session :admin, on_mount: PanWeb.Live.Admin.Auth do
-    scope "/admin", PanWeb do
-      pipe_through([:browser, :authenticate_admin, :admin_layout])
-      live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
-      live("/dashboard", Live.Admin.Dashboard, :home, as: :dashboard)
-      live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
-
-      live("/databrowser/:resource/db_indices", Live.Admin.Databrowser.DbIndex, :db_indices,
-        as: :databrowser
-      )
-
-      live(
-        "/databrowser/:resource/schema_definition",
-        Live.Admin.Databrowser.SchemaDefinition,
-        :schema_definition,
-        as: :databrowser
-      )
-
-      live("/databrowser/:resource/new", Live.Admin.Databrowser.New, :new, as: :databrowser)
-      live("/databrowser/:resource/:id", Live.Admin.Databrowser.Show, :show, as: :databrowser)
-
-      live("/databrowser/:resource/:id/edit", Live.Admin.Databrowser.Edit, :edit, as: :databrowser)
-
-      live(
-        "/databrowser/:resource/new/:first_column/:first_id/:second_column/:second_id",
-        Live.Admin.Databrowser.NewAssociation,
-        :new_association,
-        as: :databrowser
-      )
-
-      live(
-        "/databrowser/:owner/:owner_id/has_many/:association",
-        Live.Admin.Databrowser.HasMany,
-        :has_many,
-        as: :databrowser
-      )
-
-      live(
-        "/databrowser/:owner/:owner_id/many_to_many/:association",
-        Live.Admin.Databrowser.ManyToMany,
-        :many_to_many,
-        as: :databrowser
-      )
-
-      live(
-        "/databrowser/show_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
-        Live.Admin.Databrowser.ShowMediating,
-        :show_mediating,
-        as: :databrowser
-      )
-
-      live(
-        "/databrowser/edit_mediating/:resource/:first_column/:first_id/:second_column/:second_id/id",
-        Live.Admin.Databrowser.EditMediating,
-        :edit_mediating,
-        as: :databrowser
-      )
-    end
   end
 end
