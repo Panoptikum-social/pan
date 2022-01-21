@@ -53,10 +53,6 @@ defmodule PanWeb.Live.Persona.Show do
     assign(socket, gigs: gigs, grouped_gigs: Gig.grouped_gigs(gigs))
   end
 
-  def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
-  end
-
   defp markdown(content) do
     if content do
       content
@@ -64,6 +60,10 @@ defmodule PanWeb.Live.Persona.Show do
       |> HtmlSanitizeEx.html5()
       |> raw()
     end
+  end
+
+  def handle_event("load-more", _, %{assigns: assigns} = socket) do
+    {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
   end
 
   defp ordered_episodes(grouped_gigs) do
