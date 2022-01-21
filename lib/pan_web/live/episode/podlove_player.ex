@@ -119,9 +119,8 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
   def render(assigns) do
     ~F"""
     <div :hook="PodlovePlayer"
-         {=@class}>
-      <div id="podlove-player" class="podlove-player" />
-    </div>
+         id="podlove-player"
+         class={"podlove-player shrink-0", @class} />
     """
   end
 end

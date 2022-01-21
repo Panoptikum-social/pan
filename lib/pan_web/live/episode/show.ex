@@ -56,7 +56,7 @@ defmodule PanWeb.Live.Episode.Show do
                            class="mr-4 w-1/2" />
           {/if}
 
-          <div id="shownotes">
+          <div id="shownotes" class="w-1/2">
             {#if @episode.shownotes}
               <h2 class="text-2xl">Shownotes</h2>
               <div class="my-4 prose max-w-none bg-white p-4">{raw(@episode.shownotes)}</div>
