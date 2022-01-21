@@ -37,6 +37,8 @@
 .alert:empty { @apply hidden; }
 .alert-info { @apply p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4; }
 .alert-danger {@apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4; }
+.alert-success {@apply p-4 border border-success-dark bg-success-light/50 rounded-xl mb-4; }
+.alert-warning {@apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4; }
 .invalid-feedback{ @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded}
 
 /* LiveView specific classes for your customizations */

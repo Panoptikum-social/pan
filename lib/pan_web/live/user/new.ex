@@ -21,19 +21,19 @@ defmodule PanWeb.Live.User.New do
 
         <Field :if={@changeset.action}
                name="error"
-               class="alert alert-danger">
+               class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
           An error occured. Please check the errors below!
         </Field>
 
         <Field :if={{"has already been taken", []} == @changeset.errors[:email]}
                name="welcome_back"
-               class="alert alert-warning alert-dismissable">
+               class="empty:hidden p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4">
           <h4>Welcome back!</h4>
 
           <p>There is already a user account with this email address.<br/>
             Please
             <Link to={user_path(@socket, :forgot_password)}
-                  class="alert-link"
+                  class="text-link hover:text-link-dark"
                   label="Request a login link" /> via email to login to your existing account and
             reset your password.
           </p>

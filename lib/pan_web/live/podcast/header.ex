@@ -28,7 +28,7 @@ defmodule PanWeb.Live.Podcast.Header do
     <h1 class="text-3xl">{@podcast.title}</h1>
 
     <p :if={@podcast.retired}
-        class="alert alert-warning container"
+        class="empty:hidden p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container"
         role="alert">
       We retired this podcast, because we couldn't parse it for 10 consecutive times.
     </p>
