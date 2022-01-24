@@ -3,8 +3,9 @@ defmodule PanWeb.Live.Persona.Edit do
   on_mount PanWeb.Live.Auth
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User}
-  alias PanWeb.Surface.{TextField, EmailField, Submit}
+  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField}
   alias Surface.Components.Form
+  alias Surface.Components.Form.{TextInput, Label, Field}
   import PanWeb.Router.Helpers
   import NaiveDateTime, only: [compare: 2, utc_now: 0]
 
@@ -27,6 +28,9 @@ defmodule PanWeb.Live.Persona.Edit do
 
   def render(assigns, :not_allowed) do
     ~F"""
+    <div class="m-4">
+      You are not allowed to change this persona.
+    </div>
     """
   end
 
@@ -42,69 +46,68 @@ defmodule PanWeb.Live.Persona.Edit do
           class="p-4 mb-4 flex flex-col items-start space-y-4"
           action={persona_frontend_path(Endpoint, :update, @persona)}>
 
-
-        <div if={@changeset.action}
+       <Field :if={@changeset.action}
+              name="error"
               class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
-          Oops, something went wrong! Please check the errors below.
-        </div>
+        An error occured. Please check the errors below!
+      </Field>
 
-        <div :unless={pro(@current_user)}
-              class="empty:hidden p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4">
-          <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
-        </div>
+      <div :if={!pro(@current_user)}
+            class="empty:hidden p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4">
+        <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
+      </div>
 
-        <Form.Field name={:pid}>
-          <Form.Label>Pid</Form.Label>
-          <Form.TextInput field={:pid}
-                          opts={disabled: not pro(@current_user)} />
-        </Form.Field>
+      <Field name={:pid}
+             class="my-4">
+        <Label class="block font-medium text-gray-darker">Pid</Label>
+        <TextInput field={:pid}
+                   class="w-full"
+                   opts={disabled: not pro(@current_user)} />
+      </Field>
 
-        <TextField name={:name} />
-        <TextField name={:uri} />
-        <EmailField name={:email} />
+      <TextField name={:name} />
+      <TextField name={:uri} />
+      <EmailField name={:email} />
 
-        <Form.Field name={:fediverse_address}>
-          <Form.Label>Fediverse address</Form.Label>
-          <Form.TextInput field={:fediverse_address}
-                          opts={placeholder: "@username@domain.social"} />
-        </Form.Field>
+      <Field name={:fediverse_address}
+             class="my-4">
+        <Label class="block font-medium text-gray-darker">Fediverse address</Label>
+        <TextInput field={:fediverse_address}
+                   class="w-full"
+                   opts={placeholder: "@username@domain.social"} />
+      </Field>
 
-        <Form.Field name={:image_url}>
-          <Form.Label>Image url</Form.Label>
-          <Form.TextInput field={:image_url}
-                          opts={disabled: not pro(@current_user)} />
-        </Form.Field>
+      <Field name={:image_url}
+             class="my-4">
+        <Label class="block font-medium text-gray-darker">Image url</Label>
+        <TextInput field={:image_url}
+                   class="w-full"
+                   opts={disabled: not pro(@current_user)} />
+      </Field>
 
-        <Form.Field name={:image_title}>
-          <Form.Label>Image title</Form.Label>
-          <Form.TextInput field={:image_title}
-                          opts={disabled: not pro(@current_user)} />
-        </Form.Field>
+      <Field name={:image_title}
+             class="my-4">
+        <Label class="block font-medium text-gray-darker">Image title</Label>
+        <TextInput field={:image_title}
+                   class="w-full"
+                   opts={disabled: not pro(@current_user)} />
+      </Field>
 
-        <Form.Field name={:description_header}>
-          <Form.Label>Description heading</Form.Label>
-          <Form.TextInput field={:description_header}
-                          opts={disabled: not pro(@current_user)} />
-        </Form.Field>
+      <Field name={:description_header}
+             class="my-4">
+        <Label class="block font-medium text-gray-darker">Description heading</Label>
+        <TextInput field={:description_header}
+                   class="w-full"
+                   opts={disabled: not pro(@current_user)} />
+      </Field>
 
-        <Form.Field name={:long_description}>
-          <Form.Label>Description </Form.Label>
-          <Form.TextInput field={:long_description}
-                          opts={disabled: not pro(@current_user)} />
-        </Form.Field>
+      <MarkdownField name={:long_description}
+                     disabled={not pro(@current_user)}/>
+      <Submit />
+    </Form>
 
-        {#if pro(@current_user)}
-          <script>
-            var simplemde = new SimpleMDE({ element: document.getElementById("simplemde"),
-                                            spellChecker: false })
-          </script>
-        {/if}
-
-        <Submit />
-      </Form>
-
-      <a href={user_frontend_path(Endpoint, :my_profile)},
-         class="text-link hover:text-link-dark">Back</a>
+    <a href={user_frontend_path(Endpoint, :my_profile)},
+        class="text-link hover:text-link-dark">Back</a>
     """
   end
 end
