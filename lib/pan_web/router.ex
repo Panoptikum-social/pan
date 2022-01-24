@@ -325,7 +325,8 @@ defmodule PanWeb.Router do
     get("/personas/:id/warning", PersonaFrontendController, :warning)
     post("/personas/:id/connect", PersonaFrontendController, :connect)
     post("/personas/:id/disconnect", PersonaFrontendController, :disconnect)
-    resources("/personas", PersonaFrontendController, only: [:edit, :update])
+    live("/personas/:id/edit", Live.Persona.Edit, :edit, as: :persona_frontend)
+    resources("/personas", PersonaFrontendController, only: [:update])
 
     resources("/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete])
     get("/opmls/:id/import", OpmlFrontendController, :import)

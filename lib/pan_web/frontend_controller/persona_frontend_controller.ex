@@ -7,39 +7,6 @@ defmodule PanWeb.PersonaFrontendController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def show(conn, %{"id" => id}, _user) do
-    persona = Repo.get!(Persona, id)
-
-    case persona.redirect_id do
-      nil ->
-        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
-
-      redirect_id ->
-        persona = Repo.get!(Persona, redirect_id)
-        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
-    end
-  end
-
-  def edit(conn, %{"id" => id}, user) do
-    manifestation =
-      from(m in Manifestation,
-        where: m.user_id == ^user.id and m.persona_id == ^id,
-        preload: :persona
-      )
-      |> Repo.one()
-
-    case manifestation do
-      nil ->
-        render(conn, "not_allowed.html")
-
-      manifestation ->
-        persona = manifestation.persona
-
-        changeset = Persona.changeset(persona)
-        render(conn, "edit.html", persona: persona, changeset: changeset)
-    end
-  end
-
   def update(conn, %{"id" => id, "persona" => persona_params}, user) do
     manifestation =
       from(m in Manifestation,

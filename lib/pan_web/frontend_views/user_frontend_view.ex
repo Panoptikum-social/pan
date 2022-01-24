@@ -1,6 +1,6 @@
 defmodule PanWeb.UserFrontendView do
   use PanWeb, :view
-  import NaiveDateTime
+  import NaiveDateTime, only: [compare: 2, utc_now: 0]
 
   def pro(user) do
     user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
