@@ -1,5 +1,6 @@
 defmodule PanWeb.Router do
   use PanWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug(:accepts, ["html"])
@@ -47,15 +48,6 @@ defmodule PanWeb.Router do
 
   pipeline :admin_layout do
     plug(:put_layout, {PanWeb.LayoutView, :admin})
-  end
-
-  if Mix.env() in [:dev, :test] do
-    import Phoenix.LiveDashboard.Router
-
-    scope "/" do
-      pipe_through(:browser)
-      live_dashboard("/dashboard", metrics: PanWeb.Telemetry)
-    end
   end
 
   scope "/jsonapi", PanWeb.Api, as: :api do
@@ -369,6 +361,7 @@ defmodule PanWeb.Router do
   scope "/admin", PanWeb do
     pipe_through([:browser, :authenticate_admin, :admin_layout])
 
+    live_dashboard("/dashboard", metrics: PanWeb.Telemetry)
     get("/episodes/remove_duplicates", EpisodeController, :remove_duplicates)
 
     get(
