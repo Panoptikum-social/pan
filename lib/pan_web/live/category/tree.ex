@@ -9,7 +9,7 @@ defmodule PanWeb.Live.Category.Tree do
 
   def render(assigns) do
     ~F"""
-    <div class="up-to-four-columns w-full">
+    <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full">
       {#for {category, counter} <- @categories |> Enum.with_index}
         <div class="mx-2 my-4">
           <p>

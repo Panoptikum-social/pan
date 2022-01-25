@@ -9,7 +9,7 @@ defmodule PanWeb.Live.Category.StatsTree do
 
   def render(assigns) do
     ~F"""
-    <div class="up-to-four-columns">
+    <div class="lg:columns-2 xl:columns-3 2xl:columns-4">
       {#for {category, counter} <- @categories |> Enum.with_index}
         <div class="inline-block">
           <p class="my-4">

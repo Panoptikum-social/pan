@@ -1,7 +1,6 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import "tailwindcss/screens";
 
 @import "../node_modules/nprogress/nprogress.css";
  
@@ -23,10 +22,6 @@
   select {
     @apply px-2 py-1 rounded-md border-gray-light shadow-sm;
   }
-
-  @screen lg { .up-to-four-columns { columns: 2; } }
-  @screen xl { .up-to-four-columns { columns: 3; } }
-  @screen 2xl { .up-to-four-columns { columns: 4; } }
 
   .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
 
@@ -50,17 +45,13 @@
 /* Classes used by phoenix forms*/
 .alert:empty { @apply hidden; }
 .alert-info { @apply p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4; }
-.alert-danger {@apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4; }
-.alert-success {@apply p-4 border border-success-dark bg-success-light/50 rounded-xl mb-4; }
-.alert-warning {@apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4; }
-.invalid-feedback{ @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded}
+.alert-danger { @apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4; }
+.alert-success { @apply p-4 border border-success-dark bg-success-light/50 rounded-xl mb-4; }
+.alert-warning { @apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4; }
+.invalid-feedback{ @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded; }
 
 /* LiveView specific classes for your customizations */
-.phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback {
-  display: none;
-}
-
-
+.phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback { display: none; }
 .phx-click-loading {opacity: 0.5; transition: opacity 1s ease-out; }
-.phx-disconnected{ cursor: wait; }
+.phx-disconnected { cursor: wait; }
 .phx-disconnected *{ pointer-events: none; }
