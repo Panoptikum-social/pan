@@ -66,11 +66,10 @@ defmodule PanWeb.Live.Admin.Dashboard do
     <div>
       <Explorer id="schemas"
                 title="Schemas"
-                class="m-2 max-w-2xl"
+                class="m-2 max-w-4xl"
                 items={schema <- @schemas}
                 {=@selected_count}
-                format={:grid}
-                grid_columns={4}>
+                format={:grid}>
         <ToolbarItem message="index"
                     title="Data"
                     when_selected_count={:one} />

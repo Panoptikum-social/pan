@@ -7,7 +7,6 @@ defmodule PanWeb.Surface.Admin.Explorer do
   prop(items, :list, required: true)
   prop(selected_count, :integer, required: false, default: 0)
   prop(format, :atom, required: false, values: [:grid, :table], default: :grid)
-  prop(grid_columns, :integer, required: false, values: [1, 2, 3, 4, 5, 6], default: 5)
   prop(caller, :module, required: false)
   prop(caller_id, :string, required: false)
 
@@ -85,13 +84,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
       </table>
 
       <div :if={@format == :grid}
-           class={"grid",
-                  "grid-cols-1": (@grid_columns == 1),
-                  "grid-cols-2": (@grid_columns == 2),
-                  "grid-cols-3": (@grid_columns == 3),
-                  "grid-cols-4": (@grid_columns == 4),
-                  "grid-cols-5": (@grid_columns == 5),
-                  "grid-cols-6": (@grid_columns == 6)} >
+           class={"grid grid-flow-col grid-rows-6"} >
         {#for item <- @items}
            <div phx-click="select"
                 phx-value-id={item.id}
