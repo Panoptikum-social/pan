@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
   use Surface.LiveComponent
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
 
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock

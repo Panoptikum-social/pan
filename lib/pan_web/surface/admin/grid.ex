@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.Grid do
   use Surface.LiveComponent
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
   alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}

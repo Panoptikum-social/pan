@@ -164,7 +164,7 @@ defmodule PanWeb.Router do
     live("/:index/:term", Live.Search, :search, as: :search_frontend)
   end
 
-  live_session :admin, on_mount: PanWeb.Live.Admin.Auth do
+  live_session :admin, on_mount: {PanWeb.Live.Auth, :admin} do
     scope "/admin", PanWeb do
       pipe_through([:browser, :authenticate_admin, :admin_layout])
       live("/", Live.Admin.Dashboard, :home, as: :dashboard)

@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.DataTable do
   use Surface.LiveComponent
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
 
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
   alias Surface.Components.{Form, Form.TextInput}

@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Podcast.Retirement do
   use Surface.LiveView,
     layout: {PanWeb.LayoutView, "live_admin.html"}
 
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.{Podcast, Surface.Admin.IndexGrid}
 
   def handle_info({:count, id: id, module: module}, socket) do

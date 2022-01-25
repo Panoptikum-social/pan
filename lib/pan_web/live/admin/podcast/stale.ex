@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     layout: {PanWeb.LayoutView, "live_admin.html"},
     container: {:div, class: "m-4"}
 
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.{Podcast, Endpoint}
   alias PanWeb.Surface.{LinkButton, Admin.SortLink}
   import PanWeb.Router.Helpers

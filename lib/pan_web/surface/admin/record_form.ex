@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.RecordForm do
   use Surface.LiveComponent
-  on_mount PanWeb.Live.Admin.Auth
+  on_mount {PanWeb.Live.Auth, :admin}
 
   alias Surface.Components.{Form, LiveRedirect}
   alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
