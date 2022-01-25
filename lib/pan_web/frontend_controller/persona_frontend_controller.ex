@@ -30,13 +30,7 @@ defmodule PanWeb.PersonaFrontendController do
               |> Repo.one()
 
             if thumbnail, do: Image.delete_asset(thumbnail)
-
-            Image.download_thumbnail(
-              "persona",
-              String.to_integer(id),
-              persona_params["image_url"]
-            )
-
+            Image.download_thumbnail("persona", String.to_integer(id), persona_params["image_url"])
             Persona.pro_user_changeset(persona, persona_params)
           else
             Persona.user_changeset(persona, persona_params)
@@ -50,8 +44,10 @@ defmodule PanWeb.PersonaFrontendController do
             |> put_flash(:info, "Persona updated successfully.")
             |> redirect(to: user_frontend_path(conn, :my_profile))
 
-          {:error, changeset} ->
-            render(conn, "edit.html", persona: persona, changeset: changeset)
+          {:error, _changeset} ->
+            conn
+            |> put_flash(:error, "An error has happend, see details below.")
+            |> redirect(to:  persona_frontend_path(conn, :edit, persona))
         end
     end
   end

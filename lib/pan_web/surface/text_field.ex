@@ -1,6 +1,7 @@
 defmodule PanWeb.Surface.TextField do
   use Surface.Component
   alias Surface.Components.Form
+  alias PanWeb.Surface.ErrorTag
 
   prop(name, :atom, required: true)
 
@@ -9,7 +10,7 @@ defmodule PanWeb.Surface.TextField do
     <Form.Field {=@name} class="my-4">
       <Form.Label class="block font-medium text-gray-darker"/>
       <Form.TextInput class="w-full" />
-      <Form.ErrorTag />
+      <ErrorTag />
     </Form.Field>
     """
   end

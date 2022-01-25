@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Persona.Edit do
   on_mount PanWeb.Live.Auth
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User}
-  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField}
+  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField, ErrorTag}
   alias Surface.Components.Form
   alias Surface.Components.Form.{TextInput, Label, Field}
   import PanWeb.Router.Helpers
@@ -21,7 +21,7 @@ defmodule PanWeb.Live.Persona.Edit do
          assign(socket,
            persona: manifestation.persona,
            current_user: User.get_by_id(assigns.current_user_id),
-           changeset: Persona.changeset(manifestation.persona)
+           changeset: Persona.changeset(manifestation.persona) |> Map.put(:action, :insert)
          )}
     end
   end
@@ -38,18 +38,31 @@ defmodule PanWeb.Live.Persona.Edit do
     user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
   end
 
+  def handle_event("validate", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
+    changeset =
+      if assigns.current_user.pro_until &&
+           NaiveDateTime.compare(assigns.current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+        Persona.pro_user_changeset(assigns.persona, persona_params)
+      else
+        Persona.user_changeset(assigns.persona, persona_params)
+      end
+
+   {:noreply, assign(socket, changeset: changeset)}
+  end
+
   def render(assigns) do
     ~F"""
     <h2 class="text-2xl">Edit persona</h2>
 
     <Form for={@changeset}
           class="p-4 mb-4 flex flex-col items-start space-y-4"
-          action={persona_frontend_path(Endpoint, :update, @persona)}>
+          change="validate"
+          submit="save">
 
-       <Field :if={@changeset.action}
+      <Field :if={!@changeset.valid?}
               name="error"
-              class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
-        An error occured. Please check the errors below!
+              class="p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
+        This persona is not valid. Please check the errors below!
       </Field>
 
       <div :if={!pro(@current_user)}
@@ -60,9 +73,9 @@ defmodule PanWeb.Live.Persona.Edit do
       <Field name={:pid}
              class="my-4">
         <Label class="block font-medium text-gray-darker">Pid</Label>
-        <TextInput field={:pid}
-                   class="w-full"
+        <TextInput class="w-full"
                    opts={disabled: not pro(@current_user)} />
+        <ErrorTag />
       </Field>
 
       <TextField name={:name} />

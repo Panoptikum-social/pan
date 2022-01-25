@@ -9,7 +9,8 @@ defmodule PanWeb.Surface.MarkdownField do
     ~F"""
     <div :hook="MarkdownField"
          id="markdown-field-container"
-         data-disabled={@disabled}>
+         data-disabled={@disabled}
+         phx-update="ignore">
       <Form.Field {=@name} class="my-4">
         <Form.Label class="block font-medium text-gray-darker"/>
         <Form.TextArea id="simplemde"

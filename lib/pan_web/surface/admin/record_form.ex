@@ -174,7 +174,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
             {#for column <- ColumnsFilter.string_columns(assigns)}
               <TextField name={column.field}
-                        redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+                         redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
             {/for}
           </fieldset>
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">

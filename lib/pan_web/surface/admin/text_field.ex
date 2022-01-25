@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.TextField do
   alias Surface.Components.Form
   alias PanWeb.Surface.Admin.ErrorTag
 
-  prop(name, :string, required: true)
+  prop(name, :atom, required: true)
   prop(redact, :boolean, required: false, default: false)
 
   def render(assigns) do
