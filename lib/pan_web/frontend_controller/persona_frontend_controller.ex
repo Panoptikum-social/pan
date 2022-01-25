@@ -1,54 +1,22 @@
 defmodule PanWeb.PersonaFrontendController do
   use PanWeb, :controller
   alias Pan.Search
-  alias PanWeb.{Delegation, Image, Manifestation, Persona}
+  alias PanWeb.{Delegation, Manifestation, Persona}
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def update(conn, %{"id" => id, "persona" => persona_params}, user) do
-    manifestation =
-      from(m in Manifestation,
-        where: m.user_id == ^user.id and m.persona_id == ^id,
-        preload: :persona
-      )
-      |> Repo.one()
+  def show(conn, %{"id" => id}, _user) do
+    persona = Repo.get!(Persona, id)
 
-    case manifestation do
+    case persona.redirect_id do
       nil ->
-        render(conn, "not_allowed.html")
+        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
 
-      manifestation ->
-        persona = manifestation.persona
-
-        changeset =
-          if user.pro_until &&
-               NaiveDateTime.compare(user.pro_until, NaiveDateTime.utc_now()) == :gt do
-            thumbnail =
-              from(i in Image, where: i.persona_id == ^id)
-              |> Repo.one()
-
-            if thumbnail, do: Image.delete_asset(thumbnail)
-            Image.download_thumbnail("persona", String.to_integer(id), persona_params["image_url"])
-            Persona.pro_user_changeset(persona, persona_params)
-          else
-            Persona.user_changeset(persona, persona_params)
-          end
-
-        case Repo.update(changeset) do
-          {:ok, _persona} ->
-            Search.Persona.update_index(manifestation.persona.id)
-
-            conn
-            |> put_flash(:info, "Persona updated successfully.")
-            |> redirect(to: user_frontend_path(conn, :my_profile))
-
-          {:error, _changeset} ->
-            conn
-            |> put_flash(:error, "An error has happend, see details below.")
-            |> redirect(to:  persona_frontend_path(conn, :edit, persona))
-        end
+      redirect_id ->
+        persona = Repo.get!(Persona, redirect_id)
+        redirect(conn, to: persona_frontend_path(conn, :persona, persona.pid))
     end
   end
 

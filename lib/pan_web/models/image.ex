@@ -90,6 +90,7 @@ defmodule PanWeb.Image do
          {:ok, path} <- extract_path(response),
          {:ok, filename} <- not_empty(Path.basename(path)) do
       File.mkdir_p(target_dir)
+      IO.inspect target_dir
       File.write!(target_dir <> "/" <> filename, response.body)
 
       Logger.info("=== Mogrifying image with id #{id} ===")

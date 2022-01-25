@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Persona.Edit do
   use Surface.LiveView, container: {:div, class: "m-4"}
   on_mount PanWeb.Live.Auth
 
-  alias PanWeb.{Manifestation, Persona, Endpoint, User}
+  alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
   alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField, ErrorTag}
   alias Surface.Components.Form
   alias Surface.Components.Form.{TextInput, Label, Field}
@@ -47,7 +47,33 @@ defmodule PanWeb.Live.Persona.Edit do
         Persona.user_changeset(assigns.persona, persona_params)
       end
 
-   {:noreply, assign(socket, changeset: changeset)}
+    {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("save", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
+    changeset =
+      if assigns.current_user.pro_until &&
+           NaiveDateTime.compare(assigns.current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+        thumbnail = Image.get_by_persona_id(assigns.persona.id)
+        if thumbnail, do: Image.delete_asset(thumbnail)
+        Image.download_thumbnail("persona", assigns.persona.id, persona_params["image_url"])
+
+        Persona.pro_user_changeset(assigns.persona, persona_params)
+      else
+        Persona.user_changeset(assigns.persona, persona_params)
+      end
+
+    case Pan.Repo.update(changeset) do
+      {:ok, _persona} ->
+        Pan.Search.Persona.update_index(assigns.persona.id)
+        {:noreply,
+         socket
+         |> put_flash(:info, "Persona updated successfully.")
+         |> push_redirect(to: user_frontend_path(Endpoint, :my_profile))}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
   end
 
   def render(assigns) do
