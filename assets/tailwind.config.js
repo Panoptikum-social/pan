@@ -1,4 +1,5 @@
 const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   enabled: process.env.NODE_ENV === "production",
@@ -20,8 +21,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      sans: ['Ubuntu'],
-      mono: ['Ubuntu\\ Mono'],
+      sans: ["'Ubuntu'", ...defaultTheme.fontFamily.sans],
+      mono: ["'Ubuntu Mono'", ...defaultTheme.fontFamily.mono],
     },
     colors: {
       transparent: 'transparent',

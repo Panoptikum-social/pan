@@ -29,6 +29,18 @@
   @screen 2xl { .up-to-four-columns { columns: 4; } }
 
   .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
+
+  @font-face {
+    font-family: "Ubuntu";
+    font-weight: 400;
+    src: url('/fonts/ubuntu.woff2') format('woff2'), url('/fonts/ubuntu.woff') format('woff')
+  }
+  @font-face {
+    font-family: "Ubuntu Mono";
+    font-weight: 400;
+    src: url('/fonts/ubuntu-mono.woff2') format('woff2'), url('/fonts/ubuntu-mono.woff') format('woff')
+  }
+
 }
 
 [hidden] { @apply hidden; }
