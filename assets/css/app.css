@@ -33,11 +33,13 @@
   @font-face {
     font-family: "Ubuntu";
     font-weight: 400;
+    font-display: swap;
     src: url('/fonts/ubuntu.woff2') format('woff2'), url('/fonts/ubuntu.woff') format('woff')
   }
   @font-face {
     font-family: "Ubuntu Mono";
     font-weight: 400;
+    font-display: swap;
     src: url('/fonts/ubuntu-mono.woff2') format('woff2'), url('/fonts/ubuntu-mono.woff') format('woff')
   }
 
