@@ -73,13 +73,6 @@ defmodule PanWeb.Live.Persona.Show do
     |> Enum.reverse()
   end
 
-  defp format_date(date) do
-    if date do
-      Timex.to_date(date)
-      |> Timex.format!("%e.%m.%Y", :strftime)
-    end
-  end
-
   def render(%{not_found: true} = assigns) do
     ~F"""
     <div class="m-4">
@@ -249,7 +242,7 @@ defmodule PanWeb.Live.Persona.Show do
         <tbody phx-update="append" id="gigs-table-body">
           {#for episode <- ordered_episodes(@grouped_gigs)}
             <tr id={"episode-#{episode.id}"}>
-              <td align="right" class="px-2">{episode.publishing_date |> format_date}</td>
+              <td align="right" class="px-2">{episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}</td>
               <td class="px-2"><PodcastButton for={episode.podcast} /></td>
               <td class="px-2"><EpisodeButton for={episode} /></td>
               <td class="px-2">

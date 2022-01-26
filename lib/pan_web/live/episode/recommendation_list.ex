@@ -28,7 +28,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
 
   def social_url(episode) do
     episode_frontend_url(Endpoint, :show, episode)
-    |> URI.encode_www_form
+    |> URI.encode_www_form()
   end
 
   defp facebook(episode, recommendation) do
@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                   </td>
                   <td>{recommendation.comment}</td>
                   <td align="right">
-                    {recommendation.inserted_at |> Timex.to_date |> Timex.format!("%e.%m.%Y", :strftime)}
+                    {Calendar.strftime(recommendation.inserted_at, "%x")}
                   </td>
                 </tr>
               {/for}

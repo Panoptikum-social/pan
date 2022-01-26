@@ -25,9 +25,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
           <tr id={"episode-#{episode.id}"}
               class={"bg-gray-lighter": Integer.is_even(index)}>
             <td class="p-2" align="right">
-              {#if episode.publishing_date}
-                {episode.publishing_date |> Timex.to_date |> Timex.format!("%e.%m.%Y", :strftime)}
-              {/if}
+              {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}
             </td>
             <td class="p-2">
               <EpisodeButton for={episode}/><br/>

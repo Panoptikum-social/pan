@@ -13,11 +13,6 @@ defmodule PanWeb.Live.User.Show do
      )}
   end
 
-  defp format_date(date) do
-    Timex.to_date(date)
-    |> Timex.format!("%e.%m.%Y", :strftime)
-  end
-
   def render(assigns) do
     ~F"""
     <div class="m-4">
@@ -52,16 +47,16 @@ defmodule PanWeb.Live.User.Show do
           {#for like <- @podcast_related_likes}
             <p class="leading-10">
               {#if like.chapter_id != nil}
-                {like.inserted_at |> format_date}: &nbsp;
+                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.chapter.episode.podcast} /> /
                 <EpisodeButton for={like.chapter.episode} /> /
                 <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
               {#elseif like.episode_id != nil}
-                {like.inserted_at |> format_date}: &nbsp;
+                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.episode.podcast} /> /
                 <EpisodeButton for={like.episode} />
               {#elseif like.podcast_id != nil}
-                {like.inserted_at |> format_date}: &nbsp;
+                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.podcast} />
               {/if}
             </p>

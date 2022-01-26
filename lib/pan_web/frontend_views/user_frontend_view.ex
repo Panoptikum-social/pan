@@ -15,9 +15,4 @@ defmodule PanWeb.UserFrontendView do
       pro_days_left(user) < 7 -> "danger"
     end
   end
-
-  def format_date(date) do
-    Timex.to_date(date)
-    |> Timex.format!("%e.%m.%Y", :strftime)
-  end
 end
