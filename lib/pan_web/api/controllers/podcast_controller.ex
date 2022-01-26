@@ -3,7 +3,9 @@ defmodule PanWeb.Api.PodcastController do
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
-  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1, time_shift: 2]
+
+  import Pan.Parser.MyDateTime,
+    only: [now: 0, in_the_future?: 1, time_shift: 2, time_diff: 3, in_the_past?: 1]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -138,7 +140,7 @@ defmodule PanWeb.Api.PodcastController do
       else
         minutes =
           time_shift(podcast.manually_updated_at, hours: 1)
-          |> Timex.Comparable.diff(now(), :minutes)
+          |> time_diff(now(), :minutes)
 
         Helpers.send_error(
           conn,
@@ -162,8 +164,7 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           Timex.compare(time_shift(podcast.manually_updated_at, hours: 1), now()) == -1 do
-
+           time_shift(podcast.manually_updated_at, hours: 1) |> in_the_past?() do
         Podcast.changeset(podcast, %{manually_updated_at: time_shift(now(), minutes: -30)})
         |> Repo.update()
 
@@ -178,7 +179,7 @@ defmodule PanWeb.Api.PodcastController do
       else
         minutes =
           time_shift(podcast.manually_updated_at, hours: 1)
-          |> Timex.Comparable.diff(now(), :minutes)
+          |> time_diff(now(), :minutes)
 
         Helpers.send_error(
           conn,

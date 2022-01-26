@@ -47,16 +47,16 @@ defmodule PanWeb.Live.User.Show do
           {#for like <- @podcast_related_likes}
             <p class="leading-10">
               {#if like.chapter_id != nil}
-                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
+                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.chapter.episode.podcast} /> /
                 <EpisodeButton for={like.chapter.episode} /> /
                 <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
               {#elseif like.episode_id != nil}
-                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
+                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.episode.podcast} /> /
                 <EpisodeButton for={like.episode} />
               {#elseif like.podcast_id != nil}
-                {Calender.strftime(like.inserted_at, "%x")}: &nbsp;
+                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
                 <PodcastButton for={like.podcast} />
               {/if}
             </p>

@@ -1,6 +1,6 @@
 defmodule PanWeb.Podcast do
   use PanWeb, :model
-  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3]
   alias Pan.{Repo, Search}
 
   alias PanWeb.{
@@ -341,7 +341,7 @@ defmodule PanWeb.Podcast do
       |> Repo.all()
       |> List.first()
 
-    hours = Timex.diff(now(), Timex.to_datetime(last_update), :hours)
+    hours = time_diff(now(), last_update, :hours)
 
     # approximate solution for u_i*(u_i+1)/2 = hours
     update_intervall = round(:math.sqrt(8 * hours) / 2)
