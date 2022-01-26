@@ -8,10 +8,7 @@ defmodule Pan.ActivityPub.View do
   end
 
   def published(toot) do
-    {:ok, datetime} =
-      toot["published"]
-      |> NaiveDateTime.from_iso8601()
-
+    {:ok, datetime} = NaiveDateTime.from_iso8601(toot["published"])
     Timex.from_now(datetime)
   end
 

@@ -2,7 +2,6 @@ defmodule Pan.Parser.Helpers do
   import Ecto.Query
   alias Pan.Repo
   require Logger
-  use Timex
 
   def boolify(explicit) do
     case explicit do
