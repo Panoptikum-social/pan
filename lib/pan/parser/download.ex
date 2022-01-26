@@ -12,48 +12,28 @@ defmodule Pan.Parser.Download do
   end
 
   def download(url, option \\ nil, feed_id \\ nil) do
+    error_map = %{
+      204 => "204: no content",
+      304 => "304: not modified",
+      400 => "400: bad request",
+      401 => "401: unauthorized",
+      402 => "402: payment required",
+      404 => "404: feed not found",
+      406 => "406: not acceptable",
+      408 => "408: request timeout",
+      410 => "410: gone",
+      416 => "416: range not satisfiable",
+      422 => "422: unprocessible entity"
+    }
+
     case get(url, option) do
-      {:ok, %Response{status_code: 200, body: feed_xml}} ->
+      {:ok, %Response{status_code: status_code, body: feed_xml}}
+      when status_code in [200, 203, 206] ->
         check_for_rss(feed_xml)
 
-      {:ok, %Response{status_code: 203, body: feed_xml}} ->
-        check_for_rss(feed_xml)
-
-      {:ok, %Response{status_code: 206, body: feed_xml}} ->
-        check_for_rss(feed_xml)
-
-      {:ok, %Response{status_code: 204}} ->
-        {:error, "204: no content"}
-
-      {:ok, %Response{status_code: 304}} ->
-        {:error, "304: not modified"}
-
-      {:ok, %Response{status_code: 400}} ->
-        {:error, "400: bad request"}
-
-      {:ok, %Response{status_code: 401}} ->
-        {:error, "401: unauthorized"}
-
-      {:ok, %Response{status_code: 402}} ->
-        {:error, "402: payment required"}
-
-      {:ok, %Response{status_code: 404}} ->
-        {:error, "404: feed not found"}
-
-      {:ok, %Response{status_code: 406}} ->
-        {:error, "406: not acceptable"}
-
-      {:ok, %Response{status_code: 408}} ->
-        {:error, "408: request timeout"}
-
-      {:ok, %Response{status_code: 410}} ->
-        {:error, "410: gone"}
-
-      {:ok, %Response{status_code: 416}} ->
-        {:error, "416: range not satisfiable"}
-
-      {:ok, %Response{status_code: 422}} ->
-        {:error, "422: unprocessible entity"}
+      {:ok, %Response{status_code: status_code}}
+      when status_code in [204, 304, 400, 401, 402, 404, 406, 408, 410, 416, 422] ->
+        {:error, Map.get(error_map, status_code)}
 
       {:ok, %Response{status_code: 423}} ->
         {:error, "423: locked"}
@@ -191,18 +171,18 @@ defmodule Pan.Parser.Download do
         ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"]
       end
 
-      ssl_versions =
+    ssl_versions =
       if option == "unset_tls_version" do
         [:"tlsv1.2"]
       else
         [:"tlsv1.2", :"tlsv1.1", :tlsv1]
       end
 
-    HTTPoison.get(url, headers, [
+    HTTPoison.get(url, headers,
       recv_timeout: 10_000,
       timeout: 10_000,
       hackney: [:insecure],
       ssl: [{:versions, ssl_versions}]
-    ])
+    )
   end
 end
