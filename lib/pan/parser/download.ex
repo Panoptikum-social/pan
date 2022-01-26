@@ -70,14 +70,11 @@ defmodule Pan.Parser.Download do
         Logger.error("status_code unknown #{inspect(code)}")
 
       {:error, %Error{id: nil, reason: reason}}
-      when reason in [
-             :timeout,
-             :ehostunreach,
-             :nxdomain,
-             :connect_timeout,
-             :econnrefused,
-             :closed
-           ] ->
+      when reason in [ :timeout, :ehostunreach, :nxdomain, :connect_timeout, :econnrefused] ->
+        {:error, Map.get(error_translations, reason)}
+
+      {:error, %Error{id: nil, reason: reason}}
+      when reason in [:closed] ->
         {:error, Map.get(error_translations, reason)}
 
       {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
@@ -108,7 +105,9 @@ defmodule Pan.Parser.Download do
   end
 
   defp get(url) do
-    HTTPoison.get(url, ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
+    HTTPoison.get(
+      url,
+      ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
       recv_timeout: 10_000,
       timeout: 10_000,
       hackney: [:insecure],
