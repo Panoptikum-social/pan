@@ -11,7 +11,7 @@ defmodule PanWeb.Surface.PodcastCard do
 
     <p :if={@for.inserted_at} class="mt-1">
       <Icon name="calendar-heroicons-outline" />
-      {@for.inserted_at |> Timex.format!("{ISOdate}")}
+      {Calendar.strftime(@for.inserted_at, "%x")}
     </p>
 
     <p if={@for.author_name} class="mt-1">

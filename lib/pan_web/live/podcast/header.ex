@@ -84,11 +84,11 @@ defmodule PanWeb.Live.Podcast.Header do
             </dd>
             {#if @podcast.last_build_date}
               <dt class="justify-self-end font-medium">last modified</dt>
-              <dd class="col-span-3">{@podcast.last_build_date |> Timex.format!("{ISOdate} {h24}:{m}")}</dd>
+              <dd class="col-span-3">{Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}</dd>
             {/if}
             {#if @podcast.latest_episode_publishing_date}
               <dt class="justify-self-end font-medium">last episode published</dt>
-              <dd class="col-span-3">{@podcast.latest_episode_publishing_date |> Timex.format!("{ISOdate} {h24}:{m}")}</dd>
+              <dd class="col-span-3">{Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}</dd>
             {/if}
             {#if @podcast.publication_frequency > 0}
               <dt class="justify-self-end font-medium">publication frequency</dt>

@@ -16,7 +16,7 @@ defmodule PanWeb.Surface.EpisodeCard do
     <p class="mt-1">
       {#if @for.publishing_date}
         published <Icon name="calendar-heroicons-outline" />
-        {@for.publishing_date |> Timex.format!("{ISOdate}")}
+        {Calendar.strftime(@for.publishing_date, "%x")}
       {/if}
       {#if @for.duration}
         Duration &nbsp; <Icon name="stopwatch-lineawesome-solid" /> {@for.duration}

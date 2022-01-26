@@ -32,9 +32,7 @@ defmodule PanWeb.Live.Search do
 
   defp format_datetime(timestamp) do
     {:ok, date_time} = DateTime.from_unix(timestamp)
-
-    Timex.to_date(date_time)
-    |> Timex.format!("%e.%m.%Y", :strftime)
+    Calendar.strftime(date_time, "%x")
   end
 
   def show_path(index, id) do

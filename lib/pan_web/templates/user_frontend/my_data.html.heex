@@ -32,7 +32,7 @@
     <dt class="text-right">Shares follows?</dt>
     <dd><%= @user.share_follows %></dd>
     <dt class="text-right">Pro account until</dt>
-    <dd><%= if @user.pro_until, do: Timex.format!(@user.pro_until, "{ISOdate} {h24}:{m}") %></dd>
+    <dd><%= if @user.pro_until, do: Calendar.strftime(@user.pro_until, "%x %H:%M") %></dd>
     <dt class="text-right">Billing address</dt>
     <dd><pre class="text-mono p-4 border border-gray-dark bg-gray-lighter"><%= @user.billing_address %></pre></dd>
     <dt class="text-right">Payment reference</dt>
@@ -131,7 +131,7 @@
   <%= for invoice <- @user.invoices do %>
     <dl class="grid grid-cols-2 gap-x-6 max-w-2xl">
       <dt class="text-right">Date</dt>
-      <dd><%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %></dd>
+      <dd><%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %></dd>
       <dt class="text-right">File</dt>
       <dd><%= link invoice.filename, to: invoice_frontend_path(@conn, :download, invoice) %></dd>
     </dl>
@@ -412,7 +412,7 @@
                                                       target: "_blank" %>
             <% end  %>
           </td>
-          <td class="border border-gray-light"><nobr><%= Timex.format!(recommendation.inserted_at, "{ISOdate} {h24}:{m}:{s}") %></nobr></td>
+          <td class="border border-gray-light"><nobr><%= Calendar.strftime(recommendation.inserted_at, "%c") %></nobr></td>
         </tr>
         <tr class="bg-white">
           <td class="border border-gray-light"><%= recommendation.comment %></td>

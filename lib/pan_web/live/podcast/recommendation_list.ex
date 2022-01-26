@@ -88,7 +88,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
                 <td  class={"p-2",
                             "bg-gray-lighter": Integer.is_even(index)}
                     align="right">
-                  {recommendation.inserted_at |> Timex.to_date |> Timex.format!("%e.%m.%Y", :strftime)}
+                  {Calendar.strftime(recommendation.inserted_at, "%x")}
                 </td>
               </tr>
             {/for}

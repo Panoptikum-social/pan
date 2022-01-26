@@ -103,7 +103,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
             <td class="border border-gray-light">{opml.user_name}</td>
             <td class="border border-gray-light">{opml.content_type}</td>
             <td class="border border-gray-light">{opml.filename}</td>
-            <td class="border border-gray-light"><nobr> {opml.inserted_at |> Timex.format!("{YYYY}-{0M}-{0D} {h24}:{m}:{s}")}</nobr></td>
+            <td class="border border-gray-light"><nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr></td>
             <td class="border border-gray-light">{opml.path}</td>
             <td class="border border-gray-light">
               <LinkButton title="Parse"

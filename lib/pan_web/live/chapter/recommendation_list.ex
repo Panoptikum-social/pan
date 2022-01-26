@@ -43,7 +43,7 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
             </p>
 
             <b>{recommendation.user.name}:</b> {recommendation.comment}
-            <span class="pull-right">{ recommendation.inserted_at |> Timex.format!("{ISOdate} {h24}:{m}")}</span>
+            <span class="pull-right">{Calendar.strftime(recommendation.inserted_at, "%x %H:%M")}</span>
           </li>
         {/for}
       </ul>

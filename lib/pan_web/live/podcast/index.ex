@@ -55,7 +55,7 @@ defmodule PanWeb.Live.Podcast.Index do
                   </td>
                   <td>
                     <Icon name="calendar-heroicons-outline"/>
-                    {Timex.format!(podcast.inserted_at, "{ISOdate}")}
+                    {Calendar.strftime(podcast.inserted_at, "%x")}
                   </td>
                 </tr>
 

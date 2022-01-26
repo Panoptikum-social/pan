@@ -63,7 +63,7 @@ defmodule PanWeb.Live.Episode.Header do
           <dd class="col-span-3">{@episode.duration}</dd>
           {#if @episode.publishing_date}
             <dt class="justify-self-end font-medium">Publishing date</dt>
-            <dd class="col-span-3">{Timex.format!(@episode.publishing_date, "{ISOdate} {h24}:{m}")}</dd>
+            <dd class="col-span-3">{Calendar.strftime(@episode.publishing_date, "%x %H:%M")}</dd>
           {/if}
           {#if @episode.link}
             <dt class="justify-self-end font-medium">Link</dt>

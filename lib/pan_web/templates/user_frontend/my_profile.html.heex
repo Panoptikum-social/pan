@@ -67,8 +67,8 @@
 
       <div class="justify-self-end">Pro account until</div>
       <div>
-        <%= Timex.format!(@user.pro_until, "{ISOdate}") %>
-        <%= Timex.format!(@user.pro_until, "{h24}:{m}") %>
+        <%= Calendar.strftime(@user.pro_until, "%x") %>
+        <%= Calendar.strftime(@user.pro_until, "%H:%M") %>
       </div>
 
       <div class="justify-self-end">Billing address</div>
@@ -114,7 +114,7 @@
     <ul class="list-disc my-4 ml-4">
       <%= for invoice <- @user.invoices do %>
         <li>
-          <%= icon("calendar-heroicons-outline") %> <%= Timex.format!(invoice.inserted_at, "{ISOdate} {h24}:{m}") %>
+          <%= icon("calendar-heroicons-outline") %> <%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %>
           &nbsp; &nbsp;
           <%= link [icon("document-download-heroicons-outline"), " ", invoice.filename],
                    to: invoice_frontend_path(@conn, :download, invoice),

@@ -30,8 +30,8 @@
 
         <div class="text-right" ><label class="label label-info">Available since</label></div>
         <div class="col-span-2">
-          <%= icon("calendar-heroicons-outline") %>
-          <%= Timex.format!(@podcast.inserted_at, "{ISOdate}") %>
+          <%= icon("calendar-heroicons-outline") %>          
+          <%= Calendar.strftime(@podcast.inserted_at, "%x") %>
         </div>
 
         <div class="text-right"><label class="label label-warning">Categories</label></div>

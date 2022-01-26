@@ -276,7 +276,7 @@ defmodule PanWeb.UserFrontendController do
 
   def go_pro(conn, _params, user) do
     unless user.pro_until do
-      payment_reference = "pan-#{user.id}-" <> Timex.format!(now(), "{ISOdate}")
+      payment_reference = "pan-#{user.id}-" <> Calendar.strftime(now(), "%x")
 
       User.changeset(user, %{
         pro_until: time_shift(now(), days: 30),

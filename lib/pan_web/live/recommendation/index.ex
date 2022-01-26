@@ -30,7 +30,7 @@ defmodule PanWeb.Live.Recommendation.Index do
               <span><UserButton for={recommendation.user} /> recommended</span>
               <div>
                 <Icon name="calendar-heroicons-outline" />
-                {recommendation.inserted_at |> Timex.format!("{ISOdate}")}
+                {Calendar.strftime(recommendation.inserted_at, "%x")}
               </div>
             </div>
 

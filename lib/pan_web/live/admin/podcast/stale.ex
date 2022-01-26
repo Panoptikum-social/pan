@@ -94,9 +94,9 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
                           to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
                           class="border-gray text-white bg-primary hover:bg-primary-light rounded" /></td>
             <td class="border border-gray-light">{podcast.title}</td>
-            <td class="border border-gray-light whitespace-nowrap">{podcast.updated_at |> Timex.format!("{ISOdate} {h24}:{m}:{s}")}</td>
+            <td class="border border-gray-light whitespace-nowrap">{Calendar.strftime(podcast.updated_at, "%c")}</td>
             <td class="border border-gray-light">{podcast.update_intervall}</td>
-            <td class="border border-gray-light whitespace-nowrap">{podcast.next_update |> Timex.format!("{ISOdate} {h24}:{m}:{s}")}</td>
+            <td class="border border-gray-light whitespace-nowrap">{Calendar.strftime(podcast.next_update, "%c")}</td>
             <td class="border border-gray-light">{podcast.failure_count}</td>
             <td class="border border-gray-light">{podcast.feed_url}</td>
           </tr>
