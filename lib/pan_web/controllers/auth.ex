@@ -1,7 +1,7 @@
 defmodule PanWeb.Auth do
   import Plug.Conn
   import Bcrypt, only: [verify_pass: 2, no_user_verify: 0]
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1]
   alias Pan.Repo
   alias PanWeb.User
 
@@ -112,8 +112,7 @@ defmodule PanWeb.Auth do
   def authenticate_pro(conn, _opts) do
     current_user = conn.assigns.current_user
 
-    if current_user && current_user.pro_until != nil &&
-         NaiveDateTime.compare(current_user.pro_until, now()) == :gt do
+    if current_user && in_the_future?(current_user.pro_until) do
       conn
     else
       conn

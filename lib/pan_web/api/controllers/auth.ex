@@ -3,7 +3,7 @@ defmodule PanWeb.Api.Auth do
   import PanWeb.Api.Helpers, only: [send_401: 2]
   alias Pan.Repo
   alias PanWeb.User
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -11,8 +11,7 @@ defmodule PanWeb.Api.Auth do
 
   def call(conn, _repo) do
     token =
-      conn
-      |> get_req_header("authorization")
+      get_req_header(conn, "authorization")
       |> List.first()
 
     token = token && String.slice(token, 7..-1)
@@ -24,8 +23,7 @@ defmodule PanWeb.Api.Auth do
         if user.email_confirmed do
           assign(conn, :current_user, user)
         else
-          conn
-          |> assign(:current_user, nil)
+          assign(conn, :current_user, nil)
           |> assign(
             :api_error,
             "email address not confirmed yet, click the confirmation link in the email"
@@ -33,8 +31,7 @@ defmodule PanWeb.Api.Auth do
         end
 
       {:error, error} ->
-        conn
-        |> assign(:current_user, nil)
+        assign(conn, :current_user, nil)
         |> assign(:api_error, "token " <> Atom.to_string(error))
     end
   end
@@ -43,22 +40,17 @@ defmodule PanWeb.Api.Auth do
     if conn.assigns.current_user do
       conn
     else
-      conn
-      |> send_401(conn.assigns.api_error)
+      send_401(conn, conn.assigns.api_error)
     end
   end
 
   def authenticate_api_pro_user(conn, _opts) do
     current_user = conn.assigns.current_user
 
-    if current_user && current_user.pro_until != nil &&
-         NaiveDateTime.compare(current_user.pro_until, now()) == :gt do
+    if current_user && in_the_future?(current_user.pro_until) do
       conn
     else
-      error = conn.assigns.api_error || "Pro account needed"
-
-      conn
-      |> send_401(error)
+      send_401(conn, conn.assigns.api_error || "Pro account needed")
     end
   end
 end

@@ -1,10 +1,8 @@
 defmodule PanWeb.UserFrontendView do
   use PanWeb, :view
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1]
 
-  def pro(user) do
-    user.pro_until != nil && NaiveDateTime.compare(user.pro_until, now()) == :gt
-  end
+  def pro(user), do: in_the_future?(user.pro_until)
 
   def pro_days_left(user) do
     Timex.diff(user.pro_until, now(), :days)

@@ -3,7 +3,7 @@ defmodule PanWeb.Api.SessionController do
   use JaSerializer
   alias PanWeb.{Auth, Endpoint}
   import PanWeb.Api.Helpers, only: [send_401: 2]
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   def login(conn, %{"username" => username, "password" => given_pass}) do
     conn = fetch_session(conn)
@@ -25,7 +25,7 @@ defmodule PanWeb.Api.SessionController do
           token: token,
           inserted_at: now(),
           valid_for: "1 hour",
-          valid_until: Timex.shift(now(), hours: 1)
+          valid_until: time_shift(now(), hours: 1)
         }
 
         conn = Plug.Conn.put_resp_header(conn, "token", token)

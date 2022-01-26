@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   use Surface.LiveComponent
   alias PanWeb.Live.Podcast.{LikeButton, FollowButton, SubscribeButton}
   import PanWeb.Router.Helpers
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
@@ -34,7 +34,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         </p>
 
         {#if !@podcast.manually_updated_at or
-              (Timex.compare(Timex.shift(@podcast.manually_updated_at, hours: 1), now()) == -1)}
+              (Timex.compare(time_shift(@podcast.manually_updated_at, hours: 1), now()) == -1)}
           <div class="mt-4">
             <button :on-click="trigger-update"
                     class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1">
@@ -68,7 +68,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         {#else}
           <small>
             A manual update will be available in
-            {Timex.Comparable.diff(Timex.shift(@podcast.manually_updated_at, hours: 1), now(), :minutes)}
+            {Timex.Comparable.diff(time_shift(@podcast.manually_updated_at, hours: 1), now(), :minutes)}
             minutes.
           </small>
         {/if}

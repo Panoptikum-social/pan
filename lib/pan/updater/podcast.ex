@@ -4,7 +4,7 @@ defmodule Pan.Updater.Podcast do
   alias Pan.Parser.{Download, Feed, Persistor}
   alias Pan.Updater.RssFeed
   alias PanWeb.Podcast
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   require Logger
 
   def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false) do
@@ -48,7 +48,7 @@ defmodule Pan.Updater.Podcast do
   end
 
   defp set_next_update(podcast) do
-    next_update = Timex.shift(now(), hours: podcast.update_intervall + 1)
+    next_update = time_shift(now(), hours: podcast.update_intervall + 1)
 
     Podcast.changeset(podcast, %{
       update_intervall: podcast.update_intervall + 1,

@@ -3,7 +3,7 @@ defmodule Pan.Parser.Episode do
   alias Pan.Repo
   alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
   require Logger
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   def get_or_insert(episode_map, podcast_id) do
     case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
@@ -58,7 +58,7 @@ defmodule Pan.Parser.Episode do
     |> Repo.get(podcast_id)
     |> PanWeb.Podcast.changeset(%{
       update_intervall: 10,
-      next_update: Timex.shift(now(), hours: 10)
+      next_update: time_shift(now(), hours: 10)
     })
     |> Repo.update()
 
@@ -81,14 +81,10 @@ defmodule Pan.Parser.Episode do
   def update_from_feed_many(episodes_map, podcast) do
     for {_, episode_map} <- episodes_map, do: update_from_feed_one(episode_map, podcast)
 
-    # delete derprecated episodes
-    one_hour_ago = Timex.shift(now(), hours: -1)
-
+    # delete deprecated episodes
     episodes =
       from(e in PanWeb.Episode,
-        where:
-          e.podcast_id == ^podcast.id and
-            e.updated_at < ^one_hour_ago
+        where: e.podcast_id == ^podcast.id and e.updated_at < ^time_shift(now(), hours: -1)
       )
       |> Repo.all()
 
@@ -178,13 +174,11 @@ defmodule Pan.Parser.Episode do
       Chapter.insert_or_touch(chapter_map, episode_id)
     end
 
-    # delete derprecated chapters
-    one_hour_ago = Timex.shift(now(), hours: -1)
-
+    # delete deprecated chapters
     from(c in PanWeb.Chapter,
       where:
         c.episode_id == ^episode_id and
-          c.updated_at < ^one_hour_ago
+          c.updated_at < ^time_shift(now(), hours: -1)
     )
     |> Repo.delete_all()
   end

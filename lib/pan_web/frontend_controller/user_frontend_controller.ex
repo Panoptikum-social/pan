@@ -1,7 +1,7 @@
 defmodule PanWeb.UserFrontendController do
   use PanWeb, :controller
   alias PanWeb.{CategoryPodcast, Follow, Like, Persona, Podcast, Subscription, User}
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   plug(:scrub_params, "user" when action in [:create, :update])
 
@@ -279,7 +279,7 @@ defmodule PanWeb.UserFrontendController do
       payment_reference = "pan-#{user.id}-" <> Timex.format!(now(), "{ISOdate}")
 
       User.changeset(user, %{
-        pro_until: Timex.shift(now(), days: 30),
+        pro_until: time_shift(now(), days: 30),
         payment_reference: payment_reference,
         billing_address: user.name
       })

@@ -3,7 +3,7 @@ defmodule PanWeb.Api.PodcastController do
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1, time_shift: 2]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -128,7 +128,7 @@ defmodule PanWeb.Api.PodcastController do
     else
       if !podcast.manually_updated_at or
            NaiveDateTime.add(podcast.manually_updated_at, 3600, :second)
-           |> NaiveDateTime.compare(now()) == :gt do
+           |> in_the_future?() do
         podcast
         |> Podcast.changeset(%{manually_updated_at: now()})
         |> Repo.update()
@@ -137,8 +137,7 @@ defmodule PanWeb.Api.PodcastController do
         show(conn, params, nil)
       else
         minutes =
-          podcast.manually_updated_at
-          |> Timex.shift(hours: 1)
+          time_shift(podcast.manually_updated_at, hours: 1)
           |> Timex.Comparable.diff(now(), :minutes)
 
         Helpers.send_error(
@@ -163,10 +162,9 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), now()) == -1 do
-        thirty_minutes_ago = Timex.shift(now(), minutes: -30)
+           Timex.compare(time_shift(podcast.manually_updated_at, hours: 1), now()) == -1 do
 
-        Podcast.changeset(podcast, %{manually_updated_at: thirty_minutes_ago})
+        Podcast.changeset(podcast, %{manually_updated_at: time_shift(now(), minutes: -30)})
         |> Repo.update()
 
         case Pan.Updater.Podcast.import_new_episodes(
@@ -179,8 +177,7 @@ defmodule PanWeb.Api.PodcastController do
         end
       else
         minutes =
-          podcast.manually_updated_at
-          |> Timex.shift(hours: 1)
+          time_shift(podcast.manually_updated_at, hours: 1)
           |> Timex.Comparable.diff(now(), :minutes)
 
         Helpers.send_error(

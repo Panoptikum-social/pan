@@ -1,6 +1,6 @@
 defmodule PanWeb.Podcast do
   use PanWeb, :model
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   alias Pan.{Repo, Search}
 
   alias PanWeb.{
@@ -345,10 +345,7 @@ defmodule PanWeb.Podcast do
 
     # approximate solution for u_i*(u_i+1)/2 = hours
     update_intervall = round(:math.sqrt(8 * hours) / 2)
-
-    next_update =
-      now()
-      |> Timex.shift(hours: update_intervall)
+    next_update = time_shift(now(), hours: update_intervall)
 
     Repo.get(Podcast, id)
     |> Podcast.changeset(%{update_intervall: update_intervall, next_update: next_update})
