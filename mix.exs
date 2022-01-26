@@ -62,7 +62,7 @@ defmodule Pan.MixProject do
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 3.0"},
       # time conversion
-      {:timex, "~> 3.4"},
+      {:timex, "~> 3.7"},
       # http client
       {:httpoison, "~> 1.6"},
       # XML parser
@@ -90,7 +90,7 @@ defmodule Pan.MixProject do
       # QR Code generation
       {:eqrcode, "~> 0.1.7"},
       # Creating a pidfile
-      {:pid_file, "~> 0.1.1"},
+      {:pid_file, "~> 0.2"},
 
       # Mix task invoking esbuild
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},

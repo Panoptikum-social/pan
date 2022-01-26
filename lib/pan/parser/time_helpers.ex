@@ -4,7 +4,6 @@ defmodule Pan.Parser.MyDateTime do
     |> NaiveDateTime.truncate(:second)
   end
 
-
   def in_the_future?(nil), do: false
   def in_the_future?(naive_date_time) do
     NaiveDateTime.compare(naive_date_time, now()) == :gt

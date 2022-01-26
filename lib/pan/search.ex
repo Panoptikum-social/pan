@@ -3,7 +3,6 @@ defmodule Pan.Search do
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
   require Logger
-  alias HTTPoison.Response
 
   def migrate do
     # Search.Category.migrate()
@@ -43,7 +42,7 @@ defmodule Pan.Search do
         |> Enum.map(&struct_function.(&1))
         |> Enum.map_join("\n", &Jason.encode!(&1))
 
-      {:ok, %Response{status_code: response_code, body: response_body}} =
+      {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} =
         Search.Manticore.post(data, "bulk")
 
       if response_code in [200, 201] do
@@ -104,7 +103,7 @@ defmodule Pan.Search do
         {"Content-Type", "application/x-ndjson"}
       ])
 
-    {:ok, %Response{body: response_body}} = response
+    {:ok, %HTTPoison.Response{body: response_body}} = response
     {:ok, search_result} = Jason.decode(response_body)
 
     search_result["hits"]

@@ -183,36 +183,26 @@ defmodule Pan.Parser.Download do
     Feed.check_for_redirect_loop(url, redirect_target, feed_id)
   end
 
-  def get(url, option \\ nil) do
+  def get(url, option) do
     headers =
-      case option do
-        "no_headers" ->
-          []
-
-        _ ->
-          ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"]
+      if option == "no_headers" do
+        []
+      else
+        ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"]
       end
 
-    options =
-      case option do
-        "unset_tls_version" ->
-          [
-            recv_timeout: 10_000,
-            timeout: 10_000,
-            hackney: [:insecure],
-            ssl: [{:versions, [:"tlsv1.2"]}]
-          ]
-
-        _ ->
-          [
-            recv_timeout: 10_000,
-            timeout: 10_000,
-            hackney: [:insecure],
-            # HAS20200518 removed sslv3 for tlsv1.3
-            ssl: [{:versions, [:"tlsv1.2", :"tlsv1.1", :tlsv1]}]
-          ]
+      ssl_versions =
+      if option == "unset_tls_version" do
+        [:"tlsv1.2"]
+      else
+        [:"tlsv1.2", :"tlsv1.1", :tlsv1]
       end
 
-    HTTPoison.get(url, headers, options)
+    HTTPoison.get(url, headers, [
+      recv_timeout: 10_000,
+      timeout: 10_000,
+      hackney: [:insecure],
+      ssl: [{:versions, ssl_versions}]
+    ])
   end
 end
