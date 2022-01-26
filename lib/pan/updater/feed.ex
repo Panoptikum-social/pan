@@ -64,8 +64,8 @@ defmodule Pan.Updater.Feed do
     # We allow for a difference of (rather arbitrary) 100 seconds between last_modified header
     # and the last build date of the podcast or the publishing date of latest episode:
     if (podcast.last_build_date &&
-          abs(NaiveDateTime.diff(podcast.last_build_date, last_modified, :seconds)) < 100) ||
-         abs(NaiveDateTime.diff(podcast.latest_episode_publishing_date, last_modified, :seconds)) < 100 do
+          abs(NaiveDateTime.diff(podcast.last_build_date, last_modified)) < 100) ||
+         abs(NaiveDateTime.diff(podcast.latest_episode_publishing_date, last_modified)) < 100 do
       Feed.changeset(feed, %{last_modified: last_modified, trust_last_modified: true})
       |> Repo.update()
 
