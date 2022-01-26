@@ -51,15 +51,7 @@ defmodule Pan.Parser.Download do
         check_for_rss(feed_xml)
 
       {:ok, %Response{status_code: status_code}}
-      when status_code in [204, 304, 307, 400, 401, 402, 403, 404, 406, 408, 410, 416, 422] ->
-        {:error, Map.get(error_map, status_code)}
-
-      {:ok, %Response{status_code: status_code}}
-      when status_code in [423, 429, 451, 479, 500, 501, 502, 503, 504, 508, 509, 520, 521] ->
-        {:error, Map.get(error_map, status_code)}
-
-      {:ok, %Response{status_code: status_code}}
-      when status_code in [523, 526, 530] ->
+      when status_code in [204, 304, 307, 400, 401, 402, 403, 404, 406, 408, 410, 416, 422, 423, 429, 451, 479, 500, 501, 502, 503, 504, 508, 509, 520, 521,523, 526, 530] ->
         {:error, Map.get(error_map, status_code)}
 
       {:ok, %Response{status_code: status_code, headers: headers}}
@@ -70,11 +62,7 @@ defmodule Pan.Parser.Download do
         Logger.error("status_code unknown #{inspect(code)}")
 
       {:error, %Error{id: nil, reason: reason}}
-      when reason in [ :timeout, :ehostunreach, :nxdomain, :connect_timeout, :econnrefused] ->
-        {:error, Map.get(error_translations, reason)}
-
-      {:error, %Error{id: nil, reason: reason}}
-      when reason in [:closed] ->
+      when reason in [:timeout, :ehostunreach, :nxdomain, :connect_timeout, :econnrefused, :closed] ->
         {:error, Map.get(error_translations, reason)}
 
       {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
@@ -110,7 +98,6 @@ defmodule Pan.Parser.Download do
       ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
       recv_timeout: 10_000,
       timeout: 10_000,
-      hackney: [:insecure],
       ssl: [{:versions, [:"tlsv1.2"]}]
     )
   end
