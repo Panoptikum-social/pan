@@ -4,6 +4,7 @@ defmodule Pan.Updater.Podcast do
   alias Pan.Parser.{Download, Feed, Persistor}
   alias Pan.Updater.RssFeed
   alias PanWeb.Podcast
+  import Pan.Parser.MyDateTime, only: [now: 0]
   require Logger
 
   def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false) do
@@ -47,7 +48,7 @@ defmodule Pan.Updater.Podcast do
   end
 
   defp set_next_update(podcast) do
-    next_update = Timex.shift(Timex.now(), hours: podcast.update_intervall + 1)
+    next_update = Timex.shift(now(), hours: podcast.update_intervall + 1)
 
     Podcast.changeset(podcast, %{
       update_intervall: podcast.update_intervall + 1,
@@ -83,7 +84,7 @@ defmodule Pan.Updater.Podcast do
     Podcast.changeset(podcast, %{
       failure_count: (podcast.failure_count || 0) + 1,
       last_error_message: message,
-      last_error_occured: NaiveDateTime.utc_now()
+      last_error_occured: now()
     })
     |> Repo.update(force: true)
 

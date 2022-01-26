@@ -2,6 +2,7 @@ defmodule PanWeb.Api.EpisodeController do
   use PanWeb, :controller
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode}
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def index(conn, params) do
     page =
@@ -22,7 +23,7 @@ defmodule PanWeb.Api.EpisodeController do
         join: p in assoc(e, :podcast),
         where:
           not p.blocked and
-            e.publishing_date < ^NaiveDateTime.utc_now()
+            e.publishing_date < ^now()
       )
       |> Repo.aggregate(:count)
 
@@ -38,7 +39,7 @@ defmodule PanWeb.Api.EpisodeController do
         join: p in assoc(e, :podcast),
         where:
           not p.blocked and
-            e.publishing_date < ^NaiveDateTime.utc_now(),
+            e.publishing_date < ^now(),
         order_by: [desc: :publishing_date],
         preload: [:podcast, :gigs, :contributors],
         limit: ^size,
@@ -89,7 +90,7 @@ defmodule PanWeb.Api.EpisodeController do
     offset = (page - 1) * size
 
     hits = Pan.Search.query(index: "episodes", term: params["filter"], limit: size, offset: offset)
-    
+
     if hits["total"] > 0 do
       total = Enum.min([hits["total"], 10_000])
       total_pages = div(total - 1, size) + 1

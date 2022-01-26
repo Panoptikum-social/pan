@@ -3,7 +3,7 @@ defmodule Pan.Parser.Episode do
   alias Pan.Repo
   alias Pan.Parser.{Author, Chapter, Contributor, Enclosure}
   require Logger
-  import Pan.Parser.Helpers, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def get_or_insert(episode_map, podcast_id) do
     case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
@@ -82,9 +82,7 @@ defmodule Pan.Parser.Episode do
     for {_, episode_map} <- episodes_map, do: update_from_feed_one(episode_map, podcast)
 
     # delete derprecated episodes
-    one_hour_ago =
-      Timex.now()
-      |> Timex.shift(hours: -1)
+    one_hour_ago = Timex.shift(now(), hours: -1)
 
     episodes =
       from(e in PanWeb.Episode,
@@ -181,9 +179,7 @@ defmodule Pan.Parser.Episode do
     end
 
     # delete derprecated chapters
-    one_hour_ago =
-      Timex.now()
-      |> Timex.shift(hours: -1)
+    one_hour_ago = Timex.shift(now(), hours: -1)
 
     from(c in PanWeb.Chapter,
       where:

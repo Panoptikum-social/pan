@@ -7,7 +7,7 @@ defmodule PanWeb.Live.Persona.Edit do
   alias Surface.Components.Form
   alias Surface.Components.Form.{TextInput, Label, Field}
   import PanWeb.Router.Helpers
-  import NaiveDateTime, only: [compare: 2, utc_now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def mount(%{"id" => id}, _session, %{assigns: assigns} = socket) do
     manifestation = Manifestation.get_with_persona(assigns.current_user_id, id)
@@ -35,13 +35,13 @@ defmodule PanWeb.Live.Persona.Edit do
   end
 
   defp pro(user) do
-    user.pro_until != nil && compare(user.pro_until, utc_now()) == :gt
+    user.pro_until != nil && NaiveDateTime.compare(user.pro_until, now()) == :gt
   end
 
   def handle_event("validate", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
     changeset =
       if assigns.current_user.pro_until &&
-           NaiveDateTime.compare(assigns.current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+           NaiveDateTime.compare(assigns.current_user.pro_until, now()) == :gt do
         Persona.pro_user_changeset(assigns.persona, persona_params)
       else
         Persona.user_changeset(assigns.persona, persona_params)
@@ -53,7 +53,7 @@ defmodule PanWeb.Live.Persona.Edit do
   def handle_event("save", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
     changeset =
       if assigns.current_user.pro_until &&
-           NaiveDateTime.compare(assigns.current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+           NaiveDateTime.compare(assigns.current_user.pro_until, now()) == :gt do
         thumbnail = Image.get_by_persona_id(assigns.persona.id)
         if thumbnail, do: Image.delete_asset(thumbnail)
         Image.download_thumbnail("persona", assigns.persona.id, persona_params["image_url"])

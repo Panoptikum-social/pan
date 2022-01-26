@@ -3,7 +3,7 @@ defmodule Pan.Parser.Podcast do
   alias Pan.Parser.{Feed, Language, Persistor, RssFeed}
   alias PanWeb.Podcast
   require Logger
-  import Pan.Parser.Helpers, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def get_or_insert(podcast_map) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
@@ -59,7 +59,7 @@ defmodule Pan.Parser.Podcast do
   end
 
   defp update_manually_updated_at(podcast) do
-    Podcast.changeset(podcast, %{manually_updated_at: Timex.now()})
+    Podcast.changeset(podcast, %{manually_updated_at: now()})
     |> Repo.update()
   end
 

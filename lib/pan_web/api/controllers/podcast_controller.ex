@@ -3,6 +3,7 @@ defmodule PanWeb.Api.PodcastController do
   use JaSerializer
   alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -126,9 +127,10 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
+           NaiveDateTime.add(podcast.manually_updated_at, 3600, :second)
+           |> NaiveDateTime.compare(now()) == :gt do
         podcast
-        |> Podcast.changeset(%{manually_updated_at: Timex.now()})
+        |> Podcast.changeset(%{manually_updated_at: now()})
         |> Repo.update()
 
         Pan.Parser.Podcast.update_from_feed(podcast)
@@ -137,7 +139,7 @@ defmodule PanWeb.Api.PodcastController do
         minutes =
           podcast.manually_updated_at
           |> Timex.shift(hours: 1)
-          |> Timex.Comparable.diff(Timex.now(), :minutes)
+          |> Timex.Comparable.diff(now(), :minutes)
 
         Helpers.send_error(
           conn,
@@ -161,10 +163,8 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), Timex.now()) == -1 do
-        thirty_minutes_ago =
-          Timex.now()
-          |> Timex.shift(minutes: -30)
+           Timex.compare(Timex.shift(podcast.manually_updated_at, hours: 1), now()) == -1 do
+        thirty_minutes_ago = Timex.shift(now(), minutes: -30)
 
         Podcast.changeset(podcast, %{manually_updated_at: thirty_minutes_ago})
         |> Repo.update()
@@ -181,7 +181,7 @@ defmodule PanWeb.Api.PodcastController do
         minutes =
           podcast.manually_updated_at
           |> Timex.shift(hours: 1)
-          |> Timex.Comparable.diff(Timex.now(), :minutes)
+          |> Timex.Comparable.diff(now(), :minutes)
 
         Helpers.send_error(
           conn,
@@ -212,7 +212,7 @@ defmodule PanWeb.Api.PodcastController do
         where:
           not p.blocked and
             not is_nil(p.latest_episode_publishing_date) and
-            p.latest_episode_publishing_date < ^NaiveDateTime.utc_now()
+            p.latest_episode_publishing_date < ^now()
       )
       |> Repo.aggregate(:count)
 
@@ -228,7 +228,7 @@ defmodule PanWeb.Api.PodcastController do
         where:
           not p.blocked and
             not is_nil(p.latest_episode_publishing_date) and
-            p.latest_episode_publishing_date < ^NaiveDateTime.utc_now(),
+            p.latest_episode_publishing_date < ^now(),
         order_by: [desc: :latest_episode_publishing_date],
         limit: ^size,
         offset: ^offset

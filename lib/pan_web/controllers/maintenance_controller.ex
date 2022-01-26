@@ -1,6 +1,6 @@
 defmodule PanWeb.MaintenanceController do
   use PanWeb, :controller
-
+  import Pan.Parser.MyDateTime, only: [now: 0]
   alias PanWeb.{
     Category,
     Delegation,
@@ -92,7 +92,7 @@ defmodule PanWeb.MaintenanceController do
     stale_podcasts =
       from(p in Podcast,
         where:
-          p.next_update <= ^Timex.now() and
+          p.next_update <= ^now() and
             not p.update_paused and
             not p.retired
       )

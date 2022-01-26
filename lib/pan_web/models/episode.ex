@@ -2,6 +2,7 @@ defmodule PanWeb.Episode do
   use PanWeb, :model
   alias Pan.Repo
   alias PanWeb.{Chapter, Enclosure, Episode, Gig, Like, Persona, Podcast, Recommendation}
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   schema "episodes" do
     field(:title, :string)
@@ -86,7 +87,7 @@ defmodule PanWeb.Episode do
       join: p in assoc(e, :podcast),
       where:
         not p.blocked and
-          e.publishing_date < ^NaiveDateTime.utc_now(),
+          e.publishing_date < ^now(),
       left_join: g in assoc(e, :gigs),
       where: g.role == "author",
       left_join: persona in assoc(g, :persona),
@@ -113,7 +114,7 @@ defmodule PanWeb.Episode do
       join: p in assoc(e, :podcast),
       where:
         not p.blocked and
-          e.publishing_date < ^NaiveDateTime.utc_now() and
+          e.publishing_date < ^now() and
           e.podcast_id in ^podcast_ids,
       left_join: g in assoc(e, :gigs),
       where: g.role == "author",

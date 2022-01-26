@@ -305,10 +305,4 @@ defmodule Pan.Parser.Helpers do
     :crypto.hash(:md5, xml)
     |> Base.encode16()
   end
-
-  def now() do
-    Timex.now()
-    |> DateTime.truncate(:second)
-    |> Timex.to_naive_datetime()
-  end
 end

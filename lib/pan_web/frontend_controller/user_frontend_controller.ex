@@ -1,6 +1,7 @@
 defmodule PanWeb.UserFrontendController do
   use PanWeb, :controller
   alias PanWeb.{CategoryPodcast, Follow, Like, Persona, Podcast, Subscription, User}
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   plug(:scrub_params, "user" when action in [:create, :update])
 
@@ -275,10 +276,10 @@ defmodule PanWeb.UserFrontendController do
 
   def go_pro(conn, _params, user) do
     unless user.pro_until do
-      payment_reference = "pan-#{user.id}-" <> Timex.format!(Timex.now(), "{ISOdate}")
+      payment_reference = "pan-#{user.id}-" <> Timex.format!(now(), "{ISOdate}")
 
       User.changeset(user, %{
-        pro_until: Timex.shift(Timex.now(), days: 30),
+        pro_until: Timex.shift(now(), days: 30),
         payment_reference: payment_reference,
         billing_address: user.name
       })

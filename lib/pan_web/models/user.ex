@@ -18,6 +18,8 @@ defmodule PanWeb.User do
     Subscription
   }
 
+  import Pan.Parser.MyDateTime, only: [now: 0]
+
   schema "users" do
     field(:name, :string)
     field(:username, :string)
@@ -338,13 +340,8 @@ defmodule PanWeb.User do
   end
 
   def pro_expiration() do
-    in_seven_days =
-      Timex.now()
-      |> Timex.shift(days: 7)
-
-    in_six_days =
-      Timex.now()
-      |> Timex.shift(days: 6)
+    in_seven_days = Timex.shift(now(), days: 7)
+    in_six_days = Timex.shift(now() , days: 6)
 
     emails =
       from(u in User,

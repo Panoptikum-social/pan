@@ -92,7 +92,7 @@
           <%= for delegate_persona <- @user.personas do %>
             <%= if delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
               <li class="flex space-x-2 items-center">
-                <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                <%= if pro(@user) do %>
                   <%= link [icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"), " Cancel Delegation"],
                           to: persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
                           class: "bg-warning text-white border border-gray-dark hover:bg-warning-light 
@@ -112,7 +112,7 @@
             <%= unless delegate_persona.id in Enum.map(persona.delegates, fn(delegate) -> delegate.id end) do %>
               <%= if delegate_persona != persona do %>
                 <li class="flex space-x-2 items-center">
-                  <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                  <%= if pro(@user) do %>
                     <%= link [icon("link-heroicons-outline", class: "h-4 w-4 inline"), " Delegate"],
                               to: persona_frontend_path(@conn, :toggle_delegation, persona.id,
                                                         delegate_id: delegate_persona.id),
@@ -137,7 +137,7 @@
         <ul class="flex flex-col space-y-1">
           <%= if persona.redirect do %>
             <li class="flex space-x-2 items-center">
-              <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+              <%= if pro(@user) do %>
                 <%= link [icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"), " Cancel Redirection"],
                           to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
                           class: "bg-warning text-white border border-gray-dark hover:bg-warning-light 
@@ -156,7 +156,7 @@
             <%= for target_persona <- @user.personas do %>
               <%= if target_persona.id != persona.id do %>
                 <li class="flex space-x-2 items-center">
-                  <%= if @user.pro_until && compare(@user.pro_until, utc_now()) == :gt do %>
+                  <%= if pro(@user) do %>
                     <%= link [icon("arrow-sm-right-heroicons-outline", class: "h-4 w-4 inline"), " Redirect"],
                               to: persona_frontend_path(@conn, :redirect, persona.id,
                                                         target_id: target_persona.id),

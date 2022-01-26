@@ -1,7 +1,8 @@
 defmodule Pan.Parser.Analyzer do
   import Pan.Parser.Iterator, only: [parse: 3, parse: 4]
   import UUID, only: [uuid1: 0]
-  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1, now: 0]
+  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1]
+  import Pan.Parser.MyDateTime, only: [now: 0]
   require Logger
 
   defdelegate dm(left, right), to: Pan.Parser.Helpers, as: :deep_merge

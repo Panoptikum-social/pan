@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Persistor do
   alias Pan.Repo
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   alias Pan.Parser.{
     AlternateFeed,
@@ -59,7 +60,7 @@ defmodule Pan.Parser.Persistor do
   end
 
   def delta_import(map, podcast) do
-    map = Map.put_new(map, :last_build_date, NaiveDateTime.utc_now())
+    map = Map.put_new(map, :last_build_date, now())
 
     if map.last_build_date != podcast.last_build_date do
       if map[:episodes], do: Episode.persist_many(map.episodes, podcast)

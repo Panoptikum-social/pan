@@ -1,5 +1,6 @@
 defmodule PanWeb.Podcast do
   use PanWeb, :model
+  import Pan.Parser.MyDateTime, only: [now: 0]
   alias Pan.{Repo, Search}
 
   alias PanWeb.{
@@ -263,7 +264,7 @@ defmodule PanWeb.Podcast do
   def get_one_stale do
     from(p in Podcast,
       where:
-        p.next_update <= ^Timex.now() and
+        p.next_update <= ^now() and
           not p.update_paused and not p.retired,
       order_by: [asc: :next_update],
       limit: 1
@@ -340,13 +341,13 @@ defmodule PanWeb.Podcast do
       |> Repo.all()
       |> List.first()
 
-    hours = Timex.diff(Timex.now(), Timex.to_datetime(last_update), :hours)
+    hours = Timex.diff(now(), Timex.to_datetime(last_update), :hours)
 
     # approximate solution for u_i*(u_i+1)/2 = hours
     update_intervall = round(:math.sqrt(8 * hours) / 2)
 
     next_update =
-      Timex.now()
+      now()
       |> Timex.shift(hours: update_intervall)
 
     Repo.get(Podcast, id)
@@ -538,7 +539,7 @@ defmodule PanWeb.Podcast do
   def stale(sort_by, sort_order, limit) do
     from(p in Podcast,
       where:
-        p.next_update <= ^Timex.now() and
+        p.next_update <= ^now() and
           not p.update_paused and not p.retired,
       join: f in assoc(p, :feeds),
       limit: ^limit,
@@ -559,7 +560,7 @@ defmodule PanWeb.Podcast do
   def count_stale() do
     from(p in Podcast,
       where:
-        p.next_update <= ^Timex.now() and
+        p.next_update <= ^now() and
           not p.update_paused and not p.retired
     )
     |> Repo.aggregate(:count)

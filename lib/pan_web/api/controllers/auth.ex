@@ -3,6 +3,7 @@ defmodule PanWeb.Api.Auth do
   import PanWeb.Api.Helpers, only: [send_401: 2]
   alias Pan.Repo
   alias PanWeb.User
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -51,7 +52,7 @@ defmodule PanWeb.Api.Auth do
     current_user = conn.assigns.current_user
 
     if current_user && current_user.pro_until != nil &&
-         NaiveDateTime.compare(current_user.pro_until, NaiveDateTime.utc_now()) == :gt do
+         NaiveDateTime.compare(current_user.pro_until, now()) == :gt do
       conn
     else
       error = conn.assigns.api_error || "Pro account needed"
