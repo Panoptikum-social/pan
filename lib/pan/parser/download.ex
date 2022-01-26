@@ -3,7 +3,7 @@ defmodule Pan.Parser.Download do
   alias Pan.Parser.Feed
   alias HTTPoison.{Error, Response}
 
-  def check_for_rss(feed_xml) do
+  defp check_for_rss(feed_xml) do
     if String.contains?(feed_xml, "<rss") do
       {:ok, feed_xml}
     else
@@ -15,6 +15,7 @@ defmodule Pan.Parser.Download do
     error_map = %{
       204 => "204: no content",
       304 => "304: not modified",
+      307 => "307: temporary redirect",
       400 => "400: bad request",
       401 => "401: unauthorized",
       402 => "402: payment required",
@@ -23,7 +24,31 @@ defmodule Pan.Parser.Download do
       408 => "408: request timeout",
       410 => "410: gone",
       416 => "416: range not satisfiable",
-      422 => "422: unprocessible entity"
+      422 => "422: unprocessible entity",
+      423 => "423: locked",
+      429 => "429: too many requests",
+      451 => "451: unavailable For legal reasons",
+      479 => "479: not a standard status code",
+      500 => "500: internal server error",
+      501 => "501: not implemented",
+      502 => "502: bad gateway",
+      503 => "503: service unavailable",
+      504 => "504: gateway time-out",
+      508 => "508: loop detected",
+      509 => "509: bandwidth limit exceeded",
+      520 => "520: unknown error",
+      521 => "521: web server is down",
+      523 => "523: origin is unreachable",
+      526 => "526: invalid SSL certificate",
+      530 => "530: origin DNS error with cloudflare"
+    }
+
+    error_translations = %{
+      timeout: "Timeout",
+      ehostunreach: "Host unreachable",
+      nxdomain: "Domain not resolveable",
+      connect_timeout: "Connection timeout",
+      econnrefused: "Connection refused"
     }
 
     case get(url, option) do
@@ -32,71 +57,20 @@ defmodule Pan.Parser.Download do
         check_for_rss(feed_xml)
 
       {:ok, %Response{status_code: status_code}}
-      when status_code in [204, 304, 400, 401, 402, 404, 406, 408, 410, 416, 422] ->
+      when status_code in [204, 304, 307, 400, 401, 402, 404, 406, 408, 410, 416, 422, 423] ->
         {:error, Map.get(error_map, status_code)}
 
-      {:ok, %Response{status_code: 423}} ->
-        {:error, "423: locked"}
+      {:ok, %Response{status_code: status_code}}
+      when status_code in [429, 451, 479, 500, 501, 502, 503, 504, 508, 509, 520, 521, 523] ->
+        {:error, Map.get(error_map, status_code)}
 
-      {:ok, %Response{status_code: 429}} ->
-        {:error, "429: too many requests"}
+      {:ok, %Response{status_code: status_code}}
+      when status_code in [526, 530] ->
+        {:error, Map.get(error_map, status_code)}
 
-      {:ok, %Response{status_code: 451}} ->
-        {:error, "451: unavailable For legal reasons"}
-
-      {:ok, %Response{status_code: 479}} ->
-        {:error, "479: not a standard status code"}
-
-      {:ok, %Response{status_code: 500}} ->
-        {:error, "500: internal server error"}
-
-      {:ok, %Response{status_code: 501}} ->
-        {:error, "501: not implemented"}
-
-      {:ok, %Response{status_code: 502}} ->
-        {:error, "502: bad gateway"}
-
-      {:ok, %Response{status_code: 503}} ->
-        {:error, "503: service unavailable"}
-
-      {:ok, %Response{status_code: 504}} ->
-        {:error, "504: gateway time-out"}
-
-      {:ok, %Response{status_code: 508}} ->
-        {:error, "508: loop detected"}
-
-      {:ok, %Response{status_code: 509}} ->
-        {:error, "509: bandwidth limit exceeded"}
-
-      {:ok, %Response{status_code: 520}} ->
-        {:error, "520: unknown error"}
-
-      {:ok, %Response{status_code: 521}} ->
-        {:error, "521: web server is down"}
-
-      {:ok, %Response{status_code: 523}} ->
-        {:error, "523: origin is unreachable"}
-
-      {:ok, %Response{status_code: 526}} ->
-        {:error, "526: invalid SSL certificate"}
-
-      {:ok, %Response{status_code: 530}} ->
-        {:error, "530: origin DNS error with cloudflare"}
-
-      {:ok, %Response{status_code: 301, headers: headers}} ->
+      {:ok, %Response{status_code: status_code, headers: headers}}
+      when status_code in [301, 302, 303, 308] ->
         redirect(url, headers, feed_id)
-
-      {:ok, %Response{status_code: 302, headers: headers}} ->
-        redirect(url, headers, feed_id)
-
-      {:ok, %Response{status_code: 303, headers: headers}} ->
-        redirect(url, headers, feed_id)
-
-      {:ok, %Response{status_code: 308, headers: headers}} ->
-        redirect(url, headers, feed_id)
-
-      {:ok, %Response{status_code: 307}} ->
-        {:error, "307: temporary redirect"}
 
       {:ok, %Response{status_code: 403}} ->
         if option == "no_headers" do
@@ -108,20 +82,9 @@ defmodule Pan.Parser.Download do
       {:ok, %Response{status_code: code}} ->
         Logger.error("status_code unknown #{inspect(code)}")
 
-      {:error, %Error{id: nil, reason: :timeout}} ->
-        {:error, "Timeout"}
-
-      {:error, %Error{id: nil, reason: :ehostunreach}} ->
-        {:error, "Host unreachable"}
-
-      {:error, %Error{id: nil, reason: :nxdomain}} ->
-        {:error, "Domain not resolveable"}
-
-      {:error, %Error{id: nil, reason: :connect_timeout}} ->
-        {:error, "Connection timeout"}
-
-      {:error, %Error{id: nil, reason: :econnrefused}} ->
-        {:error, "Connection refused"}
+      {:error, %Error{id: nil, reason: reason}}
+      when reason in [:timeout, :ehostunreach, :nxdomain, :connect_timeout, :econnrefused] ->
+        {:error, Map.get(error_translations, reason)}
 
       {:error, %Error{id: nil, reason: :closed}} ->
         try_without_tls_set(url, option)
@@ -129,13 +92,8 @@ defmodule Pan.Parser.Download do
       {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
         try_without_tls_set(url, option)
 
-      {:error, %Error{id: nil, reason: {:tls_alert, 'handshake failure'}}} ->
-        try_without_tls_set(url, option)
-
-      {:error, %Error{id: nil, reason: {:tls_alert, 'protocol version'}}} ->
-        try_without_tls_set(url, option)
-
-      {:error, %Error{id: nil, reason: {:tls_alert, 'unrecognised name'}}} ->
+      {:error, %Error{id: nil, reason: {:tls_alert, alert_message}}}
+      when alert_message in ["handshake failure", "protocol version", "unrecognised name"] ->
         try_without_tls_set(url, option)
 
       {:error, reason} ->
@@ -143,7 +101,7 @@ defmodule Pan.Parser.Download do
     end
   end
 
-  def try_without_tls_set(url, option) do
+  defp try_without_tls_set(url, option) do
     case option do
       "unset_tls_version" -> {:error, "Does not work without specifying tls version as well!"}
       _ -> download(url, "unset_tls_version")
