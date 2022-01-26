@@ -1,7 +1,7 @@
 defmodule PanWeb.Auth do
   import Plug.Conn
   import Bcrypt, only: [verify_pass: 2, no_user_verify: 0]
-  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1]
+  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
   alias Pan.Repo
   alias PanWeb.User
 

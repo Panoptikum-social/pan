@@ -7,7 +7,7 @@ defmodule PanWeb.Live.Persona.Edit do
   alias Surface.Components.Form
   alias Surface.Components.Form.{TextInput, Label, Field}
   import PanWeb.Router.Helpers
-  import Pan.Parser.MyDateTime, only: [now: 0, in_the_future?: 1]
+  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
   def mount(%{"id" => id}, _session, %{assigns: assigns} = socket) do
     manifestation = Manifestation.get_with_persona(assigns.current_user_id, id)

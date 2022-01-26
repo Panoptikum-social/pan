@@ -296,9 +296,8 @@ defmodule PanWeb.UserFrontendController do
   end
 
   def delete_my_account(conn, _params, user) do
-    user = Repo.get!(User, user.id)
-
-    Repo.delete!(user)
+    Repo.get!(User, user.id)
+    |> Repo.delete!()
 
     conn
     |> put_flash(:info, "User deleted successfully.")

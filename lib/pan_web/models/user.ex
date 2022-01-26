@@ -343,7 +343,7 @@ defmodule PanWeb.User do
     emails =
       from(u in User,
         where:
-          u.pro_until >= ^in_six_days = time_shift(now() , days: 6) and
+          u.pro_until >= ^time_shift(now() , days: 6) and
             u.pro_until <= ^time_shift(now(), days: 7),
         select: u.email
       )
