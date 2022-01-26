@@ -13,7 +13,7 @@ defmodule Pan.Updater.Podcast do
     with {:ok, _podcast} <- set_next_update(podcast),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
-         {:ok, feed_xml} <- Download.download(feed.self_link_url, nil, feed.id),
+         {:ok, feed_xml} <- Download.download(feed.self_link_url, feed.id),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
