@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Category.Tree do
     ~F"""
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">
       {#for {category, counter} <- @categories |> Enum.with_index}
-        <div class="mx-2 my-4">
+        <div style="break-inside:avoid-column;">
           <p>
             <CategoryButton for={category} index_on_page={counter} large/>
           </p>

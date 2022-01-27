@@ -11,12 +11,12 @@ defmodule PanWeb.Live.Category.StatsTree do
     ~F"""
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 p-4">
       {#for {category, counter} <- @categories |> Enum.with_index}
-        <div class="inline-block">
-          <p class="my-4">
+      <div style="break-inside:avoid-column;">
+          <p>
             <CategoryButton for={category} index_on_page={counter} large />
             <span class="align-top">{length category.podcasts}</span>
           </p>
-          <p class="my-4">
+          <p class="mt-6 -mx-0.5">
             {#for subcategory <- category.children}
               <nobr>
                 <CategoryButton for={subcategory} index_on_page={1} truncate/>
