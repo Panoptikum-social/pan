@@ -3,8 +3,8 @@ defmodule PanWeb.Live.Persona.Show do
   import PanWeb.Router.Helpers
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
-  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Panel}
-  alias PanWeb.Live.Persona.{FollowButton, LikeButton}
+  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Panel, LikeButton}
+  alias PanWeb.Live.Persona.{FollowButton}
   import Phoenix.HTML.Link, only: [link: 2]
 
   def mount(%{"pid" => pid}, _session, socket) do
@@ -123,8 +123,9 @@ defmodule PanWeb.Live.Persona.Show do
         <p :if={@current_user_id}
            class="m-4">
           <LikeButton id="like_button"
-                      persona={@persona}
-                      current_user_id={@current_user_id} />
+                      current_user_id={@current_user_id}
+                      model={Persona}
+                      instance={@persona} />
           <FollowButton id="follow_button"
                         persona={@persona}
                         current_user_id={@current_user_id} />

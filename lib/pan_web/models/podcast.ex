@@ -562,4 +562,8 @@ defmodule PanWeb.Podcast do
     )
     |> Repo.aggregate(:count)
   end
+
+  def likes(id) do
+    get_by_id(id).likes_count
+  end
 end

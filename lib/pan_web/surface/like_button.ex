@@ -25,8 +25,7 @@ defmodule PanWeb.Surface.LikeButton do
 
     socket =
       assign(socket, assigns)
-      |> assign(assigns, liking: liking)
-      |> assign(assigns, likes_count: assigns.model.likes(assigns.instance.id))
+      |> assign(liking: liking, likes_count: assigns.model.likes(assigns.instance.id))
 
     {:ok, socket}
   end
