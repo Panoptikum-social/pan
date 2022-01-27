@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.IndexGrid do
   use Surface.LiveComponent
-  alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
+  alias PanWeb.Endpoint
+  alias PanWeb.Surface.Admin.{Naming, Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
   alias Surface.Components.{LiveRedirect}
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
@@ -348,7 +348,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="show">
+                    :on-click="show_frontend">
                     🔍 Show
             </button>
 
