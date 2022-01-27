@@ -16,19 +16,12 @@ defmodule PanWeb.Surface.Admin.Explorer do
   data(selected, :integer)
 
   def update(assigns, socket) do
-    items =
-      assigns.items
-      |> Tools.ensure_ids_and_selected()
-
+    items = Tools.ensure_ids_and_selected(assigns.items)
     send(self(), {:items, items})
 
     {:ok,
-     socket
-     |> assign(assigns)
-     |> assign(
-       id: assigns.id,
-       items: items
-     )}
+     assign(socket, assigns)
+     |> assign(id: assigns.id, items: items)}
   end
 
   def render(assigns) do

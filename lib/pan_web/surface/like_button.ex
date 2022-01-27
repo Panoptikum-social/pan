@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.LikeButton do
   use Surface.LiveComponent
-  alias PanWeb.{Like, Chapter, Episode, Podcast, Persona, Category}
+  alias PanWeb.{Like, Chapter, Episode, Podcast, Persona, Category, User}
   alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
@@ -10,16 +10,17 @@ defmodule PanWeb.Surface.LikeButton do
   data(likes_count, :integer, default: 0)
 
   def update(assigns, socket) do
-    find_model_like_method = case assigns.model do
+    like_method = case assigns.model do
        Chapter -> &Like.find_chapter_like/2
        Episode -> &Like.find_episode_like/2
        Podcast -> &Like.find_podcast_like/2
        Category -> &Like.find_category_like/2
        Persona -> &Like.find_persona_like/2
+       User -> &Like.find_user_like/2
     end
 
     liking =
-      find_model_like_method.(assigns.current_user_id, assigns.instance.id)
+      like_method.(assigns.current_user_id, assigns.instance.id)
       |> is_nil
       |> Kernel.not()
 

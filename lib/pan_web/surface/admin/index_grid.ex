@@ -60,8 +60,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     primary_key = assigns.model.__schema__(:primary_key)
 
     socket =
-      socket
-      |> assign(assigns)
+      assign(socket, assigns)
       |> assign(primary_key: primary_key)
       |> derive_and_assign_sort_by(assigns)
 

@@ -1,10 +1,10 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   use Surface.LiveComponent
-  alias PanWeb.Live.Podcast.{FollowButton, SubscribeButton}
+  alias PanWeb.Live.Podcast.SubscribeButton
   alias PanWeb.{Endpoint, Podcast}
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
-  alias PanWeb.Surface.{Icon, LikeButton}
+  alias PanWeb.Surface.{Icon, LikeButton, FollowButton}
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)
@@ -29,7 +29,8 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                       instance={@podcast} />
           <FollowButton id="follow_button"
                         current_user_id={@current_user_id}
-                        podcast={@podcast} />
+                        model={Podcast}
+                        instance={@podcast} />
           <SubscribeButton id="subscribe_button"
                           current_user_id={@current_user_id}
                           podcast={@podcast} />

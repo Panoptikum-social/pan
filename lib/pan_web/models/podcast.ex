@@ -566,4 +566,8 @@ defmodule PanWeb.Podcast do
   def likes(id) do
     get_by_id(id).likes_count
   end
+
+  def follows(id) do
+    get_by_id(id).followers_count
+  end
 end

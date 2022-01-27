@@ -4,8 +4,18 @@ defmodule PanWeb.Live.Category.Show do
 
   import PanWeb.Router.Helpers
   alias PanWeb.Category
-  alias PanWeb.Live.Category.FollowButton
-  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton, LikeButton}
+
+  alias PanWeb.Surface.{
+    Panel,
+    PanelHeading,
+    Icon,
+    CategoryButton,
+    PodcastButton,
+    LinkButton,
+    LikeButton,
+    FollowButton
+  }
+
   alias Surface.Components.Link
 
   def mount(%{"id" => id}, session, socket) do
@@ -112,7 +122,8 @@ defmodule PanWeb.Live.Category.Show do
                     instance={@category}/> &nbsp;
         <FollowButton id="follow_button"
                       current_user_id={@current_user_id}
-                      category={@category}/> &nbsp;
+                      model={Category}
+                      instance={@category}/> &nbsp;
       </div>
 
     </Panel>

@@ -1,35 +1,42 @@
-defmodule PanWeb.Live.Persona.FollowButton do
+defmodule PanWeb.Surface.FollowButton do
   use Surface.LiveComponent
-  alias PanWeb.{Follow, Persona}
+  alias PanWeb.{Follow, User, Podcast, Category, Persona}
   alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
-  prop(persona, :map, required: true)
+  prop(instance, :map, required: true)
+  prop(model, :module, required: true)
   data(following, :boolean, default: false)
   data(followers_count, :integer, default: 0)
 
   def update(assigns, socket) do
+    follow_method = case assigns.model do
+      Podcast -> &Follow.find_podcast_follow/2
+      Category -> &Follow.find_category_follow/2
+      Persona -> &Follow.find_persona_follow/2
+      User -> &Follow.find_user_follow/2
+    end
+
     following =
-      Follow.find_persona_follow(assigns.current_user_id, assigns.persona.id)
+      follow_method.(assigns.current_user_id, assigns.instance.id)
       |> is_nil
       |> Kernel.not()
 
     socket =
       assign(socket, assigns)
-      |> assign(following: following)
-      |> assign(followers_count: Persona.follows(assigns.persona.id))
+      |> assign(following: following, followers_count: assigns.model.follows(assigns.instance.id))
 
     {:ok, socket}
   end
 
   def handle_event("toggle-follow", _params, %{assigns: assigns} = socket) do
-    Persona.follow(assigns.persona.id, assigns.current_user_id)
+    assigns.model.follow(assigns.instance.id, assigns.current_user_id)
 
     socket =
       assign(socket,
         following: !assigns.following,
-        persona: Persona.get_by_id(assigns.persona.id),
-        followers_count: Persona.follows(assigns.persona.id)
+        instance: assigns.model.get_by_id(assigns.instance.id),
+        followers_count: assigns.model.follows(assigns.instance.id)
       )
 
     {:noreply, socket}

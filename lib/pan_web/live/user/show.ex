@@ -2,8 +2,7 @@ defmodule PanWeb.Live.User.Show do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like}
-  alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon}
-  alias PanWeb.Live.User.{LikeButton, FollowButton}
+  alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon, LikeButton, FollowButton}
 
   def mount(%{"id" => id}, _session, socket) do
     user = User.get_for_show(id)
@@ -23,10 +22,12 @@ defmodule PanWeb.Live.User.Show do
       <p :if={@current_user_id}>
         <LikeButton id="like_button"
                     current_user_id={@current_user_id}
-                    user={@user} />
+                    model={User}
+                    instance={@user} />
         <FollowButton id="follow_button"
                       current_user_id={@current_user_id}
-                      user={@user} />
+                      model={User}
+                      instance={@user} />
       </p>
 
       <Panel :if={@user.share_subscriptions}
