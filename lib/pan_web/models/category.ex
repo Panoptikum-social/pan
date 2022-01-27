@@ -132,7 +132,7 @@ defmodule PanWeb.Category do
       )
       |> Repo.all()
 
-    %{category: category, podcasts: podcasts}
+    %{category: category, podcasts: podcasts, page_title: category.title <> " (Category)"}
   end
 
   def get_by_id(id) do

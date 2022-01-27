@@ -5,10 +5,13 @@ defmodule PanWeb.Live.Episode.Show do
   alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodlovePlayer}
 
   def mount(%{"id" => id}, _session, socket) do
+    episode = Episode.get_by_id_for_episode_show(id)
+
     {:ok,
      assign(socket,
-       episode: Episode.get_by_id_for_episode_show(id),
-       changeset: %Recommendation{} |> Recommendation.changeset
+       episode: episode,
+       changeset: %Recommendation{} |> Recommendation.changeset,
+       page_title: episode.title <> " (Episode) from " <> episode.podcast.title <> " (Podcast)"
      )}
   end
 

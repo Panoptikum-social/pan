@@ -6,13 +6,16 @@ defmodule PanWeb.Live.Podcast.Show do
   alias PanWeb.Live.Podcast.{Header, RecommendationList, EpisodeList}
 
   def mount(%{"id" => id}, _session, socket) do
+    podcast = Podcast.get_by_id_for_show(id)
+
     socket =
       assign(socket,
-        podcast: Podcast.get_by_id_for_show(id),
+        podcast: podcast,
         page: 1,
         per_page: 10,
         changeset: %Recommendation{} |> Recommendation.changeset,
-        podcast_thumbnail: Image.get_by_podcast_id(id)
+        podcast_thumbnail: Image.get_by_podcast_id(id),
+        page_title: podcast.title <> " (Podcast)"
       )
       |> fetch
 
