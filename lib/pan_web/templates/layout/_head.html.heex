@@ -17,7 +17,13 @@
   <meta name="theme-color" content="#ffffff">
 
   <%= csrf_meta_tag() %>
-  <%= live_title_tag assigns[:page_title] || "Pan", suffix: " · Panoptikum" %>
+
+  <%= if function_exported?(view_module(@conn), :title, 2) do %>
+    <title><%= view_module(@conn).title(view_template(@conn), @conn.assigns) %></title>
+  <%  else %>
+    <%= live_title_tag assigns[:page_title] || "🎧", suffix: " · Panoptikum" %>
+  <% end %>
+  
   <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
   <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
 
