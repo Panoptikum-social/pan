@@ -1,34 +1,44 @@
-defmodule PanWeb.Live.Category.LikeButton do
+defmodule PanWeb.Surface.LikeButton do
   use Surface.LiveComponent
-  alias PanWeb.{Like, Category}
+  alias PanWeb.{Like, Chapter, Episode, Podcast, Persona, Category}
   alias PanWeb.Surface.Icon
 
   prop(current_user_id, :integer, required: true)
-  prop(category, :map, required: true)
+  prop(instance, :map, required: true)
+  prop(model, :module, required: true)
   data(liking, :boolean, default: false)
   data(likes_count, :integer, default: 0)
 
   def update(assigns, socket) do
+    find_model_like_method = case assigns.model do
+       Chapter -> &Like.find_chapter_like/2
+       Episode -> &Like.find_episode_like/2
+       Podcast -> &Like.find_podcast_like/2
+       Category -> &Like.find_category_like/2
+       Persona -> &Like.find_persona_like/2
+    end
+
     liking =
-      Like.find_category_like(assigns.current_user_id, assigns.category.id)
+      find_model_like_method.(assigns.current_user_id, assigns.instance.id)
       |> is_nil
       |> Kernel.not()
 
-      socket =
-        assign(socket, assigns)
-        |> assign(socket, liking: liking)
-        |> assign(socket, likes_count: Category.likes(assigns.category.id))
-      {:ok, socket}
+    socket =
+      assign(socket, assigns)
+      |> assign(assigns, liking: liking)
+      |> assign(assigns, likes_count: assigns.model.likes(assigns.instance.id))
+
+    {:ok, socket}
   end
 
   def handle_event("toggle-like", _params, %{assigns: assigns} = socket) do
-    Category.like(assigns.category.id, assigns.current_user_id)
+    assigns.model.like(assigns.instance.id, assigns.current_user_id)
 
     socket =
       assign(socket,
         liking: !assigns.liking,
-        category: Category.get_by_id(assigns.category.id),
-        likes_count: Category.likes(assigns.category.id)
+        chapter: assigns.model.get_by_id(assigns.instance.id),
+        likes_count: assigns.model.likes(assigns.instance.id)
       )
 
     {:noreply, socket}

@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.Episode.ChapterList do
   use Surface.Component
-  alias PanWeb.Live.Chapter.{LikeButton, RecommendForm, RecommendationList}
+  alias PanWeb.Surface.LikeButton
+  alias PanWeb.Live.Chapter.{RecommendForm, RecommendationList}
 
   prop(current_user_id, :integer, required: true)
   prop(changeset, :map, required: true)
@@ -30,7 +31,8 @@ defmodule PanWeb.Live.Episode.ChapterList do
             <LikeButton :if={@current_user_id}
                         id={"chapter_#{chapter.id}_like_button"}
                         current_user_id={@current_user_id}
-                        chapter={chapter} />
+                        model={PanWeb.Chapter}
+                        instance={chapter} />
           </div>
 
           <RecommendForm id={"recommend-form-#{chapter.id}"}

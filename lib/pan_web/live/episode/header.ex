@@ -1,8 +1,8 @@
 defmodule PanWeb.Live.Episode.Header do
   use Surface.LiveComponent
-  alias PanWeb.User
-  alias PanWeb.Surface.{PodcastButton, PersonaButton, Pill, Icon}
-  alias PanWeb.Live.Episode.{LikeButton, ClaimButton}
+  alias PanWeb.{User, Episode}
+  alias PanWeb.Surface.{PodcastButton, PersonaButton, Pill, Icon, LikeButton}
+  alias PanWeb.Live.Episode.ClaimButton
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
 
   prop(current_user_id, :integer, required: true)
@@ -149,7 +149,8 @@ defmodule PanWeb.Live.Episode.Header do
       <p :if={@current_user_id} class="my-4">
         <LikeButton id="like_episode_button"
                        current_user_id={@current_user_id}
-                       episode={@episode} />
+                       model={Episode}
+                       instance={@episode} />
       </p>
     </div>
     """

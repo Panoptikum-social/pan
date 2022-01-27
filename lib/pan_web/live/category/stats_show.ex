@@ -4,8 +4,8 @@ defmodule PanWeb.Live.Category.StatsShow do
 
   import PanWeb.Router.Helpers
   alias PanWeb.Category
-  alias PanWeb.Live.Category.{LikeButton, FollowButton}
-  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton}
+  alias PanWeb.Live.Category.FollowButton
+  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton, PodcastButton, LinkButton, LikeButton}
   alias Surface.Components.Link
 
   def mount(%{"id" => id}, session, socket) do
@@ -120,7 +120,8 @@ defmodule PanWeb.Live.Category.StatsShow do
       <div :if={@current_user_id} class="m-4">
         <LikeButton id="like_button"
                     current_user_id={@current_user_id}
-                    category={@category}/> &nbsp;
+                    model={Category}
+                    instance={@category}/> &nbsp;
         <FollowButton id="follow_button"
                       current_user_id={@current_user_id}
                       category={@category}/> &nbsp;
