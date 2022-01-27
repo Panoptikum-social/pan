@@ -7,7 +7,7 @@ defmodule PanWeb.Live.User.New do
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, changeset: %User{} |> User.changeset)}
+    {:ok, assign(socket, changeset: %User{} |> User.changeset, page_title: "Sign Up")}
   end
 
   def render(assigns) do

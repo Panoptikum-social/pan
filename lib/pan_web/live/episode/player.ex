@@ -4,7 +4,8 @@ defmodule PanWeb.Live.Episode.Player do
   alias PanWeb.Live.Episode.PodlovePlayer
 
   def mount(%{"id" => id}, _session, socket) do
-    {:ok, assign(socket, episode: Episode.get_by_id_for_episode_player(id))}
+    episode = Episode.get_by_id_for_episode_player(id)
+    {:ok, assign(socket, episode: episode, page_title: "Player Page for #{episode.title} (Episode)")}
   end
 
   def render(assigns) do

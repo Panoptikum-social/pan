@@ -21,7 +21,8 @@ defmodule PanWeb.Live.Persona.Edit do
          assign(socket,
            persona: manifestation.persona,
            current_user: User.get_by_id(assigns.current_user_id),
-           changeset: Persona.changeset(manifestation.persona) |> Map.put(:action, :insert)
+           changeset: Persona.changeset(manifestation.persona) |> Map.put(:action, :insert),
+           page_title: "Edit Persona #{manifestation.persona.name}"
          )}
     end
   end

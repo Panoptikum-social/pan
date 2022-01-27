@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Episode.Index do
   alias PanWeb.Surface.{EpisodeCard, PodcastButton, Panel}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page: 1, per_page: 15)
+    {:ok, assign(socket, page: 1, per_page: 15, page_title: "Latest Episodes")
      |> fetch(), temporary_assigns: [latest_episodes: []]}
   end
 

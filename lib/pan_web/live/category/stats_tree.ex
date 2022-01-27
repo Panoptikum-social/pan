@@ -4,12 +4,12 @@ defmodule PanWeb.Live.Category.StatsTree do
   alias PanWeb.Surface.CategoryButton
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.stats_tree)}
+    {:ok, assign(socket, categories: Category.stats_tree, page_title: "Category Tree with Statistics")}
   end
 
   def render(assigns) do
     ~F"""
-    <div class="lg:columns-2 xl:columns-3 2xl:columns-4">
+    <div class="lg:columns-2 xl:columns-3 2xl:columns-4 p-4">
       {#for {category, counter} <- @categories |> Enum.with_index}
         <div class="inline-block">
           <p class="my-4">

@@ -12,7 +12,8 @@ defmodule PanWeb.Live.Home do
        liked_podcasts: Podcast.liked,
        latest_podcasts: Podcast.latest,
        latest_episodes: Episode.latest,
-       latest_recommendations: Recommendation.latest
+       latest_recommendations: Recommendation.latest,
+       page_title: "The Podcast Panoptikum "
      )}
   end
 end

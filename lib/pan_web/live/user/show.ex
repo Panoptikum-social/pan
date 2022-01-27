@@ -6,10 +6,12 @@ defmodule PanWeb.Live.User.Show do
   alias PanWeb.Live.User.{LikeButton, FollowButton}
 
   def mount(%{"id" => id}, _session, socket) do
+    user = User.get_for_show(id)
     {:ok,
      assign(socket,
-       user: User.get_for_show(id),
-       podcast_related_likes: Like.get_podcast_related(id)
+       user: user,
+       podcast_related_likes: Like.get_podcast_related(id),
+       page_title: user.name <> " (User)"
      )}
   end
 

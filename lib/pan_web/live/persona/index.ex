@@ -3,6 +3,10 @@ defmodule PanWeb.Live.Persona.Index do
   alias PanWeb.Persona
   alias PanWeb.Surface.Admin.IndexGrid
 
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "Personas")}
+  end
+
   def handle_info({:count, id: id, module: module}, socket) do
     send_update(module, id: id, count: :now)
     {:noreply, socket}
@@ -10,7 +14,7 @@ defmodule PanWeb.Live.Persona.Index do
 
   def render(assigns) do
     ~F"""
-    <h1 class="text-3xl">Personas</h1>
+    <h1 class="text-3xl">All Personas</h1>
 
     <IndexGrid id="persona-indexgrid"
                heading="Listing records for Personas"

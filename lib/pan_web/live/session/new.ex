@@ -6,6 +6,10 @@ defmodule PanWeb.Live.Session.New do
   alias Surface.Components.Link
   import PanWeb.Router.Helpers
 
+  def mount(_params, _session, socket) do
+    {:ok, assign(socket, page_title: "Log In")}
+  end
+
   def render(assigns) do
     ~F"""
     <div class="mx-auto max-w-lg mt-12">
