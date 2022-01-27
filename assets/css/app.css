@@ -24,6 +24,7 @@
   }
 
   .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
+  .avoid-column-break {break-inside:avoid-column;}
 
   @font-face {
     font-family: "Ubuntu";

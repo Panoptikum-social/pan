@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Category.StatsTree do
     ~F"""
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 p-4">
       {#for {category, counter} <- @categories |> Enum.with_index}
-      <div style="break-inside:avoid-column;">
+      <div class="avoid-column-break">
           <p>
             <CategoryButton for={category} index_on_page={counter} large />
             <span class="align-top">{length category.podcasts}</span>
