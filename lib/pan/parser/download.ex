@@ -134,8 +134,7 @@ defmodule Pan.Parser.Download do
       url,
       ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
       recv_timeout: 10_000,
-      timeout: 10_000,
-      ssl: [{:versions, [:"tlsv1.2"]}]
+      timeout: 10_000
     )
   end
 end
