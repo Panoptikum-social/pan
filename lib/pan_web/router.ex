@@ -385,7 +385,6 @@ defmodule PanWeb.Router do
 
     post("/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog)
 
-    post("/categories/execute_assign", CategoryController, :execute_assign)
     live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
 
     get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
@@ -403,7 +402,7 @@ defmodule PanWeb.Router do
 
     get("/images/cache_missing", ImageController, :cache_missing)
     get("/images/remove_duplicates", ImageController, :remove_duplicates)
-    resources("/images", ImageController, only: [:create])
+    resources("/images", ImageController, only: [:new, :create])
 
     get("/podcasts/:id/pause", PodcastController, :pause)
     get("/podcasts/:id/touch", PodcastController, :touch)
@@ -420,6 +419,7 @@ defmodule PanWeb.Router do
     get("/podcasts/duplicates", PodcastController, :duplicates)
     get("/podcasts/:id/update_counters/", PodcastController, :update_counters)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
+    get("/podcasts/update_all_counters", PodcastController, :update_all_counters)
     resources("/podcasts", PodcastController, only: [:delete])
 
     get("/search/push_missing", SearchController, :push_missing)
@@ -428,7 +428,6 @@ defmodule PanWeb.Router do
     get("/search/migrate", SearchController, :migrate)
 
     get("/maintenance/stats", MaintenanceController, :stats)
-    get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
   end

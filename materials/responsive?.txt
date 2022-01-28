@@ -1,7 +1,6 @@
 scope "/search", PanWeb do
   post("/", SearchFrontendController, :new)
   live("/:index/:term", Live.Search, :search, as: :search_frontend)
-end
 
 scope "/", PanWeb do
   live("/", Live.Home, :index, as: :page_frontend)
@@ -42,18 +41,15 @@ scope "/", PanWeb do
   get("/2016/:month/:day/:file", MaintenanceController, :blog_2016)
   get("/2017/:month/:day/:file", MaintenanceController, :blog_2017)
   live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
-end
 
 scope "/", PanWeb do
   live("/episodes/:id/player", Live.Episode.Player, :player, as: :episode_frontend)
   live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
     as: :podcast_frontend
   )
-end
 
 scope "/mydata", PanWeb do
   get("/download", UserJsonDownloadController, :download)
-end
 
 scope "/pan", PanWeb do
   get("/users/payment_info", UserFrontendController, :payment_info)
@@ -94,11 +90,9 @@ scope "/pan", PanWeb do
   delete("/likes/unlike_all_users", LikeFrontendController, :unlike_all_users)
   delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
   resources("/manifestations", ManifestationFrontendController, only: [:delete])
-end
 
 scope "/pro", PanWeb do
   get("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
   get("/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
   get("/personas/:id/redirect", PersonaFrontendController, :redirect)
   get("/invoices/:id/", InvoiceFrontendController, :download)
-end

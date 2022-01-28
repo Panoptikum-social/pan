@@ -109,22 +109,5 @@
             <td class="text-right border border-gray-light"><%= @feeds_with_last_modified %></td></tr>
         </tbody>
     </table>
-
-    <div class="flex flex-col space-y-4 items-start">
-      <%= link "Full text search push missing", to: search_path(@conn, :push_missing),
-                                                class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Cache missing images", to: image_path(@conn, :cache_missing),
-                                       class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Remove duplicate images", to: image_path(@conn, :remove_duplicates),
-                                          class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Update missing podcast counters", to: podcast_path(@conn, :update_missing_counters),
-                                                  class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Remove javascript from shownotes", to: episode_path(@conn, :remove_javascript_from_shownotes),
-                                                   class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Catch up missing thumbnailed booleans", to: maintenance_path(@conn, :catch_up_thumbnailed),
-                                                        class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-      <%= link "Trigger exception notification", to: maintenance_path(@conn, :exception_notification),
-                                                class: "border border-black bg-primary hover:bg-primary-light text-white py-1 px-2 text-sm rounded" %>
-    </div>
   </div>
 </div>

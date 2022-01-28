@@ -1,0 +1,6 @@
+<h2>New image</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: image_path(@conn, :create) %>
+
+<%= link "Back", to: databrowser_path(@conn, :index, "image") %>

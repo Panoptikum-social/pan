@@ -38,12 +38,6 @@ defmodule PanWeb.MaintenanceController do
     raise "exception_notification"
   end
 
-  def update_podcast_counters(conn, _params) do
-    Podcast.update_all_counters()
-
-    render(conn, PageFrontendView, "done.html")
-  end
-
   def catch_up_thumbnailed(conn, _paar) do
     podcast_candidates =
       from(p in Podcast,

@@ -2,6 +2,11 @@ defmodule PanWeb.ImageController do
   use PanWeb, :controller
   alias PanWeb.{PageFrontendView, Image}
 
+  def new(conn, _params) do
+    changeset = Image.changeset(%Image{})
+    render(conn, "new.html", changeset: changeset)
+  end
+
   def create(conn, %{"image" => image_params}) do
     record_slug =
       cond do

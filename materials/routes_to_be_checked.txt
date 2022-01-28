@@ -36,37 +36,7 @@
   resources("/manifestations", ManifestationFrontendController, only: [:delete])
 
 === ADMIN ===
-  get(
-    "/episodes/remove_javascript_from_shownotes",
-    EpisodeController,
-    :remove_javascript_from_shownotes
-  )
-  get("/personas/merge", PersonaController, :merge)
-  get(
-    "/users/:user_id/category/:category_id/push_subscriptions",
-    UserController,
-    :push_subscriptions
-  )
-  post("/users/:id/unset_pro", UserController, :unset_pro)
-  post("/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog)
-  post("/categories/execute_assign", CategoryController, :execute_assign)
-  get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
-  get("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)
-  get("/backlog_feeds/import_100", FeedBacklogController, :import_100)
-  get("/backlog_feeds/:id/import", FeedBacklogController, :import)
-  delete("/feed_backlogs/delete_all", FeedBacklogController, :delete_all)
-  resources("/backlog_feeds", FeedBacklogController)
-  get("/opmls/:id/import", OpmlController, :import)
-  live("/opmls", Live.Admin.Opml.Index, :index, as: :opml)
-  get("/images/cache_missing", ImageController, :cache_missing)
-  get("/images/remove_duplicates", ImageController, :remove_duplicates)
-  resources("/images", ImageController, only: [:create])
+  get("/users/:user_id/category/:category_id/push_subscriptions", UserController, :push_subscriptions)
+  
   get("/podcasts/:id/fix_owner", PodcastController, :fix_owner)
   get("/podcasts/fix_languages", PodcastController, :fix_languages)
-  get("/search/push_missing", SearchController, :push_missing)
-  get("/search/reset_all", SearchController, :reset_all)
-  get("/search/delete_orphans", SearchController, :delete_orphans)
-  get("/search/migrate", SearchController, :migrate)
-  get("/maintenance/update_podcast_counters", MaintenanceController, :update_podcast_counters)
-  get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
-  get("/maintenance/exception_notification", MaintenanceController, :exception_notification)

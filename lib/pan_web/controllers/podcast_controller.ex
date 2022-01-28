@@ -202,6 +202,11 @@ defmodule PanWeb.PodcastController do
     render(conn, PageFrontendView, "done.html")
   end
 
+  def update_all_counters(conn, _params) do
+    Podcast.update_all_counters()
+    render(conn, PageFrontendView, "done.html")
+  end
+
   defp update_missing_counters_async(podcasts) do
     for {podcast, index} <- Enum.with_index(podcasts) do
       Podcast.changeset(podcast)
