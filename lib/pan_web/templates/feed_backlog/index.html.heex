@@ -1,16 +1,16 @@
 <div class="m-4">
   <div class="flex justify-end space-x-4">
     <%= link "Import 100", to: feed_backlog_path(@conn, :import_100),
-                           class: "border border-black bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md" %>
+                           class: "border border-gray bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md" %>
     <%= link "Subscribe All", to: feed_backlog_path(@conn, :subscribe),
-                              class: "border border-black bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
+                              class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
     <%= link "Subscribe 50", to: feed_backlog_path(@conn, :subscribe50),
-                              class: "border border-black bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
+                              class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
     <%= link "Delete All (from Itunes user)",
             to: feed_backlog_path(@conn, :delete_all),
             method: :delete,
             data: [confirm: "Are you sure?"],
-            class: "border border-black bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md" %>
+            class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md" %>
   </div>
 
   <h2 class="text-2xl">Listing the last <%= length(@backlog_feeds) %> of <%= @feedcount %> backlog feeds</h2>
@@ -41,12 +41,12 @@
             <% end %>
 
             <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
-              <%= link [ icon("rss-heroicons-outline"), " Create alternate feed"],
+              <%= link [ icon("rss-heroicons-outline", class: "align-text-top w-4 h-4 inline"), " Create alternate feed"],
                       to: alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id,
                                                                             url: feed_backlog.url,
                                                                             backlog_id: feed_backlog.id),
                       method: :post,
-                      class: "border border-black bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %> 
+                      class: "border border-gray bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %> 
               for <%= feed.self_link_url %>
             <% end %>
           </td>
