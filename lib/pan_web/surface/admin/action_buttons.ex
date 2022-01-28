@@ -4,10 +4,11 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
   alias PanWeb.Surface.LinkButton
   import PanWeb.Router.Helpers
 
-  prop(record, :map, required: true)
+  prop(record, :map, required: false)
   prop(model, :module, required: true)
+  prop(type, :atom, required: true, values: [:show, :index])
 
-  def render(%{model: Image} = assigns) do
+  def render(%{model: Image, value: :show} = assigns) do
     ~F"""
     <div class="m-4 flex space-x-4">
       <h3 class="text-xl">Preview</h3>
@@ -16,7 +17,7 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
     """
   end
 
-  def render(%{model: Feed} = assigns) do
+  def render(%{model: Feed, type: :show} = assigns) do
     ~F"""
     <div class="m-4 flex space-x-4">
       <LinkButton title="Make primary"
@@ -28,24 +29,24 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
     """
   end
 
-  def render(%{model: User} = assigns) do
+  def render(%{model: User, type: :show} = assigns) do
     ~F"""
     <div class="m-4 flex space-x-4">
       <LinkButton title="Edit Password"
                   to={user_path(Endpoint, :edit_password, @record)}
                   large
-                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
+                  class="bg-warning hover:bg-warning-dark border-gray" />
     </div>
     """
   end
 
-  def render(%{model: Podcast} = assigns) do
+  def render(%{model: Podcast, type: :show} = assigns) do
     ~F"""
     <div class="m-4 flex space-x-4">
       <LinkButton title="Pause"
                   to={podcast_path(Endpoint, :pause, @record)}
                   large
-                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
+                  class="bg-warning hover:bg-warning-dark border-gray" />
 
       <LinkButton title="Touch"
                   to={podcast_path(Endpoint, :touch, @record)}
@@ -82,10 +83,14 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
       <LinkButton title="Update counters"
                   to={podcast_path(Endpoint, :update_counters, @record)}
                   large
-                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
+                  class="bg-warning hover:bg-warning-dark border-gray" />
     </div>
+    """
+  end
+
+  def render(%{model: Podcast, type: :index} = assigns) do
+    ~F"""
     <div class="m-4 flex space-x-4 items-center">
-      <h3 class="text-xl">Lists</h3>
       <LinkButton title="Stale"
                   to={podcast_path(Endpoint, :stale)}
                   large
@@ -104,7 +109,7 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
       <LinkButton title="Update missing counters"
                   to={podcast_path(Endpoint, :update_missing_counters)}
                   large
-                  class="bg-warning hover:bg-warning-dark text-white border-gray" />
+                  class="bg-warning hover:bg-warning-dark border-gray" />
     </div>
     """
   end

@@ -22,7 +22,8 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
                 {=@model}
                 {=@cols} />
     <ActionButtons {=@model }
-                   {=@record} />
+                   {=@record}
+                   type={:show} />
     """
   end
 end

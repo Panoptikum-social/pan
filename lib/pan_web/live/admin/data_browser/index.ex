@@ -1,8 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.Index do
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
                         container: {:div, class: "flex-1"}
-  alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.IndexGrid
+  alias PanWeb.Surface.Admin.{Naming, IndexGrid, ActionButtons}
   require Integer
 
   def mount(%{"resource" => resource}, _session, socket) do
@@ -30,6 +29,8 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
                {=@cols}
                buttons={[:show, :edit, :delete, :new, :pagination,
                            :number_of_records, :search]}/>
+    <ActionButtons {=@model }
+                   type={:index} />
     """
   end
 end
