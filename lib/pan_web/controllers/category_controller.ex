@@ -5,21 +5,6 @@ defmodule PanWeb.CategoryController do
 
   plug(:scrub_params, "category" when action in [:create, :update])
 
-  def get_podcasts(conn, %{"id" => id}) do
-    category =
-      Repo.get!(Category, id)
-      |> Repo.preload(:podcasts)
-
-    podcast_ids = Enum.map(category.podcasts, fn podcast -> podcast.id end)
-
-    podcasts_unassigned = Repo.all(from(p in Podcast, where: p.id not in ^podcast_ids))
-
-    render(conn, "get_podcasts.json",
-      podcasts_assigned: category.podcasts,
-      podcasts_unassigned: podcasts_unassigned
-    )
-  end
-
   def execute_assign(conn, params) do
     category_id = String.to_integer(params["category_id"])
 

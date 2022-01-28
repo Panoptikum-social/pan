@@ -144,6 +144,12 @@ defmodule PanWeb.Router do
     post("/delegations/toggle", DelegationController, :toggle)
   end
 
+  scope "/api", PanWeb do
+    pipe_through(:api)
+
+    get("/categories/:id/get_podcasts", CategoryController, :get_podcasts)
+  end
+
   scope "/bot", PanWeb do
     pipe_through(:bot)
 
