@@ -1,8 +1,10 @@
 defmodule PanWeb.Live.Admin.Dashboard do
-  alias Surface.Components.Link
   use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Surface.Admin.{Explorer, Col, Tools, ToolbarItem, Naming}
+  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Endpoint
+  import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
     schemas =
@@ -84,142 +86,14 @@ defmodule PanWeb.Live.Admin.Dashboard do
         </Col>
       </Explorer>
 
-      <div class="grid grid-cols-8 m-4">
-        <div>
-          <h2 class="text-lg">Categories</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Merge Categories"
-                    to={Routes.category_path(@socket, :merge)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
+      <div class="m-2 flex space-x-4">
+        <LinkButton title="LiveDashboard"
+                    to={live_dashboard_path(Endpoint, :home)}
+                    class="bg-white hover:bg-gray-light border-gray" />
 
-        <div class="row-span-2">
-          <h2 class="text-lg">Podcasts</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Orphans"
-                    to={Routes.podcast_path(@socket, :orphans)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Retirement"
-                    to={Routes.podcast_path(@socket, :retirement)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Stale"
-                    to={Routes.podcast_path(@socket, :stale)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Duplicates"
-                    to={Routes.podcast_path(@socket, :duplicates)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Episodes</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Remove duplicates"
-                    to={Routes.episode_path(@socket, :remove_duplicates)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div class="row-span-2">
-          <h2 class="text-lg">Feed Backlog</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Import 100"
-                    to={Routes.feed_backlog_path(@socket, :import_100)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Subscribe All"
-                    to={Routes.feed_backlog_path(@socket, :subscribe)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Subscribe 50"
-                    to={Routes.feed_backlog_path(@socket, :subscribe50)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-            <li>
-              <Link label="Delete All (from Itunes user)"
-                    to={Routes.feed_backlog_path(@socket, :delete_all)}
-                    class="text-link hover:text-link-dark underline"
-                    opts={method: :delete,
-                          data: [confirm: "Are you sure?"]} />
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Personas</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Merge Candidates"
-                    to={Routes.persona_path(@socket, :merge_candidates)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Users</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Merge Users"
-                    to={Routes.user_path(@socket, :merge)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Invoices</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Index"
-                    to={Routes.invoice_path(@socket, :index)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Opmls</h2>
-          <ul class="list-disc ml-4 mb-4">
-            <li>
-              <Link label="Index"
-                    to={Routes.opml_path(@socket, :index)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
-
-        <div>
-          <h2 class="text-lg">Maintenance</h2>
-          <ul class="list-disc ml-4 mb-4">
-          <li>
-            <Link label="LiveDashboard"
-                  to={Routes.live_dashboard_path(@socket, :home)}
-                  class="text-link hover:text-link-dark underline"/>
-          </li>
-          <li>
-              <Link label="Statistics"
-                    to={Routes.maintenance_path(@socket, :stats)}
-                    class="text-link hover:text-link-dark underline"/>
-            </li>
-          </ul>
-        </div>
+        <LinkButton title="Statistics"
+                    to={maintenance_path(Endpoint, :stats)}
+                    class="bg-white hover:bg-gray-light border-gray" />
       </div>
     </div>
     """

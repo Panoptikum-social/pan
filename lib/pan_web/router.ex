@@ -387,7 +387,6 @@ defmodule PanWeb.Router do
 
     post("/categories/execute_assign", CategoryController, :execute_assign)
     live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
-    get("/categories/execute_merge", CategoryController, :execute_merge)
 
     get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
     get("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)
