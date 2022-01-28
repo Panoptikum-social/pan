@@ -272,7 +272,11 @@ defmodule PanWeb.Podcast do
     |> Repo.one()
   end
 
-  def import_stale(nil), do: Logger.info("=== Import job finished ===")
+  def import_stale(nil) do
+    Logger.info("=== Import job finished ===")
+    Phoenix.PubSub.broadcast(:pan_pubsub, "admin", %{content: "Import job finished"})
+  end
+
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)
     get_one_stale()
