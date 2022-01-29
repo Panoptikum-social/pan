@@ -1,6 +1,9 @@
-<h2>New image</h2>
+<div class="m-4">
+  <h2 class="text-2xl">New image</h2>
 
-<%= render "form.html", changeset: @changeset,
-                        action: image_path(@conn, :create) %>
+  <%= render "form.html", changeset: @changeset,
+                          action: image_path(@conn, :create) %>
 
-<%= link "Back", to: databrowser_path(@conn, :index, "image") %>
+  <%= link "Back", to: databrowser_path(@conn, :index, "image"),
+                   class: "text-link hover:text-link-dark" %>
+</div>

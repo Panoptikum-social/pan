@@ -1,46 +1,47 @@
-<%= form_for @changeset, @action, [multipart: true], fn f -> %>
+<%= form_for @changeset, @action, [multipart: true,
+                                   class: "p-4 mb-4 flex flex-col items-start space-y-4"], fn f -> %>
   <%= if @changeset.action do %>
-    <div class="alert alert-danger">
+    <div class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
 
-  <div class="form-group">
+  <div class="flex flex-col">
     <label>Image</label>
-    <%= file_input f, :file, class: "form-control" %>
+    <%= file_input f, :file %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :filename, class: "control-label" %>
-    <%= text_input f, :filename, class: "form-control" %>
+  <div class="flex flex-col">
+    <%= label f, :filename %>
+    <%= text_input f, :filename %>
     <%= error_tag f, :filename %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :content_type, class: "control-label" %>
-    <%= text_input f, :content_type, class: "form-control" %>
+  <div class="flex flex-col">
+    <%= label f, :content_type %>
+    <%= text_input f, :content_type %>
     <%= error_tag f, :content_type %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :path, class: "control-label" %>
-    <%= text_input f, :path, class: "form-control" %>
+  <div class="flex flex-col">
+    <%= label f, :path %>
+    <%= text_input f, :path %>
     <%= error_tag f, :path %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :podcast_id, class: "control-label" %>
-    <%= text_input f, :podcast_id, class: "form-control" %>
+  <div class="flex flex-col">
+    <%= label f, :podcast_id %>
+    <%= text_input f, :podcast_id %>
     <%= error_tag f, :podcast_id %>
   </div>
 
-  <div class="form-group">
-    <%= label f, :persona_id, class: "control-label" %>
-    <%= text_input f, :persona_id, class: "form-control" %>
+  <div class="flex flex-col">
+    <%= label f, :persona_id %>
+    <%= text_input f, :persona_id %>
     <%= error_tag f, :persona_id %>
   </div>
 
-  <div class="form-group">
-    <%= submit "Submit", class: "btn btn-primary" %>
+  <div class="flex flex-col">
+    <%= submit "Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
   </div>
 <% end %>
