@@ -68,6 +68,13 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
                   to={user_path(Endpoint, :unset_pro, @record)}
                   class="bg-danger hover:bg-danger-dark border-gray text-white"
                   opts={data: [confirm: "Are you sure?"]} />
+
+    </div>
+    <div class="m-2 flex space-x-4 text-align-top">
+      <span>no admin interface exists for</span>
+      <LinkButton title="Push Subscriptions"
+                  to="/admin/users/:user_id/category/:category_id/push_subscriptions"
+                  class="bg-mint-light hover:bg-mint border-gray" />
     </div>
     """
   end
@@ -165,6 +172,9 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
       <LinkButton title="Update counters"
                   to={podcast_path(Endpoint, :update_counters, @record)}
                   class="bg-warning hover:bg-warning-dark border-gray" />
+      <LinkButton title="Fix owner"
+                  to={podcast_path(Endpoint, :fix_owner, @record)}
+                  class="bg-warning hover:bg-warning-dark border-gray" />
     </div>
     """
   end
@@ -190,6 +200,9 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
       <LinkButton title="Update all counters"
                   to={podcast_path(Endpoint, :update_all_counters)}
                   class="bg-danger hover:bg-danger-dark border-gray" />
+      <LinkButton title="Fix languages"
+                  to={podcast_path(Endpoint, :fix_languages)}
+                  class="bg-warning hover:bg-warning-dark border-gray" />
     </div>
     """
   end

@@ -81,6 +81,7 @@ defmodule PanWeb.UserController do
   end
 
   def push_subscriptions(conn, %{"user_id" => user_id, "category_id" => category_id}, _user) do
+    # pushes all of a user's subscribed podcasts into a category (e.g. for a community)
     podcast_ids =
       from(s in Subscription,
         where: s.user_id == ^user_id,
