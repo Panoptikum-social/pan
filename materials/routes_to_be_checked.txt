@@ -1,3 +1,0 @@
-get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
-post("/pan/personas/:id/connect", PersonaFrontendController, :connect)
-post("/pan/personas/:id/disconnect", PersonaFrontendController, :disconnect)
