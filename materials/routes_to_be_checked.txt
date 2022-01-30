@@ -1,14 +1,3 @@
-=== / ===
-  get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
-
-=== PAN ===
-  post("/personas/:id/claim", PersonaFrontendController, :claim)
-  get("/personas/:id/warning", PersonaFrontendController, :warning)
-  post("/personas/:id/connect", PersonaFrontendController, :connect)
-  post("/personas/:id/disconnect", PersonaFrontendController, :disconnect)
-  resources("/personas", PersonaFrontendController, only: [:update])
-  
-  resources("/recommendations", RecommendationFrontendController, only: [:delete])
-
-  delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
-  resources("/manifestations", ManifestationFrontendController, only: [:delete])
+get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
+post("/pan/personas/:id/connect", PersonaFrontendController, :connect)
+post("/pan/personas/:id/disconnect", PersonaFrontendController, :disconnect)

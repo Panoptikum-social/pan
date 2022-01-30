@@ -30,17 +30,10 @@
 
     <div class="flex flex-col">
       <%= label f, :podcaster do %>
-        <%= checkbox f, :podcaster %> Podcaster
+        <%= checkbox f, :podcaster %> I am a podcaster
       <% end %>      
       <%= error_tag f, :podcaster %>
     </div>
-
-    <div class="flex flex-col">
-      <%= label f, :in_progress do %>
-        <%= checkbox f, :in_progress %> In Progress
-      <% end %>
-    <%= error_tag f, :in_progress %>
-  </div>
 
     <div class="flex flex-col">
       <%= label f, :i_want_to_share_my_followings do %>

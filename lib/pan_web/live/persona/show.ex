@@ -142,7 +142,7 @@ defmodule PanWeb.Live.Persona.Show do
           <Panel heading="Claiming not available" purpose="persona">
             <p class="m-4">You didn't say you are a podcaster in
               <a href={user_frontend_path(Endpoint, :my_profile)}
-                 class="bg-primary hover:bg-primary-dark text-white border-gray">My Profile</a> yet.</p>
+                 class="text-link hover:text-link-dark">My Profile</a> yet.</p>
           </Panel>
 
         {#elseif !@current_user.email_confirmed}

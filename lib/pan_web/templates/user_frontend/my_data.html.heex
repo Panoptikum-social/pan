@@ -62,7 +62,7 @@
   <h2 class="text-2xl mb-4 mt-8">Personas</h2>
   
   You can even delete all manifestations as personas, you created so far, at once, by clicking &nbsp;
-  <%= link [icon("exclamation-heroicons-outline"), " Delete all subscriptions"],
+  <%= link [icon("exclamation-heroicons-outline"), " Delete all manifestations"],
            to: manifestation_frontend_path(@conn, :delete_all),
            method: :delete,
            data: [confirm: "Are you sure? All manifestations will be deleted!"],

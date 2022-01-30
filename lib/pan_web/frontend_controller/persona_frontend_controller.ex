@@ -169,7 +169,7 @@ defmodule PanWeb.PersonaFrontendController do
       |> Repo.insert()
 
       conn
-      |> put_flash(:info, "Persona claimed  successfully.")
+      |> put_flash(:info, "Persona claimed successfully.")
       |> redirect(to: persona_frontend_path(conn, :show, persona))
     else
       conn
