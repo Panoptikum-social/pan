@@ -3,11 +3,6 @@ scope "/search", PanWeb do
   live("/:index/:term", Live.Search, :search, as: :search_frontend)
 
 scope "/", PanWeb do
-  live("/", Live.Home, :index, as: :page_frontend)
-  live("/categories", Live.Category.Tree, :index, as: :category_frontend)
-  live("/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend)
-  live("/categories/:id", Live.Category.Show, :show, as: :category_frontend)
-  live("/categories/:id/stats", Live.Category.StatsShow, :show_stats, as: :category_frontend)
   live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes,
     as: :category_frontend
   )
