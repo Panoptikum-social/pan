@@ -12,8 +12,12 @@
             to: category_frontend_path(@conn, :index),
             title: "Categories",
             class: "visible-xs-inline" %></li>
-  <li class="py-1"><%= link [nav_icon("beaker-heroicons-outline"), " Random"],
+  <li class="py-1"><%= link [nav_icon("beaker-heroicons-outline"), " Random Recommendation"],
           to: recommendation_frontend_path(@conn, :random) %></li>
+  <li class="py-1">
+    <%= link [nav_icon("gift-heroicons-outline"), " Latest Recommendations"],
+      to: recommendation_frontend_path(@conn, :index) %>
+  </li>
   <li class="py-1"><a href="https://blog.panoptikum.io/">
     <%= nav_icon("question-mark-circle-heroicons-solid") %> About
   </a></li>

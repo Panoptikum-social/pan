@@ -39,14 +39,15 @@ defmodule PanWeb.Live.Episode.RecommendationList do
     ~F"""
     <div class="my-4">
       {#if @episode.recommendations != [] or @current_user_id}
+      <div :if={@episode.recommendations != []}
+           class="float-right">
+       <a href="https://panoptikum.io/complaints"
+          class="text-link hover-text-link-dark">Complain</a>
+     </div>
+
         <h2 class="text-2xl">Recommendations</h2>
 
         {#if @episode.recommendations != []}
-          <div class="float-right">
-            <a href="https://panoptikum.io/complaints"
-              class="text-link hover-text-link-dark">Complain</a>
-          </div>
-
           <table class="border border-separate border-gray-lighter">
             <thead>
               <tr>

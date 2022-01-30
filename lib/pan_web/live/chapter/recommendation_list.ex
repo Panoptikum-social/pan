@@ -23,23 +23,23 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
 
   def render(assigns) do
     ~F"""
-    <div :if={@chapter.recommendations != []} class="my-4">
-      <h2 class="text-2xl"> Recommendations</h2>
+    <div :if={@chapter.recommendations != []} class="my-4 col-span-3">
       <div class="float-right">
-          <a href="https://panoptikum.io/complaints"
-             class="text-link hover-text-link-dark">Complain</a>
+        <a href="https://panoptikum.io/complaints"
+          class="text-link hover-text-link-dark">Complain</a>
       </div>
-      <ul class="list-group">
+
+      <h2 class="text-2xl"> Recommendations</h2>
+      <ul class="my-4 bg-white">
         {#for recommendation <- @chapter.recommendations}
-          <li class="list-group-item"
-              id={"chapter-#{@chapter.id}"}>
-              <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
+          <li id={"chapter-#{@chapter.id}"}>
+              <p :if={@current_user_id == recommendation.user_id} class="mt-4"><nobr>
               <a href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
-                class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
+                class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white" alt="tweet it">tweet</a>
               <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@chapter, recommendation)}"},
-                class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white" alt="post on facebook">fb</a>
+                class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
               <a href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
-                class="bg-grass bg-grass-light px-3 py-2 my-4 rounded-full text-white" alt="send an email">mail</a></nobr>
+                class="bg-grass bg-grass-light px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
             </p>
 
             <b>{recommendation.user.name}:</b> {recommendation.comment}
