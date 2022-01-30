@@ -56,6 +56,25 @@ defmodule PanWeb.SessionController do
     end
   end
 
+  def login_from_signup(conn, %{"token" => token}) do
+    case PanWeb.Auth.login_by_token(conn, token) do
+      {:ok, conn} ->
+        conn
+        |> put_flash(:info, "You are now logged in.")
+        |> redirect(to: page_frontend_path(conn, :index))
+
+      {:error, :expired} ->
+        conn
+        |> put_flash(:error, "The token has expired already!")
+        |> render("new.html")
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "Invalid token!")
+        |> render("new.html")
+    end
+  end
+
   def delete(conn, _) do
     conn
     |> PanWeb.Auth.logout()

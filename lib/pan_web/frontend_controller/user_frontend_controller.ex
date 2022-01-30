@@ -21,30 +21,6 @@ defmodule PanWeb.UserFrontendController do
     render(conn, "index.html", users: users)
   end
 
-  def create(conn, %{"user" => user_params}, _user) do
-    changeset = User.registration_changeset(%User{}, user_params)
-
-    case Repo.insert(changeset) do
-      {:ok, user} ->
-        Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
-        |> Pan.Email.email_confirmation_link_html_email(user.email)
-        |> Pan.Mailer.deliver_now!
-
-        conn
-        |> PanWeb.Auth.login(user)
-        |> put_flash(
-          :info,
-          "Your account @#{user.username} has been created! Please confirm" <>
-            " your email address via the confirmation link in the email sent to you." <>
-            " Otherwise you won't be able to claim personas."
-        )
-        |> redirect(to: category_frontend_path(conn, :index))
-
-      {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-  end
-
   def edit(conn, _params, user) do
     changeset = User.changeset(user)
     render(conn, "edit.html", user: user, changeset: changeset)

@@ -1,10 +1,8 @@
 === / ===
   get("/pro_features", PageFrontendController, :pro_features)
   get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
-  get("/forgot_password", UserController, :forgot_password)
   post("/request_login_link", UserController, :request_login_link)
   get("/sessions/login_via_token", SessionController, :login_via_token)
-  get("/sessions/confirm_email", SessionController, :confirm_email)
   live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
 
 === PAN ===

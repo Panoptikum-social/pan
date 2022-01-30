@@ -40,9 +40,9 @@ defmodule PanWeb.Live.Persona.Edit do
   def handle_event("validate", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
     changeset =
       if in_the_future?(assigns.current_user.pro_until) do
-        Persona.pro_user_changeset(assigns.persona, persona_params)
+        Persona.pro_user_changeset(assigns.persona, persona_params) |> Map.put(:action, :insert)
       else
-        Persona.user_changeset(assigns.persona, persona_params)
+        Persona.user_changeset(assigns.persona, persona_params) |> Map.put(:action, :insert)
       end
 
     {:noreply, assign(socket, changeset: changeset)}

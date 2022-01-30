@@ -26,7 +26,8 @@ defmodule PanWeb.Live.Session.New do
           <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
         </Field>
 
-        <PasswordField name={:password} />
+        <PasswordField name={:password}
+                       value="" />
 
         <Submit label="Log in" />
       </Form>

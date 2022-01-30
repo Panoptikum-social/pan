@@ -4,9 +4,7 @@ defmodule PanWeb.Surface.Admin.ErrorTag do
 
   def render(assigns) do
     ~F"""
-    <Form.ErrorTag class="inline-block px-2 mt-2
-                          text-grapefruit bg-grapefruit bg-opacity-20
-                          border border-dotted border-grapefruit" />
+    <Form.ErrorTag class="inline-block px-2 mt-2 text-grapefruit bg-grapefruit border border-dotted border-grapefruit" />
     """
   end
 end

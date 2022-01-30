@@ -150,7 +150,7 @@ defmodule PanWeb.User do
     |> unique_constraint(:email)
   end
 
-  def registration_changeset(struct, params) do
+  def registration_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [
       :name,
@@ -179,7 +179,7 @@ defmodule PanWeb.User do
     if params["bot_check"] == "42" do
       changeset
     else
-      add_error(changeset, :bot_check, "It seems, you are a bot! 🤣")
+      add_error(changeset, :bot_check, "That's not right.")
     end
   end
 

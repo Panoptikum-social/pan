@@ -247,7 +247,7 @@ defmodule PanWeb.Router do
 
     live("/users/new", Live.User.New, :new, as: :user_frontend)
     live("/users/:id", Live.User.Show, :show, as: :user_frontend)
-    resources("/users", UserFrontendController, only: [:index, :create])
+    resources("/users", UserFrontendController, only: [:index])
     get("/pro_features", PageFrontendController, :pro_features)
 
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
@@ -260,6 +260,7 @@ defmodule PanWeb.Router do
     live("/sessions/new", Live.Session.New, :new, as: :session)
     resources("/sessions", SessionController, only: [:create, :delete])
     get("/sessions/login_via_token", SessionController, :login_via_token)
+    get("/sessions/login_from_signup", SessionController, :login_from_signup)
     get("/sessions/confirm_email", SessionController, :confirm_email)
 
     live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)

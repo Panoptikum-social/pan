@@ -138,9 +138,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
                   phx_target: "#" <> @id}>
         <Field :if={!@changeset.valid?}
                 name="error"
-                class="inline-block px-2 mb-2
-                text-grapefruit bg-grapefruit bg-opacity-20
-                border border-grapefruit border-dotted">
+                class="inline-block px-2 mb-2 text-grapefruit bg-grapefruit/20 border border-grapefruit border-dotted">
           This record is not valid. Please check the errors below!
         </Field>
 
