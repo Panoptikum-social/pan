@@ -15,18 +15,9 @@
         <%= @inner_content %>
       </div>
 
-      <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
-                    justify-evenly place-self-center">
+      <footer class="p-4 flex flex-wrap">
         <%= render "_footer.html", conn: @conn, current_user: @current_user %>
       </footer>
-      <div class="flex justify-center w-full font-medium pb-4">
-        <p>Hosted by
-          <a class="text-link hover:text-link-dark"
-            href="https://www.informatom.com">
-            Informatom EDV-Dienstleistungen e.U.
-          </a>
-        </p>
-      </div>
     </div>
   </body>
 </html>

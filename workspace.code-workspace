@@ -8,6 +8,7 @@
 		"git.ignoreLimitWarning": true,
 		"workbench.settings.enableNaturalLanguageSearch": false,
 		"telemetry.enableCrashReporter": false,
-		"telemetry.enableTelemetry": false
+		"telemetry.enableTelemetry": false,
+		"editor.tabSize": 2
 	}
 }

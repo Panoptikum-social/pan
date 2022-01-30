@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.User.New do
-  use Surface.LiveView, container: {:div, class: "flex-1 justify-self-center"}
+  use Surface.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
   alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField, ErrorTag}
   alias Surface.Components.{Form, Link}
