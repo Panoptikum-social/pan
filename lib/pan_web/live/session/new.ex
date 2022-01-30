@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Session.New do
-  use Surface.LiveView, container: {:div, class: "m-4 flex justify-center items-center h-full"}
+  use Surface.LiveView, container: {:div, class: "m-4 flex justify-center"}
   alias Surface.Components.Form
   alias PanWeb.Surface.{Submit, PasswordField}
   alias Surface.Components.Form.{Field, TextInput, Label}
@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Session.New do
 
   def render(assigns) do
     ~F"""
-    <div class="max-w-lg">
+    <div class="max-w-lg my-4">
       <h1 class="text-3xl">Login</h1>
 
       <Form action="/sessions"
