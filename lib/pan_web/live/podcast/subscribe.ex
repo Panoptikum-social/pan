@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Podcast.Subscribe do
     ~F"""
     <PodloveSubscribeButton id="podlove_subscribe_button"
                             {=@podcast}
-                            class="m-4" />
+                            class="grid place-items-center h-screen" />
     """
   end
 end
