@@ -22,11 +22,8 @@ scope "/", PanWeb do
   get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
   live("/personas", Live.Persona.Index, :index, as: :persona_frontend)
   resources("/personas", PersonaFrontendController, only: [:show])
-  get("/forgot_password", UserController, :forgot_password)
-  post("/request_login_link", UserController, :request_login_link)
   live("/sessions/new", Live.Session.New, :new, as: :session)
   resources("/sessions", SessionController, only: [:create, :delete])
-  get("/sessions/login_via_token", SessionController, :login_via_token)
   get("/sessions/confirm_email", SessionController, :confirm_email)
   live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
   live("/recommendations/random", Live.Recommendation.Random, :random,
@@ -42,9 +39,6 @@ scope "/", PanWeb do
   live("/podcasts/:id/subscribe_button", Live.Podcast.Subscribe, :subscribe_button,
     as: :podcast_frontend
   )
-
-scope "/mydata", PanWeb do
-  get("/download", UserJsonDownloadController, :download)
 
 scope "/pan", PanWeb do
   get("/users/payment_info", UserFrontendController, :payment_info)
@@ -73,18 +67,6 @@ scope "/pan", PanWeb do
   delete("/my_recommendations/delete_all", RecommendationFrontendController, :delete_all)
   resources("/recommendations", RecommendationFrontendController, only: [:create, :delete])
   delete("/subscriptions/", SubscriptionFrontendController, :delete_all)
-  delete("/follows/unfollow_all_categories", FollowFrontendController, :unfollow_all_categories)
-  delete("/follows/unfollow_all_personas", FollowFrontendController, :unfollow_all_personas)
-  delete("/follows/unfollow_all_podcasts", FollowFrontendController, :unfollow_all_podcasts)
-  delete("/follows/unfollow_all_users", FollowFrontendController, :unfollow_all_users)
-  delete("/likes/unlike_all_categories", LikeFrontendController, :unlike_all_categories)
-  delete("/likes/unlike_all_chapters", LikeFrontendController, :unlike_all_chapters)
-  delete("/likes/unlike_all_episodes", LikeFrontendController, :unlike_all_episodes)
-  delete("/likes/unlike_all_personas", LikeFrontendController, :unlike_all_personas)
-  delete("/likes/unlike_all_podcasts", LikeFrontendController, :unlike_all_podcasts)
-  delete("/likes/unlike_all_users", LikeFrontendController, :unlike_all_users)
-  delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
-  resources("/manifestations", ManifestationFrontendController, only: [:delete])
 
 scope "/pro", PanWeb do
   get("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)

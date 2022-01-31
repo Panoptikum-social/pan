@@ -2,15 +2,11 @@
   <div
     class="empty:hidden p-4 border border-info-dark bg-info-light/50 rounded-xl m-4"
     role="alert"
-  >
-    <%= get_flash(@conn, :info) %>
-  </div>
+  ><%= get_flash(@conn, :info) %></div>
   <div
     class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl m-4"
     role="alert"
-  >
-    <%= get_flash(@conn, :error) %>
-  </div>
+  ><%= get_flash(@conn, :error) %></div>
 
   <%= @inner_content %>
 </main>
