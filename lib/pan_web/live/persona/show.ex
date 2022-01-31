@@ -7,7 +7,9 @@ defmodule PanWeb.Live.Persona.Show do
   import Phoenix.HTML.Link, only: [link: 2]
 
   def mount(%{"pid" => pid}, _session, socket) do
-    current_user = socket.assigns.current_user_id && User.get_by_id(socket.assigns.current_user_id)
+    current_user =
+      socket.assigns.current_user_id && User.get_by_id(socket.assigns.current_user_id)
+
     persona = Persona.get_by_pid(pid)
 
     if persona do

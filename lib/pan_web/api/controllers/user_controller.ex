@@ -140,7 +140,7 @@ defmodule PanWeb.Api.UserController do
       {:ok, user} ->
         Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
         |> Pan.Email.email_confirmation_link_html_email(user.email)
-        |> Pan.Mailer.deliver_now!
+        |> Pan.Mailer.deliver_now!()
 
         user = Repo.preload(user, :personas)
 

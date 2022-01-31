@@ -125,6 +125,7 @@ defmodule PanWeb.Auth do
 
   def authenticate_admin(conn, _opts) do
     current_user = conn.assigns.current_user
+
     if current_user && current_user.admin do
       conn
     else

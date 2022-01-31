@@ -1,13 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-  <%= render "_head.html", conn: @conn %>
+  <%= render("_head.html", conn: @conn) %>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-        data-js-view-name={js_view_name(@conn, view_template(@conn))}>
-    <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
-        class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-        :class="{'lg:p-1': !navbarOpen}">
-      <%= render "_navbar.html", conn: @conn, current_user: @current_user %>
+  <body
+    class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
+    data-js-view-name={js_view_name(@conn, view_template(@conn))}
+  >
+    <nav
+      x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
+      class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
+      :class="{'lg:p-1': !navbarOpen}"
+    >
+      <%= render("_navbar.html", conn: @conn, current_user: @current_user) %>
     </nav>
 
     <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
@@ -16,7 +21,7 @@
       </div>
 
       <footer class="p-4 flex flex-wrap">
-        <%= render "_footer.html", conn: @conn, current_user: @current_user %>
+        <%= render("_footer.html", conn: @conn, current_user: @current_user) %>
       </footer>
     </div>
   </body>

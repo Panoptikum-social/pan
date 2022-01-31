@@ -4,7 +4,8 @@ defmodule PanWeb.Live.Recommendation.Index do
   alias PanWeb.Surface.{Icon, UserButton, PodcastButton, EpisodeButton}
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations")
+    {:ok,
+     assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations")
      |> fetch(), temporary_assigns: [recommendations: []]}
   end
 

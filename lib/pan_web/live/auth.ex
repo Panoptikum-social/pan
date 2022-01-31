@@ -13,6 +13,7 @@ defmodule PanWeb.Live.Auth do
     socket =
       socket
       |> assign(current_user_id: user_id, admin: admin)
+
     {:cont, socket}
   end
 

@@ -17,7 +17,6 @@ defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
         _session,
         socket
       ) do
-
     model = Naming.model_from_join_through(resource)
 
     cols =
@@ -26,8 +25,8 @@ defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
 
     struct =
       Kernel.struct(model)
-      |> Map.put(first_column |> String.to_atom, first_id)
-      |> Map.put(second_column |> String.to_atom, second_id)
+      |> Map.put(first_column |> String.to_atom(), first_id)
+      |> Map.put(second_column |> String.to_atom(), second_id)
 
     {:ok,
      assign(socket,

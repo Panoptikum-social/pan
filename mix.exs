@@ -7,7 +7,7 @@ defmodule Pan.MixProject do
       version: "0.1.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers()  ++ [:surface],
+      compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -42,7 +42,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.17.6"},
+      {:phoenix_live_view, "~> 0.17.6", override: true},
       # HTML parser
       {:floki, ">= 0.27.0"},
       # classic view layer
@@ -97,7 +97,8 @@ defmodule Pan.MixProject do
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # Code analysis
-      {:credo, "~> 1.5", only: [:dev, :test]}
+      {:credo, "~> 1.5", only: [:dev, :test]},
+      {:heex_formatter, github: "feliperenan/heex_formatter", only: :dev}
     ]
   end
 

@@ -1,43 +1,68 @@
 <div class="m-4">
-  <h2 class="text-2xl">My OPML files</h2>
-  
+  <h2 class="text-2xl">
+    My OPML files
+  </h2>
+
   <%= if @opmls != [] do %>
     <table cellpadding="4" class="my-4 border border-gray-light rounded-lg">
       <thead>
         <tr>
-          <th class="border border-gray-light">Content type</th>
-          <th class="border border-gray-light">Filename</th>
-          <th class="border border-gray-light">Upload date</th>
-          <th class="border border-gray-light">Actions</th>
+          <th class="border border-gray-light">
+            Content type
+          </th>
+          <th class="border border-gray-light">
+            Filename
+          </th>
+          <th class="border border-gray-light">
+            Upload date
+          </th>
+          <th class="border border-gray-light">
+            Actions
+          </th>
         </tr>
       </thead>
       <tbody>
-      <%= for opml <- @opmls do %>
+        <%= for opml <- @opmls do %>
           <tr>
-            <td class="border border-gray-light"><%= opml.content_type %></td>
-            <td class="border border-gray-light"><%= opml.filename %></td>
-            <td class="border border-gray-light"><%= opml.inserted_at %></td>
-      
             <td class="border border-gray-light">
-              <%= link [icon("cog-heroicons-outline"), " Parse"], to: opml_frontend_path(@conn, :import, opml),
-                                class: "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded" %> &nbsp;
-      
-              <%= link [icon("document-download-heroicons-outline"), " Download"], to: opml_frontend_path(@conn, :download, opml),
-                                class: "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %> &nbsp;
-      
-              <%= link [icon("trash-heroicons-outline"), " Delete"], to: opml_frontend_path(@conn, :delete, opml),
-                                method: :delete,
-                                data: [confirm: "Are you sure?"],
-                                class: "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded" %>
+              <%= opml.content_type %>
+            </td>
+            <td class="border border-gray-light">
+              <%= opml.filename %>
+            </td>
+            <td class="border border-gray-light">
+              <%= opml.inserted_at %>
+            </td>
+
+            <td class="border border-gray-light">
+              <%= link([icon("cog-heroicons-outline"), " Parse"],
+                to: opml_frontend_path(@conn, :import, opml),
+                class:
+                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+              ) %> &nbsp; <%= link([icon("document-download-heroicons-outline"), " Download"],
+                to: opml_frontend_path(@conn, :download, opml),
+                class:
+                  "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
+              ) %> &nbsp; <%= link([icon("trash-heroicons-outline"), " Delete"],
+                to: opml_frontend_path(@conn, :delete, opml),
+                method: :delete,
+                data: [confirm: "Are you sure?"],
+                class:
+                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+              ) %>
             </td>
           </tr>
-      <% end %>
+        <% end %>
       </tbody>
     </table>
   <% else %>
-   <p class="m-4">No OPML files uploaded so far</p>
+    <p class="m-4">
+      No OPML files uploaded so far
+    </p>
   <% end %>
-  
-  <%= link "New OPML", to: opml_frontend_path(@conn, :new),
-                       class: "text-link hover:text-link-dark" %>
+
+  <%= link("New OPML",
+    to: opml_frontend_path(@conn, :new),
+    class: "text-link hover:text-link-dark"
+  ) %>
 </div>

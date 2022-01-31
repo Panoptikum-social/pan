@@ -12,12 +12,12 @@ defmodule PanWeb.Surface.Admin.Pagination do
 
   def format(number) do
     number
-    |> Integer.to_string
-    |> String.reverse
-    |> String.codepoints
+    |> Integer.to_string()
+    |> String.reverse()
+    |> String.codepoints()
     |> Enum.chunk_every(3)
     |> Enum.join(".")
-    |> String.reverse
+    |> String.reverse()
   end
 
   def render(assigns) do

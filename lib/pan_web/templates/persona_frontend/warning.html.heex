@@ -1,68 +1,119 @@
 <div class="m-4 max-w-screen-xl">
   <div class="flex space-x-4">
     <div class="w-1/2">
-      <h2 class="text-2xl mb-4">On claiming this persona</h2>
-  
-      <p>There hasn't been provided any email address alongside this persona within the feed(s).
-         So we basically have to trust you, that you claim this persona responsibly.</p>
-  
+      <h2 class="text-2xl mb-4">
+        On claiming this persona
+      </h2>
+
+      <p>
+        There hasn't been provided any email address alongside this persona within the feed(s).
+         So we basically have to trust you, that you claim this persona responsibly.
+      </p>
+
       <p>If you click claim, the following will happen:</p>
-  
+
       <ul class="list-disc ml-4">
         <li>You will gain access to this persona.</li>
-        <li>Your email address will be added to this persona. It will be used to send emails to other
-             users aiming to claim this persona as well.</li>
-        <li>A permanent connection between your account and this persona will be established. That
-            connection will stay in place, also if you will change persona data later on.</li>
+        <li>
+          Your email address will be added to this persona. It will be used to send emails to other
+             users aiming to claim this persona as well.
+        </li>
+        <li>
+          A permanent connection between your account and this persona will be established. That
+            connection will stay in place, also if you will change persona data later on.
+        </li>
       </ul>
-  
-  
-      <h3 class="text-xl my-4">A message of concern</h3>
-  
-      <p><b>Please, only do claim this persona, if you are the person behind the persona yourself or
-      if you are a legitimite representative of the group or organisation represented by the persona.</b></p>
-  
-      <p>If we would have to spend time to deal with conflicting persona claiming issues manually,
+
+      <h3 class="text-xl my-4">
+        A message of concern
+      </h3>
+
+      <p>
+        <b>
+          Please, only do claim this persona, if you are the person behind the persona yourself or
+      if you are a legitimite representative of the group or organisation represented by the persona.
+        </b>
+      </p>
+
+      <p>
+        If we would have to spend time to deal with conflicting persona claiming issues manually,
          that time couldn't be available to bring the project forward. Worst case, this feature would
-         be disabled all together.</p>
-  
+         be disabled all together.
+      </p>
+
       <p>So please act responisbly.</p>
     </div>
-  
-    <div>
-      <h2 class="text-2xl mb-4">Persona data</h2>
-  
-      <p>You are about to claim the following persona:</p>
-  
-      <dl class="grid grid-cols-3 gap-x-4 gap-y-2 mt-4">
-        <dt class="text-right">Pid</dt>
-        <dd class="col-span-2"><%= @persona.pid %></dd>
-  
-        <dt class="text-right">Name</dt>
-        <dd class="col-span-2"><%= @persona.name %></dd>
-  
-        <dt class="text-right">Uri</dt>
-        <dd class="col-span-2"><%= @persona.uri %></dd>
-  
-        <dt class="text-right">Description heading</dt>
-        <dd class="col-span-2"><%= @persona.description %></dd>
-  
-        <dt class="text-right">Description</dt>
-        <dd class="col-span-2"><%= @persona.long_description %></dd>
-  
-        <dt class="text-right">Image</dt>
-        <dd class="col-span-2"><a href={@persona.image_url}><%= @persona.image_title %></a></dd>
 
-        <dt class="text-right">Fediverse Address</dt>
-        <dd class="col-span-2"><a href={@persona.fediverse_address}><%= @persona.fediverse_address %></a></dd>
+    <div>
+      <h2 class="text-2xl mb-4">
+        Persona data
+      </h2>
+
+      <p>You are about to claim the following persona:</p>
+
+      <dl class="grid grid-cols-3 gap-x-4 gap-y-2 mt-4">
+        <dt class="text-right">
+          Pid
+        </dt>
+        <dd class="col-span-2">
+          <%= @persona.pid %>
+        </dd>
+
+        <dt class="text-right">
+          Name
+        </dt>
+        <dd class="col-span-2">
+          <%= @persona.name %>
+        </dd>
+
+        <dt class="text-right">
+          Uri
+        </dt>
+        <dd class="col-span-2">
+          <%= @persona.uri %>
+        </dd>
+
+        <dt class="text-right">
+          Description heading
+        </dt>
+        <dd class="col-span-2">
+          <%= @persona.description %>
+        </dd>
+
+        <dt class="text-right">
+          Description
+        </dt>
+        <dd class="col-span-2">
+          <%= @persona.long_description %>
+        </dd>
+
+        <dt class="text-right">
+          Image
+        </dt>
+        <dd class="col-span-2">
+          <a href={@persona.image_url}>
+            <%= @persona.image_title %>
+          </a>
+        </dd>
+
+        <dt class="text-right">
+          Fediverse Address
+        </dt>
+        <dd class="col-span-2">
+          <a href={@persona.fediverse_address}>
+            <%= @persona.fediverse_address %>
+          </a>
+        </dd>
       </dl>
     </div>
   </div>
 
   <p class="mt-4">
-    <%= link "Claim", to: persona_frontend_path(@conn, :connect, @persona),
-                      class: "bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md",
-                      method: :post,
-                      data: [confirm: "Are you sure?"] %>
+    <%= link("Claim",
+      to: persona_frontend_path(@conn, :connect, @persona),
+      class: "bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md",
+      method: :post,
+      data: [confirm: "Are you sure?"]
+    ) %>
   </p>
 </div>

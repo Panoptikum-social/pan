@@ -23,7 +23,8 @@ defmodule PanWeb.Endpoint do
     at: "/",
     from: :pan,
     gzip: false,
-    only: ~w(assets fonts images web-player subscribe-button simplemde config robots.txt .well-known google0fe1c0bbe8862b06.html)
+    only:
+      ~w(assets fonts images web-player subscribe-button simplemde config robots.txt .well-known google0fe1c0bbe8862b06.html)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.

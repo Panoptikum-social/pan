@@ -1,6 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-  <%= render "_head.html", conn: @conn %>
+  <%= render("_head.html", conn: @conn) %>
 
   <body data-js-view-name={js_view_name(@conn, view_template(@conn))}>
     <%= @inner_content %>

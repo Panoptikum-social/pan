@@ -4,11 +4,17 @@ defmodule PanWeb.Live.Recommendation.Random do
   alias PanWeb.{Podcast, Category}
 
   def mount(_params, _session, socket) do
-    podcast = Podcast.random
+    podcast = Podcast.random()
     category = List.first(podcast.categories).id |> Category.get_by_id()
     episode = Enum.random(podcast.episodes)
 
-    {:ok, assign(socket, podcast: podcast, episode: episode, category: category, page_title: "Random Recommendation")}
+    {:ok,
+     assign(socket,
+       podcast: podcast,
+       episode: episode,
+       category: category,
+       page_title: "Random Recommendation"
+     )}
   end
 
   def render(assigns) do

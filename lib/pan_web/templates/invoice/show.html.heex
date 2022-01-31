@@ -1,31 +1,37 @@
 <div class="m-4">
-  <h2 class="text-2xl">Show invoice</h2>
-  
+  <h2 class="text-2xl">
+    Show invoice
+  </h2>
+
   <ul class="m-4">
     <li>
       <strong>Filename:</strong>
       <%= @invoice.filename %>
     </li>
-  
+
     <li>
       <strong>Content type:</strong>
       <%= @invoice.content_type %>
     </li>
-  
+
     <li>
       <strong>Path:</strong>
       <%= @invoice.path %>
     </li>
-  
+
     <li>
       <strong>User:</strong>
       <%= @invoice.user_id %>
     </li>
-  
+
   </ul>
-  
-  <%= link "Edit", to: invoice_path(@conn, :edit, @invoice),
-                   class: "text-link hover:text-link-dark" %>
-  <%= link "Back", to: invoice_path(@conn, :index),
-                   class: "text-link hover:text-link-dark" %>
+
+  <%= link("Edit",
+    to: invoice_path(@conn, :edit, @invoice),
+    class: "text-link hover:text-link-dark"
+  ) %>
+  <%= link("Back",
+    to: invoice_path(@conn, :index),
+    class: "text-link hover:text-link-dark"
+  ) %>
 </div>

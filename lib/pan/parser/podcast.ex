@@ -75,7 +75,9 @@ defmodule Pan.Parser.Podcast do
 
   defp send_final_messages_to_browser(podcast) do
     Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{podcast.id}", %{
-      content: "Finished updating Podcast #{podcast.title}"})
+      content: "Finished updating Podcast #{podcast.title}"
+    })
+
     {:ok, :done}
   end
 

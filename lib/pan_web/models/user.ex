@@ -343,7 +343,7 @@ defmodule PanWeb.User do
     emails =
       from(u in User,
         where:
-          u.pro_until >= ^time_shift(now() , days: 6) and
+          u.pro_until >= ^time_shift(now(), days: 6) and
             u.pro_until <= ^time_shift(now(), days: 7),
         select: u.email
       )
@@ -351,7 +351,7 @@ defmodule PanWeb.User do
 
     for email <- emails do
       Pan.Email.pro_expiration_notification(email)
-      |> Pan.Mailer.deliver_now!
+      |> Pan.Mailer.deliver_now!()
     end
   end
 

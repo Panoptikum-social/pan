@@ -158,7 +158,8 @@ defmodule PanWeb.Api.PersonaController do
 
     offset = (page - 1) * size
 
-    hits = Pan.Search.query(index: "personas", term: params["filter"], limit: size, offset: offset)
+    hits =
+      Pan.Search.query(index: "personas", term: params["filter"], limit: size, offset: offset)
 
     if hits["total"] > 0 do
       total = Enum.min([hits["total"], 10_000])
@@ -311,7 +312,7 @@ defmodule PanWeb.Api.PersonaController do
           PanWeb.Endpoint
           |> Phoenix.Token.sign("persona", id)
           |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
-          |> Pan.Mailer.deliver_now!
+          |> Pan.Mailer.deliver_now!()
 
           conn
           |> put_view(ErrorView)

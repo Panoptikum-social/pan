@@ -111,7 +111,7 @@ defmodule PanWeb.PersonaFrontendController do
     PanWeb.Endpoint
     |> Phoenix.Token.sign("persona", id)
     |> Pan.Email.confirm_persona_claim_link_html_email(user, email)
-    |> Pan.Mailer.deliver_now!
+    |> Pan.Mailer.deliver_now!()
 
     render(conn, "email_sent.html")
   end

@@ -4,20 +4,28 @@
   <% else %>
     <div class="rounded-xl shadow">
       <div class="p-3 rounded-t-xl bg-warning text-white">
-        <%= icon("rss-heroicons-outline") %> Feeds for <%= link @podcast.title, to: podcast_frontend_path(@conn, :show, @podcast) %>
+        <%= icon("rss-heroicons-outline") %> Feeds for <%= link(@podcast.title, to: podcast_frontend_path(@conn, :show, @podcast)) %>
       </div>
       <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
         <ul class="list-disc ml-4">
           <%= for feed <- @podcast.feeds do %>
             <li>
-              <%= link feed.self_link_title || feed.self_link_url, to: feed.self_link_url,
-                                                                   class: "text-link hover:text-link-dark" %>
+              <%= link(feed.self_link_title || feed.self_link_url,
+                to: feed.self_link_url,
+                class: "text-link hover:text-link-dark"
+              ) %>
               <%= if feed.alternate_feeds != [] do %>
-                <h3 class="text-xl my-4">Alternate feeds</h3>
+                <h3 class="text-xl my-4">
+                  Alternate feeds
+                </h3>
                 <ul class="list-disc">
                   <%= for alternate_feed <- feed.alternate_feeds do %>
-                    <li><%= link alternate_feed.title, to: String.downcase(alternate_feed.url),
-                                                       class: "text-link hover:text-link-dark" %></li>
+                    <li>
+                      <%= link(alternate_feed.title,
+                        to: String.downcase(alternate_feed.url),
+                        class: "text-link hover:text-link-dark"
+                      ) %>
+                    </li>
                   <% end %>
                 </ul>
               <% end %>

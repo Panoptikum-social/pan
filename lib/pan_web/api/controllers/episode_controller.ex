@@ -89,7 +89,8 @@ defmodule PanWeb.Api.EpisodeController do
 
     offset = (page - 1) * size
 
-    hits = Pan.Search.query(index: "episodes", term: params["filter"], limit: size, offset: offset)
+    hits =
+      Pan.Search.query(index: "episodes", term: params["filter"], limit: size, offset: offset)
 
     if hits["total"] > 0 do
       total = Enum.min([hits["total"], 10_000])

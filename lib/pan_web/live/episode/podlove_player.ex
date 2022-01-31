@@ -51,8 +51,10 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
 
   defp chapterlist(chapters) do
     Enum.map(chapters, fn chapter ->
-      %{start: HTML.javascript_escape(chapter.start || ""),
-        title: HTML.javascript_escape(chapter.title || "")}
+      %{
+        start: HTML.javascript_escape(chapter.start || ""),
+        title: HTML.javascript_escape(chapter.title || "")
+      }
     end)
   end
 

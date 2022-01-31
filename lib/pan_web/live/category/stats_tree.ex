@@ -4,7 +4,8 @@ defmodule PanWeb.Live.Category.StatsTree do
   alias PanWeb.Surface.CategoryButton
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.stats_tree, page_title: "Category Tree with Statistics")}
+    {:ok,
+     assign(socket, categories: Category.stats_tree(), page_title: "Category Tree with Statistics")}
   end
 
   def render(assigns) do

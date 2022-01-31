@@ -8,11 +8,15 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
   def mount(_params, _session, socket) do
     schemas =
-      Naming.schemas
+      Naming.schemas()
       |> Enum.map(&%{title: &1})
-    {:ok, assign(socket, id: "admin_dashboard",
-                         schemas: schemas,
-                         selected_count: 0)}
+
+    {:ok,
+     assign(socket,
+       id: "admin_dashboard",
+       schemas: schemas,
+       selected_count: 0
+     )}
   end
 
   def handle_info({:items, schemas}, socket) do
@@ -24,43 +28,57 @@ defmodule PanWeb.Live.Admin.Dashboard do
       socket.assigns.schemas
       |> Enum.map(&Tools.toggle_select_single(&1, String.to_integer(id)))
 
-      selected_count =
-        Enum.filter(schemas, &(&1.selected))
-        |> length
+    selected_count =
+      Enum.filter(schemas, & &1.selected)
+      |> length
 
-    {:noreply, assign(socket, schemas: schemas,
-                              selected_count: selected_count)}
+    {:noreply,
+     assign(socket,
+       schemas: schemas,
+       selected_count: selected_count
+     )}
   end
 
-  def handle_event("index", _,  socket) do
+  def handle_event("index", _, socket) do
     selected_schema =
-      Enum.filter(socket.assigns.schemas, &(&1.selected))
+      Enum.filter(socket.assigns.schemas, & &1.selected)
       |> hd
 
     index_path =
       Routes.databrowser_path(socket, :index, Phoenix.Naming.resource_name(selected_schema.title))
-      {:noreply, push_redirect(socket, to: index_path)}
+
+    {:noreply, push_redirect(socket, to: index_path)}
   end
 
   def handle_event("db_index", _, socket) do
     selected_schema =
-      Enum.filter(socket.assigns.schemas, &(&1.selected))
+      Enum.filter(socket.assigns.schemas, & &1.selected)
       |> hd
 
     index_path =
-      Routes.databrowser_path(socket, :db_indices, Phoenix.Naming.resource_name(selected_schema.title))
-      {:noreply, push_redirect(socket, to: index_path)}
+      Routes.databrowser_path(
+        socket,
+        :db_indices,
+        Phoenix.Naming.resource_name(selected_schema.title)
+      )
+
+    {:noreply, push_redirect(socket, to: index_path)}
   end
 
   def handle_event("schema_definition", _, socket) do
     selected_schema =
       socket.assigns.schemas
-      |> Enum.filter(&(&1.selected))
+      |> Enum.filter(& &1.selected)
       |> hd
 
-      index_path =
-        Routes.databrowser_path(socket, :schema_definition, Phoenix.Naming.resource_name(selected_schema.title))
-        {:noreply, push_redirect(socket, to: index_path)}
+    index_path =
+      Routes.databrowser_path(
+        socket,
+        :schema_definition,
+        Phoenix.Naming.resource_name(selected_schema.title)
+      )
+
+    {:noreply, push_redirect(socket, to: index_path)}
   end
 
   def render(assigns) do

@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(:pan_pubsub, "admin")
-    {:ok, assign(socket, sort_order: :asc, sort_by: :next_update ) |> fetch()}
+    {:ok, assign(socket, sort_order: :asc, sort_by: :next_update) |> fetch()}
   end
 
   defp fetch(%{assigns: %{sort_by: sort_by, sort_order: sort_order}} = socket) do
@@ -25,10 +25,12 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   end
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
-    {:noreply, assign(socket,
-      sort_by: String.to_atom(sort_by),
-      sort_order: String.to_atom(sort_order)
-    )|> fetch()}
+    {:noreply,
+     assign(socket,
+       sort_by: String.to_atom(sort_by),
+       sort_order: String.to_atom(sort_order)
+     )
+     |> fetch()}
   end
 
   def handle_event("trigger-update", _, socket) do
@@ -36,6 +38,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       Podcast.get_one_stale()
       |> Podcast.import_stale()
     end)
+
     {:noreply, socket}
   end
 

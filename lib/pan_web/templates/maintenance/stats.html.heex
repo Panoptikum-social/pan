@@ -1,113 +1,317 @@
 <div class="m-4">
-  <h2 class="text-2xl">Statistics</h2>
+  <h2 class="text-2xl">
+    Statistics
+  </h2>
   <div class="flex space-x-12 my-4">
     <table cellpadding="4">
-        <thead>
-        <tr><td class="border border-gray-light">Module</td>
-            <td class="border border-gray-light">Kind</td>
-            <td class="border border-gray-light">Number</td></tr>
-        </thead>
+      <thead>
+        <tr>
+          <td class="border border-gray-light">
+            Module
+          </td>
+          <td class="border border-gray-light">
+            Kind
+          </td>
+          <td class="border border-gray-light">
+            Number
+          </td>
+        </tr>
+      </thead>
 
-        <tbody>
-        <tr><th class="border border-gray-light">Podcasts</th>
-            <td class="border border-gray-light">total</td>
-            <td class="text-right border border-gray-light"><%= @total_podcasts %></td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">stale</td>
-            <td class="text-right border border-gray-light"><%= @stale_podcasts %></td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">inactive</td>
-            <td class="text-right border border-gray-light"><%= @inactive_podcasts %></td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">retired</td>
-            <td class="text-right border border-gray-light"><%= @retired_podcasts %></td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">average update intervall</td>
-            <td class="text-right border border-gray-light"><%= @average_update_intervall %> h ø</td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">update frequency</td>
-            <td class="text-right border border-gray-light"><%= @podcasts_per_hour %> p/h</td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">backlog</td>
-            <td class="text-right border border-gray-light"><%= @total_feed_backlogs %></td></tr>
-        <tr><td></td>
-            <td class="border border-gray-light">zero publication frequency</td>
-            <td class="text-right border border-gray-light"><%= @podcasts_with_zero_publication_frequency %></td></tr>
-        <tr><th class="border border-gray-light">Episodes</th>
-            <td class="border border-gray-light">total</td>
-            <td class="text-right border border-gray-light"><%= @total_episodes %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">not indexed by full text search engine</td>
-            <td class="text-right border border-gray-light"><%= @unindexed_episodes %></td></tr>
-        <tr><th class="border border-gray-light">Category</th>
-            <td>total</td>
-            <td class="text-right border border-gray-light"><%= @total_categories %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">categorizations</td>
-            <td class="text-right border border-gray-light"><%= @total_categorizations %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">podcasts_missing</td>
-            <td class="text-right border border-gray-light"><%= @podcasts_without_image %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">personas_missing</td>
-            <td class="text-right border border-gray-light"><%= @personas_without_image %></td></tr>
+      <tbody>
+        <tr>
+          <th class="border border-gray-light">
+            Podcasts
+          </th>
+          <td class="border border-gray-light">
+            total
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_podcasts %>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            stale
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @stale_podcasts %>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            inactive
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @inactive_podcasts %>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            retired
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @retired_podcasts %>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            average update intervall
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @average_update_intervall %> h ø
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            update frequency
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @podcasts_per_hour %> p/h
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            backlog
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_feed_backlogs %>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="border border-gray-light">
+            zero publication frequency
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @podcasts_with_zero_publication_frequency %>
+          </td>
+        </tr>
+        <tr>
+          <th class="border border-gray-light">
+            Episodes
+          </th>
+          <td class="border border-gray-light">
+            total
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_episodes %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            not indexed by full text search engine
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @unindexed_episodes %>
+          </td>
+        </tr>
+        <tr>
+          <th class="border border-gray-light">
+            Category
+          </th>
+          <td>total</td>
+          <td class="text-right border border-gray-light">
+            <%= @total_categories %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            categorizations
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_categorizations %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            podcasts_missing
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @podcasts_without_image %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            personas_missing
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @personas_without_image %>
+          </td>
+        </tr>
 
-        </tbody>
+      </tbody>
     </table>
 
     <table cellpadding="4">
       <thead>
-        <tr><td class="border border-gray-light">Module</td>
-            <td class="border border-gray-light">Kind</td>
-            <td class="border border-gray-light">Number</td></tr>
+        <tr>
+          <td class="border border-gray-light">
+            Module
+          </td>
+          <td class="border border-gray-light">
+            Kind
+          </td>
+          <td class="border border-gray-light">
+            Number
+          </td>
+        </tr>
       </thead>
-        <tbody>
-        <tr><th class="border border-gray-light">Users</th>
-            <td class="border border-gray-light">total</td>
-            <td class="text-right border border-gray-light"><%= @total_users %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">subscriptions</td>
-            <td class="text-right border border-gray-light"><%= @total_subscriptions %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">likes</td>
-            <td class="text-right border border-gray-light"><%= @total_likes %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">recommendations</td>
-            <td class="text-right border border-gray-light"><%= @total_recommendations %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">follows</td>
-            <td class="text-right border border-gray-light"><%= @total_follows %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">opmls</td>
-            <td class="text-right border border-gray-light"><%= @total_opmls %></td></tr>
-        <tr><th class="border border-gray-light">Personas</th>
-            <td class="border border-gray-light">total</td>
-            <td class="text-right border border-gray-light"><%= @total_personas %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">engagements</td>
-            <td class="text-right border border-gray-light"><%= @total_engagements %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">gigs</td>
-            <td class="text-right border border-gray-light"><%= @total_gigs %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">manifestations</td>
-            <td class="text-right border border-gray-light"><%= @total_manifestations %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">delegations</td>
-            <td class="text-right border border-gray-light"><%= @total_delegations %></td></tr>
-        <tr><th class="border border-gray-light">Languages</th>
-            <td class="border border-gray-light">total</td>
-            <td class="text-right border border-gray-light"><%= @total_languages %></td></tr>
-        <tr><th class="border border-gray-light">Feeds</th>
-            <td class="border border-gray-light">without headers</td>
-            <td class="text-right border border-gray-light"><%= @feeds_without_headers %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">with etag</td>
-            <td class="text-right border border-gray-light"><%= @feeds_with_etag %></td></tr>
-        <tr><th></th>
-            <td class="border border-gray-light">with last modified</td>
-            <td class="text-right border border-gray-light"><%= @feeds_with_last_modified %></td></tr>
-        </tbody>
+      <tbody>
+        <tr>
+          <th class="border border-gray-light">
+            Users
+          </th>
+          <td class="border border-gray-light">
+            total
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_users %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            subscriptions
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_subscriptions %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            likes
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_likes %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            recommendations
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_recommendations %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            follows
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_follows %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            opmls
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_opmls %>
+          </td>
+        </tr>
+        <tr>
+          <th class="border border-gray-light">
+            Personas
+          </th>
+          <td class="border border-gray-light">
+            total
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_personas %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            engagements
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_engagements %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            gigs
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_gigs %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            manifestations
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_manifestations %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            delegations
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_delegations %>
+          </td>
+        </tr>
+        <tr>
+          <th class="border border-gray-light">
+            Languages
+          </th>
+          <td class="border border-gray-light">
+            total
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @total_languages %>
+          </td>
+        </tr>
+        <tr>
+          <th class="border border-gray-light">
+            Feeds
+          </th>
+          <td class="border border-gray-light">
+            without headers
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @feeds_without_headers %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            with etag
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @feeds_with_etag %>
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="border border-gray-light">
+            with last modified
+          </td>
+          <td class="text-right border border-gray-light">
+            <%= @feeds_with_last_modified %>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

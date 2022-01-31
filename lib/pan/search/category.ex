@@ -41,8 +41,9 @@ defmodule Pan.Search.Category do
   end
 
   def update_index(id) do
-    category = from(c in Category, where: c.id == ^id, select: ^selects())
-    |> Repo.one()
+    category =
+      from(c in Category, where: c.id == ^id, select: ^selects())
+      |> Repo.one()
 
     manticore_struct(category)[:insert]
     |> Jason.encode!()

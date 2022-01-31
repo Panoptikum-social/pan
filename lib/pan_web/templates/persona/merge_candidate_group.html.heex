@@ -1,48 +1,66 @@
-<h2 class="text-2xl m-4">Merge personas</h2>
+<h2 class="text-2xl m-4">
+  Merge personas
+</h2>
 
 <table class="m-4 table-auto" cellpadding="4">
   <tbody>
     <tr class="bg-gray-lighter">
       <th>ID</th>
       <%= for persona <- @personas do %>
-        <td><%= link persona.id, to: persona_frontend_path(@conn, :show, persona.id), 
-                                 class: "text-link hover:text-link-dark" %></td>
+        <td>
+          <%= link(persona.id,
+            to: persona_frontend_path(@conn, :show, persona.id),
+            class: "text-link hover:text-link-dark"
+          ) %>
+        </td>
       <% end %>
     </tr>
     <tr>
       <th>Pid</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.pid %></td>
+        <td>
+          <%= persona.pid %>
+        </td>
       <% end %>
     </tr>
     <tr class="bg-gray-lighter">
       <th>Name</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.name %></td>
+        <td>
+          <%= persona.name %>
+        </td>
       <% end %>
     </tr>
     <tr>
       <th>URI</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.uri %></td>
+        <td>
+          <%= persona.uri %>
+        </td>
       <% end %>
     </tr>
     <tr class="bg-gray-lighter">
       <th>Email</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.email %></td>
+        <td>
+          <%= persona.email %>
+        </td>
       <% end %>
     </tr>
     <tr>
       <th>Image url</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.image_url %></td>
+        <td>
+          <%= persona.image_url %>
+        </td>
       <% end %>
     </tr>
     <tr class="bg-gray-lighter">
       <th>Description</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.description %></td>
+        <td>
+          <%= persona.description %>
+        </td>
       <% end %>
     </tr>
     <tr>
@@ -51,9 +69,11 @@
         <td class="py-2">
           <%= for persona_to <- @personas do %>
             <%= unless persona.id == persona_to.id do
-                  link(persona_to.id, to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id),
-                                      class: "border border-black rounded p-0.5 hover:text-gray-dark")
-                end %>
+              link(persona_to.id,
+                to: persona_path(@conn, :merge, from: persona.id, to: persona_to.id),
+                class: "border border-black rounded p-0.5 hover:text-gray-dark"
+              )
+            end %>
           <% end %>
         </td>
       <% end %>
@@ -73,11 +93,11 @@
       <%= for persona <- @personas do %>
         <td>
           <%= for gig <- persona.gigs do %>
-            <%= gig.episode_id %><br/>
+            <%= gig.episode_id %>
+            <br />
           <% end %>
         </td>
       <% end %>
     </tr>
   </tbody>
 </table>
-

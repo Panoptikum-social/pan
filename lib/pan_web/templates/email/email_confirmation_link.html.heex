@@ -1,10 +1,11 @@
-<p>
-  Please confirm your email address clicking on this link:
-  <%= link "Confirm Email", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint,
-                                                               :confirm_email,
-                                                               token: @token)  %>
+<p>Please confirm your email address clicking on this link: <%= link("Confirm Email",
+    to:
+      PanWeb.Router.Helpers.session_url(
+        PanWeb.Endpoint,
+        :confirm_email,
+        token: @token
+      )
+  ) %>
 </p>
 
-<p>
-  If you don't confirm your email address, you won't be able to claim personas.
-</p>
+<p>If you don't confirm your email address, you won't be able to claim personas.</p>

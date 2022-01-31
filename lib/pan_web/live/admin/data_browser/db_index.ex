@@ -1,6 +1,8 @@
 defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"},
-                        container: {:div, class: "flex-1"}
+  use Surface.LiveView,
+    layout: {PanWeb.LayoutView, "live_admin.html"},
+    container: {:div, class: "flex-1"}
+
   alias PanWeb.Surface.Admin.Naming
   require Integer
 
@@ -11,8 +13,13 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
 
   def get_indices(assigns) do
     table_name = Naming.table_name(assigns.model)
+
     response =
-      Ecto.Adapters.SQL.query(Pan.Repo, "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = '#{table_name}' ORDER BY indexname;")
+      Ecto.Adapters.SQL.query(
+        Pan.Repo,
+        "SELECT indexname, indexdef FROM pg_indexes WHERE tablename = '#{table_name}' ORDER BY indexname;"
+      )
+
     {:ok, %Postgrex.Result{rows: indices}} = response
     indices
   end

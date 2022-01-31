@@ -11,7 +11,14 @@ defmodule PanWeb.Live.Admin.Opml.Index do
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, sort_by: :inserted_at, sort_order: :desc, page: 1, per_page: 10, filter_by: nil)
+    socket =
+      assign(socket,
+        sort_by: :inserted_at,
+        sort_order: :desc,
+        page: 1,
+        per_page: 10,
+        filter_by: nil
+      )
 
     {:ok, socket |> fetch() |> paginate()}
   end

@@ -7,6 +7,7 @@ defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
 
   def handle_event("read-config", _, socket) do
     podcast = socket.assigns.podcast
+
     config = %{
       title: HTML.javascript_escape(podcast.title || ""),
       subtitle: HTML.javascript_escape(podcast.summary || ""),

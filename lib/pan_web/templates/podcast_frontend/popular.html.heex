@@ -3,8 +3,10 @@
     Top 100 subscribed Podcasts
   </div>
   <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
-    <%= render "_wide_top_list_table.html", podcasts: @popular_podcasts,
-                                            icon: "user-heroicons-solid",
-                                            conn: @conn %>
+    <%= render("_wide_top_list_table.html",
+      podcasts: @popular_podcasts,
+      icon: "user-heroicons-solid",
+      conn: @conn
+    ) %>
   </div>
 </div>

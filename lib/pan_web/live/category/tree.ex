@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Category.Tree do
   alias PanWeb.Surface.CategoryButton
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.tree, page_title: "Category Tree")}
+    {:ok, assign(socket, categories: Category.tree(), page_title: "Category Tree")}
   end
 
   def render(assigns) do

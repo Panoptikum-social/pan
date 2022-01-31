@@ -7,9 +7,10 @@
     <ul class="list-disc m-4">
       <%= for {name, frequency} <- @non_unique_names do %>
         <li>
-          <%= link name, to: persona_path(@conn, :merge_candidate_group, name: name),
-                         class: "text-link hover:text-link-dark" %>
-          (<%= frequency %>)
+          <%= link(name,
+            to: persona_path(@conn, :merge_candidate_group, name: name),
+            class: "text-link hover:text-link-dark"
+          ) %> ( <%= frequency %> )
         </li>
       <% end %>
     </ul>
@@ -23,9 +24,10 @@
     <ul class="list-disc m-4">
       <%= for {email, frequency} <- @non_unique_emails do %>
         <li>
-          <%= link email, to: persona_path(@conn, :merge_candidate_group, email: email),
-                          class: "text-link hover:text-link-dark" %>
-          (<%= frequency %>)
+          <%= link(email,
+            to: persona_path(@conn, :merge_candidate_group, email: email),
+            class: "text-link hover:text-link-dark"
+          ) %> ( <%= frequency %> )
         </li>
       <% end %>
     </ul>

@@ -18,9 +18,9 @@ defmodule PanWeb.Manifestation do
 
   def get_with_persona(user_id, persona_id) do
     from(m in Manifestation,
-    where: m.user_id == ^user_id and m.persona_id == ^persona_id,
-    preload: :persona
-  )
-  |> Repo.one()
+      where: m.user_id == ^user_id and m.persona_id == ^persona_id,
+      preload: :persona
+    )
+    |> Repo.one()
   end
 end

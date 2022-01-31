@@ -14,7 +14,7 @@ defmodule PanWeb.SessionController do
           _ ->
             Phoenix.Token.sign(PanWeb.Endpoint, "user", current_user.id)
             |> Pan.Email.email_confirmation_link_html_email(current_user.email)
-            |> Pan.Mailer.deliver_now!
+            |> Pan.Mailer.deliver_now!()
 
             conn
             |> Phoenix.Controller.put_flash(

@@ -1,35 +1,41 @@
-<h1 class="text-2xl">Users</h1>
+<h1 class="text-2xl">
+  Users
+</h1>
 
 <% grouped_users = Enum.group_by(@users, fn p -> (p.name |> String.first() |> String.upcase()) end) %>
 <% letters = Map.keys(grouped_users) |> Enum.sort %>
 
 <div x-data={"{ selectedTab: #{Enum.find_index(letters, &(&1 == "A"))} }"} class="pt-4">
-  <ul class="flex flex-wrap border-b border-gray-lighter">
-    <%= for {letter, index} <- letters |> Enum.with_index do %>
-      <li class="-mb-px ml-1.5">
-        <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-           :class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
+<ul class="flex flex-wrap border-b border-gray-lighter">
+  <%= for {letter, index} <- letters |> Enum.with_index() do %>
+    <li class="-mb-px ml-1.5">
+      <a
+        class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
+        :class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
                        selectedTab === #{index},
                      'bg-gray-lighter text-gray-dark' :
                      selectedTab !== #{index} }"}
-           @click.prevent={"selectedTab = #{index}"}
-           to="#"><%= letter %></a>
-      </li>
-    <% end %>
-  </ul>
+        @click.prevent={"selectedTab = #{index}"}
+        to="#"
+      >
+        <%= letter %>
+      </a>
+    </li>
+  <% end %>
+</ul>
 
-  <div class="pt-4">
-    <%= for {letter, index} <- letters |> Enum.with_index do %>
-      <div class="flex flex-wrap items-start"
-           x-show={"selectedTab === #{index}"}>
-        <%= for user <- grouped_users[letter] do %>
-          <%= link [icon("user-heroicons-outline", class: "inline w-4 h-4"), " ", user.name],
-                  to: user_frontend_path(@conn, :show, user),
-                  class: "mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet 
-                          text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet" %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+<div class="pt-4">
+  <%= for {letter, index} <- letters |> Enum.with_index() do %>
+    <div class="flex flex-wrap items-start" x-show={"selectedTab === #{index}"}>
+      <%= for user <- grouped_users[letter] do %>
+        <%= link([icon("user-heroicons-outline", class: "inline w-4 h-4"), " ", user.name],
+          to: user_frontend_path(@conn, :show, user),
+          class:
+            "mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet 
+                                  text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet"
+        ) %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
-
+</div>

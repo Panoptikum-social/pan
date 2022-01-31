@@ -279,6 +279,7 @@ defmodule PanWeb.Podcast do
 
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)
+
     get_one_stale()
     |> import_stale()
   end

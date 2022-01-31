@@ -10,12 +10,13 @@ defmodule PanWeb.Surface.FollowButton do
   data(followers_count, :integer, default: 0)
 
   def update(assigns, socket) do
-    follow_method = case assigns.model do
-      Podcast -> &Follow.find_podcast_follow/2
-      Category -> &Follow.find_category_follow/2
-      Persona -> &Follow.find_persona_follow/2
-      User -> &Follow.find_user_follow/2
-    end
+    follow_method =
+      case assigns.model do
+        Podcast -> &Follow.find_podcast_follow/2
+        Category -> &Follow.find_category_follow/2
+        Persona -> &Follow.find_persona_follow/2
+        User -> &Follow.find_user_follow/2
+      end
 
     following =
       follow_method.(assigns.current_user_id, assigns.instance.id)

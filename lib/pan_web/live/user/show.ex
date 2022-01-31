@@ -2,10 +2,21 @@ defmodule PanWeb.Live.User.Show do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like}
-  alias PanWeb.Surface.{Panel, PodcastButton, CategoryButton, UserButton, EpisodeButton, Icon, LikeButton, FollowButton}
+
+  alias PanWeb.Surface.{
+    Panel,
+    PodcastButton,
+    CategoryButton,
+    UserButton,
+    EpisodeButton,
+    Icon,
+    LikeButton,
+    FollowButton
+  }
 
   def mount(%{"id" => id}, _session, socket) do
     user = User.get_for_show(id)
+
     {:ok,
      assign(socket,
        user: user,

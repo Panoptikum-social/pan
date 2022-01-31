@@ -1,6 +1,7 @@
 defmodule PanWeb.MaintenanceController do
   use PanWeb, :controller
   import Pan.Parser.MyDateTime, only: [now: 0]
+
   alias PanWeb.{
     Category,
     Delegation,
@@ -128,7 +129,7 @@ defmodule PanWeb.MaintenanceController do
 
     unindexed_episodes =
       from(e in Episode, where: not e.full_text)
-      |> Repo.aggregate(:count, [timeout: 999_999])
+      |> Repo.aggregate(:count, timeout: 999_999)
       |> delimit_integer(" ")
 
     podcasts_per_hour =

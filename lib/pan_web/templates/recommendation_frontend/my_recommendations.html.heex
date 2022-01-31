@@ -1,15 +1,21 @@
 <div class="flex space-x-4">
   <div>
     <div class="border border-gray-light rounded roundet-lg">
-      <div class="bg-gray-light p-2">Your Podcast Recommendations</div>
+      <div class="bg-gray-light p-2">
+        Your Podcast Recommendations
+      </div>
       <ul class="m-4 flex flex-col space-y-4">
         <%= for recommendation <- @podcast_recommendations do %>
           <li>
             <div class="flex justify-between">
-              <%= link [icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"), " ", recommendation.podcast.title],
-                  to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                  class: "border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest" %>
-              <span><%= to_string(recommendation.inserted_at) %></span>
+              <%= link(
+                [icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"), " ", recommendation.podcast.title],
+                to: podcast_frontend_path(@conn, :show, recommendation.podcast),
+                class: "border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+              ) %>
+              <span>
+                <%= to_string(recommendation.inserted_at) %>
+              </span>
             </div>
             <%= recommendation.comment %>
           </li>
@@ -20,27 +26,36 @@
 
   <div>
     <div class="border border-gray-light rounded-lg">
-      <div class="bg-mint text-white p-2">Unrecommended Podcasts</div>
+      <div class="bg-mint text-white p-2">
+        Unrecommended Podcasts
+      </div>
       <ul class="m-4 flex flex-col space-y-4">
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
             <%= form_for @changeset,
-                         recommendation_frontend_path(@conn, :create), [style: "margin-top: 0px;
-                                                                               margin-bottom: 0px;"],
-                         fn f -> %>
+                     recommendation_frontend_path(@conn, :create),
+                     [
+                       style:
+                         "margin-top: 0px;
+                                                                                                  margin-bottom: 0px;"
+                     ],
+                     fn f -> %>
 
               <div class="flex space-x-4">
                 <div class="basis-5/6 shrink-0">
                   <div class="flex justify-between">
                     Your recommendation for: &nbsp; <%= podcast.title %>
-                    <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>255</small>
+                    <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>
+                      255
+                    </small>
                   </div>
-                  <%= hidden_input f, :podcast_id, value: podcast.id  %>
-                  <%= text_input f, :comment, size: 60, maxlength: 255,
-                                              data: [chapter: podcast.id ] %>
+                  <%= hidden_input(f, :podcast_id, value: podcast.id) %>
+                  <%= text_input(f, :comment, size: 60, maxlength: 255, data: [chapter: podcast.id]) %>
                 </div>
-                <%= submit [icon("thumb-up-heroicons-outline"), " Recommend"], 
-                    class: "bg-info hover:bg-info-light border border-gray text-white px-2 py-1 rounded self-end shrink-0 basis-1/6" %>
+                <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
+                  class:
+                    "bg-info hover:bg-info-light border border-gray text-white px-2 py-1 rounded self-end shrink-0 basis-1/6"
+                ) %>
               </div>
             <% end %>
 

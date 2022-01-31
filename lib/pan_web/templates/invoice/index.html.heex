@@ -1,46 +1,83 @@
 <div class="m-4">
-  <h2 class="text-2xl">Listing invoices</h2>
+  <h2 class="text-2xl">
+    Listing invoices
+  </h2>
 
   <table cellpadding="4" class="my-4">
     <thead>
       <tr>
-        <th class="border border-gray-light">Filename</th>
-        <th class="border border-gray-light">Content type</th>
-        <th class="border border-gray-light">Path</th>
-        <th class="border border-gray-light">User Id</th>
-        <th class="border border-gray-light">Username</th>
-        <th class="border border-gray-light">User Name</th>
+        <th class="border border-gray-light">
+          Filename
+        </th>
+        <th class="border border-gray-light">
+          Content type
+        </th>
+        <th class="border border-gray-light">
+          Path
+        </th>
+        <th class="border border-gray-light">
+          User Id
+        </th>
+        <th class="border border-gray-light">
+          Username
+        </th>
+        <th class="border border-gray-light">
+          User Name
+        </th>
         <th class="border border-gray-light"></th>
       </tr>
     </thead>
     <tbody>
       <%= for invoice <- @invoices do %>
         <tr>
-          <td class="border border-gray-light"><%= invoice.filename %></td>
-          <td class="border border-gray-light"><%= invoice.content_type %></td>
-          <td class="border border-gray-light"><%= invoice.path %></td>
-          <td class="border border-gray-light"><%= link invoice.user_id, to: databrowser_path(@conn, :show, "user", invoice.user) %></td>
-          <td class="border border-gray-light"><%= invoice.user.username %></td>
-          <td class="border border-gray-light"><%= invoice.user.name %></td>
+          <td class="border border-gray-light">
+            <%= invoice.filename %>
+          </td>
+          <td class="border border-gray-light">
+            <%= invoice.content_type %>
+          </td>
+          <td class="border border-gray-light">
+            <%= invoice.path %>
+          </td>
+          <td class="border border-gray-light">
+            <%= link(invoice.user_id, to: databrowser_path(@conn, :show, "user", invoice.user)) %>
+          </td>
+          <td class="border border-gray-light">
+            <%= invoice.user.username %>
+          </td>
+          <td class="border border-gray-light">
+            <%= invoice.user.name %>
+          </td>
 
           <td class="border border-gray-light">
-            <%= link "Show", to: invoice_path(@conn, :show, invoice), 
-                             class: "bg-info text-white border border-gray-dark hover:bg-info-light 
-                                     inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm" %>
-            <%= link "Edit", to: invoice_path(@conn, :edit, invoice), 
-                             class: "bg-warning text-white border border-gray-dark hover:bg-warning-light 
-                                     inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm" %>
-            <%= link "Delete", to: invoice_path(@conn, :delete, invoice), 
-                               method: :delete, 
-                               data: [confirm: "Are you sure?"], 
-                               class: "bg-danger text-white border border-gray-dark hover:bg-danger-light 
-                                       inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm" %>
+            <%= link("Show",
+              to: invoice_path(@conn, :show, invoice),
+              class:
+                "bg-info text-white border border-gray-dark hover:bg-info-light 
+                                                 inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            ) %>
+            <%= link("Edit",
+              to: invoice_path(@conn, :edit, invoice),
+              class:
+                "bg-warning text-white border border-gray-dark hover:bg-warning-light 
+                                                 inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            ) %>
+            <%= link("Delete",
+              to: invoice_path(@conn, :delete, invoice),
+              method: :delete,
+              data: [confirm: "Are you sure?"],
+              class:
+                "bg-danger text-white border border-gray-dark hover:bg-danger-light 
+                                                   inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            ) %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <%= link "New invoice", to: invoice_path(@conn, :new), 
-                          class: "text-link hover:text-link-dark" %>
+  <%= link("New invoice",
+    to: invoice_path(@conn, :new),
+    class: "text-link hover:text-link-dark"
+  ) %>
 </div>

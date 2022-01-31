@@ -3,20 +3,28 @@
     <%= for {rank, count, podcasts} <- prepare_for_toplist(@podcasts) do %>
       <tr class="odd:bg-white">
         <th scope="row">
-          <%= rank %>.
+          <%= rank %> .
         </th>
 
         <td class="flex flex-wrap">
           <%= for {id, title} <- podcasts do %>
-            <%= link [icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"), " ", truncate_string(title, 50)],
-                  to: podcast_frontend_path(@conn, :show, id),
-                  class: "m-1 border border-gray-dark hover:bg-gray-light text-gray-dark text-sm py-1 px-2 rounded",
-                  style: "color: #000;" %>
+            <%= link(
+              [
+                icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"),
+                " ",
+                truncate_string(title, 50)
+              ],
+              to: podcast_frontend_path(@conn, :show, id),
+              class:
+                "m-1 border border-gray-dark hover:bg-gray-light text-gray-dark text-sm py-1 px-2 rounded",
+              style: "color: #000;"
+            ) %>
           <% end %>
         </td>
 
         <td class="text-right whitespace-nowrap">
-          <%= count %> <%= icon(@icon, class: "w-5 h-5 inline align-text-top") %>
+          <%= count %>
+          <%= icon(@icon, class: "w-5 h-5 inline align-text-top") %>
         </td>
       </tr>
     <% end %>

@@ -21,7 +21,7 @@ defmodule Logger.Backends.ExceptionNotification do
         "exeception_notification@panoptikum.io",
         "stefan@panoptikum.io"
       )
-      |> Pan.Mailer.deliver_now!
+      |> Pan.Mailer.deliver_now!()
     end
 
     {:ok, state}

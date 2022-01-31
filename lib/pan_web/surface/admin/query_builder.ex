@@ -25,7 +25,6 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     |> Repo.aggregate(:count)
   end
 
-
   defp apply_criteria(query, criteria) do
     Enum.reduce(criteria, query, &apply_criterium(&1, &2))
   end

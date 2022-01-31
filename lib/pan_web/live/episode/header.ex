@@ -11,12 +11,12 @@ defmodule PanWeb.Live.Episode.Header do
 
   def update(%{current_user_id: current_user_id} = assigns, socket) do
     socket =
-    if current_user_id do
-      assign(socket, assigns)
-      |> assign(current_user: User.get_by_id_with_personas(current_user_id))
-    else
-      assign(socket, assigns)
-    end
+      if current_user_id do
+        assign(socket, assigns)
+        |> assign(current_user: User.get_by_id_with_personas(current_user_id))
+      else
+        assign(socket, assigns)
+      end
 
     {:ok, socket}
   end
@@ -24,7 +24,7 @@ defmodule PanWeb.Live.Episode.Header do
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   defp truncated_filename(url) do
-    url |> String.split("/") |> List.last |> truncate_string(50)
+    url |> String.split("/") |> List.last() |> truncate_string(50)
   end
 
   def render(assigns) do

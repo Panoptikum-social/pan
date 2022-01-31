@@ -10,14 +10,15 @@ defmodule PanWeb.Surface.LikeButton do
   data(likes_count, :integer, default: 0)
 
   def update(assigns, socket) do
-    like_method = case assigns.model do
-       Chapter -> &Like.find_chapter_like/2
-       Episode -> &Like.find_episode_like/2
-       Podcast -> &Like.find_podcast_like/2
-       Category -> &Like.find_category_like/2
-       Persona -> &Like.find_persona_like/2
-       User -> &Like.find_user_like/2
-    end
+    like_method =
+      case assigns.model do
+        Chapter -> &Like.find_chapter_like/2
+        Episode -> &Like.find_episode_like/2
+        Podcast -> &Like.find_podcast_like/2
+        Category -> &Like.find_category_like/2
+        Persona -> &Like.find_persona_like/2
+        User -> &Like.find_user_like/2
+      end
 
     liking =
       like_method.(assigns.current_user_id, assigns.instance.id)

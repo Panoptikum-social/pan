@@ -16,7 +16,7 @@ config :pan, Pan.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :pan, PanWeb.Endpoint,
-  http: [ip: {10,0,0,36}, port: System.get_env("PORT") || 4000],
+  http: [ip: {10, 0, 0, 36}, port: System.get_env("PORT") || 4000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -68,8 +68,7 @@ config :pan, PanWeb.Endpoint,
     ]
   ]
 
-config :pan, Pan.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :pan, Pan.Mailer, adapter: Bamboo.LocalAdapter
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

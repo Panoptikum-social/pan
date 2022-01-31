@@ -65,8 +65,10 @@ defmodule Pan.Search.Episode do
           shownotes: episode.shownotes || "",
           inserted_at: to_unix(episode.inserted_at),
           podcast_id: episode.podcast.id,
-          language_ids: (episode.podcast.languages && Enum.map(episode.podcast.languages, get_id)) || [],
-          category_ids: (episode.podcast.categories && Enum.map(episode.podcast.categories, get_id)) || [],
+          language_ids:
+            (episode.podcast.languages && Enum.map(episode.podcast.languages, get_id)) || [],
+          category_ids:
+            (episode.podcast.categories && Enum.map(episode.podcast.categories, get_id)) || [],
           gig_ids: (episode.gigs && Enum.map(episode.gigs, get_id)) || [],
           gigs:
             Enum.map(

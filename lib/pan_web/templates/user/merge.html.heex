@@ -1,20 +1,23 @@
 <div class="m-4">
-  <h2 class="text-3xl">Merging Users</h2>
-  
-  <%= form_for @conn, user_path(@conn, :execute_merge), 
-                      [as: :users, class: "p-4 mb-4 flex flex-col items-start space-y-4"], 
-                      fn f -> %>
+  <h2 class="text-3xl">
+    Merging Users
+  </h2>
+
+  <%= form_for @conn,
+           user_path(@conn, :execute_merge),
+           [as: :users, class: "p-4 mb-4 flex flex-col items-start space-y-4"],
+           fn f -> %>
     <div class="flex flex-col">
-      <%= label f, :from %>
-      <%= text_input f, :from %>
+      <%= label(f, :from) %>
+      <%= text_input(f, :from) %>
     </div>
     <div class="flex flex-col">
-      <%= label f, :into %>
-      <%= text_input f, :into %>
+      <%= label(f, :into) %>
+      <%= text_input(f, :into) %>
     </div>
-  
+
     <div class="flex flex-col">
-      <%= submit "Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
+      <%= submit("Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md") %>
     </div>
   <% end %>
 </div>

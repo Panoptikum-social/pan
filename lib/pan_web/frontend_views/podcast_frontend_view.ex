@@ -1,7 +1,9 @@
 defmodule PanWeb.PodcastFrontendView do
   use PanWeb, :view
 
-  def title("feeds.html", assigns), do: "Feeds for #{assigns.podcast.title} (Podcast) · Panoptikum"
+  def title("feeds.html", assigns),
+    do: "Feeds for #{assigns.podcast.title} (Podcast) · Panoptikum"
+
   def title("liked.html", _assigns), do: "Most Liked Podcasts · Panoptikum"
   def title("popular.html", _assigns), do: "Most Subscribed Podcasts · Panoptikum"
   def title(_, _assigns), do: "🎧 · Panoptikum"

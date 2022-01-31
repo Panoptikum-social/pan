@@ -1,6 +1,9 @@
-<p>
-  You can now login using this
-  <%= link "Login link", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint,
-                                                            :login_via_token,
-                                                            token: @token)  %>
+<p>You can now login using this <%= link("Login link",
+    to:
+      PanWeb.Router.Helpers.session_url(
+        PanWeb.Endpoint,
+        :login_via_token,
+        token: @token
+      )
+  ) %>
 </p>

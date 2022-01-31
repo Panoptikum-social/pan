@@ -1,38 +1,43 @@
-<%= link [icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
-         to: category_frontend_path(@conn, :index) %>
-/
-<%= if @category.parent do %>
-  <%= link [icon("folder-open-heroicons-outline"), " ", @category.parent.title],
-           to: category_frontend_path(@conn, :show, @category.parent.id) %>
-  /
+<%= link([icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
+  to: category_frontend_path(@conn, :index)
+) %> / <%= if @category.parent do %>
+  <%= link([icon("folder-open-heroicons-outline"), " ", @category.parent.title],
+    to: category_frontend_path(@conn, :show, @category.parent.id)
+  ) %> /
 <% end %>
-<%= link [icon("folder-open-heroicons-outline"), " ", @category.title],
-           to: category_frontend_path(@conn, :show, @category) %>
+<%= link([icon("folder-open-heroicons-outline"), " ", @category.title],
+  to: category_frontend_path(@conn, :show, @category)
+) %>
 
-
-<h1 class="text-3xl my-4"><%= icon("folder-open-heroicons-outline") %> <%= @category.title %></h1>
+<h1 class="text-3xl my-4">
+  <%= icon("folder-open-heroicons-outline") %>
+  <%= @category.title %>
+</h1>
 
 <div x-data="{ selectedTab: 0}" class="pt-4">
   <ul class="flex flex-wrap border-b border-gray-lighter">
     <%= for {category, index} <- Enum.with_index(@categories) do %>
       <li class="-mb-px ml-1.5">
-        <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-           :class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
+        <a
+          class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
+          :class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
                        selectedTab === #{index},
                      'bg-gray-lighter text-gray-dark' :
                      selectedTab !== #{index} }"}
-           @click.prevent={"selectedTab = #{index}"}
-           to="#"><%= category.title %></a>
+          @click.prevent={"selectedTab = #{index}"}
+          to="#"
+        >
+          <%= category.title %>
+        </a>
       </li>
     <% end %>
   </ul>
 
   <div class="pt-4">
     <%= for {category, index} <- Enum.with_index(@categories) do %>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4"
-           x-show={"selectedTab === #{index}"}>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" x-show={"selectedTab === #{index}"}>
         <%= for podcast <- category.podcasts do %>
-          <%= render "_podcast_widget.html", conn: @conn, podcast: podcast %>
+          <%= render("_podcast_widget.html", conn: @conn, podcast: podcast) %>
         <% end %>
       </div>
     <% end %>

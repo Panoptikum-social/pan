@@ -8,9 +8,9 @@ defmodule PanWeb.Surface.Admin.RelationsBlock do
 
   def type(model, association) do
     model.__schema__(:association, association).__struct__
-    |> Atom.to_string
+    |> Atom.to_string()
     |> String.split(".")
-    |> List.last
+    |> List.last()
   end
 
   def render(assigns) do

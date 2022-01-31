@@ -1,85 +1,166 @@
 <div class="m-4">
   <div class="float-right">
-    <%= link "Assign all to 'Unsorted'", to: podcast_path(@conn, :assign_to_unsorted),
-                                         class: "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-2 px-3 rounded" %>
+    <%= link("Assign all to 'Unsorted'",
+      to: podcast_path(@conn, :assign_to_unsorted),
+      class:
+        "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-2 px-3 rounded"
+    ) %>
   </div>
-  
-  <h2 class="text-2xl">Listing <%= length(@unassigned_podcasts) %> podcasts without categories</h2>
-  
+
+  <h2 class="text-2xl">
+    Listing <%= length(@unassigned_podcasts) %> podcasts without categories
+  </h2>
+
   <table class="m-4 table-auto" cellpadding="4">
     <thead>
       <tr>
-        <th class="border border-gray-light">ID</th>
-        <th class="border border-gray-light">Title</th>
-        <th class="border border-gray-light">Website</th>
-        <th class="border border-gray-light">updated_at</th>
-        <th class="border border-gray-light">Last build date</th>
-        <th class="border border-gray-light">Update Paused</th>
-        <th class="border border-gray-light">Actions</th>
+        <th class="border border-gray-light">
+          ID
+        </th>
+        <th class="border border-gray-light">
+          Title
+        </th>
+        <th class="border border-gray-light">
+          Website
+        </th>
+        <th class="border border-gray-light">
+          updated_at
+        </th>
+        <th class="border border-gray-light">
+          Last build date
+        </th>
+        <th class="border border-gray-light">
+          Update Paused
+        </th>
+        <th class="border border-gray-light">
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody>
       <%= for podcast <- @unassigned_podcasts do %>
         <tr>
-          <td class="border border-gray-light"><%= podcast.id %></td>
-          <td class="border border-gray-light"><%= podcast.title %></td>
+          <td class="border border-gray-light">
+            <%= podcast.id %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.title %>
+          </td>
           <td class="border border-gray-light">
             <%= if podcast.website do %>
-              <a href={podcast.website}><%= truncate_string(podcast.website, 50)%> </a>
+              <a href={podcast.website}>
+                <%= truncate_string(podcast.website, 50) %>
+              </a>
             <% end %>
           </td>
-          <td class="border border-gray-light"><%= podcast.updated_at %></td>
-          <td class="border border-gray-light"><%= podcast.last_build_date %></td>
-          <td class="border border-gray-light"><%= podcast.update_paused %></td>
-  
           <td class="border border-gray-light">
-            <%= link "Show", to: databrowser_path(@conn, :show, "podcast", podcast),
-                             class: "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %>
-            <%= link "Edit", to: databrowser_path(@conn, :edit, "podcast", podcast),
-                             class: "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-1 px-2 rounded" %>
-            <%= link "Delete", to: podcast_path(@conn, :delete, podcast),
-                               method: :delete,
-                               data: [confirm: "Are you sure?"],
-                               class: "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded" %>
+            <%= podcast.updated_at %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.last_build_date %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.update_paused %>
+          </td>
+
+          <td class="border border-gray-light">
+            <%= link("Show",
+              to: databrowser_path(@conn, :show, "podcast", podcast),
+              class:
+                "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+            <%= link("Edit",
+              to: databrowser_path(@conn, :edit, "podcast", podcast),
+              class:
+                "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+            <%= link("Delete",
+              to: podcast_path(@conn, :delete, podcast),
+              method: :delete,
+              data: [confirm: "Are you sure?"],
+              class:
+                "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+            ) %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  
-  <h2 class="text-2xl">Listing <%= length(@podcasts_without_episodes) %> podcasts without episodes</h2>
-  
+
+  <h2 class="text-2xl">
+    Listing <%= length(@podcasts_without_episodes) %> podcasts without episodes
+  </h2>
+
   <table class="m-4 table-auto" cellpadding="4">
     <thead>
       <tr>
-        <th class="border border-gray-light">ID</th>
-        <th class="border border-gray-light">Title</th>
-        <th class="border border-gray-light">Website</th>
-        <th class="border border-gray-light">updated_at</th>
-        <th class="border border-gray-light">Last build date</th>
-        <th class="border border-gray-light">Update Paused</th>
-        <th class="border border-gray-light">Actions</th>
+        <th class="border border-gray-light">
+          ID
+        </th>
+        <th class="border border-gray-light">
+          Title
+        </th>
+        <th class="border border-gray-light">
+          Website
+        </th>
+        <th class="border border-gray-light">
+          updated_at
+        </th>
+        <th class="border border-gray-light">
+          Last build date
+        </th>
+        <th class="border border-gray-light">
+          Update Paused
+        </th>
+        <th class="border border-gray-light">
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody>
       <%= for podcast <- @podcasts_without_episodes do %>
         <tr>
-          <td class="border border-gray-light"><%= podcast.id %></td>
-          <td class="border border-gray-light"><%= podcast.title %></td>
-          <td class="border border-gray-light"><%= if podcast.website do %><a href={podcast.website}><%= truncate_string(podcast.website, 50)%> </a><% end %></td>
-          <td class="border border-gray-light"><%= podcast.updated_at %></td>
-          <td class="border border-gray-light"><%= podcast.last_build_date %></td>
-          <td class="border border-gray-light"><%= podcast.update_paused %></td>
-  
           <td class="border border-gray-light">
-            <%= link "Show", to: databrowser_path(@conn, :show, "podcast", podcast),
-                             class: "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded" %>
-            <%= link "Edit", to: databrowser_path(@conn, :edit, "podcast", podcast),
-                             class: "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-1 px-2 rounded" %>
-            <%= link "Delete", to: podcast_path(@conn, :delete, podcast),
-                               method: :delete,
-                               data: [confirm: "Are you sure?"],
-                               class: "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded" %>
+            <%= podcast.id %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.title %>
+          </td>
+          <td class="border border-gray-light">
+            <%= if podcast.website do %>
+              <a href={podcast.website}>
+                <%= truncate_string(podcast.website, 50) %>
+              </a>
+            <% end %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.updated_at %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.last_build_date %>
+          </td>
+          <td class="border border-gray-light">
+            <%= podcast.update_paused %>
+          </td>
+
+          <td class="border border-gray-light">
+            <%= link("Show",
+              to: databrowser_path(@conn, :show, "podcast", podcast),
+              class:
+                "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+            <%= link("Edit",
+              to: databrowser_path(@conn, :edit, "podcast", podcast),
+              class:
+                "border border-gray-dark bg-warning hover:bg-warning-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+            <%= link("Delete",
+              to: podcast_path(@conn, :delete, podcast),
+              method: :delete,
+              data: [confirm: "Are you sure?"],
+              class:
+                "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+            ) %>
           </td>
         </tr>
       <% end %>

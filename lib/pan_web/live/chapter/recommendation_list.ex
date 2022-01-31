@@ -14,7 +14,7 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
 
   def social_url(episode) do
     episode_frontend_url(Endpoint, :show, episode)
-    |> URI.encode_www_form
+    |> URI.encode_www_form()
   end
 
   defp facebook(chapter, recommendation) do

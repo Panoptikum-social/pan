@@ -1,4 +1,4 @@
-<%= form_for @changeset, @action, [class: "p-4 mb-4 flex flex-col items-start space-y-4"], fn f -> %>
+<%= form_for(@changeset, @action, [class: "p-4 mb-4 flex flex-col items-start space-y-4"], fn f -> %>
   <%= if @changeset.action do %>
     <div class="invalid-feedback">
       Oops, something went wrong! Please check the errors below.
@@ -6,29 +6,29 @@
   <% end %>
 
   <div class="flex flex-col">
-    <%= label f, :url %>
-    <%= text_input f, :url %>
-    <%= error_tag f, :url %>
+    <%= label(f, :url) %>
+    <%= text_input(f, :url) %>
+    <%= error_tag(f, :url) %>
   </div>
 
   <div class="flex flex-col">
-    <%= label f, :feed_generator %>
-    <%= text_input f, :feed_generator %>
-    <%= error_tag f, :feed_generator %>
+    <%= label(f, :feed_generator) %>
+    <%= text_input(f, :feed_generator) %>
+    <%= error_tag(f, :feed_generator) %>
   </div>
 
   <div class="flex flex-col">
     <%= label f, :in_progress do %>
-      <%= checkbox f, :in_progress %> In Progress
+      <%= checkbox(f, :in_progress) %> In Progress
     <% end %>
-    <%= error_tag f, :in_progress %>
+    <%= error_tag(f, :in_progress) %>
   </div>
 
   <div class="flex flex-col">
-    <%= label f, :user_id %>
-    <%= text_input f, :user_id %>
-    <%= error_tag f, :user_id %>
+    <%= label(f, :user_id) %>
+    <%= text_input(f, :user_id) %>
+    <%= error_tag(f, :user_id) %>
   </div>
-  
-  <%= submit "Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md" %>
+
+  <%= submit("Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md") %>
 <% end %>

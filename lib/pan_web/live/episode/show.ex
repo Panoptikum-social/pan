@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Episode.Show do
     {:ok,
      assign(socket,
        episode: episode,
-       changeset: %Recommendation{} |> Recommendation.changeset,
+       changeset: %Recommendation{} |> Recommendation.changeset(),
        page_title: episode.title <> " (Episode) from " <> episode.podcast.title <> " (Podcast)"
      )}
   end

@@ -1,36 +1,43 @@
+
 <!DOCTYPE html>
 <html lang="en" class="h-full">
 
-<%= render PanWeb.LayoutView, "_head.html", conn: @conn %>
-<% current_user = %PanWeb.User{id: 0, admin: false, name: "Dummy", username: "Dummy", email: "noreply@panoptikum.io"} %>
+  <%= render(PanWeb.LayoutView, "_head.html", conn: @conn) %>
+  <% current_user = %PanWeb.User{id: 0, admin: false, name: "Dummy", username: "Dummy", email: "noreply@panoptikum.io"} %>
 
-<body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-      data-js-view-name="StaticTemplateView">
-    <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
-        class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-        :class="{'lg:p-1': !navbarOpen}">
-      <%= render PanWeb.LayoutView, "_navbar.html", conn: @conn, 
-                                                    current_user: current_user %>
+  <body
+    class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
+    data-js-view-name="StaticTemplateView"
+  >
+    <nav
+      x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
+      class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
+      :class="{'lg:p-1': !navbarOpen}"
+    >
+      <%= render(PanWeb.LayoutView, "_navbar.html",
+        conn: @conn,
+        current_user: current_user
+      ) %>
     </nav>
 
-  <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
-    <div class="bg-gray-lightest flex-1 text-black justify-self-center">
-      <div class="mx-auto max-w-lg mt-12">
-        This url makes no sense for us.
+    <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
+      <div class="bg-gray-lightest flex-1 text-black justify-self-center">
+        <div class="mx-auto max-w-lg mt-12">
+          This url makes no sense for us.
+        </div>
+      </div>
+
+      <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
+                  justify-evenly place-self-center">
+        <%= render(PanWeb.LayoutView, "_footer.html", conn: @conn, current_user: current_user) %>
+      </footer>
+      <div class="flex justify-center w-full font-medium pb-4">
+        <p>Hosted by
+          <a class="text-link hover:text-link-dark" href="https://www.informatom.com">
+            Informatom EDV-Dienstleistungen e.U.
+          </a>
+        </p>
       </div>
     </div>
-
-    <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
-                  justify-evenly place-self-center">
-      <%= render PanWeb.LayoutView, "_footer.html", conn: @conn, current_user: current_user %>
-    </footer>
-    <div class="flex justify-center w-full font-medium pb-4">
-      <p>Hosted by
-        <a class="text-link hover:text-link-dark" href="https://www.informatom.com">
-          Informatom EDV-Dienstleistungen e.U.
-        </a>
-      </p>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

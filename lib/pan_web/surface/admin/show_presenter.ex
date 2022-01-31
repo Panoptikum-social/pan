@@ -17,6 +17,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   def present(record, field, format) do
     if data = Map.get(record, field), do: present(format, data), else: "∅"
   end
+
   def present(:boolean, nil), do: "❌"
   def present(:boolean, _data), do: "✅"
 

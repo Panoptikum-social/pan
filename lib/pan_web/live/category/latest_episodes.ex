@@ -6,6 +6,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   def mount(%{"id" => id}, _session, socket) do
     podcast_ids = Podcast.ids_by_category_id(id)
     category = Category.get_by_id_with_parent(id)
+
     socket =
       assign(socket,
         page: 1,

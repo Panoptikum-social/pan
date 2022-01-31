@@ -27,6 +27,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       assign(socket, assigns)
       |> assign(columns: columns)
       |> assign(primary_key: primary_key)
+
     {:ok, socket}
   end
 
