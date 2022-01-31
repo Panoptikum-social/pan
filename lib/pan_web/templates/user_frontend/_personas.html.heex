@@ -145,14 +145,15 @@
                       persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
                     class:
                       "bg-warning text-white border border-gray-dark hover:bg-warning-light 
-                                                    inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                        inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                   ) %>
                 <% end %>
                 <%= icon("link-lineawesome-solid") %>
                 <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", delegate_persona.name],
                   to: persona_frontend_path(@conn, :show, delegate_persona),
-                  class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
-                                            inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                  class:
+                    "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                                                                            inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                 ) %>
                 <span>(pid: <%= delegate_persona.pid %> )</span>
               </li>
@@ -169,7 +170,7 @@
                         persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
                       class:
                         "bg-primary text-white border border-gray-dark hover:bg-primary-light 
-                                                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                     ) %>
                   <% end %>
                   <%= icon("unlink-lineawesome-solid") %>
@@ -177,7 +178,7 @@
                     to: persona_frontend_path(@conn, :show, delegate_persona),
                     class:
                       "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
-                                                      inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                   ) %>
                   <span>(pid: <%= delegate_persona.pid %> )</span>
                 </li>
@@ -199,14 +200,15 @@
                   to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
                   class:
                     "bg-warning text-white border border-gray-dark hover:bg-warning-light 
-                                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                 ) %>
               <% end %>
               <%= icon("arrow-sm-right-heroicons-outline") %>
               <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", persona.redirect.name],
                 to: persona_frontend_path(@conn, :show, persona.redirect.pid),
-                class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
-                                              inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                class:
+                  "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                                                                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
               ) %>
               <span>(pid: <%= persona.redirect.pid %> )</span>
             </li>
@@ -221,7 +223,7 @@
                       to: persona_frontend_path(@conn, :redirect, persona.id, target_id: target_persona.id),
                       class:
                         "bg-danger text-white border border-gray-dark hover:bg-danger-light 
-                                                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                                  inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                     ) %>
                   <% end %>
                   <%= icon("unlink-lineawesome-solid") %>
@@ -229,7 +231,7 @@
                     to: persona_frontend_path(@conn, :show, target_persona.id),
                     class:
                       "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
-                                                      inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
+                                                                                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                   ) %>
                   <span>(pid: <%= target_persona.pid %> )</span>
                 </li>
