@@ -1,5 +1,4 @@
 live("/search/:index/:term", Live.Search, :search, as: :search_frontend)
-
 live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
 get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 get("/podcasts/liked", PodcastFrontendController, :liked)
@@ -19,14 +18,10 @@ get("/sessions/confirm_email", SessionController, :confirm_email)
 live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
 live("/recommendations/random", Live.Recommendation.Random, :random, as: :recommendation_frontend )
 live("/:pid", Live.Persona.Show, :persona, as: :persona_frontend)
-
 get("/pan/users/payment_info", UserFrontendController, :payment_info)
-post("/pan/users/like_all_subscribed", UserFrontendController, :like_all_subscribed)
-post("/pan/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed)
 get("/pan/my_podcasts", UserFrontendController, :my_podcasts)
 get("/pan/my_profile", UserFrontendController, :my_profile)
 get("/pan/my_data", UserFrontendController, :my_data)
-delete("/pan/delete_my_account", UserFrontendController, :delete_my_account)
 put("/pan/update", UserFrontendController, :update)
 post("/pan/go_pro", UserFrontendController, :go_pro)
 post("/pan/personas/:id/claim", PersonaFrontendController, :claim)
@@ -43,7 +38,6 @@ get("/pan/my_recommendations", RecommendationFrontendController, :my_recommendat
 delete("/pan/my_recommendations/delete_all", RecommendationFrontendController, :delete_all)
 resources("/pan/recommendations", RecommendationFrontendController, only: [:create, :delete])
 delete("/pan/subscriptions/", SubscriptionFrontendController, :delete_all)
-
 get("/pro/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
 get("/pro/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
 get("/pro/personas/:id/redirect", PersonaFrontendController, :redirect)
