@@ -1,8 +1,9 @@
-live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
-get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 live("/podcasts/:id", Live.Podcast.Show, :show, as: :podcast_frontend)
 live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
 get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
+
+live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
+get("/categories/:id/categorized", CategoryFrontendController, :categorized)
 live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
 
 get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)

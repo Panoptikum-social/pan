@@ -11,9 +11,9 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
     ~F"""
     <h2 class="text-2xl">Episodes</h2>
 
-    <table class="border border-separate border-gray-lighter">
+    <table class="border border-separate border-gray-light mt-4">
       <thead>
-        <tr>
+        <tr class="flex flex-col sm:table-row">
           <th>Date</th>
           <th>Title &amp; Description</th>
           <th>Contributors</th>
@@ -23,15 +23,16 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
               phx-update="append">
         {#for {episode, index} <- @episodes |> Enum.with_index}
           <tr id={"episode-#{episode.id}"}
-              class={"bg-gray-lighter": Integer.is_even(index)}>
-            <td class="p-2" align="right">
+              class={"flex flex-col sm:table-row",
+                     "bg-gray-lighter": Integer.is_even(index)}>
+            <td class="p-2 text-center">
               {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}
             </td>
             <td class="p-2">
               <EpisodeButton for={episode}/><br/>
               {episode.description |> HtmlSanitizeEx.strip_tags |> truncate_string(255)}
             </td>
-            <td class="p-2">
+            <td class="p-2 leading-10">
               {#for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona))}
                 <nobr>
                   <PersonaButton for={persona}/>

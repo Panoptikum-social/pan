@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
               class="m-4"
               action={recommendation_frontend_path(Endpoint, :create)}>
           <TextInput field={:comment}
-                     opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} />
+                     opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} class="max-w-full" />
             <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
           <HiddenInput field={:podcast_id } value={@podcast.id} />
           <Submit label={"Recommend"} />

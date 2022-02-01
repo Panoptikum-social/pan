@@ -42,7 +42,7 @@ defmodule PanWeb.Live.Podcast.Show do
 
   def render(assigns) do
     ~F"""
-    <div class="bg-white m-4 p-4 rounded shadow"
+    <div class="m-4"
          phx-hook="Notification"
          id="notification-hook-target">
       {#if @podcast && @podcast.blocked == true}
