@@ -50,12 +50,12 @@ defmodule PanWeb.Surface.LikeButton do
       <span>
         {#if @liking}
           <button :on-click="toggle-like"
-                  class="text-white rounded py-1 px-2 bg-success border border-gray-darker rounded">
+                  class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
             {@likes_count} <Icon name="heart-heroicons-solid"/> Unlike
           </button>
         {#else}
           <button :on-click="toggle-like"
-                  class="text-white rounded py-1 px-2 bg-danger border border-gray-darker rounded">
+                  class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
             {@likes_count} <Icon name="heart-heroicons-outline"/> Like
           </button>
         {/if}

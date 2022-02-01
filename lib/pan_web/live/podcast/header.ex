@@ -59,11 +59,9 @@ defmodule PanWeb.Live.Podcast.Header do
               <p>{@podcast.summary |> raw}</p>
             </div>
           </div>
-          <p class="mt-4">
-            <ListFollowSubscribeButtons id="list_follow_subscribe_button"
-                                        current_user_id={@current_user_id}
-                                        podcast={@podcast} />
-          </p>
+          <ListFollowSubscribeButtons id="list_follow_subscribe_button"
+                                      current_user_id={@current_user_id}
+                                      podcast={@podcast} />
         </div>
 
         <dl class="grid grid-cols-4 gap-4">
