@@ -59,7 +59,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
       </div>
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>
       {#if @recommendations != []}
-        <table class="border border-separate border-gray-lighter mt-4">
+        <table class="border border-separate border-gray-lighter mt-4 w-full">
           <thead>
             <tr>
               <th class="p-2">User</th>

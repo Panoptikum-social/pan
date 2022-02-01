@@ -125,7 +125,7 @@ defmodule PanWeb.Live.Podcast.Header do
             <a href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
                 class="text-link hover:text-link-dark">Detail page</a></dd>
           <dt class="justify-self-end font-medium">Categories</dt>
-          <dd class="col-span-3" style="line-height: 200%;">
+          <dd class="col-span-3 leading-10">
             {#for category <- @podcast.categories}
               <CategoryButton for={category}/>
             {/for}
