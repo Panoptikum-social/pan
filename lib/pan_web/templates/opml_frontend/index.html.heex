@@ -31,24 +31,24 @@
               <%= opml.filename %>
             </td>
             <td class="border border-gray-light">
-              <%= opml.inserted_at %>
+              <%= Calendar.strftime(opml.inserted_at, "%c") %>
             </td>
 
-            <td class="border border-gray-light">
-              <%= link([icon("cog-heroicons-outline"), " Parse"],
+            <td class="border border-gray-light leading-8">
+              <%= link([icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Parse"],
                 to: opml_frontend_path(@conn, :import, opml),
                 class:
-                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
-              ) %> &nbsp; <%= link([icon("document-download-heroicons-outline"), " Download"],
+                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
+              ) %> &nbsp; <%= link([icon("document-download-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Download"],
                 to: opml_frontend_path(@conn, :download, opml),
                 class:
-                  "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
-              ) %> &nbsp; <%= link([icon("trash-heroicons-outline"), " Delete"],
+                  "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
+              ) %> &nbsp; <%= link([icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Delete"],
                 to: opml_frontend_path(@conn, :delete, opml),
                 method: :delete,
                 data: [confirm: "Are you sure?"],
                 class:
-                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
               ) %>
             </td>
           </tr>

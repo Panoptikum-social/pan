@@ -1,4 +1,4 @@
-<div class="grid grid-cols-3 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
   <div class="rounded-xl shadow">
     <div class="p-3 rounded-t-xl bg-info text-white">
       Subscriptions
@@ -71,16 +71,14 @@
   </div>
 </div>
 
-<div class="grid grid-cols-3 gap-4 mt-4">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
   <div class="rounded-xl shadow">
     <div class="p-3 rounded-t-xl bg-warning text-white">
       Listeners of the podcasts you listen to, also listen to
     </div>
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@recommendations) do %>
-        <b class="justify-self-end">
-          <%= rank + 1 %> .
-        </b>
+        <b class="justify-self-end"><%= rank + 1 %>.</b>
         <%= link(
           [
             icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"),
@@ -89,7 +87,7 @@
           ],
           to: podcast_frontend_path(@conn, :show, id),
           class:
-            "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate"
+            "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         ) %>
         <div class="col-span-2 justify-self-end">
           <%= count %>
@@ -105,9 +103,7 @@
     </div>
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@also_liked) do %>
-        <b class="justify-self-end">
-          <%= rank + 1 %> .
-        </b>
+        <b class="justify-self-end"><%= rank + 1 %>.</b>
         <%= link(
           [
             icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"),
@@ -116,7 +112,7 @@
           ],
           to: podcast_frontend_path(@conn, :show, id),
           class:
-            "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate"
+            "justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         ) %>
         <div class="col-span-2 justify-self-end">
           <%= count %>
@@ -132,9 +128,7 @@
     </div>
     <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4 grid grid-cols-12 gap-x-4 gap-y-2">
       <%= for {[count, id, title], rank} <- Enum.with_index(@categories) do %>
-        <b class="justify-self-end">
-          <%= rank + 1 %> .
-        </b>
+        <b class="justify-self-end"><%= rank + 1 %>.</b>
         <%= link(
           [
             icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top"),
@@ -143,7 +137,7 @@
           ],
           to: category_frontend_path(@conn, :show, id),
           class:
-            "justify-self-start col-span-9 border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate"
+            "justify-self-start col-span-9 border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         ) %>
         <div class="col-span-2 justify-self-end">
           <%= count %>
