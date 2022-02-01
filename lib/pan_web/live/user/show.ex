@@ -45,10 +45,11 @@ defmodule PanWeb.Live.User.Show do
              purpose="podcast"
              heading={"Podcasts, #{@user.name} has subscribed to"}
              class="my-4">
-        <p class="leading-10 m-4">
+        <p class="flex flex-wrap my-4">
           {#for podcast <- @user.podcasts_i_subscribed}
             <PodcastButton for={podcast}
-                           truncate={true}/> &nbsp;
+                           truncate={true}
+                           class="mx-2 my-1" />
           {/for}
         </p>
       </Panel>
@@ -62,16 +63,16 @@ defmodule PanWeb.Live.User.Show do
             <p class="leading-10">
               {#if like.chapter_id != nil}
                 {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.chapter.episode.podcast} /> /
+                <PodcastButton for={like.chapter.episode.podcast} class="truncate max-w-full" /> /
                 <EpisodeButton for={like.chapter.episode} /> /
                 <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
               {#elseif like.episode_id != nil}
                 {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.episode.podcast} /> /
+                <PodcastButton for={like.episode.podcast} class="truncate max-w-full" /> /
                 <EpisodeButton for={like.episode} />
               {#elseif like.podcast_id != nil}
                 {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.podcast} />
+                <PodcastButton for={like.podcast} class="truncate max-w-full" />
               {/if}
             </p>
           {/for}

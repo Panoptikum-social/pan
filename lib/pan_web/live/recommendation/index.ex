@@ -22,7 +22,7 @@ defmodule PanWeb.Live.Recommendation.Index do
     <div class="p-4">
       <h1 class="text-3xl">Latest Recommendations</h1>
 
-      <div class="grid grid-cols-3"
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
            phx-update="append"">
         {#for recommendation <- @latest_recommendations}
           <div id={"recommendation-#{recommendation.id}"}

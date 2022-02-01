@@ -32,15 +32,9 @@
       <ul class="m-4 flex flex-col space-y-4">
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
-            <%= form_for @changeset,
-                     recommendation_frontend_path(@conn, :create),
-                     [
-                       style:
-                         "margin-top: 0px;
-                                                                                                                          margin-bottom: 0px;"
-                     ],
+            <%= form_for @changeset, recommendation_frontend_path(@conn, :create),
+                     [ style: "margin-top: 0px; margin-bottom: 0px;" ],
                      fn f -> %>
-
               <div class="flex space-x-4">
                 <div class="basis-5/6 shrink-0">
                   <div class="flex justify-between">

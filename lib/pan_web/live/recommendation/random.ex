@@ -20,7 +20,7 @@ defmodule PanWeb.Live.Recommendation.Random do
   def render(assigns) do
     ~F"""
     <h1 class="text-3xl">A Random Recommendation</h1>
-    <p class="mt-4">
+    <p class="mt-4 leading-9">
       Fortuna opted for the episode &nbsp; <EpisodeButton for={@episode} /> &nbsp;
       from the podcast  &nbsp; <PodcastButton for={@podcast} /> &nbsp;
       in the category  &nbsp;<CategoryButton for={@category} /> &nbsp;.
