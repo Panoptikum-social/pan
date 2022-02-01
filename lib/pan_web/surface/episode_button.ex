@@ -6,15 +6,18 @@ defmodule PanWeb.Surface.EpisodeButton do
 
   prop(id, :integer, required: false)
   prop(title, :string, required: false)
+  prop(class, :string, required: false)
   prop(for, :map, required: false)
+  prop(truncate, :boolean, default: false)
 
   def render(assigns) do
     ~F"""
     <LinkButton to={Routes.episode_frontend_path(Endpoint, :show, @id || @for.id)}
-                class="bg-aqua text-white border-gray-dark
-                       hover:bg-aqua-light hover:border-aqua"
+                class={"bg-aqua text-white border-gray-dark
+                       hover:bg-aqua-light hover:border-aqua", @class}
                 icon="headphones-lineawesome-solid"
-                title={@title || @for.title} />
+                title={@title || @for.title}
+                truncate={@truncate} />
     """
   end
 end

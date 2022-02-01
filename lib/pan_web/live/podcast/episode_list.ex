@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
     ~F"""
     <h2 class="text-2xl">Episodes</h2>
 
-    <table class="border border-separate border-gray-light mt-4">
+    <table class="w-full table-fixed md:table-auto border border-separate border-gray-light mt-4">
       <thead>
         <tr class="flex flex-col sm:table-row">
           <th>Date</th>
@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
               {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}
             </td>
             <td class="p-2">
-              <EpisodeButton for={episode}/><br/>
+              <p><EpisodeButton for={episode} truncate/></p>
               {episode.description |> HtmlSanitizeEx.strip_tags |> truncate_string(255)}
             </td>
             <td class="p-2 leading-10">
