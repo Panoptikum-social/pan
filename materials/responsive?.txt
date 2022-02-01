@@ -1,4 +1,3 @@
-get("/pan/my_data", UserFrontendController, :my_data)
 get("/pan/my_profile", UserFrontendController, :my_profile)
 live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
 get("/categories/:id/categorized", CategoryFrontendController, :categorized)
