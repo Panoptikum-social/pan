@@ -1,11 +1,11 @@
-<div class="m-4">
+<div class="m-auto">
   <h2 class="text-2xl">
     Update Profile
   </h2>
 
   <%= form_for @changeset,
            user_frontend_path(@conn, :update),
-           [class: "p-4 mb-4 flex flex-col items-start space-y-4"],
+           [class: "p-4 flex flex-col items-start space-y-4"],
            fn f -> %>
     <%= if @changeset.action do %>
       <div class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
