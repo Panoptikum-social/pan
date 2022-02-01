@@ -11,10 +11,10 @@
 </p>
 
 <%= unless @user.podcaster == true do %>
-  <p>You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to <%= link("Edit your data",
+  <p>You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to 
+  <%= link("Edit your data",
       to: user_frontend_path(@conn, :edit),
-      class: "btn btn-sm btn-default"
-    ) %> ?
+      class: "text-link hover:text-link-dark") %> ?
   </p>
 <% end %>
 
