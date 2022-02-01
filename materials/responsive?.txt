@@ -1,11 +1,7 @@
-live("/podcasts/:id", Live.Podcast.Show, :show, as: :podcast_frontend)
+live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
 live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
-get("/podcasts/:id/feeds", PodcastFrontendController, :feeds)
-
 live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
 get("/categories/:id/categorized", CategoryFrontendController, :categorized)
-live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
-
 get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
 live("/personas", Live.Persona.Index, :index, as: :persona_frontend)
 resources("/personas", PersonaFrontendController, :show)
@@ -16,9 +12,7 @@ post("/pan/personas/:id/connect", PersonaFrontendController, :connect)
 post("/pan/personas/:id/disconnect", PersonaFrontendController, :disconnect)
 live("/pan/personas/:id/edit", Live.Persona.Edit, :edit, as: :persona_frontend)
 resources("/pan/personas", PersonaFrontendController, :update)
-
 get("/pan/my_recommendations", RecommendationFrontendController, :my_recommendations)
 resources("/pan/recommendations", RecommendationFrontendController, :create)
 resources("/pan/recommendations", RecommendationFrontendController, :delete)
-
 live("/search/:index/:term", Live.Search, :search, as: :search_frontend)
