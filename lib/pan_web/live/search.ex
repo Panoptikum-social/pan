@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Search do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [icon: 1]
-  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Surface.{LinkButton, Pill}
   alias Surface.Components.LivePatch
   alias Pan.Search
   alias PanWeb.Endpoint
@@ -103,119 +103,114 @@ defmodule PanWeb.Live.Search do
       </p>
     </div>
 
-    <table>
-      <tbody id="search_results" phx-update={@update}>
-        {#for hit <- @hits["hits"]}
-          <tr id={"result-#{hit["_id"]}"}>
-            <td class="p-2 align-top">
-              <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}>
-                <img src={"https://panoptikum.io#{hit["_source"]["thumbnail_url"]}"}
-                    class="ring-4 ring-gray rounded-xl"
-                    height="120" width="120"
-                    alt={hit["_source"]["image_title"]}
-                    id={"photo-#{hit["_id"]}"}/>
-              </div>
-            </td>
-            <td class="p-2 align-top max-w-screen-lg">
-              <h3 class="text-2xl">
-                {heading(@index)}
-                <a href={show_path(@index, hit["_id"])}
-                  class="text-link hover:text-link-dark visited:text-mint">
-                  {hit["_source"]["title"]}
-                </a>
-                {#if hit["_source"]["languages"]}
-                  {#for language <- hit["_source"]["languages"]}
-                    {language["emoji"]}
-                  {/for}
-                {/if}
-              </h3>
+    <ul id="search_results" phx-update={@update}
+        class="flex flex-col divide-y divide-gray divide-dotted space-y-4 m-4">
+      {#for hit <- @hits["hits"]}
+        <li id={"result-#{hit["_id"]}"} class="pt-4 flex flex-col xl:flex-row space-x-0 xl:space-x-4 space-y-4 xl:space-y-0">
+          <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}
+               class="flex-none p-2 my-2 border border-gray-light shadow mx-auto lg:mx-0">
+            <img src={"https://panoptikum.io#{hit["_source"]["thumbnail_url"]}"}
+                class="break-words text-xs"
+                height="150" width="150"
+                alt={hit["_source"]["image_title"]}
+                id={"photo-#{hit["_id"]}"}/>
+          </div>
 
-              <p class="text-sm">
-                <a href={show_path(@index, hit["_id"])}
-                  class="text-mint hover:text-mint-light">
-                  https://panoptikum.io {show_path(@index, hit["_id"])}
-                </a>
-              </p>
-
-              <table class="text-sm">
-                {#for {highlight_key, highlight_values} <- hit["highlight"]}
-                  {#for highlight_value <- highlight_values}
-                    <tr>
-                      <td class="text-right pr-4">{highlight_key |> String.capitalize}</td>
-                      <td>{highlight_value |> raw}</td>
-                    </tr>
-                  {/for}
+          <div class="max-w-screen-lg">
+            <h3 class="text-2xl">
+              {heading(@index)}
+              <a href={show_path(@index, hit["_id"])}
+                class="text-link hover:text-link-dark visited:text-mint">
+                {hit["_source"]["title"] || hit["_source"]["name"]}
+              </a>
+              {#if hit["_source"]["languages"]}
+                {#for language <- hit["_source"]["languages"]}
+                  {language["emoji"]}
                 {/for}
-
-                <tr :if={hit["_source"]["inserted_at"]}>
-                  <td class="text-right pr-4">Imported</td>
-                  <td>{hit["_source"]["inserted_at"] |> format_datetime()}</td>
-                </tr>
-              </table>
-
-              {#if hit["_source"]["gigs"]}
-                <p>
-                  {#for {gig, index} <- Enum.with_index(hit["_source"]["gigs"])}
-                    {#if index > 0}&nbsp;·&nbsp;{/if}
-
-                    <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
-                                class="my-2 bg-lavender text-white border border-gray-dark
-                                      hover:bg-lavender-light hover:border-lavender"
-                                icon="user-astronaut-lineawesome-solid"
-                                title={gig["persona_name"]} />
-                    <label class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light mr-1">
-                      {gig["role"]}
-                    </label>
-                  {/for}
-                </p>
               {/if}
+            </h3>
 
-              <LinkButton :if={hit["_source"]["podcast_id"]}
-                          to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
-                          class={"bg-white hover:bg-gray-lighter text-black border-gray"}
-                          icon="podcast-lineawesome-solid"
-                          title={hit["_source"]["podcast"]["title"]}
-                          truncate={true} />
+            <p class="text-sm">
+              <a href={show_path(@index, hit["_id"])}
+                class="text-mint hover:text-mint-light">
+                https://panoptikum.io{show_path(@index, hit["_id"])}
+              </a>
+            </p>
 
-              <p :if={hit["_source"]["engagements"]}>
-                {#for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"])}
-                  {#if index > 0} &nbsp;·&nbsp; {/if}
+            <table class="text-sm" cellpadding="4">
+              {#for {highlight_key, highlight_values} <- hit["highlight"]}
+                {#for highlight_value <- highlight_values}
+                  <tr>
+                    <td class="text-right align-top pr-4">{highlight_key |> String.capitalize}</td>
+                    <td>{highlight_value |> raw}</td>
+                  </tr>
+                {/for}
+              {/for}
 
-                  {#if @index == "podcasts"}
-                    <LinkButton to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
-                                class="my-2 bg-lavender text-white border border-gray-dark
-                                      hover:bg-lavender-light hover:border-lavender"
-                                icon="user-astronaut-lineawesome-solid"
-                                title={engagement["persona_name"]} />
-                  {#else}
-                    <LinkButton to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
-                                class="bg-white hover:bg-gray-lighter text-black border-gray"
-                                icon="podcast-lineawesome-solid"
-                                title={engagement["podcast_title"]} />
-                  {/if}
+              <tr :if={hit["_source"]["inserted_at"]}>
+                <td class="text-right pr-4">Imported</td>
+                <td>{hit["_source"]["inserted_at"] |> format_datetime()}</td>
+              </tr>
+            </table>
 
-                  <label class="text-xs font-semibold py-1 px-2 text-gray-darker uppercase rounded bg-lavender-light mr-1">
-                    {engagement["role"]}
-                  </label>
+            {#if hit["_source"]["gigs"]}
+              <p>
+                {#for {gig, index} <- Enum.with_index(hit["_source"]["gigs"])}
+                  {#if index > 0}&nbsp;·&nbsp;{/if}
+
+                  <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
+                              class="my-2 bg-lavender text-white border border-gray-dark
+                                    hover:bg-lavender-light hover:border-lavender"
+                              icon="user-astronaut-lineawesome-solid"
+                              title={gig["persona_name"]} />
+                  <Pill type="lavender">{gig["role"]}</Pill>
                 {/for}
               </p>
+            {/if}
 
-              <p :if={hit["_source"]["categories"]}>
-                {#for {category, index} <- Enum.with_index(hit["_source"]["categories"])}
-                  {#if index > 0} &nbsp;·&nbsp; {/if}
-                  <LinkButton to={category_frontend_path(Endpoint, :show, category["id"])}
-                              class="bg-white hover:bg-gray-lighter text-gray-darker border-gray"
-                              large={false}
-                              icon="folder-heroicons-outline"
-                              title={category["title"]}
-                              truncate={false} />
-                {/for}
-              </p>
-            </td>
-          </tr>
-        {/for}
-      </tbody>
-    </table>
+            <LinkButton :if={hit["_source"]["podcast_id"]}
+                        to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
+                        class={"bg-white hover:bg-gray-lighter text-black border-gray"}
+                        icon="podcast-lineawesome-solid"
+                        title={hit["_source"]["podcast"]["title"]}
+                        truncate={true} />
+
+            <p :if={hit["_source"]["engagements"]}>
+              {#for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"])}
+                {#if index > 0} &nbsp;·&nbsp; {/if}
+
+                {#if @index == "podcasts"}
+                  <LinkButton to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
+                              class="my-2 bg-lavender text-white border border-gray-dark
+                                    hover:bg-lavender-light hover:border-lavender"
+                              icon="user-astronaut-lineawesome-solid"
+                              title={engagement["persona_name"]} />
+                {#else}
+                  <LinkButton to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
+                              class="bg-white hover:bg-gray-lighter text-black border-gray"
+                              icon="podcast-lineawesome-solid"
+                              title={engagement["podcast_title"]} />
+                {/if}
+
+                <Pill type="lavender">{engagement["role"]}</Pill>
+              {/for}
+            </p>
+
+            <p :if={hit["_source"]["categories"]}>
+              {#for {category, index} <- Enum.with_index(hit["_source"]["categories"])}
+                {#if index > 0} &nbsp;·&nbsp; {/if}
+                <LinkButton to={category_frontend_path(Endpoint, :show, category["id"])}
+                            class="bg-white hover:bg-gray-lighter text-gray-darker border-gray"
+                            large={false}
+                            icon="folder-heroicons-outline"
+                            title={category["title"]}
+                            truncate={false} />
+              {/for}
+            </p>
+          </div>
+        </li>
+      {/for}
+    </ul>
     <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
