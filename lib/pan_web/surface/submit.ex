@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.Submit do
 
   prop(class, :css_class,
     required: false,
-    default: "my-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"
+    default: "mt-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"
   )
 
   def render(assigns) do

@@ -14,10 +14,10 @@ defmodule PanWeb.Live.Episode.RecommendForm do
     ~F"""
     {#if @current_user_id}
       <Form for={@changeset}
-            class="my-4"
+            class="mt-4"
             action={recommendation_frontend_path(Endpoint, :create)}>
         <TextInput field={:comment}
-                    opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} />
+                    opts={size: 100, maxlength: 255, placeholder: "Your recommendation", class: "max-w-full"} />
           <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
         <HiddenInput field={:episode_id} value={@episode.id} />
         <Submit label={"Recommend"} />

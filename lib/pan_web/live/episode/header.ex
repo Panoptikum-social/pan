@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Episode.Header do
   use Surface.LiveComponent
   alias PanWeb.{User, Episode}
-  alias PanWeb.Surface.{PodcastButton, PersonaButton, Pill, Icon, LikeButton}
+  alias PanWeb.Surface.{PodcastButton, PersonaButton, EpisodeButton, Icon, LikeButton, Pill}
   alias PanWeb.Live.Episode.ClaimButton
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
 
@@ -30,13 +30,13 @@ defmodule PanWeb.Live.Episode.Header do
   def render(assigns) do
     ~F"""
     <div>
-      <h1>
+      <h1 class="leading-10">
         <PodcastButton for={@episode.podcast} large />
         &nbsp; / &nbsp;
-        <Pill type="episode" large={true}><Icon name="headphones-lineawesome-solid" /> {@episode.title}</Pill>
+        <EpisodeButton for={@episode} large class="my-2" />
       </h1>
 
-      <div class="flex my-4 space-x-4 divide-x divide-dotted divide-gray">
+      <div class="flex flex-col md:flex-row my-4 space-y-4 md:space-y-0 md:space-x-4 md:divide-x md:divide-dotted md:divide-gray">
         {#if (@episode.description && @episode.description != @episode.shownotes) ||
               (@episode.summary && @episode.summary != @episode.description)}
           <div class="flex-1">
@@ -62,7 +62,7 @@ defmodule PanWeb.Live.Episode.Header do
           <dt class="justify-self-end font-medium">Duration</dt>
           <dd class="col-span-3">{@episode.duration}</dd>
           {#if @episode.publishing_date}
-            <dt class="justify-self-end font-medium">Publishing date</dt>
+            <dt class="text-right font-medium">Publishing date</dt>
             <dd class="col-span-3">{Calendar.strftime(@episode.publishing_date, "%x %H:%M")}</dd>
           {/if}
           {#if @episode.link}
@@ -120,8 +120,8 @@ defmodule PanWeb.Live.Episode.Header do
           <dt class="justify-self-end font-medium">Enclosures</dt>
           {#for enclosure <- @episode.enclosures}
           <dd class="col-start-2 col-span-2">
-            <a class="text-link hover:text-link-dark"
-              href={enclosure.url |> String.trim }>{enclosure.url |> truncated_filename}</a>
+            <a class="text-link hover:text-link-dark break-words"
+               href={enclosure.url |> String.trim }>{enclosure.url}</a>
             {#if is_integer(enclosure.length)}
               ({Float.round(String.to_integer(enclosure.length) / 1048576, 1)} MB)
             {/if}

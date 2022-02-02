@@ -45,7 +45,7 @@ defmodule PanWeb.Live.Episode.Show do
                             current_user_id={@current_user_id}
                             changeset={@changeset} />
 
-        <div class="flex my-4">
+        <div class="flex flex-col md:flex-row">
           {#if major_mimetype(@episode) == "video"}
             <video width="640" height="480" controls>
               {#for enclosure <- @episode.enclosures}
@@ -56,13 +56,13 @@ defmodule PanWeb.Live.Episode.Show do
           {#else}
             <PodlovePlayer id="player"
                            episode={@episode}
-                           class="mr-4 w-1/2" />
+                           class="mr-4 lg:w-1/2" />
           {/if}
 
-          <div id="shownotes" class="w-1/2">
+          <div id="shownotes" class="lg:w-1/2 mt-4 lg:mt-0">
             {#if @episode.shownotes}
               <h2 class="text-2xl">Shownotes</h2>
-              <div class="my-4 prose max-w-none bg-white p-4">{raw(@episode.shownotes)}</div>
+              <div class="my-2 prose max-w-none bg-white lg:p-2">{raw(@episode.shownotes)}</div>
             {/if}
           </div>
         </div>

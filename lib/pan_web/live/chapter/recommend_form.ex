@@ -26,7 +26,8 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
                 name="recommendation[comment]"
                 placeholder="Your recommendation"
                 size="100"
-                type="text" />
+                type="text"
+                class="max-w-full" />
         <span id={"remaining-chapter-#{@chapter.id}"}>{@remaining}</span>
         <HiddenInput field={:chapter_id} value={@chapter.id} />
         <Submit label={"Recommend"}
