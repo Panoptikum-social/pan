@@ -57,7 +57,7 @@ defmodule PanWeb.Surface.Panel do
         {/if}
       </div>
 
-      <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
+      <div>
         <#slot>No content defined!</#slot>
       </div>
     </div>

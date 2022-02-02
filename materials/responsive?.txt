@@ -1,8 +1,10 @@
-live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
-live("/podcasts", Live.Podcast.Index, :index, as: :podcast_frontend)
 live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
 get("/categories/:id/categorized", CategoryFrontendController, :categorized)
+
+live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
+
 get("/pan/my_recommendations", RecommendationFrontendController, :my_recommendations)
 resources("/pan/recommendations", RecommendationFrontendController, :create)
 resources("/pan/recommendations", RecommendationFrontendController, :delete)
+
 live("/search/:index/:term", Live.Search, :search, as: :search_frontend)
