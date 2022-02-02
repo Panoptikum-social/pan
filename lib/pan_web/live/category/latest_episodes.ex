@@ -33,7 +33,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
     <Panel heading={"Latest Episodes for #{@category.title}"} purpose="episode" class="m-4">
       <div id="latest_episodes" phx-update="append" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
         {#for episode <- @latest_episodes }
-          <div id={"episode-#{episode.id}"} class="p-2 rounded-xl shadow">
+          <div id={"episode-#{episode.id}"} class="my-2">
             <p class="mb-1">Podcast <PodcastButton id={episode.podcast_id} title={episode.podcast_title} /></p>
             <EpisodeCard for={episode}/>
           </div>

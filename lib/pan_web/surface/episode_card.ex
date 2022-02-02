@@ -8,23 +8,21 @@ defmodule PanWeb.Surface.EpisodeCard do
     ~F"""
     <p><EpisodeButton for={@for}/></p>
 
-    <p :if={@for.author_name}
-       class="mt-1">
-      Author <PersonaButton name={@for.author_name} id={@for.author_id} />
+    <p :if={@for.author_name} class="mt-1">
+      <PersonaButton name={@for.author_name} id={@for.author_id} />
     </p>
 
     <p class="mt-1">
       {#if @for.publishing_date}
-        published <Icon name="calendar-heroicons-outline" />
-        {Calendar.strftime(@for.publishing_date, "%x")}
+        <Icon name="calendar-heroicons-outline" />&nbsp;{Calendar.strftime(@for.publishing_date, "%x")}
       {/if}
       {#if @for.duration}
-        Duration &nbsp; <Icon name="stopwatch-lineawesome-solid" /> {@for.duration}
+        - <Icon name="stopwatch-lineawesome-solid" />{@for.duration}
       {/if}
     </p>
 
     <p :if={@for.subtitle} class="mt-1">
-      <Icon name="photograph-heroicons-outline" /> {@for.subtitle}
+      <Icon name="photograph-heroicons-outline" />&nbsp;{@for.subtitle}
     </p>
     """
   end

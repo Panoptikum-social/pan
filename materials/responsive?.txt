@@ -1,6 +1,3 @@
-live("/categories/:id/latest_episodes", Live.Category.LatestEpisodes, :latest_episodes, as: :category_frontend )
-get("/categories/:id/categorized", CategoryFrontendController, :categorized)
-
 live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
 
 get("/pan/my_recommendations", RecommendationFrontendController, :my_recommendations)

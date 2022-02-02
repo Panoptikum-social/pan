@@ -37,8 +37,11 @@ defmodule PanWeb.Live.Podcast.Index do
             <div class="flex-none p-2 xl:mx-4 my-2 xl:my-0 border border-gray-light shadow m-auto">
               {#if podcast.thumbnails != []}
                 <img href={"https://panoptikum.io#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}
-                    width="150" height="150" alt={podcast.image_title} id="photo"
-                    class="break-words text-xs" />
+                     width="150"
+                     height="150"
+                     alt={podcast.image_title}
+                     id="photo"
+                     class="break-words text-xs" />
               {#else}
                 <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
               {/if}

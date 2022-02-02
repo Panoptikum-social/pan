@@ -50,7 +50,11 @@ defmodule PanWeb.Live.Podcast.Header do
             <div class="flex-none p-2 xl:mr-4 my-2 border border-gray-light shadow m-auto">
               {#if @podcast_thumbnail}
                 <img href={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
-                     width="150" height="150" alt={truncate_string(@podcast.image_title, 50)} id="photo" />
+                     width="150"
+                     height="150"
+                     alt={@podcast.image_title}
+                     id="photo"
+                     class="break-words text-xs" />
               {#else}
                 <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
               {/if}
