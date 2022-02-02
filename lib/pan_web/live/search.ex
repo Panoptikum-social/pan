@@ -153,20 +153,16 @@ defmodule PanWeb.Live.Search do
               </tr>
             </table>
 
-            {#if hit["_source"]["gigs"]}
-              <p>
-                {#for {gig, index} <- Enum.with_index(hit["_source"]["gigs"])}
-                  {#if index > 0}&nbsp;·&nbsp;{/if}
-
-                  <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
-                              class="my-2 bg-lavender text-white border border-gray-dark
-                                    hover:bg-lavender-light hover:border-lavender"
-                              icon="user-astronaut-lineawesome-solid"
-                              title={gig["persona_name"]} />
-                  <Pill type="lavender">{gig["role"]}</Pill>
-                {/for}
-              </p>
-            {/if}
+            <p class="leading-9" :if={hit["_source"]["gigs"]}>
+              {#for gig <- hit["_source"]["gigs"]}
+                <LinkButton to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
+                            class="bg-lavender text-white border border-gray-dark
+                                  hover:bg-lavender-light hover:border-lavender"
+                            icon="user-astronaut-lineawesome-solid"
+                            title={gig["persona_name"]} />
+                <Pill type="lavender">{gig["role"]}</Pill>
+              {/for}
+            </p>
 
             <LinkButton :if={hit["_source"]["podcast_id"]}
                         to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
@@ -175,13 +171,11 @@ defmodule PanWeb.Live.Search do
                         title={hit["_source"]["podcast"]["title"]}
                         truncate={true} />
 
-            <p :if={hit["_source"]["engagements"]}>
-              {#for {engagement, index} <- Enum.with_index(hit["_source"]["engagements"])}
-                {#if index > 0} &nbsp;·&nbsp; {/if}
-
+            <p :if={hit["_source"]["engagements"]} class="leading-9">
+              {#for engagement <- hit["_source"]["engagements"]}
                 {#if @index == "podcasts"}
                   <LinkButton to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
-                              class="my-2 bg-lavender text-white border border-gray-dark
+                              class="bg-lavender text-white border border-gray-dark
                                     hover:bg-lavender-light hover:border-lavender"
                               icon="user-astronaut-lineawesome-solid"
                               title={engagement["persona_name"]} />
@@ -191,14 +185,12 @@ defmodule PanWeb.Live.Search do
                               icon="podcast-lineawesome-solid"
                               title={engagement["podcast_title"]} />
                 {/if}
-
                 <Pill type="lavender">{engagement["role"]}</Pill>
               {/for}
             </p>
 
-            <p :if={hit["_source"]["categories"]}>
-              {#for {category, index} <- Enum.with_index(hit["_source"]["categories"])}
-                {#if index > 0} &nbsp;·&nbsp; {/if}
+            <p :if={hit["_source"]["categories"]} class="leading-9">
+              {#for category <- hit["_source"]["categories"]}
                 <LinkButton to={category_frontend_path(Endpoint, :show, category["id"])}
                             class="bg-white hover:bg-gray-lighter text-gray-darker border-gray"
                             large={false}
