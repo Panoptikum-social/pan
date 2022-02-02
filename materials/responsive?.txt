@@ -1,7 +1,0 @@
-live("/episodes/:id", Live.Episode.Show, :show, as: :episode_frontend)
-
-get("/pan/my_recommendations", RecommendationFrontendController, :my_recommendations)
-resources("/pan/recommendations", RecommendationFrontendController, :create)
-resources("/pan/recommendations", RecommendationFrontendController, :delete)
-
-live("/search/:index/:term", Live.Search, :search, as: :search_frontend)

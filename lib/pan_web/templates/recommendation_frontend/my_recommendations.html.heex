@@ -1,12 +1,12 @@
-<div class="flex space-x-4">
+<div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
   <div>
     <div class="border border-gray-light rounded roundet-lg">
       <div class="bg-gray-light p-2">
         Your Podcast Recommendations
       </div>
-      <ul class="m-4 flex flex-col space-y-4">
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
         <%= for recommendation <- @podcast_recommendations do %>
-          <li>
+          <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <%= link(
                 [icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"), " ", recommendation.podcast.title],
@@ -18,6 +18,15 @@
               </span>
             </div>
             <%= recommendation.comment %>
+            <p class="text-right">
+              <%= link("Delete",
+                to: recommendation_frontend_path(@conn, :delete, recommendation),
+                method: :delete,
+                data: [confirm: "Are you sure?"],
+                class:
+                  "border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+              ) %>
+            </p>
           </li>
         <% end %>
       </ul>
@@ -35,8 +44,8 @@
             <%= form_for @changeset, recommendation_frontend_path(@conn, :create),
                      [ style: "margin-top: 0px; margin-bottom: 0px;" ],
                      fn f -> %>
-              <div class="flex space-x-4">
-                <div class="basis-5/6 shrink-0">
+              <div class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-1 lg:space-y-0">
+                <div class="lg:basis-5/6 lg:shrink-0">
                   <div class="flex justify-between">
                     Your recommendation for: &nbsp; <%= podcast.title %>
                     <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>
@@ -44,12 +53,14 @@
                     </small>
                   </div>
                   <%= hidden_input(f, :podcast_id, value: podcast.id) %>
-                  <%= text_input(f, :comment, size: 60, maxlength: 255, data: [chapter: podcast.id]) %>
+                  <%= text_input(f, :comment, size: 60, maxlength: 255, data: [chapter: podcast.id], class: "max-w-full") %>
                 </div>
-                <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
-                  class:
-                    "bg-info hover:bg-info-light border border-gray text-white px-2 py-1 rounded self-end shrink-0 basis-1/6"
-                ) %>
+                <div class="lg:shrink-0 lg:basis-1/6 self-end">
+                  <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
+                    class:
+                      "bg-info hover:bg-info-light border border-gray text-white px-2 py-1 rounded "
+                  ) %>
+                </div>
               </div>
             <% end %>
 
