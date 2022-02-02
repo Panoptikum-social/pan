@@ -85,13 +85,13 @@ defmodule PanWeb.Live.Persona.Show do
 
   def render(assigns) do
     ~F"""
-    <div class="m-4 flex space-x-4">
+    <div class="m-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
       <Panel heading={@persona.name}
              purpose="user">
-        <div class="flex m-4">
+        <div class="flex flex-col md:flex-row m-4">
           <table>
             <tr>
-              <td class="px-4 text-right font-semibold">Panoptikum-ID</td>
+              <td class="px-4 text-right font-semibold">PanoptikumID</td>
               <td>{@persona.pid}</td>
             </tr>
             <tr>
@@ -110,15 +110,16 @@ defmodule PanWeb.Live.Persona.Show do
             </tr>
           </table>
 
-          <img :if={@persona_thumbnail}
-                alt={@persona.image_title}
-                class="rounded shadow ml-4"
-                id="photo" />
-          <img :if={!@persona_thumbnail}
-                src="/images/missing-persona.png"
-                alt="missing image"
-                width="150"
-                class="rounded shadow ml-4" />
+          <div class="flex-none rounded shadow m-auto md:mx-4 my-4">
+            <img :if={@persona_thumbnail}
+                  alt={@persona.image_title}
+                  id="photo"
+                  width="150" height="150" />
+            <img :if={!@persona_thumbnail}
+                  src="/images/missing-persona.png"
+                  alt="missing image"
+                  width="150" height="150" />
+          </div>
         </div>
 
         <p :if={@current_user_id}
@@ -236,7 +237,7 @@ defmodule PanWeb.Live.Persona.Show do
            class="m-4">
       <table class="m-4">
         <thead>
-          <tr>
+          <tr class="flex flex-col sm:table-row">
             <th>Date</th>
             <th>Podcast</th>
             <th>Episode</th>
@@ -245,8 +246,8 @@ defmodule PanWeb.Live.Persona.Show do
         </thead>
         <tbody phx-update="append" id="gigs-table-body">
           {#for episode <- ordered_episodes(@grouped_gigs)}
-            <tr id={"episode-#{episode.id}"}>
-              <td align="right" class="px-2">{episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}</td>
+            <tr id={"episode-#{episode.id}"} class="flex flex-col sm:table-row odd:bg-gray-lighter">
+              <td align="center" class="px-2">{episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}</td>
               <td class="px-2"><PodcastButton for={episode.podcast} /></td>
               <td class="px-2"><EpisodeButton for={episode} /></td>
               <td class="px-2">

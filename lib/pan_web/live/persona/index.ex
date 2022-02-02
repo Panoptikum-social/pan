@@ -23,7 +23,7 @@ defmodule PanWeb.Live.Persona.Index do
                cols={[
                  %{field: :id, label: "Id", type: :integer, searchable: true, sortable: true},
                  %{field: :name, label: "Name", type: :string, searchable: true, sortable: true},
-                 %{field: :pid, label: "Pid", type: :string, searchable: true, sortable: true}
+                 %{field: :pid, label: "PanoptikumID", type: :string, searchable: true, sortable: true}
                      ]}
                buttons={[:show_frontend, :pagination, :number_of_records, :search]} />
 

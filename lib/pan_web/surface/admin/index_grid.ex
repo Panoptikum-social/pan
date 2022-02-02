@@ -325,7 +325,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   def render(assigns) do
     ~F"""
     <div {=@id}>
-      <div class={"m-2 border border-gray rounded shadow-lg", @class}>
+      <div class={"my-2 sm:m-4 border border-gray rounded shadow-lg", @class}>
         <h2 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
                     font-mono text-white font-semibold rounded-t", @color_class}>
           {@heading}
@@ -333,7 +333,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
         <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
-          <div class="border-r border-gray flex">
+          <div class="sm:border-r border-gray flex">
             <button :if={:show in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
@@ -420,11 +420,11 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           to={Naming.path %{model: @model, method: :new, path_helper: @path_helper}}
                           label="🆕 New"
                           class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                                lg:mr-2 px-2 lg:py-0 m-1 rounded border-r border-gray" />
+                                lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r border-gray" />
           </div>
 
           <div :if={:number_of_records in @buttons}
-               class="px-4 border-r border-gray">
+               class="px-4 sm:border-r border-gray">
             <PerPageLink delta="-5" click="per_page"/>
             <PerPageLink delta="-3" click="per_page"/>
             <PerPageLink delta="-1" click="per_page"/>

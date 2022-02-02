@@ -21,10 +21,9 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
       </thead>
       <tbody id="table-body-episodes"
               phx-update="append">
-        {#for {episode, index} <- @episodes |> Enum.with_index}
+        {#for episode <- @episodes}
           <tr id={"episode-#{episode.id}"}
-              class={"flex flex-col sm:table-row",
-                     "bg-gray-lighter": Integer.is_even(index)}>
+              class="flex flex-col sm:table-row even:bg-gray-lighter">
             <td class="p-2 text-center">
               {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}
             </td>

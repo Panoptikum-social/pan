@@ -96,7 +96,7 @@ defmodule PanWeb.Live.Persona.Edit do
 
       <Field name={:pid}
              class="my-4">
-        <Label class="block font-medium text-gray-darker">Pid</Label>
+        <Label class="block font-medium text-gray-darker">PanoptikumID</Label>
         <TextInput class="w-full"
                    opts={disabled: not pro(@current_user)} />
         <ErrorTag />
@@ -112,6 +112,7 @@ defmodule PanWeb.Live.Persona.Edit do
         <TextInput field={:fediverse_address}
                    class="w-full"
                    opts={placeholder: "@username@domain.social"} />
+        <p class="text-gray">(support is experimental and data might not be imported currently)</p>
       </Field>
 
       <Field name={:image_url}
