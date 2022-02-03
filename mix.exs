@@ -77,8 +77,6 @@ defmodule Pan.MixProject do
       {:bamboo_phoenix, "~> 1.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
-      # Cron like agent,
-      {:timelier, "~> 0.9"},
       # Timezone information
       {:tzdata, "~> 1.0"},
       # Jsonapi.org serializer
