@@ -27,10 +27,10 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
   def render(assigns) do
     ~F"""
     <div class="m-2 border border-gray rounded">
-      <h3 class="p-1 border-b border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
+      <h1 class="p-1 border-b border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
         Database Indices for Resource
         <span class="italic">{Naming.module_without_namespace(@model)}</span>
-      </h3>
+      </h1>
       <div class="grid mb-1"
            style="grid-template-columns: max-content 1fr;">
           <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">

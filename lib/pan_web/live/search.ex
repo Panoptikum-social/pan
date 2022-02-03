@@ -117,7 +117,7 @@ defmodule PanWeb.Live.Search do
           </div>
 
           <div class="max-w-screen-lg">
-            <h3 class="text-2xl">
+            <h2 class="text-2xl">
               {heading(@index)}
               <a href={show_path(@index, hit["_id"])}
                 class="text-link hover:text-link-dark visited:text-mint">
@@ -128,7 +128,7 @@ defmodule PanWeb.Live.Search do
                   {language["emoji"]}
                 {/for}
               {/if}
-            </h3>
+            </h2>
 
             <p class="text-sm">
               <a href={show_path(@index, hit["_id"])}

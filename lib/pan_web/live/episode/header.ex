@@ -46,7 +46,7 @@ defmodule PanWeb.Live.Episode.Header do
             {/if}
 
             {#if @episode.summary && @episode.summary != @episode.description}
-              <h3>Summary</h3>
+              <h2 class="text-2xl">Summary</h2>
               <p>{raw(@episode.summary)}</p>
             {/if}
           </div>

@@ -119,7 +119,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
                     class="bg-success hover:bg-success-dark border-gray text-white" />
       </div>
       <div class="mx-2 flex space-x-4 items-center border border-gray p-2 max-w-4xl">
-        <h3 class="font-mono">Full text Search</h3>
+        <span class="font-mono">Full text Search</span>
         <LinkButton title="Push Missing"
                     to={search_path(Endpoint, :push_missing)}
                     class="bg-warning hover:bg-warning-dark border-gray" />
