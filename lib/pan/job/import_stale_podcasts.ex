@@ -8,7 +8,8 @@ defmodule Pan.Job.ImportStalePodcasts do
 
   @impl true
   def init(state) do
-    schedule_work()
+    # give app a quiet minute in the beginning
+    Process.send_after(self(), :work, 60 * 1000)
     {:ok, state}
   end
 
@@ -16,12 +17,8 @@ defmodule Pan.Job.ImportStalePodcasts do
   def handle_info(:work, state) do
     Podcast.get_one_stale()
     |> Podcast.import_stale()
-    schedule_work()
+    # search for stale Podcast every second
+    Process.send_after(self(), :work, 1 * 1000)
     {:noreply, state}
-  end
-
-  defp schedule_work do
-    # run each minute
-    Process.send_after(self(), :work, 60 * 1000)
   end
 end
