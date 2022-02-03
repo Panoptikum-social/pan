@@ -3,7 +3,6 @@ defmodule PanWeb.Live.Episode.Header do
   alias PanWeb.{User, Episode}
   alias PanWeb.Surface.{PodcastButton, PersonaButton, EpisodeButton, Icon, LikeButton, Pill}
   alias PanWeb.Live.Episode.ClaimButton
-  import PanWeb.ViewHelpers, only: [truncate_string: 2]
 
   prop(current_user_id, :integer, required: true)
   prop(episode, :map, required: true)
@@ -22,10 +21,6 @@ defmodule PanWeb.Live.Episode.Header do
   end
 
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
-
-  defp truncated_filename(url) do
-    url |> String.split("/") |> List.last() |> truncate_string(50)
-  end
 
   def render(assigns) do
     ~F"""
