@@ -11,16 +11,6 @@ defmodule PanWeb.Live.Podcast.Header do
   prop(episodes_count, :integer, required: true)
   prop(podcast_thumbnail, :map, required: true)
 
-  defp truncate_string(nil, _len), do: ""
-
-  defp truncate_string(string, len) do
-    if String.length(string) > len - 3 do
-      String.slice(string, 0, len - 3) <> "..."
-    else
-      string
-    end
-  end
-
   def render(assigns) do
     ~F"""
     {#if @admin}
