@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
           class="text-link hover-text-link-dark">Complain</a>
       </div>
 
-      <h4 class="text-lg"> Recommendations</h4>
+      <h3 class="text-xl"> Recommendations</h3>
       <ul class="my-4 bg-white">
         {#for recommendation <- @chapter.recommendations}
           <li id={"chapter-#{@chapter.id}"}>

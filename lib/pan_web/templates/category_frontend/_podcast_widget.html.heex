@@ -111,15 +111,15 @@
     </div>
 
     <div class="m-4">
-      <h5 class="text-lg">
+      <h4 class="text-lg">
         Description
-      </h5>
+      </h4>
       <%= @podcast.description %>
 
       <%= if @podcast.description != @podcast.summary do %>
-        <h5 class="text-lg">
+        <h4 class="text-lg">
           Summary
-        </h5>
+        </h4>
         <%= @podcast.summary %>
       <% end %>
     </div>

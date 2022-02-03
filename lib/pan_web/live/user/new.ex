@@ -66,7 +66,7 @@ defmodule PanWeb.Live.User.New do
         <Field :if={{"has already been taken", []} == @changeset.errors[:email]}
                name="welcome_back"
                class="empty:hidden p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4">
-          <h4>Welcome back!</h4>
+          <h2 class="text-lg">Welcome back!</h2>
 
           <p>There is already a user account with this email address.<br/>
             Please

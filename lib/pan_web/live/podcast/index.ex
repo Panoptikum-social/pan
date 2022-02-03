@@ -105,10 +105,10 @@ defmodule PanWeb.Live.Podcast.Index do
           </div>
 
           <div class="m-4">
-            <h5 class="text-lg">Description</h5>
+            <h4 class="text-lg">Description</h4>
             <p>{podcast.description}</p>
             {#if podcast.description != podcast.summary}
-              <h5 class="text-lg">Summary</h5>
+              <h4 class="text-lg">Summary</h4>
               <p>{podcast.summary}</p>
             {/if}
           </div>
