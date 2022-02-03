@@ -99,7 +99,7 @@ defmodule PanWeb.Live.Episode.Header do
                     </div>
                     <div x-show="metadataOpen"
                          class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96 z-10">
-                      <h1 class="text-2xl">Info</h1>
+                      <h1 class="text-3xl">Info</h1>
                       <p class="mt-4">
                         This contribution is claimed by a user and not source of the podcast feed.
                       </p>

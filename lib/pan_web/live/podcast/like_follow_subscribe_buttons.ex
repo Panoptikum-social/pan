@@ -53,7 +53,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               </div>
               <div x-show="metadataOpen"
                     class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96">
-                <h1 class="text-2xl">Info</h1>
+                <h1 class="text-3xl">Info</h1>
                 <p class="mt-4">
                   You can manually trigger a metadata update for this podcast once an hour,
                   if you are impatient. This still will take some time, so keep track of

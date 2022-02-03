@@ -9,7 +9,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
 
   def render(assigns) do
     ~F"""
-    <h2 class="text-2xl">Episodes</h2>
+    <h1 class="text-3xl">Episodes</h1>
 
     <table class="w-full table-fixed md:table-auto border border-separate border-gray-light mt-4">
       <thead>
@@ -47,7 +47,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                         </div>
                         <div x-show="detailsOpen"
                               class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4">
-                          <h1 class="text-2xl">Info</h1>
+                          <h1 class="text-3xl">Info</h1>
                           <p class="mt-4">This contribution is claimed by a user and not source of the podcast feed.</p>
                           <button @click="detailsOpen = false"
                                   class="bg-info hover:bg-info-light text-white p-2 rounded mt-4

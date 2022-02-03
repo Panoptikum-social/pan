@@ -107,9 +107,9 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <div class="text-gray-dark whitespace-nowrap">
             Edit <span class="font-semibold">{module_name(@model)}</span>
           </div>
-          <h2 class="max-w-screen-lg w-full truncate">
+          <h1 class="max-w-screen-lg w-full truncate">
             {Naming.title_from_record(@record)}
-          </h2>
+          </h1>
         </span>
         <span>
           <LiveRedirect :if={Map.has_key?(@record, :id) && @record.id}

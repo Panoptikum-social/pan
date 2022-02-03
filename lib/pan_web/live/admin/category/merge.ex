@@ -23,7 +23,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
   def render(assigns) do
     ~F"""
-    <h2 class="text-3xl m-4">Merging categories</h2>
+    <h1 class="text-3xl m-4">Merging categories</h1>
 
     <div class="flex m-4 space-x-4">
       <Tree id="fromTree"

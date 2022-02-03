@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Admin.Podcast.Retirement do
 
   def render(assigns) do
     ~F"""
-    <h2 class="text-2xl m-4">Retirement</h2>
+    <h1 class="text-2xl m-4">Retirement</h1>
 
     <div class="bg-info-light/50 rounded-lg border border-gray-dark p-2 m-4">
       <p>Select Podcast and use [Edit] to change the retirement flag. Beware: after saving the edited record, you end up in the databrowser, not here!</p>

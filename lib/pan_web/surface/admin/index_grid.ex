@@ -326,10 +326,10 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     ~F"""
     <div {=@id}>
       <div class={"my-2 sm:m-4 border border-gray rounded shadow-lg", @class}>
-        <h2 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
+        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
                     font-mono text-white font-semibold rounded-t", @color_class}>
           {@heading}
-        </h2>
+        </h1>
 
         <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">

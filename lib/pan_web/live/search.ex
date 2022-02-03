@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Search do
   def render(assigns) do
     ~F"""
     <div class="sticky top-0 z-50 bg-gray-lightest pb-2 m-6">
-      <h1 class="text-2xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
+      <h1 class="text-3xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
       <p class="mt-2">
         You might want to search for
         <LivePatch :if={@index != "categories"}

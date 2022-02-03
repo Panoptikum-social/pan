@@ -51,7 +51,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       Episode import
     </button>
 
-    <h2 class="text-2xl">{@stale_podcasts_count} stale podcasts</h2>
+    <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
 
     <table cellpadding="4" class="my-4">
       <thead>

@@ -76,7 +76,7 @@ defmodule PanWeb.Live.Persona.Edit do
 
   def render(assigns) do
     ~F"""
-    <h2 class="text-2xl">Edit persona</h2>
+    <h1 class="text-3xl">Edit persona</h1>
 
     <Form for={@changeset}
           class="p-4 mb-4 flex flex-col items-start space-y-4"

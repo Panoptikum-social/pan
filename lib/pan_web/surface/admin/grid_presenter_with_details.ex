@@ -52,7 +52,7 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
       <div x-show="detailsOpen"
            class="absolute inset-52 mx-auto items-center bg-gray-lightest
                   border border-gray p-4">
-        <h1 class="text-2xl">Details</h1>
+        <h1 class="text-3xl">Details</h1>
         <p class="mt-6">
           {present(@presenter, @record, @field, @type)}
         </p>

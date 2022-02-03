@@ -33,10 +33,10 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
 
     ~F"""
     <div class="m-2 border border-gray rounded">
-      <h2 class="p-1 border-b border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
+      <h1 class="p-1 border-b border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
         Schema Definition for Resource
         <span class="italic">{Naming.module_without_namespace(@model)}</span>
-      </h2>
+      </h1>
 
       <div x-data="{ selectedTab: 0 }">
         <ul class="flex flex-wrap border-b border-gray bg-gradient-to-r from-gray-lightest via-gray-lighter to-gray-light">

@@ -76,7 +76,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
   def render(assigns) do
     ~F"""
     <div class="flex justify-between max-w-7xl">
-      <h2 class="text-2xl">Listing opmls</h2>
+      <h1 class="text-3xl">Listing opmls</h1>
       <input type="text"  placeholder="Filter" phx-keyup="filter" value={@filter_by} />
     </div>
 

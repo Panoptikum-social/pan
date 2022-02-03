@@ -28,10 +28,10 @@ defmodule PanWeb.Surface.Admin.Explorer do
     ~F"""
     <div {=@id}
          class={"m-2 border border-gray rounded", @class}>
-      <h2 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
+      <h1 class="p-1 border-b border-t-rounded border-gray text-center bg-gradient-to-r from-gray-light
                 via-gray-lighter to-gray-light font-mono">
         {@title}
-      </h2>
+      </h1>
 
       <div :if={@toolbar_items}
            class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest

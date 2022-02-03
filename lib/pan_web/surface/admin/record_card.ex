@@ -39,7 +39,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <span class="text-gray-dark">
             Show&nbsp;<span class="font-semibold">{Naming.module_without_namespace(@model)}</span>
           </span>
-          <h2 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h2>
+          <h1 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h1>
         </span>
         <span>
            <LiveRedirect to={Naming.path %{model: @model,
