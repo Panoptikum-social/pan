@@ -26,7 +26,7 @@ defmodule PanWeb.Live.Category.StatsTree do
               &nbsp;
             {/for}
           </p>
-          <hr class="myt-4 border-t-1 border-gray-lighter" style="break-before: avoid;" />
+          <hr class="myt-4 border-t-1 border-gray-lighter break-before-avoid" />
         </div>
       {/for}
     </div>

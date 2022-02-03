@@ -21,7 +21,7 @@ defmodule PanWeb.Live.Category.Tree do
                               class="px-1.5 py-0.5 mx-0.5" truncate />
             {/for}
           </p>
-          <hr class="w-full mt-4 border-t-1 border-gray-lightest" style="break-before: avoid;" />
+          <hr class="w-full mt-4 border-t-1 border-gray-lightest break-before-avoid" />
         </div>
       {/for}
     </div>
