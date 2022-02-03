@@ -1,4 +1,4 @@
-defmodule Pan.Job do
+defmodule Pan.Job.ImportStalePodcasts do
   use GenServer
   alias PanWeb.Podcast
 
@@ -8,21 +8,20 @@ defmodule Pan.Job do
 
   @impl true
   def init(state) do
-    Podcast.get_one_stale()
-    |> Podcast.import_stale()
     schedule_work()
     {:ok, state}
   end
 
   @impl true
   def handle_info(:work, state) do
-
+    Podcast.get_one_stale()
+    |> Podcast.import_stale()
     schedule_work()
     {:noreply, state}
   end
 
   defp schedule_work do
-    # run after 10 minutes
-    Process.send_after(self(), :work, 10 * 60 * 1000)
+    # run each minute
+    Process.send_after(self(), :work, 60 * 1000)
   end
 end

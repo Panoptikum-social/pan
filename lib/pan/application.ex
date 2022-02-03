@@ -9,7 +9,8 @@ defmodule Pan.Application do
       PanWeb.Telemetry,
       {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
       PanWeb.Endpoint,
-      {PidFile.Worker, file: "pan.pid"}
+      {PidFile.Worker, file: "pan.pid"},
+      Pan.Job.ImportStalePodcasts
     ]
 
     opts = [strategy: :one_for_one, name: Pan.Supervisor]
