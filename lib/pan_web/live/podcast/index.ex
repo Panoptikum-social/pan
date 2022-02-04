@@ -36,7 +36,7 @@ defmodule PanWeb.Live.Podcast.Index do
           <div class="flex flex-col md:flex-row md:items-start md:space-x-2 mx-2 mt-4">
             <div class="flex-none p-2 xl:mx-4 my-2 xl:my-0 border border-gray-light shadow m-auto">
               {#if podcast.thumbnails != []}
-                <img href={"https://panoptikum.io#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}
+                <img src={"https://panoptikum.io#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}
                      width="150"
                      height="150"
                      alt={podcast.image_title}

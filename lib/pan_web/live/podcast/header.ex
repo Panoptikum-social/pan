@@ -39,7 +39,7 @@ defmodule PanWeb.Live.Podcast.Header do
           <div class="flex flex-col md:flex-row">
             <div class="flex-none p-2 xl:mr-4 my-2 border border-gray-light shadow m-auto">
               {#if @podcast_thumbnail}
-                <img href={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+                <img src={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
                      width="150"
                      height="150"
                      alt={@podcast.image_title}
