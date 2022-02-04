@@ -48,6 +48,13 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     {:noreply, socket}
   end
 
+  def vienna_string(naive_date_time) do
+    naive_date_time
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.shift_zone!("Europe/Vienna")
+    |> Calendar.strftime("%c")
+  end
+
   def render(assigns) do
     ~F"""
       <button id="notification-hook-target"
@@ -76,7 +83,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
           </th>
           <th class="border border-gray-light">
           <SortLink field={:updated_at} click="sort" {=@sort_order} {=@sort_by}>
-            Updated at
+            Updated at 🎡
             </SortLink>
           </th>
           <th class="border border-gray-light">
@@ -86,7 +93,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
           </th>
           <th class="border border-gray-light">
             <SortLink field={:next_update} click="sort" {=@sort_order} {=@sort_by}>
-              Next update
+              Next update 🎡
             </SortLink>
           </th>
           <th class="border border-gray-light">
@@ -105,9 +112,9 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
                           to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
                           class="border-gray text-white bg-primary hover:bg-primary-light rounded" /></td>
             <td class="border border-gray-light">{podcast.title}</td>
-            <td class="border border-gray-light whitespace-nowrap">{Calendar.strftime(podcast.updated_at, "%c")}</td>
+            <td class="border border-gray-light whitespace-nowrap">{podcast.updated_at |> vienna_string()}</td>
             <td class="border border-gray-light">{podcast.update_intervall}</td>
-            <td class="border border-gray-light whitespace-nowrap">{Calendar.strftime(podcast.next_update, "%c")}</td>
+            <td class="border border-gray-light whitespace-nowrap">{podcast.next_update |> vienna_string()}</td>
             <td class="border border-gray-light">{podcast.failure_count}</td>
             <td class="border border-gray-light">{podcast.feed_url}</td>
           </tr>
