@@ -58,7 +58,9 @@ defmodule Pan.Updater.Podcast do
   end
 
   defp notify({status, message}, podcast) do
-    Phoenix.PubSub.broadcast(:pan_pubsub, "admin", build_notification(podcast, {status, message}))
+    # For monitoring purposes, Notifications can be enabled here by uncommenting the next line:
+    _message = build_notification(podcast, {status, message})
+    # Phoenix.PubSub.broadcast(:pan_pubsub, "admin", message)
   end
 
   defp build_notification(podcast, {:ok, _}),

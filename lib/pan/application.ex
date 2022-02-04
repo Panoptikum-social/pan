@@ -10,7 +10,10 @@ defmodule Pan.Application do
       {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
       PanWeb.Endpoint,
       {PidFile.Worker, file: "pan.pid"},
-      Pan.Job.ImportStalePodcasts
+      Pan.Job.ImportStalePodcasts,
+      Pan.Job.CacheMissingImages,
+      Pan.Job.PushMissingSearchIndex,
+      Pan.Job.UserProExpiration
     ]
 
     opts = [strategy: :one_for_one, name: Pan.Supervisor]

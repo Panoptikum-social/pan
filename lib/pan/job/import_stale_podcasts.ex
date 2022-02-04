@@ -1,6 +1,5 @@
 defmodule Pan.Job.ImportStalePodcasts do
   use GenServer
-  alias PanWeb.Podcast
 
   def start_link(_) do
     GenServer.start_link(__MODULE__, %{})
@@ -15,8 +14,8 @@ defmodule Pan.Job.ImportStalePodcasts do
 
   @impl true
   def handle_info(:work, state) do
-    Podcast.get_one_stale()
-    |> Podcast.import_stale()
+    PanWeb.Podcast.get_one_stale()
+    |> PanWeb.Podcast.import_stale()
     # search for stale Podcast every second
     Process.send_after(self(), :work, 1 * 1000)
     {:noreply, state}
