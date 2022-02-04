@@ -10,6 +10,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(:pan_pubsub, "admin")
+    Process.send_after(self(), :refresh, 5 * 1000)
     {:ok, assign(socket, sort_order: :asc, sort_by: :next_update) |> fetch()}
   end
 
@@ -18,6 +19,11 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       stale_podcasts: Podcast.stale(sort_by, sort_order, 10),
       stale_podcasts_count: Podcast.count_stale()
     )
+  end
+
+  def handle_info(:refresh, socket) do
+    Process.send_after(self(), :refresh, 5 * 1000)
+    {:noreply, socket |> fetch()}
   end
 
   def handle_info(payload, socket) do
@@ -52,6 +58,8 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
     </button>
 
     <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
+
+    <p>This view is auto-refreshing every 5 seconds.</p>
 
     <table cellpadding="4" class="my-4">
       <thead>

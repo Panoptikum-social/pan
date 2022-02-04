@@ -17,7 +17,8 @@ defmodule Pan.Job.ImportStalePodcasts do
     PanWeb.Podcast.get_one_stale()
     |> PanWeb.Podcast.import_stale()
     # search for stale Podcast every second
-    Process.send_after(self(), :work, 1 * 1000)
+    Process.send_after(self(), :work, 1)
+    #FIXME: Process.send_after(self(), :work, 1 * 1000)
     {:noreply, state}
   end
 end
