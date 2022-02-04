@@ -272,9 +272,14 @@ defmodule PanWeb.Podcast do
     |> Repo.one()
   end
 
-  def import_stale(nil), do: 5
+
+  def import_stale(nil) do
+    # return 5 for next update in 5 seconds
+    5
+  end
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)
+    # return 0 for immediate next update
     0
   end
 
