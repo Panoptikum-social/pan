@@ -15,8 +15,8 @@ defmodule Pan.Job.PushMissingSearchIndex do
   @impl true
   def handle_info(:work, state) do
     Pan.Search.push_missing
-    # search for missing Images roughly every minute
-    Process.send_after(self(), :work, 61 * 1000)
+    # search for missing Images roughly every 3 minutes
+    Process.send_after(self(), :work, 3 * 60 * 1000)
     {:noreply, state}
   end
 end

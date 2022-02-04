@@ -274,8 +274,8 @@ defmodule PanWeb.Podcast do
 
 
   def import_stale(nil) do
-    # return 5 for next update in 5 seconds
-    5
+    # return 10 for next update in 10 seconds
+    10
   end
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)

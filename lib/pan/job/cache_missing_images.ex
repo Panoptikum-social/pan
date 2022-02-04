@@ -15,8 +15,8 @@ defmodule Pan.Job.CacheMissingImages do
   @impl true
   def handle_info(:work, state) do
     PanWeb. Image.cache_missing()
-    # search for missing Images every minute
-    Process.send_after(self(), :work, 60 * 1000)
+    # search for missing Images every five minutes
+    Process.send_after(self(), :work, 5 * 60 * 1000)
     {:noreply, state}
   end
 end
