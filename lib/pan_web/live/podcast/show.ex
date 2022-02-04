@@ -14,7 +14,7 @@ defmodule PanWeb.Live.Podcast.Show do
         page: 1,
         per_page: 10,
         changeset: %Recommendation{} |> Recommendation.changeset(),
-        podcast_thumbnail: Image.get_by_podcast_id(id),
+        podcast_thumbnail: Image.get_by_podcast_id(id) || %{},
         page_title: podcast.title <> " (Podcast)"
       )
       |> fetch

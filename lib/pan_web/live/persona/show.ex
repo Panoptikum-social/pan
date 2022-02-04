@@ -16,7 +16,7 @@ defmodule PanWeb.Live.Persona.Show do
       delegator_ids = Delegation.get_by_delegate_id(persona.id)
       persona_ids = [persona.id | delegator_ids]
       engagements = Engagement.get_by_persona_ids(persona_ids)
-      persona_thumbnail = Image.get_by_persona_id(persona.id)
+      persona_thumbnail = Image.get_by_persona_id(persona.id) || %{}
 
       if persona.redirect_id do
         persona = Persona.get_by_id(persona.redirect_id)
@@ -111,12 +111,12 @@ defmodule PanWeb.Live.Persona.Show do
           </table>
 
           <div class="flex-none rounded shadow m-auto md:mx-4 my-4">
-            <img :if={@persona_thumbnail}
+            <img :if={Map.has_key?(@persona_thumbnail, :path)}
                   src={"https://panoptikum.io#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
                   alt={@persona.image_title}
                   id="photo"
                   width="150" height="150" />
-            <img :if={!@persona_thumbnail}
+            <img :if={!Map.has_key?(@persona_thumbnail, :path)}
                   src="/images/missing-persona.png"
                   alt="missing image"
                   width="150" height="150" />
