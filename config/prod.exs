@@ -9,11 +9,9 @@ config :pan, PanWeb.Endpoint,
   check_origin: ["https://panoptikum.io", "https://ansible.local"],
   version: Mix.Project.config()[:version]
 
-# Do not print debug messages in production
-config :logger, level: :info
-
 config :logger,
   backends: [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]
+config :logger, level: :info
 
 config :phoenix, :serve_endpoints, true
 

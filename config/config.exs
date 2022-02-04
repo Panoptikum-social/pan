@@ -31,8 +31,6 @@ config :esbuild,
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]
 
-# Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
 config :pid_file, file: "./pan.pid"
 
 # Import environment specific config. This must remain at the bottom

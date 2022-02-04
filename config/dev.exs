@@ -44,8 +44,6 @@ config :pan, PanWeb.Endpoint,
     ]
   ]
 
-config :pan, Pan.Mailer, adapter: Bamboo.LocalAdapter
-
 config :pan, :children, [
   Pan.Repo,
   PanWeb.Telemetry,
