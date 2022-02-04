@@ -46,6 +46,13 @@ config :pan, PanWeb.Endpoint,
 
 config :pan, Pan.Mailer, adapter: Bamboo.LocalAdapter
 
+config :pan, :children, [
+  Pan.Repo,
+  PanWeb.Telemetry,
+  {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
+  PanWeb.Endpoint
+]
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 

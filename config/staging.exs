@@ -16,4 +16,11 @@ config :logger, level: :info
 config :phoenix, :serve_endpoints, true
 config :pan, :environment, "staging"
 
+config :pan, :children, [
+  Pan.Repo,
+  PanWeb.Telemetry,
+  {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
+  PanWeb.Endpoint
+]
+
 import_config "staging.secret.exs"
