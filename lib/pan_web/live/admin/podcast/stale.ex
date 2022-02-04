@@ -27,7 +27,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   end
 
   def handle_info(payload, socket) do
-    {:noreply, push_event(socket, "notification", payload) |> fetch()}
+    {:noreply, push_event(socket, "notification", payload)}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
