@@ -272,9 +272,10 @@ defmodule PanWeb.Podcast do
     |> Repo.one()
   end
 
-  def import_stale(nil), do: nil
+  def import_stale(nil), do: 5
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)
+    0
   end
 
   def remove_unwanted_references(id) do

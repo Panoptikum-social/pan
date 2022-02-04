@@ -14,10 +14,12 @@ defmodule Pan.Job.ImportStalePodcasts do
 
   @impl true
   def handle_info(:work, state) do
-    PanWeb.Podcast.get_one_stale()
-    |> PanWeb.Podcast.import_stale()
-    # search for stale Podcast every second
-    Process.send_after(self(), :work, 1 * 1000)
+    # search for stale Podcast immediately, if one had been found, otherwise wait 5 seconds
+    wait_for_seconds =
+      PanWeb.Podcast.get_one_stale()
+      |> PanWeb.Podcast.import_stale()
+
+    Process.send_after(self(), :work, wait_for_seconds * 1000)
     {:noreply, state}
   end
 end
