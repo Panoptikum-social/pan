@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
   def handle_event("merge", _, %{assigns: assigns} = socket) do
     Category.merge(assigns.from_id, assigns.into_id)
-    {:noreply, assign(socket, categories: Category.tree())}
+    {:noreply, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
   end
 
   def handle_event("selectFrom", %{"node-id" => from_id}, socket) do

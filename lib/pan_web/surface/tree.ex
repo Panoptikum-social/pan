@@ -25,12 +25,12 @@ defmodule PanWeb.Surface.Tree do
   def render(assigns) do
     ~F"""
     <div class={"flex flex-col", @class}>
-      {render_tree(assigns, @nodes, 0)}
+      {render_tree(assigns, @nodes, 0, @myself)}
     </div>
     """
   end
 
-  defp render_tree(assigns, nodes, indentation_level) do
+  defp render_tree(assigns, nodes, indentation_level, myself) do
     ~F"""
     {#for node <- nodes}
       <div :on-click={@select}
@@ -42,7 +42,7 @@ defmodule PanWeb.Surface.Tree do
         </span>
 
         <button :if={node.children |> is_list && length(node.children) > 0}
-                :on-click="toggle-expand" phx-value-node-id={node.id}>
+                :on-click="toggle-expand" phx-value-node-id={node.id} phx-target={myself}>
           <Icon :if={@expanded[node.id]}  name="folder-open-heroicons-outline" />
           <Icon :if={!@expanded[node.id]} name="folder-heroicons-outline" />
         </button>
@@ -50,7 +50,7 @@ defmodule PanWeb.Surface.Tree do
         {node.title}
       </div>
       {#if @expanded[node.id] && is_list(node.children)}
-        {render_tree(assigns, node.children, indentation_level + 1)}
+        {render_tree(assigns, node.children, indentation_level + 1, myself)}
       {/if}
     {/for}
     """
