@@ -14,13 +14,15 @@ defmodule PanWeb.Live.Podcast.Header do
   def render(assigns) do
     ~F"""
     {#if @admin}
-      <div class="fixed top-0 right-0 mt-4 mr-8">
-        <a href={databrowser_path(Endpoint, :show, "podcast", @podcast)}>
-          <Icon name="cog-heroicons-outline"/>
+      <div class="fixed top-0 right-0 mt-4 mr-8 space-x-4">
+        <a href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
+           class="text-link hover:text-link-dark">
+          <Icon name="cog-heroicons-outline"/> Show Podcast
         </a>
 
-        <a href={databrowser_path(Endpoint, :edit, "feed", @podcast.feeds |> hd)}>
-          <Icon name="rss-heroicons-outline"/>
+        <a href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")},
+           class="text-link hover:text-link-dark">
+          <Icon name="rss-heroicons-outline"/> Alternate Feeds
         </a>
       </div>
     {/if}
