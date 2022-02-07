@@ -129,7 +129,7 @@ defmodule Pan.Parser.Download do
     Feed.check_for_redirect_loop(url, redirect_target, feed_id)
   end
 
-  defp get(url) do
+  def get(url) do
     HTTPoison.get(
       url,
       ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
