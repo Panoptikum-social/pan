@@ -47,7 +47,7 @@ defmodule PanWeb.Live.Episode.Header do
           </div>
         {/if}
 
-        <dl class="flex-1 grid grid-cols-4 gap-x-4 gap-y-2">
+        <dl class="flex-1 grid content-start grid-cols-4 gap-x-4 gap-y-2">
           <dt class="justify-self-end font-medium">Subtitle</dt>
           <dd class="col-span-3">{@episode.subtitle}</dd>
           {#if @episode.payment_link_url}
