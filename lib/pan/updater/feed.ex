@@ -64,7 +64,8 @@ defmodule Pan.Updater.Feed do
     # and the last build date of the podcast or the publishing date of latest episode:
     if (podcast.last_build_date &&
           abs(NaiveDateTime.diff(podcast.last_build_date, last_modified)) < 100) ||
-         abs(NaiveDateTime.diff(podcast.latest_episode_publishing_date, last_modified)) < 100 do
+         (podcast.latest_episode_publishing_date &&
+            abs(NaiveDateTime.diff(podcast.latest_episode_publishing_date, last_modified)) < 100) do
       Feed.changeset(feed, %{last_modified: last_modified, trust_last_modified: true})
       |> Repo.update()
 
