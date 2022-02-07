@@ -22,7 +22,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
     ~F"""
     <div>
       {#if @current_user_id}
-        <p>
+        <p class="whitespace-nowrap">
           <LikeButton id="like_button"
                       current_user_id={@current_user_id}
                       model={Podcast}
