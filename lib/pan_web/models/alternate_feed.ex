@@ -11,7 +11,7 @@ defmodule PanWeb.AlternateFeed do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :url])
+    |> cast(params, [:title, :url, :feed_id])
     |> validate_required([:url])
   end
 end
