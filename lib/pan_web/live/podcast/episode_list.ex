@@ -41,20 +41,21 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                       <span class="relative"
                             x-data="{ detailsOpen: false }">
                         <div class="inline"
-                              @click="detailsOpen = !detailsOpen
-                                      $nextTick(() => $refs.detailsCloseButton.focus())">
+                             @click="detailsOpen = !detailsOpen
+                                     $nextTick(() => $refs.detailsCloseButton.focus())">
                           <Icon name="information-circle-heroicons" />
                         </div>
                         <div x-show="detailsOpen"
                               class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4">
                           <h1 class="text-3xl">Info</h1>
                           <p class="mt-4">This contribution is claimed by a user and not source of the podcast feed.</p>
-                          <button @click="detailsOpen = false"
-                                  class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
-                                          focus:ring-2 focus:ring-info-light"
-                                  x-ref="detailsCloseButton">
-                            Close
-                          </button>
+                          <p>
+                            <button @click="detailsOpen = false"
+                                    class="bg-info hover:bg-info-light text-white px-2 rounded mt-4"
+                                    x-ref="detailsCloseButton">
+                              Close
+                            </button>
+                          </p>
                         </div>
                       </span>
                     {/if}

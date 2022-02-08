@@ -5,19 +5,12 @@
   <%= render(PanWeb.LayoutView, "_head.html", conn: @conn) %>
   <% current_user = %PanWeb.User{id: 0, admin: false, name: "Dummy", username: "Dummy", email: "noreply@panoptikum.io"} %>
 
-  <body
-    class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-    data-js-view-name="StaticTemplateView"
-  >
-    <nav
-      x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
+  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
+    data-js-view-name="StaticTemplateView">
+    <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
       class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-      :class="{'lg:p-1': !navbarOpen}"
-    >
-      <%= render(PanWeb.LayoutView, "_navbar.html",
-        conn: @conn,
-        current_user: current_user
-      ) %>
+      :class="{'lg:p-1': !navbarOpen}">
+      <%= render(PanWeb.LayoutView, "_navbar.html", conn: @conn, current_user: current_user) %>
     </nav>
 
     <div class="flex-1 min-h-full flex flex-col overflow-x-auto">

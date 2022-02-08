@@ -4,7 +4,7 @@
 // Configure module entry points in "webpack.config.js".
 // Import deps with the dep name or local files with a relative path, for example:
 //     import socket from "./socket"
-import "alpinejs";
+import Alpine from "alpinejs";
 import "phoenix_html";
 import { Socket } from "phoenix";
 import topbar from "topbar";
@@ -16,14 +16,17 @@ import Hooks from "./_hooks";
 Hooks.InfiniteScroll = InfiniteScroll;
 Hooks.Notification = Notification;
 
+window.Alpine = Alpine;
+Alpine.start();
+
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
-      if (from.__x) {
-        window.Alpine.clone(from.__x, to);
+      if (from._x_dataStack) {
+        window.Alpine.clone(from, to);
       }
     },
   },
