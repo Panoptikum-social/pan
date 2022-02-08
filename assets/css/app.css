@@ -2,57 +2,84 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "../node_modules/nprogress/nprogress.css";
- 
 @layer base {
-  [type='text'],
-  [type='email'],
-  [type='url'],
-  [type='password'],
-  [type='number'],
-  [type='date'],
-  [type='datetime-local'],
-  [type='month'],
-  [type='search'],
-  [type='tel'],
-  [type='time'],
-  [type='week'],
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
   [multiple],
   textarea,
   select {
     @apply px-2 py-1 rounded-md border-gray-light shadow-sm;
   }
 
-  .scrollbar-gray {scrollbar-color: #aab2bd #f5f7fa;}
-  .avoid-column-break {break-inside:avoid-column;}
+  .scrollbar-gray {
+    scrollbar-color: #aab2bd #f5f7fa;
+  }
+  .avoid-column-break {
+    break-inside: avoid-column;
+  }
 
   @font-face {
     font-family: "Ubuntu";
     font-weight: 400;
     font-display: swap;
-    src: url('/fonts/ubuntu.woff2') format('woff2'), url('/fonts/ubuntu.woff') format('woff')
+    src: url("/fonts/ubuntu.woff2") format("woff2"),
+      url("/fonts/ubuntu.woff") format("woff");
   }
   @font-face {
     font-family: "Ubuntu Mono";
     font-weight: 400;
     font-display: swap;
-    src: url('/fonts/ubuntu-mono.woff2') format('woff2'), url('/fonts/ubuntu-mono.woff') format('woff')
+    src: url("/fonts/ubuntu-mono.woff2") format("woff2"),
+      url("/fonts/ubuntu-mono.woff") format("woff");
   }
-
 }
 
-[hidden] { @apply hidden; }
+[hidden] {
+  @apply hidden;
+}
 
 /* Classes used by phoenix forms*/
-.alert:empty { @apply hidden; }
-.alert-info { @apply p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4; }
-.alert-danger { @apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4; }
-.alert-success { @apply p-4 border border-success-dark bg-success-light/50 rounded-xl mb-4; }
-.alert-warning { @apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4; }
-.invalid-feedback{ @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded; }
+.alert:empty {
+  @apply hidden;
+}
+.alert-info {
+  @apply p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4;
+}
+.alert-danger {
+  @apply p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4;
+}
+.alert-success {
+  @apply p-4 border border-success-dark bg-success-light/50 rounded-xl mb-4;
+}
+.alert-warning {
+  @apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4;
+}
+.invalid-feedback {
+  @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded;
+}
 
 /* LiveView specific classes for your customizations */
-.phx-no-feedback.invalid-feedback, .phx-no-feedback .invalid-feedback { display: none; }
-.phx-click-loading {opacity: 0.5; transition: opacity 1s ease-out; }
-.phx-disconnected { cursor: wait; }
-.phx-disconnected *{ pointer-events: none; }
+.phx-no-feedback.invalid-feedback,
+.phx-no-feedback .invalid-feedback {
+  display: none;
+}
+.phx-click-loading {
+  opacity: 0.5;
+  transition: opacity 1s ease-out;
+}
+.phx-disconnected {
+  cursor: wait;
+}
+.phx-disconnected * {
+  pointer-events: none;
+}
