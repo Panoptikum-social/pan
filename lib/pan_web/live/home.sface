@@ -2,10 +2,10 @@
      x-init="() => {cookie_consent = localStorage.getItem('cookie_consent')}"
      class="text-center mb-2">
   <div x-show="cookie_consent != 'true'">    
-    Panoptikum.io uses cookies only out of technical necessity. See 
+    Panoptikum.io uses cookies only out of technical necessity. See our
     <Link to="https://blog.panoptikum.io/privacy" 
-          class="text-link hover:text-link-dark mx-1" 
-          label="Privacy" /> 
+          class="text-link hover:text-link-dark" 
+          label="Privacy Page" /> 
     for details.
     <button @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
        class="inline border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
