@@ -10,9 +10,9 @@ defmodule PanWeb.Live.Home do
      assign(socket,
        popular_podcasts: Podcast.popular(),
        liked_podcasts: Podcast.liked(),
-       latest_podcasts: Podcast.latest(),
-       latest_episodes: Episode.latest(),
-       latest_recommendations: Recommendation.latest(),
+       latest_podcast: Podcast.latest(),
+       latest_episode: Episode.latest(),
+       latest_recommendation: Recommendation.latest(),
        page_title: "The Podcast Panoptikum "
      )}
   end

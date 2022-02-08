@@ -78,7 +78,7 @@ defmodule PanWeb.Episode do
   end
 
   def latest do
-    latest(1, 10)
+    latest(1, 1) |> List.first()
   end
 
   def latest(page, per_page) do

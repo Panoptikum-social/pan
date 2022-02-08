@@ -49,9 +49,9 @@ defmodule PanWeb.Recommendation do
           episode: [:id, :title, :podcast_id, podcast: [:id, :title]]
         ]
       ],
-      limit: 10
+      limit: 1
     )
-    |> Repo.all()
+    |> Repo.one()
   end
 
   def get_by_podcast_id(podcast_id, page, per_page) do

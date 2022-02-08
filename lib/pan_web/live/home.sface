@@ -14,21 +14,21 @@
   </div>
 </div>
 
-<div aria-label="columncontainer" 
-    class="max-w-screen-xl mx-auto
-           flex flex-col space-y-4 justify-items-auto 
-           lg:flex-row lg:space-y-0 lg:space-x-4 ">
+<div class="max-w-screen-xl mx-auto
+            flex flex-col space-y-4 justify-items-auto 
+            lg:flex-row lg:space-y-0 lg:space-x-4 ">
   <div aria-label="left column" 
       class="flex-1">
-    <Panel heading="Podcasts new in Panoptikum" heading_right="more ..."
-           target={podcast_frontend_path(@socket, :index)}
-           purpose="podcast">
-      <Tab items={podcast <- @latest_podcasts}>
-        <PodcastCard for={podcast} />
-      </Tab>
+    <Panel heading="Top 10 most liked Podcasts" 
+           heading_right="more ..."
+           target={podcast_frontend_path(@socket, :liked)}
+           purpose="like">
+      <TopList items={@liked_podcasts}
+               purpose="podcast"
+               icon="heart-heroicons-outline" />
     </Panel>
 
-    <Panel heading="Top 15 subscribed Podcasts" heading_right="more ..." 
+    <Panel heading="Top 10 subscribed Podcasts" heading_right="more ..." 
            target={podcast_frontend_path(@socket, :popular)}
            purpose="popular"
            class="mt-4">
@@ -38,36 +38,42 @@
     </Panel>
   </div>
 
-  <div aria-label="right column" 
-       class="flex-1">
-    <Panel heading="Latest Episodes" 
-           heading_right="more ..."
-           target={episode_frontend_path(@socket, :index)}
-           purpose="episode" >
-      <Tab items={episode <- @latest_episodes}>
-          <EpisodeCard for={episode} />
-      </Tab>
-
+  <div class="flex-1">
+    <Panel heading="Latest Podcast" heading_right="more ..."
+           target={podcast_frontend_path(@socket, :index)}
+           purpose="podcast"
+           content_class="p-4">
+      <PodcastCard for={@latest_podcast} />
+      <p class="mt-4">
+        <a href={podcast_frontend_path(@socket, :index)}
+           class="text-link hover:text-link-dark">show more...</a>
+      </p>
     </Panel>
 
-    <Panel heading="Latest Recommendations" 
+    <Panel heading="Latest Episode" 
+           heading_right="more ..."
+           target={episode_frontend_path(@socket, :index)}
+           purpose="episode"
+           content_class="p-4" 
+           class="mt-4">
+      <EpisodeCard for={@latest_episode} />
+      <p class="mt-4">
+        <a href={episode_frontend_path(@socket, :index)}
+           class="text-link hover:text-link-dark">show more...</a>
+      </p>
+    </Panel>
+
+    <Panel heading="Latest Recommendation" 
            heading_right="more ..."
            target={recommendation_frontend_path(@socket, :index)}
            purpose="recommendation"
-           class="mt-4">
-      <Tab items={recommendation <- @latest_recommendations}>
-        <RecommendationCard for={recommendation} />
-      </Tab>
-    </Panel>
-
-    <Panel heading="Liked Podcasts" 
-          heading_right="more ..."
-          target={podcast_frontend_path(@socket, :liked)}
-          purpose="like"
-          class="mt-4">
-      <TopList items={@liked_podcasts}
-               purpose="podcast"
-               icon="heart-heroicons-outline" />
+           class="mt-4"
+           content_class="p-4">
+      <RecommendationCard for={@latest_recommendation} />
+      <p class="mt-4">
+        <a href={recommendation_frontend_path(@socket, :index)}
+           class="text-link hover:text-link-dark">show more...</a>
+      </p>
     </Panel>
   </div>
 </div>

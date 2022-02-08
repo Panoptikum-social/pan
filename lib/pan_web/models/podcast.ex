@@ -209,9 +209,9 @@ defmodule PanWeb.Podcast do
         author_id: persona.id,
         author_name: persona.name
       },
-      limit: 10
+      limit: 1
     )
-    |> Repo.all()
+    |> Repo.one()
   end
 
   def latest_for_index(page, per_page) do
@@ -229,7 +229,7 @@ defmodule PanWeb.Podcast do
     from(p in Podcast,
       select: [p.subscriptions_count, p.id, p.title],
       order_by: [fragment("? DESC NULLS LAST", p.subscriptions_count)],
-      limit: 15
+      limit: 10
     )
     |> Repo.all()
   end
@@ -272,11 +272,11 @@ defmodule PanWeb.Podcast do
     |> Repo.one()
   end
 
-
   def import_stale(nil) do
     # return 10 for next update in 10 seconds
     10
   end
+
   def import_stale(podcast) do
     Pan.Updater.Podcast.import_new_episodes(podcast)
     # return 0 for immediate next update
