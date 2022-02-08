@@ -53,13 +53,13 @@
     <span :class="{'lg:hidden': !navbarOpen}">Panoptikum.io</span></a>
 
   <button @click="navbarOpen = !navbarOpen" class="focus:outline-none" aria-label="toggle sidebar">
-    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="heroicons-x" >
+    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="heroicons-x" x-cloak>
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
     </svg>
-    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden lg:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="heroicons-chevron-double-left" >
+    <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden lg:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-cloak>
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
     </svg>
-    <svg x-show="!navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="heroicons-menu" >
+    <svg x-show="!navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-cloak >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
   </button>
