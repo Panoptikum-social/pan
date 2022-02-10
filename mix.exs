@@ -49,6 +49,8 @@ defmodule Pan.MixProject do
       {:phoenix_html, "~> 3.0"},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.6.2"},
+      # Providing postgres stats for liveview
+      {:ecto_psql_extras, "~> 0.6"},
       # Component library
       {:surface, "~> 0.7"},
       # telemetry_metrics
