@@ -27,7 +27,7 @@ defmodule PanWeb.Live.Podcast.Index do
     ~F"""
     <h1 class="text-3xl m-4">Latest Podcasts</h1>
 
-    <div id="latest_podcasts" phx-update="append" class="m-4 grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-4">
+    <div id="latest_podcasts" phx-update="append" class="m-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
       {#for podcast <- @latest_podcasts }
         <Panel purpose="podcast"
                 id={"podcast-#{podcast.id}"}
@@ -54,7 +54,7 @@ defmodule PanWeb.Live.Podcast.Index do
                     Website
                   </label>
                 </div>
-                <div class="col-span-2"><a href={podcast.website}>{podcast.website}</a></div>
+                <div class="col-span-2 break-words"><a href={podcast.website}>{podcast.website}</a></div>
               {/if}
 
               <div>
