@@ -54,7 +54,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
     <div class="my-4">
       <div :if={@recommendations != []}
            class="float-right">
-        <a href="https://panoptikum.io/complaints"
+        <a href="https://blog.panoptikum.io/complaints"
           class="text-link hover-text-link-dark">Complain</a>
       </div>
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>

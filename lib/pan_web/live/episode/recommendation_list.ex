@@ -41,7 +41,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
       {#if @episode.recommendations != [] or @current_user_id}
         <div :if={@episode.recommendations != []}
             class="float-right">
-          <a href="https://panoptikum.io/complaints"
+          <a href="https://blog.panoptikum.io/complaints"
             class="text-link hover-text-link-dark">Complain</a>
         </div>
 
