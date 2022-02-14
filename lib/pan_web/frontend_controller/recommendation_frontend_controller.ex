@@ -66,7 +66,7 @@ defmodule PanWeb.RecommendationFrontendController do
 
     conn
     |> put_flash(:info, "Recommendation deleted successfully.")
-    |> redirect(to: user_frontend_path(conn, :my_data))
+    |> redirect(to: recommendation_frontend_path(conn, :my_recommendations))
   end
 
   def delete_all(conn, _, user) do
