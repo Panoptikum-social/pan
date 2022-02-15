@@ -30,16 +30,16 @@ defmodule PanWeb.Live.Podcast.Header do
     <h1 class="text-3xl">{@podcast.title}</h1>
 
     <p :if={@podcast.retired}
-        class="empty:hidden p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container"
+        class="empty:hidden p-2 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container max-w-screen-md my-4"
         role="alert">
       We retired this podcast, because we couldn't parse it for 10 consecutive times.
     </p>
 
-    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row mt-4">
+    <div id="header" class="flex flex-col space-y-4 md:justify-between md:space-y-0 md:flex-row mt-4">
       <div class="flex flex-col space-y-4 lg:space-y-0 lg:flex-row">
         <div class="flex flex-col md:flex-row md:space-x-4">
-          <div class="flex-none p-2 xl:mr-4 my-2">
-            <div class="border border-gray-light shadow m-auto">
+          <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
+            <div id="thumbnail" class="border border-gray-light shadow m-auto ">
               {#if Map.has_key?(@podcast_thumbnail, :path)}
                 <img src={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
                       width="150"
@@ -124,7 +124,7 @@ defmodule PanWeb.Live.Podcast.Header do
         </dl>
       </div>
 
-      <div role="qrcode" class="flex flex-col m-auto">
+      <div role="qrcode" class="flex flex-col items-end">
         <QRCode for={podcast_frontend_url(Endpoint, :subscribe_button, @podcast)} />
         <PodloveSubscribeButton id="podlove_subscribe_button"
                                 {=@podcast} />
