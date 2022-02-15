@@ -20,6 +20,8 @@ defmodule PanWeb.User do
 
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
+  @minimum_password_length 10
+
   schema "users" do
     field(:name, :string)
     field(:username, :string)
@@ -171,7 +173,7 @@ defmodule PanWeb.User do
     |> unique_constraint(:email)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
-    |> validate_length(:password, min: 6, max: 100)
+    |> validate_length(:password, min: @minimum_password_length, max: 100)
     |> put_pass_hash()
   end
 
@@ -188,7 +190,7 @@ defmodule PanWeb.User do
     |> cast(params, [:password, :password_confirmation])
     |> validate_required([:password, :password_confirmation])
     |> validate_confirmation(:password)
-    |> validate_length(:password, min: 6, max: 100)
+    |> validate_length(:password, min: @minimum_password_length, max: 100)
     |> put_pass_hash()
   end
 
