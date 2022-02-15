@@ -35,32 +35,29 @@ defmodule PanWeb.Live.Podcast.Header do
       We retired this podcast, because we couldn't parse it for 10 consecutive times.
     </p>
 
-    <div class="flex flex-col space-y-4 md:flex-row mt-4">
-      <div class="flex flex-col space-y-4 md:flex-row">
-        <div>
-          <div class="flex flex-col md:flex-row">
-            <div class="flex-none p-2 xl:mr-4 my-2 border border-gray-light shadow m-auto">
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row mt-4">
+      <div class="flex flex-col space-y-4 lg:space-y-0 lg:flex-row">
+        <div class="flex flex-col md:flex-row md:space-x-4">
+          <div class="flex-none p-2 xl:mr-4 my-2">
+            <div class="border border-gray-light shadow m-auto">
               {#if Map.has_key?(@podcast_thumbnail, :path)}
                 <img src={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
-                     width="150"
-                     height="150"
-                     alt={@podcast.image_title}
-                     id="photo"
-                     class="break-words text-xs" />
+                      width="150"
+                      height="150"
+                      alt={@podcast.image_title}
+                      id="photo"
+                      class="break-words text-xs" />
               {#else}
                 <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
               {/if}
             </div>
-            <div>
-              <p>{@podcast.summary |> raw}</p>
-            </div>
           </div>
-          <ListFollowSubscribeButtons id="list_follow_subscribe_button"
-                                      current_user_id={@current_user_id}
-                                      podcast={@podcast} />
+          <div>
+            <p>{@podcast.summary |> raw}</p>
+          </div>
         </div>
 
-        <dl class="grid grid-cols-4 gap-4">
+        <dl class="grid grid-cols-4 gap-x-4 gap-y-2">
           {#if @podcast.website}
             <dt class="justify-self-end font-medium">Website</dt>
             <dd class="col-span-3">
@@ -125,7 +122,6 @@ defmodule PanWeb.Live.Podcast.Header do
             {/for}
           </dd>
         </dl>
-
       </div>
 
       <div role="qrcode" class="flex flex-col m-auto">
@@ -134,6 +130,10 @@ defmodule PanWeb.Live.Podcast.Header do
                                 {=@podcast} />
       </div>
     </div>
+
+    <ListFollowSubscribeButtons id="list_follow_subscribe_button"
+                                current_user_id={@current_user_id}
+                                podcast={@podcast} />
     """
   end
 end
