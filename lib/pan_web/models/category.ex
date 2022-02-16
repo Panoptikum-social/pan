@@ -111,28 +111,16 @@ defmodule PanWeb.Category do
     |> Kernel.not()
   end
 
-  def get_with_children_parent_and_podcasts(id) do
-    category =
-      from(c in Category,
-        where: [id: ^id],
-        left_join: children in assoc(c, :children),
-        left_join: p in assoc(c, :parent),
-        order_by: children.title,
-        preload: [parent: p, children: children],
-        select: [:id, :title, children: [:id, :title], parent: [:id, :title]]
-      )
-      |> Repo.one()
-
-    podcasts =
-      from(l in Language,
-        right_join: p in assoc(l, :podcasts),
-        join: c in assoc(p, :categories),
-        where: c.id == ^id,
-        select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
-      )
-      |> Repo.all()
-
-    %{category: category, podcasts: podcasts, page_title: category.title <> " (Category)"}
+  def get_with_children_and_parent(id) do
+    from(c in Category,
+      where: [id: ^id],
+      left_join: children in assoc(c, :children),
+      left_join: p in assoc(c, :parent),
+      order_by: children.title,
+      preload: [parent: p, children: children],
+      select: [:id, :title, children: [:id, :title], parent: [:id, :title]]
+    )
+    |> Repo.one()
   end
 
   def get_by_id(id) do

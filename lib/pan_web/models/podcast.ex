@@ -574,4 +574,28 @@ defmodule PanWeb.Podcast do
   def follows(id) do
     get_by_id(id).followers_count
   end
+
+  def get_by_category_id_and_language(category_id, nil, page, per_page) do
+    from(l in Language,
+      right_join: p in assoc(l, :podcasts),
+      join: c in assoc(p, :categories),
+      where: c.id == ^category_id,
+      select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji},
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
+
+  def get_by_category_id_and_language(category_id, language, page, per_page) do
+    from(l in Language,
+      right_join: p in assoc(l, :podcasts),
+      join: c in assoc(p, :categories),
+      where: c.id == ^category_id and l.emoji == ^language.emoji,
+      select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji},
+      limit: ^per_page,
+      offset: (^page - 1) * ^per_page
+    )
+    |> Repo.all()
+  end
 end
