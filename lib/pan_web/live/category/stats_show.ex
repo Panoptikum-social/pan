@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Category.StatsShow do
 
   import PanWeb.Router.Helpers
   alias PanWeb.{Category, Podcast, Language}
-  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton}
+  alias PanWeb.Surface.{Panel, PanelHeading, Icon, LinkButton}
   alias Surface.Components.Link
 
   def mount(%{"id" => id}, session, socket) do
@@ -57,7 +57,7 @@ defmodule PanWeb.Live.Category.StatsShow do
           <Icon name="folder-heroicons-outline" /> Panoptikum
         </Link> /
         {#if @category.parent}
-          <Link to={category_frontend_path(@socket, :show, @category.parent)}
+          <Link to={category_frontend_path(@socket, :show_stats, @category.parent)}
                 class="hover:text-blue-400">
             <Icon name="folder-heroicons-outline" /> {@category.parent.title}
           </Link> /
@@ -68,8 +68,11 @@ defmodule PanWeb.Live.Category.StatsShow do
       <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
           {#for subcategory <- @category.children}
-            <CategoryButton for={subcategory}
-                            class="mr-2 mb-2" />
+            <LinkButton to={category_frontend_path(@socket, :show_stats, subcategory.id)}
+                        class="bg-white hover:bg-gray-lighter text-gray-darker border-gray mr-2 mb-2"
+                        icon="folder-heroicons-outline"
+                        title={subcategory.title}
+                        truncate={true} />
           {/for}
         </div>
 
