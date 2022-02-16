@@ -21,23 +21,57 @@ defmodule PanWeb.Live.Category.Show do
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
     language = nil
+    page = 1
+    per_page = 100
 
     if Category.by_id_exists?(id) do
       category = Category.get_with_children_and_parent(id)
-      podcasts = Podcast.get_by_category_id_and_language(category.id, language, 1, 100)
       languages = Language.get_by_category_id(category.id)
 
       {:ok,
        assign(socket,
          category: category,
-         podcasts: podcasts,
          page_title: category.title <> " (Category)",
          languages: languages,
-         language: language
-       )}
+         language: language,
+         page: page,
+         per_page: per_page,
+         update_action: "append"
+       )
+       |> fetch()}
     else
       {:ok, assign(socket, error: "not_found")}
     end
+  end
+
+  defp fetch(
+         %{
+           assigns: %{
+             page: page,
+             per_page: per_page,
+             category: category,
+             language: language
+           }
+         } = socket
+       ) do
+    podcasts = Podcast.get_by_category_id_and_language(category.id, language, page, per_page)
+    assign(socket, podcasts: podcasts)
+  end
+
+  def handle_event("load-more", _, %{assigns: assigns} = socket) do
+    {:noreply, assign(socket, page: assigns.page + 1, update_action: "append") |> fetch()}
+  end
+
+  def handle_event("set-language-filter", %{"language_id" => language_id}, socket) do
+    {:noreply,
+     assign(socket, language: Language.get_by_id(language_id), page: 1, update_action: "replace")
+     |> fetch()}
+  end
+
+  def handle_event("reset-language-filter", _params, socket) do
+    {:noreply,
+     assign(socket, language: nil, page: 1, update_action: "replace")
+     |> fetch()}
   end
 
   def render(%{error: "not_found"} = assigns) do
@@ -88,42 +122,6 @@ defmodule PanWeb.Live.Category.Show do
         <Icon name="folder-open-heroicons-outline" /> {@category. title}
       </PanelHeading>
 
-      <div aria-label="panel-body" class="p-4">
-        <div :if={@category.children != []} class="flex flex-wrap">
-          {#for subcategory <- @category.children}
-            <CategoryButton for={subcategory}
-                            class="mx-2 my-1" />
-          {/for}
-        </div>
-
-        <h3 class="pt-4 text-xl">Click on a language to filter</h3>
-
-        <div class="flex flex-wrap py-4">
-          {#for language <- @languages}
-            <div class="mx-2">
-              {language.emoji || "🏳️"} &nbsp;
-              <Link opts={id: "lang#" <> (language.name || "Language unknown")}
-                    to={"#" <> (language.name || "Language unknown")}
-                    label= {language.name || "Language unknown"} />
-            </div>
-          {/for}
-        </div>
-
-        <h2 class="text-2xl mt-4">
-          {#if @language}
-            Podcasts in {@language}.name {@language.emoji}
-          {#else}
-            Podcasts in any language
-          {/if}
-        </h2>
-
-        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-          {#for podcast <- @podcasts}
-            <PodcastButton for={podcast} class="m-2" truncate/>
-          {/for}
-        </div>
-      </div>
-
       <div :if={@current_user_id} class="m-4">
         <LikeButton id="like_button"
                     current_user_id={@current_user_id}
@@ -134,7 +132,50 @@ defmodule PanWeb.Live.Category.Show do
                       model={Category}
                       instance={@category}/> &nbsp;
       </div>
+      <div aria-label="panel-body" class="p-4">
+        <div :if={@category.children != []} class="flex flex-wrap">
+          {#for subcategory <- @category.children}
+            <CategoryButton for={subcategory}
+                            class="mr-2 mb-2" />
+          {/for}
+        </div>
 
+        <h3 class="pt-4 text-xl">Click on a language to filter</h3>
+
+        <div class="flex flex-wrap py-4">
+          {#for language <- @languages}
+            <a href="#"
+               :on-click="set-language-filter"
+               phx-value-language_id={language.id}
+               class="text-link hover: text-link-dark mx-2">
+              {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
+            </a>
+          {/for}
+        </div>
+
+        {#if @language}
+          <div class="float-right">
+            <a href="#"
+              :on-click="reset-language-filter"
+              class="text-link hover: text-link-dark mx-2">🗑️ Clear language filter</a>
+          </div>
+          <h2 class="text-2xl mt-4">
+            Podcasts in {@language.name} {@language.emoji}
+          </h2>
+          {#else}
+            <h2 class="text-2xl mt-4">Podcasts in any language</h2>
+          {/if}
+
+        <div id="podcast_grid"
+             phx-update={@update_action}
+             class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
+          {#for podcast <- @podcasts}
+            <PodcastButton for={podcast} class="m-2" truncate/>
+          {/for}
+        </div>
+
+      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+      </div>
     </Panel>
     """
   end

@@ -26,8 +26,12 @@ defmodule PanWeb.Language do
       join: c in assoc(p, :categories),
       where: c.id == ^category_id,
       distinct: [asc: l.name],
-      select: %{name: l.name, emoji: l.emoji}
+      select: [:id, :name, :emoji]
     )
     |> Repo.all()
+  end
+
+  def get_by_id(id) do
+    Repo.get!(Language, id)
   end
 end

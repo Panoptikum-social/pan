@@ -3,6 +3,7 @@ defmodule PanWeb.Surface.LinkButton do
   alias PanWeb.Surface.Icon
   alias Surface.Components.Link
 
+  prop(id, :string, required: false)
   prop(title, :string, required: true)
   prop(to, :fun, required: true)
   prop(class, :css_class, required: false)
@@ -14,7 +15,8 @@ defmodule PanWeb.Surface.LinkButton do
 
   def render(assigns) do
     ~F"""
-    <Link to={@to}
+    <Link id={@id}
+          to={@to}
           class={"border border-solid inline-block shadow",
                  @class,
                  "truncate max-w-full": @truncate,
