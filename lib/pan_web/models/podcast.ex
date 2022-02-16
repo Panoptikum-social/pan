@@ -598,4 +598,14 @@ defmodule PanWeb.Podcast do
     )
     |> Repo.all()
   end
+
+  def get_all_by_category_id_and_language(category_id) do
+    from(l in Language,
+      right_join: p in assoc(l, :podcasts),
+      join: c in assoc(p, :categories),
+      where: c.id == ^category_id,
+      select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji}
+    )
+    |> Repo.all()
+  end
 end

@@ -3,43 +3,39 @@ defmodule PanWeb.Live.Category.StatsShow do
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   import PanWeb.Router.Helpers
-  alias PanWeb.Category
-
-  alias PanWeb.Surface.{
-    Panel,
-    PanelHeading,
-    Icon,
-    CategoryButton,
-    PodcastButton,
-    LinkButton,
-    LikeButton,
-    FollowButton
-  }
-
+  alias PanWeb.{Category, Podcast, Language}
+  alias PanWeb.Surface.{Panel, PanelHeading, Icon, CategoryButton}
   alias Surface.Components.Link
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
+    language = nil
+    page = 1
+    per_page = 100
 
-    case Category.by_id_exists?(id) do
-      true -> {:ok, assign(socket, Category.get_with_children_parent_and_podcasts(id))}
-      false -> {:ok, assign(socket, error: "not_found")}
+    if Category.by_id_exists?(id) do
+      category = Category.get_with_children_and_parent(id)
+      languages = Language.get_by_category_id(category.id)
+
+      {:ok,
+       assign(socket,
+         category: category,
+         page_title: category.title <> " (Category)",
+         languages: languages,
+         language: language,
+         page: page,
+         per_page: per_page,
+         podcasts: Podcast.get_all_by_category_id_and_language(category.id),
+         update_action: "append"
+       )}
+    else
+      {:ok, assign(socket, error: "not_found")}
     end
   end
 
-  def language(podcast) do
-    podcast.language_name || "Language unknown"
-  end
-
-  def amount(language, podcasts) do
-    language =
-      case language do
-        "Language unknown" -> nil
-        language -> language
-      end
-
+  def amount(language_name, podcasts) do
     podcasts
-    |> Enum.filter(fn p -> p.language_name == language end)
+    |> Enum.filter(fn p -> p.language_name == language_name end)
     |> length
   end
 
@@ -53,29 +49,8 @@ defmodule PanWeb.Live.Category.StatsShow do
 
   def render(assigns) do
     ~F"""
-    <Panel :if={@category.parent && @category.parent.title == "👩 👨 Community"}
-           purpose="episode"
-           heading="Welcome to the Test Laboratory!"
-           class="mb-4">
-
-      <div aria-label="panel-body" class="p-4">
-        <p class="my-4">We are currently testing different  and additional views for community categories!<br/>
-          Wanna give it a try?</p>
-        <p class="my-4 leading-8">
-          <LinkButton to={category_frontend_path @socket, :latest_episodes, @category}
-                      title="Latest episodes"
-                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
-          gives you a timeline view starting with the most current episode within this category.<br/>
-          <LinkButton to={category_frontend_path @socket, :categorized, @category}
-                      title="Categorized"
-                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
-          sorts the podcasts within this categories by the other categories, they are listed in.<br/>
-          Further more we display a info card with the most relevant information on this podcast.
-        </p>
-      </div>
-    </Panel>
-
-    <Panel purpose="category">
+    <Panel purpose="category"
+           class="m-4">
       <PanelHeading>
         <Link to={category_frontend_path(@socket, :index)}
               class="hover:text-blue-400">
@@ -90,54 +65,37 @@ defmodule PanWeb.Live.Category.StatsShow do
         <Icon name="folder-open-heroicons-outline" /> {@category. title}
       </PanelHeading>
 
-      <div aria-label="panel-body" class="p-4 divide-y-2 divide-gray-lighter">
+      <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
           {#for subcategory <- @category.children}
             <CategoryButton for={subcategory}
-                            class="mx-2" />
+                            class="mr-2 mb-2" />
           {/for}
         </div>
+
+        <h3 class="pt-4 text-xl">Click on a language to filter</h3>
 
         <div class="flex flex-wrap py-4">
-          {#for prototype <- @podcasts |> Enum.uniq_by(fn p -> p.language_name end)
-                                       |> Enum.sort_by(fn p -> p.language_name end)}
-            <div class="mx-2">
-              {prototype.language_emoji || "🏳️"} &nbsp;
-              <Link opts={id: "lang#" <> language(prototype)}
-                    to={"#" <> language(prototype)}>
-                {language(prototype)} {language(prototype) |> amount(@podcasts)}
-              </Link>
+          {#for language <- @languages}
+            <div class="mr-8">
+              {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
+              {amount(language.name, @podcasts)}
             </div>
           {/for}
         </div>
 
-        {#for prototype <- @podcasts |> Enum.uniq_by(fn p -> p.language_name end)
-                                     |> Enum.sort_by(fn p -> p.language_name end)}
-          <div>
-            <h2 id={language(prototype)}
-                class="text-2xl mt-4">
-              {language(prototype)} {language(prototype) |> amount(@podcasts)}
-            </h2>
-            <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-              {#for podcast <- Enum.filter(@podcasts, fn p -> p.language_name == prototype.language_name end)}
-                <PodcastButton for={podcast} class="m-2" truncate/>
-              {/for}
-            </div>
-          </div>
-        {/for}
-      </div>
+        {#if @language}
+          <h2 class="text-2xl mt-4">
+            {amount(@language.name, @podcasts)} Podcasts in {@language.name} {@language.emoji}
+          </h2>
+          {#else}
+            <h2 class="text-2xl mt-4">Podcasts in any language</h2>
+          {/if}
 
-      <div :if={@current_user_id} class="m-4">
-        <LikeButton id="like_button"
-                    current_user_id={@current_user_id}
-                    model={Category}
-                    instance={@category}/> &nbsp;
-        <FollowButton id="follow_button"
-                      current_user_id={@current_user_id}
-                      model={Category}
-                      instance={@category}/> &nbsp;
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
+          Podcast Buttons not shown in this view.
+        </div>
       </div>
-
     </Panel>
     """
   end
