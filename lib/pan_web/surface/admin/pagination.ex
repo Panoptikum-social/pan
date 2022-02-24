@@ -52,7 +52,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
       <div class="sm:border-l border-gray px-4 py-1 text-center">
         Records {(@page - 1) * @per_page + 1} to {min((@page * @per_page), @nr_of_filtered)} of
         {if @nr_of_filtered > 0, do: format(@nr_of_filtered), else: "??"}
-        ({if @nr_of_unfiltered > 0, do: format(@nr_of_unfiltered), else: "??"}&nbsp;unfiltered)
+        ({if @nr_of_unfiltered, do: format(@nr_of_unfiltered), else: "??"}&nbsp;unfiltered)
       </div>
     </div>
     """

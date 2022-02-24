@@ -31,7 +31,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   data(sort_order, :atom, default: :asc)
   data(primary_key, :list, default: [])
   data(nr_of_pages, :integer, default: -1)
-  data(nr_of_unfiltered, :integer, default: -1)
+  data(nr_of_unfiltered, :integer)
   data(nr_of_filtered, :integer, default: -1)
 
   def update(%{count: :now}, socket) do
@@ -44,16 +44,15 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
       }
     ]
 
+    socket =
+      assign_new(socket, :nr_of_unfiltered, fn ->
+        QueryBuilder.count_unfiltered(socket.assigns.model)
+      end)
+
     nr_of_filtered = QueryBuilder.count_filtered(socket.assigns.model, search_criteria)
     nr_of_pages = round(nr_of_filtered / socket.assigns.per_page + 0.5)
-    nr_of_unfiltered = QueryBuilder.count_unfiltered(socket.assigns.model)
 
-    {:ok,
-     assign(socket,
-       nr_of_filtered: nr_of_filtered,
-       nr_of_unfiltered: nr_of_unfiltered,
-       nr_of_pages: nr_of_pages
-     )}
+    {:ok, assign(socket, nr_of_filtered: nr_of_filtered, nr_of_pages: nr_of_pages)}
   end
 
   def update(assigns, socket) do
@@ -448,7 +447,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     {=@page}
                     {=@per_page}
                     {=@nr_of_pages}
-                    {=@nr_of_unfiltered}
+                    nr_of_unfiltered = {Map.get(assigns, :nr_of_unfiltered)}
                     {=@nr_of_filtered} />
 
         <DataTable id={"index_table-#{@id}"}
