@@ -24,15 +24,15 @@ defmodule PanWeb.MaintenanceController do
   }
 
   def vienna_beamers(conn, _params) do
-    redirect(conn, external: "https://blog.panoptikum.io/vienna-beamers/")
+    redirect(conn, external: "https://blog.panoptikum.social/vienna-beamers/")
   end
 
   def blog_2016(conn, %{"month" => month, "day" => day, "file" => file}) do
-    redirect(conn, external: "https://blog.panoptikum.io/2016/#{month}/#{day}/#{file}")
+    redirect(conn, external: "https://blog.panoptikum.social/2016/#{month}/#{day}/#{file}")
   end
 
   def blog_2017(conn, %{"month" => month, "day" => day, "file" => file}) do
-    redirect(conn, external: "https://blog.panoptikum.io/2017/#{month}/#{day}/#{file}")
+    redirect(conn, external: "https://blog.panoptikum.social/2017/#{month}/#{day}/#{file}")
   end
 
   def exception_notification(_conn, _params) do

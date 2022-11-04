@@ -13,7 +13,7 @@ defmodule PanWeb.PageFrontendView do
   end
 
   def unsafe_content_for(url, selector) do
-    HTTPoison.get!("https://blog.panoptikum.io/" <> url <> "/", [],
+    HTTPoison.get!("https://blog.panoptikum.social/" <> url <> "/", [],
       recv_timeout: 10_000,
       timeout: 10_000,
       hackney: [:insecure],

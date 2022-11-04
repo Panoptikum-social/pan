@@ -3,7 +3,7 @@
      class="text-center mb-2">
   <div x-show="cookie_consent != 'true'" x-cloak>    
     Panoptikum.io uses cookies only out of technical necessity. See our
-    <Link to="https://blog.panoptikum.io/privacy" 
+    <Link to="https://blog.panoptikum.social/privacy" 
           class="text-link hover:text-link-dark" 
           label="Privacy Page" /> 
     for details.

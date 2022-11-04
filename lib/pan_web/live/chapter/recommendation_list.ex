@@ -25,7 +25,7 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
     ~F"""
     <div :if={@chapter.recommendations != []} class="my-4 col-span-3">
       <div class="float-right">
-        <a href="https://blog.panoptikum.io/complaints"
+        <a href="https://blog.panoptikum.social/complaints"
           class="text-link hover-text-link-dark">Complain</a>
       </div>
 
