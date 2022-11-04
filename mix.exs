@@ -34,7 +34,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       # web framework
-      {:phoenix, "~> 1.6.0"},
+      {:phoenix, "~> 1.6.6"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
@@ -52,7 +52,7 @@ defmodule Pan.MixProject do
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "~> 0.7"},
+      {:surface, "~> 0.7.1"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
@@ -66,7 +66,7 @@ defmodule Pan.MixProject do
       # time conversion
       {:timex, "~> 3.7"},
       # http client
-      {:httpoison, "~> 1.6"},
+      {:httpoison, "~> 1.8.2"},
       # XML parser
       {:quinn, "~> 1.1"},
       # UUID creation
@@ -74,7 +74,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing smtp adapter,
-      {:bamboo_smtp, "~> 4.1.0"},
+      {:bamboo_smtp, "~> 4.2.2"},
       # bamboo phoenix integration
       {:bamboo_phoenix, "~> 1.0"},
       # Markdown parser
@@ -93,9 +93,9 @@ defmodule Pan.MixProject do
       {:pid_file, "~> 0.2"},
 
       # Mix task invoking esbuild
-      {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.4.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix_live_reload, "~> 1.3.3", only: :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
       {:heex_formatter, github: "feliperenan/heex_formatter", only: :dev}
