@@ -41,7 +41,7 @@ defmodule PanWeb.Live.Podcast.Header do
           <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
             <div id="thumbnail" class="border border-gray-light shadow m-auto ">
               {#if Map.has_key?(@podcast_thumbnail, :path)}
-                <img src={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+                <img src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
                       width="150"
                       height="150"
                       alt={@podcast.image_title}

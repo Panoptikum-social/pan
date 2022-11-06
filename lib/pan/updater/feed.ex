@@ -9,7 +9,7 @@ defmodule Pan.Updater.Feed do
       {:ok, "go on"}
     else
       headers = [
-        "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"
+        "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
       ]
 
       options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]

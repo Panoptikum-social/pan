@@ -1,6 +1,6 @@
 # Panoptikum
 
-## Warning: This is the branch for the major rewrite of Panoptikum.io
+## Warning: This is the branch for the major rewrite of Panoptikum.social
 
 We are
 
@@ -19,8 +19,8 @@ Panoptikum (or short Pan) is a webapplication written in [Phoenix](http://www.ph
 that represents a podcast discovery and community website.
 
 It is licensed under the AGPL license.
-The project website with more information on the project can be found at <https://www.panoptikum.io>
-If you are interested and want to get in touch, write an email to [Stefan](mailto:stefan@panoptikum.io).
+The project website with more information on the project can be found at <https://www.panoptikum.social>
+If you are interested and want to get in touch, write an email to [Stefan](mailto:stefan@panoptikum.social).
 
 ## Setup
 

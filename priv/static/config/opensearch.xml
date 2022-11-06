@@ -1,8 +1,8 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                         xmlns:moz="http://www.mozilla.org/2006/browser/search/">
   <ShortName>Panoptikum</ShortName>
-  <Description>Search Panoptikum.io for podcasts, episodes, categories, personas, and users</Description>
+  <Description>Search Panoptikum.social for podcasts, episodes, categories, personas, and users</Description>
   <InputEncoding>UTF-8</InputEncoding>
-  <Image width="16" height="16" type="image/x-icon">https://panoptikum.io/favicon.ico</Image>
-  <Url type="text/html" method="get" template="https://panoptikum.io/search?search[searchstring]={searchTerms}"></Url>
+  <Image width="16" height="16" type="image/x-icon">https://panoptikum.social/favicon.ico</Image>
+  <Url type="text/html" method="get" template="https://panoptikum.social/search?search[searchstring]={searchTerms}"></Url>
 </OpenSearchDescription>

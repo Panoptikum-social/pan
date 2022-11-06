@@ -2,4 +2,4 @@ Hello!
 
 <%= @inner_content %>
 
-- The Panoptikum.io Team.
+- The Panoptikum.social Team.

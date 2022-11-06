@@ -26,7 +26,7 @@ defmodule PanWeb.Surface.Admin.ActionButtons do
     ~F"""
     <div class="m-2 flex space-x-4">
       <h3 class="text-xl">Preview</h3>
-      <img src={"https://panoptikum.io#{@record.path}#{@record.filename}"} />
+      <img src={"https://panoptikum.social#{@record.path}#{@record.filename}"} />
     </div>
     """
   end

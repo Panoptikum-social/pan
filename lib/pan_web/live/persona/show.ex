@@ -112,7 +112,7 @@ defmodule PanWeb.Live.Persona.Show do
 
           <div class="flex-none rounded shadow m-auto md:mx-4 my-4">
             <img :if={Map.has_key?(@persona_thumbnail, :path)}
-                  src={"https://panoptikum.io#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
+                  src={"https://panoptikum.social#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
                   alt={@persona.image_title}
                   id="photo"
                   width="150" height="150" />

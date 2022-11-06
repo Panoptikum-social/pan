@@ -15,7 +15,7 @@ defmodule PanWeb.Live.Podcast.Subscribe do
     ~F"""
       <div class="flex flex-col h-screen space-y-4 justify-center items-center w-screen">
           <img :if={Map.has_key?(@podcast_thumbnail, :path)}
-              src={"https://panoptikum.io#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+              src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
               width="150"
               height="150"
               alt={@podcast.image_title}

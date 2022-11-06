@@ -109,7 +109,7 @@ defmodule PanWeb.Live.Search do
         <li id={"result-#{hit["_id"]}"} class="pt-4 flex flex-col xl:flex-row space-x-0 xl:space-x-4 space-y-4 xl:space-y-0">
           <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}
                class="flex-none p-2 my-2 border border-gray-light shadow mx-auto lg:mx-0">
-            <img src={"https://panoptikum.io#{hit["_source"]["thumbnail_url"]}"}
+            <img src={"https://panoptikum.social#{hit["_source"]["thumbnail_url"]}"}
                 class="break-words text-xs"
                 height="150" width="150"
                 alt={hit["_source"]["image_title"]}
@@ -133,7 +133,7 @@ defmodule PanWeb.Live.Search do
             <p class="text-sm">
               <a href={show_path(@index, hit["_id"])}
                 class="text-mint hover:text-mint-light">
-                https://panoptikum.io{show_path(@index, hit["_id"])}
+                https://panoptikum.social{show_path(@index, hit["_id"])}
               </a>
             </p>
 

@@ -1,9 +1,9 @@
 defmodule Pan.ActivityPub.Net do
   # download and pretty print actor feed
-  # curl -H "Accept: application/activity+json" https://pleroma.panoptikum.io/users/informatom | python -m json.tool
+  # curl -H "Accept: application/activity+json" https://pleroma.panoptikum.social/users/informatom | python -m json.tool
 
   @options [
-    "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)",
+    "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)",
     ssl: [{:versions, [:"tlsv1.2", :"tlsv1.1", :tlsv1]}]
   ]
   @headers [Accept: "application/activity+json"]

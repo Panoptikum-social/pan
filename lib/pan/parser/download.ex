@@ -132,7 +132,7 @@ defmodule Pan.Parser.Download do
   def get(url) do
     HTTPoison.get(
       url,
-      ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.io/)"],
+      ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"],
       recv_timeout: 10_000,
       timeout: 10_000
     )
