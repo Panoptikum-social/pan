@@ -11,7 +11,12 @@ defmodule Pan.Updater.RssFeed do
          {:ok, "go on"} <- Feed.hash_changed(feed_xml, feed, forced),
          {:ok, feed_map} <- xml_to_map(feed_xml),
          {:ok, reduced_map} <- Filter.only_new_items_and_new_feed_url(feed_map, podcast_id) do
-      run_the_parser(reduced_map, url)
+      try do
+        run_the_parser(reduced_map, url)
+      rescue
+        e ->
+          raise "#{e.message} when importing podcast #{podcast_id}"
+      end
     else
       {:exit, error} -> {:exit, error}
       {:done, "nothing to do"} -> {:done, "nothing to do"}
