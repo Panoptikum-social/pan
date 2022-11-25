@@ -73,6 +73,13 @@ defmodule Pan.Updater.Podcast do
     %{content: "TLS Error: #{error} / #{message} | Podcast #{podcast.id}: #{podcast.title}"}
   end
 
+  defp build_notification(
+    podcast,
+    {:error, %HTTPoison.Error{reason: :enetunreach, id: nil}}
+  ) do
+%{content: "Network Error: not reached | Podcast #{podcast.id}: #{podcast.title}"}
+end
+
   defp build_notification(podcast, {:error, message}) do
     %{content: "Error: #{message} | Podcast #{podcast.id}: #{podcast.title}"}
   end

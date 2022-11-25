@@ -291,6 +291,8 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
+  def scrub(value) when is_nil(value), do: ""
+
   def scrub(value) when is_binary(value) do
     # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy
     String.replace(value, ~r/<script.*<\/script>/isU, "")
@@ -298,6 +300,7 @@ defmodule Pan.Parser.Helpers do
   end
 
   def scrub(value) do
+    IO.inspect(value)
     value.value
     |> to_string
     |> scrub()
