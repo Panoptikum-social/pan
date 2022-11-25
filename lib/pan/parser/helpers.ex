@@ -140,6 +140,8 @@ defmodule Pan.Parser.Helpers do
 
   def replace_long_month_names(datetime) do
     datetime
+    # the next line captures the french "mar, 01 mar whatever" pattern, where mar stands for tuesday and march
+    |> String.replace(~r/mar(.+)mar/i, "Tue\\1Mar", global: false)
     |> String.replace(~r/janr?u?r?a?r?y?/i, "Jan")
     |> String.replace(~r/f[aeé][brv][rv]?u?a?r?y?/iu, "Feb")
     |> String.replace(~r/m[aä]rc?h?/i, "Mar")
@@ -147,7 +149,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/m[a][iy]/i, "May")
     |> String.replace(~r/jui?n[ieg]?/i, "Jun")
     |> String.replace(~r/jui?[l1]y?/i, "Jul")
-    |> String.replace(~r/au?g[ou]?s?t?/i, "Aug")
+    |> String.replace(~r/a[uo]?[gû][ou]?s?t?/ui, "Aug")
     |> String.replace(~r/s[ep]p?t?e?m?b?e?r?/i, "Sep")
     |> String.replace(~r/o[uck]to?b?e?r?/i, "Oct")
     |> String.replace(~r/no[vc]e?m?e?b?e?r?/i, "Nov")
@@ -157,7 +159,7 @@ defmodule Pan.Parser.Helpers do
   def replace_long_week_days(datetime) do
     # Saturday and Tuesday would interfere, if ordered
     datetime
-    |> String.replace(~r/sas?tu?r?d?a?y?/i, "Sat")
+    |> String.replace(~r/sa[sm]?t?u?r?d?a?y?/i, "Sat")
     |> String.replace(~r/m[oå]n?d?a?y?/i, "Mon")
     |> String.replace(~r/t[ui][er]?s?[du]?[an]?y?/i, "Tue")
     |> String.replace("Di", "Tue")
@@ -167,11 +169,13 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("mer", "Wed")
     |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
-    |> String.replace("Do", "Thu")
+    |> String.replace(~r/do/i, "Thu")
+    |> String.replace(~r/jeu/i, "Thu")
+    |> String.replace(~r/ven/i, "Fri")
     |> String.replace(~r/f[ir][rei]?d?a?y?/i, "Fri")
     |> String.replace(~r/s[ou]nd?a?y?/i, "Sun")
-    |> String.replace("dim", "Sun")
-    |> String.replace(~r/Lun/i, "Mon")
+    |> String.replace(~r/dim/i, "Sun")
+    |> String.replace(~r/lun/i, "Mon")
   end
 
   def fix_timezones(datetime) do
