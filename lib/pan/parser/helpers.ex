@@ -11,25 +11,7 @@ defmodule Pan.Parser.Helpers do
   end
 
   def to_naive_datetime(feed_date) do
-    feed_date =
-      feed_date
-      |> String.replace(",", " ")
-      |> String.replace("p.m.", "")
-      |> String.replace(". ", " ")
-      |> String.replace("  ", " ")
-      |> String.replace("\"", "")
-      |> String.replace("ٍ", "")
-      |> String.replace("~", "")
-      |> String.replace("\r", "")
-      |> String.replace("\t", " ")
-      |> String.replace("\n", "")
-      |> fix_time()
-      |> replace_first_second_third_fourth()
-      |> replace_long_month_names()
-      |> replace_long_week_days()
-      |> String.replace("  ", " ")
-      |> String.trim()
-      |> fix_timezones()
+    feed_date = initial_cleanup(feed_date)
 
     # Formatters reference:
     # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
@@ -53,6 +35,7 @@ defmodule Pan.Parser.Helpers do
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
+        try_format(feed_date, "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}") ||
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {Z}") ||
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY}") ||
         try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} GMT") ||
@@ -98,7 +81,28 @@ defmodule Pan.Parser.Helpers do
     ensure_naive_in_seconds(datetime, feed_date)
   end
 
-  defp ensure_naive_in_seconds(datetime, feed_date) do
+  def initial_cleanup(feed_date) do
+    feed_date
+    |> String.replace(",", " ")
+    |> String.replace("p.m.", "")
+    |> String.replace(". ", " ")
+    |> String.replace("  ", " ")
+    |> String.replace("\"", "")
+    |> String.replace("ٍ", "")
+    |> String.replace("~", "")
+    |> String.replace("\r", "")
+    |> String.replace("\t", " ")
+    |> String.replace("\n", "")
+    |> fix_time()
+    |> replace_first_second_third_fourth()
+    |> replace_long_month_names()
+    |> replace_long_week_days()
+    |> String.replace("  ", " ")
+    |> String.trim()
+    |> fix_timezones()
+  end
+
+  def ensure_naive_in_seconds(datetime, feed_date) do
     case datetime do
       naive = %NaiveDateTime{} ->
         naive
@@ -115,7 +119,7 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
-  defp try_format(feed_date, format) do
+  def try_format(feed_date, format) do
     case Timex.parse(feed_date, format) do
       {:ok, datetime} -> datetime
       {:error, _} -> nil
@@ -164,13 +168,14 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/t[ui][er]?s?[du]?[an]?y?/i, "Tue")
     |> String.replace("Di", "Tue")
     |> String.replace("tor", "Tue")
-    |> String.replace(~r/we[db]?n?e?é?s?d?a?y?/i, "Wed")
+    |> String.replace(~r/we[db]?[né]?e?é?s?d?a?y?/ui, "Wed")
+    |> String.replace(~r/mié/ui, "Wed")
     |> String.replace("MWed", "Wed")
     |> String.replace("mer", "Wed")
     |> String.replace(~r/Mie?/i, "Wed")
     |> String.replace(~r/thu?[er]?s?d?a?y?/i, "Thu")
     |> String.replace(~r/do/i, "Thu")
-    |> String.replace(~r/jeu/i, "Thu")
+    |> String.replace(~r/j[eu][eu]/i, "Thu")
     |> String.replace(~r/ven/i, "Fri")
     |> String.replace(~r/f[ir][rei]?d?a?y?/i, "Fri")
     |> String.replace(~r/s[ou]nd?a?y?/i, "Sun")
