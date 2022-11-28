@@ -115,7 +115,7 @@ defmodule Pan.Parser.Helpers do
 
       _ ->
         Logger.error("Error in date parsing: " <> feed_date)
-        raise "Error in date parsing [#{feed_date}]"
+        raise "Error in date parsing [#{feed_date}] -> [#{datetime}]"
     end
   end
 
@@ -148,7 +148,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/mar(.+)mar/i, "Tue\\1Mar", global: false)
     |> String.replace(~r/janr?u?r?a?r?y?/i, "Jan")
     |> String.replace(~r/f[aeé][brv][rv]?u?a?r?y?/iu, "Feb")
-    |> String.replace(~r/m[aä]rc?zh?/iu, "Mar")
+    |> String.replace(~r/m[aä]rc?[zh]?/iu, "Mar")
     |> String.replace(~r/a[pvb]r?i?l?/i, "Apr")
     |> String.replace(~r/m[a][iy]/i, "May")
     |> String.replace(~r/jui?n[ieg]?/i, "Jun")
@@ -309,7 +309,6 @@ defmodule Pan.Parser.Helpers do
   end
 
   def scrub(value) do
-    IO.inspect(value)
     value.value
     |> to_string
     |> scrub()
