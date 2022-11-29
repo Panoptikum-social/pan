@@ -92,7 +92,7 @@ defmodule PanWeb.Api.RecommendationController do
         podcast: podcast,
         episode: episode,
         category: category,
-        chapter: {},
+        chapter: nil,
         user: %PanWeb.User{id: 1, name: "Fortuna"}
       )
 
