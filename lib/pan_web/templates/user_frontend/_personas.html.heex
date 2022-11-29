@@ -5,13 +5,13 @@
 <p class="mb-4">
   Your personas are your different identities when you are podcasting.
   <br />
-  You might be podcasting in the name of an organisation, a group or use an alias, when you appear 
+  You might be podcasting in the name of an organisation, a group or use an alias, when you appear
   contributing to a podcast.
   <br />We call all these different identities personas.
 </p>
 
 <%= unless @user.podcaster == true do %>
-  <p>You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to 
+  <p>You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to
   <%= link("Edit your data",
       to: user_frontend_path(@conn, :edit),
       class: "text-link hover:text-link-dark") %> ?
@@ -21,7 +21,7 @@
 <%= for persona <- @user.personas do %>
   <div x-data="{expanded: false}" class="p-4 pb-2 border border-dotted border-gray">
     <div class="panel-heading flex flex-wrap justify-between">
-      <a @click.prevent={"expanded = !expanded"} class="text-link hover:text-link-dark">
+      <a @click.prevent={"expanded = !expanded"} class="text-link hover:text-link-dark cursor-pointer">
         <%= icon("document-search-heroicons-outline") %>
         <%= persona.name %> (pid: <%= persona.pid %> )
       </a>
@@ -99,7 +99,7 @@
           Delegations
         </h2>
         <p class="mt-2">
-          A delegation lets the gigs (i.e. contributions to episodes) and engagements (i.e. 
+          A delegation lets the gigs (i.e. contributions to episodes) and engagements (i.e.
           contributions to podcasts) of the persona also appear on the profile page of the target persona.
           Delegation Management is only available for pro users.
         </p>
@@ -113,7 +113,7 @@
                     to:
                       persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
                     class:
-                      "bg-warning text-white border border-gray-dark hover:bg-warning-light 
+                      "bg-warning text-white border border-gray-dark hover:bg-warning-light
                        inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm my-1"
                   ) %>
                 <% end %>
@@ -121,7 +121,7 @@
                 <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", delegate_persona.name],
                   to: persona_frontend_path(@conn, :show, delegate_persona),
                   class:
-                    "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                    "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
                                                                             inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                 ) %>
                 <span>(pid: <%= delegate_persona.pid %> )</span>
@@ -138,7 +138,7 @@
                       to:
                         persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id),
                       class:
-                        "bg-primary text-white border border-gray-dark hover:bg-primary-light 
+                        "bg-primary text-white border border-gray-dark hover:bg-primary-light
                          inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
                     ) %>
                   <% end %>
@@ -146,7 +146,7 @@
                   <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", delegate_persona.name],
                     to: persona_frontend_path(@conn, :show, delegate_persona),
                     class:
-                      "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                      "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
                        inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                   ) %>
                   <span>(pid: <%= delegate_persona.pid %> )</span>
@@ -168,7 +168,7 @@
                 <%= link([icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"), " Cancel Redirection"],
                   to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
                   class:
-                    "bg-warning text-white border border-gray-dark hover:bg-warning-light 
+                    "bg-warning text-white border border-gray-dark hover:bg-warning-light
                      inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
                 ) %>
               <% end %>
@@ -176,7 +176,7 @@
               <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", persona.redirect.name],
                 to: persona_frontend_path(@conn, :show, persona.redirect.pid),
                 class:
-                  "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                  "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
                    inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
               ) %>
               <span>(pid: <%= persona.redirect.pid %> )</span>
@@ -191,7 +191,7 @@
                     <%= link([icon("arrow-sm-right-heroicons-outline", class: "h-4 w-4 inline"), " Redirect"],
                       to: persona_frontend_path(@conn, :redirect, persona.id, target_id: target_persona.id),
                       class:
-                        "bg-danger text-white border border-gray-dark hover:bg-danger-light 
+                        "bg-danger text-white border border-gray-dark hover:bg-danger-light
                          inline-block shadow max-w-full py-1 px-2 rounded text-sm mb-1"
                     ) %>
                   <% end %>
@@ -199,7 +199,7 @@
                   <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", target_persona.name],
                     to: persona_frontend_path(@conn, :show, target_persona.id),
                     class:
-                      "bg-lavender text-white border border-gray-dark hover:bg-lavender-light 
+                      "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
                        inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
                   ) %>
                   <span>(pid: <%= target_persona.pid %> )</span>

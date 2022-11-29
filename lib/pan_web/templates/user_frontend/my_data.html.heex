@@ -101,7 +101,7 @@
   <h2 class="text-2xl"> OPML Files </h2>
 </div>
 
-<ul class="list-disc">
+<ul class="list-disc ml-4">
   <%= for opml <- @user.opmls do %>
     <li>
       <%= opml.filename %>
@@ -112,7 +112,7 @@
 <h2 class="text-2xl mb-4 mt-8">
   Personas
 </h2>
-You can even delete all manifestations as personas, you created so far, at once, by clicking 
+You can even delete all manifestations as personas, you created so far, at once, by clicking
 &nbsp; <%= link([icon("exclamation-heroicons-outline"), " Delete all manifestations"],
   to: manifestation_frontend_path(@conn, :delete_all),
   method: :delete,
@@ -196,7 +196,7 @@ Invoices cannot be deleted, we have to store them due to fiscal regulations. <%=
 <h2 class="text-2xl mb-4 mt-8">Subscribed Podcasts</h2>
 
 <p class="mb-2">Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow.</p>
-You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp; 
+You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Delete all subscriptions"],
   to: subscription_frontend_path(@conn, :delete_all),
   method: :delete,
@@ -224,7 +224,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
   Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.
 </p>
-You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp; 
+You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all podcasts"],
   to: follow_frontend_path(@conn, :unfollow_all_podcasts),
   method: :delete,
@@ -252,7 +252,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
   Click on the podcast link to open the podcast show page in a new tab
 to un/like, un/subscribe, un/follow.
 </p>
-You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all podcasts"],
   to: like_frontend_path(@conn, :unlike_all_podcasts),
   method: :delete,
@@ -280,7 +280,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
   Click on the episode link to open the episode show page in a new tab
 to un/like, un/subscribe, un/follow.
 </p>
-You can even unlike all the episodes, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the episodes, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all episodes"],
   to: like_frontend_path(@conn, :unlike_all_episodes),
   method: :delete,
@@ -308,7 +308,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
   Click on the chaptere link to open the episode show page in a new tab
 to un/like, un/subscribe, un/follow.
 </p>
-You can even unlike all the chapters, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the chapters, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all chapters"],
   to: like_frontend_path(@conn, :unlike_all_chapters),
   method: :delete,
@@ -336,7 +336,7 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
   Click on the user link to open the user show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unlike all the users, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the users, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all users"],
   to: like_frontend_path(@conn, :unlike_all_users),
   method: :delete,
@@ -364,7 +364,7 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
   Click on the user link to open the user show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unfollow all the users, you followed so far at once, by clicking &nbsp; 
+You can even unfollow all the users, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all users"],
   to: follow_frontend_path(@conn, :unfollow_all_users),
   method: :delete,
@@ -392,7 +392,7 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
   Click on the persona link to open the persona show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unfollow all the personas, you followed so far at once, by clicking &nbsp; 
+You can even unfollow all the personas, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all personas"],
   to: follow_frontend_path(@conn, :unfollow_all_personas),
   method: :delete,
@@ -420,7 +420,7 @@ You can even unfollow all the personas, you followed so far at once, by clicking
   Click on the persona link to open the persona show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unlike all the personas, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the personas, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all personas"],
   to: like_frontend_path(@conn, :unlike_all_personas),
   method: :delete,
@@ -448,7 +448,7 @@ You can even unlike all the personas, you followed so far at once, by clicking &
   Click on the category link to open the category show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unfollow all the categories, you followed so far at once, by clicking &nbsp; 
+You can even unfollow all the categories, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all categories"],
   to: follow_frontend_path(@conn, :unfollow_all_categories),
   method: :delete,
@@ -476,7 +476,7 @@ You can even unfollow all the categories, you followed so far at once, by clicki
   Click on the category link to open the category show page in a new tab
 to un/like, un/follow.
 </p>
-You can even unlike all the categories, you followed so far at once, by clicking &nbsp; 
+You can even unlike all the categories, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all categories"],
   to: like_frontend_path(@conn, :unlike_all_categories),
   method: :delete,
@@ -506,7 +506,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
   You can double check the context by clicking the podcast or episode link, that will open
 podcast or episode in a new tab, respectively.
 </p>
-You can even delete all the recommendations, you created so far, at once, by clicking &nbsp; 
+You can even delete all the recommendations, you created so far, at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Delete all recommendations"],
   to: recommendation_frontend_path(@conn, :delete_all),
   method: :delete,
