@@ -153,6 +153,11 @@ defmodule PanWeb.Episode do
     |> Repo.all()
   end
 
+  def count_by_podcast_id(podcast_id) do
+    from(e in Episode, where: e.podcast_id == ^podcast_id)
+    |> Repo.aggregate(:count)
+  end
+
   def get_by_id_for_episode_show(id) do
     Repo.get!(Episode, id)
     |> Repo.preload([
