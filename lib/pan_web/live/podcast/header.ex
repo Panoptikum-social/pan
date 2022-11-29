@@ -36,7 +36,7 @@ defmodule PanWeb.Live.Podcast.Header do
     </p>
 
     <div id="header" class="flex flex-col space-y-4 md:justify-between md:space-y-0 md:flex-row mt-4">
-      <div class="flex flex-col space-y-4 lg:space-y-0 lg:flex-row">
+      <div class="flex flex-col space-y-4 lg:space-y-0 xl:flex-row">
         <div class="flex flex-col md:flex-row md:space-x-4">
           <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
             <div id="thumbnail" class="border border-gray-light shadow m-auto ">
