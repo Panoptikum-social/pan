@@ -46,6 +46,7 @@ defmodule PanWeb.Api.MyUserView do
     :email,
     :admin,
     :podcaster,
+    :moderator,
     :email_confirmed,
     :share_subscriptions,
     :share_follows,

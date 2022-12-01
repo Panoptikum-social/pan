@@ -100,6 +100,7 @@ defmodule PanWeb.Surface.Admin.Naming do
           :email_confirmed,
           :podcaster,
           :admin,
+          :moderator,
           :pro_until,
           :inserted_at,
           :updated_at

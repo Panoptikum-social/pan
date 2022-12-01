@@ -15,7 +15,8 @@ defmodule PanWeb.User do
     Podcast,
     Recommendation,
     User,
-    Subscription
+    Subscription,
+    Moderation
   }
 
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
@@ -31,6 +32,7 @@ defmodule PanWeb.User do
     field(:email, :string)
     field(:admin, :boolean)
     field(:podcaster, :boolean)
+    field(:moderator, :boolean)
     field(:email_confirmed, :boolean)
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
@@ -101,11 +103,17 @@ defmodule PanWeb.User do
       join_keys: [follower_id: :id, category_id: :id]
     )
 
+    many_to_many(:moderated_categories, Category,
+      join_through: "moderations",
+      join_keys: [user_id: :id, category_id: :id]
+    )
+
     has_many(:following, Follow, on_delete: :delete_all)
     has_many(:followeds, Follow, foreign_key: :follower_id, on_delete: :delete_all)
     has_many(:liking, Like, on_delete: :delete_all)
     has_many(:liked, Like, foreign_key: :enjoyer_id, on_delete: :delete_all)
     has_many(:subscriptions, Subscription, on_delete: :delete_all)
+    has_many(:moderations, Moderation, on_delete: :delete_all)
   end
 
   def changeset(struct, params \\ %{}) do
@@ -116,6 +124,7 @@ defmodule PanWeb.User do
       :email,
       :admin,
       :podcaster,
+      :moderator,
       :email_confirmed,
       :share_subscriptions,
       :share_follows,

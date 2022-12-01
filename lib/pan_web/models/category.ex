@@ -1,19 +1,25 @@
 defmodule PanWeb.Category do
   use PanWeb, :model
   alias Pan.{Repo, Search}
-  alias PanWeb.{Follow, Like, Category}
+  alias PanWeb.{Follow, Like, Category, User, Moderation}
 
   schema "categories" do
     field(:title, :string)
     field(:full_text, :boolean)
 
     has_many(:children, PanWeb.Category, foreign_key: :parent_id, preload_order: [asc: :title])
+    has_many(:moderations, Moderation, on_delete: :delete_all)
 
     belongs_to(:parent, PanWeb.Category)
 
     many_to_many(:podcasts, PanWeb.Podcast,
       join_through: "categories_podcasts",
       on_replace: :delete
+    )
+
+    many_to_many(:moderators, User,
+      join_through: "moderations",
+      on_delete: :delete_all
     )
 
     timestamps()
