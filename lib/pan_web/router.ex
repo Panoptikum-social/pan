@@ -430,6 +430,5 @@ defmodule PanWeb.Router do
     get("/maintenance/stats", MaintenanceController, :stats)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-    get("/maintenance/populate-wisspod", MaintenanceController, :populate_wisspod)
   end
 end
