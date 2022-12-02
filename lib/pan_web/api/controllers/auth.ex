@@ -53,4 +53,14 @@ defmodule PanWeb.Api.Auth do
       send_401(conn, conn.assigns.api_error || "Pro account needed")
     end
   end
+
+  def authenticate_api_moderator(conn, _opts) do
+    current_user = conn.assigns.current_user
+
+    if current_user && current_user.moderator do
+      conn
+    else
+      send_401(conn, conn.assigns.api_error || "Moderator account needed")
+    end
+  end
 end

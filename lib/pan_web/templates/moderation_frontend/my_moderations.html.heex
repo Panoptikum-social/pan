@@ -1,0 +1,11 @@
+<div class="m-4">
+  <h1 class="text-3xl">
+    My Moderations
+  </h1>
+
+  <ul class="list-disc m-4">
+    <%= for categories <- @categories do %>
+      <li><%= categories.title %></li>
+    <% end %>
+  </ul>
+</div>

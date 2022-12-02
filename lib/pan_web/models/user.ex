@@ -103,7 +103,7 @@ defmodule PanWeb.User do
       join_keys: [follower_id: :id, category_id: :id]
     )
 
-    many_to_many(:moderated_categories, Category,
+    many_to_many(:categories_i_moderate, Category,
       join_through: "moderations",
       join_keys: [user_id: :id, category_id: :id]
     )

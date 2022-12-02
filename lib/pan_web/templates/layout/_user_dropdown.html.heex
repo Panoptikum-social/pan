@@ -24,6 +24,12 @@
       to: recommendation_frontend_path(@conn, :my_recommendations)
     ) %>
   </li>
+  <%= if @current_user.moderator do %>
+    <li class="py-1">
+      <%= nav_icon("user-astronaut-lineawesome-solid") %>
+      <%= link("My Moderations", to: moderation_frontend_path(@conn, :my_moderations)) %>
+    </li>
+  <% end %>
   <li class="py-1">
     <%= link([nav_icon("rss-heroicons-outline"), " Suggest a Podcast"],
       to: feed_backlog_frontend_path(@conn, :new)

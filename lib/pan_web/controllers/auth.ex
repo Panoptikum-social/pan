@@ -123,6 +123,20 @@ defmodule PanWeb.Auth do
     end
   end
 
+  def authenticate_moderator(conn, _opts) do
+    current_user = conn.assigns.current_user
+
+    if current_user && current_user.moderator do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You need to be logged in with a moderation account to access that page.")
+      |> put_session(:desired_url, conn.request_path)
+      |> redirect(to: Helpers.session_path(conn, :new))
+      |> halt()
+    end
+  end
+
   def authenticate_admin(conn, _opts) do
     current_user = conn.assigns.current_user
 

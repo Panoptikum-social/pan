@@ -144,6 +144,11 @@ defmodule PanWeb.Router do
     post("/delegations/toggle", DelegationController, :toggle)
   end
 
+  scope "/jsonapi/moderator", PanWeb.Api, as: :api do
+    pipe_through([:json_api, :authenticate_api_moderator])
+    # no moderator specific api routes defined yet
+  end
+
   scope "/bot", PanWeb do
     pipe_through(:bot)
 
@@ -340,6 +345,11 @@ defmodule PanWeb.Router do
 
     delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
     resources("/manifestations", ManifestationFrontendController, only: [:delete])
+  end
+
+  scope "/moderator", PanWeb do
+    pipe_through([:browser, :authenticate_moderator])
+    get("/moderations/my", ModerationFrontendController, :my_moderations)
   end
 
   scope "/pro", PanWeb do
