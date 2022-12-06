@@ -349,7 +349,7 @@ defmodule PanWeb.Router do
 
   scope "/moderator", PanWeb do
     pipe_through([:browser, :authenticate_moderator])
-    get("/moderations/my", ModerationFrontendController, :my_moderations)
+    get("/my_moderations", ModerationFrontendController, :my_moderations)
   end
 
   scope "/pro", PanWeb do
