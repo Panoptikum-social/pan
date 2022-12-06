@@ -4,8 +4,13 @@
   </h1>
 
   <ul class="list-disc m-4">
-    <%= for categories <- @categories do %>
-      <li><%= categories.title %></li>
+    <%= for category <- @categories do %>
+      <li>
+        <%= link(category.title,
+          to: moderation_frontend_path(@conn, :moderation, category),
+          class: "text-link hover:text-link-dark"
+        ) %>
+      </li>
     <% end %>
   </ul>
 </div>
