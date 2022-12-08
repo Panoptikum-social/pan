@@ -198,7 +198,7 @@ defmodule PanWeb.Podcast do
     from(p in Podcast,
       as: :podcast,
       order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
-      where: not p.blocked,
+      where: not p.blocked or is_nil(p.blocked),
       inner_lateral_join: e in subquery(first_engagement),
       join: persona in assoc(e, :persona),
       select: %{
@@ -217,7 +217,7 @@ defmodule PanWeb.Podcast do
   def latest_for_index(page, per_page) do
     from(p in Podcast,
       order_by: [desc: :inserted_at],
-      where: not p.blocked,
+      where: not p.blocked or is_nil(p.blocked),
       preload: [:categories, [engagements: :persona], :thumbnails],
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
@@ -518,7 +518,7 @@ defmodule PanWeb.Podcast do
   def ids_by_category_id(id) do
     from(c in Category,
       join: p in assoc(c, :podcasts),
-      where: not p.blocked and c.id == ^id,
+      where: c.id == ^id and (not p.blocked or is_nil(p.blocked)),
       select: p.id
     )
     |> Repo.all()

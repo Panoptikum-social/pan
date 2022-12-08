@@ -26,7 +26,7 @@ defmodule PanWeb.Api.PodcastController do
     offset = (page - 1) * size
 
     total =
-      from(p in Podcast, where: not p.blocked)
+      from(p in Podcast, where: not p.blocked or is_nil(p.blocked))
       |> Repo.aggregate(:count)
 
     total_pages = div(total - 1, size) + 1
@@ -39,7 +39,7 @@ defmodule PanWeb.Api.PodcastController do
     podcasts =
       from(p in Podcast,
         order_by: [desc: :inserted_at],
-        where: not p.blocked,
+        where: not p.blocked or is_nil(p.blocked),
         preload: [:categories, :languages, :engagements, :contributors],
         limit: ^size,
         offset: ^offset
