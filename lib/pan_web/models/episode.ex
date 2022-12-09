@@ -1,7 +1,7 @@
 defmodule PanWeb.Episode do
   use PanWeb, :model
   alias Pan.Repo
-  alias PanWeb.{Chapter, Enclosure, Episode, Gig, Like, Persona, Podcast, Recommendation}
+  alias PanWeb.{Category, Chapter, Enclosure, Episode, Gig, Like, Persona, Podcast, Recommendation}
   import Pan.Parser.MyDateTime, only: [now: 0]
 
   schema "episodes" do
@@ -181,5 +181,15 @@ defmodule PanWeb.Episode do
 
   def get_by_id(id) do
     Repo.get!(Episode, id)
+  end
+
+  def ids_by_category_id_and_podcast_id(category_id, podcast_id) do
+    from(c in Category,
+      join: p in assoc(c, :podcasts),
+      join: e in assoc(p, :episodes),
+      where: c.id == ^category_id and (not p.blocked or is_nil(p.blocked)) and p.id == ^podcast_id,
+      select: e.id
+    )
+    |> Repo.all()
   end
 end

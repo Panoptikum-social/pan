@@ -3,6 +3,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
   alias PanWeb.Surface.Admin.{IndexGrid, Naming}
+  alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => id}, session, socket) do
     moderation = Moderation.get_by_catagory_id_and_user_id(id, session["user_id"])
@@ -29,13 +30,27 @@ defmodule PanWeb.Live.Moderation.Moderate do
     if moderation do
       {:ok, assign(socket, category: moderation.category, cols: cols, podcast_ids: podcast_ids) }
     else
-      {:ok, assign(socket, error: "This is not one of your moderations")}
+      {:ok, assign(socket, error: "not_found")}
     end
   end
 
   def handle_info({:count, id: id, module: module}, socket) do
     send_update(module, id: id, count: :now)
     {:noreply, socket}
+  end
+
+  def handle_info({:show_episodes, category_id, podcast_id}, socket) do
+    episode_grid_path = Routes.moderation_frontend_path(socket, :episodegrid, category_id, podcast_id)
+    {:noreply, push_redirect(socket, to: episode_grid_path)}
+  end
+
+
+  def render(%{error: "not_found"} = assigns) do
+    ~F"""
+    <div class="m-12">
+      This is not one of your moderations
+    </div>
+    """
   end
 
   def render(assigns) do
@@ -50,7 +65,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
         model={Podcast}
         cols={@cols}
         search_filter={{:id, @podcast_ids}}
-        buttons={[:pagination, :number_of_records, :search]} />
+        buttons={[:pagination, :show_episodes, :number_of_records, :search]} />
     </div>
     """
   end
