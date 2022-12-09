@@ -300,6 +300,13 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
+  def handle_event("show_episodes", _, socket) do
+    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    send(self(), {:show_episodes, selected_record_id})
+    {:noreply, socket}
+  end
+
+
   def get_records(socket) do
     records =
       QueryBuilder.load(socket.assigns.model, criteria(socket.assigns), socket.assigns.cols)

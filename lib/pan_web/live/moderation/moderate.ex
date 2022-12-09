@@ -39,7 +39,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, socket}
   end
 
-  def handle_info({:show_episodes, category_id, podcast_id}, socket) do
+  def handle_info({:show_episodes, podcast_id}, socket) do
+    IO.inspect socket
+    category_id = socket.assigns[:category].id
     episode_grid_path = Routes.moderation_frontend_path(socket, :episodegrid, category_id, podcast_id)
     {:noreply, push_redirect(socket, to: episode_grid_path)}
   end
