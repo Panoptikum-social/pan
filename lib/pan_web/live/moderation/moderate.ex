@@ -10,9 +10,12 @@ defmodule PanWeb.Live.Moderation.Moderate do
     moderation = Moderation.get_by_catagory_id_and_user_id(id, session["user_id"])
 
     columns = [
-      :id, :title, :last_build_date, :blocked, :update_paused, :retired, :failure_count,
-      :episodes_count, :latest_episode_publishing_date, :publication_frequency,
-      :manually_updated_at, :full_text, :last_error_message, :last_error_occured, :inserted_at, :updated_at]
+      :id, :title, :last_build_date, :blocked, :update_paused, :update_intervall, :next_update,
+      :retired, :failure_count, :unique_identifier, :episodes_count, :followers_count, :likes_count,
+      :subscriptions_count, :latest_episode_publishing_date, :publication_frequency,
+      :manually_updated_at, :full_text, :thumbnailed, :last_error_message, :last_error_occured,
+      :inserted_at, :updated_at
+    ]
 
     cols =
       Enum.map(
