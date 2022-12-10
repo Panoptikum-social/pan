@@ -10,7 +10,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
-      :id, :title, :publishing_date, :guid, :duration, :full_text
+      :id, :title, :publishing_date, :guid, :duration, :full_text, :inserted_at, :updated_at
     ]
 
     cols =

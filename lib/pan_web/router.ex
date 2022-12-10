@@ -351,7 +351,8 @@ defmodule PanWeb.Router do
     pipe_through([:browser, :authenticate_moderator])
     get("/my_moderations", ModerationFrontendController, :my_moderations)
     live("/moderation/:id", Live.Moderation.Moderate, :moderation, as: :moderation_frontend)
-    live("/moderation/:id/podcast/:podcast_id", Live.Moderation.EpisodeGrid, :episodegrid, as: :moderation_frontend)
+    live("/moderation/:id/podcast/:podcast_id/episodes", Live.Moderation.EpisodeGrid, :episode_grid, as: :moderation_frontend)
+    live("/moderation/:id/podcast/:podcast_id/feeds", Live.Moderation.FeedGrid, :feed_grid, as: :moderation_frontend)
   end
 
   scope "/pro", PanWeb do

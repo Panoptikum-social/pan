@@ -1,7 +1,7 @@
 defmodule PanWeb.Feed do
   use PanWeb, :model
   alias Pan.Repo
-  alias PanWeb.{AlternateFeed, Feed, Podcast}
+  alias PanWeb.{AlternateFeed, Category, Feed, Podcast}
 
   schema "feeds" do
     field(:self_link_title, :string)
@@ -92,5 +92,15 @@ defmodule PanWeb.Feed do
       true ->
         nil
     end
+  end
+
+  def ids_by_category_id_and_podcast_id(category_id, podcast_id) do
+    from(c in Category,
+      join: p in assoc(c, :podcasts),
+      join: f in assoc(p, :feeds),
+      where: c.id == ^category_id and (not p.blocked or is_nil(p.blocked)) and p.id == ^podcast_id,
+      select: f.id
+    )
+    |> Repo.all()
   end
 end

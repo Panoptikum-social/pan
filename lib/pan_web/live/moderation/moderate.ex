@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
     columns = [
       :id, :title, :last_build_date, :blocked, :update_paused, :retired, :failure_count,
       :episodes_count, :latest_episode_publishing_date, :publication_frequency,
-      :manually_updated_at, :full_text, :last_error_message, :last_error_occured]
+      :manually_updated_at, :full_text, :last_error_message, :last_error_occured, :inserted_at, :updated_at]
 
     cols =
       Enum.map(
@@ -41,12 +41,16 @@ defmodule PanWeb.Live.Moderation.Moderate do
   end
 
   def handle_info({:show_episodes, podcast_id}, socket) do
-    IO.inspect socket
     category_id = socket.assigns[:category].id
-    episode_grid_path = Routes.moderation_frontend_path(socket, :episodegrid, category_id, podcast_id)
+    episode_grid_path = Routes.moderation_frontend_path(socket, :episode_grid, category_id, podcast_id)
     {:noreply, push_redirect(socket, to: episode_grid_path)}
   end
 
+  def handle_info({:show_feeds, podcast_id}, socket) do
+    category_id = socket.assigns[:category].id
+    feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, category_id, podcast_id)
+    {:noreply, push_redirect(socket, to: feed_grid_path)}
+  end
 
   def render(%{error: "not_found"} = assigns) do
     ~F"""
@@ -68,7 +72,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
         model={Podcast}
         cols={@cols}
         search_filter={{:id, @podcast_ids}}
-        buttons={[:pagination, :show_episodes, :number_of_records, :search]} />
+        buttons={[:pagination, :show_episodes, :show_feeds, :number_of_records, :search]} />
     </div>
     """
   end

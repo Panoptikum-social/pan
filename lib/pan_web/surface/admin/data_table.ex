@@ -70,7 +70,7 @@ defmodule PanWeb.Surface.Admin.DataTable do
 
   def render(assigns) do
     ~F"""
-    <div class="m-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
+    <div class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
          style={"grid-template-columns: 6rem #{Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")};"}>
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
          <span :if={:search in @buttons}>Search Mode</span>
