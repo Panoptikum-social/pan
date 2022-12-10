@@ -300,13 +300,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-  def handle_event("show_episodes", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_episodes, selected_record_id})
-    {:noreply, socket}
-  end
-
-
   def get_records(socket) do
     records =
       QueryBuilder.load(socket.assigns.model, criteria(socket.assigns), socket.assigns.cols)
@@ -420,15 +413,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
                     :on-click="associate">
               ↔️ New association
-            </button>
-
-            <button :if={:show_episodes in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                    lg:px-2 lg:py-0 m-1 rounded
-                    disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-              disabled={Tools.disabled?(:one, @selected_records |> length)}
-              :on-click="show_episodes">
-              🔍 Episodes
             </button>
 
             <LiveRedirect :if={:new in @buttons}

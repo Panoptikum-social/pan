@@ -2,7 +2,8 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Episode}
-  alias PanWeb.Surface.Admin.{IndexGrid, Naming}
+  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Surface.Moderation.ModerationGrid
 
   def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
@@ -54,7 +55,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
         Podcast {@podcast.title} / Episodes
       </h1>
 
-      <IndexGrid id="episodes_table"
+      <ModerationGrid id="episodes_table"
         heading={"Listing Episodes for Podcast #{@podcast.title}"}
         model={Episode}
         cols={@cols}
