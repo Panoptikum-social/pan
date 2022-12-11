@@ -94,6 +94,10 @@ defmodule PanWeb.Feed do
     end
   end
 
+  def get_by_id(id) do
+    Repo.get!(Feed, id)
+  end
+
   def ids_by_category_id_and_podcast_id(category_id, podcast_id) do
     from(c in Category,
       join: p in assoc(c, :podcasts),
