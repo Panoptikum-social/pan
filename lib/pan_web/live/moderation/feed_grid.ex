@@ -4,6 +4,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   alias PanWeb.{Moderation, Podcast, Feed}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Moderation.ModerationGrid
+  alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
@@ -31,7 +32,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
-      {:ok, assign(socket, podcast: podcast, cols: cols, feed_ids: feed_ids) }
+      {:ok, assign(socket, podcast: podcast, category_id: category_id, cols: cols, feed_ids: feed_ids) }
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -43,7 +44,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   end
 
   def handle_info({:edit_feed, feed_id}, socket) do
-    category_id = socket.assigns[:category].id
+    category_id = socket.assigns[:category_id]
     edit_feed_path = Routes.moderation_frontend_path(socket, :edit_feed, category_id, feed_id)
     {:noreply, push_redirect(socket, to: edit_feed_path)}
   end

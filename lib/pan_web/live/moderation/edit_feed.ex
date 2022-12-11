@@ -28,7 +28,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
 
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
-    if moderation && Enum.member?(podcast_ids, String.to_integer(feed.podcast_id)) do
+    if moderation && Enum.member?(podcast_ids, feed.podcast_id) do
       {:ok, assign(socket, feed: feed, cols: cols) }
     else
       {:ok, assign(socket, error: "not_found")}
@@ -52,7 +52,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     ~F"""
     <div class="m-4">
       <h1 class="text-2xl">
-        Episode {@episode.title}
+        Feed {@feed.self_link_title}
       </h1>
     </div>
     """
