@@ -353,6 +353,8 @@ defmodule PanWeb.Router do
     live("/moderation/:id", Live.Moderation.Moderate, :moderation, as: :moderation_frontend)
     live("/moderation/:id/podcast/:podcast_id/episodes", Live.Moderation.EpisodeGrid, :episode_grid, as: :moderation_frontend)
     live("/moderation/:id/podcast/:podcast_id/feeds", Live.Moderation.FeedGrid, :feed_grid, as: :moderation_frontend)
+    live("/moderation/:id/podcast/:podcast_id", Live.Moderation.EditPodcast, :edit_podcast, as: :moderation_frontend)
+    live("/moderation/:id/episode/:episode_id", Live.Moderation.EditEpisode, :edit_episode, as: :moderation_frontend)
     live("/moderation/:id/feed/:feed_id", Live.Moderation.EditFeed, :edit_feed, as: :moderation_frontend)
   end
 

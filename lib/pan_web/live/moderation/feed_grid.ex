@@ -49,7 +49,6 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
     {:noreply, push_redirect(socket, to: edit_feed_path)}
   end
 
-
   def render(%{error: "not_found"} = assigns) do
     ~F"""
     <div class="m-12">

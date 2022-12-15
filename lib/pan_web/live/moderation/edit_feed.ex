@@ -46,7 +46,6 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   end
 
   def handle_info({:saved, %{message: message}}, socket) do
-    IO.inspect(socket.assigns)
     feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, socket.assigns.category_id, socket.assigns.feed.podcast_id)
     {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: feed_grid_path)}
   end

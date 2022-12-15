@@ -173,6 +173,18 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
     {:noreply, socket}
   end
 
+  def handle_event("edit_podcast", _, socket) do
+    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    send(self(), {:edit_podcast, selected_record_id})
+    {:noreply, socket}
+  end
+
+  def handle_event("edit_episode", _, socket) do
+    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    send(self(), {:edit_episode, selected_record_id})
+    {:noreply, socket}
+  end
+
   def handle_event("edit_feed", _, socket) do
     selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
     send(self(), {:edit_feed, selected_record_id})
@@ -228,6 +240,24 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
               disabled={Tools.disabled?(:one, @selected_records |> length)}
               :on-click="show_feeds">
               🔍 List of Feeds
+            </button>
+
+            <button :if={:edit_podcast in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                    lg:px-2 lg:py-0 m-1 rounded
+                    disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              :on-click="edit_podcast">
+              ✏️ Edit Podcast
+            </button>
+
+            <button :if={:edit_episode in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                    lg:px-2 lg:py-0 m-1 rounded
+                    disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              :on-click="edit_episode">
+              ✏️ Edit Episode
             </button>
 
             <button :if={:edit_feed in @buttons}
