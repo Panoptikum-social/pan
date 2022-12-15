@@ -101,7 +101,8 @@ defmodule PanWeb.Surface.Admin.DataTable do
           <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
                 for={:search}
                 change={@search}
-                opts={autocomplete: "off"}>
+                opts={autocomplete: "off", onkeydown: "return event.key != 'Enter';"}
+                >
             <TextInput field={column.field}
                        value={@search_options[column.field]}
                        class={"p-0.5 w-full"}
