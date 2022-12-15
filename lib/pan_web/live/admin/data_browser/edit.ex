@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
     container: {:div, class: "flex-1 w-full"}
 
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.RecordForm
+  alias PanWeb.Surface.Moderation.RecordForm
   alias Pan.Repo
 
   def mount(%{"resource" => resource, "id" => id}, _session, socket) do

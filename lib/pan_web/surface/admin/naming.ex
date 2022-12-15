@@ -111,20 +111,20 @@ defmodule PanWeb.Surface.Admin.Naming do
     end
   end
 
-  def path(%{model: model, method: method, path_helper: nil, record: record}) do
-    Routes.databrowser_path(Endpoint, method, Phoenix.Naming.resource_name(model), record.id)
+  def path(%{model: model, action: action, path_helper: nil, record: record}) do
+    Routes.databrowser_path(Endpoint, action, Phoenix.Naming.resource_name(model), record.id)
   end
 
-  def path(%{model: _, method: method, path_helper: path_helper, record: record}) do
-    Function.capture(Routes, path_helper, 3).(Endpoint, method, record.id)
+  def path(%{model: _, action: action, path_helper: path_helper, record: record}) do
+    Function.capture(Routes, path_helper, 3).(Endpoint, action, record.id)
   end
 
-  def path(%{model: model, method: method, path_helper: nil}) do
-    Routes.databrowser_path(Endpoint, method, Phoenix.Naming.resource_name(model))
+  def path(%{model: model, action: action, path_helper: nil}) do
+    Routes.databrowser_path(Endpoint, action, Phoenix.Naming.resource_name(model))
   end
 
-  def path(%{model: _, method: method, path_helper: path_helper}) do
-    Function.capture(Routes, path_helper, 2).(Endpoint, method)
+  def path(%{model: _, action: action, path_helper: path_helper}) do
+    Function.capture(Routes, path_helper, 2).(Endpoint, action)
   end
 
   def title_from_record(record) do

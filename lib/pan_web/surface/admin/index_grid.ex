@@ -169,7 +169,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         %Postgrex.Error{postgres: %{message: message}} = e
 
         index_path =
-          Naming.path(%{socket: socket, model: model, method: :index, path_helper: path_helper})
+          Naming.path(%{socket: socket, model: model, action: :index, path_helper: path_helper})
 
         socket =
           put_flash(socket, :error, message)

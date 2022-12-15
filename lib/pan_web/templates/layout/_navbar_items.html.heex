@@ -59,7 +59,7 @@
     <li class="py-1">
       <%= link([nav_icon("logout-heroicons-outline"), " Log Out"],
         to: session_path(@conn, :delete, @current_user),
-        method: "delete"
+        method: :delete
       ) %>
     </li>
   <% else %>

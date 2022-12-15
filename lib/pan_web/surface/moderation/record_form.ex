@@ -1,12 +1,11 @@
-defmodule PanWeb.Surface.Admin.RecordForm do
+defmodule PanWeb.Surface.Moderation.RecordForm do
   use Surface.LiveComponent
   on_mount {PanWeb.Live.Auth, :admin}
 
-  alias Surface.Components.{Form, LiveRedirect}
+  alias Surface.Components.Form
   alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
   alias Surface.Components.Form.Field
   alias PanWeb.Surface.Submit
-  alias PanWeb.Endpoint
   alias Pan.Repo
 
   alias PanWeb.Surface.Admin.{
@@ -19,8 +18,6 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
-  prop(path_helper, :atom, required: false)
-  prop(path_action, :atom, required: false, default: :index)
   prop(cols, :list, required: false, default: [])
 
   data(changeset, :map)
@@ -63,8 +60,6 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   def handle_event("save", params, socket) do
     model = socket.assigns.model
-    path_helper = socket.assigns.path_helper
-    path_action = socket.assigns.path_action
     resource = Phoenix.Naming.resource_name(model)
     record_state = socket.assigns.record.__meta__.state
     record = socket.assigns.record
@@ -78,22 +73,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
     case response do
       {:ok, _} ->
-        send(
-          self(),
-          {:redirect,
-           %{
-             path:
-               Naming.path(%{
-                 socket: socket,
-                 model: model,
-                 action: path_action,
-                 path_helper: path_helper
-               }),
-             flash_type: :info,
-             message: to_string(model) <> updated_or_created(record_state)
-           }}
-        )
-
+        send(self(), {:saved, %{message: to_string(model) <> updated_or_created(record_state)}})
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -112,23 +92,6 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           <h1 class="max-w-screen-lg w-full truncate">
             {Naming.title_from_record(@record)}
           </h1>
-        </span>
-        <span>
-          <LiveRedirect :if={Map.has_key?(@record, :id) && @record.id}
-                        to={Naming.path %{socket: Endpoint,
-                                          model: @model,
-                                          action: :show,
-                                          path_helper: @path_helper,
-                                          record: @record}}
-                        class="text-link hover:text-link-dark underline">
-            Show&nbsp;{module_name(@model)}
-          </LiveRedirect> |
-          <LiveRedirect to={Naming.path %{model: @model,
-                                          action: :index,
-                                          path_helper: @path_helper}}
-                        class="text-link hover:text-link-dark underline">
-            {module_name(@model)}&nbsp;List
-          </LiveRedirect> &nbsp;
         </span>
       </div>
 

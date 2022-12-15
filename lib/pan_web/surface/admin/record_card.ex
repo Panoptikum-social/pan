@@ -43,14 +43,14 @@ defmodule PanWeb.Surface.Admin.RecordCard do
         </span>
         <span>
            <LiveRedirect to={Naming.path %{model: @model,
-                                           method: :index,
+                                           action: :index,
                                            path_helper: @path_helper}}
                          class="text-link hover:text-link-dark underline">
              {Naming.module_without_namespace(@model)}&nbsp;List
           </LiveRedirect> &nbsp;
           <LiveRedirect :if={Map.has_key?(@record, :id)}
                         to={Naming.path %{model: @model,
-                                          method: :edit,
+                                          action: :edit,
                                           path_helper: @path_helper,
                                           record: @record}}
                         class="text-link hover:text-link-dark underline">
