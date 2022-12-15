@@ -4,6 +4,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
   alias PanWeb.{Moderation, Podcast, Episode}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Moderation.ModerationGrid
+  alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
@@ -29,7 +30,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
-      {:ok, assign(socket, podcast: podcast, cols: cols, episode_ids: episode_ids) }
+      {:ok, assign(socket, category_id: category_id, podcast: podcast, cols: cols, episode_ids: episode_ids) }
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -38,6 +39,12 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
   def handle_info({:count, id: id, module: module}, socket) do
     send_update(module, id: id, count: :now)
     {:noreply, socket}
+  end
+
+  def handle_info({:edit_episode, episode_id}, socket) do
+    category_id = socket.assigns[:category_id]
+    edit_episode_path = Routes.moderation_frontend_path(socket, :edit_episode, category_id, episode_id)
+    {:noreply, push_redirect(socket, to: edit_episode_path)}
   end
 
   def render(%{error: "not_found"} = assigns) do
@@ -60,7 +67,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
         model={Episode}
         cols={@cols}
         search_filter={{:id, @episode_ids}}
-        buttons={[:pagination, :number_of_records, :search]} />
+        buttons={[:pagination, :edit_episode, :number_of_records, :search]} />
     </div>
     """
   end

@@ -10,11 +10,11 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
 
   alias PanWeb.Surface.Admin.{
     CheckBoxField,
-    NumberField,
     TextAreaField,
     TextField,
     DateTimeSelect
   }
+  alias PanWeb.Surface.Moderation.NumberField
 
   prop(record, :map, required: true)
   prop(model, :module, required: true)
@@ -54,6 +54,8 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
     changeset =
       model.changeset(Kernel.struct(model), params[resource])
       |> Map.put(:action, :insert)
+
+    IO.inspect changeset
 
     {:noreply, assign(socket, changeset: changeset)}
   end
@@ -112,7 +114,7 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
             {#for column <- ColumnsFilter.number_columns(assigns)}
               <NumberField name={column.field}
-                          redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+                           redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field) } />
             {/for}
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">

@@ -6,7 +6,7 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Moderation. RecordForm
+  alias PanWeb.Surface.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do
@@ -14,12 +14,13 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
-      :title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
+      :id, :title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
       :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
       :update_intervall, :next_update, :retired, :failure_count, :unique_identifier,
       :episodes_count, :followers_count, :likes_count, :subscriptions_count,
       :latest_episode_publishing_date, :publication_frequency, :manually_updated_at,
-      :full_text, :thumbnailed, :last_error_message, :last_error_occured
+      :full_text, :thumbnailed, :last_error_message, :last_error_occured, :inserted_at,
+      :updated_at
     ]
 
     cols =
@@ -63,16 +64,10 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
 
   def render(assigns) do
     ~F"""
-    <div class="m-4">
-      <h1 class="text-2xl">
-        Podcast {@podcast.title}
-      </h1>
-
-      <RecordForm id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
+    <RecordForm id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
       record = {@podcast}
       model= {Podcast}
       {=@cols} />
-    </div>
     """
   end
 end

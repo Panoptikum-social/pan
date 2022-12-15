@@ -61,7 +61,6 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, push_redirect(socket, to: edit_podcast_path)}
   end
 
-
   def render(%{error: "not_found"} = assigns) do
     ~F"""
     <div class="m-12">
