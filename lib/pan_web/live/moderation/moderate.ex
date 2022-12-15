@@ -61,6 +61,11 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, push_redirect(socket, to: edit_podcast_path)}
   end
 
+  def handle_info({:show_in_frontend, podcast_id}, socket) do
+    show_podcast_path = Routes.podcast_frontend_path(socket, :show, podcast_id)
+    {:noreply, redirect(socket, to: show_podcast_path)}
+  end
+
   def render(%{error: "not_found"} = assigns) do
     ~F"""
     <div class="m-12">
@@ -81,7 +86,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
         model={Podcast}
         cols={@cols}
         search_filter={{:id, @podcast_ids}}
-        buttons={[:pagination, :edit_podcast, :show_episodes, :show_feeds, :number_of_records, :search]} />
+        buttons={[:pagination, :show_in_frontend, :edit_podcast, :show_episodes, :show_feeds, :number_of_records, :search]} />
     </div>
     """
   end

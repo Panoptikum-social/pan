@@ -47,6 +47,11 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     {:noreply, push_redirect(socket, to: edit_episode_path)}
   end
 
+  def handle_info({:show_in_frontend, episode_id}, socket) do
+    show_podcast_path = Routes.episode_frontend_path(socket, :show, episode_id)
+    {:noreply, redirect(socket, to: show_podcast_path)}
+  end
+
   def render(%{error: "not_found"} = assigns) do
     ~F"""
     <div class="m-12">
@@ -67,7 +72,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
         model={Episode}
         cols={@cols}
         search_filter={{:id, @episode_ids}}
-        buttons={[:pagination, :edit_episode, :number_of_records, :search]} />
+        buttons={[:pagination, :show_in_frontend, :edit_episode, :number_of_records, :search]} />
     </div>
     """
   end
