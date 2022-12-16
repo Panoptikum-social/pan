@@ -65,9 +65,7 @@ defmodule PanWeb.MaintenanceController do
       {FeedBacklog, :in_progress},
       {Gig, :self_proclaimed},
       {Category, :full_text},
-
-      {Episode, :full_text},
-      {Episode, :thumbnailed}
+      {Episode, :full_text}
     ]
 
     Enum.each(boolean_columns, fn {repo, field_name} ->
