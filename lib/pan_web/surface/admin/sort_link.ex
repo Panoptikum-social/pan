@@ -10,19 +10,28 @@ defmodule PanWeb.Surface.Admin.SortLink do
 
   slot(default, required: true)
 
-  defp toggle_sort_order(:asc), do: :desc
-  defp toggle_sort_order(:desc), do: :asc
+  defp cycle_sort_order(:asc_nulls_last), do: :asc_nulls_first
+  defp cycle_sort_order(:asc_nulls_first), do: :desc_nulls_last
+  defp cycle_sort_order(:asc), do: :desc_nulls_last
+  defp cycle_sort_order(:desc_nulls_last), do: :desc_nulls_first
+  defp cycle_sort_order(:desc_nulls_first), do: :asc_nulls_last
+  defp cycle_sort_order(:desc), do: :asc_nulls_last
 
   def render(assigns) do
     ~F"""
     <a href="#"
        :on-click={@click}
        phx-value-sort-by={@field}
-       phx-value-sort-order={toggle_sort_order(@sort_order)}>
+       phx-value-sort-order={cycle_sort_order(@sort_order)}>
       {#if @sort_by == @field}
-        <Icon :if={@sort_order == :asc}
+        {#if @sort_order |> Atom.to_string() |> String.ends_with?("last")}
+          0 last
+        {#else}
+          0 first
+        {/if}
+        <Icon :if={@sort_order |> Atom.to_string() |> String.starts_with?("asc")}
               name="sort-up-lineawesome-solid" />
-        <Icon :if={@sort_order == :desc}
+        <Icon :if={@sort_order |> Atom.to_string() |> String.starts_with?("desc")}
               name="sort-down-lineawesome-solid" />
       {/if}
       <#slot/>
