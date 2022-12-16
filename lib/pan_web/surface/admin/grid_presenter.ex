@@ -20,9 +20,9 @@ defmodule PanWeb.Surface.Admin.GridPresenter do
       case format do
         :boolean ->
           case data do
-            true -> "✔️"
-            false -> "❌"
-            _ -> "{}"
+            true -> "☒"
+            false -> "☐"
+            _ -> "∅"
           end
 
         _ ->

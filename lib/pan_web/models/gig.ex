@@ -9,7 +9,7 @@ defmodule PanWeb.Gig do
     field(:comment, :string)
     field(:publishing_date, :naive_datetime)
     field(:role, :string)
-    field(:self_proclaimed, :boolean)
+    field(:self_proclaimed, :boolean, default: false)
     belongs_to(:persona, PanWeb.Persona)
     belongs_to(:episode, PanWeb.Episode)
 

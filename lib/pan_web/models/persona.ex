@@ -24,8 +24,8 @@ defmodule PanWeb.Persona do
     field(:long_description, Ecto.EctoText)
     field(:image_url, :string)
     field(:image_title, :string)
-    field(:full_text, :boolean)
-    field(:thumbnailed, :boolean)
+    field(:full_text, :boolean, default: false)
+    field(:thumbnailed, :boolean, default: false)
     field(:fediverse_address, :string)
 
     belongs_to(:redirect, Persona)

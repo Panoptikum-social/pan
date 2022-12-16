@@ -19,7 +19,7 @@ defmodule PanWeb.Episode do
     field(:summary, Ecto.EctoText)
     field(:image_title, :string)
     field(:image_url, :string)
-    field(:full_text, :boolean)
+    field(:full_text, :boolean, default: false)
     timestamps()
 
     belongs_to(:podcast, Podcast)

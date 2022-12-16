@@ -14,8 +14,8 @@ defmodule PanWeb.Feed do
     field(:feed_generator, :string)
     field(:etag, :string)
     field(:last_modified, :naive_datetime)
-    field(:trust_last_modified, :boolean)
-    field(:no_headers_available, :boolean)
+    field(:trust_last_modified, :boolean, default: false)
+    field(:no_headers_available, :boolean, default: false)
     field(:hash, :string)
     timestamps()
 

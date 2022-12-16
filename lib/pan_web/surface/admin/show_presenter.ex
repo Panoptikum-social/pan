@@ -15,11 +15,15 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   def present(presenter, record, _field, _format, false), do: presenter.(record)
 
   def present(record, field, format) do
-    if data = Map.get(record, field), do: present(format, data), else: "∅"
+    if Map.get(record, field) == nil  do
+      "∅"
+    else
+      present(format, Map.get(record, field))
+    end
   end
 
-  def present(:boolean, nil), do: "❌"
-  def present(:boolean, _data), do: "✅"
+  def present(:boolean, true), do: "☒"
+  def present(:boolean, false), do: "☐"
 
   def present(:string, data) do
     if String.starts_with?(data, ["http://", "https://"]) do

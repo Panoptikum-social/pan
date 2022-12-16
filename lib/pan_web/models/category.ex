@@ -5,7 +5,7 @@ defmodule PanWeb.Category do
 
   schema "categories" do
     field(:title, :string)
-    field(:full_text, :boolean)
+    field(:full_text, :boolean, default: false)
 
     has_many(:children, PanWeb.Category, foreign_key: :parent_id, preload_order: [asc: :title])
     has_many(:moderations, Moderation, on_delete: :delete_all)
