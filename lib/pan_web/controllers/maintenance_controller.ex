@@ -39,7 +39,61 @@ defmodule PanWeb.MaintenanceController do
     raise "exception_notification"
   end
 
-  def catch_up_thumbnailed(conn, _paar) do
+  def fix_nils(conn, _params) do
+    boolean_columns = [
+      {Podcast, :explicit},
+      {Podcast, :blocked},
+      {Podcast, :update_paused},
+      {Podcast, :retired},
+      {Podcast, :full_text},
+      {Podcast, :thumbnailed},
+
+      {User, :admin},
+      {User, :email_confirmed},
+      {User, :podcaster},
+      {User, :share_subscriptions},
+      {User, :share_follows},
+      {User, :paper_bill},
+      {User, :moderator},
+
+      {Persona, :full_text},
+      {Persona, :thumbnailed},
+
+      {Feed, :trust_last_modified},
+      {Feed, :no_headers_available},
+
+      {FeedBacklog, :in_progress},
+      {Gig, :self_proclaimed},
+      {Category, :full_text},
+
+      {Episode, :full_text},
+      {Episode, :thumbnailed}
+    ]
+
+    Enum.each(boolean_columns, fn {repo, field_name} ->
+      Task.start(fn -> update_nil_records_async(repo, field_name) end)
+    end)
+
+    put_view(conn, PageFrontendView)
+    |> render("done.html")
+  end
+
+  defp update_nil_records_async(repo, field_name) do
+    update_args = Keyword.new([{field_name, false}])
+
+    counted = from(r in repo, where: is_nil(field(r, ^field_name)) )
+    |> Repo.aggregate(:count, :id, timeout: :infinity)
+
+    from(r in repo,
+      where: is_nil(field(r, ^field_name)),
+      update: [set: ^update_args]
+    )
+    |> Repo.update_all([], timeout: :infinity)
+
+  IO.inspect "updated #{counted} #{repo}s"
+  end
+
+  def catch_up_thumbnailed(conn, _params) do
     podcast_candidates =
       from(p in Podcast,
         where: not p.thumbnailed and not is_nil(p.image_url),
