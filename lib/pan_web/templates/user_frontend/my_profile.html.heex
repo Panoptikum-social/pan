@@ -98,21 +98,9 @@
   <%= unless @current_user.pro_until do %>
     <div class="max-w-2xl p-4 col-span-2 justify-self-center bg-warning-light rounded text-warning-dark">
       <h4 class="text-lg">
-        Try it free for 30 days!
+        Panoptikum Pro is currently on hold
       </h4>
-      Claim your free pro account without any further obligations!
-      <br />Why? To either support Panoptikum or to unlock all pro features now!
-      <p class="mt-4 flex justify-between">
-        <%= link("Pro features",
-          to: page_frontend_path(@conn, :pro_features),
-          class: "bg-info hover:bg-info-light border border-gray px-3 py-2 text-white rounded"
-        ) %>
-        <%= link("Start your free trail",
-          to: user_frontend_path(@conn, :go_pro),
-          class: "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded",
-          method: :post
-        ) %>
-      </p>
+      We are thinking about a better solution currently...
     </div>
   <% end %>
 </div>
