@@ -176,7 +176,7 @@ defmodule PanWeb.PodcastController do
       {:error, message} ->
         put_flash(conn, :error, message)
     end
-    |> redirect(to: podcast_path(conn, :show, podcast.id))
+    |> redirect(to: databrowser_path(conn, :show, :podcast, podcast.id))
   end
 
   def update_counters(conn, %{"id" => id}) do
