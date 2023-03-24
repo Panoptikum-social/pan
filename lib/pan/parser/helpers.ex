@@ -238,10 +238,6 @@ defmodule Pan.Parser.Helpers do
   # export feed urls
   def feed_urls do
     urls = Repo.all(from(f in PanWeb.Feed, select: [f.self_link_url]))
-
-    for url <- urls do
-      IO.puts(url)
-    end
   end
 
   def remove_comments(xml) do

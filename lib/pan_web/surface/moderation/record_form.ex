@@ -55,8 +55,6 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
       model.changeset(Kernel.struct(model), params[resource])
       |> Map.put(:action, :insert)
 
-    IO.inspect changeset
-
     {:noreply, assign(socket, changeset: changeset)}
   end
 

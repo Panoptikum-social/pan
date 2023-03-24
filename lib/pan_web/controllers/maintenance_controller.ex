@@ -87,8 +87,6 @@ defmodule PanWeb.MaintenanceController do
       update: [set: ^update_args]
     )
     |> Repo.update_all([], timeout: :infinity)
-
-  IO.inspect "updated #{counted} #{repo}s"
   end
 
   def catch_up_thumbnailed(conn, _params) do
