@@ -6,6 +6,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Moderation.RecordForm
   alias Pan.Repo
+  alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"resource" => resource, "id" => id}, _session, socket) do
     model = Naming.model_from_resource(resource)
@@ -31,6 +32,11 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
      socket
      |> put_flash(flash_type, message)
      |> push_redirect(to: path)}
+  end
+
+  def handle_info({:saved, %{message: message}}, socket) do
+    show_path = Routes.databrowser_path(socket, :show, socket.assigns.resource, socket.assigns.record.id)
+    {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: show_path)}
   end
 
   def render(assigns) do

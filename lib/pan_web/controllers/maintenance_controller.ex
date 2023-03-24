@@ -79,7 +79,7 @@ defmodule PanWeb.MaintenanceController do
   defp update_nil_records_async(repo, field_name) do
     update_args = Keyword.new([{field_name, false}])
 
-    counted = from(r in repo, where: is_nil(field(r, ^field_name)) )
+    from(r in repo, where: is_nil(field(r, ^field_name)) )
     |> Repo.aggregate(:count, :id, timeout: :infinity)
 
     from(r in repo,
