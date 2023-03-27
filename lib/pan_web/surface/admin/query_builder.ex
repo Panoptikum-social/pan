@@ -38,6 +38,15 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
   end
 
   defp apply_criterium(
+        {:search, %{options: options, filter: filter, second_filter: second_filter, hide: hide, mode: mode}},
+        query
+      ) do
+    Enum.reduce(options, query, &apply_option(&1, &2, mode))
+    |> apply_filter(filter, hide)
+    |> apply_filter(second_filter, hide)
+  end
+
+  defp apply_criterium(
          {:search, %{options: options, filter: filter, hide: hide, mode: mode}},
          query
        ) do

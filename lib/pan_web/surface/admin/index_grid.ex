@@ -11,6 +11,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   prop(path_helper, :atom, required: false)
   prop(cols, :list, required: false, default: [])
   prop(search_filter, :tuple, default: {})
+  prop(second_search_filter, :tuple, default: {})
   prop(per_page, :integer, default: 20)
   prop(class, :css_class, required: false)
   prop(buttons, :list, required: true)
@@ -309,15 +310,27 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def criteria(assigns) do
-    [
-      paginate: %{page: assigns.page, per_page: assigns.per_page},
-      sort: %{by: assigns.sort_by, order: assigns.sort_order},
-      search: %{
+    search = if assigns.second_search_filter != {} do
+      %{
+        options: assigns.search_options,
+        filter: assigns.search_filter,
+        second_filter: assigns.second_search_filter,
+        mode: assigns.search_mode,
+        hide: assigns.hide_filtered
+      }
+    else
+      %{
         options: assigns.search_options,
         filter: assigns.search_filter,
         mode: assigns.search_mode,
         hide: assigns.hide_filtered
       }
+    end
+
+    [
+      paginate: %{page: assigns.page, per_page: assigns.per_page},
+      sort: %{by: assigns.sort_by, order: assigns.sort_order},
+      search: search
     ]
   end
 

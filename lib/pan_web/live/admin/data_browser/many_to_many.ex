@@ -32,6 +32,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       )
       |> Repo.all()
       |> Enum.map(&Map.get(&1, children_id_column))
+      |> Enum.reject(&is_nil/1)
 
     model = association.related
 
@@ -59,6 +60,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
        cols: cols,
        owner_search_filter: {:id, owner_id},
        join_search_filter: {elem(hd(association.join_keys), 0), owner_id},
+       join_second_search_filter: {elem(hd(tl(association.join_keys)), 0), children_ids},
        search_filter: {:id, children_ids}
      )}
   end
@@ -114,6 +116,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                model={@join_through_model}
                cols={@join_through_cols}
                search_filter={@join_search_filter}
+               second_search_filter={@join_second_search_filter}
                buttons={[:show, :edit, :delete, :new, :pagination,
                            :number_of_records, :search]}>
     </IndexGrid>
