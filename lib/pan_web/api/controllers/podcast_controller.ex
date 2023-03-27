@@ -5,7 +5,7 @@ defmodule PanWeb.Api.PodcastController do
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
 
   import Pan.Parser.MyDateTime,
-    only: [now: 0, in_the_future?: 1, time_shift: 2, time_diff: 3, in_the_past?: 1]
+    only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -130,7 +130,7 @@ defmodule PanWeb.Api.PodcastController do
     else
       if !podcast.manually_updated_at or
            NaiveDateTime.add(podcast.manually_updated_at, 3600, :second)
-           |> in_the_future?() do
+           |> in_the_past?() do
         podcast
         |> Podcast.changeset(%{manually_updated_at: now()})
         |> Repo.update()
@@ -171,7 +171,8 @@ defmodule PanWeb.Api.PodcastController do
         case Pan.Updater.Podcast.import_new_episodes(
                podcast,
                :not_forced,
-               :no_failure_count_increase
+               :no_failure_count_increase,
+               :do_not_increase_update_interval
              ) do
           {:ok, _} -> show(conn, params, nil)
           {:error, message} -> send_504(conn, message)

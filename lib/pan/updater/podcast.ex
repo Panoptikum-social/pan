@@ -7,10 +7,10 @@ defmodule Pan.Updater.Podcast do
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   require Logger
 
-  def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false) do
+  def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false, do_not_increase_update_interval \\ false) do
     Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
 
-    with {:ok, _podcast} <- set_next_update(podcast),
+    with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
          {:ok, feed_xml} <- Download.download(feed.self_link_url, feed.id),
@@ -47,14 +47,18 @@ defmodule Pan.Updater.Podcast do
     {:error, message}
   end
 
-  defp set_next_update(podcast) do
-    next_update = time_shift(now(), hours: podcast.update_intervall + 1)
+  defp set_next_update(podcast, do_not_increase_update_interval) do
+    if do_not_increase_update_interval == :do_not_increase_update_interval do
+      {:ok, "nothing to do"}
+    else
+      next_update = time_shift(now(), hours: podcast.update_intervall + 1)
 
-    Podcast.changeset(podcast, %{
-      update_intervall: podcast.update_intervall + 1,
-      next_update: next_update
-    })
-    |> Repo.update()
+      Podcast.changeset(podcast, %{
+        update_intervall: podcast.update_intervall + 1,
+        next_update: next_update
+      })
+      |> Repo.update()
+    end
   end
 
   defp notify({status, message}, podcast) do
