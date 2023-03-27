@@ -129,7 +129,7 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           NaiveDateTime.add(podcast.manually_updated_at, 3600, :second)
+           time_shift(podcast.manually_updated_at, minutes: 30)
            |> in_the_past?() do
         podcast
         |> Podcast.changeset(%{manually_updated_at: now()})
@@ -139,7 +139,7 @@ defmodule PanWeb.Api.PodcastController do
         show(conn, params, nil)
       else
         minutes =
-          time_shift(podcast.manually_updated_at, hours: 1)
+          time_shift(podcast.manually_updated_at, minutes: 30)
           |> time_diff(now(), :minutes)
 
         Helpers.send_error(
@@ -164,8 +164,8 @@ defmodule PanWeb.Api.PodcastController do
       )
     else
       if !podcast.manually_updated_at or
-           time_shift(podcast.manually_updated_at, hours: 1) |> in_the_past?() do
-        Podcast.changeset(podcast, %{manually_updated_at: time_shift(now(), minutes: -30)})
+           time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() do
+        Podcast.changeset(podcast, %{manually_updated_at: now()})
         |> Repo.update()
 
         case Pan.Updater.Podcast.import_new_episodes(
@@ -179,7 +179,7 @@ defmodule PanWeb.Api.PodcastController do
         end
       else
         minutes =
-          time_shift(podcast.manually_updated_at, hours: 1)
+          time_shift(podcast.manually_updated_at, minutes: 30)
           |> time_diff(now(), :minutes)
 
         Helpers.send_error(
