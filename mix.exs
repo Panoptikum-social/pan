@@ -38,7 +38,7 @@ defmodule Pan.MixProject do
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.7.1"},
+      {:ecto_sql, "~> 3.9.2"},
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
@@ -66,7 +66,7 @@ defmodule Pan.MixProject do
       # time conversion
       {:timex, "~> 3.7"},
       # http client
-      {:httpoison, "~> 1.8.2"},
+      {:httpoison, "~> 2.1.0"},
       # XML parser
       {:quinn, "~> 1.1"},
       # UUID creation
@@ -93,7 +93,7 @@ defmodule Pan.MixProject do
       {:pid_file, "~> 0.2"},
 
       # Mix task invoking esbuild
-      {:esbuild, "~> 0.4.0", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.3.3", only: :dev},
       # Code analysis
