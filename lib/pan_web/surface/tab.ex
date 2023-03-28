@@ -1,9 +1,9 @@
 defmodule PanWeb.Surface.Tab do
   use Surface.Component
 
-  prop(items, :list, required: true)
+  prop(items, :generator, required: true)
 
-  slot(default, args: [item: ^items])
+  slot(default, generator_prop: :items)
 
   def render(assigns) do
     ~F"""
@@ -24,7 +24,7 @@ defmodule PanWeb.Surface.Tab do
       <div class="p-4">
         {#for {item, index} <- @items |> Enum.with_index}
           <div x-show={"selectedTab === #{index}"}>
-            <#slot :args={item: item} />
+            <#slot generator_value={item} {@default} />
           </div>
         {/for}
       </div>

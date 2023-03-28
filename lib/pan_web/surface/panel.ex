@@ -43,7 +43,7 @@ defmodule PanWeb.Surface.Panel do
          id={@id}>
       <div aria-label="panel heading"
            class={"p-3 rounded-t-xl", heading_color_classes(@purpose)}>
-        <#slot name="panel_heading" />
+        <#slot {@panel_heading} />
 
         {#if @target}
           <Link to={@target}

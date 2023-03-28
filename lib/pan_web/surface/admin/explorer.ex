@@ -4,14 +4,14 @@ defmodule PanWeb.Surface.Admin.Explorer do
 
   prop(title, :string, required: false, default: "Items")
   prop(class, :css_class, required: false)
-  prop(items, :list, required: true)
+  prop(items, :generator, required: true)
   prop(selected_count, :integer, required: false, default: 0)
   prop(format, :atom, required: false, values: [:grid, :table], default: :grid)
   prop(caller, :module, required: false)
   prop(caller_id, :string, required: false)
 
   slot(toolbar_items)
-  slot(cols, args: [item: ^items])
+  slot(cols, generator_prop: :items)
 
   data(selected, :integer)
 
@@ -64,11 +64,9 @@ defmodule PanWeb.Surface.Admin.Explorer do
                 class={"cursor-pointer",
                         "bg-sunflower-lighter": item.selected,
                         "bg-white": !item.selected}>
-              {#for {col, index} <- @cols |> Enum.with_index}
+              {#for col <- @cols}
                 <td class={"px-1 border border-gray-lightest", col.class}>
-                  <#slot name="cols"
-                         {=index}
-                         :args={item: item} />
+                  <#slot {@cols} generator_value={item} />
                 </td>
               {/for}
             </tr>
@@ -84,9 +82,7 @@ defmodule PanWeb.Surface.Admin.Explorer do
                 class={"cursor-pointer m-1",
                        "bg-sunflower-lighter": item.selected,
                        "bg-white": !item.selected}>
-            <#slot name="cols"
-                   index={0}
-                   :args={item: item} />
+            <#slot {@cols} generator_value={item} />
           </div>
         {/for}
       </div>

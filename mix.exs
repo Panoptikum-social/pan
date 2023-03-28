@@ -52,7 +52,7 @@ defmodule Pan.MixProject do
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "~> 0.7.6"},
+      {:surface, "~> 0.8.4"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
