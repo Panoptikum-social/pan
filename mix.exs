@@ -97,7 +97,7 @@ defmodule Pan.MixProject do
       # Mix task invoking esbuild
       {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.3.3", only: :dev},
+      {:phoenix_live_reload, "~> 1.4.1", only: :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]}
     ]
