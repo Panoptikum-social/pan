@@ -310,22 +310,23 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def criteria(assigns) do
-    search = if assigns.second_search_filter != {} do
-      %{
-        options: assigns.search_options,
-        filter: assigns.search_filter,
-        second_filter: assigns.second_search_filter,
-        mode: assigns.search_mode,
-        hide: assigns.hide_filtered
-      }
-    else
-      %{
-        options: assigns.search_options,
-        filter: assigns.search_filter,
-        mode: assigns.search_mode,
-        hide: assigns.hide_filtered
-      }
-    end
+    search =
+      if assigns.second_search_filter != {} do
+        %{
+          options: assigns.search_options,
+          filter: assigns.search_filter,
+          second_filter: assigns.second_search_filter,
+          mode: assigns.search_mode,
+          hide: assigns.hide_filtered
+        }
+      else
+        %{
+          options: assigns.search_options,
+          filter: assigns.search_filter,
+          mode: assigns.search_mode,
+          hide: assigns.hide_filtered
+        }
+      end
 
     [
       paginate: %{page: assigns.page, per_page: assigns.per_page},

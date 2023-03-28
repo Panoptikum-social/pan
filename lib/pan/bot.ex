@@ -8,7 +8,10 @@ defmodule Pan.Bot do
     body =
       %{
         setting_type: "domain_whitelisting",
-        whitelisted_domains: [Application.get_env(:pan, :bot)[:host], "https://panoptikum.social/"],
+        whitelisted_domains: [
+          Application.get_env(:pan, :bot)[:host],
+          "https://panoptikum.social/"
+        ],
         domain_action_type: "add"
       }
       |> Jason.encode!()

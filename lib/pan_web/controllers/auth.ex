@@ -130,7 +130,10 @@ defmodule PanWeb.Auth do
       conn
     else
       conn
-      |> put_flash(:error, "You need to be logged in with a moderation account to access that page.")
+      |> put_flash(
+        :error,
+        "You need to be logged in with a moderation account to access that page."
+      )
       |> put_session(:desired_url, conn.request_path)
       |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()

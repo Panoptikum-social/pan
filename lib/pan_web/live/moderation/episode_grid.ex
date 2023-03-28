@@ -11,7 +11,14 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
-      :id, :title, :publishing_date, :guid, :duration, :full_text, :inserted_at, :updated_at
+      :id,
+      :title,
+      :publishing_date,
+      :guid,
+      :duration,
+      :full_text,
+      :inserted_at,
+      :updated_at
     ]
 
     cols =
@@ -30,7 +37,13 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
-      {:ok, assign(socket, category_id: category_id, podcast: podcast, cols: cols, episode_ids: episode_ids) }
+      {:ok,
+       assign(socket,
+         category_id: category_id,
+         podcast: podcast,
+         cols: cols,
+         episode_ids: episode_ids
+       )}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -43,7 +56,10 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
 
   def handle_info({:edit_episode, episode_id}, socket) do
     category_id = socket.assigns[:category_id]
-    edit_episode_path = Routes.moderation_frontend_path(socket, :edit_episode, category_id, episode_id)
+
+    edit_episode_path =
+      Routes.moderation_frontend_path(socket, :edit_episode, category_id, episode_id)
+
     {:noreply, push_redirect(socket, to: edit_episode_path)}
   end
 

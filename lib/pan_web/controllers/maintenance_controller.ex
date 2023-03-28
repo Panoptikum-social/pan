@@ -47,7 +47,6 @@ defmodule PanWeb.MaintenanceController do
       {Podcast, :retired},
       {Podcast, :full_text},
       {Podcast, :thumbnailed},
-
       {User, :admin},
       {User, :email_confirmed},
       {User, :podcaster},
@@ -55,13 +54,10 @@ defmodule PanWeb.MaintenanceController do
       {User, :share_follows},
       {User, :paper_bill},
       {User, :moderator},
-
       {Persona, :full_text},
       {Persona, :thumbnailed},
-
       {Feed, :trust_last_modified},
       {Feed, :no_headers_available},
-
       {FeedBacklog, :in_progress},
       {Gig, :self_proclaimed},
       {Category, :full_text},
@@ -79,7 +75,7 @@ defmodule PanWeb.MaintenanceController do
   defp update_nil_records_async(repo, field_name) do
     update_args = Keyword.new([{field_name, false}])
 
-    from(r in repo, where: is_nil(field(r, ^field_name)) )
+    from(r in repo, where: is_nil(field(r, ^field_name)))
     |> Repo.aggregate(:count, :id, timeout: :infinity)
 
     from(r in repo,

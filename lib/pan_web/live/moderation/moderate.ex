@@ -10,11 +10,29 @@ defmodule PanWeb.Live.Moderation.Moderate do
     moderation = Moderation.get_by_catagory_id_and_user_id(id, session["user_id"])
 
     columns = [
-      :id, :title, :last_build_date, :blocked, :update_paused, :update_intervall, :next_update,
-      :retired, :failure_count, :unique_identifier, :episodes_count, :followers_count, :likes_count,
-      :subscriptions_count, :latest_episode_publishing_date, :publication_frequency,
-      :manually_updated_at, :full_text, :thumbnailed, :last_error_message, :last_error_occured,
-      :inserted_at, :updated_at
+      :id,
+      :title,
+      :last_build_date,
+      :blocked,
+      :update_paused,
+      :update_intervall,
+      :next_update,
+      :retired,
+      :failure_count,
+      :unique_identifier,
+      :episodes_count,
+      :followers_count,
+      :likes_count,
+      :subscriptions_count,
+      :latest_episode_publishing_date,
+      :publication_frequency,
+      :manually_updated_at,
+      :full_text,
+      :thumbnailed,
+      :last_error_message,
+      :last_error_occured,
+      :inserted_at,
+      :updated_at
     ]
 
     cols =
@@ -32,7 +50,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
     podcast_ids = Podcast.ids_by_category_id(id)
 
     if moderation do
-      {:ok, assign(socket, category: moderation.category, cols: cols, podcast_ids: podcast_ids) }
+      {:ok, assign(socket, category: moderation.category, cols: cols, podcast_ids: podcast_ids)}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -45,7 +63,10 @@ defmodule PanWeb.Live.Moderation.Moderate do
 
   def handle_info({:show_episodes, podcast_id}, socket) do
     category_id = socket.assigns[:category].id
-    episode_grid_path = Routes.moderation_frontend_path(socket, :episode_grid, category_id, podcast_id)
+
+    episode_grid_path =
+      Routes.moderation_frontend_path(socket, :episode_grid, category_id, podcast_id)
+
     {:noreply, push_redirect(socket, to: episode_grid_path)}
   end
 
@@ -57,7 +78,10 @@ defmodule PanWeb.Live.Moderation.Moderate do
 
   def handle_info({:edit_podcast, podcast_id}, socket) do
     category_id = socket.assigns[:category].id
-    edit_podcast_path = Routes.moderation_frontend_path(socket, :edit_podcast, category_id, podcast_id)
+
+    edit_podcast_path =
+      Routes.moderation_frontend_path(socket, :edit_podcast, category_id, podcast_id)
+
     {:noreply, push_redirect(socket, to: edit_podcast_path)}
   end
 

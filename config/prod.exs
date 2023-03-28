@@ -11,6 +11,7 @@ config :pan, PanWeb.Endpoint,
 
 config :logger,
   backends: [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]
+
 config :logger, level: :info
 
 config :phoenix, :serve_endpoints, true

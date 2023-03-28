@@ -14,9 +14,23 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     feed = Feed.get_by_id(feed_id)
 
     columns = [
-      :id, :podcast_id, :self_link_title, :self_link_url, :next_page_url, :prev_page_url, :first_page_url,
-      :last_page_url, :hub_link_url, :feed_generator, :etag, :last_modified, :trust_last_modified,
-      :no_headers_available, :hash, :inserted_at, :updated_at
+      :id,
+      :podcast_id,
+      :self_link_title,
+      :self_link_url,
+      :next_page_url,
+      :prev_page_url,
+      :first_page_url,
+      :last_page_url,
+      :hub_link_url,
+      :feed_generator,
+      :etag,
+      :last_modified,
+      :trust_last_modified,
+      :no_headers_available,
+      :hash,
+      :inserted_at,
+      :updated_at
     ]
 
     cols =
@@ -34,7 +48,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, feed.podcast_id) do
-      {:ok, assign(socket, feed: feed, cols: cols, category_id: category_id) }
+      {:ok, assign(socket, feed: feed, cols: cols, category_id: category_id)}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -46,7 +60,14 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   end
 
   def handle_info({:saved, %{message: message}}, socket) do
-    feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, socket.assigns.category_id, socket.assigns.feed.podcast_id)
+    feed_grid_path =
+      Routes.moderation_frontend_path(
+        socket,
+        :feed_grid,
+        socket.assigns.category_id,
+        socket.assigns.feed.podcast_id
+      )
+
     {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: feed_grid_path)}
   end
 

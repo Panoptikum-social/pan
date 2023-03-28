@@ -25,8 +25,10 @@ defmodule PanWeb.Live.Podcast.Show do
   end
 
   defp fetch(%{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket) do
-    assign(socket, episodes: Episode.get_by_podcast_id(podcast.id, page, per_page),
-                   episodes_count: Episode.count_by_podcast_id(podcast.id))
+    assign(socket,
+      episodes: Episode.get_by_podcast_id(podcast.id, page, per_page),
+      episodes_count: Episode.count_by_podcast_id(podcast.id)
+    )
   end
 
   def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast}} = socket) do

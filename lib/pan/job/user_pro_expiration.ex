@@ -7,7 +7,7 @@ defmodule Pan.Job.UserProExpiration do
   end
 
   defp seconds_to_wait() do
-    86_400 - NaiveDateTime.diff(now(),  %{now() | hour: 6, minute: 0, second: 0})
+    86_400 - NaiveDateTime.diff(now(), %{now() | hour: 6, minute: 0, second: 0})
   end
 
   @impl true
@@ -19,7 +19,7 @@ defmodule Pan.Job.UserProExpiration do
 
   @impl true
   def handle_info(:work, state) do
-    PanWeb.User.pro_expiration
+    PanWeb.User.pro_expiration()
     # search for Users to be expired tomorrow morning 06:00
     Process.send_after(self(), :work, seconds_to_wait() * 1000)
     {:noreply, state}

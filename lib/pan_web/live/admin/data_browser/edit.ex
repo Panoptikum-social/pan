@@ -35,7 +35,9 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
   end
 
   def handle_info({:saved, %{message: message}}, socket) do
-    show_path = Routes.databrowser_path(socket, :show, socket.assigns.resource, socket.assigns.record.id)
+    show_path =
+      Routes.databrowser_path(socket, :show, socket.assigns.resource, socket.assigns.record.id)
+
     {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: show_path)}
   end
 

@@ -102,7 +102,8 @@ defmodule PanWeb.Feed do
     from(c in Category,
       join: p in assoc(c, :podcasts),
       join: f in assoc(p, :feeds),
-      where: c.id == ^category_id and (not p.blocked or is_nil(p.blocked)) and p.id == ^podcast_id,
+      where:
+        c.id == ^category_id and (not p.blocked or is_nil(p.blocked)) and p.id == ^podcast_id,
       select: f.id
     )
     |> Repo.all()

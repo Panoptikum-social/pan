@@ -11,9 +11,22 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
-      :id, :self_link_title, :self_link_url, :next_page_url, :prev_page_url, :first_page_url,
-      :last_page_url, :hub_link_url, :feed_generator, :etag, :last_modified, :trust_last_modified,
-      :no_headers_available, :hash, :inserted_at, :updated_at
+      :id,
+      :self_link_title,
+      :self_link_url,
+      :next_page_url,
+      :prev_page_url,
+      :first_page_url,
+      :last_page_url,
+      :hub_link_url,
+      :feed_generator,
+      :etag,
+      :last_modified,
+      :trust_last_modified,
+      :no_headers_available,
+      :hash,
+      :inserted_at,
+      :updated_at
     ]
 
     cols =
@@ -32,7 +45,8 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
-      {:ok, assign(socket, podcast: podcast, category_id: category_id, cols: cols, feed_ids: feed_ids) }
+      {:ok,
+       assign(socket, podcast: podcast, category_id: category_id, cols: cols, feed_ids: feed_ids)}
     else
       {:ok, assign(socket, error: "not_found")}
     end

@@ -14,12 +14,36 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
-      :id, :title, :website, :description, :summary, :image_title, :image_url, :last_build_date,
-      :payment_link_title, :payment_link_url, :explicit, :blocked, :update_paused,
-      :update_intervall, :next_update, :retired, :failure_count, :unique_identifier,
-      :episodes_count, :followers_count, :likes_count, :subscriptions_count,
-      :latest_episode_publishing_date, :publication_frequency, :manually_updated_at,
-      :full_text, :thumbnailed, :last_error_message, :last_error_occured, :inserted_at,
+      :id,
+      :title,
+      :website,
+      :description,
+      :summary,
+      :image_title,
+      :image_url,
+      :last_build_date,
+      :payment_link_title,
+      :payment_link_url,
+      :explicit,
+      :blocked,
+      :update_paused,
+      :update_intervall,
+      :next_update,
+      :retired,
+      :failure_count,
+      :unique_identifier,
+      :episodes_count,
+      :followers_count,
+      :likes_count,
+      :subscriptions_count,
+      :latest_episode_publishing_date,
+      :publication_frequency,
+      :manually_updated_at,
+      :full_text,
+      :thumbnailed,
+      :last_error_message,
+      :last_error_occured,
+      :inserted_at,
       :updated_at
     ]
 
@@ -38,7 +62,7 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
-      {:ok, assign(socket, podcast: podcast, cols: cols, category_id: category_id) }
+      {:ok, assign(socket, podcast: podcast, cols: cols, category_id: category_id)}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -50,7 +74,9 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
   end
 
   def handle_info({:saved, %{message: message}}, socket) do
-    moderation_path = Routes.moderation_frontend_path(socket, :moderation, socket.assigns.category_id)
+    moderation_path =
+      Routes.moderation_frontend_path(socket, :moderation, socket.assigns.category_id)
+
     {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: moderation_path)}
   end
 

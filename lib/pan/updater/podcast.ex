@@ -7,7 +7,12 @@ defmodule Pan.Updater.Podcast do
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   require Logger
 
-  def import_new_episodes(podcast, forced \\ false, no_failure_count_increase \\ false, do_not_increase_update_interval \\ false) do
+  def import_new_episodes(
+        podcast,
+        forced \\ false,
+        no_failure_count_increase \\ false,
+        do_not_increase_update_interval \\ false
+      ) do
     Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
 
     with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
@@ -78,11 +83,11 @@ defmodule Pan.Updater.Podcast do
   end
 
   defp build_notification(
-    podcast,
-    {:error, %HTTPoison.Error{reason: :enetunreach, id: nil}}
-  ) do
-%{content: "Network Error: not reached | Podcast #{podcast.id}: #{podcast.title}"}
-end
+         podcast,
+         {:error, %HTTPoison.Error{reason: :enetunreach, id: nil}}
+       ) do
+    %{content: "Network Error: not reached | Podcast #{podcast.id}: #{podcast.title}"}
+  end
 
   defp build_notification(podcast, {:error, message}) do
     %{content: "Error: #{message} | Podcast #{podcast.id}: #{podcast.title}"}

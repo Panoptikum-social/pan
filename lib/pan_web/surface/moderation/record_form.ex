@@ -14,6 +14,7 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
     TextField,
     DateTimeSelect
   }
+
   alias PanWeb.Surface.Moderation.NumberField
 
   prop(record, :map, required: true)

@@ -20,7 +20,12 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
   data(selected_records, :list, default: [])
   data(search_options, :map, default: %{})
   data(page, :integer, default: 1)
-  data(search_mode, :atom, values: [:exact, :starts_with, :ends_with, :contains], default: :starts_with)
+
+  data(search_mode, :atom,
+    values: [:exact, :starts_with, :ends_with, :contains],
+    default: :starts_with
+  )
+
   data(sort_by, :atom, default: :id)
   data(sort_order, :atom, default: :asc)
   data(primary_key, :list, default: [])

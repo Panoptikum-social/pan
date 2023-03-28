@@ -22,8 +22,22 @@ defmodule PanWeb do
       import Ecto.Query, only: [from: 1, from: 2]
       import PanWeb.Router.Helpers
       import PanWeb.Gettext
-      import PanWeb.Auth, only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2, authenticate_moderator: 2]
-      import PanWeb.Api.Auth, only: [authenticate_api_user: 2, authenticate_api_pro_user: 2, authenticate_api_moderator: 2]
+
+      import PanWeb.Auth,
+        only: [
+          authenticate_user: 2,
+          authenticate_admin: 2,
+          authenticate_pro: 2,
+          authenticate_moderator: 2
+        ]
+
+      import PanWeb.Api.Auth,
+        only: [
+          authenticate_api_user: 2,
+          authenticate_api_pro_user: 2,
+          authenticate_api_moderator: 2
+        ]
+
       import Ecto.Convenience, only: [total_estimated: 1]
       import Plug.Conn
       import PanWeb.Gettext
@@ -71,9 +85,19 @@ defmodule PanWeb do
       import Phoenix.LiveView.Router
 
       import PanWeb.Auth,
-        only: [authenticate_user: 2, authenticate_admin: 2, authenticate_pro: 2, authenticate_moderator: 2]
+        only: [
+          authenticate_user: 2,
+          authenticate_admin: 2,
+          authenticate_pro: 2,
+          authenticate_moderator: 2
+        ]
 
-      import PanWeb.Api.Auth, only: [authenticate_api_user: 2, authenticate_api_pro_user: 2, authenticate_api_moderator: 2]
+      import PanWeb.Api.Auth,
+        only: [
+          authenticate_api_user: 2,
+          authenticate_api_pro_user: 2,
+          authenticate_api_moderator: 2
+        ]
     end
   end
 

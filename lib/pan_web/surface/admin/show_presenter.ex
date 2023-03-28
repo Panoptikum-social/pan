@@ -15,7 +15,7 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   def present(presenter, record, _field, _format, false), do: presenter.(record)
 
   def present(record, field, format) do
-    if Map.get(record, field) == nil  do
+    if Map.get(record, field) == nil do
       "∅"
     else
       present(format, Map.get(record, field))
