@@ -42,19 +42,19 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.14"},
       # reactive view layer
-      {:phoenix_live_view, "0.18.14", override: true},
+      {:phoenix_live_view, "0.18.16", override: true},
       # HTML parser
       {:floki, "~> 0.34.2"},
       # classic view layer
       {:phoenix_html, "~> 3.0"},
       # live metrics dashboard
-      {:phoenix_live_dashboard, "0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.7.2"},
       # phoenix classic views
       {:phoenix_view, "~> 2.0.2"},
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "0.9.4"},
+      {:surface, "~> 0.9.4"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
