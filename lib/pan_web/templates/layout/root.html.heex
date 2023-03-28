@@ -6,7 +6,7 @@
     data-js-view-name={js_view_name(@conn, view_template(@conn))} >
     <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
          class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-         :class="{'lg:p-1': !navbarOpen}">
+         x-bind:class="{'lg:p-1': !navbarOpen}">
       <%= render("_navbar.html", conn: @conn, current_user: @current_user) %>
     </nav>
 

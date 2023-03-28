@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.AssignUserAndAdmin do
-  import Phoenix.LiveView
+  import Phoenix.Component
+
 
   def on_mount(:default, _params, session, socket) do
     {:cont,

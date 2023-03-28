@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
   use Surface.LiveView,
-    layout: {PanWeb.LayoutView, "live_admin.html"},
+    layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "flex-1"}
 
   alias PanWeb.Surface.Admin.Naming
@@ -43,7 +43,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
           {#for {title, index} <- tabs |> Enum.with_index}
             <li class="-mb-px ml-1.5 mt-1">
                 <a class="inline-block rounded-t px-1 border-gray"
-                   :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+                   x-bind:class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
                             selectedTab === #{index},
                             'bg-gray-light text-gray-dark hover:text-gray-darker': selectedTab !== #{index} }"}
                   @click.prevent={"selectedTab = #{index}"}
@@ -125,7 +125,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                 {#for {association, assoc_index} <- @model.__schema__(:associations) |> Enum.with_index}
                   <li class="-mb-px ml-1.5 mt-1">
                     <a class="inline-block rounded-t px-1 border-gray"
-                      :class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+                       x-bind:class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
                                 selectedAssociation === #{assoc_index},
                                 'bg-gray-light text-gray-dark hover:text-gray-darker': selectedAssociation !== #{assoc_index} }"}
                       @click.prevent={"selectedAssociation = #{assoc_index}"}

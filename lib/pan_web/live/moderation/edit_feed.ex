@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
   use Surface.LiveView,
-    layout: {PanWeb.LayoutView, "live_admin.html"},
+    layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "flex-1 w-full"}
 
   on_mount PanWeb.Live.AssignUserAndAdmin

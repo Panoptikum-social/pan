@@ -11,7 +11,7 @@
     <li class="-mb-px ml-1.5">
       <a
         class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-        :class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
+        x-bind:class={"{ 'disabled font-semibold bg-white border-l border-t border-r text-gray-darker' :
                        selectedTab === #{index},
                      'bg-gray-lighter text-gray-dark' :
                      selectedTab !== #{index} }"}
@@ -31,7 +31,7 @@
         <%= link([icon("user-heroicons-outline", class: "inline w-4 h-4"), " ", user.name],
           to: user_frontend_path(@conn, :show, user),
           class:
-            "mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet 
+            "mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet
                                                   text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet"
         ) %>
       <% end %>

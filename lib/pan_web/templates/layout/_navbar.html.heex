@@ -1,7 +1,7 @@
 <div class="flex justify-between items-start lg:items-center"
-     :class="{'lg:flex-col': !navbarOpen}" >
+     x-bind:class="{'lg:flex-col': !navbarOpen}" >
   <a href="/" class="text-2xl font-bold">
-    <svg width="40" height="40" class="align-middle inline" :class="{'lg:w-5 lg:h-5': !navbarOpen}" alt="Panoptikum Logo, Link to Home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
+    <svg width="40" height="40" class="align-middle inline" x-bind:class="{'lg:w-5 lg:h-5': !navbarOpen}" alt="Panoptikum Logo, Link to Home" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" >
       <g>
         <path fill="#a0d468" d="M256.071 256.154l253.604 68.077V188.129zm0-68.025zm253.604 136.102z" />
         <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="81" d="M14236 7672l4831 1295V6378z" transform="matrix(.0525 0 0 .05257 -491.25 -147.156)" />
@@ -50,7 +50,7 @@
       <path fill="#e9573f" d="M256.229 255.943l67.98 253.962H188.3zm-67.93 0zm135.91 253.962z" />
       <path fill="none" stroke="#000" stroke-linejoin="round" stroke-width="4.158" d="M256.229 244.493l67.98 242.501H188.3z" transform="matrix(1 0 0 1.04726 0 -.104)" />
     </svg>
-    <span :class="{'lg:hidden': !navbarOpen}">Panoptikum.social</span></a>
+    <span x-bind:class="{'lg:hidden': !navbarOpen}">Panoptikum.social</span></a>
 
   <button @click="navbarOpen = !navbarOpen" class="focus:outline-none" aria-label="toggle sidebar">
     <svg x-show="navbarOpen" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" id="heroicons-x" x-cloak>
@@ -65,6 +65,6 @@
   </button>
 </div>
 
-<div :class="{'hidden': !navbarOpen}">
+<div x-bind:class="{'hidden': !navbarOpen}">
   <%= render("_navbar_items.html", conn: @conn, current_user: @current_user) %>
 </div>

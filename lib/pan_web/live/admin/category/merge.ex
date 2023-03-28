@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Category.Merge do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.Category
   alias PanWeb.Surface.{Icon, Tree, EventButton}

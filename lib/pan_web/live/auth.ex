@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Auth do
   import Phoenix.LiveView
+  import Phoenix.Component
 
   def on_mount(:default, _params, %{"user_id" => user_id} = _session, socket) do
     {:cont, assign_new(socket, :current_user_id, fn -> user_id end)}

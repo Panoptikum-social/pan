@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.Show do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   alias PanWeb.Surface.Admin.{Naming, RecordCard, ActionButtons}
   alias Pan.Repo
 

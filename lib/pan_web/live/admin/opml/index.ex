@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Admin.Opml.Index do
   use Surface.LiveView,
-    layout: {PanWeb.LayoutView, "live_admin.html"},
+    layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "m-4"}
 
   on_mount {PanWeb.Live.Auth, :admin}

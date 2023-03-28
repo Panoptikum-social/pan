@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Dashboard do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Surface.Admin.{Explorer, Col, Tools, ToolbarItem, Naming}
   alias PanWeb.Surface.LinkButton

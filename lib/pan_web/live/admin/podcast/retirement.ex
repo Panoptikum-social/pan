@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Admin.Podcast.Retirement do
   use Surface.LiveView,
-    layout: {PanWeb.LayoutView, "live_admin.html"}
+    layout: {PanWeb.LayoutView, :live_admin}
 
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.{Podcast, Surface.Admin.IndexGrid}

@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Admin.Databrowser.Index do
   use Surface.LiveView,
-    layout: {PanWeb.LayoutView, "live_admin.html"},
+    layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "flex-1"}
 
   alias PanWeb.Surface.Admin.{Naming, IndexGrid, ActionButtons}

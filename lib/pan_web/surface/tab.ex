@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.Tab do
         {#for {_item, index} <- @items |> Enum.with_index}
           <li class="-mb-px ml-1.5">
             <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-              :class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r text-gray-darker' :
+               x-bind:class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r text-gray-darker' :
                           selectedTab === #{index},
                         'bg-gray-lighter text-gray-dark' :
                         selectedTab !== #{index} }"}

@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Sandbox do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, "live_admin.html"}
+  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
 
   def mount(_params, _session, socket) do
     {:ok, socket}
