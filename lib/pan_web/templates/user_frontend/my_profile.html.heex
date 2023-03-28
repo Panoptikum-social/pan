@@ -67,7 +67,8 @@
         ) %>
         <%= link("Payment information",
           to: user_frontend_path(@conn, :payment_info),
-          class: "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded"
+          class:
+            "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded"
         ) %>
       </p>
     </div>
@@ -75,7 +76,12 @@
     <div class="justify-self-end">
       Pro account until
     </div>
-    <div><%= Calendar.strftime(@user.pro_until, "%x") %> <%= Calendar.strftime(@user.pro_until, "%H:%M") %></div>
+    <div>
+      <%= Calendar.strftime(@user.pro_until, "%x") %> <%= Calendar.strftime(
+        @user.pro_until,
+        "%H:%M"
+      ) %>
+    </div>
 
     <div class="justify-self-end">
       Billing address
@@ -114,7 +120,8 @@
     <%= for invoice <- @user.invoices do %>
       <li>
         <%= icon("calendar-heroicons-outline") %>
-        <%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %> &nbsp; &nbsp; <%= link([icon("document-download-heroicons-outline"), " ", invoice.filename],
+        <%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %> &nbsp; &nbsp; <%= link(
+          [icon("document-download-heroicons-outline"), " ", invoice.filename],
           to: invoice_frontend_path(@conn, :download, invoice),
           class: "text-link hover:text-link-dark"
         ) %>

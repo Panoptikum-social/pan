@@ -9,7 +9,8 @@
         <div>
           <%= feed.self_link_url %>
         </div>
-        <div>Podcast: <%= link(feed.podcast.title,
+        <div>
+          Podcast: <%= link(feed.podcast.title,
             to: databrowser_path(@conn, :show, "podcast", feed.podcast),
             class: "text-link hover:text-link-dark"
           ) %>

@@ -1,15 +1,23 @@
 <main role="main" class="px-4 mx-auto mb-4">
-  <p id="alert-success"
-     class="inline-block rounded-xl p-4 m-4 text-black bg-aqua-light/20 border border-aqua-dark border-dotted"
-     role="alert"
-     phx-click="lv:clear-flash"
-     phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+  <p
+    id="alert-success"
+    class="inline-block rounded-xl p-4 m-4 text-black bg-aqua-light/20 border border-aqua-dark border-dotted"
+    role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="info"
+  >
+    <%= live_flash(@flash, :info) %>
+  </p>
 
-  <p id="alert-error"
-     class="inline-block rounded-xl p-4 m-4 text-black bg-grapefruit-light/20 border border-grapefruit-dark border-dotted"
-     role="alert"
-     phx-click="lv:clear-flash"
-     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+  <p
+    id="alert-error"
+    class="inline-block rounded-xl p-4 m-4 text-black bg-grapefruit-light/20 border border-grapefruit-dark border-dotted"
+    role="alert"
+    phx-click="lv:clear-flash"
+    phx-value-key="error"
+  >
+    <%= live_flash(@flash, :error) %>
+  </p>
 
   <%= @inner_content %>
 </main>

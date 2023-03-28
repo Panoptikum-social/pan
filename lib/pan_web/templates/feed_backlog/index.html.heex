@@ -2,15 +2,18 @@
   <div class="flex justify-end space-x-4">
     <%= link("Import 100",
       to: feed_backlog_path(@conn, :import_100),
-      class: "border border-gray bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md"
+      class:
+        "border border-gray bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md"
     ) %>
     <%= link("Subscribe All",
       to: feed_backlog_path(@conn, :subscribe),
-      class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
+      class:
+        "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
     ) %>
     <%= link("Subscribe 50",
       to: feed_backlog_path(@conn, :subscribe50),
-      class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
+      class:
+        "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
     ) %>
     <%= link("Delete All (from Itunes user)",
       to: feed_backlog_path(@conn, :delete_all),

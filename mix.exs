@@ -7,7 +7,7 @@ defmodule Pan.MixProject do
       version: "1.0.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers() ++ [:surface],
+      compilers: [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -34,7 +34,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       # web framework
-      {:phoenix, "~> 1.6.6"},
+      {:phoenix, "~> 1.7.2"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
@@ -99,8 +99,7 @@ defmodule Pan.MixProject do
       # live browser page reload on code changes
       {:phoenix_live_reload, "~> 1.3.3", only: :dev},
       # Code analysis
-      {:credo, "~> 1.5", only: [:dev, :test]},
-      {:heex_formatter, github: "feliperenan/heex_formatter", only: :dev}
+      {:credo, "~> 1.5", only: [:dev, :test]}
     ]
   end
 

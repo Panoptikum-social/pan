@@ -9,7 +9,11 @@
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <%= link(
-                [icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"), " ", recommendation.podcast.title],
+                [
+                  icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"),
+                  " ",
+                  recommendation.podcast.title
+                ],
                 to: podcast_frontend_path(@conn, :show, recommendation.podcast),
                 class: "border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
               ) %>
@@ -51,7 +55,12 @@
                     </small>
                   </div>
                   <%= hidden_input(f, :podcast_id, value: podcast.id) %>
-                  <%= text_input(f, :comment, size: 60, maxlength: 255, data: [chapter: podcast.id], class: "max-w-full") %>
+                  <%= text_input(f, :comment,
+                    size: 60,
+                    maxlength: 255,
+                    data: [chapter: podcast.id],
+                    class: "max-w-full"
+                  ) %>
                 </div>
                 <div class="lg:shrink-0 lg:basis-1/6 self-end">
                   <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
