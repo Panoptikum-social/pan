@@ -38,9 +38,9 @@ defmodule Pan.MixProject do
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.9.2"},
+      {:ecto_sql, "~> 3.10.1"},
       # database adapter
-      {:postgrex, "~> 0.14"},
+      {:postgrex, "~> 0.17.1"},
       # reactive view layer
       {:phoenix_live_view, "0.18.16", override: true},
       # HTML parser
