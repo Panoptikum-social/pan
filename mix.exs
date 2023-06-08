@@ -7,7 +7,7 @@ defmodule Pan.MixProject do
       version: "1.0.0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix] ++ Mix.compilers() ++ [:surface],
+      compilers: Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -34,7 +34,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       # web framework
-      {:phoenix, "~> 1.6.6"},
+      {:phoenix, "~> 1.7.3"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.4.0"},
       # ecto sql adapter
@@ -42,19 +42,19 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.17.1"},
       # reactive view layer
-      {:phoenix_live_view, "0.18.16", override: true},
+      {:phoenix_live_view, "~> 0.19.1"},
       # HTML parser
       {:floki, "~> 0.34.2"},
       # classic view layer
       {:phoenix_html, "~> 3.0"},
       # live metrics dashboard
-      {:phoenix_live_dashboard, "~> 0.7.2"},
+      {:phoenix_live_dashboard, "~> 0.8.0"},
       # phoenix classic views
       {:phoenix_view, "~> 2.0.2"},
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "~> 0.9.4"},
+      {:surface, "~> 0.11.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 0.6"},
       # telemetry poller
@@ -97,10 +97,9 @@ defmodule Pan.MixProject do
       # Mix task invoking esbuild
       {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.3.3", only: :dev},
+      {:phoenix_live_reload, "~> 1.4.1", only: :dev},
       # Code analysis
-      {:credo, "~> 1.5", only: [:dev, :test]},
-      {:heex_formatter, github: "feliperenan/heex_formatter", only: :dev}
+      {:credo, "~> 1.5", only: [:dev, :test]}
     ]
   end
 

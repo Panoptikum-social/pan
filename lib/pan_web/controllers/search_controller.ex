@@ -6,17 +6,23 @@ defmodule PanWeb.SearchController do
 
   def migrate(conn, _params) do
     Task.start(fn -> Pan.Search.migrate() end)
-    render(conn, PageFrontendView, "started.html", %{})
+    conn
+    |> put_view(PageFrontendView)
+    |> render("started.html", %{})
   end
 
   def push_missing(conn, _params) do
     Task.start(fn -> Search.push_missing() end)
-    render(conn, PageFrontendView, "started.html", %{})
+    conn
+    |> put_view(PageFrontendView)
+    |> render("started.html", %{})
   end
 
   def reset_all(conn, _params) do
     Task.start(fn -> Search.reset_all() end)
-    render(conn, PageFrontendView, "started.html", %{})
+    conn
+    |> put_view(PageFrontendView)
+    |> render("started.html", %{})
   end
 
   def delete_orphans(conn, _params) do
@@ -34,6 +40,8 @@ defmodule PanWeb.SearchController do
     Logger.info("=== Persona orphans deleted ===")
 
     Logger.info("===  Full text search orphans deletion finished ===")
-    render(conn, PageFrontendView, "done.html", %{})
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html", %{})
   end
 end
