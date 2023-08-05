@@ -47,7 +47,7 @@ defmodule Pan.Updater.Podcast do
       increase_failure_count_and_persist_error(podcast, message)
     end
 
-    Logger.warn(message)
+    Logger.warning(message)
     notify({:error, message}, podcast)
     {:error, message}
   end
