@@ -77,8 +77,6 @@ defmodule Pan.MixProject do
       {:html_sanitize_ex, "~> 1.4"},
       # mailing smtp adapter,
       {:bamboo_smtp, "~> 4.2.2"},
-      # bamboo phoenix integration
-      {:bamboo_phoenix, "~> 1.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
       # Timezone information
