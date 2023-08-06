@@ -126,7 +126,9 @@ defmodule PanWeb.MaintenanceController do
     from(p in Persona, where: p.id in ^personas_missing_thumbnailed)
     |> Repo.update_all(set: [thumbnailed: true])
 
-    render(conn, PageFrontendView, "done.html")
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 
   def stats(conn, _params) do

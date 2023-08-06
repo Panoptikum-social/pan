@@ -199,12 +199,18 @@ defmodule PanWeb.PodcastController do
       |> Repo.all()
 
     Task.start(fn -> update_missing_counters_async(podcasts) end)
-    render(conn, PageFrontendView, "done.html")
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 
   def update_all_counters(conn, _params) do
     Podcast.update_all_counters()
-    render(conn, PageFrontendView, "done.html")
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 
   defp update_missing_counters_async(podcasts) do

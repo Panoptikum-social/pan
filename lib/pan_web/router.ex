@@ -47,7 +47,7 @@ defmodule PanWeb.Router do
   end
 
   pipeline :admin_layout do
-    plug(:put_layout, {PanWeb.LayoutView, :admin})
+    plug(:put_layout, html: {PanWeb.LayoutView, :admin})
   end
 
   scope "/jsonapi", PanWeb.Api, as: :api do

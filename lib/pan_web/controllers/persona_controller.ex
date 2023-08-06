@@ -165,6 +165,9 @@ defmodule PanWeb.PersonaController do
     Repo.delete!(from_persona)
     Search.Persona.delete_index(from_id)
     Search.Persona.update_index(to_id)
-    render(conn, PageFrontendView, "done.html")
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 end

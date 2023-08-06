@@ -93,7 +93,9 @@ defmodule PanWeb.UserController do
       PanWeb.CategoryPodcast.get_or_insert(String.to_integer(category_id), podcast_id)
     end
 
-    render(conn, PageFrontendView, "done.html")
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 
   def edit_password(conn, %{"id" => id}, _user) do
