@@ -56,7 +56,9 @@ defmodule PanWeb.ImageController do
 
   def cache_missing(conn, _params) do
     Task.start(fn -> PanWeb.Image.cache_missing() end)
-    render(conn, PageFrontendView, "started.html")
+    conn
+    |> put_view(PageFrontendView)
+    |> render("started.html")
   end
 
   def remove_duplicates(conn, _params) do
@@ -96,6 +98,8 @@ defmodule PanWeb.ImageController do
       |> Repo.delete()
     end
 
-    render(conn, PageFrontendView, "done.html")
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 end

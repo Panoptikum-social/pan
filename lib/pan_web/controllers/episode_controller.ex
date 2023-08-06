@@ -64,7 +64,9 @@ defmodule PanWeb.EpisodeController do
     end
 
     Logger.info("=== Sanitized #{length(episodes)} episodes ... ===")
-    render(conn, PageFrontendView, "done.html")
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
   end
 
   defp fallback_link(episode) do

@@ -101,7 +101,8 @@ defmodule PanWeb.FeedBacklogController do
 
         conn
         |> put_flash(:error, error)
-        |> render(PageFrontendView, "done.html")
+        |> put_view(PageFrontendView)
+        |> render("done.html")
     end
   end
 
