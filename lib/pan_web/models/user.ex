@@ -362,7 +362,7 @@ defmodule PanWeb.User do
 
     for email <- emails do
       Pan.Email.pro_expiration_notification(email)
-      |> Pan.Mailer.deliver_now!()
+      |> Pan.Mailer.deliver()
     end
   end
 

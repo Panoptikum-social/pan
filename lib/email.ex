@@ -1,9 +1,9 @@
 defmodule Pan.Email do
-  import Bamboo.Email
+  import Swoosh.Email
   import Phoenix.HTML.Link
 
   def login_link_html_email(token, email_address) do
-    new_email(
+    new(
       to: email_address,
       from: "noreply@panoptikum.social",
       subject: "Panoptikum - Login link",
@@ -17,7 +17,7 @@ defmodule Pan.Email do
           <body>
             <p>Hello!</p>
             <p>You can now login using this
-              #{link("Login link", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :login_via_token, token: token))}
+              #{link("Login link", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :login_via_token, token: token)) |> Kernel.elem(1)}
             </p>
             <p>- The Panoptikum Team.</p>
           </body>
@@ -27,7 +27,7 @@ defmodule Pan.Email do
   end
 
   def email_confirmation_link_html_email(token, email_address) do
-    new_email(
+    new(
       to: email_address,
       from: "noreply@panoptikum.social",
       subject: "Panoptikum - Email Confirmation",
@@ -53,7 +53,7 @@ defmodule Pan.Email do
   end
 
   def confirm_persona_claim_link_html_email(token, user, email_address) do
-    new_email(
+    new(
       to: email_address,
       from: "noreply@panoptikum.social",
       subject: "Panoptikum - Persona manifestation confirmation request",
@@ -98,7 +98,7 @@ defmodule Pan.Email do
   def error_notification(mail_body, from, to) do
     {:ok, hostname} = :inet.gethostname()
 
-    new_email(
+    new(
       to: to,
       from: from,
       subject: "Panoptikum - #{hostname} - Error Notification",
@@ -107,7 +107,7 @@ defmodule Pan.Email do
   end
 
   def pro_expiration_notification(email_address) do
-    new_email(
+    new(
       to: email_address,
       from: "noreply@panoptikum.social",
       subject: "Panoptikum - Your pro account expires soon",

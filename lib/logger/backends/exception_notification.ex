@@ -18,7 +18,7 @@ defmodule Logger.Backends.ExceptionNotification do
       |> Logger.Formatter.format(:error, message, timestamp, old_metadata_format)
       |> IO.chardata_to_string()
       |> Pan.Email.error_notification("robot@informatom.com", "robot@informatom.com")
-      |> Pan.Mailer.deliver_now()
+      |> Pan.Mailer.deliver()
     end
 
     {:ok, state}

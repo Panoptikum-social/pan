@@ -33,7 +33,7 @@ defmodule PanWeb.UserController do
       user ->
         Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
         |> Pan.Email.login_link_html_email(changeset.changes.email)
-        |> Pan.Mailer.deliver_now!()
+        |> Pan.Mailer.deliver()
     end
 
     render(conn, "login_link_sent.html")

@@ -30,7 +30,7 @@ defmodule PanWeb.Live.User.New do
         token = Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
 
         Pan.Email.email_confirmation_link_html_email(token, user.email)
-        |> Pan.Mailer.deliver_now!()
+        |> Pan.Mailer.deliver()
 
         message = """
         Your account @#{user.username} has been created! Please confirm your email address

@@ -75,8 +75,9 @@ defmodule Pan.MixProject do
       {:uuid, "~> 1.1"},
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
-      # mailing smtp adapter,
-      {:bamboo_smtp, "~> 4.2.2"},
+      # mailing
+      {:swoosh, "~> 1.11.5"},
+      {:gen_smtp, "~> 1.2.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
       # Timezone information

@@ -62,5 +62,6 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 
 ### ✨ Bonus
 
-* To view sent emails while developing you can visit [`localhost:4000/sent_emails`](http://localhost:4000/sent_emails)
+* Sending a Test Mail from the console
+  `Pan.Email.login_link_html_email("mytoken", "mail@stefan-haslinger.at") |> Pan.Mailer.deliver()`
 * To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)
