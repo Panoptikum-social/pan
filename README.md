@@ -63,5 +63,5 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 ### ✨ Bonus
 
 * Sending a Test Mail from the console
-  `Pan.Email.login_link_html_email("mytoken", "mail@stefan-haslinger.at") |> Pan.Mailer.deliver()`
+  `Pan.Email.login_link_html_email("mytoken", "my-email@example.com") |> Pan.Mailer.deliver()`
 * To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)
