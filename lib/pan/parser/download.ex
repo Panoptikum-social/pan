@@ -28,6 +28,7 @@ defmodule Pan.Parser.Download do
       503 => "503: service unavailable",
       504 => "504: gateway time-out",
       508 => "508: loop detected",
+      506 => "506: variant also negotiates",
       509 => "509: bandwidth limit exceeded",
       520 => "520: unknown error",
       521 => "521: web server is down",
