@@ -48,6 +48,9 @@ defmodule Pan.Updater.Podcast do
     end
 
     Logger.warning(message)
+
+    %HTTPoison.Error{reason: reason} = message
+    message = if reason, do: inspect(reason), else: message
     notify({:error, message}, podcast)
     {:error, message}
   end

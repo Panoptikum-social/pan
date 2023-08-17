@@ -12,7 +12,8 @@ defmodule Logger.Backends.ExceptionNotification do
              "Fatal error: handshake failure",
              "Warning: unrecognised name",
              ":whitespace_required_between_attributes",
-             ":unexpected_end"
+             ":unexpected_end",
+             ":unrecognized name"
            ]) do
       Logger.Formatter.compile("$time $metadata[$level] $message\n")
       |> Logger.Formatter.format(:error, message, timestamp, old_metadata_format)
