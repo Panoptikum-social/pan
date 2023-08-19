@@ -1,9 +1,9 @@
 <%%= f = form_for @changeset, "#",
   id: "<%= schema.singular %>-form",
   class: "block",
-  phx_target: @myself,
-  phx_change: "validate",
-  phx_submit: "save" %>
+  "phx-target": @myself,
+  "phx-change": "validate",
+  "phx-submit": "save" %>
 <%= for {label, input, error} <- inputs, input do %><%= if String.match?(input, ~r/checkbox/) do %>
   <div class="mb-6">
     <%= input %>
@@ -18,6 +18,6 @@
   </div>
 <% end %><% end %>
   <div class="mt-8 mb-2">
-    <%%= submit "Save", phx_disable_with: "Saving...", class: "btn btn-primary btn-sm" %>
+    <%%= submit "Save", "phx-disable-with": "Saving...", class: "btn btn-primary btn-sm" %>
   </div>
 </form>

@@ -99,9 +99,9 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
       <Form for={@changeset}
             opts={autocomplete: "off",
                   class: "mt-4",
-                  phx_change: :validate,
-                  phx_submit: :save,
-                  phx_target: "#" <> @id}>
+                  "phx-change": :validate,
+                  "phx-submit": :save,
+                  "phx-target": "#" <> @id}>
         <Field :if={!@changeset.valid?}
                 name="error"
                 class="inline-block px-2 mb-2 text-grapefruit bg-grapefruit/20 border border-grapefruit border-dotted">

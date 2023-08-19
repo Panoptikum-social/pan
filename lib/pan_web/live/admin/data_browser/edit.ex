@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
     container: {:div, class: "flex-1 w-full"}
 
   alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Moderation.RecordForm
+  alias PanWeb.Surface.Admin.RecordForm
   alias Pan.Repo
   alias PanWeb.Router.Helpers, as: Routes
 
