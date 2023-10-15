@@ -44,7 +44,7 @@ defmodule Pan.MixProject do
       # reactive view layer
       {:phoenix_live_view, "~> 0.19.1"},
       # HTML parser
-      {:floki, "~> 0.34.2"},
+      {:floki, "~> 0.35.0"},
       # classic view layer
       {:phoenix_html, "~> 3.0"},
       # live metrics dashboard
@@ -76,7 +76,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.11.5"},
+      {:swoosh, "~> 1.12.0"},
       {:gen_smtp, "~> 1.2.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
