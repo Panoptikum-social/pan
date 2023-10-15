@@ -9,7 +9,7 @@ defmodule Pan.Updater.RssFeed do
 
     with feed_xml <- clean_up_xml(feed_xml),
          {:ok, "go on"} <- Feed.hash_changed(feed_xml, feed, forced),
-         {:ok, feed_map} <- xml_to_map(feed_xml),
+         {:ok, feed_map} <- xml_to_map(feed_xml, podcast_id),
          {:ok, reduced_map} <- Filter.only_new_items_and_new_feed_url(feed_map, podcast_id) do
       try do
         run_the_parser(reduced_map, url)
@@ -34,11 +34,12 @@ defmodule Pan.Updater.RssFeed do
     |> H.fix_encoding()
   end
 
-  defp xml_to_map(feed_map) do
+  defp xml_to_map(feed_xml, podcast_id) do
     try do
-      {:ok, Quinn.parse(feed_map)}
+      {:ok, Quinn.parse(feed_xml)}
     catch
-      :exit, _ -> {:error, "Quinn parser finds unexpected end"}
+      :exit, {:fatal, error} ->
+        {:error, "Podcast: #{podcast_id} Quinn parsing failed with error #{Kernel.inspect(error)}"}
     end
   end
 
