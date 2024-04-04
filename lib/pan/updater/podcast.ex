@@ -49,10 +49,12 @@ defmodule Pan.Updater.Podcast do
 
     Logger.warning(message)
 
-    message = case message do
-      %HTTPoison.Error{reason: reason} -> inspect(reason)
-      _ -> message
-    end
+    message =
+      case message do
+        %HTTPoison.Error{reason: reason} -> inspect(reason)
+        _ -> message
+      end
+
     notify({:error, message}, podcast)
     {:error, message}
   end

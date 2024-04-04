@@ -31,18 +31,24 @@ defmodule PanWeb.Surface.Tree do
   end
 
   defp render_tree(assigns, nodes, indentation_level, myself) do
+    assigns =
+      assigns
+      |> assign(:nodes, nodes)
+      |> assign(:indentation_level, indentation_level)
+      |> assign(:myself, myself)
+
     ~F"""
-    {#for node <- nodes}
+    {#for node <- @nodes}
       <div :on-click={@select}
            phx-value-node-id={node.id}
            class={"px-2 py-0.5 border border-gray-light",
                   "bg-success": @selected_id == node.id}>
         <span class="font-mono text-gray-light">
-          {String.duplicate("&nbsp;", indentation_level) |> raw}
+          {String.duplicate("&nbsp;", @indentation_level) |> raw}
         </span>
 
         <button :if={node.children |> is_list && length(node.children) > 0}
-                :on-click="toggle-expand" phx-value-node-id={node.id} phx-target={myself}>
+                :on-click="toggle-expand" phx-value-node-id={node.id} phx-target={@myself}>
           <Icon :if={@expanded[node.id]}  name="folder-open-heroicons-outline" />
           <Icon :if={!@expanded[node.id]} name="folder-heroicons-outline" />
         </button>
@@ -50,7 +56,7 @@ defmodule PanWeb.Surface.Tree do
         {node.title}
       </div>
       {#if @expanded[node.id] && is_list(node.children)}
-        {render_tree(assigns, node.children, indentation_level + 1, myself)}
+        {render_tree(assigns, node.children, @indentation_level + 1, @myself)}
       {/if}
     {/for}
     """

@@ -1,6 +1,7 @@
 <%= link([icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
   to: category_frontend_path(@conn, :index)
-) %> / <%= if @category.parent do %>
+) %> /
+<%= if @category.parent do %>
   <%= link([icon("folder-open-heroicons-outline"), " ", @category.parent.title],
     to: category_frontend_path(@conn, :show, @category.parent.id)
   ) %> /

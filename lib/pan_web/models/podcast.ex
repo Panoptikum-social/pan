@@ -199,7 +199,8 @@ defmodule PanWeb.Podcast do
       as: :podcast,
       order_by: [fragment("? DESC NULLS LAST", p.inserted_at)],
       where: not p.blocked or is_nil(p.blocked),
-      inner_lateral_join: e in subquery(first_engagement), on: true,
+      inner_lateral_join: e in subquery(first_engagement),
+      on: true,
       join: persona in assoc(e, :persona),
       select: %{
         id: p.id,

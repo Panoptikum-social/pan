@@ -62,7 +62,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   end
 
   def handle_event("save", params, socket) do
-    IO.inspect ("=== 1 ===")
+    IO.inspect("=== 1 ===")
     model = socket.assigns.model
     path_helper = socket.assigns.path_helper
     path_action = socket.assigns.path_action

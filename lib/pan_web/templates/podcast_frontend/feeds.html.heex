@@ -4,7 +4,9 @@
   <% else %>
     <div class="rounded-xl shadow">
       <div class="p-3 rounded-t-xl bg-warning text-white">
-        <%= icon("rss-heroicons-outline") %> Feeds for <%= link(@podcast.title, to: podcast_frontend_path(@conn, :show, @podcast)) %>
+        <%= icon("rss-heroicons-outline") %> Feeds for <%= link(@podcast.title,
+          to: podcast_frontend_path(@conn, :show, @podcast)
+        ) %>
       </div>
       <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
         <ul class="list-disc ml-4">

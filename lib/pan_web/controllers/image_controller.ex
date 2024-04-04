@@ -56,6 +56,7 @@ defmodule PanWeb.ImageController do
 
   def cache_missing(conn, _params) do
     Task.start(fn -> PanWeb.Image.cache_missing() end)
+
     conn
     |> put_view(PageFrontendView)
     |> render("started.html")

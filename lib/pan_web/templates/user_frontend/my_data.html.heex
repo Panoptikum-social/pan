@@ -6,7 +6,8 @@
   <div class="float-right">
     Manage &nbsp; <%= link([icon("user-circle-heroicons-outline"), " My Profile"],
       to: user_frontend_path(@conn, :my_profile),
-      class: "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
+      class:
+        "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
       target: "_blank"
     ) %>
   </div>
@@ -94,11 +95,12 @@
   <div class="float-right">
     Manage &nbsp; <%= link([icon("document-download-heroicons-outline"), " My OPMLs"],
       to: opml_frontend_path(@conn, :index),
-      class: "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
+      class:
+        "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
       target: "_blank"
     ) %>
   </div>
-  <h2 class="text-2xl"> OPML Files </h2>
+  <h2 class="text-2xl">OPML Files</h2>
 </div>
 
 <ul class="list-disc ml-4">
@@ -117,7 +119,8 @@ You can even delete all manifestations as personas, you created so far, at once,
   to: manifestation_frontend_path(@conn, :delete_all),
   method: :delete,
   data: [confirm: "Are you sure? All manifestations will be deleted!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <%= for persona <- @user.personas do %>
@@ -136,7 +139,7 @@ You can even delete all manifestations as personas, you created so far, at once,
     <dt class="text-right">PanoptikumID</dt>
     <dd><%= persona.pid %></dd>
     <dt class="text-right">Name</dt>
-    <dd> <%= persona.name %> </dd>
+    <dd><%= persona.name %></dd>
     <dt class="text-right">Uri</dt>
     <dd><%= persona.uri %></dd>
     <dt class="text-right">Email</dt>
@@ -183,7 +186,8 @@ You can even delete all manifestations as personas, you created so far, at once,
 <h2 class="text-2xl mb-4 mt-8">
   Invoices
 </h2>
-Invoices cannot be deleted, we have to store them due to fiscal regulations. <%= for invoice <- @user.invoices do %>
+Invoices cannot be deleted, we have to store them due to fiscal regulations.
+<%= for invoice <- @user.invoices do %>
   <dl class="grid grid-cols-2 gap-x-6 max-w-2xl">
     <dt class="text-right">Date</dt>
     <dd><%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %></dd>
@@ -195,13 +199,16 @@ Invoices cannot be deleted, we have to store them due to fiscal regulations. <%=
 
 <h2 class="text-2xl mb-4 mt-8">Subscribed Podcasts</h2>
 
-<p class="mb-2">Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow.</p>
+<p class="mb-2">
+  Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow.
+</p>
 You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Delete all subscriptions"],
   to: subscription_frontend_path(@conn, :delete_all),
   method: :delete,
   data: [confirm: "Are you sure? All subscriptions will be deleted!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -222,14 +229,15 @@ You can even delete all the subscriptions, you created so far, at once, by click
 
 <p class="mb-2">
   Click on the podcast link to open the podcast show page in a new tab
-to un/like, un/subscribe, un/follow.
+  to un/like, un/subscribe, un/follow.
 </p>
 You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all podcasts"],
   to: follow_frontend_path(@conn, :unfollow_all_podcasts),
   method: :delete,
   data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -250,14 +258,15 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
 
 <p class="mb-2">
   Click on the podcast link to open the podcast show page in a new tab
-to un/like, un/subscribe, un/follow.
+  to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all podcasts"],
   to: like_frontend_path(@conn, :unlike_all_podcasts),
   method: :delete,
   data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -278,14 +287,15 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
 
 <p class="mb-2">
   Click on the episode link to open the episode show page in a new tab
-to un/like, un/subscribe, un/follow.
+  to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the episodes, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all episodes"],
   to: like_frontend_path(@conn, :unlike_all_episodes),
   method: :delete,
   data: [confirm: "Are you sure? All episodes will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -306,14 +316,15 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
 
 <p class="mb-2">
   Click on the chaptere link to open the episode show page in a new tab
-to un/like, un/subscribe, un/follow.
+  to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the chapters, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all chapters"],
   to: like_frontend_path(@conn, :unlike_all_chapters),
   method: :delete,
   data: [confirm: "Are you sure? All chapters will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -334,14 +345,15 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
 
 <p class="mb-2">
   Click on the user link to open the user show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unlike all the users, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all users"],
   to: like_frontend_path(@conn, :unlike_all_users),
   method: :delete,
   data: [confirm: "Are you sure? All users will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -362,14 +374,15 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
 
 <p class="mb-2">
   Click on the user link to open the user show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unfollow all the users, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all users"],
   to: follow_frontend_path(@conn, :unfollow_all_users),
   method: :delete,
   data: [confirm: "Are you sure? All users will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -390,14 +403,15 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
 
 <p class="mb-2">
   Click on the persona link to open the persona show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unfollow all the personas, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all personas"],
   to: follow_frontend_path(@conn, :unfollow_all_personas),
   method: :delete,
   data: [confirm: "Are you sure? All personas will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -418,14 +432,15 @@ You can even unfollow all the personas, you followed so far at once, by clicking
 
 <p class="mb-2">
   Click on the persona link to open the persona show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unlike all the personas, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all personas"],
   to: like_frontend_path(@conn, :unlike_all_personas),
   method: :delete,
   data: [confirm: "Are you sure? All personas will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -446,14 +461,15 @@ You can even unlike all the personas, you followed so far at once, by clicking &
 
 <p class="mb-2">
   Click on the category link to open the category show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unfollow all the categories, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unfollow all categories"],
   to: follow_frontend_path(@conn, :unfollow_all_categories),
   method: :delete,
   data: [confirm: "Are you sure? All categories will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -474,14 +490,15 @@ You can even unfollow all the categories, you followed so far at once, by clicki
 
 <p class="mb-2">
   Click on the category link to open the category show page in a new tab
-to un/like, un/follow.
+  to un/like, un/follow.
 </p>
 You can even unlike all the categories, you followed so far at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Unlike all categories"],
   to: like_frontend_path(@conn, :unlike_all_categories),
   method: :delete,
   data: [confirm: "Are you sure? All categories will be unfollowed!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -501,17 +518,17 @@ You can even unlike all the categories, you followed so far at once, by clicking
 </h2>
 
 <p class="mb-2">
-  You can delete a recommendation by clicking the Delete button next to it.
-  <br />
+  You can delete a recommendation by clicking the Delete button next to it. <br />
   You can double check the context by clicking the podcast or episode link, that will open
-podcast or episode in a new tab, respectively.
+  podcast or episode in a new tab, respectively.
 </p>
 You can even delete all the recommendations, you created so far, at once, by clicking &nbsp;
 <%= link([icon("exclamation-heroicons-outline"), " Delete all recommendations"],
   to: recommendation_frontend_path(@conn, :delete_all),
   method: :delete,
   data: [confirm: "Are you sure? All recommendations will be deleted!"],
-  class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+  class:
+    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
 ) %>
 
 <table cellpadding="4" class="my-4">

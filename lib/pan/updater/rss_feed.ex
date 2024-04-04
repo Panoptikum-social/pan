@@ -39,7 +39,8 @@ defmodule Pan.Updater.RssFeed do
       {:ok, Quinn.parse(feed_xml)}
     catch
       :exit, {:fatal, error} ->
-        {:error, "Podcast: #{podcast_id} Quinn parsing failed with error #{Kernel.inspect(error)}"}
+        {:error,
+         "Podcast: #{podcast_id} Quinn parsing failed with error #{Kernel.inspect(error)}"}
     end
   end
 

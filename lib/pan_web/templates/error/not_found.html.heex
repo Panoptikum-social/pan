@@ -1,15 +1,23 @@
-
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-
   <%= render(PanWeb.LayoutView, "_head.html", conn: @conn) %>
-  <% current_user = %PanWeb.User{id: 0, admin: false, name: "Dummy", username: "Dummy", email: "noreply@panoptikum.social"} %>
+  <% current_user = %PanWeb.User{
+    id: 0,
+    admin: false,
+    name: "Dummy",
+    username: "Dummy",
+    email: "noreply@panoptikum.social"
+  } %>
 
-  <body class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
-    data-js-view-name="StaticTemplateView">
-    <nav x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
+  <body
+    class="flex flex-col lg:flex-row lg:h-full text-gray-lighter bg-nav-background scrollbar-gray"
+    data-js-view-name="StaticTemplateView"
+  >
+    <nav
+      x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
       class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
-      x-bind:class="{'lg:p-1': !navbarOpen}">
+      x-bind:class="{'lg:p-1': !navbarOpen}"
+    >
       <%= render(PanWeb.LayoutView, "_navbar.html", conn: @conn, current_user: current_user) %>
     </nav>
 
@@ -25,7 +33,8 @@
         <%= render(PanWeb.LayoutView, "_footer.html", conn: @conn, current_user: current_user) %>
       </footer>
       <div class="flex justify-center w-full font-medium pb-4">
-        <p>Hosted by
+        <p>
+          Hosted by
           <a class="text-link hover:text-link-dark" href="https://www.informatom.com">
             Informatom EDV-Dienstleistungen e.U.
           </a>

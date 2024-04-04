@@ -36,17 +36,17 @@ defmodule Pan.MixProject do
       # web framework
       {:phoenix, "~> 1.7.3"},
       # phoenix support for ecto
-      {:phoenix_ecto, "~> 4.4.0"},
+      {:phoenix_ecto, "~> 4.5.1"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.10.1"},
+      {:ecto_sql, "~> 3.11.1"},
       # database adapter
       {:postgrex, "~> 0.17.1"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.19.1"},
+      {:phoenix_live_view, "~> 0.20.14"},
       # HTML parser
-      {:floki, "~> 0.35.0"},
+      {:floki, "~> 0.36.1"},
       # classic view layer
-      {:phoenix_html, "~> 3.0"},
+      {:phoenix_html, "~> 3.3.3"},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.8.0"},
       # phoenix classic views
@@ -56,7 +56,7 @@ defmodule Pan.MixProject do
       # Component library
       {:surface, "~> 0.11.0"},
       # telemetry_metrics
-      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_metrics, "~> 1.0.0"},
       # telemetry poller
       {:telemetry_poller, "~> 1.0"},
       # i18n library
@@ -68,7 +68,7 @@ defmodule Pan.MixProject do
       # time conversion
       {:timex, "~> 3.7"},
       # http client
-      {:httpoison, "~> 2.1.0"},
+      {:httpoison, "~> 2.2.1"},
       # XML parser
       {:quinn, "~> 1.1"},
       # UUID creation
@@ -76,7 +76,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.12.0"},
+      {:swoosh, "~> 1.16.3"},
       {:gen_smtp, "~> 1.2.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
@@ -94,9 +94,9 @@ defmodule Pan.MixProject do
       {:pid_file, "~> 0.2"},
 
       # Mix task invoking esbuild
-      {:esbuild, "~> 0.7.0", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.8.1", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.4.1", only: :dev},
+      {:phoenix_live_reload, "~> 1.5.3", only: :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]}
     ]

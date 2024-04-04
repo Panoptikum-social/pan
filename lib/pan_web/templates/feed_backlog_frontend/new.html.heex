@@ -7,7 +7,7 @@
 </p>
 <p>
   Links to the website of the podcast or even
-the link to the podcast on a different podcast directory will be discarded.
+  the link to the podcast on a different podcast directory will be discarded.
 </p>
 
 <%= form_for @changeset,
@@ -28,8 +28,13 @@ the link to the podcast on a different podcast directory will be discarded.
   </div>
 
   <div class="flex flex-col">
-    <%= submit("Submit", class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md") %>
+    <%= submit("Submit",
+      class: "bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
+    ) %>
   </div>
 <% end %>
-If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <%= link("My OPMLs", to: opml_frontend_path(@conn, :index), class: "text-link hover:text-link-dark") %> in your personal menu.
-
+If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <%= link(
+  "My OPMLs",
+  to: opml_frontend_path(@conn, :index),
+  class: "text-link hover:text-link-dark"
+) %> in your personal menu.
