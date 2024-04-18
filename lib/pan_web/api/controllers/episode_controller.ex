@@ -6,13 +6,19 @@ defmodule PanWeb.Api.EpisodeController do
 
   def index(conn, params) do
     page =
-      Map.get(params, "page", %{})
-      |> Map.get("number", "1")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "number"]) || "1"
+      else
+        "1"
+      end
       |> String.to_integer()
 
     size =
-      Map.get(params, "page", %{})
-      |> Map.get("size", "10")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "size"]) || "10"
+      else
+        "10"
+      end
       |> String.to_integer()
       |> min(1000)
 
@@ -77,13 +83,19 @@ defmodule PanWeb.Api.EpisodeController do
 
   def search(conn, params) do
     page =
-      Map.get(params, "page", %{})
-      |> Map.get("number", "1")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "number"]) || "1"
+      else
+        "1"
+      end
       |> String.to_integer()
 
     size =
-      Map.get(params, "page", %{})
-      |> Map.get("size", "10")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "size"]) || "10"
+      else
+        "10"
+      end
       |> String.to_integer()
       |> min(1000)
 

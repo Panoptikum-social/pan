@@ -22,13 +22,19 @@ defmodule PanWeb.Api.CategoryController do
 
   def show(conn, %{"id" => id} = params, _user) do
     page =
-      Map.get(params, "page", %{})
-      |> Map.get("number", "1")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "number"]) || "1"
+      else
+        "1"
+      end
       |> String.to_integer()
 
     size =
-      Map.get(params, "page", %{})
-      |> Map.get("size", "10")
+      if is_map(params["page"]) do
+        get_in(params, ["page", "size"]) || "10"
+      else
+        "10"
+      end
       |> String.to_integer()
       |> min(1000)
 
