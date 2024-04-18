@@ -34,7 +34,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       # web framework
-      {:phoenix, "~> 1.7.3"},
+      {:phoenix, "~> 1.7.12"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.5.1"},
       # ecto sql adapter
@@ -54,11 +54,11 @@ defmodule Pan.MixProject do
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "~> 0.11.0"},
+      {:surface, "~> 0.11.4"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 1.0.0"},
       # telemetry poller
-      {:telemetry_poller, "~> 1.0"},
+      {:telemetry_poller, "~> 1.1.0"},
       # i18n library
       {:gettext, "~> 0.11"},
       # web server plug
