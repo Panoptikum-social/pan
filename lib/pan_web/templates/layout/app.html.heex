@@ -2,15 +2,10 @@
   <p
     class="empty:hidden p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4"
     role="alert"
-  >
-    <%= Phoenix.Flash.get(@flash, :info) %>
-  </p>
+  ><%= Phoenix.Flash.get(@flash, :info) %></p>
   <p
     class="empty:hidden p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4"
     role="alert"
-  >
-    <%= Phoenix.Flash.get(@flash, :error) %>
-  </p>
-
+  ><%= Phoenix.Flash.get(@flash, :error) %></p>
   <%= @inner_content %>
 </main>

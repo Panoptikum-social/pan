@@ -90,7 +90,7 @@ defmodule PanWeb.Live.Persona.Edit do
       </Field>
 
       <div :if={!pro(@current_user)}
-            class="empty:hidden p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4">
+            class="p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4">
         <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
       </div>
 
