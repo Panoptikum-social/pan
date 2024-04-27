@@ -50,7 +50,8 @@ def orphans(conn, _params) do
   end
 
   def remove_unwanted_references(conn, %{"id" => id}) do
-    Podcast.remove_unwanted_references(id)
+    String.to_integer(id) |>
+    Podcast.remove_unwanted_references()
 
     conn
     |> put_view(PageFrontendView)
