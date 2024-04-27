@@ -30,9 +30,10 @@ defmodule PanWeb.Persona do
 
     belongs_to(:redirect, Persona)
     belongs_to(:user, User)
-    has_many(:engagements, Engagement)
+    has_many(:engagements, Engagement, on_delete: :delete_all)
     has_many(:gigs, Gig)
     has_many(:thumbnails, Image, on_delete: :delete_all)
+    has_many(:manifestations, Manifestation, on_delete: :delete_all)
 
     many_to_many(:delegates, Persona,
       join_through: "delegations",

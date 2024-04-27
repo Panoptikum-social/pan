@@ -286,6 +286,7 @@ defmodule PanWeb.Podcast do
 
   def remove_unwanted_references(id) do
     podcast = Repo.get(Podcast, id)
+    Search.Podcast.delete_index(id)
 
     if podcast.blocked do
       episode_ids =

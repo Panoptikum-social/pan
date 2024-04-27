@@ -99,7 +99,8 @@ defmodule PanWeb.Surface.Admin.DataTable do
             class={"bg-gray-lighter p-1",
                    "text-right": column.type == :integer}>
           <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
-                for={:search}
+                for={%{}}
+                as={:search}
                 change={@search}
                 opts={autocomplete: "off", onkeydown: "return event.key != 'Enter';"}
                 >

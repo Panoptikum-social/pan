@@ -22,7 +22,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   end
 
   def handle_info(:refresh, socket) do
-    Process.send_after(self(), :refresh, 5 * 1000)
+    Process.send_after(self(), :refresh, 60 * 1000)
     {:noreply, socket |> fetch()}
   end
 
@@ -41,11 +41,17 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   def handle_event("trigger-update", _, socket) do
     Task.start(fn ->
-      Podcast.get_one_stale()
-      |> Podcast.import_stale()
+      trigger_update()
     end)
 
     {:noreply, socket}
+  end
+
+  defp trigger_update() do
+    Podcast.get_one_stale()
+    |> Podcast.import_stale()
+
+    trigger_update()
   end
 
   def vienna_string(naive_date_time) do
@@ -66,7 +72,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
     <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
 
-    <p>This view is auto-refreshing every 5 seconds.</p>
+    <p>This view is auto-refreshing every 60 seconds.</p>
 
     <table cellpadding="4" class="my-4">
       <thead>

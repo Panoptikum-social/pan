@@ -16,7 +16,8 @@ defmodule PanWeb.Live.Session.New do
       <h1 class="text-3xl">Login</h1>
 
       <Form action="/sessions"
-            for={:session}
+            for={%{}}
+            as={:session}
             opts={autocomplete: "off"}>
 
         <Field name="username"
