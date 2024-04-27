@@ -13,7 +13,7 @@ defmodule PanWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: PanWeb
+      use Phoenix.Controller, namespace: PanWeb, layouts: [html: {PAnWeb.LayoutView, :app}]
 
       alias Pan.Repo
       alias PanWeb.Router.Helpers, as: Routes
