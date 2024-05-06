@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Analyzer do
   import Pan.Parser.Iterator, only: [parse: 3, parse: 4]
   import UUID, only: [uuid1: 0]
-  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1]
+  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1, strip_tags: 1]
   import Pan.Parser.MyDateTime, only: [now: 0]
   require Logger
 
@@ -948,6 +948,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:title, _, [value | _]]), do: %{title: to_255(value)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
+  def call(_, "episode", [:"itunes:title", _, [%{name: :"content:encoded", value: [value]}]]), do: %{title: strip_tags(value)}
   def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: to_255(value)}
 
   def call(_, "episode", [tag_atom, attr, _])

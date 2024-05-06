@@ -310,6 +310,10 @@ defmodule Pan.Parser.Helpers do
     |> scrub()
   end
 
+  def strip_tags(value) do
+    HtmlSanitizeEx.strip_tags(value)
+  end
+
   def md5hash(xml) do
     :crypto.hash(:md5, xml)
     |> Base.encode16()
