@@ -19,6 +19,7 @@ defmodule Pan.Parser.Download do
       416 => "416: range not satisfiable",
       422 => "422: unprocessible entity",
       423 => "423: locked",
+      428 => "428: precondition required",
       429 => "429: too many requests",
       451 => "451: unavailable For legal reasons",
       479 => "479: not a standard status code",
