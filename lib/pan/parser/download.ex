@@ -68,6 +68,7 @@ defmodule Pan.Parser.Download do
              416,
              422,
              423,
+             428,
              429,
              451,
              479,
