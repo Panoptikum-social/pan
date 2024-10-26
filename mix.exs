@@ -36,11 +36,11 @@ defmodule Pan.MixProject do
       # web framework
       {:phoenix, "~> 1.7.12"},
       # phoenix support for ecto
-      {:phoenix_ecto, "~> 4.5.1"},
+      {:phoenix_ecto, "~> 4.6.3"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.11.1"},
+      {:ecto_sql, "~> 3.12.1"},
       # database adapter
-      {:postgrex, "~> 0.17.1"},
+      {:postgrex, "~> 0.19.2"},
       # reactive view layer
       {:phoenix_live_view, "~> 0.20.14"},
       # HTML parser
@@ -76,7 +76,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.16.3"},
+      {:swoosh, "~> 1.17.2"},
       {:gen_smtp, "~> 1.2.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
