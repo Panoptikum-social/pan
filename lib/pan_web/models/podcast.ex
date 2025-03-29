@@ -656,7 +656,7 @@ defmodule PanWeb.Podcast do
         order_by: [asc: podcast.last_build_date],
         preload: [episodes: ^most_recent_episode]
       )
-      |> Repo.all()
+      |> Repo.all(timeout: 60_000)
 
       Enum.map(deprecated_podcasts, fn deprecated_podcast ->
         response = HTTPoison.get!(Enum.at(deprecated_podcast.episodes, 0).url)
