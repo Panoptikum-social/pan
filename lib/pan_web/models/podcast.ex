@@ -631,7 +631,10 @@ defmodule PanWeb.Podcast do
           row_number: over(row_number(), :posts_partition)
         },
         windows: [
-          posts_partition: [partition_by: :podcast_id, order_by: [desc_nulls_last: :publishing_date]]
+          posts_partition: [
+            partition_by: :podcast_id,
+            order_by: [desc_nulls_last: :publishing_date]
+          ]
         ]
       )
 
@@ -658,13 +661,19 @@ defmodule PanWeb.Podcast do
       )
       |> Repo.all(timeout: 60_000)
 
-      Enum.map(deprecated_podcasts, fn deprecated_podcast ->
+    Enum.map(deprecated_podcasts, fn deprecated_podcast ->
+      try do
         case HTTPoison.get(Enum.at(deprecated_podcast.episodes, 0).url, [], follow_redirect: true) do
-        {:ok, response} ->
-        Map.put(deprecated_podcast, :status_code, response.status_code)
-        {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
-          Map.put(deprecated_podcast, :status_code, reason)
+          {:ok, response} ->
+            Map.put(deprecated_podcast, :status_code, response.status_code)
+
+          {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
+            Map.put(deprecated_podcast, :status_code, reason)
         end
-      end)
+      rescue
+        e in CaseClauseError -> Map.put(deprecated_podcast, :status_code, "CaseClauseError")
+        e -> Map.put(deprecated_podcast, :status_code, e.message)
+      end
+    end)
   end
 end
