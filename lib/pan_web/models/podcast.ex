@@ -631,7 +631,7 @@ defmodule PanWeb.Podcast do
           row_number: over(row_number(), :posts_partition)
         },
         windows: [
-          posts_partition: [partition_by: :podcast_id, order_by: [desc: :inserted_at]]
+          posts_partition: [partition_by: :podcast_id, order_by: [desc_nulls_last: :publishing_date]]
         ]
       )
 
