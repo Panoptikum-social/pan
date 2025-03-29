@@ -659,7 +659,7 @@ defmodule PanWeb.Podcast do
       |> Repo.all(timeout: 60_000)
 
       Enum.map(deprecated_podcasts, fn deprecated_podcast ->
-        response = HTTPoison.get!(Enum.at(deprecated_podcast.episodes, 0).url)
+        {:ok, response} = HTTPoison.get(Enum.at(deprecated_podcast.episodes, 0).url)
         Map.put(deprecated_podcast, :status_code, response.status_code)
       end)
   end
