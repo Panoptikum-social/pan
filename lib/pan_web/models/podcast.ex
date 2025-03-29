@@ -51,7 +51,7 @@ defmodule PanWeb.Podcast do
     field(:thumbnailed, :boolean, default: false)
     field(:last_error_message, :string)
     field(:last_error_occured, :naive_datetime)
-    field(:status_code, :integer, virtual: true)
+    field(:status_code, :string, virtual: true)
     timestamps()
 
     has_many(:episodes, Episode, on_delete: :delete_all)
@@ -659,8 +659,12 @@ defmodule PanWeb.Podcast do
       |> Repo.all(timeout: 60_000)
 
       Enum.map(deprecated_podcasts, fn deprecated_podcast ->
-        {:ok, response} = HTTPoison.get(Enum.at(deprecated_podcast.episodes, 0).url)
+        case HTTPoison.get(Enum.at(deprecated_podcast.episodes, 0).url, [], follow_redirect: true) do
+        {:ok, response} ->
         Map.put(deprecated_podcast, :status_code, response.status_code)
+        {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
+          Map.put(deprecated_podcast, :status_code, reason)
+        end
       end)
   end
 end
