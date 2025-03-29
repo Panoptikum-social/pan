@@ -19,8 +19,8 @@ defmodule PanWeb.Feed do
     field(:hash, :string)
     timestamps()
 
-    belongs_to(:podcast, PanWeb.Podcast)
-    has_many(:alternate_feeds, PanWeb.AlternateFeed, on_delete: :delete_all)
+    belongs_to(:podcast, Podcast)
+    has_many(:alternate_feeds, AlternateFeed, on_delete: :delete_all)
   end
 
   def changeset(struct, params \\ %{}) do

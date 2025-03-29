@@ -1,0 +1,66 @@
+<div class="m-4">
+  <h1 class="text-3xl">
+    10 longest deprecated Podcasts
+  </h1>
+
+  <table cellpadding="4" class="my-4 border border-gray-light rounded-lg">
+    <thead>
+      <tr>
+        <th class="border border-gray-light">
+          ID
+        </th>
+        <th class="border border-gray-light">
+          Title
+        </th>
+        <th class="border border-gray-light">
+          Last build date
+        </th>
+        <th class="border border-gray-light">
+          Actions
+        </th>
+        <th class="border border-gray-light">
+          Last Episode
+        </th>
+        <th class="border border-gray-light">
+          Last Episode Url
+        </th>
+        <th class="border border-gray-light">
+          Status Code
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for deprecated_podcast <- @deprecated_podcasts do %>
+        <tr>
+          <td class="border border-gray-light"><%= deprecated_podcast.id %></td>
+          <td class="border border-gray-light"><%= deprecated_podcast.title %></td>
+          <td class="border border-gray-light">
+            <%= deprecated_podcast.last_build_date %>
+          </td>
+          <td class="border border-gray-light">
+            <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
+              to: episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id),
+              class:
+                "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+          </td>
+          <td class="border border-gray-light">
+            <%= Enum.at(deprecated_podcast.episodes, 0).url %>
+          </td>
+          <td class="border border-gray-light">
+            <%= deprecated_podcast.status_code %>
+          </td>
+          <td class="border border-gray-light">
+            <%= link("Delete",
+              to: podcast_path(@conn, :delete, deprecated_podcast),
+              method: :delete,
+              target: "_blank",
+              class:
+                "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+            ) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

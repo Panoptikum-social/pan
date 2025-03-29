@@ -457,6 +457,7 @@ defmodule PanWeb.Router do
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
     get("/podcasts/update_all_counters", PodcastController, :update_all_counters)
     get("/podcasts/:id/remove_unwanted_references", PodcastController, :remove_unwanted_references)
+    get("/podcasts/deprecated", PodcastController, :deprecated)
     resources("/podcasts", PodcastController, only: [:delete])
 
     get("/search/push_missing", SearchController, :push_missing)

@@ -222,15 +222,17 @@ def orphans(conn, _params) do
     |> render("done.html")
   end
 
+  def deprecated(conn, _params) do
+    deprecated_podcasts = Podcast.get_deprecated()
+
+    render(conn, "deprecated.html", deprecated_podcasts: deprecated_podcasts)
+  end
+
   defp update_missing_counters_async(podcasts) do
     for {podcast, index} <- Enum.with_index(podcasts) do
       Podcast.changeset(podcast)
       |> Podcast.update_counters()
       |> Repo.update()
-
-      Logger.info("Fixed counter for Podcast #{index} / id #{podcast.id}")
     end
-
-    Logger.info("Counter update job finished")
   end
 end

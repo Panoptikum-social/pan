@@ -51,6 +51,7 @@ defmodule PanWeb.Podcast do
     field(:thumbnailed, :boolean, default: false)
     field(:last_error_message, :string)
     field(:last_error_occured, :naive_datetime)
+    field(:status_code, :integer, virtual: true)
     timestamps()
 
     has_many(:episodes, Episode, on_delete: :delete_all)
@@ -620,5 +621,46 @@ defmodule PanWeb.Podcast do
       next_update: now()
     })
     |> Repo.update()
+  end
+
+  def get_deprecated() do
+    ranked_episodes =
+      from(episode in Episode,
+        select: %{
+          id: episode.id,
+          row_number: over(row_number(), :posts_partition)
+        },
+        windows: [
+          posts_partition: [partition_by: :podcast_id, order_by: [desc: :inserted_at]]
+        ]
+      )
+
+    most_recent_episode =
+      from(episode in Episode,
+        join: ranked_episode in subquery(ranked_episodes),
+        on: episode.id == ranked_episode.id and ranked_episode.row_number == 1,
+        join: enclosure in assoc(episode, :enclosures),
+        on: episode.id == enclosure.episode_id,
+        select: %{
+          id: episode.id,
+          title: episode.title,
+          link: episode.link,
+          url: enclosure.url
+        }
+      )
+
+    deprecated_podcasts =
+      from(podcast in Podcast,
+        where: podcast.retired == true,
+        limit: 10,
+        order_by: [asc: podcast.last_build_date],
+        preload: [episodes: ^most_recent_episode]
+      )
+      |> Repo.all()
+
+      Enum.map(deprecated_podcasts, fn deprecated_podcast ->
+        response = HTTPoison.get!(Enum.at(deprecated_podcast.episodes, 0).url)
+        Map.put(deprecated_podcast, :status_code, response.status_code)
+      end)
   end
 end
