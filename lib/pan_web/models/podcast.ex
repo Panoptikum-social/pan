@@ -686,7 +686,7 @@ defmodule PanWeb.Podcast do
             end
         end
       rescue
-        e in CaseClauseError ->
+        _e in CaseClauseError ->
           Map.put(deprecated_podcast, :status_code, "CaseClauseError")
 
         e ->
