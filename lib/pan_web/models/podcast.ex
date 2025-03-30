@@ -503,6 +503,12 @@ defmodule PanWeb.Podcast do
     |> Repo.update()
   end
 
+  def unretire(podcast) do
+    podcast
+    |> Podcast.changeset(%{retired: false})
+    |> Repo.update()
+  end
+
   def get_by_id(id) do
     Repo.get!(Podcast, id)
   end

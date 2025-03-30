@@ -16,7 +16,7 @@
           Last build date
         </th>
         <th class="border border-gray-light">
-          Actions
+          # Episodes
         </th>
         <th class="border border-gray-light">
           Last Episode
@@ -27,6 +27,9 @@
         <th class="border border-gray-light">
           Status Code
         </th>
+        <th class="border border-gray-light">
+          Actions
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +39,9 @@
           <td class="border border-gray-light"><%= deprecated_podcast.title %></td>
           <td class="border border-gray-light">
             <%= deprecated_podcast.last_build_date %>
+          </td>
+          <td class="border border-gray-light">
+            <%= deprecated_podcast.episodes_count %>
           </td>
           <td class="border border-gray-light">
             <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
@@ -51,12 +57,20 @@
             <%= deprecated_podcast.status_code %>
           </td>
           <td class="border border-gray-light">
-            <%= link("Delete",
-              to: podcast_path(@conn, :delete, deprecated_podcast),
-              method: :delete,
+            <%= if deprecated_podcast.status_code != 200 do %>
+              <%= link("Delete",
+                to: podcast_path(@conn, :delete, deprecated_podcast),
+                method: :delete,
+                target: "_blank",
+                class:
+                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+              ) %>
+            <% end %>
+            <%= link("Unretire",
+              to: podcast_path(@conn, :unretire, deprecated_podcast),
               target: "_blank",
               class:
-                "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+                "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
             ) %>
           </td>
         </tr>

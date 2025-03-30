@@ -70,8 +70,19 @@ def orphans(conn, _params) do
     Repo.delete!(podcast)
 
     conn
+    |> put_view(PageFrontendView)
     |> put_flash(:info, "Podcast deleted successfully.")
-    |> redirect(to: podcast_frontend_path(conn, :index))
+    |> render("done.html")
+  end
+
+  def unretire(conn, %{"id" => id}) do
+    podcast = Repo.get!(Podcast, id)
+    Podcast.unretire(podcast)
+
+    conn
+    |> put_view(PageFrontendView)
+    |> put_flash(:info, "Podcast came back from retirement.")
+    |> render("done.html")
   end
 
   def delta_import(conn, %{"id" => id}, forced \\ false, no_failure_count_increase \\ false) do
@@ -229,7 +240,7 @@ def orphans(conn, _params) do
   end
 
   defp update_missing_counters_async(podcasts) do
-    for {podcast, index} <- Enum.with_index(podcasts) do
+    for {podcast, _index} <- Enum.with_index(podcasts) do
       Podcast.changeset(podcast)
       |> Podcast.update_counters()
       |> Repo.update()
