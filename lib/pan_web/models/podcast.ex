@@ -674,12 +674,20 @@ defmodule PanWeb.Podcast do
             Map.put(deprecated_podcast, :status_code, response.status_code)
 
           {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
-            Map.put(deprecated_podcast, :status_code, reason)
+            case reason do
+              {:invalid_redirection, _} ->
+                Map.put(deprecated_podcast, :status_code, "invalid_redirection")
+
+              _ ->
+                Map.put(deprecated_podcast, :status_code, reason)
+            end
         end
       rescue
-        e in CaseClauseError -> Map.put(deprecated_podcast, :status_code, "CaseClauseError")
-        e in Protocol.UndefinedError -> Map.put(deprecated_podcast, :status_code, "Protocol.UndefinedError")
-        e -> Map.put(deprecated_podcast, :status_code, e.message)
+        e in CaseClauseError ->
+          Map.put(deprecated_podcast, :status_code, "CaseClauseError")
+
+        e ->
+          Map.put(deprecated_podcast, :status_code, e.message)
       end
     end)
   end
