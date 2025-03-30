@@ -676,8 +676,9 @@ defmodule PanWeb.Podcast do
           {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
             case reason do
               {:invalid_redirection, _} ->
-                Map.put(deprecated_podcast, :status_code, "invalid_redirection")
-
+                Map.put(deprecated_podcast, :status_code, "invalid redirection")
+                {:tls_alert, _} ->
+                  Map.put(deprecated_podcast, :status_code, "TLS alert")
               _ ->
                 Map.put(deprecated_podcast, :status_code, reason)
             end
