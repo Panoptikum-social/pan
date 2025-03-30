@@ -662,7 +662,7 @@ defmodule PanWeb.Podcast do
       from(podcast in Podcast,
         where: podcast.retired == true,
         limit: 10,
-        order_by: [asc: podcast.last_build_date],
+        order_by: [asc_nulls_first: podcast.last_build_date],
         preload: [episodes: ^most_recent_episode]
       )
       |> Repo.all(timeout: 60_000)
@@ -679,6 +679,8 @@ defmodule PanWeb.Podcast do
                 Map.put(deprecated_podcast, :status_code, "invalid redirection")
                 {:tls_alert, _} ->
                   Map.put(deprecated_podcast, :status_code, "TLS alert")
+                 {:closed, ""}
+                  Map.put(deprecated_podcast, :status_code, "closed")
               _ ->
                 Map.put(deprecated_podcast, :status_code, reason)
             end
