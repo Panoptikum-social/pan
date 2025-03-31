@@ -667,33 +667,65 @@ defmodule PanWeb.Podcast do
       )
       |> Repo.all(timeout: 60_000)
 
-    Enum.map(deprecated_podcasts, fn deprecated_podcast ->
-      try do
-        case HTTPoison.get(Enum.at(deprecated_podcast.episodes, 0).url, [], follow_redirect: true) do
-          {:ok, response} ->
-            Map.put(deprecated_podcast, :status_code, response.status_code)
+    deprecated_podcasts =
+      Enum.map(deprecated_podcasts, fn dp ->
+        try do
+          case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
+            {:ok, response} ->
+              Map.put(dp, :status_code, response.status_code)
 
-          {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
-            case reason do
-              {:invalid_redirection, _} ->
-                Map.put(deprecated_podcast, :status_code, "invalid redirection")
+            {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
+              case reason do
+                {:invalid_redirection, _} ->
+                  Map.put(dp, :status_code, "invalid redirection")
 
-              {:tls_alert, _} ->
-                Map.put(deprecated_podcast, :status_code, "TLS alert")
+                {:tls_alert, _} ->
+                  Map.put(dp, :status_code, "TLS alert")
 
-              {:closed, ""} ->
-                Map.put(deprecated_podcast, :status_code, "closed")
+                {:closed, ""} ->
+                  Map.put(dp, :status_code, "closed")
 
-              _ ->
-                Map.put(deprecated_podcast, :status_code, reason)
-            end
+                _ ->
+                  Map.put(dp, :status_code, reason)
+              end
+          end
+        rescue
+          _e in CaseClauseError ->
+            Map.put(dp, :status_code, "CaseClauseError")
+
+          e ->
+            Map.put(dp, :status_code, e.message)
         end
-      rescue
-        _e in CaseClauseError ->
-          Map.put(deprecated_podcast, :status_code, "CaseClauseError")
+      end)
 
-        e ->
-          Map.put(deprecated_podcast, :status_code, e.message)
+    Enum.map(deprecated_podcasts, fn dp ->
+      cond do
+        dp.status_code in [
+          :nxdomain,
+          403,
+          404,
+          410,
+          503,
+          "invalid redirection",
+          "TLS alert",
+          :closed,
+          "closed",
+          :timeout,
+          :connect_timeout,
+          :ehostunreach
+        ] ->
+          for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
+          Search.Podcast.delete_index(dp.id)
+          Repo.delete!(dp)
+          Map.replace(dp, :status_code, "deleted")
+
+        dp.status_code == 200 ->
+          unretire(dp)
+          Map.replace(dp, :status_code, "unretired")
+
+        true ->
+          IO.inspect(dp.status_code)
+          dp
       end
     end)
   end

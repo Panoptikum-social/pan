@@ -57,7 +57,7 @@
             <%= deprecated_podcast.status_code %>
           </td>
           <td class="border border-gray-light">
-            <%= if deprecated_podcast.status_code != 200 do %>
+            <%= if deprecated_podcast.status_code not in [200, "unretired", "deleted"] do %>
               <%= link("Delete",
                 to: podcast_path(@conn, :delete, deprecated_podcast),
                 method: :delete,
@@ -66,12 +66,14 @@
                   "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
               ) %>
             <% end %>
-            <%= link("Unretire",
-              to: podcast_path(@conn, :unretire, deprecated_podcast),
-              target: "_blank",
-              class:
-                "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
-            ) %>
+            <%= if deprecated_podcast.status_code == 200 do %>
+              <%= link("Unretire",
+                to: podcast_path(@conn, :unretire, deprecated_podcast),
+                target: "_blank",
+                class:
+                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+              ) %>
+            <% end %>
           </td>
         </tr>
       <% end %>
