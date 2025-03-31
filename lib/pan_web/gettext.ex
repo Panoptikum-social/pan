@@ -20,5 +20,5 @@ defmodule PanWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :pan
+  use Gettext.Backend, otp_app: :pan
 end
