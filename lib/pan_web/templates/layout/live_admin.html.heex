@@ -4,12 +4,12 @@
     class="empty:hidden inline-block rounded-xl p-4 m-4 text-black bg-aqua-light/20 border border-aqua-dark border-dotted"
     phx-click="lv:clear-flash"
     phx-value-key="info"
-  ><%= live_flash(@flash, :info) %></p>
+  ><%= Phoenix.Flash.get(@flash, :info) %></p>
   <p
     id="alert-error"
     class="empty:hidden inline-block rounded-xl p-4 m-4 text-black bg-grapefruit-light/20 border border-grapefruit-dark border-dotted"
     phx-click="lv:clear-flash"
     phx-value-key="error"
-  ><%= live_flash(@flash, :error) %></p>
+  ><%= Phoenix.Flash.get(@flash, :error) %></p>
   <%= @inner_content %>
 </main>
