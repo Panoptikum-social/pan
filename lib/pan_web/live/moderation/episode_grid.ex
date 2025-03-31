@@ -60,7 +60,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
     edit_episode_path =
       Routes.moderation_frontend_path(socket, :edit_episode, category_id, episode_id)
 
-    {:noreply, push_redirect(socket, to: edit_episode_path)}
+    {:noreply, push_navigate(socket, to: edit_episode_path)}
   end
 
   def handle_info({:show_in_frontend, episode_id}, socket) do

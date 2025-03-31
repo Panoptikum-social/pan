@@ -31,14 +31,14 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
     {:noreply,
      socket
      |> put_flash(flash_type, message)
-     |> push_redirect(to: path)}
+     |> push_navigate(to: path)}
   end
 
   def handle_info({:saved, %{message: message}}, socket) do
     show_path =
       Routes.databrowser_path(socket, :show, socket.assigns.resource, socket.assigns.record.id)
 
-    {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: show_path)}
+    {:noreply, socket |> put_flash(:info, message) |> push_navigate(to: show_path)}
   end
 
   def render(assigns) do

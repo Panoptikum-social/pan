@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Admin.Databrowser.New do
     {:noreply,
      socket
      |> put_flash(flash_type, message)
-     |> push_redirect(to: path)}
+     |> push_navigate(to: path)}
   end
 
   def render(assigns) do

@@ -40,7 +40,7 @@ defmodule PanWeb.Live.User.New do
 
         {:noreply,
          put_flash(socket, :info, message)
-         |> push_redirect(to: session_path(Endpoint, :login_from_signup, token: token))}
+         |> push_navigate(to: session_path(Endpoint, :login_from_signup, token: token))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

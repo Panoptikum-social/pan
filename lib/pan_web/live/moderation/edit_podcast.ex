@@ -77,7 +77,7 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     moderation_path =
       Routes.moderation_frontend_path(socket, :moderation, socket.assigns.category_id)
 
-    {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: moderation_path)}
+    {:noreply, socket |> put_flash(:info, message) |> push_navigate(to: moderation_path)}
   end
 
   def render(%{error: "not_found"} = assigns) do

@@ -174,7 +174,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
         socket =
           put_flash(socket, :error, message)
-          |> push_redirect(to: index_path)
+          |> push_navigate(to: index_path)
 
         {:noreply, socket}
     end
@@ -221,7 +221,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     if Map.has_key?(selected_record, :id) do
       id = selected_record |> Map.get(:id)
       show_path = Routes.databrowser_path(socket, :show, resource, id)
-      {:noreply, push_redirect(socket, to: show_path)}
+      {:noreply, push_navigate(socket, to: show_path)}
     else
       [first_column, second_column] = socket.assigns.primary_key
 
@@ -236,7 +236,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           selected_record[second_column]
         )
 
-      {:noreply, push_redirect(socket, to: show_mediating_path)}
+      {:noreply, push_navigate(socket, to: show_mediating_path)}
     end
   end
 
@@ -247,7 +247,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
       path_helper = socket.assigns.path_helper
       id = selected_record |> Map.get(:id)
       show_path = Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
-      {:noreply, push_redirect(socket, to: show_path)}
+      {:noreply, push_navigate(socket, to: show_path)}
     end
   end
 
@@ -258,7 +258,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     if Map.has_key?(selected_record, :id) do
       id = selected_record.id
       edit_path = Routes.databrowser_path(socket, :edit, resource, id)
-      {:noreply, push_redirect(socket, to: edit_path)}
+      {:noreply, push_navigate(socket, to: edit_path)}
     else
       [first_column, second_column] = socket.assigns.primary_key
 
@@ -273,7 +273,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
           Map.get(selected_record, second_column)
         )
 
-      {:noreply, push_redirect(socket, to: edit_mediating_path)}
+      {:noreply, push_navigate(socket, to: edit_mediating_path)}
     end
   end
 

@@ -60,7 +60,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   def handle_info({:edit_feed, feed_id}, socket) do
     category_id = socket.assigns[:category_id]
     edit_feed_path = Routes.moderation_frontend_path(socket, :edit_feed, category_id, feed_id)
-    {:noreply, push_redirect(socket, to: edit_feed_path)}
+    {:noreply, push_navigate(socket, to: edit_feed_path)}
   end
 
   def render(%{error: "not_found"} = assigns) do

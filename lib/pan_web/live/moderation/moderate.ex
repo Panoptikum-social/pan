@@ -67,13 +67,13 @@ defmodule PanWeb.Live.Moderation.Moderate do
     episode_grid_path =
       Routes.moderation_frontend_path(socket, :episode_grid, category_id, podcast_id)
 
-    {:noreply, push_redirect(socket, to: episode_grid_path)}
+    {:noreply, push_navigate(socket, to: episode_grid_path)}
   end
 
   def handle_info({:show_feeds, podcast_id}, socket) do
     category_id = socket.assigns[:category].id
     feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, category_id, podcast_id)
-    {:noreply, push_redirect(socket, to: feed_grid_path)}
+    {:noreply, push_navigate(socket, to: feed_grid_path)}
   end
 
   def handle_info({:edit_podcast, podcast_id}, socket) do
@@ -82,7 +82,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
     edit_podcast_path =
       Routes.moderation_frontend_path(socket, :edit_podcast, category_id, podcast_id)
 
-    {:noreply, push_redirect(socket, to: edit_podcast_path)}
+    {:noreply, push_navigate(socket, to: edit_podcast_path)}
   end
 
   def handle_info({:show_in_frontend, podcast_id}, socket) do

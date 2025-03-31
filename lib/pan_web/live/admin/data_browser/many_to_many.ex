@@ -89,7 +89,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
         related_id
       )
 
-    {:noreply, push_redirect(socket, to: new_association_path)}
+    {:noreply, push_navigate(socket, to: new_association_path)}
   end
 
   def handle_info({:count, id: id, module: module}, socket) do

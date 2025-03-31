@@ -67,7 +67,7 @@ defmodule PanWeb.Live.Persona.Edit do
         {:noreply,
          socket
          |> put_flash(:info, "Persona updated successfully.")
-         |> push_redirect(to: user_frontend_path(Endpoint, :my_profile))}
+         |> push_navigate(to: user_frontend_path(Endpoint, :my_profile))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

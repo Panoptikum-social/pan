@@ -70,7 +70,7 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
         socket.assigns.episode.podcast_id
       )
 
-    {:noreply, socket |> put_flash(:info, message) |> push_redirect(to: episode_grid_path)}
+    {:noreply, socket |> put_flash(:info, message) |> push_navigate(to: episode_grid_path)}
   end
 
   def render(%{error: "not_found"} = assigns) do

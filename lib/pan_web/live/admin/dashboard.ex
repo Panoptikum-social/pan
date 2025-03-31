@@ -47,7 +47,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
     index_path =
       Routes.databrowser_path(socket, :index, Phoenix.Naming.resource_name(selected_schema.title))
 
-    {:noreply, push_redirect(socket, to: index_path)}
+    {:noreply, push_navigate(socket, to: index_path)}
   end
 
   def handle_event("db_index", _, socket) do
@@ -62,7 +62,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
         Phoenix.Naming.resource_name(selected_schema.title)
       )
 
-    {:noreply, push_redirect(socket, to: index_path)}
+    {:noreply, push_navigate(socket, to: index_path)}
   end
 
   def handle_event("schema_definition", _, socket) do
@@ -78,7 +78,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
         Phoenix.Naming.resource_name(selected_schema.title)
       )
 
-    {:noreply, push_redirect(socket, to: index_path)}
+    {:noreply, push_navigate(socket, to: index_path)}
   end
 
   def render(assigns) do
