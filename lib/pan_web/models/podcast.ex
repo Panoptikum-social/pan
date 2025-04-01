@@ -715,6 +715,8 @@ defmodule PanWeb.Podcast do
           "TLS alert",
           :closed,
           "closed",
+          :ehostunreach,
+          :econnrefused,
           :timeout,
           :connect_timeout,
           "max_redirect_overflow"
