@@ -685,6 +685,9 @@ defmodule PanWeb.Podcast do
                 {:closed, ""} ->
                   Map.put(dp, :status_code, "closed")
 
+                {:max_redirect_overflow, ""} ->
+                  Map.put(dp, :status_code, "max_redirect_overflow")
+
                 _ ->
                   Map.put(dp, :status_code, reason)
               end
@@ -702,9 +705,11 @@ defmodule PanWeb.Podcast do
       cond do
         dp.status_code in [
           :nxdomain,
+          400,
           403,
           404,
           410,
+          500,
           503,
           "invalid redirection",
           "TLS alert",
@@ -712,7 +717,7 @@ defmodule PanWeb.Podcast do
           "closed",
           :timeout,
           :connect_timeout,
-          :ehostunreach
+          "max_redirect_overflow"
         ] ->
           for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
           Search.Podcast.delete_index(dp.id)
