@@ -1,7 +1,7 @@
 import Config
 
 config :pan, PanWeb.Endpoint,
-  http: [port: 8888, compress: false],
+  http: [port: 8888, compress: false, protocol_options: [idle_timeout: 120_000]],
   url: [scheme: "https", host: "panoptikum.social", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
