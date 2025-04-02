@@ -44,14 +44,19 @@
             <%= deprecated_podcast.episodes_count %>
           </td>
           <td class="border border-gray-light">
-            <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
-              to: episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id),
-              class:
-                "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
-            ) %>
+            <%= if Enum.at(deprecated_podcast.episodes, 0) do %>
+              <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
+                to:
+                  episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id),
+                class:
+                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+              ) %>
+            <% end %>
           </td>
           <td class="border border-gray-light">
-            <%= Enum.at(deprecated_podcast.episodes, 0).url %>
+            <%= if Enum.at(deprecated_podcast.episodes, 0) do %>
+              <%= Enum.at(deprecated_podcast.episodes, 0).url %>
+            <% end %>
           </td>
           <td class="border border-gray-light">
             <%= deprecated_podcast.status_code %>
