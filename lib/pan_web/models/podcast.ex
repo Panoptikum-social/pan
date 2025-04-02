@@ -685,7 +685,7 @@ defmodule PanWeb.Podcast do
                 {:closed, ""} ->
                   Map.put(dp, :status_code, "closed")
 
-                {:max_redirect_overflow, ""} ->
+                {:max_redirect_overflow, _} ->
                   Map.put(dp, :status_code, "max_redirect_overflow")
 
                 _ ->
@@ -708,6 +708,7 @@ defmodule PanWeb.Podcast do
           400,
           403,
           404,
+          409,
           410,
           500,
           503,
