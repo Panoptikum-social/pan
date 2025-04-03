@@ -234,7 +234,7 @@ def orphans(conn, _params) do
   end
 
   def deprecated(conn, _params) do
-    deprecated_podcasts = Podcast.get_deprecated()
+    deprecated_podcasts = Podcast.get_deprecated(10)
 
     render(conn, "deprecated.html", deprecated_podcasts: deprecated_podcasts)
   end

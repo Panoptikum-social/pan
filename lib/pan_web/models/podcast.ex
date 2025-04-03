@@ -629,7 +629,7 @@ defmodule PanWeb.Podcast do
     |> Repo.update()
   end
 
-  def get_deprecated() do
+  def get_deprecated(amount) do
     ranked_episodes =
       from(episode in Episode,
         select: %{
@@ -661,7 +661,7 @@ defmodule PanWeb.Podcast do
     deprecated_podcasts =
       from(podcast in Podcast,
         where: podcast.retired == true,
-        limit: 10,
+        limit: ^amount,
         order_by: [asc_nulls_first: podcast.last_build_date],
         preload: [episodes: ^most_recent_episode]
       )
@@ -669,6 +669,7 @@ defmodule PanWeb.Podcast do
 
     deprecated_podcasts =
       Enum.map(deprecated_podcasts, fn dp ->
+        IO.write("🖥️")
         try do
           case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
             {:ok, response} ->
@@ -725,14 +726,15 @@ defmodule PanWeb.Podcast do
           for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
           Search.Podcast.delete_index(dp.id)
           Repo.delete!(dp)
+          IO.write("🗑️")
           Map.replace(dp, :status_code, "deleted")
 
         dp.status_code == 200 ->
           unretire(dp)
+          IO.write("🔛")
           Map.replace(dp, :status_code, "unretired")
 
         true ->
-          IO.inspect(dp.status_code)
           dp
       end
     end)
