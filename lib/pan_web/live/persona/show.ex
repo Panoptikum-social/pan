@@ -42,6 +42,10 @@ defmodule PanWeb.Live.Persona.Show do
     end
   end
 
+  def mount(:not_mounted_at_router, %{"_csrf_token" => _token}, socket) do
+    {:ok, assign(socket, wrong_token: true)}
+  end
+
   defp fetch_gigs(
          %{
            assigns: %{
@@ -79,6 +83,14 @@ defmodule PanWeb.Live.Persona.Show do
     ~F"""
     <div class="m-4">
       We don't know a persona with that name.
+    </div>
+    """
+  end
+
+    def render(%{wrong_token: true} = assigns) do
+    ~F"""
+    <div class="m-4">
+      The crawler sent the wrong token.
     </div>
     """
   end
