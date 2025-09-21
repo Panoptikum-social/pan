@@ -56,9 +56,9 @@ defmodule Pan.MixProject do
       # Component library
       {:surface, "~> 0.11.4"},
       # telemetry_metrics
-      {:telemetry_metrics, "~> 1.0.0"},
+      {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller
-      {:telemetry_poller, "~> 1.1.0"},
+      {:telemetry_poller, "~> 1.3.0"},
       # i18n library
       {:gettext, "~> 0.11"},
       # web server plug
