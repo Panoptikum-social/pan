@@ -5,7 +5,7 @@ defmodule Pan.MixProject do
     [
       app: :pan,
       version: "1.0.0",
-      elixir: "~> 1.13",
+      elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
@@ -34,19 +34,19 @@ defmodule Pan.MixProject do
   defp deps do
     [
       # web framework
-      {:phoenix, "~> 1.7.12"},
+      {:phoenix, "~> 1.8.1"},
       # phoenix support for ecto
-      {:phoenix_ecto, "~> 4.5.1"},
+      {:phoenix_ecto, "~> 4.6.5"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.11.1"},
+      {:ecto_sql, "~> 3.13.2"},
       # database adapter
-      {:postgrex, "~> 0.17.1"},
+      {:postgrex, "~> 0.21.1"},
       # reactive view layer
-      {:phoenix_live_view, "~> 0.20.14"},
+      {:phoenix_live_view, "~> 1.1.13"},
       # HTML parser
-      {:floki, "~> 0.36.1"},
+      {:floki, "~> 0.38.0"},
       # classic view layer
-      {:phoenix_html, "~> 3.3.3"},
+      {:phoenix_html, "~> 4.3.0"},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.8.0"},
       # phoenix classic views
@@ -54,13 +54,13 @@ defmodule Pan.MixProject do
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
-      {:surface, "~> 0.11.4"},
+      {:surface, "~> 0.12.1"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller
       {:telemetry_poller, "~> 1.3.0"},
       # i18n library
-      {:gettext, "~> 0.11"},
+      {:gettext, "~> 0.26"},
       # web server plug
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
@@ -76,27 +76,29 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.16.3"},
-      {:gen_smtp, "~> 1.2.0"},
+      {:swoosh, "~> 1.19.8"},
+      {:gen_smtp, "~> 1.3.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
       # Timezone information
       {:tzdata, "~> 1.0"},
       # Jsonapi.org serializer
       {:ja_serializer, "~> 0.15"},
+      # See https://github.com/nurugger07/inflex/pull/99, why we have to pull this from githab
+      {:inflex, github: "warmwaffles/inflex", branch: "master", override: true},
       # Unicode converter
       {:iconv, "~> 1.0.12"},
       # Imagemagick wrapper
       {:mogrify, "~> 0.7"},
       # QR Code generation
-      {:eqrcode, "~> 0.1.7"},
+      {:eqrcode, "~> 0.2.1"},
       # Creating a pidfile
       {:pid_file, "~> 0.2"},
 
       # Mix task invoking esbuild
-      {:esbuild, "~> 0.8.1", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.10.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.5.3", only: :dev},
+      {:phoenix_live_reload, "~> 1.6.1", only: :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]}
     ]
