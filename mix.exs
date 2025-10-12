@@ -42,7 +42,7 @@ defmodule Pan.MixProject do
       # database adapter
       {:postgrex, "~> 0.21.1"},
       # reactive view layer
-      {:phoenix_live_view, "~> 1.1.13"},
+      {:phoenix_live_view, "~> 1.1.14"},
       # HTML parser
       {:floki, "~> 0.38.0"},
       # classic view layer
