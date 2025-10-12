@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Persona.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
   alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Panel, LikeButton, FollowButton}
-  import Phoenix.HTML.Link, only: [link: 2]
+  use PhoenixHTMLHelpers
 
   def mount(%{"pid" => pid}, _session, socket) do
     current_user =

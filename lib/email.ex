@@ -1,6 +1,6 @@
 defmodule Pan.Email do
   import Swoosh.Email
-  import Phoenix.HTML.Link
+  use PhoenixHTMLHelpers
 
   def login_link_html_email(token, email_address) do
     new(
