@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
-  alias Surface.Components.{Form, Link, LiveRedirect, Form.TextInput}
+  alias Surface.Components.{Form, LiveRedirect, Form.TextInput}
   require Integer
 
   prop(cols, :list, required: true)
@@ -116,12 +116,11 @@ defmodule PanWeb.Surface.Admin.Grid do
                                           record: record}}
                         label="🖊️" />
 
-          <Link to="#"
-                click={@delete}
-                opts={data: [confirm: "Are you sure?"],
+          <.link href="#"
+                 click={@delete}
+                 opts={data: [confirm: "Are you sure?"],
                         "phx-value-id": record.id}
-                class="block"
-                label="🗑️" />
+                 class="block">🗑️</.link>
         </div>
         <div :if={!Map.has_key?(record, :id)} >
           No id to link to.

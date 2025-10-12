@@ -16,8 +16,6 @@ defmodule PanWeb.Live.Category.Show do
     FollowButton
   }
 
-  alias Surface.Components.Link
-
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
     language = nil
@@ -109,15 +107,15 @@ defmodule PanWeb.Live.Category.Show do
     <Panel purpose="category"
            class="m-4">
       <PanelHeading>
-        <Link to={category_frontend_path(@socket, :index)}
+        <.link href={category_frontend_path(@socket, :index)}
               class="hover:text-blue-400">
           <Icon name="folder-heroicons-outline" /> Panoptikum
-        </Link> /
+        </.link> /
         {#if @category.parent}
-          <Link to={category_frontend_path(@socket, :show, @category.parent)}
+          <.link href={category_frontend_path(@socket, :show, @category.parent)}
                 class="hover:text-blue-400">
             <Icon name="folder-heroicons-outline" /> {@category.parent.title}
-          </Link> /
+          </.link> /
         {/if}
         <Icon name="folder-open-heroicons-outline" /> {@category. title}
       </PanelHeading>

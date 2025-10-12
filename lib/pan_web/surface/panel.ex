@@ -4,8 +4,6 @@ end
 
 defmodule PanWeb.Surface.Panel do
   use Surface.Component
-  alias PanWeb.Surface.Link
-  alias Surface.Components.Link
 
   prop(heading, :string, required: false)
   prop(purpose, :string, required: false, default: "default")
@@ -46,13 +44,11 @@ defmodule PanWeb.Surface.Panel do
         <#slot {@panel_heading} />
 
         {#if @target}
-          <Link to={@target}
-                class="hover:text-gray-lighter"
-                label={@heading} />
-          <Link :if={@heading_right}
-                to={@target}
-                class="float-right hover:text-gray-lighter"
-                label={@heading_right} />
+          <.link href={@target}
+                class="hover:text-gray-lighter">{@heading}</.link>
+          <.link :if={@heading_right}
+                href={@target}
+                class="float-right hover:text-gray-lighter">{@heading_right}</.link>
         {#else}
           {@heading}
         {/if}

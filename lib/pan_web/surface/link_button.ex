@@ -1,7 +1,6 @@
 defmodule PanWeb.Surface.LinkButton do
   use Surface.Component
   alias PanWeb.Surface.Icon
-  alias Surface.Components.Link
 
   prop(id, :string, required: false)
   prop(title, :string, required: true)
@@ -15,7 +14,7 @@ defmodule PanWeb.Surface.LinkButton do
 
   def render(assigns) do
     ~F"""
-    <Link id={@id}
+    <.link id={@id}
           to={@to}
           class={"border border-solid inline-block shadow",
                  @class,
@@ -26,7 +25,7 @@ defmodule PanWeb.Surface.LinkButton do
           {=@opts}>
         <Icon :if={@icon} name={@icon} spaced/>
         {@title}
-    </Link>
+    </.link>
     """
   end
 end

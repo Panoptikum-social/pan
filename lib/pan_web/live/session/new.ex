@@ -3,7 +3,6 @@ defmodule PanWeb.Live.Session.New do
   alias Surface.Components.Form
   alias PanWeb.Surface.{Submit, PasswordField}
   alias Surface.Components.Form.{Field, TextInput, Label}
-  alias Surface.Components.Link
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
@@ -35,15 +34,17 @@ defmodule PanWeb.Live.Session.New do
 
       <ul class="list-disc mt-4 ml-8">
         <li>Forgot your password? -
-          <Link to={user_path(@socket, :forgot_password)}
-                class="text-link hover:text-link-dark"
-                label="Get an email with a login link" />
+          <.link href={user_path(@socket, :forgot_password)}
+                 class="text-link hover:text-link-dark">
+            Get an email with a login link
+          </.link>
         </li>
         <li>
           No account yet? -
-          <Link to={user_frontend_path(@socket, :new)}
-                class="text-link hover:text-link-dark"
-                label="Sign up" />
+          <.link href={user_frontend_path(@socket, :new)}
+                class="text-link hover:text-link-dark">
+            Sign up
+          </.link>
         </li>
       </ul>
     </div>

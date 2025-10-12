@@ -3,9 +3,8 @@
      class="text-center mb-2">
   <div x-show="cookie_consent != 'true'" x-cloak>    
     Panoptikum.social uses cookies only out of technical necessity. See our
-    <Link to="https://blog.panoptikum.social/privacy" 
-          class="text-link hover:text-link-dark" 
-          label="Privacy Page" /> 
+    <.link href="https://blog.panoptikum.social/privacy" 
+          class="text-link hover:text-link-dark"> Privacy Page</.link>
     for details.
     <button @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
        class="inline border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">

@@ -2,7 +2,7 @@ defmodule PanWeb.Live.User.New do
   use Surface.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
   alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField, ErrorTag}
-  alias Surface.Components.{Form, Link}
+  alias Surface.Components.Form
   alias Surface.Components.Form.{Field, Label, NumberInput}
   import PanWeb.Router.Helpers
 
@@ -70,9 +70,11 @@ defmodule PanWeb.Live.User.New do
 
           <p>There is already a user account with this email address.<br/>
             Please
-            <Link to={user_path(@socket, :forgot_password)}
-                  class="text-link hover:text-link-dark"
-                  label="Request a login link" /> via email to login to your existing account and
+            <.link href={user_path(@socket, :forgot_password)}
+                  class="text-link hover:text-link-dark">
+              Request a login link
+            </.link>
+            via email to login to your existing account and
             reset your password.
           </p>
         </Field>
