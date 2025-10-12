@@ -57,6 +57,8 @@ defmodule Pan.MixProject do
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
       {:surface, "~> 0.12.1"},
+      # FIXME: migrate to Phoenix's .form
+      {:surface_form_helpers, "~> 0.2.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller
