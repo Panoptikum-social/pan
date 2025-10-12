@@ -1,7 +1,6 @@
 defmodule PanWeb.Surface.LiveRedirectButton do
   use Surface.Component
   alias PanWeb.Surface.Icon
-  alias Surface.Components.LiveRedirect
 
   prop(id, :string, required: false)
   prop(title, :string, required: true)
@@ -15,16 +14,16 @@ defmodule PanWeb.Surface.LiveRedirectButton do
 
   def render(assigns) do
     ~F"""
-    <LiveRedirect to={@to}
-                  class={"border border-solid inline-block shadow",
-                        @class,
-                        "truncate max-w-full": @truncate,
-                        "py-1 px-2 rounded text-sm": !@large,
-                        "py-2 px-3 rounded-md": @large}
+    <.link navigate={@to}
+           class={"border border-solid inline-block shadow",
+                  @class,
+                  "truncate max-w-full": @truncate,
+                  "py-1 px-2 rounded text-sm": !@large,
+                  "py-2 px-3 rounded-md": @large}
                   {=@opts}>
         <Icon :if={@icon} name={@icon} spaced/>
         {@title}
-    </LiveRedirect>
+    </.link>
     """
   end
 end

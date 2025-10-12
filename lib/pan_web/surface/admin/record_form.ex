@@ -2,7 +2,7 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   use Surface.LiveComponent
   on_mount {PanWeb.Live.Auth, :admin}
 
-  alias Surface.Components.{Form, LiveRedirect}
+  alias Surface.Components.Form
   alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
   alias Surface.Components.Form.Field
   alias PanWeb.Surface.Submit
@@ -115,21 +115,21 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           </h1>
         </span>
         <span>
-          <LiveRedirect :if={Map.has_key?(@record, :id) && @record.id}
-                        to={Naming.path %{socket: Endpoint,
-                                          model: @model,
-                                          action: :show,
-                                          path_helper: @path_helper,
-                                          record: @record}}
-                        class="text-link hover:text-link-dark underline">
+          <.link :if={Map.has_key?(@record, :id) && @record.id}
+                 navigate={Naming.path %{socket: Endpoint,
+                                         model: @model,
+                                         action: :show,
+                                         path_helper: @path_helper,
+                                         record: @record}}
+                 class="text-link hover:text-link-dark underline">
             Show&nbsp;{module_name(@model)}
-          </LiveRedirect> |
-          <LiveRedirect to={Naming.path %{model: @model,
-                                          action: :index,
-                                          path_helper: @path_helper}}
-                        class="text-link hover:text-link-dark underline">
+          </.link> |
+          <.link navigate={Naming.path %{model: @model,
+                                         action: :index,
+                                         path_helper: @path_helper}}
+                 class="text-link hover:text-link-dark underline">
             {module_name(@model)}&nbsp;List
-          </LiveRedirect> &nbsp;
+          </.link> &nbsp;
         </span>
       </div>
 

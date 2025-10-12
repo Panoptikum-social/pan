@@ -2,7 +2,6 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   use Surface.LiveComponent
   alias PanWeb.Endpoint
   alias PanWeb.Surface.Admin.{Naming, Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
-  alias Surface.Components.{LiveRedirect}
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
 
@@ -429,11 +428,10 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
               ↔️ New association
             </button>
 
-            <LiveRedirect :if={:new in @buttons}
-                          to={Naming.path %{model: @model, action: :new, path_helper: @path_helper}}
-                          label="🆕 New"
-                          class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                                lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r border-gray" />
+            <.link :if={:new in @buttons}
+                   navigate={Naming.path %{model: @model, action: :new, path_helper: @path_helper}}
+                   class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r border-gray">🆕 New</.link>
           </div>
 
           <div :if={:number_of_records in @buttons}

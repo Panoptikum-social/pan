@@ -3,7 +3,7 @@ defmodule PanWeb.Surface.Admin.Grid do
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
-  alias Surface.Components.{Form, LiveRedirect, Form.TextInput}
+  alias Surface.Components.{Form, Form.TextInput}
   require Integer
 
   prop(cols, :list, required: true)
@@ -104,17 +104,16 @@ defmodule PanWeb.Surface.Admin.Grid do
                     "bg-gray-lighter": Integer.is_odd(index) && !to_be_dyed?(record, assigns),
                     "bg-white": Integer.is_even(index) && !to_be_dyed?(record, assigns),
                     "bg-sunflower-lighter": to_be_dyed?(record, assigns)}>
-          <LiveRedirect to={Naming.path %{model: @model,
-                                          path_helper: @path_helper,
-                                          action: :show,
-                                          record: record}}
-                        label="🔍" />
+          <.link navigate={Naming.path %{model: @model,
+                                         path_helper: @path_helper,
+                                         action: :show,
+                                         record: record}}>🔍</.link>
 
-          <LiveRedirect to={Naming.path %{model: @model,
-                                          path_helper: @path_helper,
-                                          action: :edit,
-                                          record: record}}
-                        label="🖊️" />
+
+          <.link navigate={Naming.path %{model: @model,
+                                         path_helper: @path_helper,
+                                         action: :edit,
+                                         record: record}}>🔍</.link>
 
           <.link href="#"
                  click={@delete}

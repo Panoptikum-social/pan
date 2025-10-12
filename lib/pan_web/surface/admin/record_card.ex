@@ -5,7 +5,6 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
   alias PanWeb.Surface.Admin.RelationsBlock
-  alias Surface.Components.LiveRedirect
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Endpoint
   alias PanWeb.Router.Helpers, as: Routes
@@ -42,34 +41,34 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h1 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h1>
         </span>
         <span>
-           <LiveRedirect to={Naming.path %{model: @model,
-                                           action: :index,
-                                           path_helper: @path_helper}}
-                         class="text-link hover:text-link-dark underline">
+           <.link navigate={Naming.path %{model: @model,
+                                          action: :index,
+                                          path_helper: @path_helper}}
+                  class="text-link hover:text-link-dark underline">
              {Naming.module_without_namespace(@model)}&nbsp;List
-          </LiveRedirect> &nbsp;
-          <LiveRedirect :if={Map.has_key?(@record, :id)}
-                        to={Naming.path %{model: @model,
-                                          action: :edit,
-                                          path_helper: @path_helper,
-                                          record: @record}}
-                        class="text-link hover:text-link-dark underline">
+          </.link> &nbsp;
+          <.link :if={Map.has_key?(@record, :id)}
+                 navigate={Naming.path %{model: @model,
+                                         action: :edit,
+                                         path_helper: @path_helper,
+                                         record: @record}}
+                 class="text-link hover:text-link-dark underline">
             Edit {Naming.module_without_namespace(@model)}
-          </LiveRedirect>
+          </.link>
 
-          <LiveRedirect :if={!Map.has_key?(@record, :id)}
-                        to={Routes.databrowser_path(
-                            Endpoint,
-                            :edit_mediating,
-                            Phoenix.Naming.resource_name(@model),
-                            @primary_key |> hd |> Atom.to_string,
-                            Map.get(@record, hd(@primary_key)),
-                            @primary_key |> tl |> hd |> Atom.to_string,
-                            Map.get(@record, hd(tl(@primary_key)))
-                        )}
-                        class="text-link hover:text-link-dark underline">
+          <.link :if={!Map.has_key?(@record, :id)}
+                 navigate={Routes.databrowser_path(
+                             Endpoint,
+                             :edit_mediating,
+                             Phoenix.Naming.resource_name(@model),
+                             @primary_key |> hd |> Atom.to_string,
+                             Map.get(@record, hd(@primary_key)),
+                             @primary_key |> tl |> hd |> Atom.to_string,
+                             Map.get(@record, hd(tl(@primary_key)))
+                          )}
+                 class="text-link hover:text-link-dark underline">
             Edit {Naming.module_without_namespace(@model)}
-          </LiveRedirect>
+          </.link>
         </span>
       </div>
 

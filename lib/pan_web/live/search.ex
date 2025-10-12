@@ -3,7 +3,6 @@ defmodule PanWeb.Live.Search do
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [icon: 1]
   alias PanWeb.Surface.{LinkButton, Pill}
-  alias Surface.Components.LivePatch
   alias Pan.Search
   alias PanWeb.Endpoint
 
@@ -74,29 +73,29 @@ defmodule PanWeb.Live.Search do
       <h1 class="text-3xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
       <p class="mt-2">
         You might want to search for
-        <LivePatch :if={@index != "categories"}
-                  to={search_frontend_path(Endpoint, :search, "categories", @term)}
-                  class="text-link hover:text-link-dark visited:text-mint">
+        <.link :if={@index != "categories"}
+                patch={search_frontend_path(Endpoint, :search, "categories", @term)}
+                class="text-link hover:text-link-dark visited:text-mint">
           categories
-        </LivePatch>
+        </.link>
         {#if @index != "categories"} | {/if}
-        <LivePatch :if={@index != "podcasts"}
-                  to={search_frontend_path(Endpoint, :search, "podcasts", @term)}
-                  class="text-link hover:text-link-dark visited:text-mint">
+        <.link :if={@index != "podcasts"}
+               patch={search_frontend_path(Endpoint, :search, "podcasts", @term)}
+               class="text-link hover:text-link-dark visited:text-mint">
           podcasts
-        </LivePatch>
+        </.link>
         {#if @index != "podcasts"} | {/if}
-        <LivePatch :if={@index != "personas"}
-                  to={search_frontend_path(Endpoint, :search, "personas", @term)}
-                  class="text-link hover:text-link-dark visited:text-mint">
+        <.link :if={@index != "personas"}
+                pathc={search_frontend_path(Endpoint, :search, "personas", @term)}
+                class="text-link hover:text-link-dark visited:text-mint">
           personas
-        </LivePatch>
+        </.link>
         {#if @index not in ["personas", "episodes"] } | {/if}
-        <LivePatch :if={@index != "episodes"}
-            to={search_frontend_path(Endpoint, :search, "episodes", @term)}
-            class="text-link hover:text-link-dark visited:text-mint">
+        <.link :if={@index != "episodes"}
+               patch={search_frontend_path(Endpoint, :search, "episodes", @term)}
+               class="text-link hover:text-link-dark visited:text-mint">
           episodes
-        </LivePatch>
+        </.link>
         instead.<br/>
         You can mask your search terms with an asterisk at the end or the beginning of the search term,
         as long as there are at least 3 characters left.

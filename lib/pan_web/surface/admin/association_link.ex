@@ -1,6 +1,5 @@
 defmodule PanWeb.Surface.Admin.AssociationLink do
   use Surface.Component
-  alias Surface.Components.LiveRedirect
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
@@ -57,9 +56,10 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
     assigns = assigns |> assign(:to, to) |> assign(:link_title, link_title)
 
     ~F"""
-    <LiveRedirect {=@to}
-                  class="text-link hover:text-link-dark text-medium underline"
-                  label={@link_title} />
+    <.link navigate={@to}
+           class="text-link hover:text-link-dark text-medium underline">
+      {@link_title}
+    </.link>
     """
   end
 
