@@ -14,7 +14,7 @@ defmodule PanWeb.Api.Auth do
       get_req_header(conn, "authorization")
       |> List.first()
 
-    token = token && String.slice(token, 7..-1)
+    token = token && String.slice(token, 7..-1//-1)
 
     case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 60) do
       {:ok, user_id} ->
