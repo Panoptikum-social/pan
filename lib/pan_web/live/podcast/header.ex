@@ -61,7 +61,7 @@ defmodule PanWeb.Live.Podcast.Header do
           {#if @podcast.website}
             <dt class="justify-self-end font-medium">Website</dt>
             <dd class="col-span-3">
-              <a href={String.downcase(@podcast.website)}
+              <a href={@podcast.website}
                   class="text-link hover:text-link-dark">{@podcast.website}</a>
             </dd>
           {/if}
