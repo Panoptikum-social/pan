@@ -36,7 +36,7 @@ defmodule Pan.MixProject do
       # web framework
       {:phoenix, "~> 1.8.1"},
       # phoenix support for ecto
-      {:phoenix_ecto, "~> 4.6.5"},
+      {:phoenix_ecto, "~> 4.7"},
       # ecto sql adapter
       {:ecto_sql, "~> 3.13.2"},
       # database adapter
@@ -72,7 +72,7 @@ defmodule Pan.MixProject do
       # time conversion
       {:timex, "~> 3.7"},
       # http client
-      {:httpoison, "~> 2.2.1"},
+      {:httpoison, "~> 2.3"},
       # XML parser
       {:quinn, "~> 1.1"},
       # UUID creation
@@ -80,7 +80,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.19.8"},
+      {:swoosh, "~> 1.20.0"},
       {:gen_smtp, "~> 1.3.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
