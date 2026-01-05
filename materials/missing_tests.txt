@@ -12,7 +12,7 @@
 
 ---
 
-* category_frontend_controller.ex FIXME! #8
+* category_frontend_controller.ex #8
 * recommendation_frontend_controller.ex : message creation & event sending
 
 ---
