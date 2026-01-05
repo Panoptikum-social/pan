@@ -69,7 +69,7 @@ defmodule Pan.Search do
         end
       end
 
-      if response_code in [200, 201, 500] && length(record_ids) > 0 do
+      if response_code in [200, 201, 500] && record_ids != [] do
         batch_index(
           model: model,
           preloads: preloads,

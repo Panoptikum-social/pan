@@ -79,7 +79,7 @@ defmodule Pan.Search.Podcast do
   end
 
   defp thumbnail_url(image) do
-    if length(image.thumbnails) > 0 do
+    if image.thumbnails != [] do
       hd(image.thumbnails).path <> hd(image.thumbnails).filename
     else
       ""
@@ -100,7 +100,7 @@ defmodule Pan.Search.Podcast do
     from(p in Podcast, where: p.id in ^podcast_ids)
     |> Repo.update_all(set: [full_text: false])
 
-    if length(podcast_ids) > 0, do: batch_reset()
+    if podcast_ids != [], do: batch_reset()
   end
 
   def update_index(id) do

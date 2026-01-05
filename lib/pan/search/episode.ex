@@ -110,7 +110,7 @@ defmodule Pan.Search.Episode do
     from(e in Episode, where: e.id in ^episode_ids)
     |> Repo.update_all(set: [full_text: false])
 
-    if length(episode_ids) > 0, do: batch_reset()
+    if episode_ids != [], do: batch_reset()
   end
 
   def update_index(id) do
