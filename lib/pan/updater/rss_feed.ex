@@ -15,12 +15,10 @@ defmodule Pan.Updater.RssFeed do
         run_the_parser(reduced_map, url)
       rescue
         e ->
-          reraise("#{e.message} when importing podcast #{podcast_id}", __STACKTRACE__)
+          reraise("#{e.__exception__} when importing podcast #{podcast_id}", __STACKTRACE__)
       end
     else
-      {:exit, error} -> {:exit, error}
       {:done, "nothing to do"} -> {:done, "nothing to do"}
-      {:redirect, redirect_target} -> {:redirect, redirect_target}
       {:error, reason} -> {:error, reason}
     end
   end

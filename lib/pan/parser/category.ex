@@ -73,7 +73,6 @@ defmodule Pan.Parser.Category do
           Pan.Parser.Category.persist_many(map[:categories], podcast)
         catch
           :exit, _ -> :noop
-          :timeout, _ -> :noop
           :error, _ -> :noop
         end
       end

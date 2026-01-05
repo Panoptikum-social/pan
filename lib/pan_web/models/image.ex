@@ -113,7 +113,6 @@ defmodule PanWeb.Image do
       Image.delete_if_defect(image)
     else
       {:error, error} -> {:error, error}
-      {:ok, []} -> {:error, "empty response"}
     end
   end
 

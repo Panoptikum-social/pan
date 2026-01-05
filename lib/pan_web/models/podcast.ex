@@ -698,7 +698,7 @@ defmodule PanWeb.Podcast do
             Map.put(dp, :status_code, "CaseClauseError")
 
           e ->
-            Map.put(dp, :status_code, e.message)
+            Map.put(dp, :status_code, e.__exception__)
         end
       end)
 
