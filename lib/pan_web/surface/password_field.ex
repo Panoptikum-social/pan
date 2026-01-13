@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.PasswordField do
   use Surface.Component
+  use PanWeb, :html
   alias Surface.Components.Form
-  alias PanWeb.Surface.ErrorTag
 
   prop(name, :atom, required: true)
   prop(value, :string, required: true)
@@ -12,8 +12,9 @@ defmodule PanWeb.Surface.PasswordField do
       <Form.Label class="block font-medium text-gray-darker"/>
       <Form.PasswordInput class="w-full"
                           {=@value} />
-      <ErrorTag />
+      <Form.ErrorTag />
     </Form.Field>
+
     """
   end
 end

@@ -1,12 +1,12 @@
 defmodule PanWeb.Live.Session.New do
   use Surface.LiveView, container: {:div, class: "m-4 flex justify-center"}
-  alias Surface.Components.Form
+  use PanWeb, :html
   alias PanWeb.Surface.{Submit, PasswordField}
   alias Surface.Components.Form.{Field, TextInput, Label}
   import PanWeb.Router.Helpers
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Log In")}
+  def mount(params, _session, socket) do
+    {:ok, assign(socket, page_title: "Log In", form: to_form(params))}
   end
 
   def render(assigns) do
@@ -14,10 +14,12 @@ defmodule PanWeb.Live.Session.New do
     <div class="max-w-lg my-4">
       <h1 class="text-3xl">Login</h1>
 
-      <Form action="/sessions"
-            for={%{}}
+      Am I on the right track?
+
+      <.form action="/sessions"
+            for={@form}
             as={:session}
-            opts={autocomplete: "off"}>
+            autocomplete="off">
 
         <Field name="username"
                class="my-6">
@@ -30,7 +32,7 @@ defmodule PanWeb.Live.Session.New do
                        value="" />
 
         <Submit label="Log in" />
-      </Form>
+      </.form>
 
       <ul class="list-disc mt-4 ml-8">
         <li>Forgot your password? -

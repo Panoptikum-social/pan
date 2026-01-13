@@ -10,7 +10,8 @@ defmodule Pan.MixProject do
       compilers: Mix.compilers() ++ [:surface],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
@@ -57,6 +58,7 @@ defmodule Pan.MixProject do
       {:ecto_psql_extras, "~> 0.6"},
       # Component library
       {:surface, "~> 0.12.1"},
+
       # FIXME: migrate to Phoenix's .form
       {:surface_form_helpers, "~> 0.2.0"},
       # telemetry_metrics

@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.User.New do
   use Surface.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
-  alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField, ErrorTag}
+  alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField}
   alias Surface.Components.Form
   alias Surface.Components.Form.{Field, Label, NumberInput}
   import PanWeb.Router.Helpers
@@ -94,7 +94,7 @@ defmodule PanWeb.Live.User.New do
           </Label>
           <NumberInput class="w-full"
                        opts={placeholder: "Are you a human? ;-)"}   />
-          <ErrorTag />
+          <Form.ErrorTag />
         </Field>
 
         <Submit label="Create Account" />

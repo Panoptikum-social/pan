@@ -3,9 +3,9 @@ defmodule PanWeb.Live.Persona.Edit do
   on_mount PanWeb.Live.Auth
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
-  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField, ErrorTag}
+  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField}
   alias Surface.Components.Form
-  alias Surface.Components.Form.{TextInput, Label, Field}
+  alias Surface.Components.Form.{TextInput, Label, Field, ErrorTag}
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 

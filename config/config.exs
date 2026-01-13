@@ -33,6 +33,14 @@ config :esbuild,
 
 config :pid_file, file: "./pan.pid"
 
+config :surface, :components, [
+  {Surface.Components.Form.ErrorTag,
+   default_translator: {MyAppWeb.ErrorHelpers, :translate_error}},
+  {Surface.Components.Form.ErrorTag,
+   default_class:
+     "inline-block px-2 mt-2 text-grapefruit bg-grapefruit/20 border border-dotted border-grapefruit"}
+]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
