@@ -22,9 +22,22 @@ config :mime, :types, %{
   "application/vnd.api+json" => ["json-api"]
 }
 
+config :tailwind,
+  version: "4.1.18",
+  default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=assets/css/app.css
+      --output=priv/static/assets/app.css
+    ),
+    cd: Path.expand("..", __DIR__),
+  ],
+  version_check: false,
+  path: Path.expand("../assets/node_modules/.bin/tailwindcss", __DIR__)
+
 config :esbuild,
   version: "0.13.10",
-  default: [
+  pan: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --external:/web-player/* --external:/subscribe-button/*),
     cd: Path.expand("../assets", __DIR__),

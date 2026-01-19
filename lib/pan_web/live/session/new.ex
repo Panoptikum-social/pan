@@ -1,8 +1,6 @@
 defmodule PanWeb.Live.Session.New do
   use Surface.LiveView, container: {:div, class: "m-4 flex justify-center"}
   use PanWeb, :html
-  alias PanWeb.Surface.{Submit, PasswordField}
-  alias Surface.Components.Form.{Field, TextInput, Label}
   import PanWeb.Router.Helpers
 
   def mount(params, _session, socket) do
@@ -14,24 +12,17 @@ defmodule PanWeb.Live.Session.New do
     <div class="max-w-lg my-4">
       <h1 class="text-3xl">Login</h1>
 
-      Am I on the right track?
-
       <.form action="/sessions"
             for={@form}
             as={:session}
             autocomplete="off">
 
-        <Field name="username"
-               class="my-6">
-          <Label field={:username_or_email}
-                 class="block font-medium text-gray-darker"/>
-          <TextInput class="w-full border-gray-light rounded-lg shadow-sm" />
-        </Field>
+        <.input field={@form[:username]} label="username or email"
+               class="w-full border-gray-light rounded-lg shadow-sm" />
 
-        <PasswordField name={:password}
-                       value="" />
+        <.input field={@form[:password]} type="password" value="" />
 
-        <Submit label="Log in" />
+        <.button type="submit" label="Log in" class="btn btn-primary">Submit</.button>
       </.form>
 
       <ul class="list-disc mt-4 ml-8">

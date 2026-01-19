@@ -1,6 +1,104 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import "tailwindcss" source(none);
+@source "../css";
+@source "../../lib/**/*.{ex,eex,heex,sface}";
+@source "../js/**/*.js";
+@source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
+@plugin "daisyui";
+@plugin "daisyui/theme";
+
+@custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
+@custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
+@custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@theme {
+    --color-transparent: transparent;
+    --color-current: currentColor;
+
+/* Bootflat colors: base */
+    --color-blue-jeans-light: #5d9cec;
+    --color-blue-jeans: #4a89dc;
+    --color-aqua-light: #4fc1e9;
+    --color-aqua: #3bafda;
+    --color-mint-light: #48cfad;
+    --color-mint-lighter: #00c997;
+    --color-mint: #37bc9b;
+    --color-grass-light: #a0d468;
+    --color-grass-lighter: #c8e5a1;
+    --color-grass: #8cc152;
+    --color-sunflower-light: #ffce54;
+    --color-sunflower-lighter: #ffe299;
+    --color-sunflower: #f6bb42;
+    --color-bittersweet-light: #fc6e51;
+    --color-bittersweet: #e9573f;
+    --color-grapefruit-light: #ed5565;
+    --color-grapefruit: #da4453;
+    --color-lavender-light: #ac92ec;
+    --color-lavender: #967adc;
+    --color-pink-rose-light: #ec87c0;
+    --color-pink-rose: #d770ad;
+
+/* Bootflat colors: shades of gray */
+    --color-white: #ffffff;
+    --color-gray-lightest: #f5f7fa;
+    --color-gray-lighter: #e6e9ed;
+    --color-gray-light: #ccd1d9;
+    --color-gray: #aab2bd;
+    --color-gray-dark: #656d78;
+    --color-gray-darker: #434a54;
+    --color-black: #000000;
+
+/* Bootflat colors: functional colors */
+    --color-success-light: #b9df90;
+    --color-success: #8cc152;
+    --color-success-dark: #3c763d;
+    --color-warning-light: #ffdd87;
+    --color-warning: #f6bb42;  /* sunflower */
+    --color-warning-dark: #c3880f;
+    --color-danger-light: #f2838f;
+    --color-danger: #da4453;  /* grapefruit */
+    --color-danger-dark: #a94442;
+    --color-info-light: #7cd1ef;
+    --color-info: #3bafda; /* aqua */
+    --color-info-dark: #31708f;
+    --color-nav-background: #434a54; /* dark gray */
+    --color-link-dark: #175042; /* mint-darker */
+    --color-link: #257e68; /* mint-dark */
+    --color-primary-light: #48cfad;
+    --color-primary: #37bc98; /* mint */
+    --color-primary-dark: #048965;
+    --color-podcast-light: #ffce54; /* sunflower-light */
+    --color-podcast: #f6bb42; /* sunflower */
+    --color-category-light: #fc6e51; /* bittersweet-light */
+    --color-category: #e9573f; /* bittersweet */
+    --color-episode-light: #48cfad; /* mint-light */
+    --color-episode: #37bc9b; /* mint */
+    --color-recommendation-light: #ac92ec; /* lavender-light */
+    --color-recommendation: #967adc; /* lavender */
+
+    --font-family-sans: 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-mono: 'Ubuntu Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    --max-width-grid: 1630px;
+};
+
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   [type="text"],
@@ -18,7 +116,7 @@
   [multiple],
   textarea,
   select {
-    @apply px-2 py-1 rounded-md border-gray-light shadow-sm;
+    @apply px-2 py-1 rounded-md border-gray-light shadow-xs;
   }
 
   .scrollbar-gray {
@@ -44,6 +142,7 @@
   }
 }
 
+
 [hidden] {
   @apply hidden;
 }
@@ -65,7 +164,7 @@
   @apply p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4;
 }
 .invalid-feedback {
-  @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded;
+  @apply border border-danger bg-danger-light/50 text-black px-2 py-0.5 my-1 rounded-sm;
 }
 
 /* LiveView specific classes for your customizations */
