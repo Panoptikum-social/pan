@@ -13,14 +13,16 @@ defmodule PanWeb.Live.Session.New do
       <h1 class="text-3xl">Login</h1>
 
       <.form action="/sessions"
+            :let={f}
             for={@form}
             as={:session}
             autocomplete="off">
 
-        <.input field={@form[:username]} label="username or email"
+        <.input field={f[:username]} label="Username or email"
                class="w-full border-gray-light rounded-lg shadow-sm" />
 
-        <.input field={@form[:password]} type="password" value="" />
+        <.input field={f[:password]} label="Password" type="password"
+                class="w-full border-gray-light rounded-lg shadow-sm"value="" />
 
         <.button type="submit" label="Log in" class="btn btn-primary">Submit</.button>
       </.form>

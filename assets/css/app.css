@@ -18,6 +18,20 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #37bc98; /* mint */
+  --color-secondary: #967adc; /* lavender */
+  --color-accent: #d770ad; /* pink-rose */
+  --color-neutral: #434a54; /* gray-darker */
+  --color-info: #3bafda; /* aqua */
+  --color-warning: #f6bb42;  /* sunflower */
+  --color-success: #8cc152;
+  --color-error: #da4453;  /* grapefruit */
+}
+
 @theme {
     --color-transparent: transparent;
     --color-current: currentColor;
