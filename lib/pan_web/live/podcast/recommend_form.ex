@@ -1,9 +1,7 @@
 defmodule PanWeb.Live.Podcast.RecommendForm do
   use Surface.Component
-  alias Surface.Components.Form
-  alias Surface.Components.Form.{TextInput, HiddenInput}
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.Submit
+  use PanWeb, :html
   import PanWeb.Router.Helpers
 
   prop(current_user_id, :integer, required: true)
@@ -13,15 +11,16 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
   def render(assigns) do
     ~F"""
       {#if @current_user_id}
-        <Form for={@changeset}
-              class="m-4"
-              action={recommendation_frontend_path(Endpoint, :create)}>
-          <TextInput field={:comment}
-                     opts={size: 100, maxlength: 255, placeholder: "Your recommendation"} class="max-w-full" />
+        <.form for={@changeset}
+               :let={f}
+               class="m-4"
+               action={recommendation_frontend_path(Endpoint, :create)}>
+          <.input field={f[:comment]} size="100" maxlength="255" label="Your recommendation"
+                  class="max-w-full input" />
             <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
-          <HiddenInput field={:podcast_id } value={@podcast.id} />
-          <Submit label={"Recommend"} />
-        </Form>
+          <.input type="hidden" field={f[:podcast_id] } value={@podcast.id} />
+          <.button type="submit" class="btn btn-primary">Recommend</.button>
+        </.form>
 
         <script>
           document.getElementById('recommendation_comment').onkeyup = function(){
