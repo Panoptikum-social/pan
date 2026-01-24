@@ -1,6 +1,6 @@
 defmodule PanWeb.RecommendationFrontendController do
   use PanWeb, :controller
-
+  require Logger
   alias PanWeb.{Podcast, Recommendation, Subscription}
 
   def action(conn, _) do

@@ -39,7 +39,7 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
               <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@chapter, recommendation)}"},
                 class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
               <a href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
-                class="bg-grass bg-grass-light px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
+                class="bg-grass px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
             </p>
 
             <b>{recommendation.user.name}:</b> {recommendation.comment}

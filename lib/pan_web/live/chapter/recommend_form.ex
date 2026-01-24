@@ -1,9 +1,7 @@
 defmodule PanWeb.Live.Chapter.RecommendForm do
   use Surface.LiveComponent
-  alias Surface.Components.Form
-  alias Surface.Components.Form.HiddenInput
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.Submit
+  use PanWeb, :html
   import PanWeb.Router.Helpers
 
   prop(current_user_id, :integer, required: true)
@@ -17,22 +15,21 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
 
   def render(assigns) do
     ~F"""
-    <div class="col-start-2 col-span-2">
-      <Form for={@changeset}
+    <div class="col-start-2 col-span-2" id={"chapter-#{@id}"} >
+      <.form for={@changeset}
+        :let={f}
             class="flex space-x-2 items-center"
             action={recommendation_frontend_path(Endpoint, :create)}>
-        <input :on-keyup="on-change"
-                maxlength="255"
-                name="recommendation[comment]"
-                placeholder="Your recommendation"
-                size="100"
-                type="text"
-                class="max-w-full" />
+        <.input :on-keyup="on-change"
+                field={f[:comment]} label="Your recommendation"
+                id={"text-#{@id}"}
+                size="100" maxlength="255"
+                class="max-w-full input" />
         <span id={"remaining-chapter-#{@chapter.id}"}>{@remaining}</span>
-        <HiddenInput field={:chapter_id} value={@chapter.id} />
-        <Submit label={"Recommend"}
-                class="py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"/>
-      </Form>
+        <.input type="hidden" field={f[:chapter_id]} value={@chapter.id} />
+        <.button type="submit"
+                 class="py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light">Recommend</.button>
+      </.form>
     </div>
     """
   end
