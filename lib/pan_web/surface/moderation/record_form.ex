@@ -90,7 +90,7 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
           <div class="text-gray-dark whitespace-nowrap">
             Edit <span class="font-semibold">{module_name(@model)}</span>
           </div>
-          <h1 class="max-w-screen-lg w-full truncate">
+          <h1 class="max-w-5xl w-full truncate">
             {Naming.title_from_record(@record)}
           </h1>
         </span>

@@ -19,10 +19,10 @@ defmodule PanWeb.Live.Session.New do
             autocomplete="off">
 
         <.input field={f[:username]} label="Username or email"
-               class="w-full border-gray-light rounded-lg shadow-sm" />
+               class="w-full input" />
 
         <.input field={f[:password]} label="Password" type="password"
-                class="w-full border-gray-light rounded-lg shadow-sm"value="" />
+                class="w-full input" value="" />
 
         <.button type="submit" label="Log in" class="btn btn-primary">Submit</.button>
       </.form>

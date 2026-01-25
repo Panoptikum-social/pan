@@ -66,7 +66,7 @@ defmodule PanWeb do
   def controller do
     quote do
       use Phoenix.Controller,
-        formats: [html: PanWeb.LayoutView, json: JaSerializer.PhoenixView]
+        layouts: [html: PanWeb.LayoutView, json: JaSerializer.PhoenixView]
 
       alias Pan.Repo
       alias PanWeb.Router.Helpers, as: Routes

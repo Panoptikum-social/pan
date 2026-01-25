@@ -1,9 +1,7 @@
 defmodule PanWeb.Live.User.New do
-  use Surface.LiveView, container: {:div, class: "flex-1 flex justify-center"}
+  use Phoenix.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
-  alias PanWeb.Surface.{Submit, TextField, PasswordField, EmailField, CheckBoxField}
-  alias Surface.Components.Form
-  alias Surface.Components.Form.{Field, Label, NumberInput}
+  use PanWeb, :html
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do
@@ -48,22 +46,19 @@ defmodule PanWeb.Live.User.New do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="max-w-lg m-4">
       <h1 class="text-3xl">Sign Up</h1>
 
-      <Form for={@changeset}
-            opts={autocomplete: "off"}
-            change="validate"
-            submit="create">
+      <.form for={@changeset}
+             :let={f}
+             phx-change="validate"
+             phx-submit="create">
+        <.error :if={!@changeset.valid?}>
+          The form is not filled out fully.
+        </.error>
 
-        <Field :if={!@changeset.valid?}
-               name="error"
-               class="p-2 my-4 text-grapefruit bg-grapefruit/20 border border-dotted border-grapefruit rounded-xl" >
-          Account data is not valid yet. Please check the hints below.
-        </Field>
-
-        <Field :if={{"has already been taken", []} == @changeset.errors[:email]}
+        <.error :if={{"has already been taken", []} == @changeset.errors[:email]}
                name="welcome_back"
                class="p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4">
           <h2 class="text-lg">Welcome back!</h2>
@@ -77,28 +72,56 @@ defmodule PanWeb.Live.User.New do
             via email to login to your existing account and
             reset your password.
           </p>
-        </Field>
+        </.error>
 
-        <TextField name={:name} />
-        <TextField name={:username} />
-        <EmailField name={:email} />
-        <PasswordField name={:password}
-                       value={Ecto.Changeset.get_change(@changeset, :password)} />
-        <PasswordField name={:password_confirmation}
-                       value={Ecto.Changeset.get_change(@changeset, :password_confirmation)} />
-        <CheckBoxField name={:podcaster} label="I am a podcaster" />
+        <.input field={f[:name]}
+                label="Name *"
+                class="w-full input validator"
+                required
+                show_errors={false} />
 
-        <Field name={:bot_check} class="my-4">
-          <Label class="block font-medium text-gray-darker">
-                 If you subtract two from 44, you get...
-          </Label>
-          <NumberInput class="w-full"
-                       opts={placeholder: "Are you a human? ;-)"}   />
-          <Form.ErrorTag />
-        </Field>
+        <.input field={f[:username]}
+                label="Username *"
+                class="w-full input"
+                required
+                show_errors={false} />
 
-        <Submit label="Create Account" />
-      </Form>
+        <.input type="email"
+                field={f[:email]}
+                label="Email *"
+                class="w-full input"
+                required
+                show_errors={false} />
+
+        <.input type="password"
+                name="user[password]"
+                required
+                value={Ecto.Changeset.get_change(@changeset, :password)}
+                label="Password *"
+                class="w-full input" />
+
+        <.input type="password"
+                name="user[password_confirmation]"
+                required
+                value={Ecto.Changeset.get_change(@changeset, :password_confirmation)}
+                label="Password Confirmation *"
+                class="w-full input" />
+
+        <.input type="checkbox"
+                field={f[:podcaster]}
+                label="I am a podcaster" />
+
+        <.input type="number"
+                field={f[:bot_check]}
+                required
+                label="If you subtract two from 44, you get... *"
+                placeholder="Are you a human? ;-)"
+                class="w-full input"
+                show_errors={false} />
+
+        <input type="submit" value="Create Account"
+                 class="btn btn-primary" />
+      </.form>
     </div>
     """
   end
