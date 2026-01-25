@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.User.New do
   use Phoenix.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
+  alias Phoenix.Component
   use PanWeb, :html
   import PanWeb.Router.Helpers
 
@@ -97,15 +98,19 @@ defmodule PanWeb.Live.User.New do
                 name="user[password]"
                 required
                 value={Ecto.Changeset.get_change(@changeset, :password)}
+                errors={if Component.used_input?(f[:password]), do: Enum.map(f[:password].errors, &translate_error(&1)), else: []}
                 label="Password *"
-                class="w-full input" />
+                class="w-full input"
+                show_errors={false} />
 
         <.input type="password"
                 name="user[password_confirmation]"
                 required
                 value={Ecto.Changeset.get_change(@changeset, :password_confirmation)}
+                errors={if Component.used_input?(f[:password_confirmation]), do: Enum.map(f[:password_confirmation].errors, &translate_error(&1)), else: []}
                 label="Password Confirmation *"
-                class="w-full input" />
+                class="w-full input"
+                show_errors={false} />
 
         <.input type="checkbox"
                 field={f[:podcaster]}
