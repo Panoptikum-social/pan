@@ -3,9 +3,8 @@ defmodule PanWeb.Live.Persona.Edit do
   on_mount PanWeb.Live.Auth
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
-  alias PanWeb.Surface.{TextField, EmailField, Submit, MarkdownField}
-  alias Surface.Components.Form
-  alias Surface.Components.Form.{TextInput, Label, Field, ErrorTag}
+  alias PanWeb.Surface.MarkdownField
+  use PanWeb, :html
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
@@ -78,71 +77,64 @@ defmodule PanWeb.Live.Persona.Edit do
     ~F"""
     <h1 class="text-3xl">Edit persona</h1>
 
-    <Form for={@changeset}
-          class="p-4 mb-4 flex flex-col items-start space-y-4"
-          change="validate"
-          submit="save">
+    <.form for={@changeset}
+           :let={f}
+           class="p-4 mb-4 flex flex-col items-start space-y-4"
+           change="validate"
+           submit="save">
 
-      <Field :if={!@changeset.valid?}
-              name="error"
-              class="p-4 border border-danger-dark bg-danger-light/50 rounded-xl mb-4">
+      <.error :if={!@changeset.valid?}>
         This persona is not valid. Please check the errors below!
-      </Field>
+      </.error>
 
-      <div :if={!pro(@current_user)}
-            class="p-4 border border-info-dark bg-info-light/50 rounded-xl mb-4">
+      <.error :if={!pro(@current_user)}>
         <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
-      </div>
+      </.error>
 
-      <Field name={:pid}
-             class="my-4">
-        <Label class="block font-medium text-gray-darker">PanoptikumID</Label>
-        <TextInput class="w-full"
-                   opts={disabled: not pro(@current_user)} />
-        <ErrorTag />
-      </Field>
+      <.input field={f[:pid]}
+             class="input"
+             label="PanoptikumID"
+             disabled={not pro(@current_user)} />
 
-      <TextField name={:name} />
-      <TextField name={:uri} />
-      <EmailField name={:email} />
+      <.input field={f[:name]}
+              label="Name"
+              class="w-full input" />
 
-      <Field name={:fediverse_address}
-             class="my-4">
-        <Label class="block font-medium text-gray-darker">Fediverse address</Label>
-        <TextInput field={:fediverse_address}
-                   class="w-full"
-                   opts={placeholder: "@username@domain.social"} />
+      <.input field={f[:uri]}
+              label="Uri"
+              class="w-full input" />
+
+      <.input type="email"
+              field={f[:email]}
+              label="Email"
+              class="w-full input" />
+
+      <.input field={f[:fediverse_address]}
+              label="Fediverse Address"
+              placeholder="@username@domain.social"
+              class="w-full input" />
         <p class="text-gray">(support is experimental and data might not be imported currently)</p>
-      </Field>
 
-      <Field name={:image_url}
-             class="my-4">
-        <Label class="block font-medium text-gray-darker">Image url</Label>
-        <TextInput field={:image_url}
-                   class="w-full"
-                   opts={disabled: not pro(@current_user)} />
-      </Field>
+      <.input field={f[:image_url]}
+              label="Image URL"
+              class="input w-full"
+              disabled={not pro(@current_user)} />
 
-      <Field name={:image_title}
-             class="my-4">
-        <Label class="block font-medium text-gray-darker">Image title</Label>
-        <TextInput field={:image_title}
-                   class="w-full"
-                   opts={disabled: not pro(@current_user)} />
-      </Field>
+      <.input field={f[:image_title]}
+              class="input w-full"
+              label="Image title"
+              disabled={not pro(@current_user)} />
 
-      <Field name={:description_header}
-             class="my-4">
-        <Label class="block font-medium text-gray-darker">Description heading</Label>
-        <TextInput field={:description_header}
-                   class="w-full"
-                   opts={disabled: not pro(@current_user)} />
-      </Field>
+      <.input field={f[:description_header]}
+              class="input w-full"
+              label="Description heading"
+              disabled={not pro(@current_user)} />
 
-      <MarkdownField name={:long_description}
+      <MarkdownField myfield={f[:long_description]}
                      disabled={not pro(@current_user)}/>
-      <Submit />
-    </Form>
+
+      <.button type="submit" class="btn btn-info">Submit</.button>
+    </.form>
 
     <a href={user_frontend_path(Endpoint, :my_profile)},
         class="text-link hover:text-link-dark">Back</a>

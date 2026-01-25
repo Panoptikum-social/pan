@@ -170,6 +170,8 @@ defmodule PanWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
+  attr :show_errors, :boolean, default: true,
+    doc: "whether to show errors even if the field was not yet touched"
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -182,7 +184,7 @@ defmodule PanWeb.CoreComponents do
                 multiple pattern placeholder readonly required rows size step)
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
+    errors = if Phoenix.Component.used_input?(field) or assigns.show_errors, do: field.errors, else: []
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
@@ -296,7 +298,7 @@ defmodule PanWeb.CoreComponents do
   end
 
   # Helper used by inputs to generate form errors
-  defp error(assigns) do
+  def error(assigns) do
     ~H"""
     <p class="mt-1.5 flex gap-2 items-center text-sm text-error">
       <.icon name="hero-exclamation-circle" class="size-5" />
@@ -483,9 +485,9 @@ defmodule PanWeb.CoreComponents do
     # with our gettext backend as first argument. Translations are
     # available in the errors.po file (as we use the "errors" domain).
     if count = opts[:count] do
-      Gettext.dngettext(HelloWeb.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(PanWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(HelloWeb.Gettext, "errors", msg, opts)
+      Gettext.dgettext(PanWeb.Gettext, "errors", msg, opts)
     end
   end
 
