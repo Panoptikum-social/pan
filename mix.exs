@@ -60,7 +60,7 @@ defmodule Pan.MixProject do
       {:surface, "~> 0.12.1"},
 
       # FIXME: migrate to Phoenix's .form
-      {:surface_form_helpers, "~> 0.2.0"},
+      #{:surface_form_helpers, "~> 0.2.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller

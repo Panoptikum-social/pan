@@ -1,10 +1,9 @@
 defmodule PanWeb.Surface.Admin.ErrorTag do
-  use Surface.Component
-  alias Surface.Components.Form
+  use PanWeb, :html
 
   def render(assigns) do
-    ~F"""
-    <Form.ErrorTag class="inline-block px-2 mt-2 text-grapefruit bg-grapefruit border border-dotted border-grapefruit" />
+    ~H"""
+    <.error :for={msg <- @errors}>{msg}</.error>
     """
   end
 end
