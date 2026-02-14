@@ -1,18 +1,14 @@
 defmodule PanWeb.Surface.Submit do
-  use Surface.Component
-  alias Surface.Components.Form
+  use PanWeb, :html
 
-  prop(label, :string, required: false, default: "Submit")
-
-  prop(class, :css_class,
-    required: false,
-    default: "mt-4 py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"
-  )
+  attr :label, :string, required: false, default: "Submit"
+  attr :class, :string, required: false, default: "btn btn-info"
 
   def render(assigns) do
-    ~F"""
-    <Form.Submit {=@label}
-                 {=@class} />
+    ~H"""
+    <.button type="submit" class={@class}>
+      {@label}
+    </.button>
     """
   end
 end

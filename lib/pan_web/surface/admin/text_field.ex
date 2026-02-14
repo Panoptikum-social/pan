@@ -1,23 +1,16 @@
 defmodule PanWeb.Surface.Admin.TextField do
-  use Surface.Component
-  alias Surface.Components.Form
-  alias PanWeb.Surface.Admin.ErrorTag
+  use PanWeb, :html
 
-  prop(name, :atom, required: true)
-  prop(redact, :boolean, required: false, default: false)
+  attr :name, :atom, required: true
+  attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
-    ~F"""
-    <Form.Field name={@name} class="my-2">
-      <Form.Label class="italic"/>
-      <Form.TextInput :if={!@redact}
-                      class="w-full px-2 py-0 rounded-none" />
-      <Form.TextInput :if={@redact}
-                      value="** redacted **"
-                      class="w-full px-2 py-0 rounded-none"
-                      opts={disabled: true} />
-     <ErrorTag />
-    </Form.Field>
+    ~H"""
+    <%= if @redact do %>
+      <.input value="** redacted **" readonly />
+    <% else %>
+      <.input name={@name} />
+    <% end %>
     """
   end
 end

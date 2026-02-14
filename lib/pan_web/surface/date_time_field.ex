@@ -1,16 +1,11 @@
 defmodule PanWeb.Surface.DateTimeField do
-  use Surface.Component
-  alias Surface.Components.Form
+  use PanWeb, :html
 
-  prop(name, :string, required: true)
+  attr :name, :string, required: true
 
   def render(assigns) do
-    ~F"""
-    <Form.Field {=@name} class="my-4">
-      <Form.Label class="block font-medium text-gray-darker"/>
-      <Form.DateTimeLocalInput class="w-full" />
-      <Form.ErrorTag />
-    </Form.Field>
+    ~H"""
+    <.input type="datetime-local" name={@name} />
     """
   end
 end
