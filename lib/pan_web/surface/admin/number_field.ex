@@ -1,5 +1,6 @@
 defmodule PanWeb.Surface.Admin.NumberField do
   use PanWeb, :html
+  use Phoenix.Component
 
   attr :name, :string, required: true
   attr :redact, :boolean, required: false, default: false

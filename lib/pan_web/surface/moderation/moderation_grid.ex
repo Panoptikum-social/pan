@@ -227,12 +227,12 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
     ~F"""
     <div {=@id}>
       <div class={"my-2 sm:m-4 border border-gray rounded shadow-lg", @class}>
-        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
+        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-linear-to-r
                     font-mono text-white font-semibold rounded-t", @color_class}>
           {@heading}
         </h1>
 
-        <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
+        <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="sm:border-r border-gray flex">
             <button :if={:show_episodes in @buttons}
@@ -303,7 +303,7 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
         </div>
 
         <Pagination :if={:pagination in @buttons}
-                    class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
+                    class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
                     click="paginate"
                     {=@page}
