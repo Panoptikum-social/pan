@@ -1,29 +1,21 @@
 defmodule PanWeb.Surface.Moderation.NumberField do
-  use Surface.Component
-  alias Surface.Components.Form
-  alias PanWeb.Surface.Admin.ErrorTag
+  use PanWeb, :html
 
-  prop(name, :string, required: true)
-  prop(redact, :boolean, required: false, default: false)
+  attr :name, :string, required: true
+  attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
-    ~F"""
-    <Form.Field name={@name} class="my-2 flex items-center justify-end">
-      <Form.Label class="italic text-right"/>
-      <div class="flex flex-col items-center">
-        {#if @redact}
-          <Form.TextInput value="** redacted **"
-                          class={"readonly:disabled ml-3 w-32 px-2 py-0 rounded-none
-                          cursor-not-allowed bg-gray-lighter"}
-          opts={readonly: true} />
-        {#else}
-          <Form.NumberInput class={"ml-3 w-32 text-right px-2 py-0 rounded-none",
-                                   "cursor-not-allowed bg-gray-lighter": @name |> Atom.to_string() |> String.ends_with?("id")}
-                            opts= {readonly: @name |> Atom.to_string() |> String.ends_with?("id")} />
-        {/if}
-        <ErrorTag />
-      </div>
-    </Form.Field>
+    ~H"""
+    <%= if @redact do %>
+      <.input value="** redacted **" readonly />
+    <% else %>
+      <.input
+        type="number"
+        name={@name}
+        readonly={@name |> Atom.to_string() |> String.ends_with?("id")}
+        class={"#{if @name |> Atom.to_string() |> String.ends_with?("id"), do: "cursor-not-allowed" } w-full input"}
+      />
+    <% end %>
     """
   end
 end
