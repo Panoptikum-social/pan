@@ -41,7 +41,7 @@ defmodule Pan.MixProject do
       # ecto sql adapter
       {:ecto_sql, "~> 3.13.2"},
       # database adapter
-      {:postgrex, "~> 0.21.1"},
+      {:postgrex, "~> 0.22"},
       # reactive view layer
       {:phoenix_live_view, "~> 1.1.14"},
       # HTML parser
@@ -82,7 +82,7 @@ defmodule Pan.MixProject do
       # sanitizing html input (shownotes)
       {:html_sanitize_ex, "~> 1.4"},
       # mailing
-      {:swoosh, "~> 1.20.0"},
+      {:swoosh, "~> 1.21"},
       {:gen_smtp, "~> 1.3.0"},
       # Markdown parser
       {:earmark, "~> 1.4"},
