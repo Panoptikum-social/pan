@@ -6,7 +6,7 @@ defmodule PanWeb.Surface.PasswordField do
 
   def render(assigns) do
     ~H"""
-    <.input tpye = "password" name={@name} value={@value} />
+    <.input type="password" name={@name} value={@value} />
     """
   end
 end

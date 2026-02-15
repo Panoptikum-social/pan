@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.CheckBoxField do
+defmodule PanWeb.Components.Admin.CheckBoxField do
   use PanWeb, :html
   use Phoenix.Component
 

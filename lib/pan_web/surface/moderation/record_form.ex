@@ -85,6 +85,7 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
   def render(assigns) do
     ~F"""
     <div class="m-2" id={@id}>
+            <!-- FIXME
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <div class="text-gray-dark whitespace-nowrap">
@@ -152,7 +153,8 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
         </div>
 
          <Submit label="Save" />
-      </Form>
+             </Form>
+             -->
     </div>
     """
   end

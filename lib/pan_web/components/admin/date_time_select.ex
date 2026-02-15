@@ -1,8 +1,8 @@
-defmodule PanWeb.Surface.Admin.TextField do
+defmodule PanWeb.Components.Admin.DateTimeSelect do
   use PanWeb, :html
   use Phoenix.Component
 
-  attr :name, :atom, required: true
+  attr :name, :string, required: true
   attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
@@ -10,7 +10,7 @@ defmodule PanWeb.Surface.Admin.TextField do
     <%= if @redact do %>
       <.input value="** redacted **" readonly />
     <% else %>
-      <.input name={@name} />
+      <.input type="datetime-local" name={@name} />
     <% end %>
     """
   end

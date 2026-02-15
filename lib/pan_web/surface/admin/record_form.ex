@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.RecordForm do
-  use Phoenix.Component
-  use PanWeb, :html
+  use Surface.LiveComponent
+  # use PanWeb, :html
 
   on_mount {PanWeb.Live.Auth, :admin}
 
@@ -8,20 +8,19 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   alias Pan.Repo
 
   alias PanWeb.Surface.Admin.{
-    CheckBoxField,
-    ColumnsFilter,
-    Naming,
-    NumberField,
-    TextAreaField,
-    TextField,
-    DateTimeSelect
+     CheckBoxField,
+     ColumnsFilter,
+     Naming,
+     NumberField,
+     TextAreaField,
+     TextField
   }
 
-  attr :record, :map, required: true
-  attr :model, :module, required: true
-  attr :path_helper, :atom, required: false
-  attr :path_action, :atom, required: false, default: :index
-  attr :cols, :list, required: false, default: []
+  prop(record, :map, required: true)
+  prop(model, :module, required: true)
+  prop(path_helper, :atom, required: false)
+  prop(path_action, :atom, required: false, default: :index)
+  prop(cols, :list, required: false, default: [])
 
   data(changeset, :map)
   data(columns, :list, default: [])
@@ -102,7 +101,9 @@ defmodule PanWeb.Surface.Admin.RecordForm do
   end
 
   def render(assigns) do
-    ~H"""
+    ~F"""
+      <div>
+    <!-- FIXME
     <div class="m-2" id={@id}>
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
@@ -131,7 +132,6 @@ defmodule PanWeb.Surface.Admin.RecordForm do
           </.link> &nbsp;
         </span>
       </div>
-
       <.form for={@changeset}
             opts={autocomplete: "off",
                   class: "mt-4",
@@ -146,48 +146,50 @@ defmodule PanWeb.Surface.Admin.RecordForm do
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
-            <%= for column <- ColumnsFilter.number_columns(assigns) do %>
+            {#for column <- ColumnsFilter.number_columns(assigns)}
               <NumberField name={column.field}
                           redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
-            <% end %>
+            {/for}
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
-            <%= for column <- ColumnsFilter.datetime_columns(assigns)} do %>
+            {#for column <- ColumnsFilter.datetime_columns(assigns)}
               <DateTimeSelect name={column.field}
                               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
-            <% end %>
+            {/for}
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
           <legend class="px-4 border border-gray rounded-lg bg-white">Boolean Fields</legend>
-            <%= for column <- ColumnsFilter.boolean_columns(assigns)} do %>
+            {#for column <- ColumnsFilter.boolean_columns(assigns)}
               <CheckBoxField name={column.field}
                              label={column.field}
                              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
-            <%= end %>
+            {/for}
           </fieldset>
         </div>
 
         <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
-            <%= for column <- ColumnsFilter.string_columns(assigns) do %>
+            {#for column <- ColumnsFilter.string_columns(assigns)}
               <TextField name={column.field}
                          redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
-            <% end %>
+            {/for}
           </fieldset>
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
-            <%= for column <- ColumnsFilter.text_columns(assigns) do %>
+            {#for column <- ColumnsFilter.text_columns(assigns)}
               <TextAreaField name={column.field}
                              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
 
-            <% end %>
+            {/for}
           </fieldset>
         </div>
 
          <.button type="submit" label="Save" />
+
       </.form>
+               -->
     </div>
     """
   end

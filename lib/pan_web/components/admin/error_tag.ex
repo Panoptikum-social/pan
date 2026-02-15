@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.ErrorTag do
+defmodule PanWeb.Components.Admin.ErrorTag do
   use PanWeb, :html
 
   def render(assigns) do

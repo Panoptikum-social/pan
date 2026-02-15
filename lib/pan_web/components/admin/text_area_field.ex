@@ -1,9 +1,9 @@
-defmodule PanWeb.Surface.Admin.TextAreaField do
+defmodule PanWeb.Components.Admin.TextAreaField do
   use PanWeb, :html
   use Phoenix.Component
 
   attr :name, :string, required: true
-  attr :redact, :boolean, required: false, default: false
+  attr :redact, :boolean, default: false
 
   def render(assigns) do
     ~H"""

@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.DateTimeSelect do
+defmodule PanWeb.Components.Admin.NumberField do
   use PanWeb, :html
   use Phoenix.Component
 
@@ -10,7 +10,11 @@ defmodule PanWeb.Surface.Admin.DateTimeSelect do
     <%= if @redact do %>
       <.input value="** redacted **" readonly />
     <% else %>
-      <.input type="datetime-local" name={@name} />
+      <.input
+        type="number"
+        name={@name}
+        readonly={@name == :id}
+      />
     <% end %>
     """
   end
