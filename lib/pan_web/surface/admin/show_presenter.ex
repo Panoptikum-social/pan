@@ -1,14 +1,14 @@
 defmodule PanWeb.Surface.Admin.ShowPresenter do
-  use Surface.Component
+  use PanWeb, :html
   require Integer
 
-  prop(presenter, :fun, required: false)
-  prop(record, :any, required: true)
-  prop(field, :string, required: true)
-  prop(type, :atom, required: false, values: [:string, :integer], default: :string)
-  prop(index, :integer, required: false, default: 0)
-  prop(width, :string, required: false, default: "")
-  prop(redact, :boolean, required: false, default: false)
+  attr :presenter, :any, default: nil
+  attr :record, :any, required: true
+  attr :field, :string, required: true
+  attr :type, :atom, default: :string
+  attr :index, :integer, default: 0
+  attr :width, :string, default: ""
+  attr :redact, :boolean, default: false
 
   def present(_presenter, _record, _field, _format, true = _redact), do: "** redacted **"
   def present(nil, record, field, format, false), do: present(record, field, format)
@@ -67,10 +67,12 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   def present(_unknown_format, data), do: data
 
   def render(assigns) do
-    ~F"""
-    <div class={"text-right font-mono": @type in [:integer, :float, :datetime, :naive_datetime],
-                "text-center": @type == :boolean}>
-      {present @presenter, @record, @field, @type, @redact}
+    ~H"""
+    <div class={[
+      @type in [:integer, :float, :datetime, :naive_datetime] && "text-right font-mono",
+      @type == :boolean && "text-center"
+    ]}>
+      {present(@presenter, @record, @field, @type, @redact)}
     </div>
     """
   end

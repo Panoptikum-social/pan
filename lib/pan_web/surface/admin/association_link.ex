@@ -1,10 +1,10 @@
 defmodule PanWeb.Surface.Admin.AssociationLink do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
-  prop(for, :map, required: true)
-  prop(record, :map, required: true)
+  attr :for, :map, required: true
+  attr :record, :map, required: true
 
   def present(assigns) do
     link_title =
@@ -55,7 +55,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
   def styled_live_redirect(to, assigns, link_title) do
     assigns = assigns |> assign(:to, to) |> assign(:link_title, link_title)
 
-    ~F"""
+    ~H"""
     <.link navigate={@to}
            class="text-link hover:text-link-dark text-medium underline">
       {@link_title}
@@ -64,7 +64,7 @@ defmodule PanWeb.Surface.Admin.AssociationLink do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     {present(assigns)}
     """
   end
