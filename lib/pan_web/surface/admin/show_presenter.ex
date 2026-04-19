@@ -2,14 +2,6 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   use PanWeb, :html
   require Integer
 
-  attr :presenter, :any, default: nil
-  attr :record, :any, required: true
-  attr :field, :string, required: true
-  attr :type, :atom, default: :string
-  attr :index, :integer, default: 0
-  attr :width, :string, default: ""
-  attr :redact, :boolean, default: false
-
   def present(_presenter, _record, _field, _format, true = _redact), do: "** redacted **"
   def present(nil, record, field, format, false), do: present(record, field, format)
   def present(presenter, record, _field, _format, false), do: presenter.(record)
@@ -65,6 +57,14 @@ defmodule PanWeb.Surface.Admin.ShowPresenter do
   end
 
   def present(_unknown_format, data), do: data
+
+  attr :presenter, :any, default: nil
+  attr :record, :any, required: true
+  attr :field, :atom, required: true
+  attr :type, :atom, default: :string
+  attr :index, :integer, default: 0
+  attr :width, :string, default: ""
+  attr :redact, :boolean, default: false
 
   def render(assigns) do
     ~H"""

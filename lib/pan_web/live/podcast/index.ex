@@ -41,7 +41,7 @@ defmodule PanWeb.Live.Podcast.Index do
                      height="150"
                      alt={podcast.image_title}
                      id="photo"
-                     class="break-words text-xs" />
+                     class="wrap-break-word text-xs" />
               {#else}
                 <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
               {/if}
@@ -54,7 +54,7 @@ defmodule PanWeb.Live.Podcast.Index do
                     Website
                   </label>
                 </div>
-                <div class="col-span-2 break-words"><a href={podcast.website}>{podcast.website}</a></div>
+                <div class="col-span-2 wrap-break-word"><a href={podcast.website}>{podcast.website}</a></div>
               {/if}
 
               <div>

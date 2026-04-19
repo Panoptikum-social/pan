@@ -115,7 +115,7 @@ defmodule PanWeb.Live.Episode.Header do
           <dt class="justify-self-end font-medium">Enclosures</dt>
           {#for enclosure <- @episode.enclosures}
           <dd class="col-start-2 col-span-2">
-            <a class="text-link hover:text-link-dark break-words"
+            <a class="text-link hover:text-link-dark wrap-break-word"
                href={enclosure.url |> String.trim }>{enclosure.url}</a>
             {#if is_integer(enclosure.length)}
               ({Float.round(String.to_integer(enclosure.length) / 1048576, 1)} MB)

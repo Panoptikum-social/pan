@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.RecordCard do
-  use Surface.LiveComponent
-  on_mount {PanWeb.Live.Auth, :admin}
+  use PanWeb, :live_component
+  import PanWeb.CoreComponents
 
   import PanWeb.Surface.Admin.ColumnsFilter
   alias PanWeb.Surface.Admin.DataBlock
@@ -8,15 +8,6 @@ defmodule PanWeb.Surface.Admin.RecordCard do
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Endpoint
   alias PanWeb.Router.Helpers, as: Routes
-
-  prop(record, :map, required: true)
-  prop(model, :module, required: true)
-  prop(path_helper, :atom, required: false)
-  prop(cols, :list, required: false, default: [])
-
-  data(columns, :list, default: [])
-  data(primary_key, :list, default: [])
-  slot(slot_columns)
 
   def update(assigns, socket) do
     columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
@@ -30,8 +21,15 @@ defmodule PanWeb.Surface.Admin.RecordCard do
     {:ok, socket}
   end
 
+  attr :record, :map, required: true
+  attr :model, :atom, required: true
+  attr :path_helper, :atom, default: nil
+  attr :cols, :list, default: []
+
+  slot :slot_columns
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-2">
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
@@ -41,11 +39,11 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <h1 class="max-w-5xl w-full truncate">{Naming.title_from_record(@record)}</h1>
         </span>
         <span>
-           <.link navigate={Naming.path %{model: @model,
-                                          action: :index,
-                                          path_helper: @path_helper}}
-                  class="text-link hover:text-link-dark underline">
-             {Naming.module_without_namespace(@model)}&nbsp;List
+          <.link navigate={Naming.path %{model: @model,
+                                         action: :index,
+                                         path_helper: @path_helper}}
+                 class="text-link hover:text-link-dark underline">
+            {Naming.module_without_namespace(@model)}&nbsp;List
           </.link> &nbsp;
           <.link :if={Map.has_key?(@record, :id)}
                  navigate={Naming.path %{model: @model,
@@ -55,15 +53,14 @@ defmodule PanWeb.Surface.Admin.RecordCard do
                  class="text-link hover:text-link-dark underline">
             Edit {Naming.module_without_namespace(@model)}
           </.link>
-
           <.link :if={!Map.has_key?(@record, :id)}
                  navigate={Routes.databrowser_path(
                              Endpoint,
                              :edit_mediating,
                              Phoenix.Naming.resource_name(@model),
-                             @primary_key |> hd |> Atom.to_string,
+                             @primary_key |> hd |> Atom.to_string(),
                              Map.get(@record, hd(@primary_key)),
-                             @primary_key |> tl |> hd |> Atom.to_string,
+                             @primary_key |> tl |> hd |> Atom.to_string(),
                              Map.get(@record, hd(tl(@primary_key)))
                           )}
                  class="text-link hover:text-link-dark underline">
@@ -75,39 +72,39 @@ defmodule PanWeb.Surface.Admin.RecordCard do
       <div class="flex flex-col md:flex-row space-x-4 items-start mt-4">
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Numeric Fields</legend>
-          <DataBlock columns={number_columns(assigns)}
-                     {=@record}
-                     {=@model} />
+          <DataBlock.render columns={number_columns(assigns)}
+                            record={@record}
+                            model={@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Date & Time Fields</legend>
-          <DataBlock columns={datetime_columns(assigns)}
-                     {=@record}
-                     {=@model} />
+          <DataBlock.render columns={datetime_columns(assigns)}
+                            record={@record}
+                            model={@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Boolean Fields</legend>
-          <DataBlock columns={boolean_columns(assigns)}
-                     {=@record}
-                     {=@model} />
+          <DataBlock.render columns={boolean_columns(assigns)}
+                            record={@record}
+                            model={@model} />
         </fieldset>
         <fieldset class="border border-gray bg-white rounded p-1">
           <legend class="bg-white px-4 border border-gray rounded-lg">Relations</legend>
-          <RelationsBlock {=@record}
-                          {=@model} />
+          <RelationsBlock.render record={@record}
+                                 model={@model} />
         </fieldset>
       </div>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">String Fields</legend>
-        <DataBlock columns={string_columns(assigns)}
-                   {=@record}
-                   {=@model} />
+        <DataBlock.render columns={string_columns(assigns)}
+                          record={@record}
+                          model={@model} />
       </fieldset>
       <fieldset class="border border-gray bg-white rounded p-1 mt-4">
         <legend class="bg-white px-4 border border-gray rounded-lg">Text Fields</legend>
-        <DataBlock columns={text_columns(assigns)}
-                   {=@record}
-                   {=@model} />
+        <DataBlock.render columns={text_columns(assigns)}
+                          record={@record}
+                          model={@model} />
       </fieldset>
     </div>
     """

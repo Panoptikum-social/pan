@@ -130,8 +130,8 @@ defmodule PanWeb.Live.Persona.Edit do
               label="Description heading"
               disabled={not pro(@current_user)} />
 
-      <MarkdownField myfield={f[:long_description]}
-                     disabled={not pro(@current_user)}/>
+      <MarkdownField.render myfield={f[:long_description]}
+                           disabled={not pro(@current_user)}/>
 
       <.button type="submit" class="btn btn-info">Submit</.button>
     </.form>

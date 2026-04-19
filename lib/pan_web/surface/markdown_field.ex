@@ -1,13 +1,12 @@
 defmodule PanWeb.Surface.MarkdownField do
-  use Surface.Component
   use PanWeb, :html
 
-  prop(myfield, :any, required: true)
-  prop(disabled, :boolean, default: false)
+  attr :myfield, :any, required: true
+  attr :disabled, :boolean, default: false
 
   def render(assigns) do
-    ~F"""
-    <div :hook="MarkdownField"
+    ~H"""
+    <div phx-hook="MarkdownField"
          id="markdown-field-container"
          data-disabled={@disabled}
          phx-update="ignore">
