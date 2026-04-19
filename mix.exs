@@ -65,8 +65,8 @@ defmodule Pan.MixProject do
       {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller
       {:telemetry_poller, "~> 1.3.0"},
-      # i18n library
-      {:gettext, "~> 0.26"},
+      # i18n library, override necessary because of unnecessary dependency restriction from timex
+      {:gettext, "~> 1.0.2", override: true},
       # web server plug
       {:plug_cowboy, "~> 2.0"},
       # algorithm used for comeonin
