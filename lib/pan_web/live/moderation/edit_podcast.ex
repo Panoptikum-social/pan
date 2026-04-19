@@ -90,10 +90,11 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
 
   def render(assigns) do
     ~F"""
-    <RecordForm id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
-      record = {@podcast}
-      model= {Podcast}
-      {=@cols} />
+    <.live_component module={RecordForm}
+                    id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
+                    record={@podcast}
+                    model={Podcast}
+                    cols={@cols} />
     """
   end
 end

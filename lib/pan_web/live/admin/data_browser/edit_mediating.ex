@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "flex-1 w-full"}
+  use PanWeb, :admin_live_view
 
   alias PanWeb.Surface.Admin.{Naming, RecordForm, QueryBuilder}
 
@@ -47,11 +45,12 @@ defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
   end
 
   def render(assigns) do
-    ~F"""
-    <RecordForm id={"record_form_" <> @resource <> "_" <> @ids_string}
-                {=@record}
-                {=@model}
-                {=@cols} />
+    ~H"""
+    <.live_component module={RecordForm}
+                    id={"record_form_" <> @resource <> "_" <> @ids_string}
+                    record={@record}
+                    model={@model}
+                    cols={@cols} />
     """
   end
 end

@@ -24,29 +24,29 @@ defmodule PanWeb.Surface.Admin.Pagination do
     ~F"""
     <div class={"flex flex-col sm:flex-row items-center justify-between", @class}>
       <div class="flex items-center space-x-2">
-        <PaginationLink :if={@page > 1}
-                        click={@click}
-                        page={@page - 1}
-                        class="rounded-l">
+        <PaginationLink.render :if={@page > 1}
+                               click={@click}
+                               page={@page - 1}
+                               class="rounded-l">
           Previous
-        </PaginationLink>
+        </PaginationLink.render>
         {#for i <- 1..@page}
-          <PaginationLink :if={i != @page}
-                          click={@click}
-                          page={i}
-                          class={"rounded-l-lg": i==1}>
+          <PaginationLink.render :if={i != @page}
+                                 click={@click}
+                                 page={i}
+                                 class={"rounded-l-lg": i==1}>
             {i}
-          </PaginationLink>
+          </PaginationLink.render>
           <span :if={i == @page}>
             Page {i} of {if @nr_of_pages > 0, do: @nr_of_pages, else: "?? "}
           </span>
         {/for}
-        <PaginationLink :if={@page < @nr_of_pages}
-                        click={@click}
-                        page={@page + 1}
-                        class="rounded-r">
+        <PaginationLink.render :if={@page < @nr_of_pages}
+                               click={@click}
+                               page={@page + 1}
+                               class="rounded-r">
           Next
-        </PaginationLink>
+        </PaginationLink.render>
       </div>
 
       <div class="sm:border-l border-gray px-4 py-1 text-center">

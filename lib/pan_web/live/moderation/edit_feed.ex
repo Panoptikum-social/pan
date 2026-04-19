@@ -81,10 +81,11 @@ defmodule PanWeb.Live.Moderation.EditFeed do
 
   def render(assigns) do
     ~F"""
-    <RecordForm id={"record_form_feed_" <> Integer.to_string(@feed.id)}
-    record = {@feed}
-    model= {Feed}
-    {=@cols} />
+    <.live_component module={RecordForm}
+                    id={"record_form_feed_" <> Integer.to_string(@feed.id)}
+                    record={@feed}
+                    model={Feed}
+                    cols={@cols} />
     """
   end
 end

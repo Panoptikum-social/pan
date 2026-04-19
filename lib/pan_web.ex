@@ -143,6 +143,16 @@ defmodule PanWeb do
     end
   end
 
+  def admin_live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {PanWeb.LayoutView, :live_admin},
+        container: {:div, class: "flex-1 w-full"}
+
+      unquote(view_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent

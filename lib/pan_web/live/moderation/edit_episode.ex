@@ -83,10 +83,11 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
 
   def render(assigns) do
     ~F"""
-    <RecordForm id={"record_form_episode_" <> Integer.to_string(@episode.id)}
-    record={@episode}
-    model={Episode}
-    {=@cols} />
+    <.live_component module={RecordForm}
+                    id={"record_form_episode_" <> Integer.to_string(@episode.id)}
+                    record={@episode}
+                    model={Episode}
+                    cols={@cols} />
     """
   end
 end

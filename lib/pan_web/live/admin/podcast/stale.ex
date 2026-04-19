@@ -78,34 +78,34 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       <thead>
         <tr>
           <th class="border border-gray-light">
-            <SortLink field={:id} click="sort" {=@sort_order} {=@sort_by}>
+            <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
               ID
-            </SortLink>
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:title} click="sort" {=@sort_order} {=@sort_by}>
+            <SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
               Title
-            </SortLink>
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">
-          <SortLink field={:updated_at} click="sort" {=@sort_order} {=@sort_by}>
-            Updated at 🎡
-            </SortLink>
+            <SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+              Updated at 🎡
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:update_intervall} click="sort" {=@sort_order} {=@sort_by}>
+            <SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
               Update intervall
-            </SortLink>
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:next_update} click="sort" {=@sort_order} {=@sort_by}>
+            <SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
               Next update 🎡
-            </SortLink>
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">
-          <SortLink field={:failure_count} click="sort" {=@sort_order} {=@sort_by}>
-            Failure count
-          </SortLink>
+            <SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+              Failure count
+            </SortLink.render>
           </th>
           <th class="border border-gray-light">Feed url</th>
         </tr>

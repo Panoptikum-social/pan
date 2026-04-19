@@ -292,13 +292,13 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
 
           <div :if={:number_of_records in @buttons}
                class="px-4 sm:border-r border-gray">
-            <PerPageLink delta="-5" click="per_page"/>
-            <PerPageLink delta="-3" click="per_page"/>
-            <PerPageLink delta="-1" click="per_page"/>
+            <PerPageLink.render delta="-5" click="per_page"/>
+            <PerPageLink.render delta="-3" click="per_page"/>
+            <PerPageLink.render delta="-1" click="per_page"/>
             <span class="hidden sm:inline">Records</span>
-            <PerPageLink delta="+1" click="per_page"/>
-            <PerPageLink delta="+3" click="per_page"/>
-            <PerPageLink delta="+5" click="per_page"/>
+            <PerPageLink.render delta="+1" click="per_page"/>
+            <PerPageLink.render delta="+3" click="per_page"/>
+            <PerPageLink.render delta="+5" click="per_page"/>
           </div>
         </div>
 

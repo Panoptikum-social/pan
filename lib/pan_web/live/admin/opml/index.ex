@@ -84,21 +84,21 @@ defmodule PanWeb.Live.Admin.Opml.Index do
       <thead>
         <tr>
           <th class="border border-gray-light">
-            <SortLink field={:id} click="sort" {=@sort_order} {=@sort_by}>Id</SortLink>
+            <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:user_name} click="sort" {=@sort_order} {=@sort_by}>User</SortLink></th>
+            <SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render></th>
           <th class="border border-gray-light">
-            <SortLink field={:content_type} click="sort" {=@sort_order} {=@sort_by}>Content Type</SortLink>
+            <SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:filename} click="sort" {=@sort_order} {=@sort_by}>Filename</SortLink>
+            <SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:inserted_at} click="sort" {=@sort_order} {=@sort_by}>inserted at</SortLink>
+            <SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render>
           </th>
           <th class="border border-gray-light">
-            <SortLink field={:path} click="sort" {=@sort_order} {=@sort_by}>Path</SortLink>
+            <SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render>
           </th>
           <th class="border border-gray-light">Actions</th>
         </tr>

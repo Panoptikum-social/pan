@@ -77,12 +77,12 @@ defmodule PanWeb.Surface.Admin.DataTable do
       </div>
       {#for column <- @columns}
         <div class="bg-white italic grid place-content-center text-sm text-center">
-          <SortLink click={@sort}
-                    {=@sort_by}
-                    {=@sort_order}
-                    field={column.field}>
+          <SortLink.render click={@sort}
+                          sort_by={@sort_by}
+                          sort_order={@sort_order}
+                          field={column.field}>
             {column.label}
-          </SortLink>
+          </SortLink.render>
         </div>
       {/for}
 

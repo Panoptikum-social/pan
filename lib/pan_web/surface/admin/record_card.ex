@@ -38,7 +38,7 @@ defmodule PanWeb.Surface.Admin.RecordCard do
           <span class="text-gray-dark">
             Show&nbsp;<span class="font-semibold">{Naming.module_without_namespace(@model)}</span>
           </span>
-          <h1 class="max-w-screen-lg w-full truncate">{Naming.title_from_record(@record)}</h1>
+          <h1 class="max-w-5xl w-full truncate">{Naming.title_from_record(@record)}</h1>
         </span>
         <span>
            <.link navigate={Naming.path %{model: @model,

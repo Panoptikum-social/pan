@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "flex-1 w-full"}
+  use PanWeb, :admin_live_view
 
   alias PanWeb.Surface.Admin.Naming
   alias PanWeb.Surface.Admin.RecordForm
@@ -48,11 +46,12 @@ defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
   end
 
   def render(assigns) do
-    ~F"""
-    <RecordForm id={"record_form_" <> @resource <> "_new"}
-                {=@record}
-                {=@model}
-                {=@cols} />
+    ~H"""
+    <.live_component module={RecordForm}
+                    id={"record_form_" <> @resource <> "_new"}
+                    record={@record}
+                    model={@model}
+                    cols={@cols} />
     """
   end
 end
