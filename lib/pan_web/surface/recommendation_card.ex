@@ -1,47 +1,46 @@
 defmodule PanWeb.Surface.RecommendationCard do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.{EpisodeButton, PodcastButton, Icon, UserButton}
 
-  prop(for, :any, required: true)
+  attr :for, :any, required: true
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <p>
       <span :if={@for.inserted_at} class="float-right">
-        at <Icon name="calendar-heroicons-outline" />
+        at <Icon.render name="calendar-heroicons-outline" />
         {Calendar.strftime(@for.inserted_at, "%x")}
       </span>
-      <UserButton for={@for.user} /> recommended
+      <UserButton.render for={@for.user} /> recommended
     </p>
 
-    <p :if={@for.podcast}
-       class="mt-2">
-      the podcast <PodcastButton for={@for.podcast} />
+    <p :if={@for.podcast} class="mt-2">
+      the podcast <PodcastButton.render for={@for.podcast} />
     </p>
 
-    {#if @for.episode}
+    <%= if @for.episode do %>
       <p class="mt-2">
-        the episode <EpisodeButton for={@for.episode} />
+        the episode <EpisodeButton.render for={@for.episode} />
       </p>
-      <p >
-        from podcast <PodcastButton for={@for.episode.podcast} />
+      <p>
+        from podcast <PodcastButton.render for={@for.episode.podcast} />
       </p>
-    {/if}
+    <% end %>
 
-    {#if @for.chapter}
+    <%= if @for.chapter do %>
       <p class="mt-2">
-        the chapter <Icon name="indent-lineawesome-solid" /> {@for.chapter.title}
+        the chapter <Icon.render name="indent-lineawesome-solid" /> {@for.chapter.title}
       </p>
       <p class="mt-2">
-        from episode  <EpisodeButton for={@for.chapter.episode} />
+        from episode <EpisodeButton.render for={@for.chapter.episode} />
       </p>
       <p class="mt-2">
-        from podcast <PodcastButton for={@for.chapter.episode.podcast} />
+        from podcast <PodcastButton.render for={@for.chapter.episode.podcast} />
       </p>
-    {/if}
+    <% end %>
 
     <p class="mt-2">
-      with <Icon name="thumb-up-heroicons-outline" /> <i>„{@for.comment}“</i>
+      with <Icon.render name="thumb-up-heroicons-outline" /> <i>„{@for.comment}"</i>
     </p>
     """
   end
