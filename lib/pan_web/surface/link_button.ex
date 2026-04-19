@@ -1,30 +1,32 @@
 defmodule PanWeb.Surface.LinkButton do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.Icon
 
-  prop(id, :string, required: false)
-  prop(title, :string, required: true)
-  prop(to, :fun, required: true)
-  prop(class, :css_class, required: false)
-  prop(large, :boolean, required: false, default: false)
-  prop(icon, :string, required: false)
-  prop(truncate, :boolean, default: false)
-  prop(method, :atom, default: :get)
-  prop(opts, :keyword, default: [])
+  attr :id, :string, default: nil
+  attr :title, :string, required: true
+  attr :to, :string, required: true
+  attr :class, :string, default: nil
+  attr :large, :boolean, default: false
+  attr :icon, :string, default: nil
+  attr :truncate, :boolean, default: false
+  attr :method, :atom, default: :get
+  attr :opts, :list, default: []
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <.link id={@id}
-          to={@to}
-          class={"border border-solid inline-block shadow",
-                 @class,
-                 "truncate max-w-full": @truncate,
-                 "py-1 px-2 rounded text-sm": !@large,
-                 "py-2 px-3 rounded-md": @large}
-          {=@method}
-          {=@opts}>
-        <Icon :if={@icon} name={@icon} spaced/>
-        {@title}
+           href={@to}
+           class={[
+             "border border-solid inline-block shadow",
+             @class,
+             @truncate && "truncate max-w-full",
+             !@large && "py-1 px-2 rounded text-sm",
+             @large && "py-2 px-3 rounded-md"
+           ]}
+           method={@method}
+           {@opts}>
+      <Icon.render :if={@icon} name={@icon} spaced={true} />
+      {@title}
     </.link>
     """
   end

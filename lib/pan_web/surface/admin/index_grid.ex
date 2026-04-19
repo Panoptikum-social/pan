@@ -338,12 +338,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
     ~F"""
     <div {=@id}>
       <div class={"my-2 sm:m-4 border border-gray rounded shadow-lg", @class}>
-        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-gradient-to-r
+        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-linear-to-r
                     font-mono text-white font-semibold rounded-t", @color_class}>
           {@heading}
         </h1>
 
-        <div class="flex flex-col sm:flex-row justify-start bg-gradient-to-r from-gray-lightest
+        <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="sm:border-r border-gray flex">
             <button :if={:show in @buttons}
@@ -431,7 +431,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
             <.link :if={:new in @buttons}
                    navigate={Naming.path %{model: @model, action: :new, path_helper: @path_helper}}
                    class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r border-gray">🆕 New</.link>
+                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r">🆕 New</.link>
           </div>
 
           <div :if={:number_of_records in @buttons}
@@ -453,7 +453,7 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
         </div>
 
         <Pagination :if={:pagination in @buttons}
-                    class="pl-2 border-b border-gray rounded-b bg-gradient-to-r from-gray-lightest
+                    class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
                            via-gray-lighter to-gray-light"
                     click="paginate"
                     {=@page}

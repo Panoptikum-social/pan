@@ -1,61 +1,61 @@
-defmodule PanWeb.Surface.PanelHeading do
-  use Surface.Component, slot: "panel_heading"
-end
-
 defmodule PanWeb.Surface.Panel do
-  use Surface.Component
+  use PanWeb, :html
 
-  prop(heading, :string, required: false)
-  prop(purpose, :string, required: false, default: "default")
-  prop(heading_right, :string, required: false)
-  prop(target, :fun, required: false)
-  prop(class, :css_class, required: false, default: "")
-  prop(id, :string, required: false)
-  prop(content_class, :css_class, required: false, default: "")
+  attr :heading, :string, default: nil
+  attr :purpose, :string, default: "default"
+  attr :heading_right, :string, default: nil
+  attr :target, :string, default: nil
+  attr :class, :string, default: ""
+  attr :id, :string, default: nil
+  attr :content_class, :string, default: ""
 
-  slot(default)
-  slot(panel_heading, required: false)
+  slot :inner_block
+  slot :panel_heading
 
   def heading_color_classes(purpose) do
     case purpose do
-      "info" -> "bg-info text-white"
-      "category" -> "bg-category text-white"
-      "podcast" -> "bg-podcast text-white"
-      "persona" -> "bg-warning text-white"
-      "popular" -> "bg-aqua text-white"
-      "like" -> "bg-grapefruit text-white"
-      "user" -> "bg-lavender text-white"
-      "episode" -> "bg-episode text-white"
-      "engagement" -> "bg-bittersweet text-white"
-      "gig" -> "bg-mint text-white"
+      "info"           -> "bg-info text-white"
+      "category"       -> "bg-category text-white"
+      "podcast"        -> "bg-podcast text-white"
+      "persona"        -> "bg-warning text-white"
+      "popular"        -> "bg-aqua text-white"
+      "like"           -> "bg-grapefruit text-white"
+      "user"           -> "bg-lavender text-white"
+      "episode"        -> "bg-episode text-white"
+      "engagement"     -> "bg-bittersweet text-white"
+      "gig"            -> "bg-mint text-white"
       "recommendation" -> "bg-recommendation text-white"
-      "message" -> "bg-success text-white"
-      _ -> "bg-white"
+      "message"        -> "bg-success text-white"
+      _                -> "bg-white"
     end
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div aria-label="panel"
-         class={"rounded-xl shadow", @class}
+         class={["rounded-xl shadow", @class]}
          id={@id}>
       <div aria-label="panel heading"
-           class={"p-3 rounded-t-xl", heading_color_classes(@purpose)}>
-        <#slot {@panel_heading} />
+           class={["p-3 rounded-t-xl", heading_color_classes(@purpose)]}>
+        {render_slot(@panel_heading)}
 
-        {#if @target}
+        <%= if @target do %>
           <.link href={@target}
-                class="hover:text-gray-lighter">{@heading}</.link>
+                 class="hover:text-gray-lighter">{@heading}</.link>
           <.link :if={@heading_right}
-                href={@target}
-                class="float-right hover:text-gray-lighter">{@heading_right}</.link>
-        {#else}
+                 href={@target}
+                 class="float-right hover:text-gray-lighter">{@heading_right}</.link>
+        <% else %>
           {@heading}
-        {/if}
+        <% end %>
       </div>
 
       <div class={@content_class}>
-        <#slot>No content defined!</#slot>
+        <%= if @inner_block != [] do %>
+          {render_slot(@inner_block)}
+        <% else %>
+          No content defined!
+        <% end %>
       </div>
     </div>
     """

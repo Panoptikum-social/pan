@@ -1,14 +1,14 @@
 defmodule PanWeb.Surface.Admin.Pagination do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.Admin.PaginationLink
 
-  prop(page, :integer, required: true)
-  prop(per_page, :integer, required: true)
-  prop(nr_of_pages, :integer, required: true)
-  prop(nr_of_unfiltered, :integer, required: true)
-  prop(nr_of_filtered, :integer, required: true)
-  prop(class, :css_class, required: false)
-  prop(click, :event, required: true)
+  attr :page, :integer, required: true
+  attr :per_page, :integer, required: true
+  attr :nr_of_pages, :integer, required: true
+  attr :nr_of_unfiltered, :integer, required: true
+  attr :nr_of_filtered, :integer, required: true
+  attr :class, :string, default: nil
+  attr :click, :string, required: true
 
   def format(number) do
     number
@@ -21,8 +21,8 @@ defmodule PanWeb.Surface.Admin.Pagination do
   end
 
   def render(assigns) do
-    ~F"""
-    <div class={"flex flex-col sm:flex-row items-center justify-between", @class}>
+    ~H"""
+    <div class={["flex flex-col sm:flex-row items-center justify-between", @class]}>
       <div class="flex items-center space-x-2">
         <PaginationLink.render :if={@page > 1}
                                click={@click}
@@ -30,17 +30,17 @@ defmodule PanWeb.Surface.Admin.Pagination do
                                class="rounded-l">
           Previous
         </PaginationLink.render>
-        {#for i <- 1..@page}
+        <%= for i <- 1..@page do %>
           <PaginationLink.render :if={i != @page}
                                  click={@click}
                                  page={i}
-                                 class={"rounded-l-lg": i==1}>
+                                 class={i == 1 && "rounded-l-lg"}>
             {i}
           </PaginationLink.render>
           <span :if={i == @page}>
             Page {i} of {if @nr_of_pages > 0, do: @nr_of_pages, else: "?? "}
           </span>
-        {/for}
+        <% end %>
         <PaginationLink.render :if={@page < @nr_of_pages}
                                click={@click}
                                page={@page + 1}

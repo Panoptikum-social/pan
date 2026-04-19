@@ -1,14 +1,15 @@
 defmodule PanWeb.Surface.Icon do
-  use Surface.Component
+  use PanWeb, :html
   import PanWeb.ViewHelpers, only: [icon: 2]
 
-  prop(name, :string, required: true)
-  prop(class, :css_class, required: false, default: "")
-  prop(spaced, :boolean, required: false, default: false)
+  attr :name, :string, required: true
+  attr :class, :string, default: ""
+  attr :spaced, :boolean, default: false
 
   def render(assigns) do
-    ~F"""
-    {icon(@name, class: "h-5 w-5 inline align-text-bottom #{@class}")}{#if @spaced}&nbsp;{/if}
+    ~H"""
+    {icon(@name, class: "h-5 w-5 inline align-text-bottom #{@class}")}
+    <%= if @spaced do %>&nbsp;<% end %>
     """
   end
 end
