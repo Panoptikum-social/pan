@@ -1,32 +1,29 @@
 defmodule PanWeb.Surface.Tab do
-  use Surface.Component
+  use PanWeb, :html
 
-  prop(items, :generator, required: true)
+  attr :items, :list, required: true
 
-  slot(default, generator_prop: :items)
+  slot :inner_block, required: true
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div x-data="{ selectedTab: 0 }" class="pt-0.5">
       <ul class="flex flex-wrap border-b border-gray-lighter">
-        {#for {_item, index} <- @items |> Enum.with_index}
+        <%= for {_item, index} <- Enum.with_index(@items) do %>
           <li class="-mb-px ml-1.5">
             <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-               x-bind:class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r text-gray-darker' :
-                          selectedTab === #{index},
-                        'bg-gray-lighter text-gray-dark' :
-                        selectedTab !== #{index} }"}
-              @click.prevent={"selectedTab = #{index}"}
-              to="#">{index + 1}</a>
+               x-bind:class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r' : selectedTab === #{index}, 'bg-gray-lighter text-gray-dark' : selectedTab !== #{index} }"}
+               @click.prevent={"selectedTab = #{index}"}
+               to="#">{index + 1}</a>
           </li>
-        {/for}
+        <% end %>
       </ul>
       <div class="p-4">
-        {#for {item, index} <- @items |> Enum.with_index}
+        <%= for {item, index} <- Enum.with_index(@items) do %>
           <div x-show={"selectedTab === #{index}"}>
-            <#slot generator_value={item} {@default} />
+            {render_slot(@inner_block, item)}
           </div>
-        {/for}
+        <% end %>
       </div>
     </div>
     """

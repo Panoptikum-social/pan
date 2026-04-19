@@ -1,16 +1,16 @@
 defmodule PanWeb.Surface.CategoryButton do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
-  prop(id, :integer, required: false)
-  prop(title, :string, required: false)
-  prop(class, :string, required: false)
-  prop(large, :boolean, required: false, default: false)
-  prop(for, :map, required: false)
-  prop(index_on_page, :integer, default: 1)
-  prop(truncate, :boolean, default: false)
+  attr :id, :integer, default: nil
+  attr :title, :string, default: nil
+  attr :class, :string, default: nil
+  attr :large, :boolean, default: false
+  attr :for, :map, default: nil
+  attr :index_on_page, :integer, default: 1
+  attr :truncate, :boolean, default: false
 
   defp color_class_cycle(counter) do
     Enum.at(
@@ -34,13 +34,13 @@ defmodule PanWeb.Surface.CategoryButton do
   end
 
   def render(assigns) do
-    ~F"""
-    <LinkButton to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
-                class={color_class_cycle(@index_on_page), @class}
-                {=@large}
-                icon="folder-heroicons-outline"
-                title={@title || @for.title}
-                {=@truncate} />
+    ~H"""
+    <LinkButton.render to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
+                       class={[color_class_cycle(@index_on_page), @class]}
+                       large={@large}
+                       icon="folder-heroicons-outline"
+                       title={@title || @for.title}
+                       truncate={@truncate} />
     """
   end
 end
