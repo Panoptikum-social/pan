@@ -1,21 +1,20 @@
 defmodule PanWeb.Surface.PersonaButton do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
-  prop(id, :integer, required: false)
-  prop(name, :string, required: false)
-  prop(for, :map, required: false)
-  prop(class, :css_class, required: false)
+  attr :id, :integer, default: nil
+  attr :name, :string, default: nil
+  attr :for, :map, default: nil
+  attr :class, :string, default: nil
 
   def render(assigns) do
-    ~F"""
-    <LinkButton to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
-                class={"bg-lavender text-white border border-gray-dark
-                       hover:bg-lavender-light hover:border-lavender", @class}
-                icon="user-astronaut-lineawesome-solid"
-                title={@name || @for.name} />
+    ~H"""
+    <LinkButton.render to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
+                       class={["bg-lavender text-white border border-gray-dark hover:bg-lavender-light hover:border-lavender", @class]}
+                       icon="user-astronaut-lineawesome-solid"
+                       title={@name || @for.name} />
     """
   end
 end

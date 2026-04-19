@@ -1,10 +1,10 @@
 defmodule PanWeb.Surface.TopList do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Surface.{PodcastButton, Icon}
 
-  prop(items, :list, required: true)
-  prop(icon, :string, required: false, default: "heart-heroicons-outline")
-  prop(purpose, :string, required: false)
+  attr :items, :list, required: true
+  attr :icon, :string, default: "heart-heroicons-outline"
+  attr :purpose, :string, default: nil
 
   def prepare_for_toplist(items) do
     items
@@ -38,25 +38,25 @@ defmodule PanWeb.Surface.TopList do
   defp add_rank([], {_rank, acc}), do: acc
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <table class="w-full table-fixed mt-2">
-      {#for {rank, count, items} <- prepare_for_toplist(@items)}
-        <tr class="odd:bg-gray-lightest" >
+      <%= for {rank, count, items} <- prepare_for_toplist(@items) do %>
+        <tr class="odd:bg-gray-lightest">
           <td class="text-right py-2 w-10">
             {rank}.
           </td>
           <td class="px-4">
-            {#for {id, title} <- items}
+            <%= for {id, title} <- items do %>
               <p>
-                <PodcastButton :if={@purpose == "podcast"} {=id} {=title} truncate />
+                <PodcastButton.render :if={@purpose == "podcast"} id={id} title={title} truncate={true} />
               </p>
-            {/for}
+            <% end %>
           </td>
           <td class="text-right py-2 w-20">
-            {count} <Icon name={@icon} />&nbsp;
+            {count} <Icon.render name={@icon} />&nbsp;
           </td>
         </tr>
-      {/for}
+      <% end %>
     </table>
     """
   end

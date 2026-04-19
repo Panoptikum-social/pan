@@ -1,14 +1,14 @@
 defmodule PanWeb.Surface.QRCode do
-  use Surface.Component
+  use PanWeb, :html
 
-  prop(for, :string, required: true)
+  attr :for, :string, required: true
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <img src={"/qrcode/#{URI.encode_www_form(@for)}"}
          class="max-w-none"
          width="150"
-         height="150" %>
+         height="150" />
     """
   end
 end
