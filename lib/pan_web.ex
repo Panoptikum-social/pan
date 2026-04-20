@@ -137,7 +137,7 @@ defmodule PanWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {PanWeb.LayoutView, "live.html"}
+        layout: {PanWeb.LayoutView, :live}
 
       unquote(view_helpers())
     end

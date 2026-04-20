@@ -1,16 +1,15 @@
 defmodule PanWeb.Live.Episode.RecommendForm do
-  use Surface.Component
-  alias PanWeb.Endpoint
   use PanWeb, :html
+  alias PanWeb.Endpoint
   import PanWeb.Router.Helpers
 
-  prop(current_user_id, :integer, required: true)
-  prop(changeset, :map, required: true)
-  prop(episode, :map, required: true)
+  attr :current_user_id, :integer, required: true
+  attr :changeset, :map, required: true
+  attr :episode, :map, required: true
 
   def render(assigns) do
-    ~F"""
-    {#if @current_user_id}
+    ~H"""
+    <div :if={@current_user_id}>
       <.form for={@changeset}
              :let={f}
              class="mt-4"
@@ -27,8 +26,8 @@ defmodule PanWeb.Live.Episode.RecommendForm do
             document.getElementById("remaining").innerHTML = 255 - this.value.length;
         }
       </script>
-      {/if}
-      <br/>
+    </div>
+    <br/>
     """
   end
 end

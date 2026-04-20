@@ -2,7 +2,6 @@ defmodule PanWeb.Live.Category.Show do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
 
-  import PanWeb.Router.Helpers
   alias PanWeb.{Category, Podcast, Language}
 
   alias PanWeb.Surface.{

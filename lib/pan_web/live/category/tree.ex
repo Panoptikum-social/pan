@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Category.Tree do
-  use Surface.LiveView
+  use PanWeb, :live_view
   alias PanWeb.Category
   alias PanWeb.Surface.CategoryButton
 
@@ -8,22 +8,20 @@ defmodule PanWeb.Live.Category.Tree do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">
-      {#for {category, counter} <- @categories |> Enum.with_index}
-        <div class="avoid-column-break">
-          <p>
-            <CategoryButton for={category} index_on_page={counter} large/>
-          </p>
-          <p class="mt-6 -mx-0.5">
-            {#for subcategory <- category.children}
-              <CategoryButton for={subcategory}
-                              class="px-1.5 py-0.5 mx-0.5" truncate />
-            {/for}
-          </p>
-          <hr class="w-full mt-4 border-t-1 border-gray-lightest break-before-avoid" />
-        </div>
-      {/for}
+      <div :for={{category, counter} <- Enum.with_index(@categories)} class="avoid-column-break">
+        <p>
+          <CategoryButton.render for={category} index_on_page={counter} large={true} />
+        </p>
+        <p class="mt-6 -mx-0.5">
+          <CategoryButton.render :for={subcategory <- category.children}
+                                 for={subcategory}
+                                 class="px-1.5 py-0.5 mx-0.5"
+                                 truncate={true} />
+        </p>
+        <hr class="w-full mt-4 border-t border-gray-lightest break-before-avoid" />
+      </div>
     </div>
     """
   end

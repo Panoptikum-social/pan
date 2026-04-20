@@ -1,26 +1,25 @@
 defmodule PanWeb.Live.Chapter.RecommendForm do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
+  import PanWeb.CoreComponents
   alias PanWeb.Endpoint
-  use PanWeb, :html
   import PanWeb.Router.Helpers
 
-  prop(current_user_id, :integer, required: true)
-  prop(changeset, :map, required: true)
-  prop(chapter, :map, required: true)
-  prop(remaining, :integer, default: 255)
+  def mount(socket) do
+    {:ok, assign(socket, remaining: 255)}
+  end
 
   def handle_event("on-change", %{"value" => value}, socket) do
     {:noreply, assign(socket, remaining: 255 - String.length(value))}
   end
 
   def render(assigns) do
-    ~F"""
-    <div class="col-start-2 col-span-2" id={"chapter-#{@id}"} >
+    ~H"""
+    <div class="col-start-2 col-span-2" id={"chapter-#{@id}"}>
       <.form for={@changeset}
-        :let={f}
-            class="flex space-x-2 items-center"
-            action={recommendation_frontend_path(Endpoint, :create)}>
-        <.input :on-keyup="on-change"
+             :let={f}
+             class="flex space-x-2 items-center"
+             action={recommendation_frontend_path(Endpoint, :create)}>
+        <.input phx-keyup="on-change"
                 field={f[:comment]} label="Your recommendation"
                 id={"text-#{@id}"}
                 size="100" maxlength="255"
