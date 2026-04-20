@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
   use PanWeb, :admin_live_view
 
-  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Admin.Naming
   alias PanWeb.Surface.Admin.RecordForm
 
   def mount(

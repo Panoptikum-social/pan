@@ -1,7 +1,9 @@
 defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
   use PanWeb, :admin_live_view
 
-  alias PanWeb.Surface.Admin.{Naming, RecordForm, QueryBuilder}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.QueryBuilder
+  alias PanWeb.Surface.Admin.RecordForm
 
   def mount(
         %{

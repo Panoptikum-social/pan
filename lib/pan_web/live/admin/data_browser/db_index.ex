@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
     layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "flex-1"}
 
-  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Admin.Naming
   require Integer
 
   def mount(%{"resource" => resource}, _session, socket) do

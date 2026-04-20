@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.ActionButtons do
+defmodule PanWeb.Admin.ActionButtons do
   use PanWeb, :html
 
   alias PanWeb.{

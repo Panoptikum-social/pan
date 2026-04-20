@@ -3,7 +3,8 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
 
   import PanWeb.CoreComponents
 
-  alias PanWeb.Surface.Admin.{Naming, ColumnsFilter}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ColumnsFilter
   alias Pan.Repo
 
   alias PanWeb.Surface.Moderation.NumberField

@@ -1,6 +1,6 @@
-defmodule PanWeb.Surface.Admin.RelationsBlock do
+defmodule PanWeb.Admin.RelationsBlock do
   use PanWeb, :html
-  alias PanWeb.Surface.Admin.AssociationLink
+  alias PanWeb.Admin.AssociationLink
   require Integer
 
   def type(model, association) do

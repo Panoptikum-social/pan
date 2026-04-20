@@ -1,7 +1,12 @@
 defmodule PanWeb.Surface.Admin.IndexGrid do
   use PanWeb, :live_component
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.Admin.{Naming, Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.Tools
+  alias PanWeb.Admin.QueryBuilder
+  alias PanWeb.Admin.PerPageLink
+  alias PanWeb.Admin.Pagination
+  alias PanWeb.Surface.Admin.DataTable
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
 

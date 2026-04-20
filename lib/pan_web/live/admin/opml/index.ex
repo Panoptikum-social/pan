@@ -7,7 +7,8 @@ defmodule PanWeb.Live.Admin.Opml.Index do
 
   alias PanWeb.{Opml, Endpoint}
   alias PanWeb.Surface.LinkButton
-  alias PanWeb.Surface.Admin.{SortLink, Pagination}
+  alias PanWeb.Admin.SortLink
+  alias PanWeb.Admin.Pagination
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do

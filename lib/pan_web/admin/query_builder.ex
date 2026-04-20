@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.QueryBuilder do
+defmodule PanWeb.Admin.QueryBuilder do
   import Ecto.Query
   alias Pan.Repo
 
@@ -61,51 +61,42 @@ defmodule PanWeb.Surface.Admin.QueryBuilder do
     |> apply_filter(filter, hide)
   end
 
-  # No or initial search term given
   defp apply_option({_column, ""}, query, _mode), do: query
 
-  # Search term given & contains search mode
   defp apply_option({column, value}, query, :contains = _mode) do
     from(q in query,
       where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
     )
   end
 
-  # Search term given & starts_with search mode
   defp apply_option({column, value}, query, :starts_with = _mode) do
     from(q in query,
       where: ilike(fragment("cast (? as text)", field(q, ^column)), ^(value <> "%"))
     )
   end
 
-  # Search term given & ends with search mode
   defp apply_option({column, value}, query, :ends_with = _mode) do
     from(q in query,
       where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value))
     )
   end
 
-  # Search term given & exact match search mode
   defp apply_option({column, value}, query, :exact = _mode) do
     from(q in query, where: ^[{column, value}])
   end
 
-  # Filter ignored, selected elements will be indicated in view
   defp apply_filter(query, _filter, false = _hide), do: query
 
-  # Filter for list
   defp apply_filter(query, {column, values}, true = _hide)
        when is_list(values) do
     from(q in query, where: field(q, ^column) in ^values)
   end
 
-  # Filter for item
   defp apply_filter(query, {column, value}, true = _hide)
        when is_integer(value) do
     from(q in query, where: field(q, ^column) == ^value)
   end
 
-  # No or initial filter to be applied
   defp apply_filter(query, {} = _filter, _hide), do: query
 
   defp select_columns(query, cols) do

@@ -5,7 +5,7 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
 
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
-  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Admin.Naming
   alias PanWeb.Surface.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 

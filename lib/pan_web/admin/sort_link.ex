@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.SortLink do
+defmodule PanWeb.Admin.SortLink do
   use PanWeb, :html
   import PanWeb.ViewHelpers, only: [icon: 2]
 

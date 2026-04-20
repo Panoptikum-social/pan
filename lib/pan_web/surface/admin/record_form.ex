@@ -6,7 +6,8 @@ defmodule PanWeb.Surface.Admin.RecordForm do
 
   import PanWeb.CoreComponents
 
-  alias PanWeb.Surface.Admin.{ColumnsFilter, Naming}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ColumnsFilter
 
   alias PanWeb.Components.Admin.{
     CheckBoxField,

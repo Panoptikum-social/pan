@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
+defmodule PanWeb.Admin.GridPresenter do
   use PanWeb, :html
   require Integer
 
@@ -11,9 +11,9 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
       case format do
         :boolean ->
           case data do
-            true -> "✔️"
-            false -> "❌"
-            _ -> "{}"
+            true -> "☒"
+            false -> "☐"
+            _ -> "∅"
           end
 
         _ ->
@@ -35,7 +35,7 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
     ~H"""
     <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not}
          class={[
-           "text-very-gray-darker px-1 grid content-center",
+           "text-very-gray-darker px-1 grid content-center truncate",
            @width,
            if(@type in [:integer, :id, :boolean], do: "text-right whitespace-nowrap"),
            if(@type in [:datetime, :naive_datetime], do: "text-center whitespace-nowrap"),
@@ -45,25 +45,7 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
            if(@dye, do: "bg-sunflower-lighter")
          ]}
          x-data="{ detailsOpen: false }">
-      <div @click="detailsOpen = !detailsOpen
-                   $nextTick(() => $refs.detailsCloseButton.focus())"
-           class="truncate">
-        {present(@presenter, @record, @field, @type)}
-      </div>
-      <div x-show="detailsOpen"
-           class="absolute inset-52 mx-auto items-center bg-gray-lightest
-                  border border-gray p-4">
-        <h1 class="text-3xl">Details</h1>
-        <p class="mt-6">
-          {present(@presenter, @record, @field, @type)}
-        </p>
-        <button @click="detailsOpen = false"
-                class="absolute bottom-4 left-4 bg-info hover:bg-info-light text-white p-2 rounded mt-6
-                       focus:ring-2 focus:ring-info-light"
-                x-ref="detailsCloseButton">
-          Close
-        </button>
-      </div>
+      {present(@presenter, @record, @field, @type)}
     </div>
 
     <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field)}

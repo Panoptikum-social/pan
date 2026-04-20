@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.PerPageLink do
+defmodule PanWeb.Admin.PerPageLink do
   use PanWeb, :html
 
   attr :delta, :string, required: true

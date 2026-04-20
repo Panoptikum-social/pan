@@ -1,6 +1,6 @@
-defmodule PanWeb.Surface.Admin.Pagination do
+defmodule PanWeb.Admin.Pagination do
   use PanWeb, :html
-  alias PanWeb.Surface.Admin.PaginationLink
+  alias PanWeb.Admin.PaginationLink
 
   attr :page, :integer, required: true
   attr :per_page, :integer, required: true
@@ -35,7 +35,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
         <%= for i <- 1..@page do %>
           <PaginationLink.render :if={i != @page}
                                  click={@click}
-                               target={@target}
+                                 target={@target}
                                  page={i}
                                  class={i == 1 && "rounded-l-lg"}>
             {i}

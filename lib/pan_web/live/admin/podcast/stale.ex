@@ -5,7 +5,8 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.{Podcast, Endpoint}
-  alias PanWeb.Surface.{LinkButton, Admin.SortLink}
+  alias PanWeb.Admin.SortLink
+  alias PanWeb.Surface.LinkButton
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do

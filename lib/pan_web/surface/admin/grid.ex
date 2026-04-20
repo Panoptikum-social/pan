@@ -1,8 +1,9 @@
 defmodule PanWeb.Surface.Admin.Grid do
   use PanWeb, :html
 
-  alias PanWeb.Surface.Admin.Naming
-  alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.SortLink
+  alias PanWeb.Admin.GridPresenter
   require Integer
 
   defp width(type) do

@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.PaginationLink do
+defmodule PanWeb.Admin.PaginationLink do
   use PanWeb, :html
 
   attr :page, :integer, required: true

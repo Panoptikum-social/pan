@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   use Surface.LiveView
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Feed}
-  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Admin.Naming
   alias PanWeb.Surface.Moderation.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 

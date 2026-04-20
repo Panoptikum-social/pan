@@ -1,7 +1,8 @@
 defmodule PanWeb.Surface.Admin.DataTable do
   use PanWeb, :html
 
-  alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
+  alias PanWeb.Admin.SortLink
+  alias PanWeb.Admin.GridPresenter
   require Integer
 
   defp width(:id), do: "6rem"

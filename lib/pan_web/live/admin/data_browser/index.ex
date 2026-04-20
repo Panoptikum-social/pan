@@ -3,7 +3,9 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
     layout: {PanWeb.LayoutView, :live_admin},
     container: {:div, class: "flex-1"}
 
-  alias PanWeb.Surface.Admin.{Naming, IndexGrid, ActionButtons}
+  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ActionButtons
+  alias PanWeb.Surface.Admin.IndexGrid
   require Integer
 
   def mount(%{"resource" => resource}, _session, socket) do

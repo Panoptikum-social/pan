@@ -1,7 +1,7 @@
 defmodule PanWeb.Surface.Admin.DataBlock do
   use PanWeb, :html
-  alias PanWeb.Surface.Admin.ShowPresenter
-  alias PanWeb.Surface.Admin.Naming
+  alias PanWeb.Admin.ShowPresenter
+  alias PanWeb.Admin.Naming
   require Integer
 
   attr :record, :map, required: true

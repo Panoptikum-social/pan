@@ -1,6 +1,6 @@
 defmodule PanWeb.Surface.Admin.Explorer do
   use PanWeb, :live_component
-  alias PanWeb.Surface.Admin.Tools
+  alias PanWeb.Admin.Tools
 
   def update(assigns, socket) do
     items = Tools.ensure_ids_and_selected(assigns.items)

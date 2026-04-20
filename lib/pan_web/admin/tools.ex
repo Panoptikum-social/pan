@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Tools do
+defmodule PanWeb.Admin.Tools do
   def ensure_ids_and_selected(items) do
     items
     |> Enum.with_index()

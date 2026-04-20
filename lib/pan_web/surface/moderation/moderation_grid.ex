@@ -1,6 +1,10 @@
 defmodule PanWeb.Surface.Moderation.ModerationGrid do
   use PanWeb, :live_component
-  alias PanWeb.Surface.Admin.{Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
+  alias PanWeb.Admin.Tools
+  alias PanWeb.Admin.QueryBuilder
+  alias PanWeb.Admin.PerPageLink
+  alias PanWeb.Admin.Pagination
+  alias PanWeb.Surface.Admin.DataTable
 
   def mount(socket) do
     {:ok,

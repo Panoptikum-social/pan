@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Naming do
+defmodule PanWeb.Admin.Naming do
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
@@ -12,7 +12,7 @@ defmodule PanWeb.Surface.Admin.Naming do
   end
 
   def application() do
-    {:ok, application} = :application.get_application(PanWeb.Surface.Admin.Naming)
+    {:ok, application} = :application.get_application(PanWeb.Admin.Naming)
     application
   end
 

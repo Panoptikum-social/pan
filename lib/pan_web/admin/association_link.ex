@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.AssociationLink do
+defmodule PanWeb.Admin.AssociationLink do
   use PanWeb, :html
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint

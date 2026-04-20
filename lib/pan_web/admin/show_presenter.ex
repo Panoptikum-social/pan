@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.ShowPresenter do
+defmodule PanWeb.Admin.ShowPresenter do
   use PanWeb, :html
   require Integer
 
