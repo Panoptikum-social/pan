@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Tab do
+defmodule PanWeb.Component.Tab do
   use PanWeb, :html
 
   attr :items, :list, required: true

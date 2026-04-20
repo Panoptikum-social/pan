@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.QRCode do
+defmodule PanWeb.Component.QRCode do
   use PanWeb, :html
 
   attr :for, :string, required: true

@@ -1,11 +1,11 @@
-defmodule PanWeb.Surface.EmailField do
+defmodule PanWeb.Component.TextField do
   use PanWeb, :html
 
   attr :name, :atom, required: true
 
   def render(assigns) do
     ~H"""
-    <.input type="email" name={@name} />
+    <.input type="text" name={@name} />
     """
   end
 end

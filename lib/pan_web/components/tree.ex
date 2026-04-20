@@ -1,7 +1,7 @@
-defmodule PanWeb.Surface.Tree do
+defmodule PanWeb.Component.Tree do
   use PanWeb, :live_component
   import PanWeb.CoreComponents
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Component.Icon
 
   def handle_event("toggle-expand", %{"node-id" => node_id}, socket) do
     expanded = socket.assigns.expanded

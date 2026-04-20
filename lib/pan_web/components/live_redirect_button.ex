@@ -1,6 +1,6 @@
-defmodule PanWeb.Surface.LinkButton do
+defmodule PanWeb.Component.LiveRedirectButton do
   use PanWeb, :html
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Component.Icon
 
   attr :id, :string, default: nil
   attr :title, :string, required: true
@@ -14,8 +14,7 @@ defmodule PanWeb.Surface.LinkButton do
 
   def render(assigns) do
     ~H"""
-    <.link id={@id}
-           href={@to}
+    <.link navigate={@to}
            class={[
              "border border-solid inline-block shadow",
              @class,
@@ -23,7 +22,6 @@ defmodule PanWeb.Surface.LinkButton do
              !@large && "py-1 px-2 rounded text-sm",
              @large && "py-2 px-3 rounded-md"
            ]}
-           method={@method}
            {@opts}>
       <Icon.render :if={@icon} name={@icon} spaced={true} />
       {@title}

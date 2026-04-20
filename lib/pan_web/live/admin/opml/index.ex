@@ -6,7 +6,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
   on_mount {PanWeb.Live.Auth, :admin}
 
   alias PanWeb.{Opml, Endpoint}
-  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Component.LinkButton
   alias PanWeb.Admin.SortLink
   alias PanWeb.Admin.Pagination
   import PanWeb.Router.Helpers

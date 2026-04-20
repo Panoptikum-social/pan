@@ -3,16 +3,13 @@ defmodule PanWeb.Live.User.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like}
 
-  alias PanWeb.Surface.{
-    Panel,
-    PodcastButton,
-    CategoryButton,
-    UserButton,
-    EpisodeButton,
-    Icon,
-    LikeButton,
-    FollowButton
-  }
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.FollowButton
+  alias PanWeb.Component.LikeButton
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.UserButton
+  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Surface.PodcastButton
 
   def mount(%{"id" => id}, _session, socket) do
     user = User.get_for_show(id)

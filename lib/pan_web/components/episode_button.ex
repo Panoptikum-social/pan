@@ -1,6 +1,6 @@
-defmodule PanWeb.Surface.EpisodeButton do
+defmodule PanWeb.Component.EpisodeButton do
   use PanWeb, :html
-  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Component.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 

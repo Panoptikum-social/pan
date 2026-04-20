@@ -4,15 +4,14 @@ defmodule PanWeb.Live.Category.Show do
 
   alias PanWeb.{Category, Podcast, Language}
 
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.FollowButton
+  alias PanWeb.Component.LikeButton
+  alias PanWeb.Component.CategoryButton
   alias PanWeb.Surface.{
-    Panel,
     PanelHeading,
-    Icon,
-    CategoryButton,
     PodcastButton,
-    LinkButton,
-    LikeButton,
-    FollowButton
+    LinkButton
   }
 
   def mount(%{"id" => id}, session, socket) do
@@ -144,7 +143,7 @@ defmodule PanWeb.Live.Category.Show do
             <a href="#"
                :on-click="set-language-filter"
                phx-value-language_id={language.id}
-               class="text-link hover: text-link-dark mx-2">
+               class="text-link hover:text-link-dark mx-2">
               {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
             </a>
           {/for}
@@ -154,7 +153,7 @@ defmodule PanWeb.Live.Category.Show do
           <div class="float-right">
             <a href="#"
               :on-click="reset-language-filter"
-              class="text-link hover: text-link-dark mx-2">🗑️ Clear language filter</a>
+              class="text-link hover:text-link-dark mx-2">🗑️ Clear language filter</a>
           </div>
           <h2 class="text-2xl mt-4">
             Podcasts in {@language.name} {@language.emoji}

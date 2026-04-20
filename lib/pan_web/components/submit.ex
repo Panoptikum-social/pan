@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Submit do
+defmodule PanWeb.Component.Submit do
   use PanWeb, :html
 
   attr :label, :string, default: "Submit"

@@ -1,7 +1,9 @@
 defmodule PanWeb.Live.Episode.Index do
   use Surface.LiveView
   alias PanWeb.Episode
-  alias PanWeb.Surface.{EpisodeCard, PodcastButton, Panel}
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.EpisodeCard
 
   def mount(_params, _session, socket) do
     {:ok,

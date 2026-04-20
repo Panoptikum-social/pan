@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.MarkdownField do
+defmodule PanWeb.Component.MarkdownField do
   use PanWeb, :html
 
   attr :myfield, :any, required: true

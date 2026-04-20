@@ -1,7 +1,9 @@
 defmodule PanWeb.Live.Recommendation.Index do
   use Surface.LiveView
   alias PanWeb.Recommendation
-  alias PanWeb.Surface.{Icon, UserButton, PodcastButton, EpisodeButton}
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.UserButton
 
   def mount(_params, _session, socket) do
     {:ok,

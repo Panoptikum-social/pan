@@ -5,7 +5,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
   alias PanWeb.Admin.Explorer
   alias PanWeb.Surface.Admin.{Col, ToolbarItem}
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Component.LinkButton
   alias PanWeb.Endpoint
   import PanWeb.Router.Helpers
 

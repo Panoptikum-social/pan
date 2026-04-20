@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.PasswordField do
+defmodule PanWeb.Component.PasswordField do
   use PanWeb, :html
 
   attr :name, :atom, required: true

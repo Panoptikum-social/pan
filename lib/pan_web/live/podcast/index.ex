@@ -2,7 +2,10 @@ defmodule PanWeb.Live.Podcast.Index do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   alias PanWeb.{Podcast, Endpoint}
-  alias PanWeb.Surface.{Panel, CategoryButton, PersonaButton, Pill, Icon}
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.Pill
+  alias PanWeb.Component.PersonaButton
+  alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
     {:ok,

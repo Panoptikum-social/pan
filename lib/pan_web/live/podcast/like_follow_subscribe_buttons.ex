@@ -4,7 +4,8 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   alias PanWeb.{Endpoint, Podcast}
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
-  alias PanWeb.Surface.{Icon, LikeButton, FollowButton}
+  alias PanWeb.Component.FollowButton
+  alias PanWeb.Component.LikeButton
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)

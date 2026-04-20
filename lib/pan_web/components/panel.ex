@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Panel do
+defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
   attr :heading, :string, default: nil

@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Category.Tree do
   use PanWeb, :live_view
   alias PanWeb.Category
-  alias PanWeb.Surface.CategoryButton
+  alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, categories: Category.tree(), page_title: "Category Tree")}

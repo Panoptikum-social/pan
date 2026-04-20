@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Persona.Edit do
   on_mount PanWeb.Live.Auth
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
-  alias PanWeb.Surface.MarkdownField
+  alias PanWeb.Component.MarkdownField
   use PanWeb, :html
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [in_the_future?: 1]

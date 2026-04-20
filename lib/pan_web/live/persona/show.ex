@@ -3,7 +3,12 @@ defmodule PanWeb.Live.Persona.Show do
   import PanWeb.Router.Helpers
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
-  alias PanWeb.Surface.{PodcastButton, EpisodeButton, Pill, Panel, LikeButton, FollowButton}
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.Pill
+  alias PanWeb.Component.FollowButton
+  alias PanWeb.Component.LikeButton
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PodcastButton
   use PhoenixHTMLHelpers
 
   def mount(%{"pid" => pid}, _session, socket) do
@@ -207,14 +212,14 @@ defmodule PanWeb.Live.Persona.Show do
     <Panel :if={@persona.description || @persona.long_description}
            heading={@persona.description}
            purpose="info"
-           class="m-4 max-w-screen-xl">
+           class="m-4 max-w-7xl">
         <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
     </Panel>
 
     <Panel :if={false && @persona.fediverse_address}
            heading={"#{@persona.fediverse_address} in the Fediverse"}
            purpose="gig"
-           class="m-4 max-w-screen-xl">
+           class="m-4 max-w-7xl">
       {Pan.ActivityPub.View.widget(@persona.fediverse_address)}
     </Panel>
 

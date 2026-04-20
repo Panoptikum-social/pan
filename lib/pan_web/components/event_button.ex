@@ -1,6 +1,6 @@
-defmodule PanWeb.Surface.EventButton do
+defmodule PanWeb.Component.EventButton do
   use PanWeb, :html
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Component.Icon
 
   attr :title, :string, default: nil
   attr :event, :string, required: true

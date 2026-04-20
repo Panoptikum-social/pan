@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.DateTimeField do
+defmodule PanWeb.Component.DateTimeField do
   use PanWeb, :html
 
   attr :name, :string, required: true

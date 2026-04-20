@@ -2,7 +2,8 @@ defmodule PanWeb.Live.Search do
   use Surface.LiveView
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [icon: 1]
-  alias PanWeb.Surface.{LinkButton, Pill}
+  alias PanWeb.Component.Pill
+  alias PanWeb.Component.LinkButton
   alias Pan.Search
   alias PanWeb.Endpoint
 
@@ -109,13 +110,13 @@ defmodule PanWeb.Live.Search do
           <div :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}
                class="flex-none p-2 my-2 border border-gray-light shadow mx-auto lg:mx-0">
             <img src={"https://panoptikum.social#{hit["_source"]["thumbnail_url"]}"}
-                class="break-words text-xs"
+                class="wrap-break-word text-xs"
                 height="150" width="150"
                 alt={hit["_source"]["image_title"]}
                 id={"photo-#{hit["_id"]}"}/>
           </div>
 
-          <div class="max-w-screen-lg">
+          <div class="max-w-5xl">
             <h2 class="text-2xl">
               {heading(@index)}
               <a href={show_path(@index, hit["_id"])}

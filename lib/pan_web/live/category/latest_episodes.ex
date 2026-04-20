@@ -1,7 +1,9 @@
 defmodule PanWeb.Live.Category.LatestEpisodes do
   use Surface.LiveView
   alias PanWeb.{Category, Podcast, Episode}
-  alias PanWeb.Surface.{EpisodeCard, PodcastButton, Panel}
+  alias PanWeb.Component.Panel
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.EpisodeCard
 
   def mount(%{"id" => id}, _session, socket) do
     podcast_ids = Podcast.ids_by_category_id(id)

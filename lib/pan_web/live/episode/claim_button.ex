@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Episode.ClaimButton do
   use Surface.LiveComponent
-  alias PanWeb.Surface.EventButton
+  alias PanWeb.Component.EventButton
   alias PanWeb.{Gig, Episode}
 
   prop(current_user_id, :integer, required: true)

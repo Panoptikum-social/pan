@@ -1,7 +1,8 @@
 defmodule PanWeb.Live.Podcast.EpisodeList do
   use Surface.Component
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  alias PanWeb.Surface.{Icon, PersonaButton, EpisodeButton}
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PersonaButton
   require Integer
 
   prop(episodes, :list, required: false, default: [])

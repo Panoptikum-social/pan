@@ -1,6 +1,9 @@
 defmodule PanWeb.Surface.RecommendationCard do
   use PanWeb, :html
-  alias PanWeb.Surface.{EpisodeButton, PodcastButton, Icon, UserButton}
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.UserButton
+  alias PanWeb.Component.Icon
 
   attr :for, :any, required: true
 

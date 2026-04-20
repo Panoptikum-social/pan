@@ -1,7 +1,10 @@
 defmodule PanWeb.Live.Podcast.Header do
   use Surface.Component
   alias PanWeb.Endpoint
-  alias PanWeb.Surface.{Icon, CategoryButton, PersonaButton, Pill, QRCode}
+  alias PanWeb.Component.Pill
+  alias PanWeb.Component.QRCode
+  alias PanWeb.Component.PersonaButton
+  alias PanWeb.Component.CategoryButton
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, PodloveSubscribeButton}
 
@@ -30,7 +33,7 @@ defmodule PanWeb.Live.Podcast.Header do
     <h1 class="text-3xl">{@podcast.title}</h1>
 
     <p :if={@podcast.retired}
-        class="p-2 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container max-w-screen-md my-4"
+        class="p-2 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container max-w-3xl my-4"
         role="alert">
       We retired this podcast, because we couldn't parse it for 10 consecutive times.
     </p>
@@ -46,7 +49,7 @@ defmodule PanWeb.Live.Podcast.Header do
                       height="150"
                       alt={@podcast.image_title}
                       id="photo"
-                      class="break-words text-xs" />
+                      class="wrap-break-word text-xs" />
               {#else}
                 <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
               {/if}

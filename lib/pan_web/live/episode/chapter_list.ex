@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Episode.ChapterList do
   use Surface.Component
-  alias PanWeb.Surface.LikeButton
+  alias PanWeb.Component.LikeButton
   alias PanWeb.Live.Chapter.{RecommendForm, RecommendationList}
 
   prop(current_user_id, :integer, required: true)

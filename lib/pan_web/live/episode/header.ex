@@ -1,7 +1,11 @@
 defmodule PanWeb.Live.Episode.Header do
   use Surface.LiveComponent
   alias PanWeb.{User, Episode}
-  alias PanWeb.Surface.{PodcastButton, PersonaButton, EpisodeButton, Icon, LikeButton, Pill}
+  alias PanWeb.Component.Pill
+  alias PanWeb.Component.LikeButton
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PersonaButton
+  alias PanWeb.Component.PodcastButton
   alias PanWeb.Live.Episode.ClaimButton
 
   prop(current_user_id, :integer, required: true)

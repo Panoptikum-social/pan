@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Icon do
+defmodule PanWeb.Component.Icon do
   use PanWeb, :html
   import PanWeb.ViewHelpers, only: [icon: 2]
 

@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Pill do
+defmodule PanWeb.Component.Pill do
   use PanWeb, :html
 
   attr :type, :string, default: "info"

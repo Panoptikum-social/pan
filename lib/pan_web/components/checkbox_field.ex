@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.CheckBoxField do
+defmodule PanWeb.Component.CheckBoxField do
   use PanWeb, :html
 
   attr :name, :atom, required: true

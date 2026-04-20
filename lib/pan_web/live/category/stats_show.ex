@@ -3,7 +3,8 @@ defmodule PanWeb.Live.Category.StatsShow do
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Category, Podcast, Language}
-  alias PanWeb.Surface.{Panel, PanelHeading, Icon, LinkButton}
+  alias PanWeb.Component.Panel
+  alias PanWeb.Surface.{PanelHeading, LinkButton}
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])

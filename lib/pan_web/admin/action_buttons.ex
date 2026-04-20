@@ -15,7 +15,7 @@ defmodule PanWeb.Admin.ActionButtons do
     FeedBacklog
   }
 
-  alias PanWeb.Surface.LinkButton
+  alias PanWeb.Component.LinkButton
   import PanWeb.Router.Helpers
 
   attr :record, :map, default: nil

@@ -1,8 +1,8 @@
-defmodule PanWeb.Surface.LikeButton do
+defmodule PanWeb.Component.LikeButton do
   use PanWeb, :live_component
   import PanWeb.CoreComponents
   alias PanWeb.{Like, Chapter, Episode, Podcast, Persona, Category, User}
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Component.Icon
 
   def update(assigns, socket) do
     like_method =

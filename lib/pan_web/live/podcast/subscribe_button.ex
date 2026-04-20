@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Podcast.SubscribeButton do
   use Surface.LiveComponent
   alias PanWeb.{Subscription, Podcast}
-  alias PanWeb.Surface.Icon
+  alias PanWeb.Component.Icon
 
   prop(current_user_id, :integer, required: true)
   prop(podcast, :map, required: true)

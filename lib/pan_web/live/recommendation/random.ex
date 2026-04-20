@@ -1,6 +1,8 @@
 defmodule PanWeb.Live.Recommendation.Random do
   use Surface.LiveView, container: {:div, class: "m-4"}
-  alias PanWeb.Surface.{PodcastButton, EpisodeButton, CategoryButton}
+  alias PanWeb.Component.EpisodeButton
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.CategoryButton
   alias PanWeb.{Podcast, Category}
 
   def mount(_params, _session, socket) do

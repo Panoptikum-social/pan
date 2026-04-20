@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.EpisodeCard do
+defmodule PanWeb.Component.EpisodeCard do
   use PanWeb, :html
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PersonaButton

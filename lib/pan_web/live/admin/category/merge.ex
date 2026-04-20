@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   on_mount {PanWeb.Live.Auth, :admin}
   alias PanWeb.Category
-  alias PanWeb.Surface.{Icon, Tree, EventButton}
+  alias PanWeb.Component.{Tree, EventButton}
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}

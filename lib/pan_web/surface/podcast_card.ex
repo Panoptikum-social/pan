@@ -1,6 +1,8 @@
 defmodule PanWeb.Surface.PodcastCard do
   use PanWeb, :html
-  alias PanWeb.Surface.{PodcastButton, Icon, PersonaButton}
+  alias PanWeb.Component.PersonaButton
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.Icon
   import PanWeb.ViewHelpers
 
   attr :for, :map, required: true

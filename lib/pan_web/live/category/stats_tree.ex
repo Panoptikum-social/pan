@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Category.StatsTree do
   use Surface.LiveView
   alias PanWeb.Category
-  alias PanWeb.Surface.CategoryButton
+  alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
     {:ok,

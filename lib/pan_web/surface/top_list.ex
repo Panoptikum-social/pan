@@ -1,6 +1,7 @@
 defmodule PanWeb.Surface.TopList do
   use PanWeb, :html
-  alias PanWeb.Surface.{PodcastButton, Icon}
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.Icon
 
   attr :items, :list, required: true
   attr :icon, :string, default: "heart-heroicons-outline"
