@@ -1,15 +1,6 @@
 defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
-  use Surface.Component
+  use PanWeb, :html
   require Integer
-
-  prop(presenter, :fun, required: false)
-  prop(model, :module, required: true)
-  prop(record, :any, required: true)
-  prop(field, :string, required: true)
-  prop(type, :atom, required: false, values: [:string, :integer], default: :string)
-  prop(index, :integer, required: false, default: 0)
-  prop(width, :string, required: false, default: "")
-  prop(dye, :boolean, required: false, default: false)
 
   def present(presenter, record, field, format) do
     if presenter do
@@ -31,19 +22,29 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
     end
   end
 
+  attr :presenter, :any, default: nil
+  attr :model, :any, required: true
+  attr :record, :any, required: true
+  attr :field, :string, required: true
+  attr :type, :atom, default: :string
+  attr :index, :integer, default: 0
+  attr :width, :string, default: ""
+  attr :dye, :boolean, default: false
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field) |> Kernel.not}
-         class={"text-very-gray-darker px-1 grid content-center",
-                  @width,
-                  "text-right whitespace-nowrap": (@type in [:integer, :id]),
-                  "text-right whitespace-nowrap": (@type == :boolean),
-                  "text-center whitespace-nowrap": (@type in [:datetime, :naive_datetime]),
-                  "text-left": (@type == :string),
-                  "bg-gray-lighter": Integer.is_odd(@index) && !@dye,
-                  "bg-white": Integer.is_even(@index) && !@dye,
-                  "bg-sunflower-lighter": @dye}
-                 x-data="{ detailsOpen: false }">
+         class={[
+           "text-very-gray-darker px-1 grid content-center",
+           @width,
+           if(@type in [:integer, :id, :boolean], do: "text-right whitespace-nowrap"),
+           if(@type in [:datetime, :naive_datetime], do: "text-center whitespace-nowrap"),
+           if(@type == :string, do: "text-left"),
+           if(Integer.is_odd(@index) && !@dye, do: "bg-gray-lighter"),
+           if(Integer.is_even(@index) && !@dye, do: "bg-white"),
+           if(@dye, do: "bg-sunflower-lighter")
+         ]}
+         x-data="{ detailsOpen: false }">
       <div @click="detailsOpen = !detailsOpen
                    $nextTick(() => $refs.detailsCloseButton.focus())"
            class="truncate">
@@ -66,11 +67,13 @@ defmodule PanWeb.Surface.Admin.GridPresenterWithDetails do
     </div>
 
     <div :if={@model.__schema__(:redact_fields) |> Enum.member?(@field)}
-    class={"bg-white text-very-gray-darker px-1 grid content-center text-center whitespace-nowrap",
-             @width,
-             "bg-gray-lighter": Integer.is_odd(@index)}
-            x-data="{ detailsOpen: false }">
-    ** redacted **
+         class={[
+           "bg-white text-very-gray-darker px-1 grid content-center text-center whitespace-nowrap",
+           @width,
+           if(Integer.is_odd(@index), do: "bg-gray-lighter")
+         ]}
+         x-data="{ detailsOpen: false }">
+      ** redacted **
     </div>
     """
   end

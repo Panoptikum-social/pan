@@ -1,36 +1,8 @@
 defmodule PanWeb.Surface.Admin.DataTable do
-  use Surface.LiveComponent
-  on_mount {PanWeb.Live.Auth, :admin}
+  use PanWeb, :html
 
   alias PanWeb.Surface.Admin.{SortLink, GridPresenter}
-  alias Surface.Components.{Form, Form.TextInput}
   require Integer
-
-  prop(cols, :list, required: true)
-  prop(sort_by, :atom, required: false, default: :id)
-  prop(sort_order, :atom, required: false, default: :asc)
-  prop(buttons, :list, required: true)
-  prop(model, :module, required: true)
-  prop(search_options, :map, required: false, default: %{})
-  prop(search_mode, :atom, required: false, default: :exact)
-  prop(hide_filtered, :boolean, required: false, default: true)
-  prop(records, :list, required: false, default: [])
-  prop(path_helper, :atom, required: false)
-  prop(sort, :event, required: true)
-  prop(select, :event, required: true)
-  prop(search, :event, required: true)
-  prop(cycle_search_mode, :event, required: true)
-  prop(search_filter, :tuple, default: {})
-  prop(selected_records, :list, default: [])
-  prop(primary_key, :list, default: [:id])
-
-  data(columns, :list, default: [])
-  slot(slot_columns)
-
-  def update(assigns, socket) do
-    columns = if assigns.cols == [], do: assigns.slot_columns, else: assigns.cols
-    {:ok, assign(socket, assigns) |> assign(columns: columns)}
-  end
 
   defp width(:id), do: "6rem"
   defp width(Ecto.UUID), do: "4rem"
@@ -61,90 +33,112 @@ defmodule PanWeb.Surface.Admin.DataTable do
   end
 
   defp selected?(record, selected_records) do
-    Enum.any?(selected_records, &all_keys_maching?(record, &1))
+    Enum.any?(selected_records, &all_keys_matching?(record, &1))
   end
 
-  defp all_keys_maching?(record, selected_record) do
+  defp all_keys_matching?(record, selected_record) do
     Enum.all?(Map.keys(selected_record), &(Map.get(record, &1) == Map.get(selected_record, &1)))
   end
 
+  attr :cols, :list, required: true
+  attr :sort_by, :atom, default: :id
+  attr :sort_order, :atom, default: :asc
+  attr :buttons, :list, required: true
+  attr :model, :any, required: true
+  attr :search_options, :map, default: %{}
+  attr :search_mode, :atom, default: :exact
+  attr :hide_filtered, :boolean, default: true
+  attr :records, :list, default: []
+  attr :path_helper, :atom, default: nil
+  attr :sort, :string, required: true
+  attr :select, :string, required: true
+  attr :search, :string, required: true
+  attr :cycle_search_mode, :string, required: true
+  attr :search_filter, :any, default: {}
+  attr :selected_records, :list, default: []
+  attr :primary_key, :list, default: [:id]
+  attr :target, :any, required: true
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={"grid-template-columns: 6rem #{Enum.map(@columns, &width(&1.type)) |> Enum.join(" ")};"}>
+         style={"grid-template-columns: 6rem #{Enum.map(@cols, &width(&1.type)) |> Enum.join(" ")};"}>
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
-         <span :if={:search in @buttons}>Search Mode</span>
+        <span :if={:search in @buttons}>Search Mode</span>
       </div>
-      {#for column <- @columns}
-        <div class="bg-white italic grid place-content-center text-sm text-center">
-          <SortLink.render click={@sort}
-                          sort_by={@sort_by}
-                          sort_order={@sort_order}
-                          field={column.field}>
-            {column.label}
-          </SortLink.render>
-        </div>
-      {/for}
+      <div :for={column <- @cols} class="bg-white italic grid place-content-center text-sm text-center">
+        <SortLink.render click={@sort}
+                         target={@target}
+                         sort_by={@sort_by}
+                         sort_order={@sort_order}
+                         field={column.field}>
+          {column.label}
+        </SortLink.render>
+      </div>
 
       <div :if={:search in @buttons}
            class="bg-gray-lighter text-center p-1">
-        <a :on-click={@cycle_search_mode}
+        <a phx-click={@cycle_search_mode}
+           phx-target={@target}
            class="text-link hover:text-link-dark underline">
-          {@search_mode |> Atom.to_string |> String.replace("_", " ")}
+          {@search_mode |> Atom.to_string() |> String.replace("_", " ")}
         </a>
       </div>
 
-      {#for column <- @columns}
-        <div :if={:search in @buttons}
-            class={"bg-gray-lighter p-1",
-                   "text-right": column.type == :integer}>
-          <Form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
-                for={%{}}
-                as={:search}
-                change={@search}
-                opts={autocomplete: "off", onkeydown: "return event.key != 'Enter';"}
-                >
-            <TextInput field={column.field}
-                       value={@search_options[column.field]}
-                       class={"p-0.5 w-full"}
-                       opts={autofocus: "autofocus",
-                             autocomplete: "off",
-                             "phx-debounce": 300} />
-          </Form>
-        </div>
-      {/for}
+      <div :for={column <- @cols}
+           :if={:search in @buttons}
+           class={["bg-gray-lighter p-1", if(column.type == :integer, do: "text-right")]}>
+        <.form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
+               for={%{}}
+               as={:search}
+               phx-change={@search}
+               phx-target={@target}
+               autocomplete="off"
+               onkeydown="return event.key != 'Enter';">
+          <input type="text"
+                 name={"search[#{column.field}]"}
+                 value={@search_options[column.field]}
+                 class="p-0.5 w-full"
+                 autofocus="autofocus"
+                 autocomplete="off"
+                 phx-debounce="300" />
+        </.form>
+      </div>
 
-      {#for {record, index} <- @records |> Enum.with_index}
-        <div class={"text-center",
-                    "bg-gray-lighter": Integer.is_odd(index) && !dyed?(record, assigns),
-                    "bg-white": Integer.is_even(index) && !dyed?(record, assigns),
-                    "bg-sunflower-lighter": dyed?(record, assigns)}>
+      <%= for {record, index} <- @records |> Enum.with_index do %>
+        <div class={[
+               "text-center",
+               if(Integer.is_odd(index) && !dyed?(record, assigns), do: "bg-gray-lighter"),
+               if(Integer.is_even(index) && !dyed?(record, assigns), do: "bg-white"),
+               if(dyed?(record, assigns), do: "bg-sunflower-lighter")
+             ]}>
           <input :if={Map.has_key?(record, :id)}
                  type="checkbox"
                  class="my-1.5"
                  checked={selected?(record, @selected_records)}
-                 :on-click={@select}
+                 phx-click={@select}
+                 phx-target={@target}
                  phx-value-id={record.id} />
 
           <input :if={length(@primary_key) == 2}
                  type="checkbox"
                  class="my-1.5"
                  checked={selected?(record, @selected_records)}
-                 :on-click={@select}
+                 phx-click={@select}
+                 phx-target={@target}
                  phx-value-one={Map.get(record, hd(@primary_key))}
                  phx-value-two={Map.get(record, hd(tl(@primary_key)))} />
         </div>
 
-        {#for column <- @columns}
-          <GridPresenter presenter={column[:presenter]}
-                         {=record}
-                         field={column.field}
-                         type={column.type}
-                         {=index}
-                         {=@model}
-                         dye={dyed?(record, assigns)}/>
-        {/for}
-      {/for}
+        <GridPresenter.render :for={column <- @cols}
+                              presenter={column[:presenter]}
+                              record={record}
+                              field={column.field}
+                              type={column.type}
+                              index={index}
+                              model={@model}
+                              dye={dyed?(record, assigns)} />
+      <% end %>
     </div>
     """
   end

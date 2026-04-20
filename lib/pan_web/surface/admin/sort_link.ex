@@ -7,6 +7,7 @@ defmodule PanWeb.Surface.Admin.SortLink do
   attr :field, :atom, required: true
   attr :disabled, :boolean, default: false
   attr :click, :string, required: true
+  attr :target, :any, default: nil
 
   slot :inner_block, required: true
 
@@ -21,6 +22,7 @@ defmodule PanWeb.Surface.Admin.SortLink do
     ~H"""
     <a href="#"
        phx-click={@click}
+       phx-target={@target}
        phx-value-sort-by={@field}
        phx-value-sort-order={cycle_sort_order(@sort_order)}>
       <%= if @sort_by == @field do %>
