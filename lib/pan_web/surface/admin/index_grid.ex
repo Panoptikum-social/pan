@@ -1,38 +1,26 @@
 defmodule PanWeb.Surface.Admin.IndexGrid do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
   alias PanWeb.Endpoint
   alias PanWeb.Surface.Admin.{Naming, Pagination, PerPageLink, DataTable, QueryBuilder, Tools}
   alias PanWeb.Router.Helpers, as: Routes
   alias Pan.Repo
 
-  prop(heading, :string, required: false, default: "Records")
-  prop(model, :module, required: true)
-  prop(path_helper, :atom, required: false)
-  prop(cols, :list, required: false, default: [])
-  prop(search_filter, :tuple, default: {})
-  prop(second_search_filter, :tuple, default: {})
-  prop(per_page, :integer, default: 20)
-  prop(class, :css_class, required: false)
-  prop(buttons, :list, required: true)
-  prop(records, :list, default: [])
-
-  prop(color_class, :css_class,
-    required: false,
-    default: "from-bittersweet-light via-bittersweet to-bittersweet-light"
-  )
-
-  data(selected_records, :list, default: [])
-  data(request_confirmation, :boolean, default: false)
-  data(search_options, :map, default: %{})
-  data(page, :integer, default: 1)
-  data(search_mode, :atom, values: [:exact, :starts_with, :ends_with, :contains], default: :exact)
-  data(hide_filtered, :boolean, default: true)
-  data(sort_by, :atom, default: :id)
-  data(sort_order, :atom, default: :asc)
-  data(primary_key, :list, default: [])
-  data(nr_of_pages, :integer, default: -1)
-  data(nr_of_unfiltered, :integer)
-  data(nr_of_filtered, :integer, default: -1)
+  def mount(socket) do
+    {:ok,
+     assign(socket,
+       selected_records: [],
+       request_confirmation: false,
+       search_options: %{},
+       page: 1,
+       search_mode: :exact,
+       hide_filtered: true,
+       sort_by: :id,
+       sort_order: :asc,
+       primary_key: [],
+       nr_of_pages: -1,
+       nr_of_filtered: -1
+     )}
+  end
 
   def update(%{count: :now}, socket) do
     search_criteria = [
@@ -282,14 +270,12 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
 
   def handle_event("link", _, socket) do
     selected_record_ids = Enum.map(socket.assigns.selected_records, & &1.id)
-
     QueryBuilder.set_belongs_to(socket.assigns, selected_record_ids)
     {:noreply, get_records(socket)}
   end
 
   def handle_event("unlink", _, socket) do
     selected_record_ids = Enum.map(socket.assigns.selected_records, & &1.id)
-
     QueryBuilder.clear_belongs_to(socket.assigns, selected_record_ids)
     {:noreply, get_records(socket)}
   end
@@ -335,11 +321,11 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
   end
 
   def render(assigns) do
-    ~F"""
-    <div {=@id}>
-      <div class={"my-2 sm:m-4 border border-gray rounded shadow-lg", @class}>
-        <h1 class={"p-1 border border-t-rounded border-gray-dark text-center bg-linear-to-r
-                    font-mono text-white font-semibold rounded-t", @color_class}>
+    ~H"""
+    <div id={@id}>
+      <div class={["my-2 sm:m-4 border border-gray rounded shadow-lg", @class]}>
+        <h1 class={["p-1 border border-t-rounded border-gray-dark text-center bg-linear-to-r
+                    font-mono text-white font-semibold rounded-t", @color_class]}>
           {@heading}
         </h1>
 
@@ -351,8 +337,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="show">
-                    🔍 Show
+                    phx-click="show"
+                    phx-target={@myself}>
+              🔍 Show
             </button>
 
             <button :if={:show_frontend in @buttons}
@@ -360,8 +347,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="show_frontend">
-                    🔍 Show
+                    phx-click="show_frontend"
+                    phx-target={@myself}>
+              🔍 Show
             </button>
 
             <button :if={:edit in @buttons}
@@ -369,8 +357,9 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="edit">
-                    🖊️ Edit
+                    phx-click="edit"
+                    phx-target={@myself}>
+              🖊️ Edit
             </button>
 
             <button :if={!@request_confirmation && :delete in @buttons}
@@ -378,25 +367,27 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="toggle_request_confirmation">
+                    phx-click="toggle_request_confirmation"
+                    phx-target={@myself}>
               🗑️ Delete
             </button>
 
-            <div :if={@request_confirmation}
-                 class="px-2">
+            <div :if={@request_confirmation} class="px-2">
               Are you sure?
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                       disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      :on-click="delete">
+                      phx-click="delete"
+                      phx-target={@myself}>
                 Yes
               </button>
               <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
                              disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                       disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      :on-click="toggle_request_confirmation">
+                      phx-click="toggle_request_confirmation"
+                      phx-target={@myself}>
                 No
               </button>
             </div>
@@ -406,7 +397,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    :on-click="link">
+                    phx-click="link"
+                    phx-target={@myself}>
               🔗 Link
             </button>
 
@@ -415,7 +407,8 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    :on-click="unlink">
+                    phx-click="unlink"
+                    phx-target={@myself}>
               ✂️ Unlink
             </button>
 
@@ -424,62 +417,65 @@ defmodule PanWeb.Surface.Admin.IndexGrid do
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    :on-click="associate">
+                    phx-click="associate"
+                    phx-target={@myself}>
               ↔️ New association
             </button>
 
             <.link :if={:new in @buttons}
-                   navigate={Naming.path %{model: @model, action: :new, path_helper: @path_helper}}
+                   navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
                    class="border border-gray bg-white hover:bg-gray-lightest py-0.5
                           lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r">🆕 New</.link>
           </div>
 
-          <div :if={:number_of_records in @buttons}
-               class="px-4 sm:border-r border-gray">
-            <PerPageLink.render delta="-5" click="per_page"/>
-            <PerPageLink.render delta="-3" click="per_page"/>
-            <PerPageLink.render delta="-1" click="per_page"/>
+          <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-gray">
+            <PerPageLink.render delta="-5" click="per_page" target={@myself} />
+            <PerPageLink.render delta="-3" click="per_page" target={@myself} />
+            <PerPageLink.render delta="-1" click="per_page" target={@myself} />
             <span class="hidden sm:inline">Records</span>
-            <PerPageLink.render delta="+1" click="per_page"/>
-            <PerPageLink.render delta="+3" click="per_page"/>
-            <PerPageLink.render delta="+5" click="per_page"/>
+            <PerPageLink.render delta="+1" click="per_page" target={@myself} />
+            <PerPageLink.render delta="+3" click="per_page" target={@myself} />
+            <PerPageLink.render delta="+5" click="per_page" target={@myself} />
           </div>
 
           <button :if={:assignment_filter in @buttons}
-                  :on-click="toggle_hide_filtered"
+                  phx-click="toggle_hide_filtered"
+                  phx-target={@myself}
                   class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
             {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
           </button>
         </div>
 
-        <Pagination :if={:pagination in @buttons}
-                    class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
-                           via-gray-lighter to-gray-light"
-                    click="paginate"
-                    {=@page}
-                    {=@per_page}
-                    {=@nr_of_pages}
-                    nr_of_unfiltered = {Map.get(assigns, :nr_of_unfiltered)}
-                    {=@nr_of_filtered} />
+        <Pagination.render :if={:pagination in @buttons}
+                           class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
+                                  via-gray-lighter to-gray-light"
+                           click="paginate"
+                           target={@myself}
+                           page={@page}
+                           per_page={@per_page}
+                           nr_of_pages={@nr_of_pages}
+                           nr_of_unfiltered={Map.get(assigns, :nr_of_unfiltered)}
+                           nr_of_filtered={@nr_of_filtered} />
 
-        <DataTable id={"index_table-#{@id}"}
-                   sort="sort"
-                   cycle_search_mode="cycle_search_mode"
-                   select="select"
-                   search="search"
-                   {=@cols}
-                   {=@model}
-                   {=@primary_key}
-                   {=@records}
-                   {=@selected_records}
-                   {=@path_helper}
-                   {=@sort_by}
-                   {=@sort_order}
-                   {=@buttons}
-                   {=@search_mode}
-                   {=@hide_filtered}
-                   {=@search_options}
-                   {=@search_filter} />
+        <DataTable.render id={"index_table-#{@id}"}
+                          sort="sort"
+                          cycle_search_mode="cycle_search_mode"
+                          select="select"
+                          search="search"
+                          target={@myself}
+                          cols={@cols}
+                          model={@model}
+                          primary_key={@primary_key}
+                          records={@records}
+                          selected_records={@selected_records}
+                          path_helper={@path_helper}
+                          sort_by={@sort_by}
+                          sort_order={@sort_order}
+                          buttons={@buttons}
+                          search_mode={@search_mode}
+                          hide_filtered={@hide_filtered}
+                          search_options={@search_options}
+                          search_filter={@search_filter} />
       </div>
     </div>
     """

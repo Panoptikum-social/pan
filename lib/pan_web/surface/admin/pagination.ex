@@ -9,6 +9,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
   attr :nr_of_filtered, :integer, required: true
   attr :class, :string, default: nil
   attr :click, :string, required: true
+  attr :target, :any, default: nil
 
   def format(number) do
     number
@@ -26,6 +27,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
       <div class="flex items-center space-x-2">
         <PaginationLink.render :if={@page > 1}
                                click={@click}
+                               target={@target}
                                page={@page - 1}
                                class="rounded-l">
           Previous
@@ -33,6 +35,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
         <%= for i <- 1..@page do %>
           <PaginationLink.render :if={i != @page}
                                  click={@click}
+                               target={@target}
                                  page={i}
                                  class={i == 1 && "rounded-l-lg"}>
             {i}
@@ -43,6 +46,7 @@ defmodule PanWeb.Surface.Admin.Pagination do
         <% end %>
         <PaginationLink.render :if={@page < @nr_of_pages}
                                click={@click}
+                               target={@target}
                                page={@page + 1}
                                class="rounded-r">
           Next
