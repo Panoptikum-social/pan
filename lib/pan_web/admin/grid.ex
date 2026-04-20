@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Grid do
+defmodule PanWeb.Admin.Grid do
   use PanWeb, :html
 
   alias PanWeb.Admin.Naming

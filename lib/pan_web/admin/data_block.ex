@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.DataBlock do
+defmodule PanWeb.Admin.DataBlock do
   use PanWeb, :html
   alias PanWeb.Admin.ShowPresenter
   alias PanWeb.Admin.Naming

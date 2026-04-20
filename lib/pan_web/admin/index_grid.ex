@@ -1,23 +1,28 @@
-defmodule PanWeb.Surface.Moderation.ModerationGrid do
+defmodule PanWeb.Admin.IndexGrid do
   use PanWeb, :live_component
+  alias PanWeb.Endpoint
+  alias PanWeb.Admin.Naming
   alias PanWeb.Admin.Tools
   alias PanWeb.Admin.QueryBuilder
   alias PanWeb.Admin.PerPageLink
   alias PanWeb.Admin.Pagination
-  alias PanWeb.Surface.Admin.DataTable
+  alias PanWeb.Admin.DataTable
+  alias PanWeb.Router.Helpers, as: Routes
+  alias Pan.Repo
 
   def mount(socket) do
     {:ok,
      assign(socket,
        selected_records: [],
+       request_confirmation: false,
        search_options: %{},
        page: 1,
-       search_mode: :starts_with,
+       search_mode: :exact,
+       hide_filtered: true,
        sort_by: :id,
        sort_order: :asc,
        primary_key: [],
        nr_of_pages: -1,
-       nr_of_unfiltered: nil,
        nr_of_filtered: -1
      )}
   end
@@ -28,7 +33,7 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
         options: socket.assigns.search_options,
         filter: socket.assigns.search_filter,
         mode: socket.assigns.search_mode,
-        hide: true
+        hide: socket.assigns.hide_filtered
       }
     ]
 
@@ -121,6 +126,52 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
     {:noreply, socket}
   end
 
+  def handle_event("toggle_hide_filtered", _, socket) do
+    socket =
+      socket
+      |> assign(hide_filtered: !socket.assigns.hide_filtered)
+      |> get_records
+
+    {:noreply, socket}
+  end
+
+  def handle_event("delete", _, socket) do
+    model = socket.assigns.model
+    [selected_record | _] = socket.assigns.selected_records
+
+    record =
+      if Map.has_key?(selected_record, :id) do
+        Repo.get!(model, selected_record.id)
+      else
+        [first_column, second_column] = socket.assigns.primary_key
+
+        QueryBuilder.read_by_values(model, %{
+          first_column => selected_record[first_column],
+          second_column => selected_record[second_column]
+        })
+      end
+
+    path_helper = socket.assigns.path_helper
+
+    try do
+      QueryBuilder.delete(model, record)
+      socket = assign(socket, selected_records: [], request_confirmation: false)
+      {:noreply, get_records(socket)}
+    rescue
+      e in Postgrex.Error ->
+        %Postgrex.Error{postgres: %{message: message}} = e
+
+        index_path =
+          Naming.path(%{socket: socket, model: model, action: :index, path_helper: path_helper})
+
+        socket =
+          put_flash(socket, :error, message)
+          |> push_navigate(to: index_path)
+
+        {:noreply, socket}
+    end
+  end
+
   def handle_event("select", %{"id" => id}, socket) do
     clicked_record = %{id: String.to_integer(id)}
     selected_records = socket.assigns.selected_records
@@ -155,39 +206,88 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
     {:noreply, assign(socket, selected_records: selected_records)}
   end
 
-  def handle_event("show_episodes", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_episodes, selected_record_id})
-    {:noreply, socket}
+  def handle_event("show", _, socket) do
+    selected_record = hd(socket.assigns.selected_records)
+    resource = Phoenix.Naming.resource_name(socket.assigns.model)
+
+    if Map.has_key?(selected_record, :id) do
+      id = selected_record |> Map.get(:id)
+      show_path = Routes.databrowser_path(socket, :show, resource, id)
+      {:noreply, push_navigate(socket, to: show_path)}
+    else
+      [first_column, second_column] = socket.assigns.primary_key
+
+      show_mediating_path =
+        Routes.databrowser_path(
+          socket,
+          :show_mediating,
+          resource,
+          first_column,
+          selected_record[first_column],
+          second_column,
+          selected_record[second_column]
+        )
+
+      {:noreply, push_navigate(socket, to: show_mediating_path)}
+    end
   end
 
-  def handle_event("show_feeds", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_feeds, selected_record_id})
-    {:noreply, socket}
+  def handle_event("show_frontend", _, socket) do
+    selected_record = hd(socket.assigns.selected_records)
+
+    if Map.has_key?(selected_record, :id) do
+      path_helper = socket.assigns.path_helper
+      id = selected_record |> Map.get(:id)
+      show_path = Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
+      {:noreply, push_navigate(socket, to: show_path)}
+    end
   end
 
-  def handle_event("edit_podcast", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_podcast, selected_record_id})
-    {:noreply, socket}
+  def handle_event("edit", _, socket) do
+    selected_record = hd(socket.assigns.selected_records)
+    resource = Phoenix.Naming.resource_name(socket.assigns.model)
+
+    if Map.has_key?(selected_record, :id) do
+      id = selected_record.id
+      edit_path = Routes.databrowser_path(socket, :edit, resource, id)
+      {:noreply, push_navigate(socket, to: edit_path)}
+    else
+      [first_column, second_column] = socket.assigns.primary_key
+
+      edit_mediating_path =
+        Routes.databrowser_path(
+          socket,
+          :edit_mediating,
+          resource,
+          first_column,
+          Map.get(selected_record, first_column),
+          second_column,
+          Map.get(selected_record, second_column)
+        )
+
+      {:noreply, push_navigate(socket, to: edit_mediating_path)}
+    end
   end
 
-  def handle_event("edit_episode", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_episode, selected_record_id})
-    {:noreply, socket}
+  def handle_event("toggle_request_confirmation", _, socket) do
+    {:noreply, assign(socket, request_confirmation: !socket.assigns.request_confirmation)}
   end
 
-  def handle_event("edit_feed", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_feed, selected_record_id})
-    {:noreply, socket}
+  def handle_event("link", _, socket) do
+    selected_record_ids = Enum.map(socket.assigns.selected_records, & &1.id)
+    QueryBuilder.set_belongs_to(socket.assigns, selected_record_ids)
+    {:noreply, get_records(socket)}
   end
 
-  def handle_event("show_in_frontend", _, socket) do
+  def handle_event("unlink", _, socket) do
+    selected_record_ids = Enum.map(socket.assigns.selected_records, & &1.id)
+    QueryBuilder.clear_belongs_to(socket.assigns, selected_record_ids)
+    {:noreply, get_records(socket)}
+  end
+
+  def handle_event("associate", _, socket) do
     selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_in_frontend, selected_record_id})
+    send(self(), {:associate_to, selected_record_id})
     {:noreply, socket}
   end
 
@@ -200,15 +300,28 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
   end
 
   def criteria(assigns) do
+    search =
+      if assigns.second_search_filter != {} do
+        %{
+          options: assigns.search_options,
+          filter: assigns.search_filter,
+          second_filter: assigns.second_search_filter,
+          mode: assigns.search_mode,
+          hide: assigns.hide_filtered
+        }
+      else
+        %{
+          options: assigns.search_options,
+          filter: assigns.search_filter,
+          mode: assigns.search_mode,
+          hide: assigns.hide_filtered
+        }
+      end
+
     [
       paginate: %{page: assigns.page, per_page: assigns.per_page},
       sort: %{by: assigns.sort_by, order: assigns.sort_order},
-      search: %{
-        options: assigns.search_options,
-        filter: assigns.search_filter,
-        mode: assigns.search_mode,
-        hide: true
-      }
+      search: search
     ]
   end
 
@@ -224,65 +337,100 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
         <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="sm:border-r border-gray flex">
-            <button :if={:show_episodes in @buttons}
+            <button :if={:show in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_episodes"
+                    phx-click="show"
                     phx-target={@myself}>
-              🔍 List of Episodes
+              🔍 Show
             </button>
 
-            <button :if={:show_feeds in @buttons}
+            <button :if={:show_frontend in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                           lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_feeds"
+                    phx-click="show_frontend"
                     phx-target={@myself}>
-              🔍 List of Feeds
+              🔍 Show
             </button>
 
-            <button :if={:edit_podcast in @buttons}
+            <button :if={:edit in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_podcast"
+                    phx-click="edit"
                     phx-target={@myself}>
-              ✏️ Edit Podcast
+              🖊️ Edit
             </button>
 
-            <button :if={:edit_episode in @buttons}
+            <button :if={!@request_confirmation && :delete in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
                     disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_episode"
+                    phx-click="toggle_request_confirmation"
                     phx-target={@myself}>
-              ✏️ Edit Episode
+              🗑️ Delete
             </button>
 
-            <button :if={:edit_feed in @buttons}
+            <div :if={@request_confirmation} class="px-2">
+              Are you sure?
+              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                            lg:px-2 lg:py-0 m-1 rounded
+                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                      disabled={Tools.disabled?(:one, @selected_records |> length)}
+                      phx-click="delete"
+                      phx-target={@myself}>
+                Yes
+              </button>
+              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                             lg:px-2 lg:py-0 m-1 rounded
+                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                      disabled={Tools.disabled?(:one, @selected_records |> length)}
+                      phx-click="toggle_request_confirmation"
+                      phx-target={@myself}>
+                No
+              </button>
+            </div>
+
+            <button :if={:link in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_feed"
+                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
+                    phx-click="link"
                     phx-target={@myself}>
-              ✏️ Edit Feed
+              🔗 Link
             </button>
 
-            <button :if={:show_in_frontend in @buttons}
+            <button :if={:link in @buttons}
                     class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                           lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_in_frontend"
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
+                    phx-click="unlink"
                     phx-target={@myself}>
-              🔍 Show in Frontend
+              ✂️ Unlink
             </button>
+
+            <button :if={:new_mediating in @buttons}
+                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                          lg:px-2 lg:py-0 m-1 rounded
+                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                    disabled={Tools.disabled?(:one, @selected_records |> length)}
+                    phx-click="associate"
+                    phx-target={@myself}>
+              ↔️ New association
+            </button>
+
+            <.link :if={:new in @buttons}
+                   navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
+                   class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r">🆕 New</.link>
           </div>
 
           <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-gray">
@@ -294,6 +442,13 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
             <PerPageLink.render delta="+3" click="per_page" target={@myself} />
             <PerPageLink.render delta="+5" click="per_page" target={@myself} />
           </div>
+
+          <button :if={:assignment_filter in @buttons}
+                  phx-click="toggle_hide_filtered"
+                  phx-target={@myself}
+                  class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
+            {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
+          </button>
         </div>
 
         <Pagination.render :if={:pagination in @buttons}
@@ -323,7 +478,7 @@ defmodule PanWeb.Surface.Moderation.ModerationGrid do
                           sort_order={@sort_order}
                           buttons={@buttons}
                           search_mode={@search_mode}
-                          hide_filtered={true}
+                          hide_filtered={@hide_filtered}
                           search_options={@search_options}
                           search_filter={@search_filter} />
       </div>

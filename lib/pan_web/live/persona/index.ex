@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Persona.Index do
   use Surface.LiveView, container: {:div, class: "m-4"}
   alias PanWeb.Persona
-  alias PanWeb.Surface.Admin.IndexGrid
+  alias PanWeb.Admin.IndexGrid
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, page_title: "Personas")}

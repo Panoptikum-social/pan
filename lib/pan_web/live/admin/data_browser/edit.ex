@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
   use PanWeb, :admin_live_view
 
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Admin.RecordForm
+  alias PanWeb.Admin.RecordForm
   alias Pan.Repo
   alias PanWeb.Router.Helpers, as: Routes
 

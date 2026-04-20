@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Admin.Databrowser.EditMediating do
 
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.QueryBuilder
-  alias PanWeb.Surface.Admin.RecordForm
+  alias PanWeb.Admin.RecordForm
 
   def mount(
         %{

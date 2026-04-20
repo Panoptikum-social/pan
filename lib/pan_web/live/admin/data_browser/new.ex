@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Databrowser.New do
   use PanWeb, :admin_live_view
 
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Admin.RecordForm
+  alias PanWeb.Admin.RecordForm
 
   def mount(%{"resource" => resource}, _session, socket) do
     model = Naming.model_from_resource(resource)

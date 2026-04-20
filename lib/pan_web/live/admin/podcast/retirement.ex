@@ -3,7 +3,8 @@ defmodule PanWeb.Live.Admin.Podcast.Retirement do
     layout: {PanWeb.LayoutView, :live_admin}
 
   on_mount {PanWeb.Live.Auth, :admin}
-  alias PanWeb.{Podcast, Surface.Admin.IndexGrid}
+  alias PanWeb.Podcast
+  alias PanWeb.Admin.IndexGrid
 
   def handle_info({:count, id: id, module: module}, socket) do
     send_update(module, id: id, count: :now)

@@ -5,7 +5,7 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
 
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ActionButtons
-  alias PanWeb.Surface.Admin.IndexGrid
+  alias PanWeb.Admin.IndexGrid
   require Integer
 
   def mount(%{"resource" => resource}, _session, socket) do

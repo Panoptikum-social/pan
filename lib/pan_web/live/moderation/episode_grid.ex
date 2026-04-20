@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Episode}
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Moderation.ModerationGrid
+  alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do

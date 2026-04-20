@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
   use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.QueryBuilder
-  alias PanWeb.Surface.Admin.RecordCard
+  alias PanWeb.Admin.RecordCard
 
   def mount(
         %{

@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.DataTable do
+defmodule PanWeb.Admin.DataTable do
   use PanWeb, :html
 
   alias PanWeb.Admin.SortLink

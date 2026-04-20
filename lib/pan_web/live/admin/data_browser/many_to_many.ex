@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Admin.IndexGrid
+  alias PanWeb.Admin.IndexGrid
   import Ecto.Query
   alias Pan.Repo
   alias PanWeb.Router.Helpers, as: Routes

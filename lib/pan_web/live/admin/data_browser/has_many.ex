@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Admin.IndexGrid
+  alias PanWeb.Admin.IndexGrid
 
   def mount(
         %{

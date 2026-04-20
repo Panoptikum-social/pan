@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.Explorer do
+defmodule PanWeb.Admin.Explorer do
   use PanWeb, :live_component
   alias PanWeb.Admin.Tools
 

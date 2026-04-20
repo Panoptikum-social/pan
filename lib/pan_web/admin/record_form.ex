@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Admin.RecordForm do
+defmodule PanWeb.Admin.RecordForm do
   use PanWeb, :live_component
 
   alias PanWeb.Endpoint

@@ -1,9 +1,9 @@
-defmodule PanWeb.Surface.Admin.RecordCard do
+defmodule PanWeb.Admin.RecordCard do
   use PanWeb, :live_component
   import PanWeb.CoreComponents
 
   import PanWeb.Admin.ColumnsFilter
-  alias PanWeb.Surface.Admin.DataBlock
+  alias PanWeb.Admin.DataBlock
   alias PanWeb.Admin.RelationsBlock
   alias PanWeb.Admin.Naming
   alias PanWeb.Endpoint
