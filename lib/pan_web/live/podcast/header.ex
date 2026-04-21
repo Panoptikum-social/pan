@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Podcast.Header do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Endpoint
   alias PanWeb.Component.Pill
   alias PanWeb.Component.QRCode
@@ -9,27 +9,25 @@ defmodule PanWeb.Live.Podcast.Header do
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, PodloveSubscribeButton}
 
-  prop(current_user_id, :integer, required: true)
-  prop(admin, :boolean, required: true)
-  prop(podcast, :map, required: true)
-  prop(episodes_count, :integer, required: true)
-  prop(podcast_thumbnail, :map, required: true)
+  attr :current_user_id, :integer, required: true
+  attr :admin, :boolean, required: true
+  attr :podcast, :map, required: true
+  attr :episodes_count, :integer, required: true
+  attr :podcast_thumbnail, :map, required: true
 
   def render(assigns) do
-    ~F"""
-    {#if @admin}
-      <div class="fixed top-0 right-0 mt-4 mr-8 space-x-4">
-        <a href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
-           class="text-link hover:text-link-dark">
-          <Icon name="cog-heroicons-outline"/> Show Podcast
-        </a>
+    ~H"""
+    <div :if={@admin} class="fixed top-0 right-0 mt-4 mr-8 space-x-4">
+      <a href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
+         class="text-link hover:text-link-dark">
+        <Icon.render name="cog-heroicons-outline"/> Show Podcast
+      </a>
 
-        <a href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")},
-           class="text-link hover:text-link-dark">
-          <Icon name="rss-heroicons-outline"/> Alternate Feeds
-        </a>
-      </div>
-    {/if}
+      <a href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")}
+         class="text-link hover:text-link-dark">
+        <Icon.render name="rss-heroicons-outline"/> Alternate Feeds
+      </a>
+    </div>
 
     <h1 class="text-3xl">{@podcast.title}</h1>
 
@@ -44,16 +42,15 @@ defmodule PanWeb.Live.Podcast.Header do
         <div class="flex flex-col md:flex-row md:space-x-4">
           <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
             <div id="thumbnail" class="border border-gray-light shadow m-auto ">
-              {#if Map.has_key?(@podcast_thumbnail, :path)}
-                <img src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
-                      width="150"
-                      height="150"
-                      alt={@podcast.image_title}
-                      id="photo"
-                      class="wrap-break-word text-xs" />
-              {#else}
-                <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
-              {/if}
+              <img :if={Map.has_key?(@podcast_thumbnail, :path)}
+                    src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+                    width="150"
+                    height="150"
+                    alt={@podcast.image_title}
+                    id="photo"
+                    class="wrap-break-word text-xs" />
+              <img :if={!Map.has_key?(@podcast_thumbnail, :path)}
+                    src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
             </div>
           </div>
           <div>
@@ -62,82 +59,68 @@ defmodule PanWeb.Live.Podcast.Header do
         </div>
 
         <dl class="grid grid-cols-4 gap-x-4 gap-y-2">
-          {#if @podcast.website}
-            <dt class="justify-self-end font-medium">Website</dt>
-            <dd class="col-span-3">
-              <a href={@podcast.website}
-                  class="text-link hover:text-link-dark">{@podcast.website}</a>
-            </dd>
-          {/if}
+          <dt :if={@podcast.website} class="justify-self-end font-medium">Website</dt>
+          <dd :if={@podcast.website} class="col-span-3">
+            <a href={@podcast.website}
+                class="text-link hover:text-link-dark">{@podcast.website}</a>
+          </dd>
           <dt class="justify-self-end font-medium">Description</dt>
           <dd class="col-span-3">{@podcast.description}</dd>
-          {#if @podcast.payment_link_url}
-            <dt class="justify-self-end font-medium">Support</dt>
-            <dd class="col-span-3">
-              <a href={@podcast.payment_link_url |> String.trim}
-                  class="text-link hover:text-link-dark">
-                {@podcast.payment_link_title || "Support"}
-              </a>
-            </dd>
-          {/if}
+          <dt :if={@podcast.payment_link_url} class="justify-self-end font-medium">Support</dt>
+          <dd :if={@podcast.payment_link_url} class="col-span-3">
+            <a href={@podcast.payment_link_url |> String.trim}
+                class="text-link hover:text-link-dark">
+              {@podcast.payment_link_title || "Support"}
+            </a>
+          </dd>
           <dt class="justify-self-end font-medium">Language</dt>
           <dd class="col-span-3">
-            {#for language <- @podcast.languages}
-              {language.emoji} {language.name}
-            {/for}
+            <span :for={language <- @podcast.languages}>{language.emoji} {language.name}</span>
           </dd>
-          {#if @podcast.last_build_date}
-            <dt class="justify-self-end font-medium">last modified</dt>
-            <dd class="col-span-3">{Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}</dd>
-          {/if}
-          {#if @podcast.latest_episode_publishing_date}
-            <dt class="justify-self-end font-medium">last episode published</dt>
-            <dd class="col-span-3">{Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}</dd>
-          {/if}
-          {#if @podcast.publication_frequency > 0}
-            <dt class="justify-self-end font-medium">publication frequency</dt>
-            <dd class="col-span-3">{@podcast.publication_frequency |> Float.round(2)} days</dd>
-          {/if}
+          <dt :if={@podcast.last_build_date} class="justify-self-end font-medium">last modified</dt>
+          <dd :if={@podcast.last_build_date} class="col-span-3">{Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}</dd>
+          <dt :if={@podcast.latest_episode_publishing_date} class="justify-self-end font-medium">last episode published</dt>
+          <dd :if={@podcast.latest_episode_publishing_date} class="col-span-3">{Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}</dd>
+          <dt :if={@podcast.publication_frequency > 0} class="justify-self-end font-medium">publication frequency</dt>
+          <dd :if={@podcast.publication_frequency > 0} class="col-span-3">{@podcast.publication_frequency |> Float.round(2)} days</dd>
 
           <dt class="justify-self-end font-medium">Contributors</dt>
-          {#for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona))}
+          <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
             <dd class="col-start-2 col-span-2">
-              <PersonaButton for={persona}/>
+              <PersonaButton.render for={persona}/>
             </dd>
             <dd class="col-start-4">
-              {#for engagement <- engagements}
-                <Pill type="lavender">{engagement.role |> String.capitalize}</Pill>
-              {/for}
+              <Pill.render :for={engagement <- engagements} type="lavender">{engagement.role |> String.capitalize}</Pill.render>
             </dd>
-          {/for}
+          <% end %>
           <dt class="justify-self-end font-medium">Explicit</dt>
           <dd class="col-span-3">{@podcast.explicit}</dd>
           <dt id="metadata"
               class="justify-self-end font-medium">Number of Episodes</dt>
           <dd class="col-span-3">{@episodes_count}</dd>
-          <dt class="justify-self-end font-medium"><Icon name="rss-heroicons-outline"/> Rss-Feeds</dt>
+          <dt class="justify-self-end font-medium"><Icon.render name="rss-heroicons-outline"/> Rss-Feeds</dt>
           <dd class="col-span-3">
             <a href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
                 class="text-link hover:text-link-dark">Detail page</a></dd>
           <dt class="justify-self-end font-medium">Categories</dt>
           <dd class="col-span-3 leading-10">
-            {#for category <- @podcast.categories}
-              <CategoryButton for={category}/>
-            {/for}
+            <CategoryButton.render :for={category <- @podcast.categories} for={category}/>
           </dd>
         </dl>
       </div>
 
       <div role="qrcode" class="flex flex-col items-end">
-        <QRCode for={podcast_frontend_url(Endpoint, :subscribe_button, @podcast)} />
-        <PodloveSubscribeButton id="podlove_subscribe_button"
-                                {=@podcast} />
+        <QRCode.render for={podcast_frontend_url(Endpoint, :subscribe_button, @podcast)} />
+        <.live_component module={PodloveSubscribeButton}
+                         id="podlove_subscribe_button"
+                         podcast={@podcast} />
       </div>
     </div>
 
-    <ListFollowSubscribeButtons id="list_follow_subscribe_button"
-                                current_user_id={@current_user_id}
-                                podcast={@podcast} />
+    <.live_component module={ListFollowSubscribeButtons}
+                     id="list_follow_subscribe_button"
+                     current_user_id={@current_user_id}
+                     podcast={@podcast} />
     """
   end
 end

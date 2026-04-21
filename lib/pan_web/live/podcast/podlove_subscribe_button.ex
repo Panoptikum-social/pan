@@ -1,9 +1,6 @@
 defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
   alias Phoenix.HTML
-
-  prop(podcast, :map, required: true)
-  prop(class, :css_class, default: "", required: false)
 
   def handle_event("read-config", _, socket) do
     podcast = socket.assigns.podcast
@@ -25,11 +22,14 @@ defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
     end)
   end
 
+  attr :podcast, :map, required: true
+  attr :class, :string, default: ""
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div id="subscribe-button"
          class={@class}
-         :hook="PodloveSubscribeButton" />
+         phx-hook="PodloveSubscribeButton" />
     """
   end
 end

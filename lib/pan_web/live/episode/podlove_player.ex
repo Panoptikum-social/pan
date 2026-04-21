@@ -1,11 +1,8 @@
 defmodule PanWeb.Live.Episode.PodlovePlayer do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
   alias PanWeb.Endpoint
   alias Phoenix.HTML
   import PanWeb.Router.Helpers
-
-  prop(episode, :map, required: true)
-  prop(class, :css_class, default: "")
 
   def handle_event("read-config", _, %{assigns: assigns} = socket) do
     config = %{
@@ -118,10 +115,13 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
     }
   end
 
+  attr :episode, :map, required: true
+  attr :class, :string, default: ""
+
   def render(assigns) do
-    ~F"""
-    <div :hook="PodlovePlayer"
-         class={"shrink-0", @class} >
+    ~H"""
+    <div phx-hook="PodlovePlayer"
+         class={["shrink-0", @class]}>
       <script src="/web-player/embed.js" async />
       <script src="/web-player/extensions/external-events.js" async />
       <div id="podlove-player"

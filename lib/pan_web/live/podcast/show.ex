@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Podcast.Show do
-  use Surface.LiveView
+  use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Recommendation, Podcast, Episode, Image}
@@ -44,25 +44,27 @@ defmodule PanWeb.Live.Podcast.Show do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-4"
          phx-hook="Notification"
          id="notification-hook-target">
-      {#if @podcast && @podcast.blocked == true}
+      <span :if={@podcast && @podcast.blocked == true}>
         This podcast may not be published here, sorry.
-      {#else}
-        <Header current_user_id={@current_user_id}
+      </span>
+      <div :if={!(@podcast && @podcast.blocked == true)}>
+        <Header.render current_user_id={@current_user_id}
                 admin={@admin}
                 podcast={@podcast}
                 podcast_thumbnail={@podcast_thumbnail}
                 episodes_count={@episodes_count}/>
-        <RecommendationList id="recommendations_list"
+        <.live_component module={RecommendationList}
+                            id="recommendations_list"
                             current_user_id={@current_user_id}
                             podcast={@podcast}
                             changeset={@changeset} />
-        <EpisodeList episodes={@episodes}
+        <EpisodeList.render episodes={@episodes}
                      page={@page} />
-      {/if}
+      </div>
     </div>
     """
   end

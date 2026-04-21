@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Podcast.Subscribe do
-  use Surface.LiveView
+  use PanWeb, :live_view
   alias PanWeb.{Podcast, Image}
   alias PanWeb.Live.Podcast.PodloveSubscribeButton
 
@@ -12,18 +12,19 @@ defmodule PanWeb.Live.Podcast.Subscribe do
   end
 
   def render(assigns) do
-    ~F"""
-      <div class="flex flex-col h-screen space-y-4 justify-center items-center w-screen">
-          <img :if={Map.has_key?(@podcast_thumbnail, :path)}
-              src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
-              width="150"
-              height="150"
-              alt={@podcast.image_title}
-              id="photo"
-              class="break-words text-xs" />
-          <PodloveSubscribeButton id="podlove_subscribe_button"
-                                  {=@podcast} />
-      </div>
+    ~H"""
+    <div class="flex flex-col h-screen space-y-4 justify-center items-center w-screen">
+      <img :if={Map.has_key?(@podcast_thumbnail, :path)}
+          src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+          width="150"
+          height="150"
+          alt={@podcast.image_title}
+          id="photo"
+          class="wrap-break-word text-xs" />
+      <.live_component module={PodloveSubscribeButton}
+                       id="podlove_subscribe_button"
+                       podcast={@podcast} />
+    </div>
     """
   end
 end
