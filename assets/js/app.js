@@ -11,10 +11,6 @@ import topbar from "topbar";
 import { LiveSocket } from "phoenix_live_view";
 import { InfiniteScroll } from "./infinite_scroll";
 import { Notification } from "./notification";
-import Hooks from "./_hooks";
-
-Hooks.InfiniteScroll = InfiniteScroll;
-Hooks.Notification = Notification;
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -30,8 +26,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
       }
     },
   },
-  params: { _csrf_token: csrfToken },
-  hooks: Hooks,
+  params: { _csrf_token: csrfToken }
 });
 
 // Show progress bar on live navigation and form submits
