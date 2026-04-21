@@ -13,9 +13,13 @@ defmodule PanWeb.Admin.IndexGrid do
   def mount(socket) do
     {:ok,
      assign(socket,
+       records: [],
        selected_records: [],
        request_confirmation: false,
        search_options: %{},
+       search_filter: {},
+       second_search_filter: {},
+       per_page: 20,
        page: 1,
        search_mode: :exact,
        hide_filtered: true,
@@ -23,7 +27,9 @@ defmodule PanWeb.Admin.IndexGrid do
        sort_order: :asc,
        primary_key: [],
        nr_of_pages: -1,
-       nr_of_filtered: -1
+       nr_of_filtered: -1,
+       color_class: "from-bittersweet-light via-bittersweet to-bittersweet-light",
+       class: ""
      )}
   end
 

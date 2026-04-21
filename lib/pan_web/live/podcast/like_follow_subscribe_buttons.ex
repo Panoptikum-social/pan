@@ -17,6 +17,10 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
     {:noreply, socket}
   end
 
+  attr :id, :string, required: true
+  attr :current_user_id, :integer, default: nil
+  attr :podcast, :map, required: true
+
   def render(assigns) do
     ~H"""
     <div>

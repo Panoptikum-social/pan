@@ -8,6 +8,13 @@ defmodule PanWeb.Admin.Explorer do
     {:ok, assign(socket, assigns) |> assign(items: items)}
   end
 
+  attr :id, :string, required: true
+  attr :title, :string, required: true
+  attr :items, :list, required: true
+  attr :format, :atom, required: true
+  attr :selected_count, :integer, default: 0
+  attr :class, :string, default: ""
+
   slot :toolbar_items do
     attr :message, :string, required: true
     attr :title, :string, required: true
