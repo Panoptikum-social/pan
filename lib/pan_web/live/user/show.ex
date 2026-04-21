@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.User.Show do
-  use Surface.LiveView
+  use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{User, Like}
 
@@ -9,7 +9,8 @@ defmodule PanWeb.Live.User.Show do
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.UserButton
   alias PanWeb.Component.CategoryButton
-  alias PanWeb.Surface.PodcastButton
+  alias PanWeb.Component.PodcastButton
+  alias PanWeb.Component.Icon
 
   def mount(%{"id" => id}, _session, socket) do
     user = User.get_for_show(id)
@@ -23,80 +24,81 @@ defmodule PanWeb.Live.User.Show do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-4">
       <h1 class="text-3xl">{@user.name}</h1>
 
       <p :if={@current_user_id}>
-        <LikeButton id="like_button"
+        <.live_component module={LikeButton}
+                    id="like_button"
                     current_user_id={@current_user_id}
                     model={User}
                     instance={@user} />
-        <FollowButton id="follow_button"
+        <.live_component module={FollowButton}
+                      id="follow_button"
                       current_user_id={@current_user_id}
                       model={User}
                       instance={@user} />
       </p>
 
-      <Panel :if={@user.share_subscriptions}
+      <Panel.render :if={@user.share_subscriptions}
              purpose="podcast"
              heading={"Podcasts, #{@user.name} has subscribed to"}
              class="my-4">
         <p class="flex flex-wrap my-4">
-          {#for podcast <- @user.podcasts_i_subscribed}
-            <PodcastButton for={podcast}
-                           truncate={true}
-                           class="mx-2 my-1" />
-          {/for}
+          <PodcastButton.render :for={podcast <- @user.podcasts_i_subscribed}
+                         for={podcast}
+                         truncate={true}
+                         class="mx-2 my-1" />
         </p>
-      </Panel>
+      </Panel.render>
 
-      <Panel :if={@podcast_related_likes != []}
+      <Panel.render :if={@podcast_related_likes != []}
              purpose="like"
              heading={"Podcast, #{@user.name} likes"}
              class="my-4">
         <div class="m-4">
-          {#for like <- @podcast_related_likes}
-            <p class="leading-10">
-              {#if like.chapter_id != nil}
-                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.chapter.episode.podcast} class="truncate max-w-full" /> /
-                <EpisodeButton for={like.chapter.episode} /> /
-                <Icon name="indent-lineawesome-solid" /> {like.chapter.title} />
-              {#elseif like.episode_id != nil}
-                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.episode.podcast} class="truncate max-w-full" /> /
-                <EpisodeButton for={like.episode} />
-              {#elseif like.podcast_id != nil}
-                {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
-                <PodcastButton for={like.podcast} class="truncate max-w-full" />
-              {/if}
-            </p>
-          {/for}
+          <p :for={like <- @podcast_related_likes} class="leading-10">
+            <span :if={like.chapter_id != nil}>
+              {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
+              <PodcastButton.render for={like.chapter.episode.podcast} class="truncate max-w-full" /> /
+              <EpisodeButton.render for={like.chapter.episode} /> /
+              <Icon.render name="indent-lineawesome-solid" /> {like.chapter.title} />
+            </span>
+            <span :if={like.episode_id != nil && is_nil(like.chapter_id)}>
+              {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
+              <PodcastButton.render for={like.episode.podcast} class="truncate max-w-full" /> /
+              <EpisodeButton.render for={like.episode} />
+            </span>
+            <span :if={like.podcast_id != nil && is_nil(like.episode_id) && is_nil(like.chapter_id)}>
+              {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
+              <PodcastButton.render for={like.podcast} class="truncate max-w-full" />
+            </span>
+          </p>
         </div>
-      </Panel>
+      </Panel.render>
 
-      <Panel :if={@user.users_i_like != []}
+      <Panel.render :if={@user.users_i_like != []}
              purpose="popular"
              heading={"Persons, #{@user.name} likes"}
              class="my-4">
         <p class="leading-10 m-4">
-          {#for user <- @user.users_i_like}
-            <UserButton for={user} /> &nbsp;
-          {/for}
+          <span :for={u <- @user.users_i_like}>
+            <UserButton.render for={u} /> &nbsp;
+          </span>
         </p>
-      </Panel>
+      </Panel.render>
 
-      <Panel :if={@user.categories_i_like != []}
+      <Panel.render :if={@user.categories_i_like != []}
              purpose="category"
              heading={"Categories, #{@user.name} likes"}
              class="my-4">
         <p class="leading-10 m-4">
-          {#for category <- @user.categories_i_like}
-            <CategoryButton for={category} /> &nbsp;
-          {/for}
+          <span :for={category <- @user.categories_i_like}>
+            <CategoryButton.render for={category} /> &nbsp;
+          </span>
         </p>
-      </Panel>
+      </Panel.render>
     </div>
     """
   end

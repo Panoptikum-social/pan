@@ -1,9 +1,8 @@
 defmodule PanWeb.Live.Admin.Dashboard do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Admin.Tools
   alias PanWeb.Admin.Explorer
-  alias PanWeb.Surface.Admin.{Col, ToolbarItem}
   alias PanWeb.Admin.Naming
   alias PanWeb.Component.LinkButton
   alias PanWeb.Endpoint
@@ -48,7 +47,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
       |> hd
 
     index_path =
-      Routes.databrowser_path(socket, :index, Phoenix.Naming.resource_name(selected_schema.title))
+      Routes.databrowser_path(Endpoint, :index, Phoenix.Naming.resource_name(selected_schema.title))
 
     {:noreply, push_navigate(socket, to: index_path)}
   end
@@ -60,7 +59,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
     index_path =
       Routes.databrowser_path(
-        socket,
+        Endpoint,
         :db_indices,
         Phoenix.Naming.resource_name(selected_schema.title)
       )
@@ -76,7 +75,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
 
     index_path =
       Routes.databrowser_path(
-        socket,
+        Endpoint,
         :schema_definition,
         Phoenix.Naming.resource_name(selected_schema.title)
       )
@@ -85,60 +84,54 @@ defmodule PanWeb.Live.Admin.Dashboard do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div>
-      <Explorer id="schemas"
+      <.live_component module={Explorer}
+                id="schemas"
                 title="Schemas"
                 class="m-2 max-w-4xl"
-                items={schema <- @schemas}
-                {=@selected_count}
+                items={@schemas}
+                selected_count={@selected_count}
                 format={:grid}>
-        <ToolbarItem message="index"
-                    title="Data"
-                    when_selected_count={:one} />
-        <ToolbarItem message="schema_definition"
-                     title="Schema Definition"
-                     when_selected_count={:one} />
-        <ToolbarItem message="db_index"
-                    title="Database Indices"
-                    when_selected_count={:one} />
-        <Col title="title">
+        <:toolbar_items message="index" title="Data" when_selected_count={:one} />
+        <:toolbar_items message="schema_definition" title="Schema Definition" when_selected_count={:one} />
+        <:toolbar_items message="db_index" title="Database Indices" when_selected_count={:one} />
+        <:cols title="title" :let={schema}>
           {schema.title |> Naming.model_in_plural}
-        </Col>
-      </Explorer>
+        </:cols>
+      </.live_component>
 
       <div class="-mt-2 mx-2 flex space-x-4 border-x border-gray p-2 max-w-4xl">
-        <LinkButton title="Live Dashboard"
+        <LinkButton.render title="Live Dashboard"
                     to={live_dashboard_path(Endpoint, :home)}
                     class="bg-white hover:bg-gray-light border-gray" />
-        <LinkButton title="Statistics"
+        <LinkButton.render title="Statistics"
                     to={maintenance_path(Endpoint, :stats)}
                     class="bg-white hover:bg-gray-light border-gray" />
-        <LinkButton title="Catch up missing thumbnailed booleans"
+        <LinkButton.render title="Catch up missing thumbnailed booleans"
                     to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
                     class="bg-warning hover:bg-warning-dark border-gray" />
-        <LinkButton title="Trigger exception notification"
+        <LinkButton.render title="Trigger exception notification"
                     to={maintenance_path(Endpoint, :exception_notification)}
                     class="bg-success hover:bg-success-dark border-gray text-white" />
       </div>
       <div class="mx-2 flex space-x-4 items-center border border-gray p-2 max-w-4xl">
         <span class="font-mono">Full text Search</span>
-        <LinkButton title="Push Missing"
+        <LinkButton.render title="Push Missing"
                     to={search_path(Endpoint, :push_missing)}
                     class="bg-warning hover:bg-warning-dark border-gray" />
-        <LinkButton title="Migrate Manticore Search Indices"
+        <LinkButton.render title="Migrate Manticore Search Indices"
                     to={search_path(Endpoint, :migrate)}
                     class="bg-danger text-white hover:bg-danger-dark border-gray"
-                    opts={data: [confirm: "Are you sure?"]} />
-        <LinkButton title="Delete Orphaned Index Entries"
+                    opts={[data: [confirm: "Are you sure?"]]} />
+        <LinkButton.render title="Delete Orphaned Index Entries"
                     to={search_path(Endpoint, :delete_orphans)}
                     class="bg-danger text-white hover:bg-danger-dark border-gray"
-                    opts={data: [confirm: "Are you sure?"]} />
-        <LinkButton title="Reset all Records"
+                    opts={[data: [confirm: "Are you sure?"]]} />
+        <LinkButton.render title="Reset all Records"
                     to={search_path(Endpoint, :reset_all)}
                     class="bg-danger text-white hover:bg-danger-dark border-gray"
-                    opts={data: [confirm: "Are you sure?"]} />
-
+                    opts={[data: [confirm: "Are you sure?"]]} />
       </div>
     </div>
     """
