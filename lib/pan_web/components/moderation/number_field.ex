@@ -2,6 +2,7 @@ defmodule PanWeb.Component.Moderation.NumberField do
   use PanWeb, :html
 
   attr :name, :string, required: true
+  attr :value, :any, default: nil
   attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
@@ -12,6 +13,7 @@ defmodule PanWeb.Component.Moderation.NumberField do
       <.input
         type="number"
         name={@name}
+        value={@value}
         readonly={@name |> Atom.to_string() |> String.ends_with?("id")}
         class={"#{if @name |> Atom.to_string() |> String.ends_with?("id"), do: "cursor-not-allowed" } w-full input"}
       />

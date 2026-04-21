@@ -4,6 +4,8 @@ defmodule PanWeb.Components.Admin.CheckBoxField do
 
   attr :name, :string, required: true
   attr :label, :string, required: true
+  attr :value, :any, default: nil
+  attr :errors, :list, default: []
   attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
@@ -14,7 +16,7 @@ defmodule PanWeb.Components.Admin.CheckBoxField do
       {@label}
       <.error :for={msg <- @errors}>{msg}</.error>
     <% else %>
-      <.input type="checkbox" name={@name} label={@label} />
+      <.input type="checkbox" name={@name} label={@label} value={@value} />
     <% end %>
     """
   end

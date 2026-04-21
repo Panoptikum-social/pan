@@ -45,7 +45,7 @@ defmodule PanWeb.Admin.RecordForm do
     resource = Phoenix.Naming.resource_name(model)
 
     changeset =
-      model.changeset(Kernel.struct(model), params[resource])
+      model.changeset(Kernel.struct(model), params[resource] || params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
@@ -58,7 +58,7 @@ defmodule PanWeb.Admin.RecordForm do
     resource = Phoenix.Naming.resource_name(model)
     record_state = socket.assigns.record.__meta__.state
     record = socket.assigns.record
-    changeset = model.changeset(record, params[resource])
+    changeset = model.changeset(record, params[resource] || params)
 
     response =
       case record_state do
@@ -145,12 +145,14 @@ defmodule PanWeb.Admin.RecordForm do
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
             <NumberField.render :for={column <- ColumnsFilter.number_columns(assigns)}
                                 name={column.field}
+                                value={Ecto.Changeset.get_field(@changeset, column.field)}
                                 redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
             <DateTimeSelect.render :for={column <- ColumnsFilter.datetime_columns(assigns)}
                                    name={column.field}
+                                   value={Ecto.Changeset.get_field(@changeset, column.field)}
                                    redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
@@ -158,6 +160,7 @@ defmodule PanWeb.Admin.RecordForm do
             <CheckBoxField.render :for={column <- ColumnsFilter.boolean_columns(assigns)}
                                   name={column.field}
                                   label={column.field}
+                                  value={Ecto.Changeset.get_field(@changeset, column.field)}
                                   redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
         </div>
@@ -167,12 +170,14 @@ defmodule PanWeb.Admin.RecordForm do
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
             <TextField.render :for={column <- ColumnsFilter.string_columns(assigns)}
                               name={column.field}
+                              value={Ecto.Changeset.get_field(@changeset, column.field)}
                               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
             <TextAreaField.render :for={column <- ColumnsFilter.text_columns(assigns)}
                                   name={column.field}
+                                  value={Ecto.Changeset.get_field(@changeset, column.field)}
                                   redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
         </div>

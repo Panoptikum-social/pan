@@ -3,6 +3,7 @@ defmodule PanWeb.Components.Admin.DateTimeSelect do
   use Phoenix.Component
 
   attr :name, :string, required: true
+  attr :value, :any, default: nil
   attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
@@ -10,7 +11,7 @@ defmodule PanWeb.Components.Admin.DateTimeSelect do
     <%= if @redact do %>
       <.input value="** redacted **" readonly />
     <% else %>
-      <.input type="datetime-local" name={@name} />
+      <.input type="datetime-local" name={@name} value={@value} />
     <% end %>
     """
   end

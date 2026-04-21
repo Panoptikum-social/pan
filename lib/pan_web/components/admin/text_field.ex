@@ -3,6 +3,7 @@ defmodule PanWeb.Components.Admin.TextField do
   use Phoenix.Component
 
   attr :name, :atom, required: true
+  attr :value, :any, default: nil
   attr :redact, :boolean, required: false, default: false
 
   def render(assigns) do
@@ -10,7 +11,7 @@ defmodule PanWeb.Components.Admin.TextField do
     <%= if @redact do %>
       <.input value="** redacted **" readonly />
     <% else %>
-      <.input name={@name} />
+      <.input name={@name} value={@value} />
     <% end %>
     """
   end
