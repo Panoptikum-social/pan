@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.TopList do
+defmodule PanWeb.Component.TopList do
   use PanWeb, :html
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.Icon

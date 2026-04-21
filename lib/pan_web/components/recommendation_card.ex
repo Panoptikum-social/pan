@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.RecommendationCard do
+defmodule PanWeb.Component.RecommendationCard do
   use PanWeb, :html
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton

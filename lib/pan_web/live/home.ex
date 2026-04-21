@@ -2,7 +2,9 @@ defmodule PanWeb.Live.Home do
   use PanWeb, :live_view
   alias PanWeb.Component.Panel
   alias PanWeb.Component.EpisodeCard
-  alias PanWeb.Surface.{TopList, PodcastCard, RecommendationCard}
+  alias PanWeb.Component.TopList
+  alias PanWeb.Component.PodcastCard
+  alias PanWeb.Component.RecommendationCard
   alias PanWeb.{Podcast, Episode, Recommendation, Endpoint}
 
   def mount(_params, _session, socket) do
