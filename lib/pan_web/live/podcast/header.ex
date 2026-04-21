@@ -5,6 +5,7 @@ defmodule PanWeb.Live.Podcast.Header do
   alias PanWeb.Component.QRCode
   alias PanWeb.Component.PersonaButton
   alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.Icon
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, PodloveSubscribeButton}
 

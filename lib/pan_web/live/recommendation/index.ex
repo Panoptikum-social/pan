@@ -4,6 +4,7 @@ defmodule PanWeb.Live.Recommendation.Index do
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.UserButton
+  alias PanWeb.Component.Icon
 
   def mount(_params, _session, socket) do
     {:ok,

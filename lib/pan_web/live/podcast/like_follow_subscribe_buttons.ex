@@ -1,14 +1,13 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
+  import PanWeb.CoreComponents
   alias PanWeb.Live.Podcast.SubscribeButton
   alias PanWeb.{Endpoint, Podcast}
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
   alias PanWeb.Component.FollowButton
   alias PanWeb.Component.LikeButton
-
-  prop(current_user_id, :integer, required: true)
-  prop(podcast, :map, required: true)
+  alias PanWeb.Component.Icon
 
   def handle_event("trigger-update", _, %{assigns: %{podcast: podcast}} = socket) do
     Task.start(fn ->
@@ -20,29 +19,30 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div>
-      {#if @current_user_id}
+      <%= if @current_user_id do %>
         <p class="whitespace-nowrap">
-          <LikeButton id="like_button"
+          <.live_component module={LikeButton} id="like_button"
                       current_user_id={@current_user_id}
                       model={Podcast}
                       instance={@podcast} />
-          <FollowButton id="follow_button"
+          <.live_component module={FollowButton} id="follow_button"
                         current_user_id={@current_user_id}
                         model={Podcast}
                         instance={@podcast} />
-          <SubscribeButton id="subscribe_button"
+          <.live_component module={SubscribeButton} id="subscribe_button"
                           current_user_id={@current_user_id}
                           podcast={@podcast} />
         </p>
 
-        {#if !@podcast.manually_updated_at or
-              time_shift(@podcast.manually_updated_at, hours: 1) |> in_the_past?}
+        <%= if !@podcast.manually_updated_at or
+              time_shift(@podcast.manually_updated_at, hours: 1) |> in_the_past? do %>
           <div class="mt-4">
-            <button :on-click="trigger-update"
+            <button phx-click="trigger-update"
+                    phx-target={@myself}
                     class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1">
-                    <Icon name="cog-heroicons-outline" />
+                    <Icon.render name="cog-heroicons-outline" />
                     Metadata Update
             </button>
             <span class="relative"
@@ -50,7 +50,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               <div class="inline"
                   @click="metadataOpen = !metadataOpen
                           $nextTick(() => $refs.metadataCloseButton.focus())">
-                <Icon name="information-circle-heroicons" />
+                <Icon.render name="information-circle-heroicons" />
               </div>
               <div x-show="metadataOpen"
                     class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96">
@@ -69,17 +69,17 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               </div>
             </span>
           </div>
-        {#else}
+        <% else %>
           <small>
             A manual update will be available in
             {time_diff(time_shift(@podcast.manually_updated_at, hours: 1), now(), :minutes)}
             minutes.
           </small>
-        {/if}
-      {#else}
-        {@podcast.likes_count} <Icon name="heart-heroicons-outline"/> Likes &nbsp; &nbsp;
-        {@podcast.followers_count}  <Icon name="annotation-heroicons-outline"/> Followers &nbsp; &nbsp;
-        {@podcast.subscriptions_count} <Icon name="user-heroicons-outline"/> Subscribers
+        <% end %>
+      <% else %>
+        {@podcast.likes_count} <Icon.render name="heart-heroicons-outline"/> Likes &nbsp; &nbsp;
+        {@podcast.followers_count} <Icon.render name="annotation-heroicons-outline"/> Followers &nbsp; &nbsp;
+        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline"/> Subscribers
 
         <p class="mt-4"><i>
           <a href={user_frontend_path(Endpoint, :new)}
@@ -87,7 +87,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
           <a href={session_path(Endpoint, :new)}
             class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
         </i></p>
-      {/if}
+      <% end %>
     </div>
     """
   end
