@@ -6,7 +6,7 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Episode}
   alias PanWeb.Admin.Naming
-  alias PanWeb.Surface.Moderation.RecordForm
+  alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
   def mount(%{"id" => category_id, "episode_id" => episode_id}, session, socket) do

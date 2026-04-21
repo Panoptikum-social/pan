@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Moderation.RecordForm do
+defmodule PanWeb.Component.Moderation.RecordForm do
   use PanWeb, :live_component
 
   import PanWeb.CoreComponents
@@ -7,7 +7,7 @@ defmodule PanWeb.Surface.Moderation.RecordForm do
   alias PanWeb.Admin.ColumnsFilter
   alias Pan.Repo
 
-  alias PanWeb.Surface.Moderation.NumberField
+  alias PanWeb.Component.Moderation.NumberField
 
   alias PanWeb.Components.Admin.{
     CheckBoxField,

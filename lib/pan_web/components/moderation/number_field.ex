@@ -1,4 +1,4 @@
-defmodule PanWeb.Surface.Moderation.NumberField do
+defmodule PanWeb.Component.Moderation.NumberField do
   use PanWeb, :html
 
   attr :name, :string, required: true
