@@ -1,11 +1,11 @@
 defmodule PanWeb.Live.Podcast.SubscribeButton do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
   alias PanWeb.{Subscription, Podcast}
   alias PanWeb.Component.Icon
 
-  prop(current_user_id, :integer, required: true)
-  prop(podcast, :map, required: true)
-  data(subscribed, :boolean, default: false)
+  def mount(socket) do
+    {:ok, assign(socket, subscribed: false)}
+  end
 
   def update(assigns, socket) do
     subscribed =
@@ -32,21 +32,23 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
     {:noreply, socket}
   end
 
+  attr :current_user_id, :integer, required: true
+  attr :podcast, :map, required: true
+
   def render(assigns) do
-    ~F"""
-      <span>
-        {#if @subscribed}
-          <button :on-click="toggle-subscribe"
-                  class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
-            {@podcast.subscriptions_count} <Icon name="user-heroicons-solid"/> Unsubscribe
-          </button>
-        {#else}
-          <button :on-click="toggle-subscribe"
-                  class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
-            {@podcast.subscriptions_count} <Icon name="user-heroicons-outline"/> Subscribe
-          </button>
-        {/if}
-      </span>
+    ~H"""
+    <span>
+      <button :if={@subscribed}
+              phx-click="toggle-subscribe"
+              class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
+        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-solid"/> Unsubscribe
+      </button>
+      <button :if={!@subscribed}
+              phx-click="toggle-subscribe"
+              class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
+        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline"/> Subscribe
+      </button>
+    </span>
     """
   end
 end
