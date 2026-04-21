@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.Show do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ActionButtons
   alias PanWeb.Admin.RecordCard
@@ -22,13 +22,14 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
   end
 
   def render(assigns) do
-    ~F"""
-    <RecordCard id={"record_card_" <> @resource <> "_" <> Integer.to_string(@record.id)}
-                {=@record}
-                {=@model}
-                {=@cols} />
-    <ActionButtons {=@model }
-                   {=@record}
+    ~H"""
+    <.live_component module={RecordCard}
+                id={"record_card_" <> @resource <> "_" <> Integer.to_string(@record.id)}
+                record={@record}
+                model={@model}
+                cols={@cols} />
+    <ActionButtons.render model={@model}
+                   record={@record}
                    type={:show} />
     """
   end

@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.Index do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "flex-1"}
+  use PanWeb, :admin_live_view
 
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ActionButtons
@@ -33,14 +31,15 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
   end
 
   def render(assigns) do
-    ~F"""
-    <IndexGrid id="index_table"
+    ~H"""
+    <.live_component module={IndexGrid}
+               id="index_table"
                heading={"Listing records for " <> Naming.model_in_plural(@model)}
-               {=@model}
-               {=@cols}
+               model={@model}
+               cols={@cols}
                buttons={[:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :search]}/>
-    <ActionButtons {=@model }
+                           :number_of_records, :search]} />
+    <ActionButtons.render model={@model}
                    type={:index} />
     """
   end

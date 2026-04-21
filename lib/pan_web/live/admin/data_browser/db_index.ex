@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "flex-1"}
+  use PanWeb, :admin_live_view
 
   alias PanWeb.Admin.Naming
   require Integer
@@ -25,9 +23,9 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-2 border border-gray rounded">
-      <h1 class="p-1 border-b border-gray text-center bg-gradient-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
+      <h1 class="p-1 border-b border-gray text-center bg-linear-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
         Database Indices for Resource
         <span class="italic">{Naming.module_without_namespace(@model)}</span>
       </h1>
@@ -39,20 +37,20 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
           <div class="w-full font-semibold pl-4 pr-2 py-0.5">
             Index Definition
           </div>
-        {#for {[name, definition], index} <- get_indices(assigns) |> Enum.with_index}
-          <div class={"px-2 py-0.5 text-gray-darker italic text-right",
-                      "bg-white": Integer.is_even(index),
-                      "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0}>
+        <%= for {[name, definition], index} <- get_indices(assigns) |> Enum.with_index do %>
+          <div class={["px-2 py-0.5 text-gray-darker italic text-right",
+                       if(Integer.is_even(index), do: "bg-white"),
+                       if(Integer.is_odd(index), do: "bg-gray-lightest"),
+                       if(index > 0, do: "border-t-2 border-gray-lighter")]}>
             {name}
           </div>
-          <div class={"w-full pl-4 pr-2 py-0.5",
-                      "bg-white": Integer.is_even(index),
-                      "bg-gray-lightest": Integer.is_odd(index),
-                      "border-t-2 border-gray-lighter": index > 0}>
+          <div class={["w-full pl-4 pr-2 py-0.5",
+                       if(Integer.is_even(index), do: "bg-white"),
+                       if(Integer.is_odd(index), do: "bg-gray-lightest"),
+                       if(index > 0, do: "border-t-2 border-gray-lighter")]}>
             {definition}
           </div>
-        {/for}
+        <% end %>
       </div>
     </div>
     """

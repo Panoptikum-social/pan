@@ -1,9 +1,5 @@
 defmodule PanWeb.Live.Admin.Opml.Index do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "m-4"}
-
-  on_mount {PanWeb.Live.Auth, :admin}
+  use PanWeb, :admin_live_view
 
   alias PanWeb.{Opml, Endpoint}
   alias PanWeb.Component.LinkButton
@@ -75,38 +71,39 @@ defmodule PanWeb.Live.Admin.Opml.Index do
   end
 
   def render(assigns) do
-    ~F"""
-    <div class="flex justify-between max-w-7xl">
-      <h1 class="text-3xl">Listing opmls</h1>
-      <input type="text"  placeholder="Filter" phx-keyup="filter" value={@filter_by} />
-    </div>
+    ~H"""
+    <div class="m-4">
+      <div class="flex justify-between max-w-7xl">
+        <h1 class="text-3xl">Listing opmls</h1>
+        <input type="text" placeholder="Filter" phx-keyup="filter" value={@filter_by} />
+      </div>
 
-    <table cellpadding="4" class="my-4">
-      <thead>
-        <tr>
-          <th class="border border-gray-light">
-            <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render></th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render>
-          </th>
-          <th class="border border-gray-light">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#for opml <- @filtered_opmls}
-          <tr class="odd:bg-white">
+      <table cellpadding="4" class="my-4">
+        <thead>
+          <tr>
+            <th class="border border-gray-light">
+              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render>
+            </th>
+            <th class="border border-gray-light">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={opml <- @filtered_opmls} class="odd:bg-white">
             <td class="border border-gray-light">{opml.id}</td>
             <td class="border border-gray-light">{opml.user_name}</td>
             <td class="border border-gray-light">{opml.content_type}</td>
@@ -114,32 +111,35 @@ defmodule PanWeb.Live.Admin.Opml.Index do
             <td class="border border-gray-light"><nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr></td>
             <td class="border border-gray-light">{opml.path}</td>
             <td class="border border-gray-light">
-              <LinkButton title="Parse"
+              <LinkButton.render title="Parse"
                           to={opml_path(Endpoint, :import, opml.id)}
                           class="text-sm border-primary-dark bg-primary hover:bg-primary-light text-white" />
-              <LinkButton title="Show"
+              <LinkButton.render title="Show"
                           class="text-sm border-gray bg-white hover:bg-gray-light"
                           to={opml_path(Endpoint, :show, opml.id)} />
-              <LinkButton title="Edit"
+              <LinkButton.render title="Edit"
                           class="text-sm border-warning-dark bg-warning hover:bg-warning-light text-white"
                           to={opml_path(Endpoint, :edit, opml.id)} />
-              <LinkButton title="Delete"
+              <LinkButton.render title="Delete"
                           to={opml_path(Endpoint, :delete, opml.id)}
                           method={:delete}
                           class="text-sm border-danger-dark bg-danger hover:bg-danger-light text-white"
                           opts={[confirm: "Are you sure?"]} />
             </td>
           </tr>
-        {/for}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
 
-    <Pagination nr_of_pages={Float.ceil(@nr_of_filtered / @per_page) |> round}
-                {=@nr_of_unfiltered} {=@nr_of_filtered} {=@page} {=@per_page}
-                click="paginate" class="mb-4 max-w-3xl" />
+      <Pagination.render nr_of_pages={Float.ceil(@nr_of_filtered / @per_page) |> round}
+                  nr_of_unfiltered={@nr_of_unfiltered}
+                  nr_of_filtered={@nr_of_filtered}
+                  page={@page}
+                  per_page={@per_page}
+                  click="paginate"
+                  class="mb-4 max-w-3xl" />
 
-    <LinkButton title="New opml"
-                to={opml_path(Endpoint, :new)} />
+      <LinkButton.render title="New opml" to={opml_path(Endpoint, :new)} />
+    </div>
     """
   end
 end

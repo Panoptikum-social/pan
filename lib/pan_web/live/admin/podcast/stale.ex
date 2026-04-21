@@ -1,9 +1,5 @@
 defmodule PanWeb.Live.Admin.Podcast.Stale do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "m-4"}
-
-  on_mount {PanWeb.Live.Auth, :admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.{Podcast, Endpoint}
   alias PanWeb.Admin.SortLink
   alias PanWeb.Component.LinkButton
@@ -63,59 +59,59 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
+    <div class="m-4">
       <button id="notification-hook-target"
               phx-hook="Notification"
-              :on-click="trigger-update"
+              phx-click="trigger-update"
               class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1 float-right">
-      Episode import
-    </button>
+        Episode import
+      </button>
 
-    <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
+      <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
 
-    <p>This view is auto-refreshing every 60 seconds.</p>
+      <p>This view is auto-refreshing every 60 seconds.</p>
 
-    <table cellpadding="4" class="my-4">
-      <thead>
-        <tr>
-          <th class="border border-gray-light">
-            <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              ID
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              Title
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              Updated at 🎡
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              Update intervall
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              Next update 🎡
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">
-            <SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-              Failure count
-            </SortLink.render>
-          </th>
-          <th class="border border-gray-light">Feed url</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#for podcast <- @stale_podcasts}
+      <table cellpadding="4" class="my-4">
+        <thead>
           <tr>
+            <th class="border border-gray-light">
+              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                ID
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Title
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Updated at 🎡
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Update intervall
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Next update 🎡
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">
+              <SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Failure count
+              </SortLink.render>
+            </th>
+            <th class="border border-gray-light">Feed url</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={podcast <- @stale_podcasts}>
             <td class="border border-gray-light text-right">
-              <LinkButton title={podcast.id}
+              <LinkButton.render title={podcast.id}
                           to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
                           class="border-gray text-white bg-primary hover:bg-primary-light rounded" /></td>
             <td class="border border-gray-light">{podcast.title}</td>
@@ -125,9 +121,9 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
             <td class="border border-gray-light">{podcast.failure_count}</td>
             <td class="border border-gray-light">{podcast.feed_url}</td>
           </tr>
-        {/for}
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
     """
   end
 end
