@@ -1,10 +1,11 @@
 defmodule PanWeb.Live.Category.StatsShow do
-  use Surface.LiveView
+  use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Category, Podcast, Language}
   alias PanWeb.Component.Panel
-  alias PanWeb.Surface.{PanelHeading, LinkButton}
+  alias PanWeb.Component.LinkButton
+  alias PanWeb.Component.Icon
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
@@ -39,7 +40,7 @@ defmodule PanWeb.Live.Category.StatsShow do
   end
 
   def render(%{error: "not_found"} = assigns) do
-    ~F"""
+    ~H"""
     <div class="m-12">
       A category with this id could not be found
     </div>
@@ -47,58 +48,53 @@ defmodule PanWeb.Live.Category.StatsShow do
   end
 
   def render(assigns) do
-    ~F"""
-    <Panel purpose="category"
-           class="m-4">
-      <PanelHeading>
-        <.link href={category_frontend_path(@socket, :index)}
-              class="hover:text-blue-400">
-          <Icon name="folder-heroicons-outline" /> Panoptikum
+    ~H"""
+    <Panel.render purpose="category" class="m-4">
+      <:panel_heading>
+        <.link href={category_frontend_path(@socket, :index)} class="hover:text-blue-400">
+          <Icon.render name="folder-heroicons-outline" /> Panoptikum
         </.link> /
-        {#if @category.parent}
+        <span :if={@category.parent}>
           <.link href={category_frontend_path(@socket, :show_stats, @category.parent)}
                 class="hover:text-blue-400">
-            <Icon name="folder-heroicons-outline" /> {@category.parent.title}
+            <Icon.render name="folder-heroicons-outline" /> {@category.parent.title}
           </.link> /
-        {/if}
-        <Icon name="folder-open-heroicons-outline" /> {@category. title}
-      </PanelHeading>
+        </span>
+        <Icon.render name="folder-open-heroicons-outline" /> {@category.title}
+      </:panel_heading>
 
       <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
-          {#for subcategory <- @category.children}
-            <LinkButton to={category_frontend_path(@socket, :show_stats, subcategory.id)}
-                        class="bg-white hover:bg-gray-lighter text-gray-darker border-gray mr-2 mb-2"
-                        icon="folder-heroicons-outline"
-                        title={subcategory.title}
-                        truncate={true} />
-          {/for}
+          <LinkButton.render :for={subcategory <- @category.children}
+                      to={category_frontend_path(@socket, :show_stats, subcategory.id)}
+                      class="bg-white hover:bg-gray-lighter text-gray-darker border-gray mr-2 mb-2"
+                      icon="folder-heroicons-outline"
+                      title={subcategory.title}
+                      truncate={true} />
         </div>
 
         <h3 class="pt-4 text-xl">Click on a language to filter</h3>
 
         <div class="flex flex-wrap py-4">
-          {#for language <- @languages}
-            <div class="mr-8">
-              {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
-              {amount(language.name, @podcasts)}
-            </div>
-          {/for}
+          <div :for={language <- @languages} class="mr-8">
+            {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
+            {amount(language.name, @podcasts)}
+          </div>
         </div>
 
-        {#if @language}
+        <%= if @language do %>
           <h2 class="text-2xl mt-4">
             {amount(@language.name, @podcasts)} Podcasts in {@language.name} {@language.emoji}
           </h2>
-          {#else}
-            <h2 class="text-2xl mt-4">Podcasts in any language</h2>
-          {/if}
+        <% else %>
+          <h2 class="text-2xl mt-4">Podcasts in any language</h2>
+        <% end %>
 
         <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
           Podcast Buttons not shown in this view.
         </div>
       </div>
-    </Panel>
+    </Panel.render>
     """
   end
 end

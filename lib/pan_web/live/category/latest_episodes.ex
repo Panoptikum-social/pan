@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Category.LatestEpisodes do
-  use Surface.LiveView
+  use PanWeb, :live_view
   alias PanWeb.{Category, Podcast, Episode}
   alias PanWeb.Component.Panel
   alias PanWeb.Component.PodcastButton
@@ -31,18 +31,16 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   end
 
   def render(assigns) do
-    ~F"""
-    <Panel heading={"Latest Episodes for #{@category.title}"} purpose="episode" class="m-4">
+    ~H"""
+    <Panel.render heading={"Latest Episodes for #{@category.title}"} purpose="episode" class="m-4">
       <div id="latest_episodes" phx-update="append" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
-        {#for episode <- @latest_episodes }
-          <div id={"episode-#{episode.id}"} class="my-2">
-            <p class="mb-1">Podcast <PodcastButton id={episode.podcast_id} title={episode.podcast_title} /></p>
-            <EpisodeCard for={episode}/>
-          </div>
-        {/for}
+        <div :for={episode <- @latest_episodes} id={"episode-#{episode.id}"} class="my-2">
+          <p class="mb-1">Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} /></p>
+          <EpisodeCard.render for={episode}/>
+        </div>
       </div>
       <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
-    </Panel>
+    </Panel.render>
     """
   end
 end
