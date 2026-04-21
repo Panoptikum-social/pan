@@ -57,7 +57,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                 <th>Date</th>
               </tr>
             </thead>
-            <tbody id="latest_recommendations" phx-update="append">
+            <tbody id="latest_recommendations">
               <tr :for={recommendation <- @episode.recommendations}
                   id={"recommendation-row-#{recommendation.id}"}>
                 <td>

@@ -18,23 +18,21 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
         page_title: "Latest Episodes in #{category.title} (Category)"
       )
 
-    {:ok, socket |> fetch(), temporary_assigns: [latest_episodes: []]}
-  end
-
-  defp fetch(%{assigns: %{page: page, per_page: per_page, podcast_ids: podcast_ids}} = socket) do
-    latest_episodes = Episode.latest_episodes_by_podcast_ids(podcast_ids, page, per_page)
-    assign(socket, latest_episodes: latest_episodes)
+    episodes = Episode.latest_episodes_by_podcast_ids(podcast_ids, 1, 15)
+    {:ok, stream(socket, :latest_episodes, episodes)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+    page = assigns.page + 1
+    episodes = Episode.latest_episodes_by_podcast_ids(assigns.podcast_ids, page, assigns.per_page)
+    {:noreply, socket |> assign(page: page) |> stream(:latest_episodes, episodes)}
   end
 
   def render(assigns) do
     ~H"""
     <Panel.render heading={"Latest Episodes for #{@category.title}"} purpose="episode" class="m-4">
-      <div id="latest_episodes" phx-update="append" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
-        <div :for={episode <- @latest_episodes} id={"episode-#{episode.id}"} class="my-2">
+      <div id="latest_episodes" phx-update="stream" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
+        <div :for={{dom_id, episode} <- @streams.latest_episodes} id={dom_id} class="my-2">
           <p class="mb-1">Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} /></p>
           <EpisodeCard.render for={episode}/>
         </div>

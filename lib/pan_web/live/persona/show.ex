@@ -41,7 +41,7 @@ defmodule PanWeb.Live.Persona.Show do
         )
         |> fetch_gigs
 
-      {:ok, socket, temporary_assigns: [gigs: [], grouped_gigs: []]}
+      {:ok, socket}
     else
       {:ok, assign(socket, not_found: true)}
     end
@@ -61,7 +61,15 @@ defmodule PanWeb.Live.Persona.Show do
          } = socket
        ) do
     gigs = Gig.get_by_persona_ids(persona_ids, gigs_page, gigs_per_page)
-    assign(socket, gigs: gigs, grouped_gigs: Gig.grouped_gigs(gigs))
+    grouped = Gig.grouped_gigs(gigs)
+
+    rows =
+      grouped
+      |> Map.keys()
+      |> Enum.sort_by(&Date.to_erl(&1.publishing_date), :desc)
+      |> Enum.map(fn episode -> %{id: episode.id, episode: episode, gigs: grouped[episode]} end)
+
+    stream(socket, :gig_rows, rows)
   end
 
   defp markdown(content) do
@@ -77,12 +85,6 @@ defmodule PanWeb.Live.Persona.Show do
     {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
   end
 
-  defp ordered_episodes(grouped_gigs) do
-    grouped_gigs
-    |> Map.keys()
-    |> Enum.sort_by(&Date.to_erl(&1.publishing_date))
-    |> Enum.reverse()
-  end
 
   def render(%{not_found: true} = assigns) do
     ~H"""
@@ -255,15 +257,15 @@ defmodule PanWeb.Live.Persona.Show do
             <th>Role</th>
           </tr>
         </thead>
-        <tbody phx-update="append" id="gigs-table-body">
-          <tr :for={episode <- ordered_episodes(@grouped_gigs)}
-              id={"episode-#{episode.id}"}
+        <tbody phx-update="stream" id="gigs-table-body">
+          <tr :for={{dom_id, row} <- @streams.gig_rows}
+              id={dom_id}
               class="flex flex-col sm:table-row odd:bg-gray-lighter">
-            <td align="center" class="px-2">{episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}</td>
-            <td class="px-2"><PodcastButton.render for={episode.podcast} /></td>
-            <td class="px-2"><EpisodeButton.render for={episode} /></td>
+            <td align="center" class="px-2">{row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}</td>
+            <td class="px-2"><PodcastButton.render for={row.episode.podcast} /></td>
+            <td class="px-2"><EpisodeButton.render for={row.episode} /></td>
             <td class="px-2">
-              <Pill.render :for={gig <- @grouped_gigs[episode]} id={"gig-#{gig.id}"} type="success">{gig.role}</Pill.render>
+              <Pill.render :for={gig <- row.gigs} id={"gig-#{gig.id}"} type="success">{gig.role}</Pill.render>
             </td>
           </tr>
         </tbody>

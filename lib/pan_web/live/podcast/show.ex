@@ -13,26 +13,21 @@ defmodule PanWeb.Live.Podcast.Show do
         podcast: podcast,
         page: 1,
         per_page: 10,
+        episodes_count: Episode.count_by_podcast_id(id),
         changeset: %Recommendation{} |> Recommendation.changeset(),
         podcast_thumbnail: Image.get_by_podcast_id(id) || %{},
         page_title: podcast.title <> " (Podcast)"
       )
-      |> fetch
 
     Phoenix.PubSub.subscribe(:pan_pubsub, "podcasts:#{id}")
 
-    {:ok, socket, temporary_assigns: [episodes: []]}
+    {:ok, stream(socket, :episodes, Episode.get_by_podcast_id(podcast.id, 1, 10))}
   end
 
-  defp fetch(%{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket) do
-    assign(socket,
-      episodes: Episode.get_by_podcast_id(podcast.id, page, per_page),
-      episodes_count: Episode.count_by_podcast_id(podcast.id)
-    )
-  end
-
-  def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast}} = socket) do
-    {:noreply, assign(socket, podcast: Podcast.get_by_id_for_show(podcast.id)) |> fetch()}
+  def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast, per_page: per_page}} = socket) do
+    podcast = Podcast.get_by_id_for_show(podcast.id)
+    episodes = Episode.get_by_podcast_id(podcast.id, 1, per_page)
+    {:noreply, socket |> assign(podcast: podcast, page: 1, episodes_count: Episode.count_by_podcast_id(podcast.id)) |> stream(:episodes, episodes, reset: true)}
   end
 
   def handle_info(payload, socket) do
@@ -40,7 +35,9 @@ defmodule PanWeb.Live.Podcast.Show do
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+    page = assigns.page + 1
+    episodes = Episode.get_by_podcast_id(assigns.podcast.id, page, assigns.per_page)
+    {:noreply, socket |> assign(page: page) |> stream(:episodes, episodes)}
   end
 
   def render(assigns) do
@@ -62,7 +59,7 @@ defmodule PanWeb.Live.Podcast.Show do
                             current_user_id={@current_user_id}
                             podcast={@podcast}
                             changeset={@changeset} />
-        <EpisodeList.render episodes={@episodes}
+        <EpisodeList.render episodes={@streams.episodes}
                      page={@page} />
       </div>
     </div>

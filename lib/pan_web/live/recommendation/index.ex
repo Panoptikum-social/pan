@@ -7,17 +7,13 @@ defmodule PanWeb.Live.Recommendation.Index do
   alias PanWeb.Component.Icon
 
   def mount(_params, _session, socket) do
-    {:ok,
-     assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations")
-     |> fetch(), temporary_assigns: [recommendations: []]}
-  end
-
-  defp fetch(%{assigns: %{page: page, per_page: per_page}} = socket) do
-    assign(socket, latest_recommendations: Recommendation.latest(page, per_page))
+    socket = assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations")
+    {:ok, stream(socket, :latest_recommendations, Recommendation.latest(1, 21))}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+    page = assigns.page + 1
+    {:noreply, socket |> assign(page: page) |> stream(:latest_recommendations, Recommendation.latest(page, assigns.per_page))}
   end
 
   def render(assigns) do
@@ -27,9 +23,9 @@ defmodule PanWeb.Live.Recommendation.Index do
 
       <div id="recommendations-grid"
            class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-           phx-update="append">
-        <div :for={recommendation <- @latest_recommendations}
-             id={"recommendation-#{recommendation.id}"}
+           phx-update="stream">
+        <div :for={{dom_id, recommendation} <- @streams.latest_recommendations}
+             id={dom_id}
              class="m-2 p-2 rounded shadow">
           <div class="flex justify-between">
             <span><UserButton.render for={recommendation.user} /> recommended</span>

@@ -6,7 +6,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
   alias PanWeb.Component.Icon
   require Integer
 
-  attr :episodes, :list, required: false, default: []
+  attr :episodes, :any, required: false, default: []
   attr :page, :integer, required: false, default: 1
 
   def render(assigns) do
@@ -21,9 +21,9 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
           <th>Contributors</th>
         </tr>
       </thead>
-      <tbody id="table-body-episodes" phx-update="append">
-        <tr :for={episode <- @episodes}
-            id={"episode-#{episode.id}"}
+      <tbody id="table-body-episodes" phx-update="stream">
+        <tr :for={{dom_id, episode} <- @episodes}
+            id={dom_id}
             class="flex flex-col sm:table-row even:bg-gray-lighter">
           <td class="p-2 text-center">
             {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}

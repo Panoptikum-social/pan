@@ -9,18 +9,13 @@ defmodule PanWeb.Live.Podcast.Index do
   alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
-    {:ok,
-     assign(socket, page: 1, per_page: 15, page_title: "Latest Podcasts")
-     |> fetch(), temporary_assigns: [latest_episodes: []]}
-  end
-
-  defp fetch(%{assigns: %{page: page, per_page: per_page}} = socket) do
-    latest_podcasts = Podcast.latest_for_index(page, per_page)
-    assign(socket, latest_podcasts: latest_podcasts)
+    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Podcasts")
+    {:ok, stream(socket, :latest_podcasts, Podcast.latest_for_index(1, 15))}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
+    page = assigns.page + 1
+    {:noreply, socket |> assign(page: page) |> stream(:latest_podcasts, Podcast.latest_for_index(page, assigns.per_page))}
   end
 
   defp thumbnail(podcast) do
@@ -31,10 +26,10 @@ defmodule PanWeb.Live.Podcast.Index do
     ~H"""
     <h1 class="text-3xl m-4">Latest Podcasts</h1>
 
-    <div id="latest_podcasts" phx-update="append" class="m-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <Panel.render :for={podcast <- @latest_podcasts}
+    <div id="latest_podcasts" phx-update="stream" class="m-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <Panel.render :for={{dom_id, podcast} <- @streams.latest_podcasts}
               purpose="podcast"
-              id={"podcast-#{podcast.id}"}
+              id={dom_id}
               heading={podcast.title}
               target={podcast_frontend_path(Endpoint, :show, podcast.id)}>
         <div class="flex flex-col md:flex-row md:items-start md:space-x-2 mx-2 mt-4">

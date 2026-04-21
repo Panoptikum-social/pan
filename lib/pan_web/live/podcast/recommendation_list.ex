@@ -4,10 +4,9 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   alias PanWeb.{Endpoint, Recommendation}
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  require Integer
 
   def mount(socket) do
-    {:ok, assign(socket, recommendations: [], recommendations_count: 0)}
+    {:ok, assign(socket, recommendations_count: 0) |> stream(:recommendations, [])}
   end
 
   def update(assigns, socket) do
@@ -18,18 +17,16 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
 
     socket =
       assign(socket, assigns)
-      |> assign(recommendations: recommendations)
       |> assign(recommendations_count: recommendations_count)
+      |> stream(:recommendations, recommendations)
 
     {:ok, socket}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
-    {:noreply, assign(socket, page: assigns.page + 1) |> fetch()}
-  end
-
-  defp fetch(%{assigns: %{podcast: podcast, page: page, per_page: per_page}} = socket) do
-    assign(socket, recommendations: Recommendation.get_by_podcast_id(podcast.id, page, per_page))
+    page = assigns.page + 1
+    recommendations = Recommendation.get_by_podcast_id(assigns.podcast.id, page, assigns.per_page)
+    {:noreply, socket |> assign(page: page) |> stream(:recommendations, recommendations)}
   end
 
   def social(podcast, recommendation) do
@@ -68,10 +65,11 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
               <th class="p-2">Date</th>
             </tr>
           </thead>
-          <tbody id="latest_recommendations" phx-update="append">
-            <tr :for={{recommendation, index} <- Enum.with_index(@recommendations)}
-                id={"recommendation-row-#{recommendation.id}"}>
-              <td class={["p-2", if(Integer.is_even(index), do: "bg-gray-lighter")]}>
+          <tbody id="latest_recommendations" phx-update="stream">
+            <tr :for={{dom_id, recommendation} <- @streams.recommendations}
+                id={dom_id}
+                class="even:bg-gray-lighter">
+              <td class="p-2">
                 <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
                   <a href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
                     class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
@@ -82,9 +80,8 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
                 </p>
                 {recommendation.user.name}
               </td>
-              <td class={["p-2", if(Integer.is_even(index), do: "bg-gray-lighter")]}>{recommendation.comment}</td>
-              <td class={["p-2", if(Integer.is_even(index), do: "bg-gray-lighter")]}
-                  align="right">
+              <td class="p-2">{recommendation.comment}</td>
+              <td class="p-2" align="right">
                 {Calendar.strftime(recommendation.inserted_at, "%x")}
               </td>
             </tr>
