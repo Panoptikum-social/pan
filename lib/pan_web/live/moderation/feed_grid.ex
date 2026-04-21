@@ -1,6 +1,5 @@
 defmodule PanWeb.Live.Moderation.FeedGrid do
-  use Surface.LiveView
-  on_mount PanWeb.Live.AssignUserAndAdmin
+  use PanWeb, :live_view
   alias PanWeb.{Moderation, Podcast, Feed}
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ModerationGrid
@@ -64,7 +63,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   end
 
   def render(%{error: "not_found"} = assigns) do
-    ~F"""
+    ~H"""
     <div class="m-12">
       This podcast/category combination is not within your moderations.
     </div>
@@ -72,13 +71,14 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-4">
       <h1 class="text-2xl">
         Podcast {@podcast.title} / Feeds
       </h1>
 
-      <ModerationGrid id="episodes_table"
+      <.live_component module={ModerationGrid}
+        id="episodes_table"
         heading={"Listing Feeds for Podcast #{@podcast.title}"}
         model={Feed}
         cols={@cols}

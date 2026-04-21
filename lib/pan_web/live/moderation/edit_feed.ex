@@ -1,9 +1,5 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
-  use Surface.LiveView,
-    layout: {PanWeb.LayoutView, :live_admin},
-    container: {:div, class: "flex-1 w-full"}
-
-  on_mount PanWeb.Live.AssignUserAndAdmin
+  use PanWeb, :admin_live_view
   alias PanWeb.{Moderation, Feed, Podcast}
   alias PanWeb.Admin.Naming
   alias PanWeb.Component.Moderation.RecordForm
@@ -72,7 +68,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   end
 
   def render(%{error: "not_found"} = assigns) do
-    ~F"""
+    ~H"""
     <div class="m-12">
       This podcast/category combination is not within your moderations.
     </div>
@@ -80,7 +76,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <.live_component module={RecordForm}
                     id={"record_form_feed_" <> Integer.to_string(@feed.id)}
                     record={@feed}
