@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Moderation.FeedGrid do
   use PanWeb, :live_view
+  on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Feed}
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ModerationGrid

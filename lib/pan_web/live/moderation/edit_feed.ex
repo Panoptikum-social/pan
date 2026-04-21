@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
   use PanWeb, :admin_live_view
+  on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Feed, Podcast}
   alias PanWeb.Admin.Naming
   alias PanWeb.Component.Moderation.RecordForm

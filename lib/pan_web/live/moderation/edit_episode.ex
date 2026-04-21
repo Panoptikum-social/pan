@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.Moderation.EditEpisode do
   use PanWeb, :admin_live_view
+  on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Moderation, Podcast, Episode}
   alias PanWeb.Admin.Naming

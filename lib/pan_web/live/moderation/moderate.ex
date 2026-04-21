@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Moderation.Moderate do
-  use Surface.LiveView
+  use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
   alias PanWeb.Admin.Naming
@@ -91,7 +91,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
   end
 
   def render(%{error: "not_found"} = assigns) do
-    ~F"""
+    ~H"""
     <div class="m-12">
       This is not one of your moderations
     </div>
@@ -99,13 +99,14 @@ defmodule PanWeb.Live.Moderation.Moderate do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-4">
       <h1 class="text-2xl">
         Moderating {@category.title}
       </h1>
 
-      <ModerationGrid id="moderation_table"
+      <.live_component module={ModerationGrid}
+        id="moderation_table"
         heading="Listing Podcasts"
         model={Podcast}
         cols={@cols}
