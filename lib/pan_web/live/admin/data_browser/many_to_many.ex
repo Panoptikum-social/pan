@@ -1,10 +1,11 @@
 defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.IndexGrid
   import Ecto.Query
   alias Pan.Repo
   alias PanWeb.Router.Helpers, as: Routes
+  alias PanWeb.Endpoint
 
   def mount(
         %{
@@ -80,7 +81,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
 
     new_association_path =
       Routes.databrowser_path(
-        socket,
+        Endpoint,
         :new_association,
         socket.assigns.join_through,
         hd(socket.assigns.join_keys),
@@ -98,18 +99,19 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
   end
 
   def render(assigns) do
-    ~F"""
-    <IndexGrid id="owner_table"
+    ~H"""
+    <.live_component module={IndexGrid}
+               id="owner_table"
                color_class="from-pink-rose-light via-pink-rose to-pink-rose-light"
                heading={Naming.module_without_namespace(@owner_model)}
                model={@owner_model}
                cols={@owner_cols}
                search_filter={@owner_search_filter}
                per_page={1}
-               buttons={[:show, :edit]}>
-    </IndexGrid>
+               buttons={[:show, :edit]} />
 
-    <IndexGrid id="join_through_table"
+    <.live_component module={IndexGrid}
+               id="join_through_table"
                class="mt-8"
                color_class="from-lavender-light via-lavender to-lavender-light"
                heading={"Join Through " <> Naming.model_in_plural(@join_through_model)}
@@ -118,19 +120,18 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
                search_filter={@join_search_filter}
                second_search_filter={@join_second_search_filter}
                buttons={[:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :search]}>
-    </IndexGrid>
+                           :number_of_records, :search]} />
 
-    <IndexGrid id="many_to_many_table"
+    <.live_component module={IndexGrid}
+               id="many_to_many_table"
                class="mt-8"
                color_class="from-mint-light via-mint to-mint-light"
                heading={"Many To Many " <> Naming.model_in_plural(@model)}
-               {=@model}
-               {=@cols}
-               {=@search_filter}
+               model={@model}
+               cols={@cols}
+               search_filter={@search_filter}
                buttons={[:show, :edit, :pagination, :number_of_records,
-                           :new_mediating, :assignment_filter, :search]}>
-    </IndexGrid>
+                           :new_mediating, :assignment_filter, :search]} />
     """
   end
 end

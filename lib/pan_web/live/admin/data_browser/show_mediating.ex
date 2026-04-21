@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.QueryBuilder
   alias PanWeb.Admin.RecordCard
@@ -36,11 +36,12 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
   end
 
   def render(assigns) do
-    ~F"""
-    <RecordCard id={"record_card_" <> @resource <> "_" <> @ids_string}
-                {=@record}
-                {=@model}
-                {=@cols} />
+    ~H"""
+    <.live_component module={RecordCard}
+                id={"record_card_" <> @resource <> "_" <> @ids_string}
+                record={@record}
+                model={@model}
+                cols={@cols} />
     """
   end
 end

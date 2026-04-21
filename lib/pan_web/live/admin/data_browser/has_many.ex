@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Admin.Databrowser.HasMany do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.IndexGrid
 
@@ -55,28 +55,28 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
   end
 
   def render(assigns) do
-    ~F"""
-    <IndexGrid id="owner_table"
+    ~H"""
+    <.live_component module={IndexGrid}
+               id="owner_table"
                color_class="from-grapefruit-light via-grapefruit to-grapefruit-light"
                heading={Naming.module_without_namespace(@owner_model)}
                model={@owner_model}
                cols={@owner_cols}
                search_filter={@owner_search_filter}
                per_page={1}
-               buttons={[:show, :edit]}>
-    </IndexGrid>
+               buttons={[:show, :edit]} />
 
-    <IndexGrid id="has_many_table"
+    <.live_component module={IndexGrid}
+               id="has_many_table"
                class="mt-8"
                color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
                heading={"Has Many " <> Naming.model_in_plural(@model)}
-               {=@model}
-               {=@cols}
-               {=@search_filter}
+               model={@model}
+               cols={@cols}
+               search_filter={@search_filter}
                per_page={20}
                buttons={[:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :link, :assignment_filter, :search]} >
-    </IndexGrid>
+                           :number_of_records, :link, :assignment_filter, :search]} />
     """
   end
 end

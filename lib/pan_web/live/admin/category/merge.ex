@@ -1,8 +1,7 @@
 defmodule PanWeb.Live.Admin.Category.Merge do
-  use Surface.LiveView, layout: {PanWeb.LayoutView, :live_admin}
-  on_mount {PanWeb.Live.Auth, :admin}
+  use PanWeb, :admin_live_view
   alias PanWeb.Category
-  alias PanWeb.Component.{Tree, EventButton}
+  alias PanWeb.Component.{Tree, EventButton, Icon}
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
@@ -22,26 +21,28 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <h1 class="text-3xl m-4">Merging categories</h1>
 
     <div class="flex m-4 space-x-4">
-      <Tree id="fromTree"
+      <.live_component module={Tree}
+            id="fromTree"
             nodes={@categories}
             select="selectFrom"
-            selected_id={@from_id}/>
-      <Tree id="intoTree"
+            selected_id={@from_id} />
+      <.live_component module={Tree}
+            id="intoTree"
             nodes={@categories}
             select="selectInto"
             selected_id={@into_id} />
 
       <div>
-        <EventButton event="merge">
-          <Icon name="folder-heroicons-outline" />
-          <Icon name="arrow-sm-right-heroicons-outline" />
-          <Icon name="folder-heroicons-outline" />
+        <EventButton.render event="merge">
+          <Icon.render name="folder-heroicons-outline" />
+          <Icon.render name="arrow-sm-right-heroicons-outline" />
+          <Icon.render name="folder-heroicons-outline" />
           Merge Categories
-        </EventButton>
+        </EventButton.render>
       </div>
     </div>
     """
