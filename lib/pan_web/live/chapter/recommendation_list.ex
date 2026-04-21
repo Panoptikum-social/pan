@@ -1,12 +1,8 @@
 defmodule PanWeb.Live.Chapter.RecommendationList do
-  use Surface.Component
+  use PanWeb, :html
   alias PanWeb.Endpoint
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-
-  prop(current_user_id, :integer, required: true)
-  prop(chapter, :map, required: true)
-  prop(episode, :map, required: true)
 
   def social(chapter, recommendation) do
     "👍 #{chapter.title}%0A💬 #{truncate_string(recommendation.comment, 220)}%0A🔊 "
@@ -21,8 +17,12 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
     chapter.title <> "%0A" <> truncate_string(recommendation.comment, 220)
   end
 
+  attr :current_user_id, :integer, required: true
+  attr :chapter, :map, required: true
+  attr :episode, :map, required: true
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div :if={@chapter.recommendations != []} class="my-4 col-span-3">
       <div class="float-right">
         <a href="https://blog.panoptikum.social/complaints"
@@ -31,21 +31,20 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
 
       <h3 class="text-xl"> Recommendations</h3>
       <ul class="my-4 bg-white">
-        {#for recommendation <- @chapter.recommendations}
-          <li id={"chapter-#{@chapter.id}"}>
-              <p :if={@current_user_id == recommendation.user_id} class="mt-4"><nobr>
-              <a href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
-                class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white" alt="tweet it">tweet</a>
-              <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@chapter, recommendation)}"},
-                class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
-              <a href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
-                class="bg-grass px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
-            </p>
+        <li :for={recommendation <- @chapter.recommendations}
+            id={"chapter-#{@chapter.id}"}>
+            <p :if={@current_user_id == recommendation.user_id} class="mt-4"><nobr>
+            <a href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
+              class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white" alt="tweet it">tweet</a>
+            <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@chapter, recommendation)}"},
+              class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
+            <a href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
+              class="bg-grass px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
+          </p>
 
-            <b>{recommendation.user.name}:</b> {recommendation.comment}
-            <span class="pull-right">{Calendar.strftime(recommendation.inserted_at, "%x %H:%M")}</span>
-          </li>
-        {/for}
+          <b>{recommendation.user.name}:</b> {recommendation.comment}
+          <span class="pull-right">{Calendar.strftime(recommendation.inserted_at, "%x %H:%M")}</span>
+        </li>
       </ul>
     </div>
     """

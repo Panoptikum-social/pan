@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Recommendation.Index do
-  use Surface.LiveView
+  use PanWeb, :live_view
   alias PanWeb.Recommendation
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton
@@ -21,45 +21,45 @@ defmodule PanWeb.Live.Recommendation.Index do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="p-4">
       <h1 class="text-3xl">Latest Recommendations</h1>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-           phx-update="append"">
-        {#for recommendation <- @latest_recommendations}
-          <div id={"recommendation-#{recommendation.id}"}
-              class="m-2 p-2 rounded shadow">
-            <div class="flex justify-between">
-              <span><UserButton for={recommendation.user} /> recommended</span>
-              <div>
-                <Icon name="calendar-heroicons-outline" />
-                {Calendar.strftime(recommendation.inserted_at, "%x")}
-              </div>
+      <div id="recommendations-grid"
+           class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+           phx-update="append">
+        <div :for={recommendation <- @latest_recommendations}
+             id={"recommendation-#{recommendation.id}"}
+             class="m-2 p-2 rounded shadow">
+          <div class="flex justify-between">
+            <span><UserButton.render for={recommendation.user} /> recommended</span>
+            <div>
+              <Icon.render name="calendar-heroicons-outline" />
+              {Calendar.strftime(recommendation.inserted_at, "%x")}
             </div>
-
-            <p class="leading-10 mb-4">
-              <PodcastButton :if={recommendation.podcast}
-                              for={recommendation.podcast} />
-
-              {#if recommendation.episode}
-                <PodcastButton for={recommendation.episode.podcast} /><br />
-                <EpisodeButton for={recommendation.episode} />
-              {/if}
-
-              {#if recommendation.chapter_id}
-                <PodcastButton for={recommendation.chapter.episode.podcast} /><br />
-                <EpisodeButton for={recommendation.chapter.episode} /><br />
-                <Icon name="indent-lineawesome-solid" /> {recommendation.chapter.title}
-              {/if}
-            </p>
-
-            <p>
-              <Icon name="thumb-up-heroicons-outline" />
-              <i>„{recommendation.comment}“</i>
-            </p>
           </div>
-        {/for}
+
+          <p class="leading-10 mb-4">
+            <PodcastButton.render :if={recommendation.podcast}
+                            for={recommendation.podcast} />
+
+            <span :if={recommendation.episode}>
+              <PodcastButton.render for={recommendation.episode.podcast} /><br />
+              <EpisodeButton.render for={recommendation.episode} />
+            </span>
+
+            <span :if={recommendation.chapter_id}>
+              <PodcastButton.render for={recommendation.chapter.episode.podcast} /><br />
+              <EpisodeButton.render for={recommendation.chapter.episode} /><br />
+              <Icon.render name="indent-lineawesome-solid" /> {recommendation.chapter.title}
+            </span>
+          </p>
+
+          <p>
+            <Icon.render name="thumb-up-heroicons-outline" />
+            <i>„{recommendation.comment}"</i>
+          </p>
+        </div>
       </div>
       <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     </div>

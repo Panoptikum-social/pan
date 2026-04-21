@@ -1,14 +1,11 @@
 defmodule PanWeb.Live.Episode.ClaimButton do
-  use Surface.LiveComponent
+  use PanWeb, :live_component
   alias PanWeb.Component.EventButton
   alias PanWeb.{Gig, Episode}
 
-  prop(current_user_id, :integer, required: true)
-  prop(persona, :map, required: true)
-  prop(episode_id, :integer, required: true)
-  prop(caller, :module, required: false)
-  prop(caller_id, :integer, required: false)
-  data(not_claimed_yet, :boolean, default: false)
+  def mount(socket) do
+    {:ok, assign(socket, not_claimed_yet: false)}
+  end
 
   def update(assigns, socket) do
     not_claimed_yet = Gig.find_self_proclaimed(assigns.persona.id, assigns.episode_id) |> is_nil
@@ -37,22 +34,27 @@ defmodule PanWeb.Live.Episode.ClaimButton do
     {:noreply, assign(socket, not_claimed_yet: !assigns.not_claimed_yet)}
   end
 
+  attr :current_user_id, :integer, required: true
+  attr :persona, :map, required: true
+  attr :episode_id, :integer, required: true
+  attr :caller, :atom, default: nil
+  attr :caller_id, :integer, default: nil
+
   def render(assigns) do
-    ~F"""
+    ~H"""
     <span>
-      {#if @not_claimed_yet}
-        <EventButton event="toggle-claim"
-                     class="text-lavender border-lavender bg-white hover:bg-gray-lightest"
-                     alt={"Claim contribution for #{@persona.pid}"}
-                     icon="user-add-heroicons-outline"
-                     title={@persona.name} />
-      {#else}
-        <EventButton event="toggle-claim"
-                     class="text-white border-lavender bg-lavender hover:bg-lavender-light"
-                     alt={"Withdraw contribution for #{@persona.pid}"}
-                     icon="user-remove-heroicons-outline"
-                     title={@persona.name} />
-      {/if}
+      <EventButton.render :if={@not_claimed_yet}
+                   event="toggle-claim"
+                   class="text-lavender border-lavender bg-white hover:bg-gray-lightest"
+                   alt={"Claim contribution for #{@persona.pid}"}
+                   icon="user-add-heroicons-outline"
+                   title={@persona.name} />
+      <EventButton.render :if={!@not_claimed_yet}
+                   event="toggle-claim"
+                   class="text-white border-lavender bg-lavender hover:bg-lavender-light"
+                   alt={"Withdraw contribution for #{@persona.pid}"}
+                   icon="user-remove-heroicons-outline"
+                   title={@persona.name} />
     </span>
     """
   end

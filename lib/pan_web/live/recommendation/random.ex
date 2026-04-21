@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Recommendation.Random do
-  use Surface.LiveView, container: {:div, class: "m-4"}
+  use PanWeb, :live_view
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.CategoryButton
@@ -25,16 +25,16 @@ defmodule PanWeb.Live.Recommendation.Random do
 
   def render(assigns) do
     if Map.has_key?(assigns, :podcast) do
-      ~F"""
+      ~H"""
       <h1 class="text-3xl">A Random Recommendation</h1>
       <p class="mt-4 leading-9">
-        Fortuna opted for the episode &nbsp; <EpisodeButton for={@episode} /> &nbsp;
-        from the podcast  &nbsp; <PodcastButton for={@podcast} /> &nbsp;
-        in the category  &nbsp;<CategoryButton for={@category} /> &nbsp;.
+        Fortuna opted for the episode &nbsp; <EpisodeButton.render for={@episode} /> &nbsp;
+        from the podcast  &nbsp; <PodcastButton.render for={@podcast} /> &nbsp;
+        in the category  &nbsp;<CategoryButton.render for={@category} /> &nbsp;.
       </p>
       """
     else
-      ~F"""
+      ~H"""
       <h1 class="text-3xl">A Random Recommendation</h1>
       <p class="mt-4 leading-9">
         loading ...
