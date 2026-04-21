@@ -41,6 +41,7 @@ defmodule PanWeb.Admin.DataTable do
     Enum.all?(Map.keys(selected_record), &(Map.get(record, &1) == Map.get(selected_record, &1)))
   end
 
+  attr :id, :string, default: nil
   attr :cols, :list, required: true
   attr :sort_by, :atom, default: :id
   attr :sort_order, :atom, default: :asc

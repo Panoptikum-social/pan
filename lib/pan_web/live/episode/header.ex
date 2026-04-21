@@ -1,6 +1,5 @@
 defmodule PanWeb.Live.Episode.Header do
   use PanWeb, :live_component
-  import PanWeb.CoreComponents
   alias PanWeb.{User, Episode}
   alias PanWeb.Component.Pill
   alias PanWeb.Component.LikeButton

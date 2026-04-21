@@ -5,7 +5,7 @@ defmodule PanWeb.Component.LinkButton do
   attr :id, :string, default: nil
   attr :title, :string, required: true
   attr :to, :string, required: true
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :large, :boolean, default: false
   attr :icon, :string, default: nil
   attr :truncate, :boolean, default: false

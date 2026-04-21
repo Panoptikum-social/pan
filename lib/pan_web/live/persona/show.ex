@@ -1,7 +1,6 @@
 defmodule PanWeb.Live.Persona.Show do
   use PanWeb, :live_view
   import PanWeb.Router.Helpers
-  import PanWeb.CoreComponents
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Endpoint, Persona, Delegation, Gig, Image, Engagement, User}
   alias PanWeb.Component.Panel
@@ -197,7 +196,7 @@ defmodule PanWeb.Live.Persona.Show do
               to give the owner a chance to get in contact with you.</p>
 
             <.link href={persona_frontend_path(Endpoint, :claim, @persona)}
-                   method={:post}
+                   method="post"
                    data-confirm="Are you sure?"
                    class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light">
               Claim

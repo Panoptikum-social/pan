@@ -1,6 +1,5 @@
 defmodule PanWeb.Admin.RecordCard do
   use PanWeb, :live_component
-  import PanWeb.CoreComponents
 
   import PanWeb.Admin.ColumnsFilter
   alias PanWeb.Admin.DataBlock

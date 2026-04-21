@@ -26,7 +26,7 @@ defmodule PanWeb.Live.Session.New do
         <.input field={f[:password]} label="Password" type="password"
                 class="w-full input" value="" />
 
-        <.button type="submit" label="Log in" class="btn btn-primary">Submit</.button>
+        <.button type="submit" class="btn btn-primary">Log in</.button>
       </.form>
 
       <ul class="list-disc mt-4 ml-8">

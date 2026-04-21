@@ -1,6 +1,5 @@
 defmodule PanWeb.Component.LikeButton do
   use PanWeb, :live_component
-  import PanWeb.CoreComponents
   alias PanWeb.{Like, Chapter, Episode, Podcast, Persona, Category, User}
   alias PanWeb.Component.Icon
 
@@ -40,6 +39,7 @@ defmodule PanWeb.Component.LikeButton do
     {:noreply, socket}
   end
 
+  attr :id, :string, default: nil
   attr :current_user_id, :integer, required: true
   attr :instance, :map, required: true
   attr :model, :atom, required: true

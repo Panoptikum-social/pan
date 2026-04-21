@@ -1,6 +1,5 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   use PanWeb, :live_component
-  import PanWeb.CoreComponents
   alias PanWeb.Live.Podcast.SubscribeButton
   alias PanWeb.{Endpoint, Podcast}
   import PanWeb.Router.Helpers

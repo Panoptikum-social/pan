@@ -1,6 +1,5 @@
 defmodule PanWeb.Component.FollowButton do
   use PanWeb, :live_component
-  import PanWeb.CoreComponents
   alias PanWeb.{Follow, User, Podcast, Category, Persona}
   alias PanWeb.Component.Icon
 

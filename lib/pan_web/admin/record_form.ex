@@ -177,7 +177,7 @@ defmodule PanWeb.Admin.RecordForm do
           </fieldset>
         </div>
 
-        <.button type="submit" label="Save" />
+        <.button type="submit">Save</.button>
 
       </.form>
     </div>
