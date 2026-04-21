@@ -18,6 +18,14 @@ Alpine.start();
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
+const PodloveSubscribeButton = {
+  mounted() {
+    this.pushEvent("read-config", {}, (config) => {
+      // TODO: initialize Podlove Subscribe Button widget with config
+    });
+  },
+};
+
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
@@ -26,6 +34,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
       }
     },
   },
+  hooks: { InfiniteScroll, Notification, PodloveSubscribeButton },
   params: { _csrf_token: csrfToken }
 });
 
