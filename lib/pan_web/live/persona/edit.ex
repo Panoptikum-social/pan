@@ -1,10 +1,10 @@
 defmodule PanWeb.Live.Persona.Edit do
-  use Surface.LiveView, container: {:div, class: "m-4"}
+  use PanWeb, :live_view
   on_mount PanWeb.Live.Auth
+  import PanWeb.CoreComponents
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
   alias PanWeb.Component.MarkdownField
-  use PanWeb, :html
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
@@ -13,25 +13,18 @@ defmodule PanWeb.Live.Persona.Edit do
 
     case manifestation do
       nil ->
-        render(socket.assigns, :not_allowed)
+        {:ok, assign(socket, not_allowed: true)}
 
       manifestation ->
         {:ok,
          assign(socket,
+           not_allowed: false,
            persona: manifestation.persona,
            current_user: User.get_by_id(assigns.current_user_id),
            changeset: Persona.changeset(manifestation.persona) |> Map.put(:action, :insert),
            page_title: "Edit Persona #{manifestation.persona.name}"
          )}
     end
-  end
-
-  def render(assigns, :not_allowed) do
-    ~F"""
-    <div class="m-4">
-      You are not allowed to change this persona.
-    </div>
-    """
   end
 
   defp pro(user), do: in_the_future?(user.pro_until)
@@ -73,71 +66,81 @@ defmodule PanWeb.Live.Persona.Edit do
     end
   end
 
+  def render(%{not_allowed: true} = assigns) do
+    ~H"""
+    <div class="m-4">
+      You are not allowed to change this persona.
+    </div>
+    """
+  end
+
   def render(assigns) do
-    ~F"""
-    <h1 class="text-3xl">Edit persona</h1>
+    ~H"""
+    <div class="m-4">
+      <h1 class="text-3xl">Edit persona</h1>
 
-    <.form for={@changeset}
-           :let={f}
-           class="p-4 mb-4 flex flex-col items-start space-y-4"
-           change="validate"
-           submit="save">
+      <.form for={@changeset}
+             :let={f}
+             class="p-4 mb-4 flex flex-col items-start space-y-4"
+             phx-change="validate"
+             phx-submit="save">
 
-      <.error :if={!@changeset.valid?}>
-        This persona is not valid. Please check the errors below!
-      </.error>
+        <.error :if={!@changeset.valid?}>
+          This persona is not valid. Please check the errors below!
+        </.error>
 
-      <.error :if={!pro(@current_user)}>
-        <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
-      </.error>
+        <.error :if={!pro(@current_user)}>
+          <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
+        </.error>
 
-      <.input field={f[:pid]}
-             class="input"
-             label="PanoptikumID"
-             disabled={not pro(@current_user)} />
+        <.input field={f[:pid]}
+               class="input"
+               label="PanoptikumID"
+               disabled={not pro(@current_user)} />
 
-      <.input field={f[:name]}
-              label="Name"
-              class="w-full input" />
+        <.input field={f[:name]}
+                label="Name"
+                class="w-full input" />
 
-      <.input field={f[:uri]}
-              label="Uri"
-              class="w-full input" />
+        <.input field={f[:uri]}
+                label="Uri"
+                class="w-full input" />
 
-      <.input type="email"
-              field={f[:email]}
-              label="Email"
-              class="w-full input" />
+        <.input type="email"
+                field={f[:email]}
+                label="Email"
+                class="w-full input" />
 
-      <.input field={f[:fediverse_address]}
-              label="Fediverse Address"
-              placeholder="@username@domain.social"
-              class="w-full input" />
-        <p class="text-gray">(support is experimental and data might not be imported currently)</p>
+        <.input field={f[:fediverse_address]}
+                label="Fediverse Address"
+                placeholder="@username@domain.social"
+                class="w-full input" />
+          <p class="text-gray">(support is experimental and data might not be imported currently)</p>
 
-      <.input field={f[:image_url]}
-              label="Image URL"
-              class="input w-full"
-              disabled={not pro(@current_user)} />
+        <.input field={f[:image_url]}
+                label="Image URL"
+                class="input w-full"
+                disabled={not pro(@current_user)} />
 
-      <.input field={f[:image_title]}
-              class="input w-full"
-              label="Image title"
-              disabled={not pro(@current_user)} />
+        <.input field={f[:image_title]}
+                class="input w-full"
+                label="Image title"
+                disabled={not pro(@current_user)} />
 
-      <.input field={f[:description_header]}
-              class="input w-full"
-              label="Description heading"
-              disabled={not pro(@current_user)} />
+        <.input field={f[:description_header]}
+                class="input w-full"
+                label="Description heading"
+                disabled={not pro(@current_user)} />
 
-      <MarkdownField.render myfield={f[:long_description]}
-                           disabled={not pro(@current_user)}/>
+        <MarkdownField.render myfield={f[:long_description]}
+                             disabled={not pro(@current_user)}/>
 
-      <.button type="submit" class="btn btn-info">Submit</.button>
-    </.form>
+        <.button type="submit" class="btn btn-info">Submit</.button>
+      </.form>
 
-    <a href={user_frontend_path(Endpoint, :my_profile)},
-        class="text-link hover:text-link-dark">Back</a>
+      <a href={user_frontend_path(Endpoint, :my_profile)}
+          class="text-link hover:text-link-dark">Back</a>
+    </div>
     """
   end
 end

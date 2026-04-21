@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Episode.Player do
-  use Surface.LiveView
+  use PanWeb, :live_view
   alias PanWeb.Episode
   alias PanWeb.Live.Episode.PodlovePlayer
 
@@ -11,11 +11,12 @@ defmodule PanWeb.Live.Episode.Player do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="h-full">
-      <PodlovePlayer id="webplayer"
-                     episode={@episode}
-                     class="mx-auto max-w-screen-lg" />
+      <.live_component module={PodlovePlayer}
+                       id="webplayer"
+                       episode={@episode}
+                       class="mx-auto max-w-5xl" />
     </div>
     """
   end

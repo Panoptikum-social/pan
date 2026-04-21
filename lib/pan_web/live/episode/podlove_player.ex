@@ -120,7 +120,8 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
 
   def render(assigns) do
     ~H"""
-    <div phx-hook="PodlovePlayer"
+    <div id={@id}
+         phx-hook="PodlovePlayer"
          class={["shrink-0", @class]}>
       <script src="/web-player/embed.js" async />
       <script src="/web-player/extensions/external-events.js" async />

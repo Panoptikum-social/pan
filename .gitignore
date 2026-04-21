@@ -36,9 +36,6 @@ npm-debug.log
 # Uploaded OPML-Files
 /uploads/opml/**
 
-# Surface: Ignore auto-generated hook files
-/assets/js/_hooks/
-
 # config secret files
 /config/dev.secret.exs
 /config/prod.secret.exs

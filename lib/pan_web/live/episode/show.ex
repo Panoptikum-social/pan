@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Episode.Show do
-  use Surface.LiveView
+  use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Episode, Recommendation}
   alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodlovePlayer}
@@ -32,45 +32,45 @@ defmodule PanWeb.Live.Episode.Show do
   end
 
   def render(assigns) do
-    ~F"""
+    ~H"""
     <div class="m-4">
-      {#if @episode.podcast.blocked}
+      <span :if={@episode.podcast.blocked}>
         This episode may not be published here, sorry.
-      {#else}
-        <Header id="header"
+      </span>
+      <div :if={!@episode.podcast.blocked}>
+        <.live_component module={Header}
+                id="header"
                 episode={@episode}
                 current_user_id={@current_user_id} />
-        <RecommendationList id="recommendation_list"
+        <.live_component module={RecommendationList}
+                            id="recommendation_list"
                             episode={@episode}
                             current_user_id={@current_user_id}
                             changeset={@changeset} />
 
         <div class="flex flex-col md:flex-row">
-          {#if major_mimetype(@episode) == "video"}
-            <video width="640" height="480" controls>
-              {#for enclosure <- @episode.enclosures}
-                <source src={enclosure.url}>
-              {/for}
-              Your browser does not support the video tag.
-            </video>
-          {#else}
-            <PodlovePlayer id="player"
+          <video :if={major_mimetype(@episode) == "video"} width="640" height="480" controls>
+            <source :for={enclosure <- @episode.enclosures} src={enclosure.url}>
+            Your browser does not support the video tag.
+          </video>
+          <.live_component :if={major_mimetype(@episode) != "video"}
+                           module={PodlovePlayer}
+                           id="player"
                            episode={@episode}
                            class="mr-4 lg:w-1/2" />
-          {/if}
 
           <div id="shownotes" class="lg:w-1/2 mt-4 lg:mt-0">
-            {#if @episode.shownotes}
+            <div :if={@episode.shownotes}>
               <h2 class="text-2xl">Shownotes</h2>
               <div class="my-2 prose max-w-none bg-white lg:p-2">{raw(@episode.shownotes)}</div>
-            {/if}
+            </div>
           </div>
         </div>
 
-        <ChapterList current_user_id={@current_user_id}
+        <ChapterList.render current_user_id={@current_user_id}
                      episode={@episode}
                      changeset={@changeset} />
-      {/if}
+      </div>
     </div>
     """
   end

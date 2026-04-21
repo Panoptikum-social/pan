@@ -7,7 +7,7 @@ defmodule Pan.MixProject do
       version: "1.0.0",
       elixir: "~> 1.18",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers() ++ [:surface],
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -56,11 +56,6 @@ defmodule Pan.MixProject do
       {:phoenix_view, "~> 2.0.2"},
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
-      # Component library
-      {:surface, "~> 0.12.1"},
-
-      # FIXME: migrate to Phoenix's .form
-      {:surface_form_helpers, "~> 0.2.0"},
       # telemetry_metrics
       {:telemetry_metrics, "~> 1.1.0"},
       # telemetry poller
