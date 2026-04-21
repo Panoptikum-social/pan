@@ -2,6 +2,13 @@ defmodule PanWeb.Admin.SortLink do
   use PanWeb, :html
   import PanWeb.ViewHelpers, only: [icon: 2]
 
+  defp cycle_sort_order(:asc_nulls_last), do: :asc_nulls_first
+  defp cycle_sort_order(:asc_nulls_first), do: :desc_nulls_last
+  defp cycle_sort_order(:asc), do: :desc_nulls_last
+  defp cycle_sort_order(:desc_nulls_last), do: :desc_nulls_first
+  defp cycle_sort_order(:desc_nulls_first), do: :asc_nulls_last
+  defp cycle_sort_order(:desc), do: :asc_nulls_last
+
   attr :sort_order, :atom, required: true
   attr :sort_by, :atom, required: true
   attr :field, :atom, required: true
@@ -10,13 +17,6 @@ defmodule PanWeb.Admin.SortLink do
   attr :target, :any, default: nil
 
   slot :inner_block, required: true
-
-  defp cycle_sort_order(:asc_nulls_last), do: :asc_nulls_first
-  defp cycle_sort_order(:asc_nulls_first), do: :desc_nulls_last
-  defp cycle_sort_order(:asc), do: :desc_nulls_last
-  defp cycle_sort_order(:desc_nulls_last), do: :desc_nulls_first
-  defp cycle_sort_order(:desc_nulls_first), do: :asc_nulls_last
-  defp cycle_sort_order(:desc), do: :asc_nulls_last
 
   def render(assigns) do
     ~H"""

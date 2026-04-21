@@ -29,7 +29,8 @@ defmodule PanWeb.Admin.IndexGrid do
        nr_of_pages: -1,
        nr_of_filtered: -1,
        color_class: "from-bittersweet-light via-bittersweet to-bittersweet-light",
-       class: ""
+       class: "",
+       path_helper: nil
      )}
   end
 

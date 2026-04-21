@@ -3,9 +3,6 @@ defmodule PanWeb.Admin.AssociationLink do
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
-  attr :for, :map, required: true
-  attr :record, :map, required: true
-
   def present(assigns) do
     link_title =
       assigns.for.field
@@ -62,6 +59,9 @@ defmodule PanWeb.Admin.AssociationLink do
     </.link>
     """
   end
+
+  attr :for, :map, required: true
+  attr :record, :map, required: true
 
   def render(assigns) do
     ~H"""

@@ -2,15 +2,6 @@ defmodule PanWeb.Admin.Pagination do
   use PanWeb, :html
   alias PanWeb.Admin.PaginationLink
 
-  attr :page, :integer, required: true
-  attr :per_page, :integer, required: true
-  attr :nr_of_pages, :integer, required: true
-  attr :nr_of_unfiltered, :integer, required: true
-  attr :nr_of_filtered, :integer, required: true
-  attr :class, :string, default: nil
-  attr :click, :string, required: true
-  attr :target, :any, default: nil
-
   def format(number) do
     number
     |> Integer.to_string()
@@ -20,6 +11,15 @@ defmodule PanWeb.Admin.Pagination do
     |> Enum.join(".")
     |> String.reverse()
   end
+
+  attr :page, :integer, required: true
+  attr :per_page, :integer, required: true
+  attr :nr_of_pages, :integer, required: true
+  attr :nr_of_unfiltered, :integer, required: true
+  attr :nr_of_filtered, :integer, required: true
+  attr :class, :string, default: nil
+  attr :click, :string, required: true
+  attr :target, :any, default: nil
 
   def render(assigns) do
     ~H"""
