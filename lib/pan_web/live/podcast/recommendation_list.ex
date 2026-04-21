@@ -6,17 +6,19 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
 
   def mount(socket) do
-    {:ok, assign(socket, recommendations_count: 0) |> stream(:recommendations, [])}
+    {:ok, assign(socket, recommendations_count: 0, page: 1, per_page: 10) |> stream(:recommendations, [])}
   end
 
   def update(assigns, socket) do
-    recommendations =
-      Recommendation.get_by_podcast_id(assigns.podcast.id, assigns.page, assigns.per_page)
+    socket = assign(socket, assigns)
 
-    recommendations_count = Recommendation.count_by_podcast_id(assigns.podcast.id)
+    recommendations =
+      Recommendation.get_by_podcast_id(socket.assigns.podcast.id, socket.assigns.page, socket.assigns.per_page)
+
+    recommendations_count = Recommendation.count_by_podcast_id(socket.assigns.podcast.id)
 
     socket =
-      assign(socket, assigns)
+      socket
       |> assign(recommendations_count: recommendations_count)
       |> stream(:recommendations, recommendations)
 
@@ -51,12 +53,12 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   def render(assigns) do
     ~H"""
     <div class="my-4">
-      <div :if={@recommendations != []} class="float-right">
+      <div :if={@recommendations_count > 0} class="float-right">
         <a href="https://blog.panoptikum.social/complaints"
           class="text-link hover-text-link-dark">Complain</a>
       </div>
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>
-      <div :if={@recommendations != []}>
+      <div :if={@recommendations_count > 0}>
         <table class="border border-separate border-gray-lighter mt-4 w-full">
           <thead>
             <tr>

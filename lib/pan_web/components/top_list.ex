@@ -3,10 +3,6 @@ defmodule PanWeb.Component.TopList do
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.Icon
 
-  attr :items, :list, required: true
-  attr :icon, :string, default: "heart-heroicons-outline"
-  attr :purpose, :string, default: nil
-
   def prepare_for_toplist(items) do
     items
     |> Enum.group_by(&select_count/1, &id_title_tuple/1)
@@ -37,6 +33,10 @@ defmodule PanWeb.Component.TopList do
 
   # end of list, end loop and return acc
   defp add_rank([], {_rank, acc}), do: acc
+
+  attr :items, :list, required: true
+  attr :icon, :string, default: "heart-heroicons-outline"
+  attr :purpose, :string, default: nil
 
   def render(assigns) do
     ~H"""

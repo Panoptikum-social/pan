@@ -1,17 +1,6 @@
 defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
-  attr :heading, :string, default: nil
-  attr :purpose, :string, default: "default"
-  attr :heading_right, :string, default: nil
-  attr :target, :string, default: nil
-  attr :class, :string, default: ""
-  attr :id, :string, default: nil
-  attr :content_class, :string, default: ""
-
-  slot :inner_block
-  slot :panel_heading
-
   def heading_color_classes(purpose) do
     case purpose do
       "info"           -> "bg-info text-white"
@@ -29,6 +18,17 @@ defmodule PanWeb.Component.Panel do
       _                -> "bg-white"
     end
   end
+
+  attr :heading, :string, default: nil
+  attr :purpose, :string, default: "default"
+  attr :heading_right, :string, default: nil
+  attr :target, :string, default: nil
+  attr :class, :string, default: ""
+  attr :id, :string, default: nil
+  attr :content_class, :string, default: ""
+
+  slot :inner_block
+  slot :panel_heading
 
   def render(assigns) do
     ~H"""
