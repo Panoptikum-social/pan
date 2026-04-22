@@ -1,23 +1,22 @@
 defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
-  def heading_color_classes(purpose) do
-    case purpose do
-      "info"           -> "bg-info text-white"
-      "category"       -> "bg-category text-white"
-      "podcast"        -> "bg-podcast text-white"
-      "persona"        -> "bg-warning text-white"
-      "popular"        -> "bg-aqua text-white"
-      "like"           -> "bg-grapefruit text-white"
-      "user"           -> "bg-lavender text-white"
-      "episode"        -> "bg-episode text-white"
-      "engagement"     -> "bg-bittersweet text-white"
-      "gig"            -> "bg-mint text-white"
-      "recommendation" -> "bg-recommendation text-white"
-      "message"        -> "bg-success text-white"
-      _                -> "bg-white"
-    end
-  end
+  @heading_colors %{
+    "info"           => "bg-info text-white",
+    "category"       => "bg-category text-white",
+    "podcast"        => "bg-podcast text-white",
+    "persona"        => "bg-warning text-white",
+    "popular"        => "bg-aqua text-white",
+    "like"           => "bg-grapefruit text-white",
+    "user"           => "bg-lavender text-white",
+    "episode"        => "bg-episode text-white",
+    "engagement"     => "bg-bittersweet text-white",
+    "gig"            => "bg-mint text-white",
+    "recommendation" => "bg-recommendation text-white",
+    "message"        => "bg-success text-white"
+  }
+
+  def heading_color_classes(purpose), do: Map.get(@heading_colors, purpose, "bg-white")
 
   attr :heading, :string, default: nil
   attr :purpose, :string, default: "default"

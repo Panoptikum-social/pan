@@ -3,6 +3,70 @@ defmodule Pan.Parser.Helpers do
   alias Pan.Repo
   require Logger
 
+  @date_formats [
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}",
+    "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}",
+    "{ISO:Extended}",
+    "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}",
+    "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}",
+    "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}",
+    "{WDshort} {D} {Mshort} {YYYY} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY}",
+    "{WDshort} {D} {Mshort} {YYYY} GMT",
+    "{WDshort} {Mshort} {D} {ISOtime} {Z}",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Z})",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime}",
+    "{WDshort} {Mshort} {D} {YYYY} {Z}",
+    "{WDshort} {Mshort} {D} {YYYY}",
+    "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}",
+    "{WDshort} {D}.{M}.{YYYY} {ISOtime} {Z}",
+    "{Mshort} {D} {YYYY} {ISOtime} {Zname}",
+    "{Mshort} {D} {YYYY} {ISOtime} {Z}",
+    "{Mshort} {D} {YYYY} {ISOtime}",
+    "{Mshort} {D} {YYYY}",
+    "{Mshort} {YYYY}",
+    "{0D} {Mshort} {YYYY} {ISOtime} {Z}",
+    "{0M}/{0D}/{YYYY} - {h24}:{m}",
+    "{0M}/{0D}/{YYYY} {ISOtime} {Zname}",
+    "{0M}/{0D}/{YYYY} {Zname}",
+    "{0M}/{0D}/{YYYY}",
+    "{M}/{0D}/{YYYY}",
+    "{YYYY}/{M}/{0D}",
+    "{0D}/{0M}/{YYYY} {ISOtime}",
+    "{0D}-{0M}-{YYYY}",
+    "{0D}.{0M}.{YYYY}",
+    "{D} {Mshort} {YYYY} {ISOtime} {Zname}",
+    "{D} {Mshort} {YYYY} {ISOtime} {Z}",
+    "{D} {Mshort} {YYYY} {ISOtime}",
+    "{D} {Mshort} {YYYY}",
+    "{YYYY}-{0M}-{0D} {ISOtime} {Z}",
+    "{YYYY}-{0M}-{0D} {ISOtime} {Zname}",
+    "{YYYY}-{0M}-{0D} {ISOtime}",
+    "{YYYY}-{0M}-{0D}",
+    "{YYYY}-{0M}-{0D}T{ISOtime}",
+    "{RFC3339z}",
+    "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}",
+    "{YYYY}/{0M}/{0D} {ISOtime}"
+  ]
+
   def boolify(explicit) do
     case explicit do
       "yes" -> true
@@ -10,74 +74,10 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
+  # Formatters reference: https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
   def to_naive_datetime(feed_date) do
     feed_date = initial_cleanup(feed_date)
-
-    # Formatters reference:
-    # https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
-    datetime =
-      try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}") ||
-        try_format(feed_date, "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}") ||
-        try_format(feed_date, "{ISO:Extended}") ||
-        try_format(feed_date, "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}") ||
-        try_format(feed_date, "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} {Z}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY}") ||
-        try_format(feed_date, "{WDshort} {D} {Mshort} {YYYY} GMT") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {ISOtime} {Z}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Z})") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {ISOtime}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY} {Z}") ||
-        try_format(feed_date, "{WDshort} {Mshort} {D} {YYYY}") ||
-        try_format(feed_date, "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}") ||
-        try_format(feed_date, "{WDshort} {D}.{M}.{YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{Mshort} {D} {YYYY} {ISOtime}") ||
-        try_format(feed_date, "{Mshort} {D} {YYYY}") ||
-        try_format(feed_date, "{Mshort} {YYYY}") ||
-        try_format(feed_date, "{0D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{0M}/{0D}/{YYYY} - {h24}:{m}") ||
-        try_format(feed_date, "{0M}/{0D}/{YYYY} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{0M}/{0D}/{YYYY} {Zname}") ||
-        try_format(feed_date, "{0M}/{0D}/{YYYY}") ||
-        try_format(feed_date, "{M}/{0D}/{YYYY}") ||
-        try_format(feed_date, "{YYYY}/{M}/{0D}") ||
-        try_format(feed_date, "{0D}/{0M}/{YYYY} {ISOtime}") ||
-        try_format(feed_date, "{0D}-{0M}-{YYYY}") ||
-        try_format(feed_date, "{0D}.{0M}.{YYYY}") ||
-        try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime} {Z}") ||
-        try_format(feed_date, "{D} {Mshort} {YYYY} {ISOtime}") ||
-        try_format(feed_date, "{D} {Mshort} {YYYY}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Z}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime} {Zname}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D} {ISOtime}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime}") ||
-        try_format(feed_date, "{RFC3339z}") ||
-        try_format(feed_date, "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}") ||
-        try_format(feed_date, "{YYYY}/{0M}/{0D} {ISOtime}")
-
+    datetime = Enum.find_value(@date_formats, &try_format(feed_date, &1))
     ensure_naive_in_seconds(datetime, feed_date)
   end
 

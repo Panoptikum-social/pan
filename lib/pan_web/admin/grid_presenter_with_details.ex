@@ -2,25 +2,13 @@ defmodule PanWeb.Admin.GridPresenterWithDetails do
   use PanWeb, :html
   require Integer
 
-  def present(presenter, record, field, format) do
-    if presenter do
-      presenter.(record)
-    else
-      data = Map.get(record, field)
+  def present(presenter, record, _field, _format) when is_function(presenter), do: presenter.(record)
+  def present(_presenter, record, field, :boolean), do: format_boolean(Map.get(record, field))
+  def present(_presenter, record, field, _format), do: Map.get(record, field)
 
-      case format do
-        :boolean ->
-          case data do
-            true -> "✔️"
-            false -> "❌"
-            _ -> "{}"
-          end
-
-        _ ->
-          data
-      end
-    end
-  end
+  defp format_boolean(true), do: "✔️"
+  defp format_boolean(false), do: "❌"
+  defp format_boolean(_), do: "{}"
 
   attr :presenter, :any, default: nil
   attr :model, :any, required: true
