@@ -26,5 +26,7 @@ export const InfiniteScroll = {
   },
   updated() {
     this.pending = this.page();
+    this.observer.unobserve(this.el);
+    this.observer.observe(this.el);
   },
 };

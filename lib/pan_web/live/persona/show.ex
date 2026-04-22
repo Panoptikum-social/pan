@@ -69,7 +69,9 @@ defmodule PanWeb.Live.Persona.Show do
       |> Enum.sort_by(&Date.to_erl(&1.publishing_date), :desc)
       |> Enum.map(fn episode -> %{id: episode.id, episode: episode, gigs: grouped[episode]} end)
 
-    stream(socket, :gig_rows, rows)
+    socket
+    |> stream(:gig_rows, rows, reset: false)
+    |> assign(has_gigs: rows != [] || Map.get(socket.assigns, :has_gigs, false))
   end
 
   defp markdown(content) do
@@ -244,7 +246,7 @@ defmodule PanWeb.Live.Persona.Show do
       </table>
     </Panel.render>
 
-    <Panel.render :if={@grouped_gigs != []}
+    <Panel.render :if={@has_gigs}
            heading={"Gigs, #{@persona.name} has been engaged in"}
            purpose="gig"
            class="m-4">
@@ -270,7 +272,7 @@ defmodule PanWeb.Live.Persona.Show do
           </tr>
         </tbody>
       </table>
-      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-gigs-page={@gigs_page}></div>
+      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
     </Panel.render>
     """
   end

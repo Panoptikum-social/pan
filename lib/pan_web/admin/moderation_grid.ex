@@ -9,6 +9,11 @@ defmodule PanWeb.Admin.ModerationGrid do
   def mount(socket) do
     {:ok,
      assign(socket,
+       records: [],
+       per_page: 20,
+       path_helper: nil,
+       class: nil,
+       color_class: "from-bittersweet-light via-bittersweet to-bittersweet-light",
        selected_records: [],
        search_options: %{},
        page: 1,

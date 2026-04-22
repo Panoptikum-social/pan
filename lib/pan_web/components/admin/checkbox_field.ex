@@ -16,7 +16,7 @@ defmodule PanWeb.Components.Admin.CheckBoxField do
       {@label}
       <.error :for={msg <- @errors}>{msg}</.error>
     <% else %>
-      <.input type="checkbox" name={@name} label={@label} value={@value} />
+      <.input type="checkbox" name={@name} label={Phoenix.Naming.humanize(@label)} value={@value} />
     <% end %>
     """
   end

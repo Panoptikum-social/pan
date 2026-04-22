@@ -9,9 +9,9 @@ defmodule PanWeb.Components.Admin.TextField do
   def render(assigns) do
     ~H"""
     <%= if @redact do %>
-      <.input value="** redacted **" readonly />
+      <.input label={Phoenix.Naming.humanize(@name)} value="** redacted **" readonly class="w-full input input-sm" />
     <% else %>
-      <.input name={@name} value={@value} />
+      <.input label={Phoenix.Naming.humanize(@name)} name={@name} value={@value} class="w-full input input-sm" />
     <% end %>
     """
   end

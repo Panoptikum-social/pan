@@ -25,7 +25,8 @@ defmodule PanWeb.Live.Episode.ChapterList do
                class="text-link hover:text-link-dark">{chapter.start}</a>
             {chapter.title}
             <br :if={@current_user_id} />
-            <LikeButton.render :if={@current_user_id}
+            <.live_component :if={@current_user_id}
+                        module={LikeButton}
                         id={"chapter_#{chapter.id}_like_button"}
                         current_user_id={@current_user_id}
                         model={PanWeb.Chapter}

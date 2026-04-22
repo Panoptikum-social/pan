@@ -8,14 +8,15 @@ defmodule PanWeb.Component.Moderation.NumberField do
   def render(assigns) do
     ~H"""
     <%= if @redact do %>
-      <.input value="** redacted **" readonly />
+      <.input label={Phoenix.Naming.humanize(@name)} value="** redacted **" readonly />
     <% else %>
       <.input
         type="number"
+        label={Phoenix.Naming.humanize(@name)}
         name={@name}
         value={@value}
         readonly={@name |> Atom.to_string() |> String.ends_with?("id")}
-        class={"#{if @name |> Atom.to_string() |> String.ends_with?("id"), do: "cursor-not-allowed" } w-full input"}
+        class={"#{if @name |> Atom.to_string() |> String.ends_with?("id"), do: "cursor-not-allowed" } w-full input input-sm"}
       />
     <% end %>
     """

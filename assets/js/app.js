@@ -11,6 +11,8 @@ import topbar from "topbar";
 import { LiveSocket } from "phoenix_live_view";
 import { InfiniteScroll } from "./infinite_scroll";
 import { Notification } from "./notification";
+import { PodlovePlayer } from "./podlove_player";
+import { MarkdownField } from "./markdown_field";
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -20,8 +22,19 @@ let csrfToken = document
   .getAttribute("content");
 const PodloveSubscribeButton = {
   mounted() {
-    this.pushEvent("read-config", {}, (config) => {
-      // TODO: initialize Podlove Subscribe Button widget with config
+    this.pushEventTo(this.el, "read-config", {}, (resp, ref) => {
+      window['podcastData'] = resp;
+      const scripttag = document.createElement('script');
+      scripttag.async = true;
+      scripttag.src = '/subscribe-button/javascripts/app.js';
+      scripttag.setAttribute('class', 'podlove-subscribe-button');
+      scripttag.setAttribute('data-language', 'en');
+      scripttag.setAttribute('data-size', 'medium');
+      scripttag.setAttribute('data-json-data', 'podcastData');
+      scripttag.setAttribute('data-color', '#ED5565');
+      scripttag.setAttribute('data-format', 'rectangle');
+      scripttag.setAttribute('data-style', 'filled');
+      this.el.appendChild(scripttag);
     });
   },
 };
@@ -34,7 +47,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
       }
     },
   },
-  hooks: { InfiniteScroll, Notification, PodloveSubscribeButton },
+  hooks: { InfiniteScroll, Notification, PodloveSubscribeButton, PodlovePlayer, MarkdownField },
   params: { _csrf_token: csrfToken }
 });
 

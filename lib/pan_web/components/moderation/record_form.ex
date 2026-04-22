@@ -137,7 +137,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
                               value={Ecto.Changeset.get_field(@changeset, column.field)}
                               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
           </fieldset>
-          <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
+          <fieldset class="flex-1 flex flex-col border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
             <TextAreaField.render :for={column <- ColumnsFilter.text_columns(assigns)}
                                   name={column.field}
