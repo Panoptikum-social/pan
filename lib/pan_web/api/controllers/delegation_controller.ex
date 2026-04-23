@@ -49,36 +49,7 @@ defmodule PanWeb.Api.DelegationController do
         |> Repo.all()
 
       if id in persona_ids and delegate_id in persona_ids do
-        case Repo.get_by(Delegation,
-               persona_id: id,
-               delegate_id: delegate_id
-             ) do
-          nil ->
-            {:ok, delegation} =
-              %Delegation{persona_id: id, delegate_id: delegate_id}
-              |> Repo.insert()
-
-            delegation =
-              delegation
-              |> Repo.preload([:persona, :delegate])
-              |> mark_if_deleted()
-
-            render(conn, "show.json-api",
-              data: delegation,
-              opts: [include: "persona,delegate"]
-            )
-
-          delegation ->
-            delegation =
-              Repo.delete!(delegation)
-              |> Repo.preload([:persona, :delegate])
-              |> mark_if_deleted()
-
-            render(conn, "show.json-api",
-              data: delegation,
-              opts: [include: "persona,delegate"]
-            )
-        end
+        toggle_delegation(conn, id, delegate_id)
       else
         Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
       end
@@ -92,6 +63,36 @@ defmodule PanWeb.Api.DelegationController do
           412,
           "Precondition Failed",
           "delegations can only happen between different personas"
+        )
+    end
+  end
+
+  defp toggle_delegation(conn, id, delegate_id) do
+    case Repo.get_by(Delegation, persona_id: id, delegate_id: delegate_id) do
+      nil ->
+        {:ok, delegation} =
+          %Delegation{persona_id: id, delegate_id: delegate_id}
+          |> Repo.insert()
+
+        delegation =
+          delegation
+          |> Repo.preload([:persona, :delegate])
+          |> mark_if_deleted()
+
+        render(conn, "show.json-api",
+          data: delegation,
+          opts: [include: "persona,delegate"]
+        )
+
+      delegation ->
+        delegation =
+          Repo.delete!(delegation)
+          |> Repo.preload([:persona, :delegate])
+          |> mark_if_deleted()
+
+        render(conn, "show.json-api",
+          data: delegation,
+          opts: [include: "persona,delegate"]
         )
     end
   end

@@ -92,19 +92,17 @@ defmodule Pan.Parser.Episode do
   end
 
   def insert_contributors(episodes_map, podcast) do
-    for {_, episode_map} <- episodes_map do
-      if episode_map[:enclosures] do
-        first_enclosure = unwrap_first_enclosure(episode_map.enclosures)
-        plain_episode_map = clean_episode(episode_map, first_enclosure.url)
+    for {_, episode_map} <- episodes_map, episode_map[:enclosures] do
+      first_enclosure = unwrap_first_enclosure(episode_map.enclosures)
+      plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
-        case get(plain_episode_map, podcast.id) do
-          {:exists, episode} ->
-            Contributor.persist_many(episode_map.contributors, episode)
-            Logger.info("=== Updating contributors for episode: #{episode.title} ===")
+      case get(plain_episode_map, podcast.id) do
+        {:exists, episode} ->
+          Contributor.persist_many(episode_map.contributors, episode)
+          Logger.info("=== Updating contributors for episode: #{episode.title} ===")
 
-          {:error, "not_found"} ->
-            true
-        end
+        {:error, "not_found"} ->
+          true
       end
     end
   end
