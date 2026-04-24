@@ -7,13 +7,13 @@
 
   <div class="flex flex-col">
     <%= label(f, :url) %>
-    <%= text_input(f, :url) %>
+    <%= text_input(f, :url, class: "input") %>
     <%= error_tag(f, :url) %>
   </div>
 
   <div class="flex flex-col">
     <%= label(f, :feed_generator) %>
-    <%= text_input(f, :feed_generator) %>
+    <%= text_input(f, :feed_generator, class: "input") %>
     <%= error_tag(f, :feed_generator) %>
   </div>
 
@@ -26,7 +26,7 @@
 
   <div class="flex flex-col">
     <%= label(f, :user_id) %>
-    <%= text_input(f, :user_id) %>
+    <%= text_input(f, :user_id, class: "input") %>
     <%= error_tag(f, :user_id) %>
   </div>
 

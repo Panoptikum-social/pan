@@ -75,7 +75,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
     <div class="m-4">
       <div class="flex justify-between max-w-7xl">
         <h1 class="text-3xl">Listing opmls</h1>
-        <input type="text" placeholder="Filter" phx-keyup="filter" value={@filter_by} />
+        <input type="text" placeholder="Filter" phx-keyup="filter" value={@filter_by} class="input" />
       </div>
 
       <table cellpadding="4" class="my-4">

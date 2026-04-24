@@ -15,19 +15,19 @@
 
     <div class="flex flex-col">
       <%= label(f, :name) %>
-      <%= text_input(f, :name, placeholder: "Name") %>
+      <%= text_input(f, :name, placeholder: "Name", class: "input") %>
       <%= error_tag(f, :name) %>
     </div>
 
     <div class="flex flex-col">
       <%= label(f, :username) %>
-      <%= text_input(f, :username, placeholder: "Username") %>
+      <%= text_input(f, :username, placeholder: "Username", class: "input") %>
       <%= error_tag(f, :username) %>
     </div>
 
     <div class="flex flex-col">
       <%= label(f, :email) %>
-      <%= email_input(f, :email, placeholder: "Email") %>
+      <%= email_input(f, :email, placeholder: "Email", class: "input") %>
       <%= error_tag(f, :email) %>
     </div>
 
@@ -61,7 +61,7 @@
 
     <div class="flex flex-col">
       <%= label(f, "Billing address (will be used on bill and in envelope window)") %>
-      <%= textarea(f, :billing_address, rows: 7) %>
+      <%= textarea(f, :billing_address, rows: 7, class: "textarea") %>
       <%= error_tag(f, :billing_address) %>
     </div>
 
