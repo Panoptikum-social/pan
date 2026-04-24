@@ -2,7 +2,7 @@ defmodule PanWeb.Admin.DataTable do
   use PanWeb, :html
 
   alias PanWeb.Admin.SortLink
-  alias PanWeb.Admin.GridPresenter
+  alias PanWeb.Admin.GridPresenterWithDetails
   require Integer
 
   defp width(:id), do: "6rem"
@@ -132,7 +132,7 @@ defmodule PanWeb.Admin.DataTable do
                  phx-value-two={Map.get(record, hd(tl(@primary_key)))} />
         </div>
 
-        <GridPresenter.render :for={column <- @cols}
+        <GridPresenterWithDetails.render :for={column <- @cols}
                               presenter={column[:presenter]}
                               record={record}
                               field={column.field}
