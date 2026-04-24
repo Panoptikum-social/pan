@@ -13,7 +13,7 @@ defmodule PanWeb.Live.Admin.Sandbox do
     ~H"""
     <div class="m-4"
          x-data="{isShow: false}">
-      <button class="bg-gray-light rounded hover:bg-gray-lighter px-6 py-1"
+      <button class="btn"
               x-on:click="isShow = true; setTimeout(() => isShow = false, 5000)">Trigger</button>
       <div x-show="isShow"
            class="absolute top-0 right-4 m-3 w-2/3 md:w-1/3">

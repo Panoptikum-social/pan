@@ -31,7 +31,7 @@ defmodule PanWeb.Live.Home do
                 class="text-link hover:text-link-dark"> Privacy Page</.link>
           for details.
           <button @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
-             class="inline border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+             class="btn btn-sm">
             I agree
           </button>
         </div>

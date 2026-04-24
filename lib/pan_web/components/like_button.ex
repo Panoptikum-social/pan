@@ -50,13 +50,13 @@ defmodule PanWeb.Component.LikeButton do
       <%= if @liking do %>
         <button phx-click="toggle-like"
                 phx-target={@myself}
-                class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
+                class="btn btn-success btn-sm my-2">
           {@likes_count} <Icon.render name="heart-heroicons-solid" /> Unlike
         </button>
       <% else %>
         <button phx-click="toggle-like"
                 phx-target={@myself}
-                class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
+                class="btn btn-error btn-sm my-2">
           {@likes_count} <Icon.render name="heart-heroicons-outline" /> Like
         </button>
       <% end %>

@@ -1,7 +1,7 @@
-<table cellpadding="4">
+<table class="table table-zebra table-xs w-auto">
   <tbody>
     <%= for {rank, count, podcasts} <- prepare_for_toplist(@podcasts) do %>
-      <tr class="odd:bg-white">
+      <tr>
         <th scope="row"><%= rank %>.</th>
         <td class="flex flex-wrap">
           <%= for {id, title} <- podcasts do %>

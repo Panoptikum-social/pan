@@ -88,11 +88,11 @@ defmodule PanWeb.Live.Category.Show do
         <p class="mt-4 leading-8">
           <LinkButton.render to={category_frontend_path(@socket, :latest_episodes, @category)}
                       title="Latest episodes"
-                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
+                      class="btn-primary" />&nbsp;
           gives you a timeline view starting with the most current episode within this category.<br/>
           <LinkButton.render to={category_frontend_path(@socket, :categorized, @category)}
                       title="Categorized"
-                      class="bg-mint text-white hover:bg-mint-light" />&nbsp;
+                      class="btn-primary" />&nbsp;
           sorts the podcasts within this categories by the other categories, they are listed in.<br/>
           Further more we display a info card with the most relevant information on this podcast.
         </p>

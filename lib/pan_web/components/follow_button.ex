@@ -47,13 +47,13 @@ defmodule PanWeb.Component.FollowButton do
       <%= if @following do %>
         <button phx-click="toggle-follow"
                 phx-target={@myself}
-                class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
+                class="btn btn-success btn-sm my-2">
           {@followers_count} <Icon.render name="chat-heroicons-solid" /> Unfollow
         </button>
       <% else %>
         <button phx-click="toggle-follow"
                 phx-target={@myself}
-                class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
+                class="btn btn-error btn-sm my-2">
           {@followers_count} <Icon.render name="chat-heroicons-outline" /> Follow
         </button>
       <% end %>

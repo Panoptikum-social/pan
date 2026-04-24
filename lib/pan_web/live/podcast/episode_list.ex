@@ -37,7 +37,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
               <nobr>
                 <PersonaButton.render for={persona}/>
                 <%= for gig <- gigs do %>
-                  <span class="bg-lavender-light rounded text-white p-1 text-sm" id={"gig-#{gig.id}"}>{gig.role}</span>
+                  <span class="badge bg-lavender-light text-white" id={"gig-#{gig.id}"}>{gig.role}</span>
                   <span :if={gig.self_proclaimed}
                         class="relative"
                         x-data="{ detailsOpen: false }">
@@ -52,7 +52,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                       <p class="mt-4">This contribution is claimed by a user and not source of the podcast feed.</p>
                       <p>
                         <button @click="detailsOpen = false"
-                                class="bg-info hover:bg-info-light text-white px-2 rounded mt-4"
+                                class="btn btn-info btn-sm mt-4"
                                 x-ref="detailsCloseButton">
                           Close
                         </button>

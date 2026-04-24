@@ -3,72 +3,50 @@
     10 longest deprecated Podcasts
   </h1>
 
-  <table cellpadding="4" class="my-4 border border-gray-light rounded-lg">
+  <table class="table table-zebra table-xs my-4 w-auto">
     <thead>
       <tr>
-        <th class="border border-gray-light">
-          ID
-        </th>
-        <th class="border border-gray-light">
-          Title
-        </th>
-        <th class="border border-gray-light">
-          Last build date
-        </th>
-        <th class="border border-gray-light">
-          # Episodes
-        </th>
-        <th class="border border-gray-light">
-          Last Episode
-        </th>
-        <th class="border border-gray-light">
-          Last Episode Url
-        </th>
-        <th class="border border-gray-light">
-          Status Code
-        </th>
-        <th class="border border-gray-light">
-          Actions
-        </th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Last build date</th>
+        <th># Episodes</th>
+        <th>Last Episode</th>
+        <th>Last Episode Url</th>
+        <th>Status Code</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <%= for deprecated_podcast <- @deprecated_podcasts do %>
         <tr>
-          <td class="border border-gray-light"><%= deprecated_podcast.id %></td>
-          <td class="border border-gray-light"><%= deprecated_podcast.title %></td>
-          <td class="border border-gray-light">
-            <%= deprecated_podcast.last_build_date %>
-          </td>
-          <td class="border border-gray-light">
-            <%= deprecated_podcast.episodes_count %>
-          </td>
-          <td class="border border-gray-light">
+          <td><%= deprecated_podcast.id %></td>
+          <td><%= deprecated_podcast.title %></td>
+          <td><%= deprecated_podcast.last_build_date %></td>
+          <td><%= deprecated_podcast.episodes_count %></td>
+          <td>
             <%= if Enum.at(deprecated_podcast.episodes, 0) do %>
               <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
                 to:
                   episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id),
                 class:
-                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+                  "btn btn-info btn-sm"
               ) %>
             <% end %>
           </td>
-          <td class="border border-gray-light">
+          <td>
             <%= if Enum.at(deprecated_podcast.episodes, 0) do %>
               <%= Enum.at(deprecated_podcast.episodes, 0).url %>
             <% end %>
           </td>
-          <td class="border border-gray-light">
-            <%= deprecated_podcast.status_code %>
-          </td>
-          <td class="border border-gray-light">
+          <td><%= deprecated_podcast.status_code %></td>
+          <td>
             <%= if deprecated_podcast.status_code not in [200, "unretired", "deleted"] do %>
               <%= link("Delete",
                 to: podcast_path(@conn, :delete, deprecated_podcast),
                 method: :delete,
                 target: "_blank",
                 class:
-                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded"
+                  "btn btn-error btn-sm"
               ) %>
             <% end %>
             <%= if deprecated_podcast.status_code == 200 do %>
@@ -76,7 +54,7 @@
                 to: podcast_path(@conn, :unretire, deprecated_podcast),
                 target: "_blank",
                 class:
-                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded"
+                  "btn btn-info btn-sm"
               ) %>
             <% end %>
           </td>

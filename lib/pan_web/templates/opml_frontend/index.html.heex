@@ -4,42 +4,28 @@
   </h1>
 
   <%= if @opmls != [] do %>
-    <table cellpadding="4" class="my-4 border border-gray-light rounded-lg">
+    <table class="table table-zebra table-xs my-4 w-auto">
       <thead>
         <tr>
-          <th class="border border-gray-light">
-            Content type
-          </th>
-          <th class="border border-gray-light">
-            Filename
-          </th>
-          <th class="border border-gray-light">
-            Upload date
-          </th>
-          <th class="border border-gray-light">
-            Actions
-          </th>
+          <th>Content type</th>
+          <th>Filename</th>
+          <th>Upload date</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <%= for opml <- @opmls do %>
           <tr>
-            <td class="border border-gray-light">
-              <%= opml.content_type %>
-            </td>
-            <td class="border border-gray-light">
-              <%= opml.filename %>
-            </td>
-            <td class="border border-gray-light">
-              <%= Calendar.strftime(opml.inserted_at, "%c") %>
-            </td>
+            <td><%= opml.content_type %></td>
+            <td><%= opml.filename %></td>
+            <td><%= Calendar.strftime(opml.inserted_at, "%c") %></td>
 
-            <td class="border border-gray-light leading-8">
+            <td class="leading-8">
               <%= link(
                 [icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Parse"],
                 to: opml_frontend_path(@conn, :import, opml),
                 class:
-                  "border border-gray-dark bg-info hover:bg-info-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
+                  "btn btn-info btn-sm whitespace-nowrap"
               ) %> &nbsp; <%= link(
                 [
                   icon("document-download-heroicons-outline",
@@ -49,7 +35,7 @@
                 ],
                 to: opml_frontend_path(@conn, :download, opml),
                 class:
-                  "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
+                  "btn btn-primary btn-sm whitespace-nowrap"
               ) %> &nbsp; <%= link(
                 [
                   icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top"),
@@ -59,7 +45,7 @@
                 method: :delete,
                 data: [confirm: "Are you sure?"],
                 class:
-                  "border border-gray-dark bg-danger hover:bg-danger-light text-white text-sm py-1 px-2 rounded whitespace-nowrap"
+                  "btn btn-error btn-sm whitespace-nowrap"
               ) %>
             </td>
           </tr>

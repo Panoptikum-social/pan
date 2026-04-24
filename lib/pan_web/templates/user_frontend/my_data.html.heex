@@ -17,7 +17,7 @@
 <p class="my-4">
   <%= link([icon("document-download-heroicons-outline"), " Download"],
     to: user_json_download_path(@conn, :download),
-    class: "border border-gray bg-primary hover:bg-primary-light text-white py-2 px-3 rounded-md"
+    class: "border border-gray btn btn-primary"
   ) %> all my data as JSON-File
 </p>
 
@@ -120,7 +120,7 @@ You can even delete all manifestations as personas, you created so far, at once,
   method: :delete,
   data: [confirm: "Are you sure? All manifestations will be deleted!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <%= for persona <- @user.personas do %>
@@ -208,7 +208,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
   method: :delete,
   data: [confirm: "Are you sure? All subscriptions will be deleted!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -237,7 +237,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
   method: :delete,
   data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -266,7 +266,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
   method: :delete,
   data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -295,7 +295,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
   method: :delete,
   data: [confirm: "Are you sure? All episodes will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -324,7 +324,7 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
   method: :delete,
   data: [confirm: "Are you sure? All chapters will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -353,7 +353,7 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
   method: :delete,
   data: [confirm: "Are you sure? All users will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -382,7 +382,7 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
   method: :delete,
   data: [confirm: "Are you sure? All users will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -411,7 +411,7 @@ You can even unfollow all the personas, you followed so far at once, by clicking
   method: :delete,
   data: [confirm: "Are you sure? All personas will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -440,7 +440,7 @@ You can even unlike all the personas, you followed so far at once, by clicking &
   method: :delete,
   data: [confirm: "Are you sure? All personas will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -469,7 +469,7 @@ You can even unfollow all the categories, you followed so far at once, by clicki
   method: :delete,
   data: [confirm: "Are you sure? All categories will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -498,7 +498,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
   method: :delete,
   data: [confirm: "Are you sure? All categories will be unfollowed!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
 <ul class="list-disc m-4">
@@ -528,33 +528,25 @@ You can even delete all the recommendations, you created so far, at once, by cli
   method: :delete,
   data: [confirm: "Are you sure? All recommendations will be deleted!"],
   class:
-    "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md whitespace-nowrap leading-10"
+    "btn btn-error whitespace-nowrap leading-10"
 ) %>
 
-<table cellpadding="4" class="my-4">
+<table class="table table-zebra table-xs my-4 w-auto">
   <thead>
     <tr>
-      <th class="border border-gray-light">
-        Object
-      </th>
-      <th class="border border-gray-light">
-        Date
-      </th>
+      <th>Object</th>
+      <th>Date</th>
     </tr>
-    <tr class="bg-white">
-      <th class="border border-gray-light">
-        Comment
-      </th>
-      <th class="border border-gray-light">
-        Actions
-      </th>
+    <tr>
+      <th>Comment</th>
+      <th>Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <%= for recommendation <- @user.recommendations do %>
       <tr>
-        <td class="border border-gray-light">
+        <td>
           <%= cond do %>
             <% recommendation.podcast -> %>
               Podcast: <%= link(recommendation.podcast.title,
@@ -576,17 +568,15 @@ You can even delete all the recommendations, you created so far, at once, by cli
               ) %>
           <% end %>
         </td>
-        <td class="border border-gray-light">
+        <td>
           <nobr>
             <%= Calendar.strftime(recommendation.inserted_at, "%c") %>
           </nobr>
         </td>
       </tr>
-      <tr class="bg-white">
-        <td class="border border-gray-light">
-          <%= recommendation.comment %>
-        </td>
-        <td class="border border-gray-light text-center">
+      <tr>
+        <td><%= recommendation.comment %></td>
+        <td class="text-center">
           <%= link("Delete",
             to: recommendation_frontend_path(@conn, :delete, recommendation),
             method: :delete,
@@ -614,6 +604,6 @@ You can even delete all the recommendations, you created so far, at once, by cli
     to: user_frontend_path(@conn, :delete_my_account),
     method: :delete,
     data: [confirm: "Are you sure? Your account would be deleted!"],
-    class: "border border-gray bg-danger hover:bg-danger-light text-white py-2 px-3 rounded-md"
+    class: "btn btn-error"
   ) %>
 </div>

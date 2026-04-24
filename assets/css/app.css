@@ -161,6 +161,11 @@
   @apply hidden;
 }
 
+.btn {
+  font-weight: normal;
+  font-size: 1rem;
+}
+
 /* Classes used by phoenix forms*/
 .alert:empty {
   @apply hidden;

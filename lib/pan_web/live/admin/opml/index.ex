@@ -78,47 +78,35 @@ defmodule PanWeb.Live.Admin.Opml.Index do
         <input type="text" placeholder="Filter" phx-keyup="filter" value={@filter_by} class="input" />
       </div>
 
-      <table cellpadding="4" class="my-4">
+      <table class="table table-zebra table-xs my-4 w-auto">
         <thead>
           <tr>
-            <th class="border border-gray-light">
-              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render>
-            </th>
-            <th class="border border-gray-light">Actions</th>
+            <th><SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render></th>
+            <th><SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render></th>
+            <th><SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render></th>
+            <th><SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render></th>
+            <th><SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render></th>
+            <th><SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render></th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr :for={opml <- @filtered_opmls} class="odd:bg-white">
-            <td class="border border-gray-light">{opml.id}</td>
-            <td class="border border-gray-light">{opml.user_name}</td>
-            <td class="border border-gray-light">{opml.content_type}</td>
-            <td class="border border-gray-light">{opml.filename}</td>
-            <td class="border border-gray-light"><nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr></td>
-            <td class="border border-gray-light">{opml.path}</td>
-            <td class="border border-gray-light">
+          <tr :for={opml <- @filtered_opmls}>
+            <td>{opml.id}</td>
+            <td>{opml.user_name}</td>
+            <td>{opml.content_type}</td>
+            <td>{opml.filename}</td>
+            <td><nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr></td>
+            <td>{opml.path}</td>
+            <td>
               <LinkButton.render title="Parse"
                           to={opml_path(Endpoint, :import, opml.id)}
-                          class="text-sm border-primary-dark bg-primary hover:bg-primary-light text-white" />
+                          class="btn-primary" />
               <LinkButton.render title="Show"
-                          class="text-sm border-gray bg-white hover:bg-gray-light"
+                          class="btn-ghost"
                           to={opml_path(Endpoint, :show, opml.id)} />
               <LinkButton.render title="Edit"
-                          class="text-sm border-warning-dark bg-warning hover:bg-warning-light text-white"
+                          class="btn-warning"
                           to={opml_path(Endpoint, :edit, opml.id)} />
               <LinkButton.render title="Delete"
                           to={opml_path(Endpoint, :delete, opml.id)}

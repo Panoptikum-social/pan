@@ -64,7 +64,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       <button id="notification-hook-target"
               phx-hook="Notification"
               phx-click="trigger-update"
-              class="border border-gray-darker text-white text-sm rounded bg-info hover:bg-info-light px-2 py-1 float-right">
+              class="btn btn-info btn-sm float-right">
         Episode import
       </button>
 
@@ -72,54 +72,30 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
 
       <p>This view is auto-refreshing every 60 seconds.</p>
 
-      <table cellpadding="4" class="my-4">
+      <table class="table table-zebra table-xs my-4 w-auto">
         <thead>
           <tr>
-            <th class="border border-gray-light">
-              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                ID
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Title
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Updated at 🎡
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Update intervall
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Next update 🎡
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">
-              <SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Failure count
-              </SortLink.render>
-            </th>
-            <th class="border border-gray-light">Feed url</th>
+            <th><SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>ID</SortLink.render></th>
+            <th><SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Title</SortLink.render></th>
+            <th><SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Updated at 🎡</SortLink.render></th>
+            <th><SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Update intervall</SortLink.render></th>
+            <th><SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Next update 🎡</SortLink.render></th>
+            <th><SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Failure count</SortLink.render></th>
+            <th>Feed url</th>
           </tr>
         </thead>
         <tbody>
           <tr :for={podcast <- @stale_podcasts}>
-            <td class="border border-gray-light text-right">
+            <td class="text-right">
               <LinkButton.render title={podcast.id}
                           to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
-                          class="border-gray text-white bg-primary hover:bg-primary-light rounded" /></td>
-            <td class="border border-gray-light">{podcast.title}</td>
-            <td class="border border-gray-light whitespace-nowrap">{podcast.updated_at |> vienna_string()}</td>
-            <td class="border border-gray-light">{podcast.update_intervall}</td>
-            <td class="border border-gray-light whitespace-nowrap">{podcast.next_update |> vienna_string()}</td>
-            <td class="border border-gray-light">{podcast.failure_count}</td>
-            <td class="border border-gray-light">{podcast.feed_url}</td>
+                          class="btn-primary" /></td>
+            <td>{podcast.title}</td>
+            <td class="whitespace-nowrap">{podcast.updated_at |> vienna_string()}</td>
+            <td>{podcast.update_intervall}</td>
+            <td class="whitespace-nowrap">{podcast.next_update |> vienna_string()}</td>
+            <td>{podcast.failure_count}</td>
+            <td>{podcast.feed_url}</td>
           </tr>
         </tbody>
       </table>

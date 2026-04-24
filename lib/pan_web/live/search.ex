@@ -129,7 +129,7 @@ defmodule PanWeb.Live.Search do
             </a>
           </p>
 
-          <table class="text-sm" cellpadding="4">
+          <table class="table w-auto text-sm">
             <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
               <tr :for={highlight_value <- highlight_values}>
                 <td class="text-right align-top pr-4">{highlight_key |> String.capitalize}</td>
@@ -156,7 +156,7 @@ defmodule PanWeb.Live.Search do
 
           <LinkButton.render :if={hit["_source"]["podcast_id"]}
                       to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
-                      class="bg-white hover:bg-gray-lighter text-black border-gray"
+                      class="btn-ghost"
                       icon="podcast-lineawesome-solid"
                       title={hit["_source"]["podcast"]["title"]}
                       truncate={true} />
@@ -171,7 +171,7 @@ defmodule PanWeb.Live.Search do
                             title={engagement["persona_name"]} />
               <LinkButton.render :if={@index != "podcasts"}
                             to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
-                            class="bg-white hover:bg-gray-lighter text-black border-gray"
+                            class="btn-ghost"
                             icon="podcast-lineawesome-solid"
                             title={engagement["podcast_title"]} />
               <Pill.render type="lavender">{engagement["role"]}</Pill.render>
@@ -181,7 +181,7 @@ defmodule PanWeb.Live.Search do
           <p :if={hit["_source"]["categories"]} class="leading-9">
             <LinkButton.render :for={category <- hit["_source"]["categories"]}
                         to={category_frontend_path(Endpoint, :show, category["id"])}
-                        class="bg-white hover:bg-gray-lighter text-gray-darker border-gray"
+                        class="btn-ghost"
                         large={false}
                         icon="folder-heroicons-outline"
                         title={category["title"]}

@@ -80,8 +80,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
           </table>
           <button :if={@page * @per_page < @recommendations_count}
                   phx-click="load-more"
-                  class="border border-solid inline-block shadow m-4 py-1 px-2 rounded text-sm bg-info
-                        hover:bg-info-light text-white border-gray-dark">
+                  class="btn btn-info btn-sm m-4">
             Load more
           </button>
         </div>

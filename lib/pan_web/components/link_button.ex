@@ -17,11 +17,10 @@ defmodule PanWeb.Component.LinkButton do
     <.link id={@id}
            href={@to}
            class={[
-             "border border-solid inline-block shadow",
+             "btn",
              @class,
              @truncate && "truncate max-w-full",
-             !@large && "py-1 px-2 rounded text-sm",
-             @large && "py-2 px-3 rounded-md"
+             !@large && "btn-sm"
            ]}
            method={@method}
            {@opts}>

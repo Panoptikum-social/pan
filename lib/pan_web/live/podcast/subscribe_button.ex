@@ -40,12 +40,12 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
     <span>
       <button :if={@subscribed}
               phx-click="toggle-subscribe"
-              class="text-white rounded py-1 px-2 bg-success border border-gray-darker my-2">
+              class="btn btn-success btn-sm my-2">
         {@podcast.subscriptions_count} <Icon.render name="user-heroicons-solid"/> Unsubscribe
       </button>
       <button :if={!@subscribed}
               phx-click="toggle-subscribe"
-              class="text-white rounded py-1 px-2 bg-danger border border-gray-darker my-2">
+              class="btn btn-error btn-sm my-2">
         {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline"/> Subscribe
       </button>
     </span>

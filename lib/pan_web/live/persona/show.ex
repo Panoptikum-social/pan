@@ -179,7 +179,7 @@ defmodule PanWeb.Live.Persona.Show do
             <p>Please take the time to read the text on the following screen carefully.</p>
             <p>
               <.link href={persona_frontend_path(Endpoint, :warning, @persona)}
-                    class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light">
+                    class="btn btn-warning btn-sm mt-4">
                 Start claiming process
               </.link>
             </p>
@@ -202,7 +202,7 @@ defmodule PanWeb.Live.Persona.Show do
             <.link href={persona_frontend_path(Endpoint, :claim, @persona)}
                    method="post"
                    data-confirm="Are you sure?"
-                   class="mt-4 border border-solid inline-block shadow py-1 px-2 rounded text-sm bg-warning hover:bg-warning-light">
+                   class="btn btn-warning btn-sm mt-4">
               Claim
             </.link>
           </div>

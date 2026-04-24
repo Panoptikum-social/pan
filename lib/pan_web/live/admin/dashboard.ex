@@ -104,33 +104,33 @@ defmodule PanWeb.Live.Admin.Dashboard do
       <div class="-mt-2 mx-2 flex space-x-4 border-x border-gray p-2 max-w-4xl">
         <LinkButton.render title="Live Dashboard"
                     to={live_dashboard_path(Endpoint, :home)}
-                    class="bg-white hover:bg-gray-light border-gray" />
+                    class="btn-ghost" />
         <LinkButton.render title="Statistics"
                     to={maintenance_path(Endpoint, :stats)}
-                    class="bg-white hover:bg-gray-light border-gray" />
+                    class="btn-ghost" />
         <LinkButton.render title="Catch up missing thumbnailed booleans"
                     to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
-                    class="bg-warning hover:bg-warning-dark border-gray" />
+                    class="btn-warning" />
         <LinkButton.render title="Trigger exception notification"
                     to={maintenance_path(Endpoint, :exception_notification)}
-                    class="bg-success hover:bg-success-dark border-gray text-white" />
+                    class="btn-success" />
       </div>
       <div class="mx-2 flex space-x-4 items-center border border-gray p-2 max-w-4xl">
         <span class="font-mono">Full text Search</span>
         <LinkButton.render title="Push Missing"
                     to={search_path(Endpoint, :push_missing)}
-                    class="bg-warning hover:bg-warning-dark border-gray" />
+                    class="btn-warning" />
         <LinkButton.render title="Migrate Manticore Search Indices"
                     to={search_path(Endpoint, :migrate)}
-                    class="bg-danger text-white hover:bg-danger-dark border-gray"
+                    class="btn-error"
                     opts={[data: [confirm: "Are you sure?"]]} />
         <LinkButton.render title="Delete Orphaned Index Entries"
                     to={search_path(Endpoint, :delete_orphans)}
-                    class="bg-danger text-white hover:bg-danger-dark border-gray"
+                    class="btn-error"
                     opts={[data: [confirm: "Are you sure?"]]} />
         <LinkButton.render title="Reset all Records"
                     to={search_path(Endpoint, :reset_all)}
-                    class="bg-danger text-white hover:bg-danger-dark border-gray"
+                    class="btn-error"
                     opts={[data: [confirm: "Are you sure?"]]} />
       </div>
     </div>

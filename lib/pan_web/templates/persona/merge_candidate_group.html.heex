@@ -2,9 +2,9 @@
   Merge personas
 </h1>
 
-<table class="m-4 table-auto" cellpadding="4">
+<table class="table table-zebra table-xs m-4 w-auto">
   <tbody>
-    <tr class="bg-gray-lighter">
+    <tr>
       <th>ID</th>
       <%= for persona <- @personas do %>
         <td>
@@ -18,49 +18,37 @@
     <tr>
       <th>PanoptikumID</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.pid %>
-        </td>
+        <td><%= persona.pid %></td>
       <% end %>
     </tr>
-    <tr class="bg-gray-lighter">
+    <tr>
       <th>Name</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.name %>
-        </td>
+        <td><%= persona.name %></td>
       <% end %>
     </tr>
     <tr>
       <th>URI</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.uri %>
-        </td>
+        <td><%= persona.uri %></td>
       <% end %>
     </tr>
-    <tr class="bg-gray-lighter">
+    <tr>
       <th>Email</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.email %>
-        </td>
+        <td><%= persona.email %></td>
       <% end %>
     </tr>
     <tr>
       <th>Image url</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.image_url %>
-        </td>
+        <td><%= persona.image_url %></td>
       <% end %>
     </tr>
-    <tr class="bg-gray-lighter">
+    <tr>
       <th>Description</th>
       <%= for persona <- @personas do %>
-        <td>
-          <%= persona.description %>
-        </td>
+        <td><%= persona.description %></td>
       <% end %>
     </tr>
     <tr>
@@ -78,7 +66,7 @@
         </td>
       <% end %>
     </tr>
-    <tr class="bg-gray-lighter">
+    <tr>
       <th>Podcasts</th>
       <%= for persona <- @personas do %>
         <td>

@@ -36,13 +36,13 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Cache missing images"
                          to={image_path(Endpoint, :cache_missing)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Remove duplicate images"
                          to={image_path(Endpoint, :remove_duplicates)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Upload new image"
                          to={image_path(Endpoint, :new)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
     </div>
     """
   end
@@ -52,7 +52,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Make primary"
                          to={feed_path(Endpoint, :make_only, @record)}
-                         class="bg-warning hover:bg-warning-dark text-white border-gray"
+                         class="btn-warning"
                          method={:post} />
     </div>
     """
@@ -63,17 +63,17 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Edit Password"
                          to={user_path(Endpoint, :edit_password, @record)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Unset Pro Date"
                          to={user_path(Endpoint, :unset_pro, @record)}
-                         class="bg-danger hover:bg-danger-dark border-gray text-white"
+                         class="btn-error"
                          opts={[data: [confirm: "Are you sure?"]]} />
     </div>
     <div class="m-2 flex space-x-4 text-align-top">
       <span>no admin interface exists for</span>
       <LinkButton.render title="Push Subscriptions"
                          to="/admin/users/:user_id/category/:category_id/push_subscriptions"
-                         class="bg-mint-light hover:bg-mint border-gray" />
+                         class="btn-primary" />
     </div>
     """
   end
@@ -83,7 +83,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Merge Users"
                          to={user_path(Endpoint, :merge)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
     </div>
     """
   end
@@ -93,7 +93,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Merge Categories"
                          to={category_path(Endpoint, :merge)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
     </div>
     """
   end
@@ -103,7 +103,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of Invoices"
                          to={invoice_path(Endpoint, :index)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
     </div>
     """
   end
@@ -113,7 +113,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of OPMLs"
                          to={opml_path(Endpoint, :index)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
     </div>
     """
   end
@@ -123,19 +123,19 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of BacklogFeeds"
                          to={feed_backlog_path(Endpoint, :index)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Import 100"
                          to={feed_backlog_path(Endpoint, :import_100)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Subscribe All"
                          to={feed_backlog_path(Endpoint, :subscribe)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Subscribe 50"
                          to={feed_backlog_path(Endpoint, :subscribe50)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Delete All"
                          to={feed_backlog_path(Endpoint, :delete_all)}
-                         class="bg-danger hover:bg-danger-dark border-gray text-white"
+                         class="btn-error"
                          opts={[method: :delete, data: [confirm: "Are you sure?"]]} />
     </div>
     """
@@ -146,33 +146,33 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Pause"
                          to={podcast_path(Endpoint, :pause, @record)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Touch"
                          to={podcast_path(Endpoint, :touch, @record)}
-                         class="bg-info hover:bg-info-dark text-white border-gray" />
+                         class="btn-info" />
       <LinkButton.render title="Delta import"
                          to={podcast_path(Endpoint, :delta_import, @record)}
-                         class="bg-primary hover:bg-primary-dark text-white border-gray" />
+                         class="btn-primary" />
       <LinkButton.render title="Forced delta import"
                          to={podcast_path(Endpoint, :forced_delta_import, @record)}
-                         class="bg-primary hover:bg-primary-dark text-white border-gray" />
+                         class="btn-primary" />
       <LinkButton.render title="Delete"
                          to={podcast_path(Endpoint, :delete, @record)}
-                         class="bg-danger hover:bg-danger-dark text-white border-gray"
+                         class="btn-error"
                          method={:delete}
                          opts={[data: [confirm: "Are you sure?"]]} />
       <LinkButton.render title="Contributor import"
                          to={podcast_path(Endpoint, :contributor_import, @record)}
-                         class="bg-success hover:bg-success-dark text-white border-gray" />
+                         class="btn-success" />
       <LinkButton.render title="Update from feed"
                          to={podcast_path(Endpoint, :update_from_feed, @record)}
-                         class="bg-primary hover:bg-primary-dark text-white border-gray" />
+                         class="btn-primary" />
       <LinkButton.render title="Update counters"
                          to={podcast_path(Endpoint, :update_counters, @record)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Fix owner"
                          to={podcast_path(Endpoint, :fix_owner, @record)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
     </div>
     """
   end
@@ -182,25 +182,25 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Duplicates"
                          to={podcast_path(Endpoint, :duplicates)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Orphans"
                          to={podcast_path(Endpoint, :orphans)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Stale"
                          to={podcast_path(Endpoint, :stale)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Retirement"
                          to={podcast_path(Endpoint, :retirement)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Update missing counters"
                          to={podcast_path(Endpoint, :update_missing_counters)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
       <LinkButton.render title="Update all counters"
                          to={podcast_path(Endpoint, :update_all_counters)}
                          class="bg-danger hover:bg-danger-dark border-gray" />
       <LinkButton.render title="Fix languages"
                          to={podcast_path(Endpoint, :fix_languages)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
     </div>
     """
   end
@@ -210,10 +210,10 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Remove duplicates"
                          to={episode_path(Endpoint, :remove_duplicates)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
       <LinkButton.render title="Remove javascript from shownotes"
                          to={episode_path(Endpoint, :remove_javascript_from_shownotes)}
-                         class="bg-warning hover:bg-warning-dark border-gray" />
+                         class="btn-warning" />
     </div>
     """
   end
@@ -223,7 +223,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Merge candidates"
                          to={persona_path(Endpoint, :merge_candidates)}
-                         class="bg-white hover:bg-gray-light border-gray" />
+                         class="btn-ghost" />
     </div>
     """
   end
