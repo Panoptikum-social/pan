@@ -106,6 +106,7 @@ defmodule Pan.Search do
     {:ok, %HTTPoison.Response{body: response_body}} = response
     {:ok, search_result} = Jason.decode(response_body)
 
-    search_result["hits"]
+    outer = search_result["hits"] || %{}
+    %{"total" => outer["total"] || 0, "hits" => outer["hits"] || []}
   end
 end

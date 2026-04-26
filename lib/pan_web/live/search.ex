@@ -13,7 +13,7 @@ defmodule PanWeb.Live.Search do
 
   defp fetch(%{assigns: %{page: page, per_page: per_page, index: index, term: term}} = socket) do
     hits = Search.query(index: index, term: term, limit: per_page, offset: (page - 1) * per_page)
-    assign(socket, hits: hits, total: hits["total"], hits_count: hits["hits"] |> length)
+    assign(socket, hits: hits, total: hits["total"], hits_count: length(hits["hits"]), has_more: hits["total"] > page * per_page)
   end
 
   def handle_params(
@@ -190,7 +190,7 @@ defmodule PanWeb.Live.Search do
         </div>
       </li>
     </ul>
-    <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
+    <div :if={@has_more} id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
 end
