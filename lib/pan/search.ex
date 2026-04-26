@@ -5,10 +5,10 @@ defmodule Pan.Search do
   require Logger
 
   def migrate do
-    # Search.Category.migrate()
-    # Search.Persona.migrate()
-    # Search.Podcast.migrate()
-    # Search.Episode.migrate()
+    Search.Category.migrate()
+    Search.Persona.migrate()
+    Search.Podcast.migrate()
+    Search.Episode.migrate()
   end
 
   def push_missing do
@@ -19,10 +19,10 @@ defmodule Pan.Search do
   end
 
   def reset_all do
-    # Search.Category.batch_reset()
-    # Search.Persona.batch_reset()
-    # Search.Podcast.batch_reset()
-    # Search.Episode.batch_reset()
+    Search.Category.batch_reset()
+    Search.Persona.batch_reset()
+    Search.Podcast.batch_reset()
+    Search.Episode.batch_reset()
   end
 
   def batch_index(
@@ -43,7 +43,7 @@ defmodule Pan.Search do
         |> Enum.map_join("\n", &Jason.encode!(&1))
 
       {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} =
-        Search.Manticore.post(data, "bulk")
+        Search.Manticore.post(data, "bulk", "application/x-ndjson")
 
       if response_code in [200, 201] do
         from(r in model, where: r.id in ^record_ids)

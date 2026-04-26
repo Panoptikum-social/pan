@@ -6,14 +6,15 @@ defmodule Pan.Search.Podcast do
   require Logger
 
   def migrate() do
-    Manticore.post("mode=raw&query=DROP TABLE podcasts", "sql")
+    Manticore.sql("DROP TABLE podcasts")
 
-    ("mode=raw&query=CREATE TABLE podcasts(title text, description text, thumbnail_url string, " <>
-       "summary text, image_title string, " <>
-       "language_ids multi, category_ids multi, contributor_ids multi, " <>
-       "languages json, categories json, engagements json) " <>
-       "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'")
-    |> Manticore.post("sql")
+    Manticore.sql(
+      "CREATE TABLE podcasts(title text, description text, thumbnail_url string, " <>
+        "summary text, image_title string, " <>
+        "language_ids multi, category_ids multi, contributor_ids multi, " <>
+        "languages json, categories json, engagements json) " <>
+        "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'"
+    )
   end
 
   def preloads() do
@@ -113,14 +114,14 @@ defmodule Pan.Search.Podcast do
     else
       manticore_struct(podcast)[:insert]
       |> Jason.encode!()
-      |> Manticore.post("replace")
+      |> Manticore.post("replace", "application/json")
     end
   end
 
   def delete_index(id) do
     %{index: "podcasts", id: id}
     |> Jason.encode!()
-    |> Manticore.post("delete")
+    |> Manticore.post("delete", "application/json")
   end
 
   def delete_index_orphans() do

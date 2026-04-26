@@ -6,10 +6,8 @@ defmodule Pan.Search.Category do
   alias Pan.Search.Manticore
 
   def migrate() do
-    Manticore.post("mode=raw&query=DROP TABLE categories", "sql")
-
-    "mode=raw&query=CREATE TABLE categories(title text) min_infix_len='2'"
-    |> Manticore.post("sql")
+    Manticore.sql("DROP TABLE categories")
+    Manticore.sql("CREATE TABLE categories(title text) min_infix_len='2'")
   end
 
   def selects() do
@@ -47,13 +45,13 @@ defmodule Pan.Search.Category do
 
     manticore_struct(category)[:insert]
     |> Jason.encode!()
-    |> Manticore.post("replace")
+    |> Manticore.post("replace", "application/json")
   end
 
   def delete_index(id) do
     %{index: "categories", id: id}
     |> Jason.encode!()
-    |> Manticore.post("delete")
+    |> Manticore.post("delete", "application/json")
   end
 
   def delete_index_orphans() do

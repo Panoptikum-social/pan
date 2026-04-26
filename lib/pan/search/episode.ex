@@ -6,14 +6,15 @@ defmodule Pan.Search.Episode do
   require Logger
 
   def migrate() do
-    Manticore.post("mode=raw&query=DROP TABLE episodes", "sql")
+    Manticore.sql("DROP TABLE episodes")
 
-    ("mode=raw&query=CREATE TABLE episodes(title text, subtitle text, description text, " <>
-       "summary text, shownotes text, inserted_at timestamp, " <>
-       "podcast_id int, language_ids multi, category_ids multi, gig_ids multi," <>
-       "podcast json, languages json, categories json, gigs json) " <>
-       "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'")
-    |> Manticore.post("sql")
+    Manticore.sql(
+      "CREATE TABLE episodes(title text, subtitle text, description text, " <>
+        "summary text, shownotes text, inserted_at timestamp, " <>
+        "podcast_id int, language_ids multi, category_ids multi, gig_ids multi," <>
+        "podcast json, languages json, categories json, gigs json) " <>
+        "min_infix_len='2' html_strip='1' html_remove_elements = 'style, script'"
+    )
   end
 
   def preloads() do
@@ -123,14 +124,14 @@ defmodule Pan.Search.Episode do
     else
       manticore_struct(episode)[:insert]
       |> Jason.encode!()
-      |> Manticore.post("replace")
+      |> Manticore.post("replace", "application/json")
     end
   end
 
   def delete_index(id) do
     %{index: "episodes", id: id}
     |> Jason.encode!()
-    |> Manticore.post("delete")
+    |> Manticore.post("delete", "application/json")
   end
 
   def delete_index_orphans() do
