@@ -1,5 +1,6 @@
 defmodule PanWeb.Component.PodcastButton do
   use PanWeb, :html
+  import PanWeb.ViewHelpers, only: [truncate_string: 2]
   alias PanWeb.Component.LinkButton
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
@@ -17,7 +18,7 @@ defmodule PanWeb.Component.PodcastButton do
                        id={@for && "podcast-button-#{@for.id}"}
                        class={["bg-white hover:bg-gray-lighter text-black border-gray", @class]}
                        icon="podcast-lineawesome-solid"
-                       title={@title || @for.title}
+                       title={truncate_string(@title || @for.title, 80)}
                        large={@large}
                        truncate={@truncate} />
     """
