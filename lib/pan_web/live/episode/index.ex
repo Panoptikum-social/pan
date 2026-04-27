@@ -6,13 +6,15 @@ defmodule PanWeb.Live.Episode.Index do
   alias PanWeb.Component.EpisodeCard
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Episodes")
-    {:ok, stream(socket, :latest_episodes, Episode.latest(1, 15))}
+    episodes = Episode.latest(1, 15)
+    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Episodes", has_more: length(episodes) == 15)
+    {:ok, stream(socket, :latest_episodes, episodes)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
-    {:noreply, socket |> assign(page: page) |> stream(:latest_episodes, Episode.latest(page, assigns.per_page))}
+    episodes = Episode.latest(page, assigns.per_page)
+    {:noreply, socket |> assign(page: page, has_more: length(episodes) == assigns.per_page) |> stream(:latest_episodes, episodes)}
   end
 
   def render(assigns) do
@@ -24,7 +26,7 @@ defmodule PanWeb.Live.Episode.Index do
           <EpisodeCard.render for={episode}/>
         </div>
       </div>
-      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+      <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     </Panel.render>
     """
   end

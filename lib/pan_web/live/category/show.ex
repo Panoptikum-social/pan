@@ -49,7 +49,7 @@ defmodule PanWeb.Live.Category.Show do
          } = socket
        ) do
     podcasts = Podcast.get_by_category_id_and_language(category.id, language, page, per_page)
-    assign(socket, podcasts: podcasts)
+    assign(socket, podcasts: podcasts, has_more: length(podcasts) == per_page)
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
@@ -161,7 +161,7 @@ defmodule PanWeb.Live.Category.Show do
           <PodcastButton.render :for={podcast <- @podcasts} for={podcast} class="m-2" truncate/>
         </div>
 
-        <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+        <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
       </div>
     </Panel.render>
     """

@@ -9,13 +9,15 @@ defmodule PanWeb.Live.Podcast.Index do
   alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Podcasts")
-    {:ok, stream(socket, :latest_podcasts, Podcast.latest_for_index(1, 15))}
+    podcasts = Podcast.latest_for_index(1, 15)
+    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Podcasts", has_more: length(podcasts) == 15)
+    {:ok, stream(socket, :latest_podcasts, podcasts)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
-    {:noreply, socket |> assign(page: page) |> stream(:latest_podcasts, Podcast.latest_for_index(page, assigns.per_page))}
+    podcasts = Podcast.latest_for_index(page, assigns.per_page)
+    {:noreply, socket |> assign(page: page, has_more: length(podcasts) == assigns.per_page) |> stream(:latest_podcasts, podcasts)}
   end
 
   defp thumbnail(podcast) do
@@ -108,7 +110,7 @@ defmodule PanWeb.Live.Podcast.Index do
         </div>
       </Panel.render>
     </div>
-    <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+    <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
 end

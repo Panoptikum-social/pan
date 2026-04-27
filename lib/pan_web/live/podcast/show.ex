@@ -21,13 +21,14 @@ defmodule PanWeb.Live.Podcast.Show do
 
     Phoenix.PubSub.subscribe(:pan_pubsub, "podcasts:#{id}")
 
-    {:ok, stream(socket, :episodes, Episode.get_by_podcast_id(podcast.id, 1, 10))}
+    episodes = Episode.get_by_podcast_id(podcast.id, 1, 10)
+    {:ok, socket |> assign(has_more: length(episodes) == 10) |> stream(:episodes, episodes)}
   end
 
   def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast, per_page: per_page}} = socket) do
     podcast = Podcast.get_by_id_for_show(podcast.id)
     episodes = Episode.get_by_podcast_id(podcast.id, 1, per_page)
-    {:noreply, socket |> assign(podcast: podcast, page: 1, episodes_count: Episode.count_by_podcast_id(podcast.id)) |> stream(:episodes, episodes, reset: true)}
+    {:noreply, socket |> assign(podcast: podcast, page: 1, episodes_count: Episode.count_by_podcast_id(podcast.id), has_more: length(episodes) == per_page) |> stream(:episodes, episodes, reset: true)}
   end
 
   def handle_info(payload, socket) do
@@ -37,7 +38,7 @@ defmodule PanWeb.Live.Podcast.Show do
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     episodes = Episode.get_by_podcast_id(assigns.podcast.id, page, assigns.per_page)
-    {:noreply, socket |> assign(page: page) |> stream(:episodes, episodes)}
+    {:noreply, socket |> assign(page: page, has_more: length(episodes) == assigns.per_page) |> stream(:episodes, episodes)}
   end
 
   def render(assigns) do
@@ -60,7 +61,8 @@ defmodule PanWeb.Live.Podcast.Show do
                             podcast={@podcast}
                             changeset={@changeset} />
         <EpisodeList.render episodes={@streams.episodes}
-                     page={@page} />
+                     page={@page}
+                     has_more={@has_more} />
       </div>
     </div>
     """

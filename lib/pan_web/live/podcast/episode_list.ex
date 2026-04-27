@@ -8,6 +8,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
 
   attr :episodes, :any, required: false, default: []
   attr :page, :integer, required: false, default: 1
+  attr :has_more, :boolean, required: false, default: true
 
   def render(assigns) do
     ~H"""
@@ -67,7 +68,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
         </tr>
       </tbody>
     </table>
-    <div id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
+    <div :if={@has_more} id="infinite-scroll" class="h-24" phx-hook="InfiniteScroll" data-page={@page}></div>
     """
   end
 end

@@ -71,7 +71,10 @@ defmodule PanWeb.Live.Persona.Show do
 
     socket
     |> stream(:gig_rows, rows, reset: false)
-    |> assign(has_gigs: rows != [] || Map.get(socket.assigns, :has_gigs, false))
+    |> assign(
+      has_gigs: rows != [] || Map.get(socket.assigns, :has_gigs, false),
+      has_more_gigs: length(rows) == gigs_per_page
+    )
   end
 
   defp markdown(content) do
@@ -272,7 +275,7 @@ defmodule PanWeb.Live.Persona.Show do
           </tr>
         </tbody>
       </table>
-      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
+      <div :if={@has_more_gigs} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
     </Panel.render>
     """
   end

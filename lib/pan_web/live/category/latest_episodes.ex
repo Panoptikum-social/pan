@@ -9,23 +9,25 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
     podcast_ids = Podcast.ids_by_category_id(id)
     category = Category.get_by_id_with_parent(id)
 
+    episodes = Episode.latest_episodes_by_podcast_ids(podcast_ids, 1, 15)
+
     socket =
       assign(socket,
         page: 1,
         per_page: 15,
         category: category,
         podcast_ids: podcast_ids,
-        page_title: "Latest Episodes in #{category.title} (Category)"
+        page_title: "Latest Episodes in #{category.title} (Category)",
+        has_more: length(episodes) == 15
       )
 
-    episodes = Episode.latest_episodes_by_podcast_ids(podcast_ids, 1, 15)
     {:ok, stream(socket, :latest_episodes, episodes)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     episodes = Episode.latest_episodes_by_podcast_ids(assigns.podcast_ids, page, assigns.per_page)
-    {:noreply, socket |> assign(page: page) |> stream(:latest_episodes, episodes)}
+    {:noreply, socket |> assign(page: page, has_more: length(episodes) == assigns.per_page) |> stream(:latest_episodes, episodes)}
   end
 
   def render(assigns) do
@@ -37,7 +39,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
           <EpisodeCard.render for={episode}/>
         </div>
       </div>
-      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+      <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     </Panel.render>
     """
   end

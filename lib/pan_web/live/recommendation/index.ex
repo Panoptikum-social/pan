@@ -7,13 +7,15 @@ defmodule PanWeb.Live.Recommendation.Index do
   alias PanWeb.Component.Icon
 
   def mount(_params, _session, socket) do
-    socket = assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations")
-    {:ok, stream(socket, :latest_recommendations, Recommendation.latest(1, 21))}
+    recommendations = Recommendation.latest(1, 21)
+    socket = assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations", has_more: length(recommendations) == 21)
+    {:ok, stream(socket, :latest_recommendations, recommendations)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
-    {:noreply, socket |> assign(page: page) |> stream(:latest_recommendations, Recommendation.latest(page, assigns.per_page))}
+    recommendations = Recommendation.latest(page, assigns.per_page)
+    {:noreply, socket |> assign(page: page, has_more: length(recommendations) == assigns.per_page) |> stream(:latest_recommendations, recommendations)}
   end
 
   def render(assigns) do
@@ -57,7 +59,7 @@ defmodule PanWeb.Live.Recommendation.Index do
           </p>
         </div>
       </div>
-      <div id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
+      <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
     </div>
     """
   end
