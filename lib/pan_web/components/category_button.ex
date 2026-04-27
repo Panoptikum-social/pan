@@ -7,7 +7,7 @@ defmodule PanWeb.Component.CategoryButton do
   defp color_class_cycle(counter) do
     Enum.at(
       [
-        "btn-ghost",
+        "bg-white hover:bg-gray-lighter text-gray-darker border-gray",
         "bg-gray-lighter hover:bg-gray-lightest text-gray-darker border-gray",
         "bg-gray hover:bg-gray-light text-white",
         "bg-gray-darker hover:bg-gray-darker text-white",
