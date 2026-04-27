@@ -46,8 +46,8 @@
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
             <%= form_for @changeset, recommendation_frontend_path(@conn, :create), fn f -> %>
-              <div class="flex flex-col lg:flex-row space-x-0 lg:space-x-4 space-y-1 lg:space-y-0">
-                <div class="lg:basis-5/6 lg:shrink-0">
+              <div class="flex flex-col lg:flex-row gap-4">
+                <div class="grow">
                   <div class="flex justify-between">
                     Your recommendation for: &nbsp; <%= podcast.title %>
                     <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>
@@ -62,10 +62,9 @@
                     class: "input input-bordered w-full"
                   ) %>
                 </div>
-                <div class="lg:shrink-0 lg:basis-1/6 self-end">
+                <div class="shrink-0 self-end">
                   <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
-                    class:
-                      "bg-info hover:bg-info-light border border-gray text-white px-2 py-1 rounded "
+                    class: "btn btn-info btn-sm"
                   ) %>
                 </div>
               </div>
