@@ -110,58 +110,7 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:generator, _, [value]]), do: %{feed: %{feed_generator: value}}
 
   # the links are a mixture of the two above
-  def call(_, "tag", [:"atom:link", attr, _]) do
-    case attr[:rel] do
-      "self" ->
-        %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
-
-      "me" ->
-        %{}
-
-      "current" ->
-        %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
-
-      "next" ->
-        %{feed: %{next_page_url: attr[:href]}}
-
-      "prev" ->
-        %{feed: %{prev_page_url: attr[:href]}}
-
-      "prev-archive" ->
-        %{feed: %{prev_page_url: attr[:href]}}
-
-      "previous" ->
-        %{feed: %{prev_page_url: attr[:href]}}
-
-      "first" ->
-        %{feed: %{first_page_url: attr[:href]}}
-
-      "last" ->
-        %{feed: %{last_page_url: attr[:href]}}
-
-      "hub" ->
-        %{feed: %{hub_link_url: attr[:href]}}
-
-      "search" ->
-        %{}
-
-      "related" ->
-        %{}
-
-      "via" ->
-        %{}
-
-      nil ->
-        %{}
-
-      "alternate" ->
-        alternate_feed_map = %{UUID.uuid1() => %{title: attr[:title], url: attr[:href]}}
-        %{feed: %{alternate_feeds: alternate_feed_map}}
-
-      "payment" ->
-        %{payment_link_title: attr[:title], payment_link_url: to_255(attr[:href])}
-    end
-  end
+  def call(_, "tag", [:"atom:link", attr, _]), do: parse_atom_link(attr)
 
   def call(_, "tag", [:"rawvoice:donate", attr, [value]]),
     do: %{payment_link_title: value, payment_link_url: attr[:href]}
@@ -1225,4 +1174,35 @@ defmodule Pan.Parser.Analyzer do
   def call("episode_author", [:"panoptikum:pid", _, [value]]), do: %{pid: value}
 
   def call("episode_author", [tag_atom, _, _]) when tag_atom in [:avatar], do: %{}
+
+  @atom_link_href_fields %{
+    "next" => :next_page_url,
+    "prev" => :prev_page_url,
+    "prev-archive" => :prev_page_url,
+    "previous" => :prev_page_url,
+    "first" => :first_page_url,
+    "last" => :last_page_url,
+    "hub" => :hub_link_url
+  }
+
+  defp parse_atom_link(attr) do
+    rel = attr[:rel]
+
+    cond do
+      rel in ["self", "current"] ->
+        %{feed: %{self_link_title: attr[:title], self_link_url: attr[:href]}}
+
+      field = @atom_link_href_fields[rel] ->
+        %{feed: %{field => attr[:href]}}
+
+      rel == "alternate" ->
+        %{feed: %{alternate_feeds: %{uuid1() => %{title: attr[:title], url: attr[:href]}}}}
+
+      rel == "payment" ->
+        %{payment_link_title: attr[:title], payment_link_url: to_255(attr[:href])}
+
+      true ->
+        %{}
+    end
+  end
 end
