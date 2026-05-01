@@ -4,6 +4,7 @@ defmodule PanWeb.Component.EventButton do
 
   attr :title, :string, default: nil
   attr :event, :string, required: true
+  attr :target, :any, default: nil
   attr :class, :string, default: nil
   attr :large, :boolean, default: false
   attr :icon, :string, default: nil
@@ -14,7 +15,7 @@ defmodule PanWeb.Component.EventButton do
 
   def render(assigns) do
     ~H"""
-    <a phx-click={@event}
+    <a phx-click={@event} phx-target={@target}
        alt={@alt}
        class={[
          "border border-solid inline-block shadow",

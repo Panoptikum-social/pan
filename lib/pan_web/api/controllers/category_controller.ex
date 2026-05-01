@@ -74,7 +74,7 @@ defmodule PanWeb.Api.CategoryController do
     hits = Pan.Search.query(index: "categories", term: params["filter"], limit: 1000, offset: 0)
 
     if hits["total"] > 0 do
-      category_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
+      category_ids = Enum.map(hits["hits"], fn hit -> hit["_id"] end)
 
       categories =
         from(c in Category, where: c.id in ^category_ids)

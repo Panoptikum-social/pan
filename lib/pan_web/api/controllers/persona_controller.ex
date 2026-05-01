@@ -188,7 +188,7 @@ defmodule PanWeb.Api.PersonaController do
         |> api_persona_url(:search)
         |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-      persona_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
+      persona_ids = Enum.map(hits["hits"], fn hit -> hit["_id"] end)
 
       personas =
         from(p in Persona,

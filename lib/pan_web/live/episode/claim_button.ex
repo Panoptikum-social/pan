@@ -45,12 +45,14 @@ defmodule PanWeb.Live.Episode.ClaimButton do
     <span>
       <EventButton.render :if={@not_claimed_yet}
                    event="toggle-claim"
+                   target={@myself}
                    class="text-lavender border-lavender bg-white hover:bg-gray-lightest"
                    alt={"Claim contribution for #{@persona.pid}"}
                    icon="user-add-heroicons-outline"
                    title={@persona.name} />
       <EventButton.render :if={!@not_claimed_yet}
                    event="toggle-claim"
+                   target={@myself}
                    class="text-white border-lavender bg-lavender hover:bg-lavender-light"
                    alt={"Withdraw contribution for #{@persona.pid}"}
                    icon="user-remove-heroicons-outline"

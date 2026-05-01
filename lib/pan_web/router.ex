@@ -2,6 +2,10 @@ defmodule PanWeb.Router do
   use PanWeb, :router
   import Phoenix.LiveDashboard.Router
 
+  if Mix.env() == :dev do
+    forward "/dev/mailbox", Plug.Swoosh.MailboxPreview
+  end
+
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
@@ -86,6 +90,8 @@ defmodule PanWeb.Router do
     resources("/likes", LikeController, only: [:show])
     resources("/follows", FollowController, only: [:show])
     resources("/subscriptions", SubscriptionController, only: [:show])
+
+    get("/search", SearchController, :search)
 
     post("/login", SessionController, :login)
     post("/get_token", SessionController, :login)

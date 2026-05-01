@@ -316,7 +316,7 @@ defmodule PanWeb.Api.PodcastController do
         |> api_podcast_url(:search)
         |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-      podcast_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
+      podcast_ids = Enum.map(hits["hits"], fn hit -> hit["_id"] end)
 
       podcasts =
         from(p in Podcast,

@@ -113,7 +113,7 @@ defmodule PanWeb.Api.EpisodeController do
         |> api_episode_url(:search)
         |> Helpers.pagination_links({page, size, total_pages}, conn)
 
-      episode_ids = Enum.map(hits["hits"], fn hit -> String.to_integer(hit["_id"]) end)
+      episode_ids = Enum.map(hits["hits"], fn hit -> hit["_id"] end)
 
       episodes =
         from(e in Episode,

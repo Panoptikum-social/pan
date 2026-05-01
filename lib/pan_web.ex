@@ -67,7 +67,7 @@ defmodule PanWeb do
     quote do
       use Phoenix.Controller,
         namespace: PanWeb,
-        formats: [html: "View", json: "View"],
+        formats: [html: "View", json: "View", "json-api": "View"],
         layouts: [html: {PanWeb.LayoutView, :app}, json: JaSerializer.PhoenixView]
 
       alias Pan.Repo
