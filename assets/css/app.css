@@ -30,6 +30,7 @@
   --color-warning: #f6bb42;  /* sunflower */
   --color-success: #8cc152;
   --color-error: #da4453;  /* grapefruit */
+  --color-error-content: white;
 }
 
 @theme {

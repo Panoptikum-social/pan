@@ -25,7 +25,7 @@
                 [icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Parse"],
                 to: opml_frontend_path(@conn, :import, opml),
                 class:
-                  "btn btn-info btn-sm whitespace-nowrap"
+                  "btn btn-info btn-sm whitespace-nowrap text-white"
               ) %> &nbsp; <%= link(
                 [
                   icon("document-download-heroicons-outline",
@@ -35,7 +35,7 @@
                 ],
                 to: opml_frontend_path(@conn, :download, opml),
                 class:
-                  "btn btn-primary btn-sm whitespace-nowrap"
+                  "btn btn-primary btn-sm whitespace-nowrap text-white"
               ) %> &nbsp; <%= link(
                 [
                   icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top"),

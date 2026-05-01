@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Category.Tree do
         <p class="mt-6 -mx-0.5">
           <CategoryButton.render :for={subcategory <- category.children}
                                  for={subcategory}
-                                 class="px-1.5 py-0.5 mx-0.5"
+                                 class="px-1.5 py-0.5 mx-0.5 my-0.5"
                                  truncate={true} />
         </p>
         <hr class="w-full mt-4 border-t border-gray-lightest break-before-avoid" />
