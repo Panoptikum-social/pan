@@ -73,7 +73,7 @@ defmodule PanWeb.Live.Persona.Show do
     |> stream(:gig_rows, rows, reset: false)
     |> assign(
       has_gigs: rows != [] || Map.get(socket.assigns, :has_gigs, false),
-      has_more_gigs: length(rows) == gigs_per_page
+      has_more_gigs: length(gigs) == gigs_per_page
     )
   end
 
@@ -266,16 +266,16 @@ defmodule PanWeb.Live.Persona.Show do
           <tr :for={{dom_id, row} <- @streams.gig_rows}
               id={dom_id}
               class="flex flex-col sm:table-row odd:bg-gray-lighter">
-            <td align="center" class="px-2">{row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}</td>
-            <td class="px-2"><PodcastButton.render for={row.episode.podcast} /></td>
-            <td class="px-2"><EpisodeButton.render for={row.episode} /></td>
-            <td class="px-2">
+            <td align="center" class="px-2 py-2">{row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}</td>
+            <td class="px-2 py-2"><PodcastButton.render for={row.episode.podcast} /></td>
+            <td class="px-2 py-2"><EpisodeButton.render for={row.episode} /></td>
+            <td class="px-2 py-2">
               <Pill.render :for={gig <- row.gigs} id={"gig-#{gig.id}"} type="success">{gig.role}</Pill.render>
             </td>
           </tr>
         </tbody>
       </table>
-      <div :if={@has_more_gigs} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
+      <div :if={@has_more_gigs} id="infinite-scroll" class="h-4" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
     </Panel.render>
     """
   end
