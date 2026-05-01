@@ -37,18 +37,10 @@ defmodule Pan.Parser.Persona do
       end
 
     persona_map = Map.put_new(persona_map, :uri, persona_map[:email])
-    uri = persona_map[:uri] || ""
-    email = persona_map[:email] || ""
+    uri = Map.get(persona_map, :uri, "")
+    email = Map.get(persona_map, :email, "")
 
-    case Repo.get_by(PanWeb.Persona, pid: persona_map[:pid]) ||
-           Repo.get_by(PanWeb.Persona, pid: uri) ||
-           Repo.get_by(PanWeb.Persona, uri: uri) ||
-           Repo.one(
-             from(p in PanWeb.Persona,
-               where: p.email == ^email,
-               limit: 1
-             )
-           ) do
+    case find_persona(persona_map[:pid], uri, email) do
       nil ->
         %PanWeb.Persona{}
         |> Map.merge(persona_map)
@@ -57,5 +49,12 @@ defmodule Pan.Parser.Persona do
       persona ->
         {:ok, persona}
     end
+  end
+
+  defp find_persona(pid, uri, email) do
+    Repo.get_by(PanWeb.Persona, pid: pid) ||
+      Repo.get_by(PanWeb.Persona, pid: uri) ||
+      Repo.get_by(PanWeb.Persona, uri: uri) ||
+      Repo.one(from(p in PanWeb.Persona, where: p.email == ^email, limit: 1))
   end
 end

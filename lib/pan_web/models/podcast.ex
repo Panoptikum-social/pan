@@ -676,40 +676,7 @@ defmodule PanWeb.Podcast do
       )
       |> Repo.all(timeout: 60_000)
 
-    deprecated_podcasts =
-      Enum.map(deprecated_podcasts, fn dp ->
-        IO.write("🖥️")
-        try do
-          case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
-            {:ok, response} ->
-              Map.put(dp, :status_code, response.status_code)
-
-            {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
-              case reason do
-                {:invalid_redirection, _} ->
-                  Map.put(dp, :status_code, "invalid redirection")
-
-                {:tls_alert, _} ->
-                  Map.put(dp, :status_code, "TLS alert")
-
-                {:closed, ""} ->
-                  Map.put(dp, :status_code, "closed")
-
-                {:max_redirect_overflow, _} ->
-                  Map.put(dp, :status_code, "max_redirect_overflow")
-
-                _ ->
-                  Map.put(dp, :status_code, reason)
-              end
-          end
-        rescue
-          _e in CaseClauseError ->
-            Map.put(dp, :status_code, "CaseClauseError")
-
-          e ->
-            Map.put(dp, :status_code, e.__exception__)
-        end
-      end)
+    deprecated_podcasts = Enum.map(deprecated_podcasts, &probe_deprecated/1)
 
     Enum.map(deprecated_podcasts, &process_deprecated/1)
   end
@@ -733,6 +700,29 @@ defmodule PanWeb.Podcast do
     :connect_timeout,
     "max_redirect_overflow"
   ]
+
+  defp probe_deprecated(dp) do
+    IO.write("🖥️")
+
+    try do
+      case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
+        {:ok, response} ->
+          Map.put(dp, :status_code, response.status_code)
+
+        {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
+          case reason do
+            {:invalid_redirection, _} -> Map.put(dp, :status_code, "invalid redirection")
+            {:tls_alert, _} -> Map.put(dp, :status_code, "TLS alert")
+            {:closed, ""} -> Map.put(dp, :status_code, "closed")
+            {:max_redirect_overflow, _} -> Map.put(dp, :status_code, "max_redirect_overflow")
+            _ -> Map.put(dp, :status_code, reason)
+          end
+      end
+    rescue
+      _e in CaseClauseError -> Map.put(dp, :status_code, "CaseClauseError")
+      e -> Map.put(dp, :status_code, e.__exception__)
+    end
+  end
 
   defp process_deprecated(dp) do
     cond do

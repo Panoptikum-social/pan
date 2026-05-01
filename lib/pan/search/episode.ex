@@ -52,25 +52,21 @@ defmodule Pan.Search.Episode do
   end
 
   def manticore_struct(episode) do
-    get_id = & &1.id
-
     %{
       insert: %{
         index: "episodes",
         id: episode.id,
         doc: %{
-          title: episode.title || "",
-          subtitle: episode.subtitle || "",
-          description: episode.description || "",
-          summary: episode.summary || "",
-          shownotes: episode.shownotes || "",
+          title: nilstr(episode.title),
+          subtitle: nilstr(episode.subtitle),
+          description: nilstr(episode.description),
+          summary: nilstr(episode.summary),
+          shownotes: nilstr(episode.shownotes),
           inserted_at: to_unix(episode.inserted_at),
           podcast_id: episode.podcast.id,
-          language_ids:
-            (episode.podcast.languages && Enum.map(episode.podcast.languages, get_id)) || [],
-          category_ids:
-            (episode.podcast.categories && Enum.map(episode.podcast.categories, get_id)) || [],
-          gig_ids: (episode.gigs && Enum.map(episode.gigs, get_id)) || [],
+          language_ids: ids(episode.podcast.languages),
+          category_ids: ids(episode.podcast.categories),
+          gig_ids: ids(episode.gigs),
           gigs:
             Enum.map(
               episode.gigs,
@@ -91,6 +87,12 @@ defmodule Pan.Search.Episode do
       }
     }
   end
+
+  defp nilstr(nil), do: ""
+  defp nilstr(val), do: val
+
+  defp ids(nil), do: []
+  defp ids(list), do: Enum.map(list, & &1.id)
 
   defp to_unix(naive) do
     {:ok, date_time} = DateTime.from_naive(naive, "Etc/UTC")
