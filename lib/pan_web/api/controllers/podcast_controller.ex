@@ -175,32 +175,36 @@ defmodule PanWeb.Api.PodcastController do
         "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
       )
     else
-      if !podcast.manually_updated_at or
-           time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() do
-        Podcast.changeset(podcast, %{manually_updated_at: now()})
-        |> Repo.update()
+      do_trigger_episode_update(conn, podcast, params)
+    end
+  end
 
-        case Pan.Updater.Podcast.import_new_episodes(
-               podcast,
-               :not_forced,
-               :no_failure_count_increase,
-               :do_not_increase_update_interval
-             ) do
-          {:ok, _} -> show(conn, params, nil)
-          {:error, message} -> send_504(conn, message)
-        end
-      else
-        minutes =
-          time_shift(podcast.manually_updated_at, minutes: 30)
-          |> time_diff(now(), :minutes)
+  defp do_trigger_episode_update(conn, podcast, params) do
+    if !podcast.manually_updated_at or
+         time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() do
+      Podcast.changeset(podcast, %{manually_updated_at: now()})
+      |> Repo.update()
 
-        Helpers.send_error(
-          conn,
-          429,
-          "Too many requests",
-          "The next update on this podcast is available in #{minutes} minutes."
-        )
+      case Pan.Updater.Podcast.import_new_episodes(
+             podcast,
+             :not_forced,
+             :no_failure_count_increase,
+             :do_not_increase_update_interval
+           ) do
+        {:ok, _} -> show(conn, params, nil)
+        {:error, message} -> send_504(conn, message)
       end
+    else
+      minutes =
+        time_shift(podcast.manually_updated_at, minutes: 30)
+        |> time_diff(now(), :minutes)
+
+      Helpers.send_error(
+        conn,
+        429,
+        "Too many requests",
+        "The next update on this podcast is available in #{minutes} minutes."
+      )
     end
   end
 

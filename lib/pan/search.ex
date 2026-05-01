@@ -51,22 +51,7 @@ defmodule Pan.Search do
 
         Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
       else
-        {:ok, query_result} = Jason.decode(response_body)
-
-        Logger.info("=== Query Result ===")
-        Logger.info(query_result)
-
-        with last_item_result <- query_result["items"] |> Enum.reverse() |> hd,
-             error_type <- last_item_result["insert"]["error"]["type"],
-             ["duplicate", "id", duplicate_id_string] <- error_type |> String.split() do
-          duplicate_id = duplicate_id_string |> String.replace("'", "") |> String.to_integer()
-          Logger.info("=== Updating full text status for #{model} with id #{duplicate_id} ===")
-
-          from(r in model, where: r.id == ^duplicate_id)
-          |> Repo.update_all(set: [full_text: true])
-        else
-          _ -> Logger.error("=== Error: #{hd(query_result["items"])["insert"]["error"]} ===")
-        end
+        handle_bulk_insert_error(response_body, model)
       end
 
       if response_code in [200, 201, 500] && record_ids != [] do
@@ -79,6 +64,25 @@ defmodule Pan.Search do
       end
     else
       Logger.info("=== Done with type #{model} ===")
+    end
+  end
+
+  defp handle_bulk_insert_error(response_body, model) do
+    {:ok, query_result} = Jason.decode(response_body)
+
+    Logger.info("=== Query Result ===")
+    Logger.info(query_result)
+
+    with last_item_result <- query_result["items"] |> Enum.reverse() |> hd,
+         error_type <- last_item_result["insert"]["error"]["type"],
+         ["duplicate", "id", duplicate_id_string] <- error_type |> String.split() do
+      duplicate_id = duplicate_id_string |> String.replace("'", "") |> String.to_integer()
+      Logger.info("=== Updating full text status for #{model} with id #{duplicate_id} ===")
+
+      from(r in model, where: r.id == ^duplicate_id)
+      |> Repo.update_all(set: [full_text: true])
+    else
+      _ -> Logger.error("=== Error: #{hd(query_result["items"])["insert"]["error"]} ===")
     end
   end
 

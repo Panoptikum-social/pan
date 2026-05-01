@@ -711,41 +711,45 @@ defmodule PanWeb.Podcast do
         end
       end)
 
-    Enum.map(deprecated_podcasts, fn dp ->
-      cond do
-        dp.status_code in [
-          :nxdomain,
-          400,
-          403,
-          404,
-          409,
-          410,
-          500,
-          503,
-          "invalid redirection",
-          "TLS alert",
-          :closed,
-          "closed",
-          :ehostunreach,
-          :econnrefused,
-          :timeout,
-          :connect_timeout,
-          "max_redirect_overflow"
-        ] ->
-          for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
-          Search.Podcast.delete_index(dp.id)
-          Repo.delete!(dp)
-          IO.write("🗑️")
-          Map.replace(dp, :status_code, "deleted")
+    Enum.map(deprecated_podcasts, &process_deprecated/1)
+  end
 
-        dp.status_code == 200 ->
-          unretire(dp)
-          IO.write("🔛")
-          Map.replace(dp, :status_code, "unretired")
+  @dead_status_codes [
+    :nxdomain,
+    400,
+    403,
+    404,
+    409,
+    410,
+    500,
+    503,
+    "invalid redirection",
+    "TLS alert",
+    :closed,
+    "closed",
+    :ehostunreach,
+    :econnrefused,
+    :timeout,
+    :connect_timeout,
+    "max_redirect_overflow"
+  ]
 
-        true ->
-          dp
-      end
-    end)
+  defp process_deprecated(dp) do
+    cond do
+      dp.status_code in @dead_status_codes ->
+        for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
+        Search.Podcast.delete_index(dp.id)
+        Repo.delete!(dp)
+        IO.write("🗑️")
+        Map.replace(dp, :status_code, "deleted")
+
+      dp.status_code == 200 ->
+        unretire(dp)
+        IO.write("🔛")
+        Map.replace(dp, :status_code, "unretired")
+
+      true ->
+        dp
+    end
   end
 end
