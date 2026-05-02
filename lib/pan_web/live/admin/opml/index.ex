@@ -103,7 +103,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
                           to={opml_path(Endpoint, :import, opml.id)}
                           class="btn-primary" />
               <LinkButton.render title="Show"
-                          class="btn-ghost"
+                          class="btn-outline"
                           to={opml_path(Endpoint, :show, opml.id)} />
               <LinkButton.render title="Edit"
                           class="btn-warning"

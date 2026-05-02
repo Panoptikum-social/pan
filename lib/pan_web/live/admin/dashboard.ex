@@ -104,10 +104,10 @@ defmodule PanWeb.Live.Admin.Dashboard do
       <div class="-mt-2 mx-2 flex space-x-4 border-x border-gray p-2 max-w-4xl">
         <LinkButton.render title="Live Dashboard"
                     to={live_dashboard_path(Endpoint, :home)}
-                    class="btn-ghost" />
+                    class="btn-outline" />
         <LinkButton.render title="Statistics"
                     to={maintenance_path(Endpoint, :stats)}
-                    class="btn-ghost" />
+                    class="btn-outline" />
         <LinkButton.render title="Catch up missing thumbnailed booleans"
                     to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
                     class="btn-warning" />

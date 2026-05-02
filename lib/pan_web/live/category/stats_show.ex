@@ -67,7 +67,7 @@ defmodule PanWeb.Live.Category.StatsShow do
         <div :if={@category.children != []} class="flex flex-wrap">
           <LinkButton.render :for={subcategory <- @category.children}
                       to={category_frontend_path(@socket, :show_stats, subcategory.id)}
-                      class="btn-ghost mr-2 mb-2"
+                      class="btn-outline mr-2 mb-2"
                       icon="folder-heroicons-outline"
                       title={subcategory.title}
                       truncate={true} />

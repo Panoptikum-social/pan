@@ -83,7 +83,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Merge Users"
                          to={user_path(Endpoint, :merge)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
     </div>
     """
   end
@@ -93,7 +93,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="Merge Categories"
                          to={category_path(Endpoint, :merge)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
     </div>
     """
   end
@@ -103,7 +103,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of Invoices"
                          to={invoice_path(Endpoint, :index)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
     </div>
     """
   end
@@ -113,7 +113,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of OPMLs"
                          to={opml_path(Endpoint, :index)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
     </div>
     """
   end
@@ -123,7 +123,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render title="List of BacklogFeeds"
                          to={feed_backlog_path(Endpoint, :index)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Import 100"
                          to={feed_backlog_path(Endpoint, :import_100)}
                          class="btn-warning" />
@@ -182,16 +182,16 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Duplicates"
                          to={podcast_path(Endpoint, :duplicates)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Orphans"
                          to={podcast_path(Endpoint, :orphans)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Stale"
                          to={podcast_path(Endpoint, :stale)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Retirement"
                          to={podcast_path(Endpoint, :retirement)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Update missing counters"
                          to={podcast_path(Endpoint, :update_missing_counters)}
                          class="btn-warning" />
@@ -210,7 +210,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Remove duplicates"
                          to={episode_path(Endpoint, :remove_duplicates)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
       <LinkButton.render title="Remove javascript from shownotes"
                          to={episode_path(Endpoint, :remove_javascript_from_shownotes)}
                          class="btn-warning" />
@@ -223,7 +223,7 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render title="Merge candidates"
                          to={persona_path(Endpoint, :merge_candidates)}
-                         class="btn-ghost" />
+                         class="btn-outline" />
     </div>
     """
   end

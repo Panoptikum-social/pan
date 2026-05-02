@@ -156,7 +156,7 @@ defmodule PanWeb.Live.Search do
 
           <LinkButton.render :if={hit["_source"]["podcast_id"]}
                       to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
-                      class="btn-ghost"
+                      class="btn-outline"
                       icon="podcast-lineawesome-solid"
                       title={hit["_source"]["podcast"]["title"]}
                       truncate={true} />
@@ -171,7 +171,7 @@ defmodule PanWeb.Live.Search do
                             title={engagement["persona_name"]} />
               <LinkButton.render :if={@index != "podcasts"}
                             to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
-                            class="btn-ghost"
+                            class="btn-outline"
                             icon="podcast-lineawesome-solid"
                             title={engagement["podcast_title"]} />
               <Pill.render type="lavender">{engagement["role"]}</Pill.render>
@@ -181,7 +181,7 @@ defmodule PanWeb.Live.Search do
           <p :if={hit["_source"]["categories"]} class="leading-9">
             <LinkButton.render :for={category <- hit["_source"]["categories"]}
                         to={category_frontend_path(Endpoint, :show, category["id"])}
-                        class="btn-ghost"
+                        class="btn-outline"
                         large={false}
                         icon="folder-heroicons-outline"
                         title={category["title"]}
