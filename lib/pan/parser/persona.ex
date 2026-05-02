@@ -52,9 +52,9 @@ defmodule Pan.Parser.Persona do
   end
 
   defp find_persona(pid, uri, email) do
-    Repo.get_by(PanWeb.Persona, pid: pid) ||
-      Repo.get_by(PanWeb.Persona, pid: uri) ||
-      Repo.get_by(PanWeb.Persona, uri: uri) ||
-      Repo.one(from(p in PanWeb.Persona, where: p.email == ^email, limit: 1))
+    (pid && Repo.get_by(PanWeb.Persona, pid: pid)) ||
+      (uri && Repo.get_by(PanWeb.Persona, pid: uri)) ||
+      (uri && Repo.get_by(PanWeb.Persona, uri: uri)) ||
+      (email && Repo.one(from(p in PanWeb.Persona, where: p.email == ^email, limit: 1)))
   end
 end
