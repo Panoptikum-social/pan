@@ -91,6 +91,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
         </table>
         <button :if={@page * @per_page < @recommendations_count}
                 phx-click="load-more"
+                phx-target={@myself}
                 class="btn btn-info btn-sm m-4">
           Load more
         </button>
