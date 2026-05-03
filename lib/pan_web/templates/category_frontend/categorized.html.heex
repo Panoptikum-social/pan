@@ -1,14 +1,14 @@
-<%= link([icon("folder-open-heroicons-outline"), " ", "Panoptikum"],
-  to: category_frontend_path(@conn, :index)
-) %> /
+<.link href={category_frontend_path(@conn, :index)}>
+  {icon("folder-open-heroicons-outline")} Panoptikum
+</.link> /
 <%= if @category.parent do %>
-  <%= link([icon("folder-open-heroicons-outline"), " ", @category.parent.title],
-    to: category_frontend_path(@conn, :show, @category.parent.id)
-  ) %> /
+  <.link href={category_frontend_path(@conn, :show, @category.parent.id)}>
+    {icon("folder-open-heroicons-outline")} {@category.parent.title}
+  </.link> /
 <% end %>
-<%= link([icon("folder-open-heroicons-outline"), " ", @category.title],
-  to: category_frontend_path(@conn, :show, @category)
-) %>
+<.link href={category_frontend_path(@conn, :show, @category)}>
+  {icon("folder-open-heroicons-outline")} {@category.title}
+</.link>
 
 <h1 class="text-3xl my-4">
   <%= icon("folder-open-heroicons-outline") %>

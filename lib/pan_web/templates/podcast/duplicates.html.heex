@@ -10,18 +10,9 @@
           <%= feed.self_link_url %>
         </div>
         <div>
-          Podcast: <%= link(feed.podcast.title,
-            to: databrowser_path(@conn, :show, "podcast", feed.podcast),
-            class: "text-link hover:text-link-dark"
-          ) %>
+          Podcast: <.link href={databrowser_path(@conn, :show, "podcast", feed.podcast)} class="text-link hover:text-link-dark">{feed.podcast.title}</.link>
         </div>
-        <%= link("Delete",
-          to: podcast_path(@conn, :delete, feed.podcast),
-          method: :delete,
-          data: [confirm: "Are you sure?"],
-          class:
-            "btn btn-error btn-sm"
-        ) %>
+        <.link href={podcast_path(@conn, :delete, feed.podcast)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm">Delete</.link>
       </li>
     <% end %>
   </ul>

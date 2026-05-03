@@ -6,10 +6,7 @@
   <ul class="list-disc m-4">
     <%= for category <- @categories do %>
       <li>
-        <%= link(category.title,
-          to: moderation_frontend_path(@conn, :moderation, category),
-          class: "text-link hover:text-link-dark"
-        ) %>
+        <.link href={moderation_frontend_path(@conn, :moderation, category)} class="text-link hover:text-link-dark">{category.title}</.link>
       </li>
     <% end %>
   </ul>
