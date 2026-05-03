@@ -26,25 +26,14 @@
         <%= @best_matching_feed.self_link_title %>
       </li>
       <li class="my-4">
-        <%= link([icon("rss-heroicons-outline"), " Create alternate feed"],
-          to:
-            alternate_feed_path(@conn, :create_from_backlog,
-              feed_id: @best_matching_feed.id,
-              url: @feed_backlog.url,
-              backlog_id: @feed_backlog.id
-            ),
-          method: :post,
-          class: "border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md"
-        ) %> for <%= @best_matching_feed.self_link_url %>
+        <.link href={alternate_feed_path(@conn, :create_from_backlog, feed_id: @best_matching_feed.id, url: @feed_backlog.url, backlog_id: @feed_backlog.id)} method="post" class="border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md">
+          {icon("rss-heroicons-outline")} Create alternate feed
+        </.link> for <%= @best_matching_feed.self_link_url %>
       </li>
     <% end %>
   </ul>
 
-  <%= link("Edit",
-    to: feed_backlog_path(@conn, :edit, @feed_backlog),
-    class: "text-link hover:text-link-dark"
-  ) %> &nbsp; <%= link("Back",
-    to: feed_backlog_path(@conn, :index),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={feed_backlog_path(@conn, :edit, @feed_backlog)} class="text-link hover:text-link-dark">Edit</.link>
+  &nbsp;
+  <.link href={feed_backlog_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>

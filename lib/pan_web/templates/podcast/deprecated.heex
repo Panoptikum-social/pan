@@ -25,12 +25,9 @@
           <td><%= deprecated_podcast.episodes_count %></td>
           <td>
             <%= if Enum.at(deprecated_podcast.episodes, 0) do %>
-              <%= link(Enum.at(deprecated_podcast.episodes, 0).title,
-                to:
-                  episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id),
-                class:
-                  "btn btn-info btn-sm"
-              ) %>
+              <.link href={episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id)} class="btn btn-info btn-sm">
+                {Enum.at(deprecated_podcast.episodes, 0).title}
+              </.link>
             <% end %>
           </td>
           <td>
@@ -41,21 +38,10 @@
           <td><%= deprecated_podcast.status_code %></td>
           <td>
             <%= if deprecated_podcast.status_code not in [200, "unretired", "deleted"] do %>
-              <%= link("Delete",
-                to: podcast_path(@conn, :delete, deprecated_podcast),
-                method: :delete,
-                target: "_blank",
-                class:
-                  "btn btn-error btn-sm"
-              ) %>
+              <.link href={podcast_path(@conn, :delete, deprecated_podcast)} method="delete" target="_blank" class="btn btn-error btn-sm">Delete</.link>
             <% end %>
             <%= if deprecated_podcast.status_code == 200 do %>
-              <%= link("Unretire",
-                to: podcast_path(@conn, :unretire, deprecated_podcast),
-                target: "_blank",
-                class:
-                  "btn btn-info btn-sm"
-              ) %>
+              <.link href={podcast_path(@conn, :unretire, deprecated_podcast)} target="_blank" class="btn btn-info btn-sm">Unretire</.link>
             <% end %>
           </td>
         </tr>

@@ -8,8 +8,5 @@
     action: feed_backlog_path(@conn, :update, @feed_backlog)
   ) %>
 
-  <%= link("Back",
-    to: feed_backlog_path(@conn, :index),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={feed_backlog_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>
