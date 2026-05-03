@@ -18,7 +18,7 @@ defmodule PanWeb.Live.Episode.RecommendForm do
                 size="100" maxlength="255" label="Your recommendation" class="max-w-full input" />
           <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
         <.input type="hidden" field={f[:episode_id]} value={@episode.id} />
-        <.button type="submit">Recommend</.button>
+        <.button type="submit" class="btn btn-primary">Recommend</.button>
       </.form>
 
       <script>

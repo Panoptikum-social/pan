@@ -21,6 +21,24 @@ defmodule PanWeb.RecommendationFrontendController do
         )
       )
 
+    episode_recommendations =
+      Repo.all(
+        from(r in Recommendation,
+          where: r.user_id == ^user.id and not is_nil(r.episode_id) and is_nil(r.chapter_id),
+          order_by: [desc: :inserted_at],
+          preload: [episode: :podcast]
+        )
+      )
+
+    chapter_recommendations =
+      Repo.all(
+        from(r in Recommendation,
+          where: r.user_id == ^user.id and not is_nil(r.chapter_id),
+          order_by: [desc: :inserted_at],
+          preload: [chapter: [episode: :podcast]]
+        )
+      )
+
     subscribed_podcast_ids =
       Repo.all(
         from(s in Subscription,
@@ -44,6 +62,8 @@ defmodule PanWeb.RecommendationFrontendController do
 
     render(conn, "my_recommendations.html",
       podcast_recommendations: podcast_recommendations,
+      episode_recommendations: episode_recommendations,
+      chapter_recommendations: chapter_recommendations,
       unrecommended_podcasts: unrecommended_podcasts,
       changeset: changeset
     )

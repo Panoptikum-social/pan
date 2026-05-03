@@ -1,6 +1,6 @@
 <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
-  <div>
-    <div class="border border-gray-light rounded roundet-lg">
+  <div class="flex flex-col space-y-4">
+    <div class="border border-gray-light rounded-lg">
       <div class="bg-gray-light p-2">
         Your Podcast Recommendations
       </div>
@@ -11,9 +11,64 @@
               <.link href={podcast_frontend_path(@conn, :show, recommendation.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
                 {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.podcast.title}
               </.link>
-              <span>
-                <%= to_string(recommendation.inserted_at) %>
-              </span>
+              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
+            </div>
+            <%= recommendation.comment %>
+            <p class="text-right">
+              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
+            </p>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="border border-gray-light rounded-lg">
+      <div class="bg-info text-white p-2">
+        Your Episode Recommendations
+      </div>
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
+        <%= for recommendation <- @episode_recommendations do %>
+          <li class="mt-2 pt-2">
+            <div class="flex justify-between">
+              <div class="flex flex-col space-y-1">
+                <.link href={podcast_frontend_path(@conn, :show, recommendation.episode.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                  {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.episode.podcast.title}
+                </.link>
+                <.link href={episode_frontend_path(@conn, :show, recommendation.episode)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                  {icon("headphones-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.episode.title}
+                </.link>
+              </div>
+              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
+            </div>
+            <%= recommendation.comment %>
+            <p class="text-right">
+              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
+            </p>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="border border-gray-light rounded-lg">
+      <div class="bg-aqua text-white p-2">
+        Your Chapter Recommendations
+      </div>
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
+        <%= for recommendation <- @chapter_recommendations do %>
+          <li class="mt-2 pt-2">
+            <div class="flex justify-between">
+              <div class="flex flex-col space-y-1">
+                <.link href={podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                  {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.episode.podcast.title}
+                </.link>
+                <.link href={episode_frontend_path(@conn, :show, recommendation.chapter.episode)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                  {icon("headphones-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.episode.title}
+                </.link>
+                <span class="text-sm">
+                  {icon("indent-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.title}
+                </span>
+              </div>
+              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
             </div>
             <%= recommendation.comment %>
             <p class="text-right">
