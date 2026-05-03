@@ -10,11 +10,8 @@
 
 <%= unless @user.podcaster == true do %>
   <p>
-    You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to <%= link(
-      "Edit your data",
-      to: user_frontend_path(@conn, :edit),
-      class: "text-link hover:text-link-dark"
-    ) %> ?
+    You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to
+    <.link href={user_frontend_path(@conn, :edit)} class="text-link hover:text-link-dark">Edit your data</.link> ?
   </p>
 <% end %>
 
@@ -29,11 +26,9 @@
         <%= persona.name %> (pid: <%= persona.pid %> )
       </a>
 
-      <%= link([icon("user-heroicons-outline", class: "h-4 w-4 inline"), " ", persona.name],
-        to: persona_frontend_path(@conn, :show, persona),
-        class:
-          "bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm whitespace-nowrap truncate max-x-full"
-      ) %>
+      <.link href={persona_frontend_path(@conn, :show, persona)} class="bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm whitespace-nowrap truncate max-x-full">
+        {icon("user-heroicons-outline", class: "h-4 w-4 inline")} {persona.name}
+      </.link>
     </div>
     <div x-show="expanded" class="grid grid-cols-1 lg:grid-cols-4 gap-4">
       <div class="mt-2">
@@ -54,11 +49,7 @@
             />
           <% end %>
 
-          <%= link("Edit persona",
-            to: persona_frontend_path(@conn, :edit, persona),
-            class:
-              "self-start bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm"
-          ) %>
+          <.link href={persona_frontend_path(@conn, :edit, persona)} class="self-start bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm">Edit persona</.link>
         </div>
 
         <dl class="grid grid-cols-3 gap-x-4">
@@ -112,31 +103,14 @@
             <%= if delegate_persona.id in Enum.map(persona.delegates, fn delegate -> delegate.id end) do %>
               <li class="flex flex-wrap space-x-2 items-center">
                 <%= if pro(@user) do %>
-                  <%= link(
-                    [
-                      icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"),
-                      " Cancel Delegation"
-                    ],
-                    to:
-                      persona_frontend_path(@conn, :toggle_delegation, persona.id,
-                        delegate_id: delegate_persona.id
-                      ),
-                    class: "bg-warning text-white border border-gray-dark hover:bg-warning-light
-                       inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm my-1"
-                  ) %>
+                  <.link href={persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id)} class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm my-1">
+                    {icon("unlink-lineawesome-solid", class: "h-4 w-4 inline")} Cancel Delegation
+                  </.link>
                 <% end %>
                 <%= icon("link-lineawesome-solid") %>
-                <%= link(
-                  [
-                    icon("user-heroicons-outline", class: "h-4 w-4 inline"),
-                    " ",
-                    delegate_persona.name
-                  ],
-                  to: persona_frontend_path(@conn, :show, delegate_persona),
-                  class:
-                    "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
-                                                                            inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                ) %>
+                <.link href={persona_frontend_path(@conn, :show, delegate_persona)} class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm">
+                  {icon("user-heroicons-outline", class: "h-4 w-4 inline")} {delegate_persona.name}
+                </.link>
                 <span>(pid: <%= delegate_persona.pid %> )</span>
               </li>
             <% end %>
@@ -147,27 +121,14 @@
               <%= if delegate_persona != persona do %>
                 <li class="flex flex-wrap space-x-2 items-center">
                   <%= if pro(@user) do %>
-                    <%= link(
-                      [icon("link-heroicons-outline", class: "h-4 w-4 inline"), " Delegate"],
-                      to:
-                        persona_frontend_path(@conn, :toggle_delegation, persona.id,
-                          delegate_id: delegate_persona.id
-                        ),
-                      class: "bg-primary text-white border border-gray-dark hover:bg-primary-light
-                         inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
-                    ) %>
+                    <.link href={persona_frontend_path(@conn, :toggle_delegation, persona.id, delegate_id: delegate_persona.id)} class="bg-primary text-white border border-gray-dark hover:bg-primary-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1">
+                      {icon("link-heroicons-outline", class: "h-4 w-4 inline")} Delegate
+                    </.link>
                   <% end %>
                   <%= icon("unlink-lineawesome-solid") %>
-                  <%= link(
-                    [
-                      icon("user-heroicons-outline", class: "h-4 w-4 inline"),
-                      " ",
-                      delegate_persona.name
-                    ],
-                    to: persona_frontend_path(@conn, :show, delegate_persona),
-                    class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
-                       inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                  ) %>
+                  <.link href={persona_frontend_path(@conn, :show, delegate_persona)} class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm">
+                    {icon("user-heroicons-outline", class: "h-4 w-4 inline")} {delegate_persona.name}
+                  </.link>
                   <span>(pid: <%= delegate_persona.pid %> )</span>
                 </li>
               <% end %>
@@ -186,27 +147,14 @@
           <%= if persona.redirect do %>
             <li class="flex flex-wrap space-x-2 items-center">
               <%= if pro(@user) do %>
-                <%= link(
-                  [
-                    icon("unlink-lineawesome-solid", class: "h-4 w-4 inline"),
-                    " Cancel Redirection"
-                  ],
-                  to: persona_frontend_path(@conn, :cancel_redirect, persona.id),
-                  class: "bg-warning text-white border border-gray-dark hover:bg-warning-light
-                     inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
-                ) %>
+                <.link href={persona_frontend_path(@conn, :cancel_redirect, persona.id)} class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1">
+                  {icon("unlink-lineawesome-solid", class: "h-4 w-4 inline")} Cancel Redirection
+                </.link>
               <% end %>
               <%= icon("arrow-sm-right-heroicons-outline") %>
-              <%= link(
-                [
-                  icon("user-heroicons-outline", class: "h-4 w-4 inline"),
-                  " ",
-                  persona.redirect.name
-                ],
-                to: persona_frontend_path(@conn, :show, persona.redirect.pid),
-                class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
-                   inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-              ) %>
+              <.link href={persona_frontend_path(@conn, :show, persona.redirect.pid)} class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm">
+                {icon("user-heroicons-outline", class: "h-4 w-4 inline")} {persona.redirect.name}
+              </.link>
               <span>(pid: <%= persona.redirect.pid %> )</span>
             </li>
           <% else %>
@@ -216,30 +164,14 @@
               <%= if target_persona.id != persona.id do %>
                 <li class="flex flex-wrap space-x-2 items-center">
                   <%= if pro(@user) do %>
-                    <%= link(
-                      [
-                        icon("arrow-sm-right-heroicons-outline", class: "h-4 w-4 inline"),
-                        " Redirect"
-                      ],
-                      to:
-                        persona_frontend_path(@conn, :redirect, persona.id,
-                          target_id: target_persona.id
-                        ),
-                      class: "bg-danger text-white border border-gray-dark hover:bg-danger-light
-                         inline-block shadow max-w-full py-1 px-2 rounded text-sm mb-1"
-                    ) %>
+                    <.link href={persona_frontend_path(@conn, :redirect, persona.id, target_id: target_persona.id)} class="bg-danger text-white border border-gray-dark hover:bg-danger-light inline-block shadow max-w-full py-1 px-2 rounded text-sm mb-1">
+                      {icon("arrow-sm-right-heroicons-outline", class: "h-4 w-4 inline")} Redirect
+                    </.link>
                   <% end %>
                   <%= icon("unlink-lineawesome-solid") %>
-                  <%= link(
-                    [
-                      icon("user-heroicons-outline", class: "h-4 w-4 inline"),
-                      " ",
-                      target_persona.name
-                    ],
-                    to: persona_frontend_path(@conn, :show, target_persona.id),
-                    class: "bg-lavender text-white border border-gray-dark hover:bg-lavender-light
-                       inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                  ) %>
+                  <.link href={persona_frontend_path(@conn, :show, target_persona.id)} class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm">
+                    {icon("user-heroicons-outline", class: "h-4 w-4 inline")} {target_persona.name}
+                  </.link>
                   <span>(pid: <%= target_persona.pid %> )</span>
                 </li>
               <% end %>

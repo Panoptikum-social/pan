@@ -8,21 +8,19 @@
 
 <ul>
   <li class="py-1">
-    <%= link([nav_icon("map-heroicons-outline"), " Categories"],
-      to: category_frontend_path(@conn, :index),
-      title: "Categories",
-      class: "visible-xs-inline"
-    ) %>
+    <.link href={category_frontend_path(@conn, :index)} title="Categories" class="visible-xs-inline">
+      {nav_icon("map-heroicons-outline")} Categories
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("beaker-heroicons-outline"), " Random Recommendation"],
-      to: recommendation_frontend_path(@conn, :random)
-    ) %>
+    <.link href={recommendation_frontend_path(@conn, :random)}>
+      {nav_icon("beaker-heroicons-outline")} Random Recommendation
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("gift-heroicons-outline"), " Latest Recommendations"],
-      to: recommendation_frontend_path(@conn, :index)
-    ) %>
+    <.link href={recommendation_frontend_path(@conn, :index)}>
+      {nav_icon("gift-heroicons-outline")} Latest Recommendations
+    </.link>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/">
@@ -35,21 +33,21 @@
     </a>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("user-astronaut-lineawesome-solid"), " Podcasters"],
-      to: persona_frontend_path(@conn, :index)
-    ) %>
+    <.link href={persona_frontend_path(@conn, :index)}>
+      {nav_icon("user-astronaut-lineawesome-solid")} Podcasters
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("user-heroicons-outline"), " Users"],
-      to: user_frontend_path(@conn, :index)
-    ) %>
+    <.link href={user_frontend_path(@conn, :index)}>
+      {nav_icon("user-heroicons-outline")} Users
+    </.link>
   </li>
 
   <%= if @current_user do %>
     <%= if @current_user.admin do %>
       <li class="py-1">
         <%= nav_icon("adjustments-heroicons-outline") %>
-        <%= link("Administration", to: dashboard_path(@conn, :home)) %>
+        <.link href={dashboard_path(@conn, :home)}>Administration</.link>
       </li>
     <% end %>
 
@@ -58,21 +56,20 @@
     </li>
     <li class="border-t-2"></li>
     <li class="py-1">
-      <%= link([nav_icon("logout-heroicons-outline"), " Log Out"],
-        to: session_path(@conn, :delete, @current_user),
-        method: :delete
-      ) %>
+      <.link href={session_path(@conn, :delete, @current_user)} method="delete">
+        {nav_icon("logout-heroicons-outline")} Log Out
+      </.link>
     </li>
   <% else %>
     <li class="py-1">
-      <%= link([nav_icon("pencil-heroicons-outline"), " Sign Up"],
-        to: user_frontend_path(@conn, :new)
-      ) %>
+      <.link href={user_frontend_path(@conn, :new)}>
+        {nav_icon("pencil-heroicons-outline")} Sign Up
+      </.link>
     </li>
     <li class="py-1">
-      <%= link([nav_icon("login-heroicons-outline"), " Log In"],
-        to: session_path(@conn, :new)
-      ) %>
+      <.link href={session_path(@conn, :new)}>
+        {nav_icon("login-heroicons-outline")} Log In
+      </.link>
     </li>
   <% end %>
 </ul>

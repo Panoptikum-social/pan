@@ -11,9 +11,5 @@
     )
     |> Phoenix.HTML.raw() %>
   </div>
-  <%= link("My profile",
-    to: user_frontend_path(@conn, :my_profile),
-    class:
-      "border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-2 px-3 rounded"
-  ) %>
+  <.link href={user_frontend_path(@conn, :my_profile)} class="border border-gray-dark bg-primary hover:bg-primary-light text-white text-sm py-2 px-3 rounded">My profile</.link>
 </div>

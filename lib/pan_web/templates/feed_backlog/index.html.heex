@@ -1,26 +1,9 @@
 <div class="m-4">
   <div class="flex justify-end space-x-4">
-    <%= link("Import 100",
-      to: feed_backlog_path(@conn, :import_100),
-      class:
-        "btn btn-warning"
-    ) %>
-    <%= link("Subscribe All",
-      to: feed_backlog_path(@conn, :subscribe),
-      class:
-        "border border-gray btn btn-primary"
-    ) %>
-    <%= link("Subscribe 50",
-      to: feed_backlog_path(@conn, :subscribe50),
-      class:
-        "border border-gray btn btn-primary"
-    ) %>
-    <%= link("Delete All (from Itunes user)",
-      to: feed_backlog_path(@conn, :delete_all),
-      method: :delete,
-      data: [confirm: "Are you sure?"],
-      class: "btn btn-error"
-    ) %>
+    <.link href={feed_backlog_path(@conn, :import_100)} class="btn btn-warning">Import 100</.link>
+    <.link href={feed_backlog_path(@conn, :subscribe)} class="border border-gray btn btn-primary">Subscribe All</.link>
+    <.link href={feed_backlog_path(@conn, :subscribe50)} class="border border-gray btn btn-primary">Subscribe 50</.link>
+    <.link href={feed_backlog_path(@conn, :delete_all)} method="delete" data-confirm="Are you sure?" class="btn btn-error">Delete All (from Itunes user)</.link>
   </div>
 
   <h1 class="text-3xl">
@@ -44,32 +27,16 @@
           <td><%= feed_backlog.id %></td>
           <td class="leading-6">
             <%= if URI.parse(feed_backlog.url).scheme do %>
-              <%= link(feed_backlog.url,
-                to: String.downcase(feed_backlog.url),
-                target: "_blank",
-                class: "text-link hover:text-link-dark"
-              ) %>
+              <.link href={String.downcase(feed_backlog.url)} target="_blank" class="text-link hover:text-link-dark">{feed_backlog.url}</.link>
               <br />
             <% else %>
               Error: <%= feed_backlog.url %>
             <% end %>
 
             <%= if feed = Feed.clean_and_best_matching(feed_backlog.url) do %>
-              <%= link(
-                [
-                  icon("rss-heroicons-outline", class: "align-text-top w-4 h-4 inline"),
-                  " Create alternate feed"
-                ],
-                to:
-                  alternate_feed_path(@conn, :create_from_backlog,
-                    feed_id: feed.id,
-                    url: feed_backlog.url,
-                    backlog_id: feed_backlog.id
-                  ),
-                method: :post,
-                class:
-                  "border border-gray bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
-              ) %> for <%= feed.self_link_url %>
+              <.link href={alternate_feed_path(@conn, :create_from_backlog, feed_id: feed.id, url: feed_backlog.url, backlog_id: feed_backlog.id)} method="post" class="border border-gray bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded">
+                {icon("rss-heroicons-outline", class: "align-text-top w-4 h-4 inline")} Create alternate feed
+              </.link> for <%= feed.self_link_url %>
             <% end %>
           </td>
           <td><%= feed_backlog.feed_generator %></td>
@@ -77,36 +44,15 @@
           <td><%= feed_backlog.user_id %></td>
 
           <td class="whitespace-nowrap">
-            <%= link("Show",
-              to: feed_backlog_path(@conn, :show, feed_backlog),
-              class:
-                "btn btn-info btn-sm"
-            ) %>
-            <%= link("Edit",
-              to: feed_backlog_path(@conn, :edit, feed_backlog),
-              class:
-                "btn btn-warning btn-sm"
-            ) %>
-            <%= link("Delete",
-              to: feed_backlog_path(@conn, :delete, feed_backlog),
-              method: :delete,
-              data: [confirm: "Are you sure?"],
-              class:
-                "btn btn-error btn-sm"
-            ) %>
-            <%= link("Import",
-              to: feed_backlog_path(@conn, :import, feed_backlog),
-              class:
-                "btn btn-primary btn-sm"
-            ) %>
+            <.link href={feed_backlog_path(@conn, :show, feed_backlog)} class="btn btn-info btn-sm">Show</.link>
+            <.link href={feed_backlog_path(@conn, :edit, feed_backlog)} class="btn btn-warning btn-sm">Edit</.link>
+            <.link href={feed_backlog_path(@conn, :delete, feed_backlog)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm">Delete</.link>
+            <.link href={feed_backlog_path(@conn, :import, feed_backlog)} class="btn btn-primary btn-sm">Import</.link>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <%= link("New feed backlog",
-    to: feed_backlog_path(@conn, :new),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={feed_backlog_path(@conn, :new)} class="text-link hover:text-link-dark">New feed backlog</.link>
 </div>
