@@ -3,8 +3,5 @@
 </div>
 
 <p class="my-4">
-  <%= link("My profile",
-    to: user_frontend_path(@conn, :my_profile),
-    class: "border border-black btn btn-primary"
-  ) %>
+  <.link href={user_frontend_path(@conn, :my_profile)} class="border border-black btn btn-primary">My profile</.link>
 </p>

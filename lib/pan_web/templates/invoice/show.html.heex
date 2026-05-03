@@ -25,12 +25,6 @@
     </li>
   </ul>
 
-  <%= link("Edit",
-    to: invoice_path(@conn, :edit, @invoice),
-    class: "text-link hover:text-link-dark"
-  ) %>
-  <%= link("Back",
-    to: invoice_path(@conn, :index),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={invoice_path(@conn, :edit, @invoice)} class="text-link hover:text-link-dark">Edit</.link>
+  <.link href={invoice_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>

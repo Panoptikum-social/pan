@@ -25,12 +25,6 @@
     </li>
   </ul>
 
-  <%= link("Edit",
-    to: opml_path(@conn, :edit, @opml),
-    class: "text-link hover:text-link-dark"
-  ) %>
-  <%= link("Back",
-    to: opml_path(@conn, :index),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={opml_path(@conn, :edit, @opml)} class="text-link hover:text-link-dark">Edit</.link>
+  <.link href={opml_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>
