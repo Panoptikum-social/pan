@@ -4,135 +4,75 @@
 
 <p class="mt-8 mb-4">
   <div class="float-right">
-    Manage &nbsp; <%= link([icon("user-circle-heroicons-outline"), " My Profile"],
-      to: user_frontend_path(@conn, :my_profile),
-      class:
-        "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
-      target: "_blank"
-    ) %>
+    Manage &nbsp;
+    <.link href={user_frontend_path(@conn, :my_profile)} target="_blank" class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md">
+      {icon("user-circle-heroicons-outline")} My Profile
+    </.link>
   </div>
   <h2 class="text-2xl">Account</h2>
 </p>
 
 <p class="my-4">
-  <%= link([icon("document-download-heroicons-outline"), " Download"],
-    to: user_json_download_path(@conn, :download),
-    class: "border border-gray btn btn-primary"
-  ) %> all my data as JSON-File
+  <.link href={user_json_download_path(@conn, :download)} class="border border-gray btn btn-primary">
+    {icon("document-download-heroicons-outline")} Download
+  </.link> all my data as JSON-File
 </p>
 
 <dl class="grid grid-cols-2 gap-x-4 max-w-4xl">
-  <dt class="text-right">
-    Name
-  </dt>
-  <dd>
-    <%= @user.name %>
-  </dd>
-  <dt class="text-right">
-    Username
-  </dt>
-  <dd>
-    <%= @user.username %>
-  </dd>
-  <dt class="text-right">
-    Email
-  </dt>
-  <dd>
-    <%= @user.email %>
-  </dd>
-  <dt class="text-right">
-    Email adress confirmed?
-  </dt>
-  <dd>
-    <%= @user.email_confirmed %>
-  </dd>
-  <dt class="text-right">
-    Is podcaster?
-  </dt>
-  <dd>
-    <%= @user.podcaster %>
-  </dd>
-  <dt class="text-right">
-    Shares subscriptions?
-  </dt>
-  <dd>
-    <%= @user.share_subscriptions %>
-  </dd>
-  <dt class="text-right">
-    Shares follows?
-  </dt>
-  <dd>
-    <%= @user.share_follows %>
-  </dd>
-  <dt class="text-right">
-    Pro account until
-  </dt>
-  <dd>
-    <%= if @user.pro_until, do: Calendar.strftime(@user.pro_until, "%x %H:%M") %>
-  </dd>
-  <dt class="text-right">
-    Billing address
-  </dt>
+  <dt class="text-right">Name</dt>
+  <dd><%= @user.name %></dd>
+  <dt class="text-right">Username</dt>
+  <dd><%= @user.username %></dd>
+  <dt class="text-right">Email</dt>
+  <dd><%= @user.email %></dd>
+  <dt class="text-right">Email adress confirmed?</dt>
+  <dd><%= @user.email_confirmed %></dd>
+  <dt class="text-right">Is podcaster?</dt>
+  <dd><%= @user.podcaster %></dd>
+  <dt class="text-right">Shares subscriptions?</dt>
+  <dd><%= @user.share_subscriptions %></dd>
+  <dt class="text-right">Shares follows?</dt>
+  <dd><%= @user.share_follows %></dd>
+  <dt class="text-right">Pro account until</dt>
+  <dd><%= if @user.pro_until, do: Calendar.strftime(@user.pro_until, "%x %H:%M") %></dd>
+  <dt class="text-right">Billing address</dt>
   <dd>
     <pre class="text-mono p-2 border border-gray-dark bg-gray-lighter"><%= @user.billing_address %>
     </pre>
   </dd>
-  <dt class="text-right">
-    Payment reference
-  </dt>
-  <dd>
-    <%= @user.payment_reference %>
-  </dd>
-  <dt class="text-right">
-    Wants a paper bill?
-  </dt>
-  <dd>
-    <%= @user.paper_bill %>
-  </dd>
+  <dt class="text-right">Payment reference</dt>
+  <dd><%= @user.payment_reference %></dd>
+  <dt class="text-right">Wants a paper bill?</dt>
+  <dd><%= @user.paper_bill %></dd>
 </dl>
 
 <div class="mt-8 mb-4">
   <div class="float-right">
-    Manage &nbsp; <%= link([icon("document-download-heroicons-outline"), " My OPMLs"],
-      to: opml_frontend_path(@conn, :index),
-      class:
-        "border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md",
-      target: "_blank"
-    ) %>
+    Manage &nbsp;
+    <.link href={opml_frontend_path(@conn, :index)} target="_blank" class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md">
+      {icon("document-download-heroicons-outline")} My OPMLs
+    </.link>
   </div>
   <h2 class="text-2xl">OPML Files</h2>
 </div>
 
 <ul class="list-disc ml-4">
   <%= for opml <- @user.opmls do %>
-    <li>
-      <%= opml.filename %>
-    </li>
+    <li><%= opml.filename %></li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Personas
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Personas</h2>
 You can even delete all manifestations as personas, you created so far, at once, by clicking
-&nbsp; <%= link([icon("exclamation-heroicons-outline"), " Delete all manifestations"],
-  to: manifestation_frontend_path(@conn, :delete_all),
-  method: :delete,
-  data: [confirm: "Are you sure? All manifestations will be deleted!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+&nbsp;
+<.link href={manifestation_frontend_path(@conn, :delete_all)} method="delete" data-confirm="Are you sure? All manifestations will be deleted!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Delete all manifestations
+</.link>
 
 <%= for persona <- @user.personas do %>
   <h3 class="text-xl my-4">
     Persona <%= persona.name %>
-    <%= link("Delete Manifestation",
-      to: manifestation_frontend_path(@conn, :delete, persona.id),
-      method: :delete,
-      data: [confirm: "Are you sure?"],
-      class:
-        "border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap"
-    ) %>
+    <.link href={manifestation_frontend_path(@conn, :delete, persona.id)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap">Delete Manifestation</.link>
   </h3>
 
   <dl class="grid grid-cols-2 gap-x-6 max-w-2xl">
@@ -156,13 +96,7 @@ You can even delete all manifestations as personas, you created so far, at once,
 <%= for persona <- @user.user_personas do %>
   <h3 class="text-xl my-4">
     Persona <%= persona.name %>
-    <%= link("Disconnect Persona",
-      to: persona_frontend_path(@conn, :disconnect, persona.id),
-      method: :post,
-      data: [confirm: "Are you sure?"],
-      class:
-        "border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap"
-    ) %>
+    <.link href={persona_frontend_path(@conn, :disconnect, persona.id)} method="post" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap">Disconnect Persona</.link>
   </h3>
 
   <dl class="grid grid-cols-2 gap-x-6 max-w-2xl">
@@ -183,16 +117,14 @@ You can even delete all manifestations as personas, you created so far, at once,
   </dl>
 <% end %>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Invoices
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Invoices</h2>
 Invoices cannot be deleted, we have to store them due to fiscal regulations.
 <%= for invoice <- @user.invoices do %>
   <dl class="grid grid-cols-2 gap-x-6 max-w-2xl">
     <dt class="text-right">Date</dt>
     <dd><%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %></dd>
     <dt class="text-right">File</dt>
-    <dd><%= link(invoice.filename, to: invoice_frontend_path(@conn, :download, invoice)) %></dd>
+    <dd><.link href={invoice_frontend_path(@conn, :download, invoice)}>{invoice.filename}</.link></dd>
   </dl>
   <br />
 <% end %>
@@ -203,319 +135,209 @@ Invoices cannot be deleted, we have to store them due to fiscal regulations.
   Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow.
 </p>
 You can even delete all the subscriptions, you created so far, at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Delete all subscriptions"],
-  to: subscription_frontend_path(@conn, :delete_all),
-  method: :delete,
-  data: [confirm: "Are you sure? All subscriptions will be deleted!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={subscription_frontend_path(@conn, :delete_all)} method="delete" data-confirm="Are you sure? All subscriptions will be deleted!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Delete all subscriptions
+</.link>
 
 <ul class="list-disc m-4">
   <%= for podcast <- @user.podcasts_i_subscribed do %>
     <li>
-      <%= link(podcast.title,
-        to: podcast_frontend_path(@conn, :show, podcast),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={podcast_frontend_path(@conn, :show, podcast)} target="_blank" class="text-link hover:text-link-dark">{podcast.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl my-4">
-  Followed Podcasts
-</h2>
+<h2 class="text-2xl my-4">Followed Podcasts</h2>
 
 <p class="mb-2">
   Click on the podcast link to open the podcast show page in a new tab
   to un/like, un/subscribe, un/follow.
 </p>
 You can even unfollow all the podcasts, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unfollow all podcasts"],
-  to: follow_frontend_path(@conn, :unfollow_all_podcasts),
-  method: :delete,
-  data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={follow_frontend_path(@conn, :unfollow_all_podcasts)} method="delete" data-confirm="Are you sure? All podcasts will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unfollow all podcasts
+</.link>
 
 <ul class="list-disc m-4">
   <%= for podcast <- @user.podcasts_i_follow do %>
     <li>
-      <%= link(podcast.title,
-        to: podcast_frontend_path(@conn, :show, podcast),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={podcast_frontend_path(@conn, :show, podcast)} target="_blank" class="text-link hover:text-link-dark">{podcast.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Podcasts
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Podcasts</h2>
 
 <p class="mb-2">
   Click on the podcast link to open the podcast show page in a new tab
   to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the podcasts, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all podcasts"],
-  to: like_frontend_path(@conn, :unlike_all_podcasts),
-  method: :delete,
-  data: [confirm: "Are you sure? All podcasts will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_podcasts)} method="delete" data-confirm="Are you sure? All podcasts will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all podcasts
+</.link>
 
 <ul class="list-disc m-4">
   <%= for podcast <- @user.podcasts_i_like do %>
     <li>
-      <%= link(podcast.title,
-        to: podcast_frontend_path(@conn, :show, podcast),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={podcast_frontend_path(@conn, :show, podcast)} target="_blank" class="text-link hover:text-link-dark">{podcast.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Episodes
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Episodes</h2>
 
 <p class="mb-2">
   Click on the episode link to open the episode show page in a new tab
   to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the episodes, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all episodes"],
-  to: like_frontend_path(@conn, :unlike_all_episodes),
-  method: :delete,
-  data: [confirm: "Are you sure? All episodes will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_episodes)} method="delete" data-confirm="Are you sure? All episodes will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all episodes
+</.link>
 
 <ul class="list-disc m-4">
   <%= for episode <- @user.episodes_i_like do %>
     <li>
-      <%= link(episode.title,
-        to: episode_frontend_path(@conn, :show, episode),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={episode_frontend_path(@conn, :show, episode)} target="_blank" class="text-link hover:text-link-dark">{episode.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Chapters
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Chapters</h2>
 
 <p class="mb-2">
   Click on the chaptere link to open the episode show page in a new tab
   to un/like, un/subscribe, un/follow.
 </p>
 You can even unlike all the chapters, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all chapters"],
-  to: like_frontend_path(@conn, :unlike_all_chapters),
-  method: :delete,
-  data: [confirm: "Are you sure? All chapters will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_chapters)} method="delete" data-confirm="Are you sure? All chapters will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all chapters
+</.link>
 
 <ul class="list-disc m-4">
   <%= for chapter <- @user.chapters_i_like do %>
     <li>
-      <%= link(chapter.title,
-        to: episode_frontend_path(@conn, :show, chapter.episode),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={episode_frontend_path(@conn, :show, chapter.episode)} target="_blank" class="text-link hover:text-link-dark">{chapter.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Users
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Users</h2>
 
 <p class="mb-2">
   Click on the user link to open the user show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unlike all the users, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all users"],
-  to: like_frontend_path(@conn, :unlike_all_users),
-  method: :delete,
-  data: [confirm: "Are you sure? All users will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_users)} method="delete" data-confirm="Are you sure? All users will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all users
+</.link>
 
 <ul class="list-disc m-4">
   <%= for user <- @user.users_i_like do %>
     <li>
-      <%= link(user.name,
-        to: user_frontend_path(@conn, :show, user),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={user_frontend_path(@conn, :show, user)} target="_blank" class="text-link hover:text-link-dark">{user.name}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Followed Users
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Followed Users</h2>
 
 <p class="mb-2">
   Click on the user link to open the user show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unfollow all the users, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unfollow all users"],
-  to: follow_frontend_path(@conn, :unfollow_all_users),
-  method: :delete,
-  data: [confirm: "Are you sure? All users will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={follow_frontend_path(@conn, :unfollow_all_users)} method="delete" data-confirm="Are you sure? All users will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unfollow all users
+</.link>
 
 <ul class="list-disc m-4">
   <%= for user <- @user.users_i_follow do %>
     <li>
-      <%= link(user.name,
-        to: user_frontend_path(@conn, :show, user),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={user_frontend_path(@conn, :show, user)} target="_blank" class="text-link hover:text-link-dark">{user.name}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Followed Personas
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Followed Personas</h2>
 
 <p class="mb-2">
   Click on the persona link to open the persona show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unfollow all the personas, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unfollow all personas"],
-  to: follow_frontend_path(@conn, :unfollow_all_personas),
-  method: :delete,
-  data: [confirm: "Are you sure? All personas will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={follow_frontend_path(@conn, :unfollow_all_personas)} method="delete" data-confirm="Are you sure? All personas will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unfollow all personas
+</.link>
 
 <ul class="list-disc m-4">
   <%= for persona <- @user.personas_i_follow do %>
     <li>
-      <%= link(persona.name,
-        to: persona_frontend_path(@conn, :show, persona),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={persona_frontend_path(@conn, :show, persona)} target="_blank" class="text-link hover:text-link-dark">{persona.name}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Personas
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Personas</h2>
 
 <p class="mb-2">
   Click on the persona link to open the persona show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unlike all the personas, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all personas"],
-  to: like_frontend_path(@conn, :unlike_all_personas),
-  method: :delete,
-  data: [confirm: "Are you sure? All personas will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_personas)} method="delete" data-confirm="Are you sure? All personas will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all personas
+</.link>
 
 <ul class="list-disc m-4">
   <%= for persona <- @user.personas_i_like do %>
     <li>
-      <%= link(persona.name,
-        to: persona_frontend_path(@conn, :show, persona),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={persona_frontend_path(@conn, :show, persona)} target="_blank" class="text-link hover:text-link-dark">{persona.name}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Followed Categories
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Followed Categories</h2>
 
 <p class="mb-2">
   Click on the category link to open the category show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unfollow all the categories, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unfollow all categories"],
-  to: follow_frontend_path(@conn, :unfollow_all_categories),
-  method: :delete,
-  data: [confirm: "Are you sure? All categories will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={follow_frontend_path(@conn, :unfollow_all_categories)} method="delete" data-confirm="Are you sure? All categories will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unfollow all categories
+</.link>
 
 <ul class="list-disc m-4">
   <%= for category <- @user.categories_i_follow do %>
     <li>
-      <%= link(category.title,
-        to: category_frontend_path(@conn, :show, category),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={category_frontend_path(@conn, :show, category)} target="_blank" class="text-link hover:text-link-dark">{category.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Liked Categories
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Liked Categories</h2>
 
 <p class="mb-2">
   Click on the category link to open the category show page in a new tab
   to un/like, un/follow.
 </p>
 You can even unlike all the categories, you followed so far at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Unlike all categories"],
-  to: like_frontend_path(@conn, :unlike_all_categories),
-  method: :delete,
-  data: [confirm: "Are you sure? All categories will be unfollowed!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={like_frontend_path(@conn, :unlike_all_categories)} method="delete" data-confirm="Are you sure? All categories will be unfollowed!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Unlike all categories
+</.link>
 
 <ul class="list-disc m-4">
   <%= for category <- @user.categories_i_like do %>
     <li>
-      <%= link(category.title,
-        to: category_frontend_path(@conn, :show, category),
-        class: "text-link hover:text-link-dark",
-        target: "_blank"
-      ) %>
+      <.link href={category_frontend_path(@conn, :show, category)} target="_blank" class="text-link hover:text-link-dark">{category.title}</.link>
     </li>
   <% end %>
 </ul>
 
-<h2 class="text-2xl mb-4 mt-8">
-  Recommendations
-</h2>
+<h2 class="text-2xl mb-4 mt-8">Recommendations</h2>
 
 <p class="mb-2">
   You can delete a recommendation by clicking the Delete button next to it. <br />
@@ -523,13 +345,9 @@ You can even unlike all the categories, you followed so far at once, by clicking
   podcast or episode in a new tab, respectively.
 </p>
 You can even delete all the recommendations, you created so far, at once, by clicking &nbsp;
-<%= link([icon("exclamation-heroicons-outline"), " Delete all recommendations"],
-  to: recommendation_frontend_path(@conn, :delete_all),
-  method: :delete,
-  data: [confirm: "Are you sure? All recommendations will be deleted!"],
-  class:
-    "btn btn-error whitespace-nowrap leading-10"
-) %>
+<.link href={recommendation_frontend_path(@conn, :delete_all)} method="delete" data-confirm="Are you sure? All recommendations will be deleted!" class="btn btn-error whitespace-nowrap leading-10">
+  {icon("exclamation-heroicons-outline")} Delete all recommendations
+</.link>
 
 <table class="table table-zebra table-xs my-4 w-auto">
   <thead>
@@ -549,23 +367,11 @@ You can even delete all the recommendations, you created so far, at once, by cli
         <td>
           <%= cond do %>
             <% recommendation.podcast -> %>
-              Podcast: <%= link(recommendation.podcast.title,
-                to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                class: "text-link hover:text-link-dark",
-                target: "_blank"
-              ) %>
+              Podcast: <.link href={podcast_frontend_path(@conn, :show, recommendation.podcast)} target="_blank" class="text-link hover:text-link-dark">{recommendation.podcast.title}</.link>
             <% recommendation.episode -> %>
-              Episode: <%= link(recommendation.episode.title,
-                to: episode_frontend_path(@conn, :show, recommendation.episode),
-                class: "text-link hover:text-link-dark",
-                target: "_blank"
-              ) %>
+              Episode: <.link href={episode_frontend_path(@conn, :show, recommendation.episode)} target="_blank" class="text-link hover:text-link-dark">{recommendation.episode.title}</.link>
             <% recommendation.chapter -> %>
-              <%= link(recommendation.chapter.title,
-                to: episode_frontend_path(@conn, :show, recommendation.chapter.episode_id),
-                class: "text-link hover:text-link-dark",
-                target: "_blank"
-              ) %>
+              <.link href={episode_frontend_path(@conn, :show, recommendation.chapter.episode_id)} target="_blank" class="text-link hover:text-link-dark">{recommendation.chapter.title}</.link>
           <% end %>
         </td>
         <td>
@@ -577,13 +383,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
       <tr>
         <td><%= recommendation.comment %></td>
         <td class="text-center">
-          <%= link("Delete",
-            to: recommendation_frontend_path(@conn, :delete, recommendation),
-            method: :delete,
-            data: [confirm: "Are you sure?"],
-            class:
-              "border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
-          ) %>
+          <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
         </td>
       </tr>
     <% end %>
@@ -600,10 +400,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
     <br />We would be really sad to see you leave. But you can always sign up for a new account.
   </p>
 
-  <%= link([icon("exclamation-heroicons-outline"), " Delete my account"],
-    to: user_frontend_path(@conn, :delete_my_account),
-    method: :delete,
-    data: [confirm: "Are you sure? Your account would be deleted!"],
-    class: "btn btn-error"
-  ) %>
+  <.link href={user_frontend_path(@conn, :delete_my_account)} method="delete" data-confirm="Are you sure? Your account would be deleted!" class="btn btn-error">
+    {icon("exclamation-heroicons-outline")} Delete my account
+  </.link>
 </div>

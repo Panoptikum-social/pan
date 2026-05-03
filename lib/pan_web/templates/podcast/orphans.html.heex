@@ -1,10 +1,6 @@
 <div class="m-4">
   <div class="float-right">
-    <%= link("Assign all to 'Unsorted'",
-      to: podcast_path(@conn, :assign_to_unsorted),
-      class:
-        "btn btn-warning btn-sm"
-    ) %>
+    <.link href={podcast_path(@conn, :assign_to_unsorted)} class="btn btn-warning btn-sm">Assign all to 'Unsorted'</.link>
   </div>
 
   <h1 class="text-3xl">Orphans</h1>
@@ -40,23 +36,9 @@
           <td><%= podcast.last_build_date %></td>
           <td><%= podcast.update_paused %></td>
           <td>
-            <%= link("Show",
-              to: databrowser_path(@conn, :show, "podcast", podcast),
-              class:
-                "btn btn-primary btn-sm"
-            ) %>
-            <%= link("Edit",
-              to: databrowser_path(@conn, :edit, "podcast", podcast),
-              class:
-                "btn btn-warning btn-sm"
-            ) %>
-            <%= link("Delete",
-              to: podcast_path(@conn, :delete, podcast),
-              method: :delete,
-              data: [confirm: "Are you sure?"],
-              class:
-                "btn btn-error btn-sm"
-            ) %>
+            <.link href={databrowser_path(@conn, :show, "podcast", podcast)} class="btn btn-primary btn-sm">Show</.link>
+            <.link href={databrowser_path(@conn, :edit, "podcast", podcast)} class="btn btn-warning btn-sm">Edit</.link>
+            <.link href={podcast_path(@conn, :delete, podcast)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm">Delete</.link>
           </td>
         </tr>
       <% end %>
@@ -95,23 +77,9 @@
           <td><%= podcast.last_build_date %></td>
           <td><%= podcast.update_paused %></td>
           <td>
-            <%= link("Show",
-              to: databrowser_path(@conn, :show, "podcast", podcast),
-              class:
-                "btn btn-primary btn-sm"
-            ) %>
-            <%= link("Edit",
-              to: databrowser_path(@conn, :edit, "podcast", podcast),
-              class:
-                "btn btn-warning btn-sm"
-            ) %>
-            <%= link("Delete",
-              to: podcast_path(@conn, :delete, podcast),
-              method: :delete,
-              data: [confirm: "Are you sure?"],
-              class:
-                "btn btn-error btn-sm"
-            ) %>
+            <.link href={databrowser_path(@conn, :show, "podcast", podcast)} class="btn btn-primary btn-sm">Show</.link>
+            <.link href={databrowser_path(@conn, :edit, "podcast", podcast)} class="btn btn-warning btn-sm">Edit</.link>
+            <.link href={podcast_path(@conn, :delete, podcast)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm">Delete</.link>
           </td>
         </tr>
       <% end %>

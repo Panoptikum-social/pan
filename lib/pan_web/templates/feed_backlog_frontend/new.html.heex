@@ -33,8 +33,4 @@
     ) %>
   </div>
 <% end %>
-If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <%= link(
-  "My OPMLs",
-  to: opml_frontend_path(@conn, :index),
-  class: "text-link hover:text-link-dark"
-) %> in your personal menu.
+If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <.link href={opml_frontend_path(@conn, :index)} class="text-link hover:text-link-dark">My OPMLs</.link> in your personal menu.
