@@ -20,6 +20,7 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
              class="flex space-x-2 items-center"
              action={recommendation_frontend_path(Endpoint, :create)}>
         <.input phx-keyup="on-change"
+                phx-target={@myself}
                 field={f[:comment]} label="Your recommendation"
                 id={"text-#{@id}"}
                 size="100" maxlength="255"
