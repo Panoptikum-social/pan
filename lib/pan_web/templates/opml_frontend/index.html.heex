@@ -21,32 +21,17 @@
             <td><%= Calendar.strftime(opml.inserted_at, "%c") %></td>
 
             <td class="leading-8">
-              <%= link(
-                [icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top"), " Parse"],
-                to: opml_frontend_path(@conn, :import, opml),
-                class:
-                  "btn btn-info btn-sm whitespace-nowrap text-white"
-              ) %> &nbsp; <%= link(
-                [
-                  icon("document-download-heroicons-outline",
-                    class: "inline w-4 h-4 align-text-top"
-                  ),
-                  " Download"
-                ],
-                to: opml_frontend_path(@conn, :download, opml),
-                class:
-                  "btn btn-primary btn-sm whitespace-nowrap text-white"
-              ) %> &nbsp; <%= link(
-                [
-                  icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top"),
-                  " Delete"
-                ],
-                to: opml_frontend_path(@conn, :delete, opml),
-                method: :delete,
-                data: [confirm: "Are you sure?"],
-                class:
-                  "btn btn-error btn-sm whitespace-nowrap"
-              ) %>
+              <.link href={opml_frontend_path(@conn, :import, opml)} class="btn btn-info btn-sm whitespace-nowrap text-white">
+                {icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Parse
+              </.link>
+              &nbsp;
+              <.link href={opml_frontend_path(@conn, :download, opml)} class="btn btn-primary btn-sm whitespace-nowrap text-white">
+                {icon("document-download-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Download
+              </.link>
+              &nbsp;
+              <.link href={opml_frontend_path(@conn, :delete, opml)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm whitespace-nowrap">
+                {icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Delete
+              </.link>
             </td>
           </tr>
         <% end %>
@@ -58,8 +43,5 @@
     </p>
   <% end %>
 
-  <%= link("New OPML",
-    to: opml_frontend_path(@conn, :new),
-    class: "text-link hover:text-link-dark"
-  ) %>
+  <.link href={opml_frontend_path(@conn, :new)} class="text-link hover:text-link-dark">New OPML</.link>
 </div>

@@ -5,44 +5,44 @@
     <%= @current_user.username %>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("user-circle-heroicons-outline"), " My Profile"],
-      to: user_frontend_path(@conn, :my_profile)
-    ) %>
+    <.link href={user_frontend_path(@conn, :my_profile)}>
+      {nav_icon("user-circle-heroicons-outline")} My Profile
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("user-secret-lineawesome-outline"), " Change Password"],
-      to: user_frontend_path(@conn, :edit_password)
-    ) %>
+    <.link href={user_frontend_path(@conn, :edit_password)}>
+      {nav_icon("user-secret-lineawesome-outline")} Change Password
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("podcast-lineawesome-solid"), " My Podcasts"],
-      to: user_frontend_path(@conn, :my_podcasts)
-    ) %>
+    <.link href={user_frontend_path(@conn, :my_podcasts)}>
+      {nav_icon("podcast-lineawesome-solid")} My Podcasts
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("gift-heroicons-outline"), " My Recommendations"],
-      to: recommendation_frontend_path(@conn, :my_recommendations)
-    ) %>
+    <.link href={recommendation_frontend_path(@conn, :my_recommendations)}>
+      {nav_icon("gift-heroicons-outline")} My Recommendations
+    </.link>
   </li>
   <%= if @current_user.moderator do %>
     <li class="py-1">
       <%= nav_icon("user-astronaut-lineawesome-solid") %>
-      <%= link("My Moderations", to: moderation_frontend_path(@conn, :my_moderations)) %>
+      <.link href={moderation_frontend_path(@conn, :my_moderations)}>My Moderations</.link>
     </li>
   <% end %>
   <li class="py-1">
-    <%= link([nav_icon("rss-heroicons-outline"), " Suggest a Podcast"],
-      to: feed_backlog_frontend_path(@conn, :new)
-    ) %>
+    <.link href={feed_backlog_frontend_path(@conn, :new)}>
+      {nav_icon("rss-heroicons-outline")} Suggest a Podcast
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("file-audio-lineawesome"), " My OPMLs"],
-      to: opml_frontend_path(@conn, :index)
-    ) %>
+    <.link href={opml_frontend_path(@conn, :index)}>
+      {nav_icon("file-audio-lineawesome")} My OPMLs
+    </.link>
   </li>
   <li class="py-1">
-    <%= link([nav_icon("briefcase-heroicons-outline"), " My Data"],
-      to: user_frontend_path(@conn, :my_data)
-    ) %>
+    <.link href={user_frontend_path(@conn, :my_data)}>
+      {nav_icon("briefcase-heroicons-outline")} My Data
+    </.link>
   </li>
 </ul>

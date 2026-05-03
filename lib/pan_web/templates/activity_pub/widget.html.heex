@@ -15,10 +15,7 @@
             <%= toot.name %>
           </b>
           <span class="text-gray-dark">
-            <%= link(toot.preferred_username,
-              to: toot.actor_url,
-              class: "text-link hover:text-link-dark"
-            ) %> - <%= if toot.boosted, do: "boosted" %>
+            <.link href={toot.actor_url} class="text-link hover:text-link-dark">{toot.preferred_username}</.link> - <%= if toot.boosted, do: "boosted" %>
             <%= toot.published %>
           </span>
           <br />
@@ -28,10 +25,7 @@
               <%= toot.attributed_to_name %>
             </b>
             <span>
-              <%= link(toot.attributed_to_preferred_username,
-                to: toot.attributed_to_url,
-                class: "text-link hover:text-link-dark"
-              ) %> -
+              <.link href={toot.attributed_to_url} class="text-link hover:text-link-dark">{toot.attributed_to_preferred_username}</.link> -
             </span>
           <% end %>
 
