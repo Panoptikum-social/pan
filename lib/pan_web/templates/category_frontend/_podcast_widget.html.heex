@@ -1,14 +1,8 @@
 <div class="rounded-xl shadow">
   <div class="p-3 rounded-t-xl bg-primary">
-    <%= link(
-      [
-        icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top"),
-        " ",
-        @podcast.title
-      ],
-      to: podcast_frontend_path(@conn, :show, @podcast.id),
-      class: "truncate text-white hover:text-gray-lighter"
-    ) %>
+    <.link href={podcast_frontend_path(@conn, :show, @podcast.id)} class="truncate text-white hover:text-gray-lighter">
+      {icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top")} {@podcast.title}
+    </.link>
   </div>
 
   <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
@@ -35,14 +29,7 @@
             </label>
           </div>
           <div class="col-span-2">
-            <%= try do
-              link(@podcast.website,
-                to: @podcast.website,
-                class: "text-link truncate hover:text-link-dark"
-              )
-            rescue
-              _ -> @podcast.website
-            end %>
+            <.link href={@podcast.website} class="text-link truncate hover:text-link-dark">{@podcast.website}</.link>
           </div>
         <% end %>
 
@@ -63,16 +50,9 @@
         </div>
         <div class="col-span-2 flex flex-col space-y-1">
           <%= for category <- @podcast.categories do %>
-            <%= link(
-              [
-                icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top"),
-                " ",
-                category.title
-              ],
-              to: category_frontend_path(@conn, :show, category),
-              class:
-                "self-start border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 rounded-md truncate max-w-full"
-            ) %>
+            <.link href={category_frontend_path(@conn, :show, category)} class="self-start border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 rounded-md truncate max-w-full">
+              {icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top")} {category.title}
+            </.link>
           <% end %>
         </div>
 
@@ -83,16 +63,9 @@
         </div>
         <div class="col-span-2 grid grid-cols-3 gap-1 place-items-start">
           <%= for engagement <- @podcast.engagements do %>
-            <%= link(
-              [
-                icon("user-heroicons-outline", class: "w-4 h-4 inline align-text-top"),
-                " ",
-                engagement.persona.name
-              ],
-              to: persona_frontend_path(@conn, :show, engagement.persona),
-              class:
-                "self-start border border-gray-dark bg-lavender hover:bg-lavender-light text-white text-sm py-1 px-2 rounded-md truncate max-w-full col-span-2"
-            ) %>
+            <.link href={persona_frontend_path(@conn, :show, engagement.persona)} class="self-start border border-gray-dark bg-lavender hover:bg-lavender-light text-white text-sm py-1 px-2 rounded-md truncate max-w-full col-span-2">
+              {icon("user-heroicons-outline", class: "w-4 h-4 inline align-text-top")} {engagement.persona.name}
+            </.link>
             <span class="inline-block eading-none text-center whitespace-nowrap
                         align-baseline bg-success hover:bg-success-dark text-white p-1 rounded-md text-xs">
               <%= engagement.role %>
@@ -104,10 +77,7 @@
           <div class="text-right">
             Support
           </div>
-          <%= link(@podcast.payment_link_title,
-            class: "col-span-2 text-link hover:text-link-dark",
-            to: @podcast.payment_link_url
-          ) %>
+          <.link href={@podcast.payment_link_url} class="col-span-2 text-link hover:text-link-dark">{@podcast.payment_link_title}</.link>
         <% end %>
       </div>
     </div>

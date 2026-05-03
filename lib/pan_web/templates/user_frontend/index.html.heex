@@ -28,12 +28,9 @@
     <%= for {letter, index} <- letters |> Enum.with_index() do %>
       <div class="flex flex-wrap items-start" x-show={"selectedTab === #{index}"}>
         <%= for user <- grouped_users[letter] do %>
-          <%= link([icon("user-heroicons-outline", class: "inline w-4 h-4"), " ", user.name],
-            to: user_frontend_path(@conn, :show, user),
-            class:
-              "mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet
-                                                  text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet"
-          ) %>
+          <.link href={user_frontend_path(@conn, :show, user)} class="mr-2 mb-1 border border-gray-dark text-sm py-1 px-2 rounded bg-bittersweet text-white hover:bg-bittersweet-light hover:border-bittersweet">
+            {icon("user-heroicons-outline", class: "inline w-4 h-4")} {user.name}
+          </.link>
         <% end %>
       </div>
     <% end %>

@@ -1,9 +1,6 @@
 <div class="my-4">
   <div class="float-right">
-    <%= link("Edit your data",
-      to: user_frontend_path(@conn, :edit),
-      class: "bg-warning hover:bg-warning-light border border-gray px-3 py-2 text-white rounded"
-    ) %>
+    <.link href={user_frontend_path(@conn, :edit)} class="bg-warning hover:bg-warning-light border border-gray px-3 py-2 text-white rounded">Edit your data</.link>
   </div>
   <h1 class="text-3xl">
     My Profile
@@ -61,15 +58,8 @@
       <p text-align="center">Get access to all pro features for one more year for 12 EUR only!</p>
 
       <p class="mt-4 flex justify-between">
-        <%= link("Pro features",
-          to: page_frontend_path(@conn, :pro_features),
-          class: "bg-info hover:bg-info-light border border-gray px-3 py-2 text-white rounded"
-        ) %>
-        <%= link("Payment information",
-          to: user_frontend_path(@conn, :payment_info),
-          class:
-            "bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded"
-        ) %>
+        <.link href={page_frontend_path(@conn, :pro_features)} class="bg-info hover:bg-info-light border border-gray px-3 py-2 text-white rounded">Pro features</.link>
+        <.link href={user_frontend_path(@conn, :payment_info)} class="bg-warning-dark hover:bg-warning border border-gray px-3 py-2 text-white rounded">Payment information</.link>
       </p>
     </div>
 
@@ -120,11 +110,10 @@
     <%= for invoice <- @user.invoices do %>
       <li>
         <%= icon("calendar-heroicons-outline") %>
-        <%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %> &nbsp; &nbsp; <%= link(
-          [icon("document-download-heroicons-outline"), " ", invoice.filename],
-          to: invoice_frontend_path(@conn, :download, invoice),
-          class: "text-link hover:text-link-dark"
-        ) %>
+        <%= Calendar.strftime(invoice.inserted_at, "%x %H:%M") %> &nbsp; &nbsp;
+        <.link href={invoice_frontend_path(@conn, :download, invoice)} class="text-link hover:text-link-dark">
+          {icon("document-download-heroicons-outline")} {invoice.filename}
+        </.link>
       </li>
     <% end %>
   </ul>

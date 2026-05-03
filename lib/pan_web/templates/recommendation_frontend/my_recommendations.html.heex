@@ -8,28 +8,16 @@
         <%= for recommendation <- @podcast_recommendations do %>
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
-              <%= link(
-                [
-                  icon("podcast-lineawesome-solid", class: "h-4 w-4 inline"),
-                  " ",
-                  recommendation.podcast.title
-                ],
-                to: podcast_frontend_path(@conn, :show, recommendation.podcast),
-                class: "border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-              ) %>
+              <.link href={podcast_frontend_path(@conn, :show, recommendation.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.podcast.title}
+              </.link>
               <span>
                 <%= to_string(recommendation.inserted_at) %>
               </span>
             </div>
             <%= recommendation.comment %>
             <p class="text-right">
-              <%= link("Delete",
-                to: recommendation_frontend_path(@conn, :delete, recommendation),
-                method: :delete,
-                data: [confirm: "Are you sure?"],
-                class:
-                  "border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
-              ) %>
+              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
             </p>
           </li>
         <% end %>
