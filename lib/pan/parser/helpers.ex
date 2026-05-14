@@ -300,11 +300,14 @@ defmodule Pan.Parser.Helpers do
 
   def scrub(value) when is_binary(value) do
     # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy
-    String.replace(value, ~r/<script.*<\/script>/isU, "")
-    |> String.replace(~r/&#(\d+);/, fn full, n ->
-      if String.to_integer(n) <= 0x10FFFF, do: full, else: ""
-    end)
-    |> HtmlSanitizeEx2.basic_html_reduced()
+    cleaned = String.replace(value, ~r/<script.*<\/script>/isU, "")
+
+    try do
+      HtmlSanitizeEx2.basic_html_reduced(cleaned)
+    rescue
+      # mochiweb raises RuntimeError for invalid Unicode codepoints (e.g. &#2013265935;)
+      RuntimeError -> String.replace(cleaned, ~r/<[^>]+>/, "")
+    end
   end
 
   def scrub(value) do
