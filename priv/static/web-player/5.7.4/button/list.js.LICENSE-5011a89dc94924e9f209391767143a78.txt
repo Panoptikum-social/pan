@@ -1,0 +1,3 @@
+/*! For license information please see tooltip.js.LICENSE.txt */
+
+/*! creation: 2021-12-04T09:20:57.781Z revision: 908f83822a506023d2847b2fe8372121514a5181 version: 5.7.4 name: @podlove/subscribe-button */
