@@ -3,11 +3,7 @@
     <%= for toot <- @toots do %>
       <li class="media text-gray-darkest">
         <div class="pull-left">
-          <%= img_tag(toot.attributed_to_image,
-            height: 70,
-            alt: toot.name,
-            class: "thumbnail"
-          ) %>
+          <img src={toot.attributed_to_image} height="70" alt={toot.name} class="thumbnail" />
         </div>
 
         <div class="media-body">

@@ -1,51 +1,15 @@
-<%= form_for @changeset,
-         @action,
-         [multipart: true, class: "p-4 mb-4 flex flex-col items-start space-y-4"],
-         fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
-
+<.form :let={f} for={@changeset} action={@action} enctype="multipart/form-data" class="p-4 mb-4 flex flex-col items-start space-y-4">
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
   <div class="flex flex-col">
     <label>OPML-File</label>
-    <%= file_input(f, :file, class: "file-input") %>
+    <.input field={f[:file]} type="file" class="file-input" />
   </div>
-
-  <div class="flex flex-col">
-    <%= label(f, :content_type) %>
-    <%= text_input(f, :content_type, class: "input") %>
-    <%= error_tag(f, :content_type) %>
-  </div>
-
-  <div class="flex flex-col">
-    <%= label(f, :filename) %>
-    <%= text_input(f, :filename, class: "input") %>
-    <%= error_tag(f, :filename) %>
-  </div>
-
-  <div class="flex flex-col">
-    <%= label(f, :path) %>
-    <%= text_input(f, :path, class: "input") %>
-    <%= error_tag(f, :path) %>
-  </div>
-
-  <div class="flex flex-col">
-    <%= label(f, :inserted_at) %>
-    <%= text_input(f, :inserted_at, class: "input") %>
-    <%= error_tag(f, :inserted_at) %>
-  </div>
-
-  <div class="flex flex-col">
-    <%= label(f, :user_id) %>
-    <%= text_input(f, :user_id, class: "input") %>
-    <%= error_tag(f, :user_id) %>
-  </div>
-
-  <div class="flex flex-col">
-    <%= submit("Submit",
-      class: "btn btn-primary"
-    ) %>
-  </div>
-<% end %>
+  <.input field={f[:content_type]} type="text" label="Content type" class="input" />
+  <.input field={f[:filename]} type="text" label="Filename" class="input" />
+  <.input field={f[:path]} type="text" label="Path" class="input" />
+  <.input field={f[:inserted_at]} type="text" label="Inserted at" class="input" />
+  <.input field={f[:user_id]} type="text" label="User" class="input" />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</.form>

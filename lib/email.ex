@@ -1,8 +1,9 @@
 defmodule Pan.Email do
   import Swoosh.Email
-  use PhoenixHTMLHelpers
 
   def login_link_html_email(token, email_address) do
+    url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :login_via_token, token: token)
+
     new(
       to: email_address,
       from: "noreply@panoptikum.social",
@@ -17,7 +18,7 @@ defmodule Pan.Email do
           <body>
             <p>Hello!</p>
             <p>You can now login using this
-              #{link("Login link", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :login_via_token, token: token)) |> Kernel.elem(1)}
+              <a href="#{url}">Login link</a>
             </p>
             <p>- The Panoptikum Team.</p>
           </body>
@@ -27,6 +28,8 @@ defmodule Pan.Email do
   end
 
   def email_confirmation_link_html_email(token, email_address) do
+    url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :confirm_email, token: token)
+
     new(
       to: email_address,
       from: "noreply@panoptikum.social",
@@ -41,7 +44,7 @@ defmodule Pan.Email do
           <body>
             <p>Hello!</p>
             <p>Please confirm your email address clicking on this link:
-              #{link("Confirm Email", to: PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :confirm_email, token: token)) |> Kernel.elem(1)}
+              <a href="#{url}">Confirm Email</a>
             </p>
 
             <p>If you don't confirm your email address, you won't be able to claim personas.</p>
@@ -53,6 +56,9 @@ defmodule Pan.Email do
   end
 
   def confirm_persona_claim_link_html_email(token, user, email_address) do
+    profile_url = PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :show, user)
+    grant_url = PanWeb.Router.Helpers.persona_frontend_url(PanWeb.Endpoint, :grant_access, user, token: token)
+
     new(
       to: email_address,
       from: "noreply@panoptikum.social",
@@ -74,7 +80,7 @@ defmodule Pan.Email do
             <p>The user's user name is
               <b> #{user.username} </b>
               with the email address
-              <a href=#{"mailto:" <> user.email} #{user.email} </a>
+              <a href="mailto:#{user.email}">#{user.email}</a>
               .
             </p>
             <p>You could ...
@@ -82,9 +88,9 @@ defmodule Pan.Email do
                 <li>ignore this mail, if you don't want to provide access.</li>
                 <li>reply to this email, if you have questions to that user, before you want to provide access.</li>
                 <li>check out the user's
-                #{link("public profile", to: PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :show, user)) |> Kernel.elem(1)} in Panoptikum before.</li>
+                <a href="#{profile_url}">public profile</a> in Panoptikum before.</li>
                 <li>grant access to your persona within the next 48 hours by clicking on this link:
-                #{link("Grant Access", to: PanWeb.Router.Helpers.persona_frontend_url(PanWeb.Endpoint, :grant_access, user, token: token)) |> Kernel.elem(1)}
+                <a href="#{grant_url}">Grant Access</a>
                 </li>
               </ul>
             </p>
@@ -107,6 +113,8 @@ defmodule Pan.Email do
   end
 
   def pro_expiration_notification(email_address) do
+    url = PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :my_profile)
+
     new(
       to: email_address,
       from: "noreply@panoptikum.social",
@@ -124,7 +132,7 @@ defmodule Pan.Email do
             <p>
               If you would like to extend your pro account, please login to your account and find
               more information on your
-              #{link("Your profile page", to: PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :my_profile)) |> Kernel.elem(1)} .
+              <a href="#{url}">profile page</a>.
             </p>
             <p>We won't bother you with any more emails, promised!</p>
             <p>- The Panoptikum Team.</p>

@@ -3,12 +3,13 @@
     Oops, something went wrong! Please check the errors below.
   </.error>
   <div class="flex flex-col">
-    <label>Invoice</label>
+    <label>Image</label>
     <.input field={f[:file]} type="file" class="file-input" />
   </div>
   <.input field={f[:filename]} type="text" label="Filename" class="input" />
   <.input field={f[:content_type]} type="text" label="Content type" class="input" />
   <.input field={f[:path]} type="text" label="Path" class="input" />
-  <.input field={f[:user_id]} type="text" label="User" class="input" />
+  <.input field={f[:podcast_id]} type="text" label="Podcast" class="input" />
+  <.input field={f[:persona_id]} type="text" label="Persona" class="input" />
   <button type="submit" class="btn btn-primary">Submit</button>
 </.form>

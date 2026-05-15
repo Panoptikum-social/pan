@@ -117,11 +117,8 @@ defmodule PanWeb do
   defp view_helpers do
     quote do
       import Phoenix.HTML
-      import Phoenix.HTML.Form
-      use PhoenixHTMLHelpers
-
-      # Import LiveView helpers (live_render, live_component, live_patch, etc)
       import Phoenix.Component
+      import PanWeb.CoreComponents, except: [icon: 1]
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
@@ -129,7 +126,6 @@ defmodule PanWeb do
       # These are our panoptkum-specific view helpers
       import PanWeb.ViewHelpers
 
-      import PanWeb.ErrorHelpers
       import PanWeb.Gettext
       import PanWeb.Router.Helpers
       alias PanWeb.Router.Helpers, as: Routes

@@ -16,7 +16,7 @@
   <meta name="msapplication-config" content="/assets/browserconfig.xml" />
   <meta name="theme-color" content="#ffffff" />
 
-  <%= csrf_meta_tag() %>
+  <meta name="csrf-token" content={get_csrf_token()} />
 
   <%= if function_exported?(view_module(@conn), :title, 2) do %>
     <title>

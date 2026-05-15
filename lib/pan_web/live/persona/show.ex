@@ -9,7 +9,6 @@ defmodule PanWeb.Live.Persona.Show do
   alias PanWeb.Component.LikeButton
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton
-  use PhoenixHTMLHelpers
 
   def mount(%{"pid" => pid}, _session, socket) do
     current_user =

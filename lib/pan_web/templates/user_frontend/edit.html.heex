@@ -3,72 +3,18 @@
     Update Profile
   </h1>
 
-  <%= form_for @changeset,
-           user_frontend_path(@conn, :update),
-           [class: "p-4 flex flex-col items-start space-y-4"],
-           fn f -> %>
-    <%= if @changeset.action do %>
-      <div class="alert-danger">
-        <p>Oops, something went wrong! Please check the errors below.</p>
-      </div>
-    <% end %>
-
-    <div class="flex flex-col">
-      <%= label(f, :name) %>
-      <%= text_input(f, :name, placeholder: "Name", class: "input") %>
-      <%= error_tag(f, :name) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label(f, :username) %>
-      <%= text_input(f, :username, placeholder: "Username", class: "input") %>
-      <%= error_tag(f, :username) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label(f, :email) %>
-      <%= email_input(f, :email, placeholder: "Email", class: "input") %>
-      <%= error_tag(f, :email) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label f, :podcaster do %>
-        <%= checkbox(f, :podcaster) %> I am a podcaster
-      <% end %>
-      <%= error_tag(f, :podcaster) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label f, :i_want_to_share_my_followings do %>
-        <%= checkbox(f, :share_follows) %> I want to share my followings
-      <% end %>
-      <%= error_tag(f, :share_follows) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label f, :i_want_to_share_my_subscriptions do %>
-        <%= checkbox(f, :share_subscriptions) %> I want to share my subscriptions
-      <% end %>
-      <%= error_tag(f, :share_subscriptions) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label f, :paper_bill do %>
-        <%= checkbox(f, :paper_bill) %> I want to receive a printed bill via snail mail
-      <% end %>
-      <%= error_tag(f, :paper_bill) %>
-    </div>
-
-    <div class="flex flex-col">
-      <%= label(f, "Billing address (will be used on bill and in envelope window)") %>
-      <%= textarea(f, :billing_address, rows: 7, class: "textarea") %>
-      <%= error_tag(f, :billing_address) %>
-    </div>
-
-    <div class="form-group">
-      <%= submit("Update Profile",
-        class: "btn btn-primary"
-      ) %>
-    </div>
-  <% end %>
+  <.form :let={f} for={@changeset} action={user_frontend_path(@conn, :update)} class="p-4 flex flex-col items-start space-y-4">
+    <.error :if={@changeset.action}>
+      Oops, something went wrong! Please check the errors below.
+    </.error>
+    <.input field={f[:name]} type="text" label="Name" placeholder="Name" class="input" />
+    <.input field={f[:username]} type="text" label="Username" placeholder="Username" class="input" />
+    <.input field={f[:email]} type="email" label="Email" placeholder="Email" class="input" />
+    <.input field={f[:podcaster]} type="checkbox" label="I am a podcaster" />
+    <.input field={f[:share_follows]} type="checkbox" label="I want to share my followings" />
+    <.input field={f[:share_subscriptions]} type="checkbox" label="I want to share my subscriptions" />
+    <.input field={f[:paper_bill]} type="checkbox" label="I want to receive a printed bill via snail mail" />
+    <.input field={f[:billing_address]} type="textarea" label="Billing address (will be used on bill and in envelope window)" rows={7} class="textarea" />
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+  </.form>
 </div>

@@ -10,27 +10,13 @@
   the link to the podcast on a different podcast directory will be discarded.
 </p>
 
-<%= form_for @changeset,
-          feed_backlog_frontend_path(@conn, :create),
-          [class: "p-4 mb-4 flex flex-col items-start space-y-4"],
-          fn f -> %>
-  <%= if @changeset.action do %>
-    <div class="alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
-    </div>
-  <% end %>
-
+<.form :let={f} for={@changeset} action={feed_backlog_frontend_path(@conn, :create)} class="p-4 mb-4 flex flex-col items-start space-y-4">
+  <.error :if={@changeset.action}>
+    Oops, something went wrong! Please check the errors below.
+  </.error>
+  <.input field={f[:url]} type="text" label="RSS Feed Url" class="input w-96 sm:w-auto" />
   <div class="flex flex-col">
-    <%= label(f, "RSS Feed Url") %>
-
-    <%= text_input(f, :url, size: 80, class: "input w-96 sm:w-auto") %>
-    <%= error_tag(f, :url) %>
+    <button type="submit" class="btn btn-primary">Submit</button>
   </div>
-
-  <div class="flex flex-col">
-    <%= submit("Submit",
-      class: "btn btn-primary"
-    ) %>
-  </div>
-<% end %>
+</.form>
 If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <.link href={opml_frontend_path(@conn, :index)} class="text-link hover:text-link-dark">My OPMLs</.link> in your personal menu.

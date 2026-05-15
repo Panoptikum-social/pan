@@ -88,30 +88,23 @@
       <ul class="m-4 flex flex-col space-y-4">
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
-            <%= form_for @changeset, recommendation_frontend_path(@conn, :create), fn f -> %>
+            <.form :let={f} for={@changeset} action={recommendation_frontend_path(@conn, :create)}>
               <div class="flex flex-col lg:flex-row gap-4">
                 <div class="grow">
                   <div class="flex justify-between">
-                    Your recommendation for: &nbsp; <%= podcast.title %>
+                    Your recommendation for: &nbsp; {podcast.title}
                     <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>
                       255
                     </small>
                   </div>
-                  <%= hidden_input(f, :podcast_id, value: podcast.id) %>
-                  <%= text_input(f, :comment,
-                    size: 60,
-                    maxlength: 255,
-                    data: [chapter: podcast.id],
-                    class: "input input-bordered w-full"
-                  ) %>
+                  <.input field={f[:podcast_id]} type="hidden" value={podcast.id} />
+                  <.input field={f[:comment]} type="text" maxlength="255" data-chapter={podcast.id} class="input input-bordered w-full" />
                 </div>
                 <div class="shrink-0 self-end">
-                  <%= submit([icon("thumb-up-heroicons-outline"), " Recommend"],
-                    class: "btn btn-info btn-sm"
-                  ) %>
+                  <button type="submit" class="btn btn-info btn-sm">{icon("thumb-up-heroicons-outline")} Recommend</button>
                 </div>
               </div>
-            <% end %>
+            </.form>
 
             <script>
               document.querySelector('[data-chapter="<%= podcast.id %>"]').onkeyup = function(){

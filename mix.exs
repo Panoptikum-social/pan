@@ -48,8 +48,6 @@ defmodule Pan.MixProject do
       {:floki, "~> 0.38.0"},
       # classic view layer
       {:phoenix_html, "~> 4.3.0"},
-      #FIXME: get our version compiled again:
-      {:phoenix_html_helpers, "~> 1.0"},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.8.0"},
       # phoenix classic views

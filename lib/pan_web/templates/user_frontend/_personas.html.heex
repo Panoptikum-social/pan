@@ -34,12 +34,7 @@
       <div class="mt-2">
         <div class="flex justify-between">
           <%= if thumbnail = List.first(persona.thumbnails) do %>
-            <%= img_tag(thumbnail.path <> thumbnail.filename,
-              width: 150,
-              alt: persona.image_title,
-              class: "p-1 border border-gray-light rounded",
-              id: "photo"
-            ) %>
+            <img src={thumbnail.path <> thumbnail.filename} width="150" alt={persona.image_title} class="p-1 border border-gray-light rounded" id="photo" />
           <% else %>
             <img
               src="/images/missing-persona.png"
