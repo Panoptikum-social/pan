@@ -44,7 +44,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
     resource = Phoenix.Naming.resource_name(model)
 
     changeset =
-      model.changeset(Kernel.struct(model), params[resource] || params)
+      model.changeset(socket.assigns.record, params[resource] || params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}

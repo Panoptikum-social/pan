@@ -127,9 +127,9 @@ defmodule PanWeb.Live.Persona.Edit do
                 label="Image title"
                 disabled={not pro(@current_user)} />
 
-        <.input field={f[:description_header]}
+        <.input field={f[:description]}
                 class="input w-full"
-                label="Description heading"
+                label="Description"
                 disabled={not pro(@current_user)} />
 
         <MarkdownField.render myfield={f[:long_description]}

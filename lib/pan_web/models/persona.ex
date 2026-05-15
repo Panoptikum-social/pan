@@ -71,6 +71,10 @@ defmodule PanWeb.Persona do
       :fediverse_address
     ])
     |> validate_required([:pid, :name, :uri])
+    |> validate_length(:uri, max: 255)
+    |> validate_length(:image_url, max: 255)
+    |> validate_length(:image_title, max: 255)
+    |> validate_length(:fediverse_address, max: 255)
     |> unique_constraint(:pid)
   end
 
@@ -88,6 +92,10 @@ defmodule PanWeb.Persona do
       :fediverse_address
     ])
     |> validate_required([:pid, :name, :uri])
+    |> validate_length(:uri, max: 255)
+    |> validate_length(:image_url, max: 255)
+    |> validate_length(:image_title, max: 255)
+    |> validate_length(:fediverse_address, max: 255)
     |> unique_constraint(:pid)
     |> unique_constraint(:uri)
   end
