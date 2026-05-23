@@ -65,3 +65,5 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 * Sending a Test Mail from the console
   `Pan.Email.login_link_html_email("mytoken", "my-email@example.com") |> Pan.Mailer.deliver()`
 * To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)
+* To attach to a server session:
+  `/var/phoenix/pan/bin/pan remote` and then, for example `PanWeb.Podcast.get_deprecated(10)` to delete deprecated Podcasts
