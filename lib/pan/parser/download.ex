@@ -5,6 +5,7 @@ defmodule Pan.Parser.Download do
 
   def download(url, feed_id \\ nil) do
     error_map = %{
+      202 => "202: accepted",
       204 => "204: no content",
       304 => "304: not modified",
       307 => "307: temporary redirect",
@@ -13,14 +14,18 @@ defmodule Pan.Parser.Download do
       402 => "402: payment required",
       403 => "403: forbidden",
       404 => "404: feed not found",
+      405 => "405: method not allowed",
       406 => "406: not acceptable",
       408 => "408: request timeout",
+      409 => "409: conflict",
       410 => "410: gone",
       416 => "416: range not satisfiable",
       422 => "422: unprocessible entity",
       423 => "423: locked",
       428 => "428: precondition required",
       429 => "429: too many requests",
+      437 => "437: not a standard status code",
+      440 => "440: login timeout",
       451 => "451: unavailable For legal reasons",
       479 => "479: not a standard status code",
       500 => "500: internal server error",
@@ -34,8 +39,10 @@ defmodule Pan.Parser.Download do
       520 => "520: unknown error",
       521 => "521: web server is down",
       523 => "523: origin is unreachable",
+      525 => "525: SSL handshake failed",
       526 => "526: invalid SSL certificate",
-      530 => "530: origin DNS error with cloudflare"
+      530 => "530: origin DNS error with cloudflare",
+      999 => "999: not a standard status code"
     }
 
     error_translations = %{
@@ -54,6 +61,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %Response{status_code: status_code}}
       when status_code in [
+             202,
              204,
              304,
              307,
@@ -62,14 +70,18 @@ defmodule Pan.Parser.Download do
              402,
              403,
              404,
+             405,
              406,
              408,
+             409,
              410,
              416,
              422,
              423,
              428,
              429,
+             437,
+             440,
              451,
              479,
              500,
@@ -82,8 +94,10 @@ defmodule Pan.Parser.Download do
              520,
              521,
              523,
+             525,
              526,
-             530
+             530,
+             999
            ] ->
         {:error, Map.get(error_map, status_code)}
 
