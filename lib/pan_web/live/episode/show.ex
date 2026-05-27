@@ -5,14 +5,18 @@ defmodule PanWeb.Live.Episode.Show do
   alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodlovePlayer}
 
   def mount(%{"id" => id}, _session, socket) do
-    episode = Episode.get_by_id_for_episode_show(id)
+    case Episode.get_by_id_for_episode_show(id) do
+      nil ->
+        {:ok, socket |> put_flash(:error, "Episode not found.") |> redirect(to: "/")}
 
-    {:ok,
-     assign(socket,
-       episode: episode,
-       changeset: %Recommendation{} |> Recommendation.changeset(),
-       page_title: episode.title <> " (Episode) from " <> episode.podcast.title <> " (Podcast)"
-     )}
+      episode ->
+        {:ok,
+         assign(socket,
+           episode: episode,
+           changeset: %Recommendation{} |> Recommendation.changeset(),
+           page_title: (episode.title || "Episode") <> " from " <> (episode.podcast.title || "Podcast") <> " (Podcast)"
+         )}
+    end
   end
 
   defp major_mimetype(episode) do

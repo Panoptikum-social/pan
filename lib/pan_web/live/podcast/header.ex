@@ -81,8 +81,8 @@ defmodule PanWeb.Live.Podcast.Header do
           <dd :if={@podcast.last_build_date} class="col-span-3">{Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}</dd>
           <dt :if={@podcast.latest_episode_publishing_date} class="justify-self-end font-medium">last episode published</dt>
           <dd :if={@podcast.latest_episode_publishing_date} class="col-span-3">{Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}</dd>
-          <dt :if={@podcast.publication_frequency > 0} class="justify-self-end font-medium">publication frequency</dt>
-          <dd :if={@podcast.publication_frequency > 0} class="col-span-3">{@podcast.publication_frequency |> Float.round(2)} days</dd>
+          <dt :if={@podcast.publication_frequency && @podcast.publication_frequency > 0} class="justify-self-end font-medium">publication frequency</dt>
+          <dd :if={@podcast.publication_frequency && @podcast.publication_frequency > 0} class="col-span-3">{@podcast.publication_frequency |> Float.round(2)} days</dd>
 
           <dt class="justify-self-end font-medium">Contributors</dt>
           <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
