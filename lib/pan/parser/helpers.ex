@@ -273,12 +273,10 @@ defmodule Pan.Parser.Helpers do
 
   def to_255(text) do
     if text && byte_size(text) > 255 do
-      chars =
-        text
-        |> binary_part(0, 255)
-        |> String.length()
-
-      String.slice(text, 0, chars - 2)
+      text
+      |> String.codepoints()
+      |> Enum.take(255)
+      |> Enum.join()
     else
       text
     end
