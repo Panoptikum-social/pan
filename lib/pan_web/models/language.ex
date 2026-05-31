@@ -22,7 +22,7 @@ defmodule PanWeb.Language do
 
   def get_by_category_id(category_id) do
     from(l in Language,
-      right_join: p in assoc(l, :podcasts),
+      join: p in assoc(l, :podcasts),
       join: c in assoc(p, :categories),
       where: c.id == ^category_id,
       distinct: [asc: l.name],
