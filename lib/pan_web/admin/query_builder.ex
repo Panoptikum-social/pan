@@ -82,7 +82,9 @@ defmodule PanWeb.Admin.QueryBuilder do
   end
 
   defp apply_option({column, value}, query, :exact = _mode) do
-    from(q in query, where: ^[{column, value}])
+    from(q in query,
+      where: ilike(fragment("cast (? as text)", field(q, ^column)), ^value)
+    )
   end
 
   defp apply_filter(query, _filter, false = _hide), do: query
