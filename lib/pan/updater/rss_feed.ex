@@ -15,7 +15,7 @@ defmodule Pan.Updater.RssFeed do
         run_the_parser(reduced_map, url)
       rescue
         e ->
-          reraise("#{e.__exception__} when importing podcast #{podcast_id}", __STACKTRACE__)
+          reraise("#{Exception.message(e)} when importing podcast #{podcast_id}", __STACKTRACE__)
       end
     else
       {:done, "nothing to do"} -> {:done, "nothing to do"}
