@@ -4,68 +4,113 @@ defmodule Pan.Parser.Helpers do
   require Logger
 
   @date_formats [
+    # RFC 822 — standard RSS/podcast format
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z}",
-    "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}",
-    "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}",
-    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}",
-    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}",
+    # RFC 3339 / ISO 8601 — common in modern feeds
+    "{RFC3339z}",
     "{ISO:Extended}",
-    "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}",
-    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}",
-    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}",
-    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100",
+    "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}",
+    "{YYYY}-{0M}-{0D}T{ISOtime}",
+    "{YYYY}-{0M}-{0D} {ISOtime} {Z}",
+    "{YYYY}-{0M}-{0D} {ISOtime} {Zname}",
+    "{YYYY}-{0M}-{0D} {ISOtime}",
+    "{YYYY}-{0M}-{0D}",
+    # RFC 822 variants
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z} {Zname}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}",
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT{Z:}",
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime} GMT {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} 0100",
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM} {Zname}",
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {AM}",
-    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Z:}",
-    "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
-    "{WDshort} {D} {Mshort} {YYYY} {ISOtime} {Zname}",
     "{WDshort} {D} {Mshort} {YYYY} {ISOtime}",
-    "{WDshort} {D} {Mshort} {YYYY} {ISOtime}{Zname}",
-    "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}",
+    "{WDshort} {D} {Mshort} {YYYY} 0{ISOtime} {Z}",
+    "{WDshort} {D}{Mshort} {YYYY} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}",
+    "{WDshort} {D} {Mshort} {YYYY} {h24}:{m}:{s}{ss}{Z:}",
     "{WDshort} {D} {Mshort} {YYYY} {Z}",
-    "{WDshort} {D} {Mshort} {YYYY}",
     "{WDshort} {D} {Mshort} {YYYY} GMT",
-    "{WDshort} {Mshort} {D} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {YYYY}",
+    "{WDshort} {0D}-{Mshort}-{YYYY} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
+    # American weekday-first, month before day
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}",
+    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}",
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Zname})",
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} GMT{Z} ({Z})",
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {AM}",
-    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}",
-    "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}",
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime}",
     "{WDshort} {Mshort} {D} {YYYY} {Z}",
     "{WDshort} {Mshort} {D} {YYYY}",
+    "{WDshort} {Mshort} {D} {ISOtime} {Z}",
+    "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}",
+    # Unusual weekday-prefixed formats
+    "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}",
     "{WDshort}:{D}:{0M}:{YYYY}: {ISOtime}",
     "{WDshort} {D}.{M}.{YYYY} {ISOtime} {Z}",
+    # Day Month Year without weekday
+    "{D} {Mshort} {YYYY} {ISOtime} {Z}",
+    "{D} {Mshort} {YYYY} {ISOtime} {Zname}",
+    "{D} {Mshort} {YYYY} {ISOtime}",
+    "{D} {Mshort} {YYYY}",
+    "{0D} {Mshort} {YYYY} {ISOtime} {Z}",
+    # Month Day Year without weekday
     "{Mshort} {D} {YYYY} {ISOtime} {Zname}",
     "{Mshort} {D} {YYYY} {ISOtime} {Z}",
     "{Mshort} {D} {YYYY} {ISOtime}",
     "{Mshort} {D} {YYYY}",
     "{Mshort} {YYYY}",
-    "{0D} {Mshort} {YYYY} {ISOtime} {Z}",
-    "{0M}/{0D}/{YYYY} - {h24}:{m}",
+    # Numeric-only formats
+    "{YYYY}/{M}/{0D}",
+    "{YYYY}/{0M}/{0D} {ISOtime}",
     "{0M}/{0D}/{YYYY} {ISOtime} {Zname}",
+    "{0M}/{0D}/{YYYY} {ISOtime} {AM} {Z}",
+    "{M}/{0D}/{YYYY} {ISOtime} {AM} {Z}",
+    "{0M}/{0D}/{YYYY} - {h24}:{m}",
     "{0M}/{0D}/{YYYY} {Zname}",
     "{0M}/{0D}/{YYYY}",
     "{M}/{0D}/{YYYY}",
-    "{YYYY}/{M}/{0D}",
     "{0D}/{0M}/{YYYY} {ISOtime}",
     "{0D}-{0M}-{YYYY}",
-    "{0D}.{0M}.{YYYY}",
-    "{D} {Mshort} {YYYY} {ISOtime} {Zname}",
-    "{D} {Mshort} {YYYY} {ISOtime} {Z}",
-    "{D} {Mshort} {YYYY} {ISOtime}",
-    "{D} {Mshort} {YYYY}",
-    "{YYYY}-{0M}-{0D} {ISOtime} {Z}",
-    "{YYYY}-{0M}-{0D} {ISOtime} {Zname}",
-    "{YYYY}-{0M}-{0D} {ISOtime}",
-    "{YYYY}-{0M}-{0D}",
-    "{YYYY}-{0M}-{0D}T{ISOtime}",
-    "{RFC3339z}",
-    "{YYYY}-{0M}-{0D}T{ISOtime} {Z:}",
-    "{YYYY}/{0M}/{0D} {ISOtime}"
+    "{0D}.{0M}.{YYYY}"
   ]
+
+  @tz_map %{
+    "GMT+1" => "+0100",
+    "GMT+2" => "+0200",
+    "AEST" => "+1000",
+    "AEDT" => "+1100",
+    "CEST" => "+0200",
+    "NZST" => "+1200",
+    "NZDT" => "+1300",
+    "BRT" => "-0300",
+    "BST" => "+0100",
+    "CDT" => "-0500",
+    "CMT" => "-0600",
+    "CST" => "-0600",
+    "EDT" => "-0400",
+    "EST" => "-0500",
+    "GST" => "+0400",
+    "IDT" => "+0300",
+    "JST" => "+0900",
+    "KST" => "+0900",
+    "PCT" => "-0700",
+    "PDT" => "-0700",
+    "PST" => "-0700",
+    "ET" => "-0500",
+    "CT" => "-0600"
+  }
+
+  @tz_regex Regex.compile!(
+    @tz_map
+    |> Map.keys()
+    |> Enum.sort_by(&byte_size/1, :desc)
+    |> Enum.map(&Regex.escape/1)
+    |> Enum.join("|")
+  )
 
   def boolify(explicit) do
     case explicit do
@@ -94,6 +139,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("\t", " ")
     |> String.replace("\n", "")
     |> fix_time()
+    |> String.replace(~r/(\d{4}) \1/, "\\1")
     |> replace_first_second_third_fourth()
     |> replace_long_month_names()
     |> replace_long_week_days()
@@ -158,6 +204,11 @@ defmodule Pan.Parser.Helpers do
     |> String.replace(~r/o[uck]to?b?e?r?/i, "Oct")
     |> String.replace(~r/no[vc]e?m?e?b?e?r?/i, "Nov")
     |> String.replace(~r/d[eéi][vcsz][e]?m?b?[re]?[ro]?/iu, "Dec")
+    |> String.replace(
+      ~r/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/,
+      "\\1"
+    )
+    |> String.replace(~r/^Mar( .+\b(?:Jan|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b)/, "Tue\\1")
   end
 
   def replace_long_week_days(datetime) do
@@ -186,29 +237,9 @@ defmodule Pan.Parser.Helpers do
   def fix_timezones(datetime) do
     datetime
     |> String.replace(" 0000", " +0000")
-    |> String.replace("BRT", "-0300")
-    |> String.replace("AEST", "+1000")
-    |> String.replace("CEST", "+0200")
-    |> String.replace("AEDT", "+1100")
-    |> String.replace("NZST", "+1200")
-    |> String.replace("NZDT", "+1300")
-    |> String.replace("EST", "-0500")
-    |> String.replace("CDT", "-0500")
-    |> String.replace("EDT", "-0400")
-    |> String.replace("CST", "-0600")
-    |> String.replace("CMT", "-0600")
-    |> String.replace("PST", "-0700")
-    |> String.replace("PDT", "-0700")
-    |> String.replace("PCT", "-0700")
-    |> String.replace("GMT+1", "+0100")
-    |> String.replace("BST", "+0100")
-    |> String.replace("IDT", "+0300")
-    |> String.replace("GST", "+0400")
-    |> String.replace("KST", "+0900")
-    |> String.replace("JST", "+0900")
     |> String.replace("GTM", "GMT")
-    |> String.replace("GMT+2", "+0200")
     |> String.replace("-0001", "2016")
+    |> String.replace(@tz_regex, fn match -> Map.fetch!(@tz_map, match) end)
   end
 
   def fix_missing_xml_tag(xml) do
@@ -271,15 +302,21 @@ defmodule Pan.Parser.Helpers do
     if String.valid?(xml), do: xml, else: :iconv.convert("ISO-8859-1", "utf-8", xml)
   end
 
+  def to_255(nil), do: nil
+
   def to_255(text) do
-    if text && byte_size(text) > 255 do
-      text
-      |> String.codepoints()
-      |> Enum.take(255)
-      |> Enum.join()
+    if byte_size(text) > 255 do
+      <<head::binary-size(255), _::binary>> = text
+      trim_incomplete_codepoint(head)
     else
       text
     end
+  end
+
+  defp trim_incomplete_codepoint(bin) do
+    if String.valid?(bin),
+      do: bin,
+      else: trim_incomplete_codepoint(:binary.part(bin, 0, byte_size(bin) - 1))
   end
 
   def mark_if_deleted(changeset) do
