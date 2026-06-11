@@ -122,9 +122,9 @@ defmodule Pan.Parser.Download do
       {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
         {:error, Map.get(error_translations, :closed)}
 
-      {:error, %Error{id: nil, reason: {:tls_alert, alert_message}}}
-      when alert_message in ["handshake failure", "protocol version", "unrecognised name"] ->
-        {:error, alert_message}
+      {:error, %Error{id: nil, reason: {:tls_alert, {alert_type, _description}}}}
+      when alert_type in [:handshake_failure, :protocol_version, :unrecognised_name] ->
+        {:error, "TLS error: #{alert_type}"}
 
       {:error, reason} ->
         {:error, reason}
@@ -147,11 +147,17 @@ defmodule Pan.Parser.Download do
   end
 
   def get(url) do
-    HTTPoison.get(
-      url,
-      ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"],
-      recv_timeout: 10_000,
-      timeout: 10_000
-    )
+    headers = ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"]
+    options = [recv_timeout: 10_000, timeout: 10_000]
+
+    case HTTPoison.get(url, headers, options) do
+      {:error, %Error{id: nil, reason: {:tls_alert, {:handshake_failure, _description}}}} ->
+        # Some servers' TLS 1.3 handling is incompatible with Erlang's client hello,
+        # while TLS 1.2 negotiates fine (e.g. www.br50.org).
+        HTTPoison.get(url, headers, options ++ [ssl: [versions: [:"tlsv1.2"]]])
+
+      response ->
+        response
+    end
   end
 end
