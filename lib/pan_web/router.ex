@@ -409,6 +409,7 @@ defmodule PanWeb.Router do
     get("/personas/merge_candidates", PersonaController, :merge_candidates)
     get("/personas/merge_candidate_group", PersonaController, :merge_candidate_group)
     get("/personas/merge", PersonaController, :merge)
+    resources("/personas", PersonaController, only: [:delete])
 
     get("/edit_password/:id", UserController, :edit_password)
     put("/update_password/:id", UserController, :update_password)

@@ -1,6 +1,6 @@
 defmodule PanWeb.PersonaController do
   use PanWeb, :controller
-  alias PanWeb.{Persona, PageFrontendView}
+  alias PanWeb.{Delegation, Follow, Like, Persona, PageFrontendView}
   alias Pan.Search
 
   def merge_candidates(conn, _params) do
@@ -70,6 +70,35 @@ defmodule PanWeb.PersonaController do
     |> render("done.html")
   end
 
+  def delete(conn, %{"id" => id}) do
+    id = String.to_integer(id)
+
+    Repo.transaction(fn ->
+      persona = Repo.get!(Persona, id)
+
+      from(p in Persona, where: p.redirect_id == ^id)
+      |> Repo.update_all(set: [redirect_id: nil])
+
+      from(l in Like, where: l.persona_id == ^id)
+      |> Repo.delete_all()
+
+      from(f in Follow, where: f.persona_id == ^id)
+      |> Repo.delete_all()
+
+      from(d in Delegation, where: d.persona_id == ^id or d.delegate_id == ^id)
+      |> Repo.delete_all()
+
+      Repo.delete!(persona)
+    end)
+
+    Search.Persona.delete_index(id)
+
+    conn
+    |> put_view(PageFrontendView)
+    |> put_flash(:info, "Persona deleted successfully.")
+    |> render("done.html")
+  end
+
   defp migrate_relations(from_id, to_id) do
     from(e in PanWeb.Engagement, where: e.persona_id == ^from_id)
     |> Repo.all()
@@ -104,8 +133,6 @@ defmodule PanWeb.PersonaController do
 
     from(m in PanWeb.Manifestation, where: m.persona_id == ^to_id)
     |> Repo.delete_all()
-
-    Pan.Search.Persona.delete_index(from_id)
   end
 
   defp migrate_engagement(engagement, to_id) do

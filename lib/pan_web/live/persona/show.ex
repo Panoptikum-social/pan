@@ -128,6 +128,10 @@ defmodule PanWeb.Live.Persona.Show do
               <td class="px-4 text-right font-semibold">Uri</td>
               <td>{@persona.uri}</td>
             </tr>
+            <tr>
+              <td class="px-4 text-right font-semibold">ID</td>
+              <td>{@persona.id}</td>
+            </tr>
           </table>
 
           <div class="flex-none rounded shadow m-auto md:mx-4 my-4">

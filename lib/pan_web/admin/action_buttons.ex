@@ -228,6 +228,18 @@ defmodule PanWeb.Admin.ActionButtons do
     """
   end
 
+  def render(%{model: Persona, type: :show} = assigns) do
+    ~H"""
+    <div class="m-2 flex space-x-4">
+      <LinkButton.render title="Delete"
+                         to={persona_path(Endpoint, :delete, @record)}
+                         class="btn-error"
+                         method={:delete}
+                         opts={[data: [confirm: "Are you sure?"]]} />
+    </div>
+    """
+  end
+
   def render(assigns) do
     ~H"""
     <div class="m-4">
