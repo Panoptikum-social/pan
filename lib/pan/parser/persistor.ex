@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Persistor do
   alias Pan.Repo
+  alias PanWeb.Image
   import Pan.Parser.MyDateTime, only: [now: 0]
 
   alias Pan.Parser.{
@@ -79,6 +80,9 @@ defmodule Pan.Parser.Persistor do
       content: "Updating from feed"
     })
 
+    image_url = map[:image_url] || get_in(map, [:image, :image_url])
+    image_title = map[:image_title] || get_in(map, [:image, :image_title]) || image_url
+
     podcast_map =
       Map.drop(map, [
         :episodes,
@@ -91,6 +95,7 @@ defmodule Pan.Parser.Persistor do
         "author",
         "managing_editor"
       ])
+      |> maybe_put_image(image_url, image_title)
 
     feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
@@ -98,6 +103,8 @@ defmodule Pan.Parser.Persistor do
     {:ok, podcast} =
       PanWeb.Podcast.changeset(podcast, podcast_map)
       |> Repo.update()
+
+    if image_url, do: update_thumbnail(podcast)
 
     PodcastContributor.delete_role(podcast.id, "owner")
     map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
@@ -131,6 +138,23 @@ defmodule Pan.Parser.Persistor do
     |> Repo.update()
 
     {:ok, :podcast_updated}
+  end
+
+  defp maybe_put_image(podcast_map, nil, _image_title), do: podcast_map
+
+  defp maybe_put_image(podcast_map, image_url, image_title) do
+    Map.merge(podcast_map, %{image_url: image_url, image_title: image_title})
+  end
+
+  defp update_thumbnail(podcast) do
+    if old_image = Image.get_by_podcast_id(podcast.id) do
+      Image.delete_asset(old_image)
+    end
+
+    PanWeb.Podcast.cache_thumbnail_image(podcast)
+
+    PanWeb.Podcast.changeset(podcast, %{thumbnailed: true})
+    |> Repo.update()
   end
 
   def contributor_import(map, podcast_id) do
