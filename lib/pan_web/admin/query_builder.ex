@@ -4,7 +4,12 @@ defmodule PanWeb.Admin.QueryBuilder do
 
   def delete(model, record) do
     Repo.delete(record)
-    if Map.has_key?(record, :elastic), do: model.delete_search_index(record.id)
+
+    search_module = Module.concat(Pan.Search, model |> Module.split() |> List.last())
+
+    if Code.ensure_loaded?(search_module) and function_exported?(search_module, :delete_index, 1) do
+      search_module.delete_index(record.id)
+    end
   end
 
   def load(model, criteria, cols) do
