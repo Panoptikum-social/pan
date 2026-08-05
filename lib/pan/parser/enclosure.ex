@@ -1,6 +1,10 @@
 defmodule Pan.Parser.Enclosure do
   alias Pan.Repo
 
+  # feeds sometimes contain an <enclosure> without a url attribute at all;
+  # there's no audio file to attach, so there's nothing to look up or insert
+  def get_or_insert(%{url: nil}, _episode_id), do: {:ok, nil}
+
   def get_or_insert(enclosure_map, episode_id) do
     case get_enclosure(episode_id, enclosure_map) do
       nil ->

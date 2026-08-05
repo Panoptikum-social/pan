@@ -121,9 +121,25 @@ defmodule Pan.Parser.Helpers do
 
   # Formatters reference: https://hexdocs.pm/timex/Timex.Format.DateTime.Formatters.Default.html
   def to_naive_datetime(feed_date) do
-    feed_date = initial_cleanup(feed_date)
+    feed_date =
+      feed_date
+      |> extract_date_string()
+      |> initial_cleanup()
+
     datetime = Enum.find_value(@date_formats, &try_format(feed_date, &1))
     ensure_naive_in_seconds(datetime, feed_date)
+  end
+
+  # Some feeds nest a date inside a child tag instead of giving plain text,
+  # e.g. <lastBuildDate><time datetime="2026-06-10T01:51:04+02:00">...</time></lastBuildDate>
+  # which the XML parser hands us as %{name: :time, value: [...], attr: [datetime: ...]}.
+  defp extract_date_string(feed_date) when is_binary(feed_date), do: feed_date
+
+  defp extract_date_string(%{attr: attr, value: value}) do
+    case attr[:datetime] do
+      nil -> value |> List.first() |> extract_date_string()
+      datetime -> datetime
+    end
   end
 
   def initial_cleanup(feed_date) do
