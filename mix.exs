@@ -39,17 +39,17 @@ defmodule Pan.MixProject do
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.7"},
       # ecto sql adapter
-      {:ecto_sql, "~> 3.13.2"},
+      {:ecto_sql, "~> 3.14.0"},
       # database adapter
       {:postgrex, "~> 0.22"},
       # reactive view layer
-      {:phoenix_live_view, "~> 1.1.14"},
+      {:phoenix_live_view, "~> 1.2.10"},
       # HTML parser
       {:floki, "~> 0.38.0"},
       # classic view layer
       {:phoenix_html, "~> 4.3.0"},
       # live metrics dashboard
-      {:phoenix_live_dashboard, "~> 0.8.0"},
+      {:phoenix_live_dashboard, "~> 0.9.0"},
       # phoenix classic views
       {:phoenix_view, "~> 2.0.2"},
       # Providing postgres stats for liveview
@@ -97,9 +97,9 @@ defmodule Pan.MixProject do
       # Mix task invoking esbuild
       {:esbuild, "~> 0.10.0", runtime: Mix.env() == :dev},
       # live browser page reload on code changes
-      {:phoenix_live_reload, "~> 1.6.1", only: :dev},
+      {:phoenix_live_reload, "~> 1.7.0", only: :dev},
       # CSS Framework
-      {:tailwind, "~> 0.4.1", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.5.1", runtime: Mix.env() == :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]}
     ]
