@@ -407,7 +407,6 @@ defmodule PanWeb.Router do
 
     get("/users/merge", UserController, :merge)
     post("/users/execute_merge", UserController, :execute_merge)
-    post("/users/:id/unset_pro", UserController, :unset_pro)
 
     post("/feeds/:id/make_only", FeedController, :make_only)
 

@@ -8,16 +8,6 @@ defmodule PanWeb.UserController do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
   end
 
-  def unset_pro(conn, %{"id" => id}, _user) do
-    Repo.get(User, id)
-    |> User.changeset(%{pro_until: nil})
-    |> Repo.update()
-
-    conn
-    |> put_flash(:info, "User pro_until date deleted.")
-    |> redirect(to: user_frontend_path(conn, :index))
-  end
-
   def forgot_password(conn, _params, _user) do
     render(conn, "forgot_password.html")
   end

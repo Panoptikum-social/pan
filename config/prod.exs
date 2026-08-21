@@ -26,8 +26,7 @@ config :pan, :children, [
   {PidFile.Worker, file: "pan.pid"},
   Pan.Job.ImportStalePodcasts,
   Pan.Job.CacheMissingImages,
-  Pan.Job.PushMissingSearchIndex,
-  Pan.Job.UserProExpiration
+  Pan.Job.PushMissingSearchIndex
 ]
 
 import_config "prod.secret.exs"

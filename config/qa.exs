@@ -27,9 +27,7 @@ config :pan, :children, [
   PanWeb.Endpoint,
   Pan.Job.ImportStalePodcasts,
   Pan.Job.CacheMissingImages,
-  Pan.Job.PushMissingSearchIndex,
-  Pan.Job.UserProExpiration
-
+  Pan.Job.PushMissingSearchIndex
 ]
 
 # Do not include metadata nor timestamps in development logs

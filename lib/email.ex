@@ -57,7 +57,11 @@ defmodule Pan.Email do
 
   def confirm_persona_claim_link_html_email(token, user, email_address) do
     profile_url = PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :show, user)
-    grant_url = PanWeb.Router.Helpers.persona_frontend_url(PanWeb.Endpoint, :grant_access, user, token: token)
+
+    grant_url =
+      PanWeb.Router.Helpers.persona_frontend_url(PanWeb.Endpoint, :grant_access, user,
+        token: token
+      )
 
     new(
       to: email_address,
@@ -109,36 +113,6 @@ defmodule Pan.Email do
       from: from,
       subject: "Panoptikum - #{hostname} - Error Notification",
       text_body: mail_body
-    )
-  end
-
-  def pro_expiration_notification(email_address) do
-    url = PanWeb.Router.Helpers.user_frontend_url(PanWeb.Endpoint, :my_profile)
-
-    new(
-      to: email_address,
-      from: "noreply@panoptikum.social",
-      subject: "Panoptikum - Your pro account expires soon",
-      html_body: ~s"""
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width">
-          </head>
-          <body>
-            <p>Hello!</p>
-            <p> We would like to let you know, that your Panoptikum pro account will expire in less than one week. </p>
-            <p>
-              If you would like to extend your pro account, please login to your account and find
-              more information on your
-              <a href="#{url}">profile page</a>.
-            </p>
-            <p>We won't bother you with any more emails, promised!</p>
-            <p>- The Panoptikum Team.</p>
-          </body>
-        </html>
-      """
     )
   end
 end

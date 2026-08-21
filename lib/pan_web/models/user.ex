@@ -19,8 +19,6 @@ defmodule PanWeb.User do
     Moderation
   }
 
-  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
-
   @minimum_password_length 10
 
   schema "users" do
@@ -174,7 +172,14 @@ defmodule PanWeb.User do
       :password_confirmation,
       :bot_check
     ])
-    |> validate_required([:name, :username, :email, :password, :password_confirmation, :bot_check])
+    |> validate_required([
+      :name,
+      :username,
+      :email,
+      :password,
+      :password_confirmation,
+      :bot_check
+    ])
     |> validate_length(:username, min: 3, max: 30)
     |> validate_confirmation(:password)
     |> validate_bot_check(params)
@@ -347,22 +352,6 @@ defmodule PanWeb.User do
 
       array ->
         Enum.map(array, fn id -> Integer.to_string(id) end)
-    end
-  end
-
-  def pro_expiration() do
-    emails =
-      from(u in User,
-        where:
-          u.pro_until >= ^time_shift(now(), days: 6) and
-            u.pro_until <= ^time_shift(now(), days: 7),
-        select: u.email
-      )
-      |> Repo.all()
-
-    for email <- emails do
-      Pan.Email.pro_expiration_notification(email)
-      |> Pan.Mailer.deliver()
     end
   end
 
