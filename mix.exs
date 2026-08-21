@@ -78,7 +78,7 @@ defmodule Pan.MixProject do
       {:swoosh, "~> 1.21"},
       {:gen_smtp, "~> 1.3.0"},
       # Markdown parser
-      {:earmark, "~> 1.4"},
+      {:mdex, "~> 0.13"},
       # Timezone information
       {:tzdata, "~> 1.0"},
       # Jsonapi.org serializer

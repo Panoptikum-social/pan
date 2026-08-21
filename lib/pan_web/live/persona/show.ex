@@ -79,7 +79,7 @@ defmodule PanWeb.Live.Persona.Show do
   defp markdown(content) do
     if content do
       content
-      |> Earmark.as_html!()
+      |> MDEx.to_html!()
       |> HtmlSanitizeEx.html5()
       |> raw()
     end
