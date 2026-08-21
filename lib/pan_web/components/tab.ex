@@ -1,4 +1,5 @@
 defmodule PanWeb.Component.Tab do
+  # Not used anywhere yet — kept for a future feature. See conversation from 2026-08-21.
   use PanWeb, :html
 
   attr :items, :list, required: true
@@ -11,10 +12,12 @@ defmodule PanWeb.Component.Tab do
       <ul class="flex flex-wrap border-b border-gray-lighter">
         <%= for {_item, index} <- Enum.with_index(@items) do %>
           <li class="-mb-px ml-1.5">
-            <a class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
-               x-bind:class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r' : selectedTab === #{index}, 'bg-gray-lighter text-gray-dark' : selectedTab !== #{index} }"}
-               @click.prevent={"selectedTab = #{index}"}
-               to="#">{index + 1}</a>
+            <a
+              class="inline-block rounded-t px-2 py-1.5 hover:text-link-dark border-gray-lighter"
+              x-bind:class={"{ 'disabled font-semibold text-gray bg-white border-l border-t border-r' : selectedTab === #{index}, 'bg-gray-lighter text-gray-dark' : selectedTab !== #{index} }"}
+              @click.prevent={"selectedTab = #{index}"}
+              to="#"
+            >{index + 1}</a>
           </li>
         <% end %>
       </ul>
