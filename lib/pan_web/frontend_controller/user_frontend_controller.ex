@@ -1,7 +1,6 @@
 defmodule PanWeb.UserFrontendController do
   use PanWeb, :controller
   alias PanWeb.{CategoryPodcast, Follow, Like, Persona, Podcast, Subscription, User}
-  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   plug(:scrub_params, "user" when action in [:create, :update])
 
@@ -248,27 +247,6 @@ defmodule PanWeb.UserFrontendController do
     conn
     |> put_flash(:info, "Followed all podcasts you had subscribed to.")
     |> redirect(to: user_frontend_path(conn, :my_podcasts))
-  end
-
-  def go_pro(conn, _params, user) do
-    unless user.pro_until do
-      payment_reference = "pan-#{user.id}-" <> Calendar.strftime(now(), "%x")
-
-      User.changeset(user, %{
-        pro_until: time_shift(now(), days: 30),
-        payment_reference: payment_reference,
-        billing_address: user.name
-      })
-      |> Repo.update()
-    end
-
-    conn
-    |> put_flash(:info, "You are now a Panoptikum pro user!")
-    |> redirect(to: user_frontend_path(conn, :my_profile))
-  end
-
-  def payment_info(conn, _params, user) do
-    render(conn, "payment_info.html", user: user)
   end
 
   def delete_my_account(conn, _params, user) do

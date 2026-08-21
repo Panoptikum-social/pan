@@ -253,7 +253,6 @@ defmodule PanWeb.Router do
     live("/users/new", Live.User.New, :new, as: :user_frontend)
     live("/users/:id", Live.User.Show, :show, as: :user_frontend)
     resources("/users", UserFrontendController, only: [:index])
-    get("/pro_features", PageFrontendController, :pro_features)
 
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
     live("/personas", Live.Persona.Index, :index, as: :persona_frontend)
@@ -299,7 +298,6 @@ defmodule PanWeb.Router do
   scope "/pan", PanWeb do
     pipe_through([:browser, :authenticate_user])
 
-    get("/users/payment_info", UserFrontendController, :payment_info)
     post("/users/like_all_subscribed", UserFrontendController, :like_all_subscribed)
     post("/users/follow_all_subscribed", UserFrontendController, :follow_all_subscribed)
     get("/my_podcasts", UserFrontendController, :my_podcasts)
@@ -311,7 +309,6 @@ defmodule PanWeb.Router do
     put("/update", UserFrontendController, :update)
     get("/edit_password", UserFrontendController, :edit_password)
     put("/update_password", UserFrontendController, :update_password)
-    post("/go_pro", UserFrontendController, :go_pro)
 
     post("/personas/:id/claim", PersonaFrontendController, :claim)
     get("/personas/:id/warning", PersonaFrontendController, :warning)
