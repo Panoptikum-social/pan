@@ -3,7 +3,6 @@ defmodule PanWeb.Api.Auth do
   import PanWeb.Api.Helpers, only: [send_401: 2]
   alias Pan.Repo
   alias PanWeb.User
-  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
   def init(opts) do
     Keyword.fetch!(opts, :repo)
@@ -41,16 +40,6 @@ defmodule PanWeb.Api.Auth do
       conn
     else
       send_401(conn, conn.assigns.api_error)
-    end
-  end
-
-  def authenticate_api_pro_user(conn, _opts) do
-    current_user = conn.assigns.current_user
-
-    if current_user && in_the_future?(current_user.pro_until) do
-      conn
-    else
-      send_401(conn, conn.assigns.api_error || "Pro account needed")
     end
   end
 

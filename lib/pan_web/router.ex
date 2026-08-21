@@ -135,18 +135,10 @@ defmodule PanWeb.Router do
 
     post("/personas/:id/claim", PersonaController, :claim)
     resources("/personas", PersonaController, only: [:update])
-
-    resources("/delegations", DelegationController, only: [:show])
-  end
-
-  scope "/jsonapi/pro", PanWeb.Api, as: :api do
-    pipe_through([:json_api, :authenticate_api_pro_user])
-
     post("/personas/:id/redirect", PersonaController, :redirect)
     post("/personas/:id/cancel_redirect", PersonaController, :cancel_redirect)
-    put("/personas/:id", PersonaController, :pro_update)
-    patch("/personas/:id", PersonaController, :pro_update)
 
+    resources("/delegations", DelegationController, only: [:show])
     post("/delegations/toggle", DelegationController, :toggle)
   end
 
@@ -353,6 +345,12 @@ defmodule PanWeb.Router do
 
     delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
     resources("/manifestations", ManifestationFrontendController, only: [:delete])
+
+    get("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
+    get("/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
+    get("/personas/:id/redirect", PersonaFrontendController, :redirect)
+
+    get("/invoices/:id/", InvoiceFrontendController, :download)
   end
 
   scope "/moderator", PanWeb do
@@ -382,16 +380,6 @@ defmodule PanWeb.Router do
     live("/moderation/:id/feed/:feed_id", Live.Moderation.EditFeed, :edit_feed,
       as: :moderation_frontend
     )
-  end
-
-  scope "/pro", PanWeb do
-    pipe_through([:browser, :authenticate_pro])
-
-    get("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
-    get("/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
-    get("/personas/:id/redirect", PersonaFrontendController, :redirect)
-
-    get("/invoices/:id/", InvoiceFrontendController, :download)
   end
 
   scope "/admin", PanWeb do
@@ -464,7 +452,13 @@ defmodule PanWeb.Router do
     get("/podcasts/:id/update_counters/", PodcastController, :update_counters)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
     get("/podcasts/update_all_counters", PodcastController, :update_all_counters)
-    get("/podcasts/:id/remove_unwanted_references", PodcastController, :remove_unwanted_references)
+
+    get(
+      "/podcasts/:id/remove_unwanted_references",
+      PodcastController,
+      :remove_unwanted_references
+    )
+
     get("/podcasts/deprecated", PodcastController, :deprecated)
     resources("/podcasts", PodcastController, only: [:delete])
 

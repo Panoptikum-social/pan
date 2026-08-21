@@ -78,7 +78,7 @@ defmodule PanWeb.Persona do
     |> unique_constraint(:pid)
   end
 
-  def pro_user_changeset(struct, params \\ %{}) do
+  def user_changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [
       :pid,
@@ -96,14 +96,6 @@ defmodule PanWeb.Persona do
     |> validate_length(:image_url, max: 255)
     |> validate_length(:image_title, max: 255)
     |> validate_length(:fediverse_address, max: 255)
-    |> unique_constraint(:pid)
-    |> unique_constraint(:uri)
-  end
-
-  def user_changeset(struct, params \\ %{}) do
-    struct
-    |> cast(params, [:name, :uri])
-    |> validate_required([:pid, :name, :uri])
     |> unique_constraint(:pid)
     |> unique_constraint(:uri)
   end

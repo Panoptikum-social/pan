@@ -1,7 +1,6 @@
 defmodule PanWeb.Auth do
   import Plug.Conn
   import Bcrypt, only: [verify_pass: 2, no_user_verify: 0]
-  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
   alias Pan.Repo
   alias PanWeb.User
 
@@ -103,20 +102,6 @@ defmodule PanWeb.Auth do
     else
       conn
       |> put_flash(:error, "You must be logged in to access that page.")
-      |> put_session(:desired_url, conn.request_path)
-      |> redirect(to: Helpers.session_path(conn, :new))
-      |> halt()
-    end
-  end
-
-  def authenticate_pro(conn, _opts) do
-    current_user = conn.assigns.current_user
-
-    if current_user && in_the_future?(current_user.pro_until) do
-      conn
-    else
-      conn
-      |> put_flash(:error, "You need to be logged in with a pro account to access that page.")
       |> put_session(:desired_url, conn.request_path)
       |> redirect(to: Helpers.session_path(conn, :new))
       |> halt()

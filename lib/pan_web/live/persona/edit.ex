@@ -6,7 +6,6 @@ defmodule PanWeb.Live.Persona.Edit do
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
   alias PanWeb.Component.MarkdownField
   import PanWeb.Router.Helpers
-  import Pan.Parser.MyDateTime, only: [in_the_future?: 1]
 
   def mount(%{"id" => id}, _session, %{assigns: assigns} = socket) do
     manifestation = Manifestation.get_with_persona(assigns.current_user_id, id)
@@ -27,30 +26,19 @@ defmodule PanWeb.Live.Persona.Edit do
     end
   end
 
-  defp pro(user), do: in_the_future?(user.pro_until)
-
   def handle_event("validate", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
     changeset =
-      if in_the_future?(assigns.current_user.pro_until) do
-        Persona.pro_user_changeset(assigns.persona, persona_params) |> Map.put(:action, :insert)
-      else
-        Persona.user_changeset(assigns.persona, persona_params) |> Map.put(:action, :insert)
-      end
+      Persona.user_changeset(assigns.persona, persona_params) |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"persona" => persona_params}, %{assigns: assigns} = socket) do
-    changeset =
-      if in_the_future?(assigns.current_user.pro_until) do
-        thumbnail = Image.get_by_persona_id(assigns.persona.id)
-        if thumbnail, do: Image.delete_asset(thumbnail)
-        Image.download_thumbnail("persona", assigns.persona.id, persona_params["image_url"])
+    thumbnail = Image.get_by_persona_id(assigns.persona.id)
+    if thumbnail, do: Image.delete_asset(thumbnail)
+    Image.download_thumbnail("persona", assigns.persona.id, persona_params["image_url"])
 
-        Persona.pro_user_changeset(assigns.persona, persona_params)
-      else
-        Persona.user_changeset(assigns.persona, persona_params)
-      end
+    changeset = Persona.user_changeset(assigns.persona, persona_params)
 
     case Pan.Repo.update(changeset) do
       {:ok, _persona} ->
@@ -79,67 +67,77 @@ defmodule PanWeb.Live.Persona.Edit do
     <div class="m-4">
       <h1 class="text-3xl">Edit persona</h1>
 
-      <.form for={@changeset}
-             :let={f}
-             class="p-4 mb-4 flex flex-col items-start space-y-4"
-             phx-change="validate"
-             phx-submit="save">
-
+      <.form
+        :let={f}
+        for={@changeset}
+        class="p-4 mb-4 flex flex-col items-start space-y-4"
+        phx-change="validate"
+        phx-submit="save"
+      >
         <.error :if={!@changeset.valid?}>
           This persona is not valid. Please check the errors below!
         </.error>
 
-        <.error :if={!pro(@current_user)}>
-          <strong>Info!</strong> Fields grayed out can be updated with pro accounts only.
-        </.error>
+        <.input
+          field={f[:pid]}
+          class="input"
+          label="PanoptikumID"
+        />
 
-        <.input field={f[:pid]}
-               class="input"
-               label="PanoptikumID"
-               disabled={not pro(@current_user)} />
+        <.input
+          field={f[:name]}
+          label="Name"
+          class="w-full input"
+        />
 
-        <.input field={f[:name]}
-                label="Name"
-                class="w-full input" />
+        <.input
+          field={f[:uri]}
+          label="Uri"
+          class="w-full input"
+        />
 
-        <.input field={f[:uri]}
-                label="Uri"
-                class="w-full input" />
+        <.input
+          type="email"
+          field={f[:email]}
+          label="Email"
+          class="w-full input"
+        />
 
-        <.input type="email"
-                field={f[:email]}
-                label="Email"
-                class="w-full input" />
+        <.input
+          field={f[:fediverse_address]}
+          label="Fediverse Address"
+          placeholder="@username@domain.social"
+          class="w-full input"
+        />
+        <p class="text-gray">(support is experimental and data might not be imported currently)</p>
 
-        <.input field={f[:fediverse_address]}
-                label="Fediverse Address"
-                placeholder="@username@domain.social"
-                class="w-full input" />
-          <p class="text-gray">(support is experimental and data might not be imported currently)</p>
+        <.input
+          field={f[:image_url]}
+          label="Image URL"
+          class="input w-full"
+        />
 
-        <.input field={f[:image_url]}
-                label="Image URL"
-                class="input w-full"
-                disabled={not pro(@current_user)} />
+        <.input
+          field={f[:image_title]}
+          class="input w-full"
+          label="Image title"
+        />
 
-        <.input field={f[:image_title]}
-                class="input w-full"
-                label="Image title"
-                disabled={not pro(@current_user)} />
+        <.input
+          field={f[:description]}
+          class="input w-full"
+          label="Description"
+        />
 
-        <.input field={f[:description]}
-                class="input w-full"
-                label="Description"
-                disabled={not pro(@current_user)} />
-
-        <MarkdownField.render myfield={f[:long_description]}
-                             disabled={not pro(@current_user)}/>
+        <MarkdownField.render myfield={f[:long_description]} />
 
         <.button type="submit" class="btn btn-info">Submit</.button>
       </.form>
 
-      <a href={user_frontend_path(Endpoint, :my_profile)}
-          class="text-link hover:text-link-dark">Back</a>
+      <a
+        href={user_frontend_path(Endpoint, :my_profile)}
+        class="text-link hover:text-link-dark"
+      >Back</a>
     </div>
     """
   end

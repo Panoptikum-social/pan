@@ -239,34 +239,6 @@ defmodule PanWeb.Api.PersonaController do
     end
   end
 
-  def pro_update(conn, %{"id" => id} = params, user) do
-    manifestation =
-      from(m in Manifestation,
-        where: m.user_id == ^user.id and m.persona_id == ^id,
-        preload: :persona
-      )
-      |> Repo.one()
-
-    case manifestation do
-      nil ->
-        Helpers.send_401(conn, "You are not a manifestation of of this persona.")
-
-      manifestation ->
-        persona = manifestation.persona
-        changeset = Persona.pro_user_changeset(persona, params)
-
-        case Repo.update(changeset) do
-          {:ok, persona} ->
-            show(conn, %{"id" => persona.id}, user)
-
-          {:error, changeset} ->
-            conn
-            |> put_status(422)
-            |> render(:errors, data: changeset)
-        end
-    end
-  end
-
   def redirect(conn, %{"id" => id, "target_id" => target_id}, user) do
     id = String.to_integer(id)
     target_id = String.to_integer(target_id)
