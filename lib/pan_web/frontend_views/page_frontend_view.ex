@@ -15,9 +15,7 @@ defmodule PanWeb.PageFrontendView do
   def unsafe_content_for(url, selector) do
     HTTPoison.get!("https://blog.panoptikum.social/" <> url <> "/", [],
       recv_timeout: 10_000,
-      timeout: 10_000,
-      hackney: [:insecure],
-      ssl: [{:versions, [:"tlsv1.2", :"tlsv1.1", :tlsv1]}]
+      timeout: 10_000
     ).body
     |> Floki.find(selector)
     |> Floki.raw_html()
