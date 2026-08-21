@@ -4,6 +4,7 @@
     "alpinejs": "^3.8.1",
     "topbar": "^1.0.1",
     "@tailwindcss/cli": "^4.1.18",
+    "@tailwindcss/typography": "^0.5.19",
     "daisyui": "^5.5.14",
     "tailwindcss": "^4.1.18"
   }

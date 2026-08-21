@@ -5,6 +5,7 @@
 @source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
 @plugin "daisyui";
 @plugin "daisyui/theme";
+@plugin "@tailwindcss/typography";
 
 @custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
 @custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
