@@ -30,7 +30,7 @@ config :tailwind,
       --input=assets/css/app.css
       --output=priv/static/assets/app.css
     ),
-    cd: Path.expand("..", __DIR__),
+    cd: Path.expand("..", __DIR__)
   ],
   version_check: false,
   path: Path.expand("../assets/node_modules/.bin/tailwindcss", __DIR__)

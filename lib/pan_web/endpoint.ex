@@ -27,6 +27,10 @@ defmodule PanWeb.Endpoint do
     only:
       ~w(assets fonts images web-player subscribe-button simplemde config robots.txt .well-known google0fe1c0bbe8862b06.html)
 
+  if Mix.env() == :dev do
+    plug Tidewave
+  end
+
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do

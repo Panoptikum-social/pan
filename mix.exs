@@ -34,6 +34,8 @@ defmodule Pan.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:tidewave, "~> 0.4", only: [:dev]},
+      {:usage_rules, "~> 0.1", only: [:dev]},
       # web framework
       {:phoenix, "~> 1.8.1"},
       # phoenix support for ecto
@@ -101,7 +103,11 @@ defmodule Pan.MixProject do
       # CSS Framework
       {:tailwind, "~> 0.5.1", runtime: Mix.env() == :dev},
       # Code analysis
-      {:credo, "~> 1.5", only: [:dev, :test]}
+      {:credo, "~> 1.5", only: [:dev, :test]},
+      # codegen/installer framework, required by the claude package's installer
+      {:igniter, "~> 0.8", only: [:dev, :test]},
+      # Claude Code project integration (hooks, MCP servers incl. Tidewave, CLAUDE.md usage rules)
+      {:claude, "~> 0.5.3", only: [:dev, :test]}
     ]
   end
 
@@ -120,5 +126,4 @@ defmodule Pan.MixProject do
       "assets.deploy": ["tailwind default --minify", "esbuild pan --minify", "phx.digest"]
     ]
   end
-
 end
