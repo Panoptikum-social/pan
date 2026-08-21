@@ -34,10 +34,6 @@ defmodule PanWeb.User do
     field(:email_confirmed, :boolean, default: false)
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
-    field(:pro_until, :naive_datetime)
-    field(:billing_address, Ecto.EctoText)
-    field(:payment_reference, :string)
-    field(:paper_bill, :boolean, default: false)
     field(:bot_check, :integer, virtual: true)
     timestamps()
 
@@ -125,11 +121,7 @@ defmodule PanWeb.User do
       :moderator,
       :email_confirmed,
       :share_subscriptions,
-      :share_follows,
-      :pro_until,
-      :billing_address,
-      :payment_reference,
-      :paper_bill
+      :share_follows
     ])
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
@@ -147,9 +139,7 @@ defmodule PanWeb.User do
       :name,
       :username,
       :share_follows,
-      :share_subscriptions,
-      :billing_address,
-      :paper_bill
+      :share_subscriptions
     ])
     |> validate_required([:email, :name, :username])
     |> validate_length(:name, min: 3, max: 100)

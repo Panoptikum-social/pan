@@ -52,7 +52,6 @@ defmodule PanWeb.MaintenanceController do
       {User, :podcaster},
       {User, :share_subscriptions},
       {User, :share_follows},
-      {User, :paper_bill},
       {User, :moderator},
       {Persona, :full_text},
       {Persona, :thumbnailed},

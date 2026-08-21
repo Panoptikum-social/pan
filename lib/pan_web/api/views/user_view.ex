@@ -49,11 +49,7 @@ defmodule PanWeb.Api.MyUserView do
     :moderator,
     :email_confirmed,
     :share_subscriptions,
-    :share_follows,
-    :pro_until,
-    :billing_address,
-    :payment_reference,
-    :paper_bill
+    :share_follows
   ])
 
   has_many(:personas, serializer: PanWeb.Api.PlainPersonaView, include: false)

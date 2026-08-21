@@ -3,18 +3,31 @@
     Update Profile
   </h1>
 
-  <.form :let={f} for={@changeset} action={user_frontend_path(@conn, :update)} class="p-4 flex flex-col items-start space-y-4">
+  <.form
+    :let={f}
+    for={@changeset}
+    action={user_frontend_path(@conn, :update)}
+    class="p-4 flex flex-col items-start space-y-4"
+  >
     <.error :if={@changeset.action}>
       Oops, something went wrong! Please check the errors below.
     </.error>
     <.input field={f[:name]} type="text" label="Name" placeholder="Name" class="input" />
-    <.input field={f[:username]} type="text" label="Username" placeholder="Username" class="input" />
+    <.input
+      field={f[:username]}
+      type="text"
+      label="Username"
+      placeholder="Username"
+      class="input"
+    />
     <.input field={f[:email]} type="email" label="Email" placeholder="Email" class="input" />
     <.input field={f[:podcaster]} type="checkbox" label="I am a podcaster" />
     <.input field={f[:share_follows]} type="checkbox" label="I want to share my followings" />
-    <.input field={f[:share_subscriptions]} type="checkbox" label="I want to share my subscriptions" />
-    <.input field={f[:paper_bill]} type="checkbox" label="I want to receive a printed bill via snail mail" />
-    <.input field={f[:billing_address]} type="textarea" label="Billing address (will be used on bill and in envelope window)" rows={7} class="textarea" />
+    <.input
+      field={f[:share_subscriptions]}
+      type="checkbox"
+      label="I want to share my subscriptions"
+    />
     <button type="submit" class="btn btn-primary">Update Profile</button>
   </.form>
 </div>
