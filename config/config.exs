@@ -9,7 +9,7 @@ config :pan, PanWeb.Endpoint,
   render_errors: [view: PanWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: :pan_pubsub,
   live_view: [signing_salt: "LMBJCcov"],
-  http: [compress: false]
+  adapter: Bandit.PhoenixAdapter
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
