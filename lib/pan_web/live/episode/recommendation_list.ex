@@ -64,7 +64,7 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                   <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
                     <a href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
                       class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white" alt="tweet it">tweet</a>
-                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@episode, recommendation)}"},
+                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@episode, recommendation)}"}
                       class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
                     <a href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
                       class="bg-grass-light px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
