@@ -23,10 +23,12 @@ In `config/qa.secret.exs`, set:
   ```sh
   openssl rand -base64 48
   ```
+* `PanWeb.Endpoint` `url`/`check_origin` — change `qa.panoptikum.social` to
+  this server's actual domain/IP. If you change the published port away
+  from `4001` (see below), update the port here too.
 
-In `config/qa.exs`, set the `host` values (default `qa.panoptikum.social`) to
-this server's actual domain/IP. If you change the published port away from
-`4001` (see below), update the `port` in `url:`/`check_origin` here too.
+All of this lives only in `config/qa.secret.exs` (gitignored), so a later
+`git pull` on this server never conflicts with these settings.
 
 ## Build and run
 

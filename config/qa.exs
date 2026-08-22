@@ -5,12 +5,14 @@ import Config
 
 config :pan, PanWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4000],
-  url: [scheme: "http", host: "qa.panoptikum.social", port: 4001],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
-  check_origin: ["http://qa.panoptikum.social:4001"],
   version: Mix.Project.config()[:version]
+
+# url/check_origin/secret_key_base are deployment-specific and live in
+# qa.secret.exs (gitignored) instead, so a `git pull` on the QA server
+# never conflicts with per-server settings.
 
 config :logger, level: :info
 
