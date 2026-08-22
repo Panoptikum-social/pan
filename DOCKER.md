@@ -37,7 +37,13 @@ docker compose build
 docker compose up -d
 ```
 
-Migrations run automatically on container start.
+On first init of an empty `db_data` volume, Postgres loads
+`materials/pan_dev.sql.gz` (a baseline schema + demo data dump) before the
+app container's automatic migrations run. This is required — running the
+full migration history against a truly empty database fails partway
+through (old migration ordering issue); the dump provides a working
+baseline with `schema_migrations` already populated, so only the
+migrations added since then need to apply.
 
 App is published on host port `4001` by default (edit `ports:` in
 `docker-compose.yml` to change).
@@ -89,3 +95,9 @@ docker compose up -d
   ([npm/cli#4828](https://github.com/npm/cli/issues/4828)), usually from an
   old apt-packaged npm. `Dockerfile` installs Node from NodeSource to avoid
   it; if it recurs, bump the Node version there.
+* `app` crashes on start with a Postgres error like `relation "..." does
+  not exist` during a migration — the `db_data` volume already has a
+  partially-migrated, empty-origin database in it (e.g. from before the
+  `materials/pan_dev.sql.gz` seed was added). Reset it: `docker compose
+  down -v && docker compose up -d`. The `pan_dev.sql.gz` seed only loads
+  on first init of an empty volume, not on top of an existing one.

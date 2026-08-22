@@ -25,6 +25,10 @@ services:
       POSTGRES_PASSWORD: changeme
     volumes:
       - db_data:/var/lib/postgresql/data
+      # seeds a baseline schema + demo data on first init (empty data dir
+      # only) — running the full migration history from a truly empty DB
+      # fails partway through, see DOCKER.md
+      - ./materials/pan_dev.sql.gz:/docker-entrypoint-initdb.d/01-pan_dev.sql.gz:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -43,7 +47,9 @@ services:
         soft: 65535
         hard: 65535
     healthcheck:
-      test: ["CMD-SHELL", "curl -sf http://localhost:9308/ || exit 1"]
+      # the manticoresearch/manticore image has no curl/wget; the mysql
+      # socket appearing is a reliable proxy for "accepting connections"
+      test: ["CMD-SHELL", "test -S /var/run/mysqld/mysqld.sock"]
       interval: 5s
       timeout: 5s
       retries: 10
