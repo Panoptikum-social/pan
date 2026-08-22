@@ -24,6 +24,13 @@ config :pan, :environment, "qa"
 # not on localhost like the bare-metal dev/prod setup.
 config :pan, :manticore_url, "http://search:9308"
 
+# pid_file is a hard OTP application dependency of :pan (it's a normal Mix
+# dep) — if it fails to start, :pan never starts either, regardless of its
+# release start_type. The container's working directory isn't writable by
+# the app user, so point it at /tmp instead of the default "./pan.pid".
+# Nothing reads this file in QA (unlike bare-metal prod, where monit does).
+config :pid_file, file: "/tmp/pan.pid"
+
 config :pan, :children, [
   Pan.Repo,
   PanWeb.Telemetry,

@@ -11,23 +11,7 @@ defmodule Pan.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader],
-      releases: releases()
-    ]
-  end
-
-  # pid_file is only useful where monit reads it (bare-metal prod). In the
-  # QA Docker container there's nothing consuming it, and the container's
-  # working directory isn't writable by the app user, so it would otherwise
-  # crash the release on boot. `:temporary` still attempts to start it, but
-  # if that fails, only logs an error instead of taking the whole release
-  # down (`:load` would skip starting it entirely, but :pan depends on it
-  # and release assembly rejects a :permanent app depending on a :load one).
-  defp releases do
-    [
-      pan: [
-        applications: if(Mix.env() == :qa, do: [pid_file: :temporary], else: [])
-      ]
+      listeners: [Phoenix.CodeReloader]
     ]
   end
 
