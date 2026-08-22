@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.AddPodcasterAndAdminToUsers do
+defmodule Pan.Repo.Migrations.AddModeratorToUsers do
   use Ecto.Migration
 
   def change do

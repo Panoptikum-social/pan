@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.AddElasticBooleans do
+defmodule Pan.Repo.Migrations.AddThumbnailedBooleans do
   use Ecto.Migration
 
   def change do

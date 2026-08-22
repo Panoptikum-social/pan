@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.UpdateThumbnailedIndices do
+defmodule Pan.Repo.Migrations.UpdateThumbnailedIndicesAgain do
   use Ecto.Migration
 
   def change do

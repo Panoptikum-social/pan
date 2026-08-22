@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.AddUpdatePausedToPodcasts do
+defmodule Pan.Repo.Migrations.AddRetiredToPodcasts do
   use Ecto.Migration
 
   def change do

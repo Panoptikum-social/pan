@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.UniqueConstraintsForRelations do
+defmodule Pan.Repo.Migrations.MoreUniqueConstraintsForRelations do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.AddNoHeadersIndicator do
+defmodule Pan.Repo.Migrations.AddHashToFeeds do
   use Ecto.Migration
 
   def change do

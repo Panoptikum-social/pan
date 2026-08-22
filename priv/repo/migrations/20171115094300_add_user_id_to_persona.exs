@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.AddPersonaIdToLikes do
+defmodule Pan.Repo.Migrations.AddUserIdToPersona do
   use Ecto.Migration
 
   def change do

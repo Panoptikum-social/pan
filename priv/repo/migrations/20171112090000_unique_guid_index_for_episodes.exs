@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.UniqueConstraintsForEpisodes do
+defmodule Pan.Repo.Migrations.UniqueGuidIndexForEpisodes do
   use Ecto.Migration
 
   def change do

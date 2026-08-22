@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.CreateGig do
+defmodule Pan.Repo.Migrations.DropContributor do
   use Ecto.Migration
 
   def change do

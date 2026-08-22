@@ -1,4 +1,4 @@
-defmodule Pan.Repo.Migrations.RemoveCommentAndRecommendToFromLike do
+defmodule Pan.Repo.Migrations.FixEpisodesPodcastIdIdIndex do
   use Ecto.Migration
 
   def change do
