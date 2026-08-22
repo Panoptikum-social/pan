@@ -11,7 +11,21 @@ defmodule Pan.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      releases: releases()
+    ]
+  end
+
+  # pid_file is only useful where monit reads it (bare-metal prod). In the
+  # QA Docker container there's nothing consuming it, and the container's
+  # working directory isn't writable by the app user, so it would otherwise
+  # crash the release on boot. `:load` loads the application without
+  # calling its start callback, i.e. without starting PidFile.Worker.
+  defp releases do
+    [
+      pan: [
+        applications: if(Mix.env() == :qa, do: [pid_file: :load], else: [])
+      ]
     ]
   end
 
