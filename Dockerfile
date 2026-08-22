@@ -21,7 +21,15 @@ FROM ${BUILDER_IMAGE} AS builder
 ARG MIX_ENV
 
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-      build-essential git curl ca-certificates nodejs npm \
+      build-essential git curl ca-certificates gnupg \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Ubuntu's apt-packaged nodejs/npm is old enough (npm ~9.x) to hit a known
+# npm optional-dependencies bug (npm/cli#4828) that drops platform-specific
+# native packages like @tailwindcss/oxide-linux-x64-gnu. Install a current
+# Node LTS from NodeSource instead.
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -35,9 +43,11 @@ COPY config config
 RUN mix deps.get --only $MIX_ENV
 RUN mix deps.compile
 
-# JS deps + asset build (tailwind CLI comes from npm, see config/config.exs)
+# JS deps + asset build (tailwind CLI comes from npm, see config/config.exs).
+# `npm ci` (not `npm install`) installs strictly from the lockfile, which
+# also sidesteps the optional-dependency bug above.
 COPY assets assets
-RUN npm install --prefix assets
+RUN npm ci --prefix assets
 
 COPY priv priv
 COPY lib lib

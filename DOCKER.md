@@ -84,3 +84,8 @@ docker compose up -d
   (`/var/phoenix/pan-uploads`) — persists across `up`/`down`, cleared only
   by `down -v`.
 * Manticore URL is set via `config :pan, :manticore_url` in `config/qa.exs`.
+* `mix assets.deploy` fails with "Cannot find native binding" /
+  `@tailwindcss/oxide-*` — npm optional-dependencies bug
+  ([npm/cli#4828](https://github.com/npm/cli/issues/4828)), usually from an
+  old apt-packaged npm. `Dockerfile` installs Node from NodeSource to avoid
+  it; if it recurs, bump the Node version there.
