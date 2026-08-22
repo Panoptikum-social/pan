@@ -6,7 +6,11 @@
     // Phoenix HEEx template syntax highlighting
     "phoenixframework.phoenix",
     // Tailwind CSS IntelliSense (class autocomplete in .heex / app.css)
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    // Inline diagnostics (Credo/LSP warnings shown right on the line)
+    "usernamehw.errorlens",
+    // Enforce .editorconfig whitespace/encoding rules
+    "editorconfig.editorconfig"
   ],
   // ElixirLS provides the same LSP features as elixir-tools plus a debugger,
   // but the two conflict if both are enabled at once — pick one.
