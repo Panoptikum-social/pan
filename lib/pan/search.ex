@@ -103,7 +103,7 @@ defmodule Pan.Search do
       |> Jason.encode!()
 
     response =
-      HTTPoison.post("http://localhost:9308/search", manticore_data, [
+      HTTPoison.post(Search.Manticore.base_url() <> "/search", manticore_data, [
         {"Content-Type", "application/x-ndjson"}
       ])
 

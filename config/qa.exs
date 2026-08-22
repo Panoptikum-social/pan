@@ -1,24 +1,26 @@
 import Config
 
-# Configure your database
-config :pan, Pan.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "pan_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+# Database and Mailer credentials live in qa.secret.exs (gitignored),
+# same convention as prod.secret.exs — see config/qa.secret.exs.example.
 
-# For development, we disable any cache and enable
-# debugging and code reloading.
-#
-# The watchers configuration can be used to run external
-# watchers to your application. For example, we use it
-# with webpack to recompile .js and .css sources.
 config :pan, PanWeb.Endpoint,
-  http: [ip: {0, 0, 0, 0}, port: System.get_env("PORT") || 4000],
-  debug_errors: true,
-  check_origin: false
+  http: [ip: {0, 0, 0, 0}, port: 4000],
+  url: [scheme: "https", host: "qa.panoptikum.social", port: 443],
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  server: true,
+  root: ".",
+  check_origin: ["https://qa.panoptikum.social"],
+  version: Mix.Project.config()[:version]
+
+config :logger, level: :info
+
+config :phoenix, :serve_endpoints, true
+
+config :pan, :environment, "qa"
+
+# Manticore runs as its own container in the QA docker-compose stack,
+# not on localhost like the bare-metal dev/prod setup.
+config :pan, :manticore_url, "http://search:9308"
 
 config :pan, :children, [
   Pan.Repo,
@@ -30,15 +32,4 @@ config :pan, :children, [
   Pan.Job.PushMissingSearchIndex
 ]
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
-
-# Set a higher stacktrace during development.
-config :phoenix, :stacktrace_depth, 20
-
-# Initialize plugs at runtime for faster development compilation
-config :phoenix, :plug_init_mode, :runtime
-
-import_config "dev.secret.exs"
-
-config :pan, Pan.Mailer, adapter: Swoosh.Adapters.Local
+import_config "qa.secret.exs"

@@ -39,4 +39,5 @@ npm-debug.log
 # config secret files
 /config/dev.secret.exs
 /config/prod.secret.exs
+/config/qa.secret.exs
 

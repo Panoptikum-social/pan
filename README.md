@@ -60,6 +60,11 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 
 * Run tests with `mix test`
 
+## 🐳 QA environment
+
+To stand up a disposable QA deployment on a separate server via Docker
+Compose, see [DOCKER.md](DOCKER.md).
+
 ### ✨ Bonus
 
 * Sending a Test Mail from the console

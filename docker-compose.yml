@@ -1,0 +1,54 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      # host:container — change the host side if 4001 is already taken
+      - "4001:4000"
+    volumes:
+      # matches the hardcoded /var/phoenix/pan-uploads path in
+      # lib/pan_web/**/opml_controller.ex
+      - uploads:/var/phoenix/pan-uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      search:
+        condition: service_healthy
+
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      # must match config/qa.secret.exs
+      POSTGRES_DB: pan_qa
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  search:
+    image: manticoresearch/manticore:latest
+    restart: unless-stopped
+    # not published to the host — only the app container needs to reach it,
+    # via the "search" service name (see config/qa.exs :manticore_url)
+    volumes:
+      - search_data:/var/lib/manticore
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9308/ || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  db_data:
+  search_data:
+  uploads:

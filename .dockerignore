@@ -1,0 +1,16 @@
+.git
+.gitignore
+_build
+deps
+cover
+doc
+uploads
+assets/node_modules
+priv/static/assets
+*.pid
+erl_crash.dump
+
+.vscode
+.elixir_ls
+.editorconfig
+README.md
