@@ -8,12 +8,12 @@
 
 ARG ELIXIR_VERSION=1.19.5
 ARG OTP_VERSION=28.4.2
-ARG DEBIAN_VERSION=bookworm-20250520-slim
-# Check https://hub.docker.com/r/hexpm/elixir/tags for a matching
-# elixir/otp/debian combination if this tag doesn't exist (hexpm only
-# keeps recent Debian snapshot dates around).
-ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
-ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
+# Matches the QA server's host OS (Ubuntu 24.04 "noble"). Check
+# https://hub.docker.com/r/hexpm/elixir/tags for a current tag for this
+# elixir/otp/ubuntu combination if this one no longer exists.
+ARG UBUNTU_TAG=noble-20260509.1
+ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-ubuntu-${UBUNTU_TAG}"
+ARG RUNNER_IMAGE="ubuntu:24.04"
 ARG MIX_ENV=qa
 
 # ---- Build stage ----

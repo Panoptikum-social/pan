@@ -5,11 +5,11 @@ import Config
 
 config :pan, PanWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4000],
-  url: [scheme: "https", host: "qa.panoptikum.social", port: 443],
+  url: [scheme: "http", host: "qa.panoptikum.social", port: 4001],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
   root: ".",
-  check_origin: ["https://qa.panoptikum.social"],
+  check_origin: ["http://qa.panoptikum.social:4001"],
   version: Mix.Project.config()[:version]
 
 config :logger, level: :info
