@@ -8,9 +8,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   def mount(_params, _session, socket) do
     Phoenix.PubSub.subscribe(:pan_pubsub, "admin")
     Process.send_after(self(), :refresh, 5 * 1000)
-
-    {:ok,
-     assign(socket, sort_order: :asc, sort_by: :next_update, import_running?: false) |> fetch()}
+    {:ok, assign(socket, sort_order: :asc, sort_by: :next_update) |> fetch()}
   end
 
   defp fetch(%{assigns: %{sort_by: sort_by, sort_order: sort_order}} = socket) do
@@ -23,10 +21,6 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   def handle_info(:refresh, socket) do
     Process.send_after(self(), :refresh, 60 * 1000)
     {:noreply, socket |> fetch()}
-  end
-
-  def handle_info(:trigger_update_done, socket) do
-    {:noreply, assign(socket, import_running?: false) |> fetch()}
   end
 
   def handle_info(payload, socket) do
@@ -42,34 +36,19 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
      |> fetch()}
   end
 
-  def handle_event("trigger-update", _, %{assigns: %{import_running?: true}} = socket) do
-    # already running (e.g. a second click) — don't stack another loop on
-    # top, they'd race each other over the same "most stale" pick
+  def handle_event("trigger-update", _, socket) do
+    Task.start(fn ->
+      trigger_update()
+    end)
+
     {:noreply, socket}
   end
 
-  def handle_event("trigger-update", _, socket) do
-    liveview_pid = self()
+  defp trigger_update() do
+    Podcast.get_one_stale()
+    |> Podcast.import_stale()
 
-    Task.start(fn ->
-      trigger_update(liveview_pid)
-    end)
-
-    {:noreply, assign(socket, import_running?: true)}
-  end
-
-  # was: unconditional recursion with no base case, so a single click spun
-  # up a Task that ran forever, hammering every stale podcast's feed with
-  # no pacing — stop once nothing is stale, and tell the LiveView it's done
-  defp trigger_update(liveview_pid) do
-    case Podcast.get_one_stale() do
-      nil ->
-        send(liveview_pid, :trigger_update_done)
-
-      podcast ->
-        Podcast.import_stale(podcast)
-        trigger_update(liveview_pid)
-    end
+    trigger_update()
   end
 
   def vienna_string(naive_date_time) do
@@ -82,14 +61,11 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <button
-        id="notification-hook-target"
-        phx-hook="Notification"
-        phx-click="trigger-update"
-        disabled={@import_running?}
-        class="btn btn-info btn-sm float-right"
-      >
-        {if @import_running?, do: "Import running…", else: "Episode import"}
+      <button id="notification-hook-target"
+              phx-hook="Notification"
+              phx-click="trigger-update"
+              class="btn btn-info btn-sm float-right">
+        Episode import
       </button>
 
       <h1 class="text-3xl">{@stale_podcasts_count} stale podcasts</h1>
@@ -99,68 +75,21 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
       <table class="table table-zebra table-xs my-4 w-auto">
         <thead>
           <tr>
-            <th>
-              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                ID
-              </SortLink.render>
-            </th>
-            <th>
-              <SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
-                Title
-              </SortLink.render>
-            </th>
-            <th>
-              <SortLink.render
-                field={:updated_at}
-                click="sort"
-                sort_order={@sort_order}
-                sort_by={@sort_by}
-              >
-                Updated at 🎡
-              </SortLink.render>
-            </th>
-            <th>
-              <SortLink.render
-                field={:update_intervall}
-                click="sort"
-                sort_order={@sort_order}
-                sort_by={@sort_by}
-              >
-                Update intervall
-              </SortLink.render>
-            </th>
-            <th>
-              <SortLink.render
-                field={:next_update}
-                click="sort"
-                sort_order={@sort_order}
-                sort_by={@sort_by}
-              >
-                Next update 🎡
-              </SortLink.render>
-            </th>
-            <th>
-              <SortLink.render
-                field={:failure_count}
-                click="sort"
-                sort_order={@sort_order}
-                sort_by={@sort_by}
-              >
-                Failure count
-              </SortLink.render>
-            </th>
+            <th><SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>ID</SortLink.render></th>
+            <th><SortLink.render field={:title} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Title</SortLink.render></th>
+            <th><SortLink.render field={:updated_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Updated at 🎡</SortLink.render></th>
+            <th><SortLink.render field={:update_intervall} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Update intervall</SortLink.render></th>
+            <th><SortLink.render field={:next_update} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Next update 🎡</SortLink.render></th>
+            <th><SortLink.render field={:failure_count} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Failure count</SortLink.render></th>
             <th>Feed url</th>
           </tr>
         </thead>
         <tbody>
           <tr :for={podcast <- @stale_podcasts}>
             <td class="text-right">
-              <LinkButton.render
-                title={podcast.id}
-                to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
-                class="btn-primary"
-              />
-            </td>
+              <LinkButton.render title={podcast.id}
+                          to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
+                          class="btn-primary" /></td>
             <td>{podcast.title}</td>
             <td class="whitespace-nowrap">{podcast.updated_at |> vienna_string()}</td>
             <td>{podcast.update_intervall}</td>
