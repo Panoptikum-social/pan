@@ -11,6 +11,54 @@ defmodule Pan.Search do
     Search.Episode.migrate()
   end
 
+  @doc """
+  Detects a fresh Manticore instance (e.g. an empty QA/Docker volume) and, if
+  needed, brings it up to the same state as `/admin/search/migrate` +
+  `/admin/search/reset_all` used to require doing by hand:
+
+    1. `migrate/0` creates the (missing) Manticore tables.
+    2. `reset_all/0` clears Postgres' `full_text` flags, since existing rows
+       (e.g. from a seeded baseline dump) are already marked indexed even
+       though the just-created Manticore tables are empty.
+
+  Step 3, actually populating Manticore, is left to the regular
+  `push_missing/0` polling in `Pan.Job.PushMissingSearchIndex`. A no-op once
+  the tables exist, so this is safe to call on every boot.
+  """
+  def ensure_tables do
+    unless tables_present?() do
+      Logger.info(
+        "=== Manticore search tables missing (fresh deploy?) — running migrate/0 + reset_all/0 ==="
+      )
+
+      migrate()
+      reset_all()
+    end
+  end
+
+  @doc """
+  Whether Manticore already has our search tables. Errs on the side of
+  "present" (skips `ensure_tables/0`'s migrate) for anything but the exact,
+  known "table ... absent" error Manticore returns for a missing table
+  (see `handle_bulk_insert_error/2`) — `migrate/0` drops and recreates
+  tables, so a false "missing" reading would destroy a live index.
+  """
+  def tables_present? do
+    case Search.Manticore.sql("SELECT 1 FROM podcasts") do
+      {:ok, %HTTPoison.Response{body: body}} ->
+        case Jason.decode(body) do
+          {:ok, %{"error" => error}} when is_binary(error) ->
+            not String.contains?(error, "absent")
+
+          _ ->
+            true
+        end
+
+      _ ->
+        true
+    end
+  end
+
   def push_missing do
     Search.Category.batch_index()
     Search.Persona.batch_index()
@@ -82,7 +130,9 @@ defmodule Pan.Search do
       from(r in model, where: r.id == ^duplicate_id)
       |> Repo.update_all(set: [full_text: true])
     else
-      _ -> Logger.error("=== Error: #{hd(query_result["items"])["insert"]["error"]} ===")
+      # error may be a map (e.g. a missing-table error), not just a string —
+      # inspect/1 never blows up on interpolation the way `#{}` did here
+      _ -> Logger.error("=== Error indexing #{model}: #{inspect(query_result)} ===")
     end
   end
 
