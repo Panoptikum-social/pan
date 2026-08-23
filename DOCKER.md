@@ -9,6 +9,20 @@
 * Your user is in the `docker` group (`sudo usermod -aG docker $USER`,
   then log out/in) — otherwise prefix every command below with `sudo`
 
+## 🔥 Firewall
+
+Docker publishes container ports by inserting its own `iptables`/`nftables`
+rules, bypassing `ufw`'s normal `INPUT` chain — a plain `ufw allow 4001`
+has no effect on traffic Docker forwards to a container. Use `ufw route
+allow` instead, scoped to whatever network should reach the QA app:
+
+```sh
+sudo ufw route allow proto tcp from 10.0.0.0/16 to any port 4001 comment 'panoptikum-qa'
+```
+
+Adjust the source CIDR and port (if you changed the published port away
+from `4001`) to match your setup.
+
 ## 🛠 Setup
 
 ```sh
