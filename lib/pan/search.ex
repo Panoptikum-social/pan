@@ -36,19 +36,23 @@ defmodule Pan.Search do
     end
   end
 
+  @required_tables ~w(categories personas podcasts episodes)
+
   @doc """
-  Whether Manticore already has our search tables. Errs on the side of
-  "present" (skips `ensure_tables/0`'s migrate) for anything but the exact,
-  known "table ... absent" error Manticore returns for a missing table
-  (see `handle_bulk_insert_error/2`) — `migrate/0` drops and recreates
-  tables, so a false "missing" reading would destroy a live index.
+  Whether Manticore already has all four of our search tables.
+
+  Errs on the side of "present" (skips `ensure_tables/0`'s migrate) for
+  anything unexpected (bad status, undecodable body, unreachable Manticore)
+  — `migrate/0` drops and recreates tables, so a false "missing" reading
+  would destroy a live index.
   """
   def tables_present? do
-    case Search.Manticore.sql("SELECT 1 FROM podcasts") do
-      {:ok, %HTTPoison.Response{body: body}} ->
+    case Search.Manticore.sql("SHOW TABLES") do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         case Jason.decode(body) do
-          {:ok, %{"error" => error}} when is_binary(error) ->
-            not String.contains?(error, "absent")
+          {:ok, [%{"data" => rows} | _]} when is_list(rows) ->
+            existing = rows |> Enum.map(& &1["Table"]) |> MapSet.new()
+            MapSet.subset?(MapSet.new(@required_tables), existing)
 
           _ ->
             true
