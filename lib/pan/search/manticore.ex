@@ -18,11 +18,12 @@ defmodule Pan.Search.Manticore do
   end
 
   def post(data, endpoint, content_type) do
-    {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} =
-      HTTPoison.post(base_url() <> "/" <> endpoint, data, [
-        {"Content-Type", content_type}
-      ])
-
-    {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}}
+    # pass the HTTPoison result through as-is — {:ok, %Response{}} on a
+    # completed request, {:error, %Error{}} on a transport failure (closed
+    # connection, timeout, ...). Used to `=`-match {:ok, ...} here, which
+    # crashed the caller on any transport error.
+    HTTPoison.post(base_url() <> "/" <> endpoint, data, [
+      {"Content-Type", content_type}
+    ])
   end
 end

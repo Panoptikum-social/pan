@@ -90,25 +90,34 @@ defmodule Pan.Search do
         |> Enum.map(&struct_function.(&1))
         |> Enum.map_join("\n", &Jason.encode!(&1))
 
-      {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} =
-        Search.Manticore.post(data, "bulk", "application/x-ndjson")
+      case Search.Manticore.post(data, "bulk", "application/x-ndjson") do
+        {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} ->
+          if response_code in [200, 201] do
+            from(r in model, where: r.id in ^record_ids)
+            |> Repo.update_all(set: [full_text: true])
 
-      if response_code in [200, 201] do
-        from(r in model, where: r.id in ^record_ids)
-        |> Repo.update_all(set: [full_text: true])
+            Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
+          else
+            handle_bulk_insert_error(response_body, model)
+          end
 
-        Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
-      else
-        handle_bulk_insert_error(response_body, model)
-      end
+          if response_code in [200, 201, 500] do
+            batch_index(
+              model: model,
+              preloads: preloads,
+              selects: selects,
+              struct_function: struct_function
+            )
+          end
 
-      if response_code in [200, 201, 500] && record_ids != [] do
-        batch_index(
-          model: model,
-          preloads: preloads,
-          selects: selects,
-          struct_function: struct_function
-        )
+        {:error, error} ->
+          # a transport-level failure (e.g. connection closed mid-request),
+          # not an HTTP error response — log and stop for this cycle rather
+          # than crash the caller or tight-loop retrying a dead connection;
+          # the next scheduled push_missing/0 run will pick these back up
+          Logger.error(
+            "=== Manticore bulk insert request failed for #{model}: #{inspect(error)} ==="
+          )
       end
     else
       Logger.info("=== Done with type #{model} ===")
@@ -152,15 +161,18 @@ defmodule Pan.Search do
       }
       |> Jason.encode!()
 
-    response =
-      HTTPoison.post(Search.Manticore.base_url() <> "/search", manticore_data, [
-        {"Content-Type", "application/x-ndjson"}
-      ])
+    case HTTPoison.post(Search.Manticore.base_url() <> "/search", manticore_data, [
+           {"Content-Type", "application/x-ndjson"}
+         ]) do
+      {:ok, %HTTPoison.Response{body: response_body}} ->
+        {:ok, search_result} = Jason.decode(response_body)
+        outer = search_result["hits"] || %{}
+        %{"total" => outer["total"] || 0, "hits" => outer["hits"] || []}
 
-    {:ok, %HTTPoison.Response{body: response_body}} = response
-    {:ok, search_result} = Jason.decode(response_body)
-
-    outer = search_result["hits"] || %{}
-    %{"total" => outer["total"] || 0, "hits" => outer["hits"] || []}
+      {:error, error} ->
+        # a Manticore hiccup shouldn't 500 a user's search request
+        Logger.error("=== Manticore search request failed: #{inspect(error)} ===")
+        %{"total" => 0, "hits" => []}
+    end
   end
 end
