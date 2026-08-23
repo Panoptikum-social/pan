@@ -22,16 +22,22 @@ defmodule PanWeb.Live.Home do
   def render(assigns) do
     ~H"""
     <div class="flex-1 justify-self-center m-2">
-      <div x-data="{ cookie_consent: true }"
-           x-init="() => {cookie_consent = localStorage.getItem('cookie_consent')}"
-           class="text-center mb-2">
+      <div
+        x-data="{ cookie_consent: true }"
+        x-init="() => {cookie_consent = localStorage.getItem('cookie_consent')}"
+        class="text-center mb-2"
+      >
         <div x-show="cookie_consent != 'true'" x-cloak>
           Panoptikum.social uses cookies only out of technical necessity. See our
-          <.link href="https://blog.panoptikum.social/privacy"
-                class="text-link hover:text-link-dark"> Privacy Page</.link>
+          <.link
+            href="https://blog.panoptikum.social/privacy"
+            class="text-link hover:text-link-dark"
+          > Privacy Page</.link>
           for details.
-          <button @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
-             class="btn btn-sm">
+          <button
+            @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
+            class="btn btn-sm"
+          >
             I agree
           </button>
         </div>
@@ -41,60 +47,86 @@ defmodule PanWeb.Live.Home do
                   flex flex-col space-y-4 justify-items-auto
                   lg:flex-row lg:space-y-0 lg:space-x-4">
         <div aria-label="left column" class="flex-1">
-          <Panel.render heading="Top 10 most liked Podcasts"
-                        heading_right="more ..."
-                        target={podcast_frontend_path(Endpoint, :liked)}
-                        purpose="like">
-            <TopList.render items={@liked_podcasts}
-                            purpose="podcast"
-                            icon="heart-heroicons-outline" />
+          <Panel.render
+            heading="Top 10 most liked Podcasts"
+            heading_right="more ..."
+            target={podcast_frontend_path(Endpoint, :liked)}
+            purpose="like"
+          >
+            <TopList.render
+              items={@liked_podcasts}
+              purpose="podcast"
+              icon="heart-heroicons-outline"
+            />
           </Panel.render>
 
-          <Panel.render heading="Top 10 subscribed Podcasts" heading_right="more ..."
-                        target={podcast_frontend_path(Endpoint, :popular)}
-                        purpose="popular"
-                        class="mt-4">
-            <TopList.render items={@popular_podcasts}
-                            purpose="podcast"
-                            icon="user-heroicons-outline" />
+          <Panel.render
+            heading="Top 10 subscribed Podcasts"
+            heading_right="more ..."
+            target={podcast_frontend_path(Endpoint, :popular)}
+            purpose="popular"
+            class="mt-4"
+          >
+            <TopList.render
+              items={@popular_podcasts}
+              purpose="podcast"
+              icon="user-heroicons-outline"
+            />
           </Panel.render>
         </div>
 
         <div class="flex-1">
-          <Panel.render heading="Latest Podcast" heading_right="more ..."
-                        target={podcast_frontend_path(Endpoint, :index)}
-                        purpose="podcast"
-                        content_class="p-4">
+          <Panel.render
+            heading="Latest Podcast"
+            heading_right="more ..."
+            target={podcast_frontend_path(Endpoint, :index)}
+            purpose="podcast"
+            content_class="p-4"
+          >
             <PodcastCard.render for={@latest_podcast} />
             <p class="mt-4">
-              <a href={podcast_frontend_path(Endpoint, :index)}
-                 class="text-link hover:text-link-dark">show more...</a>
+              <a
+                href={podcast_frontend_path(Endpoint, :index)}
+                class="text-link hover:text-link-dark"
+              >show more...</a>
             </p>
           </Panel.render>
 
-          <Panel.render heading="Latest Episode"
-                        heading_right="more ..."
-                        target={episode_frontend_path(Endpoint, :index)}
-                        purpose="episode"
-                        content_class="p-4"
-                        class="mt-4">
+          <Panel.render
+            heading="Latest Episode"
+            heading_right="more ..."
+            target={episode_frontend_path(Endpoint, :index)}
+            purpose="episode"
+            content_class="p-4"
+            class="mt-4"
+          >
             <EpisodeCard.render for={@latest_episode} />
             <p class="mt-4">
-              <a href={episode_frontend_path(Endpoint, :index)}
-                 class="text-link hover:text-link-dark">show more...</a>
+              <a
+                href={episode_frontend_path(Endpoint, :index)}
+                class="text-link hover:text-link-dark"
+              >show more...</a>
             </p>
           </Panel.render>
 
-          <Panel.render heading="Latest Recommendation"
-                        heading_right="more ..."
-                        target={recommendation_frontend_path(Endpoint, :index)}
-                        purpose="recommendation"
-                        class="mt-4"
-                        content_class="p-4">
-            <RecommendationCard.render for={@latest_recommendation} />
+          <Panel.render
+            heading="Latest Recommendation"
+            heading_right="more ..."
+            target={recommendation_frontend_path(Endpoint, :index)}
+            purpose="recommendation"
+            class="mt-4"
+            content_class="p-4"
+          >
+            <%= if @latest_recommendation do %>
+              <RecommendationCard.render for={@latest_recommendation} />
+            <% else %>
+              <p>No recommendations yet.</p>
+            <% end %>
             <p class="mt-4">
-              <a href={recommendation_frontend_path(Endpoint, :index)}
-                 class="text-link hover:text-link-dark">show more...</a>
+              <a
+                href={recommendation_frontend_path(Endpoint, :index)}
+                class="text-link hover:text-link-dark"
+              >show more...</a>
             </p>
           </Panel.render>
         </div>
