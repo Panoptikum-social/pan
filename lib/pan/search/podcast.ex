@@ -92,7 +92,7 @@ defmodule Pan.Search.Podcast do
 
     podcast_ids =
       from(p in Podcast,
-        where: p.full_text == true,
+        where: is_nil(p.full_text) or p.full_text == true,
         select: p.id,
         limit: 10_000
       )

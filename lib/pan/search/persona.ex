@@ -84,7 +84,7 @@ defmodule Pan.Search.Persona do
 
     persona_ids =
       from(p in Persona,
-        where: p.full_text == true,
+        where: is_nil(p.full_text) or p.full_text == true,
         select: p.id,
         limit: 10_000
       )

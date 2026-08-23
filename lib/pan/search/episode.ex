@@ -104,7 +104,7 @@ defmodule Pan.Search.Episode do
 
     episode_ids =
       from(e in Episode,
-        where: e.full_text == true,
+        where: is_nil(e.full_text) or e.full_text == true,
         select: e.id,
         limit: 10_000
       )
