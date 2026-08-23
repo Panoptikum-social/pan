@@ -28,6 +28,7 @@ defmodule Pan.Updater.Podcast do
       {:redirect, redirect_target} ->
         case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
           {:ok, _} ->
+            Logger.info("=== #{podcast.id} redirect -> #{redirect_target} ===")
             import_new_episodes(podcast, forced, no_failure_count_increase)
 
           {:error, message} ->
