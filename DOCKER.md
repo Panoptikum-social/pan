@@ -9,6 +9,23 @@
 * Your user is in the `docker` group (`sudo usermod -aG docker $USER`,
   then log out/in) — otherwise prefix every command below with `sudo`
 
+## 📊 Resource usage
+
+Rough numbers from a real QA instance shortly after startup, running the
+demo dataset (`materials/pan_dev.sql.gz`):
+
+* **RAM**: ~800 MiB total (`docker stats --no-stream`) — app ~300 MiB, db
+  (Postgres) ~210 MiB, search (Manticore) ~290 MiB.
+* **Disk — images**: ~2 GB total (`docker system df -v`) — app ~406 MB,
+  Manticore ~928 MB, Postgres ~645 MB. One-time cost after `docker compose
+  build`/`pull`.
+* **Disk — data volumes**: ~540 MB with the demo dataset — `db_data` ~453
+  MB, `search_data` ~88 MB, `uploads` empty. Grows with real usage
+  (episodes, uploaded OPML files, search index size).
+
+Budget for at least 1–2 GB RAM and a few GB of disk free; both will grow
+somewhat as the QA dataset accumulates more content over time.
+
 ## 🔥 Firewall
 
 Docker publishes container ports by inserting its own `iptables`/`nftables`
@@ -58,6 +75,9 @@ full migration history against a truly empty database fails partway
 through (old migration ordering issue); the dump provides a working
 baseline with `schema_migrations` already populated, so only the
 migrations added since then need to apply.
+
+The dump already includes an admin user: username `admin`, password
+`changeme`.
 
 App is published on host port `4001` by default (edit `ports:` in
 `docker-compose.yml` to change).

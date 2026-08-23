@@ -47,8 +47,9 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 * Import demo data
   * Uncompress `materials/pan_dev.sql.gz`
   * Import data with `psql pan_dev < pan_dev.sql` _inside the materials folder_
-  * Seed an admin user with `mix run priv/repo/seeds.exs` that has the credentials user `admin` and
-    password `changeme`
+  * The dump already includes an admin user, username `admin` and password
+    `changeme` — no seeding step needed (`priv/repo/seeds.exs` is currently
+    just an empty template)
 
 ### ⏯ Run locally
 
