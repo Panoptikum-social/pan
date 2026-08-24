@@ -304,6 +304,7 @@ defmodule Pan.Parser.Helpers do
 
   def fix_html_entities(xml) do
     xml
+    |> unescape_double_escaped_entities()
     |> String.replace("& ", "&amp; ")
     |> String.replace("&#xC4;", "Ä")
     |> String.replace("&#xE4;", "ä")
@@ -312,6 +313,18 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&#xDC;", "Ü")
     |> String.replace("&#xFC;", "ü")
     |> String.replace("&#xDF;", "ß")
+  end
+
+  # Some feed producers double-encode their own output (e.g. re-escaping an
+  # already-escaped title when it's edited through their CMS), leaving
+  # things like &amp;quot; or &amp;#039; in the raw XML. A conformant
+  # single-pass XML parser only decodes &amp; -> &, so &amp;quot; ends up
+  # stored as the literal text "&quot;" instead of an actual quote mark.
+  # Collapse one level of over-escaping for the 5 standard XML entities and
+  # numeric character references before parsing, so the real decode pass
+  # can finish the job.
+  def unescape_double_escaped_entities(xml) do
+    Regex.replace(~r/&amp;(quot|apos|amp|lt|gt|#\d+|#x[0-9A-Fa-f]+);/, xml, "&\\1;")
   end
 
   def fix_encoding(xml) do

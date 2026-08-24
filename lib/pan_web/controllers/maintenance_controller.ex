@@ -20,8 +20,23 @@ defmodule PanWeb.MaintenanceController do
     Recommendation,
     Subscription,
     User,
-    PageFrontendView
+    PageFrontendView,
+    Journal
   }
+
+  # title is stored as plain text after a single XML-decode pass, so a
+  # leftover double-escape bug shows up there as a *singly*-escaped entity.
+  @single_escaped_entities_pattern "&(quot|apos|#0?39|lt|gt|amp);"
+
+  # description/summary/shownotes are stored as serialized HTML: they've
+  # already been through one HTML-parse-then-reserialize pass via the
+  # scrubber at import time, which is the identity transform for anything
+  # that was double-escaped in the source (decoding &amp;quot; once yields
+  # text "&quot;", which the serializer re-escapes right back to
+  # &amp;quot; on the way out). So here the leftover bug still shows up
+  # *doubly*-escaped in the stored value.
+  @double_escaped_entities_pattern "&amp;(quot|apos|amp|lt|gt|#\\d+|#x[0-9A-Fa-f]+);"
+  @double_escaped_entities Regex.compile!(@double_escaped_entities_pattern)
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.social/vienna-beamers/")
@@ -75,13 +90,13 @@ defmodule PanWeb.MaintenanceController do
     update_args = Keyword.new([{field_name, false}])
 
     from(r in repo, where: is_nil(field(r, ^field_name)))
-    |> Repo.aggregate(:count, :id, timeout: :infinity)
+    |> Repo.aggregate(:count, :id, timeout: :timer.minutes(10))
 
     from(r in repo,
       where: is_nil(field(r, ^field_name)),
       update: [set: ^update_args]
     )
-    |> Repo.update_all([], timeout: :infinity)
+    |> Repo.update_all([], timeout: :timer.minutes(10))
   end
 
   def catch_up_thumbnailed(conn, _params) do
@@ -130,6 +145,134 @@ defmodule PanWeb.MaintenanceController do
     |> render("done.html")
   end
 
+  # Some feed producers double-encode their own output (e.g. re-escaping an
+  # already-escaped title when it's edited through their CMS), so the raw
+  # XML holds &amp;quot; instead of &quot;. A conformant single-pass XML
+  # parser only decodes &amp; -> &, so episodes imported before
+  # Pan.Parser.Helpers.unescape_double_escaped_entities/1 existed ended up
+  # with the literal entity text (e.g. &quot;) stored in their title,
+  # description, summary or shownotes instead of the actual character. This
+  # backfills those already-stored values; new imports are fixed at parse
+  # time going forward.
+  def fix_double_escaped_html_entities(conn, _params) do
+    Task.start(fn -> unescape_episode_titles_async() end)
+    Task.start(fn -> unescape_episode_html_fields_async() end)
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
+  end
+
+  defp unescape_episode_titles_async do
+    candidates =
+      from(e in Episode,
+        where: fragment("? ~ ?", e.title, ^@single_escaped_entities_pattern),
+        select: {e.id, e.title}
+      )
+      |> Repo.all(timeout: :timer.minutes(10))
+
+    changed = candidates |> Enum.map(&fix_episode_title/1) |> Enum.count(& &1)
+
+    Journal.log(%{
+      module: __MODULE__,
+      method: "unescape_episode_titles_async",
+      text:
+        "scanned #{length(candidates)} candidate episode titles, fixed #{changed} " <>
+          "(see individual entries below for before/after per episode)"
+    })
+  end
+
+  defp fix_episode_title({id, title}) do
+    new_title = unescape_single_escaped_entities(title)
+
+    if new_title != title do
+      from(e in Episode, where: e.id == ^id)
+      |> Repo.update_all([set: [title: new_title]], timeout: :timer.minutes(1))
+
+      Journal.log(%{
+        module: __MODULE__,
+        method: "unescape_episode_titles_async",
+        text: "episode #{id}: unescaped double-escaped HTML entities in title",
+        before: title,
+        after: new_title
+      })
+
+      true
+    end
+  end
+
+  defp unescape_single_escaped_entities(text) do
+    text
+    |> String.replace("&quot;", "\"")
+    |> String.replace(~r/&(apos|#0?39);/, "'")
+    |> String.replace("&lt;", "<")
+    |> String.replace("&gt;", ">")
+    |> String.replace("&amp;", "&")
+  end
+
+  # description/summary/shownotes hold real HTML (already run through the
+  # scrubber at import time), unlike title's plain text. Blindly unescaping
+  # &lt;/&gt; the way the title fix does could resurrect real markup (a
+  # double-escaped &amp;lt;script&amp;gt; would decode straight to a live
+  # <script> tag), so each touched value is re-run through the same
+  # scrubber normal imports use before being saved.
+  defp unescape_episode_html_fields_async do
+    candidates =
+      from(e in Episode,
+        where:
+          fragment("? ~ ?", e.description, ^@double_escaped_entities_pattern) or
+            fragment("? ~ ?", e.summary, ^@double_escaped_entities_pattern) or
+            fragment("? ~ ?", e.shownotes, ^@double_escaped_entities_pattern),
+        select: {e.id, e.description, e.summary, e.shownotes}
+      )
+      |> Repo.all(timeout: :timer.minutes(10))
+
+    changed = candidates |> Enum.map(&fix_episode_html_fields/1) |> Enum.count(& &1)
+
+    Journal.log(%{
+      module: __MODULE__,
+      method: "unescape_episode_html_fields_async",
+      text:
+        "scanned #{length(candidates)} candidate episodes (description/summary/shownotes), " <>
+          "fixed #{changed} (see individual entries below for before/after per episode)"
+    })
+  end
+
+  defp fix_episode_html_fields({id, description, summary, shownotes}) do
+    original = %{description: description, summary: summary, shownotes: shownotes}
+    updated = Map.new(original, fn {field, value} -> {field, unescape_and_resanitize(value)} end)
+    changes = for {field, value} <- updated, value != original[field], do: {field, value}
+
+    if changes != [] do
+      from(e in Episode, where: e.id == ^id)
+      |> Repo.update_all([set: changes], timeout: :timer.minutes(1))
+
+      changed_fields = Enum.map_join(changes, ", ", &elem(&1, 0))
+
+      Journal.log(%{
+        module: __MODULE__,
+        method: "unescape_episode_html_fields_async",
+        text: "episode #{id}: unescaped double-escaped HTML entities in #{changed_fields}",
+        before: Map.new(changes, fn {field, _new} -> {field, original[field]} end),
+        after: Map.new(changes)
+      })
+
+      true
+    end
+  end
+
+  defp unescape_and_resanitize(html) when is_binary(html) do
+    if html =~ @double_escaped_entities do
+      html
+      |> Pan.Parser.Helpers.unescape_double_escaped_entities()
+      |> HtmlSanitizeEx.Scrubber.BasicHTMLReduced.sanitize()
+    else
+      html
+    end
+  end
+
+  defp unescape_and_resanitize(other), do: other
+
   def stats(conn, _params) do
     stale_podcasts =
       from(p in Podcast,
@@ -176,7 +319,7 @@ defmodule PanWeb.MaintenanceController do
 
     unindexed_episodes =
       from(e in Episode, where: not e.full_text)
-      |> Repo.aggregate(:count, timeout: 999_999)
+      |> Repo.aggregate(:count, timeout: :timer.minutes(10))
       |> delimit_integer(" ")
 
     podcasts_per_hour =
