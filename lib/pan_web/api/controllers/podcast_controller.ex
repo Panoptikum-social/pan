@@ -132,24 +132,35 @@ defmodule PanWeb.Api.PodcastController do
   def trigger_update(conn, %{"id" => id} = params, _user) do
     podcast = Repo.get!(Podcast, id)
 
-    if podcast.update_paused do
-      Helpers.send_error(
-        conn,
-        424,
-        "Podcast paused",
-        "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
-      )
-    else
-      if !podcast.manually_updated_at or
-           time_shift(podcast.manually_updated_at, minutes: 30)
-           |> in_the_past?() do
+    cond do
+      podcast.retired ->
+        Helpers.send_error(
+          conn,
+          424,
+          "Podcast retired",
+          "The podcast has been retired and is no longer updated automatically.",
+          last_error_meta(podcast)
+        )
+
+      podcast.update_paused ->
+        Helpers.send_error(
+          conn,
+          424,
+          "Podcast paused",
+          "The podcast is paused and we do not update it's data currently.",
+          last_error_meta(podcast)
+        )
+
+      !podcast.manually_updated_at or
+          time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() ->
         podcast
         |> Podcast.changeset(%{manually_updated_at: now()})
         |> Repo.update()
 
         Pan.Parser.Podcast.update_from_feed(podcast)
         show(conn, params, nil)
-      else
+
+      true ->
         minutes =
           time_shift(podcast.manually_updated_at, minutes: 30)
           |> time_diff(now(), :minutes)
@@ -160,23 +171,41 @@ defmodule PanWeb.Api.PodcastController do
           "Too many requests",
           "The next update on this podcast is available in #{minutes} minutes."
         )
-      end
     end
   end
 
   def trigger_episode_update(conn, %{"id" => id} = params, _user) do
     podcast = Repo.get!(Podcast, id)
 
-    if podcast.update_paused do
-      Helpers.send_error(
-        conn,
-        424,
-        "Podcast paused",
-        "The podcast could not be parsed 10 times in a row and we do not update it's data currently."
-      )
-    else
-      do_trigger_episode_update(conn, podcast, params)
+    cond do
+      podcast.retired ->
+        Helpers.send_error(
+          conn,
+          424,
+          "Podcast retired",
+          "The podcast has been retired and is no longer updated automatically.",
+          last_error_meta(podcast)
+        )
+
+      podcast.update_paused ->
+        Helpers.send_error(
+          conn,
+          424,
+          "Podcast paused",
+          "The podcast is paused and we do not update it's data currently.",
+          last_error_meta(podcast)
+        )
+
+      true ->
+        do_trigger_episode_update(conn, podcast, params)
     end
+  end
+
+  defp last_error_meta(podcast) do
+    %{
+      last_error_message: podcast.last_error_message,
+      last_error_occured: podcast.last_error_occured
+    }
   end
 
   defp do_trigger_episode_update(conn, podcast, params) do

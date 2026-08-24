@@ -34,11 +34,14 @@ defmodule PanWeb.Api.Helpers do
     |> halt()
   end
 
-  def send_error(conn, code, title, detail) do
+  def send_error(conn, code, title, detail, meta \\ nil) do
+    data = %{code: code, status: code, title: title, detail: detail}
+    data = if meta, do: Map.put(data, :meta, meta), else: data
+
     conn
     |> put_view(ErrorView)
     |> put_status(code)
-    |> render(:errors, data: %{code: code, status: code, title: title, detail: detail})
+    |> render(:errors, data: data)
     |> halt()
   end
 
