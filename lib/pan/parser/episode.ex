@@ -113,8 +113,8 @@ defmodule Pan.Parser.Episode do
     for episode <- episodes do
       episode
       |> PanWeb.Episode.changeset(%{
-        description: HtmlSanitizeEx2.basic_html_reduced(episode.description),
-        summary: HtmlSanitizeEx2.basic_html_reduced(episode.summary)
+        description: HtmlSanitizeEx.Scrubber.BasicHTMLReduced.sanitize(episode.description),
+        summary: HtmlSanitizeEx.Scrubber.BasicHTMLReduced.sanitize(episode.summary)
       })
       |> Repo.update()
     end

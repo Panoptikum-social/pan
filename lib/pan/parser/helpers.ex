@@ -105,12 +105,12 @@ defmodule Pan.Parser.Helpers do
   }
 
   @tz_regex Regex.compile!(
-    @tz_map
-    |> Map.keys()
-    |> Enum.sort_by(&byte_size/1, :desc)
-    |> Enum.map(&Regex.escape/1)
-    |> Enum.join("|")
-  )
+              @tz_map
+              |> Map.keys()
+              |> Enum.sort_by(&byte_size/1, :desc)
+              |> Enum.map(&Regex.escape/1)
+              |> Enum.join("|")
+            )
 
   def boolify(explicit) do
     case explicit do
@@ -350,14 +350,14 @@ defmodule Pan.Parser.Helpers do
   def scrub(value) when is_nil(value), do: ""
 
   def scrub(value) when is_binary(value) do
-    # i -> case insensive; s -> dotall, dot matches also newlines; U -> ungreedy
-    cleaned = String.replace(value, ~r/<script.*<\/script>/isU, "")
-
     try do
-      HtmlSanitizeEx2.basic_html_reduced(cleaned)
+      HtmlSanitizeEx.Scrubber.BasicHTMLReduced.sanitize(value)
     rescue
-      # mochiweb raises RuntimeError for invalid Unicode codepoints (e.g. &#2013265935;)
-      RuntimeError -> String.replace(cleaned, ~r/<[^>]+>/, "")
+      # mochiweb raises for invalid Unicode codepoints (e.g. &#2013265935;) —
+      # RuntimeError on older mochiweb, FunctionClauseError in :mochiutf8
+      # since the mochiweb 3.5.0 bump for OTP 28 (see mix.lock)
+      _error in [RuntimeError, FunctionClauseError] ->
+        String.replace(value, ~r/<[^>]+>/, "")
     end
   end
 

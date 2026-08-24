@@ -8,6 +8,13 @@ defmodule HtmlSanitizeEx.Scrubber.BasicHTMLReduced do
 
   use HtmlSanitizeEx, extend: :strip_tags
 
+  # The default fallback for any disallowed tag is to unwrap it and keep its
+  # children (fine for e.g. <div>, wrong for <script>/<style> where the
+  # "children" is code, not text). Drop tag and content entirely for both,
+  # see https://github.com/rrrene/html_sanitize_ex/issues/13#issuecomment-427589003
+  def scrub({"script", _attributes, _children}), do: ""
+  def scrub({"style", _attributes, _children}), do: ""
+
   @valid_schemes ["http", "https", "mailto"]
 
   allow_tag_with_uri_attributes("a", ["href"], @valid_schemes)
@@ -24,6 +31,7 @@ defmodule HtmlSanitizeEx.Scrubber.BasicHTMLReduced do
   allow_tag_with_these_attributes("h3", [])
   allow_tag_with_these_attributes("h4", [])
   allow_tag_with_these_attributes("h5", [])
+  allow_tag_with_these_attributes("h6", [])
   allow_tag_with_these_attributes("hr", [])
   allow_tag_with_these_attributes("i", [])
 
