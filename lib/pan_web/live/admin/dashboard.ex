@@ -133,6 +133,11 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-warning"
         />
         <LinkButton.render
+          title="Cap stale update intervalls to 1 week"
+          to={maintenance_path(Endpoint, :reset_stale_update_intervalls)}
+          class="btn-warning"
+        />
+        <LinkButton.render
           title="Trigger exception notification"
           to={maintenance_path(Endpoint, :exception_notification)}
           class="btn-success"
@@ -141,6 +146,12 @@ defmodule PanWeb.Live.Admin.Dashboard do
           title="View Journal"
           to={databrowser_path(Endpoint, :index, "journal")}
           class="btn-outline"
+        />
+        <LinkButton.render
+          title="Clear Journal"
+          to={maintenance_path(Endpoint, :clear_journal)}
+          class="btn-error"
+          opts={[data: [confirm: "Are you sure?"]]}
         />
       </div>
       <div class="mx-2 flex flex-wrap gap-4 items-center border border-gray p-2 max-w-4xl">

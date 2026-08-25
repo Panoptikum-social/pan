@@ -7,6 +7,14 @@ defmodule Pan.Updater.Podcast do
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   require Logger
 
+  # update_intervall backs off by one hour every time a scheduled update
+  # comes up empty (see set_next_update/2 below); cap it so a podcast that's
+  # gone quiet for a long time still gets checked at least weekly instead of
+  # drifting towards an ever-growing wait.
+  @max_update_intervall_hours 24 * 7
+
+  def max_update_intervall_hours, do: @max_update_intervall_hours
+
   def import_new_episodes(
         podcast,
         forced \\ false,
@@ -64,10 +72,11 @@ defmodule Pan.Updater.Podcast do
     if do_not_increase_update_interval == :do_not_increase_update_interval do
       {:ok, "nothing to do"}
     else
-      next_update = time_shift(now(), hours: podcast.update_intervall + 1)
+      update_intervall = min(podcast.update_intervall + 1, @max_update_intervall_hours)
+      next_update = time_shift(now(), hours: update_intervall)
 
       Podcast.changeset(podcast, %{
-        update_intervall: podcast.update_intervall + 1,
+        update_intervall: update_intervall,
         next_update: next_update
       })
       |> Repo.update()

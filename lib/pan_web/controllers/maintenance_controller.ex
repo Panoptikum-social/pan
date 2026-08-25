@@ -1,6 +1,6 @@
 defmodule PanWeb.MaintenanceController do
   use PanWeb, :controller
-  import Pan.Parser.MyDateTime, only: [now: 0]
+  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   alias PanWeb.{
     Category,
@@ -272,6 +272,81 @@ defmodule PanWeb.MaintenanceController do
   end
 
   defp unescape_and_resanitize(other), do: other
+
+  # update_intervall backs off by one hour every scheduled run that finds no
+  # new episodes (Pan.Updater.Podcast.set_next_update/2), which is now
+  # capped at one week going forward; this backfills podcasts whose
+  # intervall had already climbed past that cap before it existed.
+  def reset_stale_update_intervalls(conn, _params) do
+    Task.start(fn -> reset_stale_update_intervalls_async() end)
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
+  end
+
+  defp reset_stale_update_intervalls_async do
+    max_hours = Pan.Updater.Podcast.max_update_intervall_hours()
+
+    candidates =
+      from(p in Podcast,
+        where: p.update_intervall > ^max_hours,
+        select: {p.id, p.update_intervall, p.next_update}
+      )
+      |> Repo.all(timeout: :timer.minutes(10))
+
+    changed =
+      candidates
+      |> Enum.map(&reset_podcast_update_intervall(&1, max_hours))
+      |> Enum.count(& &1)
+
+    Journal.log(%{
+      module: __MODULE__,
+      method: "reset_stale_update_intervalls_async",
+      text:
+        "found #{length(candidates)} podcasts with update_intervall over the new " <>
+          "#{max_hours}h (1 week) cap, reset #{changed} " <>
+          "(see individual entries below for before/after per podcast)"
+    })
+  end
+
+  defp reset_podcast_update_intervall({id, update_intervall, next_update}, max_hours) do
+    latest_allowed_next_update = time_shift(now(), hours: max_hours)
+
+    capped_next_update =
+      if next_update && NaiveDateTime.compare(next_update, latest_allowed_next_update) == :gt do
+        latest_allowed_next_update
+      else
+        next_update
+      end
+
+    from(p in Podcast, where: p.id == ^id)
+    |> Repo.update_all(
+      [set: [update_intervall: max_hours, next_update: capped_next_update]],
+      timeout: :timer.minutes(1)
+    )
+
+    Journal.log(%{
+      module: __MODULE__,
+      method: "reset_stale_update_intervalls_async",
+      text: "podcast #{id}: capped update_intervall to #{max_hours}h (1 week)",
+      before: %{update_intervall: update_intervall, next_update: next_update},
+      after: %{update_intervall: max_hours, next_update: capped_next_update}
+    })
+
+    true
+  end
+
+  # Journal entries are meant to be disposable working notes for one
+  # maintenance run, not a permanent audit log, so this wipes the table
+  # clean ahead of the next task instead of letting old runs pile up.
+  def clear_journal(conn, _params) do
+    Repo.delete_all(Journal)
+
+    conn
+    |> put_view(PageFrontendView)
+    |> render("done.html")
+  end
 
   def stats(conn, _params) do
     stale_podcasts =

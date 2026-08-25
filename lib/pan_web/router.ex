@@ -472,6 +472,14 @@ defmodule PanWeb.Router do
       :fix_double_escaped_html_entities
     )
 
+    get(
+      "/maintenance/reset_stale_update_intervalls",
+      MaintenanceController,
+      :reset_stale_update_intervalls
+    )
+
+    get("/maintenance/clear_journal", MaintenanceController, :clear_journal)
+
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
     get("/maintenance/fix_nils", MaintenanceController, :fix_nils)
   end
