@@ -35,7 +35,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       {:tidewave, "~> 0.4", only: [:dev]},
-      {:usage_rules, "~> 0.1", only: [:dev]},
+      {:usage_rules, "~> 1.2.7", only: [:dev]},
       # web framework
       {:phoenix, "~> 1.8.1"},
       # phoenix support for ecto
@@ -59,7 +59,7 @@ defmodule Pan.MixProject do
       # Providing postgres stats for liveview
       {:ecto_psql_extras, "~> 0.6"},
       # telemetry_metrics
-      {:telemetry_metrics, "~> 1.1.0"},
+      {:telemetry_metrics, "~> 1.2.0"},
       # telemetry poller
       {:telemetry_poller, "~> 1.3.0"},
       # i18n library, override necessary because of unnecessary dependency restriction from timex

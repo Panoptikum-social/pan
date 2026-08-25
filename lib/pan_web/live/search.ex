@@ -128,6 +128,13 @@ defmodule PanWeb.Live.Search do
      |> fetch()}
   end
 
+  # Dialyzer/OTP 28 false positive: MapSet.to_list/1 below spuriously fails
+  # opaqueness checking on plain MapSets under OTP 28's stricter dialyzer -
+  # not specific to this code. See https://github.com/elixir-lang/elixir/issues/14576
+  # and https://elixirforum.com/t/function-call-without-opaqueness-type-mismatch-under-otp-28/72407
+  @dialyzer {:no_opaque, apply_language_selection: 2}
+  @spec apply_language_selection(Phoenix.LiveView.Socket.t(), MapSet.t(integer())) ::
+          Phoenix.LiveView.Socket.t()
   defp apply_language_selection(socket, selected) do
     socket
     |> assign(page: 1, update: "replace", selected_representative_ids: selected)
