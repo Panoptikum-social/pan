@@ -1,6 +1,6 @@
 defmodule PanWeb.UserFrontendController do
   use PanWeb, :controller
-  alias PanWeb.{CategoryPodcast, Follow, Like, Persona, Podcast, Subscription, User}
+  alias PanWeb.{CategoryPodcast, Follow, Language, Like, Persona, Podcast, Subscription, User}
 
   plug(:scrub_params, "user" when action in [:create, :update])
 
@@ -22,20 +22,39 @@ defmodule PanWeb.UserFrontendController do
 
   def edit(conn, _params, user) do
     changeset = User.changeset(user)
-    render(conn, "edit.html", user: user, changeset: changeset)
+    selected_language_ids = Repo.preload(user, :languages).languages |> Enum.map(& &1.id)
+
+    render(conn, "edit.html",
+      user: user,
+      changeset: changeset,
+      language_groups: Language.grouped(),
+      selected_language_ids: selected_language_ids
+    )
   end
 
   def update(conn, %{"user" => user_params}, user) do
     changeset = User.self_change_changeset(user, user_params)
 
-    case Repo.update(changeset) do
-      {:ok, _user} ->
-        conn
-        |> put_flash(:info, "Account updated successfully.")
-        |> redirect(to: user_frontend_path(conn, :my_profile))
+    language_group_ids =
+      (user_params["language_group_ids"] || [])
+      |> Enum.reject(&(&1 in [nil, ""]))
 
+    with {:ok, updated_user} <- Repo.update(changeset),
+         {:ok, _} <- User.update_languages(updated_user, language_group_ids) do
+      conn
+      |> put_flash(:info, "Account updated successfully.")
+      |> redirect(to: user_frontend_path(conn, :my_profile))
+    else
       {:error, changeset} ->
-        render(conn, "edit.html", user: user, changeset: changeset)
+        render(conn, "edit.html",
+          user: user,
+          changeset: changeset,
+          language_groups: Language.grouped(),
+          # what they just submitted, not what's saved - the update was
+          # rejected, so redisplay their in-progress picks rather than
+          # silently reverting to the last-saved selection
+          selected_language_ids: Enum.map(language_group_ids, &String.to_integer/1)
+        )
     end
   end
 

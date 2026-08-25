@@ -1,4 +1,4 @@
-<div class="m-auto max-w-2xl">
+<div class="m-auto max-w-6xl">
   <h1 class="text-3xl">
     Update Profile
   </h1>
@@ -28,6 +28,32 @@
       type="checkbox"
       label="I want to share my subscriptions"
     />
+
+    <fieldset class="w-full">
+      <legend class="mb-1">
+        Languages I speak
+        <span class="block text-xs font-normal text-gray-dark">
+          Used to optionally restrict search results to podcasts/episodes in these languages.
+        </span>
+      </legend>
+      <input type="hidden" name="user[language_group_ids][]" value="" />
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-1 max-h-128 overflow-y-auto border border-gray p-2 rounded-md">
+        <label
+          :for={group <- @language_groups}
+          class="flex items-center gap-1 text-sm min-w-0"
+        >
+          <input
+            type="checkbox"
+            name="user[language_group_ids][]"
+            value={group.representative_id}
+            checked={Enum.any?(group.ids, &(&1 in @selected_language_ids))}
+            class="checkbox checkbox-xs shrink-0"
+          />
+          <span class="truncate">{group.emoji} {group.name}</span>
+        </label>
+      </div>
+    </fieldset>
+
     <button type="submit" class="btn btn-primary">Update Profile</button>
   </.form>
 </div>

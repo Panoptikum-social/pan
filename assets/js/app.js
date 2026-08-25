@@ -13,6 +13,7 @@ import { InfiniteScroll } from "./infinite_scroll";
 import { Notification } from "./notification";
 import { PodlovePlayer } from "./podlove_player";
 import { MarkdownField } from "./markdown_field";
+import { LanguageFilterPersistence } from "./language_filter_persistence";
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -47,7 +48,14 @@ let liveSocket = new LiveSocket("/live", Socket, {
       }
     },
   },
-  hooks: { InfiniteScroll, Notification, PodloveSubscribeButton, PodlovePlayer, MarkdownField },
+  hooks: {
+    InfiniteScroll,
+    Notification,
+    PodloveSubscribeButton,
+    PodlovePlayer,
+    MarkdownField,
+    LanguageFilterPersistence,
+  },
   params: { _csrf_token: csrfToken }
 });
 

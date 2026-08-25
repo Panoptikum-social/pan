@@ -8,6 +8,7 @@ defmodule PanWeb.User do
     Episode,
     Follow,
     Invoice,
+    Language,
     Like,
     Manifestation,
     Opml,
@@ -42,6 +43,8 @@ defmodule PanWeb.User do
     has_many(:user_personas, Persona, foreign_key: :user_id)
     has_many(:recommendations, Recommendation, on_delete: :delete_all)
     has_many(:opmls, Opml, on_delete: :delete_all)
+
+    many_to_many(:languages, Language, join_through: "users_languages", on_replace: :delete)
 
     many_to_many(:personas, Persona, join_through: "manifestations")
 
@@ -357,5 +360,27 @@ defmodule PanWeb.User do
   def get_by_id_with_personas(id) do
     Repo.get!(User, id)
     |> Repo.preload(:personas)
+  end
+
+  @doc """
+  Sets the languages a user speaks, for the "restrict search to my
+  languages" feature. `representative_ids` are the ids picked from
+  `Language.grouped/0` (one per real language, e.g. the "German" option);
+  each is expanded to every underlying shortcode row (`de`, `de-DE`, `de-AT`,
+  ...) before saving, so a later search filter needs no further expansion —
+  `user.languages` already holds the full matching set.
+  """
+  def update_languages(user, representative_ids) do
+    languages =
+      representative_ids
+      |> Language.expand_group_ids()
+      |> then(&from(l in Language, where: l.id in ^&1))
+      |> Repo.all()
+
+    user
+    |> Repo.preload(:languages)
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:languages, languages)
+    |> Repo.update()
   end
 end

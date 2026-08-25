@@ -149,11 +149,25 @@ defmodule Pan.Search do
     end
   end
 
-  def query(index: index, term: term, limit: limit, offset: offset) do
+  @doc """
+  `language_ids`, when given a non-empty list, restricts results to
+  podcasts/episodes tagged with any of those `PanWeb.Language` ids (already
+  fully expanded to every shortcode variant of the languages meant - see
+  `PanWeb.Language.expand_group_ids/1`). Only the `podcasts` and `episodes`
+  indices carry `language_ids`; passing this for `categories`/`personas`
+  would just filter out every hit, so callers shouldn't.
+  """
+  def query(opts) do
+    index = Keyword.fetch!(opts, :index)
+    term = Keyword.fetch!(opts, :term)
+    limit = Keyword.fetch!(opts, :limit)
+    offset = Keyword.fetch!(opts, :offset)
+    language_ids = Keyword.get(opts, :language_ids, [])
+
     manticore_data =
       %{
         index: index,
-        query: %{match_phrase: %{_all: term}},
+        query: search_query(term, language_ids),
         limit: limit,
         offset: offset,
         highlight: %{
@@ -178,5 +192,16 @@ defmodule Pan.Search do
         Logger.error("=== Manticore search request failed: #{inspect(error)} ===")
         %{"total" => 0, "hits" => []}
     end
+  end
+
+  defp search_query(term, []), do: %{match_phrase: %{_all: term}}
+
+  defp search_query(term, language_ids) do
+    %{
+      bool: %{
+        must: [%{match_phrase: %{_all: term}}],
+        filter: [%{in: %{language_ids: language_ids}}]
+      }
+    }
   end
 end
