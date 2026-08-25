@@ -5,7 +5,7 @@ defmodule Pan.Repo.Migrations.CreateEpisode do
     create table(:episodes) do
       add(:title, :string)
       add(:link, :string)
-      add(:publishing_date, :datetime)
+      add(:publishing_date, :naive_datetime)
       add(:guid, :string)
       add(:description, :text)
       add(:shownotes, :text)

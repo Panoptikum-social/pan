@@ -9,7 +9,7 @@ defmodule Pan.Repo.Migrations.CreatePodcast do
       add(:summary, :text)
       add(:image_title, :string)
       add(:image_url, :string)
-      add(:last_build_date, :datetime)
+      add(:last_build_date, :naive_datetime)
       add(:payment_link_title, :string)
       add(:payment_link_url, :string)
       add(:author, :string)

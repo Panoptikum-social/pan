@@ -7,7 +7,7 @@ defmodule Pan.Repo.Migrations.AddCachesToPodcasts do
       add(:followers_count, :integer)
       add(:likes_count, :integer)
       add(:subscriptions_count, :integer)
-      add(:latest_episode_publishing_date, :datetime)
+      add(:latest_episode_publishing_date, :naive_datetime)
       add(:publication_frequency, :float)
     end
   end
