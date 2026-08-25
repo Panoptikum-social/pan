@@ -83,7 +83,11 @@ defmodule PanWeb.Live.Home do
             purpose="podcast"
             content_class="p-4"
           >
-            <PodcastCard.render for={@latest_podcast} />
+            <%= if @latest_podcast do %>
+              <PodcastCard.render for={@latest_podcast} />
+            <% else %>
+              <p>No podcasts yet.</p>
+            <% end %>
             <p class="mt-4">
               <a
                 href={podcast_frontend_path(Endpoint, :index)}
@@ -100,7 +104,11 @@ defmodule PanWeb.Live.Home do
             content_class="p-4"
             class="mt-4"
           >
-            <EpisodeCard.render for={@latest_episode} />
+            <%= if @latest_episode do %>
+              <EpisodeCard.render for={@latest_episode} />
+            <% else %>
+              <p>No episodes yet.</p>
+            <% end %>
             <p class="mt-4">
               <a
                 href={episode_frontend_path(Endpoint, :index)}
