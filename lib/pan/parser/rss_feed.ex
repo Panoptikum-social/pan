@@ -2,7 +2,19 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.{AlternateFeed, Download, Iterator, Persistor}
   require Logger
 
+  # There's no Feed row yet at this point, so unlike the periodic-update path
+  # (Pan.Updater.Podcast, via Feed.update_with_redirect_target/2) we can't lean
+  # on alternate_feeds history to catch a redirect looping back on itself.
+  # Track the URLs seen so far for this import in memory instead, and cap the
+  # number of hops we'll chase in case the server keeps sending brand new,
+  # never-before-seen URLs.
+  @max_redirects 5
+
   def initial_import(url, feed_id \\ 0, pagecount \\ 1) do
+    initial_import(url, feed_id, pagecount, [])
+  end
+
+  defp initial_import(url, feed_id, pagecount, visited_urls) do
     case import_to_map(url, feed_id) do
       {:ok, map} ->
         podcast_id = Persistor.initial_import(map, url)
@@ -10,7 +22,7 @@ defmodule Pan.Parser.RssFeed do
         pagecount = pagecount + 1
 
         if next_page_url != nil and pagecount < 26 do
-          initial_import(next_page_url, feed_id, pagecount)
+          initial_import(next_page_url, feed_id, pagecount, [])
         end
 
         {:ok, podcast_id}
@@ -19,14 +31,23 @@ defmodule Pan.Parser.RssFeed do
         {:error, error}
 
       {:redirect, redirect_target} ->
-        case initial_import(redirect_target, feed_id, pagecount) do
-          {:ok, podcast_id} ->
-            feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
-            AlternateFeed.get_or_insert(feed.id, %{url: url})
-            {:ok, podcast_id}
+        cond do
+          redirect_target in visited_urls ->
+            {:error, "loop detected"}
 
-          {:error, error} ->
-            {:error, error}
+          length(visited_urls) >= @max_redirects ->
+            {:error, "too many redirects"}
+
+          true ->
+            case initial_import(redirect_target, feed_id, pagecount, [url | visited_urls]) do
+              {:ok, podcast_id} ->
+                feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
+                AlternateFeed.get_or_insert(feed.id, %{url: url})
+                {:ok, podcast_id}
+
+              {:error, error} ->
+                {:error, error}
+            end
         end
     end
   end

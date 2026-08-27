@@ -15,12 +15,36 @@ defmodule Pan.Updater.Podcast do
 
   def max_update_intervall_hours, do: @max_update_intervall_hours
 
+  # Feed.update_with_redirect_target/2 already refuses a redirect that leads
+  # back to a URL this feed has held before, but that only catches actual
+  # cycles: a server that keeps redirecting to a new, never-before-seen URL
+  # (e.g. a cache-busting query string) would otherwise be followed forever.
+  # This caps the number of hops we'll chase per update, independent of that
+  # cycle check.
+  @max_redirects 5
+
   def import_new_episodes(
         podcast,
         forced \\ false,
         no_failure_count_increase \\ false,
         do_not_increase_update_interval \\ false
       ) do
+    import_new_episodes(
+      podcast,
+      forced,
+      no_failure_count_increase,
+      do_not_increase_update_interval,
+      0
+    )
+  end
+
+  defp import_new_episodes(
+         podcast,
+         forced,
+         no_failure_count_increase,
+         do_not_increase_update_interval,
+         redirect_count
+       ) do
     Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
 
     with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
@@ -34,13 +58,24 @@ defmodule Pan.Updater.Podcast do
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
       {:redirect, redirect_target} ->
-        case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
-          {:ok, _} ->
-            Logger.info("=== #{podcast.id} redirect -> #{redirect_target} ===")
-            import_new_episodes(podcast, forced, no_failure_count_increase)
+        if redirect_count >= @max_redirects do
+          handle_message(podcast, "too many redirects", no_failure_count_increase)
+        else
+          case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
+            {:ok, _} ->
+              Logger.info("=== #{podcast.id} redirect -> #{redirect_target} ===")
 
-          {:error, message} ->
-            handle_message(podcast, message, no_failure_count_increase)
+              import_new_episodes(
+                podcast,
+                forced,
+                no_failure_count_increase,
+                do_not_increase_update_interval,
+                redirect_count + 1
+              )
+
+            {:error, message} ->
+              handle_message(podcast, message, no_failure_count_increase)
+          end
         end
 
       {:error, message} ->
