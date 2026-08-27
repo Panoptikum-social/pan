@@ -627,17 +627,6 @@ defmodule PanWeb.Podcast do
     |> Repo.all()
   end
 
-  def cut_update_interval_in_half(id) do
-    podcast = Repo.get!(Podcast, id)
-
-    podcast
-    |> PanWeb.Podcast.changeset(%{
-      update_intervall: floor(podcast.update_intervall / 2),
-      next_update: now()
-    })
-    |> Repo.update()
-  end
-
   def get_deprecated(amount) do
     ranked_episodes =
       from(episode in Episode,
