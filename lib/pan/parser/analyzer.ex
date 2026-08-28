@@ -1,7 +1,10 @@
 defmodule Pan.Parser.Analyzer do
   import Pan.Parser.Iterator, only: [parse: 3, parse: 4]
   import UUID, only: [uuid1: 0]
-  import Pan.Parser.Helpers, only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1, strip_tags: 1]
+
+  import Pan.Parser.Helpers,
+    only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1, strip_tags: 1]
+
   import Pan.Parser.MyDateTime, only: [now: 0]
   require Logger
 
@@ -897,7 +900,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
   def call(_, "episode", [:title, _, [value | _]]), do: %{title: to_255(value)}
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:"itunes:title", _, [%{name: :"content:encoded", value: [value]}]]), do: %{title: strip_tags(value)}
+
+  def call(_, "episode", [:"itunes:title", _, [%{name: :"content:encoded", value: [value]}]]),
+    do: %{title: strip_tags(value)}
+
   def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: to_255(value)}
 
   def call(_, "episode", [tag_atom, attr, _])
@@ -1090,6 +1096,25 @@ defmodule Pan.Parser.Analyzer do
     %{contributors: %{uuid1() => %{name: value, uri: value}}}
   end
 
+  # podcast:person - https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/person.md
+  # channel-level persons (regular hosts/cast); item-level ones (e.g. guests) are handled below
+  def call(_, "tag", [:"podcast:person", _attr, []]), do: %{}
+
+  def call(_, "tag", [:"podcast:person", attr, [value | _]]) when is_binary(value) do
+    %{contributors: %{uuid1() => person_map(attr, value)}}
+  end
+
+  def call(_, "tag", [:"podcast:person", _attr, _value]), do: %{}
+
+  # episode/item-level persons
+  def call(_, "episode", [:"podcast:person", _attr, []]), do: %{}
+
+  def call(_, "episode", [:"podcast:person", attr, [value | _]]) when is_binary(value) do
+    %{contributors: %{uuid1() => person_map(attr, value)}}
+  end
+
+  def call(_, "episode", [:"podcast:person", _attr, _value]), do: %{}
+
   # Show debugging information for unknown tags on console
   def call(_, mode, [tag, attr, value]) do
     Logger.warning("=== Tag unknown: ===")
@@ -1174,6 +1199,18 @@ defmodule Pan.Parser.Analyzer do
   def call("episode_author", [:"panoptikum:pid", _, [value]]), do: %{pid: value}
 
   def call("episode_author", [tag_atom, _, _]) when tag_atom in [:avatar], do: %{}
+
+  defp person_map(attr, value) do
+    %{name: to_255(value), role: normalize_role(attr[:role])}
+    |> maybe_put(:uri, attr[:href])
+    |> maybe_put(:image_url, attr[:img])
+  end
+
+  defp normalize_role(nil), do: "host"
+  defp normalize_role(role), do: role |> to_string() |> String.trim() |> String.downcase()
+
+  defp maybe_put(map, _key, nil), do: map
+  defp maybe_put(map, key, value), do: Map.put(map, key, value)
 
   @atom_link_href_fields %{
     "next" => :next_page_url,

@@ -8,15 +8,16 @@ defmodule Pan.Parser.Contributor do
 
   def persist_many(contributors_map, %PanWeb.Podcast{} = podcast) do
     for {_, contributor_map} <- contributors_map do
-      {:ok, contributor} = Persona.get_or_insert(contributor_map)
+      role = contributor_map[:role] || "contributor"
+      {:ok, contributor} = Persona.get_or_insert(Map.delete(contributor_map, :role))
 
       case Repo.get_by(Engagement,
              persona_id: contributor.id,
              podcast_id: podcast.id,
-             role: "contributor"
+             role: role
            ) do
         nil ->
-          %Engagement{persona_id: contributor.id, podcast_id: podcast.id, role: "contributor"}
+          %Engagement{persona_id: contributor.id, podcast_id: podcast.id, role: role}
           |> Repo.insert()
 
         engagement ->
@@ -27,18 +28,19 @@ defmodule Pan.Parser.Contributor do
 
   def persist_many(contributors_map, %PanWeb.Episode{} = episode) do
     for {_, contributor_map} <- contributors_map do
-      {:ok, contributor} = Persona.get_or_insert(contributor_map)
+      role = contributor_map[:role] || "contributor"
+      {:ok, contributor} = Persona.get_or_insert(Map.delete(contributor_map, :role))
 
       case Repo.get_by(Gig,
              persona_id: contributor.id,
              episode_id: episode.id,
-             role: "contributor"
+             role: role
            ) do
         nil ->
           %Gig{
             persona_id: contributor.id,
             episode_id: episode.id,
-            role: "contributor",
+            role: role,
             publishing_date: episode.publishing_date
           }
           |> Repo.insert()
