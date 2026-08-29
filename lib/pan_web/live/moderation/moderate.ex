@@ -50,7 +50,12 @@ defmodule PanWeb.Live.Moderation.Moderate do
     podcast_ids = Podcast.ids_by_category_id(id)
 
     if moderation do
-      {:ok, assign(socket, category: moderation.category, cols: cols, podcast_ids: podcast_ids)}
+      {:ok,
+       assign(socket,
+         category: moderation.community.category,
+         cols: cols,
+         podcast_ids: podcast_ids
+       )}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -105,13 +110,23 @@ defmodule PanWeb.Live.Moderation.Moderate do
         Moderating {@category.title}
       </h1>
 
-      <.live_component module={ModerationGrid}
+      <.live_component
+        module={ModerationGrid}
         id="moderation_table"
         heading="Listing Podcasts"
         model={Podcast}
         cols={@cols}
         search_filter={{:id, @podcast_ids}}
-        buttons={[:pagination, :show_in_frontend, :edit_podcast, :show_episodes, :show_feeds, :number_of_records, :search]} />
+        buttons={[
+          :pagination,
+          :show_in_frontend,
+          :edit_podcast,
+          :show_episodes,
+          :show_feeds,
+          :number_of_records,
+          :search
+        ]}
+      />
     </div>
     """
   end

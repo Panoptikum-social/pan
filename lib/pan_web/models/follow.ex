@@ -9,13 +9,21 @@ defmodule PanWeb.Follow do
     belongs_to(:user, PanWeb.User)
     belongs_to(:persona, PanWeb.Persona)
     belongs_to(:category, PanWeb.Category)
+    belongs_to(:community, PanWeb.Community)
 
     timestamps()
   end
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:user_id, :persona_id, :follower_id, :podcast_id, :category_id])
+    |> cast(params, [
+      :user_id,
+      :persona_id,
+      :follower_id,
+      :podcast_id,
+      :category_id,
+      :community_id
+    ])
     |> validate_required([:follower_id])
   end
 
@@ -37,6 +45,13 @@ defmodule PanWeb.Follow do
     Repo.get_by(Follow,
       follower_id: user_id,
       category_id: category_id
+    )
+  end
+
+  def find_community_follow(user_id, community_id) do
+    Repo.get_by(Follow,
+      follower_id: user_id,
+      community_id: community_id
     )
   end
 
