@@ -91,6 +91,34 @@ defmodule PanWeb.Category do
     |> Repo.all()
   end
 
+  # Public category list only — communities get their own dedicated
+  # /communities section now, so their categories (and any parent left with no
+  # remaining children once its community-only children are hidden) don't show
+  # up here. Other consumers of tree/0 (e.g. the admin category merge tool)
+  # still need to see every category, so this is a separate function rather
+  # than a filter inside tree/0 itself.
+  def public_tree do
+    community_category_ids =
+      from(c in Community, select: c.category_id)
+      |> Repo.all()
+      |> MapSet.new()
+
+    tree()
+    |> Enum.reject(&MapSet.member?(community_category_ids, &1.id))
+    |> Enum.flat_map(fn category ->
+      had_children = category.children != []
+
+      visible_children =
+        Enum.reject(category.children, &MapSet.member?(community_category_ids, &1.id))
+
+      if had_children and visible_children == [] do
+        []
+      else
+        [%{category | children: visible_children}]
+      end
+    end)
+  end
+
   def stats_tree do
     from(c in Category,
       order_by: :title,

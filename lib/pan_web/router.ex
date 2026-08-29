@@ -228,6 +228,8 @@ defmodule PanWeb.Router do
     pipe_through([:browser])
 
     live("/", Live.Home, :index, as: :page_frontend)
+    live("/communities", Live.Community.Index, :index, as: :community_frontend)
+    live("/communities/:id", Live.Community.Show, :show, as: :community_frontend)
     live("/categories", Live.Category.Tree, :index, as: :category_frontend)
     live("/categories/stats", Live.Category.StatsTree, :stats, as: :category_frontend)
     live("/categories/:id", Live.Category.Show, :show, as: :category_frontend)

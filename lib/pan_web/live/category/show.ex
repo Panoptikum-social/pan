@@ -2,19 +2,14 @@ defmodule PanWeb.Live.Category.Show do
   use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
 
-  alias PanWeb.{Category, Community, Podcast, Language}
+  alias PanWeb.{Category, Podcast, Language}
 
   alias PanWeb.Component.Panel
   alias PanWeb.Component.FollowButton
   alias PanWeb.Component.LikeButton
   alias PanWeb.Component.CategoryButton
   alias PanWeb.Component.PodcastButton
-  alias PanWeb.Component.PersonaButton
-  alias PanWeb.Component.UserButton
-  alias PanWeb.Component.LinkButton
   alias PanWeb.Component.Icon
-
-  @community_personas_preview_limit 24
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
@@ -25,14 +20,10 @@ defmodule PanWeb.Live.Category.Show do
     if Category.by_id_exists?(id) do
       category = Category.get_with_children_and_parent(id)
       languages = Language.get_by_category_id(category.id)
-      community = Community.get_by_category_id(category.id)
 
       {:ok,
        assign(socket,
          category: category,
-         community: community,
-         community_personas_preview: community_personas_preview(community),
-         community_personas_count: community_personas_count(community),
          page_title: category.title <> " (Category)",
          languages: languages,
          language: language,
@@ -45,14 +36,6 @@ defmodule PanWeb.Live.Category.Show do
       {:ok, assign(socket, error: "not_found")}
     end
   end
-
-  defp community_personas_preview(nil), do: []
-
-  defp community_personas_preview(community),
-    do: Community.personas_preview(community.id, @community_personas_preview_limit)
-
-  defp community_personas_count(nil), do: 0
-  defp community_personas_count(community), do: Community.personas_count(community.id)
 
   defp fetch(
          %{
@@ -94,76 +77,6 @@ defmodule PanWeb.Live.Category.Show do
 
   def render(assigns) do
     ~H"""
-    <Panel.render :if={@community} purpose="episode" heading={@community.title} class="m-4">
-      <div aria-label="panel-body" class="p-4">
-        <p :if={@community.description}>{@community.description}</p>
-
-        <p :if={@community.website} class="mt-2">
-          <.link
-            href={@community.website}
-            rel="me"
-            target="_blank"
-            class="text-link hover:text-link-dark"
-          >
-            {@community.website}
-          </.link>
-        </p>
-
-        <p :if={@community.fediverse_address} class="mt-2 text-gray-dark">
-          {@community.fediverse_address}
-        </p>
-
-        <div :if={@current_user_id} class="mt-4">
-          <.live_component
-            module={FollowButton}
-            id="community_follow_button"
-            current_user_id={@current_user_id}
-            model={Community}
-            instance={@community}
-          />
-        </div>
-
-        <div :if={@community.moderators != []} class="mt-4">
-          <h3 class="text-lg font-semibold">Moderators</h3>
-          <div class="flex flex-wrap mt-2">
-            <UserButton.render :for={moderator <- @community.moderators} for={moderator} />
-          </div>
-        </div>
-
-        <div :if={@community_personas_preview != []} class="mt-4">
-          <h3 class="text-lg font-semibold">Members ({@community_personas_count})</h3>
-          <div class="flex flex-wrap mt-2">
-            <PersonaButton.render
-              :for={persona <- @community_personas_preview}
-              for={persona}
-              class="m-1"
-            />
-          </div>
-          <p
-            :if={@community_personas_count > length(@community_personas_preview)}
-            class="mt-2 text-gray-dark"
-          >
-            and {@community_personas_count - length(@community_personas_preview)} more
-          </p>
-        </div>
-
-        <p class="mt-4 leading-8">
-          <LinkButton.render
-            to={category_frontend_path(@socket, :latest_episodes, @category)}
-            title="Latest episodes"
-            class="btn-primary"
-          />&nbsp;
-          gives you a timeline view starting with the most current episode within this category.<br />
-          <LinkButton.render
-            to={category_frontend_path(@socket, :categorized, @category)}
-            title="Categorized"
-            class="btn-primary"
-          />&nbsp;
-          sorts the podcasts within this categories by the other categories, they are listed in.
-        </p>
-      </div>
-    </Panel.render>
-
     <Panel.render purpose="category" class="m-4">
       <:panel_heading>
         <.link href={category_frontend_path(@socket, :index)} class="hover:text-blue-400">

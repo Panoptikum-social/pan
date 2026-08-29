@@ -8,10 +8,12 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## 1. Community categories + moderation redesign (in progress)
 
-Status: **Phase A (schema/backend foundation) shipped to prod 2026-08-29,
-commit `69f52125` "cut over to communities, part A/1" — DB-verified correct
-in prod via the admin interface (`moderations` and `communities` both
-checked, 100% correct). Everything below "Shipped in Phase A" is still open.**
+Status: **Phases A (schema/backend), B (public pages know `Community` exists), D
+(public community showcase + `/communities` index + sidebar nav), and E (moved to
+a dedicated `/communities/:id` show page, separate from `category/show.ex`, and
+hid community-only categories from the public `/categories` list) are fully
+shipped and deployed — see the code, not repeated here. Phase C (moderator "add a
+feed" workflow) hasn't been started.**
 
 ### Background
 
@@ -24,10 +26,6 @@ community of German-speaking science/knowledge podcasts and podcasters. Category
 exist yet (granting is still console/DB-only).
 
 Current-state findings that still motivate the rest of the redesign:
-- The frontend still doesn't know `Community` exists — `category_frontend_controller.ex`
-  and `category/show.ex` still gate on the old hardcoded string match
-  (`category.parent.title == "👩 👨 Community"`), not on whether a `Community` row
-  exists. Nothing user-facing has changed yet.
 - Category↔podcast membership is still 100% feed-driven (`itunes:category`, via
   `Pan.Parser.Category.persist_many/2`), append-only — nothing ever removes a
   podcast from a category, and there's no UI (moderator or admin) to manually
@@ -37,59 +35,8 @@ Current-state findings that still motivate the rest of the redesign:
   edit) still uses a fully generic reflection-based `RecordForm` exposing every
   scalar column on the record (including things like `blocked`, `retired`,
   `update_paused`, `failure_count`) — no field allowlist yet, no association
-  editing. No `PanWeb.Journal` audit trail either, but that's now a settled decision
-  (see below), not an open question.
-
-### Shipped in Phase A
-
-- `PanWeb.Community` schema (`title`, `website`, `description`,
-  `fediverse_address`, `belongs_to :category`, unique per category — this *is* the
-  "is this a community" flag now, replacing the earlier `is_community` boolean
-  idea). Category 105 itself will never get a `Community` row (pure navigation
-  node, confirmed).
-- Seeded in prod for all 4 known/candidate communities: 106
-  (Wissenschaftspodcasts.de, the only one with moderators so far), 113
-  (Kulturkapital - Museumspodcasts), 115 (Podcasterei.at), 142 (Frauenstimmen).
-  The seed migration is prod-only (no-ops on QA via `config :pan, :environment`,
-  and per-category no-ops anywhere that category doesn't exist, so it's also safe
-  on test/synthetic DBs).
-- `moderations` gained a `community_id` FK; the 3 existing moderator rows were
-  backfilled onto it. `many_to_many :moderators` moved off `Category` onto
-  `Community`. Went further than originally planned: `PanWeb.Moderation` no
-  longer has a `category_id` field at all, and as of 2026-08-29 the DB column
-  itself is gone too (fully reversible drop — `down/0` repopulates it from
-  `community_id`, so nothing was lost) — the schema's real identity is now
-  `{community_id, user_id}`, category is reached via
-  `moderation.community.category`, and `Moderation.get_by_catagory_id_and_user_id/2`
-  joins through `:community` internally while keeping its `category_id`-based
-  interface (the `/moderation/:id` URL scheme is unchanged).
-- `follows` gained a `community_id` FK; `Community.follow/2` / `Community.follows/1`
-  mirror `Category.follow/2` / `Category.follows/1`. **Not wired into any UI yet**
-  — `FollowButton`/`FollowController` don't know about `Community`, since there's
-  no community-facing page to follow from yet.
-- Two previously-open decisions got resolved along the way: no `PanWeb.Journal`
-  audit trail for moderator actions (decided out of scope); the `RecordForm` field
-  allowlist for moderators is in scope for this work, just not implemented yet
-  (see below).
-- `Community.personas/1` — derived membership (a Persona counts as a member if it
-  contributes, any role, to any podcast under the community's category, "because
-  they are already producing, in contrast to the passive listeners" — no manual
-  override of this list). Turned out simpler than expected: a plain 3-hop Ecto
-  `has_many :personas, through: [:category, :podcasts, :contributors]` works
-  directly — Ecto auto-generates `SELECT DISTINCT` for the chained many-to-many, no
-  hand-written query needed. Verified against real data (498 distinct personas for
-  Wissenschaftspodcasts.de, zero duplicates; 16 for a zero-moderator category).
-  Phase A is now fully complete.
-
-### Shipped in Phase B (2026-08-29)
-
-- Swapped `category.parent.title == "👩 👨 Community"` for `Category.has_community?/1`
-  in both `category_frontend_controller.ex` and `category/show.ex` (the latter
-  computes it once in `mount/3`, not per-render). Verified behavior-identical
-  against real data: categories 106/113/115/142 (the 4 seeded communities) all
-  return `true`, category 105 (the pure navigation node) and an unrelated category
-  both return `false` — matches what the old string check produced, now driven by
-  the real `Community` row instead of a hardcoded title.
+  editing. No `PanWeb.Journal` audit trail either — settled decision, out of scope,
+  not an open question.
 
 ### Still to do
 
@@ -135,52 +82,31 @@ Current-state findings that still motivate the rest of the redesign:
      what moderators can trigger. No `PanWeb.Journal` writes anywhere in this flow
      (decided out of scope).
 
-### Phase D — Public community showcase (new, added 2026-08-29)
+### Phase E — Proper Community show page (new, added 2026-08-29)
 
-Everything Phase A built (Community's own fields, derived `personas`, moderators,
-the follow toggle) is currently invisible on the public site — `category/show.ex`
-still shows a leftover "Welcome to the Test Laboratory!" placeholder panel on
-community categories instead of anything about the actual community. This phase
-makes communities a real, visible, clearly-separated concept for site visitors —
-not just an admin/moderator-side backend concept.
+Phase D bolted the community showcase onto `category/show.ex` — reusing the
+category page for two conceptually different things (browsing a category's
+podcasts vs. a community's identity) saved a few lines but isn't clean. Moving to
+a real separation:
 
-**Shipped (steps 1-3, 7):**
-
-1. ✅ `Community.get_by_category_id/1` (+ `personas_preview/2`, `personas_count/1`
-   for the capped showcase view) — lookup helpers, mirror existing conventions.
-2. ✅ `category/show.ex` `mount/3` — loads the actual `Community` struct (preloaded
-   `:moderators`) instead of just a boolean; the old `has_community` assign is gone,
-   templates check `@community` directly.
-3. ✅ Replaced the "Test Laboratory" panel with a real showcase: `title` (as
-   heading), `description`, `website` (as a real `rel="me"` link — turns out
-   `fediverse_address` couldn't be one, it's a handle not a URL, same caveat as
-   Persona's own still-open decision), moderators (`UserButton` grid), a capped
-   preview of member personas (`PersonaButton` grid, first 24, "+N more" — not yet
-   linked to point 4's page since it doesn't exist yet), Follow button, existing
-   "Latest episodes"/"Categorized" links kept. Verified by rendering the LiveView
-   directly against real dev data (498-member and zero-website community, plus a
-   mocked-website case to confirm the `rel="me"` markup).
-7. ✅ Wired `Community` into `FollowButton`'s dispatch `case`
-   (`lib/pan_web/components/follow_button.ex`) — the Phase A toggle mechanism is
-   now actually reachable from the UI.
-
-**Still to do:**
-
-4. Dedicated "all members" page (`/categories/:id/members`) — the full, uncapped
-   `Community.personas/1` list, for communities with more members than the
-   showcase's preview cap (Wissenschaftspodcasts.de already has 498). Once this
-   exists, point 3's "+N more" text becomes a real link.
-5. Dedicated `/communities` index page — lists only the categories that actually
-   have a `Community` row, separate from the generic `/categories` tree
-   (`Live.Category.Tree`), which mixes every category together regardless of
-   whether it's a community.
-6. Sidebar nav entry for `/communities` in
-   `lib/pan_web/templates/layout/_navbar_items.html.heex`, alongside the existing
-   "Categories" entry — this is the explicit "clearly separate communities from
-   normal categories" ask.
-7. Wire `Community` into `FollowButton`'s dispatch (`lib/pan_web/components/follow_button.ex`),
-   using the already-built `Community.follow/2`/`Community.follows/1` toggle from
-   Phase A — currently built but not used anywhere.
+1. New `/communities/:id` route (keyed on the `Community`'s own id, not
+   `category_id`) → `Live.Community.Show` — the community identity page: moved
+   out of `category/show.ex`: title, description, `website` (`rel="me"`),
+   `fediverse_address`, moderators, full member persona list, Follow button. Links
+   out to the category page (`/categories/:id` or `:categorized`/
+   `:latest_episodes`) for actually browsing the community's podcasts, rather than
+   duplicating that grid.
+2. `category/show.ex` — remove `@community`/`@community_personas` and the
+   showcase panel entirely; back to pure category browsing, unaware of
+   `Community` as a concept.
+3. `/communities` index page — links to `/communities/:id` instead of
+   `/categories/:id`.
+4. Hide community-only categories from `/categories` (`Category.tree/0` /
+   `Live.Category.Tree`) — scoped to just that page, not `stats_tree`, the
+   category merge admin tool, or breadcrumbs elsewhere, which still need to see
+   everything. Category 105 ("👩 👨 Community") itself also disappears from that
+   page once all its children are filtered out and it'd otherwise show as an
+   empty dead-end entry.
 
 ---
 

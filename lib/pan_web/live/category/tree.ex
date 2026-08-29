@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Category.Tree do
   alias PanWeb.Component.CategoryButton
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.tree(), page_title: "Category Tree")}
+    {:ok, assign(socket, categories: Category.public_tree(), page_title: "Category Tree")}
   end
 
   def render(assigns) do
@@ -15,10 +15,12 @@ defmodule PanWeb.Live.Category.Tree do
           <CategoryButton.render for={category} index_on_page={counter} large={true} />
         </p>
         <p class="mt-6 -mx-0.5">
-          <CategoryButton.render :for={subcategory <- category.children}
-                                 for={subcategory}
-                                 class="px-1.5 py-0.5 mx-0.5 my-0.5"
-                                 truncate={true} />
+          <CategoryButton.render
+            :for={subcategory <- category.children}
+            for={subcategory}
+            class="px-1.5 py-0.5 mx-0.5 my-0.5"
+            truncate={true}
+          />
         </p>
         <hr class="w-full mt-4 border-t border-gray-lightest break-before-avoid" />
       </div>
