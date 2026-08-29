@@ -10,24 +10,18 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
     feed = Feed.get_by_id(feed_id)
 
+    # Deliberately not the full Feed schema — a moderator-facing allowlist.
+    # Excluded: :id/:podcast_id/:inserted_at/:updated_at (primary/foreign key
+    # + Ecto-managed timestamps), :next_page_url/:prev_page_url/
+    # :first_page_url/:last_page_url/:hub_link_url/:feed_generator (parsed
+    # out of the feed XML itself, not meaningfully hand-edited), and
+    # :etag/:last_modified/:trust_last_modified/:no_headers_available/:hash
+    # (HTTP caching/fingerprinting bookkeeping, internal). :self_link_title
+    # and :self_link_url stay editable so a moderator can fix a feed's URL
+    # by hand if it moved.
     columns = [
-      :id,
-      :podcast_id,
       :self_link_title,
-      :self_link_url,
-      :next_page_url,
-      :prev_page_url,
-      :first_page_url,
-      :last_page_url,
-      :hub_link_url,
-      :feed_generator,
-      :etag,
-      :last_modified,
-      :trust_last_modified,
-      :no_headers_available,
-      :hash,
-      :inserted_at,
-      :updated_at
+      :self_link_url
     ]
 
     cols =
@@ -78,11 +72,13 @@ defmodule PanWeb.Live.Moderation.EditFeed do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordForm}
-                    id={"record_form_feed_" <> Integer.to_string(@feed.id)}
-                    record={@feed}
-                    model={Feed}
-                    cols={@cols} />
+    <.live_component
+      module={RecordForm}
+      id={"record_form_feed_" <> Integer.to_string(@feed.id)}
+      record={@feed}
+      model={Feed}
+      cols={@cols}
+    />
     """
   end
 end

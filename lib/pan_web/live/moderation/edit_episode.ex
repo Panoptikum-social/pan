@@ -11,13 +11,14 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
     episode = Episode.get_by_id(episode_id)
 
+    # Deliberately not the full Episode schema — a moderator-facing allowlist.
+    # Excluded: :id/:podcast_id/:inserted_at/:updated_at (primary/foreign key
+    # + Ecto-managed timestamps), :full_text (internal search-index flag), and
+    # :guid (feed-derived unique id, not meaningfully hand-edited).
     columns = [
-      :id,
-      :podcast_id,
       :title,
       :link,
       :publishing_date,
-      :guid,
       :description,
       :shownotes,
       :payment_link_title,
@@ -27,10 +28,7 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
       :subtitle,
       :summary,
       :image_title,
-      :image_url,
-      :full_text,
-      :inserted_at,
-      :updated_at
+      :image_url
     ]
 
     cols =
@@ -81,11 +79,13 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordForm}
-                    id={"record_form_episode_" <> Integer.to_string(@episode.id)}
-                    record={@episode}
-                    model={Episode}
-                    cols={@cols} />
+    <.live_component
+      module={RecordForm}
+      id={"record_form_episode_" <> Integer.to_string(@episode.id)}
+      record={@episode}
+      model={Episode}
+      cols={@cols}
+    />
     """
   end
 end

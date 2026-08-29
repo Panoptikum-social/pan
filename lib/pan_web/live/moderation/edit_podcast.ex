@@ -10,38 +10,29 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
     podcast = Podcast.get_by_id(podcast_id)
 
+    # Deliberately not the full Podcast schema — a moderator-facing allowlist.
+    # Excluded: :id/:episodes_count/:followers_count/:likes_count/
+    # :subscriptions_count (primary key + derived counters), :unique_identifier/
+    # :next_update/:latest_episode_publishing_date/:publication_frequency
+    # (system-computed/derived), :manually_updated_at/:full_text/:thumbnailed/
+    # :last_error_message/:last_error_occured (internal bookkeeping set by the
+    # system, not a human), :inserted_at/:updated_at/:last_build_date
+    # (Ecto-managed or feed-derived timestamps), and :blocked/:failure_count
+    # (admin-only). :update_paused and :retired stay editable so a moderator
+    # can resume/un-retire a podcast themselves after fixing a feed issue.
     columns = [
-      :id,
       :title,
       :website,
       :description,
       :summary,
       :image_title,
       :image_url,
-      :last_build_date,
       :payment_link_title,
       :payment_link_url,
       :explicit,
-      :blocked,
       :update_paused,
       :update_intervall,
-      :next_update,
-      :retired,
-      :failure_count,
-      :unique_identifier,
-      :episodes_count,
-      :followers_count,
-      :likes_count,
-      :subscriptions_count,
-      :latest_episode_publishing_date,
-      :publication_frequency,
-      :manually_updated_at,
-      :full_text,
-      :thumbnailed,
-      :last_error_message,
-      :last_error_occured,
-      :inserted_at,
-      :updated_at
+      :retired
     ]
 
     cols =
@@ -87,11 +78,13 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordForm}
-                    id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
-                    record={@podcast}
-                    model={Podcast}
-                    cols={@cols} />
+    <.live_component
+      module={RecordForm}
+      id={"record_form_podcast_" <> Integer.to_string(@podcast.id)}
+      record={@podcast}
+      model={Podcast}
+      cols={@cols}
+    />
     """
   end
 end

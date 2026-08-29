@@ -6,52 +6,10 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ---
 
-## 1. Community categories + moderation redesign (in progress)
-
-Status: **Phase C (moderator "add a feed" workflow) is in progress, see below.**
-
-### Background
-
-"Moderation" was purpose-built for one specific community: category `106`
-"Wissenschaftspodcasts.de" (a child of category `105` "👩 👨 Community"), the
-community of German-speaking science/knowledge podcasts and podcasters. Category
-105 has 3 more children that had zero moderators as of this writing:
-"Kulturkapital - Museumspodcasts" (113), "Podcasterei.at" (115), "Frauenstimmen"
-(142) — other communities waiting on a moderator-granting flow that still doesn't
-exist yet (granting is still console/DB-only).
-
-Current-state findings that still motivate the rest of the redesign:
-- Category↔podcast membership is still 100% feed-driven (`itunes:category`, via
-  `Pan.Parser.Category.persist_many/2`), append-only — nothing ever removes a
-  podcast from a category, and there's no UI (moderator or admin) to manually
-  add/remove membership. The only admin category tool is category merge
-  (`lib/pan_web/live/admin/category/merge.ex`).
-- The moderator UI (`/my_moderations` → `/moderation/:id` → per podcast/episode/feed
-  edit) still uses a fully generic reflection-based `RecordForm` exposing every
-  scalar column on the record (including things like `blocked`, `retired`,
-  `update_paused`, `failure_count`) — no field allowlist yet, no association
-  editing. No `PanWeb.Journal` audit trail either — settled decision, out of scope,
-  not an open question.
-
-### Still to do
-
-- **Moderator "add a feed" workflow**:
-  1. "Add existing podcast to moderation" — browsing/picking an already-known
-     Panoptikum podcast (distinct from the feed-URL submission form, which
-     already covers "paste a known podcast's feed URL"). Needs a search/picker
-     UI that doesn't exist yet; design still open.
-  2. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
-     `failure_count` (and anything else in that vein) from the moderator-facing
-     `RecordForm` specifically (`lib/pan_web/components/moderation/record_form.ex`);
-     the admin `RecordForm` (`lib/pan_web/admin/record_form.ex`) is a separate
-     component and keeps full access. Not yet implemented.
-
----
-
-## 2. Other open backlog items
+## Open backlog items
 
 ### Two latent bugs in `PanWeb.Image.download_thumbnail/3` (found 2026-08-29)
-Found while live-testing the moderator feed-add workflow (item 1) — both were
+Found while live-testing the moderator feed-add workflow — both were
 masked here only because this *local bare-metal dev machine* never had
 `/var/phoenix` or ImageMagick set up (now fixed locally). Checked QA's
 `Dockerfile`/`docker-compose.yml`: both already correctly provisioned
