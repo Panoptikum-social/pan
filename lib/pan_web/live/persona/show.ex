@@ -89,7 +89,6 @@ defmodule PanWeb.Live.Persona.Show do
     {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
   end
 
-
   def render(%{not_found: true} = assigns) do
     ~H"""
     <div class="m-4">
@@ -118,7 +117,7 @@ defmodule PanWeb.Live.Persona.Show do
             </tr>
             <tr>
               <td class="px-4 text-right font-semibold">Permalink (URI)</td>
-              <td>{Endpoint.url}/{@persona.pid}</td>
+              <td>{Endpoint.url()}/{@persona.pid}</td>
             </tr>
             <tr>
               <td class="px-4 text-right font-semibold">Name</td>
@@ -126,7 +125,14 @@ defmodule PanWeb.Live.Persona.Show do
             </tr>
             <tr :if={@persona.uri}>
               <td class="px-4 text-right font-semibold">Uri</td>
-              <td>{@persona.uri}</td>
+              <td>
+                <.link
+                  href={@persona.uri}
+                  rel="me"
+                  target="_blank"
+                  class="text-link hover:text-link-dark"
+                >{@persona.uri}</.link>
+              </td>
             </tr>
             <tr>
               <td class="px-4 text-right font-semibold">ID</td>
@@ -135,29 +141,39 @@ defmodule PanWeb.Live.Persona.Show do
           </table>
 
           <div class="flex-none rounded shadow m-auto md:mx-4 my-4">
-            <img :if={Map.has_key?(@persona_thumbnail, :path)}
-                  src={"https://panoptikum.social#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
-                  alt={@persona.image_title}
-                  id="photo"
-                  width="150" height="150" />
-            <img :if={!Map.has_key?(@persona_thumbnail, :path)}
-                  src="/images/missing-persona.png"
-                  alt="missing image"
-                  width="150" height="150" />
+            <img
+              :if={Map.has_key?(@persona_thumbnail, :path)}
+              src={"https://panoptikum.social#{@persona_thumbnail.path}#{@persona_thumbnail.filename}"}
+              alt={@persona.image_title}
+              id="photo"
+              width="150"
+              height="150"
+            />
+            <img
+              :if={!Map.has_key?(@persona_thumbnail, :path)}
+              src="/images/missing-persona.png"
+              alt="missing image"
+              width="150"
+              height="150"
+            />
           </div>
         </div>
 
         <p :if={@current_user_id} class="m-4">
-          <.live_component module={LikeButton}
-                      id="like_button"
-                      current_user_id={@current_user_id}
-                      model={Persona}
-                      instance={@persona} />
-          <.live_component module={FollowButton}
-                        id="follow_button"
-                        current_user_id={@current_user_id}
-                        model={Persona}
-                        instance={@persona} />
+          <.live_component
+            module={LikeButton}
+            id="like_button"
+            current_user_id={@current_user_id}
+            model={Persona}
+            instance={@persona}
+          />
+          <.live_component
+            module={FollowButton}
+            id="follow_button"
+            current_user_id={@current_user_id}
+            model={Persona}
+            instance={@persona}
+          />
         </p>
       </Panel.render>
 
@@ -166,49 +182,92 @@ defmodule PanWeb.Live.Persona.Show do
           <p class="m-4">You can only claim personas, if you are logged in.</p>
         </Panel.render>
 
-        <Panel.render :if={@current_user && !@current_user.podcaster}
-                      heading="Claiming not available" purpose="persona">
-          <p class="m-4">You didn't say you are a podcaster in
-            <.link href={user_frontend_path(Endpoint, :my_profile)}
-                   class="text-link hover:text-link-dark">My Profile</.link> yet.</p>
+        <Panel.render
+          :if={@current_user && !@current_user.podcaster}
+          heading="Claiming not available"
+          purpose="persona"
+        >
+          <p class="m-4">
+            You didn't say you are a podcaster in
+            <.link
+              href={user_frontend_path(Endpoint, :my_profile)}
+              class="text-link hover:text-link-dark"
+            >My Profile</.link>
+            yet.
+          </p>
         </Panel.render>
 
-        <Panel.render :if={@current_user && @current_user.podcaster && !@current_user.email_confirmed}
-                      heading="Claiming not available" purpose="persona">
+        <Panel.render
+          :if={@current_user && @current_user.podcaster && !@current_user.email_confirmed}
+          heading="Claiming not available"
+          purpose="persona"
+        >
           <p class="m-4">You didn't confirm your email address by clicking on the
-                         confirmation link in the email sent to you after login.</p>
+            confirmation link in the email sent to you after login.</p>
         </Panel.render>
 
-        <Panel.render :if={@current_user && @current_user.podcaster && @current_user.email_confirmed && !@persona.email}
-                      heading="Claiming" purpose="persona">
+        <Panel.render
+          :if={
+            @current_user && @current_user.podcaster && @current_user.email_confirmed &&
+              !@persona.email
+          }
+          heading="Claiming"
+          purpose="persona"
+        >
           <div class="m-4">
             <p>Please take the time to read the text on the following screen carefully.</p>
             <p>
-              <.link href={persona_frontend_path(Endpoint, :warning, @persona)}
-                    class="btn btn-warning btn-sm mt-4">
+              <.link
+                href={persona_frontend_path(Endpoint, :warning, @persona)}
+                class="btn btn-warning btn-sm mt-4"
+              >
                 Start claiming process
               </.link>
             </p>
           </div>
         </Panel.render>
 
-        <Panel.render :if={@current_user && @current_user.podcaster && @current_user.email_confirmed && @persona.email}
-                      heading="Claiming" purpose="persona">
-          <p :if={Pan.Repo.get_by(PanWeb.Manifestation, persona_id: @persona.id, user_id: @current_user.id)}
-             class="m-4">
+        <Panel.render
+          :if={
+            @current_user && @current_user.podcaster && @current_user.email_confirmed &&
+              @persona.email
+          }
+          heading="Claiming"
+          purpose="persona"
+        >
+          <p
+            :if={
+              Pan.Repo.get_by(PanWeb.Manifestation,
+                persona_id: @persona.id,
+                user_id: @current_user.id
+              )
+            }
+            class="m-4"
+          >
             You have claimed this persona already.
           </p>
-          <div :if={!Pan.Repo.get_by(PanWeb.Manifestation, persona_id: @persona.id, user_id: @current_user.id)}
-               class="m-4">
-            <p>You can send an email to the owner of this persona and ask her for permission
-              to add you as a manifestation of this persona.<br/>
+          <div
+            :if={
+              !Pan.Repo.get_by(PanWeb.Manifestation,
+                persona_id: @persona.id,
+                user_id: @current_user.id
+              )
+            }
+            class="m-4"
+          >
+            <p>
+              You can send an email to the owner of this persona and ask her for permission
+              to add you as a manifestation of this persona.<br />
               Your name, username and email address will be sent alongside in the email
-              to give the owner a chance to get in contact with you.</p>
+              to give the owner a chance to get in contact with you.
+            </p>
 
-            <.link href={persona_frontend_path(Endpoint, :claim, @persona)}
-                   method="post"
-                   data-confirm="Are you sure?"
-                   class="btn btn-warning btn-sm mt-4">
+            <.link
+              href={persona_frontend_path(Endpoint, :claim, @persona)}
+              method="post"
+              data-confirm="Are you sure?"
+              class="btn btn-warning btn-sm mt-4"
+            >
               Claim
             </.link>
           </div>
@@ -216,24 +275,32 @@ defmodule PanWeb.Live.Persona.Show do
       </div>
     </div>
 
-    <Panel.render :if={@persona.description || @persona.long_description}
-           heading={@persona.description}
-           purpose="info"
-           class="m-4 max-w-7xl">
-        <div class="m-4 prose max-w-none prose-sm prose-green">{@persona.long_description |> markdown}</div>
+    <Panel.render
+      :if={@persona.description || @persona.long_description}
+      heading={@persona.description}
+      purpose="info"
+      class="m-4 max-w-7xl"
+    >
+      <div class="m-4 prose max-w-none prose-sm prose-green">
+        {@persona.long_description |> markdown}
+      </div>
     </Panel.render>
 
-    <Panel.render :if={false && @persona.fediverse_address}
-           heading={"#{@persona.fediverse_address} in the Fediverse"}
-           purpose="gig"
-           class="m-4 max-w-7xl">
+    <Panel.render
+      :if={false && @persona.fediverse_address}
+      heading={"#{@persona.fediverse_address} in the Fediverse"}
+      purpose="gig"
+      class="m-4 max-w-7xl"
+    >
       {Pan.ActivityPub.View.widget(@persona.fediverse_address)}
     </Panel.render>
 
-    <Panel.render :if={@engagements != []}
-           heading={"Engagements, #{@persona.name} has entered"}
-           purpose="engagement"
-           class="m-4">
+    <Panel.render
+      :if={@engagements != []}
+      heading={"Engagements, #{@persona.name} has entered"}
+      purpose="engagement"
+      class="m-4"
+    >
       <table class="m-4">
         <thead>
           <tr>
@@ -245,17 +312,21 @@ defmodule PanWeb.Live.Persona.Show do
           <tr :for={{podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast))}>
             <td class="px-2"><PodcastButton.render for={podcast} /></td>
             <td class="px-2">
-              <Pill.render :for={engagement <- engagements} type="success">{engagement.role}</Pill.render>
+              <Pill.render :for={engagement <- engagements} type="success">
+                {engagement.role}
+              </Pill.render>
             </td>
           </tr>
         </tbody>
       </table>
     </Panel.render>
 
-    <Panel.render :if={@has_gigs}
-           heading={"Gigs, #{@persona.name} has been engaged in"}
-           purpose="gig"
-           class="m-4">
+    <Panel.render
+      :if={@has_gigs}
+      heading={"Gigs, #{@persona.name} has been engaged in"}
+      purpose="gig"
+      class="m-4"
+    >
       <table class="m-4">
         <thead>
           <tr class="flex flex-col sm:table-row">
@@ -266,19 +337,32 @@ defmodule PanWeb.Live.Persona.Show do
           </tr>
         </thead>
         <tbody phx-update="stream" id="gigs-table-body">
-          <tr :for={{dom_id, row} <- @streams.gig_rows}
-              id={dom_id}
-              class="flex flex-col sm:table-row odd:bg-gray-lighter">
-            <td align="center" class="px-2 py-2">{row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}</td>
+          <tr
+            :for={{dom_id, row} <- @streams.gig_rows}
+            id={dom_id}
+            class="flex flex-col sm:table-row odd:bg-gray-lighter"
+          >
+            <td align="center" class="px-2 py-2">
+              {row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}
+            </td>
             <td class="px-2 py-2"><PodcastButton.render for={row.episode.podcast} /></td>
             <td class="px-2 py-2"><EpisodeButton.render for={row.episode} /></td>
             <td class="px-2 py-2">
-              <Pill.render :for={gig <- row.gigs} id={"gig-#{gig.id}"} type="success">{gig.role}</Pill.render>
+              <Pill.render :for={gig <- row.gigs} id={"gig-#{gig.id}"} type="success">
+                {gig.role}
+              </Pill.render>
             </td>
           </tr>
         </tbody>
       </table>
-      <div :if={@has_more_gigs} id="infinite-scroll" class="h-4" phx-hook="InfiniteScroll" data-page={@gigs_page}></div>
+      <div
+        :if={@has_more_gigs}
+        id="infinite-scroll"
+        class="h-4"
+        phx-hook="InfiniteScroll"
+        data-page={@gigs_page}
+      >
+      </div>
     </Panel.render>
     """
   end
