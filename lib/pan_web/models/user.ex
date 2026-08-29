@@ -5,6 +5,7 @@ defmodule PanWeb.User do
   alias PanWeb.{
     Category,
     Chapter,
+    Community,
     Episode,
     Follow,
     Invoice,
@@ -100,10 +101,8 @@ defmodule PanWeb.User do
       join_keys: [follower_id: :id, category_id: :id]
     )
 
-    many_to_many(:categories_i_moderate, Category,
-      join_through: "moderations",
-      join_keys: [user_id: :id, category_id: :id]
-    )
+    many_to_many(:communities_i_moderate, Community, join_through: "moderations")
+    has_many(:categories_i_moderate, through: [:communities_i_moderate, :category])
 
     has_many(:following, Follow, on_delete: :delete_all)
     has_many(:followeds, Follow, foreign_key: :follower_id, on_delete: :delete_all)

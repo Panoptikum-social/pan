@@ -49,10 +49,16 @@ defmodule PanWeb.Admin.ModerationGrid do
   end
 
   def update(assigns, socket) do
-    primary_key = assigns.model.__schema__(:primary_key)
+    # merge first: a partial send_update/2 (e.g. just refreshing search_filter
+    # and resetting records to force a reload) only carries the keys it's
+    # changing, not the full prop set — reading straight off `assigns` instead
+    # of `socket.assigns` here crashes the whole LiveView the moment any
+    # caller does a delta-only send_update.
+    socket = assign(socket, assigns)
+    primary_key = socket.assigns.model.__schema__(:primary_key)
 
     socket =
-      assign(socket, assigns)
+      socket
       |> assign(primary_key: primary_key)
       |> derive_and_assign_sort_by(assigns)
 
@@ -196,6 +202,12 @@ defmodule PanWeb.Admin.ModerationGrid do
     {:noreply, socket}
   end
 
+  def handle_event("remove_from_moderation", _, socket) do
+    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    send(self(), {:remove_from_moderation, selected_record_id})
+    {:noreply, assign(socket, selected_records: [])}
+  end
+
   def get_records(socket) do
     records =
       QueryBuilder.load(socket.assigns.model, criteria(socket.assigns), socket.assigns.cols)
@@ -229,64 +241,89 @@ defmodule PanWeb.Admin.ModerationGrid do
         <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="sm:border-r border-gray flex">
-            <button :if={:show_episodes in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:show_episodes in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_episodes"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="show_episodes"
+              phx-target={@myself}
+            >
               🔍 List of Episodes
             </button>
 
-            <button :if={:show_feeds in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:show_feeds in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_feeds"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="show_feeds"
+              phx-target={@myself}
+            >
               🔍 List of Feeds
             </button>
 
-            <button :if={:edit_podcast in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:edit_podcast in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_podcast"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="edit_podcast"
+              phx-target={@myself}
+            >
               ✏️ Edit Podcast
             </button>
 
-            <button :if={:edit_episode in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:edit_episode in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_episode"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="edit_episode"
+              phx-target={@myself}
+            >
               ✏️ Edit Episode
             </button>
 
-            <button :if={:edit_feed in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:edit_feed in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit_feed"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="edit_feed"
+              phx-target={@myself}
+            >
               ✏️ Edit Feed
             </button>
 
-            <button :if={:show_in_frontend in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:show_in_frontend in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_in_frontend"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="show_in_frontend"
+              phx-target={@myself}
+            >
               🔍 Show in Frontend
+            </button>
+
+            <button
+              :if={:remove_from_moderation in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                           lg:px-2 lg:py-0 m-1 rounded
+                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              data-confirm="Remove this podcast from your moderation?"
+              phx-click="remove_from_moderation"
+              phx-target={@myself}
+            >
+              🗑️ Remove from Moderation
             </button>
           </div>
 
@@ -301,36 +338,40 @@ defmodule PanWeb.Admin.ModerationGrid do
           </div>
         </div>
 
-        <Pagination.render :if={:pagination in @buttons}
-                           class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
+        <Pagination.render
+          :if={:pagination in @buttons}
+          class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
                                   via-gray-lighter to-gray-light"
-                           click="paginate"
-                           target={@myself}
-                           page={@page}
-                           per_page={@per_page}
-                           nr_of_pages={@nr_of_pages}
-                           nr_of_unfiltered={Map.get(assigns, :nr_of_unfiltered)}
-                           nr_of_filtered={@nr_of_filtered} />
+          click="paginate"
+          target={@myself}
+          page={@page}
+          per_page={@per_page}
+          nr_of_pages={@nr_of_pages}
+          nr_of_unfiltered={Map.get(assigns, :nr_of_unfiltered)}
+          nr_of_filtered={@nr_of_filtered}
+        />
 
-        <DataTable.render id={"index_table-#{@id}"}
-                          sort="sort"
-                          cycle_search_mode="cycle_search_mode"
-                          select="select"
-                          search="search"
-                          target={@myself}
-                          cols={@cols}
-                          model={@model}
-                          primary_key={@primary_key}
-                          records={@records}
-                          selected_records={@selected_records}
-                          path_helper={@path_helper}
-                          sort_by={@sort_by}
-                          sort_order={@sort_order}
-                          buttons={@buttons}
-                          search_mode={@search_mode}
-                          hide_filtered={true}
-                          search_options={@search_options}
-                          search_filter={@search_filter} />
+        <DataTable.render
+          id={"index_table-#{@id}"}
+          sort="sort"
+          cycle_search_mode="cycle_search_mode"
+          select="select"
+          search="search"
+          target={@myself}
+          cols={@cols}
+          model={@model}
+          primary_key={@primary_key}
+          records={@records}
+          selected_records={@selected_records}
+          path_helper={@path_helper}
+          sort_by={@sort_by}
+          sort_order={@sort_order}
+          buttons={@buttons}
+          search_mode={@search_mode}
+          hide_filtered={true}
+          search_options={@search_options}
+          search_filter={@search_filter}
+        />
       </div>
     </div>
     """

@@ -54,10 +54,18 @@ defmodule PanWeb.Feed do
   end
 
   def best_matching(url) do
+    # Anchored on a preceding "/" (every real URL has one right before any
+    # host or path fragment, via "scheme://" at minimum) so a shorter host
+    # that's a suffix of a longer one — "aufdistanz.de" vs.
+    # "horizons.aufdistanz.de" — can't false-match. An unanchored "%url%"
+    # would match both, and with no ORDER BY + limit: 1, silently pick
+    # whichever one happens to come back first.
+    anchored = "%/#{url}%"
+
     cond do
       feed =
           from(f in Feed,
-            where: ilike(f.self_link_url, ^"%#{url}%"),
+            where: ilike(f.self_link_url, ^anchored),
             limit: 1
           )
           |> Repo.one() ->
@@ -65,7 +73,7 @@ defmodule PanWeb.Feed do
 
       alternate_feed =
           from(a in AlternateFeed,
-            where: ilike(a.url, ^"%#{url}%"),
+            where: ilike(a.url, ^anchored),
             preload: :feed,
             limit: 1
           )
@@ -74,7 +82,7 @@ defmodule PanWeb.Feed do
 
       podcast =
           from(p in Podcast,
-            where: ilike(p.website, ^"%#{url}%"),
+            where: ilike(p.website, ^anchored),
             preload: :feeds,
             limit: 1
           )

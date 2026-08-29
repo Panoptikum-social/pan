@@ -13,7 +13,8 @@ Status: **Phases A (schema/backend), B (public pages know `Community` exists), D
 a dedicated `/communities/:id` show page, separate from `category/show.ex`, and
 hid community-only categories from the public `/categories` list) are fully
 shipped and deployed — see the code, not repeated here. Phase C (moderator "add a
-feed" workflow) is in progress — steps 1-2 shipped, see below.**
+feed" workflow) is in progress — steps 1-3 shipped (see the code, not repeated
+here), steps 4-5 still open, see below.**
 
 ### Background
 
@@ -57,8 +58,46 @@ Current-state findings that still motivate the rest of the redesign:
      a real, permanent, wanted addition: podcast 52871 ("bild der wissenschaft
      PODCAST", from user 1284's own subscriptions) attached to category 106.
      Skips `PanWeb.FeedBacklog` entirely, as designed.
-  3. "Remove podcast from moderation" — a button on the moderation grid using
-     `CategoryPodcast.delete/2` (point 1). Not yet wired into the UI.
+  3. ✅ "Remove podcast from moderation" — a `🗑️ Remove from Moderation` button
+     on `PanWeb.Admin.ModerationGrid` (a `data-confirm` browser prompt guards
+     it), using `CategoryPodcast.delete/2` from point 1. Added as a new,
+     opt-in button type on the shared grid component — the other two pages
+     that reuse it (`episode_grid.ex`/`feed_grid.ex`) don't list it, so
+     they're unaffected. Live-verified end to end with a real attach/detach
+     cycle.
+  - **Three real bugs found and fixed while live-testing points 2-3** (all via
+    `Phoenix.LiveViewTest` / real `mix run` scripts against real dev data, not
+    just the earlier bare-function-call checks, which didn't exercise the
+    actual live-process message flow where two of these three live):
+    - A **live regression**, unrelated to Phase C itself but already deployed
+      to prod: `PanWeb.User`'s `:categories_i_moderate` association still
+      pointed at `moderations.category_id`, dropped back in Phase A and never
+      caught — crashed `/moderator/my_moderations` for every real moderator.
+      Fixed by adding the missing `:communities_i_moderate` (the reverse side
+      of `Community.moderators`, never mirrored onto `User`) and re-deriving
+      `:categories_i_moderate` as `has_many through: [:communities_i_moderate, :category]`
+      — zero changes needed to the controller/template.
+    - `PanWeb.Admin.ModerationGrid.update/2` crashed the whole LiveView
+      whenever `refresh_podcast_grid/1`'s partial `send_update/2` (just
+      `search_filter`/`records`) landed, since it read `assigns.model` before
+      merging into the component's existing `socket.assigns` — a real
+      robustness gap for any future partial `send_update`, not specific to
+      this feature. The crash forced a full client reconnect + remount, which
+      looked like "the flash message doesn't survive a second render" (a
+      crash-triggered remount, not LiveView's normal disconnected/connected
+      double-mount at page load). Fixed by merging first.
+    - `PanWeb.Feed.clean_and_best_matching/1`'s `ILIKE "%url%"` matching was
+      unanchored, so a shorter host that's a suffix of a longer one (e.g.
+      `aufdistanz.de` vs. `horizons.aufdistanz.de`) could false-match — with
+      `limit: 1` and no `ORDER BY`, silently picking an arbitrary wrong
+      podcast. Low-stakes before (an advisory hint on the admin feed_backlog
+      page, human-reviewed), real consequence now that Phase C uses it to
+      auto-skip/auto-import. Fixed by anchoring every `ILIKE` pattern on a
+      preceding `/` (`%/url%`) — every real URL has one there via `scheme://`
+      at minimum. Verified against a 200-feed random sample: 195/200 correctly
+      self-matched both before and after: the 5 that didn't were already wrong
+      pre-fix too (degenerate stored URLs — a 404 page, generic redirect
+      stubs — not something introduced by this change).
   4. "Add existing podcast to moderation" — browsing/picking an already-known
      Panoptikum podcast (distinct from point 2, which already covers "paste a
      known podcast's feed URL"). Needs a search/picker UI that doesn't exist yet;

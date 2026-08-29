@@ -95,6 +95,17 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, redirect(socket, to: show_podcast_path)}
   end
 
+  def handle_info({:remove_from_moderation, podcast_id}, socket) do
+    CategoryPodcast.delete(socket.assigns.category.id, podcast_id)
+
+    socket =
+      socket
+      |> put_flash(:info, "Podcast removed from your moderation.")
+      |> refresh_podcast_grid()
+
+    {:noreply, socket}
+  end
+
   def handle_event("add-feed", %{"url" => url}, socket) do
     category_id = socket.assigns.category.id
 
@@ -188,6 +199,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
           :edit_podcast,
           :show_episodes,
           :show_feeds,
+          :remove_from_moderation,
           :number_of_records,
           :search
         ]}
