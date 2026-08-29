@@ -164,22 +164,6 @@ unrelated backlog.
 
 ## 3. Other open backlog items
 
-### Persona `rel="me"` fediverse verification links
-Add `rel="me"` links to the Persona show page (`lib/pan_web/live/persona/show.ex`)
-for Mastodon-style fediverse account verification (verified by fetching the linked
-page and checking for a reciprocal `rel=me` link, not WebFinger). Persona currently
-has single scalar fields `uri` and `fediverse_address` (the latter "experimental,"
-just a `@user@domain` handle — would need to become an actual fetchable profile URL).
-
-**Decision pending** — two options on the table:
-1. MVP: keep the two existing single fields, just add `rel="me"` to their rendered
-   `<a>` tags.
-2. Generalize: new `persona_links` has-many table (url + optional label + position)
-   so a persona can list several domains/accounts, each rendered with `rel="me"`.
-   Needs a migration, a nested edit form (`inputs_for` add/remove rows in
-   `lib/pan_web/live/persona/edit.ex`), and a data migration of existing
-   `uri`/`fediverse_address` values.
-
 ### Move qa/prod secrets to `config/runtime.exs`
 There's no `config/runtime.exs` at all today — the full config chain
 (`config.exs` → `qa.exs`/`prod.exs` → `qa.secret.exs`/`prod.secret.exs`) is
