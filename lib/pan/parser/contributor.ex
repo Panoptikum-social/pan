@@ -59,4 +59,26 @@ defmodule Pan.Parser.Contributor do
     )
     |> Repo.delete_all()
   end
+
+  # "author" is a proper delete-then-reinsert singleton handled elsewhere
+  # (see Author.get_or_insert_persona_and_gig/3), so it's excluded here. Two
+  # kinds of rows are never touched, regardless of role: a *claimed* persona's
+  # (persona.user_id set) — a re-parse that doesn't re-match the exact same
+  # Persona row must not silently sever a real user's claimed contribution —
+  # and any `self_proclaimed: true` row (Gig.proclaim/3), which isn't
+  # feed-derived at all and was already being wiped by the old delete_role
+  # call on every re-parse, a separate bug fixed here in passing.
+  @reserved_roles ["author"]
+
+  def delete_stale_feed_derived(episode_id) do
+    from(g in Gig,
+      join: p in assoc(g, :persona),
+      where:
+        g.episode_id == ^episode_id and
+          g.role not in ^@reserved_roles and
+          g.self_proclaimed == false and
+          is_nil(p.user_id)
+    )
+    |> Repo.delete_all()
+  end
 end

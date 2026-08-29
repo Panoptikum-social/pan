@@ -31,4 +31,24 @@ defmodule Pan.Parser.PodcastContributor do
     )
     |> Repo.delete_all()
   end
+
+  # "owner"/"managing editor"/"author" are proper delete-then-reinsert
+  # singletons handled elsewhere (see Persistor.update_from_feed/2 and
+  # Author), so they're excluded here. Rows for a *claimed* persona
+  # (persona.user_id set — see PanWeb.Persona/Manifestation) are never
+  # touched, regardless of role: a re-parse that doesn't re-match the exact
+  # same Persona row (e.g. a name/email variant in the feed) must not
+  # silently sever a real user's claimed contribution to this podcast.
+  @reserved_roles ["owner", "managing editor", "author"]
+
+  def delete_stale_feed_derived(podcast_id) do
+    from(e in Engagement,
+      join: p in assoc(e, :persona),
+      where:
+        e.podcast_id == ^podcast_id and
+          e.role not in ^@reserved_roles and
+          is_nil(p.user_id)
+    )
+    |> Repo.delete_all()
+  end
 end

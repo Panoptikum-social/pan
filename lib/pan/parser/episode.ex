@@ -199,7 +199,7 @@ defmodule Pan.Parser.Episode do
       end
 
       if episode_map[:contributors] do
-        Contributor.delete_role(episode.id, "contributor")
+        Contributor.delete_stale_feed_derived(episode.id)
         Contributor.persist_many(episode_map.contributors, episode)
       end
 

@@ -128,7 +128,7 @@ defmodule Pan.Parser.Persistor do
     Language.delete_for_podcast(podcast.id)
     Language.persist_many(map[:languages], podcast)
 
-    PodcastContributor.delete_role(podcast.id, "contributor")
+    PodcastContributor.delete_stale_feed_derived(podcast.id)
     Contributor.persist_many(map[:contributors], podcast)
 
     map[:episodes] && Episode.update_from_feed_many(map[:episodes], podcast)

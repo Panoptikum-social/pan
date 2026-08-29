@@ -60,10 +60,9 @@ Current-state findings that still motivate the rest of the redesign:
      re-parse pathway) **synchronously** so Panoptikum's copy is refreshed
      immediately. Confirmed synchronous over backgrounded (`Task.start`), even
      though this can be slow for large back catalogs (582 episodes for podcast
-     19664 in testing). **Hard prerequisite:** backlog item 2 below (stale
-     contributor cleanup, with a claimed-persona-safe redesign — the first attempt
-     was rejected, see item 2) must land before this branch ships, since this
-     workflow is what makes that bug routine instead of hypothetical.
+     19664 in testing). The stale-contributor-cleanup gap that used to block this
+     branch (a routine re-parse orphaning `podcast:person` roles) is fixed, so
+     nothing blocks this step anymore.
   4. After a successful new import, auto-assign the new podcast to the moderator's
      category — `itunes:category` from the feed itself can't be relied on, since
      feed authors have no way to know about Panoptikum-specific curation categories
@@ -82,81 +81,9 @@ Current-state findings that still motivate the rest of the redesign:
      what moderators can trigger. No `PanWeb.Journal` writes anywhere in this flow
      (decided out of scope).
 
-### Phase E — Proper Community show page (new, added 2026-08-29)
-
-Phase D bolted the community showcase onto `category/show.ex` — reusing the
-category page for two conceptually different things (browsing a category's
-podcasts vs. a community's identity) saved a few lines but isn't clean. Moving to
-a real separation:
-
-1. New `/communities/:id` route (keyed on the `Community`'s own id, not
-   `category_id`) → `Live.Community.Show` — the community identity page: moved
-   out of `category/show.ex`: title, description, `website` (`rel="me"`),
-   `fediverse_address`, moderators, full member persona list, Follow button. Links
-   out to the category page (`/categories/:id` or `:categorized`/
-   `:latest_episodes`) for actually browsing the community's podcasts, rather than
-   duplicating that grid.
-2. `category/show.ex` — remove `@community`/`@community_personas` and the
-   showcase panel entirely; back to pure category browsing, unaware of
-   `Community` as a concept.
-3. `/communities` index page — links to `/communities/:id` instead of
-   `/categories/:id`.
-4. Hide community-only categories from `/categories` (`Category.tree/0` /
-   `Live.Category.Tree`) — scoped to just that page, not `stats_tree`, the
-   category merge admin tool, or breadcrumbs elsewhere, which still need to see
-   everything. Category 105 ("👩 👨 Community") itself also disappears from that
-   page once all its children are filtered out and it'd otherwise show as an
-   empty dead-end entry.
-
 ---
 
-## 2. Stale contributor/person role cleanup on feed re-parse
-
-Status: **spec written, not implemented.** Now higher priority than originally
-scoped — see below.
-
-Adding `podcast:person` support (channel/item-level RSS tag, implemented in
-`lib/pan/parser/analyzer.ex` and `lib/pan/parser/contributor.ex`, tested against
-podcast 19664) means feed-derived contributors can now carry arbitrary roles
-(`host`, `guest`, …) instead of the single hardcoded `"contributor"` role every
-feed-derived contributor used before.
-
-The pre-existing delete-before-reinsert cleanup only ever targets the literal role
-string `"contributor"`:
-- `lib/pan/parser/persistor.ex`, `update_from_feed/2`:
-  `PodcastContributor.delete_role(podcast.id, "contributor")`
-- `lib/pan/parser/episode.ex`, `update_from_feed_one/2`:
-  `Contributor.delete_role(episode.id, "contributor")`
-
-`owner`/`managing_editor`/`author` are proper delete-then-reinsert singletons and
-are unaffected. Consequence: on a re-parse, any `Engagement`/`Gig` whose role isn't
-literally `"contributor"` (i.e. anything from `podcast:person`) never gets cleaned
-up — a role change between two feed versions orphans the old row, and a person
-dropped from the feed is never removed.
-
-**Proposed fix:** generalize the cleanup from "delete rows matching role ==
-`\"contributor\"`" to "delete all feed-derived contributor/person rows for this
-podcast/episode" (everything except `owner`/`managing_editor`/`author`) before
-re-persisting fresh from the parsed map. Needs a delete-by-exclusion variant on
-`Pan.Parser.PodcastContributor` (scoped to `podcast_id`) and
-`Pan.Parser.Contributor` (scoped to `episode_id`).
-
-Acceptance criteria: role changes update in place (no duplicate rows), removed
-people get their `Engagement`/`Gig` deleted, `owner`/`managing_editor`/`author`
-untouched, existing `atom:contributor`-only feeds behave exactly as before,
-`mix test`/`format`/`credo` clean.
-
-**Why this got more urgent:** originally this only blocked *a hypothetical future
-bulk re-parse* of all existing feeds. Since the moderation redesign above (item 1,
-workflow step 3) will trigger `Persistor.update_from_feed` synchronously and
-routinely — every time a moderator adds an already-known podcast to their community
-— this gap will surface in normal use, not just a one-off backfill. Worth
-sequencing this fix alongside the moderation work rather than treating it as
-unrelated backlog.
-
----
-
-## 3. Other open backlog items
+## 2. Other open backlog items
 
 ### Move qa/prod secrets to `config/runtime.exs`
 There's no `config/runtime.exs` at all today — the full config chain
