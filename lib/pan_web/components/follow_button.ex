@@ -1,15 +1,16 @@
 defmodule PanWeb.Component.FollowButton do
   use PanWeb, :live_component
-  alias PanWeb.{Follow, User, Podcast, Category, Persona}
+  alias PanWeb.{Follow, User, Podcast, Category, Community, Persona}
   alias PanWeb.Component.Icon
 
   def update(assigns, socket) do
     follow_method =
       case assigns.model do
-        Podcast  -> &Follow.find_podcast_follow/2
-        Category -> &Follow.find_category_follow/2
-        Persona  -> &Follow.find_persona_follow/2
-        User     -> &Follow.find_user_follow/2
+        Podcast   -> &Follow.find_podcast_follow/2
+        Category  -> &Follow.find_category_follow/2
+        Community -> &Follow.find_community_follow/2
+        Persona   -> &Follow.find_persona_follow/2
+        User      -> &Follow.find_user_follow/2
       end
 
     following =

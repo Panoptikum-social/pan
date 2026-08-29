@@ -144,19 +144,32 @@ community categories instead of anything about the actual community. This phase
 makes communities a real, visible, clearly-separated concept for site visitors —
 not just an admin/moderator-side backend concept.
 
-1. `Community.get_by_category_id/1` — lookup helper, mirrors existing conventions.
-2. `category/show.ex` `mount/3` — load the actual `Community` struct (preloaded
-   `:moderators`) when `has_community`, not just the boolean.
-3. Replace the "Test Laboratory" panel with a real showcase: `title`/`description`/
-   `website`/`fediverse_address` (the last as a `rel="me"` link, matching the
-   Persona work from earlier in this backlog), moderators (`UserButton` grid), a
-   capped preview of member personas (`PersonaButton` grid, first ~24) linking to
-   the full members page (point 4), and the existing "Latest episodes"/
-   "Categorized" links kept, reframed as part of the community panel rather than
-   "lab testing" copy.
+**Shipped (steps 1-3, 7):**
+
+1. ✅ `Community.get_by_category_id/1` (+ `personas_preview/2`, `personas_count/1`
+   for the capped showcase view) — lookup helpers, mirror existing conventions.
+2. ✅ `category/show.ex` `mount/3` — loads the actual `Community` struct (preloaded
+   `:moderators`) instead of just a boolean; the old `has_community` assign is gone,
+   templates check `@community` directly.
+3. ✅ Replaced the "Test Laboratory" panel with a real showcase: `title` (as
+   heading), `description`, `website` (as a real `rel="me"` link — turns out
+   `fediverse_address` couldn't be one, it's a handle not a URL, same caveat as
+   Persona's own still-open decision), moderators (`UserButton` grid), a capped
+   preview of member personas (`PersonaButton` grid, first 24, "+N more" — not yet
+   linked to point 4's page since it doesn't exist yet), Follow button, existing
+   "Latest episodes"/"Categorized" links kept. Verified by rendering the LiveView
+   directly against real dev data (498-member and zero-website community, plus a
+   mocked-website case to confirm the `rel="me"` markup).
+7. ✅ Wired `Community` into `FollowButton`'s dispatch `case`
+   (`lib/pan_web/components/follow_button.ex`) — the Phase A toggle mechanism is
+   now actually reachable from the UI.
+
+**Still to do:**
+
 4. Dedicated "all members" page (`/categories/:id/members`) — the full, uncapped
    `Community.personas/1` list, for communities with more members than the
-   showcase's preview cap (Wissenschaftspodcasts.de already has 498).
+   showcase's preview cap (Wissenschaftspodcasts.de already has 498). Once this
+   exists, point 3's "+N more" text becomes a real link.
 5. Dedicated `/communities` index page — lists only the categories that actually
    have a `Community` row, separate from the generic `/categories` tree
    (`Live.Category.Tree`), which mixes every category together regardless of

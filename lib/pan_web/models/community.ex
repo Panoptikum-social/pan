@@ -54,10 +54,27 @@ defmodule PanWeb.Community do
     Repo.get!(Community, id)
   end
 
+  def get_by_category_id(category_id) do
+    Repo.get_by(Community, category_id: category_id)
+    |> Repo.preload(:moderators)
+  end
+
   def personas(id) do
     Community
     |> Repo.get!(id)
     |> Ecto.assoc(:personas)
     |> Repo.all()
+  end
+
+  def personas_preview(id, limit) do
+    from(p in Ecto.assoc(Repo.get!(Community, id), :personas), limit: ^limit)
+    |> Repo.all()
+  end
+
+  def personas_count(id) do
+    Community
+    |> Repo.get!(id)
+    |> Ecto.assoc(:personas)
+    |> Repo.aggregate(:count)
   end
 end
