@@ -66,41 +66,61 @@ defmodule PanWeb.Live.Community.Show do
           />
         </div>
 
+        <div class="mt-4 flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <LinkButton.render
+              to={category_frontend_path(@socket, :show, @community.category_id)}
+              title="Browse podcasts"
+              class="btn-primary w-44 justify-center shrink-0"
+            />
+            <span>shows every podcast in this community.</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <LinkButton.render
+              to={category_frontend_path(@socket, :latest_episodes, @community.category_id)}
+              title="Latest episodes"
+              class="btn-primary w-44 justify-center shrink-0"
+            />
+            <span>
+              gives you a timeline view starting with the most current episode from podcasts in
+              this community.
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <LinkButton.render
+              to={category_frontend_path(@socket, :categorized, @community.category_id)}
+              title="Categorized"
+              class="btn-primary w-44 justify-center shrink-0"
+            />
+            <span>sorts the podcasts in this community by the other categories they are listed in.</span>
+          </div>
+        </div>
+
         <div :if={@community.moderators != []} class="mt-4">
           <h3 class="text-lg font-semibold">Moderators</h3>
-          <div class="flex flex-wrap mt-2">
-            <UserButton.render :for={moderator <- @community.moderators} for={moderator} />
+          <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
+            <UserButton.render
+              :for={moderator <- @community.moderators}
+              for={moderator}
+              class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+            />
           </div>
         </div>
 
         <div :if={@community_personas != []} class="mt-4">
           <h3 class="text-lg font-semibold">Members ({length(@community_personas)})</h3>
-          <div class="flex flex-wrap mt-2">
-            <PersonaButton.render :for={persona <- @community_personas} for={persona} class="m-1" />
+          <p class="text-sm text-gray-dark mt-1">
+            The people behind the podcasts in this community — hosts, co-hosts, producers, and
+            other contributors.
+          </p>
+          <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
+            <PersonaButton.render
+              :for={persona <- @community_personas}
+              for={persona}
+              class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+            />
           </div>
         </div>
-
-        <p class="mt-4 leading-8">
-          <LinkButton.render
-            to={category_frontend_path(@socket, :show, @community.category_id)}
-            title="Browse podcasts"
-            class="btn-primary"
-          />&nbsp;
-          shows every podcast in this community.<br />
-          <LinkButton.render
-            to={category_frontend_path(@socket, :latest_episodes, @community.category_id)}
-            title="Latest episodes"
-            class="btn-primary"
-          />&nbsp;
-          gives you a timeline view starting with the most current episode from podcasts in this
-          community.<br />
-          <LinkButton.render
-            to={category_frontend_path(@socket, :categorized, @community.category_id)}
-            title="Categorized"
-            class="btn-primary"
-          />&nbsp;
-          sorts the podcasts in this community by the other categories they are listed in.
-        </p>
       </div>
     </Panel.render>
     """

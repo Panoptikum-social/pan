@@ -154,7 +154,11 @@ defmodule PanWeb.Live.Category.Show do
           phx-update={@update_action}
           class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4"
         >
-          <PodcastButton.render :for={podcast <- @podcasts} for={podcast} class="m-2" truncate />
+          <PodcastButton.render
+            :for={podcast <- @podcasts}
+            for={podcast}
+            class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+          />
         </div>
 
         <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>

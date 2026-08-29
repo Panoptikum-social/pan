@@ -56,7 +56,7 @@ defmodule PanWeb.Community do
 
   def find_by_id(id) do
     Repo.get(Community, id)
-    |> Repo.preload(:moderators)
+    |> Repo.preload(moderators: from(u in User, order_by: u.name))
   end
 
   def all do
@@ -70,9 +70,7 @@ defmodule PanWeb.Community do
   end
 
   def personas(id) do
-    Community
-    |> Repo.get!(id)
-    |> Ecto.assoc(:personas)
+    from(p in (Community |> Repo.get!(id) |> Ecto.assoc(:personas)), order_by: p.name)
     |> Repo.all()
   end
 end

@@ -615,6 +615,7 @@ defmodule PanWeb.Podcast do
       join: c in assoc(p, :categories),
       where: c.id == ^category_id,
       select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji},
+      order_by: p.title,
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )
@@ -627,6 +628,7 @@ defmodule PanWeb.Podcast do
       join: c in assoc(p, :categories),
       where: c.id == ^category_id and l.emoji == ^language.emoji,
       select: %{id: p.id, title: p.title, language_name: l.name, language_emoji: l.emoji},
+      order_by: p.title,
       limit: ^per_page,
       offset: (^page - 1) * ^per_page
     )

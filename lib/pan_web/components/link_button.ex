@@ -14,17 +14,19 @@ defmodule PanWeb.Component.LinkButton do
 
   def render(assigns) do
     ~H"""
-    <.link id={@id}
-           href={@to}
-           class={[
-             "btn",
-             @class,
-             @truncate && "truncate max-w-full",
-             !@large && "btn-sm"
-           ]}
-           method={@method}
-           {@opts}>
-      <Icon.render :if={@icon} name={@icon} spaced={true} />
+    <.link
+      id={@id}
+      href={@to}
+      class={[
+        "btn",
+        @class,
+        @truncate && "truncate max-w-full",
+        !@large && "btn-sm"
+      ]}
+      method={@method}
+      {@opts}
+    >
+      <Icon.render :if={@icon} name={@icon} class="shrink-0" spaced={true} />
       {@title}
     </.link>
     """
