@@ -8,29 +8,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## Open backlog items
 
-### Two latent bugs in `PanWeb.Image.download_thumbnail/3` (found 2026-08-29)
-Found while live-testing the moderator feed-add workflow — both were
-masked here only because this *local bare-metal dev machine* never had
-`/var/phoenix` or ImageMagick set up (now fixed locally). Checked QA's
-`Dockerfile`/`docker-compose.yml`: both already correctly provisioned
-(`RUN mkdir -p /var/phoenix/pan-uploads && chown pan:pan ...`, `imagemagick`
-installed, a named volume mounted over that path) — nothing to fix there, and
-prod's bare-metal setup evidently has this right too, since neither bug has
-ever surfaced. Still real code bugs, just currently inert wherever the infra
-happens to be correctly provisioned — flagging only, not otherwise in scope:
-1. `lib/pan_web/models/image.ex:81` — `File.mkdir_p(target_dir)` uses the
-   non-bang variant and its `{:error, reason}` return is silently discarded, so
-   the very next line's `File.write!/2` fails with a confusing "no such file or
-   directory" instead of surfacing the real problem, if that directory/mount
-   ever isn't there or isn't writable.
-2. Same file, the `try/catch` around `Mogrify.save/2` (comment: *"we fail
-   silently, as we did before mogrify raised errors"*) pattern-matches
-   `{error, {message, _}}` / `{error, message}` throw shapes, but current
-   Mogrify (0.9.3) raises a plain `RuntimeError` — the catch clauses don't match
-   a raised exception's shape, so any real Mogrify failure (corrupt image,
-   missing binary, etc.) propagates uncaught instead of failing silently as the
-   comment says was intended.
-
 ### Move qa/prod secrets to `config/runtime.exs`
 There's no `config/runtime.exs` at all today — the full config chain
 (`config.exs` → `qa.exs`/`prod.exs` → `qa.secret.exs`/`prod.secret.exs`) is

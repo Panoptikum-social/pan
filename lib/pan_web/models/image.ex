@@ -78,7 +78,7 @@ defmodule PanWeb.Image do
          {:ok, _} <- not_empty(response.body),
          {:ok, path} <- extract_path(response),
          {:ok, filename} <- not_empty(Path.basename(path)) do
-      File.mkdir_p(target_dir)
+      File.mkdir_p!(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
       Logger.info("=== Mogrifying image with id #{id} ===")
@@ -88,13 +88,12 @@ defmodule PanWeb.Image do
         |> Mogrify.open()
         |> Mogrify.resize_to_limit("150x150")
         |> Mogrify.save(in_place: true)
-      catch
+      rescue
         # We fail silently, as we did before mogrify raised errors.
-        kind, {error, {message, _}} ->
-          Logger.info("=== Image with id #{id} #{kind}:#{error} (#{message}) ===")
-
-        kind, {error, message} ->
-          Logger.info("=== Image with id #{id} #{kind}:#{error} (#{message}) ===")
+        error ->
+          Logger.info(
+            "=== Image with id #{id} failed to mogrify: #{Exception.message(error)} ==="
+          )
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
