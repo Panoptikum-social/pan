@@ -2,117 +2,133 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-08-28.
+2026-08-29.
 
 ---
 
 ## 1. Community categories + moderation redesign (in progress)
 
-Status: **design discussion, not yet written as a formal spec or implemented.**
-Everything below reflects what's been agreed in conversation so far; not started in
-code.
+Status: **Phase A (schema/backend foundation) shipped to prod 2026-08-29,
+commit `69f52125` "cut over to communities, part A/1" — DB-verified correct
+in prod via the admin interface (`moderations` and `communities` both
+checked, 100% correct). Everything below "Shipped in Phase A" is still open.**
 
 ### Background
 
 "Moderation" was purpose-built for one specific community: category `106`
 "Wissenschaftspodcasts.de" (a child of category `105` "👩 👨 Community"), the
-community of German-speaking science/knowledge podcasts and podcasters. Confirmed
-via DB query — all 3 existing `moderations` rows are scoped to category 106, none to
-any other category. Category 105 already has 3 more children with zero moderators
-assigned: "Kulturkapital - Museumspodcasts" (113), "Podcasterei.at" (115),
-"Frauenstimmen" (142) — other communities waiting on a moderator-granting flow that
-doesn't exist yet.
+community of German-speaking science/knowledge podcasts and podcasters. Category
+105 has 3 more children that had zero moderators as of this writing:
+"Kulturkapital - Museumspodcasts" (113), "Podcasterei.at" (115), "Frauenstimmen"
+(142) — other communities waiting on a moderator-granting flow that still doesn't
+exist yet (granting is still console/DB-only).
 
-Current-state findings that motivate the redesign:
-- "Community" isn't a real concept in the schema today — it's a hardcoded string
-  match on `category.parent.title == "👩 👨 Community"` in
-  `lib/pan_web/frontend_controller/category_frontend_controller.ex` and
-  `lib/pan_web/live/category/show.ex`.
-- Category↔podcast membership is 100% feed-driven (`itunes:category`, via
+Current-state findings that still motivate the rest of the redesign:
+- The frontend still doesn't know `Community` exists — `category_frontend_controller.ex`
+  and `category/show.ex` still gate on the old hardcoded string match
+  (`category.parent.title == "👩 👨 Community"`), not on whether a `Community` row
+  exists. Nothing user-facing has changed yet.
+- Category↔podcast membership is still 100% feed-driven (`itunes:category`, via
   `Pan.Parser.Category.persist_many/2`), append-only — nothing ever removes a
   podcast from a category, and there's no UI (moderator or admin) to manually
   add/remove membership. The only admin category tool is category merge
   (`lib/pan_web/live/admin/category/merge.ex`).
-- `PanWeb.Moderation` is a bare `{category_id, user_id}` join table (no role,
-  granted-by, or timestamp columns). **No UI anywhere creates a `Moderation` row** —
-  granting someone as a moderator is console/DB-only today.
-- The moderator UI (`/my_moderations` → `/moderation/:id` → per
-  podcast/episode/feed edit) uses a fully generic reflection-based `RecordForm`
-  exposing every scalar column on the record (including things like `blocked`,
-  `retired`, `update_paused`, `failure_count`) — no field allowlist, no association
-  editing, and no audit trail (doesn't touch `PanWeb.Journal`, despite that model
-  existing for exactly this).
+- The moderator UI (`/my_moderations` → `/moderation/:id` → per podcast/episode/feed
+  edit) still uses a fully generic reflection-based `RecordForm` exposing every
+  scalar column on the record (including things like `blocked`, `retired`,
+  `update_paused`, `failure_count`) — no field allowlist yet, no association
+  editing. No `PanWeb.Journal` audit trail either, but that's now a settled decision
+  (see below), not an open question.
 
-### Design decisions made so far
+### Shipped in Phase A
 
-**New `PanWeb.Community` schema** — this *replaces* the earlier idea of an
-`is_community` boolean/type flag on `Category`; the existence of a `Community` row
-for a category **is** the flag.
+- `PanWeb.Community` schema (`title`, `website`, `description`,
+  `fediverse_address`, `belongs_to :category`, unique per category — this *is* the
+  "is this a community" flag now, replacing the earlier `is_community` boolean
+  idea). Category 105 itself will never get a `Community` row (pure navigation
+  node, confirmed).
+- Seeded in prod for all 4 known/candidate communities: 106
+  (Wissenschaftspodcasts.de, the only one with moderators so far), 113
+  (Kulturkapital - Museumspodcasts), 115 (Podcasterei.at), 142 (Frauenstimmen).
+  The seed migration is prod-only (no-ops on QA via `config :pan, :environment`,
+  and per-category no-ops anywhere that category doesn't exist, so it's also safe
+  on test/synthetic DBs).
+- `moderations` gained a `community_id` FK; the 3 existing moderator rows were
+  backfilled onto it. `many_to_many :moderators` moved off `Category` onto
+  `Community`. Went further than originally planned: `PanWeb.Moderation` no
+  longer has a `category_id` field at all, and as of 2026-08-29 the DB column
+  itself is gone too (fully reversible drop — `down/0` repopulates it from
+  `community_id`, so nothing was lost) — the schema's real identity is now
+  `{community_id, user_id}`, category is reached via
+  `moderation.community.category`, and `Moderation.get_by_catagory_id_and_user_id/2`
+  joins through `:community` internally while keeping its `category_id`-based
+  interface (the `/moderation/:id` URL scheme is unchanged).
+- `follows` gained a `community_id` FK; `Community.follow/2` / `Community.follows/1`
+  mirror `Category.follow/2` / `Category.follows/1`. **Not wired into any UI yet**
+  — `FollowButton`/`FollowController` don't know about `Community`, since there's
+  no community-facing page to follow from yet.
+- Two previously-open decisions got resolved along the way: no `PanWeb.Journal`
+  audit trail for moderator actions (decided out of scope); the `RecordForm` field
+  allowlist for moderators is in scope for this work, just not implemented yet
+  (see below).
+- `Community.personas/1` — derived membership (a Persona counts as a member if it
+  contributes, any role, to any podcast under the community's category, "because
+  they are already producing, in contrast to the passive listeners" — no manual
+  override of this list). Turned out simpler than expected: a plain 3-hop Ecto
+  `has_many :personas, through: [:category, :podcasts, :contributors]` works
+  directly — Ecto auto-generates `SELECT DISTINCT` for the chained many-to-many, no
+  hand-written query needed. Verified against real data (498 distinct personas for
+  Wissenschaftspodcasts.de, zero duplicates; 16 for a zero-moderator category).
+  Phase A is now fully complete.
 
-- Fields: `title`, `website`, `description`, `fediverse_address` (matches the field
-  name `Persona` already uses, not `fediverse_handle`).
-- `belongs_to :category` — exactly one `Community` per community-category (e.g.
-  category 106 gets one). The top-level category 105 ("👩 👨 Community") will
-  **never** get a `Community` row — confirmed explicitly, it stays a pure navigation
-  node forever.
-- `many_to_many :moderators, through: "moderations"` — **moved off `Category` onto
-  `Community`** (moderation was always community-scoped in practice anyway). The
-  `moderations` join table gets a `community_id` FK.
-- `has_many :users` (community members — podcasters, moderators, or just plain
-  users) — implemented as **another nullable column on the existing generic
-  `follows` table** (`community_id`, alongside its existing `podcast_id`/
-  `episode_id`/`persona_id`/`category_id`/`user_id`), reusing `Follow`'s toggle
-  semantics (join = follow, leave = unfollow). The user treats "follow" and
-  "subscribe" as synonyms here — no new table, no approval workflow.
-- `has_many :personas` — **derived, not a stored join table.** A Persona counts as
-  an (active) community member if it's a contributor (any role) on any podcast under
-  the community's category — "because they are already producing, in contrast to
-  the passive listeners." Expressible as a chained `has_many :personas, through:
-  [...]` off `Category.podcasts` (many_to_many via `categories_podcasts`) →
-  `Podcast.contributors` (many_to_many via `engagements`, already exists) — both
-  hops already exist as associations, no new table needed. No manual override of
-  this list.
+### Still to do
 
-**Moderation workflow improvements** (extends the "manual category curation" gap
-above with a concrete moderator-facing flow):
-
-1. Moderators can enter a brand-new feed URL directly from their moderation area.
-   This **skips the existing `PanWeb.FeedBacklog` review queue entirely**
-   (confirmed: "yes, skip the review") — no backlog row, no audit trail via that
-   table, straight to import. (For context: `FeedBacklog` today lets plain users
-   submit a URL via `FeedBacklogFrontendController`, but nothing auto-processes it —
-   an admin has to manually visit `/feed_backlog` and click `import`/`import_100`,
-   which calls `Pan.Parser.RssFeed.initial_import/2`.)
-2. Immediate parsing: the moderator's submitted URL runs
-   `Pan.Parser.RssFeed.initial_import/2` **synchronously** (same call the admin
-   `feed_backlog_controller.ex` `import` action already uses).
-3. Before running `initial_import`, dedupe the URL against known feeds using the
-   existing `PanWeb.Feed.clean_and_best_matching/1` (already exists, used today on
-   the admin backlog's `show` page). If it already matches a known podcast: **skip
-   `initial_import`**, show the moderator "we already know that podcast and added it
-   to your moderation", auto-attach the category (point 5), and additionally
-   trigger `Pan.Parser.Podcast.update_from_feed/1` (the full re-parse pathway — see
-   item 2 below) **synchronously** so Panoptikum's copy is refreshed immediately.
-   Confirmed synchronous over backgrounded (`Task.start`), even though this can be
-   slow for large back catalogs (582 episodes for podcast 19664 in testing).
-4. After a successful new import, auto-assign the new podcast to the moderator's
-   category — `itunes:category` from the feed itself can't be relied on, since feed
-   authors have no way to know about Panoptikum-specific curation categories like
-   "Wissenschaftspodcasts.de".
-5. "Add existing podcast to moderation" / "remove podcast from moderation" — plain
-   manual `categories_podcasts` add/remove for (moderator's category, podcast).
-   `PanWeb.CategoryPodcast.get_or_insert/2` already exists and is unused by any UI —
-   covers "add." **No delete function exists yet** for `CategoryPodcast` — needs
-   adding for "remove."
-
-### Still open / not yet decided
-- Whether the missing audit-trail gap (moderator edits not going through
-  `PanWeb.Journal`) gets addressed as part of this work — flagged, not yet answered.
-- The generic `RecordForm`'s lack of a field allowlist for moderators (they can
-  currently edit *any* scalar column, including things like `blocked`/`retired`) —
-  flagged, not yet discussed further.
-- Whatever part 3+ of the design discussion brings (conversation was still ongoing
-  when this file was written).
+- **Replace the hardcoded community check** — swap
+  `category.parent.title == "👩 👨 Community"` in `category_frontend_controller.ex`
+  and `category/show.ex` for a real `Category.has_community?/1` (or preloaded
+  `:community`) check. Until this lands, `Community` existing in the schema
+  doesn't change any user-facing page.
+- **Moderator "add a feed" workflow** (unchanged from the original design, still
+  fully pending):
+  1. Moderators can enter a brand-new feed URL directly from their moderation area.
+     This **skips the existing `PanWeb.FeedBacklog` review queue entirely**
+     (confirmed: "yes, skip the review") — no backlog row, straight to import. (For
+     context: `FeedBacklog` today lets plain users submit a URL via
+     `FeedBacklogFrontendController`, but nothing auto-processes it — an admin has
+     to manually visit `/feed_backlog` and click `import`/`import_100`, which calls
+     `Pan.Parser.RssFeed.initial_import/2`.)
+  2. Immediate parsing: the moderator's submitted URL runs
+     `Pan.Parser.RssFeed.initial_import/2` **synchronously** (same call the admin
+     `feed_backlog_controller.ex` `import` action already uses).
+  3. Before running `initial_import`, dedupe the URL against known feeds using the
+     existing `PanWeb.Feed.clean_and_best_matching/1`. If it already matches a known
+     podcast: **skip `initial_import`**, show the moderator "we already know that
+     podcast and added it to your moderation", auto-attach the category (point 5),
+     and additionally trigger `Pan.Parser.Podcast.update_from_feed/1` (the full
+     re-parse pathway) **synchronously** so Panoptikum's copy is refreshed
+     immediately. Confirmed synchronous over backgrounded (`Task.start`), even
+     though this can be slow for large back catalogs (582 episodes for podcast
+     19664 in testing). **Hard prerequisite:** backlog item 2 below (stale
+     contributor cleanup, with a claimed-persona-safe redesign — the first attempt
+     was rejected, see item 2) must land before this branch ships, since this
+     workflow is what makes that bug routine instead of hypothetical.
+  4. After a successful new import, auto-assign the new podcast to the moderator's
+     category — `itunes:category` from the feed itself can't be relied on, since
+     feed authors have no way to know about Panoptikum-specific curation categories
+     like "Wissenschaftspodcasts.de".
+  5. "Add existing podcast to moderation" / "remove podcast from moderation" — plain
+     manual `categories_podcasts` add/remove for (moderator's category, podcast).
+     `PanWeb.CategoryPodcast.get_or_insert/2` already exists and is unused by any
+     UI — covers "add." **No delete function exists yet** for `CategoryPodcast` —
+     needs adding for "remove."
+  6. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
+     `failure_count` (and anything else in that vein) from the moderator-facing
+     `RecordForm` specifically (`lib/pan_web/components/moderation/record_form.ex`);
+     the admin `RecordForm` (`lib/pan_web/admin/record_form.ex`) is a separate
+     component and keeps full access. Decided in scope for this workflow, not yet
+     implemented — should land alongside it, since this workflow is what expands
+     what moderators can trigger. No `PanWeb.Journal` writes anywhere in this flow
+     (decided out of scope).
 
 ---
 

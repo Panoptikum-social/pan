@@ -12,6 +12,7 @@ defmodule PanWeb.Community do
     belongs_to(:category, Category)
 
     many_to_many(:moderators, User, join_through: "moderations")
+    has_many(:personas, through: [:category, :podcasts, :contributors])
 
     timestamps()
   end
@@ -51,5 +52,12 @@ defmodule PanWeb.Community do
 
   def get_by_id(id) do
     Repo.get!(Community, id)
+  end
+
+  def personas(id) do
+    Community
+    |> Repo.get!(id)
+    |> Ecto.assoc(:personas)
+    |> Repo.all()
   end
 end
