@@ -112,6 +112,16 @@ defmodule PanWeb.Category do
     |> Kernel.not()
   end
 
+  def has_community?(id) do
+    from(Community,
+      where: [category_id: ^id],
+      select: [:id]
+    )
+    |> Repo.one()
+    |> is_nil()
+    |> Kernel.not()
+  end
+
   def get_with_children_and_parent(id) do
     from(c in Category,
       where: [id: ^id],

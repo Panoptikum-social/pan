@@ -8,7 +8,7 @@ defmodule PanWeb.CategoryFrontendController do
       |> Repo.get!(id)
       |> Repo.preload(:parent, podcasts: :categories)
 
-    if category.parent.title == "👩 👨 Community" do
+    if Category.has_community?(id) do
       podcast_ids =
         from(cp in PanWeb.CategoryPodcast,
           where: cp.category_id == ^id,

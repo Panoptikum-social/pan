@@ -25,6 +25,7 @@ defmodule PanWeb.Live.Category.Show do
       {:ok,
        assign(socket,
          category: category,
+         has_community: Category.has_community?(category.id),
          page_title: category.title <> " (Category)",
          languages: languages,
          language: language,
@@ -78,22 +79,30 @@ defmodule PanWeb.Live.Category.Show do
 
   def render(assigns) do
     ~H"""
-    <Panel.render :if={@category.parent && @category.parent.title == "👩 👨 Community"}
-           purpose="episode"
-           heading="Welcome to the Test Laboratory!"
-           class="m-4">
+    <Panel.render
+      :if={@has_community}
+      purpose="episode"
+      heading="Welcome to the Test Laboratory!"
+      class="m-4"
+    >
       <div aria-label="panel-body" class="p-4">
-        <p>We are currently testing different and additional views for community categories!<br/>
-          Wanna give it a try?</p>
+        <p>
+          We are currently testing different and additional views for community categories!<br />
+          Wanna give it a try?
+        </p>
         <p class="mt-4 leading-8">
-          <LinkButton.render to={category_frontend_path(@socket, :latest_episodes, @category)}
-                      title="Latest episodes"
-                      class="btn-primary" />&nbsp;
-          gives you a timeline view starting with the most current episode within this category.<br/>
-          <LinkButton.render to={category_frontend_path(@socket, :categorized, @category)}
-                      title="Categorized"
-                      class="btn-primary" />&nbsp;
-          sorts the podcasts within this categories by the other categories, they are listed in.<br/>
+          <LinkButton.render
+            to={category_frontend_path(@socket, :latest_episodes, @category)}
+            title="Latest episodes"
+            class="btn-primary"
+          />&nbsp;
+          gives you a timeline view starting with the most current episode within this category.<br />
+          <LinkButton.render
+            to={category_frontend_path(@socket, :categorized, @category)}
+            title="Categorized"
+            class="btn-primary"
+          />&nbsp;
+          sorts the podcasts within this categories by the other categories, they are listed in.<br />
           Further more we display a info card with the most relevant information on this podcast.
         </p>
       </div>
@@ -103,50 +112,66 @@ defmodule PanWeb.Live.Category.Show do
       <:panel_heading>
         <.link href={category_frontend_path(@socket, :index)} class="hover:text-blue-400">
           <Icon.render name="folder-heroicons-outline" /> Panoptikum
-        </.link> /
+        </.link>
+        /
         <span :if={@category.parent}>
-          <.link href={category_frontend_path(@socket, :show, @category.parent)}
-                class="hover:text-blue-400">
+          <.link
+            href={category_frontend_path(@socket, :show, @category.parent)}
+            class="hover:text-blue-400"
+          >
             <Icon.render name="folder-heroicons-outline" /> {@category.parent.title}
-          </.link> /
+          </.link>
+          /
         </span>
         <Icon.render name="folder-open-heroicons-outline" /> {@category.title}
       </:panel_heading>
 
       <div :if={@current_user_id} class="m-4">
-        <.live_component module={LikeButton} id="like_button"
-                    current_user_id={@current_user_id}
-                    model={Category}
-                    instance={@category}/> &nbsp;
-        <.live_component module={FollowButton} id="follow_button"
-                      current_user_id={@current_user_id}
-                      model={Category}
-                      instance={@category}/> &nbsp;
+        <.live_component
+          module={LikeButton}
+          id="like_button"
+          current_user_id={@current_user_id}
+          model={Category}
+          instance={@category}
+        /> &nbsp;
+        <.live_component
+          module={FollowButton}
+          id="follow_button"
+          current_user_id={@current_user_id}
+          model={Category}
+          instance={@category}
+        /> &nbsp;
       </div>
       <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
-          <CategoryButton.render :for={subcategory <- @category.children}
-                          for={subcategory}
-                          class="mr-2 mb-2" />
+          <CategoryButton.render
+            :for={subcategory <- @category.children}
+            for={subcategory}
+            class="mr-2 mb-2"
+          />
         </div>
 
         <h3 class="pt-4 text-xl">Click on a language to filter</h3>
 
         <div class="flex flex-wrap py-4">
-          <a :for={language <- @languages}
-             href="#"
-             phx-click="set-language-filter"
-             phx-value-language_id={language.id}
-             class="text-link hover:text-link-dark mx-2">
+          <a
+            :for={language <- @languages}
+            href="#"
+            phx-click="set-language-filter"
+            phx-value-language_id={language.id}
+            class="text-link hover:text-link-dark mx-2"
+          >
             {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
           </a>
         </div>
 
         <%= if @language do %>
           <div class="float-right">
-            <a href="#"
+            <a
+              href="#"
               phx-click="reset-language-filter"
-              class="text-link hover:text-link-dark mx-2">🗑️ Clear language filter</a>
+              class="text-link hover:text-link-dark mx-2"
+            >🗑️ Clear language filter</a>
           </div>
           <h2 class="text-2xl mt-4">
             Podcasts in {@language.name} {@language.emoji}
@@ -155,10 +180,12 @@ defmodule PanWeb.Live.Category.Show do
           <h2 class="text-2xl mt-4">Podcasts in any language</h2>
         <% end %>
 
-        <div id="podcast_grid"
-             phx-update={@update_action}
-             class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-          <PodcastButton.render :for={podcast <- @podcasts} for={podcast} class="m-2" truncate/>
+        <div
+          id="podcast_grid"
+          phx-update={@update_action}
+          class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4"
+        >
+          <PodcastButton.render :for={podcast <- @podcasts} for={podcast} class="m-2" truncate />
         </div>
 
         <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>
