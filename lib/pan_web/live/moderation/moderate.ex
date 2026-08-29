@@ -54,7 +54,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
        assign(socket,
          category: moderation.community.category,
          cols: cols,
-         podcast_ids: podcast_ids
+         podcast_ids: podcast_ids,
+         existing_search_term: "",
+         existing_search_results: []
        )}
     else
       {:ok, assign(socket, error: "not_found")}
@@ -148,6 +150,29 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, refresh_podcast_grid(socket)}
   end
 
+  def handle_event("search-existing-podcast", %{"term" => term}, socket) do
+    results =
+      if String.length(String.trim(term)) >= 2 do
+        Podcast.search_by_title(term)
+      else
+        []
+      end
+
+    {:noreply, assign(socket, existing_search_term: term, existing_search_results: results)}
+  end
+
+  def handle_event("add-existing-podcast", %{"id" => id}, socket) do
+    podcast_id = String.to_integer(id)
+    CategoryPodcast.get_or_insert(socket.assigns.category.id, podcast_id)
+
+    socket =
+      socket
+      |> put_flash(:info, "Podcast added to your moderation.")
+      |> refresh_podcast_grid()
+
+    {:noreply, socket}
+  end
+
   defp refresh_podcast_grid(socket) do
     podcast_ids = Podcast.ids_by_category_id(socket.assigns.category.id)
 
@@ -185,6 +210,41 @@ defmodule PanWeb.Live.Moderation.Moderate do
         />
         <button type="submit" class="btn btn-primary btn-sm">Add feed</button>
       </form>
+
+      <form phx-change="search-existing-podcast" class="my-4 max-w-2xl">
+        <input
+          type="text"
+          name="term"
+          value={@existing_search_term}
+          placeholder="...or search for an existing Panoptikum podcast by title"
+          phx-debounce="300"
+          class="w-full border border-gray rounded px-2 py-1"
+        />
+      </form>
+
+      <ul
+        :if={@existing_search_results != []}
+        class="my-4 max-w-2xl divide-y divide-gray border border-gray rounded"
+      >
+        <li
+          :for={podcast <- @existing_search_results}
+          class="flex items-center justify-between gap-2 px-2 py-1"
+        >
+          <span>{podcast.title}</span>
+          <span :if={podcast.id in @podcast_ids} class="text-sm text-gray-dark">
+            Already in your moderation
+          </span>
+          <button
+            :if={podcast.id not in @podcast_ids}
+            type="button"
+            phx-click="add-existing-podcast"
+            phx-value-id={podcast.id}
+            class="btn btn-primary btn-sm"
+          >
+            ➕ Add
+          </button>
+        </li>
+      </ul>
 
       <.live_component
         module={ModerationGrid}

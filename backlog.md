@@ -8,13 +8,7 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## 1. Community categories + moderation redesign (in progress)
 
-Status: **Phases A (schema/backend), B (public pages know `Community` exists), D
-(public community showcase + `/communities` index + sidebar nav), and E (moved to
-a dedicated `/communities/:id` show page, separate from `category/show.ex`, and
-hid community-only categories from the public `/categories` list) are fully
-shipped and deployed — see the code, not repeated here. Phase C (moderator "add a
-feed" workflow) is in progress — steps 1-3 shipped (see the code, not repeated
-here), steps 4-5 still open, see below.**
+Status: **Phase C (moderator "add a feed" workflow) is in progress, see below.**
 
 ### Background
 
@@ -41,68 +35,12 @@ Current-state findings that still motivate the rest of the redesign:
 
 ### Still to do
 
-- **Moderator "add a feed" workflow** — in progress:
-  1. ✅ `CategoryPodcast.delete/2` added (didn't exist before).
-  2. ✅ Feed-URL submission form on `Live.Moderation.Moderate`
-     (`lib/pan_web/live/moderation/moderate.ex`), `phx-submit="add-feed"`. Dedupes
-     via `PanWeb.Feed.clean_and_best_matching/1`: no match → synchronous
-     `Pan.Parser.RssFeed.initial_import/1`, auto-attaches the category on success;
-     match found → skips import, auto-attaches the category, and synchronously
-     re-parses via `Pan.Parser.Podcast.update_from_feed/1` (matching the exact
-     `{:ok, message} / {:error, message}` handling the admin databrowser's own
-     `update_from_feed` action already uses, including its `Search.Podcast.update_index/1`
-     + `Podcast.remove_unwanted_references/1` follow-up on success). The grid
-     refreshes via `send_update(ModerationGrid, records: [])`, reusing the same
-     mechanism already used for the `:count` refresh. Live-verified end to end
-     (real dedupe match, real synchronous re-parse, real flash message) — including
-     a real, permanent, wanted addition: podcast 52871 ("bild der wissenschaft
-     PODCAST", from user 1284's own subscriptions) attached to category 106.
-     Skips `PanWeb.FeedBacklog` entirely, as designed.
-  3. ✅ "Remove podcast from moderation" — a `🗑️ Remove from Moderation` button
-     on `PanWeb.Admin.ModerationGrid` (a `data-confirm` browser prompt guards
-     it), using `CategoryPodcast.delete/2` from point 1. Added as a new,
-     opt-in button type on the shared grid component — the other two pages
-     that reuse it (`episode_grid.ex`/`feed_grid.ex`) don't list it, so
-     they're unaffected. Live-verified end to end with a real attach/detach
-     cycle.
-  - **Three real bugs found and fixed while live-testing points 2-3** (all via
-    `Phoenix.LiveViewTest` / real `mix run` scripts against real dev data, not
-    just the earlier bare-function-call checks, which didn't exercise the
-    actual live-process message flow where two of these three live):
-    - A **live regression**, unrelated to Phase C itself but already deployed
-      to prod: `PanWeb.User`'s `:categories_i_moderate` association still
-      pointed at `moderations.category_id`, dropped back in Phase A and never
-      caught — crashed `/moderator/my_moderations` for every real moderator.
-      Fixed by adding the missing `:communities_i_moderate` (the reverse side
-      of `Community.moderators`, never mirrored onto `User`) and re-deriving
-      `:categories_i_moderate` as `has_many through: [:communities_i_moderate, :category]`
-      — zero changes needed to the controller/template.
-    - `PanWeb.Admin.ModerationGrid.update/2` crashed the whole LiveView
-      whenever `refresh_podcast_grid/1`'s partial `send_update/2` (just
-      `search_filter`/`records`) landed, since it read `assigns.model` before
-      merging into the component's existing `socket.assigns` — a real
-      robustness gap for any future partial `send_update`, not specific to
-      this feature. The crash forced a full client reconnect + remount, which
-      looked like "the flash message doesn't survive a second render" (a
-      crash-triggered remount, not LiveView's normal disconnected/connected
-      double-mount at page load). Fixed by merging first.
-    - `PanWeb.Feed.clean_and_best_matching/1`'s `ILIKE "%url%"` matching was
-      unanchored, so a shorter host that's a suffix of a longer one (e.g.
-      `aufdistanz.de` vs. `horizons.aufdistanz.de`) could false-match — with
-      `limit: 1` and no `ORDER BY`, silently picking an arbitrary wrong
-      podcast. Low-stakes before (an advisory hint on the admin feed_backlog
-      page, human-reviewed), real consequence now that Phase C uses it to
-      auto-skip/auto-import. Fixed by anchoring every `ILIKE` pattern on a
-      preceding `/` (`%/url%`) — every real URL has one there via `scheme://`
-      at minimum. Verified against a 200-feed random sample: 195/200 correctly
-      self-matched both before and after: the 5 that didn't were already wrong
-      pre-fix too (degenerate stored URLs — a 404 page, generic redirect
-      stubs — not something introduced by this change).
-  4. "Add existing podcast to moderation" — browsing/picking an already-known
-     Panoptikum podcast (distinct from point 2, which already covers "paste a
-     known podcast's feed URL"). Needs a search/picker UI that doesn't exist yet;
-     design still open.
-  5. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
+- **Moderator "add a feed" workflow**:
+  1. "Add existing podcast to moderation" — browsing/picking an already-known
+     Panoptikum podcast (distinct from the feed-URL submission form, which
+     already covers "paste a known podcast's feed URL"). Needs a search/picker
+     UI that doesn't exist yet; design still open.
+  2. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
      `failure_count` (and anything else in that vein) from the moderator-facing
      `RecordForm` specifically (`lib/pan_web/components/moderation/record_form.ex`);
      the admin `RecordForm` (`lib/pan_web/admin/record_form.ex`) is a separate

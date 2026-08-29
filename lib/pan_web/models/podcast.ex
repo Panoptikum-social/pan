@@ -533,6 +533,22 @@ defmodule PanWeb.Podcast do
     |> Repo.all()
   end
 
+  @doc """
+  Title search for "pick an existing podcast" pickers (e.g. the moderator
+  "add existing podcast to moderation" flow) — a plain, unanchored
+  `ILIKE "%term%"`, not the Manticore full-text index used by the public
+  search page. Excludes blocked podcasts, same as `ids_by_category_id/1`.
+  """
+  def search_by_title(term, limit \\ 15) do
+    from(p in Podcast,
+      where: ilike(p.title, ^"%#{term}%") and (not p.blocked or is_nil(p.blocked)),
+      order_by: p.title,
+      limit: ^limit,
+      select: [:id, :title]
+    )
+    |> Repo.all()
+  end
+
   def all() do
     Repo.all(Podcast, order_by: :title)
   end
