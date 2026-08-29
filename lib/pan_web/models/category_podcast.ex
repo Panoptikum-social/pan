@@ -34,4 +34,11 @@ defmodule PanWeb.CategoryPodcast do
         {:ok, category_podcast}
     end
   end
+
+  def delete(category_id, podcast_id) do
+    from(cp in PanWeb.CategoryPodcast,
+      where: cp.category_id == ^category_id and cp.podcast_id == ^podcast_id
+    )
+    |> Repo.delete_all()
+  end
 end

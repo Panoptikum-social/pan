@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Moderation.Moderate do
   use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{Moderation, Podcast}
+  alias PanWeb.{CategoryPodcast, Feed, Moderation, Podcast}
   alias PanWeb.Admin.Naming
   alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
@@ -95,6 +95,60 @@ defmodule PanWeb.Live.Moderation.Moderate do
     {:noreply, redirect(socket, to: show_podcast_path)}
   end
 
+  def handle_event("add-feed", %{"url" => url}, socket) do
+    category_id = socket.assigns.category.id
+
+    socket =
+      case Feed.clean_and_best_matching(url) do
+        nil ->
+          case Pan.Parser.RssFeed.initial_import(url) do
+            {:ok, podcast_id} ->
+              CategoryPodcast.get_or_insert(category_id, podcast_id)
+              put_flash(socket, :info, "New podcast imported and added to your moderation.")
+
+            {:error, error} ->
+              put_flash(socket, :error, "Could not import that feed: #{error}")
+          end
+
+        feed ->
+          podcast = Podcast.get_by_id(feed.podcast_id)
+          CategoryPodcast.get_or_insert(category_id, podcast.id)
+
+          case Pan.Parser.Podcast.update_from_feed(podcast) do
+            {:ok, _message} ->
+              Pan.Search.Podcast.update_index(podcast.id)
+              Podcast.remove_unwanted_references(podcast.id)
+
+              put_flash(
+                socket,
+                :info,
+                "We already know that podcast and added it to your moderation."
+              )
+
+            {:error, message} ->
+              put_flash(
+                socket,
+                :error,
+                "Added to your moderation, but the refresh failed: #{message}"
+              )
+          end
+      end
+
+    {:noreply, refresh_podcast_grid(socket)}
+  end
+
+  defp refresh_podcast_grid(socket) do
+    podcast_ids = Podcast.ids_by_category_id(socket.assigns.category.id)
+
+    send_update(ModerationGrid,
+      id: "moderation_table",
+      search_filter: {:id, podcast_ids},
+      records: []
+    )
+
+    assign(socket, podcast_ids: podcast_ids)
+  end
+
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
@@ -109,6 +163,17 @@ defmodule PanWeb.Live.Moderation.Moderate do
       <h1 class="text-2xl">
         Moderating {@category.title}
       </h1>
+
+      <form phx-submit="add-feed" class="my-4 flex gap-2 max-w-2xl">
+        <input
+          type="text"
+          name="url"
+          placeholder="Paste a podcast feed URL to add it to your moderation..."
+          required
+          class="flex-1 border border-gray rounded px-2 py-1"
+        />
+        <button type="submit" class="btn btn-primary btn-sm">Add feed</button>
+      </form>
 
       <.live_component
         module={ModerationGrid}

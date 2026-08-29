@@ -13,7 +13,7 @@ Status: **Phases A (schema/backend), B (public pages know `Community` exists), D
 a dedicated `/communities/:id` show page, separate from `category/show.ex`, and
 hid community-only categories from the public `/categories` list) are fully
 shipped and deployed — see the code, not repeated here. Phase C (moderator "add a
-feed" workflow) hasn't been started.**
+feed" workflow) is in progress — steps 1-2 shipped, see below.**
 
 ### Background
 
@@ -40,50 +40,61 @@ Current-state findings that still motivate the rest of the redesign:
 
 ### Still to do
 
-- **Moderator "add a feed" workflow** (unchanged from the original design, still
-  fully pending):
-  1. Moderators can enter a brand-new feed URL directly from their moderation area.
-     This **skips the existing `PanWeb.FeedBacklog` review queue entirely**
-     (confirmed: "yes, skip the review") — no backlog row, straight to import. (For
-     context: `FeedBacklog` today lets plain users submit a URL via
-     `FeedBacklogFrontendController`, but nothing auto-processes it — an admin has
-     to manually visit `/feed_backlog` and click `import`/`import_100`, which calls
-     `Pan.Parser.RssFeed.initial_import/2`.)
-  2. Immediate parsing: the moderator's submitted URL runs
-     `Pan.Parser.RssFeed.initial_import/2` **synchronously** (same call the admin
-     `feed_backlog_controller.ex` `import` action already uses).
-  3. Before running `initial_import`, dedupe the URL against known feeds using the
-     existing `PanWeb.Feed.clean_and_best_matching/1`. If it already matches a known
-     podcast: **skip `initial_import`**, show the moderator "we already know that
-     podcast and added it to your moderation", auto-attach the category (point 5),
-     and additionally trigger `Pan.Parser.Podcast.update_from_feed/1` (the full
-     re-parse pathway) **synchronously** so Panoptikum's copy is refreshed
-     immediately. Confirmed synchronous over backgrounded (`Task.start`), even
-     though this can be slow for large back catalogs (582 episodes for podcast
-     19664 in testing). The stale-contributor-cleanup gap that used to block this
-     branch (a routine re-parse orphaning `podcast:person` roles) is fixed, so
-     nothing blocks this step anymore.
-  4. After a successful new import, auto-assign the new podcast to the moderator's
-     category — `itunes:category` from the feed itself can't be relied on, since
-     feed authors have no way to know about Panoptikum-specific curation categories
-     like "Wissenschaftspodcasts.de".
-  5. "Add existing podcast to moderation" / "remove podcast from moderation" — plain
-     manual `categories_podcasts` add/remove for (moderator's category, podcast).
-     `PanWeb.CategoryPodcast.get_or_insert/2` already exists and is unused by any
-     UI — covers "add." **No delete function exists yet** for `CategoryPodcast` —
-     needs adding for "remove."
-  6. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
+- **Moderator "add a feed" workflow** — in progress:
+  1. ✅ `CategoryPodcast.delete/2` added (didn't exist before).
+  2. ✅ Feed-URL submission form on `Live.Moderation.Moderate`
+     (`lib/pan_web/live/moderation/moderate.ex`), `phx-submit="add-feed"`. Dedupes
+     via `PanWeb.Feed.clean_and_best_matching/1`: no match → synchronous
+     `Pan.Parser.RssFeed.initial_import/1`, auto-attaches the category on success;
+     match found → skips import, auto-attaches the category, and synchronously
+     re-parses via `Pan.Parser.Podcast.update_from_feed/1` (matching the exact
+     `{:ok, message} / {:error, message}` handling the admin databrowser's own
+     `update_from_feed` action already uses, including its `Search.Podcast.update_index/1`
+     + `Podcast.remove_unwanted_references/1` follow-up on success). The grid
+     refreshes via `send_update(ModerationGrid, records: [])`, reusing the same
+     mechanism already used for the `:count` refresh. Live-verified end to end
+     (real dedupe match, real synchronous re-parse, real flash message) — including
+     a real, permanent, wanted addition: podcast 52871 ("bild der wissenschaft
+     PODCAST", from user 1284's own subscriptions) attached to category 106.
+     Skips `PanWeb.FeedBacklog` entirely, as designed.
+  3. "Remove podcast from moderation" — a button on the moderation grid using
+     `CategoryPodcast.delete/2` (point 1). Not yet wired into the UI.
+  4. "Add existing podcast to moderation" — browsing/picking an already-known
+     Panoptikum podcast (distinct from point 2, which already covers "paste a
+     known podcast's feed URL"). Needs a search/picker UI that doesn't exist yet;
+     design still open.
+  5. `RecordForm` field allowlist — hide `blocked`/`retired`/`update_paused`/
      `failure_count` (and anything else in that vein) from the moderator-facing
      `RecordForm` specifically (`lib/pan_web/components/moderation/record_form.ex`);
      the admin `RecordForm` (`lib/pan_web/admin/record_form.ex`) is a separate
-     component and keeps full access. Decided in scope for this workflow, not yet
-     implemented — should land alongside it, since this workflow is what expands
-     what moderators can trigger. No `PanWeb.Journal` writes anywhere in this flow
-     (decided out of scope).
+     component and keeps full access. Not yet implemented.
 
 ---
 
 ## 2. Other open backlog items
+
+### Two latent bugs in `PanWeb.Image.download_thumbnail/3` (found 2026-08-29)
+Found while live-testing the moderator feed-add workflow (item 1) — both were
+masked here only because this *local bare-metal dev machine* never had
+`/var/phoenix` or ImageMagick set up (now fixed locally). Checked QA's
+`Dockerfile`/`docker-compose.yml`: both already correctly provisioned
+(`RUN mkdir -p /var/phoenix/pan-uploads && chown pan:pan ...`, `imagemagick`
+installed, a named volume mounted over that path) — nothing to fix there, and
+prod's bare-metal setup evidently has this right too, since neither bug has
+ever surfaced. Still real code bugs, just currently inert wherever the infra
+happens to be correctly provisioned — flagging only, not otherwise in scope:
+1. `lib/pan_web/models/image.ex:81` — `File.mkdir_p(target_dir)` uses the
+   non-bang variant and its `{:error, reason}` return is silently discarded, so
+   the very next line's `File.write!/2` fails with a confusing "no such file or
+   directory" instead of surfacing the real problem, if that directory/mount
+   ever isn't there or isn't writable.
+2. Same file, the `try/catch` around `Mogrify.save/2` (comment: *"we fail
+   silently, as we did before mogrify raised errors"*) pattern-matches
+   `{error, {message, _}}` / `{error, message}` throw shapes, but current
+   Mogrify (0.9.3) raises a plain `RuntimeError` — the catch clauses don't match
+   a raised exception's shape, so any real Mogrify failure (corrupt image,
+   missing binary, etc.) propagates uncaught instead of failing silently as the
+   comment says was intended.
 
 ### Move qa/prod secrets to `config/runtime.exs`
 There's no `config/runtime.exs` at all today — the full config chain
@@ -112,15 +123,3 @@ and misses the actually-vulnerable un-CDN'd small hosts). Bounded worker pool
 (~5-10 concurrent), ETS table tracking per-domain last-started-at, skip candidates
 whose domain is in-flight or was hit within a courtesy window, fall back to today's
 idle-sleep behavior when nothing qualifies.
-
-### (Deprioritized idea, probably not pursuing) Alternate-feed fallback on fetch failure
-Should a broken feed fetch fall back to trying a podcast's old, superseded
-`alternate_feeds` URLs before failing/retiring? Discussed, not decided, but leaning
-against: `alternate_feeds` records URLs a provider deliberately moved *away* from,
-which essentially never get reverted, so a fallback rarely finds anything useful —
-and if an old URL is still resolving but stale/parked, a fallback fetch would
-"succeed" against stale content, reset `failure_count`, and mask the
-`retired: true` signal that's supposed to flag something needing human attention.
-Would also need the same redirect-loop protection as the main fetch path. If this
-resurfaces, start from "what's the actual likelihood an old, superseded URL is
-still serving *current* content" — that's the crux, and it's low.
