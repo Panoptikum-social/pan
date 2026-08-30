@@ -38,8 +38,11 @@ If you are interested and want to get in touch, write an email to [Stefan](mailt
 
 ### 🛠 Configuration
 
-* Copy `config/dev.secret.exs.example` to `config/dev.secret.exs` and insert your own data
-* Copy `config/prod.secret.exs.example` to `config/prod.secret.exs` and insert your own data
+* Dev works out of the box with no configuration — `config/runtime.exs` falls
+  back to sensible local defaults (Postgres `postgres`/`postgres`, database
+  `pan_dev`) if you don't set any env vars. Only set `PAN_DB_USERNAME` /
+  `PAN_DB_PASSWORD` / `PAN_DB_DATABASE` / `PAN_DB_HOSTNAME` if your local
+  Postgres needs different credentials.
 
 ### 📚 Database and demo data
 

@@ -8,31 +8,30 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## Open backlog items
 
-### Move prod secrets to `config/runtime.exs` (dev + qa done, prod remains)
-There's no `config/runtime.exs` at all today — the full config chain
-(`config.exs` → `prod.exs` → `prod.secret.exs`) is compile-time only, so
-secrets (DB password, `PanWeb.Endpoint` `secret_key_base`, mailer creds) end
-up baked in plaintext inside the release itself. Standard modern Phoenix
-(1.6+) generates `runtime.exs` by default; this app predates/diverges from
-that.
+### Investigate stale/inert env vars in the prod systemd unit
+While migrating prod secrets to `config/runtime.exs` (see item above),
+found the systemd unit sets `Environment=MIX_ENV=staging "PORT=8888"` —
+both look inert for how this app actually runs today:
 
-**Status (2026-08-30):** `config/runtime.exs` now exists with `dev` and `qa`
-branches, both done and user-confirmed working (commits `a74aa6c0`,
-`f21bfec9`) — `config/dev.secret.exs` and `config/qa.secret.exs` are both
-retired (the qa one deleted from the QA host after a full real test: build,
-migrations, boot, all clean). Scope was deliberately widened to include dev
-too, not just qa/prod, so every dev machine gets the same convention without
-needing the private `pan-config` sibling repo cloned. qa's DB password +
-`secret_key_base` now come from a single gitignored `.env` (see
-`.env.example`), shared between the `app` and `db` docker-compose services
-instead of duplicated by hand.
+* `MIX_ENV=staging` — `config_env()` inside a compiled release reflects
+  whatever `MIX_ENV` was set to at `mix release` **build** time, baked into
+  the release; it is not re-read from the environment when the release is
+  *started*. Since the running app clearly uses `config/prod.exs`'s config
+  today, the release must have been built with `MIX_ENV=prod` — meaning
+  this systemd-level `MIX_ENV=staging` has no effect and is presumably
+  leftover/copy-pasted from an old template. Worth confirming and either
+  removing it or renaming/understanding why "staging" is there at all (is
+  there a separate staging concept this hints at, now dead?).
+* `PORT=8888` — `config/prod.exs` hardcodes `http: [port: 8888]` directly;
+  nothing in the app reads `System.get_env("PORT")` outside of
+  `config/dev.exs`. So this line happens to match the real port by
+  coincidence, not because it's actually wired up — if `prod.exs`'s
+  hardcoded port ever changed without updating this line (or vice versa),
+  they'd silently disagree and only the hardcoded value would matter.
 
-**Remaining fix when picked up:** add a `config_env() == :prod` branch to
-`config/runtime.exs` mirroring qa's shape — `System.get_env/1` reads, raising
-for anything required and missing. Prod is bare-metal (not docker-compose),
-reading its secrets today from `pan-config/prod.secret.exs` (symlinked on the
-prod host) — figure out the equivalent of qa's `.env` mechanism for that
-deploy style (e.g. an env file sourced by whatever starts the release, or
-systemd `EnvironmentFile=`), update the actual prod deploy process
-accordingly, and test on the real prod host before considering this item
-closed.
+**Fix when picked up:** confirm both findings against the real host (e.g.
+check what `MIX_ENV` the release was actually built with, whether anything
+else depends on the systemd `PORT` var), then either remove the dead lines
+or make `config/prod.exs`'s port actually read from `$PORT` if that's the
+intent — don't just delete without understanding why they were added in
+the first place.
