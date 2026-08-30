@@ -47,12 +47,12 @@ defmodule PanWeb.SessionController do
       {:error, :expired} ->
         conn
         |> put_flash(:error, "The token has expired already!")
-        |> render("new.html")
+        |> redirect(to: session_path(conn, :new))
 
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Invalid token!")
-        |> render("new.html")
+        |> redirect(to: session_path(conn, :new))
     end
   end
 
@@ -66,12 +66,12 @@ defmodule PanWeb.SessionController do
       {:error, :expired} ->
         conn
         |> put_flash(:error, "The token has expired already!")
-        |> render("new.html")
+        |> redirect(to: session_path(conn, :new))
 
       {:error, _reason} ->
         conn
         |> put_flash(:error, "Invalid token!")
-        |> render("new.html")
+        |> redirect(to: session_path(conn, :new))
     end
   end
 
