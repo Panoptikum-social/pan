@@ -20,6 +20,7 @@ defmodule Pan.Parser.Download do
       409 => "409: conflict",
       410 => "410: gone",
       416 => "416: range not satisfiable",
+      421 => "421: misdirected request",
       422 => "422: unprocessible entity",
       423 => "423: locked",
       428 => "428: precondition required",
@@ -42,6 +43,7 @@ defmodule Pan.Parser.Download do
       525 => "525: SSL handshake failed",
       526 => "526: invalid SSL certificate",
       530 => "530: origin DNS error with cloudflare",
+      534 => "534: anycast: origin unreachable",
       999 => "999: not a standard status code"
     }
 
@@ -76,6 +78,7 @@ defmodule Pan.Parser.Download do
              409,
              410,
              416,
+             421,
              422,
              423,
              428,
@@ -97,6 +100,7 @@ defmodule Pan.Parser.Download do
              525,
              526,
              530,
+             534,
              999
            ] ->
         {:error, Map.get(error_map, status_code)}
