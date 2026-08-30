@@ -36,6 +36,7 @@ defmodule Pan.Parser.Helpers do
     "{WDshort} {D} {Mshort} {YYYY} GMT",
     "{WDshort} {D} {Mshort} {YYYY}",
     "{WDshort} {0D}-{Mshort}-{YYYY} {ISOtime} {Z}",
+    "{WDshort} {0D}-{Mshort}-{YYYY} {ISOtime} {Zname}",
     "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
     # American weekday-first, month before day
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}",
