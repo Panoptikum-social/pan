@@ -6,6 +6,7 @@ defmodule PanWeb.Podcast do
 
   alias PanWeb.{
     Category,
+    Community,
     Engagement,
     Episode,
     Feed,
@@ -20,8 +21,6 @@ defmodule PanWeb.Podcast do
     Subscription,
     User
   }
-
-  require Logger
 
   schema "podcasts" do
     field(:title, :string)
@@ -506,7 +505,7 @@ defmodule PanWeb.Podcast do
 
   def unretire(podcast) do
     podcast
-    |> Podcast.changeset(%{retired: false})
+    |> Podcast.changeset(%{retired: false, failure_count: 0})
     |> Repo.update()
   end
 
@@ -675,9 +674,21 @@ defmodule PanWeb.Podcast do
         }
       )
 
+    # Podcasts belonging to any community must never be deleted by this
+    # mechanism (hard requirement, see backlog.md) — a podcast is
+    # community-affiliated if any of its categories belongs to a Community.
+    community_podcast_ids =
+      from(c in Community,
+        join: category in assoc(c, :category),
+        join: p in assoc(category, :podcasts),
+        select: p.id
+      )
+
     deprecated_podcasts =
       from(podcast in Podcast,
-        where: podcast.retired == true,
+        where:
+          podcast.retired == true and
+            podcast.id not in subquery(community_podcast_ids),
         limit: ^amount,
         order_by: [asc_nulls_first: podcast.last_build_date],
         preload: [episodes: ^most_recent_episode]
@@ -713,7 +724,10 @@ defmodule PanWeb.Podcast do
     Logger.info("Probing deprecated podcast #{dp.id}: #{dp.title}")
 
     try do
-      case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
+      # Pan.Parser.Download.get/2 instead of a raw HTTPoison call — same TLS
+      # 1.3-handshake-quirk fallback retry and hackney-crash rescue the
+      # regular feed-update path already benefits from, see backlog.md.
+      case Pan.Parser.Download.get(Enum.at(dp.episodes, 0).url, follow_redirect: true) do
         {:ok, response} ->
           Map.put(dp, :status_code, response.status_code)
 

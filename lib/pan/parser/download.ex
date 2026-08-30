@@ -150,9 +150,13 @@ defmodule Pan.Parser.Download do
     Feed.check_for_redirect_loop(url, redirect_target, feed_id)
   end
 
-  def get(url) do
+  # extra_options is merged in as-is (e.g. `follow_redirect: true` for a
+  # caller that doesn't need to inspect the redirect chain itself) —
+  # deliberately not the default here, since download/2 relies on redirects
+  # *not* being auto-followed to detect and persist 301/etc. targets itself.
+  def get(url, extra_options \\ []) do
     headers = ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"]
-    options = [recv_timeout: 10_000, timeout: 10_000]
+    options = [recv_timeout: 10_000, timeout: 10_000] ++ extra_options
 
     case HTTPoison.get(url, headers, options) do
       {:error, %Error{id: nil, reason: {:tls_alert, {:handshake_failure, _description}}}} ->
