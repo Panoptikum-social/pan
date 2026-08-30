@@ -36,8 +36,7 @@ npm-debug.log
 # Uploaded OPML-Files
 /uploads/opml/**
 
-# config secret files
-/config/dev.secret.exs
+# config secret files (dev retired 2026-08-30 -- see config/runtime.exs)
 /config/prod.secret.exs
 /config/qa.secret.exs
 
