@@ -10,7 +10,12 @@
   the link to the podcast on a different podcast directory will be discarded.
 </p>
 
-<.form :let={f} for={@changeset} action={feed_backlog_frontend_path(@conn, :create)} class="p-4 mb-4 flex flex-col items-start space-y-4">
+<.form
+  :let={f}
+  for={@changeset}
+  action={feed_backlog_frontend_path(@conn, :create)}
+  class="p-4 mb-4 flex flex-col items-start space-y-4"
+>
   <.error :if={@changeset.action}>
     Oops, something went wrong! Please check the errors below.
   </.error>
@@ -19,4 +24,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>
 </.form>
-If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at <.link href={opml_frontend_path(@conn, :index)} class="text-link hover:text-link-dark">My OPMLs</.link> in your personal menu.
+If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at
+<.link href={opml_frontend_path(@conn, :index)} class="text-link hover:text-link-dark">My OPMLs</.link>
+in your personal menu.

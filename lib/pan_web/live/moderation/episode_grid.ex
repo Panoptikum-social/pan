@@ -83,13 +83,15 @@ defmodule PanWeb.Live.Moderation.EpisodeGrid do
         Podcast {@podcast.title} / Episodes
       </h1>
 
-      <.live_component module={ModerationGrid}
+      <.live_component
+        module={ModerationGrid}
         id="episodes_table"
         heading={"Listing Episodes for Podcast #{@podcast.title}"}
         model={Episode}
         cols={@cols}
         search_filter={{:id, @episode_ids}}
-        buttons={[:pagination, :show_in_frontend, :edit_episode, :number_of_records, :search]} />
+        buttons={[:pagination, :show_in_frontend, :edit_episode, :number_of_records, :search]}
+      />
     </div>
     """
   end

@@ -23,14 +23,18 @@ defmodule PanWeb.Live.Admin.Databrowser.Show do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordCard}
-                id={"record_card_" <> @resource <> "_" <> Integer.to_string(@record.id)}
-                record={@record}
-                model={@model}
-                cols={@cols} />
-    <ActionButtons.render model={@model}
-                   record={@record}
-                   type={:show} />
+    <.live_component
+      module={RecordCard}
+      id={"record_card_" <> @resource <> "_" <> Integer.to_string(@record.id)}
+      record={@record}
+      model={@model}
+      cols={@cols}
+    />
+    <ActionButtons.render
+      model={@model}
+      record={@record}
+      type={:show}
+    />
     """
   end
 end

@@ -11,11 +11,16 @@ defmodule PanWeb.Admin.PaginationLink do
 
   def render(assigns) do
     ~H"""
-    <button href="#"
-            class={["border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded", @class]}
-            phx-click={@click}
-            phx-target={@target}
-            phx-value-page={@page}>
+    <button
+      href="#"
+      class={[
+        "border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
+        @class
+      ]}
+      phx-click={@click}
+      phx-target={@target}
+      phx-value-page={@page}
+    >
       {render_slot(@inner_block)}
     </button>
     """

@@ -20,11 +20,13 @@ defmodule PanWeb.Admin.SortLink do
 
   def render(assigns) do
     ~H"""
-    <a href="#"
-       phx-click={@click}
-       phx-target={@target}
-       phx-value-sort-by={@field}
-       phx-value-sort-order={cycle_sort_order(@sort_order)}>
+    <a
+      href="#"
+      phx-click={@click}
+      phx-target={@target}
+      phx-value-sort-by={@field}
+      phx-value-sort-order={cycle_sort_order(@sort_order)}
+    >
       <%= if @sort_by == @field do %>
         <%= if @sort_order |> Atom.to_string() |> String.ends_with?("last") do %>
           0 last

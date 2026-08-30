@@ -7,10 +7,12 @@ defmodule PanWeb.Admin.PerPageLink do
 
   def render(assigns) do
     ~H"""
-    <button phx-click={@click}
-            phx-target={@target}
-            phx-value-delta={@delta}
-            class="border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded">
+    <button
+      phx-click={@click}
+      phx-target={@target}
+      phx-value-delta={@delta}
+      class="border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded"
+    >
       {@delta}
     </button>
     """

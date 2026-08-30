@@ -5,10 +5,12 @@ defmodule PanWeb.Component.QRCode do
 
   def render(assigns) do
     ~H"""
-    <img src={"/qrcode/#{URI.encode_www_form(@for)}"}
-         class="max-w-none"
-         width="150"
-         height="150" />
+    <img
+      src={"/qrcode/#{URI.encode_www_form(@for)}"}
+      class="max-w-none"
+      width="150"
+      height="150"
+    />
     """
   end
 end

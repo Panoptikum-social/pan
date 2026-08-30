@@ -344,100 +344,120 @@ defmodule PanWeb.Admin.IndexGrid do
         <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
                     via-gray-lighter to-gray-light border-b border-gray items-center">
           <div class="sm:border-r border-gray flex">
-            <button :if={:show in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:show in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="show"
+              phx-target={@myself}
+            >
               🔍 Show
             </button>
 
-            <button :if={:show_frontend in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:show_frontend in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="show_frontend"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="show_frontend"
+              phx-target={@myself}
+            >
               🔍 Show
             </button>
 
-            <button :if={:edit in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:edit in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="edit"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="edit"
+              phx-target={@myself}
+            >
               🖊️ Edit
             </button>
 
-            <button :if={!@request_confirmation && :delete in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={!@request_confirmation && :delete in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="toggle_request_confirmation"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="toggle_request_confirmation"
+              phx-target={@myself}
+            >
               🗑️ Delete
             </button>
 
             <div :if={@request_confirmation} class="px-2">
               Are you sure?
-              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              <button
+                class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                      disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      phx-click="delete"
-                      phx-target={@myself}>
+                disabled={Tools.disabled?(:one, @selected_records |> length)}
+                phx-click="delete"
+                phx-target={@myself}
+              >
                 Yes
               </button>
-              <button class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              <button
+                class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
                              disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                      disabled={Tools.disabled?(:one, @selected_records |> length)}
-                      phx-click="toggle_request_confirmation"
-                      phx-target={@myself}>
+                disabled={Tools.disabled?(:one, @selected_records |> length)}
+                phx-click="toggle_request_confirmation"
+                phx-target={@myself}
+              >
                 No
               </button>
             </div>
 
-            <button :if={:link in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:link in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    phx-click="link"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
+              phx-click="link"
+              phx-target={@myself}
+            >
               🔗 Link
             </button>
 
-            <button :if={:link in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:link in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
-                    phx-click="unlink"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
+              phx-click="unlink"
+              phx-target={@myself}
+            >
               ✂️ Unlink
             </button>
 
-            <button :if={:new_mediating in @buttons}
-                    class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+            <button
+              :if={:new_mediating in @buttons}
+              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                    disabled={Tools.disabled?(:one, @selected_records |> length)}
-                    phx-click="associate"
-                    phx-target={@myself}>
+              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              phx-click="associate"
+              phx-target={@myself}
+            >
               ↔️ New association
             </button>
 
-            <.link :if={:new in @buttons}
-                   navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
-                   class="border border-gray bg-white hover:bg-gray-lightest py-0.5
-                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r">🆕 New</.link>
+            <.link
+              :if={:new in @buttons}
+              navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
+              class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+                          lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r"
+            >🆕 New</.link>
           </div>
 
           <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-gray">
@@ -450,44 +470,50 @@ defmodule PanWeb.Admin.IndexGrid do
             <PerPageLink.render delta="+5" click="per_page" target={@myself} />
           </div>
 
-          <button :if={:assignment_filter in @buttons}
-                  phx-click="toggle_hide_filtered"
-                  phx-target={@myself}
-                  class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded">
+          <button
+            :if={:assignment_filter in @buttons}
+            phx-click="toggle_hide_filtered"
+            phx-target={@myself}
+            class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded"
+          >
             {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
           </button>
         </div>
 
-        <Pagination.render :if={:pagination in @buttons}
-                           class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
+        <Pagination.render
+          :if={:pagination in @buttons}
+          class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
                                   via-gray-lighter to-gray-light"
-                           click="paginate"
-                           target={@myself}
-                           page={@page}
-                           per_page={@per_page}
-                           nr_of_pages={@nr_of_pages}
-                           nr_of_unfiltered={Map.get(assigns, :nr_of_unfiltered)}
-                           nr_of_filtered={@nr_of_filtered} />
+          click="paginate"
+          target={@myself}
+          page={@page}
+          per_page={@per_page}
+          nr_of_pages={@nr_of_pages}
+          nr_of_unfiltered={Map.get(assigns, :nr_of_unfiltered)}
+          nr_of_filtered={@nr_of_filtered}
+        />
 
-        <DataTable.render id={"index_table-#{@id}"}
-                          sort="sort"
-                          cycle_search_mode="cycle_search_mode"
-                          select="select"
-                          search="search"
-                          target={@myself}
-                          cols={@cols}
-                          model={@model}
-                          primary_key={@primary_key}
-                          records={@records}
-                          selected_records={@selected_records}
-                          path_helper={@path_helper}
-                          sort_by={@sort_by}
-                          sort_order={@sort_order}
-                          buttons={@buttons}
-                          search_mode={@search_mode}
-                          hide_filtered={@hide_filtered}
-                          search_options={@search_options}
-                          search_filter={@search_filter} />
+        <DataTable.render
+          id={"index_table-#{@id}"}
+          sort="sort"
+          cycle_search_mode="cycle_search_mode"
+          select="select"
+          search="search"
+          target={@myself}
+          cols={@cols}
+          model={@model}
+          primary_key={@primary_key}
+          records={@records}
+          selected_records={@selected_records}
+          path_helper={@path_helper}
+          sort_by={@sort_by}
+          sort_order={@sort_order}
+          buttons={@buttons}
+          search_mode={@search_mode}
+          hide_filtered={@hide_filtered}
+          search_options={@search_options}
+          search_filter={@search_filter}
+        />
       </div>
     </div>
     """

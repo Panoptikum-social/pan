@@ -1117,7 +1117,7 @@ defmodule Pan.Parser.Analyzer do
 
   # Show debugging information for unknown tags on console
   def call(_, mode, [tag, attr, value]) do
-    Logger.warning("=== Tag unknown: ===")
+    Logger.warning("Tag unknown:")
     Logger.warning("Mode: #{mode}")
     Logger.warning(~s(Tag: :"#{tag}"))
     Logger.warning("Attr: #{inspect(attr)}")

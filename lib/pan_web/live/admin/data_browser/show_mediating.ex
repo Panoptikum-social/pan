@@ -37,11 +37,13 @@ defmodule PanWeb.Live.Admin.Databrowser.ShowMediating do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordCard}
-                id={"record_card_" <> @resource <> "_" <> @ids_string}
-                record={@record}
-                model={@model}
-                cols={@cols} />
+    <.live_component
+      module={RecordCard}
+      id={"record_card_" <> @resource <> "_" <> @ids_string}
+      record={@record}
+      model={@model}
+      cols={@cols}
+    />
     """
   end
 end

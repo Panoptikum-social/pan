@@ -14,12 +14,14 @@ defmodule PanWeb.Component.EpisodeButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render to={Routes.episode_frontend_path(Endpoint, :show, @id || @for.id)}
-                       class={["bg-aqua text-white border-gray-dark hover:bg-aqua-light hover:border-aqua", @class]}
-                       icon="headphones-lineawesome-solid"
-                       title={truncate_string(@title || @for.title, 80)}
-                       large={@large}
-                       truncate={@truncate} />
+    <LinkButton.render
+      to={Routes.episode_frontend_path(Endpoint, :show, @id || @for.id)}
+      class={["bg-aqua text-white border-gray-dark hover:bg-aqua-light hover:border-aqua", @class]}
+      icon="headphones-lineawesome-solid"
+      title={truncate_string(@title || @for.title, 80)}
+      large={@large}
+      truncate={@truncate}
+    />
     """
   end
 end

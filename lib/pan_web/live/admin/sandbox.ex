@@ -11,12 +11,18 @@ defmodule PanWeb.Live.Admin.Sandbox do
 
   def render(assigns) do
     ~H"""
-    <div class="m-4"
-         x-data="{isShow: false}">
-      <button class="btn"
-              x-on:click="isShow = true; setTimeout(() => isShow = false, 5000)">Trigger</button>
-      <div x-show="isShow"
-           class="absolute top-0 right-4 m-3 w-2/3 md:w-1/3">
+    <div
+      class="m-4"
+      x-data="{isShow: false}"
+    >
+      <button
+        class="btn"
+        x-on:click="isShow = true; setTimeout(() => isShow = false, 5000)"
+      >Trigger</button>
+      <div
+        x-show="isShow"
+        class="absolute top-0 right-4 m-3 w-2/3 md:w-1/3"
+      >
         <div class="bg-white border-gray border p-3 flex items-start shadow-md rounded-md space-x-2">
           <div class="shrink-0">✅</div>
           <div class="flex-1 space-y-1">

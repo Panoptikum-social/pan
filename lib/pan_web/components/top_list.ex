@@ -49,7 +49,12 @@ defmodule PanWeb.Component.TopList do
           <td class="px-4">
             <%= for {id, title} <- items do %>
               <p>
-                <PodcastButton.render :if={@purpose == "podcast"} id={id} title={title} truncate={true} />
+                <PodcastButton.render
+                  :if={@purpose == "podcast"}
+                  id={id}
+                  title={title}
+                  truncate={true}
+                />
               </p>
             <% end %>
           </td>

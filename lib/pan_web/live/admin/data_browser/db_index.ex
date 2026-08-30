@@ -29,25 +29,31 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
         Database Indices for Resource
         <span class="italic">{Naming.module_without_namespace(@model)}</span>
       </h1>
-      <div class="grid mb-1"
-           style="grid-template-columns: max-content 1fr;">
-          <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">
-            Index Name
-          </div>
-          <div class="w-full font-semibold pl-4 pr-2 py-0.5">
-            Index Definition
-          </div>
+      <div
+        class="grid mb-1"
+        style="grid-template-columns: max-content 1fr;"
+      >
+        <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">
+          Index Name
+        </div>
+        <div class="w-full font-semibold pl-4 pr-2 py-0.5">
+          Index Definition
+        </div>
         <%= for {[name, definition], index} <- get_indices(assigns) |> Enum.with_index do %>
-          <div class={["px-2 py-0.5 text-gray-darker italic text-right",
-                       if(Integer.is_even(index), do: "bg-white"),
-                       if(Integer.is_odd(index), do: "bg-gray-lightest"),
-                       if(index > 0, do: "border-t-2 border-gray-lighter")]}>
+          <div class={[
+            "px-2 py-0.5 text-gray-darker italic text-right",
+            if(Integer.is_even(index), do: "bg-white"),
+            if(Integer.is_odd(index), do: "bg-gray-lightest"),
+            if(index > 0, do: "border-t-2 border-gray-lighter")
+          ]}>
             {name}
           </div>
-          <div class={["w-full pl-4 pr-2 py-0.5",
-                       if(Integer.is_even(index), do: "bg-white"),
-                       if(Integer.is_odd(index), do: "bg-gray-lightest"),
-                       if(index > 0, do: "border-t-2 border-gray-lighter")]}>
+          <div class={[
+            "w-full pl-4 pr-2 py-0.5",
+            if(Integer.is_even(index), do: "bg-white"),
+            if(Integer.is_odd(index), do: "bg-gray-lightest"),
+            if(index > 0, do: "border-t-2 border-gray-lighter")
+          ]}>
             {definition}
           </div>
         <% end %>

@@ -38,17 +38,21 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
   def render(assigns) do
     ~H"""
     <span>
-      <button :if={@subscribed}
-              phx-click="toggle-subscribe"
-              phx-target={@myself}
-              class="btn btn-success btn-sm my-2">
-        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-solid"/> Unsubscribe
+      <button
+        :if={@subscribed}
+        phx-click="toggle-subscribe"
+        phx-target={@myself}
+        class="btn btn-success btn-sm my-2"
+      >
+        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-solid" /> Unsubscribe
       </button>
-      <button :if={!@subscribed}
-              phx-click="toggle-subscribe"
-              phx-target={@myself}
-              class="btn btn-error btn-sm my-2">
-        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline"/> Subscribe
+      <button
+        :if={!@subscribed}
+        phx-click="toggle-subscribe"
+        phx-target={@myself}
+        class="btn btn-error btn-sm my-2"
+      >
+        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline" /> Subscribe
       </button>
     </span>
     """

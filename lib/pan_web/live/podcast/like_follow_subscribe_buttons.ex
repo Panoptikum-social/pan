@@ -26,47 +26,65 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
     <div>
       <%= if @current_user_id do %>
         <p class="whitespace-nowrap">
-          <.live_component module={LikeButton} id="like_button"
-                      current_user_id={@current_user_id}
-                      model={Podcast}
-                      instance={@podcast} />
-          <.live_component module={FollowButton} id="follow_button"
-                        current_user_id={@current_user_id}
-                        model={Podcast}
-                        instance={@podcast} />
-          <.live_component module={SubscribeButton} id="subscribe_button"
-                          current_user_id={@current_user_id}
-                          podcast={@podcast} />
+          <.live_component
+            module={LikeButton}
+            id="like_button"
+            current_user_id={@current_user_id}
+            model={Podcast}
+            instance={@podcast}
+          />
+          <.live_component
+            module={FollowButton}
+            id="follow_button"
+            current_user_id={@current_user_id}
+            model={Podcast}
+            instance={@podcast}
+          />
+          <.live_component
+            module={SubscribeButton}
+            id="subscribe_button"
+            current_user_id={@current_user_id}
+            podcast={@podcast}
+          />
         </p>
 
         <%= if !@podcast.manually_updated_at or
               time_shift(@podcast.manually_updated_at, hours: 1) |> in_the_past? do %>
           <div class="mt-4">
-            <button phx-click="trigger-update"
-                    phx-target={@myself}
-                    class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1">
-                    <Icon.render name="cog-heroicons-outline" />
-                    Metadata Update
+            <button
+              phx-click="trigger-update"
+              phx-target={@myself}
+              class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1"
+            >
+              <Icon.render name="cog-heroicons-outline" /> Metadata Update
             </button>
-            <span class="relative"
-                  x-data="{ metadataOpen: false }">
-              <div class="inline"
-                  @click="metadataOpen = !metadataOpen
-                          $nextTick(() => $refs.metadataCloseButton.focus())">
+            <span
+              class="relative"
+              x-data="{ metadataOpen: false }"
+            >
+              <div
+                class="inline"
+                @click="metadataOpen = !metadataOpen
+                          $nextTick(() => $refs.metadataCloseButton.focus())"
+              >
                 <Icon.render name="information-circle-heroicons" />
               </div>
-              <div x-show="metadataOpen"
-                    class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96">
+              <div
+                x-show="metadataOpen"
+                class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96"
+              >
                 <h1 class="text-3xl">Info</h1>
                 <p class="mt-4">
                   You can manually trigger a metadata update for this podcast once an hour,
                   if you are impatient. This still will take some time, so keep track of
                   the status updates. And refresh the page with [F5] when told so..
                 </p>
-                <button @click="metadataOpen = false"
-                        class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
+                <button
+                  @click="metadataOpen = false"
+                  class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
                               focus:ring-2 focus:ring-info-light"
-                        x-ref="metadataCloseButton">
+                  x-ref="metadataCloseButton"
+                >
                   Close
                 </button>
               </div>
@@ -74,22 +92,33 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
           </div>
         <% else %>
           <small>
-            A manual update will be available in
-            {time_diff(time_shift(@podcast.manually_updated_at, hours: 1), now(), :minutes)}
-            minutes.
+            A manual update will be available in {time_diff(
+              time_shift(@podcast.manually_updated_at, hours: 1),
+              now(),
+              :minutes
+            )} minutes.
           </small>
         <% end %>
       <% else %>
-        {@podcast.likes_count} <Icon.render name="heart-heroicons-outline"/> Likes &nbsp; &nbsp;
-        {@podcast.followers_count} <Icon.render name="annotation-heroicons-outline"/> Followers &nbsp; &nbsp;
-        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline"/> Subscribers
-
-        <p class="mt-4"><i>
-          <a href={user_frontend_path(Endpoint, :new)}
-            class="text-link hover:text-link-dark">Sign up</a> /
-          <a href={session_path(Endpoint, :new)}
-            class="text-link hover:text-link-dark">Log in</a> to like, follow, recommend and subscribe!
-        </i></p>
+        {@podcast.likes_count} <Icon.render name="heart-heroicons-outline" />
+        Likes &nbsp; &nbsp; {@podcast.followers_count}
+        <Icon.render name="annotation-heroicons-outline" />
+        Followers &nbsp; &nbsp; {@podcast.subscriptions_count}
+        <Icon.render name="user-heroicons-outline" /> Subscribers
+        <p class="mt-4">
+          <i>
+            <a
+              href={user_frontend_path(Endpoint, :new)}
+              class="text-link hover:text-link-dark"
+            >Sign up</a>
+            /
+            <a
+              href={session_path(Endpoint, :new)}
+              class="text-link hover:text-link-dark"
+            >Log in</a>
+            to like, follow, recommend and subscribe!
+          </i>
+        </p>
       <% end %>
     </div>
     """

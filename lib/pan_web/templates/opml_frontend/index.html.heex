@@ -16,20 +16,33 @@
       <tbody>
         <%= for opml <- @opmls do %>
           <tr>
-            <td><%= opml.content_type %></td>
-            <td><%= opml.filename %></td>
-            <td><%= Calendar.strftime(opml.inserted_at, "%c") %></td>
+            <td>{opml.content_type}</td>
+            <td>{opml.filename}</td>
+            <td>{Calendar.strftime(opml.inserted_at, "%c")}</td>
 
             <td class="leading-8">
-              <.link href={opml_frontend_path(@conn, :import, opml)} class="btn btn-info btn-sm whitespace-nowrap text-white">
+              <.link
+                href={opml_frontend_path(@conn, :import, opml)}
+                class="btn btn-info btn-sm whitespace-nowrap text-white"
+              >
                 {icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Parse
               </.link>
               &nbsp;
-              <.link href={opml_frontend_path(@conn, :download, opml)} class="btn btn-primary btn-sm whitespace-nowrap text-white">
-                {icon("document-download-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Download
+              <.link
+                href={opml_frontend_path(@conn, :download, opml)}
+                class="btn btn-primary btn-sm whitespace-nowrap text-white"
+              >
+                {icon("document-download-heroicons-outline",
+                  class: "inline w-4 h-4 align-text-top"
+                )} Download
               </.link>
               &nbsp;
-              <.link href={opml_frontend_path(@conn, :delete, opml)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm whitespace-nowrap">
+              <.link
+                href={opml_frontend_path(@conn, :delete, opml)}
+                method="delete"
+                data-confirm="Are you sure?"
+                class="btn btn-error btn-sm whitespace-nowrap"
+              >
                 {icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Delete
               </.link>
             </td>

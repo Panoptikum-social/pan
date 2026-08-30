@@ -51,23 +51,29 @@ defmodule PanWeb.Live.User.New do
     <div class="max-w-lg m-4">
       <h1 class="text-3xl">Sign Up</h1>
 
-      <.form for={@changeset}
-             :let={f}
-             phx-change="validate"
-             phx-submit="create">
+      <.form
+        :let={f}
+        for={@changeset}
+        phx-change="validate"
+        phx-submit="create"
+      >
         <.error :if={!@changeset.valid?}>
           The form is not filled out fully.
         </.error>
 
-        <.error :if={{"has already been taken", []} == @changeset.errors[:email]}
-               name="welcome_back"
-               class="p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4">
+        <.error
+          :if={{"has already been taken", []} == @changeset.errors[:email]}
+          name="welcome_back"
+          class="p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4"
+        >
           <h2 class="text-lg">Welcome back!</h2>
 
-          <p>There is already a user account with this email address.<br/>
-            Please
-            <.link href={user_path(@socket, :forgot_password)}
-                  class="text-link hover:text-link-dark">
+          <p>
+            There is already a user account with this email address.<br /> Please
+            <.link
+              href={user_path(@socket, :forgot_password)}
+              class="text-link hover:text-link-dark"
+            >
               Request a login link
             </.link>
             via email to login to your existing account and
@@ -75,57 +81,78 @@ defmodule PanWeb.Live.User.New do
           </p>
         </.error>
 
-        <.input field={f[:name]}
-                label="Name *"
-                class="w-full input validator"
-                required
-                show_errors={false} />
+        <.input
+          field={f[:name]}
+          label="Name *"
+          class="w-full input validator"
+          required
+          show_errors={false}
+        />
 
-        <.input field={f[:username]}
-                label="Username *"
-                class="w-full input"
-                required
-                show_errors={false} />
+        <.input
+          field={f[:username]}
+          label="Username *"
+          class="w-full input"
+          required
+          show_errors={false}
+        />
 
-        <.input type="email"
-                field={f[:email]}
-                label="Email *"
-                class="w-full input"
-                required
-                show_errors={false} />
+        <.input
+          type="email"
+          field={f[:email]}
+          label="Email *"
+          class="w-full input"
+          required
+          show_errors={false}
+        />
 
-        <.input type="password"
-                name="user[password]"
-                required
-                value={Ecto.Changeset.get_change(@changeset, :password)}
-                errors={if Component.used_input?(f[:password]), do: Enum.map(f[:password].errors, &translate_error(&1)), else: []}
-                label="Password *"
-                class="w-full input"
-                show_errors={false} />
+        <.input
+          type="password"
+          name="user[password]"
+          required
+          value={Ecto.Changeset.get_change(@changeset, :password)}
+          errors={
+            if Component.used_input?(f[:password]),
+              do: Enum.map(f[:password].errors, &translate_error(&1)),
+              else: []
+          }
+          label="Password *"
+          class="w-full input"
+          show_errors={false}
+        />
 
-        <.input type="password"
-                name="user[password_confirmation]"
-                required
-                value={Ecto.Changeset.get_change(@changeset, :password_confirmation)}
-                errors={if Component.used_input?(f[:password_confirmation]), do: Enum.map(f[:password_confirmation].errors, &translate_error(&1)), else: []}
-                label="Password Confirmation *"
-                class="w-full input"
-                show_errors={false} />
+        <.input
+          type="password"
+          name="user[password_confirmation]"
+          required
+          value={Ecto.Changeset.get_change(@changeset, :password_confirmation)}
+          errors={
+            if Component.used_input?(f[:password_confirmation]),
+              do: Enum.map(f[:password_confirmation].errors, &translate_error(&1)),
+              else: []
+          }
+          label="Password Confirmation *"
+          class="w-full input"
+          show_errors={false}
+        />
 
-        <.input type="checkbox"
-                field={f[:podcaster]}
-                label="I am a podcaster" />
+        <.input
+          type="checkbox"
+          field={f[:podcaster]}
+          label="I am a podcaster"
+        />
 
-        <.input type="number"
-                field={f[:bot_check]}
-                required
-                label="If you subtract two from 44, you get... *"
-                placeholder="Are you a human? ;-)"
-                class="w-full input"
-                show_errors={false} />
+        <.input
+          type="number"
+          field={f[:bot_check]}
+          required
+          label="If you subtract two from 44, you get... *"
+          placeholder="Are you a human? ;-)"
+          class="w-full input"
+          show_errors={false}
+        />
 
-        <input type="submit" value="Create Account"
-                 class="btn btn-primary" />
+        <input type="submit" value="Create Account" class="btn btn-primary" />
       </.form>
     </div>
     """

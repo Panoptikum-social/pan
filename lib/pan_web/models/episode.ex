@@ -172,14 +172,17 @@ defmodule PanWeb.Episode do
 
   def get_by_id_for_episode_show(id) do
     case Repo.get(Episode, id) do
-      nil -> nil
-      episode -> Repo.preload(episode, [
-        :enclosures,
-        podcast: :feeds,
-        gigs: :persona,
-        recommendations: :user,
-        chapters: [recommendations: :user]
-      ])
+      nil ->
+        nil
+
+      episode ->
+        Repo.preload(episode, [
+          :enclosures,
+          podcast: :feeds,
+          gigs: :persona,
+          recommendations: :user,
+          chapters: [recommendations: :user]
+        ])
     end
   end
 

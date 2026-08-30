@@ -23,8 +23,8 @@ defmodule Pan.Job.ImportStalePodcasts do
       rescue
         error ->
           Logger.error(
-            "=== ImportStalePodcasts crashed: " <>
-              Exception.format(:error, error, __STACKTRACE__) <> " ==="
+            "ImportStalePodcasts crashed: " <>
+              Exception.format(:error, error, __STACKTRACE__)
           )
 
           # back off before retrying, so a broken feed can't spin-crash the
@@ -33,7 +33,7 @@ defmodule Pan.Job.ImportStalePodcasts do
           10
       catch
         kind, reason ->
-          Logger.error("=== ImportStalePodcasts crashed (#{kind}): #{inspect(reason)} ===")
+          Logger.error("ImportStalePodcasts crashed (#{kind}): #{inspect(reason)}")
 
           10
       end

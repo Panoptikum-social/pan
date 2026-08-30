@@ -14,7 +14,9 @@ defmodule PanWeb.Live.Episode.Show do
          assign(socket,
            episode: episode,
            changeset: %Recommendation{} |> Recommendation.changeset(),
-           page_title: (episode.title || "Episode") <> " from " <> (episode.podcast.title || "Podcast") <> " (Podcast)"
+           page_title:
+             (episode.title || "Episode") <>
+               " from " <> (episode.podcast.title || "Podcast") <> " (Podcast)"
          )}
     end
   end
@@ -42,26 +44,32 @@ defmodule PanWeb.Live.Episode.Show do
         This episode may not be published here, sorry.
       </span>
       <div :if={!@episode.podcast.blocked}>
-        <.live_component module={Header}
-                id="header"
-                episode={@episode}
-                current_user_id={@current_user_id} />
-        <.live_component module={RecommendationList}
-                            id="recommendation_list"
-                            episode={@episode}
-                            current_user_id={@current_user_id}
-                            changeset={@changeset} />
+        <.live_component
+          module={Header}
+          id="header"
+          episode={@episode}
+          current_user_id={@current_user_id}
+        />
+        <.live_component
+          module={RecommendationList}
+          id="recommendation_list"
+          episode={@episode}
+          current_user_id={@current_user_id}
+          changeset={@changeset}
+        />
 
         <div class="flex flex-col md:flex-row">
           <video :if={major_mimetype(@episode) == "video"} width="640" height="480" controls>
-            <source :for={enclosure <- @episode.enclosures} src={enclosure.url}>
+            <source :for={enclosure <- @episode.enclosures} src={enclosure.url} />
             Your browser does not support the video tag.
           </video>
-          <.live_component :if={major_mimetype(@episode) != "video"}
-                           module={PodlovePlayer}
-                           id="player"
-                           episode={@episode}
-                           class="mr-4 lg:w-1/2" />
+          <.live_component
+            :if={major_mimetype(@episode) != "video"}
+            module={PodlovePlayer}
+            id="player"
+            episode={@episode}
+            class="mr-4 lg:w-1/2"
+          />
 
           <div id="shownotes" class="lg:w-1/2 mt-4 lg:mt-0">
             <div :if={@episode.shownotes}>
@@ -71,9 +79,11 @@ defmodule PanWeb.Live.Episode.Show do
           </div>
         </div>
 
-        <ChapterList.render current_user_id={@current_user_id}
-                     episode={@episode}
-                     changeset={@changeset} />
+        <ChapterList.render
+          current_user_id={@current_user_id}
+          episode={@episode}
+          changeset={@changeset}
+        />
       </div>
     </div>
     """

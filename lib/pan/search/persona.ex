@@ -80,7 +80,7 @@ defmodule Pan.Search.Persona do
   end
 
   def batch_reset do
-    Logger.info("=== full_text reset up to 10_000 personas ===")
+    Logger.info("full_text reset up to 10_000 personas")
 
     persona_ids =
       from(p in Persona,

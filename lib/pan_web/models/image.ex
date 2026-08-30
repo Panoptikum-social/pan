@@ -81,7 +81,7 @@ defmodule PanWeb.Image do
       File.mkdir_p!(target_dir)
       File.write!(target_dir <> "/" <> filename, response.body)
 
-      Logger.info("=== Mogrifying image with id #{id} ===")
+      Logger.info("Mogrifying image with id #{id}")
 
       try do
         (target_dir <> "/" <> filename)
@@ -91,9 +91,7 @@ defmodule PanWeb.Image do
       rescue
         # We fail silently, as we did before mogrify raised errors.
         error ->
-          Logger.info(
-            "=== Image with id #{id} failed to mogrify: #{Exception.message(error)} ==="
-          )
+          Logger.info("Image with id #{id} failed to mogrify: #{Exception.message(error)}")
       end
 
       content_type = :proplists.get_value("Content-Type", response.headers, "unknown")
@@ -135,7 +133,7 @@ defmodule PanWeb.Image do
   def cache_missing() do
     Persona.cache_missing_thumbnail_images()
     Podcast.cache_missing_thumbnail_images()
-    Logger.info("=== Thumbnail image caching job finished ===")
+    Logger.info("Thumbnail image caching job finished")
   end
 
   def get_by_podcast_id(podcast_id) do

@@ -41,7 +41,7 @@ defmodule Pan.Parser.Podcast do
         update_from_feed(podcast)
 
       {:error, "not found"} ->
-        message = "=== Podcast #{podcast.id} has no feed! ==="
+        message = "Podcast #{podcast.id} has no feed!"
         Logger.error(message)
         {:error, message}
 

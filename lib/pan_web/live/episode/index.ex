@@ -7,23 +7,45 @@ defmodule PanWeb.Live.Episode.Index do
 
   def mount(_params, _session, socket) do
     episodes = Episode.latest(1, 15)
-    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Episodes", has_more: length(episodes) == 15)
+
+    socket =
+      assign(socket,
+        page: 1,
+        per_page: 15,
+        page_title: "Latest Episodes",
+        has_more: length(episodes) == 15
+      )
+
     {:ok, stream(socket, :latest_episodes, episodes)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     episodes = Episode.latest(page, assigns.per_page)
-    {:noreply, socket |> assign(page: page, has_more: length(episodes) == assigns.per_page) |> stream(:latest_episodes, episodes)}
+
+    {:noreply,
+     socket
+     |> assign(page: page, has_more: length(episodes) == assigns.per_page)
+     |> stream(:latest_episodes, episodes)}
   end
 
   def render(assigns) do
     ~H"""
     <Panel.render heading="Latest Episodes" purpose="episode" class="m-4">
-      <div id="latest_episodes" phx-update="stream" class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4">
-        <div :for={{dom_id, episode} <- @streams.latest_episodes} id={dom_id} class="p-2 rounded-xl shadow">
-          <p class="mb-1">Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} /></p>
-          <EpisodeCard.render for={episode}/>
+      <div
+        id="latest_episodes"
+        phx-update="stream"
+        class="m-2 grid md:grid-cols-2 2xl:grid-cols-3 gap-4"
+      >
+        <div
+          :for={{dom_id, episode} <- @streams.latest_episodes}
+          id={dom_id}
+          class="p-2 rounded-xl shadow"
+        >
+          <p class="mb-1">
+            Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} />
+          </p>
+          <EpisodeCard.render for={episode} />
         </div>
       </div>
       <div :if={@has_more} id="infinite-scroll" phx-hook="InfiniteScroll" data-page={@page}></div>

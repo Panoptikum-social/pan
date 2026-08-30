@@ -12,7 +12,7 @@ config :pan, PanWeb.Endpoint,
   adapter: Bandit.PhoenixAdapter
 
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
+  format: "\e[1;35m$time $metadata[$level] $message\e[0m\n",
   metadata: [:request_id]
 
 config :phoenix, :json_library, Jason

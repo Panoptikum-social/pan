@@ -6,14 +6,20 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
 
   def mount(socket) do
-    {:ok, assign(socket, recommendations_count: 0, page: 1, per_page: 10) |> stream(:recommendations, [])}
+    {:ok,
+     assign(socket, recommendations_count: 0, page: 1, per_page: 10)
+     |> stream(:recommendations, [])}
   end
 
   def update(assigns, socket) do
     socket = assign(socket, assigns)
 
     recommendations =
-      Recommendation.get_by_podcast_id(socket.assigns.podcast.id, socket.assigns.page, socket.assigns.per_page)
+      Recommendation.get_by_podcast_id(
+        socket.assigns.podcast.id,
+        socket.assigns.page,
+        socket.assigns.per_page
+      )
 
     recommendations_count = Recommendation.count_by_podcast_id(socket.assigns.podcast.id)
 
@@ -54,8 +60,10 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
     ~H"""
     <div class="my-4">
       <div :if={@recommendations_count > 0} class="float-right">
-        <a href="https://blog.panoptikum.social/complaints"
-          class="text-link hover-text-link-dark">Complain</a>
+        <a
+          href="https://blog.panoptikum.social/complaints"
+          class="text-link hover-text-link-dark"
+        >Complain</a>
       </div>
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>
       <div :if={@recommendations_count > 0}>
@@ -68,17 +76,30 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
             </tr>
           </thead>
           <tbody id="latest_recommendations" phx-update="stream">
-            <tr :for={{dom_id, recommendation} <- @streams.recommendations}
-                id={dom_id}
-                class="even:bg-gray-lighter">
+            <tr
+              :for={{dom_id, recommendation} <- @streams.recommendations}
+              id={dom_id}
+              class="even:bg-gray-lighter"
+            >
               <td class="p-2">
-                <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
-                  <a href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
-                    class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white" alt="tweet it">tweet</a>
-                  <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@podcast)}&quote=#{facebook(@podcast, recommendation)}"}
-                    class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white" alt="post on facebook">fb</a>
-                  <a href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
-                    class="bg-grass-light px-3 py-2 my-4 rounded-full text-white" alt="send an email">mail</a></nobr>
+                <p :if={@current_user_id == recommendation.user_id} class="mb-2">
+                  <nobr>
+                    <a
+                      href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
+                      class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white"
+                      alt="tweet it"
+                    >tweet</a>
+                    <a
+                      href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@podcast)}&quote=#{facebook(@podcast, recommendation)}"}
+                      class="bg-blue-jeans hover:bg-blue-jeans-light px-3 py-2 my-4 rounded-full text-white"
+                      alt="post on facebook"
+                    >fb</a>
+                    <a
+                      href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
+                      class="bg-grass-light px-3 py-2 my-4 rounded-full text-white"
+                      alt="send an email"
+                    >mail</a>
+                  </nobr>
                 </p>
                 {recommendation.user.name}
               </td>
@@ -89,17 +110,21 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
             </tr>
           </tbody>
         </table>
-        <button :if={@page * @per_page < @recommendations_count}
-                phx-click="load-more"
-                phx-target={@myself}
-                class="btn btn-info btn-sm m-4">
+        <button
+          :if={@page * @per_page < @recommendations_count}
+          phx-click="load-more"
+          phx-target={@myself}
+          class="btn btn-info btn-sm m-4"
+        >
           Load more
         </button>
       </div>
 
-      <RecommendForm.render current_user_id={@current_user_id}
-                   changeset={@changeset}
-                   podcast={@podcast} />
+      <RecommendForm.render
+        current_user_id={@current_user_id}
+        changeset={@changeset}
+        podcast={@podcast}
+      />
     </div>
     """
   end

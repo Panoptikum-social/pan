@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full">
-  <%= render(PanWeb.LayoutView, "_head.html", conn: @conn) %>
+  {render(PanWeb.LayoutView, "_head.html", conn: @conn)}
   <% current_user = %PanWeb.User{
     id: 0,
     admin: false,
@@ -18,7 +18,7 @@
       class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
       x-bind:class="{'lg:p-1': !navbarOpen}"
     >
-      <%= render(PanWeb.LayoutView, "_navbar.html", conn: @conn, current_user: current_user) %>
+      {render(PanWeb.LayoutView, "_navbar.html", conn: @conn, current_user: current_user)}
     </nav>
 
     <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
@@ -30,7 +30,7 @@
 
       <footer class="p-4 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-12
                   justify-evenly place-self-center">
-        <%= render(PanWeb.LayoutView, "_footer.html", conn: @conn, current_user: current_user) %>
+        {render(PanWeb.LayoutView, "_footer.html", conn: @conn, current_user: current_user)}
       </footer>
       <div class="flex justify-center w-full font-medium pb-4">
         <p>

@@ -3,7 +3,13 @@
     Merging Users
   </h1>
 
-  <.form :let={f} for={%{}} as={:users} action={user_path(@conn, :execute_merge)} class="p-4 mb-4 flex flex-col items-start space-y-4">
+  <.form
+    :let={f}
+    for={%{}}
+    as={:users}
+    action={user_path(@conn, :execute_merge)}
+    class="p-4 mb-4 flex flex-col items-start space-y-4"
+  >
     <.input field={f[:from]} type="text" label="From" class="input" />
     <.input field={f[:into]} type="text" label="Into" class="input" />
     <button type="submit" class="btn btn-primary">Submit</button>

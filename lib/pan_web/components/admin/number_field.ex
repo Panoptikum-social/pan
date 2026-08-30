@@ -9,7 +9,12 @@ defmodule PanWeb.Components.Admin.NumberField do
   def render(assigns) do
     ~H"""
     <%= if @redact do %>
-      <.input label={Phoenix.Naming.humanize(@name)} value="** redacted **" readonly class="w-full input input-sm" />
+      <.input
+        label={Phoenix.Naming.humanize(@name)}
+        value="** redacted **"
+        readonly
+        class="w-full input input-sm"
+      />
     <% else %>
       <.input
         type="number"

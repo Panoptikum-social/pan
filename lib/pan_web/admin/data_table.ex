@@ -63,83 +63,109 @@ defmodule PanWeb.Admin.DataTable do
 
   def render(assigns) do
     ~H"""
-    <div class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-         style={"grid-template-columns: 6rem #{Enum.map(@cols, &width(&1.type)) |> Enum.join(" ")};"}>
+    <div
+      class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
+      style={"grid-template-columns: 6rem #{Enum.map(@cols, &width(&1.type)) |> Enum.join(" ")};"}
+    >
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
         <span :if={:search in @buttons}>Search Mode</span>
       </div>
-      <div :for={column <- @cols} class="bg-white italic grid place-content-center text-sm text-center">
-        <SortLink.render click={@sort}
-                         target={@target}
-                         sort_by={@sort_by}
-                         sort_order={@sort_order}
-                         field={column.field}>
+      <div
+        :for={column <- @cols}
+        class="bg-white italic grid place-content-center text-sm text-center"
+      >
+        <SortLink.render
+          click={@sort}
+          target={@target}
+          sort_by={@sort_by}
+          sort_order={@sort_order}
+          field={column.field}
+        >
           {column.label}
         </SortLink.render>
       </div>
 
-      <div :if={:search in @buttons}
-           class="bg-gray-lighter text-center p-1">
-        <a phx-click={@cycle_search_mode}
-           phx-target={@target}
-           class="text-link hover:text-link-dark underline">
+      <div
+        :if={:search in @buttons}
+        class="bg-gray-lighter text-center p-1"
+      >
+        <a
+          phx-click={@cycle_search_mode}
+          phx-target={@target}
+          class="text-link hover:text-link-dark underline"
+        >
           {@search_mode |> Atom.to_string() |> String.replace("_", " ")}
         </a>
       </div>
 
-      <div :for={column <- @cols}
-           :if={:search in @buttons}
-           class={["bg-gray-lighter p-1", if(column.type == :integer, do: "text-right")]}>
-        <.form :if={column[:searchable] && @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not}
-               for={%{}}
-               as={:search}
-               phx-change={@search}
-               phx-target={@target}
-               autocomplete="off"
-               onkeydown="return event.key != 'Enter';">
-          <input type="text"
-                 name={"search[#{column.field}]"}
-                 value={@search_options[column.field]}
-                 class="p-0.5 w-full"
-                 autofocus="autofocus"
-                 autocomplete="off"
-                 phx-debounce="300" />
+      <div
+        :for={column <- @cols}
+        :if={:search in @buttons}
+        class={["bg-gray-lighter p-1", if(column.type == :integer, do: "text-right")]}
+      >
+        <.form
+          :if={
+            column[:searchable] &&
+              @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not()
+          }
+          for={%{}}
+          as={:search}
+          phx-change={@search}
+          phx-target={@target}
+          autocomplete="off"
+          onkeydown="return event.key != 'Enter';"
+        >
+          <input
+            type="text"
+            name={"search[#{column.field}]"}
+            value={@search_options[column.field]}
+            class="p-0.5 w-full"
+            autofocus="autofocus"
+            autocomplete="off"
+            phx-debounce="300"
+          />
         </.form>
       </div>
 
       <%= for {record, index} <- @records |> Enum.with_index do %>
         <div class={[
-               "text-center",
-               if(Integer.is_odd(index) && !dyed?(record, assigns), do: "bg-gray-lighter"),
-               if(Integer.is_even(index) && !dyed?(record, assigns), do: "bg-white"),
-               if(dyed?(record, assigns), do: "bg-sunflower-lighter")
-             ]}>
-          <input :if={Map.has_key?(record, :id)}
-                 type="checkbox"
-                 class="my-1.5"
-                 checked={selected?(record, @selected_records)}
-                 phx-click={@select}
-                 phx-target={@target}
-                 phx-value-id={record.id} />
+          "text-center",
+          if(Integer.is_odd(index) && !dyed?(record, assigns), do: "bg-gray-lighter"),
+          if(Integer.is_even(index) && !dyed?(record, assigns), do: "bg-white"),
+          if(dyed?(record, assigns), do: "bg-sunflower-lighter")
+        ]}>
+          <input
+            :if={Map.has_key?(record, :id)}
+            type="checkbox"
+            class="my-1.5"
+            checked={selected?(record, @selected_records)}
+            phx-click={@select}
+            phx-target={@target}
+            phx-value-id={record.id}
+          />
 
-          <input :if={length(@primary_key) == 2}
-                 type="checkbox"
-                 class="my-1.5"
-                 checked={selected?(record, @selected_records)}
-                 phx-click={@select}
-                 phx-target={@target}
-                 phx-value-one={Map.get(record, hd(@primary_key))}
-                 phx-value-two={Map.get(record, hd(tl(@primary_key)))} />
+          <input
+            :if={length(@primary_key) == 2}
+            type="checkbox"
+            class="my-1.5"
+            checked={selected?(record, @selected_records)}
+            phx-click={@select}
+            phx-target={@target}
+            phx-value-one={Map.get(record, hd(@primary_key))}
+            phx-value-two={Map.get(record, hd(tl(@primary_key)))}
+          />
         </div>
 
-        <GridPresenterWithDetails.render :for={column <- @cols}
-                              presenter={column[:presenter]}
-                              record={record}
-                              field={column.field}
-                              type={column.type}
-                              index={index}
-                              model={@model}
-                              dye={dyed?(record, assigns)} />
+        <GridPresenterWithDetails.render
+          :for={column <- @cols}
+          presenter={column[:presenter]}
+          record={record}
+          field={column.field}
+          type={column.type}
+          index={index}
+          model={@model}
+          dye={dyed?(record, assigns)}
+        />
       <% end %>
     </div>
     """

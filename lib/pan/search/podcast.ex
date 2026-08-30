@@ -88,7 +88,7 @@ defmodule Pan.Search.Podcast do
   end
 
   def batch_reset do
-    Logger.info("=== full_text reset up to 10_000 podcasts ===")
+    Logger.info("full_text reset up to 10_000 podcasts")
 
     podcast_ids =
       from(p in Podcast,

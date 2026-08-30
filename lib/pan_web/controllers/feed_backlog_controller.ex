@@ -131,7 +131,7 @@ defmodule PanWeb.FeedBacklogController do
         Pan.Parser.RssFeed.initial_import(backlog_feed.url, backlog_feed.id)
       rescue
         _ ->
-          Logger.error("=== Error importing: " <> backlog_feed.url <> " ===")
+          Logger.error("Error importing: " <> backlog_feed.url)
       end
     end
   end

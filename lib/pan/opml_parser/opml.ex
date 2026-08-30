@@ -5,7 +5,7 @@ defmodule Pan.OpmlParser.Opml do
   def parse(path, user_id) do
     {:ok, feed_xml} = File.read(path)
 
-    Logger.error("=== OPML- Import: Path: #{path} ===")
+    Logger.error("OPML- Import: Path: #{path}")
 
     Quinn.parse(feed_xml)
     |> Iterator.parse(user_id)

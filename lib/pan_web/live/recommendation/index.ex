@@ -8,14 +8,26 @@ defmodule PanWeb.Live.Recommendation.Index do
 
   def mount(_params, _session, socket) do
     recommendations = Recommendation.latest(1, 21)
-    socket = assign(socket, page: 1, per_page: 21, page_title: "Latest Recommendations", has_more: length(recommendations) == 21)
+
+    socket =
+      assign(socket,
+        page: 1,
+        per_page: 21,
+        page_title: "Latest Recommendations",
+        has_more: length(recommendations) == 21
+      )
+
     {:ok, stream(socket, :latest_recommendations, recommendations)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     recommendations = Recommendation.latest(page, assigns.per_page)
-    {:noreply, socket |> assign(page: page, has_more: length(recommendations) == assigns.per_page) |> stream(:latest_recommendations, recommendations)}
+
+    {:noreply,
+     socket
+     |> assign(page: page, has_more: length(recommendations) == assigns.per_page)
+     |> stream(:latest_recommendations, recommendations)}
   end
 
   def render(assigns) do
@@ -23,12 +35,16 @@ defmodule PanWeb.Live.Recommendation.Index do
     <div class="p-4">
       <h1 class="text-3xl">Latest Recommendations</h1>
 
-      <div id="recommendations-grid"
-           class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-           phx-update="stream">
-        <div :for={{dom_id, recommendation} <- @streams.latest_recommendations}
-             id={dom_id}
-             class="m-2 p-2 rounded shadow">
+      <div
+        id="recommendations-grid"
+        class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+        phx-update="stream"
+      >
+        <div
+          :for={{dom_id, recommendation} <- @streams.latest_recommendations}
+          id={dom_id}
+          class="m-2 p-2 rounded shadow"
+        >
           <div class="flex justify-between">
             <span><UserButton.render for={recommendation.user} /> recommended</span>
             <div>
@@ -38,8 +54,10 @@ defmodule PanWeb.Live.Recommendation.Index do
           </div>
 
           <p class="leading-10 mb-4">
-            <PodcastButton.render :if={recommendation.podcast}
-                            for={recommendation.podcast} />
+            <PodcastButton.render
+              :if={recommendation.podcast}
+              for={recommendation.podcast}
+            />
 
             <span :if={recommendation.episode}>
               <PodcastButton.render for={recommendation.episode.podcast} /><br />

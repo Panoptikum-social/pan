@@ -16,7 +16,10 @@ defmodule PanWeb.Component.EpisodeCard do
 
     <p class="mt-1">
       <%= if @for.publishing_date do %>
-        <Icon.render name="calendar-heroicons-outline" />&nbsp;{Calendar.strftime(@for.publishing_date, "%x")}
+        <Icon.render name="calendar-heroicons-outline" />&nbsp;{Calendar.strftime(
+          @for.publishing_date,
+          "%x"
+        )}
       <% end %>
       <%= if @for.duration do %>
         - <Icon.render name="stopwatch-lineawesome-solid" />{@for.duration}

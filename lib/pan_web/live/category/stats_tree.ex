@@ -14,16 +14,16 @@ defmodule PanWeb.Live.Category.StatsTree do
   def render(assigns) do
     ~H"""
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 p-4">
-      <div :for={{category, counter} <- @categories |> Enum.with_index} class="avoid-column-break">
+      <div :for={{category, counter} <- @categories |> Enum.with_index()} class="avoid-column-break">
         <p>
           <CategoryButton.render for={category} index_on_page={counter} large />
-          <span class="align-top">{length category.podcasts}</span>
+          <span class="align-top">{length(category.podcasts)}</span>
         </p>
         <p class="mt-6 -mx-0.5">
           <%= for subcategory <- category.children do %>
             <nobr>
-              <CategoryButton.render for={subcategory} index_on_page={1} truncate/>
-              <span class="align-top">{length subcategory.podcasts}</span>
+              <CategoryButton.render for={subcategory} index_on_page={1} truncate />
+              <span class="align-top">{length(subcategory.podcasts)}</span>
             </nobr>
             &nbsp;
           <% end %>

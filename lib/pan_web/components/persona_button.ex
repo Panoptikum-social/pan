@@ -12,10 +12,15 @@ defmodule PanWeb.Component.PersonaButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
-                       class={["bg-lavender text-white border border-gray-dark hover:bg-lavender-light hover:border-lavender", @class]}
-                       icon="user-astronaut-lineawesome-solid"
-                       title={truncate_string(@name || @for.name, 80)} />
+    <LinkButton.render
+      to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
+      class={[
+        "bg-lavender text-white border border-gray-dark hover:bg-lavender-light hover:border-lavender",
+        @class
+      ]}
+      icon="user-astronaut-lineawesome-solid"
+      title={truncate_string(@name || @for.name, 80)}
+    />
     """
   end
 end

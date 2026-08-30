@@ -16,16 +16,29 @@
     <tbody>
       <%= for invoice <- @invoices do %>
         <tr>
-          <td><%= invoice.filename %></td>
-          <td><%= invoice.content_type %></td>
-          <td><%= invoice.path %></td>
-          <td><.link href={databrowser_path(@conn, :show, "user", invoice.user)}>{invoice.user_id}</.link></td>
-          <td><%= invoice.user.username %></td>
-          <td><%= invoice.user.name %></td>
+          <td>{invoice.filename}</td>
+          <td>{invoice.content_type}</td>
+          <td>{invoice.path}</td>
           <td>
-            <.link href={invoice_path(@conn, :show, invoice)} class="bg-info text-white border border-gray-dark hover:bg-info-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm">Show</.link>
-            <.link href={invoice_path(@conn, :edit, invoice)} class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm">Edit</.link>
-            <.link href={invoice_path(@conn, :delete, invoice)} method="delete" data-confirm="Are you sure?" class="bg-danger text-white border border-gray-dark hover:bg-danger-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm">Delete</.link>
+            <.link href={databrowser_path(@conn, :show, "user", invoice.user)}>{invoice.user_id}</.link>
+          </td>
+          <td>{invoice.user.username}</td>
+          <td>{invoice.user.name}</td>
+          <td>
+            <.link
+              href={invoice_path(@conn, :show, invoice)}
+              class="bg-info text-white border border-gray-dark hover:bg-info-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            >Show</.link>
+            <.link
+              href={invoice_path(@conn, :edit, invoice)}
+              class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            >Edit</.link>
+            <.link
+              href={invoice_path(@conn, :delete, invoice)}
+              method="delete"
+              data-confirm="Are you sure?"
+              class="bg-danger text-white border border-gray-dark hover:bg-danger-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+            >Delete</.link>
           </td>
         </tr>
       <% end %>

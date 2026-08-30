@@ -8,14 +8,22 @@
         <%= for recommendation <- @podcast_recommendations do %>
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
-              <.link href={podcast_frontend_path(@conn, :show, recommendation.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+              <.link
+                href={podcast_frontend_path(@conn, :show, recommendation.podcast)}
+                class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+              >
                 {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.podcast.title}
               </.link>
-              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
+              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
             </div>
-            <%= recommendation.comment %>
+            {recommendation.comment}
             <p class="text-right">
-              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
+              <.link
+                href={recommendation_frontend_path(@conn, :delete, recommendation)}
+                method="delete"
+                data-confirm="Are you sure?"
+                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+              >Delete</.link>
             </p>
           </li>
         <% end %>
@@ -31,18 +39,29 @@
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <div class="flex flex-col space-y-1">
-                <.link href={podcast_frontend_path(@conn, :show, recommendation.episode.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                <.link
+                  href={podcast_frontend_path(@conn, :show, recommendation.episode.podcast)}
+                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+                >
                   {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.episode.podcast.title}
                 </.link>
-                <.link href={episode_frontend_path(@conn, :show, recommendation.episode)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                <.link
+                  href={episode_frontend_path(@conn, :show, recommendation.episode)}
+                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+                >
                   {icon("headphones-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.episode.title}
                 </.link>
               </div>
-              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
+              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
             </div>
-            <%= recommendation.comment %>
+            {recommendation.comment}
             <p class="text-right">
-              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
+              <.link
+                href={recommendation_frontend_path(@conn, :delete, recommendation)}
+                method="delete"
+                data-confirm="Are you sure?"
+                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+              >Delete</.link>
             </p>
           </li>
         <% end %>
@@ -58,21 +77,34 @@
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <div class="flex flex-col space-y-1">
-                <.link href={podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                <.link
+                  href={
+                    podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast)
+                  }
+                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+                >
                   {icon("podcast-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.episode.podcast.title}
                 </.link>
-                <.link href={episode_frontend_path(@conn, :show, recommendation.chapter.episode)} class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest">
+                <.link
+                  href={episode_frontend_path(@conn, :show, recommendation.chapter.episode)}
+                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
+                >
                   {icon("headphones-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.episode.title}
                 </.link>
                 <span class="text-sm">
                   {icon("indent-lineawesome-solid", class: "h-4 w-4 inline")} {recommendation.chapter.title}
                 </span>
               </div>
-              <span class="text-sm text-gray-dark"><%= to_string(recommendation.inserted_at) %></span>
+              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
             </div>
-            <%= recommendation.comment %>
+            {recommendation.comment}
             <p class="text-right">
-              <.link href={recommendation_frontend_path(@conn, :delete, recommendation)} method="delete" data-confirm="Are you sure?" class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md">Delete</.link>
+              <.link
+                href={recommendation_frontend_path(@conn, :delete, recommendation)}
+                method="delete"
+                data-confirm="Are you sure?"
+                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+              >Delete</.link>
             </p>
           </li>
         <% end %>
@@ -98,10 +130,18 @@
                     </small>
                   </div>
                   <.input field={f[:podcast_id]} type="hidden" value={podcast.id} />
-                  <.input field={f[:comment]} type="text" maxlength="255" data-chapter={podcast.id} class="input input-bordered w-full" />
+                  <.input
+                    field={f[:comment]}
+                    type="text"
+                    maxlength="255"
+                    data-chapter={podcast.id}
+                    class="input input-bordered w-full"
+                  />
                 </div>
                 <div class="shrink-0 self-end">
-                  <button type="submit" class="btn btn-info btn-sm">{icon("thumb-up-heroicons-outline")} Recommend</button>
+                  <button type="submit" class="btn btn-info btn-sm">{icon(
+                    "thumb-up-heroicons-outline"
+                  )} Recommend</button>
                 </div>
               </div>
             </.form>

@@ -8,24 +8,26 @@
 
         <div class="media-body">
           <b>
-            <%= toot.name %>
+            {toot.name}
           </b>
           <span class="text-gray-dark">
-            <.link href={toot.actor_url} class="text-link hover:text-link-dark">{toot.preferred_username}</.link> - <%= if toot.boosted, do: "boosted" %>
-            <%= toot.published %>
+            <.link href={toot.actor_url} class="text-link hover:text-link-dark">{toot.preferred_username}</.link>
+            - {if toot.boosted, do: "boosted"}
+            {toot.published}
           </span>
           <br />
 
           <%= if toot.boosted do %>
             <b>
-              <%= toot.attributed_to_name %>
+              {toot.attributed_to_name}
             </b>
             <span>
-              <.link href={toot.attributed_to_url} class="text-link hover:text-link-dark">{toot.attributed_to_preferred_username}</.link> -
+              <.link href={toot.attributed_to_url} class="text-link hover:text-link-dark">{toot.attributed_to_preferred_username}</.link>
+              -
             </span>
           <% end %>
 
-          <%= toot.content %>
+          {toot.content}
         </div>
       </li>
     <% end %>

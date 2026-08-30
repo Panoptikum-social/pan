@@ -42,8 +42,10 @@ defmodule PanWeb.Live.Episode.RecommendationList do
     <div class="mt-4">
       <div :if={@episode.recommendations != [] or @current_user_id}>
         <div :if={@episode.recommendations != []} class="float-right">
-          <a href="https://blog.panoptikum.social/complaints"
-            class="text-link hover-text-link-dark">Complain</a>
+          <a
+            href="https://blog.panoptikum.social/complaints"
+            class="text-link hover-text-link-dark"
+          >Complain</a>
         </div>
 
         <h2 class="text-2xl">Recommendations</h2>
@@ -58,16 +60,29 @@ defmodule PanWeb.Live.Episode.RecommendationList do
               </tr>
             </thead>
             <tbody id="latest_recommendations">
-              <tr :for={recommendation <- @episode.recommendations}
-                  id={"recommendation-row-#{recommendation.id}"}>
+              <tr
+                :for={recommendation <- @episode.recommendations}
+                id={"recommendation-row-#{recommendation.id}"}
+              >
                 <td>
-                  <p :if={@current_user_id == recommendation.user_id} class="mb-2"><nobr>
-                    <a href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
-                      class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white" alt="tweet it">tweet</a>
-                    <a href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@episode, recommendation)}"}
-                      class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white" alt="post on facebook">fb</a>
-                    <a href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
-                      class="bg-grass-light px-2 py-1 my-4 rounded-xl text-white" alt="send an email">mail</a></nobr>
+                  <p :if={@current_user_id == recommendation.user_id} class="mb-2">
+                    <nobr>
+                      <a
+                        href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
+                        class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white"
+                        alt="tweet it"
+                      >tweet</a>
+                      <a
+                        href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@episode, recommendation)}"}
+                        class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white"
+                        alt="post on facebook"
+                      >fb</a>
+                      <a
+                        href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
+                        class="bg-grass-light px-2 py-1 my-4 rounded-xl text-white"
+                        alt="send an email"
+                      >mail</a>
+                    </nobr>
                   </p>
                   {recommendation.user.name}
                 </td>
@@ -78,17 +93,21 @@ defmodule PanWeb.Live.Episode.RecommendationList do
               </tr>
             </tbody>
           </table>
-          <button :if={@page * @per_page < @recommendations_count}
-                  phx-click="load-more"
-                  phx-target={@myself}
-                  class="btn btn-info btn-sm m-4">
+          <button
+            :if={@page * @per_page < @recommendations_count}
+            phx-click="load-more"
+            phx-target={@myself}
+            class="btn btn-info btn-sm m-4"
+          >
             Load more
           </button>
         </div>
 
-        <RecommendForm.render current_user_id={@current_user_id}
-                     changeset={@changeset}
-                     episode={@episode} />
+        <RecommendForm.render
+          current_user_id={@current_user_id}
+          changeset={@changeset}
+          episode={@episode}
+        />
       </div>
     </div>
     """

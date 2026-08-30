@@ -29,20 +29,20 @@ defmodule PanWeb.SearchController do
   end
 
   def delete_orphans(conn, _params) do
-    Logger.info("=== Full text search orphans deletion started ===")
+    Logger.info("Full text search orphans deletion started")
     Search.Category.delete_index_orphans()
-    Logger.info("=== Category orphans deleted ===")
+    Logger.info("Category orphans deleted")
 
     Search.Podcast.delete_index_orphans()
-    Logger.info("=== Podcast orphans deleted ===")
+    Logger.info("Podcast orphans deleted")
 
     Search.Episode.delete_index_orphans()
-    Logger.info("=== Episode orphans deleted ===")
+    Logger.info("Episode orphans deleted")
 
     Search.Persona.delete_index_orphans()
-    Logger.info("=== Persona orphans deleted ===")
+    Logger.info("Persona orphans deleted")
 
-    Logger.info("===  Full text search orphans deletion finished ===")
+    Logger.info("Full text search orphans deletion finished")
 
     conn
     |> put_view(PageFrontendView)

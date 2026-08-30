@@ -63,7 +63,7 @@ defmodule PanWeb.EpisodeController do
       |> Repo.update()
     end
 
-    Logger.info("=== Sanitized #{length(episodes)} episodes ... ===")
+    Logger.info("Sanitized #{length(episodes)} episodes")
 
     conn
     |> put_view(PageFrontendView)

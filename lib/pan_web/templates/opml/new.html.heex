@@ -3,10 +3,10 @@
     New OPML
   </h1>
 
-  <%= render("form.html",
+  {render("form.html",
     changeset: @changeset,
     action: opml_path(@conn, :create)
-  ) %>
+  )}
 
   <.link href={opml_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>

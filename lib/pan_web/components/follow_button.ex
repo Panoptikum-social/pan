@@ -6,11 +6,11 @@ defmodule PanWeb.Component.FollowButton do
   def update(assigns, socket) do
     follow_method =
       case assigns.model do
-        Podcast   -> &Follow.find_podcast_follow/2
-        Category  -> &Follow.find_category_follow/2
+        Podcast -> &Follow.find_podcast_follow/2
+        Category -> &Follow.find_category_follow/2
         Community -> &Follow.find_community_follow/2
-        Persona   -> &Follow.find_persona_follow/2
-        User      -> &Follow.find_user_follow/2
+        Persona -> &Follow.find_persona_follow/2
+        User -> &Follow.find_user_follow/2
       end
 
     following =
@@ -46,15 +46,19 @@ defmodule PanWeb.Component.FollowButton do
     ~H"""
     <span>
       <%= if @following do %>
-        <button phx-click="toggle-follow"
-                phx-target={@myself}
-                class="btn btn-success btn-sm my-2">
+        <button
+          phx-click="toggle-follow"
+          phx-target={@myself}
+          class="btn btn-success btn-sm my-2"
+        >
           {@followers_count} <Icon.render name="chat-heroicons-solid" /> Unfollow
         </button>
       <% else %>
-        <button phx-click="toggle-follow"
-                phx-target={@myself}
-                class="btn btn-error btn-sm my-2">
+        <button
+          phx-click="toggle-follow"
+          phx-target={@myself}
+          class="btn btn-error btn-sm my-2"
+        >
           {@followers_count} <Icon.render name="chat-heroicons-outline" /> Follow
         </button>
       <% end %>

@@ -41,11 +41,13 @@ defmodule PanWeb.Live.Admin.Databrowser.Edit do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordForm}
-                    id={"record_form_" <> @resource <> "_" <> Integer.to_string(@record.id)}
-                    record={@record}
-                    model={@model}
-                    cols={@cols} />
+    <.live_component
+      module={RecordForm}
+      id={"record_form_" <> @resource <> "_" <> Integer.to_string(@record.id)}
+      record={@record}
+      model={@model}
+      cols={@cols}
+    />
     """
   end
 end

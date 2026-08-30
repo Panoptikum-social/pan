@@ -13,10 +13,12 @@ defmodule PanWeb.Live.Episode.Player do
   def render(assigns) do
     ~H"""
     <div class="h-full">
-      <.live_component module={PodlovePlayer}
-                       id="webplayer"
-                       episode={@episode}
-                       class="mx-auto max-w-5xl" />
+      <.live_component
+        module={PodlovePlayer}
+        id="webplayer"
+        episode={@episode}
+        class="mx-auto max-w-5xl"
+      />
     </div>
     """
   end

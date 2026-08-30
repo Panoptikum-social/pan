@@ -1,5 +1,5 @@
 <main role="main" class="mx-auto p-4">
-  <p class="alert-info empty:hidden" role="alert"><%= Phoenix.Flash.get(@flash, :info) %></p>
-  <p class="alert-danger empty:hidden" role="alert"><%= Phoenix.Flash.get(@flash, :error) %></p>
-  <%= @inner_content %>
+  <p class="alert-info empty:hidden" role="alert">{Phoenix.Flash.get(@flash, :info)}</p>
+  <p class="alert-danger empty:hidden" role="alert">{Phoenix.Flash.get(@flash, :error)}</p>
+  {@inner_content}
 </main>

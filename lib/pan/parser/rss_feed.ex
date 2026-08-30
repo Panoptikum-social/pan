@@ -54,7 +54,7 @@ defmodule Pan.Parser.RssFeed do
 
   def import_to_map(url, logging_id \\ 0) do
     url = String.trim(url)
-    Logger.info("=== #{logging_id} ⬇ #{url} ===")
+    Logger.info("#{logging_id} ⬇ #{url}")
 
     case Download.download(url) do
       {:ok, feed_xml} ->

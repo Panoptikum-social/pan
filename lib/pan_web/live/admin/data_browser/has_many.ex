@@ -56,27 +56,40 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={IndexGrid}
-               id="owner_table"
-               color_class="from-grapefruit-light via-grapefruit to-grapefruit-light"
-               heading={Naming.module_without_namespace(@owner_model)}
-               model={@owner_model}
-               cols={@owner_cols}
-               search_filter={@owner_search_filter}
-               per_page={1}
-               buttons={[:show, :edit]} />
+    <.live_component
+      module={IndexGrid}
+      id="owner_table"
+      color_class="from-grapefruit-light via-grapefruit to-grapefruit-light"
+      heading={Naming.module_without_namespace(@owner_model)}
+      model={@owner_model}
+      cols={@owner_cols}
+      search_filter={@owner_search_filter}
+      per_page={1}
+      buttons={[:show, :edit]}
+    />
 
-    <.live_component module={IndexGrid}
-               id="has_many_table"
-               class="mt-8"
-               color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
-               heading={"Has Many " <> Naming.model_in_plural(@model)}
-               model={@model}
-               cols={@cols}
-               search_filter={@search_filter}
-               per_page={20}
-               buttons={[:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :link, :assignment_filter, :search]} />
+    <.live_component
+      module={IndexGrid}
+      id="has_many_table"
+      class="mt-8"
+      color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
+      heading={"Has Many " <> Naming.model_in_plural(@model)}
+      model={@model}
+      cols={@cols}
+      search_filter={@search_filter}
+      per_page={20}
+      buttons={[
+        :show,
+        :edit,
+        :delete,
+        :new,
+        :pagination,
+        :number_of_records,
+        :link,
+        :assignment_filter,
+        :search
+      ]}
+    />
     """
   end
 end

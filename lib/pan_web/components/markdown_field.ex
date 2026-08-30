@@ -6,19 +6,23 @@ defmodule PanWeb.Component.MarkdownField do
 
   def render(assigns) do
     ~H"""
-    <div phx-hook="MarkdownField"
-         id="markdown-field-container"
-         data-disabled={@disabled}
-         phx-update="ignore">
-      <.input type="textarea"
-              field={@myfield}
-              id="simplemde"
-              rows="5"
-              class="w-full input"
-              label="Long description"
-              disabled={@disabled} />
+    <div
+      phx-hook="MarkdownField"
+      id="markdown-field-container"
+      data-disabled={@disabled}
+      phx-update="ignore"
+    >
+      <.input
+        type="textarea"
+        field={@myfield}
+        id="simplemde"
+        rows="5"
+        class="w-full input"
+        label="Long description"
+        disabled={@disabled}
+      />
 
-      <link rel="stylesheet" href="/simplemde/simplemde.min.css">
+      <link rel="stylesheet" href="/simplemde/simplemde.min.css" />
     </div>
     """
   end

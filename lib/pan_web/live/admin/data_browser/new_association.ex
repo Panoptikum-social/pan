@@ -47,11 +47,13 @@ defmodule PanWeb.Live.Admin.Databrowser.NewAssociation do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={RecordForm}
-                    id={"record_form_" <> @resource <> "_new"}
-                    record={@record}
-                    model={@model}
-                    cols={@cols} />
+    <.live_component
+      module={RecordForm}
+      id={"record_form_" <> @resource <> "_new"}
+      record={@record}
+      model={@model}
+      cols={@cols}
+    />
     """
   end
 end

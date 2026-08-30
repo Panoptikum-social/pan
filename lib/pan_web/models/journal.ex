@@ -56,7 +56,7 @@ defmodule PanWeb.Journal do
       {:error, changeset} ->
         # a broken journal call shouldn't take down whatever it's
         # documenting, but it shouldn't disappear silently either
-        Logger.error("=== Journal.log failed: #{inspect(changeset.errors)} ===")
+        Logger.error("Journal.log failed: #{inspect(changeset.errors)}")
         {:error, changeset}
     end
   end

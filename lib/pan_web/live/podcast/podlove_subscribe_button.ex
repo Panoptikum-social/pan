@@ -27,9 +27,11 @@ defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
 
   def render(assigns) do
     ~H"""
-    <div id="subscribe-button"
-         class={@class}
-         phx-hook="PodloveSubscribeButton" />
+    <div
+      id="subscribe-button"
+      class={@class}
+      phx-hook="PodloveSubscribeButton"
+    />
     """
   end
 end

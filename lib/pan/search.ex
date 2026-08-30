@@ -28,7 +28,7 @@ defmodule Pan.Search do
   def ensure_tables do
     unless tables_present?() do
       Logger.info(
-        "=== Manticore search tables missing (fresh deploy?) — running migrate/0 + reset_all/0 ==="
+        "Manticore search tables missing (fresh deploy?) — running migrate/0 + reset_all/0"
       )
 
       migrate()
@@ -100,7 +100,7 @@ defmodule Pan.Search do
             from(r in model, where: r.id in ^record_ids)
             |> Repo.update_all(set: [full_text: true])
 
-            Logger.info("=== Indexed #{length(record_ids)} records of type #{model} ===")
+            Logger.info("Indexed #{length(record_ids)} records of type #{model}")
           else
             handle_bulk_insert_error(response_body, model)
           end
@@ -119,33 +119,31 @@ defmodule Pan.Search do
           # not an HTTP error response — log and stop for this cycle rather
           # than crash the caller or tight-loop retrying a dead connection;
           # the next scheduled push_missing/0 run will pick these back up
-          Logger.error(
-            "=== Manticore bulk insert request failed for #{model}: #{inspect(error)} ==="
-          )
+          Logger.error("Manticore bulk insert request failed for #{model}: #{inspect(error)}")
       end
     else
-      Logger.info("=== Done with type #{model} ===")
+      Logger.info("Done with type #{model}")
     end
   end
 
   defp handle_bulk_insert_error(response_body, model) do
     {:ok, query_result} = Jason.decode(response_body)
 
-    Logger.info("=== Query Result ===")
+    Logger.info("Query Result")
     Logger.info(query_result)
 
     with last_item_result <- query_result["items"] |> Enum.reverse() |> hd,
          error_type <- last_item_result["insert"]["error"]["type"],
          ["duplicate", "id", duplicate_id_string] <- error_type |> String.split() do
       duplicate_id = duplicate_id_string |> String.replace("'", "") |> String.to_integer()
-      Logger.info("=== Updating full text status for #{model} with id #{duplicate_id} ===")
+      Logger.info("Updating full text status for #{model} with id #{duplicate_id}")
 
       from(r in model, where: r.id == ^duplicate_id)
       |> Repo.update_all(set: [full_text: true])
     else
       # error may be a map (e.g. a missing-table error), not just a string —
       # inspect/1 never blows up on interpolation the way `#{}` did here
-      _ -> Logger.error("=== Error indexing #{model}: #{inspect(query_result)} ===")
+      _ -> Logger.error("Error indexing #{model}: #{inspect(query_result)}")
     end
   end
 
@@ -189,7 +187,7 @@ defmodule Pan.Search do
 
       {:error, error} ->
         # a Manticore hiccup shouldn't 500 a user's search request
-        Logger.error("=== Manticore search request failed: #{inspect(error)} ===")
+        Logger.error("Manticore search request failed: #{inspect(error)}")
         %{"total" => 0, "hits" => []}
     end
   end

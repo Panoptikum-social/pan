@@ -29,7 +29,7 @@ defmodule Pan.OpmlParser.Analyzer do
       do: nil
 
   def call([tag, attr, value], _user_id) do
-    Logger.error("=== Tag unknown: ===")
+    Logger.error("Tag unknown:")
     Logger.error(~s(Tag: :"#{tag}"))
     Logger.error("Attr: #{inspect(attr)}")
     Logger.error("Value: #{inspect(value)}")

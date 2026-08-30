@@ -40,18 +40,22 @@ defmodule PanWeb.Component.Tree do
 
     ~H"""
     <%= for node <- @nodes do %>
-      <div phx-click={@select}
-           phx-value-node-id={node.id}
-           class={["px-2 py-0.5 border border-gray-light", @selected_id == node.id && "bg-success"]}>
+      <div
+        phx-click={@select}
+        phx-value-node-id={node.id}
+        class={["px-2 py-0.5 border border-gray-light", @selected_id == node.id && "bg-success"]}
+      >
         <span class="font-mono text-gray-light">
           {raw(String.duplicate("&nbsp;", @indentation_level))}
         </span>
 
-        <button :if={is_list(node.children) && length(node.children) > 0}
-                phx-click="toggle-expand"
-                phx-value-node-id={node.id}
-                phx-target={@myself}>
-          <Icon.render :if={@expanded[node.id]}  name="folder-open-heroicons-outline" />
+        <button
+          :if={is_list(node.children) && length(node.children) > 0}
+          phx-click="toggle-expand"
+          phx-value-node-id={node.id}
+          phx-target={@myself}
+        >
+          <Icon.render :if={@expanded[node.id]} name="folder-open-heroicons-outline" />
           <Icon.render :if={!@expanded[node.id]} name="folder-heroicons-outline" />
         </button>
 

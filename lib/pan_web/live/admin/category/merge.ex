@@ -25,23 +25,26 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     <h1 class="text-3xl m-4">Merging categories</h1>
 
     <div class="flex m-4 space-x-4">
-      <.live_component module={Tree}
-            id="fromTree"
-            nodes={@categories}
-            select="selectFrom"
-            selected_id={@from_id} />
-      <.live_component module={Tree}
-            id="intoTree"
-            nodes={@categories}
-            select="selectInto"
-            selected_id={@into_id} />
+      <.live_component
+        module={Tree}
+        id="fromTree"
+        nodes={@categories}
+        select="selectFrom"
+        selected_id={@from_id}
+      />
+      <.live_component
+        module={Tree}
+        id="intoTree"
+        nodes={@categories}
+        select="selectInto"
+        selected_id={@into_id}
+      />
 
       <div>
         <EventButton.render event="merge">
           <Icon.render name="folder-heroicons-outline" />
           <Icon.render name="arrow-sm-right-heroicons-outline" />
-          <Icon.render name="folder-heroicons-outline" />
-          Merge Categories
+          <Icon.render name="folder-heroicons-outline" /> Merge Categories
         </EventButton.render>
       </div>
     </div>

@@ -8,44 +8,47 @@
       <th>ID</th>
       <%= for persona <- @personas do %>
         <td>
-          <.link href={persona_frontend_path(@conn, :show, persona.id)} class="text-link hover:text-link-dark">{persona.id}</.link>
+          <.link
+            href={persona_frontend_path(@conn, :show, persona.id)}
+            class="text-link hover:text-link-dark"
+          >{persona.id}</.link>
         </td>
       <% end %>
     </tr>
     <tr>
       <th>PanoptikumID</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.pid %></td>
+        <td>{persona.pid}</td>
       <% end %>
     </tr>
     <tr>
       <th>Name</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.name %></td>
+        <td>{persona.name}</td>
       <% end %>
     </tr>
     <tr>
       <th>URI</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.uri %></td>
+        <td>{persona.uri}</td>
       <% end %>
     </tr>
     <tr>
       <th>Email</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.email %></td>
+        <td>{persona.email}</td>
       <% end %>
     </tr>
     <tr>
       <th>Image url</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.image_url %></td>
+        <td>{persona.image_url}</td>
       <% end %>
     </tr>
     <tr>
       <th>Description</th>
       <%= for persona <- @personas do %>
-        <td><%= persona.description %></td>
+        <td>{persona.description}</td>
       <% end %>
     </tr>
     <tr>
@@ -54,7 +57,10 @@
         <td class="py-2">
           <%= for persona_to <- @personas do %>
             <%= unless persona.id == persona_to.id do %>
-              <.link href={persona_path(@conn, :merge, from: persona.id, to: persona_to.id)} class="border border-black rounded p-0.5 hover:text-gray-dark">{persona_to.id}</.link>
+              <.link
+                href={persona_path(@conn, :merge, from: persona.id, to: persona_to.id)}
+                class="border border-black rounded p-0.5 hover:text-gray-dark"
+              >{persona_to.id}</.link>
             <% end %>
           <% end %>
         </td>
@@ -65,7 +71,7 @@
       <%= for persona <- @personas do %>
         <td>
           <%= for engagement <- persona.engagements do %>
-            <%= engagement.podcast_id %>
+            {engagement.podcast_id}
           <% end %>
         </td>
       <% end %>
@@ -75,7 +81,7 @@
       <%= for persona <- @personas do %>
         <td>
           <%= for gig <- persona.gigs do %>
-            <%= gig.episode_id %>
+            {gig.episode_id}
             <br />
           <% end %>
         </td>

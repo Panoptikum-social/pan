@@ -17,31 +17,39 @@ defmodule PanWeb.Live.Episode.ChapterList do
 
         <%= for chapter <- @episode.chapters do %>
           <div>
-            <a href="javascript:void(0)"
-               rel="podlove-web-player"
-               data-ref="podlove-player"
-               data-action="play"
-               data-time={chapter.start}
-               class="text-link hover:text-link-dark">{chapter.start}</a>
+            <a
+              href="javascript:void(0)"
+              rel="podlove-web-player"
+              data-ref="podlove-player"
+              data-action="play"
+              data-time={chapter.start}
+              class="text-link hover:text-link-dark"
+            >{chapter.start}</a>
             {chapter.title}
             <br :if={@current_user_id} />
-            <.live_component :if={@current_user_id}
-                        module={LikeButton}
-                        id={"chapter_#{chapter.id}_like_button"}
-                        current_user_id={@current_user_id}
-                        model={PanWeb.Chapter}
-                        instance={chapter} />
+            <.live_component
+              :if={@current_user_id}
+              module={LikeButton}
+              id={"chapter_#{chapter.id}_like_button"}
+              current_user_id={@current_user_id}
+              model={PanWeb.Chapter}
+              instance={chapter}
+            />
           </div>
 
-          <.live_component module={RecommendForm}
-                           id={"recommend-form-#{chapter.id}"}
-                           current_user_id={@current_user_id}
-                           changeset={@changeset}
-                           chapter={chapter} />
+          <.live_component
+            module={RecommendForm}
+            id={"recommend-form-#{chapter.id}"}
+            current_user_id={@current_user_id}
+            changeset={@changeset}
+            chapter={chapter}
+          />
 
-          <RecommendationList.render current_user_id={@current_user_id}
-                                     chapter={chapter}
-                                     episode={@episode} />
+          <RecommendationList.render
+            current_user_id={@current_user_id}
+            chapter={chapter}
+            episode={@episode}
+          />
         <% end %>
       </div>
     </div>

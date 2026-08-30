@@ -3,10 +3,10 @@
     Edit invoice
   </h1>
 
-  <%= render("form.html",
+  {render("form.html",
     changeset: @changeset,
     action: invoice_path(@conn, :update, @invoice)
-  ) %>
+  )}
 
   <.link href={invoice_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>

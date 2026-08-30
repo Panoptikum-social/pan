@@ -38,9 +38,6 @@ config :pan, :children, [
   PanWeb.Endpoint
 ]
 
-# Do not include metadata nor timestamps in development logs
-config :logger, :console, format: "[$level] $message\n"
-
 # Set a higher stacktrace during development.
 config :phoenix, :stacktrace_depth, 20
 

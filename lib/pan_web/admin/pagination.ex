@@ -25,38 +25,51 @@ defmodule PanWeb.Admin.Pagination do
     ~H"""
     <div class={["flex flex-col sm:flex-row items-center justify-between", @class]}>
       <div class="flex items-center space-x-2">
-        <PaginationLink.render :if={@page > 1}
-                               click={@click}
-                               target={@target}
-                               page={@page - 1}
-                               class="rounded-l">
+        <PaginationLink.render
+          :if={@page > 1}
+          click={@click}
+          target={@target}
+          page={@page - 1}
+          class="rounded-l"
+        >
           Previous
         </PaginationLink.render>
         <%= for i <- 1..@page do %>
-          <PaginationLink.render :if={i != @page}
-                                 click={@click}
-                                 target={@target}
-                                 page={i}
-                                 class={i == 1 && "rounded-l-lg"}>
+          <PaginationLink.render
+            :if={i != @page}
+            click={@click}
+            target={@target}
+            page={i}
+            class={i == 1 && "rounded-l-lg"}
+          >
             {i}
           </PaginationLink.render>
           <span :if={i == @page}>
             Page {i} of {if @nr_of_pages > 0, do: @nr_of_pages, else: "?? "}
           </span>
         <% end %>
-        <PaginationLink.render :if={@page < @nr_of_pages}
-                               click={@click}
-                               target={@target}
-                               page={@page + 1}
-                               class="rounded-r">
+        <PaginationLink.render
+          :if={@page < @nr_of_pages}
+          click={@click}
+          target={@target}
+          page={@page + 1}
+          class="rounded-r"
+        >
           Next
         </PaginationLink.render>
       </div>
 
       <div class="sm:border-l border-gray px-4 py-1 text-center">
-        Records {(@page - 1) * @per_page + 1} to {min((@page * @per_page), @nr_of_filtered)} of
-        {if @nr_of_filtered > 0, do: format(@nr_of_filtered), else: "??"}
-        ({if @nr_of_unfiltered, do: format(@nr_of_unfiltered), else: "??"}&nbsp;unfiltered)
+        Records {(@page - 1) * @per_page + 1} to {min(@page * @per_page, @nr_of_filtered)} of {if @nr_of_filtered >
+                                                                                                    0,
+                                                                                                  do:
+                                                                                                    format(
+                                                                                                      @nr_of_filtered
+                                                                                                    ),
+                                                                                                  else:
+                                                                                                    "??"} ({if @nr_of_unfiltered,
+          do: format(@nr_of_unfiltered),
+          else: "??"}&nbsp;unfiltered)
       </div>
     </div>
     """

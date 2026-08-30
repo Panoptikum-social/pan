@@ -10,13 +10,20 @@ defmodule PanWeb.Live.Episode.RecommendForm do
   def render(assigns) do
     ~H"""
     <div :if={@current_user_id}>
-      <.form for={@changeset}
-             :let={f}
-             class="mt-4"
-             action={recommendation_frontend_path(Endpoint, :create)}>
-        <.input field={f[:comment]}
-                size="100" maxlength="255" label="Your recommendation" class="max-w-full input" />
-          <p class="help-block text-muted"><span id='remaining'>255</span> characters left</p>
+      <.form
+        :let={f}
+        for={@changeset}
+        class="mt-4"
+        action={recommendation_frontend_path(Endpoint, :create)}
+      >
+        <.input
+          field={f[:comment]}
+          size="100"
+          maxlength="255"
+          label="Your recommendation"
+          class="max-w-full input"
+        />
+        <p class="help-block text-muted"><span id="remaining">255</span> characters left</p>
         <.input type="hidden" field={f[:episode_id]} value={@episode.id} />
         <.button type="submit" class="btn btn-primary">Recommend</.button>
       </.form>
@@ -27,7 +34,7 @@ defmodule PanWeb.Live.Episode.RecommendForm do
         }
       </script>
     </div>
-    <br/>
+    <br />
     """
   end
 end

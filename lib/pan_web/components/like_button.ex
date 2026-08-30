@@ -6,12 +6,12 @@ defmodule PanWeb.Component.LikeButton do
   def update(assigns, socket) do
     like_method =
       case assigns.model do
-        Chapter  -> &Like.find_chapter_like/2
-        Episode  -> &Like.find_episode_like/2
-        Podcast  -> &Like.find_podcast_like/2
+        Chapter -> &Like.find_chapter_like/2
+        Episode -> &Like.find_episode_like/2
+        Podcast -> &Like.find_podcast_like/2
         Category -> &Like.find_category_like/2
-        Persona  -> &Like.find_persona_like/2
-        User     -> &Like.find_user_like/2
+        Persona -> &Like.find_persona_like/2
+        User -> &Like.find_user_like/2
       end
 
     liking =
@@ -48,15 +48,19 @@ defmodule PanWeb.Component.LikeButton do
     ~H"""
     <span>
       <%= if @liking do %>
-        <button phx-click="toggle-like"
-                phx-target={@myself}
-                class="btn btn-success btn-sm my-2">
+        <button
+          phx-click="toggle-like"
+          phx-target={@myself}
+          class="btn btn-success btn-sm my-2"
+        >
           {@likes_count} <Icon.render name="heart-heroicons-solid" /> Unlike
         </button>
       <% else %>
-        <button phx-click="toggle-like"
-                phx-target={@myself}
-                class="btn btn-error btn-sm my-2">
+        <button
+          phx-click="toggle-like"
+          phx-target={@myself}
+          class="btn btn-error btn-sm my-2"
+        >
           {@likes_count} <Icon.render name="heart-heroicons-outline" /> Like
         </button>
       <% end %>

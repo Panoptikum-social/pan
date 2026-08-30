@@ -9,7 +9,9 @@ defmodule PanWeb.Component.Icon do
   def render(assigns) do
     ~H"""
     {icon(@name, class: "h-5 w-5 inline align-text-bottom #{@class}")}
-    <%= if @spaced do %>&nbsp;<% end %>
+    <%= if @spaced do %>
+      &nbsp;
+    <% end %>
     """
   end
 end

@@ -230,5 +230,5 @@
 </div>
 
 <div x-bind:class="{'hidden': !navbarOpen}">
-  <%= render("_navbar_items.html", conn: @conn, current_user: @current_user) %>
+  {render("_navbar_items.html", conn: @conn, current_user: @current_user)}
 </div>

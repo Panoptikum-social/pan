@@ -34,7 +34,7 @@ defmodule Pan.Search.Category do
   end
 
   def batch_reset() do
-    Logger.info("=== full_text resetting all categories ===")
+    Logger.info("full_text resetting all categories")
     Repo.update_all(Category, set: [full_text: false])
   end
 

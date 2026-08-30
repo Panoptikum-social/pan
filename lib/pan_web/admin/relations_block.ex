@@ -15,8 +15,10 @@ defmodule PanWeb.Admin.RelationsBlock do
 
   def render(assigns) do
     ~H"""
-    <div class="mt-4 grid"
-         style="grid-template-columns: max-content 1fr;">
+    <div
+      class="mt-4 grid"
+      style="grid-template-columns: max-content 1fr;"
+    >
       <%= for {association, index} <- @model.__schema__(:associations) |> Enum.with_index do %>
         <div class={[
           "px-2 py-0.5 text-gray-darker italic text-right",
@@ -32,8 +34,10 @@ defmodule PanWeb.Admin.RelationsBlock do
           Integer.is_odd(index) && "bg-gray-lightest",
           index > 0 && "border-t-2 border-gray-lighter"
         ]}>
-          <AssociationLink.render for={@model.__schema__(:association, association)}
-                                  record={@record} />
+          <AssociationLink.render
+            for={@model.__schema__(:association, association)}
+            record={@record}
+          />
           <div :if={!@record}>no record</div>
         </div>
       <% end %>

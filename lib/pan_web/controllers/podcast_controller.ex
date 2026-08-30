@@ -7,7 +7,7 @@ defmodule PanWeb.PodcastController do
 
   plug(:scrub_params, "podcast" when action in [:create, :update])
 
-def orphans(conn, _params) do
+  def orphans(conn, _params) do
     unassigned_podcasts =
       from(p in Podcast,
         left_join: c in assoc(p, :categories),
@@ -50,8 +50,8 @@ def orphans(conn, _params) do
   end
 
   def remove_unwanted_references(conn, %{"id" => id}) do
-    String.to_integer(id) |>
-    Podcast.remove_unwanted_references()
+    String.to_integer(id)
+    |> Podcast.remove_unwanted_references()
 
     conn
     |> put_view(PageFrontendView)

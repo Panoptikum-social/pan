@@ -7,12 +7,21 @@
     <%= for feed <- @feeds do %>
       <li class="flex space-x-4">
         <div>
-          <%= feed.self_link_url %>
+          {feed.self_link_url}
         </div>
         <div>
-          Podcast: <.link href={databrowser_path(@conn, :show, "podcast", feed.podcast)} class="text-link hover:text-link-dark">{feed.podcast.title}</.link>
+          Podcast:
+          <.link
+            href={databrowser_path(@conn, :show, "podcast", feed.podcast)}
+            class="text-link hover:text-link-dark"
+          >{feed.podcast.title}</.link>
         </div>
-        <.link href={podcast_path(@conn, :delete, feed.podcast)} method="delete" data-confirm="Are you sure?" class="btn btn-error btn-sm">Delete</.link>
+        <.link
+          href={podcast_path(@conn, :delete, feed.podcast)}
+          method="delete"
+          data-confirm="Are you sure?"
+          class="btn btn-error btn-sm"
+        >Delete</.link>
       </li>
     <% end %>
   </ul>

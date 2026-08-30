@@ -100,7 +100,7 @@ defmodule Pan.Search.Episode do
   end
 
   def batch_reset do
-    Logger.info("=== full_text reset up to 10_000 episodes ===")
+    Logger.info("full_text reset up to 10_000 episodes")
 
     episode_ids =
       from(e in Episode,

@@ -10,14 +10,26 @@ defmodule PanWeb.Live.Podcast.Index do
 
   def mount(_params, _session, socket) do
     podcasts = Podcast.latest_for_index(1, 15)
-    socket = assign(socket, page: 1, per_page: 15, page_title: "Latest Podcasts", has_more: length(podcasts) == 15)
+
+    socket =
+      assign(socket,
+        page: 1,
+        per_page: 15,
+        page_title: "Latest Podcasts",
+        has_more: length(podcasts) == 15
+      )
+
     {:ok, stream(socket, :latest_podcasts, podcasts)}
   end
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     podcasts = Podcast.latest_for_index(page, assigns.per_page)
-    {:noreply, socket |> assign(page: page, has_more: length(podcasts) == assigns.per_page) |> stream(:latest_podcasts, podcasts)}
+
+    {:noreply,
+     socket
+     |> assign(page: page, has_more: length(podcasts) == assigns.per_page)
+     |> stream(:latest_podcasts, podcasts)}
   end
 
   defp thumbnail(podcast) do
@@ -29,22 +41,31 @@ defmodule PanWeb.Live.Podcast.Index do
     <h1 class="text-3xl m-4">Latest Podcasts</h1>
 
     <div id="latest_podcasts" phx-update="stream" class="m-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
-      <Panel.render :for={{dom_id, podcast} <- @streams.latest_podcasts}
-              purpose="podcast"
-              id={dom_id}
-              heading={podcast.title}
-              target={podcast_frontend_path(Endpoint, :show, podcast.id)}>
+      <Panel.render
+        :for={{dom_id, podcast} <- @streams.latest_podcasts}
+        purpose="podcast"
+        id={dom_id}
+        heading={podcast.title}
+        target={podcast_frontend_path(Endpoint, :show, podcast.id)}
+      >
         <div class="flex flex-col md:flex-row md:items-start md:space-x-2 mx-2 mt-4">
           <div class="flex-none p-2 xl:mx-4 my-2 xl:my-0 border border-gray-light shadow m-auto">
-            <img :if={podcast.thumbnails != []}
-                 src={"https://panoptikum.social#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}
-                 width="150"
-                 height="150"
-                 alt={podcast.image_title}
-                 id="photo"
-                 class="wrap-break-word text-xs" />
-            <img :if={podcast.thumbnails == []}
-                 src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
+            <img
+              :if={podcast.thumbnails != []}
+              src={"https://panoptikum.social#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}
+              width="150"
+              height="150"
+              alt={podcast.image_title}
+              id="photo"
+              class="wrap-break-word text-xs"
+            />
+            <img
+              :if={podcast.thumbnails == []}
+              src="/images/missing-podcast.png"
+              alt="missing image"
+              width="150"
+              height="150"
+            />
           </div>
 
           <div class="grid grid-cols-3 grid-flow-row auto-rows-min">
@@ -64,7 +85,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div class="col-span-2">
-              <Icon.render name="calendar-heroicons-outline"/>
+              <Icon.render name="calendar-heroicons-outline" />
               {Calendar.strftime(podcast.inserted_at, "%x")}
             </div>
 
@@ -74,7 +95,7 @@ defmodule PanWeb.Live.Podcast.Index do
               </label>
             </div>
             <div class="col-span-2 leading-9">
-              <CategoryButton.render :for={category <- podcast.categories} for={category}/>
+              <CategoryButton.render :for={category <- podcast.categories} for={category} />
             </div>
 
             <div>

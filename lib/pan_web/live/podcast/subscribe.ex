@@ -14,16 +14,20 @@ defmodule PanWeb.Live.Podcast.Subscribe do
   def render(assigns) do
     ~H"""
     <div class="flex flex-col h-screen space-y-4 justify-center items-center w-screen">
-      <img :if={Map.has_key?(@podcast_thumbnail, :path)}
-          src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
-          width="150"
-          height="150"
-          alt={@podcast.image_title}
-          id="photo"
-          class="wrap-break-word text-xs" />
-      <.live_component module={PodloveSubscribeButton}
-                       id="podlove_subscribe_button"
-                       podcast={@podcast} />
+      <img
+        :if={Map.has_key?(@podcast_thumbnail, :path)}
+        src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
+        width="150"
+        height="150"
+        alt={@podcast.image_title}
+        id="photo"
+        class="wrap-break-word text-xs"
+      />
+      <.live_component
+        module={PodloveSubscribeButton}
+        id="podlove_subscribe_button"
+        podcast={@podcast}
+      />
     </div>
     """
   end

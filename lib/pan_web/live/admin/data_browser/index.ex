@@ -32,15 +32,18 @@ defmodule PanWeb.Live.Admin.Databrowser.Index do
 
   def render(assigns) do
     ~H"""
-    <.live_component module={IndexGrid}
-               id="index_table"
-               heading={"Listing records for " <> Naming.model_in_plural(@model)}
-               model={@model}
-               cols={@cols}
-               buttons={[:show, :edit, :delete, :new, :pagination,
-                           :number_of_records, :search]} />
-    <ActionButtons.render model={@model}
-                   type={:index} />
+    <.live_component
+      module={IndexGrid}
+      id="index_table"
+      heading={"Listing records for " <> Naming.model_in_plural(@model)}
+      model={@model}
+      cols={@cols}
+      buttons={[:show, :edit, :delete, :new, :pagination, :number_of_records, :search]}
+    />
+    <ActionButtons.render
+      model={@model}
+      type={:index}
+    />
     """
   end
 end

@@ -170,8 +170,11 @@ defmodule PanWeb.CoreComponents do
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
   attr :errors, :list, default: []
-  attr :show_errors, :boolean, default: true,
+
+  attr :show_errors, :boolean,
+    default: true,
     doc: "whether to show errors even if the field was not yet touched"
+
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
@@ -184,7 +187,10 @@ defmodule PanWeb.CoreComponents do
                 multiple pattern placeholder readonly required rows size step)
 
   def input(%{field: %Phoenix.HTML.FormField{} = field} = assigns) do
-    errors = if Phoenix.Component.used_input?(field) or assigns.show_errors == true, do: field.errors, else: []
+    errors =
+      if Phoenix.Component.used_input?(field) or assigns.show_errors == true,
+        do: field.errors,
+        else: []
 
     assigns
     |> assign(field: nil, id: assigns.id || field.id)

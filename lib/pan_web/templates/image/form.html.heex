@@ -1,4 +1,10 @@
-<.form :let={f} for={@changeset} action={@action} enctype="multipart/form-data" class="p-4 mb-4 flex flex-col items-start space-y-4">
+<.form
+  :let={f}
+  for={@changeset}
+  action={@action}
+  enctype="multipart/form-data"
+  class="p-4 mb-4 flex flex-col items-start space-y-4"
+>
   <.error :if={@changeset.action}>
     Oops, something went wrong! Please check the errors below.
   </.error>

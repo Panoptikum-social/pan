@@ -53,24 +53,30 @@ defmodule PanWeb.Live.Category.StatsShow do
       <:panel_heading>
         <.link href={category_frontend_path(@socket, :index)} class="hover:text-blue-400">
           <Icon.render name="folder-heroicons-outline" /> Panoptikum
-        </.link> /
+        </.link>
+        /
         <span :if={@category.parent}>
-          <.link href={category_frontend_path(@socket, :show_stats, @category.parent)}
-                class="hover:text-blue-400">
+          <.link
+            href={category_frontend_path(@socket, :show_stats, @category.parent)}
+            class="hover:text-blue-400"
+          >
             <Icon.render name="folder-heroicons-outline" /> {@category.parent.title}
-          </.link> /
+          </.link>
+          /
         </span>
         <Icon.render name="folder-open-heroicons-outline" /> {@category.title}
       </:panel_heading>
 
       <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
-          <LinkButton.render :for={subcategory <- @category.children}
-                      to={category_frontend_path(@socket, :show_stats, subcategory.id)}
-                      class="btn-outline mr-2 mb-2"
-                      icon="folder-heroicons-outline"
-                      title={subcategory.title}
-                      truncate={true} />
+          <LinkButton.render
+            :for={subcategory <- @category.children}
+            to={category_frontend_path(@socket, :show_stats, subcategory.id)}
+            class="btn-outline mr-2 mb-2"
+            icon="folder-heroicons-outline"
+            title={subcategory.title}
+            truncate={true}
+          />
         </div>
 
         <h3 class="pt-4 text-xl">Click on a language to filter</h3>

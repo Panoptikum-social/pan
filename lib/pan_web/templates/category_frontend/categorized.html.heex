@@ -1,18 +1,20 @@
 <.link href={category_frontend_path(@conn, :index)}>
   {icon("folder-open-heroicons-outline")} Panoptikum
-</.link> /
+</.link>
+/
 <%= if @category.parent do %>
   <.link href={category_frontend_path(@conn, :show, @category.parent.id)}>
     {icon("folder-open-heroicons-outline")} {@category.parent.title}
-  </.link> /
+  </.link>
+  /
 <% end %>
 <.link href={category_frontend_path(@conn, :show, @category)}>
   {icon("folder-open-heroicons-outline")} {@category.title}
 </.link>
 
 <h1 class="text-3xl my-4">
-  <%= icon("folder-open-heroicons-outline") %>
-  <%= @category.title %>
+  {icon("folder-open-heroicons-outline")}
+  {@category.title}
 </h1>
 
 <div x-data="{ selectedTab: 0}" class="pt-4">
@@ -28,7 +30,7 @@
           @click.prevent={"selectedTab = #{index}"}
           to="#"
         >
-          <%= category.title %>
+          {category.title}
         </a>
       </li>
     <% end %>
@@ -38,7 +40,7 @@
     <%= for {category, index} <- Enum.with_index(@categories) do %>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" x-show={"selectedTab === #{index}"}>
         <%= for podcast <- category.podcasts do %>
-          <%= render("_podcast_widget.html", conn: @conn, podcast: podcast) %>
+          {render("_podcast_widget.html", conn: @conn, podcast: podcast)}
         <% end %>
       </div>
     <% end %>

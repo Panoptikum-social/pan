@@ -81,12 +81,56 @@ defmodule PanWeb.Live.Admin.Opml.Index do
       <table class="table table-zebra table-xs my-4 w-auto">
         <thead>
           <tr>
-            <th><SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Id</SortLink.render></th>
-            <th><SortLink.render field={:user_name} click="sort" sort_order={@sort_order} sort_by={@sort_by}>User</SortLink.render></th>
-            <th><SortLink.render field={:content_type} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Content Type</SortLink.render></th>
-            <th><SortLink.render field={:filename} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Filename</SortLink.render></th>
-            <th><SortLink.render field={:inserted_at} click="sort" sort_order={@sort_order} sort_by={@sort_by}>inserted at</SortLink.render></th>
-            <th><SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>Path</SortLink.render></th>
+            <th>
+              <SortLink.render field={:id} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Id
+              </SortLink.render>
+            </th>
+            <th>
+              <SortLink.render
+                field={:user_name}
+                click="sort"
+                sort_order={@sort_order}
+                sort_by={@sort_by}
+              >
+                User
+              </SortLink.render>
+            </th>
+            <th>
+              <SortLink.render
+                field={:content_type}
+                click="sort"
+                sort_order={@sort_order}
+                sort_by={@sort_by}
+              >
+                Content Type
+              </SortLink.render>
+            </th>
+            <th>
+              <SortLink.render
+                field={:filename}
+                click="sort"
+                sort_order={@sort_order}
+                sort_by={@sort_by}
+              >
+                Filename
+              </SortLink.render>
+            </th>
+            <th>
+              <SortLink.render
+                field={:inserted_at}
+                click="sort"
+                sort_order={@sort_order}
+                sort_by={@sort_by}
+              >
+                inserted at
+              </SortLink.render>
+            </th>
+            <th>
+              <SortLink.render field={:path} click="sort" sort_order={@sort_order} sort_by={@sort_by}>
+                Path
+              </SortLink.render>
+            </th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -96,35 +140,47 @@ defmodule PanWeb.Live.Admin.Opml.Index do
             <td>{opml.user_name}</td>
             <td>{opml.content_type}</td>
             <td>{opml.filename}</td>
-            <td><nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr></td>
+            <td>
+              <nobr>{Calendar.strftime(opml.inserted_at, "%c")}</nobr>
+            </td>
             <td>{opml.path}</td>
             <td>
-              <LinkButton.render title="Parse"
-                          to={opml_path(Endpoint, :import, opml.id)}
-                          class="btn-primary" />
-              <LinkButton.render title="Show"
-                          class="btn-outline"
-                          to={opml_path(Endpoint, :show, opml.id)} />
-              <LinkButton.render title="Edit"
-                          class="btn-warning"
-                          to={opml_path(Endpoint, :edit, opml.id)} />
-              <LinkButton.render title="Delete"
-                          to={opml_path(Endpoint, :delete, opml.id)}
-                          method={:delete}
-                          class="text-sm border-danger-dark bg-danger hover:bg-danger-light text-white"
-                          opts={[confirm: "Are you sure?"]} />
+              <LinkButton.render
+                title="Parse"
+                to={opml_path(Endpoint, :import, opml.id)}
+                class="btn-primary"
+              />
+              <LinkButton.render
+                title="Show"
+                class="btn-outline"
+                to={opml_path(Endpoint, :show, opml.id)}
+              />
+              <LinkButton.render
+                title="Edit"
+                class="btn-warning"
+                to={opml_path(Endpoint, :edit, opml.id)}
+              />
+              <LinkButton.render
+                title="Delete"
+                to={opml_path(Endpoint, :delete, opml.id)}
+                method={:delete}
+                class="text-sm border-danger-dark bg-danger hover:bg-danger-light text-white"
+                opts={[confirm: "Are you sure?"]}
+              />
             </td>
           </tr>
         </tbody>
       </table>
 
-      <Pagination.render nr_of_pages={Float.ceil(@nr_of_filtered / @per_page) |> round}
-                  nr_of_unfiltered={@nr_of_unfiltered}
-                  nr_of_filtered={@nr_of_filtered}
-                  page={@page}
-                  per_page={@per_page}
-                  click="paginate"
-                  class="mb-4 max-w-3xl" />
+      <Pagination.render
+        nr_of_pages={Float.ceil(@nr_of_filtered / @per_page) |> round}
+        nr_of_unfiltered={@nr_of_unfiltered}
+        nr_of_filtered={@nr_of_filtered}
+        page={@page}
+        per_page={@per_page}
+        click="paginate"
+        class="mb-4 max-w-3xl"
+      />
 
       <LinkButton.render title="New opml" to={opml_path(Endpoint, :new)} />
     </div>

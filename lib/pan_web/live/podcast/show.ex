@@ -28,7 +28,16 @@ defmodule PanWeb.Live.Podcast.Show do
   def handle_info(%{reload: :now}, %{assigns: %{podcast: podcast, per_page: per_page}} = socket) do
     podcast = Podcast.get_by_id_for_show(podcast.id)
     episodes = Episode.get_by_podcast_id(podcast.id, 1, per_page)
-    {:noreply, socket |> assign(podcast: podcast, page: 1, episodes_count: Episode.count_by_podcast_id(podcast.id), has_more: length(episodes) == per_page) |> stream(:episodes, episodes, reset: true)}
+
+    {:noreply,
+     socket
+     |> assign(
+       podcast: podcast,
+       page: 1,
+       episodes_count: Episode.count_by_podcast_id(podcast.id),
+       has_more: length(episodes) == per_page
+     )
+     |> stream(:episodes, episodes, reset: true)}
   end
 
   def handle_info(payload, socket) do
@@ -38,31 +47,43 @@ defmodule PanWeb.Live.Podcast.Show do
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
     episodes = Episode.get_by_podcast_id(assigns.podcast.id, page, assigns.per_page)
-    {:noreply, socket |> assign(page: page, has_more: length(episodes) == assigns.per_page) |> stream(:episodes, episodes)}
+
+    {:noreply,
+     socket
+     |> assign(page: page, has_more: length(episodes) == assigns.per_page)
+     |> stream(:episodes, episodes)}
   end
 
   def render(assigns) do
     ~H"""
-    <div class="m-4"
-         phx-hook="Notification"
-         id="notification-hook-target">
+    <div
+      class="m-4"
+      phx-hook="Notification"
+      id="notification-hook-target"
+    >
       <span :if={@podcast && @podcast.blocked == true}>
         This podcast may not be published here, sorry.
       </span>
       <div :if={!(@podcast && @podcast.blocked == true)}>
-        <Header.render current_user_id={@current_user_id}
-                admin={@admin}
-                podcast={@podcast}
-                podcast_thumbnail={@podcast_thumbnail}
-                episodes_count={@episodes_count}/>
-        <.live_component module={RecommendationList}
-                            id="recommendations_list"
-                            current_user_id={@current_user_id}
-                            podcast={@podcast}
-                            changeset={@changeset} />
-        <EpisodeList.render episodes={@streams.episodes}
-                     page={@page}
-                     has_more={@has_more} />
+        <Header.render
+          current_user_id={@current_user_id}
+          admin={@admin}
+          podcast={@podcast}
+          podcast_thumbnail={@podcast_thumbnail}
+          episodes_count={@episodes_count}
+        />
+        <.live_component
+          module={RecommendationList}
+          id="recommendations_list"
+          current_user_id={@current_user_id}
+          podcast={@podcast}
+          changeset={@changeset}
+        />
+        <EpisodeList.render
+          episodes={@streams.episodes}
+          page={@page}
+          has_more={@has_more}
+        />
       </div>
     </div>
     """

@@ -3,10 +3,10 @@
     Edit feed backlog
   </h1>
 
-  <%= render("form.html",
+  {render("form.html",
     changeset: @changeset,
     action: feed_backlog_path(@conn, :update, @feed_backlog)
-  ) %>
+  )}
 
   <.link href={feed_backlog_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
 </div>

@@ -1,24 +1,32 @@
 <div class="flex m-4 space-x-2">
   <div>
     <h1 class="text-3xl">Merge candidates</h1>
-    <h2 class="text-2xl"><%= length(@non_unique_names) %> Name-based</h2>
+    <h2 class="text-2xl">{length(@non_unique_names)} Name-based</h2>
 
     <ul class="list-disc m-4">
       <%= for {name, frequency} <- @non_unique_names do %>
         <li>
-          <.link href={persona_path(@conn, :merge_candidate_group, name: name)} class="text-link hover:text-link-dark">{name}</.link> ( <%= frequency %> )
+          <.link
+            href={persona_path(@conn, :merge_candidate_group, name: name)}
+            class="text-link hover:text-link-dark"
+          >{name}</.link>
+          ( {frequency} )
         </li>
       <% end %>
     </ul>
   </div>
 
   <div>
-    <h2 class="text-2xl"><%= length(@non_unique_emails) %> Email-based</h2>
+    <h2 class="text-2xl">{length(@non_unique_emails)} Email-based</h2>
 
     <ul class="list-disc m-4">
       <%= for {email, frequency} <- @non_unique_emails do %>
         <li>
-          <.link href={persona_path(@conn, :merge_candidate_group, email: email)} class="text-link hover:text-link-dark">{email}</.link> ( <%= frequency %> )
+          <.link
+            href={persona_path(@conn, :merge_candidate_group, email: email)}
+            class="text-link hover:text-link-dark"
+          >{email}</.link>
+          ( {frequency} )
         </li>
       <% end %>
     </ul>

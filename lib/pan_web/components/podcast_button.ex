@@ -14,13 +14,15 @@ defmodule PanWeb.Component.PodcastButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render to={Routes.podcast_frontend_path(Endpoint, :show, @id || @for.id)}
-                       id={@for && "podcast-button-#{@for.id}"}
-                       class={["bg-white hover:bg-gray-lighter text-black border-gray", @class]}
-                       icon="podcast-lineawesome-solid"
-                       title={truncate_string(@title || @for.title, 80)}
-                       large={@large}
-                       truncate={@truncate} />
+    <LinkButton.render
+      to={Routes.podcast_frontend_path(Endpoint, :show, @id || @for.id)}
+      id={@for && "podcast-button-#{@for.id}"}
+      class={["bg-white hover:bg-gray-lighter text-black border-gray", @class]}
+      icon="podcast-lineawesome-solid"
+      title={truncate_string(@title || @for.title, 80)}
+      large={@large}
+      truncate={@truncate}
+    />
     """
   end
 end

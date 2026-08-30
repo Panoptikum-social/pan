@@ -10,8 +10,10 @@ defmodule PanWeb.Admin.DataBlock do
 
   def render(assigns) do
     ~H"""
-    <div class="mt-4 grid"
-         style="grid-template-columns: max-content 1fr;">
+    <div
+      class="mt-4 grid"
+      style="grid-template-columns: max-content 1fr;"
+    >
       <%= for {column, index} <- Enum.with_index(@columns) do %>
         <div class={[
           "px-2 py-0.5 text-gray-darker italic text-right",
@@ -27,10 +29,12 @@ defmodule PanWeb.Admin.DataBlock do
           Integer.is_odd(index) && "bg-gray-lightest",
           index > 0 && "border-t-2 border-gray-lighter"
         ]}>
-          <ShowPresenter.render record={@record}
-                                field={column.field}
-                                type={column.type}
-                                redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+          <ShowPresenter.render
+            record={@record}
+            field={column.field}
+            type={column.type}
+            redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+          />
         </div>
       <% end %>
     </div>

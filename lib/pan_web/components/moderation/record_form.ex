@@ -93,13 +93,14 @@ defmodule PanWeb.Component.Moderation.RecordForm do
         </span>
       </div>
 
-      <.form for={@changeset}
-            autocomplete="off"
-            class="mt-4"
-            phx-change="validate"
-            phx-submit="save"
-            phx-target={"#" <> @id}>
-
+      <.form
+        for={@changeset}
+        autocomplete="off"
+        class="mt-4"
+        phx-change="validate"
+        phx-submit="save"
+        phx-target={"#" <> @id}
+      >
         <.error :if={!@changeset.valid?}>
           This record is not valid. Please check the errors below!
         </.error>
@@ -107,47 +108,56 @@ defmodule PanWeb.Component.Moderation.RecordForm do
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
-            <NumberField.render :for={column <- ColumnsFilter.number_columns(assigns)}
-                                name={column.field}
-                                value={Ecto.Changeset.get_field(@changeset, column.field)}
-                                redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+            <NumberField.render
+              :for={column <- ColumnsFilter.number_columns(assigns)}
+              name={column.field}
+              value={Ecto.Changeset.get_field(@changeset, column.field)}
+              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+            />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
-            <DateTimeSelect.render :for={column <- ColumnsFilter.datetime_columns(assigns)}
-                                   name={column.field}
-                                   value={Ecto.Changeset.get_field(@changeset, column.field)}
-                                   redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+            <DateTimeSelect.render
+              :for={column <- ColumnsFilter.datetime_columns(assigns)}
+              name={column.field}
+              value={Ecto.Changeset.get_field(@changeset, column.field)}
+              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+            />
           </fieldset>
           <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Boolean Fields</legend>
-            <CheckBoxField.render :for={column <- ColumnsFilter.boolean_columns(assigns)}
-                                  name={column.field}
-                                  label={column.field}
-                                  value={Ecto.Changeset.get_field(@changeset, column.field)}
-                                  redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+            <CheckBoxField.render
+              :for={column <- ColumnsFilter.boolean_columns(assigns)}
+              name={column.field}
+              label={column.field}
+              value={Ecto.Changeset.get_field(@changeset, column.field)}
+              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+            />
           </fieldset>
         </div>
 
         <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
-            <TextField.render :for={column <- ColumnsFilter.string_columns(assigns)}
-                              name={column.field}
-                              value={Ecto.Changeset.get_field(@changeset, column.field)}
-                              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+            <TextField.render
+              :for={column <- ColumnsFilter.string_columns(assigns)}
+              name={column.field}
+              value={Ecto.Changeset.get_field(@changeset, column.field)}
+              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+            />
           </fieldset>
           <fieldset class="flex-1 flex flex-col border border-gray bg-gray-lightest rounded-xl p-2">
             <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
-            <TextAreaField.render :for={column <- ColumnsFilter.text_columns(assigns)}
-                                  name={column.field}
-                                  value={Ecto.Changeset.get_field(@changeset, column.field)}
-                                  redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)} />
+            <TextAreaField.render
+              :for={column <- ColumnsFilter.text_columns(assigns)}
+              name={column.field}
+              value={Ecto.Changeset.get_field(@changeset, column.field)}
+              redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
+            />
           </fieldset>
         </div>
 
         <.button type="submit">Save</.button>
-
       </.form>
     </div>
     """

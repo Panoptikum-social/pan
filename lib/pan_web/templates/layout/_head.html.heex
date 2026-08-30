@@ -20,11 +20,11 @@
 
   <%= if function_exported?(view_module(@conn), :title, 2) do %>
     <title>
-      <%= view_module(@conn).title(view_template(@conn), @conn.assigns) %>
+      {view_module(@conn).title(view_template(@conn), @conn.assigns)}
     </title>
   <% else %>
     <.live_title suffix="· Panoptikum">
-      <%= assigns[:page_title] || "🎧" %>
+      {assigns[:page_title] || "🎧"}
     </.live_title>
   <% end %>
 
@@ -46,6 +46,6 @@
   />
 
   <%= if function_exported?(view_module(@conn), :scripts, 1) do %>
-    <%= view_module(@conn).scripts(assigns) %>
+    {view_module(@conn).scripts(assigns)}
   <% end %>
 </head>

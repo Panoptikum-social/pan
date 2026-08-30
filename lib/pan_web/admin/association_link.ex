@@ -53,8 +53,10 @@ defmodule PanWeb.Admin.AssociationLink do
     assigns = assigns |> assign(:to, to) |> assign(:link_title, link_title)
 
     ~H"""
-    <.link navigate={@to}
-           class="text-link hover:text-link-dark text-medium underline">
+    <.link
+      navigate={@to}
+      class="text-link hover:text-link-dark text-medium underline"
+    >
       {@link_title}
     </.link>
     """

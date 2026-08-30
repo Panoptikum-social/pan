@@ -56,35 +56,35 @@
           PanoptikumID
         </dt>
         <dd class="col-span-2">
-          <%= @persona.pid %>
+          {@persona.pid}
         </dd>
 
         <dt class="text-right">
           Name
         </dt>
         <dd class="col-span-2">
-          <%= @persona.name %>
+          {@persona.name}
         </dd>
 
         <dt class="text-right">
           Uri
         </dt>
         <dd class="col-span-2">
-          <%= @persona.uri %>
+          {@persona.uri}
         </dd>
 
         <dt class="text-right">
           Description heading
         </dt>
         <dd class="col-span-2">
-          <%= @persona.description %>
+          {@persona.description}
         </dd>
 
         <dt class="text-right">
           Description
         </dt>
         <dd class="col-span-2">
-          <%= @persona.long_description %>
+          {@persona.long_description}
         </dd>
 
         <dt class="text-right">
@@ -92,7 +92,7 @@
         </dt>
         <dd class="col-span-2">
           <a href={@persona.image_url}>
-            <%= @persona.image_title %>
+            {@persona.image_title}
           </a>
         </dd>
 
@@ -101,7 +101,7 @@
         </dt>
         <dd class="col-span-2">
           <a href={@persona.fediverse_address}>
-            <%= @persona.fediverse_address %>
+            {@persona.fediverse_address}
           </a>
         </dd>
       </dl>
@@ -109,6 +109,11 @@
   </div>
 
   <p class="mt-4">
-    <.link href={persona_frontend_path(@conn, :connect, @persona)} method="post" data-confirm="Are you sure?" class="bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md">Claim</.link>
+    <.link
+      href={persona_frontend_path(@conn, :connect, @persona)}
+      method="post"
+      data-confirm="Are you sure?"
+      class="bg-warning hover:bg-warning-light text-white py-2 px-3 rounded-md"
+    >Claim</.link>
   </p>
 </div>

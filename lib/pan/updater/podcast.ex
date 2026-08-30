@@ -45,7 +45,7 @@ defmodule Pan.Updater.Podcast do
          do_not_increase_update_interval,
          redirect_count
        ) do
-    Logger.info("=== #{podcast.id} ⬇ #{podcast.title} ===")
+    Logger.info("#{podcast.id} ⬇ #{podcast.title}")
 
     with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
@@ -63,7 +63,7 @@ defmodule Pan.Updater.Podcast do
         else
           case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
             {:ok, _} ->
-              Logger.info("=== #{podcast.id} redirect -> #{redirect_target} ===")
+              Logger.info("#{podcast.id} redirect -> #{redirect_target}")
 
               import_new_episodes(
                 podcast,

@@ -35,12 +35,14 @@ defmodule PanWeb.Component.CategoryButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
-                       class={[color_class_cycle(@index_on_page), @class]}
-                       large={@large}
-                       icon="folder-heroicons-outline"
-                       title={@title || @for.title}
-                       truncate={@truncate} />
+    <LinkButton.render
+      to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
+      class={[color_class_cycle(@index_on_page), @class]}
+      large={@large}
+      icon="folder-heroicons-outline"
+      title={@title || @for.title}
+      truncate={@truncate}
+    />
     """
   end
 end
