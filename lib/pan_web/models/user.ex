@@ -7,6 +7,7 @@ defmodule PanWeb.User do
     Chapter,
     Community,
     Episode,
+    FeedBacklog,
     Follow,
     Invoice,
     Language,
@@ -39,6 +40,7 @@ defmodule PanWeb.User do
     field(:bot_check, :integer, virtual: true)
     timestamps()
 
+    has_many(:backlog_feeds, FeedBacklog, on_delete: :delete_all)
     has_many(:manifestations, Manifestation, on_delete: :delete_all)
     has_many(:invoices, Invoice, on_delete: :nilify_all)
     has_many(:user_personas, Persona, foreign_key: :user_id)
