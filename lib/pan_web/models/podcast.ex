@@ -695,9 +695,9 @@ defmodule PanWeb.Podcast do
       )
       |> Repo.all(timeout: 60_000)
 
-    deprecated_podcasts = Enum.map(deprecated_podcasts, &probe_deprecated/1)
-
-    Enum.map(deprecated_podcasts, &process_deprecated/1)
+    deprecated_podcasts
+    |> Enum.map(&probe_deprecated/1)
+    |> Enum.map(&recommend_action/1)
   end
 
   @dead_status_codes [
@@ -769,34 +769,29 @@ defmodule PanWeb.Podcast do
     end
   end
 
-  # Unretire as soon as the *feed* is reachable again — that's the thing
-  # Pan actually needs in order to resume tracking, regardless of the
-  # episode probe. Only delete when *both* signals independently agree
-  # there's nothing left. Feed dead but episode still reachable (or any
-  # other combination) is the genuinely ambiguous middle case: stays
-  # retired, no automatic action, worth a human glance rather than a
-  # guess either way.
-  defp process_deprecated(dp) do
+  # Computes a *recommendation* only — never mutates anything. Loading
+  # /podcasts/deprecated used to delete/unretire automatically as a side
+  # effect of the page render; now it only probes and suggests, and an
+  # admin has to click the matching button (PodcastController.delete/2 /
+  # unretire/2 — both already existed and already do the right cleanup) to
+  # actually commit it. See backlog.md.
+  #
+  # Recommend unretiring as soon as the *feed* is reachable again — that's
+  # the thing Pan actually needs in order to resume tracking, regardless of
+  # the episode probe. Only recommend deleting when *both* signals
+  # independently agree there's nothing left. Feed dead but episode still
+  # reachable (or any other combination) is the genuinely ambiguous middle
+  # case: no recommendation, worth a human glance rather than a guess.
+  defp recommend_action(dp) do
     cond do
       dp.feed_status_code == 200 ->
-        unretire(dp)
-        Logger.info("Unretired podcast #{dp.id}: #{dp.title} (feed alive again)")
-        Map.put(dp, :status_code, "unretired")
+        Map.put(dp, :recommended_action, :unretire)
 
       dp.feed_status_code in @dead_status_codes and dp.episode_status_code in @dead_status_codes ->
-        for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
-        Search.Podcast.delete_index(dp.id)
-        Repo.delete!(dp)
-
-        Logger.info(
-          "⚠️ Deleted deprecated podcast #{dp.id}: #{dp.title} " <>
-            "(feed: #{inspect(dp.feed_status_code)}, episode: #{inspect(dp.episode_status_code)})"
-        )
-
-        Map.put(dp, :status_code, "deleted")
+        Map.put(dp, :recommended_action, :delete)
 
       true ->
-        Map.put(dp, :status_code, "inconclusive")
+        Map.put(dp, :recommended_action, :inconclusive)
     end
   end
 end

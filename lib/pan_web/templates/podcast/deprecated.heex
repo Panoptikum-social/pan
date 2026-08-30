@@ -3,6 +3,11 @@
     10 longest deprecated Podcasts
   </h1>
 
+  <p class="my-2 text-sm">
+    Nothing here is automatic — probing only computes a recommendation.
+    Click Delete or Unretire yourself to actually act on a podcast.
+  </p>
+
   <table class="table table-zebra table-xs my-4 w-auto">
     <thead>
       <tr>
@@ -14,8 +19,8 @@
         <th>Last Episode Url</th>
         <th>Feed Status</th>
         <th>Episode Status</th>
-        <th>Result</th>
-        <th>Actions</th>
+        <th>Recommendation</th>
+        <th>Other Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -31,9 +36,11 @@
                 href={
                   episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id)
                 }
-                class="btn btn-info btn-sm"
+                class="btn btn-info btn-sm max-w-60 justify-start"
               >
-                {Enum.at(deprecated_podcast.episodes, 0).title}
+                <span class="truncate min-w-0">
+                  {Enum.at(deprecated_podcast.episodes, 0).title}
+                </span>
               </.link>
             <% end %>
           </td>
@@ -44,21 +51,39 @@
           </td>
           <td>{deprecated_podcast.feed_status_code}</td>
           <td>{deprecated_podcast.episode_status_code}</td>
-          <td>{deprecated_podcast.status_code}</td>
           <td>
-            <%= if deprecated_podcast.status_code not in [200, "unretired", "deleted"] do %>
+            <%= case deprecated_podcast.recommended_action do %>
+              <% :delete -> %>
+                <.link
+                  href={podcast_path(@conn, :delete, deprecated_podcast)}
+                  method="delete"
+                  target="_blank"
+                  class="btn btn-error btn-xs"
+                >Delete</.link>
+              <% :unretire -> %>
+                <.link
+                  href={podcast_path(@conn, :unretire, deprecated_podcast)}
+                  target="_blank"
+                  class="btn btn-info btn-xs"
+                >Unretire</.link>
+              <% :inconclusive -> %>
+                inconclusive
+            <% end %>
+          </td>
+          <td>
+            <%= if deprecated_podcast.recommended_action != :delete do %>
               <.link
                 href={podcast_path(@conn, :delete, deprecated_podcast)}
                 method="delete"
                 target="_blank"
-                class="btn btn-error btn-sm"
+                class="btn btn-error btn-xs"
               >Delete</.link>
             <% end %>
-            <%= if deprecated_podcast.status_code == 200 do %>
+            <%= if deprecated_podcast.recommended_action != :unretire do %>
               <.link
                 href={podcast_path(@conn, :unretire, deprecated_podcast)}
                 target="_blank"
-                class="btn btn-info btn-sm"
+                class="btn btn-info btn-xs"
               >Unretire</.link>
             <% end %>
           </td>

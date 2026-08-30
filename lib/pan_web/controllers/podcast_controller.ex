@@ -69,6 +69,8 @@ defmodule PanWeb.PodcastController do
     Search.Podcast.delete_index(id)
     Repo.delete!(podcast)
 
+    Logger.info("⚠️ Deleted podcast #{podcast.id}: #{podcast.title}")
+
     conn
     |> put_view(PageFrontendView)
     |> put_flash(:info, "Podcast deleted successfully.")
@@ -78,6 +80,8 @@ defmodule PanWeb.PodcastController do
   def unretire(conn, %{"id" => id}) do
     podcast = Repo.get!(Podcast, id)
     Podcast.unretire(podcast)
+
+    Logger.info("Unretired podcast #{podcast.id}: #{podcast.title}")
 
     conn
     |> put_view(PageFrontendView)
