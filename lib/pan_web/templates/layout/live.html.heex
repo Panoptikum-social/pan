@@ -1,23 +1,6 @@
 <main role="main" class="px-4 mx-auto mb-4">
-  <p
-    id="alert-success"
-    class="empty:hidden inline-block rounded-xl p-4 m-4 text-black bg-aqua-light/20 border border-aqua-dark border-dotted"
-    role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"
-  >
-    {Phoenix.Flash.get(@flash, :info)}
-  </p>
-
-  <p
-    id="alert-error"
-    class="empty:hidden inline-block rounded-xl p-4 m-4 text-black bg-grapefruit-light/20 border border-grapefruit-dark border-dotted"
-    role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"
-  >
-    {Phoenix.Flash.get(@flash, :error)}
-  </p>
+  <.flash kind={:info} flash={@flash} />
+  <.flash kind={:error} flash={@flash} />
 
   {@inner_content}
 </main>

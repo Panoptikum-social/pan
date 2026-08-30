@@ -27,7 +27,7 @@ defmodule PanWeb.CoreComponents do
 
   """
   use Phoenix.Component
-  use Gettext, backend: HelloWeb.Gettext
+  use Gettext, backend: PanWeb.Gettext
 
   alias Phoenix.LiveView.JS
 
@@ -64,15 +64,17 @@ defmodule PanWeb.CoreComponents do
         @kind == :info && "alert-info",
         @kind == :error && "alert-error"
       ]}>
-        <.icon :if={@kind == :info} name="hero-information-circle" class="size-5 shrink-0" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle" class="size-5 shrink-0" />
+        {if @kind == :info,
+          do: PanWeb.ViewHelpers.icon("information-circle-heroicons", class: "size-5 shrink-0")}
+        {if @kind == :error,
+          do: PanWeb.ViewHelpers.icon("exclamation-heroicons-outline", class: "size-5 shrink-0")}
         <div>
           <p :if={@title} class="font-semibold">{@title}</p>
           <p>{msg}</p>
         </div>
         <div class="flex-1" />
         <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <.icon name="hero-x-mark" class="size-5 opacity-40 group-hover:opacity-70" />
+          <span class="text-lg leading-none opacity-40 group-hover:opacity-70">✕</span>
         </button>
       </div>
     </div>

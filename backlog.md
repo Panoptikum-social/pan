@@ -75,3 +75,8 @@ again later" instead of auto-deleting; fix `unretire/1` to reset
 `failure_count` too. Whether to also reintroduce a real preview/confirm
 step (vs. today's auto-act-on-page-load) is a product decision, not just a
 code fix — worth deciding explicitly rather than assuming.
+
+**Note:** user does not agree with all 6 points as stated above (didn't say
+which) — this is Claude's read of the code, not a jointly agreed spec.
+Re-discuss which concerns the user actually wants acted on before
+implementing anything here, rather than fixing all six as written.
