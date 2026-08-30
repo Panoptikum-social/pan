@@ -163,5 +163,12 @@ defmodule Pan.Parser.Download do
       response ->
         response
     end
+  rescue
+    # A genuinely garbled response (e.g. a status line full of stray NUL
+    # bytes) makes hackney's parser raise instead of returning an
+    # HTTPoison.Error tuple — that shouldn't take down the whole import job.
+    e ->
+      Logger.warning("HTTP client crashed for #{url}: #{Exception.message(e)}")
+      {:error, %Error{reason: Exception.message(e)}}
   end
 end
