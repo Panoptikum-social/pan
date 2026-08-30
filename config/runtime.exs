@@ -12,8 +12,7 @@ import Config
 # Rollout, one environment at a time (see backlog.md for status):
 #   [x] dev
 #   [x] qa
-#   [ ] prod — not yet migrated, still config/prod.secret.exs (symlinked from
-#              pan-config on the prod host)
+#   [x] prod
 
 if config_env() == :dev do
   config :pan, Pan.Repo,
@@ -69,7 +68,48 @@ if config_env() == :qa do
     check_origin: ["http://#{host}:#{port}"]
 
   # Defaults to not sending real mail from QA. Switch to Swoosh.Adapters.SMTP
-  # (see the prod branch below, once migrated) if you need to test outgoing
-  # mail flows from this environment.
+  # (see the prod branch below) if you need to test outgoing mail flows from
+  # this environment.
   config :pan, Pan.Mailer, adapter: Swoosh.Adapters.Local
+end
+
+if config_env() == :prod do
+  # Bare-metal, not docker-compose — these come from an EnvironmentFile the
+  # systemd unit loads (see backlog.md / DEPLOY.md for the exact path and
+  # setup), not from docker-compose's `environment:` block like qa. Same
+  # "raise if a required one is missing" posture as qa: a real deploy, not a
+  # local machine.
+  database_password =
+    System.get_env("PAN_DB_PASSWORD") ||
+      raise "environment variable PAN_DB_PASSWORD is missing"
+
+  config :pan, Pan.Repo,
+    adapter: Ecto.Adapters.Postgres,
+    username: System.get_env("PAN_DB_USERNAME", "panoptikum"),
+    password: database_password,
+    database: System.get_env("PAN_DB_DATABASE", "pan_prod"),
+    pool_size: 10
+
+  secret_key_base =
+    System.get_env("SECRET_KEY_BASE") ||
+      raise "environment variable SECRET_KEY_BASE is missing"
+
+  config :pan, PanWeb.Endpoint, secret_key_base: secret_key_base
+
+  mailer_password =
+    System.get_env("PAN_MAILER_PASSWORD") ||
+      raise "environment variable PAN_MAILER_PASSWORD is missing"
+
+  config :pan, Pan.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: System.get_env("PAN_MAILER_RELAY", "box.mittenin.at"),
+    username: System.get_env("PAN_MAILER_USERNAME", "robot@informatom.com"),
+    password: mailer_password,
+    ssl: true,
+    sockopts: [verify: :verify_none],
+    tls: :never,
+    auth: :always,
+    port: 465,
+    retries: 0,
+    no_mx_looups: true
 end

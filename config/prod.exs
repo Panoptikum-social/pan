@@ -1,5 +1,9 @@
 import Config
 
+# Pan.Repo, PanWeb.Endpoint secret_key_base, and Pan.Mailer credentials are
+# all env-var driven now — see config/runtime.exs's `config_env() == :prod`
+# branch.
+
 config :pan, PanWeb.Endpoint,
   http: [port: 8888],
   url: [scheme: "https", host: "panoptikum.social", port: 443],
@@ -28,5 +32,3 @@ config :pan, :children, [
   Pan.Job.CacheMissingImages,
   Pan.Job.PushMissingSearchIndex
 ]
-
-import_config "prod.secret.exs"

@@ -36,8 +36,7 @@ npm-debug.log
 # Uploaded OPML-Files
 /uploads/opml/**
 
-# config secret files (dev + qa retired 2026-08-30 -- see config/runtime.exs)
-/config/prod.secret.exs
+# config secret files (dev + qa + prod retired 2026-08-30 -- see config/runtime.exs)
 
 # QA docker-compose secrets (see .env.example)
 /.env

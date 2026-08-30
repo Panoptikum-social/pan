@@ -8,28 +8,31 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## Open backlog items
 
-### Move qa/prod secrets to `config/runtime.exs` (dev done, qa/prod remain)
+### Move prod secrets to `config/runtime.exs` (dev + qa done, prod remains)
 There's no `config/runtime.exs` at all today — the full config chain
-(`config.exs` → `qa.exs`/`prod.exs` → `qa.secret.exs`/`prod.secret.exs`) is
-compile-time only, so secrets (DB password, `PanWeb.Endpoint` `secret_key_base`,
-mailer creds) end up baked in plaintext inside the release/image itself. Standard
-modern Phoenix (1.6+) generates `runtime.exs` by default; this app predates/diverges
-from that.
+(`config.exs` → `prod.exs` → `prod.secret.exs`) is compile-time only, so
+secrets (DB password, `PanWeb.Endpoint` `secret_key_base`, mailer creds) end
+up baked in plaintext inside the release itself. Standard modern Phoenix
+(1.6+) generates `runtime.exs` by default; this app predates/diverges from
+that.
 
-**Status (2026-08-30):** `config/runtime.exs` now exists (commit `a74aa6c0`,
-"migrated dev to runtime.exs"). The **dev** environment is fully migrated —
-`Pan.Repo`/`:bot`/`Pan.Mailer` are env-var driven with defaults matching the old
-values, `config/dev.secret.exs` (previously symlinked from the private
-`pan-config` sibling repo) is retired. Scope was deliberately widened to include
-dev, not just qa/prod, so every dev machine gets the same convention without
-needing `pan-config` cloned.
+**Status (2026-08-30):** `config/runtime.exs` now exists with `dev` and `qa`
+branches, both done and user-confirmed working (commits `a74aa6c0`,
+`f21bfec9`) — `config/dev.secret.exs` and `config/qa.secret.exs` are both
+retired (the qa one deleted from the QA host after a full real test: build,
+migrations, boot, all clean). Scope was deliberately widened to include dev
+too, not just qa/prod, so every dev machine gets the same convention without
+needing the private `pan-config` sibling repo cloned. qa's DB password +
+`secret_key_base` now come from a single gitignored `.env` (see
+`.env.example`), shared between the `app` and `db` docker-compose services
+instead of duplicated by hand.
 
-**Remaining fix when picked up:** in `config/runtime.exs`, add `config_env() ==
-:qa` and `config_env() == :prod` branches; move secret-bearing keys out of
-`qa.secret.exs`/`prod.secret.exs` into `System.get_env/1` reads (raising for
-anything required and missing, unlike dev's fallback-to-default approach — these
-are real deploys, not a local machine). Update `docker-compose.yml` to pass qa's
-values via `environment:` instead of baking them into the build context, update
-`DOCKER.md` accordingly. Touches both the QA Docker flow and the bare-metal prod
-deploy (which reads its secrets from `pan-config/prod.secret.exs` on the prod
-host today) — test both before considering this item closed.
+**Remaining fix when picked up:** add a `config_env() == :prod` branch to
+`config/runtime.exs` mirroring qa's shape — `System.get_env/1` reads, raising
+for anything required and missing. Prod is bare-metal (not docker-compose),
+reading its secrets today from `pan-config/prod.secret.exs` (symlinked on the
+prod host) — figure out the equivalent of qa's `.env` mechanism for that
+deploy style (e.g. an env file sourced by whatever starts the release, or
+systemd `EnvironmentFile=`), update the actual prod deploy process
+accordingly, and test on the real prod host before considering this item
+closed.
