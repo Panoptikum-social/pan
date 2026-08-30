@@ -12,7 +12,9 @@
         <th># Episodes</th>
         <th>Last Episode</th>
         <th>Last Episode Url</th>
-        <th>Status Code</th>
+        <th>Feed Status</th>
+        <th>Episode Status</th>
+        <th>Result</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -40,6 +42,8 @@
               {Enum.at(deprecated_podcast.episodes, 0).url}
             <% end %>
           </td>
+          <td>{deprecated_podcast.feed_status_code}</td>
+          <td>{deprecated_podcast.episode_status_code}</td>
           <td>{deprecated_podcast.status_code}</td>
           <td>
             <%= if deprecated_podcast.status_code not in [200, "unretired", "deleted"] do %>

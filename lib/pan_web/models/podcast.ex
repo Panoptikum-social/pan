@@ -720,52 +720,83 @@ defmodule PanWeb.Podcast do
     "max_redirect_overflow"
   ]
 
+  # Probe both the feed itself and the newest episode's enclosure, rather
+  # than just one or the other — see backlog.md's discussion. The 9 failed
+  # scheduled updates that led to retirement already tell us plenty about
+  # the *feed* specifically; re-checking it here (often much later, since a
+  # podcast sits retired indefinitely until someone visits this page) is a
+  # fresh temporal sample, not a repeat. Checking the episode enclosure too
+  # adds a genuinely different signal (episode files can outlive a dead
+  # feed generator on some hosts, or rot independently via CDN/signed-URL
+  # expiry even while the feed is fine) that the feed check alone can't see.
   defp probe_deprecated(dp) do
     Logger.info("Probing deprecated podcast #{dp.id}: #{dp.title}")
 
+    feed_status_code =
+      case Pan.Parser.Feed.get_by_podcast_id(dp.id) do
+        {:ok, feed} -> probe_url(feed.self_link_url)
+        {:error, _reason} -> nil
+      end
+
+    episode_status_code = probe_url(Enum.at(dp.episodes, 0).url)
+
+    dp
+    |> Map.put(:feed_status_code, feed_status_code)
+    |> Map.put(:episode_status_code, episode_status_code)
+  end
+
+  # Pan.Parser.Download.get/2 instead of a raw HTTPoison call — same TLS
+  # 1.3-handshake-quirk fallback retry and hackney-crash rescue the regular
+  # feed-update path already benefits from, see backlog.md.
+  defp probe_url(url) do
     try do
-      # Pan.Parser.Download.get/2 instead of a raw HTTPoison call — same TLS
-      # 1.3-handshake-quirk fallback retry and hackney-crash rescue the
-      # regular feed-update path already benefits from, see backlog.md.
-      case Pan.Parser.Download.get(Enum.at(dp.episodes, 0).url, follow_redirect: true) do
+      case Pan.Parser.Download.get(url, follow_redirect: true) do
         {:ok, response} ->
-          Map.put(dp, :status_code, response.status_code)
+          response.status_code
 
         {:error, %HTTPoison.Error{reason: reason, id: nil}} ->
           case reason do
-            {:invalid_redirection, _} -> Map.put(dp, :status_code, "invalid redirection")
-            {:tls_alert, _} -> Map.put(dp, :status_code, "TLS alert")
-            {:closed, ""} -> Map.put(dp, :status_code, "closed")
-            {:max_redirect_overflow, _} -> Map.put(dp, :status_code, "max_redirect_overflow")
-            _ -> Map.put(dp, :status_code, reason)
+            {:invalid_redirection, _} -> "invalid redirection"
+            {:tls_alert, _} -> "TLS alert"
+            {:closed, ""} -> "closed"
+            {:max_redirect_overflow, _} -> "max_redirect_overflow"
+            _ -> reason
           end
       end
     rescue
-      _e in CaseClauseError -> Map.put(dp, :status_code, "CaseClauseError")
-      e -> Map.put(dp, :status_code, e.__exception__)
+      _e in CaseClauseError -> "CaseClauseError"
+      e -> e.__exception__
     end
   end
 
+  # Unretire as soon as the *feed* is reachable again — that's the thing
+  # Pan actually needs in order to resume tracking, regardless of the
+  # episode probe. Only delete when *both* signals independently agree
+  # there's nothing left. Feed dead but episode still reachable (or any
+  # other combination) is the genuinely ambiguous middle case: stays
+  # retired, no automatic action, worth a human glance rather than a
+  # guess either way.
   defp process_deprecated(dp) do
     cond do
-      dp.status_code in @dead_status_codes ->
+      dp.feed_status_code == 200 ->
+        unretire(dp)
+        Logger.info("Unretired podcast #{dp.id}: #{dp.title} (feed alive again)")
+        Map.put(dp, :status_code, "unretired")
+
+      dp.feed_status_code in @dead_status_codes and dp.episode_status_code in @dead_status_codes ->
         for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
         Search.Podcast.delete_index(dp.id)
         Repo.delete!(dp)
 
         Logger.info(
-          "⚠️ Deleted deprecated podcast #{dp.id}: #{dp.title} (status: #{inspect(dp.status_code)})"
+          "⚠️ Deleted deprecated podcast #{dp.id}: #{dp.title} " <>
+            "(feed: #{inspect(dp.feed_status_code)}, episode: #{inspect(dp.episode_status_code)})"
         )
 
-        Map.replace(dp, :status_code, "deleted")
-
-      dp.status_code == 200 ->
-        unretire(dp)
-        Logger.info("Unretired podcast #{dp.id}: #{dp.title} (feed alive again)")
-        Map.replace(dp, :status_code, "unretired")
+        Map.put(dp, :status_code, "deleted")
 
       true ->
-        dp
+        Map.put(dp, :status_code, "inconclusive")
     end
   end
 end
