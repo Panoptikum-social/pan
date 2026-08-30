@@ -122,6 +122,11 @@ defmodule Pan.Parser.Persistor do
       Feed.update_with_redirect_target(podcast.id, feed_map[:self_link_url])
     end
 
+    # Applied last so it wins over the self_link_url check above: the feed's
+    # own explicit "I've moved" signal is more authoritative than us noticing
+    # its <atom:link rel="self"> doesn't match what we had stored.
+    Feed.update_with_redirect_target(podcast.id, map[:new_feed_url])
+
     Category.persist_many(map[:categories], podcast)
     AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
