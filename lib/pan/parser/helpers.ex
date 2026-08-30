@@ -1,6 +1,7 @@
 defmodule Pan.Parser.Helpers do
   import Ecto.Query
   alias Pan.Repo
+  alias Pan.Parser.MyDateTime
   require Logger
 
   @date_formats [
@@ -78,6 +79,23 @@ defmodule Pan.Parser.Helpers do
     "{0D}.{0M}.{YYYY}"
   ]
 
+  # Some feeds (buggy podcaster-side software) omit the year entirely, e.g.
+  # "Sun Jun 14 16:00:07 GMT". These mirror the RFC 822-ish variants above,
+  # minus {YYYY} — Timex parses them fine but defaults the year to 0000, so
+  # we detect and overwrite it with a guessed year afterwards (see
+  # try_yearless_formats/1).
+  @yearless_date_formats [
+    "{WDshort} {Mshort} {D} {ISOtime} {Zname}",
+    "{WDshort} {Mshort} {D} {ISOtime} {Z}",
+    "{WDshort} {Mshort} {D} {ISOtime}",
+    "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
+    "{WDshort} {D} {Mshort} {ISOtime} {Z}",
+    "{WDshort} {D} {Mshort} {ISOtime}",
+    "{Mshort} {D} {ISOtime} {Zname}",
+    "{Mshort} {D} {ISOtime} {Z}",
+    "{Mshort} {D} {ISOtime}"
+  ]
+
   @tz_map %{
     "GMT+1" => "+0100",
     "GMT+2" => "+0200",
@@ -126,8 +144,26 @@ defmodule Pan.Parser.Helpers do
       |> extract_date_string()
       |> initial_cleanup()
 
-    datetime = Enum.find_value(@date_formats, &try_format(feed_date, &1))
+    datetime =
+      Enum.find_value(@date_formats, &try_format(feed_date, &1)) ||
+        try_yearless_formats(feed_date)
+
     ensure_naive_in_seconds(datetime, feed_date)
+  end
+
+  # Retries against formats without a year, for feeds that omit it entirely.
+  # Timex fills in a missing year as 0000, so on a successful parse we swap
+  # in a guessed one — there's no better hint available at this point than
+  # "current year", which at least keeps recency-sorted episode lists sane.
+  defp try_yearless_formats(feed_date) do
+    case Enum.find_value(@yearless_date_formats, &try_format(feed_date, &1)) do
+      nil ->
+        nil
+
+      datetime ->
+        Logger.warning("Date missing year, assuming #{Date.utc_today().year}: #{feed_date}")
+        %{datetime | year: Date.utc_today().year}
+    end
   end
 
   # Some feeds nest a date inside a child tag instead of giving plain text,
@@ -176,8 +212,14 @@ defmodule Pan.Parser.Helpers do
         |> NaiveDateTime.truncate(:second)
 
       _ ->
-        Logger.error("Error in date parsing: " <> feed_date)
-        raise "Error in date parsing [#{feed_date}] -> [#{datetime}]"
+        # Unparseable date: don't let it blow up the whole feed import over
+        # one bad episode — fall back to "now", same as the already-existing
+        # convention for episodes with no pubDate tag at all.
+        Logger.warning(
+          "Error in date parsing [#{feed_date}] -> [#{inspect(datetime)}], using now()"
+        )
+
+        MyDateTime.now()
     end
   end
 
