@@ -245,6 +245,11 @@ defmodule PanWeb.Admin.ActionButtons do
         class="btn-outline"
       />
       <LinkButton.render
+        title="Deprecated"
+        to={podcast_path(Endpoint, :deprecated)}
+        class="btn-outline"
+      />
+      <LinkButton.render
         title="Update missing counters"
         to={podcast_path(Endpoint, :update_missing_counters)}
         class="btn-warning"

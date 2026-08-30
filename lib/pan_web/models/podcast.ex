@@ -2,6 +2,7 @@ defmodule PanWeb.Podcast do
   use PanWeb, :model
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3]
   alias Pan.{Repo, Search}
+  require Logger
 
   alias PanWeb.{
     Category,
@@ -709,7 +710,7 @@ defmodule PanWeb.Podcast do
   ]
 
   defp probe_deprecated(dp) do
-    IO.write("🖥️")
+    Logger.info("Probing deprecated podcast #{dp.id}: #{dp.title}")
 
     try do
       case HTTPoison.get(Enum.at(dp.episodes, 0).url, [], follow_redirect: true) do
@@ -737,12 +738,16 @@ defmodule PanWeb.Podcast do
         for episode <- dp.episodes, do: Search.Episode.delete_index(episode.id)
         Search.Podcast.delete_index(dp.id)
         Repo.delete!(dp)
-        IO.write("🗑️")
+
+        Logger.info(
+          "⚠️ Deleted deprecated podcast #{dp.id}: #{dp.title} (status: #{inspect(dp.status_code)})"
+        )
+
         Map.replace(dp, :status_code, "deleted")
 
       dp.status_code == 200 ->
         unretire(dp)
-        IO.write("🔛")
+        Logger.info("Unretired podcast #{dp.id}: #{dp.title} (feed alive again)")
         Map.replace(dp, :status_code, "unretired")
 
       true ->
