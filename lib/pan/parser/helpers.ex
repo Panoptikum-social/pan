@@ -267,6 +267,12 @@ defmodule Pan.Parser.Helpers do
       "\\1"
     )
     |> String.replace(~r/^Mar( .+\b(?:Jan|Feb|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b)/, "Tue\\1")
+    # drop a stray trailing month name repeating one already used earlier,
+    # e.g. "Sun 10 Nov 2019 19:29:11 Nov" -> "Sun 10 Nov 2019 19:29:11"
+    |> String.replace(
+      ~r/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b(.*)\s\1\s*$/,
+      "\\1\\2"
+    )
   end
 
   def replace_long_week_days(datetime) do
