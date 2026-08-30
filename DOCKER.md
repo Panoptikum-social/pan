@@ -43,23 +43,28 @@ from `4001`) to match your setup.
 ## 🛠 Setup
 
 ```sh
-cp config/qa.secret.exs.example config/qa.secret.exs
-$EDITOR config/qa.secret.exs
+cp .env.example .env
+$EDITOR .env
 ```
 
-In `config/qa.secret.exs`, set:
+In `.env`, set:
 
-* `Pan.Repo` `password` — must match `POSTGRES_PASSWORD` in `docker-compose.yml`
-* `PanWeb.Endpoint` `secret_key_base`:
+* `POSTGRES_PASSWORD` — shared by both the `db` and `app` services (see
+  `docker-compose.yml`), so it only needs setting once.
+* `SECRET_KEY_BASE`:
   ```sh
   openssl rand -base64 48
   ```
-* `PanWeb.Endpoint` `url`/`check_origin` — change `qa.panoptikum.social` to
-  this server's actual domain/IP. If you change the published port away
-  from `4001` (see below), update the port here too.
+* `PAN_HOST` — change to this server's actual domain/IP.
+* `PAN_PORT` — only needed if you change the published port away from
+  `4001` (see below).
 
-All of this lives only in `config/qa.secret.exs` (gitignored), so a later
-`git pull` on this server never conflicts with these settings.
+All of this lives only in `.env` (gitignored), so a later `git pull` on
+this server never conflicts with these settings. `docker compose` loads
+`.env` automatically — no extra flag needed. Nothing here is baked into the
+image; it's read by the app at container start (`config/runtime.exs`), so
+changing `.env` only needs `docker compose up -d` (not a rebuild) to take
+effect — see Update below.
 
 ## 🏗 Build and run
 
@@ -116,6 +121,8 @@ docker compose up -d
 
 ## 🔧 Troubleshooting
 
+* `docker compose` refuses to run at all, complaining a variable "is not
+  set" — `.env` is missing or incomplete; see Setup above.
 * `docker compose build` fails to pull the base image — check
   [hub.docker.com/r/hexpm/elixir/tags](https://hub.docker.com/r/hexpm/elixir/tags)
   for a current tag, adjust `UBUNTU_TAG` at the top of `Dockerfile`. If the

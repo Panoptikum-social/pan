@@ -1,10 +1,9 @@
 # syntax=docker/dockerfile:1
 #
-# Builds a Pan (Panoptikum) release for the QA environment.
-# Intended to be built ON the target QA server, where a real
-# config/qa.secret.exs already exists (see config/qa.secret.exs.example) —
-# it gets baked into the release at build time, same convention as the
-# existing bare-metal prod deploy.
+# Builds a Pan (Panoptikum) release for the QA environment. Secrets are
+# read at container start (config/runtime.exs, via docker-compose.yml's
+# `environment:` — see .env.example), not baked into this image at build
+# time — the build itself needs no secrets at all.
 
 ARG ELIXIR_VERSION=1.19.5
 ARG OTP_VERSION=28.4.2

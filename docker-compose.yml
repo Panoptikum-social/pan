@@ -5,6 +5,18 @@ services:
     ports:
       # host:container — change the host side if 4001 is already taken
       - "4001:4000"
+    environment:
+      # See .env.example — docker compose loads .env automatically and
+      # substitutes these; POSTGRES_PASSWORD is shared with the db service
+      # below so it only needs setting in one place. Consumed by
+      # config/runtime.exs's `config_env() == :qa` branch.
+      POSTGRES_USER: postgres
+      POSTGRES_DB: pan_qa
+      POSTGRES_HOST: db
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set, see .env.example}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?SECRET_KEY_BASE is not set, see .env.example}
+      PAN_HOST: ${PAN_HOST:?PAN_HOST is not set, see .env.example}
+      PAN_PORT: ${PAN_PORT:-4001}
     volumes:
       # matches the hardcoded /var/phoenix/pan-uploads path in
       # lib/pan_web/**/opml_controller.ex
@@ -19,10 +31,9 @@ services:
     image: postgres:17
     restart: unless-stopped
     environment:
-      # must match config/qa.secret.exs
       POSTGRES_DB: pan_qa
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: changeme
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is not set, see .env.example}
     volumes:
       - db_data:/var/lib/postgresql/data
       # seeds a baseline schema + demo data on first init (empty data dir

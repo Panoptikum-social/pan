@@ -1,7 +1,8 @@
 import Config
 
-# Database and Mailer credentials live in qa.secret.exs (gitignored),
-# same convention as prod.secret.exs — see config/qa.secret.exs.example.
+# Database, PanWeb.Endpoint url/check_origin/secret_key_base, and Mailer
+# credentials are all env-var driven now — see config/runtime.exs's
+# `config_env() == :qa` branch and .env.example.
 
 config :pan, PanWeb.Endpoint,
   http: [ip: {0, 0, 0, 0}, port: 4000],
@@ -9,10 +10,6 @@ config :pan, PanWeb.Endpoint,
   server: true,
   root: ".",
   version: Mix.Project.config()[:version]
-
-# url/check_origin/secret_key_base are deployment-specific and live in
-# qa.secret.exs (gitignored) instead, so a `git pull` on the QA server
-# never conflicts with per-server settings.
 
 config :logger, level: :info
 
@@ -40,5 +37,3 @@ config :pan, :children, [
   Pan.Job.CacheMissingImages,
   Pan.Job.PushMissingSearchIndex
 ]
-
-import_config "qa.secret.exs"
