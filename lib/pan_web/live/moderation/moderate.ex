@@ -17,6 +17,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
       :update_paused,
       :update_intervall,
       :next_update,
+      :next_podcast_update,
       :retired,
       :failure_count,
       :unique_identifier,

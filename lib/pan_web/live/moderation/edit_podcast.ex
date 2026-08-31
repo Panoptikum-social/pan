@@ -13,7 +13,8 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     # Deliberately not the full Podcast schema — a moderator-facing allowlist.
     # Excluded: :id/:episodes_count/:followers_count/:likes_count/
     # :subscriptions_count (primary key + derived counters), :unique_identifier/
-    # :next_update/:latest_episode_publishing_date/:publication_frequency
+    # :next_update/:next_podcast_update/:latest_episode_publishing_date/
+    # :publication_frequency
     # (system-computed/derived), :manually_updated_at/:full_text/:thumbnailed/
     # :last_error_message/:last_error_occured (internal bookkeeping set by the
     # system, not a human), :inserted_at/:updated_at/:last_build_date
