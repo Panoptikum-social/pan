@@ -11,6 +11,7 @@ defmodule Pan.Parser.Podcast do
         %Podcast{
           update_intervall: 10,
           next_update: time_shift(now(), hours: 1),
+          next_podcast_update: Podcast.next_metadata_refresh_date(),
           publication_frequency: 0.0,
           subscriptions_count: 0,
           likes_count: 0,
@@ -25,20 +26,28 @@ defmodule Pan.Parser.Podcast do
     end
   end
 
-  def update_from_feed(podcast) do
+  # opts[:skip_episodes]: true skips the episode-pruning step inside
+  # Persistor.update_from_feed/3 (which otherwise deletes episodes no longer
+  # present in the feed, cascading away any user likes/comments on them —
+  # see backlog.md). Used by Pan.Job.RefreshPodcastMetadata for the
+  # unattended monthly metadata refresh; the human-triggered callers (admin
+  # "update from feed" button, API endpoint, moderation, like/follow/
+  # subscribe buttons) keep today's full-resync-with-pruning behavior via
+  # the default.
+  def update_from_feed(podcast, opts \\ []) do
     with {:ok, _} <- update_manually_updated_at(podcast),
          {:ok, _} <- send_download_message(podcast.id),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, _} <- send_parsing_message(podcast.id),
          {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, podcast.id),
-         {:ok, _} <- Persistor.update_from_feed(map, podcast),
+         {:ok, _} <- Persistor.update_from_feed(map, podcast, opts),
          {:ok, _} <- Pan.Updater.Podcast.unpause_and_reset_failure_count(podcast),
          {:ok, _} <- send_final_messages_to_browser(podcast) do
       {:ok, "Podcast data updated"}
     else
       {:redirect, redirect_target} ->
         Feed.update_with_redirect_target(podcast.id, redirect_target)
-        update_from_feed(podcast)
+        update_from_feed(podcast, opts)
 
       {:error, "not found"} ->
         message = "Podcast #{podcast.id} has no feed!"

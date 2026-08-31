@@ -37,6 +37,7 @@ defmodule PanWeb.Podcast do
     field(:update_paused, :boolean, default: false)
     field(:update_intervall, :integer)
     field(:next_update, :naive_datetime)
+    field(:next_podcast_update, :naive_datetime)
     field(:retired, :boolean, default: false)
     field(:failure_count, :integer)
     field(:unique_identifier, Ecto.UUID)
@@ -110,6 +111,7 @@ defmodule PanWeb.Podcast do
       :updated_at,
       :update_intervall,
       :next_update,
+      :next_podcast_update,
       :episodes_count,
       :followers_count,
       :likes_count,
@@ -283,6 +285,44 @@ defmodule PanWeb.Podcast do
     Pan.Updater.Podcast.import_new_episodes(podcast)
     # return 0 for immediate next update
     0
+  end
+
+  @doc """
+  Podcasts due for the monthly metadata-only refresh (see
+  Pan.Job.RefreshPodcastMetadata). Same `not update_paused and not retired`
+  guard as get_one_stale/0 above — a podcast an admin paused, or one already
+  retired after 9 failed episode updates, is skipped here too.
+  """
+  def get_due_for_metadata_refresh(limit) do
+    from(p in Podcast,
+      where:
+        p.next_podcast_update <= ^now() and
+          not p.update_paused and not p.retired,
+      order_by: [asc: :next_podcast_update],
+      limit: ^limit
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Called after every metadata-refresh attempt, success or failure alike —
+  there's no separate failure backoff here (unlike update_intervall for
+  episodes): a persistently broken feed already gets caught by the episode
+  job's failure-count/retire-after-9 mechanism, and retired podcasts are
+  already excluded by get_due_for_metadata_refresh/1 above.
+
+  A few days of random jitter keeps podcasts from reclumping onto the same
+  day every month.
+  """
+  def reschedule_metadata_refresh(podcast) do
+    podcast
+    |> Podcast.changeset(%{next_podcast_update: next_metadata_refresh_date()})
+    |> Repo.update()
+  end
+
+  @doc "28-32 days out, so newly-imported podcasts join the same monthly rotation."
+  def next_metadata_refresh_date do
+    time_shift(now(), days: 27 + :rand.uniform(5))
   end
 
   def remove_unwanted_references(id) do

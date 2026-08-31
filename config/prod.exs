@@ -29,6 +29,7 @@ config :pan, :children, [
   PanWeb.Endpoint,
   {PidFile.Worker, file: "pan.pid"},
   Pan.Job.ImportStalePodcasts,
+  Pan.Job.RefreshPodcastMetadata,
   Pan.Job.CacheMissingImages,
   Pan.Job.PushMissingSearchIndex
 ]

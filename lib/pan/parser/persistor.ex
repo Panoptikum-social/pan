@@ -75,7 +75,7 @@ defmodule Pan.Parser.Persistor do
     end
   end
 
-  def update_from_feed(map, podcast) do
+  def update_from_feed(map, podcast, opts \\ []) do
     Phoenix.PubSub.broadcast(:pan_pubsub, "podcasts:#{podcast.id}", %{
       content: "Updating from feed"
     })
@@ -136,13 +136,26 @@ defmodule Pan.Parser.Persistor do
     PodcastContributor.delete_stale_feed_derived(podcast.id)
     Contributor.persist_many(map[:contributors], podcast)
 
-    map[:episodes] && Episode.update_from_feed_many(map[:episodes], podcast)
+    maybe_update_episodes(map, podcast, opts)
 
     PanWeb.Podcast.changeset(podcast)
     |> PanWeb.Podcast.update_counters()
     |> Repo.update()
 
     {:ok, :podcast_updated}
+  end
+
+  # opts[:skip_episodes] leaves episodes untouched entirely — used by the
+  # unattended monthly metadata job, since update_from_feed_many/2 deletes
+  # any episode no longer present in the feed, which cascades (DB-level
+  # ON DELETE CASCADE) into deleting that episode's user likes/comments too.
+  # See Pan.Parser.Podcast.update_from_feed/2 for the full rationale.
+  defp maybe_update_episodes(map, podcast, opts) do
+    if Keyword.get(opts, :skip_episodes, false) do
+      :skipped
+    else
+      map[:episodes] && Episode.update_from_feed_many(map[:episodes], podcast)
+    end
   end
 
   defp maybe_put_image(podcast_map, nil, _image_title), do: podcast_map
