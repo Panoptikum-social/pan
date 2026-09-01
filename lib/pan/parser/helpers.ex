@@ -423,11 +423,28 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
-  def scrub(value) do
-    value.value
-    |> to_string
+  # Mixed content, e.g. <description>text<a href="...">more text<span>...</span></a></description>
+  # parses into a list of binaries interleaved with nested element maps. Flatten it all
+  # down to plain text before handing it back to scrub/1 for sanitizing.
+  def scrub(value) when is_list(value) do
+    value
+    |> Enum.map(&flatten_to_string/1)
+    |> Enum.join()
     |> scrub()
   end
+
+  def scrub(value) do
+    value.value
+    |> scrub()
+  end
+
+  defp flatten_to_string(value) when is_binary(value), do: value
+
+  defp flatten_to_string(value) when is_list(value),
+    do: Enum.map_join(value, &flatten_to_string/1)
+
+  defp flatten_to_string(%{value: value}), do: flatten_to_string(value)
+  defp flatten_to_string(_value), do: ""
 
   def strip_tags(value) do
     HtmlSanitizeEx.strip_tags(value)
