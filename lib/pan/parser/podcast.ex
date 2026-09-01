@@ -5,6 +5,15 @@ defmodule Pan.Parser.Podcast do
   require Logger
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
+  # Feed.update_with_redirect_target/2 only refuses a redirect that repeats
+  # a target this feed has held before — a server that keeps redirecting to
+  # a new, never-before-seen URL (e.g. a cache-busting query string) would
+  # otherwise be followed forever. Same cap as the other two feed-redirect
+  # paths (RssFeed.initial_import/3, Pan.Updater.Podcast.import_new_episodes/5)
+  # — this one was missed in the 2026-08-27 hardening pass and recursed
+  # unbounded, seen live hammering a feed several times a second.
+  @max_redirects 5
+
   def get_or_insert(podcast_map) do
     case Repo.get_by(Podcast, title: podcast_map[:title]) do
       nil ->
@@ -35,6 +44,10 @@ defmodule Pan.Parser.Podcast do
   # subscribe buttons) keep today's full-resync-with-pruning behavior via
   # the default.
   def update_from_feed(podcast, opts \\ []) do
+    update_from_feed(podcast, opts, 0)
+  end
+
+  defp update_from_feed(podcast, opts, redirect_count) do
     with {:ok, _} <- update_manually_updated_at(podcast),
          {:ok, _} <- send_download_message(podcast.id),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
@@ -46,8 +59,7 @@ defmodule Pan.Parser.Podcast do
       {:ok, "Podcast data updated"}
     else
       {:redirect, redirect_target} ->
-        Feed.update_with_redirect_target(podcast.id, redirect_target)
-        update_from_feed(podcast, opts)
+        follow_redirect(podcast, opts, redirect_count, redirect_target)
 
       {:error, "not found"} ->
         message = "Podcast #{podcast.id} has no feed!"
@@ -56,6 +68,18 @@ defmodule Pan.Parser.Podcast do
 
       {:error, message} ->
         {:error, message}
+    end
+  end
+
+  defp follow_redirect(podcast, opts, redirect_count, redirect_target) do
+    if redirect_count >= @max_redirects do
+      Logger.error("Podcast #{podcast.id}: too many redirects")
+      {:error, "too many redirects"}
+    else
+      case Feed.update_with_redirect_target(podcast.id, redirect_target) do
+        {:ok, _} -> update_from_feed(podcast, opts, redirect_count + 1)
+        {:error, message} -> {:error, message}
+      end
     end
   end
 
