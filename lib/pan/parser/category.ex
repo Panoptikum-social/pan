@@ -1,5 +1,6 @@
 defmodule Pan.Parser.Category do
   import Ecto.Query
+  alias Pan.Parser.SsrfGuard
   alias Pan.Repo
   alias PanWeb.Category
 
@@ -63,6 +64,8 @@ defmodule Pan.Parser.Category do
 
       for feed <- podcast.feeds do
         try do
+          :ok = SsrfGuard.check(feed.self_link_url)
+
           %HTTPoison.Response{body: feed_xml} =
             HTTPoison.get!(feed.self_link_url, headers, options)
 

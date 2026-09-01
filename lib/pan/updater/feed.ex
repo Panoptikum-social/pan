@@ -1,4 +1,5 @@
 defmodule Pan.Updater.Feed do
+  alias Pan.Parser.SsrfGuard
   alias Pan.Repo
   alias PanWeb.Feed
   import Pan.Parser.Helpers, only: [md5hash: 1, to_naive_datetime: 1]
@@ -8,20 +9,34 @@ defmodule Pan.Updater.Feed do
     if forced != false || feed.no_headers_available do
       {:ok, "go on"}
     else
-      headers = [
-        "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
-      ]
+      case SsrfGuard.check(feed.self_link_url) do
+        {:error, reason} ->
+          Logger.warning(
+            "SSRF guard blocked HEAD request to #{feed.self_link_url}: #{inspect(reason)}"
+          )
 
-      options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
-
-      case HTTPoison.head(feed.self_link_url, headers, options) do
-        {:ok, %HTTPoison.Response{headers: headers}} ->
-          headermap = Enum.into(headers, %{})
-          check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
-
-        {:error, _error} ->
           {:ok, "go on"}
+
+        :ok ->
+          check_via_head(feed, podcast)
       end
+    end
+  end
+
+  defp check_via_head(feed, podcast) do
+    headers = [
+      "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
+    ]
+
+    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
+
+    case HTTPoison.head(feed.self_link_url, headers, options) do
+      {:ok, %HTTPoison.Response{headers: headers}} ->
+        headermap = Enum.into(headers, %{})
+        check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
+
+      {:error, _error} ->
+        {:ok, "go on"}
     end
   end
 

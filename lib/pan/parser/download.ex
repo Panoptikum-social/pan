@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Download do
   require Logger
-  alias Pan.Parser.Feed
   alias HTTPoison.{Error, Response}
+  alias Pan.Parser.{Feed, SsrfGuard}
 
   def download(url, feed_id \\ nil) do
     error_map = %{
@@ -155,17 +155,22 @@ defmodule Pan.Parser.Download do
   # deliberately not the default here, since download/2 relies on redirects
   # *not* being auto-followed to detect and persist 301/etc. targets itself.
   def get(url, extra_options \\ []) do
-    headers = ["User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"]
-    options = [recv_timeout: 10_000, timeout: 10_000] ++ extra_options
+    with :ok <- SsrfGuard.check(url) do
+      headers = [
+        "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
+      ]
 
-    case HTTPoison.get(url, headers, options) do
-      {:error, %Error{id: nil, reason: {:tls_alert, {:handshake_failure, _description}}}} ->
-        # Some servers' TLS 1.3 handling is incompatible with Erlang's client hello,
-        # while TLS 1.2 negotiates fine (e.g. www.br50.org).
-        HTTPoison.get(url, headers, options ++ [ssl: [versions: [:"tlsv1.2"]]])
+      options = [recv_timeout: 10_000, timeout: 10_000] ++ extra_options
 
-      response ->
-        response
+      case HTTPoison.get(url, headers, options) do
+        {:error, %Error{id: nil, reason: {:tls_alert, {:handshake_failure, _description}}}} ->
+          # Some servers' TLS 1.3 handling is incompatible with Erlang's client hello,
+          # while TLS 1.2 negotiates fine (e.g. www.br50.org).
+          HTTPoison.get(url, headers, options ++ [ssl: [versions: [:"tlsv1.2"]]])
+
+        response ->
+          response
+      end
     end
   rescue
     # A genuinely garbled response (e.g. a status line full of stray NUL
