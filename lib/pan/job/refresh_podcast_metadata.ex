@@ -103,5 +103,16 @@ defmodule Pan.Job.RefreshPodcastMetadata do
       before: podcast,
       after: message
     })
+  rescue
+    # This runs from inside refresh_one_safely/1's own rescue/catch — if
+    # recording the failure raised too (seen live: an unbounded-length
+    # crash message hitting last_error_message's varchar(255) limit), there
+    # is nothing left to catch it, and it takes the whole GenServer down a
+    # second time. Never let error-recording itself be a new crash source.
+    error ->
+      Logger.error(
+        "#{podcast.id} ⟳ #{podcast.title}: failed to record failure: " <>
+          Exception.format(:error, error, __STACKTRACE__)
+      )
   end
 end

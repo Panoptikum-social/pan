@@ -72,7 +72,8 @@ defmodule PanWeb.Image do
     target_dir = "/var/phoenix/pan-uploads/images/#{type}/#{id_part}"
     asset_path = "/thumbnails/#{type}/#{id_part}"
 
-    with {:ok, _} <- not_empty(URI.parse(url).host),
+    with {:ok, url} <- not_empty(url),
+         {:ok, _} <- not_empty(URI.parse(url).host),
          {:ok, url} <- starts_with_http(url),
          {:ok, response} <- URI.encode(url) |> Pan.Parser.Download.get(),
          {:ok, _} <- not_empty(response.body),
