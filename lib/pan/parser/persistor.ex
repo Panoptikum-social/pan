@@ -100,10 +100,20 @@ defmodule Pan.Parser.Persistor do
     feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-    {:ok, podcast} =
-      PanWeb.Podcast.changeset(podcast, podcast_map)
-      |> Repo.update()
+    case PanWeb.Podcast.changeset(podcast, podcast_map) |> Repo.update() do
+      {:ok, podcast} ->
+        continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts)
 
+      {:error, changeset} ->
+        # e.g. a feed that started serving something else entirely (a
+        # WordPress comments feed, say) can hand us a title that collides
+        # with another podcast's — don't let one bad metadata refresh crash
+        # the whole job, report it and move on.
+        {:error, "Podcast #{podcast.id} update rejected: #{format_changeset_errors(changeset)}"}
+    end
+  end
+
+  defp continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts) do
     if image_url, do: update_thumbnail(podcast)
 
     PodcastContributor.delete_role(podcast.id, "owner")
@@ -143,6 +153,12 @@ defmodule Pan.Parser.Persistor do
     |> Repo.update()
 
     {:ok, :podcast_updated}
+  end
+
+  defp format_changeset_errors(changeset) do
+    changeset
+    |> Ecto.Changeset.traverse_errors(&PanWeb.CoreComponents.translate_error/1)
+    |> Enum.map_join("; ", fn {field, messages} -> "#{field}: #{Enum.join(messages, ", ")}" end)
   end
 
   # opts[:skip_episodes] leaves episodes untouched entirely — used by the
