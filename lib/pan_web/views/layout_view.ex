@@ -2,6 +2,21 @@ defmodule PanWeb.LayoutView do
   use PanWeb, :view
 
   @doc """
+  `{label, DaisyUI badge class}` for the current environment, shown in the
+  sidebar just below the logo so it's obvious at a glance which environment
+  you're looking at. `nil` in prod (or any environment that doesn't
+  explicitly opt in) — see `config :pan, :environment` in
+  config/dev.exs/qa.exs/prod.exs.
+  """
+  def environment_badge do
+    case Application.get_env(:pan, :environment) do
+      "dev" -> {"DEV", "badge-success"}
+      "qa" -> {"Q/A", "badge-info"}
+      _ -> nil
+    end
+  end
+
+  @doc """
   Generates name for the JavaScript view we want to use
   in this combination of view/template.
   """

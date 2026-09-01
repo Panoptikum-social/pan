@@ -3,6 +3,8 @@ import Config
 # Pan.Repo, :bot, and Pan.Mailer are configured in config/runtime.exs now
 # (env-var driven, one convention shared with qa/prod).
 
+config :pan, :environment, "dev"
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
