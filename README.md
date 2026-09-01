@@ -1,20 +1,5 @@
 # Panoptikum
 
-## Warning: This is the branch for the major rewrite of Panoptikum.social
-
-We are
-
-* upgrading to the latest version of Phoenix
-* switching from Bootstrap + Bootflat to Tailwind.css
-* switching from jQuery to Alpine.js
-* switching for certain actions from MVC to LiveView
-* switching from master to main branch
-
-Currently the master branch is the one that is still used in production.
-This branch is work in progress!
-
------
-
 Panoptikum (or short Pan) is a webapplication written in [Phoenix](http://www.phoenixframework.org/)
 that represents a podcast discovery and community website.
 
@@ -73,6 +58,50 @@ Compose, see [DOCKER.md](DOCKER.md).
 
 * Sending a Test Mail from the console
   `Pan.Email.login_link_html_email("mytoken", "my-email@example.com") |> Pan.Mailer.deliver()`
-* To rebuilt the search index login as `admin` and visit [`localhost:4000/admin/search/push_all`](http://localhost:4000/admin/search/push_all)
+* To rebuild the search index login as `admin` and visit [`localhost:4000/admin/search/reset_all`](http://localhost:4000/admin/search/reset_all)
 * To attach to a server session:
-  `/var/phoenix/pan/bin/pan remote` and then, for example `PanWeb.Podcast.get_deprecated(10)` to delete deprecated Podcasts
+  `/var/phoenix/pan/bin/pan remote` and then, for example `PanWeb.Podcast.get_deprecated(10)` to probe deprecated podcasts and get delete/unretire recommendations
+
+## 🙏 Sitting on the shoulders of giants
+
+Panoptikum is only possible because of an enormous amount of open-source work
+by others. Thank you.
+
+### Server stack
+
+* [Elixir](https://elixir-lang.org) & [Erlang/OTP](https://www.erlang.org)
+* [Phoenix](https://www.phoenixframework.org) — web framework
+* [Ecto](https://hexdocs.pm/ecto) & [Postgrex](https://hexdocs.pm/postgrex) — database layer
+* [PostgreSQL](https://www.postgresql.org) — database
+* [Phoenix LiveView](https://hexdocs.pm/phoenix_live_view)
+* [Bandit](https://hexdocs.pm/bandit) — web server
+* [Manticore Search](https://manticoresearch.com) — full text search
+* [Quinn](https://hexdocs.pm/quinn) — XML parsing for feed import
+* [HTTPoison](https://hexdocs.pm/httpoison) — HTTP client
+* [Timex](https://hexdocs.pm/timex) & [tzdata](https://hexdocs.pm/tzdata) — date and time handling
+* [HtmlSanitizeEx](https://hexdocs.pm/html_sanitize_ex) — sanitizing feed HTML
+* [Floki](https://hexdocs.pm/floki) — HTML parsing
+* [MDEx](https://hexdocs.pm/mdex) — Markdown rendering
+* [Swoosh](https://hexdocs.pm/swoosh) & [gen_smtp](https://hexdocs.pm/gen_smtp) — mailing
+* [bcrypt_elixir](https://hexdocs.pm/bcrypt_elixir) — password hashing
+* [ja_serializer](https://hexdocs.pm/ja_serializer) — JSON:API serialization
+* [Mogrify](https://hexdocs.pm/mogrify) & [ImageMagick](https://imagemagick.org) — image processing
+* [eqrcode](https://hexdocs.pm/eqrcode) — QR code generation
+* [Gettext](https://hexdocs.pm/gettext) — i18n
+* [Telemetry](https://hexdocs.pm/telemetry_metrics) & [ecto_psql_extras](https://hexdocs.pm/ecto_psql_extras) — observability
+* [Tailwind CSS](https://tailwindcss.com) & [DaisyUI](https://daisyui.com) — styling
+* [Alpine.js](https://alpinejs.dev) — frontend interactivity
+* [topbar](https://github.com/buunguyen/topbar) — page-load progress bar
+* [Podlove Web Player](https://github.com/podlove/ui/tree/development/apps/web-player) — podcast episode player
+
+### Development stack
+
+* [Linux Mint](https://linuxmint.com) — development OS
+* [Visual Studio Code](https://code.visualstudio.com) — editor
+* [Docker](https://www.docker.com) & [Docker Compose](https://docs.docker.com/compose/) — QA environment, see [DOCKER.md](DOCKER.md)
+* [Node.js](https://nodejs.org) & [npm](https://www.npmjs.com) — frontend asset tooling
+* [esbuild](https://esbuild.github.io) — JS bundling
+* [Credo](https://hexdocs.pm/credo) — static code analysis
+* [Igniter](https://hexdocs.pm/igniter) — codegen/patching framework
+* [Claude Code](https://claude.com/claude-code) & [Tidewave](https://tidewave.ai) — AI-assisted development
+* [usage_rules](https://hexdocs.pm/usage_rules) — gathering dependency usage guidance for AI coding tools
