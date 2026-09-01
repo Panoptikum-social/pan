@@ -1,8 +1,10 @@
 defmodule PanWeb.SessionController do
   use PanWeb, :controller
 
-  def create(conn, %{"session" => %{"username" => user, "password" => given_pass}}) do
-    case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass) do
+  def create(conn, %{"session" => %{"username" => user, "password" => given_pass} = params}) do
+    remember_me? = params["remember_me"] == "true"
+
+    case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass, remember_me?) do
       {:ok, conn} ->
         current_user = conn.assigns.current_user
 

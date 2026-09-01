@@ -25,6 +25,8 @@ defmodule PanWeb.Live.Session.New do
 
           <.input field={f[:password]} label="Password" type="password" class="w-full input" value="" />
 
+          <.input field={f[:remember_me]} type="checkbox" label="Remember me for 30 days" />
+
           <.button type="submit" class="btn btn-primary">Log in</.button>
         </.form>
 

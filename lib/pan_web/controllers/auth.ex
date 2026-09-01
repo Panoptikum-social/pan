@@ -4,11 +4,21 @@ defmodule PanWeb.Auth do
   alias Pan.Repo
   alias PanWeb.User
 
+  # "Remember me for 30 days" — the regular session cookie has no max_age,
+  # so it's a browser session cookie: browsers are free to (and often do,
+  # especially closing a standalone-mode installed PWA window) drop it
+  # without waiting for the whole browser to quit. This is a deliberately
+  # separate, opt-in cookie rather than changing the session cookie itself,
+  # so the default (no persistent login) is unaffected.
+  @remember_me_cookie "_pan_remember_me"
+  @remember_me_max_age 60 * 60 * 24 * 30
+
   def init(opts) do
     Keyword.fetch!(opts, :repo)
   end
 
   def call(conn, repo) do
+    conn = fetch_cookies(conn)
     user_id = get_session(conn, :user_id)
 
     cond do
@@ -18,8 +28,24 @@ defmodule PanWeb.Auth do
       user = user_id && repo.get(PanWeb.User, user_id) ->
         put_current_user(conn, user)
 
+      user = remembered_user(conn, repo) ->
+        # Re-establishes a full session (see login/2) so subsequent
+        # requests take the fast session-lookup path above instead of
+        # re-verifying the remember-me cookie every time.
+        login(conn, user)
+
       true ->
         assign(conn, :current_user, nil)
+    end
+  end
+
+  defp remembered_user(conn, repo) do
+    with token when is_binary(token) <- conn.cookies[@remember_me_cookie],
+         {:ok, user_id} <-
+           Phoenix.Token.verify(conn, "remember_me", token, max_age: @remember_me_max_age) do
+      repo.get(PanWeb.User, user_id)
+    else
+      _ -> nil
     end
   end
 
@@ -31,6 +57,21 @@ defmodule PanWeb.Auth do
     |> configure_session(renew: true)
   end
 
+  @doc """
+  Sets the "remember me" cookie so `call/2` can silently re-establish a
+  session after the regular session cookie is gone — call explicitly, only
+  when the user opted in (it's independent of login/2 on purpose: every
+  login path — password, email link — shouldn't set this unless asked).
+  """
+  def remember_me(conn, user) do
+    token = Phoenix.Token.sign(conn, "remember_me", user.id)
+
+    put_resp_cookie(conn, @remember_me_cookie, token,
+      max_age: @remember_me_max_age,
+      http_only: true
+    )
+  end
+
   defp put_current_user(conn, user) do
     token = Phoenix.Token.sign(conn, "user socket", user.id)
 
@@ -40,15 +81,19 @@ defmodule PanWeb.Auth do
   end
 
   def logout(conn) do
-    configure_session(conn, drop: true)
+    conn
+    |> configure_session(drop: true)
+    |> delete_resp_cookie(@remember_me_cookie)
   end
 
-  def login_by_username_and_pass(conn, username, given_pass) do
+  def login_by_username_and_pass(conn, username, given_pass, remember_me? \\ false) do
     user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)
 
     cond do
       user && verify_pass(given_pass, user.password_hash) ->
-        {:ok, login(conn, user)}
+        conn = login(conn, user)
+        conn = if remember_me?, do: remember_me(conn, user), else: conn
+        {:ok, conn}
 
       user ->
         {:error, :unauthorized, conn}
