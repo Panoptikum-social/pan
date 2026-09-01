@@ -83,8 +83,6 @@ defmodule Pan.MixProject do
       {:gen_smtp, "~> 1.3.0"},
       # Markdown parser
       {:mdex, "~> 0.13"},
-      # Timezone information
-      {:tzdata, "~> 1.0"},
       # Jsonapi.org serializer
       {:ja_serializer, "~> 0.15"},
       # See https://github.com/nurugger07/inflex/pull/99, why we have to pull this from githab
