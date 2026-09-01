@@ -325,6 +325,27 @@ defmodule PanWeb.Podcast do
     time_shift(now(), days: 27 + :rand.uniform(5))
   end
 
+  @doc """
+  Records a failed monthly metadata refresh (Pan.Job.RefreshPodcastMetadata):
+  bumps `failure_count` and persists `last_error_message`/
+  `last_error_occured`, the same fields Pan.Updater.Podcast's episode-update
+  path uses. Deliberately does *not* retire the podcast at any threshold,
+  unlike that path's mechanism — a metadata-validation failure (e.g. a
+  title collision) says nothing about whether the feed itself is alive,
+  which is what retirement is meant to signal (see
+  get_due_for_metadata_refresh/1's and reschedule_metadata_refresh/1's docs
+  above).
+  """
+  def record_metadata_refresh_failure(podcast, message) do
+    podcast
+    |> Podcast.changeset(%{
+      failure_count: (podcast.failure_count || 0) + 1,
+      last_error_message: message,
+      last_error_occured: now()
+    })
+    |> Repo.update(force: true)
+  end
+
   def remove_unwanted_references(id) do
     podcast = Repo.get(Podcast, id)
     Search.Podcast.delete_index(id)
