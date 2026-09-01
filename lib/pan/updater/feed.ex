@@ -15,7 +15,7 @@ defmodule Pan.Updater.Feed do
             "SSRF guard blocked HEAD request to #{feed.self_link_url}: #{inspect(reason)}"
           )
 
-          {:ok, "go on"}
+          {:error, "blocked by SSRF guard"}
 
         :ok ->
           check_via_head(feed, podcast)
@@ -36,6 +36,9 @@ defmodule Pan.Updater.Feed do
         check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
 
       {:error, _error} ->
+        # Some hosts reject/mishandle HEAD entirely while GET works fine —
+        # inconclusive, not a known-bad destination, so fall through to the
+        # real fetch rather than giving up here.
         {:ok, "go on"}
     end
   end
