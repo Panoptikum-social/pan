@@ -92,3 +92,39 @@ numbering consistency), with fuzzier judgment-call checks and active
 probing (HTTP HEAD on enclosures, fetching artwork for actual pixel
 dimensions — same probe-then-report shape as the existing deprecation
 check) deferred past v1.
+
+---
+
+### PWA: asset caching + lock-screen media controls (found 2026-09-01)
+Assessed making Panoptikum a PWA. Turns out most of the groundwork already
+exists — `priv/static/config/site.webmanifest` is already linked in
+`<head>` with `display: "standalone"` set, and a full icon set (16/32px
+favicons, 180px apple-touch, 192px android-chrome, Safari pinned-tab SVG)
+plus a clean 512×512 source logo (`panoptikum.social.svg`) already sit in
+`priv/static/images/`, all apparently from a one-time favicon-generator
+pass that was never fully finished. No service worker exists yet.
+
+User's actual motivation was being able to create a Linux (Mint) desktop
+menu-item shortcut for the site — that's satisfied by the cheapest tier
+(fill in the manifest's empty `name`/`short_name`, add the missing 512px
+icon, register a minimal service worker) and isn't itself blocked on
+anything below; do that whenever, separately from this item.
+
+This item is the next tier up, deliberately scoped to what's actually
+useful for a podcast site without hitting LiveView's ceiling (a live
+WebSocket connection is required for interactivity — no PWA/service-worker
+trick makes Panoptikum's pages themselves work offline):
+
+- Basic service-worker asset caching (CSS/JS/icons) so repeat loads are
+  instant and there's a friendly offline fallback instead of a browser
+  error page.
+- Media Session API integration — OS-level lock-screen/notification
+  playback controls (play/pause/skip, artwork) for whatever's currently
+  playing, wired to the Podlove player's existing playback events
+  (`registerExternalEvents` in `assets/js/podlove_player.js`). Frontend-only,
+  no backend changes.
+
+**Explicitly out of scope, decided 2026-09-01 (won't do):** offline episode
+downloads for offline playback, and Web Push notifications for new
+episodes — both real, substantial (days-to-weeks each) undertakings that
+weren't what motivated this in the first place.

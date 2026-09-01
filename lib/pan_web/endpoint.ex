@@ -25,7 +25,7 @@ defmodule PanWeb.Endpoint do
     from: :pan,
     gzip: false,
     only:
-      ~w(assets fonts images web-player subscribe-button simplemde config robots.txt .well-known google0fe1c0bbe8862b06.html)
+      ~w(assets fonts images web-player subscribe-button simplemde config robots.txt sw.js .well-known google0fe1c0bbe8862b06.html)
 
   if Mix.env() == :dev do
     plug Tidewave
