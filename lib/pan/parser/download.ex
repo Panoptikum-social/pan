@@ -3,59 +3,59 @@ defmodule Pan.Parser.Download do
   alias HTTPoison.{Error, Response}
   alias Pan.Parser.{Feed, SsrfGuard}
 
+  @error_map %{
+    202 => "202: accepted",
+    204 => "204: no content",
+    304 => "304: not modified",
+    307 => "307: temporary redirect",
+    400 => "400: bad request",
+    401 => "401: unauthorized",
+    402 => "402: payment required",
+    403 => "403: forbidden",
+    404 => "404: feed not found",
+    405 => "405: method not allowed",
+    406 => "406: not acceptable",
+    408 => "408: request timeout",
+    409 => "409: conflict",
+    410 => "410: gone",
+    416 => "416: range not satisfiable",
+    421 => "421: misdirected request",
+    422 => "422: unprocessible entity",
+    423 => "423: locked",
+    428 => "428: precondition required",
+    429 => "429: too many requests",
+    437 => "437: not a standard status code",
+    440 => "440: login timeout",
+    451 => "451: unavailable For legal reasons",
+    479 => "479: not a standard status code",
+    500 => "500: internal server error",
+    501 => "501: not implemented",
+    502 => "502: bad gateway",
+    503 => "503: service unavailable",
+    504 => "504: gateway time-out",
+    508 => "508: loop detected",
+    506 => "506: variant also negotiates",
+    509 => "509: bandwidth limit exceeded",
+    520 => "520: unknown error",
+    521 => "521: web server is down",
+    523 => "523: origin is unreachable",
+    525 => "525: SSL handshake failed",
+    526 => "526: invalid SSL certificate",
+    530 => "530: origin DNS error with cloudflare",
+    534 => "534: anycast: origin unreachable",
+    999 => "999: not a standard status code"
+  }
+
+  @error_translations %{
+    timeout: "Timeout",
+    ehostunreach: "Host unreachable",
+    nxdomain: "Domain not resolveable",
+    connect_timeout: "Connection timeout",
+    econnrefused: "Connection refused",
+    closed: "Connection closed"
+  }
+
   def download(url, feed_id \\ nil) do
-    error_map = %{
-      202 => "202: accepted",
-      204 => "204: no content",
-      304 => "304: not modified",
-      307 => "307: temporary redirect",
-      400 => "400: bad request",
-      401 => "401: unauthorized",
-      402 => "402: payment required",
-      403 => "403: forbidden",
-      404 => "404: feed not found",
-      405 => "405: method not allowed",
-      406 => "406: not acceptable",
-      408 => "408: request timeout",
-      409 => "409: conflict",
-      410 => "410: gone",
-      416 => "416: range not satisfiable",
-      421 => "421: misdirected request",
-      422 => "422: unprocessible entity",
-      423 => "423: locked",
-      428 => "428: precondition required",
-      429 => "429: too many requests",
-      437 => "437: not a standard status code",
-      440 => "440: login timeout",
-      451 => "451: unavailable For legal reasons",
-      479 => "479: not a standard status code",
-      500 => "500: internal server error",
-      501 => "501: not implemented",
-      502 => "502: bad gateway",
-      503 => "503: service unavailable",
-      504 => "504: gateway time-out",
-      508 => "508: loop detected",
-      506 => "506: variant also negotiates",
-      509 => "509: bandwidth limit exceeded",
-      520 => "520: unknown error",
-      521 => "521: web server is down",
-      523 => "523: origin is unreachable",
-      525 => "525: SSL handshake failed",
-      526 => "526: invalid SSL certificate",
-      530 => "530: origin DNS error with cloudflare",
-      534 => "534: anycast: origin unreachable",
-      999 => "999: not a standard status code"
-    }
-
-    error_translations = %{
-      timeout: "Timeout",
-      ehostunreach: "Host unreachable",
-      nxdomain: "Domain not resolveable",
-      connect_timeout: "Connection timeout",
-      econnrefused: "Connection refused",
-      closed: "Connection closed"
-    }
-
     case get(url) do
       {:ok, %Response{status_code: status_code, body: feed_xml}}
       when status_code in [200, 203, 206] ->
@@ -103,7 +103,7 @@ defmodule Pan.Parser.Download do
              534,
              999
            ] ->
-        {:error, Map.get(error_map, status_code)}
+        {:error, Map.get(@error_map, status_code)}
 
       {:ok, %Response{status_code: status_code, headers: headers}}
       when status_code in [301, 302, 303, 308] ->
@@ -112,27 +112,47 @@ defmodule Pan.Parser.Download do
       {:ok, %Response{status_code: code}} ->
         Logger.error("status_code unknown #{inspect(code)}")
 
-      {:error, %Error{id: nil, reason: reason}}
-      when reason in [
-             :timeout,
-             :ehostunreach,
-             :nxdomain,
-             :connect_timeout,
-             :econnrefused,
-             :closed
-           ] ->
-        {:error, Map.get(error_translations, reason)}
-
-      {:error, %Error{id: nil, reason: {:closed, _feed_xml}}} ->
-        {:error, Map.get(error_translations, :closed)}
-
-      {:error, %Error{id: nil, reason: {:tls_alert, {alert_type, _description}}}}
-      when alert_type in [:handshake_failure, :protocol_version, :unrecognised_name] ->
-        {:error, "TLS error: #{alert_type}"}
+      {:error, %Error{} = error} ->
+        translate_error(error)
 
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  defp translate_error(%Error{id: nil, reason: reason})
+       when reason in [
+              :timeout,
+              :ehostunreach,
+              :nxdomain,
+              :connect_timeout,
+              :econnrefused,
+              :closed
+            ] do
+    {:error, Map.get(@error_translations, reason)}
+  end
+
+  defp translate_error(%Error{id: nil, reason: {:closed, _feed_xml}}) do
+    {:error, Map.get(@error_translations, :closed)}
+  end
+
+  defp translate_error(%Error{id: nil, reason: {:tls_alert, {alert_type, _description}}})
+       when alert_type in [
+              :handshake_failure,
+              :protocol_version,
+              :unrecognised_name,
+              :certificate_expired
+            ] do
+    {:error, "TLS error: #{alert_type}"}
+  end
+
+  # Catch-all for any HTTPoison.Error shape not specifically handled above —
+  # %HTTPoison.Error{} doesn't implement String.Chars, so passing the raw
+  # struct through crashes the first caller that interpolates it into a
+  # log/notification message (seen in Pan.Job.RefreshPodcastMetadata for an
+  # untranslated :certificate_expired TLS alert, 2026-09-01).
+  defp translate_error(%Error{reason: reason}) do
+    {:error, "HTTP error: #{inspect(reason)}"}
   end
 
   defp check_for_rss(feed_xml) do
