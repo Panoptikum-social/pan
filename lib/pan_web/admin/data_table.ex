@@ -55,7 +55,7 @@ defmodule PanWeb.Admin.DataTable do
   attr :sort, :string, required: true
   attr :select, :string, required: true
   attr :search, :string, required: true
-  attr :cycle_search_mode, :string, required: true
+  attr :select_all, :string, required: true
   attr :search_filter, :any, default: {}
   attr :selected_records, :list, default: []
   attr :primary_key, :list, default: [:id]
@@ -68,7 +68,15 @@ defmodule PanWeb.Admin.DataTable do
       style={"grid-template-columns: 6rem #{Enum.map(@cols, &width(&1.type)) |> Enum.join(" ")};"}
     >
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
-        <span :if={:search in @buttons}>Search Mode</span>
+        <input
+          :if={@records != []}
+          type="checkbox"
+          class="my-1.5"
+          checked={Enum.all?(@records, &selected?(&1, @selected_records))}
+          phx-click={@select_all}
+          phx-target={@target}
+          title="Select all displayed"
+        />
       </div>
       <div
         :for={column <- @cols}
@@ -87,15 +95,9 @@ defmodule PanWeb.Admin.DataTable do
 
       <div
         :if={:search in @buttons}
-        class="bg-gray-lighter text-center p-1"
+        class="bg-gray-lighter text-center p-1 italic text-sm"
       >
-        <a
-          phx-click={@cycle_search_mode}
-          phx-target={@target}
-          class="text-link hover:text-link-dark underline"
-        >
-          {@search_mode |> Atom.to_string() |> String.replace("_", " ")}
-        </a>
+        Search →
       </div>
 
       <div

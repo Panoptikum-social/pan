@@ -117,20 +117,34 @@ defmodule PanWeb.Admin.IndexGrid do
     {:noreply, socket}
   end
 
-  def handle_event("cycle_search_mode", _, socket) do
-    search_mode =
-      case socket.assigns.search_mode do
-        :exact -> :starts_with
-        :starts_with -> :ends_with
-        :ends_with -> :contains
-        :contains -> :exact
-      end
-
+  def handle_event("set_search_mode", %{"search_mode" => search_mode}, socket) do
     socket =
-      assign(socket, search_mode: search_mode)
+      assign(socket, search_mode: String.to_existing_atom(search_mode))
       |> get_records
 
     {:noreply, socket}
+  end
+
+  # Toggles selection of every currently displayed (paginated) record —
+  # if all of them are already selected, deselects just those; otherwise
+  # adds any not-yet-selected ones. Selections made on other pages are
+  # left untouched.
+  def handle_event("select_all", _, socket) do
+    primary_key = socket.assigns.primary_key
+    displayed_keys = Enum.map(socket.assigns.records, &record_selection_key(&1, primary_key))
+    selected_records = socket.assigns.selected_records
+
+    all_displayed_selected? =
+      displayed_keys != [] and Enum.all?(displayed_keys, &Enum.member?(selected_records, &1))
+
+    selected_records =
+      if all_displayed_selected? do
+        Enum.reject(selected_records, &Enum.member?(displayed_keys, &1))
+      else
+        Enum.uniq(selected_records ++ displayed_keys)
+      end
+
+    {:noreply, assign(socket, selected_records: selected_records)}
   end
 
   def handle_event("toggle_hide_filtered", _, socket) do
@@ -290,6 +304,19 @@ defmodule PanWeb.Admin.IndexGrid do
     selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
     send(self(), {:associate_to, selected_record_id})
     {:noreply, socket}
+  end
+
+  defp record_selection_key(record, primary_key) do
+    if length(primary_key) == 2 do
+      [first_column, second_column] = primary_key
+
+      %{
+        first_column => Map.get(record, first_column),
+        second_column => Map.get(record, second_column)
+      }
+    else
+      %{id: record.id}
+    end
   end
 
   defp resolve_selected_record(model, selected_record, primary_key) do
@@ -486,6 +513,25 @@ defmodule PanWeb.Admin.IndexGrid do
           >
             {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
           </button>
+
+          <.form
+            :if={:search in @buttons}
+            for={%{}}
+            as={:search_mode}
+            phx-change="set_search_mode"
+            phx-target={@myself}
+            class="px-2 sm:border-r border-gray flex items-center gap-1"
+          >
+            <label class="text-sm">🔍 Search mode</label>
+            <select name="search_mode" class="border border-gray rounded px-1 py-0.5 text-sm">
+              <option value="exact" selected={@search_mode == :exact}>exact</option>
+              <option value="starts_with" selected={@search_mode == :starts_with}>
+                starts with
+              </option>
+              <option value="ends_with" selected={@search_mode == :ends_with}>ends with</option>
+              <option value="contains" selected={@search_mode == :contains}>contains</option>
+            </select>
+          </.form>
         </div>
 
         <Pagination.render
@@ -504,7 +550,7 @@ defmodule PanWeb.Admin.IndexGrid do
         <DataTable.render
           id={"index_table-#{@id}"}
           sort="sort"
-          cycle_search_mode="cycle_search_mode"
+          select_all="select_all"
           select="select"
           search="search"
           target={@myself}
