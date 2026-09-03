@@ -362,6 +362,13 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&#xDC;", "Ü")
     |> String.replace("&#xFC;", "ü")
     |> String.replace("&#xDF;", "ß")
+    # A bare XML document only knows 5 predefined entities (amp/lt/gt/apos/
+    # quot) — HTML-authored named entities like &nbsp; leak in constantly
+    # from feed producers that treat their description field as HTML, and
+    # xmerl fatals on them (:unknown_entity_ref) since there's no DTD
+    # declaring what &nbsp; means. Decode to the real character, same as
+    # the numeric refs above, rather than just dropping/erroring on it.
+    |> String.replace("&nbsp;", " ")
   end
 
   # Some feed producers double-encode their own output (e.g. re-escaping an

@@ -142,26 +142,20 @@ defmodule PanWeb.Admin.IndexGrid do
     {:noreply, socket}
   end
 
+  # Deletes every selected record, not just the first — selection itself
+  # already supported multiple rows (checkboxes, :nonzero-gated Link/
+  # Unlink), delete was the one action still only ever acting on hd/1.
   def handle_event("delete", _, socket) do
     model = socket.assigns.model
-    [selected_record | _] = socket.assigns.selected_records
-
-    record =
-      if Map.has_key?(selected_record, :id) do
-        Repo.get!(model, selected_record.id)
-      else
-        [first_column, second_column] = socket.assigns.primary_key
-
-        QueryBuilder.read_by_values(model, %{
-          first_column => selected_record[first_column],
-          second_column => selected_record[second_column]
-        })
-      end
-
+    primary_key = socket.assigns.primary_key
     path_helper = socket.assigns.path_helper
 
     try do
-      QueryBuilder.delete(model, record)
+      Enum.each(socket.assigns.selected_records, fn selected_record ->
+        record = resolve_selected_record(model, selected_record, primary_key)
+        QueryBuilder.delete(model, record)
+      end)
+
       socket = assign(socket, selected_records: [], request_confirmation: false)
       {:noreply, get_records(socket)}
     rescue
@@ -298,6 +292,19 @@ defmodule PanWeb.Admin.IndexGrid do
     {:noreply, socket}
   end
 
+  defp resolve_selected_record(model, selected_record, primary_key) do
+    if Map.has_key?(selected_record, :id) do
+      Repo.get!(model, selected_record.id)
+    else
+      [first_column, second_column] = primary_key
+
+      QueryBuilder.read_by_values(model, %{
+        first_column => selected_record[first_column],
+        second_column => selected_record[second_column]
+      })
+    end
+  end
+
   def get_records(socket) do
     records =
       QueryBuilder.load(socket.assigns.model, criteria(socket.assigns), socket.assigns.cols)
@@ -385,7 +392,7 @@ defmodule PanWeb.Admin.IndexGrid do
               class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-              disabled={Tools.disabled?(:one, @selected_records |> length)}
+              disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
               phx-click="toggle_request_confirmation"
               phx-target={@myself}
             >
@@ -393,12 +400,13 @@ defmodule PanWeb.Admin.IndexGrid do
             </button>
 
             <div :if={@request_confirmation} class="px-2">
-              Are you sure?
+              Delete {@selected_records |> length} {(@selected_records |> length == 1 &&
+                                                       "record") || "records"}?
               <button
                 class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                disabled={Tools.disabled?(:one, @selected_records |> length)}
+                disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                 phx-click="delete"
                 phx-target={@myself}
               >
@@ -408,7 +416,7 @@ defmodule PanWeb.Admin.IndexGrid do
                 class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
                              disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
-                disabled={Tools.disabled?(:one, @selected_records |> length)}
+                disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                 phx-click="toggle_request_confirmation"
                 phx-target={@myself}
               >

@@ -1202,8 +1202,8 @@ defmodule Pan.Parser.Analyzer do
 
   defp person_map(attr, value) do
     %{name: to_255(value), role: normalize_role(attr[:role])}
-    |> maybe_put(:uri, attr[:href])
-    |> maybe_put(:image_url, attr[:img])
+    |> maybe_put(:uri, to_255(attr[:href]))
+    |> maybe_put(:image_url, to_255(attr[:img]))
   end
 
   defp normalize_role(nil), do: "host"
