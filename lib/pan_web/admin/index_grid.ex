@@ -188,37 +188,18 @@ defmodule PanWeb.Admin.IndexGrid do
   end
 
   def handle_event("select", %{"id" => id}, socket) do
-    clicked_record = %{id: String.to_integer(id)}
-    selected_records = socket.assigns.selected_records
-
-    selected_records =
-      if Enum.member?(selected_records, clicked_record) do
-        List.delete(selected_records, clicked_record)
-      else
-        [clicked_record | selected_records]
-      end
-
-    {:noreply, assign(socket, selected_records: selected_records)}
+    toggle_selected(socket, %{id: String.to_integer(id)})
   end
 
   def handle_event("select", %{"one" => one, "two" => two}, socket) do
-    primary_key = socket.assigns.model.__schema__(:primary_key)
+    [first_column, second_column] = socket.assigns.primary_key
 
     clicked_record = %{
-      hd(primary_key) => String.to_integer(one),
-      hd(tl(primary_key)) => String.to_integer(two)
+      first_column => String.to_integer(one),
+      second_column => String.to_integer(two)
     }
 
-    selected_records = socket.assigns.selected_records
-
-    selected_records =
-      if Enum.member?(selected_records, clicked_record) do
-        List.delete(selected_records, clicked_record)
-      else
-        [clicked_record | selected_records]
-      end
-
-    {:noreply, assign(socket, selected_records: selected_records)}
+    toggle_selected(socket, clicked_record)
   end
 
   def handle_event("show", _, socket) do
@@ -255,6 +236,11 @@ defmodule PanWeb.Admin.IndexGrid do
       id = selected_record |> Map.get(:id)
       show_path = Function.capture(Routes, path_helper, 3).(Endpoint, :show, id)
       {:noreply, push_navigate(socket, to: show_path)}
+    else
+      # No frontend page exists for a mediating (composite-key) record —
+      # this button is never paired with such a model in practice, but
+      # handle_event/3 must still return a valid tuple either way.
+      {:noreply, socket}
     end
   end
 
@@ -301,9 +287,22 @@ defmodule PanWeb.Admin.IndexGrid do
   end
 
   def handle_event("associate", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
+    selected_record_id = hd(socket.assigns.selected_records).id
     send(self(), {:associate_to, selected_record_id})
     {:noreply, socket}
+  end
+
+  defp toggle_selected(socket, clicked_record) do
+    selected_records = socket.assigns.selected_records
+
+    selected_records =
+      if Enum.member?(selected_records, clicked_record) do
+        List.delete(selected_records, clicked_record)
+      else
+        [clicked_record | selected_records]
+      end
+
+    {:noreply, assign(socket, selected_records: selected_records)}
   end
 
   defp record_selection_key(record, primary_key) do
@@ -427,8 +426,9 @@ defmodule PanWeb.Admin.IndexGrid do
             </button>
 
             <div :if={@request_confirmation} class="px-2">
-              Delete {@selected_records |> length} {(@selected_records |> length == 1 &&
-                                                       "record") || "records"}?
+              Delete {@selected_records |> length} {if @selected_records |> length == 1,
+                do: "record",
+                else: "records"}?
               <button
                 class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded

@@ -147,79 +147,70 @@ defmodule PanWeb.Admin.ModerationGrid do
   end
 
   def handle_event("select", %{"id" => id}, socket) do
-    clicked_record = %{id: String.to_integer(id)}
-    selected_records = socket.assigns.selected_records
-
-    selected_records =
-      if Enum.member?(selected_records, clicked_record) do
-        List.delete(selected_records, clicked_record)
-      else
-        [clicked_record | selected_records]
-      end
-
-    {:noreply, assign(socket, selected_records: selected_records)}
+    toggle_selected(socket, %{id: String.to_integer(id)})
   end
 
   def handle_event("select", %{"one" => one, "two" => two}, socket) do
-    primary_key = socket.assigns.model.__schema__(:primary_key)
+    [first_column, second_column] = socket.assigns.primary_key
 
     clicked_record = %{
-      hd(primary_key) => String.to_integer(one),
-      hd(tl(primary_key)) => String.to_integer(two)
+      first_column => String.to_integer(one),
+      second_column => String.to_integer(two)
     }
 
-    selected_records = socket.assigns.selected_records
-
-    selected_records =
-      if Enum.member?(selected_records, clicked_record) do
-        List.delete(selected_records, clicked_record)
-      else
-        [clicked_record | selected_records]
-      end
-
-    {:noreply, assign(socket, selected_records: selected_records)}
+    toggle_selected(socket, clicked_record)
   end
 
   def handle_event("show_episodes", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_episodes, selected_record_id})
+    send(self(), {:show_episodes, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("show_feeds", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_feeds, selected_record_id})
+    send(self(), {:show_feeds, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("edit_podcast", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_podcast, selected_record_id})
+    send(self(), {:edit_podcast, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("edit_episode", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_episode, selected_record_id})
+    send(self(), {:edit_episode, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("edit_feed", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:edit_feed, selected_record_id})
+    send(self(), {:edit_feed, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("show_in_frontend", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:show_in_frontend, selected_record_id})
+    send(self(), {:show_in_frontend, first_selected_id(socket)})
     {:noreply, socket}
   end
 
   def handle_event("remove_from_moderation", _, socket) do
-    selected_record_id = hd(Enum.map(socket.assigns.selected_records, & &1.id))
-    send(self(), {:remove_from_moderation, selected_record_id})
+    send(self(), {:remove_from_moderation, first_selected_id(socket)})
     {:noreply, assign(socket, selected_records: [])}
+  end
+
+  defp first_selected_id(socket) do
+    hd(socket.assigns.selected_records).id
+  end
+
+  defp toggle_selected(socket, clicked_record) do
+    selected_records = socket.assigns.selected_records
+
+    selected_records =
+      if Enum.member?(selected_records, clicked_record) do
+        List.delete(selected_records, clicked_record)
+      else
+        [clicked_record | selected_records]
+      end
+
+    {:noreply, assign(socket, selected_records: selected_records)}
   end
 
   defp record_selection_key(record, primary_key) do

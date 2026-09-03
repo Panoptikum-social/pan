@@ -15,6 +15,9 @@ defmodule PanWeb.Admin.DataTable do
   defp width(:string), do: "16rem"
   defp width(Ecto.EctoText), do: "16rem"
   defp width(:boolean), do: "4rem"
+  # Fallback for any Ecto type not explicitly sized above — keeps an
+  # unanticipated field type from crashing the whole table render.
+  defp width(_type), do: "8rem"
 
   defp dyed?(record, assigns) do
     if assigns.search_filter != {} do
@@ -25,11 +28,11 @@ defmodule PanWeb.Admin.DataTable do
     end
   end
 
-  def associated?(record, column, values) when is_list(values) do
+  defp associated?(record, column, values) when is_list(values) do
     Map.get(record, column) in values
   end
 
-  def associated?(record, column, value) when is_integer(value) do
+  defp associated?(record, column, value) when is_integer(value) do
     Map.get(record, column) == value
   end
 
@@ -108,7 +111,7 @@ defmodule PanWeb.Admin.DataTable do
         <.form
           :if={
             column[:searchable] &&
-              @model.__schema__(:redact_fields) |> Enum.member?(column.field) |> Kernel.not()
+              column.field not in @model.__schema__(:redact_fields)
           }
           for={%{}}
           as={:search}
