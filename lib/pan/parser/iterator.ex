@@ -21,7 +21,12 @@ defmodule Pan.Parser.Iterator do
   end
 
   def parse(map, "image", [head | tail]) do
-    image_map = Analyzer.call(map, "image", [head[:name], head[:attr], head[:value]])
+    image_map =
+      if is_map(head) do
+        Analyzer.call(map, "image", [head[:name], head[:attr], head[:value]])
+      else
+        %{image_url: head, image_title: head}
+      end
 
     Helpers.deep_merge(map, %{image: image_map})
     |> parse("image", tail)

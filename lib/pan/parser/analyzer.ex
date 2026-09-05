@@ -1098,7 +1098,7 @@ defmodule Pan.Parser.Analyzer do
   end
 
   def call(_, "episode", [:"dc:contributor", _, [value]]) do
-    %{contributors: %{uuid1() => %{name: value, uri: value}}}
+    %{contributors: %{uuid1() => %{name: to_255(value), uri: to_255(value)}}}
   end
 
   # podcast:person - https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/tags/person.md
