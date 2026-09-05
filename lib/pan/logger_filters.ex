@@ -59,5 +59,71 @@ defmodule Pan.LoggerFilters do
     :stop
   end
 
+  # A closing tag that doesn't match the element it's closing — garbled or
+  # truncated feed bytes turning e.g. </pubDate> into </p9:50:00tifeicep>.
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, {:endtag_does_not_match, {:was, _, :should_have_been, _}}]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
+  # A "<" that isn't followed by a valid element/tag start — garbled markup.
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, :expected_element_start_tag]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
+  # An unescaped "&" in text content that isn't a valid entity reference
+  # (missing the trailing ";").
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, :expected_entity_reference_semicolon]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
+  # A malformed entity reference the scanner can't parse at all.
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, :error_scanning_entity_ref]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
   def silence_xmerl_fatal(event, _extra), do: event
 end
