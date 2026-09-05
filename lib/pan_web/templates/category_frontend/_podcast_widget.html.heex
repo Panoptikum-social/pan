@@ -32,7 +32,11 @@
             </label>
           </div>
           <div class="col-span-2">
-            <.link href={@podcast.website} class="text-link truncate hover:text-link-dark">{@podcast.website}</.link>
+            <%= if safe_uri?(@podcast.website) do %>
+              <.link href={@podcast.website} class="text-link truncate hover:text-link-dark">{@podcast.website}</.link>
+            <% else %>
+              <span class="truncate">{@podcast.website}</span>
+            <% end %>
           </div>
         <% end %>
 
@@ -86,10 +90,14 @@
           <div class="text-right">
             Support
           </div>
-          <.link
-            href={@podcast.payment_link_url}
-            class="col-span-2 text-link hover:text-link-dark"
-          >{@podcast.payment_link_title}</.link>
+          <%= if safe_uri?(@podcast.payment_link_url) do %>
+            <.link
+              href={@podcast.payment_link_url}
+              class="col-span-2 text-link hover:text-link-dark"
+            >{@podcast.payment_link_title}</.link>
+          <% else %>
+            <span class="col-span-2">{@podcast.payment_link_title}</span>
+          <% end %>
         <% end %>
       </div>
     </div>

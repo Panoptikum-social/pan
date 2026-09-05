@@ -505,4 +505,26 @@ defmodule PanWeb.CoreComponents do
   def translate_errors(errors, field) when is_list(errors) do
     for {^field, {msg, opts}} <- errors, do: translate_error({msg, opts})
   end
+
+  # Several fields we render as `<.link href={...}>` come straight from
+  # feed-parsed data (podcast website, payment link, persona uri, ...) —
+  # real-world values include custom schemes (skype:, whatsapp:, ...) or
+  # plain garbage that <.link>'s own scheme validation raises on instead of
+  # just refusing to linkify, crashing the whole page for any visitor. Same
+  # allowlist Phoenix's own Phoenix.LiveView.Utils.valid_string_destination!/2
+  # uses, checked ourselves first so a bad one can fall back to plain text.
+  @safe_uri_schemes ~w(http https ftp ftps mailto news irc gopher nntp feed telnet mms rtsp svn tel fax xmpp)
+
+  @doc """
+  Whether `uri` is safe to render as a `<.link href={uri}>` — a relative
+  reference (no scheme) or one of a fixed allowlist of schemes. `nil` and
+  anything `URI.parse/1` can't make sense of are not safe.
+  """
+  def safe_uri?(nil), do: false
+
+  def safe_uri?(uri) do
+    URI.parse(uri).scheme in [nil | @safe_uri_schemes]
+  rescue
+    _ -> false
+  end
 end

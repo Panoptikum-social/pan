@@ -43,6 +43,7 @@ defmodule PanWeb.Live.Community.Show do
 
         <p :if={@community.website} class="mt-2">
           <.link
+            :if={safe_uri?(@community.website)}
             href={@community.website}
             rel="me"
             target="_blank"
@@ -50,6 +51,7 @@ defmodule PanWeb.Live.Community.Show do
           >
             {@community.website}
           </.link>
+          <span :if={!safe_uri?(@community.website)}>{@community.website}</span>
         </p>
 
         <p :if={@community.fediverse_address} class="mt-2 text-gray-dark">
