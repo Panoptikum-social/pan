@@ -30,7 +30,13 @@ defmodule Pan.Parser.Category do
   def persist_many(categories_map, podcast) do
     if categories_map do
       categories =
-        Enum.map(categories_map, fn {_, category_map} ->
+        categories_map
+        # A malformed/empty <category> tag parses to a nil (or blank) title —
+        # get_or_insert/2's query does `c.title == ^title`, and Ecto refuses
+        # to build that comparison against a literal nil (would silently
+        # match nothing in SQL anyway), raising instead of just skipping it.
+        |> Enum.reject(fn {_, category_map} -> blank?(category_map[:title]) end)
+        |> Enum.map(fn {_, category_map} ->
           {:ok, category} = get_or_insert(category_map[:title], category_map[:parent])
           category
         end)
@@ -44,6 +50,9 @@ defmodule Pan.Parser.Category do
       |> Repo.update!()
     end
   end
+
+  defp blank?(nil), do: true
+  defp blank?(title), do: String.trim(title) == ""
 
   def fix() do
     podcasts = Repo.all(PanWeb.Podcast)

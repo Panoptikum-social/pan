@@ -3,6 +3,18 @@ defmodule Pan.Parser.Persona do
   alias Pan.Repo
 
   def get_or_insert(persona_map) do
+    # itunes:owner/contributor sub-fields sometimes contain embedded HTML
+    # instead of plain text (e.g. Cloudflare's email-obfuscation snippet,
+    # <a data-cfemail="...">[email protected]</a>, parsed into a nested
+    # %{name: :a, value: [...], attr: [...]} map rather than a string) —
+    # drop any non-string value here rather than let it reach UUID.uuid5/2
+    # (requires a binary) or an Ecto :string column insert later.
+    persona_map =
+      persona_map
+      |> Map.update(:uri, nil, &only_if_string/1)
+      |> Map.update(:email, nil, &only_if_string/1)
+      |> Map.update(:name, nil, &only_if_string/1)
+
     # The idea is to set the pid to be imported as strong as possible
     # That is panoptikum:pid > uri > email > name; but if the pid in
     # the database does not fit, we still fall back to weaker matches,
@@ -16,7 +28,8 @@ defmodule Pan.Parser.Persona do
           :url,
           persona_map[:uri] ||
             persona_map[:email] ||
-            persona_map[:name]
+            persona_map[:name] ||
+            ""
         )
       )
 
@@ -50,6 +63,9 @@ defmodule Pan.Parser.Persona do
         {:ok, persona}
     end
   end
+
+  defp only_if_string(value) when is_binary(value), do: value
+  defp only_if_string(_value), do: nil
 
   defp find_persona(pid, uri, email) do
     (pid && Repo.get_by(PanWeb.Persona, pid: pid)) ||

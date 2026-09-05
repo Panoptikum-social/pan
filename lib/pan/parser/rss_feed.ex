@@ -83,7 +83,9 @@ defmodule Pan.Parser.RssFeed do
       {:ok, Quinn.parse(feed_map)}
     catch
       :exit, error ->
-        {:error, "Quinn error: " <> error}
+        # xmerl's exit reason is a term (e.g. {:fatal, {:error_scanning_entity_ref,
+        # ...}}), not a string — <> on it crashes the crash handler itself.
+        {:error, "Quinn error: " <> inspect(error)}
     end
   end
 

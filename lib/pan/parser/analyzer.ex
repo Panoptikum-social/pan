@@ -891,7 +891,12 @@ defmodule Pan.Parser.Analyzer do
     )
   end
 
+  # Not a standard Apple tag at all (the real spec nests itunes:category
+  # inside itunes:category) — some feed generators emit this instead, in
+  # either casing seen in the wild. Ignored either way: real category data
+  # comes through the itunes:category clauses above.
   def call("category", [:"itunes:Subcategory", _, _], _), do: %{}
+  def call("category", [:"itunes:subcategory", _, _], _), do: %{}
 
   # Episodes
   def call(map, "tag", [:item, _, value]), do: parse(map, "episode", value, uuid1())
