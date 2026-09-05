@@ -127,8 +127,7 @@ defmodule Pan.Parser.Helpers do
               @tz_map
               |> Map.keys()
               |> Enum.sort_by(&byte_size/1, :desc)
-              |> Enum.map(&Regex.escape/1)
-              |> Enum.join("|")
+              |> Enum.map_join("|", &Regex.escape/1)
             )
 
   def boolify(explicit) do
@@ -435,8 +434,7 @@ defmodule Pan.Parser.Helpers do
   # down to plain text before handing it back to scrub/1 for sanitizing.
   def scrub(value) when is_list(value) do
     value
-    |> Enum.map(&flatten_to_string/1)
-    |> Enum.join()
+    |> Enum.map_join(&flatten_to_string/1)
     |> scrub()
   end
 

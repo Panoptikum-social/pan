@@ -96,23 +96,15 @@ defmodule Pan.Search do
 
       case Search.Manticore.post(data, "bulk", "application/x-ndjson") do
         {:ok, %HTTPoison.Response{status_code: response_code, body: response_body}} ->
-          if response_code in [200, 201] do
-            from(r in model, where: r.id in ^record_ids)
-            |> Repo.update_all(set: [full_text: true])
-
-            Logger.info("Indexed #{length(record_ids)} records of type #{model}")
-          else
-            handle_bulk_insert_error(response_body, model)
-          end
-
-          if response_code in [200, 201, 500] do
-            batch_index(
-              model: model,
-              preloads: preloads,
-              selects: selects,
-              struct_function: struct_function
-            )
-          end
+          handle_bulk_insert_response(
+            response_code,
+            response_body,
+            model,
+            record_ids,
+            preloads,
+            selects,
+            struct_function
+          )
 
         {:error, error} ->
           # a transport-level failure (e.g. connection closed mid-request),
@@ -123,6 +115,34 @@ defmodule Pan.Search do
       end
     else
       Logger.info("Done with type #{model}")
+    end
+  end
+
+  defp handle_bulk_insert_response(
+         response_code,
+         response_body,
+         model,
+         record_ids,
+         preloads,
+         selects,
+         struct_function
+       ) do
+    if response_code in [200, 201] do
+      from(r in model, where: r.id in ^record_ids)
+      |> Repo.update_all(set: [full_text: true])
+
+      Logger.info("Indexed #{length(record_ids)} records of type #{model}")
+    else
+      handle_bulk_insert_error(response_body, model)
+    end
+
+    if response_code in [200, 201, 500] do
+      batch_index(
+        model: model,
+        preloads: preloads,
+        selects: selects,
+        struct_function: struct_function
+      )
     end
   end
 

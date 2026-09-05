@@ -58,31 +58,49 @@ defmodule Pan.Updater.Podcast do
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
       {:redirect, redirect_target} ->
-        if redirect_count >= @max_redirects do
-          handle_message(podcast, "too many redirects", no_failure_count_increase)
-        else
-          case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
-            {:ok, _} ->
-              Logger.info("#{podcast.id} redirect -> #{redirect_target}")
-
-              import_new_episodes(
-                podcast,
-                forced,
-                no_failure_count_increase,
-                do_not_increase_update_interval,
-                redirect_count + 1
-              )
-
-            {:error, message} ->
-              handle_message(podcast, message, no_failure_count_increase)
-          end
-        end
+        follow_redirect(
+          podcast,
+          forced,
+          no_failure_count_increase,
+          do_not_increase_update_interval,
+          redirect_count,
+          redirect_target
+        )
 
       {:error, message} ->
         handle_message(podcast, message, no_failure_count_increase)
 
       {:done, "nothing to do"} ->
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
+    end
+  end
+
+  defp follow_redirect(
+         podcast,
+         forced,
+         no_failure_count_increase,
+         do_not_increase_update_interval,
+         redirect_count,
+         redirect_target
+       ) do
+    if redirect_count >= @max_redirects do
+      handle_message(podcast, "too many redirects", no_failure_count_increase)
+    else
+      case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
+        {:ok, _} ->
+          Logger.info("#{podcast.id} redirect -> #{redirect_target}")
+
+          import_new_episodes(
+            podcast,
+            forced,
+            no_failure_count_increase,
+            do_not_increase_update_interval,
+            redirect_count + 1
+          )
+
+        {:error, message} ->
+          handle_message(podcast, message, no_failure_count_increase)
+      end
     end
   end
 

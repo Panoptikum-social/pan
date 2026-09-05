@@ -31,23 +31,27 @@ defmodule Pan.Parser.RssFeed do
         {:error, error}
 
       {:redirect, redirect_target} ->
-        cond do
-          redirect_target in visited_urls ->
-            {:error, "loop detected"}
+        follow_initial_import_redirect(url, feed_id, pagecount, visited_urls, redirect_target)
+    end
+  end
 
-          length(visited_urls) >= @max_redirects ->
-            {:error, "too many redirects"}
+  defp follow_initial_import_redirect(url, feed_id, pagecount, visited_urls, redirect_target) do
+    cond do
+      redirect_target in visited_urls ->
+        {:error, "loop detected"}
 
-          true ->
-            case initial_import(redirect_target, feed_id, pagecount, [url | visited_urls]) do
-              {:ok, podcast_id} ->
-                feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
-                AlternateFeed.get_or_insert(feed.id, %{url: url})
-                {:ok, podcast_id}
+      length(visited_urls) >= @max_redirects ->
+        {:error, "too many redirects"}
 
-              {:error, error} ->
-                {:error, error}
-            end
+      true ->
+        case initial_import(redirect_target, feed_id, pagecount, [url | visited_urls]) do
+          {:ok, podcast_id} ->
+            feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
+            AlternateFeed.get_or_insert(feed.id, %{url: url})
+            {:ok, podcast_id}
+
+          {:error, error} ->
+            {:error, error}
         end
     end
   end
