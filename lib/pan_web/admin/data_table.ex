@@ -5,19 +5,24 @@ defmodule PanWeb.Admin.DataTable do
   alias PanWeb.Admin.GridPresenterWithDetails
   require Integer
 
-  defp width(:id), do: "6rem"
-  defp width(Ecto.UUID), do: "4rem"
-  defp width(:integer), do: "4rem"
-  defp width(:float), do: "5rem"
-  defp width(:date), do: "6rem"
-  defp width(:datetime), do: "12rem"
-  defp width(:naive_datetime), do: "12rem"
-  defp width(:string), do: "16rem"
-  defp width(Ecto.EctoText), do: "16rem"
-  defp width(:boolean), do: "4rem"
+  # PanWeb.Journal's :after column (the "new value" side of a before/after
+  # audit entry) is wider than a plain text column deserves by type alone —
+  # sized by field name rather than type so it doesn't widen every other
+  # Ecto.EctoText column in the app.
+  defp width(%{field: :after}), do: "32rem"
+  defp width(%{type: :id}), do: "6rem"
+  defp width(%{type: Ecto.UUID}), do: "4rem"
+  defp width(%{type: :integer}), do: "4rem"
+  defp width(%{type: :float}), do: "5rem"
+  defp width(%{type: :date}), do: "6rem"
+  defp width(%{type: :datetime}), do: "12rem"
+  defp width(%{type: :naive_datetime}), do: "12rem"
+  defp width(%{type: :string}), do: "16rem"
+  defp width(%{type: Ecto.EctoText}), do: "16rem"
+  defp width(%{type: :boolean}), do: "4rem"
   # Fallback for any Ecto type not explicitly sized above — keeps an
   # unanticipated field type from crashing the whole table render.
-  defp width(_type), do: "8rem"
+  defp width(%{}), do: "8rem"
 
   defp dyed?(record, assigns) do
     if assigns.search_filter != {} do
@@ -68,7 +73,7 @@ defmodule PanWeb.Admin.DataTable do
     ~H"""
     <div
       class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
-      style={"grid-template-columns: 6rem #{Enum.map(@cols, &width(&1.type)) |> Enum.join(" ")};"}
+      style={"grid-template-columns: 6rem #{Enum.map(@cols, &width/1) |> Enum.join(" ")};"}
     >
       <div class="bg-white italic grid place-content-center text-sm text-center px-1">
         <input
