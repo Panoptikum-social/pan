@@ -41,4 +41,14 @@ defmodule Pan.Job.ImportStalePodcasts do
     Process.send_after(self(), :work, wait_for_seconds * 1000)
     {:noreply, state}
   end
+
+  # A stray {:timeout, _ref, :try_ipv4} can land here some time after an
+  # HTTP call, independent of the try/rescue above matching :work — see
+  # Pan.Job.RefreshPodcastMetadata's handle_info/2 catch-all for the full
+  # explanation (hackney's happy-eyeballs race).
+  @impl true
+  def handle_info(message, state) do
+    Logger.warning("ImportStalePodcasts received unexpected message: #{inspect(message)}")
+    {:noreply, state}
+  end
 end

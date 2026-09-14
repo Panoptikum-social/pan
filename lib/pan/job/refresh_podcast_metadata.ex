@@ -47,6 +47,25 @@ defmodule Pan.Job.RefreshPodcastMetadata do
     {:noreply, state}
   end
 
+  # hackney's "happy eyeballs" IPv4/IPv6 racing (hackney_happy.erl) has a
+  # race of its own: it starts a `try_ipv4` timer in *this* process (the one
+  # that called HTTPoison, i.e. us) and normally consumes that timer message
+  # itself via a blocking `receive`, but if the IPv6 attempt's DOWN message
+  # arrives at (almost) the same moment the timer fires, it takes the DOWN
+  # branch and returns without ever receiving the already-in-flight timer
+  # message — cancel_timer doesn't retroactively unsend a message that's
+  # already in our mailbox. That stray {:timeout, _ref, :try_ipv4} then
+  # lands on this GenServer's own handle_info some time later (seen live:
+  # crashed with a FunctionClauseError since only :work was matched).
+  # Same risk in any of this app's other periodic-job GenServers that make
+  # HTTP calls from inside handle_info — see Pan.Job.ImportStalePodcasts,
+  # Pan.Job.CacheMissingImages, Pan.Job.PushMissingSearchIndex.
+  @impl true
+  def handle_info(message, state) do
+    Logger.warning("#{__MODULE__} received unexpected message: #{inspect(message)}")
+    {:noreply, state}
+  end
+
   # Isolates each podcast's refresh so one crash doesn't stop the rest of
   # the batch (a single try/rescue used to wrap the whole Enum.each above,
   # which meant podcast 3 of 5 crashing left 4 and 5 unprocessed this
