@@ -362,12 +362,22 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&#xFC;", "ü")
     |> String.replace("&#xDF;", "ß")
     # A bare XML document only knows 5 predefined entities (amp/lt/gt/apos/
-    # quot) — HTML-authored named entities like &nbsp; leak in constantly
-    # from feed producers that treat their description field as HTML, and
-    # xmerl fatals on them (:unknown_entity_ref) since there's no DTD
-    # declaring what &nbsp; means. Decode to the real character, same as
+    # quot) — HTML-authored named entities like &nbsp; or &auml; leak in
+    # constantly from feed producers that treat their description field as
+    # HTML, and xmerl fatals on them (:unknown_entity_ref) since there's no
+    # DTD declaring what they mean. Decode to the real character, same as
     # the numeric refs above, rather than just dropping/erroring on it.
+    # Covers &nbsp; plus the German umlaut/eszett entities, since this is a
+    # German-language podcast platform and those are what's actually shown
+    # up so far — extend as further named entities surface.
     |> String.replace("&nbsp;", " ")
+    |> String.replace("&auml;", "ä")
+    |> String.replace("&ouml;", "ö")
+    |> String.replace("&uuml;", "ü")
+    |> String.replace("&Auml;", "Ä")
+    |> String.replace("&Ouml;", "Ö")
+    |> String.replace("&Uuml;", "Ü")
+    |> String.replace("&szlig;", "ß")
   end
 
   # Some feed producers double-encode their own output (e.g. re-escaping an
