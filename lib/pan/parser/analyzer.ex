@@ -1215,6 +1215,28 @@ defmodule Pan.Parser.Analyzer do
 
   def call("episode_author", [tag_atom, _, _]) when tag_atom in [:avatar], do: %{}
 
+  # Catch-all for the role-based contexts above (contributor,
+  # episode-contributor, owner, author, episode_author, chapter) plus
+  # "managing_editor" (podcast-level managingEditor/owner/author fields,
+  # see Iterator.parse/4's :podcast_contributor clause — it had *no*
+  # clauses at all until now). These fields are normally plain text, so
+  # Analyzer.call/2 for them only runs when the raw content actually
+  # contains nested markup instead — e.g. Cloudflare's email-obfuscation
+  # <a class="__cf_email__" data-cfemail="...">[email protected]</a>
+  # snippet showing up inside <managingEditor> (crashed live with a
+  # FunctionClauseError). Unlike episode_author's specific :a clause
+  # above, don't try to salvage a name from unrecognized markup — for
+  # most of these (that Cloudflare placeholder text included) there's
+  # nothing meaningful to keep. Same "log and skip" as the call/3
+  # catch-all near the top of this module.
+  def call(mode, [tag, attr, value]) do
+    Logger.warning(
+      "Tag unknown for mode #{inspect(mode)}: #{inspect(tag)}, attr: #{inspect(attr)}, value: #{inspect(value)}"
+    )
+
+    %{}
+  end
+
   defp person_map(attr, value) do
     %{name: to_255(value), role: normalize_role(attr[:role])}
     |> maybe_put(:uri, to_255(attr[:href]))
