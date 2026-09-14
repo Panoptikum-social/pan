@@ -1142,6 +1142,16 @@ defmodule Pan.Parser.Analyzer do
   def call("contributor", [:"atom:uri", _, [value]]), do: %{uri: value}
   def call("contributor", [:"panoptikum:pid", _, [value]]), do: %{pid: value}
 
+  # An empty <atom:name>/<atom:uri>/<panoptikum:pid> element (self-closing,
+  # or opening+closing tag with nothing in between) parses to an empty
+  # value list rather than a one-element list — seen live for an empty
+  # <atom:uri></atom:uri> under a channel-level <atom:contributor> (crashed
+  # with a FunctionClauseError). Same shape already handled below for
+  # "episode-contributor"; skip it here too instead of crashing.
+  def call("contributor", [:"atom:name", _, []]), do: %{}
+  def call("contributor", [:"atom:uri", _, []]), do: %{}
+  def call("contributor", [:"panoptikum:pid", _, []]), do: %{}
+
   def call("episode-contributor", [tag_atom, _, [value]])
       when tag_atom in [
              :"atom:name",
