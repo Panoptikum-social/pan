@@ -65,6 +65,7 @@ defmodule Pan.Parser.RssFeed do
         feed_xml =
           Pan.Parser.Helpers.remove_comments(feed_xml)
           |> Pan.Parser.Helpers.remove_doctype()
+          |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
           |> Pan.Parser.Helpers.remove_extra_angle_brackets()
           |> Pan.Parser.Helpers.fix_html_entities()
           |> Pan.Parser.Helpers.fix_character_code_strings()

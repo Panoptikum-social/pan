@@ -11,6 +11,7 @@ defmodule Pan.OpmlParser.Opml do
     # directly attacker-controlled — strip any DOCTYPE before it reaches
     # xmerl. See Pan.Parser.Helpers.remove_doctype/1 for why.
     Pan.Parser.Helpers.remove_doctype(feed_xml)
+    |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
     |> Quinn.parse()
     |> Iterator.parse(user_id)
   end

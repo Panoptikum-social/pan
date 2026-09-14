@@ -357,6 +357,32 @@ defmodule Pan.Parser.Helpers do
     Regex.replace(~r/<!DOCTYPE[^\[>]*(\[[^\]]*\])?[^>]*>/, xml, "")
   end
 
+  def remove_duplicate_xml_declarations(xml) do
+    # An XML declaration (<?xml version="..." ...?>) is only legal as the
+    # very first thing in a document. If a second one shows up further
+    # down — feeds concatenated by a broken proxy/CDN, or an item embedding
+    # a raw XML snippet in its body instead of escaping/CDATA-wrapping it —
+    # xmerl doesn't recover from it: any processing instruction whose
+    # target starts with "xml" other than the well-known "xml-stylesheet"
+    # fatals with :invalid_target_name (xmerl_scan.erl's
+    # scan_wellknown_pi/3), taking the whole parse down with it. Keep the
+    # first (real) declaration and drop any later ones. Matching on
+    # "version=" (rather than just "<?xml") deliberately leaves a
+    # legitimate <?xml-stylesheet ...?> PI alone.
+    regex = ~r/<\?xml\s+version\s*=[^?]*\?>/
+
+    case Regex.run(regex, xml, return: :index) do
+      nil ->
+        xml
+
+      [{start, len}] ->
+        keep_through = start + len
+        head = binary_part(xml, 0, keep_through)
+        tail = binary_part(xml, keep_through, byte_size(xml) - keep_through)
+        head <> Regex.replace(regex, tail, "")
+    end
+  end
+
   def fix_character_code_strings(xml) do
     # Erlang does not know of 1252, that's the best we can do for now
     Regex.replace(~r/Windows-1252/Us, xml, "iso-8859-1")
