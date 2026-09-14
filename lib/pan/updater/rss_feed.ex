@@ -1,6 +1,6 @@
 defmodule Pan.Updater.RssFeed do
   alias Pan.Parser.Iterator
-  alias Pan.Parser.Helpers, as: H
+  alias Pan.Parser.Helpers
   alias Pan.Updater.{Feed, Filter}
   require Logger
 
@@ -24,13 +24,13 @@ defmodule Pan.Updater.RssFeed do
   end
 
   defp clean_up_xml(feed_xml) do
-    H.remove_comments(feed_xml)
-    |> H.remove_doctype()
-    |> H.remove_extra_angle_brackets()
-    |> H.fix_html_entities()
-    |> H.fix_character_code_strings()
+    Helpers.remove_comments(feed_xml)
+    |> Helpers.remove_doctype()
+    |> Helpers.remove_extra_angle_brackets()
+    |> Helpers.fix_html_entities()
+    |> Helpers.fix_character_code_strings()
     |> String.trim()
-    |> H.fix_encoding()
+    |> Helpers.fix_encoding()
   end
 
   defp xml_to_map(feed_xml, podcast_id) do

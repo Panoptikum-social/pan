@@ -1,6 +1,6 @@
 defmodule Pan.Updater.Podcast do
   alias Pan.Repo
-  alias Pan.Parser.Helpers, as: H
+  alias Pan.Parser.Helpers
   alias Pan.Parser.{Download, Feed, Persistor}
   alias Pan.Updater.RssFeed
   alias PanWeb.Podcast
@@ -86,7 +86,7 @@ defmodule Pan.Updater.Podcast do
     if redirect_count >= @max_redirects do
       handle_message(podcast, "too many redirects", no_failure_count_increase)
     else
-      case Feed.update_with_redirect_target(podcast.id, H.to_255(redirect_target)) do
+      case Feed.update_with_redirect_target(podcast.id, Helpers.to_255(redirect_target)) do
         {:ok, _} ->
           Logger.info("#{podcast.id} redirect -> #{redirect_target}")
 
