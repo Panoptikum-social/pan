@@ -7,7 +7,11 @@ defmodule Pan.OpmlParser.Opml do
 
     Logger.error("OPML- Import: Path: #{path}")
 
-    Quinn.parse(feed_xml)
+    # This is a user-uploaded file, so unlike a fetched podcast feed it's
+    # directly attacker-controlled — strip any DOCTYPE before it reaches
+    # xmerl. See Pan.Parser.Helpers.remove_doctype/1 for why.
+    Pan.Parser.Helpers.remove_doctype(feed_xml)
+    |> Quinn.parse()
     |> Iterator.parse(user_id)
   end
 end

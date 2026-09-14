@@ -78,7 +78,7 @@ defmodule Pan.Parser.Category do
           %HTTPoison.Response{body: feed_xml} =
             HTTPoison.get!(feed.self_link_url, headers, options)
 
-          feed_map = Quinn.parse(feed_xml)
+          feed_map = Pan.Parser.Helpers.remove_doctype(feed_xml) |> Quinn.parse()
 
           map = Pan.Parser.Iterator.parse(%{}, feed_map)
           podcast = Pan.Repo.preload(feed, :podcast).podcast

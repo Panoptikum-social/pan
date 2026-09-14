@@ -25,6 +25,7 @@ defmodule Pan.Updater.RssFeed do
 
   defp clean_up_xml(feed_xml) do
     H.remove_comments(feed_xml)
+    |> H.remove_doctype()
     |> H.remove_extra_angle_brackets()
     |> H.fix_html_entities()
     |> H.fix_character_code_strings()

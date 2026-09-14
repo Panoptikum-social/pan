@@ -340,6 +340,23 @@ defmodule Pan.Parser.Helpers do
     Regex.replace(~r/<!--.*-->/Us, xml, "")
   end
 
+  def remove_doctype(xml) do
+    # A <!DOCTYPE ... SYSTEM "..."> / PUBLIC "..." "..."> declaration makes
+    # xmerl try to fetch that external DTD before it parses anything else
+    # (xmerl_scan.erl's fetch_DTD/2, called unconditionally, validation
+    # option or not). By default that's a local file read resolved against
+    # the app's cwd, or — for a "http://..." system literal — an actual
+    # outbound request, so a malicious feed could use it to probe the
+    # filesystem or make this app fetch arbitrary URLs (fetch_URI/2). On
+    # top of that, a DTD path that doesn't exist currently crashes the
+    # whole scan with an unhandled CaseClauseError inside xmerl itself
+    # (fetch_DTD/2 has no clause for {:error, :enoent} on OTP 28's xmerl
+    # 2.1.9) instead of a catchable {:fatal, _} exit. RSS/Atom feeds have
+    # no legitimate use for a custom DOCTYPE, so just drop it before it
+    # ever reaches Quinn/xmerl.
+    Regex.replace(~r/<!DOCTYPE[^\[>]*(\[[^\]]*\])?[^>]*>/, xml, "")
+  end
+
   def fix_character_code_strings(xml) do
     # Erlang does not know of 1252, that's the best we can do for now
     Regex.replace(~r/Windows-1252/Us, xml, "iso-8859-1")
