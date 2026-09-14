@@ -441,7 +441,7 @@ defmodule Pan.Parser.Helpers do
 
   def to_255(nil), do: nil
 
-  def to_255(text) do
+  def to_255(text) when is_binary(text) do
     if byte_size(text) > 255 do
       <<head::binary-size(255), _::binary>> = text
       trim_incomplete_codepoint(head)
@@ -449,6 +449,16 @@ defmodule Pan.Parser.Helpers do
       text
     end
   end
+
+  # Callers regularly pass this an {:error, reason} tuple's raw reason
+  # straight through as an error "message" (e.g. SsrfGuard.check/1's
+  # {:error, :blocked_host}) rather than a string — byte_size/1 on
+  # anything else raises ArgumentError, which is exactly the kind of
+  # crash-in-the-crash-recorder this function exists to prevent (see
+  # PanWeb.Podcast.record_metadata_refresh_failure/2's last_error_message,
+  # crashed live on this). Same fallback idiom as PanWeb.Journal.log/1's
+  # stringify/1.
+  def to_255(other), do: other |> inspect() |> to_255()
 
   defp trim_incomplete_codepoint(bin) do
     if String.valid?(bin),
