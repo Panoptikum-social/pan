@@ -411,7 +411,7 @@ defmodule Pan.Parser.Helpers do
   def fix_html_entities(xml) do
     xml
     |> unescape_double_escaped_entities()
-    |> String.replace("& ", "&amp; ")
+    |> escape_stray_ampersands()
     |> String.replace("&#xC4;", "Ä")
     |> String.replace("&#xE4;", "ä")
     |> String.replace("&#xD6;", "Ö")
@@ -448,6 +448,20 @@ defmodule Pan.Parser.Helpers do
   # can finish the job.
   def unescape_double_escaped_entities(xml) do
     Regex.replace(~r/&amp;(quot|apos|amp|lt|gt|#\d+|#x[0-9A-Fa-f]+);/, xml, "&\\1;")
+  end
+
+  # A bare "&" that isn't the start of a real entity/character reference is
+  # invalid XML — text pasted from elsewhere ("Tom & Jerry", a URL's query
+  # string, obfuscated JS show-note markup like "&(_0x1a2b...") is full of
+  # these. xmerl fatals with :invalid_name as soon as it tries to scan the
+  # "name" following the "&" and finds something that can't start one
+  # (seen live: {:invalid_name, ~c"&(_0x1"}). Escape any "&" not
+  # plausibly starting a real reference (a letter/underscore/colon for a
+  # named one, or "#" for a numeric one) to "&amp;" before anything else
+  # in fix_html_entities/1 runs — letter-led text like "nbsp"/"auml" is
+  # left alone here so the decode passes below still see it.
+  def escape_stray_ampersands(xml) do
+    Regex.replace(~r/&(?![a-zA-Z_:#])/, xml, "&amp;")
   end
 
   def fix_encoding(xml) do
