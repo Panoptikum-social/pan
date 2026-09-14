@@ -64,6 +64,7 @@ defmodule Pan.Parser.RssFeed do
       {:ok, feed_xml} ->
         feed_xml =
           Pan.Parser.Helpers.remove_comments(feed_xml)
+          |> Pan.Parser.Helpers.normalize_nbsp()
           |> Pan.Parser.Helpers.remove_doctype()
           |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
           |> Pan.Parser.Helpers.remove_extra_angle_brackets()

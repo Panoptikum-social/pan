@@ -340,6 +340,21 @@ defmodule Pan.Parser.Helpers do
     Regex.replace(~r/<!--.*-->/Us, xml, "")
   end
 
+  def normalize_nbsp(xml) do
+    # A literal U+00A0 (non-breaking space) byte can already be sitting in
+    # the raw feed (common when show-note HTML was pasted out of a word
+    # processor) rather than arriving via a decoded &nbsp; entity. Unlike
+    # a regular space, xmerl's tokenizer doesn't treat U+00A0 as
+    # whitespace, so one landing right after a tag name or attribute value
+    # — where a regular feed would just have an ordinary space separating
+    # attributes — makes xmerl try to scan a new attribute/element NAME
+    # starting at that byte and fatal with :invalid_name (seen live: a
+    # stray "\u00A0text" this way). Normalize to a plain space everywhere,
+    # same trade-off fix_html_entities already makes for the &nbsp; entity
+    # itself.
+    String.replace(xml, " ", " ")
+  end
+
   def remove_doctype(xml) do
     # A <!DOCTYPE ... SYSTEM "..."> / PUBLIC "..." "..."> declaration makes
     # xmerl try to fetch that external DTD before it parses anything else
@@ -413,7 +428,7 @@ defmodule Pan.Parser.Helpers do
     # Covers &nbsp; plus the German umlaut/eszett entities, since this is a
     # German-language podcast platform and those are what's actually shown
     # up so far — extend as further named entities surface.
-    |> String.replace("&nbsp;", " ")
+    |> String.replace("&nbsp;", " ")
     |> String.replace("&auml;", "ä")
     |> String.replace("&ouml;", "ö")
     |> String.replace("&uuml;", "ü")

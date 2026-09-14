@@ -12,6 +12,7 @@ defmodule Pan.OpmlParser.Opml do
     # xmerl. See Pan.Parser.Helpers.remove_doctype/1 for why.
     Pan.Parser.Helpers.remove_doctype(feed_xml)
     |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
+    |> Pan.Parser.Helpers.normalize_nbsp()
     |> Quinn.parse()
     |> Iterator.parse(user_id)
   end

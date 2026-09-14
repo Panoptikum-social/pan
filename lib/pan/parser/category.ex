@@ -81,6 +81,7 @@ defmodule Pan.Parser.Category do
           feed_map =
             Pan.Parser.Helpers.remove_doctype(feed_xml)
             |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
+            |> Pan.Parser.Helpers.normalize_nbsp()
             |> Quinn.parse()
 
           map = Pan.Parser.Iterator.parse(%{}, feed_map)
