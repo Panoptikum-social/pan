@@ -436,6 +436,9 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&Ouml;", "Ö")
     |> String.replace("&Uuml;", "Ü")
     |> String.replace("&szlig;", "ß")
+    |> String.replace("&hellip;", "…")
+    |> String.replace("&ndash;", "–")
+    |> String.replace("&mdash;", "—")
   end
 
   # Some feed producers double-encode their own output (e.g. re-escaping an
@@ -465,7 +468,15 @@ defmodule Pan.Parser.Helpers do
   end
 
   def fix_encoding(xml) do
-    if String.valid?(xml), do: xml, else: :iconv.convert("ISO-8859-1", "utf-8", xml)
+    # Windows-1252 is a strict superset of ISO-8859-1 for every byte except
+    # 0x80-0x9F: ISO-8859-1 leaves those as unprintable C1 control
+    # characters (themselves invalid XML characters, so xmerl fatals with
+    # :bad_character on them — seen live: byte 146/0x92, a right single
+    # quotation mark), while cp1252 correctly maps that range to real
+    # typographic punctuation (curly quotes, en/em dash, ellipsis, €, ...).
+    # Genuinely ISO-8859-1 content decodes identically either way, so
+    # there's no downside to assuming the more common cp1252 here.
+    if String.valid?(xml), do: xml, else: :iconv.convert("WINDOWS-1252", "utf-8", xml)
   end
 
   def to_255(nil), do: nil

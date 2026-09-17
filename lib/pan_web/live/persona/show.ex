@@ -36,7 +36,7 @@ defmodule PanWeb.Live.Persona.Show do
           gigs_per_page: 10,
           persona_thumbnail: persona_thumbnail,
           engagements: engagements,
-          page_title: persona.name <> "(Persona)"
+          page_title: (persona.name || "Persona") <> " (Persona)"
         )
         |> fetch_gigs
 

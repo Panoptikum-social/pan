@@ -24,7 +24,17 @@ defmodule Pan.Updater.RssFeed do
   end
 
   defp clean_up_xml(feed_xml) do
+    # fix_encoding/1 has to run before any step that matches on literal
+    # multi-byte UTF-8 characters (normalize_nbsp/1's U+00A0 search,
+    # fix_html_entities/1's umlaut replacements, ...) — a feed that isn't
+    # valid UTF-8 still has those characters as raw single legacy-encoding
+    # bytes at this point, so those later steps would find nothing to fix
+    # and the raw byte would survive all the way to xmerl uncaught (seen
+    # live: a raw 0xA0 nbsp byte from a non-UTF-8 feed sailed past
+    # normalize_nbsp/1 when fix_encoding ran last, then fataled in xmerl
+    # with :bad_character instead of being normalized to a plain space).
     Helpers.remove_comments(feed_xml)
+    |> Helpers.fix_encoding()
     |> Helpers.normalize_nbsp()
     |> Helpers.remove_doctype()
     |> Helpers.remove_duplicate_xml_declarations()
@@ -32,7 +42,6 @@ defmodule Pan.Updater.RssFeed do
     |> Helpers.fix_html_entities()
     |> Helpers.fix_character_code_strings()
     |> String.trim()
-    |> Helpers.fix_encoding()
   end
 
   defp xml_to_map(feed_xml, podcast_id) do
