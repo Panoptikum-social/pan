@@ -41,12 +41,18 @@ defmodule Pan.Parser.SsrfGuard do
     end
   end
 
+  # Every other network call in the update pipeline (HTTPoison's `timeout`/
+  # `recv_timeout` options) has an explicit bound; :inet.getaddrs/3 is given
+  # one here too so a host whose DNS resolution hangs (a stalled resolver, a
+  # black-holed AAAA query, ...) can't block the calling job indefinitely.
+  @resolve_timeout_ms 3_000
+
   defp resolve(host) do
     charlist = String.to_charlist(host)
 
     addresses =
       for family <- [:inet, :inet6],
-          {:ok, addrs} <- [:inet.getaddrs(charlist, family)],
+          {:ok, addrs} <- [:inet.getaddrs(charlist, family, @resolve_timeout_ms)],
           addr <- addrs,
           do: addr
 
