@@ -126,7 +126,20 @@ defmodule Pan.Updater.Podcast do
       {:ok, "nothing to do"}
     else
       update_intervall = min(podcast.update_intervall + 1, @max_update_intervall_hours)
-      next_update = time_shift(now(), hours: update_intervall)
+
+      # Every podcast pinned at the ceiling would otherwise compute
+      # next_update from roughly "now", cycle after cycle — so a cohort that
+      # ever gets capped around the same moment (a bulk backfill, or just a
+      # fast healthy drain through many capped podcasts at once) keeps
+      # reconverging on the same due-timestamp every ~168h indefinitely. A
+      # day of jitter, applied only at the ceiling, breaks that resonance.
+      # (This is what produced a 10k+-podcast pile-up a week after
+      # reset_stale_update_intervalls_async mass-capped a cohort in a single
+      # run, 2026-09.)
+      jitter_hours =
+        if update_intervall == @max_update_intervall_hours, do: :rand.uniform(48) - 24, else: 0
+
+      next_update = time_shift(now(), hours: update_intervall + jitter_hours)
 
       Podcast.changeset(podcast, %{
         update_intervall: update_intervall,
