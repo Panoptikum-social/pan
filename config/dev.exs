@@ -37,11 +37,7 @@ config :pan, :children, [
   Pan.Repo,
   PanWeb.Telemetry,
   {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
-  PanWeb.Endpoint,
-  Pan.Job.ImportStalePodcasts,
-  Pan.Job.RefreshPodcastMetadata,
-  Pan.Job.CacheMissingImages,
-  Pan.Job.PushMissingSearchIndex
+  PanWeb.Endpoint
 ]
 
 # Set a higher stacktrace during development.
