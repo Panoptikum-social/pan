@@ -93,6 +93,28 @@ probing (HTTP HEAD on enclosures, fetching artwork for actual pixel
 dimensions — same probe-then-report shape as the existing deprecation
 check) deferred past v1.
 
+**Decisions, 2026-09-19 (resolves the open design tension above):**
+- Separate mix project named `check-my-feed`, imported by Pan as a
+  dependency (path dep first). It parses the raw feed XML itself
+  (Quinn/xmerl only, no Pan code) — Pan's parser deliberately fixes up bad
+  feeds before parsing, which would hide exactly what this tool must report.
+- The library takes an XML string and does no fetching. Pan downloads a
+  fresh copy on every check (via `Download.get/2`, so the SSRF guard
+  applies), since the owner may have just fixed the feed.
+- Only logged-in users, only for podcasts listed in Panoptikum.
+- v1 rules exactly as in the scope note (RSS 2.0 required elements + Apple
+  basics). Podcasting 2.0, active probing, and the info-level "Pan tolerates
+  this" report come later. JSON API later or never; v1 is a web page with
+  results grouped by severity, each with rule id and spec link.
+- Who may check a podcast, rolled out in three phases: **C** any logged-in
+  user (first, nothing new to build), then **A** a user with a claimed
+  persona that has a non-self-proclaimed gig on the podcast, then **B**
+  real podcast claiming (proof of feed control, e.g. token in the feed or
+  mail to the `itunes:owner` address). Note: only personas can be claimed
+  today, there is no user-to-podcast ownership link.
+- Still open: entry point in the UI (button on the podcast page vs.
+  standalone page).
+
 ---
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)

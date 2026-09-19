@@ -318,6 +318,8 @@ defmodule PanWeb.Router do
     post("/personas/:id/disconnect", PersonaFrontendController, :disconnect)
     live("/personas/:id/edit", Live.Persona.Edit, :edit, as: :persona_frontend)
 
+    live("/podcasts/:id/check_feed", Live.Podcast.CheckFeed, :check_feed, as: :podcast_frontend)
+
     resources("/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete])
     get("/opmls/:id/import", OpmlFrontendController, :import)
     get("/opmls/:id/download", OpmlFrontendController, :download)
