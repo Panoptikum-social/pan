@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
   use PanWeb, :live_component
-  alias PanWeb.Live.Podcast.{CheckFeed, SubscribeButton}
+  alias PanWeb.Live.Podcast.SubscribeButton
   alias PanWeb.{Endpoint, Podcast}
   import PanWeb.Router.Helpers
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
@@ -99,7 +99,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             )} minutes.
           </small>
         <% end %>
-        <div :if={CheckFeed.available?()} class="mt-4">
+        <div class="mt-4">
           <.link
             navigate={podcast_frontend_path(Endpoint, :check_feed, @podcast)}
             class="inline-block border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1"

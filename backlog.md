@@ -123,11 +123,12 @@ Pan depends on the library via `{:check_my_feed, path: "../check-my-feed",
 only: :dev}`, so nothing is visible in qa/prod yet.
 
 **Still open, in suggested order:**
-1. *Get out of dev-only:* decide how Pan depends on the library (git dep from
-   code.informatom.com, Hex later), replace the runtime `apply`/
-   `Code.ensure_loaded?` workaround in `check_feed.ex` with a direct call,
-   verify the qa Docker build and the prod deploy script can fetch the
-   dependency (the prod deploy script is the risky part).
+1. *Get out of dev-only:* DONE 2026-09-20 — `check_my_feed` 0.1.0 published on
+   Hex (source: github.com/Panoptikum-social/check-my-feed, AGPL-3.0-or-later),
+   Pan depends on `{:check_my_feed, "~> 0.1.0"}` in all environments, the
+   runtime `apply`/`Code.ensure_loaded?` workaround is gone, the "Check feed"
+   button is always shown to logged-in users. Still to verify: qa Docker build
+   and prod deploy.
 2. *Access phase A:* only users with a claimed persona holding a
    non-self-proclaimed gig on the podcast may check it (phase C, any logged-in
    user, is what exists now).
@@ -138,21 +139,26 @@ only: :dev}`, so nothing is visible in qa/prod yet.
    artwork pixel size), the info-level "Panoptikum tolerates this" report,
    JSON API (maybe never).
 
-**Apple rules, missing source material (2026-09-19) — user will provide it as
-plain text or HTML (no JavaScript) so the rules can be checked against the real
-wording:**
-- Apple's *required tags* reference (`help.apple.com/itc/podcasts_connect/#/itcb54353390`,
-  JavaScript-only, unreadable): which channel and episode tags are required vs.
-  recommended, allowed values for `itunes:explicit`, `itunes:episodeType`,
-  `itunes:episode`, `itunes:season`.
-- Apple's *artwork requirements* (`podcasters.apple.com/support/artwork-requirements`
-  links to spec pages we couldn't reach): formats, pixel size, color space, size
-  limit.
-- The list of *supported enclosure file types / MIME types* (no page found).
-
-Then re-check `lib/check_my_feed/rules/apple.ex` against it: adjust severities
-(several rules are only `:warning`/`:info` because Apple's wording wasn't
-available), the supported-media-type list, and the artwork rule.
+**Apple rules, source material (2026-09-20):** the user pasted Apple's "A Podcaster's
+Guide to RSS" (required/recommended/situational tags, artwork spec, enclosure types)
+into handover.txt; `apple.ex` was re-checked against it: required tags are now
+`:error`, media types trimmed to Apple's six, and new rules added (namespace,
+itunes:type + serial numbering, description/255-char limits, pubDate, item title/
+explicit, enclosure extension, transcript type, block/complete). The category
+count rule is softened to `:info`. Artwork guide (`podcasters.apple.com/artwork-guide`) read 2026-09-20: only Show
+Cover and Episode Art come in via RSS (both PNG/JPG, square, 1400-3000 px, no
+alpha/transparency, largest preferred); everything else (full page art, chapter
+art, showcase heroes, channel/subscription art) is uploaded in Apple Podcasts
+Connect, so no rules possible. Rule description updated, nothing new checkable
+from feed text; the "active probing" item should verify size, squareness, alpha
+channel and real file type vs. extension (plus 72 dpi/RGB from the RSS guide).
+Audio requirements page read 2026-09-20 (#3): no MIME/extension list there; RSS audio
+is "MP3 or AAC" (AAC in MP4 preferred over ADTS), bit-rate/sample-rate/loudness
+(-16 LKFS, true peak < -1 dBFS) need a media download ("active probing"); WAV/FLAC
+rules are for Connect subscriber uploads only. The media-type list stays as in the
+RSS guide (6 types). ADTS AAC (`.aac`, `audio/aac`) is hinted as acceptable but
+not in the RSS guide's list: allowed 2026-09-20 with an `:info` hint
+(`apple.enclosure.adts`) to prefer an MP4/M4A container.
 
 **Apple rules, notes (2026-09-19):** verified against Apple's pages: artwork,
 enclosure (url/length/type), a never-changing guid per episode and at least one

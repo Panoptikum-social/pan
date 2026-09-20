@@ -7,34 +7,24 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
   @severities [:error, :warning, :info]
 
-  # check_my_feed is a dev-only dependency for now: everything touching it is
-  # resolved at runtime, so other environments compile cleanly and simply
-  # don't offer the check.
-  def available?, do: Code.ensure_loaded?(CheckMyFeed)
-
   def mount(%{"id" => id}, _session, socket) do
     podcast = Pan.Repo.get(Podcast, id)
 
-    cond do
-      is_nil(podcast) or podcast.blocked == true ->
-        {:ok, push_navigate(socket, to: "/podcasts")}
+    if is_nil(podcast) or podcast.blocked == true do
+      {:ok, push_navigate(socket, to: "/podcasts")}
+    else
+      socket =
+        assign(socket,
+          podcast: podcast,
+          page_title: "Feed check for #{podcast.title}",
+          status: :running,
+          feed_url: nil,
+          findings: [],
+          passed: [],
+          error: nil
+        )
 
-      not available?() ->
-        {:ok, push_navigate(socket, to: "/podcasts/#{podcast.id}")}
-
-      true ->
-        socket =
-          assign(socket,
-            podcast: podcast,
-            page_title: "Feed check for #{podcast.title}",
-            status: :running,
-            feed_url: nil,
-            findings: [],
-            passed: [],
-            error: nil
-          )
-
-        {:ok, if(connected?(socket), do: start_check(socket), else: socket)}
+      {:ok, if(connected?(socket), do: start_check(socket), else: socket)}
     end
   end
 
@@ -71,7 +61,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
          url = String.trim(feed.self_link_url),
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            Download.get(url, follow_redirect: true),
-         {:ok, report} <- apply(CheckMyFeed, :check, [body]) do
+         {:ok, report} <- CheckMyFeed.check(body) do
       {:ok, url, report}
     else
       {:error, "not found"} ->
