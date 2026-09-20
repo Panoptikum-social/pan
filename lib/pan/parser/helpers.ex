@@ -384,6 +384,15 @@ defmodule Pan.Parser.Helpers do
     # first (real) declaration and drop any later ones. Matching on
     # "version=" (rather than just "<?xml") deliberately leaves a
     # legitimate <?xml-stylesheet ...?> PI alone.
+    #
+    # A declaration is only "real" if it's the very first thing in the
+    # document (only leading whitespace allowed before it) — a feed with
+    # no leading declaration at all, but a stray one embedded further down
+    # (e.g. raw XML pasted unescaped into an item description), has
+    # exactly one regex match and it is NOT legitimate. Treating "the
+    # first match found" as automatically real (rather than checking its
+    # position) left that case untouched and still fataling with
+    # :invalid_target_name (seen live).
     regex = ~r/<\?xml\s+version\s*=[^?]*\?>/
 
     case Regex.run(regex, xml, return: :index) do
@@ -391,10 +400,14 @@ defmodule Pan.Parser.Helpers do
         xml
 
       [{start, len}] ->
-        keep_through = start + len
-        head = binary_part(xml, 0, keep_through)
-        tail = binary_part(xml, keep_through, byte_size(xml) - keep_through)
-        head <> Regex.replace(regex, tail, "")
+        if String.trim_leading(binary_part(xml, 0, start)) == "" do
+          keep_through = start + len
+          head = binary_part(xml, 0, keep_through)
+          tail = binary_part(xml, keep_through, byte_size(xml) - keep_through)
+          head <> Regex.replace(regex, tail, "")
+        else
+          Regex.replace(regex, xml, "")
+        end
     end
   end
 

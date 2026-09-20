@@ -125,5 +125,60 @@ defmodule Pan.LoggerFilters do
     :stop
   end
 
+  # An attribute name not followed by "=" — e.g. `<item pubDate "...">`
+  # missing its equals sign entirely.
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, :assignment_expected]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
+  # A literal character outside XML's legal character set (C0/C1 controls
+  # etc., XML 1.0 section 2.2) appearing in otherwise valid UTF-8 — as opposed to
+  # fix_encoding/1's case of a whole document in the wrong single-byte
+  # encoding, this is one bad codepoint (e.g. U+0092, a mis-double-decoded
+  # cp1252 byte) sitting inside content xmerl already accepted as UTF-8.
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, {:error, {:wfc_Legal_Character, _}}]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
+  # A second <?xml ...?> declaration xmerl reaches mid-document — normally
+  # handled by Helpers.remove_duplicate_xml_declarations/1, but that can
+  # only run on the feeds actually routed through it (see call sites).
+  def silence_xmerl_fatal(
+        %{
+          msg:
+            {:report,
+             %{
+               label: {:error_logger, :error_msg},
+               format: ~c"~p- fatal: ~p~n",
+               args: [_line, {:invalid_target_name, _}]
+             }}
+        },
+        _extra
+      ) do
+    :stop
+  end
+
   def silence_xmerl_fatal(event, _extra), do: event
 end
