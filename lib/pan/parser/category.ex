@@ -79,7 +79,8 @@ defmodule Pan.Parser.Category do
             HTTPoison.get!(feed.self_link_url, headers, options)
 
           feed_map =
-            Pan.Parser.Helpers.remove_doctype(feed_xml)
+            Pan.Parser.Helpers.fix_encoding(feed_xml)
+            |> Pan.Parser.Helpers.remove_doctype()
             |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
             |> Pan.Parser.Helpers.normalize_nbsp()
             |> Quinn.parse()
