@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-09-01.
+2026-09-19.
 
 ---
 
@@ -112,8 +112,65 @@ check) deferred past v1.
   real podcast claiming (proof of feed control, e.g. token in the feed or
   mail to the `itunes:owner` address). Note: only personas can be claimed
   today, there is no user-to-podcast ownership link.
-- Still open: entry point in the UI (button on the podcast page vs.
-  standalone page).
+- UI entry point decided: a "Check feed" link on the podcast page (logged-in
+  users) leading to its own results page.
+
+**Status 2026-09-19 — phase C built, dev only.** Library
+`../check-my-feed` (repo `Panoptikum/check-my-feed`) has 5 RSS 2.0 rules and 17 Apple Podcasts rules (v1 scope complete);
+Pan has `PanWeb.Live.Podcast.CheckFeed` at `/pan/podcasts/:id/check_feed`
+(findings grouped by severity and rule, list of passed checks, "Check again").
+Pan depends on the library via `{:check_my_feed, path: "../check-my-feed",
+only: :dev}`, so nothing is visible in qa/prod yet.
+
+**Still open, in suggested order:**
+1. *Get out of dev-only:* decide how Pan depends on the library (git dep from
+   code.informatom.com, Hex later), replace the runtime `apply`/
+   `Code.ensure_loaded?` workaround in `check_feed.ex` with a direct call,
+   verify the qa Docker build and the prod deploy script can fetch the
+   dependency (the prod deploy script is the risky part).
+2. *Access phase A:* only users with a claimed persona holding a
+   non-self-proclaimed gig on the podcast may check it (phase C, any logged-in
+   user, is what exists now).
+3. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
+   in the feed or mail to the `itunes:owner` address). No user-to-podcast
+   ownership exists today, only personas can be claimed.
+4. *Later, agreed:* Podcasting 2.0 rules, active probing (HEAD on enclosures,
+   artwork pixel size), the info-level "Panoptikum tolerates this" report,
+   JSON API (maybe never).
+
+**Apple rules, missing source material (2026-09-19) — user will provide it as
+plain text or HTML (no JavaScript) so the rules can be checked against the real
+wording:**
+- Apple's *required tags* reference (`help.apple.com/itc/podcasts_connect/#/itcb54353390`,
+  JavaScript-only, unreadable): which channel and episode tags are required vs.
+  recommended, allowed values for `itunes:explicit`, `itunes:episodeType`,
+  `itunes:episode`, `itunes:season`.
+- Apple's *artwork requirements* (`podcasters.apple.com/support/artwork-requirements`
+  links to spec pages we couldn't reach): formats, pixel size, color space, size
+  limit.
+- The list of *supported enclosure file types / MIME types* (no page found).
+
+Then re-check `lib/check_my_feed/rules/apple.ex` against it: adjust severities
+(several rules are only `:warning`/`:info` because Apple's wording wasn't
+available), the supported-media-type list, and the artwork rule.
+
+**Apple rules, notes (2026-09-19):** verified against Apple's pages: artwork,
+enclosure (url/length/type), a never-changing guid per episode and at least one
+episode are required; the category list and the two-category limit. Apple's
+artwork-size, supported-file-type and tag-detail pages are JavaScript-only or
+link elsewhere and could not be read, so everything else (language, explicit,
+episodeType, numbering, media types, JPEG/PNG artwork) is severity warning/info
+based on general knowledge. Artwork pixel size is not checked (needs a download;
+part of the later "active probing" item). Assumes the `itunes:` prefix.
+
+**Small known issues:**
+- Some feed servers answer 403 to Panoptikum's user agent, so the page reports
+  a failure although the feed is fine (2 of 12 sampled feeds).
+- A rule counts as passed when it had nothing to check (e.g. the enclosure
+  rule on a feed with no episodes); consider hiding those from "Passed".
+- Library tests print an xmerl `[error] fatal` log line for the broken-XML
+  test (Pan silences that via `Pan.LoggerFilters`, the library doesn't).
+- Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
 
 ---
 
