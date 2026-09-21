@@ -68,16 +68,6 @@ parser code, since Pan's fix-ups would hide what the tool must report), takes an
 XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
-**Access phase B (built, deployed and verified in prod 2026-09-21):** one user per podcast
-(`podcasts.user_id`, only changed by claim or admin, never by a feed update).
-A verified user opening `/my_podcasts` gets every unassigned podcast whose owner
-persona email matches (no cap, accepted risk: shared platform addresses such as
-feeds@soundcloud.com list thousands of podcasts). Otherwise "Claim this podcast"
-mails a token link to the owner address(es) from the feed; the link opens an
-approval page (POST, so mail scanners cannot approve). Admin page
-`/admin/podcasts/owners` assigns, reassigns and unassigns; every change is in the
-Journal. The check page is only for the assigned owner, admins and moderators.
-
 **Still open, in order:**
 1. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
    info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
@@ -107,12 +97,6 @@ uploads only.
 ---
 
 ### User retention: open follow-ups
-- *Automatic notice job deployed (2026-09-21):*
-  `Pan.Job.SendRetentionNotices` (prod only) sends one notice every 5 minutes to
-  the lowest-id unmarked user who is either unverified for more than 30 days or
-  verified without a login for 2 years (signup date counts if never logged in);
-  marking happens as with the manual "Send notice". A failing address is skipped
-  until the next restart. Deleting stays manual.
 - *Account deletion keeps more than the account:* personas stay including an
   email address stored on them (persona.user_id is left dangling), invoices stay
   with user_id set to null. The privacy page says so. Not changed in code.
