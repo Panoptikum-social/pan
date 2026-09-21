@@ -38,7 +38,7 @@ materializes:
   characterization tests for `Analyzer`/`Iterator` exist
   (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, feed links,
   people, episode fields, enclosures, chapters and the earlier crash shapes). Not
-  yet covered: the rarer tag aliases and the long list of ignored tags.
+  yet covered: the rarer tag aliases.
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;

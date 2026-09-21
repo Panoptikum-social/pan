@@ -153,18 +153,13 @@ defmodule Pan.Parser.FeedParsingTest do
 
     test "a managingEditor with obfuscated markup does not crash" do
       # Cloudflare email obfuscation, commit eec307f4
-      log =
-        capture_log(fn ->
-          map =
-            parse("""
-            <title>Show</title>
-            <managingEditor><a class="__cf_email__" data-cfemail="ab">[email protected]</a></managingEditor>
-            """)
+      map =
+        parse("""
+        <title>Show</title>
+        <managingEditor><a class="__cf_email__" data-cfemail="ab">[email protected]</a></managingEditor>
+        """)
 
-          assert map.title == "Show"
-        end)
-
-      assert is_binary(log)
+      assert map.title == "Show"
     end
 
     test "podcast:person with empty or nested content is skipped" do
@@ -553,9 +548,7 @@ defmodule Pan.Parser.FeedParsingTest do
     end
 
     test "an unknown episode tag is skipped" do
-      capture_log(fn ->
-        assert episode("<title>Ep</title><weird>zz</weird>").title == "Ep"
-      end)
+      assert episode("<title>Ep</title><weird>zz</weird>").title == "Ep"
     end
   end
 
@@ -613,7 +606,7 @@ defmodule Pan.Parser.FeedParsingTest do
   end
 
   describe "unknown tags" do
-    test "an unknown channel tag is logged and skipped" do
+    test "an unknown channel tag is skipped without a log entry" do
       log =
         capture_log(fn ->
           map =
@@ -624,7 +617,25 @@ defmodule Pan.Parser.FeedParsingTest do
           assert map.title == "Show"
         end)
 
-      assert is_binary(log)
+      assert log == ""
+    end
+
+    test "tags that used to be on the ignore list are skipped without a log entry" do
+      log =
+        capture_log(fn ->
+          map = parse("<title>Show</title><itunes:block>yes</itunes:block>")
+          assert map.title == "Show"
+
+          episode = episode("<title>Ep</title><googleplay:image href=\"x\"/>")
+          assert episode.title == "Ep"
+        end)
+
+      assert log == ""
+    end
+
+    test "a channel googleplay:author is still ignored" do
+      # it was on the ignore list although the author clause listed it too
+      refute Map.has_key?(parse("<googleplay:author>Jane</googleplay:author>"), "author")
     end
   end
 end
