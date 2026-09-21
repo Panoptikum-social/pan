@@ -10,11 +10,21 @@ defmodule PanWeb.Live.Auth do
     {:halt, redirect(socket, to: "/login")}
   end
 
-  def on_mount(:admin, _params, %{"user_id" => user_id, "admin" => admin} = _session, socket) do
-    {:cont,
-     socket
-     |> assign_new(:current_user_id, fn -> user_id end)
-     |> assign_new(:admin, fn -> admin end)}
+  # The session's own "admin" flag is not trusted: it was set at login and can be
+  # stale (an admin whose rights were revoked keeps it until the session ends).
+  # The router's authenticate_admin plug checks the database on every request,
+  # this does the same for the websocket mount.
+  def on_mount(:admin, _params, %{"user_id" => user_id}, socket) do
+    case Pan.Repo.get(PanWeb.User, user_id) do
+      %{admin: true} ->
+        {:cont,
+         socket
+         |> assign_new(:current_user_id, fn -> user_id end)
+         |> assign_new(:admin, fn -> true end)}
+
+      _ ->
+        {:halt, redirect(socket, to: "/login")}
+    end
   end
 
   def on_mount(:admin, _params, _session, socket) do
