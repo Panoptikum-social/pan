@@ -33,12 +33,10 @@ materializes:
   doesn't require `Feed.check_for_redirect_loop`.
 - Give the output map a documented, consistent shape (today it mixes string
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-- Add real test coverage for `Analyzer`/`Iterator` (the main payoff of phase 1).
-  `Helpers` is covered since 2026-09-21 (`test/pan/parser/helpers_test.exs`);
-  characterization tests for `Analyzer`/`Iterator` exist
-  (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, feed links,
-  people, episode fields, enclosures, chapters and the earlier crash shapes). Not
-  yet covered: the rarer tag aliases.
+- Test coverage is largely done: `Helpers` (`test/pan/parser/helpers_test.exs`) and
+  `Analyzer`/`Iterator` (`test/pan/parser/feed_parsing_test.exs`, ~50 tests) since
+  2026-09-21. Only the rarer tag aliases are still uncovered. Unknown tags are
+  skipped silently on purpose (no ignore lists, no logging).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
