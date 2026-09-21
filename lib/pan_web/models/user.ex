@@ -31,7 +31,7 @@ defmodule PanWeb.User do
   @inactive_after_days 2 * 365
   @deletion_grace_days 30
 
-  @retention_filters [:unverified, :never_logged_in, :inactive, :marked, :deletable]
+  @retention_filters [:unverified, :never_logged_in, :inactive, :unmarked, :marked, :deletable]
 
   schema "users" do
     field(:name, :string)
@@ -409,8 +409,17 @@ defmodule PanWeb.User do
   defp days_ago(days), do: NaiveDateTime.add(Pan.Parser.MyDateTime.now(), -days, :day)
 
   # Every filter restricts the users further, so a list of filters is an AND.
-  defp retention_query(filters) do
+  # `search` is a text that has to be contained in the username or the email.
+  defp retention_query(filters, search \\ "") do
     Enum.reduce(filters, regular_users(), &retention_filter(&2, &1))
+    |> retention_search(String.trim(search))
+  end
+
+  defp retention_search(query, ""), do: query
+
+  defp retention_search(query, search) do
+    pattern = "%" <> String.replace(search, ~r/[\\%_]/, "\\\\\\0") <> "%"
+    from(u in query, where: ilike(u.username, ^pattern) or ilike(u.email, ^pattern))
   end
 
   defp retention_filter(query, :unverified),
@@ -425,6 +434,9 @@ defmodule PanWeb.User do
     )
   end
 
+  defp retention_filter(query, :unmarked),
+    do: from(u in query, where: is_nil(u.marked_for_deletion_at))
+
   defp retention_filter(query, :marked),
     do: from(u in query, where: not is_nil(u.marked_for_deletion_at))
 
@@ -436,8 +448,8 @@ defmodule PanWeb.User do
     )
   end
 
-  def retention_users(filters, sort_by, sort_order, limit, offset) do
-    from(u in retention_query(filters),
+  def retention_users(filters, search, sort_by, sort_order, limit, offset) do
+    from(u in retention_query(filters, search),
       order_by: [{^sort_order, field(u, ^sort_by)}, asc: u.id],
       limit: ^limit,
       offset: ^offset,
@@ -454,8 +466,8 @@ defmodule PanWeb.User do
     |> Repo.all()
   end
 
-  def count_retention_users(filters) do
-    retention_query(filters) |> Repo.aggregate(:count)
+  def count_retention_users(filters, search) do
+    retention_query(filters, search) |> Repo.aggregate(:count)
   end
 
   @doc "Marks the given users (not admins or moderators) for deletion; returns how many were marked."

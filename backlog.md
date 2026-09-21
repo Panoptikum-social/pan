@@ -121,8 +121,10 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    users overview* at `/admin/users/retention` (button on the admin dashboard).
    Filter checkboxes that combine, each checked filter restricts the list further
    and nothing checked lists everyone: unverified, never logged in, inactive for
-   2 years, marked, deletable (marked for more than 30 days); the number beside a
-   box is how many users would match with it added. Sortable, paginated;
+   2 years, unmarked, marked, deletable (marked for more than 30 days); the number beside a
+   box is how many users would match with it added; a text box filters for
+   text contained in the username or the email (combined with the checkboxes).
+   Sortable, paginated;
    mark/unmark selected users; "Delete selected" only shown with the deletable
    filter checked and enforced in `PanWeb.User.delete_deletable/1`. Admins and
    moderators are hidden and never touched. The two new columns are in the

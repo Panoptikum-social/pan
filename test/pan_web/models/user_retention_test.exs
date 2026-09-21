@@ -16,8 +16,8 @@ defmodule PanWeb.UserRetentionTest do
     |> Repo.insert!()
   end
 
-  defp usernames(filter) do
-    filter |> User.retention_users(:id, :asc, 100, 0) |> Enum.map(& &1.username)
+  defp usernames(filters, search \\ "") do
+    filters |> User.retention_users(search, :id, :asc, 100, 0) |> Enum.map(& &1.username)
   end
 
   describe "filters" do
@@ -40,6 +40,12 @@ defmodule PanWeb.UserRetentionTest do
       assert marked.username in usernames([:marked])
       assert deletable.username in usernames([:marked])
 
+      refute marked.username in usernames([:unmarked])
+      refute deletable.username in usernames([:unmarked])
+      assert unverified.username in usernames([:unmarked])
+      assert never.username in usernames([:unmarked])
+      assert usernames([:marked, :unmarked]) == []
+
       assert usernames([:deletable]) == [deletable.username]
     end
 
@@ -54,7 +60,7 @@ defmodule PanWeb.UserRetentionTest do
       end
 
       assert usernames([]) == [regular.username]
-      assert User.count_retention_users([]) == 1
+      assert User.count_retention_users([], "") == 1
     end
 
     test "combine, every further filter restricts the result more" do
@@ -63,8 +69,8 @@ defmodule PanWeb.UserRetentionTest do
       verified_marked = insert_user(email_verified: true, marked_for_deletion_at: days_ago(5))
       deletable = insert_user(email_verified: false, marked_for_deletion_at: days_ago(40))
 
-      assert User.count_retention_users([]) == 4
-      assert User.count_retention_users([:unverified]) == 3
+      assert User.count_retention_users([], "") == 4
+      assert User.count_retention_users([:unverified], "") == 3
       assert usernames([:unverified, :marked]) == [unverified_marked.username, deletable.username]
       assert usernames([:unverified, :deletable]) == [deletable.username]
       assert usernames([:marked, :deletable]) == [deletable.username]
@@ -72,6 +78,43 @@ defmodule PanWeb.UserRetentionTest do
       assert unverified.username in usernames([:unverified])
       refute unverified.username in usernames([:unverified, :marked])
       refute verified_marked.username in usernames([:unverified, :marked])
+    end
+  end
+
+  describe "search" do
+    test "matches the username or the email, ignoring case" do
+      by_name = insert_user(username: "Gardening_Fan", email: "one@example.com")
+      by_mail = insert_user(username: "other", email: "someone@GARDENING.example.org")
+      neither = insert_user(username: "third", email: "third@example.com")
+
+      assert usernames([], "gardening") == [by_name.username, by_mail.username]
+      assert usernames([], "  GARDENING  ") == [by_name.username, by_mail.username]
+      refute neither.username in usernames([], "gardening")
+      assert User.count_retention_users([], "gardening") == 2
+      assert usernames([], "") |> length() == 3
+    end
+
+    test "combines with the filters" do
+      unverified = insert_user(username: "match_unverified", email_verified: false)
+      insert_user(username: "match_verified", email_verified: true)
+
+      assert usernames([:unverified], "match") == [unverified.username]
+      assert User.count_retention_users([:unverified], "match") == 1
+    end
+
+    test "takes wildcard characters literally" do
+      literal = insert_user(username: "50%_off")
+      insert_user(username: "50xyoff")
+
+      assert usernames([], "50%_off") == [literal.username]
+      assert usernames([], "%") == [literal.username]
+      assert usernames([], "5_") == []
+    end
+
+    test "does not find admins" do
+      insert_user(username: "findable_admin", admin: true)
+
+      assert usernames([], "findable_admin") == []
     end
   end
 

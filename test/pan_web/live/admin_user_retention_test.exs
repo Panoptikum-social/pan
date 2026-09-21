@@ -17,6 +17,20 @@ defmodule PanWeb.Live.Admin.UserRetentionTest do
 
   defp days_ago(days), do: NaiveDateTime.add(Pan.Parser.MyDateTime.now(), -days, :day)
 
+  defp wait_for(view, text, tries \\ 50) do
+    cond do
+      render(view) =~ text ->
+        true
+
+      tries == 0 ->
+        false
+
+      true ->
+        Process.sleep(20)
+        wait_for(view, text, tries - 1)
+    end
+  end
+
   defp admin_conn(conn) do
     admin = insert_user(admin: true, email_verified: true)
     init_test_session(conn, %{"user_id" => admin.id, "admin" => true})
@@ -90,8 +104,26 @@ defmodule PanWeb.Live.Admin.UserRetentionTest do
     render_click(view, "toggle", %{"id" => to_string(user.id)})
     assert render_click(view, "send_notices") =~ "Sending 1 notices"
 
+    # the mails are sent from a background task, wait for its report
+    assert wait_for(view, "Sent 1 notices")
     assert_email_sent(to: {"", user.email})
-    assert render(view) =~ "Sent 1 notices"
     assert Repo.get!(User, user.id).marked_for_deletion_at
+  end
+
+  test "the search box narrows the list to matching usernames or emails", %{conn: conn} do
+    wanted = insert_user(username: "searchable_person", email: "wanted@example.com")
+    by_mail = insert_user(username: "someone_else", email: "hello@searchable.example.org")
+    other = insert_user(username: "unrelated_person", email: "other@example.com")
+    {:ok, view, html} = live(admin_conn(conn), "/admin/users/retention")
+
+    assert html =~ other.username
+
+    html = view |> element("#retention-search") |> render_change(%{"search" => "searchable"})
+    assert html =~ wanted.username
+    assert html =~ by_mail.username
+    refute html =~ other.username
+
+    html = view |> element("#retention-search") |> render_change(%{"search" => ""})
+    assert html =~ other.username
   end
 end

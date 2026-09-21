@@ -28,6 +28,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
     {:ok,
      assign(socket,
        filters: [],
+       search: "",
        sort_by: :inserted_at,
        sort_order: :desc,
        page: 1,
@@ -37,7 +38,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
   end
 
   defp fetch(%{assigns: assigns} = socket) do
-    count = User.count_retention_users(assigns.filters)
+    count = User.count_retention_users(assigns.filters, assigns.search)
     pages = max(ceil(count / @per_page), 1)
     page = min(assigns.page, pages)
 
@@ -48,11 +49,12 @@ defmodule PanWeb.Live.Admin.User.Retention do
       counts:
         Map.new(
           User.retention_filters(),
-          &{&1, User.count_retention_users(Enum.uniq([&1 | assigns.filters]))}
+          &{&1, User.count_retention_users(Enum.uniq([&1 | assigns.filters]), assigns.search)}
         ),
       users:
         User.retention_users(
           assigns.filters,
+          assigns.search,
           assigns.sort_by,
           assigns.sort_order,
           @per_page,
@@ -72,6 +74,10 @@ defmodule PanWeb.Live.Admin.User.Retention do
 
         {:noreply, assign(socket, filters: filters, page: 1, selected: MapSet.new()) |> fetch()}
     end
+  end
+
+  def handle_event("search", %{"search" => search}, socket) do
+    {:noreply, assign(socket, search: search, page: 1, selected: MapSet.new()) |> fetch()}
   end
 
   def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
@@ -163,6 +169,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
   defp filter_title(:unverified), do: "Unverified"
   defp filter_title(:never_logged_in), do: "Never logged in"
   defp filter_title(:inactive), do: "Inactive for 2 years"
+  defp filter_title(:unmarked), do: "Unmarked"
   defp filter_title(:marked), do: "Marked"
   defp filter_title(:deletable), do: "Deletable (marked > #{User.deletion_grace_days()} days)"
 
@@ -175,6 +182,18 @@ defmodule PanWeb.Live.Admin.User.Retention do
         Admins and moderators are not listed. Deleting works only for users that have been marked
         for at least {User.deletion_grace_days()} days.
       </p>
+
+      <form id="retention-search" phx-change="search" phx-submit="search" class="my-4">
+        <input
+          type="text"
+          name="search"
+          value={@search}
+          phx-debounce="300"
+          autocomplete="off"
+          placeholder="Search in username or email"
+          class="input input-bordered input-sm w-full max-w-md"
+        />
+      </form>
 
       <div class="flex flex-wrap gap-x-6 gap-y-2 my-4">
         <label
@@ -193,8 +212,8 @@ defmodule PanWeb.Live.Admin.User.Retention do
       </div>
 
       <p class="text-sm">
-        {@count} users match. Checked filters apply together, the numbers show how many users
-        would match with that filter added.
+        {@count} users match. The search text and the checked filters apply together, the numbers
+        show how many users would match with that filter added.
       </p>
 
       <div class="flex flex-wrap gap-4 items-center my-2">
