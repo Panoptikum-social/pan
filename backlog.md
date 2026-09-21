@@ -39,13 +39,9 @@ materializes:
   (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, episodes,
   and the contributor / managingEditor / podcast:person / mixed-content crash
   shapes) but the 1,280-line `Analyzer` is still mostly uncovered.
-  Found while writing them and fixed the same day: with mixed content (raw markup
-  inside `description`, `itunes:summary`, `content:encoded`, titles, subtitle), only
-  the first text node was kept. All clauses that took `[value | _]` now flatten the
-  whole list to text (`Helpers.flatten_to_string/1`, pieces joined with a space,
-  since Quinn trims every text node). Not changed: the two `podcast:person` clauses
-  (name only when the first node is text), and single-element clauses such as the
-  channel `title`, which log "Tag unknown" for mixed content.
+  Small known gaps: the two `podcast:person` clauses take the name only when the
+  first node is text, and single-element clauses such as the channel `title` log
+  "Tag unknown" for mixed content (raw markup inside the element).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
@@ -114,12 +110,9 @@ uploads only.
   entries of failed mail deliveries (recipient + subject).
 - *Suspect email addresses found 2026-09-21 in the dev copy of the users table*
   (a DNS check of all domains): 64 users on 58 nonexistent domains (21 of them
-  verified, many look like bots), 3 addresses with whitespace or a CRLF (ids
-  1414, 1416, 4527), a few disposable and placeholder addresses. Registration, profile edit, admin edit
-  and login-link request now trim whitespace from the email (2026-09-21); the 3 existing
-  bad rows were cleared on prod. All 864 unverified users have never
-  logged in (490 signed up in 2019). Nothing was changed or deleted; a CSV of the
-  suspects went to the user (not in a repo).
+  verified, many look like bots), a few disposable and placeholder addresses. All
+  864 unverified users have never logged in (490 signed up in 2019). Nothing was
+  changed or deleted; a CSV of the suspects went to the user (not in a repo).
 
 ### Bounce handling for outgoing mail (added 2026-09-21; only the reader and actions on bounces are open)
 Problem: a nonexistent address goes unnoticed. The app only talks to our relay
