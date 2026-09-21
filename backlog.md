@@ -120,23 +120,53 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    remember-me cookie `_pan_remember_me` (30 days), email verification,
    last-login tracking, the retention policy above, the Journal audit log.
 
-### Bounce handling for outgoing mail (added 2026-09-21, not decided)
-Today a nonexistent address or mail server goes unnoticed: the app only talks to
-our relay (`box.mittenin.at`), which accepts the mail and reports failure later
-as an asynchronous bounce to the envelope sender, and all 7 `Pan.Mailer.deliver()`
-calls ignore the return value anyway. Idea, if pursued as its own small project:
-- keep From as `noreply@`, use a separate bounce-only envelope sender (a real
-  IMAP mailbox, not `accounts@`, which humans would reply to);
-- VERP addressing, e.g. `bounces+<user_id>.<signature>@panoptikum.social`, so a
-  bounce identifies the account directly and unsigned mail (spam, backscatter)
-  is dropped;
-- a reader that accepts only real delivery reports (empty return path,
-  `multipart/report`) to a valid signed address, and a rule how many bounces
-  mark an account (fits the retention job in the item above);
-- cheap first step: check/log/Journal the return value of `Pan.Mailer.deliver()`
-  and tell the user when the relay refuses a mail.
-Open: what spam filtering `box.mittenin.at` already does, and whether it
-bounces to the envelope sender.
+### Bounce handling for outgoing mail (added 2026-09-21, exploring, nothing built)
+Problem: a nonexistent address goes unnoticed. The app only talks to our relay
+(`box.mittenin.at`, Mail-in-a-Box/Postfix), which reports failures later as a
+bounce mail to the envelope sender, and all 7 `Pan.Mailer.deliver()` calls ignore
+the return value.
+
+**Mail server side is ready, no server change needed (tested 2026-09-21):**
+- `bounces@panoptikum.social` is an alias forwarding to the `bounce@panoptikum.social`
+  mailbox, with `robot@informatom.com` (the app's SMTP login) as permitted sender.
+  Without that, the relay refuses the envelope sender: `553 5.7.1 Sender address
+  rejected: not owned by user robot@informatom.com`.
+- Swoosh's SMTP adapter uses the email's `Sender` header as the SMTP envelope
+  sender (else the From address), so `Sender: bounces@panoptikum.social` on an
+  email is all the app would need; From stays `noreply@panoptikum.social`.
+- Tested with swaks (login robot@, `MAIL FROM:<bounces@...>`, From header
+  noreply@): accepted, and the bounce arrived in `bounce@` after about 3 seconds.
+
+**What a bounce looks like (both tests):** standard delivery report with
+`Final-Recipient`, `Action: failed`, `Status`, `Diagnostic-Code`, and the complete
+original message attached (headers and body, our headers such as Message-Id come
+back unchanged; the Postfix queue id is in the `Received` line and matches the
+"queued as ..." receipt that Swoosh's SMTP adapter returns from `deliver()`).
+- nonexistent mailbox at a real provider (gmail): `Status: 5.1.1`.
+- nonexistent domain: `Status: 5.4.4`, bounced at once by Postfix (permanent, not
+  retried for days; retrying only applies to temporary failures, not tested).
+
+**Ways to tie a bounce to an account (options, not decided):** the failing
+address in `Final-Recipient` (lookup by email), a marker header of ours in the
+original (untested with a custom header), or the queue id from the receipt.
+
+**Which statuses would mean "address is bad" (suggestion):** `5.1.1`, `5.1.2`,
+`5.4.4`. Not `5.2.x` (mailbox full) or `5.7.x` (rejected as spam/policy), and
+ignore `4.x.x` / `Action: delayed`.
+
+**Notes:**
+- A bounce contains the original mail, so for verification and login-link mails
+  it contains a link that is a login token valid for 1 hour; treat the
+  `bounce@` mailbox as sensitive and handle those links carefully in any reader.
+- Using `accounts@` as a real mailbox/From was considered and advised against
+  (replies and spam); VERP-style per-mail addresses are not needed so far and
+  the address format would be our own choice, not a standard.
+- Possible cheap first step: check/log/Journal the return value of
+  `Pan.Mailer.deliver()` and tell the user when the relay refuses a mail.
+- Fits the retention job (a permanently bouncing address could count towards
+  marking an account), see the item above.
+- Open: what spam filtering the mail server applies to `bounce@`; whether to
+  build the app side (`Sender` header, reader) at all.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
 Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
