@@ -97,52 +97,30 @@ uploads only.
 
 ---
 
-### User management and data retention (added 2026-09-21)
+### User retention: open follow-ups (built and deployed 2026-09-21)
+The retention tooling itself is done and tested by the user: last-login tracking
+and deletion mark, the admin page `/admin/users/retention` (combinable filter
+checkboxes, text search, mark/unmark, "Send notice", delete after the 30 day
+grace period), and the privacy page. What is left:
+- *No automatic marking job* (user: "we won't start with a job"). If it comes
+  later, the decided policy is: a never-verified account marked 30 days after
+  signup, a verified one after 2 years without a real login, small batches
+  first, deleting stays manual. Until then the privacy page promises these rules
+  while the marking and deleting happen by hand on the retention page.
+- *Account deletion keeps more than the account:* personas stay including an
+  email address stored on them (persona.user_id is left dangling), invoices stay
+  with user_id set to null. The privacy page says so. Not changed in code.
+- *No retention period is stated* for the `bounce@` mailbox and for Journal
+  entries of failed mail deliveries (recipient + subject).
+- *Suspect email addresses found 2026-09-21 in the dev copy of the users table*
+  (a DNS check of all domains): 64 users on 58 nonexistent domains (21 of them
+  verified, many look like bots), 3 addresses with whitespace or a CRLF (ids
+  1414, 1416, 4527), a few disposable and placeholder addresses. The registration
+  does not trim whitespace from the email. All 864 unverified users have never
+  logged in (490 signed up in 2019). Nothing was changed or deleted; a CSV of the
+  suspects went to the user (not in a repo).
 
-Decided 2026-09-21, to be built in this order (each part its own commit):
-
-1. *Data + tracking:* nullable `users.last_login_at` and
-   `users.marked_for_deletion_at`. `last_login_at` records real logins only
-   (login form, API login, emailed link), not session/remember-me use. Any real
-   login clears `marked_for_deletion_at`. Show last login on "My Data" and in
-   the JSON export.
-2. DONE 2026-09-21 as a manual action instead of a job (user: "we won't start
-   with a job"): "Send notice" on the retention page mails the selected users
-   (not admins or moderators) a deletion notice and marks them. The mail names
-   the reasons that apply (no login for 2 years, email not verified yet, or
-   neither if marked by hand) and has a login link valid for 30 days (the grace
-   period) that logs in, verifies the address and lifts the mark. Marking
-   happens only once the mail was accepted; an existing mark date is kept. An
-   automatic marking job is not started; if it comes later, the policy is: a
-   never-verified account marked 30 days after signup, a verified one after 2
-   years without a real login, small batches first. Deleting stays a manual
-   admin action after the 30 day grace period.
-3. DONE 2026-09-21 (committed; filters changed to checkboxes afterwards): *admin
-   users overview* at `/admin/users/retention` (button on the admin dashboard).
-   Filter checkboxes that combine, each checked filter restricts the list further
-   and nothing checked lists everyone: unverified, never logged in, inactive for
-   2 years, unmarked, marked, deletable (marked for more than 30 days); the number beside a
-   box is how many users would match with it added; a text box filters for
-   text contained in the username or the email (combined with the checkboxes).
-   Sortable, paginated;
-   mark/unmark selected users; "Delete selected" only shown with the deletable
-   filter checked and enforced in `PanWeb.User.delete_deletable/1`. Admins and
-   moderators are hidden and never touched. The two new columns are in the
-   databrowser user list too.
-4. DONE 2026-09-21, committed and published by the user: *privacy page*
-   (`pages/privacy.md` in the Jekyll repo) now covers the remember-me cookie,
-   email verification, last-login tracking, the retention policy above, emails
-   we send and delivery reports. Consequences to keep in mind:
-   - The page already promises the retention rules (unverified accounts deleted
-     after 30 days; inactive verified accounts announced by mail, deleted 30
-     days after it) while part 2 (marking job, warning mail) is not built yet.
-   - Account deletion keeps personas including an email address stored on them
-     (persona.user_id is left dangling), and invoices with user_id set to null;
-     the page says so. Not changed in code.
-   - No retention period is stated for the `bounce@` mailbox and for Journal
-     entries of failed mail deliveries (recipient + subject).
-
-### Bounce handling for outgoing mail (added 2026-09-21, exploring; step 1 built, see below)
+### Bounce handling for outgoing mail (added 2026-09-21; step 1 done and working, reader open)
 Problem: a nonexistent address goes unnoticed. The app only talks to our relay
 (`box.mittenin.at`, Mail-in-a-Box/Postfix), which reports failures later as a
 bounce mail to the envelope sender, and all 7 `Pan.Mailer.deliver()` calls ignore
@@ -176,27 +154,27 @@ original (untested with a custom header), or the queue id from the receipt.
 `5.4.4`. Not `5.2.x` (mailbox full) or `5.7.x` (rejected as spam/policy), and
 ignore `4.x.x` / `Action: delayed`.
 
-**Step 1 built 2026-09-21 (user wants to watch real bounces in the `bounce@`
-mailbox himself first):** `Pan.Mailer.deliver/2` now sets `Sender:
-bounces@panoptikum.social` on every mail, logs the relay's receipt (queue id) at
-info level, and on a refusal by the relay logs a warning and writes a Journal
-entry (recipient, subject, reason; not for error-notification mails, to avoid a
-notification loop). Prod only in effect, dev/qa use the local adapter. Reader
-and any action on bounces are still open (decide after seeing real bounces).
+**Step 1 done, deployed and confirmed working by the user (real bounces arrive
+in `bounce@`):** `Pan.Mailer.deliver/2` sets `Sender: bounces@panoptikum.social`
+on every mail, logs the relay's receipt (queue id) at info level, and on a
+refusal by the relay logs a warning and writes a Journal entry (recipient,
+subject, reason; not for error-notification mails, to avoid a notification
+loop). Only prod sends real mail, dev/qa use the local adapter. A reader for the
+mailbox and any action on bounces are still open (decide after seeing real
+bounces).
 
 **Notes:**
 - A bounce contains the original mail, so for verification and login-link mails
-  it contains a link that is a login token valid for 1 hour; treat the
+  it contains a link that is a login token valid for 1 hour (30 days for the
+  retention notice); treat the
   `bounce@` mailbox as sensitive and handle those links carefully in any reader.
 - Using `accounts@` as a real mailbox/From was considered and advised against
   (replies and spam); VERP-style per-mail addresses are not needed so far and
   the address format would be our own choice, not a standard.
-- Possible cheap first step: check/log/Journal the return value of
-  `Pan.Mailer.deliver()` and tell the user when the relay refuses a mail.
-- Fits the retention job (a permanently bouncing address could count towards
-  marking an account), see the item above.
+- A permanently bouncing address could count towards marking an account (see
+  the retention item above).
 - Open: what spam filtering the mail server applies to `bounce@`; whether to
-  build the app side (`Sender` header, reader) at all.
+  build a reader at all.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
 Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
