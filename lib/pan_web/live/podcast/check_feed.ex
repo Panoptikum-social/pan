@@ -4,27 +4,36 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
   alias Pan.Parser.{Download, Feed}
   alias PanWeb.Podcast
+  import PanWeb.Router.Helpers
 
   @severities [:error, :warning, :info]
 
   def mount(%{"id" => id}, _session, socket) do
     podcast = Pan.Repo.get(Podcast, id)
 
-    if is_nil(podcast) or podcast.blocked == true do
-      {:ok, push_navigate(socket, to: "/podcasts")}
-    else
-      socket =
-        assign(socket,
-          podcast: podcast,
-          page_title: "Feed check for #{podcast.title}",
-          status: :running,
-          feed_url: nil,
-          findings: [],
-          passed: [],
-          error: nil
-        )
+    cond do
+      is_nil(podcast) or podcast.blocked == true ->
+        {:ok, push_navigate(socket, to: "/podcasts")}
 
-      {:ok, if(connected?(socket), do: start_check(socket), else: socket)}
+      not Podcast.manageable_by?(podcast, socket.assigns.current_user_id) ->
+        {:ok,
+         socket
+         |> put_flash(:error, "The feed check is available to the podcast's owner only.")
+         |> push_navigate(to: podcast_frontend_path(PanWeb.Endpoint, :show, podcast))}
+
+      true ->
+        socket =
+          assign(socket,
+            podcast: podcast,
+            page_title: "Feed check for #{podcast.title}",
+            status: :running,
+            feed_url: nil,
+            findings: [],
+            passed: [],
+            error: nil
+          )
+
+        {:ok, if(connected?(socket), do: start_check(socket), else: socket)}
     end
   end
 

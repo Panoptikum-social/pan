@@ -123,6 +123,11 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-outline"
         />
         <LinkButton.render
+          title="Podcast owners"
+          to={podcast_path(Endpoint, :owners)}
+          class="btn-outline"
+        />
+        <LinkButton.render
           title="User retention"
           to={user_path(Endpoint, :retention)}
           class="btn-outline"

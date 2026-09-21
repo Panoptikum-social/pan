@@ -56,6 +56,10 @@ defmodule PanWeb.Podcast do
     field(:status_code, :string, virtual: true)
     timestamps()
 
+    # The user who manages this podcast. Never cast from feed data; it only
+    # changes through claim_by_owner_email/1 and admin action.
+    belongs_to(:owner, User, foreign_key: :user_id)
+
     has_many(:episodes, Episode, on_delete: :delete_all)
     has_many(:feeds, Feed, on_delete: :delete_all)
     has_many(:recommendations, Recommendation, on_delete: :delete_all)
@@ -833,6 +837,190 @@ defmodule PanWeb.Podcast do
       _e in CaseClauseError -> "CaseClauseError"
       e -> e.__exception__
     end
+  end
+
+  @doc """
+  Assigns every unassigned podcast whose owner persona has the user's email
+  address to that user, if the user has verified their email. Returns the
+  assigned podcast ids. Each assignment is journaled.
+  """
+  def claim_by_owner_email(%{email_verified: true, email: email} = user) when is_binary(email) do
+    normalized = email |> String.trim() |> String.downcase()
+
+    ids =
+      from(podcast in Podcast,
+        join: engagement in Engagement,
+        on: engagement.podcast_id == podcast.id and engagement.role == "owner",
+        join: persona in Persona,
+        on: persona.id == engagement.persona_id,
+        where:
+          is_nil(podcast.user_id) and fragment("lower(trim(?))", persona.email) == ^normalized,
+        distinct: true,
+        select: podcast.id
+      )
+      |> Repo.all()
+
+    {_count, claimed_ids} =
+      from(podcast in Podcast,
+        where: podcast.id in ^ids and is_nil(podcast.user_id),
+        select: podcast.id
+      )
+      |> Repo.update_all(set: [user_id: user.id])
+
+    for id <- claimed_ids do
+      PanWeb.Journal.log(%{
+        module: __MODULE__,
+        method: "claim_by_owner_email",
+        text: "podcast #{id} assigned to user #{user.id} (owner email match)",
+        before: nil,
+        after: user.id
+      })
+    end
+
+    claimed_ids
+  end
+
+  def claim_by_owner_email(_user), do: []
+
+  @doc """
+  Sets (or with `nil` removes) the managing user of a podcast on behalf of an
+  admin and journals the change.
+  """
+  def set_owner(podcast_id, user_id, admin_id) do
+    podcast = Repo.get!(Podcast, podcast_id)
+
+    {:ok, _podcast} =
+      podcast |> Ecto.Changeset.change(user_id: user_id) |> Repo.update()
+
+    PanWeb.Journal.log(%{
+      module: __MODULE__,
+      method: if(user_id, do: "assign_owner", else: "unassign_owner"),
+      text: "podcast #{podcast_id} owner changed by admin #{admin_id}",
+      before: podcast.user_id,
+      after: user_id
+    })
+  end
+
+  @doc """
+  Podcasts for the owner administration: without a search the assigned ones,
+  with a search those matching the podcast id, title or the owner's
+  username or email. Each podcast carries its owner and `:feed_owner_emails`.
+  """
+  def owner_admin_list(search, limit) do
+    pattern = "%" <> String.replace(search, ~r/[\\%_]/, "\\\\\\0") <> "%"
+
+    query =
+      from(podcast in Podcast,
+        left_join: owner in assoc(podcast, :owner),
+        order_by: podcast.title,
+        limit: ^limit,
+        preload: [owner: owner]
+      )
+
+    query =
+      case {search, Integer.parse(search)} do
+        {"", _} ->
+          from(podcast in query, where: not is_nil(podcast.user_id))
+
+        {_, {id, ""}} ->
+          from(podcast in query, where: podcast.id == ^id)
+
+        _ ->
+          from([podcast, owner] in query,
+            where:
+              ilike(podcast.title, ^pattern) or ilike(owner.username, ^pattern) or
+                ilike(owner.email, ^pattern)
+          )
+      end
+
+    podcasts = Repo.all(query)
+
+    emails =
+      from(engagement in Engagement,
+        join: persona in Persona,
+        on: persona.id == engagement.persona_id,
+        where:
+          engagement.role == "owner" and engagement.podcast_id in ^Enum.map(podcasts, & &1.id) and
+            not is_nil(persona.email),
+        select: {engagement.podcast_id, persona.email}
+      )
+      |> Repo.all()
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+
+    Enum.map(podcasts, &Map.put(&1, :feed_owner_emails, Map.get(emails, &1.id, [])))
+  end
+
+  @doc "Whether the user may manage the podcast: its assigned owner, an admin or a moderator."
+  def manageable_by?(_podcast, nil), do: false
+
+  def manageable_by?(%{user_id: user_id}, user_id), do: true
+
+  def manageable_by?(_podcast, user_id) do
+    from(user in User, where: user.id == ^user_id and (user.admin or user.moderator))
+    |> Repo.exists?()
+  end
+
+  @claim_token_max_age 48 * 3600
+
+  @doc "The distinct email addresses of the podcast's owner personas."
+  def feed_owner_emails(podcast_id) do
+    from(engagement in Engagement,
+      join: persona in Persona,
+      on: persona.id == engagement.persona_id,
+      where:
+        engagement.podcast_id == ^podcast_id and engagement.role == "owner" and
+          fragment("trim(?)", persona.email) != "",
+      distinct: true,
+      select: fragment("lower(trim(?))", persona.email)
+    )
+    |> Repo.all()
+  end
+
+  def claim_token(podcast_id, user_id) do
+    Phoenix.Token.sign(PanWeb.Endpoint, "podcast_claim", %{
+      podcast_id: podcast_id,
+      user_id: user_id
+    })
+  end
+
+  @doc "Verifies a claim token for the podcast; returns the claiming user id."
+  def verify_claim_token(token, podcast_id) do
+    case Phoenix.Token.verify(PanWeb.Endpoint, "podcast_claim", token,
+           max_age: @claim_token_max_age
+         ) do
+      {:ok, %{podcast_id: ^podcast_id, user_id: user_id}} -> {:ok, user_id}
+      {:ok, _other_podcast} -> {:error, :invalid}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  @doc """
+  Assigns the podcast to the user after the owner address confirmed the claim.
+  Never overrides an existing assignment.
+  """
+  def claim_by_confirmation(podcast_id, user_id) do
+    {count, _} =
+      from(podcast in Podcast, where: podcast.id == ^podcast_id and is_nil(podcast.user_id))
+      |> Repo.update_all(set: [user_id: user_id])
+
+    if count == 1 do
+      PanWeb.Journal.log(%{
+        module: __MODULE__,
+        method: "claim_by_confirmation",
+        text: "podcast #{podcast_id} assigned to user #{user_id} (owner address confirmed)",
+        before: nil,
+        after: user_id
+      })
+
+      :ok
+    else
+      {:error, :already_assigned}
+    end
+  end
+
+  def owned_by(user_id) do
+    from(podcast in Podcast, where: podcast.user_id == ^user_id, order_by: podcast.title)
+    |> Repo.all()
   end
 
   # Computes a *recommendation* only — never mutates anything. Loading

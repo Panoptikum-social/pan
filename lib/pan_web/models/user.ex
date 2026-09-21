@@ -366,6 +366,27 @@ defmodule PanWeb.User do
     |> Repo.preload([:users_i_like, :categories_i_like, :podcasts_i_subscribed])
   end
 
+  @doc "Finds a user by id, or by exact username or email (case-insensitive)."
+  def find_by_identifier(identifier) do
+    identifier = String.trim(identifier)
+
+    case Integer.parse(identifier) do
+      {id, ""} ->
+        Repo.get(User, id)
+
+      _ ->
+        lowered = String.downcase(identifier)
+
+        from(u in User,
+          where:
+            fragment("lower(?)", u.username) == ^lowered or
+              fragment("lower(?)", u.email) == ^lowered,
+          limit: 1
+        )
+        |> Repo.one()
+    end
+  end
+
   def get_by_id(id) do
     Repo.get!(User, id)
   end

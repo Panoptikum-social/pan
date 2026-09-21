@@ -166,6 +166,7 @@ defmodule PanWeb.Router do
       pipe_through([:browser, :authenticate_admin, :admin_layout])
       live("/", Live.Admin.Dashboard, :home, as: :dashboard)
       live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
+      live("/podcasts/owners", Live.Admin.Podcast.Owners, :owners, as: :podcast)
 
       live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
 
@@ -257,6 +258,8 @@ defmodule PanWeb.Router do
     resources("/users", UserFrontendController, only: [:index])
 
     get("/personas/:id/grant_access", PersonaFrontendController, :grant_access)
+    get("/podcasts/:id/grant_ownership", PodcastFrontendController, :confirm_ownership)
+    post("/podcasts/:id/grant_ownership", PodcastFrontendController, :grant_ownership)
     live("/personas", Live.Persona.Index, :index, as: :persona_frontend)
     resources("/personas", PersonaFrontendController, only: [:show])
 
@@ -314,6 +317,7 @@ defmodule PanWeb.Router do
     put("/update_password", UserFrontendController, :update_password)
 
     post("/personas/:id/claim", PersonaFrontendController, :claim)
+    post("/podcasts/:id/claim", PodcastFrontendController, :claim)
     get("/personas/:id/warning", PersonaFrontendController, :warning)
     post("/personas/:id/connect", PersonaFrontendController, :connect)
     post("/personas/:id/disconnect", PersonaFrontendController, :disconnect)

@@ -99,7 +99,17 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             )} minutes.
           </small>
         <% end %>
-        <div class="mt-4">
+        <div :if={is_nil(@podcast.user_id)} class="mt-4">
+          <.link
+            href={podcast_frontend_path(Endpoint, :claim, @podcast)}
+            method="post"
+            data-confirm="We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
+            class="inline-block border border-gray-darker rounded bg-primary hover:bg-primary-light text-white px-2 py-1"
+          >
+            Claim this podcast
+          </.link>
+        </div>
+        <div :if={Podcast.manageable_by?(@podcast, @current_user_id)} class="mt-4">
           <.link
             navigate={podcast_frontend_path(Endpoint, :check_feed, @podcast)}
             class="inline-block border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1"

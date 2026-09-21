@@ -1,4 +1,29 @@
+<div :if={@claimed_count > 0} class="alert alert-success mb-4">
+  {@claimed_count} podcast(s) listing your email address as owner have been assigned to you.
+</div>
+
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+  <div class="rounded-xl shadow">
+    <div class="p-3 rounded-t-xl bg-primary text-white">
+      Podcasts I manage
+    </div>
+    <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
+      <p :if={@podcasts_i_own == []} class="text-sm">
+        None yet. Podcasts whose feed lists your verified email address as owner are assigned to you here automatically.
+      </p>
+      <p class="flex flex-wrap">
+        <%= for podcast <- @podcasts_i_own do %>
+          <.link
+            href={podcast_frontend_path(@conn, :show, podcast)}
+            class="border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate"
+          >
+            {icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top")} {podcast.title}
+          </.link>
+        <% end %>
+      </p>
+    </div>
+  </div>
+
   <div class="rounded-xl shadow">
     <div class="p-3 rounded-t-xl bg-info text-white">
       Subscriptions

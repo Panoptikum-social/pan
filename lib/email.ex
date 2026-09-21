@@ -144,6 +144,49 @@ defmodule Pan.Email do
     )
   end
 
+  def confirm_podcast_claim_link_html_email(token, user, podcast, email_address) do
+    escape = &(&1 |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string())
+
+    grant_url =
+      PanWeb.Router.Helpers.podcast_frontend_url(PanWeb.Endpoint, :confirm_ownership, podcast,
+        token: token
+      )
+
+    new(
+      to: email_address,
+      from: "noreply@panoptikum.social",
+      subject: "Panoptikum - Podcast ownership confirmation request",
+      html_body: ~s"""
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+          </head>
+          <body>
+            <p>Hello!</p>
+            <p>The user <b>#{escape.(user.name)}</b> (user name <b>#{escape.(user.username)}</b>,
+              email address #{escape.(user.email)}) in
+              <a href="https://panoptikum.social">Panoptikum.social</a>
+              would like to manage the podcast <b>#{escape.(podcast.title)}</b>. Your address is
+              listed as the owner in that podcast's feed.
+            </p>
+            <p>You could ...
+              <ul>
+                <li>ignore this mail, if you don't want to provide access.</li>
+                <li>reply to this email, if you have questions before you want to provide access.</li>
+                <li>confirm within the next 48 hours by opening this link and approving there:
+                <a href="#{grant_url}">Confirm ownership</a>
+                </li>
+              </ul>
+            </p>
+            <p>- The Panoptikum Team.</p>
+          </body>
+        </html>
+      """
+    )
+  end
+
   def error_notification(mail_body, from, to) do
     {:ok, hostname} = :inet.gethostname()
 

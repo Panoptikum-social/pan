@@ -68,14 +68,24 @@ parser code, since Pan's fix-ups would hide what the tool must report), takes an
 XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
+**Access phase B (built 2026-09-21, awaiting deploy):** one user per podcast
+(`podcasts.user_id`, only changed by claim or admin, never by a feed update).
+A verified user opening `/my_podcasts` gets every unassigned podcast whose owner
+persona email matches (no cap, accepted risk: shared platform addresses such as
+feeds@soundcloud.com list thousands of podcasts). Otherwise "Claim this podcast"
+mails a token link to the owner address(es) from the feed; the link opens an
+approval page (POST, so mail scanners cannot approve). Admin page
+`/admin/podcasts/owners` assigns, reassigns and unassigns; every change is in the
+Journal. The check page is only for the assigned owner, admins and moderators.
+
 **Still open, in order:**
-1. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
-   in the feed or mail to the `itunes:owner` address). No user-to-podcast
-   ownership exists today, only personas can be claimed. (Access phase A, gig
-   based, was skipped 2026-09-21.)
-2. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
+1. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
    info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
    fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
+2. *Ownership, facts about the current build (no decisions made):* a previous
+   owner is not notified when an admin reassigns; owners see only the
+   "Podcasts I manage" card on `/my_podcasts`; deleting a user account leaves the
+   user's podcasts unassigned (FK is `nilify_all`).
 
 **Active probing (later), collected checklist:** needs downloads of artwork and
 media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,

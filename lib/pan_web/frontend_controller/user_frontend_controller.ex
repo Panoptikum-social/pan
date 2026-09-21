@@ -123,8 +123,11 @@ defmodule PanWeb.UserFrontendController do
   end
 
   def my_podcasts(conn, _params, user) do
+    user = Repo.get(User, user.id)
+    claimed_ids = Podcast.claim_by_owner_email(user)
+
     user =
-      Repo.get(User, user.id)
+      user
       |> Repo.preload(podcasts_i_subscribed: from(p in Podcast, order_by: p.title))
       |> Repo.preload(podcasts_i_follow: from(p in Podcast, order_by: p.title))
 
@@ -204,6 +207,8 @@ defmodule PanWeb.UserFrontendController do
 
     render(conn, "my_podcasts.html",
       user: user,
+      podcasts_i_own: Podcast.owned_by(user.id),
+      claimed_count: length(claimed_ids),
       podcasts_i_like: podcasts_i_like,
       recommendations: recommendations,
       also_liked: also_liked,
