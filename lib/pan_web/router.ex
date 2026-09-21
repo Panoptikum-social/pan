@@ -268,6 +268,7 @@ defmodule PanWeb.Router do
     get("/sessions/login_via_token", SessionController, :login_via_token)
     post("/sessions/resend_verification", SessionController, :resend_verification)
     get("/sessions/verify_email", SessionController, :verify_email)
+    get("/sessions/login_via_notice", SessionController, :login_via_notice)
 
     live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)
 

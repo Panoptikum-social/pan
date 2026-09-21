@@ -123,4 +123,52 @@ defmodule PanWeb.SessionControllerTest do
       assert Repo.get!(User, user.id).last_login_at
     end
   end
+
+  describe "retention notice link" do
+    test "logs in, verifies, records the login and lifts the deletion mark", %{conn: conn} do
+      user =
+        insert_user(
+          email_verified: false,
+          marked_for_deletion_at: ~N[2026-08-01 00:00:00]
+        )
+
+      token = PanWeb.Auth.sign_token(:retention_notice, user.id)
+      conn = get(conn, "/sessions/login_via_notice", %{"token" => token})
+
+      assert get_session(conn, :user_id) == user.id
+      user = Repo.get!(User, user.id)
+      assert user.email_verified
+      assert user.last_login_at
+      assert is_nil(user.marked_for_deletion_at)
+    end
+
+    test "is valid for 30 days but not longer", %{conn: conn} do
+      user = insert_user(email_verified: true)
+      day = 60 * 60 * 24
+
+      fresh = signed_token(user, 29 * day)
+      assert get_session(get(conn, "/sessions/login_via_notice", %{"token" => fresh}), :user_id)
+
+      stale = signed_token(user, 31 * day)
+      conn = get(conn, "/sessions/login_via_notice", %{"token" => stale})
+      refute get_session(conn, :user_id)
+      assert redirected_to(conn) == "/sessions/new"
+    end
+
+    test "the two kinds of login link do not work for each other", %{conn: conn} do
+      user = insert_user(email_verified: true)
+
+      notice = PanWeb.Auth.sign_token(:retention_notice, user.id)
+      refute get_session(get(conn, "/sessions/login_via_token", %{"token" => notice}), :user_id)
+
+      link = Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
+      refute get_session(get(conn, "/sessions/login_via_notice", %{"token" => link}), :user_id)
+    end
+  end
+
+  defp signed_token(user, age_in_seconds) do
+    Phoenix.Token.sign(PanWeb.Endpoint, "retention notice", user.id,
+      signed_at: System.system_time(:second) - age_in_seconds
+    )
+  end
 end

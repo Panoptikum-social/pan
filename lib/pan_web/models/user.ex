@@ -477,6 +477,47 @@ defmodule PanWeb.User do
   end
 
   @doc """
+  Mails a deletion notice with a login link (valid for the grace period) to the
+  given users (not admins or moderators). The reasons in the mail come from the
+  user's data. A user is marked for deletion only once the mail was accepted, an
+  existing mark date is kept. Returns how many notices were sent and failed.
+  """
+  def send_retention_notices(ids) do
+    results =
+      from(u in regular_users(), where: u.id in ^ids)
+      |> Repo.all()
+      |> Enum.map(&send_retention_notice/1)
+
+    %{sent: Enum.count(results, &(&1 == :ok)), failed: Enum.count(results, &(&1 == :error))}
+  end
+
+  defp send_retention_notice(user) do
+    token = PanWeb.Auth.sign_token(:retention_notice, user.id)
+    delete_after = Date.add(Date.utc_today(), @deletion_grace_days)
+
+    case user
+         |> Pan.Email.retention_notice_html_email(token, retention_reasons(user), delete_after)
+         |> Pan.Mailer.deliver() do
+      {:ok, _receipt} ->
+        mark_for_deletion([user.id])
+        :ok
+
+      {:error, _reason} ->
+        :error
+    end
+  end
+
+  defp retention_reasons(user) do
+    inactive? =
+      user.last_login_at &&
+        NaiveDateTime.compare(user.last_login_at, days_ago(@inactive_after_days)) == :lt
+
+    [inactive: inactive?, unverified: !user.email_verified]
+    |> Enum.filter(fn {_reason, applies?} -> applies? end)
+    |> Keyword.keys()
+  end
+
+  @doc """
   Deletes those of the given users that have been marked for deletion for at
   least the grace period (and are not admins or moderators); returns how many
   were deleted. Everything else in `ids` is ignored.

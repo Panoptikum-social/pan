@@ -27,6 +27,45 @@ defmodule Pan.Email do
     )
   end
 
+  # `reasons` is a list of :inactive (no login for two years) and :unverified
+  # (email address never verified), `delete_after` the date the grace period ends.
+  def retention_notice_html_email(user, token, reasons, delete_after) do
+    url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :login_via_notice, token: token)
+
+    reason_items =
+      Enum.map_join(reasons, fn
+        :inactive -> "<li>You have not logged in for more than two years.</li>"
+        :unverified -> "<li>You have not verified your email address yet.</li>"
+      end)
+
+    new(
+      to: user.email,
+      from: "noreply@panoptikum.social",
+      subject: "Panoptikum - Your account will be deleted soon",
+      html_body: ~s"""
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width">
+          </head>
+          <body>
+            <p>Hello #{user.username}!</p>
+            <p>Your Panoptikum account is marked for deletion:</p>
+            <ul>#{reason_items}</ul>
+            <p>Unless you log in before #{delete_after}, your account and its data will be deleted.
+              To keep it, just use this
+              <a href="#{url}">Login link</a>.
+              It logs you in and verifies your email address. It is valid for 30 days.
+            </p>
+            <p>If you don't want to keep your account, you don't have to do anything.</p>
+            <p>- The Panoptikum Team.</p>
+          </body>
+        </html>
+      """
+    )
+  end
+
   def email_verification_link_html_email(token, email_address) do
     url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :verify_email, token: token)
 

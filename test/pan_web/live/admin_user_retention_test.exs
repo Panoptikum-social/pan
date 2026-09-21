@@ -2,6 +2,7 @@ defmodule PanWeb.Live.Admin.UserRetentionTest do
   use PanWeb.ConnCase
 
   import Phoenix.LiveViewTest
+  import Swoosh.TestAssertions
 
   alias Pan.Repo
   alias PanWeb.User
@@ -77,5 +78,20 @@ defmodule PanWeb.Live.Admin.UserRetentionTest do
     render_click(view, "filter", %{"filter" => "unverified"})
     html = render_click(view, "filter", %{"filter" => "marked"})
     assert html =~ plain.username
+  end
+
+  test "sends notices to the selected users and marks them", %{conn: conn} do
+    Application.put_env(:swoosh, :shared_test_process, self())
+    on_exit(fn -> Application.delete_env(:swoosh, :shared_test_process) end)
+
+    user = insert_user(email_verified: false)
+    {:ok, view, _html} = live(admin_conn(conn), "/admin/users/retention")
+
+    render_click(view, "toggle", %{"id" => to_string(user.id)})
+    assert render_click(view, "send_notices") =~ "Sending 1 notices"
+
+    assert_email_sent(to: {"", user.email})
+    assert render(view) =~ "Sent 1 notices"
+    assert Repo.get!(User, user.id).marked_for_deletion_at
   end
 end

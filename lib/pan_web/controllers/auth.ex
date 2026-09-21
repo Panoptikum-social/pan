@@ -109,8 +109,22 @@ defmodule PanWeb.Auth do
     end
   end
 
-  def login_by_token(conn, token) do
-    case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 60) do
+  # Login links mailed to users. The retention notice may be read days after it
+  # was sent, so its link is valid for the whole grace period before deletion.
+  @token_kinds %{
+    link: {"user", 60 * 60},
+    retention_notice: {"retention notice", 60 * 60 * 24 * 30}
+  }
+
+  def sign_token(kind, user_id) do
+    {salt, _max_age} = Map.fetch!(@token_kinds, kind)
+    Phoenix.Token.sign(PanWeb.Endpoint, salt, user_id)
+  end
+
+  def login_by_token(conn, token, kind \\ :link) do
+    {salt, max_age} = Map.fetch!(@token_kinds, kind)
+
+    case Phoenix.Token.verify(PanWeb.Endpoint, salt, token, max_age: max_age) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
         {:ok, login(conn, record_login(user))}

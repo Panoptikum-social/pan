@@ -106,14 +106,17 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    (login form, API login, emailed link), not session/remember-me use. Any real
    login clears `marked_for_deletion_at`. Show last login on "My Data" and in
    the JSON export.
-2. *Automatic marking job* (policy, decided): a never-verified account is
-   marked 30 days after signup; a verified account with no real login for 2
-   years is marked (never logged in: measured from signup). Marking a verified
-   account sends a warning mail; unverified accounts get no mail (unproven
-   address). Deleting stays a manual admin action after a 30 day grace period,
-   no automatic deletion. Journal-log what the job does. Start with a small batch (user, 2026-09-21):
-   the first runs mark only a limited number of accounts, no need to catch up
-   everything at once.
+2. DONE 2026-09-21 as a manual action instead of a job (user: "we won't start
+   with a job"): "Send notice" on the retention page mails the selected users
+   (not admins or moderators) a deletion notice and marks them. The mail names
+   the reasons that apply (no login for 2 years, email not verified yet, or
+   neither if marked by hand) and has a login link valid for 30 days (the grace
+   period) that logs in, verifies the address and lifts the mark. Marking
+   happens only once the mail was accepted; an existing mark date is kept. An
+   automatic marking job is not started; if it comes later, the policy is: a
+   never-verified account marked 30 days after signup, a verified one after 2
+   years without a real login, small batches first. Deleting stays a manual
+   admin action after the 30 day grace period.
 3. DONE 2026-09-21 (committed; filters changed to checkboxes afterwards): *admin
    users overview* at `/admin/users/retention` (button on the admin dashboard).
    Filter checkboxes that combine, each checked filter restricts the list further

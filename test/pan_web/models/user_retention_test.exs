@@ -1,6 +1,8 @@
 defmodule PanWeb.UserRetentionTest do
   use Pan.DataCase
 
+  import Swoosh.TestAssertions
+
   alias Pan.Repo
   alias PanWeb.User
 
@@ -111,6 +113,71 @@ defmodule PanWeb.UserRetentionTest do
       assert Repo.get(User, too_recent.id)
       assert Repo.get(User, unmarked.id)
       assert Repo.get(User, admin.id)
+    end
+  end
+
+  describe "send_retention_notices/1" do
+    defmodule RefusingAdapter do
+      use Swoosh.Adapter
+
+      def deliver(_email, _config), do: {:error, :refused}
+    end
+
+    test "mails a notice with the reasons and a login link, then marks the user" do
+      inactive_unverified = insert_user(email_verified: false, last_login_at: days_ago(900))
+
+      assert %{sent: 1, failed: 0} = User.send_retention_notices([inactive_unverified.id])
+
+      assert_email_sent(fn email ->
+        email.to == [{"", inactive_unverified.email}] and
+          email.html_body =~ "logged in for more than two years" and
+          email.html_body =~ "not verified your email address" and
+          email.html_body =~ "/sessions/login_via_notice?token="
+      end)
+
+      assert Repo.get!(User, inactive_unverified.id).marked_for_deletion_at
+    end
+
+    test "names only the reasons that apply" do
+      unverified = insert_user(email_verified: false)
+      inactive = insert_user(email_verified: true, last_login_at: days_ago(900))
+
+      User.send_retention_notices([unverified.id, inactive.id])
+
+      assert_email_sent(fn email ->
+        email.to == [{"", unverified.email}] and
+          email.html_body =~ "not verified your email address" and
+          not (email.html_body =~ "logged in for more than two years")
+      end)
+
+      assert_email_sent(fn email ->
+        email.to == [{"", inactive.email}] and
+          email.html_body =~ "logged in for more than two years" and
+          not (email.html_body =~ "not verified your email address")
+      end)
+    end
+
+    test "keeps an existing mark date, and skips admins" do
+      marked_at = days_ago(20)
+      marked = insert_user(marked_for_deletion_at: marked_at)
+      admin = insert_user(admin: true)
+
+      assert %{sent: 1} = User.send_retention_notices([marked.id, admin.id])
+
+      assert NaiveDateTime.diff(Repo.get!(User, marked.id).marked_for_deletion_at, marked_at) == 0
+      refute Repo.get!(User, admin.id).marked_for_deletion_at
+      assert_email_sent(fn email -> email.to == [{"", marked.email}] end)
+      refute_email_sent()
+    end
+
+    test "does not mark a user whose notice could not be sent" do
+      user = insert_user(%{})
+      original = Application.get_env(:pan, Pan.Mailer)
+      Application.put_env(:pan, Pan.Mailer, adapter: RefusingAdapter)
+      on_exit(fn -> Application.put_env(:pan, Pan.Mailer, original) end)
+
+      assert %{sent: 0, failed: 1} = User.send_retention_notices([user.id])
+      refute Repo.get!(User, user.id).marked_for_deletion_at
     end
   end
 end

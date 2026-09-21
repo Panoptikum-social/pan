@@ -122,9 +122,32 @@ defmodule PanWeb.Live.Admin.User.Retention do
     {:noreply, done(socket, "Removed the deletion mark from #{count} users.")}
   end
 
+  def handle_event("send_notices", _, socket) do
+    ids = socket.assigns.selected |> MapSet.to_list()
+    liveview_pid = self()
+
+    Task.start(fn -> send(liveview_pid, {:notices_sent, User.send_retention_notices(ids)}) end)
+
+    {:noreply,
+     socket
+     |> assign(selected: MapSet.new())
+     |> put_flash(:info, "Sending #{length(ids)} notices…")}
+  end
+
   def handle_event("delete", _, socket) do
     count = socket.assigns.selected |> MapSet.to_list() |> User.delete_deletable()
     {:noreply, done(socket, "Deleted #{count} users.")}
+  end
+
+  def handle_info({:notices_sent, %{sent: sent, failed: failed}}, socket) do
+    message = "Sent #{sent} notices and marked the users for deletion."
+
+    socket =
+      if failed > 0,
+        do: put_flash(socket, :error, "#{failed} notices could not be sent (see the Journal)."),
+        else: socket
+
+    {:noreply, socket |> fetch() |> put_flash(:info, message)}
   end
 
   defp done(socket, message) do
@@ -182,6 +205,14 @@ defmodule PanWeb.Live.Admin.User.Retention do
           class="btn btn-warning btn-sm"
         >
           Mark for deletion
+        </button>
+        <button
+          phx-click="send_notices"
+          disabled={MapSet.size(@selected) == 0}
+          data-confirm={"Send a deletion notice to #{MapSet.size(@selected)} users and mark them for deletion?"}
+          class="btn btn-info btn-sm"
+        >
+          Send notice
         </button>
         <button
           phx-click="unmark"

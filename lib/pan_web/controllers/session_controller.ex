@@ -69,6 +69,28 @@ defmodule PanWeb.SessionController do
     end
   end
 
+  def login_via_notice(conn, %{"token" => token}) do
+    case PanWeb.Auth.login_by_token(conn, token, :retention_notice) do
+      {:ok, conn} ->
+        conn
+        |> put_flash(
+          :info,
+          "Welcome back! Your account is kept and your email address is verified."
+        )
+        |> redirect(to: user_frontend_path(conn, :my_profile))
+
+      {:error, :expired} ->
+        conn
+        |> put_flash(:error, "The link has expired already!")
+        |> redirect(to: session_path(conn, :new))
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "Invalid link!")
+        |> redirect(to: session_path(conn, :new))
+    end
+  end
+
   def delete(conn, _) do
     conn
     |> PanWeb.Auth.logout()
