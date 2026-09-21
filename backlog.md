@@ -115,59 +115,60 @@ check) deferred past v1.
 - UI entry point decided: a "Check feed" link on the podcast page (logged-in
   users) leading to its own results page.
 
-**Status 2026-09-19 — phase C built, dev only.** Library
-`../check-my-feed` (repo `Panoptikum/check-my-feed`) has 5 RSS 2.0 rules and 17 Apple Podcasts rules (v1 scope complete);
-Pan has `PanWeb.Live.Podcast.CheckFeed` at `/pan/podcasts/:id/check_feed`
-(findings grouped by severity and rule, list of passed checks, "Check again").
-Pan depends on the library via `{:check_my_feed, path: "../check-my-feed",
-only: :dev}`, so nothing is visible in qa/prod yet.
+**Status 2026-09-20 — phase C live in prod, tested and working.** Library
+`check_my_feed` 0.1.0 is published on Hex (source
+github.com/Panoptikum-social/check-my-feed, AGPL-3.0-or-later; also mirrored at
+`Panoptikum/check-my-feed` on code.informatom.com, private, sibling directory
+`../check-my-feed`). It has 5 RSS 2.0 rules and 31 Apple Podcasts rules. Pan has
+`PanWeb.Live.Podcast.CheckFeed` at `/pan/podcasts/:id/check_feed` (findings
+grouped by severity and rule, list of passed checks, "Check again") and depends
+on `{:check_my_feed, "~> 0.1.0"}` in all environments; the "Check feed" button
+is shown to every logged-in user. A new library release: bump the version,
+`mix hex.publish` (2FA), then update Pan's requirement and lock. (Hex rather
+than a git dep, because the code.informatom.com repo is private and the qa
+Docker build and prod deploy have no credentials for it.)
 
 **Still open, in suggested order:**
-1. *Get out of dev-only:* DONE 2026-09-20 — `check_my_feed` 0.1.0 published on
-   Hex (source: github.com/Panoptikum-social/check-my-feed, AGPL-3.0-or-later),
-   Pan depends on `{:check_my_feed, "~> 0.1.0"}` in all environments, the
-   runtime `apply`/`Code.ensure_loaded?` workaround is gone, the "Check feed"
-   button is always shown to logged-in users. Still to verify: qa Docker build
-   and prod deploy.
-2. *Access phase A:* only users with a claimed persona holding a
+1. *Access phase A:* only users with a claimed persona holding a
    non-self-proclaimed gig on the podcast may check it (phase C, any logged-in
    user, is what exists now).
-3. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
+2. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
    in the feed or mail to the `itunes:owner` address). No user-to-podcast
    ownership exists today, only personas can be claimed.
-4. *Later, agreed:* Podcasting 2.0 rules, active probing (HEAD on enclosures,
-   artwork pixel size), the info-level "Panoptikum tolerates this" report,
-   JSON API (maybe never).
+3. *Later, agreed:* Podcasting 2.0 rules, active probing (see below), the
+   info-level "Panoptikum tolerates this" report, JSON API (maybe never).
 
-**Apple rules, source material (2026-09-20):** the user pasted Apple's "A Podcaster's
-Guide to RSS" (required/recommended/situational tags, artwork spec, enclosure types)
-into handover.txt; `apple.ex` was re-checked against it: required tags are now
-`:error`, media types trimmed to Apple's six, and new rules added (namespace,
-itunes:type + serial numbering, description/255-char limits, pubDate, item title/
-explicit, enclosure extension, transcript type, block/complete). The category
-count rule is softened to `:info`. Artwork guide (`podcasters.apple.com/artwork-guide`) read 2026-09-20: only Show
-Cover and Episode Art come in via RSS (both PNG/JPG, square, 1400-3000 px, no
-alpha/transparency, largest preferred); everything else (full page art, chapter
-art, showcase heroes, channel/subscription art) is uploaded in Apple Podcasts
-Connect, so no rules possible. Rule description updated, nothing new checkable
-from feed text; the "active probing" item should verify size, squareness, alpha
-channel and real file type vs. extension (plus 72 dpi/RGB from the RSS guide).
-Audio requirements page read 2026-09-20 (#3): no MIME/extension list there; RSS audio
-is "MP3 or AAC" (AAC in MP4 preferred over ADTS), bit-rate/sample-rate/loudness
-(-16 LKFS, true peak < -1 dBFS) need a media download ("active probing"); WAV/FLAC
-rules are for Connect subscriber uploads only. The media-type list stays as in the
-RSS guide (6 types). ADTS AAC (`.aac`, `audio/aac`) is hinted as acceptable but
-not in the RSS guide's list: allowed 2026-09-20 with an `:info` hint
-(`apple.enclosure.adts`) to prefer an MP4/M4A container.
+**Apple rules, state 2026-09-20:** all three source gaps are closed. The user
+pasted Apple's "A Podcaster's Guide to RSS", the artwork guide and the audio
+requirements page into handover.txt, and `apple.ex` was re-checked against them:
+- Required tags (language, category, explicit, xmlns:itunes declaration, item
+  title, guid, enclosure, artwork) are `:error`; recommended/situational ones
+  are `:warning`/`:info`.
+- Media types are exactly Apple's six (audio/x-m4a, audio/mpeg,
+  video/quicktime, video/mp4, video/x-m4v, application/pdf) plus tolerated ADTS
+  AAC (`.aac`, `audio/aac`, `:info` rule `apple.enclosure.adts`); the URL
+  extension is checked too.
+- New rules: itunes:type + serial numbering, description limits (4000 bytes
+  show, 10,000 chars episode), 255-char limit, pubDate (RFC 2822), item
+  explicit, transcript type, itunes:block/complete values.
+- The two-category rule is softened to `:info` (Apple only reads the first
+  category and subcategory).
+- Artwork: only Show Cover and Episode Art come in via RSS (PNG/JPG, square,
+  1400-3000 px, no alpha, largest preferred); every other placement (full page
+  art, chapter art, showcase heroes, channel/subscription art) is uploaded in
+  Apple Podcasts Connect, so no rules are possible. Only the extension is
+  checked.
+- Skipped deliberately: leading/trailing-space check (Apple's own examples
+  have it) and channel title/description (rss2 rules already report them).
+- Assumes the `itunes:` prefix.
 
-**Apple rules, notes (2026-09-19):** verified against Apple's pages: artwork,
-enclosure (url/length/type), a never-changing guid per episode and at least one
-episode are required; the category list and the two-category limit. Apple's
-artwork-size, supported-file-type and tag-detail pages are JavaScript-only or
-link elsewhere and could not be read, so everything else (language, explicit,
-episodeType, numbering, media types, JPEG/PNG artwork) is severity warning/info
-based on general knowledge. Artwork pixel size is not checked (needs a download;
-part of the later "active probing" item). Assumes the `itunes:` prefix.
+**Active probing (later), collected checklist:** needs downloads of artwork and
+media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
+no alpha channel, real file type vs. extension, 72 dpi, RGB. Enclosures: HEAD
+request (reachable, length matches). Audio for RSS: MP3 or AAC (AAC in MP4
+preferred), bit rate/sample rate by channel count, loudness around -16 LKFS,
+true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
+uploads only.
 
 **Small known issues:**
 - Some feed servers answer 403 to Panoptikum's user agent, so the page reports
@@ -179,6 +180,23 @@ part of the later "active probing" item). Assumes the `itunes:` prefix.
 - Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
 
 ---
+
+### Overhaul user verification (added 2026-09-21)
+
+Two steps, in this order:
+
+1. *Rename "email confirmation" to "email verification"* everywhere, including
+   the database: `users.email_confirmed` becomes `email_verified` (migration),
+   plus the schema/changesets (`lib/pan_web/models/user.ex`), API auth and
+   session controllers, `UserView`/JSON download view, `maintenance_controller`,
+   persona show/frontend controller checks, `my_data` template, the
+   `confirm_email` route/action/`email_confirmed.html` template, and
+   `Pan.Email.email_confirmation_link_html_email` (incl. subject line). Keep
+   `password_confirmation` untouched, that is a different concept.
+2. *Replace the current implementation with a standard, established one*
+   (e.g. signed, expiring tokens via `Phoenix.Token`/a token table as
+   `phx.gen.auth` does, single-use, resend flow) instead of what exists now.
+   Scope and approach to be decided when picked up.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
 Assessed making Panoptikum a PWA. Turns out most of the groundwork already
