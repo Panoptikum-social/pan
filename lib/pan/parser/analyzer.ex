@@ -3,7 +3,14 @@ defmodule Pan.Parser.Analyzer do
   import UUID, only: [uuid1: 0]
 
   import Pan.Parser.Helpers,
-    only: [to_255: 1, scrub: 1, to_naive_datetime: 1, boolify: 1, strip_tags: 1]
+    only: [
+      to_255: 1,
+      scrub: 1,
+      to_naive_datetime: 1,
+      boolify: 1,
+      strip_tags: 1,
+      flatten_to_string: 1
+    ]
 
   import Pan.Parser.MyDateTime, only: [now: 0]
   require Logger
@@ -18,7 +25,10 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [:title, _, []]), do: %{}
   def call(_, "tag", [:title, _, [value]]), do: %{title: to_255(value)}
   def call(_, "tag", [:"itunes:summary", _, []]), do: %{}
-  def call(_, "tag", [:"itunes:summary", _, [value | _]]), do: %{summary: value}
+
+  def call(_, "tag", [:"itunes:summary", _, values = [_ | _]]),
+    do: %{summary: flatten_to_string(values)}
+
   def call(_, "tag", [:link, _, []]), do: %{}
   def call(_, "tag", [:link, _, [value]]), do: %{website: value}
 
@@ -93,8 +103,12 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "tag", [tag_atom, _, []]) when tag_atom in [:description, :"itunes:subtitle"],
     do: %{}
 
-  def call(_, "tag", [:description, _, [value | _]]), do: %{description: value}
-  def call(_, "tag", [:"itunes:description", _, [value | _]]), do: %{description: value}
+  def call(_, "tag", [:description, _, values = [_ | _]]),
+    do: %{description: flatten_to_string(values)}
+
+  def call(_, "tag", [:"itunes:description", _, values = [_ | _]]),
+    do: %{description: flatten_to_string(values)}
+
   def call(_, "tag", [:"itunes:description", [text: value], _]), do: %{description: value}
 
   def call(map, "tag", [tag_atom, _, [value]])
@@ -903,13 +917,17 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "episode", [:item, _, value]), do: parse(map, "episode", value, uuid1())
 
   def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
-  def call(_, "episode", [:title, _, [value | _]]), do: %{title: to_255(value)}
+
+  def call(_, "episode", [:title, _, values = [_ | _]]),
+    do: %{title: to_255(flatten_to_string(values))}
+
   def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
 
   def call(_, "episode", [:"itunes:title", _, [%{name: :"content:encoded", value: [value]}]]),
     do: %{title: strip_tags(value)}
 
-  def call(_, "episode", [:"itunes:title", _, [value | _]]), do: %{title: to_255(value)}
+  def call(_, "episode", [:"itunes:title", _, values = [_ | _]]),
+    do: %{title: to_255(flatten_to_string(values))}
 
   def call(_, "episode", [tag_atom, attr, _])
       when tag_atom in [
@@ -951,16 +969,23 @@ defmodule Pan.Parser.Analyzer do
   def call(_, "episode", [:contentId, _, [value]]), do: %{guid: to_255(value)}
 
   def call(_, "episode", [:description, _, []]), do: %{}
-  def call(_, "episode", [:description, _, [value | _]]), do: %{description: scrub(value)}
-  def call(_, "episode", [:descrition, _, [value | _]]), do: %{description: scrub(value)}
+
+  def call(_, "episode", [:description, _, values = [_ | _]]),
+    do: %{description: scrub(values)}
+
+  def call(_, "episode", [:descrition, _, values = [_ | _]]),
+    do: %{description: scrub(values)}
+
   def call(_, "episode", [:"itunes:description", _, []]), do: %{}
 
-  def call(_, "episode", [:"itunes:description", _, [value | _]]),
-    do: %{description: scrub(value)}
+  def call(_, "episode", [:"itunes:description", _, values = [_ | _]]),
+    do: %{description: scrub(values)}
 
   def call(_, "episode", [:"content:encoded", _, []]), do: %{}
-  def call(_, "episode", [:"content:encoded", _, [value]]), do: %{shownotes: scrub(value)}
-  def call(_, "episode", [:"content:encoded", _, [value | _]]), do: %{shownotes: scrub(value)}
+
+  def call(_, "episode", [:"content:encoded", _, values = [_ | _]]),
+    do: %{shownotes: scrub(values)}
+
   def call(_, "episode", [:content, _, []]), do: %{}
   def call(_, "episode", [:content, _, [value]]), do: %{shownotes: scrub(value)}
   def call(_, "episode", [:shownotes, _, []]), do: %{}
@@ -968,30 +993,21 @@ defmodule Pan.Parser.Analyzer do
 
   def call(_, "episode", [:"itunes:summary", _, []]), do: %{}
 
-  def call(_, "episode", [:"itunes:summary", _, [value | _]]) when is_map(value) do
-    %{summary: scrub(List.first(value[:value]))}
-  end
-
-  def call(_, "episode", [tag_atom, _, [value | _]])
+  def call(_, "episode", [tag_atom, _, values = [_ | _]])
       when tag_atom in [
              :"itunes:summary",
              :summary,
              :itunes_summary,
              :"atom:summary"
            ],
-      do: %{summary: scrub(value)}
+      do: %{summary: scrub(values)}
 
   def call(_, "episode", [:summary, _, []]), do: %{}
   def call(_, "episode", [:"atom:summary", _, []]), do: %{}
   def call(_, "episode", [:"itunes:subtitle", _, []]), do: %{}
 
-  def call(_, "episode", [:"itunes:subtitle", _, [value | _]]) do
-    if is_map(value) && Map.has_key?(value, :value) do
-      %{subtitle: to_255(List.first(value[:value]))}
-    else
-      %{subtitle: to_255(value)}
-    end
-  end
+  def call(_, "episode", [:"itunes:subtitle", _, values = [_ | _]]),
+    do: %{subtitle: to_255(flatten_to_string(values))}
 
   def call(_, "episode", [tag_atom, _, [value]])
       when tag_atom in [

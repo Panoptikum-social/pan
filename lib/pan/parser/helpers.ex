@@ -550,7 +550,7 @@ defmodule Pan.Parser.Helpers do
   # down to plain text before handing it back to scrub/1 for sanitizing.
   def scrub(value) when is_list(value) do
     value
-    |> Enum.map_join(&flatten_to_string/1)
+    |> flatten_to_string()
     |> scrub()
   end
 
@@ -559,13 +559,19 @@ defmodule Pan.Parser.Helpers do
     |> scrub()
   end
 
-  defp flatten_to_string(value) when is_binary(value), do: value
+  # Quinn trims every text node, so the whitespace around nested elements is
+  # already gone; joining with a space keeps the words apart.
+  def flatten_to_string(value) when is_binary(value), do: value
 
-  defp flatten_to_string(value) when is_list(value),
-    do: Enum.map_join(value, &flatten_to_string/1)
+  def flatten_to_string(value) when is_list(value) do
+    value
+    |> Enum.map(&flatten_to_string/1)
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.join(" ")
+  end
 
-  defp flatten_to_string(%{value: value}), do: flatten_to_string(value)
-  defp flatten_to_string(_value), do: ""
+  def flatten_to_string(%{value: value}), do: flatten_to_string(value)
+  def flatten_to_string(_value), do: ""
 
   def strip_tags(value) do
     HtmlSanitizeEx.strip_tags(value)

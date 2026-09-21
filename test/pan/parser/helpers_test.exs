@@ -314,9 +314,10 @@ defmodule Pan.Parser.HelpersTest do
     end
 
     test "mixed content lists are flattened to text" do
+      # Quinn trims every text node, so the pieces are joined with a space
       mixed = [
-        "text ",
-        %{name: :a, attr: [], value: ["more ", %{name: :span, attr: [], value: ["nested"]}]}
+        "text",
+        %{name: :a, attr: [], value: ["more", %{name: :span, attr: [], value: ["nested"]}]}
       ]
 
       assert Helpers.scrub(mixed) == "text more nested"

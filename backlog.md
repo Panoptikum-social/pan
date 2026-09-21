@@ -33,9 +33,19 @@ materializes:
   doesn't require `Feed.check_for_redirect_loop`.
 - Give the output map a documented, consistent shape (today it mixes string
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-- Add real test coverage for `Analyzer`/`Iterator` (none exists today; this is
-  the main payoff of phase 1 and would have caught the `scrub/1` crash before
-  prod). `Helpers` is covered since 2026-09-21 (`test/pan/parser/helpers_test.exs`).
+- Add real test coverage for `Analyzer`/`Iterator` (the main payoff of phase 1).
+  `Helpers` is covered since 2026-09-21 (`test/pan/parser/helpers_test.exs`);
+  a first set of characterization tests for `Analyzer`/`Iterator` exists
+  (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, episodes,
+  and the contributor / managingEditor / podcast:person / mixed-content crash
+  shapes) but the 1,280-line `Analyzer` is still mostly uncovered.
+  Found while writing them and fixed the same day: with mixed content (raw markup
+  inside `description`, `itunes:summary`, `content:encoded`, titles, subtitle), only
+  the first text node was kept. All clauses that took `[value | _]` now flatten the
+  whole list to text (`Helpers.flatten_to_string/1`, pieces joined with a space,
+  since Quinn trims every text node). Not changed: the two `podcast:person` clauses
+  (name only when the first node is text), and single-element clauses such as the
+  channel `title`, which log "Tag unknown" for mixed content.
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
