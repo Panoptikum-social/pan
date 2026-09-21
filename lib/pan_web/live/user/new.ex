@@ -33,13 +33,12 @@ defmodule PanWeb.Live.User.New do
 
         message = """
         Your account @#{user.username} has been created! Please verify your email address
-        via the verification link in the email sent to you. Otherwise you won't be able to
-        claim personas.
+        via the verification link in the email sent to you, you can't log in before.
         """
 
         {:noreply,
          put_flash(socket, :info, message)
-         |> push_navigate(to: session_path(Endpoint, :login_from_signup, token: token))}
+         |> push_navigate(to: session_path(Endpoint, :new))}
 
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}

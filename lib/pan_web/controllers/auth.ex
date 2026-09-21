@@ -88,12 +88,16 @@ defmodule PanWeb.Auth do
 
   def login_by_username_and_pass(conn, username, given_pass, remember_me? \\ false) do
     user = Repo.get_by(User, username: username) || Repo.get_by(User, email: username)
+    password_ok? = !!user && verify_pass(given_pass, user.password_hash)
 
     cond do
-      user && verify_pass(given_pass, user.password_hash) ->
+      password_ok? && user.email_verified ->
         conn = login(conn, user)
         conn = if remember_me?, do: remember_me(conn, user), else: conn
         {:ok, conn}
+
+      password_ok? ->
+        {:error, {:unverified, user}, conn}
 
       user ->
         {:error, :unauthorized, conn}
@@ -105,10 +109,10 @@ defmodule PanWeb.Auth do
   end
 
   def login_by_token(conn, token) do
-    case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 5) do
+    case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 60) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
-        {:ok, login(conn, user)}
+        {:ok, login(conn, verify_email_address(user))}
 
       {:error, :expired} ->
         {:error, :expired}
@@ -120,6 +124,13 @@ defmodule PanWeb.Auth do
         no_user_verify()
         {:error, :not_found, conn}
     end
+  end
+
+  # Following a link we mailed to the user's address proves they control it.
+  defp verify_email_address(%{email_verified: true} = user), do: user
+
+  defp verify_email_address(user) do
+    user |> Ecto.Changeset.change(email_verified: true) |> Repo.update!()
   end
 
   def grant_access_by_token(_conn, token) do

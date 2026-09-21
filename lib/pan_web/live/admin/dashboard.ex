@@ -123,6 +123,13 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-outline"
         />
         <LinkButton.render
+          :if={Application.get_env(:pan, :environment) == "dev"}
+          title="Dev Mailbox"
+          to="/dev/mailbox"
+          class="btn-outline"
+          opts={[target: "_blank"]}
+        />
+        <LinkButton.render
           title="Catch up missing thumbnailed booleans"
           to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
           class="btn-warning"

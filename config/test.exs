@@ -29,3 +29,5 @@ config :pan, :children, [
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+config :pan, Pan.Mailer, adapter: Swoosh.Adapters.Test

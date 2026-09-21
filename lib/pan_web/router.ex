@@ -266,7 +266,7 @@ defmodule PanWeb.Router do
     live("/sessions/new", Live.Session.New, :new, as: :session)
     resources("/sessions", SessionController, only: [:create, :delete])
     get("/sessions/login_via_token", SessionController, :login_via_token)
-    get("/sessions/login_from_signup", SessionController, :login_from_signup)
+    post("/sessions/resend_verification", SessionController, :resend_verification)
     get("/sessions/verify_email", SessionController, :verify_email)
 
     live("/recommendations", Live.Recommendation.Index, :index, as: :recommendation_frontend)

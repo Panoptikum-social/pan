@@ -111,7 +111,11 @@ Two steps, in this order:
    `confirm_email` route/action/`email_confirmed.html` template, and
    `Pan.Email.email_confirmation_link_html_email` (incl. subject line). Keep
    `password_confirmation` untouched, that is a different concept.
-2. *Replace the current implementation with a more standard / established
+2. DONE 2026-09-21 (uncommitted): unverified users can't log in by password
+   (web and API); a "send verification email again" button appears after a correct
+   password; signup no longer auto-logs-in; any successful email-link login
+   (verification or forgot-password link) marks the address verified.
+3. *Replace the current implementation with a more standard / established
    one.* Which approach is not decided yet.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)

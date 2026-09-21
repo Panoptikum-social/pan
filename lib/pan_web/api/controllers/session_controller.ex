@@ -13,13 +13,6 @@ defmodule PanWeb.Api.SessionController do
         current_user = conn.assigns.current_user
         token = Phoenix.Token.sign(Endpoint, "user", current_user.id)
 
-        unless current_user.email_verified do
-          send_401(
-            conn,
-            "email address not verified yet, click the verification link in the email"
-          )
-        end
-
         data = %{
           id: current_user.id,
           token: token,
@@ -31,6 +24,12 @@ defmodule PanWeb.Api.SessionController do
         conn = Plug.Conn.put_resp_header(conn, "token", token)
 
         render(conn, "show.json-api", data: data)
+
+      {:error, {:unverified, _user}, _conn} ->
+        send_401(
+          conn,
+          "email address not verified yet, click the verification link in the email"
+        )
 
       {:error, _reason, _conn} ->
         send_401(conn, "Could not be aquired. Wrong username/password combination?")

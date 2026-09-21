@@ -6,25 +6,7 @@ defmodule PanWeb.SessionController do
 
     case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass, remember_me?) do
       {:ok, conn} ->
-        current_user = conn.assigns.current_user
-
-        case current_user.email_verified do
-          true ->
-            conn
-            |> put_flash(:info, "Welcome back!")
-
-          _ ->
-            Phoenix.Token.sign(PanWeb.Endpoint, "user", current_user.id)
-            |> Pan.Email.email_verification_link_html_email(current_user.email)
-            |> Pan.Mailer.deliver()
-
-            conn
-            |> Phoenix.Controller.put_flash(
-              :info,
-              "Your email address has not been verified yet. Please click on " <>
-                "the verification link in the email we sent to you right now!"
-            )
-        end
+        conn = put_flash(conn, :info, "Welcome back!")
 
         if get_session(conn, :desired_url) do
           redirect(conn, to: get_session(conn, :desired_url))
@@ -32,9 +14,38 @@ defmodule PanWeb.SessionController do
           redirect(conn, to: user_frontend_path(conn, :my_profile))
         end
 
+      {:error, {:unverified, user}, conn} ->
+        token = Phoenix.Token.sign(PanWeb.Endpoint, "resend verification", user.id)
+        render(conn, "unverified.html", token: token)
+
       {:error, _reason, conn} ->
         conn
         |> put_flash(:error, "Invalid username/password combination!")
+        |> redirect(to: session_path(conn, :new))
+    end
+  end
+
+  def resend_verification(conn, %{"token" => token}) do
+    case Phoenix.Token.verify(PanWeb.Endpoint, "resend verification", token, max_age: 60 * 60) do
+      {:ok, user_id} ->
+        user = Repo.get!(PanWeb.User, user_id)
+
+        unless user.email_verified do
+          Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
+          |> Pan.Email.email_verification_link_html_email(user.email)
+          |> Pan.Mailer.deliver()
+        end
+
+        conn
+        |> put_flash(
+          :info,
+          "We sent you a new verification email. Please click the link in it, then log in."
+        )
+        |> redirect(to: session_path(conn, :new))
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "That request has expired, please log in again.")
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -58,25 +69,6 @@ defmodule PanWeb.SessionController do
     end
   end
 
-  def login_from_signup(conn, %{"token" => token}) do
-    case PanWeb.Auth.login_by_token(conn, token) do
-      {:ok, conn} ->
-        conn
-        |> put_flash(:info, "You are now logged in.")
-        |> redirect(to: page_frontend_path(conn, :index))
-
-      {:error, :expired} ->
-        conn
-        |> put_flash(:error, "The token has expired already!")
-        |> redirect(to: session_path(conn, :new))
-
-      {:error, _reason} ->
-        conn
-        |> put_flash(:error, "Invalid token!")
-        |> redirect(to: session_path(conn, :new))
-    end
-  end
-
   def delete(conn, _) do
     conn
     |> PanWeb.Auth.logout()
@@ -86,9 +78,6 @@ defmodule PanWeb.SessionController do
   def verify_email(conn, %{"token" => token}) do
     case PanWeb.Auth.login_by_token(conn, token) do
       {:ok, conn} ->
-        Ecto.Changeset.change(conn.assigns.current_user, email_verified: true)
-        |> Repo.update()
-
         conn
         |> put_flash(:info, "Thank you for verifying your email address!")
 
