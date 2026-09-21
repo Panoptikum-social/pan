@@ -34,7 +34,7 @@ defmodule PanWeb.User do
     field(:admin, :boolean, default: false)
     field(:podcaster, :boolean, default: false)
     field(:moderator, :boolean, default: false)
-    field(:email_confirmed, :boolean, default: false)
+    field(:email_verified, :boolean, default: false)
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
     field(:bot_check, :integer, virtual: true)
@@ -123,7 +123,7 @@ defmodule PanWeb.User do
       :admin,
       :podcaster,
       :moderator,
-      :email_confirmed,
+      :email_verified,
       :share_subscriptions,
       :share_follows
     ])

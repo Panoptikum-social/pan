@@ -102,7 +102,8 @@ uploads only.
 
 Two steps, in this order:
 
-1. *Rename "email confirmation" to "email verification"* everywhere, including
+1. DONE 2026-09-21 (uncommitted, migration 20260921120000 run in dev/test, not yet
+   deployed): *rename "email confirmation" to "email verification"* everywhere, including
    the database: `users.email_confirmed` becomes `email_verified` (migration),
    plus the schema/changesets (`lib/pan_web/models/user.ex`), API auth and
    session controllers, `UserView`/JSON download view, `maintenance_controller`,

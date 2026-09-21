@@ -19,13 +19,13 @@ defmodule PanWeb.Api.Auth do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
 
-        if user.email_confirmed do
+        if user.email_verified do
           assign(conn, :current_user, user)
         else
           assign(conn, :current_user, nil)
           |> assign(
             :api_error,
-            "email address not confirmed yet, click the confirmation link in the email"
+            "email address not verified yet, click the verification link in the email"
           )
         end
 

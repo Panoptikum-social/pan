@@ -10,7 +10,7 @@ defmodule PanWeb.UserJsonDownloadView do
     :email,
     :admin,
     :podcaster,
-    :email_confirmed,
+    :email_verified,
     :share_subscriptions,
     :share_follows
   ])

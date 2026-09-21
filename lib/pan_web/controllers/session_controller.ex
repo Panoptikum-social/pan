@@ -8,21 +8,21 @@ defmodule PanWeb.SessionController do
       {:ok, conn} ->
         current_user = conn.assigns.current_user
 
-        case current_user.email_confirmed do
+        case current_user.email_verified do
           true ->
             conn
             |> put_flash(:info, "Welcome back!")
 
           _ ->
             Phoenix.Token.sign(PanWeb.Endpoint, "user", current_user.id)
-            |> Pan.Email.email_confirmation_link_html_email(current_user.email)
+            |> Pan.Email.email_verification_link_html_email(current_user.email)
             |> Pan.Mailer.deliver()
 
             conn
             |> Phoenix.Controller.put_flash(
               :info,
-              "Your email address has not been confirmed yet. Please click on " <>
-                "the confirmation link in the email we sent to you right now!"
+              "Your email address has not been verified yet. Please click on " <>
+                "the verification link in the email we sent to you right now!"
             )
         end
 
@@ -83,16 +83,16 @@ defmodule PanWeb.SessionController do
     |> redirect(to: "/")
   end
 
-  def confirm_email(conn, %{"token" => token}) do
+  def verify_email(conn, %{"token" => token}) do
     case PanWeb.Auth.login_by_token(conn, token) do
       {:ok, conn} ->
-        Ecto.Changeset.change(conn.assigns.current_user, email_confirmed: true)
+        Ecto.Changeset.change(conn.assigns.current_user, email_verified: true)
         |> Repo.update()
 
         conn
-        |> put_flash(:info, "Thank you for confirming your email address!")
+        |> put_flash(:info, "Thank you for verifying your email address!")
 
-        render(conn, "email_confirmed.html")
+        render(conn, "email_verified.html")
 
       {:error, :expired} ->
         conn

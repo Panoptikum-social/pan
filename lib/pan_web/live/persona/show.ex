@@ -200,17 +200,17 @@ defmodule PanWeb.Live.Persona.Show do
         </Panel.render>
 
         <Panel.render
-          :if={@current_user && @current_user.podcaster && !@current_user.email_confirmed}
+          :if={@current_user && @current_user.podcaster && !@current_user.email_verified}
           heading="Claiming not available"
           purpose="persona"
         >
-          <p class="m-4">You didn't confirm your email address by clicking on the
-            confirmation link in the email sent to you after login.</p>
+          <p class="m-4">You didn't verify your email address by clicking on the
+            verification link in the email sent to you after login.</p>
         </Panel.render>
 
         <Panel.render
           :if={
-            @current_user && @current_user.podcaster && @current_user.email_confirmed &&
+            @current_user && @current_user.podcaster && @current_user.email_verified &&
               !@persona.email
           }
           heading="Claiming"
@@ -231,7 +231,7 @@ defmodule PanWeb.Live.Persona.Show do
 
         <Panel.render
           :if={
-            @current_user && @current_user.podcaster && @current_user.email_confirmed &&
+            @current_user && @current_user.podcaster && @current_user.email_verified &&
               @persona.email
           }
           heading="Claiming"

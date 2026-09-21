@@ -13,10 +13,10 @@ defmodule PanWeb.Api.SessionController do
         current_user = conn.assigns.current_user
         token = Phoenix.Token.sign(Endpoint, "user", current_user.id)
 
-        unless current_user.email_confirmed do
+        unless current_user.email_verified do
           send_401(
             conn,
-            "email address not confirmed yet, click the confirmation link in the email"
+            "email address not verified yet, click the verification link in the email"
           )
         end
 

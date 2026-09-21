@@ -27,13 +27,13 @@ defmodule Pan.Email do
     )
   end
 
-  def email_confirmation_link_html_email(token, email_address) do
-    url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :confirm_email, token: token)
+  def email_verification_link_html_email(token, email_address) do
+    url = PanWeb.Router.Helpers.session_url(PanWeb.Endpoint, :verify_email, token: token)
 
     new(
       to: email_address,
       from: "noreply@panoptikum.social",
-      subject: "Panoptikum - Email Confirmation",
+      subject: "Panoptikum - Email Verification",
       html_body: ~s"""
         <!DOCTYPE html>
         <html>
@@ -43,11 +43,11 @@ defmodule Pan.Email do
           </head>
           <body>
             <p>Hello!</p>
-            <p>Please confirm your email address clicking on this link:
-              <a href="#{url}">Confirm Email</a>
+            <p>Please verify your email address clicking on this link:
+              <a href="#{url}">Verify Email</a>
             </p>
 
-            <p>If you don't confirm your email address, you won't be able to claim personas.</p>
+            <p>If you don't verify your email address, you won't be able to claim personas.</p>
             <p>- The Panoptikum Team.</p>
           </body>
         </html>

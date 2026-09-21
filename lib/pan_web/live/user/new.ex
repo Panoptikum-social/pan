@@ -28,12 +28,12 @@ defmodule PanWeb.Live.User.New do
       {:ok, user} ->
         token = Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
 
-        Pan.Email.email_confirmation_link_html_email(token, user.email)
+        Pan.Email.email_verification_link_html_email(token, user.email)
         |> Pan.Mailer.deliver()
 
         message = """
-        Your account @#{user.username} has been created! Please confirm your email address
-        via the confirmation link in the email sent to you. Otherwise you won't be able to
+        Your account @#{user.username} has been created! Please verify your email address
+        via the verification link in the email sent to you. Otherwise you won't be able to
         claim personas.
         """
 

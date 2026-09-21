@@ -63,7 +63,7 @@ defmodule PanWeb.MaintenanceController do
       {Podcast, :full_text},
       {Podcast, :thumbnailed},
       {User, :admin},
-      {User, :email_confirmed},
+      {User, :email_verified},
       {User, :podcaster},
       {User, :share_subscriptions},
       {User, :share_follows},

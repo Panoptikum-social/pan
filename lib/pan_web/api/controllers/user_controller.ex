@@ -145,7 +145,7 @@ defmodule PanWeb.Api.UserController do
     case Repo.insert(changeset) do
       {:ok, user} ->
         Phoenix.Token.sign(PanWeb.Endpoint, "user", user.id)
-        |> Pan.Email.email_confirmation_link_html_email(user.email)
+        |> Pan.Email.email_verification_link_html_email(user.email)
         |> Pan.Mailer.deliver()
 
         user = Repo.preload(user, :personas)

@@ -160,7 +160,7 @@ defmodule PanWeb.PersonaFrontendController do
   def connect(conn, %{"id" => id}, user) do
     persona = Repo.get(Persona, id)
 
-    if user.podcaster && user.email_confirmed && !persona.email do
+    if user.podcaster && user.email_verified && !persona.email do
       persona
       |> PanWeb.Persona.claiming_changeset(%{user_id: user.id, email: user.email})
       |> Repo.update()

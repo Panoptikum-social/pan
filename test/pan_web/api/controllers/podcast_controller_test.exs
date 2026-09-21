@@ -12,7 +12,7 @@ defmodule PanWeb.Api.PodcastControllerTest do
         name: "Test User",
         username: "test_user_#{System.unique_integer([:positive])}",
         email: "test_user_#{System.unique_integer([:positive])}@example.com",
-        email_confirmed: true
+        email_verified: true
       }
       |> Repo.insert!()
 

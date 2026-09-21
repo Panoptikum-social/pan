@@ -97,7 +97,7 @@ defmodule PanWeb.Admin.Naming do
           :name,
           :username,
           :email,
-          :email_confirmed,
+          :email_verified,
           :podcaster,
           :admin,
           :moderator,
