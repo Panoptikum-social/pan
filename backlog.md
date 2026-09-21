@@ -68,7 +68,7 @@ parser code, since Pan's fix-ups would hide what the tool must report), takes an
 XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
-**Access phase B (built 2026-09-21, awaiting deploy):** one user per podcast
+**Access phase B (built, deployed and verified in prod 2026-09-21):** one user per podcast
 (`podcasts.user_id`, only changed by claim or admin, never by a feed update).
 A verified user opening `/my_podcasts` gets every unassigned podcast whose owner
 persona email matches (no cap, accepted risk: shared platform addresses such as
