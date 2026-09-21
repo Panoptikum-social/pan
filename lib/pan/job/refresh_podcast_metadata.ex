@@ -70,9 +70,9 @@ defmodule Pan.Job.RefreshPodcastMetadata do
   # the batch (a single try/rescue used to wrap the whole Enum.each above,
   # which meant podcast 3 of 5 crashing left 4 and 5 unprocessed this
   # tick), and so the failure can be attributed — recorded on the podcast
-  # itself and in the Journal, see record_failure/2 — to the specific
-  # podcast that caused it, rather than getting lost in a batch-wide log
-  # line with no way to tell which podcast triggered it.
+  # itself, see record_failure/2 — to the specific podcast that caused it,
+  # rather than getting lost in a batch-wide log line with no way to tell
+  # which podcast triggered it.
   defp refresh_one_safely(podcast) do
     refresh_one(podcast)
   rescue
@@ -105,23 +105,13 @@ defmodule Pan.Job.RefreshPodcastMetadata do
     PanWeb.Podcast.reschedule_metadata_refresh(podcast)
   end
 
-  # Two complementary, permanent records instead of a log line that
-  # scrolls away unread: failure_count/last_error_message on the podcast
-  # itself (visible on its own admin row — see
-  # PanWeb.Podcast.record_metadata_refresh_failure/2 for why this doesn't
-  # also retire the podcast, unlike the episode-update job's mechanism),
-  # and a Journal entry for a system-wide, chronological view across every
-  # podcast this has ever happened to.
+  # A permanent record instead of a log line that scrolls away unread:
+  # failure_count/last_error_message on the podcast itself, visible on its own
+  # admin row — see PanWeb.Podcast.record_metadata_refresh_failure/2 for why
+  # this doesn't also retire the podcast, unlike the episode-update job's
+  # mechanism.
   defp record_failure(podcast, message) do
     PanWeb.Podcast.record_metadata_refresh_failure(podcast, message)
-
-    PanWeb.Journal.log(%{
-      module: __MODULE__,
-      method: "refresh_one",
-      text: "metadata refresh failed for podcast #{podcast.id} (#{podcast.title})",
-      before: podcast,
-      after: message
-    })
   rescue
     # This runs from inside refresh_one_safely/1's own rescue/catch — if
     # recording the failure raised too (seen live: an unbounded-length

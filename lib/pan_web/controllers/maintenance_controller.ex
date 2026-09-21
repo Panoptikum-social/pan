@@ -171,15 +171,7 @@ defmodule PanWeb.MaintenanceController do
       )
       |> Repo.all(timeout: :timer.minutes(10))
 
-    changed = candidates |> Enum.map(&fix_episode_title/1) |> Enum.count(& &1)
-
-    Journal.log(%{
-      module: __MODULE__,
-      method: "unescape_episode_titles_async",
-      text:
-        "scanned #{length(candidates)} candidate episode titles, fixed #{changed} " <>
-          "(see individual entries below for before/after per episode)"
-    })
+    Enum.each(candidates, &fix_episode_title/1)
   end
 
   defp fix_episode_title({id, title}) do
@@ -188,16 +180,6 @@ defmodule PanWeb.MaintenanceController do
     if new_title != title do
       from(e in Episode, where: e.id == ^id)
       |> Repo.update_all([set: [title: new_title]], timeout: :timer.minutes(1))
-
-      Journal.log(%{
-        module: __MODULE__,
-        method: "unescape_episode_titles_async",
-        text: "episode #{id}: unescaped double-escaped HTML entities in title",
-        before: title,
-        after: new_title
-      })
-
-      true
     end
   end
 
@@ -227,15 +209,7 @@ defmodule PanWeb.MaintenanceController do
       )
       |> Repo.all(timeout: :timer.minutes(10))
 
-    changed = candidates |> Enum.map(&fix_episode_html_fields/1) |> Enum.count(& &1)
-
-    Journal.log(%{
-      module: __MODULE__,
-      method: "unescape_episode_html_fields_async",
-      text:
-        "scanned #{length(candidates)} candidate episodes (description/summary/shownotes), " <>
-          "fixed #{changed} (see individual entries below for before/after per episode)"
-    })
+    Enum.each(candidates, &fix_episode_html_fields/1)
   end
 
   defp fix_episode_html_fields({id, description, summary, shownotes}) do
@@ -246,18 +220,6 @@ defmodule PanWeb.MaintenanceController do
     if changes != [] do
       from(e in Episode, where: e.id == ^id)
       |> Repo.update_all([set: changes], timeout: :timer.minutes(1))
-
-      changed_fields = Enum.map_join(changes, ", ", &elem(&1, 0))
-
-      Journal.log(%{
-        module: __MODULE__,
-        method: "unescape_episode_html_fields_async",
-        text: "episode #{id}: unescaped double-escaped HTML entities in #{changed_fields}",
-        before: Map.new(changes, fn {field, _new} -> {field, original[field]} end),
-        after: Map.new(changes)
-      })
-
-      true
     end
   end
 
@@ -291,26 +253,14 @@ defmodule PanWeb.MaintenanceController do
     candidates =
       from(p in Podcast,
         where: p.update_intervall > ^max_hours,
-        select: {p.id, p.update_intervall, p.next_update}
+        select: {p.id, p.next_update}
       )
       |> Repo.all(timeout: :timer.minutes(10))
 
-    changed =
-      candidates
-      |> Enum.map(&reset_podcast_update_intervall(&1, max_hours))
-      |> Enum.count(& &1)
-
-    Journal.log(%{
-      module: __MODULE__,
-      method: "reset_stale_update_intervalls_async",
-      text:
-        "found #{length(candidates)} podcasts with update_intervall over the new " <>
-          "#{max_hours}h (1 week) cap, reset #{changed} " <>
-          "(see individual entries below for before/after per podcast)"
-    })
+    Enum.each(candidates, &reset_podcast_update_intervall(&1, max_hours))
   end
 
-  defp reset_podcast_update_intervall({id, update_intervall, next_update}, max_hours) do
+  defp reset_podcast_update_intervall({id, next_update}, max_hours) do
     latest_allowed_next_update = time_shift(now(), hours: max_hours)
 
     capped_next_update =
@@ -325,21 +275,11 @@ defmodule PanWeb.MaintenanceController do
       [set: [update_intervall: max_hours, next_update: capped_next_update]],
       timeout: :timer.minutes(1)
     )
-
-    Journal.log(%{
-      module: __MODULE__,
-      method: "reset_stale_update_intervalls_async",
-      text: "podcast #{id}: capped update_intervall to #{max_hours}h (1 week)",
-      before: %{update_intervall: update_intervall, next_update: next_update},
-      after: %{update_intervall: max_hours, next_update: capped_next_update}
-    })
-
-    true
   end
 
-  # Journal entries are meant to be disposable working notes for one
-  # maintenance run, not a permanent audit log, so this wipes the table
-  # clean ahead of the next task instead of letting old runs pile up.
+  # Journal entries are meant to be disposable working notes, not a permanent
+  # audit log, so this wipes the table clean instead of letting old entries
+  # pile up.
   def clear_journal(conn, _params) do
     Repo.delete_all(Journal)
 
