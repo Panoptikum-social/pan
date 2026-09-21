@@ -58,4 +58,24 @@ defmodule PanWeb.Live.Admin.UserRetentionTest do
     refute Repo.get(User, long_marked.id)
     assert Repo.get(User, just_marked.id)
   end
+
+  test "checked filters apply together and unchecking widens the list again", %{conn: conn} do
+    plain = insert_user(email_verified: true)
+    marked = insert_user(email_verified: true, marked_for_deletion_at: days_ago(3))
+    {:ok, view, html} = live(admin_conn(conn), "/admin/users/retention")
+
+    assert html =~ plain.username
+    assert html =~ marked.username
+
+    html = render_click(view, "filter", %{"filter" => "marked"})
+    refute html =~ plain.username
+    assert html =~ marked.username
+
+    html = render_click(view, "filter", %{"filter" => "unverified"})
+    refute html =~ marked.username
+
+    render_click(view, "filter", %{"filter" => "unverified"})
+    html = render_click(view, "filter", %{"filter" => "marked"})
+    assert html =~ plain.username
+  end
 end

@@ -31,7 +31,7 @@ defmodule PanWeb.User do
   @inactive_after_days 2 * 365
   @deletion_grace_days 30
 
-  @retention_filters [:all, :unverified, :never_logged_in, :inactive, :marked, :deletable]
+  @retention_filters [:unverified, :never_logged_in, :inactive, :marked, :deletable]
 
   schema "users" do
     field(:name, :string)
@@ -408,11 +408,10 @@ defmodule PanWeb.User do
 
   defp days_ago(days), do: NaiveDateTime.add(Pan.Parser.MyDateTime.now(), -days, :day)
 
-  defp retention_query(filter) do
-    retention_filter(regular_users(), filter)
+  # Every filter restricts the users further, so a list of filters is an AND.
+  defp retention_query(filters) do
+    Enum.reduce(filters, regular_users(), &retention_filter(&2, &1))
   end
-
-  defp retention_filter(query, :all), do: query
 
   defp retention_filter(query, :unverified),
     do: from(u in query, where: not coalesce(u.email_verified, false))
@@ -437,8 +436,8 @@ defmodule PanWeb.User do
     )
   end
 
-  def retention_users(filter, sort_by, sort_order, limit, offset) do
-    from(u in retention_query(filter),
+  def retention_users(filters, sort_by, sort_order, limit, offset) do
+    from(u in retention_query(filters),
       order_by: [{^sort_order, field(u, ^sort_by)}, asc: u.id],
       limit: ^limit,
       offset: ^offset,
@@ -455,8 +454,8 @@ defmodule PanWeb.User do
     |> Repo.all()
   end
 
-  def count_retention_users(filter) do
-    retention_query(filter) |> Repo.aggregate(:count)
+  def count_retention_users(filters) do
+    retention_query(filters) |> Repo.aggregate(:count)
   end
 
   @doc "Marks the given users (not admins or moderators) for deletion; returns how many were marked."
@@ -483,7 +482,7 @@ defmodule PanWeb.User do
   were deleted. Everything else in `ids` is ignored.
   """
   def delete_deletable(ids) do
-    from(u in retention_query(:deletable), where: u.id in ^ids)
+    from(u in retention_query([:deletable]), where: u.id in ^ids)
     |> Repo.all()
     |> Enum.map(&PanWeb.Admin.QueryBuilder.delete(User, &1))
     |> length()

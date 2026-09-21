@@ -27,7 +27,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       filter: :all,
+       filters: [],
        sort_by: :inserted_at,
        sort_order: :desc,
        page: 1,
@@ -37,17 +37,22 @@ defmodule PanWeb.Live.Admin.User.Retention do
   end
 
   defp fetch(%{assigns: assigns} = socket) do
-    count = User.count_retention_users(assigns.filter)
+    count = User.count_retention_users(assigns.filters)
     pages = max(ceil(count / @per_page), 1)
     page = min(assigns.page, pages)
 
     assign(socket,
       page: page,
       pages: pages,
-      counts: Map.new(User.retention_filters(), &{&1, User.count_retention_users(&1)}),
+      count: count,
+      counts:
+        Map.new(
+          User.retention_filters(),
+          &{&1, User.count_retention_users(Enum.uniq([&1 | assigns.filters]))}
+        ),
       users:
         User.retention_users(
-          assigns.filter,
+          assigns.filters,
           assigns.sort_by,
           assigns.sort_order,
           @per_page,
@@ -56,13 +61,16 @@ defmodule PanWeb.Live.Admin.User.Retention do
     )
   end
 
-  def handle_event("filter", %{"filter" => filter}, socket) do
+  def handle_event("filter", %{"filter" => filter}, %{assigns: %{filters: filters}} = socket) do
     case Enum.find(User.retention_filters(), &(Atom.to_string(&1) == filter)) do
       nil ->
         {:noreply, socket}
 
       filter ->
-        {:noreply, assign(socket, filter: filter, page: 1, selected: MapSet.new()) |> fetch()}
+        filters =
+          if filter in filters, do: List.delete(filters, filter), else: [filter | filters]
+
+        {:noreply, assign(socket, filters: filters, page: 1, selected: MapSet.new()) |> fetch()}
     end
   end
 
@@ -129,7 +137,6 @@ defmodule PanWeb.Live.Admin.User.Retention do
   defp format_date(nil), do: "–"
   defp format_date(naive_date_time), do: Calendar.strftime(naive_date_time, "%Y-%m-%d")
 
-  defp filter_title(:all), do: "All"
   defp filter_title(:unverified), do: "Unverified"
   defp filter_title(:never_logged_in), do: "Never logged in"
   defp filter_title(:inactive), do: "Inactive for 2 years"
@@ -146,23 +153,30 @@ defmodule PanWeb.Live.Admin.User.Retention do
         for at least {User.deletion_grace_days()} days.
       </p>
 
-      <div role="tablist" class="tabs tabs-boxed w-fit my-4">
-        <a
+      <div class="flex flex-wrap gap-x-6 gap-y-2 my-4">
+        <label
           :for={filter <- User.retention_filters()}
-          role="tab"
-          href="#"
-          phx-click="filter"
-          phx-value-filter={filter}
-          class={["tab", filter == @filter && "tab-active"]}
+          class="flex items-center gap-2 cursor-pointer"
         >
-          {filter_title(filter)} ({@counts[filter]})
-        </a>
+          <input
+            type="checkbox"
+            class="checkbox checkbox-sm"
+            phx-click="filter"
+            phx-value-filter={filter}
+            checked={filter in @filters}
+          />
+          <span>{filter_title(filter)} ({@counts[filter]})</span>
+        </label>
       </div>
+
+      <p class="text-sm">
+        {@count} users match. Checked filters apply together, the numbers show how many users
+        would match with that filter added.
+      </p>
 
       <div class="flex flex-wrap gap-4 items-center my-2">
         <span>{MapSet.size(@selected)} selected</span>
         <button
-          :if={@filter not in [:marked, :deletable]}
           phx-click="mark"
           disabled={MapSet.size(@selected) == 0}
           class="btn btn-warning btn-sm"
@@ -170,7 +184,6 @@ defmodule PanWeb.Live.Admin.User.Retention do
           Mark for deletion
         </button>
         <button
-          :if={@filter in [:marked, :deletable]}
           phx-click="unmark"
           disabled={MapSet.size(@selected) == 0}
           class="btn btn-outline btn-sm"
@@ -178,7 +191,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
           Remove mark
         </button>
         <button
-          :if={@filter == :deletable}
+          :if={:deletable in @filters}
           phx-click="delete"
           disabled={MapSet.size(@selected) == 0}
           data-confirm="Delete the selected users and their data for good?"

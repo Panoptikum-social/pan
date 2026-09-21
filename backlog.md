@@ -114,13 +114,16 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    no automatic deletion. Journal-log what the job does. Start with a small batch (user, 2026-09-21):
    the first runs mark only a limited number of accounts, no need to catch up
    everything at once.
-3. DONE 2026-09-21 (uncommitted at time of writing): *admin users overview*
-   at `/admin/users/retention` (button on the admin dashboard). Filter tabs with
-   counts: all, unverified, never logged in, inactive for 2 years, marked,
-   deletable (marked for more than 30 days); sortable, paginated; mark/unmark
-   selected users; "Delete selected" only in the deletable tab and enforced in
-   `PanWeb.User.delete_deletable/1`. Admins and moderators are hidden and never
-   touched. The two new columns are in the databrowser user list too.
+3. DONE 2026-09-21 (committed; filters changed to checkboxes afterwards): *admin
+   users overview* at `/admin/users/retention` (button on the admin dashboard).
+   Filter checkboxes that combine, each checked filter restricts the list further
+   and nothing checked lists everyone: unverified, never logged in, inactive for
+   2 years, marked, deletable (marked for more than 30 days); the number beside a
+   box is how many users would match with it added. Sortable, paginated;
+   mark/unmark selected users; "Delete selected" only shown with the deletable
+   filter checked and enforced in `PanWeb.User.delete_deletable/1`. Admins and
+   moderators are hidden and never touched. The two new columns are in the
+   databrowser user list too.
 4. DONE 2026-09-21, committed and published by the user: *privacy page*
    (`pages/privacy.md` in the Jekyll repo) now covers the remember-me cookie,
    email verification, last-login tracking, the retention policy above, emails

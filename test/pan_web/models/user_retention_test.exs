@@ -27,18 +27,18 @@ defmodule PanWeb.UserRetentionTest do
       marked = insert_user(marked_for_deletion_at: days_ago(5))
       deletable = insert_user(marked_for_deletion_at: days_ago(40))
 
-      assert unverified.username in usernames(:unverified)
-      refute never.username in usernames(:unverified)
+      assert unverified.username in usernames([:unverified])
+      refute never.username in usernames([:unverified])
 
-      assert never.username in usernames(:never_logged_in)
-      refute active.username in usernames(:never_logged_in)
+      assert never.username in usernames([:never_logged_in])
+      refute active.username in usernames([:never_logged_in])
 
-      assert usernames(:inactive) == [inactive.username]
+      assert usernames([:inactive]) == [inactive.username]
 
-      assert marked.username in usernames(:marked)
-      assert deletable.username in usernames(:marked)
+      assert marked.username in usernames([:marked])
+      assert deletable.username in usernames([:marked])
 
-      assert usernames(:deletable) == [deletable.username]
+      assert usernames([:deletable]) == [deletable.username]
     end
 
     test "never list admins or moderators" do
@@ -47,12 +47,29 @@ defmodule PanWeb.UserRetentionTest do
       regular = insert_user(%{})
 
       for filter <- User.retention_filters() do
-        refute admin.username in usernames(filter)
-        refute moderator.username in usernames(filter)
+        refute admin.username in usernames([filter])
+        refute moderator.username in usernames([filter])
       end
 
-      assert regular.username in usernames(:all)
-      assert User.count_retention_users(:all) == 1
+      assert usernames([]) == [regular.username]
+      assert User.count_retention_users([]) == 1
+    end
+
+    test "combine, every further filter restricts the result more" do
+      unverified_marked = insert_user(email_verified: false, marked_for_deletion_at: days_ago(5))
+      unverified = insert_user(email_verified: false)
+      verified_marked = insert_user(email_verified: true, marked_for_deletion_at: days_ago(5))
+      deletable = insert_user(email_verified: false, marked_for_deletion_at: days_ago(40))
+
+      assert User.count_retention_users([]) == 4
+      assert User.count_retention_users([:unverified]) == 3
+      assert usernames([:unverified, :marked]) == [unverified_marked.username, deletable.username]
+      assert usernames([:unverified, :deletable]) == [deletable.username]
+      assert usernames([:marked, :deletable]) == [deletable.username]
+
+      assert unverified.username in usernames([:unverified])
+      refute unverified.username in usernames([:unverified, :marked])
+      refute verified_marked.username in usernames([:unverified, :marked])
     end
   end
 
