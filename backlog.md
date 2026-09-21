@@ -33,9 +33,9 @@ materializes:
   doesn't require `Feed.check_for_redirect_loop`.
 - Give the output map a documented, consistent shape (today it mixes string
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-- Add real test coverage for `Analyzer`/`Iterator`/`Helpers` — none exists
-  today; this is the main payoff of phase 1 and would have caught the
-  `scrub/1` crash before prod.
+- Add real test coverage for `Analyzer`/`Iterator` (none exists today; this is
+  the main payoff of phase 1 and would have caught the `scrub/1` crash before
+  prod). `Helpers` is covered since 2026-09-21 (`test/pan/parser/helpers_test.exs`).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
