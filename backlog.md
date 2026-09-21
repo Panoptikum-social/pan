@@ -74,14 +74,9 @@ parser code, since Pan's fix-ups would hide what the tool must report), takes an
 XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
-**Still open, in order:**
-1. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
-   info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
-   fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
-2. *Ownership, facts about the current build (no decisions made):* a previous
-   owner is not notified when an admin reassigns; owners see only the
-   "Podcasts I manage" card on `/my_podcasts`; deleting a user account leaves the
-   user's podcasts unassigned (FK is `nilify_all`).
+**Still open, later (agreed):** Podcasting 2.0 rules, active probing (below), the
+info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
+fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
 **Active probing (later), collected checklist:** needs downloads of artwork and
 media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
