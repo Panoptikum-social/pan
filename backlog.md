@@ -42,7 +42,6 @@ materializes:
   Small known gaps, pinned as they are in those tests:
   - The `<title>` inside an RSS `<image>` is dropped: `call(_, "image", [:title, _, _])`
     matches first, so the clause below it is dead.
-  - An episode with an empty `<title>` is stored with the title "emtpy" (sic).
   - The two `podcast:person` clauses take the name only when the first node is text,
     and single-element clauses such as the channel `title` log "Tag unknown" for
     mixed content (raw markup inside the element).

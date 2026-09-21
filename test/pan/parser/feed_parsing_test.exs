@@ -434,9 +434,9 @@ defmodule Pan.Parser.FeedParsingTest do
       assert episode("<link>https://example.com/1</link>").link == "https://example.com/1"
     end
 
-    test "an empty title becomes the literal string \"emtpy\"" do
-      # sic: the misspelling is what gets stored today
-      assert episode("<title></title>").title == "emtpy"
+    test "an empty title becomes \"No title\"" do
+      assert episode("<title></title>").title == "No title"
+      assert episode("<itunes:title></itunes:title>").title == "No title"
     end
 
     test "an empty pubDate falls back to the current time" do

@@ -919,12 +919,12 @@ defmodule Pan.Parser.Analyzer do
   def call(map, "tag", [:item, _, value]), do: parse(map, "episode", value, uuid1())
   def call(map, "episode", [:item, _, value]), do: parse(map, "episode", value, uuid1())
 
-  def call(_, "episode", [:title, _, []]), do: %{title: "emtpy"}
+  def call(_, "episode", [:title, _, []]), do: %{title: "No title"}
 
   def call(_, "episode", [:title, _, values = [_ | _]]),
     do: %{title: to_255(flatten_to_string(values))}
 
-  def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "emtpy"}
+  def call(_, "episode", [:"itunes:title", _, []]), do: %{title: "No title"}
 
   def call(_, "episode", [:"itunes:title", _, [%{name: :"content:encoded", value: [value]}]]),
     do: %{title: strip_tags(value)}
