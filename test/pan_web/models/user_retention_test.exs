@@ -159,6 +159,30 @@ defmodule PanWeb.UserRetentionTest do
     end
   end
 
+  describe "next_retention_candidate_id/1" do
+    test "picks the lowest id the policy applies to" do
+      insert_user(email_verified: false, inserted_at: days_ago(5))
+      insert_user(email_verified: true, last_login_at: days_ago(10))
+      insert_user(email_verified: true, inserted_at: days_ago(900), last_login_at: days_ago(10))
+      insert_user(admin: true, email_verified: false, inserted_at: days_ago(100))
+
+      insert_user(
+        email_verified: false,
+        inserted_at: days_ago(100),
+        marked_for_deletion_at: days_ago(1)
+      )
+
+      unverified = insert_user(email_verified: false, inserted_at: days_ago(100))
+      inactive = insert_user(email_verified: true, last_login_at: days_ago(800))
+      never = insert_user(email_verified: true, inserted_at: days_ago(800))
+
+      assert User.next_retention_candidate_id() == unverified.id
+      assert User.next_retention_candidate_id([unverified.id]) == inactive.id
+      assert User.next_retention_candidate_id([unverified.id, inactive.id]) == never.id
+      assert User.next_retention_candidate_id([unverified.id, inactive.id, never.id]) == nil
+    end
+  end
+
   describe "send_retention_notices/1" do
     defmodule RefusingAdapter do
       use Swoosh.Adapter

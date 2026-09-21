@@ -30,6 +30,7 @@ defmodule PanWeb.User do
   # deletion for a grace period of 30 days.
   @inactive_after_days 2 * 365
   @deletion_grace_days 30
+  @unverified_grace_days 30
 
   @retention_filters [:unverified, :never_logged_in, :inactive, :unmarked, :marked, :deletable]
 
@@ -489,6 +490,29 @@ defmodule PanWeb.User do
   end
 
   @doc """
+  The id of the lowest-id user the retention policy applies to and who has not
+  been noticed yet, or nil. Never-verified accounts qualify after
+  #{@unverified_grace_days} days (a fresh signup is still verifying), verified ones
+  after two years without a login (their signup date counts if they never
+  logged in). Users in `excluded_ids` are skipped.
+  """
+  def next_retention_candidate_id(excluded_ids \\ []) do
+    inactive_cutoff = days_ago(@inactive_after_days)
+    unverified_cutoff = days_ago(@unverified_grace_days)
+
+    from(u in regular_users(),
+      where:
+        is_nil(u.marked_for_deletion_at) and u.id not in ^excluded_ids and
+          ((not coalesce(u.email_verified, false) and u.inserted_at < ^unverified_cutoff) or
+             coalesce(u.last_login_at, u.inserted_at) < ^inactive_cutoff),
+      order_by: [asc: u.id],
+      limit: 1,
+      select: u.id
+    )
+    |> Repo.one()
+  end
+
+  @doc """
   Mails a deletion notice with a login link (valid for the grace period) to the
   given users (not admins or moderators). The reasons in the mail come from the
   user's data. A user is marked for deletion only once the mail was accepted, an
@@ -521,8 +545,10 @@ defmodule PanWeb.User do
 
   defp retention_reasons(user) do
     inactive? =
-      user.last_login_at &&
-        NaiveDateTime.compare(user.last_login_at, days_ago(@inactive_after_days)) == :lt
+      NaiveDateTime.compare(
+        user.last_login_at || user.inserted_at,
+        days_ago(@inactive_after_days)
+      ) == :lt
 
     [inactive: inactive?, unverified: !user.email_verified]
     |> Enum.filter(fn {_reason, applies?} -> applies? end)

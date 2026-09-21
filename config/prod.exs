@@ -31,5 +31,6 @@ config :pan, :children, [
   Pan.Job.ImportStalePodcasts,
   Pan.Job.RefreshPodcastMetadata,
   Pan.Job.CacheMissingImages,
-  Pan.Job.PushMissingSearchIndex
+  Pan.Job.PushMissingSearchIndex,
+  Pan.Job.SendRetentionNotices
 ]

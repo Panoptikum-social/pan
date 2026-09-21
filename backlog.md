@@ -57,9 +57,8 @@ angle-bracket fixups, mixed-content HTML scrubbing, etc. already in
 `lib/pan/parser/helpers.ex` — that catalog of tolerances is *not* a standard
 to check against, it's the mirror image: proof of what's actually out there).
 
-**Status:** phase C (any logged-in user, "Check feed" button on the podcast
-page) is live in prod as `PanWeb.Live.Podcast.CheckFeed`. The rule engine is the
-separate Hex library `check_my_feed` (github.com/Panoptikum-social/check-my-feed,
+**Status:** the check is live in prod as `PanWeb.Live.Podcast.CheckFeed`. The
+rule engine is the separate Hex library `check_my_feed` (github.com/Panoptikum-social/check-my-feed,
 sibling directory `../check-my-feed`, mirrored privately on code.informatom.com).
 A new library release: bump the version, `mix hex.publish` (2FA), then update
 Pan's requirement and lock.
@@ -97,16 +96,13 @@ uploads only.
 
 ---
 
-### User retention: open follow-ups (built and deployed 2026-09-21)
-The retention tooling itself is done and tested by the user: last-login tracking
-and deletion mark, the admin page `/admin/users/retention` (combinable filter
-checkboxes, text search, mark/unmark, "Send notice", delete after the 30 day
-grace period), and the privacy page. What is left:
-- *No automatic marking job* (user: "we won't start with a job"). If it comes
-  later, the decided policy is: a never-verified account marked 30 days after
-  signup, a verified one after 2 years without a real login, small batches
-  first, deleting stays manual. Until then the privacy page promises these rules
-  while the marking and deleting happen by hand on the retention page.
+### User retention: open follow-ups
+- *Automatic notice job written, not yet deployed (2026-09-21):*
+  `Pan.Job.SendRetentionNotices` (prod only) sends one notice every 5 minutes to
+  the lowest-id unmarked user who is either unverified for more than 30 days or
+  verified without a login for 2 years (signup date counts if never logged in);
+  marking happens as with the manual "Send notice". A failing address is skipped
+  until the next restart. Deleting stays manual.
 - *Account deletion keeps more than the account:* personas stay including an
   email address stored on them (persona.user_id is left dangling), invoices stay
   with user_id set to null. The privacy page says so. Not changed in code.
@@ -120,7 +116,7 @@ grace period), and the privacy page. What is left:
   logged in (490 signed up in 2019). Nothing was changed or deleted; a CSV of the
   suspects went to the user (not in a repo).
 
-### Bounce handling for outgoing mail (added 2026-09-21; step 1 done and working, reader open)
+### Bounce handling for outgoing mail (added 2026-09-21; only the reader and actions on bounces are open)
 Problem: a nonexistent address goes unnoticed. The app only talks to our relay
 (`box.mittenin.at`, Mail-in-a-Box/Postfix), which reports failures later as a
 bounce mail to the envelope sender, and all 7 `Pan.Mailer.deliver()` calls ignore
@@ -154,14 +150,9 @@ original (untested with a custom header), or the queue id from the receipt.
 `5.4.4`. Not `5.2.x` (mailbox full) or `5.7.x` (rejected as spam/policy), and
 ignore `4.x.x` / `Action: delayed`.
 
-**Step 1 done, deployed and confirmed working by the user (real bounces arrive
-in `bounce@`):** `Pan.Mailer.deliver/2` sets `Sender: bounces@panoptikum.social`
-on every mail, logs the relay's receipt (queue id) at info level, and on a
-refusal by the relay logs a warning and writes a Journal entry (recipient,
-subject, reason; not for error-notification mails, to avoid a notification
-loop). Only prod sends real mail, dev/qa use the local adapter. A reader for the
-mailbox and any action on bounces are still open (decide after seeing real
-bounces).
+**Current state:** bounces already arrive in `bounce@` (`Pan.Mailer.deliver/2`
+sets the `Sender` header and logs the queue id). A reader for the mailbox and
+any action on bounces are still open (decide after seeing real bounces).
 
 **Notes:**
 - A bounce contains the original mail, so for verification and login-link mails
@@ -177,8 +168,7 @@ bounces).
   build a reader at all.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
-Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
-remains, deliberately scoped to what is useful for a podcast site without
+What remains, deliberately scoped to what is useful for a podcast site without
 hitting LiveView's ceiling (pages need a live WebSocket, so they cannot work
 offline):
 
