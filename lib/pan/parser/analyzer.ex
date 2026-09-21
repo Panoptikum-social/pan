@@ -23,7 +23,10 @@ defmodule Pan.Parser.Analyzer do
 
   # simple tags to include in podcast
   def call(_, "tag", [:title, _, []]), do: %{}
-  def call(_, "tag", [:title, _, [value]]), do: %{title: to_255(value)}
+
+  def call(_, "tag", [:title, _, values = [_ | _]]),
+    do: %{title: to_255(flatten_to_string(values))}
+
   def call(_, "tag", [:"itunes:summary", _, []]), do: %{}
 
   def call(_, "tag", [:"itunes:summary", _, values = [_ | _]]),

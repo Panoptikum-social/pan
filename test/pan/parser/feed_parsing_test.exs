@@ -69,6 +69,10 @@ defmodule Pan.Parser.FeedParsingTest do
       assert Map.values(map.languages) == [%{shortcode: "de-AT"}]
     end
 
+    test "a title with mixed content keeps all its text" do
+      assert parse("<title>My <b>great</b> show</title>").title == "My great show"
+    end
+
     test "the seed values from the feed url are kept when the feed has no title" do
       map = parse("<link>https://example.com</link>")
 

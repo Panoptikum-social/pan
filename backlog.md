@@ -39,10 +39,6 @@ materializes:
   (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, feed links,
   people, episode fields, enclosures, chapters and the earlier crash shapes). Not
   yet covered: the rarer tag aliases and the long list of ignored tags.
-  Small known gaps, pinned as they are in those tests:
-  - The two `podcast:person` clauses take the name only when the first node is text,
-    and single-element clauses such as the channel `title` log "Tag unknown" for
-    mixed content (raw markup inside the element).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
