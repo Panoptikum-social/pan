@@ -61,8 +61,11 @@ defmodule Pan.Parser.Analyzer do
 
   # image with fallback to itunes:image
   def call(_, "tag", [:image, _, value]), do: parse(%{}, "image", value)
+
+  def call(_, "image", [:title, _, [value]]) when is_binary(value),
+    do: %{image_title: to_255(value)}
+
   def call(_, "image", [:title, _, _]), do: %{}
-  def call(_, "image", [:title, _, [value]]), do: %{image_title: to_255(value)}
   def call(_, "image", [:url, _, []]), do: %{}
   def call(_, "image", [:url, _, [value]]), do: %{image_url: to_255(value)}
   def call(_, "image", [:link, _, _]), do: %{}

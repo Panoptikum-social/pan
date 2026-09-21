@@ -356,12 +356,18 @@ defmodule Pan.Parser.FeedParsingTest do
       assert map.image == %{image_url: "https://example.com/i.png"}
     end
 
-    test "the title inside an RSS image element is dropped" do
-      # call(_, "image", [:title, _, _]) matches before the clause that would
-      # keep the title, so the second one is never reached.
+    test "the title inside an RSS image element is kept" do
       map = parse("<image><url>https://example.com/i.png</url><title>Logo</title></image>")
 
-      assert map.image == %{image_url: "https://example.com/i.png"}
+      assert map.image == %{image_url: "https://example.com/i.png", image_title: "Logo"}
+    end
+
+    test "an empty or nested title inside an RSS image element is skipped" do
+      empty = parse("<image><url>https://example.com/i.png</url><title></title></image>")
+      nested = parse("<image><url>https://example.com/i.png</url><title><b>x</b></title></image>")
+
+      assert empty.image == %{image_url: "https://example.com/i.png"}
+      assert nested.image == %{image_url: "https://example.com/i.png"}
     end
 
     test "tags on the ignore list leave no trace" do
