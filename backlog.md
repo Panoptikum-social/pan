@@ -146,7 +146,9 @@ ignore `4.x.x` / `Action: delayed`.
 
 **Current state:** bounces already arrive in `bounce@` (`Pan.Mailer.deliver/2`
 sets the `Sender` header and logs the queue id). A reader for the mailbox and
-any action on bounces are still open (decide after seeing real bounces).
+any action on bounces are still open. 2026-09-21: the first 7 real bounces
+arrived; all had causes we cannot influence, so no action for now. The `bounce@`
+mailbox is watched manually for the next days, then decide again.
 
 **Notes:**
 - A bounce contains the original mail, so for verification and login-link mails
