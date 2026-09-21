@@ -1,6 +1,5 @@
 defmodule Pan.Parser.Iterator do
   alias Pan.Parser.{Analyzer, Helpers}
-  require Logger
 
   # Actual feed parsing: Now the fun begins
   def parse(map, context \\ "tag", tags)
@@ -35,13 +34,7 @@ defmodule Pan.Parser.Iterator do
   def parse(map, "episode_image", [head | tail]) do
     episode_image_map =
       if is_map(head) do
-        case Analyzer.call(map, "episode_image", [head[:name], head[:attr], head[:value]]) do
-          {:error, "tag unknown"} ->
-            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
-
-          map ->
-            map
-        end
+        Analyzer.call(map, "episode_image", [head[:name], head[:attr], head[:value]])
       else
         %{image_url: head, image_title: head}
       end
@@ -64,14 +57,7 @@ defmodule Pan.Parser.Iterator do
 
   def parse(map, context, [head | tail]) do
     if is_map(head) do
-      podcast_map =
-        case Analyzer.call(map, context, [head[:name], head[:attr], head[:value]]) do
-          {:error, "tag unknown"} ->
-            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
-
-          map ->
-            map
-        end
+      podcast_map = Analyzer.call(map, context, [head[:name], head[:attr], head[:value]])
 
       Helpers.deep_merge(map, podcast_map)
       |> parse(context, tail)
@@ -110,14 +96,7 @@ defmodule Pan.Parser.Iterator do
 
   def parse(map, "episode", [head | tail], guid) do
     if is_map(head) do
-      episode_map =
-        case Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]]) do
-          {:error, "tag unknown"} ->
-            raise "Tag unknown @ feed_url: " <> map[:feed][:self_link_url]
-
-          map ->
-            map
-        end
+      episode_map = Analyzer.call(map, "episode", [head[:name], head[:attr], head[:value]])
 
       Helpers.deep_merge(map, %{episodes: %{guid => episode_map}})
       |> parse("episode", tail, guid)
