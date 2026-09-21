@@ -105,8 +105,9 @@ uploads only.
 - *Suspect email addresses found 2026-09-21 in the dev copy of the users table*
   (a DNS check of all domains): 64 users on 58 nonexistent domains (21 of them
   verified, many look like bots), 3 addresses with whitespace or a CRLF (ids
-  1414, 1416, 4527), a few disposable and placeholder addresses. The registration
-  does not trim whitespace from the email. All 864 unverified users have never
+  1414, 1416, 4527), a few disposable and placeholder addresses. Registration, profile edit, admin edit
+  and login-link request now trim whitespace from the email (2026-09-21); the 3 existing
+  bad rows were cleared on prod. All 864 unverified users have never
   logged in (490 signed up in 2019). Nothing was changed or deleted; a CSV of the
   suspects went to the user (not in a repo).
 

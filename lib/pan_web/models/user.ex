@@ -139,6 +139,7 @@ defmodule PanWeb.User do
       :share_subscriptions,
       :share_follows
     ])
+    |> update_change(:email, &String.trim/1)
     |> validate_required([:name, :username, :email])
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
@@ -157,6 +158,7 @@ defmodule PanWeb.User do
       :share_follows,
       :share_subscriptions
     ])
+    |> update_change(:email, &String.trim/1)
     |> validate_required([:email, :name, :username])
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
@@ -178,6 +180,7 @@ defmodule PanWeb.User do
       :password_confirmation,
       :bot_check
     ])
+    |> update_change(:email, &String.trim/1)
     |> validate_required([
       :name,
       :username,
@@ -217,6 +220,7 @@ defmodule PanWeb.User do
   def request_login_changeset(struct, params) do
     struct
     |> cast(params, [:email])
+    |> update_change(:email, &String.trim/1)
     |> validate_required([:email])
     |> validate_length(:email, min: 5, max: 100)
   end
