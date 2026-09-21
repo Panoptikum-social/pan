@@ -92,6 +92,7 @@ defmodule PanWeb.Auth do
 
     cond do
       password_ok? && user.email_verified ->
+        user = record_login(user)
         conn = login(conn, user)
         conn = if remember_me?, do: remember_me(conn, user), else: conn
         {:ok, conn}
@@ -112,7 +113,7 @@ defmodule PanWeb.Auth do
     case Phoenix.Token.verify(PanWeb.Endpoint, "user", token, max_age: 60 * 60) do
       {:ok, user_id} ->
         user = Repo.get!(User, user_id)
-        {:ok, login(conn, verify_email_address(user))}
+        {:ok, login(conn, record_login(user))}
 
       {:error, :expired} ->
         {:error, :expired}
@@ -126,11 +127,18 @@ defmodule PanWeb.Auth do
     end
   end
 
-  # Following a link we mailed to the user's address proves they control it.
-  defp verify_email_address(%{email_verified: true} = user), do: user
-
-  defp verify_email_address(user) do
-    user |> Ecto.Changeset.change(email_verified: true) |> Repo.update!()
+  # Called for real logins only (login form, API login, emailed link), not when
+  # a session or remember-me cookie is merely used. Any real login lifts a
+  # deletion mark. Both callers have proven the email address (a verified
+  # account with the right password, or a link we mailed), so it is verified.
+  defp record_login(user) do
+    user
+    |> Ecto.Changeset.change(
+      email_verified: true,
+      last_login_at: Pan.Parser.MyDateTime.now(),
+      marked_for_deletion_at: nil
+    )
+    |> Repo.update!()
   end
 
   def grant_access_by_token(_conn, token) do

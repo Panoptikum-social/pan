@@ -34,6 +34,25 @@ defmodule PanWeb.SessionControllerTest do
       assert get_session(conn, :user_id) == user.id
     end
 
+    test "records the login time and lifts a deletion mark", %{conn: conn} do
+      marked_at = ~N[2026-01-01 00:00:00]
+      user = insert_user(email_verified: true, marked_for_deletion_at: marked_at)
+
+      login(conn, user)
+
+      user = Repo.get!(User, user.id)
+      assert user.last_login_at
+      assert is_nil(user.marked_for_deletion_at)
+    end
+
+    test "a blocked login records nothing", %{conn: conn} do
+      user = insert_user(email_verified: false)
+
+      login(conn, user)
+
+      refute Repo.get!(User, user.id).last_login_at
+    end
+
     test "blocks an unverified user and offers a new verification mail", %{conn: conn} do
       user = insert_user(email_verified: false)
       conn = login(conn, user)
@@ -101,6 +120,7 @@ defmodule PanWeb.SessionControllerTest do
 
       assert get_session(conn, :user_id) == user.id
       assert Repo.get!(User, user.id).email_verified
+      assert Repo.get!(User, user.id).last_login_at
     end
   end
 end

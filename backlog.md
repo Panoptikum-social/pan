@@ -97,6 +97,47 @@ uploads only.
 
 ---
 
+### User management and data retention (added 2026-09-21)
+
+Decided 2026-09-21, to be built in this order (each part its own commit):
+
+1. *Data + tracking:* nullable `users.last_login_at` and
+   `users.marked_for_deletion_at`. `last_login_at` records real logins only
+   (login form, API login, emailed link), not session/remember-me use. Any real
+   login clears `marked_for_deletion_at`. Show last login on "My Data" and in
+   the JSON export.
+2. *Automatic marking job* (policy, decided): a never-verified account is
+   marked 30 days after signup; a verified account with no real login for 2
+   years is marked (never logged in: measured from signup). Marking a verified
+   account sends a warning mail; unverified accounts get no mail (unproven
+   address). Deleting stays a manual admin action after a 30 day grace period,
+   no automatic deletion. Journal-log what the job does.
+3. *Admin users overview:* list with verified state, last login, mark state;
+   filters (unverified, never logged in, inactive since, marked); mark/unmark
+   single and bulk; delete reuses the existing cascade. Show the two new
+   columns in the databrowser too.
+4. *Privacy page* (`pages/privacy.md` in the Jekyll repo): update for the
+   remember-me cookie `_pan_remember_me` (30 days), email verification,
+   last-login tracking, the retention policy above, the Journal audit log.
+
+### Bounce handling for outgoing mail (added 2026-09-21, not decided)
+Today a nonexistent address or mail server goes unnoticed: the app only talks to
+our relay (`box.mittenin.at`), which accepts the mail and reports failure later
+as an asynchronous bounce to the envelope sender, and all 7 `Pan.Mailer.deliver()`
+calls ignore the return value anyway. Idea, if pursued as its own small project:
+- keep From as `noreply@`, use a separate bounce-only envelope sender (a real
+  IMAP mailbox, not `accounts@`, which humans would reply to);
+- VERP addressing, e.g. `bounces+<user_id>.<signature>@panoptikum.social`, so a
+  bounce identifies the account directly and unsigned mail (spam, backscatter)
+  is dropped;
+- a reader that accepts only real delivery reports (empty return path,
+  `multipart/report`) to a valid signed address, and a rule how many bounces
+  mark an account (fits the retention job in the item above);
+- cheap first step: check/log/Journal the return value of `Pan.Mailer.deliver()`
+  and tell the user when the relay refuses a mail.
+Open: what spam filtering `box.mittenin.at` already does, and whether it
+bounces to the envelope sender.
+
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
 Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
 remains, deliberately scoped to what is useful for a podcast site without

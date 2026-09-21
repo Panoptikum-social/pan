@@ -11,6 +11,7 @@ defmodule PanWeb.UserJsonDownloadView do
     :admin,
     :podcaster,
     :email_verified,
+    :last_login_at,
     :share_subscriptions,
     :share_follows
   ])

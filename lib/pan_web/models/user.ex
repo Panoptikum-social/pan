@@ -35,6 +35,8 @@ defmodule PanWeb.User do
     field(:podcaster, :boolean, default: false)
     field(:moderator, :boolean, default: false)
     field(:email_verified, :boolean, default: false)
+    field(:last_login_at, :naive_datetime)
+    field(:marked_for_deletion_at, :naive_datetime)
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
     field(:bot_check, :integer, virtual: true)
