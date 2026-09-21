@@ -111,7 +111,9 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    years is marked (never logged in: measured from signup). Marking a verified
    account sends a warning mail; unverified accounts get no mail (unproven
    address). Deleting stays a manual admin action after a 30 day grace period,
-   no automatic deletion. Journal-log what the job does.
+   no automatic deletion. Journal-log what the job does. Start with a small batch (user, 2026-09-21):
+   the first runs mark only a limited number of accounts, no need to catch up
+   everything at once.
 3. *Admin users overview:* list with verified state, last login, mark state;
    filters (unverified, never logged in, inactive since, marked); mark/unmark
    single and bulk; delete reuses the existing cascade. Show the two new
@@ -120,7 +122,7 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    remember-me cookie `_pan_remember_me` (30 days), email verification,
    last-login tracking, the retention policy above, the Journal audit log.
 
-### Bounce handling for outgoing mail (added 2026-09-21, exploring, nothing built)
+### Bounce handling for outgoing mail (added 2026-09-21, exploring; step 1 built, see below)
 Problem: a nonexistent address goes unnoticed. The app only talks to our relay
 (`box.mittenin.at`, Mail-in-a-Box/Postfix), which reports failures later as a
 bounce mail to the envelope sender, and all 7 `Pan.Mailer.deliver()` calls ignore
@@ -153,6 +155,14 @@ original (untested with a custom header), or the queue id from the receipt.
 **Which statuses would mean "address is bad" (suggestion):** `5.1.1`, `5.1.2`,
 `5.4.4`. Not `5.2.x` (mailbox full) or `5.7.x` (rejected as spam/policy), and
 ignore `4.x.x` / `Action: delayed`.
+
+**Step 1 built 2026-09-21 (user wants to watch real bounces in the `bounce@`
+mailbox himself first):** `Pan.Mailer.deliver/2` now sets `Sender:
+bounces@panoptikum.social` on every mail, logs the relay's receipt (queue id) at
+info level, and on a refusal by the relay logs a warning and writes a Journal
+entry (recipient, subject, reason; not for error-notification mails, to avoid a
+notification loop). Prod only in effect, dev/qa use the local adapter. Reader
+and any action on bounces are still open (decide after seeing real bounces).
 
 **Notes:**
 - A bounce contains the original mail, so for verification and login-link mails
