@@ -912,6 +912,9 @@ defmodule Pan.Parser.Analyzer do
   def call("category", [:"itunes:Subcategory", _, _], _), do: %{}
   def call("category", [:"itunes:subcategory", _, _], _), do: %{}
 
+  # Any other child of an itunes:category (crashed with a FunctionClauseError)
+  def call("category", _element, _parent_title), do: %{}
+
   # Episodes
   def call(map, "tag", [:item, _, value]), do: parse(map, "episode", value, uuid1())
   def call(map, "episode", [:item, _, value]), do: parse(map, "episode", value, uuid1())

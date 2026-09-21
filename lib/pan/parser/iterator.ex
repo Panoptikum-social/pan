@@ -50,6 +50,11 @@ defmodule Pan.Parser.Iterator do
     |> parse("episode_image", tail)
   end
 
+  # Plain text between the elements (e.g. <psc:chapters>text</psc:chapters>) has
+  # no chapter in it; without this clause head[:name] raises on a binary.
+  def parse(map, "chapter", [head | tail]) when not is_map(head),
+    do: parse(map, "chapter", tail)
+
   def parse(map, "chapter", [head | tail]) do
     chapter_map = Analyzer.call("chapter", [head[:name], head[:attr], head[:value]])
 
@@ -77,6 +82,10 @@ defmodule Pan.Parser.Iterator do
 
   # We are done digging down
   def parse(map, _, [], _), do: map
+
+  # Same for plain text directly inside <atom:contributor>
+  def parse(map, "contributor", [head | tail], guid) when not is_map(head),
+    do: parse(map, "contributor", tail, guid)
 
   def parse(map, "contributor", [head | tail], guid) do
     contributor_map = Analyzer.call("contributor", [head[:name], head[:attr], head[:value]])
@@ -128,6 +137,9 @@ defmodule Pan.Parser.Iterator do
       map
     end
   end
+
+  def parse(map, "episode-contributor", [head | tail], contributor_uuid) when not is_map(head),
+    do: parse(map, "episode-contributor", tail, contributor_uuid)
 
   def parse(map, "episode-contributor", [head | tail], contributor_uuid) do
     contributor_map =

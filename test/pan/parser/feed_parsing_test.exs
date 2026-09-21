@@ -549,6 +549,59 @@ defmodule Pan.Parser.FeedParsingTest do
     end
   end
 
+  describe "container tags with unexpected content" do
+    # Found by feeding every known tag as plain text, mixed content and empty
+    # element; each of these raised a FunctionClauseError.
+    test "plain text inside a channel atom:contributor is skipped" do
+      map =
+        parse("""
+        <title>Show</title>
+        <atom:contributor>Jane</atom:contributor>
+        <atom:contributor>Text <atom:name>Con</atom:name> more text</atom:contributor>
+        """)
+
+      assert map.title == "Show"
+      assert Map.values(map.contributors) == [%{name: "Con"}]
+    end
+
+    test "plain text inside an episode atom:contributor is skipped" do
+      episode =
+        episode("""
+        <title>Ep</title>
+        <atom:contributor>Jane</atom:contributor>
+        <atom:contributor>Text <atom:name>Con</atom:name></atom:contributor>
+        """)
+
+      assert episode.title == "Ep"
+      assert Map.values(episode.contributors) == [%{name: "Con"}]
+    end
+
+    test "plain text inside psc:chapters is skipped" do
+      episode =
+        episode("""
+        <title>Ep</title>
+        <psc:chapters>Some text <psc:chapter start="00:00:00" title="Intro"/></psc:chapters>
+        """)
+
+      assert Map.values(episode.chapters) == [%{start: "00:00:00", title: "Intro"}]
+    end
+
+    test "an itunes:category with an unknown child keeps the category" do
+      map =
+        parse("""
+        <itunes:category text="Technology">
+          <itunes:name>x</itunes:name>
+          <itunes:category text="Podcasting"/>
+        </itunes:category>
+        """)
+
+      assert map.categories |> Map.values() |> Enum.sort_by(& &1.title) == [
+               %{title: "Podcasting", parent: "Technology"},
+               %{title: "Technology", parent: nil}
+             ]
+    end
+  end
+
   describe "unknown tags" do
     test "an unknown channel tag is logged and skipped" do
       log =
