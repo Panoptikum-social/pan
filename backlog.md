@@ -166,16 +166,3 @@ any action on bounces are still open (decide after seeing real bounces).
   the retention item above).
 - Open: what spam filtering the mail server applies to `bounce@`; whether to
   build a reader at all.
-
-### PWA: asset caching (found 2026-09-01) — built 2026-09-21, awaiting prod test
-Service worker (`priv/static/sw.js`) caches digested `/assets/*` and `/fonts/*`
-cache-first, `/images/*` stale-while-revalidate, and falls back to
-`priv/static/offline.html` when a page navigation fails. Untested in a browser
-before deploy; bump `VERSION` in `sw.js` to reset all caches. Delete this item
-once verified in prod.
-
-Done 2026-09-21: lock-screen/notification media controls. The bundled Podlove
-player (5.7.4) already implements the Media Session API (metadata, play/pause,
-seek, previous/next); the only gap was the artwork, which was always the
-placeholder. `PodlovePlayer` now passes the podcast's cached thumbnail as
-poster. Verified on Linux Mint (media applet) and in prod.
