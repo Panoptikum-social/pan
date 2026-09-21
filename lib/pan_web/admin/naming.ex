@@ -98,6 +98,8 @@ defmodule PanWeb.Admin.Naming do
           :username,
           :email,
           :email_verified,
+          :last_login_at,
+          :marked_for_deletion_at,
           :podcaster,
           :admin,
           :moderator,

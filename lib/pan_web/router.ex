@@ -410,6 +410,7 @@ defmodule PanWeb.Router do
     )
 
     get("/users/merge", UserController, :merge)
+    live("/users/retention", Live.Admin.User.Retention, :retention, as: :user)
     post("/users/execute_merge", UserController, :execute_merge)
 
     post("/feeds/:id/make_only", FeedController, :make_only)

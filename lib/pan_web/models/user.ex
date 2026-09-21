@@ -24,6 +24,15 @@ defmodule PanWeb.User do
 
   @minimum_password_length 10
 
+  # Retention policy, see the "User management and data retention" backlog item
+  # and the privacy page: accounts without a real login for two years are
+  # announced by mail and may be deleted once they have been marked for
+  # deletion for a grace period of 30 days.
+  @inactive_after_days 2 * 365
+  @deletion_grace_days 30
+
+  @retention_filters [:all, :unverified, :never_logged_in, :inactive, :marked, :deletable]
+
   schema "users" do
     field(:name, :string)
     field(:username, :string)
@@ -385,5 +394,98 @@ defmodule PanWeb.User do
     |> Ecto.Changeset.change()
     |> Ecto.Changeset.put_assoc(:languages, languages)
     |> Repo.update()
+  end
+
+  def retention_filters, do: @retention_filters
+  def deletion_grace_days, do: @deletion_grace_days
+
+  # Admins and moderators are never part of the retention tooling.
+  defp regular_users do
+    from(u in User,
+      where: not coalesce(u.admin, false) and not coalesce(u.moderator, false)
+    )
+  end
+
+  defp days_ago(days), do: NaiveDateTime.add(Pan.Parser.MyDateTime.now(), -days, :day)
+
+  defp retention_query(filter) do
+    retention_filter(regular_users(), filter)
+  end
+
+  defp retention_filter(query, :all), do: query
+
+  defp retention_filter(query, :unverified),
+    do: from(u in query, where: not coalesce(u.email_verified, false))
+
+  defp retention_filter(query, :never_logged_in),
+    do: from(u in query, where: is_nil(u.last_login_at))
+
+  defp retention_filter(query, :inactive) do
+    from(u in query,
+      where: not is_nil(u.last_login_at) and u.last_login_at < ^days_ago(@inactive_after_days)
+    )
+  end
+
+  defp retention_filter(query, :marked),
+    do: from(u in query, where: not is_nil(u.marked_for_deletion_at))
+
+  defp retention_filter(query, :deletable) do
+    from(u in query,
+      where:
+        not is_nil(u.marked_for_deletion_at) and
+          u.marked_for_deletion_at <= ^days_ago(@deletion_grace_days)
+    )
+  end
+
+  def retention_users(filter, sort_by, sort_order, limit, offset) do
+    from(u in retention_query(filter),
+      order_by: [{^sort_order, field(u, ^sort_by)}, asc: u.id],
+      limit: ^limit,
+      offset: ^offset,
+      select: %{
+        id: u.id,
+        username: u.username,
+        email: u.email,
+        email_verified: u.email_verified,
+        inserted_at: u.inserted_at,
+        last_login_at: u.last_login_at,
+        marked_for_deletion_at: u.marked_for_deletion_at
+      }
+    )
+    |> Repo.all()
+  end
+
+  def count_retention_users(filter) do
+    retention_query(filter) |> Repo.aggregate(:count)
+  end
+
+  @doc "Marks the given users (not admins or moderators) for deletion; returns how many were marked."
+  def mark_for_deletion(ids) do
+    {count, _} =
+      from(u in regular_users(), where: u.id in ^ids and is_nil(u.marked_for_deletion_at))
+      |> Repo.update_all(set: [marked_for_deletion_at: Pan.Parser.MyDateTime.now()])
+
+    count
+  end
+
+  @doc "Removes the deletion mark from the given users; returns how many were unmarked."
+  def unmark_for_deletion(ids) do
+    {count, _} =
+      from(u in regular_users(), where: u.id in ^ids)
+      |> Repo.update_all(set: [marked_for_deletion_at: nil])
+
+    count
+  end
+
+  @doc """
+  Deletes those of the given users that have been marked for deletion for at
+  least the grace period (and are not admins or moderators); returns how many
+  were deleted. Everything else in `ids` is ignored.
+  """
+  def delete_deletable(ids) do
+    from(u in retention_query(:deletable), where: u.id in ^ids)
+    |> Repo.all()
+    |> Enum.map(&PanWeb.Admin.QueryBuilder.delete(User, &1))
+    |> length()
   end
 end

@@ -114,13 +114,25 @@ Decided 2026-09-21, to be built in this order (each part its own commit):
    no automatic deletion. Journal-log what the job does. Start with a small batch (user, 2026-09-21):
    the first runs mark only a limited number of accounts, no need to catch up
    everything at once.
-3. *Admin users overview:* list with verified state, last login, mark state;
-   filters (unverified, never logged in, inactive since, marked); mark/unmark
-   single and bulk; delete reuses the existing cascade. Show the two new
-   columns in the databrowser too.
-4. *Privacy page* (`pages/privacy.md` in the Jekyll repo): update for the
-   remember-me cookie `_pan_remember_me` (30 days), email verification,
-   last-login tracking, the retention policy above, the Journal audit log.
+3. DONE 2026-09-21 (uncommitted at time of writing): *admin users overview*
+   at `/admin/users/retention` (button on the admin dashboard). Filter tabs with
+   counts: all, unverified, never logged in, inactive for 2 years, marked,
+   deletable (marked for more than 30 days); sortable, paginated; mark/unmark
+   selected users; "Delete selected" only in the deletable tab and enforced in
+   `PanWeb.User.delete_deletable/1`. Admins and moderators are hidden and never
+   touched. The two new columns are in the databrowser user list too.
+4. DONE 2026-09-21, committed and published by the user: *privacy page*
+   (`pages/privacy.md` in the Jekyll repo) now covers the remember-me cookie,
+   email verification, last-login tracking, the retention policy above, emails
+   we send and delivery reports. Consequences to keep in mind:
+   - The page already promises the retention rules (unverified accounts deleted
+     after 30 days; inactive verified accounts announced by mail, deleted 30
+     days after it) while part 2 (marking job, warning mail) is not built yet.
+   - Account deletion keeps personas including an email address stored on them
+     (persona.user_id is left dangling), and invoices with user_id set to null;
+     the page says so. Not changed in code.
+   - No retention period is stated for the `bounce@` mailbox and for Journal
+     entries of failed mail deliveries (recipient + subject).
 
 ### Bounce handling for outgoing mail (added 2026-09-21, exploring; step 1 built, see below)
 Problem: a nonexistent address goes unnoticed. The app only talks to our relay
