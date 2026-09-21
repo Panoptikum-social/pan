@@ -40,9 +40,6 @@ materializes:
   people, episode fields, enclosures, chapters and the earlier crash shapes). Not
   yet covered: the rarer tag aliases and the long list of ignored tags.
   Small known gaps, pinned as they are in those tests:
-  - An episode-level `atom:link` with a `rel` other than deep-link / payment /
-    alternate / simple-chapters / replies / self (e.g. `rel="enclosure"`) raises a
-    `CaseClauseError`; the channel-level version skips unknown rels.
   - The `<title>` inside an RSS `<image>` is dropped: `call(_, "image", [:title, _, _])`
     matches first, so the clause below it is dead.
   - An episode with an empty `<title>` is stored with the title "emtpy" (sic).

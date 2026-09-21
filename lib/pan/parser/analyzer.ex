@@ -1065,6 +1065,10 @@ defmodule Pan.Parser.Analyzer do
 
       nil ->
         %{link: to_255(attr[:href])}
+
+      # e.g. rel="enclosure" or "related" — used to raise a CaseClauseError
+      _ ->
+        %{}
     end
   end
 

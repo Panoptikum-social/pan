@@ -466,13 +466,16 @@ defmodule Pan.Parser.FeedParsingTest do
       assert episode.link == "https://example.com/plain"
     end
 
-    test "an episode atom:link with an unlisted rel crashes the parse" do
-      # Unlike the channel-level links, the episode clause has no fallback for
-      # unknown rels (e.g. rel="enclosure"). Pinned as found; when the clause
-      # gets a fallback, change this to assert that the episode survives.
-      assert_raise CaseClauseError, fn ->
-        episode(~s(<title>Ep</title><atom:link rel="enclosure" href="https://example.com/x"/>))
-      end
+    test "an episode atom:link with an unlisted rel is skipped" do
+      # used to raise a CaseClauseError; the channel-level links already skipped them
+      episode =
+        episode("""
+        <title>Ep</title>
+        <atom:link rel="enclosure" href="https://example.com/x"/>
+        """)
+
+      assert episode.title == "Ep"
+      refute Map.has_key?(episode, :link)
     end
 
     test "several enclosures, with the bitlove guid" do
