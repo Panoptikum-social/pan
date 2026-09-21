@@ -31,7 +31,11 @@ defmodule Pan.Parser.FeedParsingTest do
     <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
          xmlns:atom="http://www.w3.org/2005/Atom"
          xmlns:content="http://purl.org/rss/1.0/modules/content/"
-         xmlns:podcast="https://podcastindex.org/namespace/1.0" #{namespaces}>
+         xmlns:podcast="https://podcastindex.org/namespace/1.0"
+         xmlns:psc="http://podlove.org/simple-chapters"
+         xmlns:rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:bitlove="http://bitlove.org" #{namespaces}>
     <channel>
     #{channel_xml}
     </channel>
@@ -247,6 +251,298 @@ defmodule Pan.Parser.FeedParsingTest do
 
       assert episode.title == "Text only"
       refute Map.has_key?(episode, :enclosures)
+    end
+  end
+
+  describe "channel feed data" do
+    test "new feed url, last build date and generator" do
+      map =
+        parse("""
+        <itunes:new-feed-url>https://new.example.com/feed</itunes:new-feed-url>
+        <lastBuildDate>Tue, 03 Jan 2023 11:00:00 GMT</lastBuildDate>
+        <generator>Gen 1.0</generator>
+        """)
+
+      assert map.new_feed_url == "https://new.example.com/feed"
+      assert map.last_build_date == ~N[2023-01-03 11:00:00]
+      assert map.feed.feed_generator == "Gen 1.0"
+    end
+
+    test "atom:link rels are sorted into their feed fields" do
+      map =
+        parse("""
+        <atom:link rel="self" title="Mine" href="https://example.com/self"/>
+        <atom:link rel="next" href="https://example.com/p2"/>
+        <atom:link rel="previous" href="https://example.com/p0"/>
+        <atom:link rel="first" href="https://example.com/p1"/>
+        <atom:link rel="last" href="https://example.com/p9"/>
+        <atom:link rel="hub" href="https://hub.example.com"/>
+        <atom:link rel="alternate" title="Alt" href="https://example.com/alt"/>
+        <atom:link rel="payment" title="Pay" href="https://pay.example.com"/>
+        <atom:link rel="something-else" href="https://example.com/x"/>
+        """)
+
+      assert %{
+               self_link_title: "Mine",
+               self_link_url: "https://example.com/self",
+               next_page_url: "https://example.com/p2",
+               prev_page_url: "https://example.com/p0",
+               first_page_url: "https://example.com/p1",
+               last_page_url: "https://example.com/p9",
+               hub_link_url: "https://hub.example.com"
+             } = map.feed
+
+      assert Map.values(map.feed.alternate_feeds) == [
+               %{title: "Alt", url: "https://example.com/alt"}
+             ]
+
+      assert map.payment_link_title == "Pay"
+      assert map.payment_link_url == "https://pay.example.com"
+    end
+
+    test "rawvoice:donate with and without a title" do
+      with_title =
+        parse(~s(<rawvoice:donate href="https://d.example.com">Donate</rawvoice:donate>))
+
+      without_title = parse(~s(<rawvoice:donate href="https://d.example.com"/>))
+
+      assert with_title.payment_link_title == "Donate"
+      assert with_title.payment_link_url == "https://d.example.com"
+      assert without_title.payment_link_title == "https://d.example.com"
+    end
+
+    test "itunes:subtitle is the description only when there is no description" do
+      assert parse("<itunes:subtitle>Sub</itunes:subtitle>").description == "Sub"
+
+      map =
+        parse("""
+        <description>Real</description>
+        <itunes:subtitle>Sub</itunes:subtitle>
+        """)
+
+      assert map.description == "Real"
+    end
+
+    test "several language tags all end up in the languages" do
+      map = parse("<language>en</language><dc:language>de</dc:language>")
+
+      assert map.languages |> Map.values() |> Enum.map(& &1.shortcode) |> Enum.sort() ==
+               ["de", "en"]
+    end
+
+    test "categories nest to any depth" do
+      map =
+        parse("""
+        <itunes:category text="A">
+          <itunes:category text="B"><itunes:category text="C"/></itunes:category>
+        </itunes:category>
+        """)
+
+      assert map.categories |> Map.values() |> Enum.sort_by(& &1.title) == [
+               %{title: "A", parent: nil},
+               %{title: "B", parent: "A"},
+               %{title: "C", parent: "B"}
+             ]
+    end
+
+    test "the channel itunes:image wins over the RSS image element" do
+      map =
+        parse("""
+        <image><url>https://example.com/i.png</url><width>1</width></image>
+        <itunes:image href="https://example.com/other.png"/>
+        """)
+
+      assert map.image_url == "https://example.com/other.png"
+      assert map.image == %{image_url: "https://example.com/i.png"}
+    end
+
+    test "the title inside an RSS image element is dropped" do
+      # call(_, "image", [:title, _, _]) matches before the clause that would
+      # keep the title, so the second one is never reached.
+      map = parse("<image><url>https://example.com/i.png</url><title>Logo</title></image>")
+
+      assert map.image == %{image_url: "https://example.com/i.png"}
+    end
+
+    test "tags on the ignore list leave no trace" do
+      map = parse("<title>Show</title><itunes:block>yes</itunes:block>")
+
+      refute Map.has_key?(map, :block)
+      assert map.title == "Show"
+    end
+  end
+
+  describe "channel people" do
+    test "later author tags merge over earlier ones" do
+      map =
+        parse("""
+        <itunes:author>Jane</itunes:author>
+        <atom:author><atom:name>Ann</atom:name><atom:email>ann@example.com</atom:email></atom:author>
+        """)
+
+      assert map["author"] == %{name: "Ann", email: "ann@example.com"}
+    end
+
+    test "a plain managingEditor is stored as managing_editor" do
+      map = parse("<managingEditor>ed@example.com (Ed)</managingEditor>")
+
+      assert map["managing_editor"] == %{name: "ed@example.com (Ed)"}
+    end
+
+    test "atom:contributor collects name, uri and pid" do
+      map =
+        parse("""
+        <atom:contributor>
+          <atom:name>Con</atom:name>
+          <atom:uri>https://con.example.com</atom:uri>
+          <panoptikum:pid>pid1</panoptikum:pid>
+        </atom:contributor>
+        """)
+
+      assert Map.values(map.contributors) == [
+               %{name: "Con", uri: "https://con.example.com", pid: "pid1"}
+             ]
+    end
+
+    test "podcast:person defaults the role to host and normalizes it" do
+      map =
+        parse("""
+        <podcast:person role=" Guest " href="https://p.example.com" img="https://p.example.com/i.jpg">Pat</podcast:person>
+        <podcast:person>Default</podcast:person>
+        """)
+
+      people = map.contributors |> Map.values() |> Enum.sort_by(& &1.name)
+
+      assert people == [
+               %{name: "Default", role: "host"},
+               %{
+                 name: "Pat",
+                 role: "guest",
+                 uri: "https://p.example.com",
+                 image_url: "https://p.example.com/i.jpg"
+               }
+             ]
+    end
+  end
+
+  describe "episode details" do
+    defp episode(item_xml), do: parse("<item>#{item_xml}</item>") |> episodes() |> hd()
+
+    test "guid variants and link" do
+      assert episode("<itunes:guid>g1</itunes:guid>").guid == "g1"
+      assert episode("<id>g2</id>").guid == "g2"
+      assert episode("<link>https://example.com/1</link>").link == "https://example.com/1"
+    end
+
+    test "an empty title becomes the literal string \"emtpy\"" do
+      # sic: the misspelling is what gets stored today
+      assert episode("<title></title>").title == "emtpy"
+    end
+
+    test "an empty pubDate falls back to the current time" do
+      date = episode("<pubDate></pubDate>").publishing_date
+
+      assert NaiveDateTime.diff(NaiveDateTime.utc_now(), date) in -5..5
+    end
+
+    test "duration variants" do
+      assert episode("<itunes:duration>12:00</itunes:duration>").duration == "12:00"
+      assert episode("<duration>3600</duration>").duration == "3600"
+    end
+
+    test "episode atom:link rels" do
+      episode =
+        episode("""
+        <atom:link rel="http://podlove.org/deep-link" href="https://deep.example.com"/>
+        <atom:link rel="payment" title="P" href="https://pay.example.com"/>
+        <atom:link rel="alternate" href="https://example.com/alt"/>
+        <atom:link rel="replies" href="https://example.com/replies"/>
+        <atom:link href="https://example.com/plain"/>
+        """)
+
+      assert episode.deep_link == "https://deep.example.com"
+      assert episode.payment_link_title == "P"
+      assert episode.payment_link_url == "https://pay.example.com"
+      assert episode.link == "https://example.com/plain"
+    end
+
+    test "an episode atom:link with an unlisted rel crashes the parse" do
+      # Unlike the channel-level links, the episode clause has no fallback for
+      # unknown rels (e.g. rel="enclosure"). Pinned as found; when the clause
+      # gets a fallback, change this to assert that the episode survives.
+      assert_raise CaseClauseError, fn ->
+        episode(~s(<title>Ep</title><atom:link rel="enclosure" href="https://example.com/x"/>))
+      end
+    end
+
+    test "several enclosures, with the bitlove guid" do
+      episode =
+        episode("""
+        <enclosure url="https://example.com/a.mp3" length="1" type="audio/mpeg" bitlove:guid="bl"/>
+        <enclosure url="https://example.com/a.ogg" length="2" type="audio/ogg"/>
+        """)
+
+      assert episode.enclosures |> Map.values() |> Enum.sort_by(& &1.length) == [
+               %{url: "https://example.com/a.mp3", length: "1", type: "audio/mpeg", guid: "bl"},
+               %{url: "https://example.com/a.ogg", length: "2", type: "audio/ogg", guid: nil}
+             ]
+    end
+
+    test "an overlong enclosure url is cut to 255 bytes" do
+      url = "https://example.com/" <> String.duplicate("a", 300)
+      episode = episode(~s(<enclosure url="#{url}" length="1" type="audio/mpeg"/>))
+
+      [enclosure] = Map.values(episode.enclosures)
+      assert byte_size(enclosure.url) == 255
+    end
+
+    test "podlove simple chapters" do
+      episode =
+        episode("""
+        <psc:chapters>
+          <psc:chapter start="00:00:00" title="Intro"/>
+          <psc:chapter start="00:05:00" title="Main"/>
+        </psc:chapters>
+        """)
+
+      assert episode.chapters |> Map.values() |> Enum.sort_by(& &1.start) == [
+               %{start: "00:00:00", title: "Intro"},
+               %{start: "00:05:00", title: "Main"}
+             ]
+    end
+
+    test "episode author, image and subtitle" do
+      episode =
+        episode("""
+        <itunes:author>Jane</itunes:author>
+        <itunes:image href="https://example.com/ep.png"/>
+        <itunes:subtitle>Sub</itunes:subtitle>
+        """)
+
+      assert episode.author == %{name: "Jane"}
+      assert episode.image_url == "https://example.com/ep.png"
+      assert episode.subtitle == "Sub"
+    end
+
+    test "episode contributors from atom, dc and podcast:person" do
+      episode =
+        episode("""
+        <atom:contributor><atom:name>Con</atom:name><atom:email>c@example.com</atom:email></atom:contributor>
+        <dc:contributor>Dee</dc:contributor>
+        <podcast:person role="guest">Gus</podcast:person>
+        """)
+
+      assert episode.contributors |> Map.values() |> Enum.sort_by(& &1.name) == [
+               %{name: "Con", email: "c@example.com"},
+               %{name: "Dee", uri: "Dee"},
+               %{name: "Gus", role: "guest"}
+             ]
+    end
+
+    test "an unknown episode tag is skipped" do
+      capture_log(fn ->
+        assert episode("<title>Ep</title><weird>zz</weird>").title == "Ep"
+      end)
     end
   end
 

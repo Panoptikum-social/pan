@@ -35,13 +35,20 @@ materializes:
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
 - Add real test coverage for `Analyzer`/`Iterator` (the main payoff of phase 1).
   `Helpers` is covered since 2026-09-21 (`test/pan/parser/helpers_test.exs`);
-  a first set of characterization tests for `Analyzer`/`Iterator` exists
-  (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, episodes,
-  and the contributor / managingEditor / podcast:person / mixed-content crash
-  shapes) but the 1,280-line `Analyzer` is still mostly uncovered.
-  Small known gaps: the two `podcast:person` clauses take the name only when the
-  first node is text, and single-element clauses such as the channel `title` log
-  "Tag unknown" for mixed content (raw markup inside the element).
+  characterization tests for `Analyzer`/`Iterator` exist
+  (`test/pan/parser/feed_parsing_test.exs`, 2026-09-21: channel fields, feed links,
+  people, episode fields, enclosures, chapters and the earlier crash shapes). Not
+  yet covered: the rarer tag aliases and the long list of ignored tags.
+  Small known gaps, pinned as they are in those tests:
+  - An episode-level `atom:link` with a `rel` other than deep-link / payment /
+    alternate / simple-chapters / replies / self (e.g. `rel="enclosure"`) raises a
+    `CaseClauseError`; the channel-level version skips unknown rels.
+  - The `<title>` inside an RSS `<image>` is dropped: `call(_, "image", [:title, _, _])`
+    matches first, so the clause below it is dead.
+  - An episode with an empty `<title>` is stored with the title "emtpy" (sic).
+  - The two `podcast:person` clauses take the name only when the first node is text,
+    and single-element clauses such as the channel `title` log "Tag unknown" for
+    mixed content (raw markup inside the element).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
