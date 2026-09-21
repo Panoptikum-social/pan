@@ -97,7 +97,7 @@ uploads only.
 ---
 
 ### User retention: open follow-ups
-- *Automatic notice job written, not yet deployed (2026-09-21):*
+- *Automatic notice job deployed (2026-09-21):*
   `Pan.Job.SendRetentionNotices` (prod only) sends one notice every 5 minutes to
   the lowest-id unmarked user who is either unverified for more than 30 days or
   verified without a login for 2 years (signup date counts if never logged in);
