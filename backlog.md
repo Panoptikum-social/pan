@@ -167,13 +167,16 @@ any action on bounces are still open (decide after seeing real bounces).
 - Open: what spam filtering the mail server applies to `bounce@`; whether to
   build a reader at all.
 
-### PWA: asset caching + lock-screen media controls (found 2026-09-01)
+### PWA: asset caching (found 2026-09-01)
 What remains, deliberately scoped to what is useful for a podcast site without
 hitting LiveView's ceiling (pages need a live WebSocket, so they cannot work
 offline):
 
 - Service-worker asset caching (CSS/JS/icons) so repeat loads are instant, with
   a friendly offline fallback instead of a browser error page.
-- Media Session API integration: lock-screen/notification playback controls
-  (play/pause/skip, artwork), wired to the Podlove player's playback events
-  (`registerExternalEvents` in `assets/js/podlove_player.js`). Frontend only.
+
+Done 2026-09-21: lock-screen/notification media controls. The bundled Podlove
+player (5.7.4) already implements the Media Session API (metadata, play/pause,
+seek, previous/next); the only gap was the artwork, which was always the
+placeholder. `PodlovePlayer` now passes the podcast's cached thumbnail as
+poster. Verified on Linux Mint (media applet).

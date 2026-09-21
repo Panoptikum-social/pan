@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Episode.PodlovePlayer do
   use PanWeb, :live_component
-  alias PanWeb.Endpoint
+  alias PanWeb.{Endpoint, Image}
   alias Phoenix.HTML
   import PanWeb.Router.Helpers
 
@@ -14,7 +14,7 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
   end
 
   defp episode_config(episode) do
-    poster = Endpoint.url() <> "/images/missing-podcast.png"
+    poster = poster_url(Image.get_by_podcast_id(episode.podcast_id))
 
     %{
       version: 5,
@@ -39,6 +39,12 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
       audio: audiolist(episode.enclosures)
     }
   end
+
+  defp poster_url(%Image{path: path, filename: filename})
+       when is_binary(path) and is_binary(filename),
+       do: Endpoint.url() <> path <> filename
+
+  defp poster_url(_), do: Endpoint.url() <> "/images/missing-podcast.png"
 
   defp contributorlist(gigs) do
     Enum.map(gigs, fn gig ->
