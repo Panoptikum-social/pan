@@ -70,12 +70,11 @@ XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
 **Still open, in order:**
-1. *Overhaul user verification* (next item below) comes first.
-2. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
+1. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
    in the feed or mail to the `itunes:owner` address). No user-to-podcast
    ownership exists today, only personas can be claimed. (Access phase A, gig
    based, was skipped 2026-09-21.)
-3. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
+2. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
    info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
    fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
@@ -97,26 +96,6 @@ uploads only.
 - Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
 
 ---
-
-### Overhaul user verification (added 2026-09-21)
-
-Two steps, in this order:
-
-1. DONE 2026-09-21 (uncommitted, migration 20260921120000 run in dev/test, not yet
-   deployed): *rename "email confirmation" to "email verification"* everywhere, including
-   the database: `users.email_confirmed` becomes `email_verified` (migration),
-   plus the schema/changesets (`lib/pan_web/models/user.ex`), API auth and
-   session controllers, `UserView`/JSON download view, `maintenance_controller`,
-   persona show/frontend controller checks, `my_data` template, the
-   `confirm_email` route/action/`email_confirmed.html` template, and
-   `Pan.Email.email_confirmation_link_html_email` (incl. subject line). Keep
-   `password_confirmation` untouched, that is a different concept.
-2. DONE 2026-09-21 (uncommitted): unverified users can't log in by password
-   (web and API); a "send verification email again" button appears after a correct
-   password; signup no longer auto-logs-in; any successful email-link login
-   (verification or forgot-password link) marks the address verified.
-3. *Replace the current implementation with a more standard / established
-   one.* Which approach is not decided yet.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
 Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
