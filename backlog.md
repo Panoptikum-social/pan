@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-09-19.
+2026-09-21.
 
 ---
 
@@ -57,110 +57,27 @@ angle-bracket fixups, mixed-content HTML scrubbing, etc. already in
 `lib/pan/parser/helpers.ex` — that catalog of tolerances is *not* a standard
 to check against, it's the mirror image: proof of what's actually out there).
 
-**Access model — deliberate, not a generic open validator:** only checkable
-for podcasts already present in the Panoptikum directory. This is intentional
-incentive/motivation to add a podcast to Panoptikum in the first place, not
-a public utility anyone can point at an arbitrary URL.
+**Status:** phase C (any logged-in user, "Check feed" button on the podcast
+page) is live in prod as `PanWeb.Live.Podcast.CheckFeed`. The rule engine is the
+separate Hex library `check_my_feed` (github.com/Panoptikum-social/check-my-feed,
+sibling directory `../check-my-feed`, mirrored privately on code.informatom.com).
+A new library release: bump the version, `mix hex.publish` (2FA), then update
+Pan's requirement and lock.
 
-**Modularity — explicit personal goal, not just architecture hygiene:** user
-wants a genuinely separate Elixir module/package for this (hasn't hand-built
-a standalone Elixir module in ~8 years and wants the practice back). Rule
-engine + rule definitions should live as an independent, testable library
-that Pan depends on — not code interleaved into `pan_web`. User explicitly
-does **not** want this sharing a runtime/codebase with the feed parser in
-Project #1 — deliberately a separate project, even though the directory-
-gating requirement above means Pan's web app still has to own the "is this
-podcast actually listed" check and the UI around it.
+**Decisions still in force:** the library parses raw feed XML itself (no Pan
+parser code, since Pan's fix-ups would hide what the tool must report), takes an
+XML string and does no fetching; Pan downloads a fresh copy per check via
+`Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
-**Open design tension to revisit when picked up:** "separate project" at the
-ownership/deployment level is clear and agreed. Whether it should also mean
-*reimplementing* feed XML/date/HTML parsing from scratch, vs. depending on
-Project #1's extracted core as a library once phase 2 there lands, is not
-yet decided — the risk of hand-rolling a second parser is quietly
-re-deriving the same bugs (e.g. the `scrub/1` mixed-content crash from
-2026-09-01) the hard way a second time. Worth an explicit call rather than
-defaulting into it either way.
-
-**Scope note carried over from the assessment:** encoding "the standards" is
-itself an open-ended, ongoing-maintenance surface (Apple's page has no
-changelog and drifts; Podcasting 2.0 keeps adding tags). Recommend rules as
-data (`%{id, standard, severity, spec_url, check: fun}`, not scattered
-`if`s), a narrow objectively-checkable v1 (required elements present, stable
-GUID, `itunes:category` from Apple's real taxonomy, enclosure `type`/
-`length` well-formed, artwork present in the right format, episode/season
-numbering consistency), with fuzzier judgment-call checks and active
-probing (HTTP HEAD on enclosures, fetching artwork for actual pixel
-dimensions — same probe-then-report shape as the existing deprecation
-check) deferred past v1.
-
-**Decisions, 2026-09-19 (resolves the open design tension above):**
-- Separate mix project named `check-my-feed`, imported by Pan as a
-  dependency (path dep first). It parses the raw feed XML itself
-  (Quinn/xmerl only, no Pan code) — Pan's parser deliberately fixes up bad
-  feeds before parsing, which would hide exactly what this tool must report.
-- The library takes an XML string and does no fetching. Pan downloads a
-  fresh copy on every check (via `Download.get/2`, so the SSRF guard
-  applies), since the owner may have just fixed the feed.
-- Only logged-in users, only for podcasts listed in Panoptikum.
-- v1 rules exactly as in the scope note (RSS 2.0 required elements + Apple
-  basics). Podcasting 2.0, active probing, and the info-level "Pan tolerates
-  this" report come later. JSON API later or never; v1 is a web page with
-  results grouped by severity, each with rule id and spec link.
-- Who may check a podcast, rolled out in three phases: **C** any logged-in
-  user (first, nothing new to build), then **A** a user with a claimed
-  persona that has a non-self-proclaimed gig on the podcast, then **B**
-  real podcast claiming (proof of feed control, e.g. token in the feed or
-  mail to the `itunes:owner` address). Note: only personas can be claimed
-  today, there is no user-to-podcast ownership link.
-- UI entry point decided: a "Check feed" link on the podcast page (logged-in
-  users) leading to its own results page.
-
-**Status 2026-09-20 — phase C live in prod, tested and working.** Library
-`check_my_feed` 0.1.0 is published on Hex (source
-github.com/Panoptikum-social/check-my-feed, AGPL-3.0-or-later; also mirrored at
-`Panoptikum/check-my-feed` on code.informatom.com, private, sibling directory
-`../check-my-feed`). It has 5 RSS 2.0 rules and 31 Apple Podcasts rules. Pan has
-`PanWeb.Live.Podcast.CheckFeed` at `/pan/podcasts/:id/check_feed` (findings
-grouped by severity and rule, list of passed checks, "Check again") and depends
-on `{:check_my_feed, "~> 0.1.0"}` in all environments; the "Check feed" button
-is shown to every logged-in user. A new library release: bump the version,
-`mix hex.publish` (2FA), then update Pan's requirement and lock. (Hex rather
-than a git dep, because the code.informatom.com repo is private and the qa
-Docker build and prod deploy have no credentials for it.)
-
-**Still open, in suggested order:**
-1. *Access phase A:* only users with a claimed persona holding a
-   non-self-proclaimed gig on the podcast may check it (phase C, any logged-in
-   user, is what exists now).
+**Still open, in order:**
+1. *Overhaul user verification* (next item below) comes first.
 2. *Access phase B:* real podcast claiming (proof of feed control, e.g. token
    in the feed or mail to the `itunes:owner` address). No user-to-podcast
-   ownership exists today, only personas can be claimed.
-3. *Later, agreed:* Podcasting 2.0 rules, active probing (see below), the
-   info-level "Panoptikum tolerates this" report, JSON API (maybe never).
-
-**Apple rules, state 2026-09-20:** all three source gaps are closed. The user
-pasted Apple's "A Podcaster's Guide to RSS", the artwork guide and the audio
-requirements page into handover.txt, and `apple.ex` was re-checked against them:
-- Required tags (language, category, explicit, xmlns:itunes declaration, item
-  title, guid, enclosure, artwork) are `:error`; recommended/situational ones
-  are `:warning`/`:info`.
-- Media types are exactly Apple's six (audio/x-m4a, audio/mpeg,
-  video/quicktime, video/mp4, video/x-m4v, application/pdf) plus tolerated ADTS
-  AAC (`.aac`, `audio/aac`, `:info` rule `apple.enclosure.adts`); the URL
-  extension is checked too.
-- New rules: itunes:type + serial numbering, description limits (4000 bytes
-  show, 10,000 chars episode), 255-char limit, pubDate (RFC 2822), item
-  explicit, transcript type, itunes:block/complete values.
-- The two-category rule is softened to `:info` (Apple only reads the first
-  category and subcategory).
-- Artwork: only Show Cover and Episode Art come in via RSS (PNG/JPG, square,
-  1400-3000 px, no alpha, largest preferred); every other placement (full page
-  art, chapter art, showcase heroes, channel/subscription art) is uploaded in
-  Apple Podcasts Connect, so no rules are possible. Only the extension is
-  checked.
-- Skipped deliberately: leading/trailing-space check (Apple's own examples
-  have it) and channel title/description (rss2 rules already report them).
-- Assumes the `itunes:` prefix.
+   ownership exists today, only personas can be claimed. (Access phase A, gig
+   based, was skipped 2026-09-21.)
+3. *Later, agreed:* Podcasting 2.0 rules, active probing (below), the
+   info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
+   fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
 **Active probing (later), collected checklist:** needs downloads of artwork and
 media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
@@ -193,41 +110,17 @@ Two steps, in this order:
    `confirm_email` route/action/`email_confirmed.html` template, and
    `Pan.Email.email_confirmation_link_html_email` (incl. subject line). Keep
    `password_confirmation` untouched, that is a different concept.
-2. *Replace the current implementation with a standard, established one*
-   (e.g. signed, expiring tokens via `Phoenix.Token`/a token table as
-   `phx.gen.auth` does, single-use, resend flow) instead of what exists now.
-   Scope and approach to be decided when picked up.
+2. *Replace the current implementation with a more standard / established
+   one.* Which approach is not decided yet.
 
 ### PWA: asset caching + lock-screen media controls (found 2026-09-01)
-Assessed making Panoptikum a PWA. Turns out most of the groundwork already
-exists — `priv/static/config/site.webmanifest` is already linked in
-`<head>` with `display: "standalone"` set, and a full icon set (16/32px
-favicons, 180px apple-touch, 192px android-chrome, Safari pinned-tab SVG)
-plus a clean 512×512 source logo (`panoptikum.social.svg`) already sit in
-`priv/static/images/`, all apparently from a one-time favicon-generator
-pass that was never fully finished. No service worker exists yet.
+Tier 1 (manifest, icons, service worker, installable shortcut) is done. What
+remains, deliberately scoped to what is useful for a podcast site without
+hitting LiveView's ceiling (pages need a live WebSocket, so they cannot work
+offline):
 
-User's actual motivation was being able to create a Linux (Mint) desktop
-menu-item shortcut for the site — that's satisfied by the cheapest tier
-(fill in the manifest's empty `name`/`short_name`, add the missing 512px
-icon, register a minimal service worker) and isn't itself blocked on
-anything below; do that whenever, separately from this item.
-
-This item is the next tier up, deliberately scoped to what's actually
-useful for a podcast site without hitting LiveView's ceiling (a live
-WebSocket connection is required for interactivity — no PWA/service-worker
-trick makes Panoptikum's pages themselves work offline):
-
-- Basic service-worker asset caching (CSS/JS/icons) so repeat loads are
-  instant and there's a friendly offline fallback instead of a browser
-  error page.
-- Media Session API integration — OS-level lock-screen/notification
-  playback controls (play/pause/skip, artwork) for whatever's currently
-  playing, wired to the Podlove player's existing playback events
-  (`registerExternalEvents` in `assets/js/podlove_player.js`). Frontend-only,
-  no backend changes.
-
-**Explicitly out of scope, decided 2026-09-01 (won't do):** offline episode
-downloads for offline playback, and Web Push notifications for new
-episodes — both real, substantial (days-to-weeks each) undertakings that
-weren't what motivated this in the first place.
+- Service-worker asset caching (CSS/JS/icons) so repeat loads are instant, with
+  a friendly offline fallback instead of a browser error page.
+- Media Session API integration: lock-screen/notification playback controls
+  (play/pause/skip, artwork), wired to the Podlove player's playback events
+  (`registerExternalEvents` in `assets/js/podlove_player.js`). Frontend only.
