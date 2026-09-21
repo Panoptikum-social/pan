@@ -470,18 +470,6 @@ defmodule PanWeb.Router do
     get("/maintenance/stats", MaintenanceController, :stats)
     get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
 
-    get(
-      "/maintenance/fix_double_escaped_html_entities",
-      MaintenanceController,
-      :fix_double_escaped_html_entities
-    )
-
-    get(
-      "/maintenance/reset_stale_update_intervalls",
-      MaintenanceController,
-      :reset_stale_update_intervalls
-    )
-
     get("/maintenance/clear_journal", MaintenanceController, :clear_journal)
 
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)

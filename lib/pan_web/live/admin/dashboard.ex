@@ -135,16 +135,6 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-warning"
         />
         <LinkButton.render
-          title="Fix double-escaped HTML entities"
-          to={maintenance_path(Endpoint, :fix_double_escaped_html_entities)}
-          class="btn-warning"
-        />
-        <LinkButton.render
-          title="Cap stale update intervalls to 1 week"
-          to={maintenance_path(Endpoint, :reset_stale_update_intervalls)}
-          class="btn-warning"
-        />
-        <LinkButton.render
           title="Trigger exception notification"
           to={maintenance_path(Endpoint, :exception_notification)}
           class="btn-success"

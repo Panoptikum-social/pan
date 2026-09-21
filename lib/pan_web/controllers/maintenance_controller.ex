@@ -1,6 +1,6 @@
 defmodule PanWeb.MaintenanceController do
   use PanWeb, :controller
-  import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
+  import Pan.Parser.MyDateTime, only: [now: 0]
 
   alias PanWeb.{
     Category,
@@ -23,20 +23,6 @@ defmodule PanWeb.MaintenanceController do
     PageFrontendView,
     Journal
   }
-
-  # title is stored as plain text after a single XML-decode pass, so a
-  # leftover double-escape bug shows up there as a *singly*-escaped entity.
-  @single_escaped_entities_pattern "&(quot|apos|#0?39|lt|gt|amp);"
-
-  # description/summary/shownotes are stored as serialized HTML: they've
-  # already been through one HTML-parse-then-reserialize pass via the
-  # scrubber at import time, which is the identity transform for anything
-  # that was double-escaped in the source (decoding &amp;quot; once yields
-  # text "&quot;", which the serializer re-escapes right back to
-  # &amp;quot; on the way out). So here the leftover bug still shows up
-  # *doubly*-escaped in the stored value.
-  @double_escaped_entities_pattern "&amp;(quot|apos|amp|lt|gt|#\\d+|#x[0-9A-Fa-f]+);"
-  @double_escaped_entities Regex.compile!(@double_escaped_entities_pattern)
 
   def vienna_beamers(conn, _params) do
     redirect(conn, external: "https://blog.panoptikum.social/vienna-beamers/")
@@ -143,138 +129,6 @@ defmodule PanWeb.MaintenanceController do
     conn
     |> put_view(PageFrontendView)
     |> render("done.html")
-  end
-
-  # Some feed producers double-encode their own output (e.g. re-escaping an
-  # already-escaped title when it's edited through their CMS), so the raw
-  # XML holds &amp;quot; instead of &quot;. A conformant single-pass XML
-  # parser only decodes &amp; -> &, so episodes imported before
-  # Pan.Parser.Helpers.unescape_double_escaped_entities/1 existed ended up
-  # with the literal entity text (e.g. &quot;) stored in their title,
-  # description, summary or shownotes instead of the actual character. This
-  # backfills those already-stored values; new imports are fixed at parse
-  # time going forward.
-  def fix_double_escaped_html_entities(conn, _params) do
-    Task.start(fn -> unescape_episode_titles_async() end)
-    Task.start(fn -> unescape_episode_html_fields_async() end)
-
-    conn
-    |> put_view(PageFrontendView)
-    |> render("done.html")
-  end
-
-  defp unescape_episode_titles_async do
-    candidates =
-      from(e in Episode,
-        where: fragment("? ~ ?", e.title, ^@single_escaped_entities_pattern),
-        select: {e.id, e.title}
-      )
-      |> Repo.all(timeout: :timer.minutes(10))
-
-    Enum.each(candidates, &fix_episode_title/1)
-  end
-
-  defp fix_episode_title({id, title}) do
-    new_title = unescape_single_escaped_entities(title)
-
-    if new_title != title do
-      from(e in Episode, where: e.id == ^id)
-      |> Repo.update_all([set: [title: new_title]], timeout: :timer.minutes(1))
-    end
-  end
-
-  defp unescape_single_escaped_entities(text) do
-    text
-    |> String.replace("&quot;", "\"")
-    |> String.replace(~r/&(apos|#0?39);/, "'")
-    |> String.replace("&lt;", "<")
-    |> String.replace("&gt;", ">")
-    |> String.replace("&amp;", "&")
-  end
-
-  # description/summary/shownotes hold real HTML (already run through the
-  # scrubber at import time), unlike title's plain text. Blindly unescaping
-  # &lt;/&gt; the way the title fix does could resurrect real markup (a
-  # double-escaped &amp;lt;script&amp;gt; would decode straight to a live
-  # <script> tag), so each touched value is re-run through the same
-  # scrubber normal imports use before being saved.
-  defp unescape_episode_html_fields_async do
-    candidates =
-      from(e in Episode,
-        where:
-          fragment("? ~ ?", e.description, ^@double_escaped_entities_pattern) or
-            fragment("? ~ ?", e.summary, ^@double_escaped_entities_pattern) or
-            fragment("? ~ ?", e.shownotes, ^@double_escaped_entities_pattern),
-        select: {e.id, e.description, e.summary, e.shownotes}
-      )
-      |> Repo.all(timeout: :timer.minutes(10))
-
-    Enum.each(candidates, &fix_episode_html_fields/1)
-  end
-
-  defp fix_episode_html_fields({id, description, summary, shownotes}) do
-    original = %{description: description, summary: summary, shownotes: shownotes}
-    updated = Map.new(original, fn {field, value} -> {field, unescape_and_resanitize(value)} end)
-    changes = for {field, value} <- updated, value != original[field], do: {field, value}
-
-    if changes != [] do
-      from(e in Episode, where: e.id == ^id)
-      |> Repo.update_all([set: changes], timeout: :timer.minutes(1))
-    end
-  end
-
-  defp unescape_and_resanitize(html) when is_binary(html) do
-    if html =~ @double_escaped_entities do
-      html
-      |> Pan.Parser.Helpers.unescape_double_escaped_entities()
-      |> HtmlSanitizeEx.Scrubber.BasicHTMLReduced.sanitize()
-    else
-      html
-    end
-  end
-
-  defp unescape_and_resanitize(other), do: other
-
-  # update_intervall backs off by one hour every scheduled run that finds no
-  # new episodes (Pan.Updater.Podcast.set_next_update/2), which is now
-  # capped at one week going forward; this backfills podcasts whose
-  # intervall had already climbed past that cap before it existed.
-  def reset_stale_update_intervalls(conn, _params) do
-    Task.start(fn -> reset_stale_update_intervalls_async() end)
-
-    conn
-    |> put_view(PageFrontendView)
-    |> render("done.html")
-  end
-
-  defp reset_stale_update_intervalls_async do
-    max_hours = Pan.Updater.Podcast.max_update_intervall_hours()
-
-    candidates =
-      from(p in Podcast,
-        where: p.update_intervall > ^max_hours,
-        select: {p.id, p.next_update}
-      )
-      |> Repo.all(timeout: :timer.minutes(10))
-
-    Enum.each(candidates, &reset_podcast_update_intervall(&1, max_hours))
-  end
-
-  defp reset_podcast_update_intervall({id, next_update}, max_hours) do
-    latest_allowed_next_update = time_shift(now(), hours: max_hours)
-
-    capped_next_update =
-      if next_update && NaiveDateTime.compare(next_update, latest_allowed_next_update) == :gt do
-        latest_allowed_next_update
-      else
-        next_update
-      end
-
-    from(p in Podcast, where: p.id == ^id)
-    |> Repo.update_all(
-      [set: [update_intervall: max_hours, next_update: capped_next_update]],
-      timeout: :timer.minutes(1)
-    )
   end
 
   # Journal entries are meant to be disposable working notes, not a permanent

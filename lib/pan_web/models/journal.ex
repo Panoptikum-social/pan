@@ -34,10 +34,10 @@ defmodule PanWeb.Journal do
 
       Journal.log(%{
         module: __MODULE__,
-        method: "fix_double_escaped_html_entities",
-        text: "backfilled 35033 episode titles",
-        before: "&amp;quot;It&amp;#039;s a match&amp;quot;",
-        after: "\\"It's a match\\""
+        method: "deliver",
+        text: "mail to someone@example.com failed",
+        before: nil,
+        after: {:permanent_failure, "relay said no"}
       })
   """
   def log(fields) do
