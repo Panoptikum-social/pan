@@ -146,6 +146,7 @@ defmodule PanWeb.User do
     |> unique_constraint(:email)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
+    |> validate_deliverable_email()
   end
 
   def self_change_changeset(struct, params \\ %{}) do
@@ -162,6 +163,7 @@ defmodule PanWeb.User do
     |> validate_required([:email, :name, :username])
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
+    |> validate_deliverable_email()
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
@@ -196,6 +198,7 @@ defmodule PanWeb.User do
     |> unique_constraint(:email)
     |> validate_length(:name, min: 3, max: 100)
     |> validate_length(:email, min: 5, max: 100)
+    |> validate_deliverable_email()
     |> validate_length(:password, min: @minimum_password_length, max: 100)
     |> put_pass_hash()
   end
@@ -206,6 +209,20 @@ defmodule PanWeb.User do
     else
       add_error(changeset, :bot_check, "That's not right.")
     end
+  end
+
+  # Rejects addresses gen_smtp itself would refuse to encode later (e.g. a stray
+  # dot right before the @), using its own parser so "valid here" and
+  # "deliverable later" can't drift apart. See the "SendRetentionNotices mailer
+  # crash" incident: malformed stored addresses crashed the sender instead of
+  # just failing to send.
+  defp validate_deliverable_email(changeset) do
+    validate_change(changeset, :email, fn :email, email ->
+      case :smtp_util.parse_rfc5322_addresses(email) do
+        {:ok, _addresses} -> []
+        {:error, _reason} -> [email: "is not a valid email address"]
+      end
+    end)
   end
 
   def password_update_changeset(struct, params) do
