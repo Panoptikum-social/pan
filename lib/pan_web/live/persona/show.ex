@@ -128,7 +128,7 @@ defmodule PanWeb.Live.Persona.Show do
               <td>
                 <.link
                   :if={safe_uri?(@persona.uri)}
-                  href={@persona.uri}
+                  href={safe_href(@persona.uri)}
                   rel="me"
                   target="_blank"
                   class="text-link hover:text-link-dark"

@@ -513,18 +513,31 @@ defmodule PanWeb.CoreComponents do
   # just refusing to linkify, crashing the whole page for any visitor. Same
   # allowlist Phoenix's own Phoenix.LiveView.Utils.valid_string_destination!/2
   # uses, checked ourselves first so a bad one can fall back to plain text.
-  @safe_uri_schemes ~w(http https ftp ftps mailto news irc gopher nntp feed telnet mms rtsp svn tel fax xmpp)
+  # Phoenix matches case-sensitively on the raw string, so "HTTPS://..." or
+  # " https://..." would crash it — hence trimming and downcasing the scheme
+  # before applying the same check.
+  @safe_uri_prefixes ~w(http: https: ftp: ftps: mailto: news: irc: gopher: nntp: feed: telnet: mms: rtsp: svn: tel: fax: xmpp:)
+
+  # Anything before the first ":/?#" delimiter that ends in ":" — what
+  # Phoenix treats as a scheme.
+  @uri_scheme_regex ~r/^[^:\/?#]*:/
 
   @doc """
-  Whether `uri` is safe to render as a `<.link href={uri}>` — a relative
-  reference (no scheme) or one of a fixed allowlist of schemes. `nil` and
-  anything `URI.parse/1` can't make sense of are not safe.
+  Normalises `uri` (trimmed, scheme downcased) into something safe to pass
+  as `<.link href={...}>`, or returns `nil` if it isn't safe — i.e. it has a
+  scheme outside a fixed allowlist. Relative references are safe.
   """
-  def safe_uri?(nil), do: false
+  def safe_href(uri) when is_binary(uri) do
+    href = Regex.replace(@uri_scheme_regex, String.trim(uri), &String.downcase/1)
 
-  def safe_uri?(uri) do
-    URI.parse(uri).scheme in [nil | @safe_uri_schemes]
-  rescue
-    _ -> false
+    if String.starts_with?(href, @safe_uri_prefixes) or not Regex.match?(@uri_scheme_regex, href),
+      do: href
   end
+
+  def safe_href(_uri), do: nil
+
+  @doc """
+  Whether `uri` can be rendered as a link via `safe_href/1`.
+  """
+  def safe_uri?(uri), do: safe_href(uri) != nil
 end

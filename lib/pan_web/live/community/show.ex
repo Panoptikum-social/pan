@@ -44,7 +44,7 @@ defmodule PanWeb.Live.Community.Show do
         <p :if={@community.website} class="mt-2">
           <.link
             :if={safe_uri?(@community.website)}
-            href={@community.website}
+            href={safe_href(@community.website)}
             rel="me"
             target="_blank"
             class="text-link hover:text-link-dark"

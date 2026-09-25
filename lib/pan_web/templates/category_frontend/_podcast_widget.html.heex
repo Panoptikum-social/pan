@@ -33,7 +33,10 @@
           </div>
           <div class="col-span-2">
             <%= if safe_uri?(@podcast.website) do %>
-              <.link href={@podcast.website} class="text-link truncate hover:text-link-dark">{@podcast.website}</.link>
+              <.link
+                href={safe_href(@podcast.website)}
+                class="text-link truncate hover:text-link-dark"
+              >{@podcast.website}</.link>
             <% else %>
               <span class="truncate">{@podcast.website}</span>
             <% end %>
@@ -92,7 +95,7 @@
           </div>
           <%= if safe_uri?(@podcast.payment_link_url) do %>
             <.link
-              href={@podcast.payment_link_url}
+              href={safe_href(@podcast.payment_link_url)}
               class="col-span-2 text-link hover:text-link-dark"
             >{@podcast.payment_link_title}</.link>
           <% else %>

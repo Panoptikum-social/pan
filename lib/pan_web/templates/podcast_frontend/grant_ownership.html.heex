@@ -3,10 +3,14 @@
 
   <div :if={@claimant}>
     <p class="mb-4">
-      The user <b>{@claimant.name}</b> (user name <b>{@claimant.username}</b>) asks to manage the podcast
-      <b>{@podcast.title}</b>. Approve only if you are the owner of that podcast or know that user.
+      The user <b>{@claimant.name}</b>
+      (user name <b>{@claimant.username}</b>) asks to manage the podcast <b>{@podcast.title}</b>. Approve only if you are the owner of that podcast or know that user.
     </p>
-    <.form for={%{}} action={podcast_frontend_path(@conn, :grant_ownership, @podcast)} method="post">
+    <.form
+      for={%{}}
+      action={podcast_frontend_path(@conn, :grant_ownership, @podcast)}
+      method="post"
+    >
       <input type="hidden" name="token" value={@token} />
       <button class="btn btn-primary">Approve</button>
     </.form>

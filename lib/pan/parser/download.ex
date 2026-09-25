@@ -43,6 +43,7 @@ defmodule Pan.Parser.Download do
     526 => "526: invalid SSL certificate",
     530 => "530: origin DNS error with cloudflare",
     534 => "534: anycast: origin unreachable",
+    550 => "550: not a standard status code",
     999 => "999: not a standard status code"
   }
 
@@ -101,6 +102,7 @@ defmodule Pan.Parser.Download do
              526,
              530,
              534,
+             550,
              999
            ] ->
         {:error, Map.get(@error_map, status_code)}
