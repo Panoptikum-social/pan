@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-09-21.
+2026-09-26.
 
 ---
 
@@ -90,69 +90,3 @@ uploads only.
   test (Pan silences that via `Pan.LoggerFilters`, the library doesn't).
 - Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
 
----
-
-### User retention: open follow-ups
-- *Account deletion keeps more than the account:* personas stay including an
-  email address stored on them (persona.user_id is left dangling), invoices stay
-  with user_id set to null. The privacy page says so. Not changed in code.
-- *No retention period is stated* for the `bounce@` mailbox and for Journal
-  entries of failed mail deliveries (recipient + subject).
-- *Suspect email addresses found 2026-09-21 in the dev copy of the users table*
-  (a DNS check of all domains): 64 users on 58 nonexistent domains (21 of them
-  verified, many look like bots), a few disposable and placeholder addresses. All
-  864 unverified users have never logged in (490 signed up in 2019). Nothing was
-  changed or deleted; a CSV of the suspects went to the user (not in a repo).
-
-### Bounce handling for outgoing mail (added 2026-09-21; only the reader and actions on bounces are open)
-Problem: a nonexistent address goes unnoticed. The app only talks to our relay
-(`box.mittenin.at`, Mail-in-a-Box/Postfix), which reports failures later as a
-bounce mail to the envelope sender, and all 7 `Pan.Mailer.deliver()` calls ignore
-the return value.
-
-**Mail server side is ready, no server change needed (tested 2026-09-21):**
-- `bounces@panoptikum.social` is an alias forwarding to the `bounce@panoptikum.social`
-  mailbox, with `robot@informatom.com` (the app's SMTP login) as permitted sender.
-  Without that, the relay refuses the envelope sender: `553 5.7.1 Sender address
-  rejected: not owned by user robot@informatom.com`.
-- Swoosh's SMTP adapter uses the email's `Sender` header as the SMTP envelope
-  sender (else the From address), so `Sender: bounces@panoptikum.social` on an
-  email is all the app would need; From stays `noreply@panoptikum.social`.
-- Tested with swaks (login robot@, `MAIL FROM:<bounces@...>`, From header
-  noreply@): accepted, and the bounce arrived in `bounce@` after about 3 seconds.
-
-**What a bounce looks like (both tests):** standard delivery report with
-`Final-Recipient`, `Action: failed`, `Status`, `Diagnostic-Code`, and the complete
-original message attached (headers and body, our headers such as Message-Id come
-back unchanged; the Postfix queue id is in the `Received` line and matches the
-"queued as ..." receipt that Swoosh's SMTP adapter returns from `deliver()`).
-- nonexistent mailbox at a real provider (gmail): `Status: 5.1.1`.
-- nonexistent domain: `Status: 5.4.4`, bounced at once by Postfix (permanent, not
-  retried for days; retrying only applies to temporary failures, not tested).
-
-**Ways to tie a bounce to an account (options, not decided):** the failing
-address in `Final-Recipient` (lookup by email), a marker header of ours in the
-original (untested with a custom header), or the queue id from the receipt.
-
-**Which statuses would mean "address is bad" (suggestion):** `5.1.1`, `5.1.2`,
-`5.4.4`. Not `5.2.x` (mailbox full) or `5.7.x` (rejected as spam/policy), and
-ignore `4.x.x` / `Action: delayed`.
-
-**Current state:** bounces already arrive in `bounce@` (`Pan.Mailer.deliver/2`
-sets the `Sender` header and logs the queue id). A reader for the mailbox and
-any action on bounces are still open. 2026-09-21: the first 7 real bounces
-arrived; all had causes we cannot influence, so no action for now. The `bounce@`
-mailbox is watched manually for the next days, then decide again.
-
-**Notes:**
-- A bounce contains the original mail, so for verification and login-link mails
-  it contains a link that is a login token valid for 1 hour (30 days for the
-  retention notice); treat the
-  `bounce@` mailbox as sensitive and handle those links carefully in any reader.
-- Using `accounts@` as a real mailbox/From was considered and advised against
-  (replies and spam); VERP-style per-mail addresses are not needed so far and
-  the address format would be our own choice, not a standard.
-- A permanently bouncing address could count towards marking an account (see
-  the retention item above).
-- Open: what spam filtering the mail server applies to `bounce@`; whether to
-  build a reader at all.
