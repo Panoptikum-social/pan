@@ -56,7 +56,7 @@ defmodule Pan.Parser.Download do
     closed: "Connection closed"
   }
 
-  def download(url, feed_id \\ nil) do
+  def download(url) do
     case get(url) do
       {:ok, %Response{status_code: status_code, body: feed_xml}}
       when status_code in [200, 203, 206] ->
@@ -109,7 +109,7 @@ defmodule Pan.Parser.Download do
 
       {:ok, %Response{status_code: status_code, headers: headers}}
       when status_code in [301, 302, 303, 308] ->
-        redirect(url, headers, feed_id)
+        redirect(url, headers)
 
       {:ok, %Response{status_code: code}} ->
         Logger.error("status_code unknown #{inspect(code)}")
@@ -165,11 +165,11 @@ defmodule Pan.Parser.Download do
     end
   end
 
-  defp redirect(url, headers, feed_id) do
+  defp redirect(url, headers) do
     header_map = Enum.into(headers, %{})
 
     redirect_target = Map.get(header_map, "Location") || Map.get(header_map, "location")
-    Feed.check_for_redirect_loop(url, redirect_target, feed_id)
+    Feed.check_for_redirect_loop(url, redirect_target)
   end
 
   # extra_options is merged in as-is (e.g. `follow_redirect: true` for a

@@ -2,12 +2,10 @@ defmodule Pan.Parser.RssFeed do
   alias Pan.Parser.{AlternateFeed, Download, Iterator, Persistor}
   require Logger
 
-  # There's no Feed row yet at this point, so unlike the periodic-update path
-  # (Pan.Updater.Podcast, via Feed.update_with_redirect_target/2) we can't lean
-  # on alternate_feeds history to catch a redirect looping back on itself.
-  # Track the URLs seen so far for this import in memory instead, and cap the
-  # number of hops we'll chase in case the server keeps sending brand new,
-  # never-before-seen URLs.
+  # Like the update paths (Pan.Updater.Podcast, Pan.Parser.Podcast), track the
+  # URLs seen so far for this import to catch a redirect looping back on
+  # itself, and cap the number of hops we'll chase in case the server keeps
+  # sending brand new, never-before-seen URLs.
   @max_redirects 5
 
   def initial_import(url, feed_id \\ 0, pagecount \\ 1) do

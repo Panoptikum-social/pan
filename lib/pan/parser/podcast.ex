@@ -5,10 +5,11 @@ defmodule Pan.Parser.Podcast do
   require Logger
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
-  # Feed.update_with_redirect_target/2 only refuses a redirect that repeats
-  # a target this feed has held before — a server that keeps redirecting to
-  # a new, never-before-seen URL (e.g. a cache-busting query string) would
-  # otherwise be followed forever. Same cap as the other two feed-redirect
+  # Redirects followed during one update are tracked in visited_urls: a
+  # target seen before in the same chain is a cycle ("loop detected"). A
+  # server that keeps redirecting to a new, never-before-seen URL (e.g. a
+  # cache-busting query string) would otherwise be followed forever, so the
+  # number of hops is capped as well. Same cap as the other two feed-redirect
   # paths (RssFeed.initial_import/3, Pan.Updater.Podcast.import_new_episodes/5)
   # — this one was missed in the 2026-08-27 hardening pass and recursed
   # unbounded, seen live hammering a feed several times a second.
@@ -44,10 +45,10 @@ defmodule Pan.Parser.Podcast do
   # subscribe buttons) keep today's full-resync-with-pruning behavior via
   # the default.
   def update_from_feed(podcast, opts \\ []) do
-    update_from_feed(podcast, opts, 0)
+    update_from_feed(podcast, opts, [])
   end
 
-  defp update_from_feed(podcast, opts, redirect_count) do
+  defp update_from_feed(podcast, opts, visited_urls) do
     with {:ok, _} <- update_manually_updated_at(podcast),
          {:ok, _} <- send_download_message(podcast.id),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
@@ -59,7 +60,7 @@ defmodule Pan.Parser.Podcast do
       {:ok, "Podcast data updated"}
     else
       {:redirect, redirect_target} ->
-        follow_redirect(podcast, opts, redirect_count, redirect_target)
+        follow_redirect(podcast, opts, visited_urls, redirect_target)
 
       {:error, "not found"} ->
         message = "Podcast #{podcast.id} has no feed!"
@@ -71,15 +72,21 @@ defmodule Pan.Parser.Podcast do
     end
   end
 
-  defp follow_redirect(podcast, opts, redirect_count, redirect_target) do
-    if redirect_count >= @max_redirects do
-      Logger.error("Podcast #{podcast.id}: too many redirects")
-      {:error, "too many redirects"}
-    else
-      case Feed.update_with_redirect_target(podcast.id, redirect_target) do
-        {:ok, _} -> update_from_feed(podcast, opts, redirect_count + 1)
-        {:error, message} -> {:error, message}
-      end
+  defp follow_redirect(podcast, opts, visited_urls, redirect_target) do
+    cond do
+      redirect_target in visited_urls ->
+        Logger.error("Podcast #{podcast.id}: loop detected")
+        {:error, "loop detected"}
+
+      length(visited_urls) >= @max_redirects ->
+        Logger.error("Podcast #{podcast.id}: too many redirects")
+        {:error, "too many redirects"}
+
+      true ->
+        case Feed.update_with_redirect_target(podcast.id, redirect_target) do
+          {:ok, _} -> update_from_feed(podcast, opts, [redirect_target | visited_urls])
+          {:error, message} -> {:error, message}
+        end
     end
   end
 

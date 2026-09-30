@@ -1,5 +1,4 @@
 defmodule Pan.Parser.Feed do
-  import Ecto.Query
   alias Pan.Repo
   alias Pan.Parser.AlternateFeed
   alias PanWeb.Feed
@@ -30,7 +29,7 @@ defmodule Pan.Parser.Feed do
   def update_with_redirect_target(id, redirect_target) do
     {:ok, feed} = get_by_podcast_id(id)
 
-    case redirect_target && check_for_redirect_loop(feed.self_link_url, redirect_target, id) do
+    case redirect_target && check_for_redirect_loop(feed.self_link_url, redirect_target) do
       {:redirect, redirect_target} ->
         AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url, title: feed.self_link_url})
 
@@ -46,7 +45,14 @@ defmodule Pan.Parser.Feed do
     end
   end
 
-  def check_for_redirect_loop(url, redirect_target, id) do
+  # Only catches a URL redirecting to itself. Cycles across several hops are
+  # caught by the callers following the redirects, which track the URLs
+  # visited during the current fetch. Deliberately not checked against
+  # alternate_feeds: that's history, not a loop — a URL we once moved away
+  # from can legitimately become current again (e.g. Zeit für Wissenschaft,
+  # podcast 102, stuck on "loop detected" for an http → https redirect whose
+  # target had been recorded years earlier).
+  def check_for_redirect_loop(url, redirect_target) do
     redirect_target =
       case String.starts_with?(redirect_target, "http") do
         true ->
@@ -60,24 +66,10 @@ defmodule Pan.Parser.Feed do
           |> Kernel.<>(String.trim_leading(redirect_target, "/"))
       end
 
-    there_is_a_loop_here =
-      if id do
-        alternate_feed_urls(id)
-        |> Enum.member?(redirect_target)
-      else
-        # This is a legitimate case: for initial import, there is no feed in the database yet
-        false
-      end
-
-    cond do
-      redirect_target == url ->
-        {:error, "redirects to itself"}
-
-      there_is_a_loop_here ->
-        {:error, "loop detected"}
-
-      true ->
-        {:redirect, redirect_target}
+    if redirect_target == url do
+      {:error, "redirects to itself"}
+    else
+      {:redirect, redirect_target}
     end
   end
 
@@ -89,13 +81,5 @@ defmodule Pan.Parser.Feed do
       feed ->
         {:ok, feed}
     end
-  end
-
-  def alternate_feed_urls(id) do
-    from(a in PanWeb.AlternateFeed,
-      where: a.feed_id == ^id,
-      select: a.url
-    )
-    |> Repo.all()
   end
 end

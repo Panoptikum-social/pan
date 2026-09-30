@@ -128,13 +128,18 @@ defmodule Pan.Parser.Persistor do
 
     {:ok, feed} = Feed.get_by_podcast_id(podcast.id)
 
-    if feed.self_link_url != feed_map[:self_link_url] do
-      Feed.update_with_redirect_target(podcast.id, feed_map[:self_link_url])
+    # A differing <atom:link rel="self"> is only recorded, not followed: the
+    # stored URL was just fetched successfully, and self links are often
+    # stale or plain wrong (Zeit für Wissenschaft's mp3 feed points to its
+    # ogg sibling over http, which 301s back to https). Moves are signalled
+    # by HTTP redirects and <itunes:new-feed-url> below.
+    if feed_map[:self_link_url] && feed.self_link_url != feed_map[:self_link_url] do
+      AlternateFeed.get_or_insert(feed.id, %{
+        url: feed_map[:self_link_url],
+        title: feed_map[:self_link_url]
+      })
     end
 
-    # Applied last so it wins over the self_link_url check above: the feed's
-    # own explicit "I've moved" signal is more authoritative than us noticing
-    # its <atom:link rel="self"> doesn't match what we had stored.
     Feed.update_with_redirect_target(podcast.id, map[:new_feed_url])
 
     Category.persist_many(map[:categories], podcast)

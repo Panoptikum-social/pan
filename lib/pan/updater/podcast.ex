@@ -15,12 +15,11 @@ defmodule Pan.Updater.Podcast do
 
   def max_update_intervall_hours, do: @max_update_intervall_hours
 
-  # Feed.update_with_redirect_target/2 already refuses a redirect that leads
-  # back to a URL this feed has held before, but that only catches actual
-  # cycles: a server that keeps redirecting to a new, never-before-seen URL
-  # (e.g. a cache-busting query string) would otherwise be followed forever.
-  # This caps the number of hops we'll chase per update, independent of that
-  # cycle check.
+  # Redirects followed during one update are tracked in visited_urls: a
+  # target seen before in the same chain is a cycle ("loop detected"). A
+  # server that keeps redirecting to a new, never-before-seen URL (e.g. a
+  # cache-busting query string) would otherwise be followed forever, so the
+  # number of hops per update is capped as well.
   @max_redirects 5
 
   def import_new_episodes(
@@ -34,7 +33,7 @@ defmodule Pan.Updater.Podcast do
       forced,
       no_failure_count_increase,
       do_not_increase_update_interval,
-      0
+      []
     )
   end
 
@@ -43,14 +42,14 @@ defmodule Pan.Updater.Podcast do
          forced,
          no_failure_count_increase,
          do_not_increase_update_interval,
-         redirect_count
+         visited_urls
        ) do
     Logger.info("#{podcast.id} ⬇ #{podcast.title}")
 
     with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
-         {:ok, feed_xml} <- Download.download(feed.self_link_url, feed.id),
+         {:ok, feed_xml} <- Download.download(feed.self_link_url),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
@@ -63,7 +62,7 @@ defmodule Pan.Updater.Podcast do
           forced,
           no_failure_count_increase,
           do_not_increase_update_interval,
-          redirect_count,
+          visited_urls,
           redirect_target
         )
 
@@ -80,27 +79,32 @@ defmodule Pan.Updater.Podcast do
          forced,
          no_failure_count_increase,
          do_not_increase_update_interval,
-         redirect_count,
+         visited_urls,
          redirect_target
        ) do
-    if redirect_count >= @max_redirects do
-      handle_message(podcast, "too many redirects", no_failure_count_increase)
-    else
-      case Feed.update_with_redirect_target(podcast.id, Helpers.to_255(redirect_target)) do
-        {:ok, _} ->
-          Logger.info("#{podcast.id} redirect -> #{redirect_target}")
+    cond do
+      redirect_target in visited_urls ->
+        handle_message(podcast, "loop detected", no_failure_count_increase)
 
-          import_new_episodes(
-            podcast,
-            forced,
-            no_failure_count_increase,
-            do_not_increase_update_interval,
-            redirect_count + 1
-          )
+      length(visited_urls) >= @max_redirects ->
+        handle_message(podcast, "too many redirects", no_failure_count_increase)
 
-        {:error, message} ->
-          handle_message(podcast, message, no_failure_count_increase)
-      end
+      true ->
+        case Feed.update_with_redirect_target(podcast.id, Helpers.to_255(redirect_target)) do
+          {:ok, _} ->
+            Logger.info("#{podcast.id} redirect -> #{redirect_target}")
+
+            import_new_episodes(
+              podcast,
+              forced,
+              no_failure_count_increase,
+              do_not_increase_update_interval,
+              [redirect_target | visited_urls]
+            )
+
+          {:error, message} ->
+            handle_message(podcast, message, no_failure_count_increase)
+        end
     end
   end
 
