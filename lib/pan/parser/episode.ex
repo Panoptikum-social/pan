@@ -100,7 +100,9 @@ defmodule Pan.Parser.Episode do
       )
       |> Repo.all()
 
-    for episode <- episodes, do: Repo.delete(episode)
+    for episode <- episodes do
+      with {:ok, _} <- Repo.delete(episode), do: Pan.Search.Episode.delete_index(episode.id)
+    end
   end
 
   def insert_contributors(episodes_map, podcast) do
