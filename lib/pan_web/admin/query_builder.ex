@@ -14,7 +14,7 @@ defmodule PanWeb.Admin.QueryBuilder do
 
   @doc """
   Brings the search index in line with a record just saved through the
-  admin form (`changes` being the saved changeset's changes).
+  admin or moderation form (`changes` being the saved changeset's changes).
   """
   def update_index(model, record, changes) do
     search_module = search_module(model)
@@ -23,11 +23,26 @@ defmodule PanWeb.Admin.QueryBuilder do
       search_module.update_index(record.id)
     end
 
-    # podcast and episode docs carry copies of category titles
-    if model == PanWeb.Category and Map.has_key?(changes, :title) do
-      Pan.Search.Category.reset_podcasts(Pan.Search.Category.podcast_ids(record.id))
-    end
+    reset_copies(model, record.id, changes)
   end
+
+  # podcast and episode docs carry copies of category titles
+  defp reset_copies(PanWeb.Category, id, %{title: _}) do
+    Pan.Search.Category.reset_podcasts(Pan.Search.Category.podcast_ids(id))
+  end
+
+  # episode and persona docs carry copies of the podcast title; episodes of
+  # a (un)blocked podcast have to leave (re-enter) the index with it
+  defp reset_copies(PanWeb.Podcast, id, changes) when is_map_key(changes, :title) do
+    Pan.Search.Episode.reset_for_podcast(id)
+    Pan.Search.Persona.reset(Pan.Search.Persona.ids_for_podcast(id))
+  end
+
+  defp reset_copies(PanWeb.Podcast, id, %{blocked: _}) do
+    Pan.Search.Episode.reset_for_podcast(id)
+  end
+
+  defp reset_copies(_model, _id, _changes), do: :ok
 
   # e.g. PanWeb.Category -> Pan.Search.Category (may not exist)
   defp search_module(model), do: Module.concat(Pan.Search, model |> Module.split() |> List.last())

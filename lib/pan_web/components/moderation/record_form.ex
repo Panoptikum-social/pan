@@ -64,7 +64,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
       end
 
     case response do
-      {:ok, _} ->
+      {:ok, saved_record} ->
+        PanWeb.Admin.QueryBuilder.update_index(model, saved_record, changeset.changes)
         send(self(), {:saved, %{message: to_string(model) <> updated_or_created(record_state)}})
         {:noreply, socket}
 

@@ -24,11 +24,16 @@ defmodule PanWeb.CategoryPodcast do
 
     case category_podcast do
       nil ->
-        %PanWeb.CategoryPodcast{
-          category_id: category_id,
-          podcast_id: podcast_id
-        }
-        |> Repo.insert()
+        result =
+          %PanWeb.CategoryPodcast{
+            category_id: category_id,
+            podcast_id: podcast_id
+          }
+          |> Repo.insert()
+
+        # podcast and episode docs carry the podcast's categories
+        Pan.Search.Category.reset_podcasts([podcast_id])
+        result
 
       category_podcast ->
         {:ok, category_podcast}
@@ -36,9 +41,14 @@ defmodule PanWeb.CategoryPodcast do
   end
 
   def delete(category_id, podcast_id) do
-    from(cp in PanWeb.CategoryPodcast,
-      where: cp.category_id == ^category_id and cp.podcast_id == ^podcast_id
-    )
-    |> Repo.delete_all()
+    result =
+      from(cp in PanWeb.CategoryPodcast,
+        where: cp.category_id == ^category_id and cp.podcast_id == ^podcast_id
+      )
+      |> Repo.delete_all()
+
+    # podcast and episode docs carry the podcast's categories
+    Pan.Search.Category.reset_podcasts([podcast_id])
+    result
   end
 end
