@@ -54,6 +54,8 @@ defmodule PanWeb.PersonaController do
     from_id = String.to_integer(from)
     to_id = String.to_integer(to)
 
+    # docs listing from's gigs/engagements will have to show to instead
+    copy_ids = Search.Persona.copy_ids(from_id)
     migrate_relations(from_id, to_id)
 
     to_persona = Repo.get!(Persona, to_id)
@@ -64,6 +66,7 @@ defmodule PanWeb.PersonaController do
     Repo.delete!(from_persona)
     Search.Persona.delete_index(from_id)
     Search.Persona.update_index(to_id)
+    Search.Persona.reset_copies(copy_ids)
 
     conn
     |> put_view(PageFrontendView)
@@ -72,6 +75,8 @@ defmodule PanWeb.PersonaController do
 
   def delete(conn, %{"id" => id}) do
     id = String.to_integer(id)
+    # the persona's gigs/engagements go with it, docs still list them
+    copy_ids = Search.Persona.copy_ids(id)
 
     Repo.transaction(fn ->
       persona = Repo.get!(Persona, id)
@@ -92,6 +97,7 @@ defmodule PanWeb.PersonaController do
     end)
 
     Search.Persona.delete_index(id)
+    Search.Persona.reset_copies(copy_ids)
 
     conn
     |> put_view(PageFrontendView)

@@ -126,6 +126,46 @@ defmodule Pan.Search.Persona do
     |> Repo.all()
   end
 
+  @doc """
+  Episode and podcast docs carry copies of persona names (their gigs and
+  engagements, rendered as links in search results). Returns the ids of
+  those listing `persona_id` — to be collected before a persona's gigs and
+  engagements move (merge) or vanish (delete), and re-flagged afterwards
+  with `reset_copies/1`.
+  """
+  def copy_ids(persona_id) do
+    episode_ids =
+      from(g in PanWeb.Gig, where: g.persona_id == ^persona_id, select: g.episode_id)
+      |> Repo.all()
+
+    podcast_ids =
+      from(e in PanWeb.Engagement, where: e.persona_id == ^persona_id, select: e.podcast_id)
+      |> Repo.all()
+
+    {episode_ids, podcast_ids}
+  end
+
+  # in a background task, as a busy host has gigs on thousands of episodes
+  def reset_copies({episode_ids, podcast_ids}) do
+    Task.start(fn ->
+      from(e in PanWeb.Episode, where: e.id in ^episode_ids)
+      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
+
+      from(p in PanWeb.Podcast, where: p.id in ^podcast_ids)
+      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
+    end)
+  end
+
+  @doc """
+  `update_index/1` after a persona update with the given changeset
+  `changes`; a rename also re-flags the episode/podcast docs carrying the
+  persona's name.
+  """
+  def update_index(id, changes) do
+    update_index(id)
+    if Map.has_key?(changes, :name), do: reset_copies(copy_ids(id))
+  end
+
   def reset(persona_ids) do
     from(p in Persona, where: p.id in ^persona_ids)
     |> Repo.update_all(set: [full_text: false])

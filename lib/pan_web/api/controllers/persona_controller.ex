@@ -229,7 +229,7 @@ defmodule PanWeb.Api.PersonaController do
 
         case Repo.update(changeset) do
           {:ok, persona} ->
-            Pan.Search.Persona.update_index(persona.id)
+            Pan.Search.Persona.update_index(persona.id, changeset.changes)
             show(conn, %{"id" => persona.id}, user)
 
           {:error, changeset} ->

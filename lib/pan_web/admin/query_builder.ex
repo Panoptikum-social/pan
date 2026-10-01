@@ -3,6 +3,10 @@ defmodule PanWeb.Admin.QueryBuilder do
   alias Pan.Repo
 
   def delete(model, record) do
+    # a persona's gigs/engagements go with it, episode/podcast docs still
+    # list them
+    copy_ids = if model == PanWeb.Persona, do: Pan.Search.Persona.copy_ids(record.id)
+
     Repo.delete(record)
 
     search_module = search_module(model)
@@ -10,6 +14,8 @@ defmodule PanWeb.Admin.QueryBuilder do
     if Code.ensure_loaded?(search_module) and function_exported?(search_module, :delete_index, 1) do
       search_module.delete_index(record.id)
     end
+
+    if copy_ids, do: Pan.Search.Persona.reset_copies(copy_ids)
   end
 
   @doc """
@@ -40,6 +46,11 @@ defmodule PanWeb.Admin.QueryBuilder do
 
   defp reset_copies(PanWeb.Podcast, id, %{blocked: _}) do
     Pan.Search.Episode.reset_for_podcast(id)
+  end
+
+  # episode and podcast docs carry copies of persona names
+  defp reset_copies(PanWeb.Persona, id, %{name: _}) do
+    Pan.Search.Persona.reset_copies(Pan.Search.Persona.copy_ids(id))
   end
 
   defp reset_copies(_model, _id, _changes), do: :ok

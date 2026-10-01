@@ -42,7 +42,7 @@ defmodule PanWeb.Live.Persona.Edit do
 
     case Pan.Repo.update(changeset) do
       {:ok, _persona} ->
-        Pan.Search.Persona.update_index(assigns.persona.id)
+        Pan.Search.Persona.update_index(assigns.persona.id, changeset.changes)
 
         {:noreply,
          socket
