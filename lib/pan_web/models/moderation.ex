@@ -22,6 +22,11 @@ defmodule PanWeb.Moderation do
     |> validate_required([:user_id, :community_id])
   end
 
+  def count_by_community_id(community_id) do
+    from(m in Moderation, where: m.community_id == ^community_id)
+    |> Repo.aggregate(:count)
+  end
+
   def community_ids_of_user(user_id) do
     from(m in Moderation, where: m.user_id == ^user_id, select: m.community_id)
     |> Repo.all()

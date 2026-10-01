@@ -48,6 +48,11 @@ defmodule PanWeb.Curatorship do
     end
   end
 
+  def count_by_community_id(community_id) do
+    from(c in Curatorship, where: c.community_id == ^community_id)
+    |> Repo.aggregate(:count)
+  end
+
   def unassign(community_id, user_id) do
     from(c in Curatorship, where: c.community_id == ^community_id and c.user_id == ^user_id)
     |> Repo.delete_all()
