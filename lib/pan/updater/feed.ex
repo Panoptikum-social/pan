@@ -28,7 +28,9 @@ defmodule Pan.Updater.Feed do
       "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
     ]
 
-    options = [recv_timeout: 15_000, timeout: 15_000, hackney: [:insecure]]
+    # verify: :verify_none replaces hackney 1's `hackney: [:insecure]`, which
+    # no longer skips certificate checks with hackney 4
+    options = [recv_timeout: 15_000, timeout: 15_000, ssl: [verify: :verify_none]]
 
     case HTTPoison.head(feed.self_link_url, headers, options) do
       {:ok, %HTTPoison.Response{headers: headers}} ->

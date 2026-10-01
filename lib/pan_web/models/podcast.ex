@@ -830,7 +830,8 @@ defmodule PanWeb.Podcast do
             {:invalid_redirection, _} -> "invalid redirection"
             {:tls_alert, _} -> "TLS alert"
             {:closed, ""} -> "closed"
-            {:max_redirect_overflow, _} -> "max_redirect_overflow"
+            # hackney 4's name for what hackney 1 called max_redirect_overflow
+            {:max_redirect, _} -> "max_redirect_overflow"
             _ -> reason
           end
       end

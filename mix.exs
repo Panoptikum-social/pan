@@ -71,7 +71,7 @@ defmodule Pan.MixProject do
       # time conversion
       {:timex, "~> 3.7"},
       # http client
-      {:httpoison, "~> 2.3"},
+      {:httpoison, "~> 3.0"},
       # XML parser
       {:quinn, "~> 1.1"},
       # feed compliance checker (separate project)

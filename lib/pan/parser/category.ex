@@ -67,8 +67,9 @@ defmodule Pan.Parser.Category do
       options = [
         recv_timeout: 15_000,
         timeout: 15_000,
-        hackney: [:insecure],
-        ssl: [{:versions, [:"tlsv1.2"]}]
+        # verify: :verify_none replaces hackney 1's `hackney: [:insecure]`,
+        # which no longer skips certificate checks with hackney 4
+        ssl: [versions: [:"tlsv1.2"], verify: :verify_none]
       ]
 
       for feed <- podcast.feeds do
