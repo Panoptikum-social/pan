@@ -4,6 +4,8 @@ defmodule PanWeb.Component.CuratorAssignment do
   # Shared by the admin and the moderator curator pages; the LiveViews handle
   # the "assign" and "unassign" events and decide which communities are listed.
   attr :entries, :list, required: true
+  # moderator page: also make any user a curator by username ("assign_by_username")
+  attr :by_username, :boolean, default: false
 
   def render(assigns) do
     ~H"""
@@ -43,7 +45,20 @@ defmodule PanWeb.Component.CuratorAssignment do
               </select>
               <button class="btn btn-primary btn-xs">Assign</button>
             </form>
-            <span :if={candidates == []} class="text-sm">no further curators available</span>
+            <span :if={candidates == [] && !@by_username} class="text-sm">
+              no further curators available
+            </span>
+            <form :if={@by_username} phx-submit="assign_by_username" class="flex gap-2 mt-2">
+              <input type="hidden" name="community_id" value={community.id} />
+              <input
+                type="text"
+                name="username"
+                placeholder="username"
+                autocomplete="off"
+                class="input input-bordered input-xs"
+              />
+              <button class="btn btn-primary btn-xs">Make curator & assign</button>
+            </form>
           </td>
         </tr>
       </tbody>

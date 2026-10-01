@@ -32,6 +32,22 @@ defmodule PanWeb.Curatorship do
     end
   end
 
+  @doc """
+  Moderators add curators by username in one step: sets the curator flag if
+  needed and assigns the user to the community. Clearing the flag stays with
+  admins.
+  """
+  def make_curator_and_assign(community_id, username) do
+    case Repo.get_by(User, username: String.trim(username)) do
+      nil ->
+        {:error, :user_not_found}
+
+      user ->
+        if !user.curator, do: user |> change(curator: true) |> Repo.update!()
+        assign(community_id, user.id)
+    end
+  end
+
   def unassign(community_id, user_id) do
     from(c in Curatorship, where: c.community_id == ^community_id and c.user_id == ^user_id)
     |> Repo.delete_all()
