@@ -157,20 +157,6 @@ defmodule Pan.Search.Episode do
   end
 
   def delete_index_orphans() do
-    episode_ids =
-      from(e in Episode, select: e.id)
-      |> Repo.all()
-
-    max_episode_id = Enum.max(episode_ids)
-
-    all_ids =
-      Range.new(1, max_episode_id)
-      |> Enum.to_list()
-
-    for id <- all_ids do
-      unless Enum.member?(episode_ids, id) do
-        delete_index(id)
-      end
-    end
+    Pan.Search.delete_orphans("episodes", Episode)
   end
 end

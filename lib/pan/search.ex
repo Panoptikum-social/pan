@@ -170,6 +170,42 @@ defmodule Pan.Search do
     end
   end
 
+  @orphan_chunk_size 10_000
+
+  @doc """
+  Deletes the docs in Manticore `index` whose id no longer exists in
+  `model`'s table. Pages through the ids Manticore actually holds (instead of
+  every id up to the max one), so it stays cheap for millions of episodes and
+  never sends deletes for ids that were never indexed.
+  """
+  def delete_orphans(index, model, after_id \\ 0) do
+    query =
+      "SELECT id FROM #{index} WHERE id > #{after_id} ORDER BY id ASC " <>
+        "LIMIT #{@orphan_chunk_size} OPTION max_matches=#{@orphan_chunk_size}"
+
+    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- Search.Manticore.sql(query),
+         {:ok, [%{"data" => [_ | _] = rows}]} <- Jason.decode(body) do
+      indexed_ids = Enum.map(rows, & &1["id"])
+
+      existing_ids =
+        from(r in model, where: r.id in ^indexed_ids, select: r.id)
+        |> Repo.all()
+        |> MapSet.new()
+
+      orphan_ids = Enum.reject(indexed_ids, &MapSet.member?(existing_ids, &1))
+
+      if orphan_ids != [] do
+        Search.Manticore.sql("DELETE FROM #{index} WHERE id IN (#{Enum.join(orphan_ids, ",")})")
+        Logger.info("Deleted #{length(orphan_ids)} orphans from #{index}")
+      end
+
+      delete_orphans(index, model, List.last(indexed_ids))
+    else
+      {:ok, [%{"data" => []}]} -> Logger.info("Done deleting orphans from #{index}")
+      error -> Logger.error("Deleting orphans from #{index} failed: #{inspect(error)}")
+    end
+  end
+
   @doc """
   `language_ids`, when given a non-empty list, restricts results to
   podcasts/episodes tagged with any of those `PanWeb.Language` ids (already

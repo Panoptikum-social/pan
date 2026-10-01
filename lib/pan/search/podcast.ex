@@ -127,14 +127,6 @@ defmodule Pan.Search.Podcast do
   end
 
   def delete_index_orphans() do
-    podcast_ids =
-      from(c in Podcast, select: c.id)
-      |> Repo.all()
-
-    max_podcast_id = Enum.max(podcast_ids)
-    all_ids = Range.new(1, max_podcast_id) |> Enum.to_list()
-    deleted_ids = all_ids -- podcast_ids
-
-    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    Pan.Search.delete_orphans("podcasts", Podcast)
   end
 end

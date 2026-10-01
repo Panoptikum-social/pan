@@ -117,14 +117,6 @@ defmodule Pan.Search.Persona do
   end
 
   def delete_index_orphans() do
-    persona_ids =
-      from(c in Persona, select: c.id)
-      |> Repo.all()
-
-    max_persona_id = Enum.max(persona_ids)
-    all_ids = Range.new(1, max_persona_id) |> Enum.to_list()
-    deleted_ids = all_ids -- persona_ids
-
-    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    Pan.Search.delete_orphans("personas", Persona)
   end
 end

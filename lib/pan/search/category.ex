@@ -55,18 +55,6 @@ defmodule Pan.Search.Category do
   end
 
   def delete_index_orphans() do
-    category_ids =
-      from(c in Category, select: c.id)
-      |> Repo.all()
-
-    max_category_id = Enum.max(category_ids)
-
-    all_ids =
-      Range.new(1, max_category_id)
-      |> Enum.to_list()
-
-    deleted_ids = all_ids -- category_ids
-
-    for deleted_id <- deleted_ids, do: delete_index(deleted_id)
+    Pan.Search.delete_orphans("categories", Category)
   end
 end
