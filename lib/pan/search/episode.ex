@@ -51,6 +51,12 @@ defmodule Pan.Search.Episode do
     )
   end
 
+  # episodes of blocked podcasts must not be searchable — a bulk delete line
+  # keeps them out (and removes them) when batch_index/0 comes across them
+  def manticore_struct(%{podcast: %{blocked: true}} = episode) do
+    %{delete: %{index: "episodes", id: episode.id}}
+  end
+
   # replace, not insert: an insert of an already indexed id fails with
   # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(episode) do

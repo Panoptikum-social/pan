@@ -46,6 +46,12 @@ defmodule Pan.Search.Podcast do
     )
   end
 
+  # blocked podcasts must not be searchable — a bulk delete line keeps them
+  # out (and removes them) when batch_index/0 comes across them
+  def manticore_struct(%{blocked: true} = podcast) do
+    %{delete: %{index: "podcasts", id: podcast.id}}
+  end
+
   # replace, not insert: an insert of an already indexed id fails with
   # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(podcast) do

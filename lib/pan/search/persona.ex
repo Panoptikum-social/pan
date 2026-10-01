@@ -29,6 +29,9 @@ defmodule Pan.Search.Persona do
       :description,
       :long_description,
       :image_title,
+      # needed by manticore_struct/1 and update_index/1 to leave out
+      # redirected personas
+      :redirect_id,
       podcasts: :id,
       episodes: :id,
       thumbnails: [:path, :filename],
@@ -43,6 +46,13 @@ defmodule Pan.Search.Persona do
       selects: selects(),
       struct_function: &manticore_struct/1
     )
+  end
+
+  # redirected personas must not be searchable (their target is) — a bulk
+  # delete line keeps them out (and removes them) when batch_index/0 comes
+  # across them
+  def manticore_struct(%{redirect_id: redirect_id} = persona) when not is_nil(redirect_id) do
+    %{delete: %{index: "personas", id: persona.id}}
   end
 
   def manticore_struct(persona) do
