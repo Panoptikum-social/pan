@@ -44,19 +44,24 @@ defmodule PanWeb.Gig do
   def proclaim(episode_id, persona_id, current_user_id) do
     case Repo.get_by(Manifestation, user_id: current_user_id, persona_id: persona_id) do
       %Manifestation{} ->
-        case Repo.get_by(Gig, episode_id: episode_id, persona_id: persona_id) do
-          nil ->
-            %Gig{
-              episode_id: episode_id,
-              persona_id: persona_id,
-              self_proclaimed: true,
-              role: "contributor"
-            }
-            |> Repo.insert()
+        result =
+          case Repo.get_by(Gig, episode_id: episode_id, persona_id: persona_id) do
+            nil ->
+              %Gig{
+                episode_id: episode_id,
+                persona_id: persona_id,
+                self_proclaimed: true,
+                role: "contributor"
+              }
+              |> Repo.insert()
 
-          gig ->
-            {:ok, Repo.delete!(gig)}
-        end
+            gig ->
+              {:ok, Repo.delete!(gig)}
+          end
+
+        # the persona's doc carries its episode_ids
+        Pan.Search.Persona.reset([persona_id])
+        result
 
       _ ->
         {:error, "not your persona"}

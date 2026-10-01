@@ -55,9 +55,11 @@ defmodule Pan.Search.Persona do
     %{delete: %{index: "personas", id: persona.id}}
   end
 
+  # replace, not insert: an insert of an already indexed id fails with
+  # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(persona) do
     %{
-      insert: %{
+      replace: %{
         index: "personas",
         id: persona.id,
         doc: %{
@@ -106,6 +108,29 @@ defmodule Pan.Search.Persona do
     if persona_ids != [], do: batch_reset()
   end
 
+  @doc """
+  The personas tied to a podcast, via its engagements or gigs on its
+  episodes — the ones whose docs (podcast_ids, episode_ids, engagements
+  with podcast titles) go stale when the podcast's feed is updated.
+  """
+  def ids_for_podcast(podcast_id) do
+    engaged =
+      from(e in PanWeb.Engagement, where: e.podcast_id == ^podcast_id, select: e.persona_id)
+
+    from(g in PanWeb.Gig,
+      join: e in assoc(g, :episode),
+      where: e.podcast_id == ^podcast_id,
+      select: g.persona_id,
+      union: ^engaged
+    )
+    |> Repo.all()
+  end
+
+  def reset(persona_ids) do
+    from(p in Persona, where: p.id in ^persona_ids)
+    |> Repo.update_all(set: [full_text: false])
+  end
+
   def update_index(id) do
     persona =
       from(p in Persona, where: p.id == ^id, preload: ^preloads(), select: ^selects())
@@ -114,7 +139,7 @@ defmodule Pan.Search.Persona do
     if persona.redirect_id do
       delete_index(id)
     else
-      manticore_struct(persona)[:insert]
+      manticore_struct(persona)[:replace]
       |> Jason.encode!()
       |> Manticore.post("replace", "application/json")
     end

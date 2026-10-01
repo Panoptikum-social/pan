@@ -229,6 +229,7 @@ defmodule PanWeb.Api.PersonaController do
 
         case Repo.update(changeset) do
           {:ok, persona} ->
+            Pan.Search.Persona.update_index(persona.id)
             show(conn, %{"id" => persona.id}, user)
 
           {:error, changeset} ->
@@ -257,6 +258,7 @@ defmodule PanWeb.Api.PersonaController do
         from(p in Persona, where: p.id == ^id)
         |> Repo.update_all(set: [redirect_id: target_id])
 
+        Pan.Search.Persona.delete_index(id)
         show(conn, %{"id" => id}, user)
       else
         Helpers.send_401(conn, "You are not a manifestation of both of this personas.")
@@ -289,6 +291,7 @@ defmodule PanWeb.Api.PersonaController do
       from(p in Persona, where: p.id == ^id)
       |> Repo.update_all(set: [redirect_id: nil])
 
+      Pan.Search.Persona.update_index(id)
       show(conn, %{"id" => id}, user)
     else
       Helpers.send_401(conn, "You are not a manifestation of this persona.")

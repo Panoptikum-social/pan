@@ -64,7 +64,12 @@ defmodule Pan.Parser.Persistor do
     map = Map.put_new(map, :last_build_date, now())
 
     if map.last_build_date != podcast.last_build_date do
-      if map[:episodes], do: Episode.persist_many(map.episodes, podcast)
+      if map[:episodes] do
+        Episode.persist_many(map.episodes, podcast)
+        # new episodes bring new gigs, i.e. new episode_ids in persona docs
+        Pan.Search.Persona.reset(Pan.Search.Persona.ids_for_podcast(podcast.id))
+      end
+
       Feed.update_with_redirect_target(podcast.id, map[:new_feed_url])
 
       PanWeb.Podcast.changeset(podcast, %{last_build_date: map.last_build_date})
@@ -101,6 +106,7 @@ defmodule Pan.Parser.Persistor do
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
     episode_podcast_data = Pan.Search.Episode.podcast_data(podcast.id)
+    persona_ids = Pan.Search.Persona.ids_for_podcast(podcast.id)
 
     case PanWeb.Podcast.changeset(podcast, podcast_map) |> Repo.update() do
       {:ok, podcast} ->
@@ -110,6 +116,10 @@ defmodule Pan.Parser.Persistor do
         if Pan.Search.Episode.podcast_data(podcast.id) != episode_podcast_data do
           Pan.Search.Episode.reset_for_podcast(podcast.id)
         end
+
+        # personas before and after: gigs/engagements may have been added or
+        # dropped, and the podcast title in their docs may have changed
+        Pan.Search.Persona.reset(persona_ids ++ Pan.Search.Persona.ids_for_podcast(podcast.id))
 
         result
 

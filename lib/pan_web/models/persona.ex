@@ -200,8 +200,10 @@ defmodule PanWeb.Persona do
 
     for persona <- personas, do: Persona.cache_thumbnail_image(persona)
 
+    # full_text: false re-pushes the new (or cleared) thumbnail_url to
+    # Manticore via Pan.Job.PushMissingSearchIndex
     from(e in Persona, where: e.id in ^persona_ids)
-    |> Repo.update_all(set: [thumbnailed: true])
+    |> Repo.update_all(set: [thumbnailed: true, full_text: false])
   end
 
   def cache_thumbnail_image(persona) do
