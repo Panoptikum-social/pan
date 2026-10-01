@@ -46,8 +46,6 @@ defmodule Pan.MixProject do
       {:postgrex, "~> 0.22"},
       # reactive view layer
       {:phoenix_live_view, "~> 1.2.10"},
-      # DOM parser required by Phoenix.LiveViewTest (live/2, render/1, ...)
-      {:lazy_html, ">= 0.1.0", only: :test},
       # HTML parser
       {:floki, "~> 0.38.0"},
       # classic view layer
@@ -109,7 +107,9 @@ defmodule Pan.MixProject do
       # codegen/installer framework, required by the claude package's installer
       {:igniter, "~> 0.8", only: [:dev, :test]},
       # Claude Code project integration (hooks, MCP servers incl. Tidewave, CLAUDE.md usage rules)
-      {:claude, "~> 0.5.3", only: [:dev, :test]}
+      {:claude, "~> 0.5.3", only: [:dev, :test]},
+      # DOM parser required by Phoenix.LiveViewTest (live/2, render/1, ...)
+      {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
 
