@@ -100,9 +100,18 @@ defmodule Pan.Parser.Persistor do
     feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
+    episode_podcast_data = Pan.Search.Episode.podcast_data(podcast.id)
+
     case PanWeb.Podcast.changeset(podcast, podcast_map) |> Repo.update() do
       {:ok, podcast} ->
-        continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts)
+        result =
+          continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts)
+
+        if Pan.Search.Episode.podcast_data(podcast.id) != episode_podcast_data do
+          Pan.Search.Episode.reset_for_podcast(podcast.id)
+        end
+
+        result
 
       {:error, changeset} ->
         # e.g. a feed that started serving something else entirely (a

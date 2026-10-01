@@ -51,9 +51,11 @@ defmodule Pan.Search.Episode do
     )
   end
 
+  # replace, not insert: an insert of an already indexed id fails with
+  # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(episode) do
     %{
-      insert: %{
+      replace: %{
         index: "episodes",
         id: episode.id,
         doc: %{
@@ -116,6 +118,24 @@ defmodule Pan.Search.Episode do
     if episode_ids != [], do: batch_reset()
   end
 
+  @doc """
+  The podcast data every episode doc carries a copy of (see
+  `manticore_struct/1`) — when it changes, all of the podcast's episode
+  docs are stale.
+  """
+  def podcast_data(podcast_id) do
+    podcast =
+      from(p in PanWeb.Podcast, where: p.id == ^podcast_id, preload: [:languages, :categories])
+      |> Repo.one()
+
+    {podcast.title, Enum.sort(ids(podcast.languages)), Enum.sort(ids(podcast.categories))}
+  end
+
+  def reset_for_podcast(podcast_id) do
+    from(e in Episode, where: e.podcast_id == ^podcast_id)
+    |> Repo.update_all(set: [full_text: false])
+  end
+
   def update_index(id) do
     episode =
       from(e in Episode, where: e.id == ^id, preload: ^preloads(), select: ^selects())
@@ -124,7 +144,7 @@ defmodule Pan.Search.Episode do
     if episode.podcast.blocked do
       delete_index(id)
     else
-      manticore_struct(episode)[:insert]
+      manticore_struct(episode)[:replace]
       |> Jason.encode!()
       |> Manticore.post("replace", "application/json")
     end

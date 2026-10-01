@@ -5,6 +5,9 @@ defmodule Pan.Parser.Episode do
   require Logger
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
+  # the episode's own fields in its Manticore doc, see Pan.Search.Episode
+  @indexed_fields [:title, :subtitle, :description, :summary, :shownotes]
+
   def get_or_insert(episode_map, podcast_id) do
     case get_episode_by_guid_or_title_or_subtitle(episode_map, podcast_id) do
       nil ->
@@ -44,9 +47,18 @@ defmodule Pan.Parser.Episode do
       episode ->
         ### Here is place to remove info from episodes, that is no longer in the feed
         episode_map = Map.put_new(episode_map, :image_url, nil)
+        changeset = PanWeb.Episode.changeset(episode, episode_map)
 
-        episode
-        |> PanWeb.Episode.changeset(episode_map)
+        # changed indexed text needs a fresh Manticore doc, pushed by
+        # Pan.Job.PushMissingSearchIndex
+        changeset =
+          if Map.take(changeset.changes, @indexed_fields) == %{} do
+            changeset
+          else
+            Ecto.Changeset.put_change(changeset, :full_text, false)
+          end
+
+        changeset
         # forces timestamp to update
         |> Repo.update(force: true)
     end
