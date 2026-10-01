@@ -179,7 +179,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
       <h1 class="text-3xl">User retention</h1>
 
       <p class="my-2">
-        Admins and moderators are not listed. Deleting works only for users that have been marked
+        Admins, moderators and curators are not listed. Deleting works only for users that have been marked
         for at least {User.deletion_grace_days()} days.
       </p>
 

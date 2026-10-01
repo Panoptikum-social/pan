@@ -7,6 +7,8 @@ defmodule PanWeb.CategoryPodcast do
   schema "categories_podcasts" do
     belongs_to(:podcast, PanWeb.Podcast, primary_key: true)
     belongs_to(:category, PanWeb.Category, primary_key: true)
+    # Existing rows were migrated closed, new rows start open.
+    field(:open_for_curation, :boolean, default: true)
   end
 
   def changeset(struct, params \\ %{}) do

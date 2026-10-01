@@ -30,6 +30,13 @@
       <.link href={moderation_frontend_path(@conn, :my_moderations)}>My Moderations</.link>
     </li>
   <% end %>
+  <%= if @current_user.curator || @current_user.moderator || @current_user.admin do %>
+    <li class="py-1">
+      <.link href={curation_frontend_path(@conn, :index)}>
+        {nav_icon("pencil-heroicons-outline")} My Curations
+      </.link>
+    </li>
+  <% end %>
   <li class="py-1">
     <.link href={feed_backlog_frontend_path(@conn, :new)}>
       {nav_icon("rss-heroicons-outline")} Suggest a Podcast

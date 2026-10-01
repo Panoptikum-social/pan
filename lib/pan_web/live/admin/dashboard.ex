@@ -128,6 +128,11 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-outline"
         />
         <LinkButton.render
+          title="Curators"
+          to={community_path(Endpoint, :curators)}
+          class="btn-outline"
+        />
+        <LinkButton.render
           title="User retention"
           to={user_path(Endpoint, :retention)}
           class="btn-outline"

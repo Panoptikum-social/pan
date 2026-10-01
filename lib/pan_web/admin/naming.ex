@@ -103,6 +103,7 @@ defmodule PanWeb.Admin.Naming do
           :podcaster,
           :admin,
           :moderator,
+          :curator,
           :inserted_at,
           :updated_at
         ]

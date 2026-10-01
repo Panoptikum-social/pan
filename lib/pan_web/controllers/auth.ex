@@ -203,6 +203,22 @@ defmodule PanWeb.Auth do
     end
   end
 
+  # Moderators and admins may enter the curator area without the curator flag;
+  # which communities they see is decided per community in the LiveViews.
+  def authenticate_curator(conn, _opts) do
+    current_user = conn.assigns.current_user
+
+    if current_user && (current_user.curator || current_user.moderator || current_user.admin) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You need to be logged in with a curator account to access that page.")
+      |> put_session(:desired_url, conn.request_path)
+      |> redirect(to: Helpers.session_path(conn, :new))
+      |> halt()
+    end
+  end
+
   def authenticate_admin(conn, _opts) do
     current_user = conn.assigns.current_user
 

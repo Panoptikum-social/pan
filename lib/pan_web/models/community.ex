@@ -12,6 +12,7 @@ defmodule PanWeb.Community do
     belongs_to(:category, Category)
 
     many_to_many(:moderators, User, join_through: "moderations")
+    many_to_many(:curators, User, join_through: "curatorships")
     has_many(:personas, through: [:category, :podcasts, :contributors])
 
     timestamps()

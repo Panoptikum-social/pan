@@ -44,6 +44,7 @@ defmodule PanWeb.User do
     field(:admin, :boolean, default: false)
     field(:podcaster, :boolean, default: false)
     field(:moderator, :boolean, default: false)
+    field(:curator, :boolean, default: false)
     field(:email_verified, :boolean, default: false)
     field(:last_login_at, :naive_datetime)
     field(:marked_for_deletion_at, :naive_datetime)
@@ -117,6 +118,7 @@ defmodule PanWeb.User do
 
     many_to_many(:communities_i_moderate, Community, join_through: "moderations")
     has_many(:categories_i_moderate, through: [:communities_i_moderate, :category])
+    many_to_many(:communities_i_curate, Community, join_through: "curatorships")
 
     has_many(:following, Follow, on_delete: :delete_all)
     has_many(:followeds, Follow, foreign_key: :follower_id, on_delete: :delete_all)
@@ -135,6 +137,7 @@ defmodule PanWeb.User do
       :admin,
       :podcaster,
       :moderator,
+      :curator,
       :email_verified,
       :share_subscriptions,
       :share_follows
@@ -442,10 +445,12 @@ defmodule PanWeb.User do
   def retention_filters, do: @retention_filters
   def deletion_grace_days, do: @deletion_grace_days
 
-  # Admins and moderators are never part of the retention tooling.
+  # Admins, moderators and curators are never part of the retention tooling.
   defp regular_users do
     from(u in User,
-      where: not coalesce(u.admin, false) and not coalesce(u.moderator, false)
+      where:
+        not coalesce(u.admin, false) and not coalesce(u.moderator, false) and
+          not coalesce(u.curator, false)
     )
   end
 
@@ -513,7 +518,7 @@ defmodule PanWeb.User do
     retention_query(filters, search) |> Repo.aggregate(:count)
   end
 
-  @doc "Marks the given users (not admins or moderators) for deletion; returns how many were marked."
+  @doc "Marks the given users (not admins, moderators or curators) for deletion; returns how many were marked."
   def mark_for_deletion(ids) do
     {count, _} =
       from(u in regular_users(), where: u.id in ^ids and is_nil(u.marked_for_deletion_at))
@@ -556,7 +561,7 @@ defmodule PanWeb.User do
 
   @doc """
   Mails a deletion notice with a login link (valid for the grace period) to the
-  given users (not admins or moderators). The reasons in the mail come from the
+  given users (not admins, moderators or curators). The reasons in the mail come from the
   user's data. A user is marked for deletion only once the mail was accepted, an
   existing mark date is kept. Returns how many notices were sent and failed.
   """
@@ -599,7 +604,7 @@ defmodule PanWeb.User do
 
   @doc """
   Deletes those of the given users that have been marked for deletion for at
-  least the grace period (and are not admins or moderators); returns how many
+  least the grace period (and are not admins, moderators or curators); returns how many
   were deleted. Everything else in `ids` is ignored.
   """
   def delete_deletable(ids) do

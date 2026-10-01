@@ -359,9 +359,22 @@ defmodule PanWeb.Router do
     get("/invoices/:id/", InvoiceFrontendController, :download)
   end
 
+  # Curators, moderators and admins; access per community is decided in the LiveViews.
+  scope "/curator", PanWeb do
+    pipe_through([:browser, :authenticate_curator])
+    # not "/" itself: the persona catch-all "/:pid" would take "/curator"
+    live("/my_curations", Live.Curation.Index, :index, as: :curation_frontend)
+    live("/communities/:id", Live.Curation.Community, :community, as: :curation_frontend)
+
+    live("/communities/:id/podcasts/:podcast_id", Live.Curation.Podcast, :podcast,
+      as: :curation_frontend
+    )
+  end
+
   scope "/moderator", PanWeb do
     pipe_through([:browser, :authenticate_moderator])
     get("/my_moderations", ModerationFrontendController, :my_moderations)
+    live("/curators", Live.Moderation.Curators, :curators, as: :moderation_frontend)
     live("/moderation/:id", Live.Moderation.Moderate, :moderation, as: :moderation_frontend)
 
     live(
@@ -423,6 +436,7 @@ defmodule PanWeb.Router do
     post("/alternate_feeds/create_from_backlog", AlternateFeedController, :create_from_backlog)
 
     live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
+    live("/communities/curators", Live.Admin.Community.Curators, :curators, as: :community)
 
     get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
     get("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)

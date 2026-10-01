@@ -31,7 +31,8 @@ defmodule PanWeb do
         only: [
           authenticate_user: 2,
           authenticate_admin: 2,
-          authenticate_moderator: 2
+          authenticate_moderator: 2,
+          authenticate_curator: 2
         ]
 
       import PanWeb.Api.Auth,
@@ -80,7 +81,8 @@ defmodule PanWeb do
         only: [
           authenticate_user: 2,
           authenticate_admin: 2,
-          authenticate_moderator: 2
+          authenticate_moderator: 2,
+          authenticate_curator: 2
         ]
 
       import PanWeb.Api.Auth,
