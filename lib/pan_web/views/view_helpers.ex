@@ -11,6 +11,17 @@ defmodule PanWeb.ViewHelpers do
 
   def nav_icon(name), do: icon(name, class: "h-5 w-5 inline")
 
+  # User written markdown (persona long descriptions, curations): GitHub
+  # flavoured tables, strikethrough and autolinks, raw HTML and images dropped.
+  def markdown(nil), do: nil
+
+  def markdown(content) do
+    content
+    |> MDEx.to_html!(extension: [table: true, strikethrough: true, autolink: true])
+    |> HtmlSanitizeEx.Scrubber.MarkdownWithoutImages.sanitize()
+    |> HTML.raw()
+  end
+
   def btn_cycle(counter) do
     Enum.at(
       [

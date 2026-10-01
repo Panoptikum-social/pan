@@ -12,7 +12,6 @@ import { LiveSocket } from "phoenix_live_view";
 import { InfiniteScroll } from "./infinite_scroll";
 import { Notification } from "./notification";
 import { PodlovePlayer } from "./podlove_player";
-import { MarkdownField } from "./markdown_field";
 import { OvertypeField } from "./overtype_field";
 import { LanguageFilterPersistence } from "./language_filter_persistence";
 
@@ -54,7 +53,6 @@ let liveSocket = new LiveSocket("/live", Socket, {
     Notification,
     PodloveSubscribeButton,
     PodlovePlayer,
-    MarkdownField,
     OvertypeField,
     LanguageFilterPersistence,
   },

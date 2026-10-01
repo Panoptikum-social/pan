@@ -60,15 +60,6 @@ defmodule PanWeb.Live.Curation.Podcast do
     end
   end
 
-  defp markdown(nil), do: nil
-
-  defp markdown(content) do
-    content
-    |> MDEx.to_html!()
-    |> HtmlSanitizeEx.html5()
-    |> raw()
-  end
-
   def render(assigns) do
     ~H"""
     <div class="m-4 max-w-4xl">

@@ -76,15 +76,6 @@ defmodule PanWeb.Live.Persona.Show do
     )
   end
 
-  defp markdown(content) do
-    if content do
-      content
-      |> MDEx.to_html!()
-      |> HtmlSanitizeEx.html5()
-      |> raw()
-    end
-  end
-
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     {:noreply, assign(socket, gigs_page: assigns.gigs_page + 1) |> fetch_gigs()}
   end

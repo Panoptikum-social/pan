@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Persona.Edit do
   import PanWeb.CoreComponents
 
   alias PanWeb.{Manifestation, Persona, Endpoint, User, Image}
-  alias PanWeb.Component.MarkdownField
+  alias PanWeb.Component.OvertypeField
   import PanWeb.Router.Helpers
 
   def mount(%{"id" => id}, _session, %{assigns: assigns} = socket) do
@@ -129,7 +129,7 @@ defmodule PanWeb.Live.Persona.Edit do
           label="Description"
         />
 
-        <MarkdownField.render myfield={f[:long_description]} />
+        <OvertypeField.render field={f[:long_description]} label="Long description" />
 
         <.button type="submit" class="btn btn-info">Submit</.button>
       </.form>

@@ -54,10 +54,17 @@
             />
           <% end %>
 
-          <.link
-            href={persona_frontend_path(@conn, :edit, persona)}
-            class="self-start bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm"
-          >Edit persona</.link>
+          <div class="self-start flex flex-col gap-2">
+            <.link
+              href={persona_frontend_path(@conn, :edit, persona)}
+              class="bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm"
+            >Edit persona</.link>
+            <.link
+              href={persona_frontend_path(@conn, :show, persona)}
+              target="_blank"
+              class="bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm"
+            >Show persona</.link>
+          </div>
         </div>
 
         <dl class="grid grid-cols-3 gap-x-4">
