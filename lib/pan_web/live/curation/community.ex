@@ -93,13 +93,15 @@ defmodule PanWeb.Live.Curation.Community do
                 {podcast.title}
               </.link>
             </td>
-            <td class="flex flex-wrap gap-1">
-              <CurationGrade.badge
-                :for={grade <- Curation.grades()}
-                :if={podcast.grades[to_string(grade)]}
-                grade={grade}
-                count={podcast.grades[to_string(grade)]}
-              />
+            <td>
+              <div class="flex flex-wrap gap-1">
+                <CurationGrade.badge
+                  :for={grade <- Curation.grades()}
+                  :if={podcast.grades[to_string(grade)]}
+                  grade={grade}
+                  count={podcast.grades[to_string(grade)]}
+                />
+              </div>
             </td>
             <td>{if podcast.mine, do: "✓"}</td>
             <td :if={@permissions.manage}>
