@@ -45,15 +45,41 @@ defmodule PanWeb.Feed do
     |> cast_assoc(:alternate_feeds)
   end
 
-  def clean_and_best_matching(url) do
+  # A hint for admins (feed backlog): falls back to ever shorter prefixes of
+  # the url, so on shared hosts it can return an unrelated podcast's feed,
+  # e.g. "anchor.fm/s/528cb318/podcast/rss" ends up matching "anchor.fm/s".
+  def clean_and_best_matching(url), do: url |> clean() |> best_matching()
+
+  # For code that acts on the match without a human looking at it (moderators
+  # adding a feed): only a feed known by this url, as alternate feed or website.
+  def clean_and_direct_matching(url), do: url |> clean() |> direct_matching()
+
+  defp clean(url) do
     url
     |> String.split("/", parts: 3)
     |> List.last()
     |> String.replace("feeds.feedburner.com/", "")
-    |> best_matching
   end
 
   def best_matching(url) do
+    cond do
+      feed = direct_matching(url) ->
+        feed
+
+      String.contains?(url, "/") ->
+        url
+        |> String.reverse()
+        |> String.split("/", parts: 2)
+        |> List.last()
+        |> String.reverse()
+        |> best_matching
+
+      true ->
+        nil
+    end
+  end
+
+  defp direct_matching(url) do
     # Anchored on a preceding "/" (every real URL has one right before any
     # host or path fragment, via "scheme://" at minimum) so a shorter host
     # that's a suffix of a longer one — "aufdistanz.de" vs.
@@ -88,14 +114,6 @@ defmodule PanWeb.Feed do
           )
           |> Repo.one() ->
         List.first(podcast.feeds)
-
-      String.contains?(url, "/") ->
-        url
-        |> String.reverse()
-        |> String.split("/", parts: 2)
-        |> List.last()
-        |> String.reverse()
-        |> best_matching
 
       true ->
         nil

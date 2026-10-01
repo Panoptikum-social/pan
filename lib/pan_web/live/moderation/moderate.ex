@@ -113,7 +113,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
     category_id = socket.assigns.category.id
 
     socket =
-      case Feed.clean_and_best_matching(url) do
+      case Feed.clean_and_direct_matching(url) do
         nil ->
           case Pan.Parser.RssFeed.initial_import(url) do
             {:ok, podcast_id} ->
