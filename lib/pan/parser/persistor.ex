@@ -153,7 +153,9 @@ defmodule Pan.Parser.Persistor do
 
     maybe_update_episodes(map, podcast, opts)
 
-    PanWeb.Podcast.changeset(podcast)
+    # full_text: false lets Pan.Job.PushMissingSearchIndex re-push the
+    # refreshed title, thumbnail, categories, ... to Manticore
+    PanWeb.Podcast.changeset(podcast, %{full_text: false})
     |> PanWeb.Podcast.update_counters()
     |> Repo.update()
 

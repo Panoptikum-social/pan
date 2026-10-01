@@ -152,8 +152,11 @@ defmodule Pan.Search do
     Logger.info("Query Result")
     Logger.info(query_result)
 
+    # items are keyed by their action ("insert" or "replace", see the
+    # models' manticore_struct/1); only inserts can hit duplicate ids
     with last_item_result <- query_result["items"] |> Enum.reverse() |> hd,
-         error_type <- last_item_result["insert"]["error"]["type"],
+         [action_result] <- Map.values(last_item_result),
+         error_type when is_binary(error_type) <- action_result["error"]["type"],
          ["duplicate", "id", duplicate_id_string] <- error_type |> String.split() do
       duplicate_id = duplicate_id_string |> String.replace("'", "") |> String.to_integer()
       Logger.info("Updating full text status for #{model} with id #{duplicate_id}")

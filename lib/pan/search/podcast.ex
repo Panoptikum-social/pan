@@ -46,9 +46,11 @@ defmodule Pan.Search.Podcast do
     )
   end
 
+  # replace, not insert: an insert of an already indexed id fails with
+  # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(podcast) do
     %{
-      insert: %{
+      replace: %{
         index: "podcasts",
         id: podcast.id,
         doc: %{
@@ -112,7 +114,7 @@ defmodule Pan.Search.Podcast do
     if podcast.blocked do
       delete_index(id)
     else
-      manticore_struct(podcast)[:insert]
+      manticore_struct(podcast)[:replace]
       |> Jason.encode!()
       |> Manticore.post("replace", "application/json")
     end
