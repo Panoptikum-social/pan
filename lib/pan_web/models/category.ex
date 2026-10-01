@@ -173,6 +173,8 @@ defmodule PanWeb.Category do
   end
 
   def merge(from_id, to_id) do
+    moved_podcast_ids = Search.Category.podcast_ids(from_id)
+
     from(f in Follow, where: f.category_id == ^from_id)
     |> Repo.update_all(set: [category_id: to_id])
 
@@ -210,5 +212,8 @@ defmodule PanWeb.Category do
 
     Search.Category.delete_index(from_id)
     Search.Category.update_index(to_id)
+
+    # their docs still list the deleted category
+    Search.Category.reset_podcasts(moved_podcast_ids)
   end
 end

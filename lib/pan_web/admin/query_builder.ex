@@ -5,12 +5,32 @@ defmodule PanWeb.Admin.QueryBuilder do
   def delete(model, record) do
     Repo.delete(record)
 
-    search_module = Module.concat(Pan.Search, model |> Module.split() |> List.last())
+    search_module = search_module(model)
 
     if Code.ensure_loaded?(search_module) and function_exported?(search_module, :delete_index, 1) do
       search_module.delete_index(record.id)
     end
   end
+
+  @doc """
+  Brings the search index in line with a record just saved through the
+  admin form (`changes` being the saved changeset's changes).
+  """
+  def update_index(model, record, changes) do
+    search_module = search_module(model)
+
+    if Code.ensure_loaded?(search_module) and function_exported?(search_module, :update_index, 1) do
+      search_module.update_index(record.id)
+    end
+
+    # podcast and episode docs carry copies of category titles
+    if model == PanWeb.Category and Map.has_key?(changes, :title) do
+      Pan.Search.Category.reset_podcasts(Pan.Search.Category.podcast_ids(record.id))
+    end
+  end
+
+  # e.g. PanWeb.Category -> Pan.Search.Category (may not exist)
+  defp search_module(model), do: Module.concat(Pan.Search, model |> Module.split() |> List.last())
 
   def load(model, criteria, cols) do
     from(r in model)

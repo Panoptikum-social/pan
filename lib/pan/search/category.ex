@@ -23,9 +23,11 @@ defmodule Pan.Search.Category do
     )
   end
 
+  # replace, not insert: an insert of an already indexed id fails with
+  # "duplicate id", so resetting full_text could never refresh a stale doc
   def manticore_struct(category) do
     %{
-      insert: %{
+      replace: %{
         index: "categories",
         id: category.id,
         doc: %{title: category.title || ""}
@@ -43,9 +45,36 @@ defmodule Pan.Search.Category do
       from(c in Category, where: c.id == ^id, select: ^selects())
       |> Repo.one()
 
-    manticore_struct(category)[:insert]
+    manticore_struct(category)[:replace]
     |> Jason.encode!()
     |> Manticore.post("replace", "application/json")
+  end
+
+  def podcast_ids(category_id) do
+    from(cp in "categories_podcasts",
+      where: cp.category_id == ^category_id,
+      select: cp.podcast_id
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Podcast and episode docs carry copies of their categories (ids and
+  titles, rendered as links in search results), so a category rename or
+  merge leaves them stale. Re-flags those podcasts and all their episodes
+  for Pan.Job.PushMissingSearchIndex — in a background task, as a big
+  category spans millions of episodes.
+  """
+  def reset_podcasts(podcast_ids) do
+    Task.start(fn ->
+      from(p in PanWeb.Podcast, where: p.id in ^podcast_ids)
+      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
+
+      from(e in PanWeb.Episode, where: e.podcast_id in ^podcast_ids)
+      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
+
+      Logger.info("Re-flagged #{length(podcast_ids)} podcasts and their episodes for search")
+    end)
   end
 
   def delete_index(id) do

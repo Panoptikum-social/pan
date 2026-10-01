@@ -69,7 +69,9 @@ defmodule PanWeb.Admin.RecordForm do
       end
 
     case response do
-      {:ok, _} ->
+      {:ok, saved_record} ->
+        PanWeb.Admin.QueryBuilder.update_index(model, saved_record, changeset.changes)
+
         send(
           self(),
           {:redirect,
