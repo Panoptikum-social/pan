@@ -137,6 +137,26 @@ defmodule Pan.Search.Episode do
     {podcast.title, Enum.sort(ids(podcast.languages)), Enum.sort(ids(podcast.categories))}
   end
 
+  @doc """
+  The gig data an episode doc shows (persona and role), to tell whether a
+  feed update changed it. Gig ids are left out on purpose: the author gig is
+  deleted and re-inserted on every update, and the doc's gig_ids aren't
+  queried anywhere.
+  """
+  def gigs_data(episode_id) do
+    from(g in PanWeb.Gig,
+      where: g.episode_id == ^episode_id,
+      select: {g.persona_id, g.role},
+      order_by: [g.persona_id, g.role]
+    )
+    |> Repo.all()
+  end
+
+  def reset(episode_ids) do
+    from(e in Episode, where: e.id in ^episode_ids)
+    |> Repo.update_all(set: [full_text: false])
+  end
+
   def reset_for_podcast(podcast_id) do
     from(e in Episode, where: e.podcast_id == ^podcast_id)
     |> Repo.update_all(set: [full_text: false])

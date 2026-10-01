@@ -153,6 +153,10 @@ defmodule Pan.Parser.Episode do
           Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
         end
 
+        # Pan.Job.PushMissingSearchIndex may have pushed the episode before
+        # its gigs existed
+        Pan.Search.Episode.reset([episode.id])
+
         Logger.info("Importing new episode: #{episode.title}")
 
       {:exists, _episode} ->
@@ -206,6 +210,7 @@ defmodule Pan.Parser.Episode do
     plain_episode_map = clean_episode(episode_map, first_enclosure.url)
 
     with {:ok, episode} <- insert_or_update(plain_episode_map, podcast.id) do
+      gigs_before = Pan.Search.Episode.gigs_data(episode.id)
       get_or_insert_enclosures(enclosures, episode.id)
 
       if episode_map[:chapters] do
@@ -219,6 +224,11 @@ defmodule Pan.Parser.Episode do
 
       if episode_map[:author] do
         Author.get_or_insert_persona_and_gig(episode_map.author, episode, podcast)
+      end
+
+      # the episode doc shows its gigs
+      if Pan.Search.Episode.gigs_data(episode.id) != gigs_before do
+        Pan.Search.Episode.reset([episode.id])
       end
 
       Logger.info("Updating episode: #{episode.title}")
