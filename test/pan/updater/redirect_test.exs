@@ -52,7 +52,7 @@ defmodule Pan.Updater.RedirectTest do
   end
 
   # the plug runs in the server process, so the URL is built up front
-  defp redirect(path, to) do
+  defp redirect(path, to, status \\ 301) do
     location = TestServer.url(to)
 
     TestServer.add(path,
@@ -60,7 +60,7 @@ defmodule Pan.Updater.RedirectTest do
       to: fn conn ->
         conn
         |> Plug.Conn.put_resp_header("location", location)
-        |> Plug.Conn.resp(301, "")
+        |> Plug.Conn.resp(status, "")
       end
     )
   end
@@ -97,6 +97,15 @@ defmodule Pan.Updater.RedirectTest do
 
       assert feed_url(feed) == TestServer.url("/new-feed.xml")
       assert alternate_urls(feed) == [TestServer.url("/feed.xml")]
+    end
+
+    test "a 307 temporary redirect is followed like any other", %{podcast: podcast, feed: feed} do
+      redirect("/feed.xml", "/new-feed.xml", 307)
+      serve("/new-feed.xml", @rss)
+
+      assert {:ok, _} = Pan.Updater.Podcast.import_new_episodes(podcast)
+
+      assert feed_url(feed) == TestServer.url("/new-feed.xml")
     end
 
     test "a redirect to the unchanged feed moves the feed URL too", %{

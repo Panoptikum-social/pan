@@ -7,7 +7,6 @@ defmodule Pan.Parser.Download do
     202 => "202: accepted",
     204 => "204: no content",
     304 => "304: not modified",
-    307 => "307: temporary redirect",
     400 => "400: bad request",
     401 => "401: unauthorized",
     402 => "402: payment required",
@@ -67,7 +66,6 @@ defmodule Pan.Parser.Download do
              202,
              204,
              304,
-             307,
              400,
              401,
              402,
@@ -108,7 +106,7 @@ defmodule Pan.Parser.Download do
         {:error, Map.get(@error_map, status_code)}
 
       {:ok, %Response{status_code: status_code, headers: headers}}
-      when status_code in [301, 302, 303, 308] ->
+      when status_code in [301, 302, 303, 307, 308] ->
         redirect(url, headers)
 
       {:ok, %Response{status_code: code}} ->
