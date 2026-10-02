@@ -176,7 +176,43 @@ defmodule Pan.Parser.Download do
   # caller that doesn't need to inspect the redirect chain itself) —
   # deliberately not the default here, since download/2 relies on redirects
   # *not* being auto-followed to detect and persist 301/etc. targets itself.
-  def get(url, extra_options \\ []) do
+  def get(url, extra_options \\ []), do: request(:get, url, extra_options)
+
+  # For callers that only need the status code, e.g. probing whether an
+  # episode enclosure still exists without downloading the whole audio file.
+  # Redirects are followed here rather than by hackney, because hackney 4
+  # turns HEAD into GET on 301/302/303 — which downloads the whole file.
+  @max_head_redirects 5
+
+  def head(url, extra_options \\ []) do
+    case Keyword.pop(extra_options, :follow_redirect, false) do
+      {true, options} -> follow_head(url, options, @max_head_redirects)
+      {false, options} -> request(:head, url, options)
+    end
+  end
+
+  defp follow_head(_url, _options, 0) do
+    {:error, %Error{reason: {:max_redirect, @max_head_redirects}}}
+  end
+
+  defp follow_head(url, options, hops_left) do
+    case request(:head, url, options) do
+      {:ok, %HTTPoison.Response{status_code: status, headers: headers}} = response
+      when status in 300..399 ->
+        case Enum.find(headers, fn {name, _value} -> String.downcase(name) == "location" end) do
+          {_name, location} ->
+            follow_head(url |> URI.merge(location) |> to_string(), options, hops_left - 1)
+
+          nil ->
+            response
+        end
+
+      response ->
+        response
+    end
+  end
+
+  defp request(method, url, extra_options) do
     with :ok <- SsrfGuard.check(url) do
       headers = [
         "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
@@ -184,11 +220,11 @@ defmodule Pan.Parser.Download do
 
       options = [recv_timeout: 10_000, timeout: 10_000] ++ extra_options
 
-      case HTTPoison.get(url, headers, options) do
+      case HTTPoison.request(method, url, "", headers, options) do
         {:error, %Error{id: nil, reason: {:tls_alert, {:handshake_failure, _description}}}} ->
           # Some servers' TLS 1.3 handling is incompatible with Erlang's client hello,
           # while TLS 1.2 negotiates fine (e.g. www.br50.org).
-          HTTPoison.get(url, headers, options ++ [ssl: [versions: [:"tlsv1.2"]]])
+          HTTPoison.request(method, url, "", headers, options ++ [ssl: [versions: [:"tlsv1.2"]]])
 
         response ->
           response

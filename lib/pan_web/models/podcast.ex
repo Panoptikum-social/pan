@@ -716,9 +716,37 @@ defmodule PanWeb.Podcast do
     |> Repo.all()
   end
 
+  @probe_deadline 10_000
+
   def get_deprecated(amount) do
+    # Podcasts belonging to any community must never be deleted by this
+    # mechanism (hard requirement, see backlog.md) — a podcast is
+    # community-affiliated if any of its categories belongs to a Community.
+    community_podcast_ids =
+      from(c in Community,
+        join: category in assoc(c, :category),
+        join: p in assoc(category, :podcasts),
+        select: p.id
+      )
+
+    deprecated_podcasts =
+      from(podcast in Podcast,
+        where:
+          podcast.retired == true and
+            podcast.id not in subquery(community_podcast_ids),
+        limit: ^amount,
+        order_by: [asc_nulls_first: podcast.last_build_date]
+      )
+      |> Repo.all()
+
+    podcast_ids = Enum.map(deprecated_podcasts, & &1.id)
+
+    # The ranking subquery must be restricted to these podcasts itself —
+    # the preload's own podcast_id filter only applies to the outer query,
+    # so unfiltered it ranks every episode in the database (seconds, not ms).
     ranked_episodes =
       from(episode in Episode,
+        where: episode.podcast_id in ^podcast_ids,
         select: %{
           id: episode.id,
           row_number: over(row_number(), :posts_partition)
@@ -745,29 +773,32 @@ defmodule PanWeb.Podcast do
         }
       )
 
-    # Podcasts belonging to any community must never be deleted by this
-    # mechanism (hard requirement, see backlog.md) — a podcast is
-    # community-affiliated if any of its categories belongs to a Community.
-    community_podcast_ids =
-      from(c in Community,
-        join: category in assoc(c, :category),
-        join: p in assoc(category, :podcasts),
-        select: p.id
-      )
+    deprecated_podcasts = Repo.preload(deprecated_podcasts, episodes: most_recent_episode)
 
-    deprecated_podcasts =
-      from(podcast in Podcast,
-        where:
-          podcast.retired == true and
-            podcast.id not in subquery(community_podcast_ids),
-        limit: ^amount,
-        order_by: [asc_nulls_first: podcast.last_build_date],
-        preload: [episodes: ^most_recent_episode]
-      )
-      |> Repo.all(timeout: 60_000)
-
+    # Probes run concurrently, each with a hard deadline: Download.get's
+    # recv_timeout is per chunk, so fetching a large enclosure from a slow
+    # but steady host never times out on its own and used to stall the
+    # whole page indefinitely.
     deprecated_podcasts
-    |> Enum.map(&probe_deprecated/1)
+    |> Task.async_stream(&probe_deprecated/1,
+      max_concurrency: amount,
+      timeout: @probe_deadline,
+      on_timeout: :kill_task
+    )
+    |> Enum.zip_with(deprecated_podcasts, fn
+      {:ok, probed_podcast}, _podcast ->
+        probed_podcast
+
+      # Not :timeout — that's a dead status code, and a deadline hit is just
+      # as likely a live host slowly serving a large enclosure, so this
+      # deliberately ends up as :inconclusive.
+      {:exit, :timeout}, podcast ->
+        Logger.info("Probing deprecated podcast #{podcast.id} exceeded the deadline")
+
+        podcast
+        |> Map.put(:feed_status_code, "probe deadline")
+        |> Map.put(:episode_status_code, "probe deadline")
+    end)
     |> Enum.map(&recommend_action/1)
   end
 
@@ -805,23 +836,25 @@ defmodule PanWeb.Podcast do
 
     feed_status_code =
       case Pan.Parser.Feed.get_by_podcast_id(dp.id) do
-        {:ok, feed} -> probe_url(feed.self_link_url)
+        {:ok, feed} -> probe_url(&Pan.Parser.Download.get/2, feed.self_link_url)
         {:error, _reason} -> nil
       end
 
-    episode_status_code = probe_url(Enum.at(dp.episodes, 0).url)
+    # HEAD only: the status code is all we need, and a GET would download
+    # the entire audio file.
+    episode_status_code = probe_url(&Pan.Parser.Download.head/2, Enum.at(dp.episodes, 0).url)
 
     dp
     |> Map.put(:feed_status_code, feed_status_code)
     |> Map.put(:episode_status_code, episode_status_code)
   end
 
-  # Pan.Parser.Download.get/2 instead of a raw HTTPoison call — same TLS
+  # Pan.Parser.Download instead of a raw HTTPoison call — same TLS
   # 1.3-handshake-quirk fallback retry and hackney-crash rescue the regular
   # feed-update path already benefits from, see backlog.md.
-  defp probe_url(url) do
+  defp probe_url(download_fun, url) do
     try do
-      case Pan.Parser.Download.get(url, follow_redirect: true) do
+      case download_fun.(url, follow_redirect: true) do
         {:ok, response} ->
           response.status_code
 
