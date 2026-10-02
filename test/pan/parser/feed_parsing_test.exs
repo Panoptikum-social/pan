@@ -617,7 +617,10 @@ defmodule Pan.Parser.FeedParsingTest do
           assert map.title == "Show"
         end)
 
-      assert log == ""
+      # capture_log also catches the other async tests' log lines, so only
+      # the old "Tag unknown:" entry is looked for, not an empty log
+      refute log =~ "Tag unknown"
+      refute log =~ "totally:unknown"
     end
 
     test "tags that used to be on the ignore list are skipped without a log entry" do
@@ -630,7 +633,9 @@ defmodule Pan.Parser.FeedParsingTest do
           assert episode.title == "Ep"
         end)
 
-      assert log == ""
+      refute log =~ "Tag unknown"
+      refute log =~ "itunes:block"
+      refute log =~ "googleplay:image"
     end
 
     test "a channel googleplay:author is still ignored" do
