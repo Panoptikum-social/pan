@@ -185,17 +185,20 @@ defmodule Pan.Updater.Podcast do
     |> Repo.update(force: true)
   end
 
+  # `>=`, not `==`: PanWeb.Podcast.record_metadata_refresh_failure/2 bumps the
+  # same counter without retiring, so it can step past 10 unnoticed.
   defp increase_failure_count_and_persist_error(podcast, message) do
-    Podcast.changeset(podcast, %{
-      failure_count: (podcast.failure_count || 0) + 1,
+    failure_count = (podcast.failure_count || 0) + 1
+
+    attrs = %{
+      failure_count: failure_count,
       last_error_message: message,
       last_error_occured: now()
-    })
-    |> Repo.update(force: true)
+    }
 
-    if podcast.failure_count == 9 do
-      Podcast.changeset(podcast, %{retired: true})
-      |> Repo.update(force: true)
-    end
+    attrs = if failure_count >= 10, do: Map.put(attrs, :retired, true), else: attrs
+
+    Podcast.changeset(podcast, attrs)
+    |> Repo.update(force: true)
   end
 end
