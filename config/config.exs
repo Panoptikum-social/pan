@@ -46,6 +46,11 @@ config :esbuild,
 
 config :pid_file, file: "./pan.pid"
 
+# hackney 4 prefers HTTP/2 via ALPN by default, and its HTTP/2 client stalls
+# on larger response bodies (e.g. a 4 MB feed that HTTP/1.1 fetches in 5 s
+# never completes). hackney 1 only ever spoke HTTP/1.1, so this keeps that.
+config :hackney, default_protocols: [:http1]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
