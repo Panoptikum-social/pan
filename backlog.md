@@ -82,8 +82,6 @@ true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
 uploads only.
 
 **Small known issues:**
-- Some feed servers answer 403 to Panoptikum's user agent, so the page reports
-  a failure although the feed is fine (2 of 12 sampled feeds).
 - A rule counts as passed when it had nothing to check (e.g. the enclosure
   rule on a feed with no episodes); consider hiding those from "Passed".
 - Library tests print an xmerl `[error] fatal` log line for the broken-XML
