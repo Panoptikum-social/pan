@@ -33,9 +33,15 @@ defmodule Pan.Updater.Feed do
     options = [recv_timeout: 15_000, timeout: 15_000, ssl: [verify: :verify_none]]
 
     case HTTPoison.head(feed.self_link_url, headers, options) do
-      {:ok, %HTTPoison.Response{headers: headers}} ->
+      # Only a 200 says anything about the feed itself: an unchanged ETag/
+      # Last-Modified ends the update as "nothing to do", which resets the
+      # failure count. Redirects and error pages go to the real fetch below.
+      {:ok, %HTTPoison.Response{status_code: 200, headers: headers}} ->
         headermap = Enum.into(headers, %{})
         check_headers(podcast, feed, headermap["ETag"], headermap["Last-Modified"])
+
+      {:ok, %HTTPoison.Response{}} ->
+        {:ok, "go on"}
 
       {:error, _error} ->
         # Some hosts reject/mishandle HEAD entirely while GET works fine —

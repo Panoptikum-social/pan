@@ -69,7 +69,10 @@ defmodule Pan.Updater.Podcast do
       {:error, message} ->
         handle_message(podcast, message, no_failure_count_increase)
 
+      # The feed answered and is unchanged — it's alive, so this counts as
+      # success for failure_count/retirement just like an actual import.
       {:done, "nothing to do"} ->
+        unpause_and_reset_failure_count(podcast)
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
   end
