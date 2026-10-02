@@ -109,7 +109,9 @@ defmodule Pan.MixProject do
       # Claude Code project integration (hooks, MCP servers incl. Tidewave, CLAUDE.md usage rules)
       {:claude, "~> 0.5.3", only: [:dev, :test]},
       # DOM parser required by Phoenix.LiveViewTest (live/2, render/1, ...)
-      {:lazy_html, ">= 0.1.0", only: :test}
+      {:lazy_html, ">= 0.1.0", only: :test},
+      # real local HTTP server for feed download/redirect tests
+      {:test_server, "~> 0.1.22", only: :test}
     ]
   end
 

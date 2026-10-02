@@ -53,7 +53,10 @@ defmodule Pan.Parser.Podcast do
          {:ok, _} <- send_download_message(podcast.id),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
          {:ok, _} <- send_parsing_message(podcast.id),
-         {:ok, map} <- RssFeed.import_to_map(feed.self_link_url, podcast.id),
+         # a redirect target is only tried in memory, see Feed.persist_redirect_target/2
+         url = List.first(visited_urls, feed.self_link_url),
+         {:ok, map} <- RssFeed.import_to_map(url, podcast.id),
+         {:ok, _} <- Feed.persist_redirect_target(podcast.id, visited_urls),
          {:ok, _} <- Persistor.update_from_feed(map, podcast, opts),
          {:ok, _} <- Pan.Updater.Podcast.unpause_and_reset_failure_count(podcast),
          {:ok, _} <- send_final_messages_to_browser(podcast) do
@@ -83,10 +86,7 @@ defmodule Pan.Parser.Podcast do
         {:error, "too many redirects"}
 
       true ->
-        case Feed.update_with_redirect_target(podcast.id, redirect_target) do
-          {:ok, _} -> update_from_feed(podcast, opts, [redirect_target | visited_urls])
-          {:error, message} -> {:error, message}
-        end
+        update_from_feed(podcast, opts, [redirect_target | visited_urls])
     end
   end
 

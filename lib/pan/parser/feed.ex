@@ -1,6 +1,6 @@
 defmodule Pan.Parser.Feed do
   alias Pan.Repo
-  alias Pan.Parser.AlternateFeed
+  alias Pan.Parser.{AlternateFeed, Helpers}
   alias PanWeb.Feed
 
   def get_or_insert(feed_map, podcast_id) do
@@ -24,6 +24,17 @@ defmodule Pan.Parser.Feed do
             {:ok, feed}
         end
     end
+  end
+
+  # The update paths fetch a redirect target in memory and only move the feed
+  # there once a feed was actually parsed from it — persisting every hop
+  # right away let a temporary redirect to a maintenance page or a homepage
+  # (wartung.wdr.de, app.screencast.com, ...) replace a working feed URL for
+  # good. visited_urls is the redirect chain of one update, latest first.
+  def persist_redirect_target(_id, []), do: {:ok, :no_redirect}
+
+  def persist_redirect_target(id, [redirect_target | _]) do
+    update_with_redirect_target(id, Helpers.to_255(redirect_target))
   end
 
   def update_with_redirect_target(id, redirect_target) do

@@ -1,6 +1,5 @@
 defmodule Pan.Updater.Podcast do
   alias Pan.Repo
-  alias Pan.Parser.Helpers
   alias Pan.Parser.{Download, Feed, Persistor}
   alias Pan.Updater.RssFeed
   alias PanWeb.Podcast
@@ -48,9 +47,12 @@ defmodule Pan.Updater.Podcast do
 
     with {:ok, _podcast} <- set_next_update(podcast, do_not_increase_update_interval),
          {:ok, feed} <- Feed.get_by_podcast_id(podcast.id),
+         # a redirect target is only tried in memory, see Feed.persist_redirect_target/2
+         feed = %{feed | self_link_url: List.first(visited_urls, feed.self_link_url)},
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
          {:ok, feed_xml} <- Download.download(feed.self_link_url),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
+         {:ok, _} <- Feed.persist_redirect_target(podcast.id, visited_urls),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
       notify({:ok, "imported"}, podcast)
@@ -72,6 +74,7 @@ defmodule Pan.Updater.Podcast do
       # The feed answered and is unchanged — it's alive, so this counts as
       # success for failure_count/retirement just like an actual import.
       {:done, "nothing to do"} ->
+        Feed.persist_redirect_target(podcast.id, visited_urls)
         unpause_and_reset_failure_count(podcast)
         {:ok, "Podcast #{podcast.id}: #{podcast.title}: nothing to do"}
     end
@@ -93,21 +96,15 @@ defmodule Pan.Updater.Podcast do
         handle_message(podcast, "too many redirects", no_failure_count_increase)
 
       true ->
-        case Feed.update_with_redirect_target(podcast.id, Helpers.to_255(redirect_target)) do
-          {:ok, _} ->
-            Logger.info("#{podcast.id} redirect -> #{redirect_target}")
+        Logger.info("#{podcast.id} redirect -> #{redirect_target}")
 
-            import_new_episodes(
-              podcast,
-              forced,
-              no_failure_count_increase,
-              do_not_increase_update_interval,
-              [redirect_target | visited_urls]
-            )
-
-          {:error, message} ->
-            handle_message(podcast, message, no_failure_count_increase)
-        end
+        import_new_episodes(
+          podcast,
+          forced,
+          no_failure_count_increase,
+          do_not_increase_update_interval,
+          [redirect_target | visited_urls]
+        )
     end
   end
 

@@ -29,6 +29,8 @@ defmodule Pan.Parser.SsrfGuard do
   """
   def check(url) do
     with %URI{host: host} when is_binary(host) and host != "" <- URI.parse(url),
+         # empty except in tests that fetch from a local TestServer
+         false <- host in Application.get_env(:pan, :ssrf_guard_allowed_hosts, []),
          {:ok, addresses} <- resolve(host) do
       if Enum.any?(addresses, &blocked_ip?/1) do
         Logger.warning("SSRF guard blocked #{url} (#{host} resolves to a blocked-range address)")
