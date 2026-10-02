@@ -865,6 +865,9 @@ defmodule PanWeb.Podcast do
             {:closed, ""} -> "closed"
             # hackney 4's name for what hackney 1 called max_redirect_overflow
             {:max_redirect, _} -> "max_redirect_overflow"
+            # e.g. hackney 4's {:stream_error, :protocol_error} — the template
+            # can't render tuples
+            _ when is_tuple(reason) -> inspect(reason)
             _ -> reason
           end
       end
