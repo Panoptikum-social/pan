@@ -152,7 +152,7 @@ defmodule PanWeb.Api.PodcastController do
         )
 
       !podcast.manually_updated_at or
-          time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() ->
+          time_shift(podcast.manually_updated_at, minutes: 5) |> in_the_past?() ->
         podcast
         |> Podcast.changeset(%{manually_updated_at: now()})
         |> Repo.update()
@@ -161,15 +161,15 @@ defmodule PanWeb.Api.PodcastController do
         show(conn, params, nil)
 
       true ->
-        minutes =
-          time_shift(podcast.manually_updated_at, minutes: 30)
-          |> time_diff(now(), :minutes)
+        seconds =
+          time_shift(podcast.manually_updated_at, minutes: 5)
+          |> time_diff(now(), :seconds)
 
         Helpers.send_error(
           conn,
           429,
           "Too many requests",
-          "The next update on this podcast is available in #{minutes} minutes."
+          "The next update on this podcast is available in #{seconds} seconds."
         )
     end
   end
@@ -210,7 +210,7 @@ defmodule PanWeb.Api.PodcastController do
 
   defp do_trigger_episode_update(conn, podcast, params) do
     if !podcast.manually_updated_at or
-         time_shift(podcast.manually_updated_at, minutes: 30) |> in_the_past?() do
+         time_shift(podcast.manually_updated_at, minutes: 5) |> in_the_past?() do
       Podcast.changeset(podcast, %{manually_updated_at: now()})
       |> Repo.update()
 
@@ -224,15 +224,15 @@ defmodule PanWeb.Api.PodcastController do
         {:error, message} -> send_504(conn, message)
       end
     else
-      minutes =
-        time_shift(podcast.manually_updated_at, minutes: 30)
-        |> time_diff(now(), :minutes)
+      seconds =
+        time_shift(podcast.manually_updated_at, minutes: 5)
+        |> time_diff(now(), :seconds)
 
       Helpers.send_error(
         conn,
         429,
         "Too many requests",
-        "The next update on this podcast is available in #{minutes} minutes."
+        "The next update on this podcast is available in #{seconds} seconds."
       )
     end
   end

@@ -49,7 +49,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         </p>
 
         <%= if !@podcast.manually_updated_at or
-              time_shift(@podcast.manually_updated_at, hours: 1) |> in_the_past? do %>
+              time_shift(@podcast.manually_updated_at, minutes: 5) |> in_the_past? do %>
           <div class="mt-4">
             <button
               phx-click="trigger-update"
@@ -75,7 +75,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               >
                 <h1 class="text-3xl">Info</h1>
                 <p class="mt-4">
-                  You can manually trigger a metadata update for this podcast once an hour,
+                  You can manually trigger a metadata update for this podcast every 5 minutes,
                   if you are impatient. This still will take some time, so keep track of
                   the status updates. And refresh the page with [F5] when told so..
                 </p>
@@ -93,10 +93,10 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         <% else %>
           <small>
             A manual update will be available in {time_diff(
-              time_shift(@podcast.manually_updated_at, hours: 1),
+              time_shift(@podcast.manually_updated_at, minutes: 5),
               now(),
-              :minutes
-            )} minutes.
+              :seconds
+            )} seconds.
           </small>
         <% end %>
         <div :if={is_nil(@podcast.user_id)} class="mt-4">

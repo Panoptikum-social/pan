@@ -47,18 +47,19 @@ defmodule PanWeb.Api.PodcastControllerTest do
   setup [:insert_user]
 
   describe "trigger_update/3" do
-    test "returns 429 when the podcast was manually updated less than 30 minutes ago", %{
+    test "returns 429 when the podcast was manually updated less than 5 minutes ago", %{
       conn: conn,
       token: token
     } do
-      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -5)})
+      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -2)})
 
-      conn =
+      error =
         authenticated_conn(conn, token)
         |> get(Routes.api_podcast_path(conn, :trigger_update, podcast.id))
+        |> first_error(429)
 
-      assert json_response(conn, 429)["errors"] |> List.first() |> Map.get("title") ==
-               "Too many requests"
+      assert error["title"] == "Too many requests"
+      assert error["detail"] =~ ~r/available in 1[78]\d seconds\.$/
     end
 
     test "returns 424 with the last error when the podcast is paused", %{
@@ -109,18 +110,19 @@ defmodule PanWeb.Api.PodcastControllerTest do
   end
 
   describe "trigger_episode_update/3" do
-    test "returns 429 when the podcast was manually updated less than 30 minutes ago", %{
+    test "returns 429 when the podcast was manually updated less than 5 minutes ago", %{
       conn: conn,
       token: token
     } do
-      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -5)})
+      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -2)})
 
-      conn =
+      error =
         authenticated_conn(conn, token)
         |> get(Routes.api_podcast_path(conn, :trigger_episode_update, podcast.id))
+        |> first_error(429)
 
-      assert json_response(conn, 429)["errors"] |> List.first() |> Map.get("title") ==
-               "Too many requests"
+      assert error["title"] == "Too many requests"
+      assert error["detail"] =~ ~r/available in 1[78]\d seconds\.$/
     end
 
     test "returns 424 with the last error when the podcast is paused", %{

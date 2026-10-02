@@ -32,6 +32,10 @@ defmodule Pan.Parser.MyDateTime do
     NaiveDateTime.add(naive_date_time, 86_400 * days, :second)
   end
 
+  def time_diff(first_date_time, second_date_time, :seconds) do
+    NaiveDateTime.diff(first_date_time, second_date_time)
+  end
+
   def time_diff(first_date_time, second_date_time, :minutes) do
     (NaiveDateTime.diff(first_date_time, second_date_time) / 60)
     |> round()
