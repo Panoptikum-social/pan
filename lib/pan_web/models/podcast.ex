@@ -775,13 +775,14 @@ defmodule PanWeb.Podcast do
 
     deprecated_podcasts = Repo.preload(deprecated_podcasts, episodes: most_recent_episode)
 
-    # Probes run concurrently, each with a hard deadline: Download.get's
+    # Probes run one at a time — concurrently, every probe on prod ran into
+    # the deadline. Each still gets a hard deadline: Download.get's
     # recv_timeout is per chunk, so fetching a large enclosure from a slow
     # but steady host never times out on its own and used to stall the
     # whole page indefinitely.
     deprecated_podcasts
     |> Task.async_stream(&probe_deprecated/1,
-      max_concurrency: amount,
+      max_concurrency: 1,
       timeout: @probe_deadline,
       on_timeout: :kill_task
     )
