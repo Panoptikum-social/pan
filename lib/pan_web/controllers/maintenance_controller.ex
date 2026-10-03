@@ -161,6 +161,10 @@ defmodule PanWeb.MaintenanceController do
       from(p in Podcast, where: p.retired == true)
       |> Repo.aggregate(:count)
 
+    retirement_candidates =
+      from(p in Podcast, where: p.failure_count >= 8 and not p.retired)
+      |> Repo.aggregate(:count)
+
     average_update_intervall =
       from(p in Podcast, where: not p.update_paused and not p.retired)
       |> Repo.aggregate(:avg, :update_intervall)
@@ -250,6 +254,7 @@ defmodule PanWeb.MaintenanceController do
       stale_podcasts: stale_podcasts,
       inactive_podcasts: inactive_podcasts,
       retired_podcasts: retired_podcasts,
+      retirement_candidates: retirement_candidates,
       average_update_intervall: average_update_intervall,
       total_podcasts: total_podcasts,
       total_episodes: total_episodes,
