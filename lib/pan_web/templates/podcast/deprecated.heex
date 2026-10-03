@@ -13,6 +13,7 @@
       <tr>
         <th>ID</th>
         <th>Title</th>
+        <th>Community</th>
         <th>Last build date</th>
         <th># Episodes</th>
         <th>Last Episode</th>
@@ -28,6 +29,9 @@
         <tr>
           <td>{deprecated_podcast.id}</td>
           <td>{deprecated_podcast.title}</td>
+          <td class="text-error font-bold">
+            {Enum.join(deprecated_podcast.community_ids, ", ")}
+          </td>
           <td>{deprecated_podcast.last_build_date}</td>
           <td>{deprecated_podcast.episodes_count}</td>
           <td>

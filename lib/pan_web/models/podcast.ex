@@ -719,27 +719,34 @@ defmodule PanWeb.Podcast do
   @probe_deadline 10_000
 
   def get_deprecated(amount) do
-    # Podcasts belonging to any community must never be deleted by this
-    # mechanism (hard requirement, see backlog.md) — a podcast is
-    # community-affiliated if any of its categories belongs to a Community.
-    community_podcast_ids =
-      from(c in Community,
-        join: category in assoc(c, :category),
-        join: p in assoc(category, :podcasts),
-        select: p.id
-      )
-
     deprecated_podcasts =
       from(podcast in Podcast,
-        where:
-          podcast.retired == true and
-            podcast.id not in subquery(community_podcast_ids),
+        where: podcast.retired == true,
         limit: ^amount,
         order_by: [asc_nulls_first: podcast.last_build_date]
       )
       |> Repo.all()
 
     podcast_ids = Enum.map(deprecated_podcasts, & &1.id)
+
+    # Community podcasts are listed, but flagged so they stand out — a
+    # podcast is community-affiliated if any of its categories belongs to a
+    # Community.
+    community_ids_by_podcast =
+      from(c in Community,
+        join: category in assoc(c, :category),
+        join: p in assoc(category, :podcasts),
+        where: p.id in ^podcast_ids,
+        distinct: true,
+        select: {p.id, c.id}
+      )
+      |> Repo.all()
+      |> Enum.group_by(&elem(&1, 0), &elem(&1, 1))
+
+    deprecated_podcasts =
+      Enum.map(deprecated_podcasts, fn podcast ->
+        Map.put(podcast, :community_ids, Map.get(community_ids_by_podcast, podcast.id, []))
+      end)
 
     # The ranking subquery must be restricted to these podcasts itself —
     # the preload's own podcast_id filter only applies to the outer query,
@@ -1079,6 +1086,10 @@ defmodule PanWeb.Podcast do
     cond do
       dp.feed_status_code == 200 ->
         Map.put(dp, :recommended_action, :unretire)
+
+      # Community podcasts are never recommended for deletion.
+      dp.community_ids != [] ->
+        Map.put(dp, :recommended_action, :inconclusive)
 
       dp.feed_status_code in @dead_status_codes and dp.episode_status_code in @dead_status_codes ->
         Map.put(dp, :recommended_action, :delete)
