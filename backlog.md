@@ -98,6 +98,24 @@ edit synchronously.
 community, i.e. has a row in `follows` with that `community_id` (the existing
 follow button). No separate community subscription.
 
+**Decided (2026-10-09):**
+- Sync: CodeMirror 6 with `y-codemirror.next` in the browser, `y_ex` (Yjs
+  CRDT, Rust NIF) on the server, over a Phoenix Channel, one process per open
+  pad. Rejected: Milkdown, a lock (one editor at a time), Quill, and binding
+  Yjs to the OverType textarea by hand.
+- Split view: editor left, preview right. The preview is rendered on the
+  server by the pad process with the existing `markdown/1` helper (MDEx +
+  `MarkdownWithoutImages`), debounced (~300 ms) and broadcast to everyone
+  viewing, so it matches the final display.
+- Mobile: Edit/Preview tabs below a breakpoint, two columns above it.
+- Rough scroll sync between editor and preview, by scroll percentage.
+- Existing markdown fields (curations, persona long descriptions) stay on
+  OverType.
+
+**Not discussed yet:** storage (Yjs state, markdown copy, or both), one pad
+per community or several, permissions (who reads, who edits, moderator or
+curator rights), history/revisions.
+
 ---
 
 ### Manticore sync: code paths never run yet (found 2026-10-01)
