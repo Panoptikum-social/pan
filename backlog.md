@@ -129,6 +129,34 @@ follow button). No separate community subscription.
     live and a restore can itself be undone by restoring again;
   - all snapshots are kept.
 
+**Accepted / out of scope:**
+- `y_ex` is a 0.x library with one main maintainer and a Rust NIF; risk
+  accepted.
+- A follower who unfollows while the pad is open is not kicked out of the
+  open session (not a real-world issue).
+- Prod is a single server, so one process per pad needs no cross-node
+  coordination.
+
+**Roadmap (estimate 2–3 weeks of focused work):**
+0. Trial (½ day): two browsers editing one pad through a channel with
+   `y_ex`, in dev and in a prod-like release build.
+1. Data model and pad management (1–2 days): pads and snapshots tables;
+   moderators create pads and toggle read only; follower-only access.
+2. Collaboration core (3–5 days): first Phoenix Channel in the app, one
+   process per open pad holding the Yjs document, cursors/presence, saving
+   the Yjs state and markdown copy, stopping when idle, read-only reaching
+   open editors.
+3. Browser side (2–3 days): CodeMirror 6 + Yjs + channel connector via the
+   existing esbuild/`package.json`; split view, mobile tabs, scroll sync.
+4. Server-rendered preview (½ day).
+5. Snapshots (1–2 days): idle timer, snapshot on last leave, "Save version"
+   button, version list, restore.
+6. Tests and deploy (2–3 days): channel tests with several clients,
+   permission tests, NIF loading in the prod build.
+
+A first usable version could be steps 0–4 without scroll sync (about 1½–2
+weeks), with snapshots following.
+
 ---
 
 ### Manticore sync: code paths never run yet (found 2026-10-01)
