@@ -88,3 +88,24 @@ uploads only.
   test (Pan silences that via `Pan.LoggerFilters`, the library doesn't).
 - Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
 
+---
+
+### Project #3: community pads (found 2026-10-09)
+A pad is basically a markdown field that several users of a community can
+edit synchronously.
+
+**User of the community** (decided 2026-10-09): a user who follows the
+community, i.e. has a row in `follows` with that `community_id` (the existing
+follow button). No separate community subscription.
+
+---
+
+### Manticore sync: code paths never run yet (found 2026-10-01)
+The Manticore index sync overhaul (2026-10-01) is deployed, but these paths
+have only been compiled, never exercised:
+- category merge
+- persona merge and delete
+- the API persona endpoints
+- the persona thumbnail job
+- the admin orphan button (`Pan.Search.delete_orphans/2`)
+
