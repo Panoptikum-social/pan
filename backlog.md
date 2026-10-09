@@ -116,8 +116,11 @@ follow button). No separate community subscription.
 - Several pads per community, each with a title that is unique within its
   community and serves as the key.
 - Permissions, for the beginning: every follower of the community can read
-  and edit its pads; visitors (and non-followers) don't see them. Moderators
-  create pads.
+  and edit its pads; visitors (and non-followers) don't see them. Only
+  moderators of that particular community create pads. Being a moderator
+  gives no read/edit access without following the community.
+- A moderator of the community can set a pad to read only and back to
+  editable. Read only freezes the pad for everybody, moderators included.
 - Snapshots (markdown text only):
   - automatic, after about 5 minutes without edits or when the last person
     leaves the pad, skipped if nothing changed;
