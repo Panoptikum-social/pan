@@ -111,10 +111,20 @@ follow button). No separate community subscription.
 - Rough scroll sync between editor and preview, by scroll percentage.
 - Existing markdown fields (curations, persona long descriptions) stay on
   OverType.
-
-**Not discussed yet:** storage (Yjs state, markdown copy, or both), one pad
-per community or several, permissions (who reads, who edits, moderator or
-curator rights), history/revisions.
+- Storage: keep both the Yjs state (for editing) and a markdown copy (for
+  display and search). There won't be many pads.
+- Several pads per community, each with a title that is unique within its
+  community and serves as the key.
+- Permissions, for the beginning: every follower of the community can read
+  and edit its pads; visitors (and non-followers) don't see them. Moderators
+  create pads.
+- Snapshots (markdown text only):
+  - automatic, after about 5 minutes without edits or when the last person
+    leaves the pad, skipped if nothing changed;
+  - a "Save version" button with an optional note;
+  - restoring replaces the text as a normal edit, so people editing see it
+    live and a restore can itself be undone by restoring again;
+  - all snapshots are kept.
 
 ---
 
