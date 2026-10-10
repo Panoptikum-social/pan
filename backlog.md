@@ -168,3 +168,20 @@ have only been compiled, never exercised:
 - the persona thumbnail job
 - the admin orphan button (`Pan.Search.delete_orphans/2`)
 
+---
+
+### Podcast metadata refresh rejected on duplicate title (found 2026-10-02)
+`Persistor.update_from_feed/3` (monthly `RefreshPodcastMetadata` and the
+manual "update from feed" buttons) fails with "title: has already been taken"
+when a feed's new title is already used by another podcast (367 active
+podcasts on 2026-10-02; some errors may be stale). Cause: the unique index on
+`podcasts.title`. Different podcasts now share generic feed titles (LingQ
+language variants, TMW Radio, "Upstream"). Episodes still import; only the
+metadata refresh fails.
+
+Not decided yet. Options:
+1. On a clash, drop the title from the changes and refresh everything else.
+2. Drop the unique title constraint; first import
+   (`Pan.Parser.Podcast.get_or_insert/1`) must then identify podcasts by feed
+   URL instead of title.
+3. Make the title unique with a suffix.
