@@ -27,10 +27,6 @@ defmodule PanWeb.Live.Episode.RecommendationList do
     |> URI.encode_www_form()
   end
 
-  defp facebook(episode, recommendation) do
-    episode.title <> "%0A" <> truncate_string(recommendation.comment, 220)
-  end
-
   attr :current_user_id, :integer, required: true
   attr :episode, :map, required: true
   attr :changeset, :map, required: true
@@ -72,11 +68,6 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                         class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white"
                         alt="tweet it"
                       >tweet</a>
-                      <a
-                        href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@episode, recommendation)}"}
-                        class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white"
-                        alt="post on facebook"
-                      >fb</a>
                       <a
                         href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
                         class="bg-grass-light px-2 py-1 my-4 rounded-xl text-white"

@@ -81,7 +81,6 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
       base: PanWeb.Endpoint.url() <> "/web-player/",
       share: %{
         channels: [
-          "facebook",
           "twitter",
           "whats-app",
           "linkedin",

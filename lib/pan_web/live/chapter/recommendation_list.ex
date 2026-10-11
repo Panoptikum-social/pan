@@ -13,10 +13,6 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
     |> URI.encode_www_form()
   end
 
-  defp facebook(chapter, recommendation) do
-    chapter.title <> "%0A" <> truncate_string(recommendation.comment, 220)
-  end
-
   attr :current_user_id, :integer, required: true
   attr :chapter, :map, required: true
   attr :episode, :map, required: true
@@ -44,11 +40,6 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
                 class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white"
                 alt="tweet it"
               >tweet</a>
-              <a
-                href={"https://www.facebook.com/sharer/sharer.php?u=#{social_url(@episode)}&quote=#{facebook(@chapter, recommendation)}"}
-                class="bg-blue-jeans hover:bg-blue-jeans-light px-2 py-1 my-4 rounded-xl text-white"
-                alt="post on facebook"
-              >fb</a>
               <a
                 href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
                 class="bg-grass px-2 py-1 my-4 rounded-xl text-white"

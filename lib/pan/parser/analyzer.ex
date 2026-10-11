@@ -489,7 +489,6 @@ defmodule Pan.Parser.Analyzer do
   def call("episode-contributor", [:"atom:email", _, []]), do: %{}
   def call("episode-contributor", [:"atom:email", _, [value]]), do: %{email: value}
   def call("episode-contributor", [:"panoptikum:pid", _, [value]]), do: %{pid: value}
-  def call("episode-contributor", [:"atom:facebook", _, _]), do: %{}
 
   def call("owner", [:"itunes:name", _, []]), do: %{}
 
