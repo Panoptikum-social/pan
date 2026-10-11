@@ -1,6 +1,6 @@
 import Config
 
-# Pan.Repo, :bot, and Pan.Mailer are configured in config/runtime.exs now
+# Pan.Repo and Pan.Mailer are configured in config/runtime.exs now
 # (env-var driven, one convention shared with qa/prod).
 
 config :pan, :environment, "dev"

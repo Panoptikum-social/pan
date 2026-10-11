@@ -46,10 +46,6 @@ defmodule PanWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  pipeline :bot do
-    plug(:accepts, ["json"])
-  end
-
   pipeline :admin_layout do
     plug(:put_layout, html: {PanWeb.LayoutView, :admin})
   end
@@ -145,13 +141,6 @@ defmodule PanWeb.Router do
   scope "/jsonapi/moderator", PanWeb.Api, as: :api do
     pipe_through([:json_api, :authenticate_api_moderator])
     # no moderator specific api routes defined yet
-  end
-
-  scope "/bot", PanWeb do
-    pipe_through(:bot)
-
-    get("/webhook", BotController, :webhook)
-    post("/webhook", BotController, :message)
   end
 
   scope "/search", PanWeb do

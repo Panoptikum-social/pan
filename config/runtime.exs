@@ -23,13 +23,6 @@ if config_env() == :dev do
     show_sensitive_data_on_connection_error: true,
     pool_size: 10
 
-  # Legacy Facebook Messenger bot integration (see lib/pan/bot.ex) — nil when
-  # unset is fine, it's only read by the handful of functions in that module,
-  # never at boot.
-  config :pan, :bot,
-    fb_access_token: System.get_env("PAN_BOT_FB_ACCESS_TOKEN"),
-    host: System.get_env("PAN_BOT_HOST")
-
   # Dev never actually sends real mail — this used to be real SMTP creds in
   # dev.secret.exs, but dev.exs unconditionally overrode the adapter to
   # Local afterwards, so those creds (the same password as prod's mailer)
