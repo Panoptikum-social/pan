@@ -1,6 +1,7 @@
 defmodule PanWeb.MaintenanceController do
   use PanWeb, :controller
   import Pan.Parser.MyDateTime, only: [now: 0]
+  import PanWeb.MaintenanceView, only: [delimit_integer: 2]
 
   alias PanWeb.{
     Category,
@@ -151,7 +152,6 @@ defmodule PanWeb.MaintenanceController do
             not p.retired
       )
       |> Repo.aggregate(:count)
-      |> delimit_integer(" ")
 
     inactive_podcasts =
       from(p in Podcast, where: p.update_paused == true and not p.retired)
@@ -193,7 +193,6 @@ defmodule PanWeb.MaintenanceController do
     unindexed_episodes =
       from(e in Episode, where: not e.full_text)
       |> Repo.aggregate(:count, timeout: :timer.minutes(10))
-      |> delimit_integer(" ")
 
     podcasts_per_hour =
       (Repo.aggregate(Podcast, :count, :id) - inactive_podcasts)
@@ -238,14 +237,6 @@ defmodule PanWeb.MaintenanceController do
       from(p in Podcast, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
 
-    podcasts_with_zero_publication_frequency =
-      from(p in Podcast,
-        where:
-          p.publication_frequency == 0.0 and
-            p.episodes_count > 1
-      )
-      |> Repo.aggregate(:count)
-
     personas_without_image =
       from(p in Persona, where: not p.thumbnailed and not is_nil(p.image_url))
       |> Repo.aggregate(:count)
@@ -279,23 +270,7 @@ defmodule PanWeb.MaintenanceController do
       personas_without_image: personas_without_image,
       feeds_without_headers: feeds_without_headers,
       feeds_with_etag: feeds_with_etag,
-      feeds_with_last_modified: feeds_with_last_modified,
-      podcasts_with_zero_publication_frequency: podcasts_with_zero_publication_frequency
+      feeds_with_last_modified: feeds_with_last_modified
     )
-  end
-
-  defp delimit_integer(number, delimiter) do
-    abs(number)
-    |> Integer.to_charlist()
-    |> :lists.reverse()
-    |> delimit_integer(delimiter, [])
-  end
-
-  defp delimit_integer([a, b, c, d | tail], delimiter, acc) do
-    delimit_integer([d | tail], delimiter, [delimiter, c, b, a | acc])
-  end
-
-  defp delimit_integer(list, _, acc) do
-    :lists.reverse(list) ++ acc
   end
 end
