@@ -120,6 +120,47 @@ defmodule PanWeb.Feed do
     end
   end
 
+  # For the first import, which decides on its own whether a feed is already
+  # known: only an exact match of one of `urls` (http and https count as the
+  # same) with a feed URL or an alternate feed URL. Unlike direct_matching/1
+  # no substring and no website match, a wrong match would merge two podcasts.
+  def exact_matching(urls) do
+    bare_urls = Enum.map(urls, &(&1 |> String.trim() |> String.replace(~r/^https?:\/\//i, "")))
+
+    from(f in Feed,
+      where:
+        fragment("regexp_replace(trim(?), '^https\\?://', '', 'i')", f.self_link_url) in ^bare_urls,
+      order_by: f.id,
+      limit: 1
+    )
+    |> Repo.one() ||
+      from(a in AlternateFeed,
+        join: f in assoc(a, :feed),
+        where: fragment("regexp_replace(trim(?), '^https\\?://', '', 'i')", a.url) in ^bare_urls,
+        order_by: f.id,
+        select: f,
+        limit: 1
+      )
+      |> Repo.one()
+  end
+
+  # Another podcast's feed with the same URL (http and https count as the
+  # same): a double import, or a podcast whose feed was redirected to its
+  # successor's ("Holding Court" -> "Sixers Talk").
+  def other_feed_with_same_url(%Feed{id: id, self_link_url: url}) do
+    bare_url = url |> String.trim() |> String.replace(~r/^https?:\/\//i, "")
+
+    from(f in Feed,
+      where:
+        f.id != ^id and
+          fragment("regexp_replace(trim(?), '^https\\?://', '', 'i')", f.self_link_url) ==
+            ^bare_url,
+      order_by: f.id,
+      limit: 1
+    )
+    |> Repo.one()
+  end
+
   def get_by_id(id) do
     Repo.get!(Feed, id)
   end

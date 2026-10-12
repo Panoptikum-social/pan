@@ -15,7 +15,11 @@ defmodule Pan.Parser.Persistor do
     PodcastContributor
   }
 
-  def initial_import(map, _url \\ nil) do
+  # podcast_id: nil for the first page of a feed, the podcast of the first
+  # page for the following ones; feed_urls: the URLs the feed was fetched
+  # from, see Pan.Parser.Podcast.get_or_insert/3. Returns {:ok, podcast_id},
+  # or {:error, {:known_feed, podcast_id}} for a feed that is already known.
+  def initial_import(map, podcast_id, feed_urls) do
     podcast_map =
       Map.drop(map, [
         :episodes,
@@ -32,32 +36,33 @@ defmodule Pan.Parser.Persistor do
     feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
-    {:ok, podcast} = Podcast.get_or_insert(podcast_map)
-    Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+    with {:ok, podcast} <- Podcast.get_or_insert(podcast_map, podcast_id, feed_urls) do
+      Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
 
-    {:ok, feed} = Feed.get_or_insert(feed_map, podcast.id)
+      {:ok, feed} = Feed.get_or_insert(feed_map, podcast.id)
 
-    Category.persist_many(map[:categories], podcast)
-    AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
+      Category.persist_many(map[:categories], podcast)
+      AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)
 
-    Language.persist_many(map[:languages], podcast)
+      Language.persist_many(map[:languages], podcast)
 
-    map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+      map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
 
-    map["managing_editor"] &&
-      PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
+      map["managing_editor"] &&
+        PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
 
-    Contributor.persist_many(map[:contributors], podcast)
+      Contributor.persist_many(map[:contributors], podcast)
 
-    if map[:episodes] do
-      Episode.persist_many(map[:episodes], podcast)
+      if map[:episodes] do
+        Episode.persist_many(map[:episodes], podcast)
 
-      PanWeb.Podcast.changeset(podcast)
-      |> PanWeb.Podcast.update_counters()
-      |> Repo.update()
+        PanWeb.Podcast.changeset(podcast)
+        |> PanWeb.Podcast.update_counters()
+        |> Repo.update()
+      end
+
+      {:ok, podcast.id}
     end
-
-    podcast.id
   end
 
   def delta_import(map, podcast) do
@@ -107,29 +112,46 @@ defmodule Pan.Parser.Persistor do
 
     episode_podcast_data = Pan.Search.Episode.podcast_data(podcast.id)
     persona_ids = Pan.Search.Persona.ids_for_podcast(podcast.id)
+    {:ok, feed} = Feed.get_by_podcast_id(podcast.id)
+    shared_feed = PanWeb.Feed.other_feed_with_same_url(feed)
 
-    case PanWeb.Podcast.changeset(podcast, podcast_map) |> Repo.update() do
-      {:ok, podcast} ->
-        result =
-          continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts)
+    with :ok <- check_title_takeover(podcast, podcast_map[:title], shared_feed),
+         {:ok, podcast} <- PanWeb.Podcast.changeset(podcast, podcast_map) |> Repo.update() do
+      result =
+        continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts)
 
-        if Pan.Search.Episode.podcast_data(podcast.id) != episode_podcast_data do
-          Pan.Search.Episode.reset_for_podcast(podcast.id)
-        end
+      if Pan.Search.Episode.podcast_data(podcast.id) != episode_podcast_data do
+        Pan.Search.Episode.reset_for_podcast(podcast.id)
+      end
 
-        # personas before and after: gigs/engagements may have been added or
-        # dropped, and the podcast title in their docs may have changed
-        Pan.Search.Persona.reset(persona_ids ++ Pan.Search.Persona.ids_for_podcast(podcast.id))
+      # personas before and after: gigs/engagements may have been added or
+      # dropped, and the podcast title in their docs may have changed
+      Pan.Search.Persona.reset(persona_ids ++ Pan.Search.Persona.ids_for_podcast(podcast.id))
 
-        result
-
-      {:error, changeset} ->
-        # e.g. a feed that started serving something else entirely (a
-        # WordPress comments feed, say) can hand us a title that collides
-        # with another podcast's — don't let one bad metadata refresh crash
-        # the whole job, report it and move on.
+      result
+    else
+      # e.g. a feed without a title — don't let one bad metadata refresh
+      # crash the whole job, report it and move on.
+      {:error, %Ecto.Changeset{} = changeset} ->
         {:error, "Podcast #{podcast.id} update rejected: #{format_changeset_errors(changeset)}"}
+
+      {:error, message} ->
+        {:error, message}
     end
+  end
+
+  # With a feed shared with another podcast, a new title is most likely the
+  # other podcast's, e.g. an old feed redirected to its successor ("Holding
+  # Court" -> "Sixers Talk"); taking it over would turn this podcast into a
+  # copy of the other one.
+  defp check_title_takeover(_podcast, _title, nil), do: :ok
+  defp check_title_takeover(_podcast, nil, _shared_feed), do: :ok
+  defp check_title_takeover(%{title: title}, title, _shared_feed), do: :ok
+
+  defp check_title_takeover(podcast, title, shared_feed) do
+    {:error,
+     "Podcast #{podcast.id} update rejected: its feed also belongs to podcast " <>
+       "#{shared_feed.podcast_id}, the title #{inspect(title)} is not taken over"}
   end
 
   defp continue_update_from_feed(podcast, map, feed_map, alternate_feeds_map, image_url, opts) do

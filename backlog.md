@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-09-26.
+2026-10-12.
 
 ---
 
@@ -157,18 +157,58 @@ weeks), with snapshots following.
 
 ---
 
-### Podcast metadata refresh rejected on duplicate title (found 2026-10-02)
-`Persistor.update_from_feed/3` (monthly `RefreshPodcastMetadata` and the
-manual "update from feed" buttons) fails with "title: has already been taken"
-when a feed's new title is already used by another podcast (367 active
-podcasts on 2026-10-02; some errors may be stale). Cause: the unique index on
-`podcasts.title`. Different podcasts now share generic feed titles (LingQ
-language variants, TMW Radio, "Upstream"). Episodes still import; only the
-metadata refresh fails.
+### Succession check: old feed redirected to a new show (found 2026-10-12)
+Some publishers retire podcast A and redirect its feed to their new podcast B
+to win the listeners over. Today the episode updater follows the redirect and
+copies B's episodes into A (e.g. 38578 "Holding Court" has received every
+"Sixers Talk" episode since 2019; 34909 is "Sixers Talk" itself). Since
+2026-10-12 the monthly refresh at least no longer gives A the title of a
+podcast it shares its feed URL with.
 
-Not decided yet. Options:
-1. On a clash, drop the title from the changes and refresh everything else.
-2. Drop the unique title constraint; first import
-   (`Pan.Parser.Podcast.get_or_insert/1`) must then identify podcasts by feed
-   URL instead of title.
-3. Make the title unique with a suffix.
+**Decided (2026-10-12):** check at the moment of a redirect in the episode
+updater (`Feed.persist_redirect_target` in `Pan.Updater.Podcast`, and
+`<itunes:new-feed-url>` via `Feed.update_with_redirect_target`), comparing the
+episode titles of the new feed with the stored episodes:
+- at least 50 % known: a move or rename, continue as today;
+- at most 10 % known: a succession. A stays unchanged and is not retired (as
+  long as its feed parses), the redirect is not saved, and B's URL goes into
+  the feed backlog once (an admin decides; protects against takeovers, e.g.
+  via a bought domain);
+- in between: not decided automatically, shown to the admin (duplicates page).
+
+A different show on the *same* URL (no redirect) is covered by the import:
+importing a known feed URL is refused with an error naming the podcast; the
+admin deletes the old podcast (good faith) and imports again, or deletes the
+backlog entry (malicious).
+
+---
+
+### Duplicates page and podcast merge (found 2026-10-12)
+Different podcasts may share a title since 2026-10-12 (unique index dropped);
+the first import identifies a podcast only by its exact feed URL ("if in
+doubt, import twice"). Duplicates are found and merged by hand afterwards.
+The current `/admin/podcasts/duplicates` only lists feeds with an identical
+URL.
+
+**Duplicates page**, each signal shown separately:
+- same feed URL;
+- one podcast's feed URL is another's alternate feed;
+- same title and overlapping episode GUIDs (format feeds: mp3/aac/ogg/opus of
+  one show share GUIDs);
+- same title and overlapping episode titles or enclosure filenames;
+- same title only (for information, e.g. "Deportes", "Embedded").
+Successions (see above) are shown apart, merging them would be wrong.
+
+**Merge B into A:** B's feed URL and alternate feeds become alternate feeds of
+A; an episode with a matching GUID in A only moves its enclosures, others move
+as a whole; subscriptions, likes, follows, recommendations, categories,
+communities/curations, engagements, gigs and chapters are moved or
+de-duplicated (the DB foreign keys don't cascade); the search index is
+cleaned up; B is deleted.
+
+**Already mixed up** (title-based imports until 2026-10-12): different shows
+merged into one podcast, e.g. 40663 "Deportes" (ivoox talk show + 100 RFI
+episodes), 21986 "Embedded" (embedded.fm + 26 NPR episodes), probably 20151
+"Interface"; podcasts copying a successor's episodes ("Holding Court"); about
+215 true URL duplicates among the 367 podcasts whose refresh failed on the
+title.

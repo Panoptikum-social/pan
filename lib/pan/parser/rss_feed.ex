@@ -9,31 +9,46 @@ defmodule Pan.Parser.RssFeed do
   @max_redirects 5
 
   def initial_import(url, feed_id \\ 0, pagecount \\ 1) do
-    initial_import(url, feed_id, pagecount, [])
+    initial_import(url, feed_id, pagecount, [], nil)
   end
 
-  defp initial_import(url, feed_id, pagecount, visited_urls) do
-    case import_to_map(url, feed_id) do
-      {:ok, map} ->
-        podcast_id = Persistor.initial_import(map, url)
-        next_page_url = map[:feed][:next_page_url]
-        pagecount = pagecount + 1
+  # podcast_id is nil for the first page and the podcast that page created or
+  # found for the following pages, see Pan.Parser.Podcast.get_or_insert/3.
+  defp initial_import(url, feed_id, pagecount, visited_urls, podcast_id) do
+    with {:ok, map} <- import_to_map(url, feed_id),
+         {:ok, podcast_id} <- Persistor.initial_import(map, podcast_id, [url | visited_urls]) do
+      next_page_url = map[:feed][:next_page_url]
+      pagecount = pagecount + 1
 
-        if next_page_url != nil and pagecount < 26 do
-          initial_import(next_page_url, feed_id, pagecount, [])
-        end
+      if next_page_url != nil and pagecount < 26 do
+        initial_import(next_page_url, feed_id, pagecount, [], podcast_id)
+      end
 
-        {:ok, podcast_id}
+      {:ok, podcast_id}
+    else
+      {:redirect, redirect_target} ->
+        follow_initial_import_redirect(
+          url,
+          feed_id,
+          pagecount,
+          visited_urls,
+          redirect_target,
+          podcast_id
+        )
 
       {:error, error} ->
         {:error, error}
-
-      {:redirect, redirect_target} ->
-        follow_initial_import_redirect(url, feed_id, pagecount, visited_urls, redirect_target)
     end
   end
 
-  defp follow_initial_import_redirect(url, feed_id, pagecount, visited_urls, redirect_target) do
+  defp follow_initial_import_redirect(
+         url,
+         feed_id,
+         pagecount,
+         visited_urls,
+         redirect_target,
+         podcast_id
+       ) do
     cond do
       redirect_target in visited_urls ->
         {:error, "loop detected"}
@@ -42,7 +57,7 @@ defmodule Pan.Parser.RssFeed do
         {:error, "too many redirects"}
 
       true ->
-        case initial_import(redirect_target, feed_id, pagecount, [url | visited_urls]) do
+        case initial_import(redirect_target, feed_id, pagecount, [url | visited_urls], podcast_id) do
           {:ok, podcast_id} ->
             feed = Pan.Repo.get_by(PanWeb.Feed, podcast_id: podcast_id)
             AlternateFeed.get_or_insert(feed.id, %{url: url})

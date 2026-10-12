@@ -120,6 +120,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
               CategoryPodcast.get_or_insert(category_id, podcast_id)
               put_flash(socket, :info, "New podcast imported and added to your moderation.")
 
+            {:error, {:known_feed, podcast_id}} ->
+              put_flash(socket, :error, Pan.Parser.Podcast.known_feed_message(podcast_id))
+
             {:error, error} ->
               put_flash(socket, :error, "Could not import that feed: #{error}")
           end

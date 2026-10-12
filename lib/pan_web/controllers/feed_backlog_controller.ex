@@ -96,6 +96,13 @@ defmodule PanWeb.FeedBacklogController do
         |> put_flash(:info, "Feed imported successfully.")
         |> redirect(to: podcast_frontend_path(conn, :show, podcast_id))
 
+      # kept in the backlog: the admin may delete the known podcast and
+      # import again
+      {:error, {:known_feed, podcast_id}} ->
+        conn
+        |> put_flash(:error, Pan.Parser.Podcast.known_feed_message(podcast_id))
+        |> redirect(to: feed_backlog_path(conn, :show, feed_backlog))
+
       {:error, error} ->
         Repo.delete!(feed_backlog)
 

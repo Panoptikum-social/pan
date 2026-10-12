@@ -15,8 +15,16 @@ defmodule Pan.Parser.Podcast do
   # unbounded, seen live hammering a feed several times a second.
   @max_redirects 5
 
-  def get_or_insert(podcast_map) do
-    case Repo.get_by(Podcast, title: podcast_map[:title]) do
+  # Pages 2 to 25 of a paged feed belong to the podcast page 1 created.
+  # Page 1 refuses a feed that is already known by one of the URLs it was
+  # fetched from (including the ones before redirects), so an admin decides
+  # what to do with it. Never by title: different podcasts share titles, and
+  # matching on it merged them.
+  def get_or_insert(_podcast_map, podcast_id, _feed_urls) when is_integer(podcast_id),
+    do: {:ok, Repo.get!(Podcast, podcast_id)}
+
+  def get_or_insert(podcast_map, nil, feed_urls) do
+    case PanWeb.Feed.exact_matching(feed_urls) do
       nil ->
         %Podcast{
           update_intervall: 10,
@@ -31,9 +39,16 @@ defmodule Pan.Parser.Podcast do
         |> Map.merge(podcast_map)
         |> Repo.insert()
 
-      podcast ->
-        {:ok, podcast}
+      feed ->
+        {:error, {:known_feed, feed.podcast_id}}
     end
+  end
+
+  def known_feed_message(podcast_id) do
+    title = Repo.get(Podcast, podcast_id).title
+
+    "This feed is already known as podcast #{podcast_id} \"#{title}\". " <>
+      "If the new import should replace it, delete that podcast first."
   end
 
   # opts[:skip_episodes]: true skips the episode-pruning step inside

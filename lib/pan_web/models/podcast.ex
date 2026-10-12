@@ -131,7 +131,6 @@ defmodule PanWeb.Podcast do
       :last_error_occured
     ])
     |> validate_required([:title, :update_intervall, :next_update])
-    |> unique_constraint(:title)
   end
 
   def like(podcast_id, user_id) do
