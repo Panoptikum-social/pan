@@ -183,6 +183,37 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     end)
   end
 
+  test "fetches the current title of a shared feed on demand", %{conn: conn} do
+    Application.put_env(:pan, :ssrf_guard_allowed_hosts, ["localhost"])
+    on_exit(fn -> Application.delete_env(:pan, :ssrf_guard_allowed_hosts) end)
+    {:ok, _} = TestServer.start()
+
+    TestServer.add("/sixers.xml",
+      via: :get,
+      to:
+        &Plug.Conn.resp(
+          &1,
+          200,
+          ~s(<?xml version="1.0"?><rss version="2.0"><channel><title>Sixers Talk</title></channel></rss>)
+        )
+    )
+
+    url = TestServer.url("/sixers.xml")
+    insert_podcast("Holding Court", url)
+    insert_podcast("Sixers Talk (old import)", url)
+
+    {:ok, view, _html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=same_feed_url")
+
+    render_async(view)
+    key = String.replace(url, ~r/^https?:\/\//, "")
+
+    assert render_click(view, "fetch_feed_title", %{"key" => key, "url" => url}) =~
+             "Fetching feed title"
+
+    assert eventually(fn -> render(view) =~ "Feed title: <strong>Sixers Talk</strong>" end)
+  end
+
   test "is for admins only", %{conn: conn} do
     assert {:error, {:redirect, _}} =
              live(as(conn, insert_user(admin: false)), "/admin/podcasts/duplicates")

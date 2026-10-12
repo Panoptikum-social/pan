@@ -8,7 +8,9 @@ defmodule PanWeb.PodcastDuplicates do
   """
 
   import Ecto.Query
+  alias Pan.Parser.Download
   alias Pan.Repo
+  alias Pan.Updater.RssFeed
   alias PanWeb.{AlternateFeed, Feed, Podcast}
 
   @bare_url "regexp_replace(trim(?), '^https\\?://', '', 'i')"
@@ -68,6 +70,27 @@ defmodule PanWeb.PodcastDuplicates do
       preload: ^[feeds: [alternate_feeds: newest_first()]]
     )
     |> Repo.all()
+  end
+
+  @doc """
+  The channel title the feed at `url` delivers right now, or a short note if
+  it delivers no feed. One request, on demand from the duplicates page:
+  podcasts sharing a feed keep their own titles (the metadata refresh doesn't
+  take over a new one), so this shows what the feed actually says.
+  """
+  def current_feed_title(url) do
+    case Download.get(url, follow_redirect: true) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        if String.contains?(body, "<rss"),
+          do: elem(RssFeed.titles(body), 0) || "(feed without a title)",
+          else: "(no feed: not RSS)"
+
+      {:ok, %HTTPoison.Response{status_code: code}} ->
+        "(no feed: HTTP #{code})"
+
+      {:error, reason} ->
+        "(no feed: #{inspect(reason)})"
+    end
   end
 
   # the previous URLs offered for a restore

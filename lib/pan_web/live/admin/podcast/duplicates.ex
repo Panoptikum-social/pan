@@ -30,7 +30,9 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
        page_title: "Duplicate podcasts",
        max_rows: @max_rows,
        tabs: @tabs,
-       merging: MapSet.new()
+       merging: MapSet.new(),
+       # fetched on demand per same-feed-URL group, kept until the page reloads
+       feed_titles: %{}
      )}
   end
 
@@ -103,6 +105,16 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:noreply, socket}
   end
 
+  def handle_event("fetch_feed_title", %{"key" => key, "url" => url}, socket) do
+    liveview = self()
+
+    Task.start(fn ->
+      send(liveview, {:feed_title, key, PodcastDuplicates.current_feed_title(url)})
+    end)
+
+    {:noreply, update(socket, :feed_titles, &Map.put(&1, key, :fetching))}
+  end
+
   def handle_event("repair_search_index", _params, socket) do
     liveview = self()
 
@@ -140,6 +152,10 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       end
 
     {:noreply, socket |> update(:merging, &MapSet.delete(&1, from_id)) |> load()}
+  end
+
+  def handle_info({:feed_title, key, title}, socket) do
+    {:noreply, update(socket, :feed_titles, &Map.put(&1, key, title))}
   end
 
   def handle_info({:repair_done, summary}, socket) do
@@ -247,6 +263,10 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   attr :key, :string, required: true
   attr :podcasts, :list, required: true
   attr :merging, :any, required: true
+  # same feed URL only: the URL to fetch the feed's current title from, and
+  # the title once fetched (:fetching meanwhile)
+  attr :fetch_url, :string, default: nil
+  attr :feed_title, :any, default: nil
 
   defp group(assigns) do
     assigns = assign(assigns, :side_by_side?, length(assigns.podcasts) <= @max_side_by_side)
@@ -254,6 +274,19 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     ~H"""
     <div class="text-sm font-semibold break-all">
       {@key} <span class="font-normal text-gray-dark">({length(@podcasts)})</span>
+    </div>
+    <div :if={@fetch_url} class="text-sm">
+      <button
+        :if={is_nil(@feed_title)}
+        phx-click="fetch_feed_title"
+        phx-value-key={@key}
+        phx-value-url={@fetch_url}
+        class="btn btn-outline btn-xs"
+      >
+        Fetch feed title
+      </button>
+      <span :if={@feed_title == :fetching}>Fetching feed title ...</span>
+      <span :if={is_binary(@feed_title)}>Feed title: <strong>{@feed_title}</strong></span>
     </div>
     <div class={["mt-1", if(@side_by_side?, do: "flex gap-6", else: "flex flex-col gap-2")]}>
       <.podcast_cell
@@ -269,6 +302,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   attr :tab, :string, required: true
   attr :candidates, :list, required: true
   attr :merging, :any, required: true
+  attr :feed_titles, :map, required: true
 
   defp rows(%{tab: "different_show"} = assigns) do
     ~H"""
@@ -293,7 +327,27 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     """
   end
 
-  # same feed URL, same title: groups
+  defp rows(%{tab: "same_feed_url"} = assigns) do
+    ~H"""
+    <tr :for={{key, podcasts} <- @candidates}>
+      <td>
+        <.group
+          key={key}
+          podcasts={podcasts}
+          merging={@merging}
+          fetch_url={
+            Enum.find_value(podcasts, fn podcast ->
+              Enum.find_value(podcast.feeds, & &1.self_link_url)
+            end)
+          }
+          feed_title={@feed_titles[key]}
+        />
+      </td>
+    </tr>
+    """
+  end
+
+  # same title: groups
   defp rows(assigns) do
     ~H"""
     <tr :for={{key, podcasts} <- @candidates}>
@@ -399,6 +453,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
               tab={@tab}
               candidates={Enum.take(@candidates.result, @max_rows)}
               merging={@merging}
+              feed_titles={@feed_titles}
             />
           </tbody>
         </table>
