@@ -1,6 +1,7 @@
 defmodule Pan.Parser.Podcast do
   alias Pan.Repo
   alias Pan.Parser.{Feed, Language, Persistor, RssFeed}
+  alias Pan.Updater.Succession
   alias PanWeb.Podcast
   require Logger
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
@@ -71,6 +72,7 @@ defmodule Pan.Parser.Podcast do
          # a redirect target is only tried in memory, see Feed.persist_redirect_target/2
          url = List.first(visited_urls, feed.self_link_url),
          {:ok, map} <- RssFeed.import_to_map(url, podcast.id),
+         :ok <- Succession.check_refresh_redirect(podcast, visited_urls, map),
          {:ok, _} <- Feed.persist_redirect_target(podcast.id, visited_urls),
          {:ok, _} <- Persistor.update_from_feed(map, podcast, opts),
          {:ok, _} <- Pan.Updater.Podcast.unpause_and_reset_failure_count(podcast),

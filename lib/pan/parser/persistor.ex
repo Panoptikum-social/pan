@@ -173,7 +173,7 @@ defmodule Pan.Parser.Persistor do
     # stored URL was just fetched successfully, and self links are often
     # stale or plain wrong (Zeit für Wissenschaft's mp3 feed points to its
     # ogg sibling over http, which 301s back to https). Moves are signalled
-    # by HTTP redirects and <itunes:new-feed-url> below.
+    # by HTTP redirects and <itunes:new-feed-url>.
     if feed_map[:self_link_url] && feed.self_link_url != feed_map[:self_link_url] do
       AlternateFeed.get_or_insert(feed.id, %{
         url: feed_map[:self_link_url],
@@ -181,7 +181,8 @@ defmodule Pan.Parser.Persistor do
       })
     end
 
-    Feed.update_with_redirect_target(podcast.id, map[:new_feed_url])
+    # <itunes:new-feed-url> is left to the episode updater, which first checks
+    # that the announced feed is the same show (Pan.Updater.Succession).
 
     Category.persist_many(map[:categories], podcast)
     AlternateFeed.get_or_insert_many(alternate_feeds_map, feed.id)

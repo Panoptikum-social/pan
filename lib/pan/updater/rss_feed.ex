@@ -23,6 +23,22 @@ defmodule Pan.Updater.RssFeed do
     end
   end
 
+  @doc """
+  Channel title and all episode titles of a feed, unlike import_to_map/4
+  not reduced to the new episodes. For Pan.Updater.Succession.
+  """
+  def titles(feed_xml) do
+    case feed_xml |> clean_up_xml() |> xml_to_map(0) do
+      {:ok, quinn_map} ->
+        {:ok, map} = run_the_parser(quinn_map, "")
+        episodes = map[:episodes] || %{}
+        {map[:title], for({_key, episode} <- episodes, do: episode[:title])}
+
+      {:error, _reason} ->
+        {nil, []}
+    end
+  end
+
   defp clean_up_xml(feed_xml) do
     # fix_encoding/1 has to run before any step that matches on literal
     # multi-byte UTF-8 characters (normalize_nbsp/1's U+00A0 search,

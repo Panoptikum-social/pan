@@ -18,7 +18,9 @@ defmodule Pan.Updater.Filter do
     new_feed_url = Quinn.find(feed_map, :"new-feed-url")
     itunes_new_feed_url = Quinn.find(feed_map, :"itunes:new-feed-url")
 
-    {:ok, [new_feed_url | [itunes_new_feed_url | items]]}
+    # Quinn.find/2 returns lists; nested into the result they were skipped by
+    # the parser, so <itunes:new-feed-url> never reached the updater
+    {:ok, new_feed_url ++ itunes_new_feed_url ++ items}
   end
 
   defp known_guid?(item, known_guids) do

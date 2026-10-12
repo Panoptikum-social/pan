@@ -35,7 +35,7 @@ defmodule Pan.Updater.RedirectTest do
     podcast =
       %Podcast{}
       |> Podcast.changeset(%{
-        title: "Redirect Test Podcast #{System.unique_integer([:positive])}",
+        title: "Redirect Test Podcast",
         update_intervall: 24,
         next_update: now()
       })

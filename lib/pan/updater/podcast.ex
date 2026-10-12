@@ -1,7 +1,7 @@
 defmodule Pan.Updater.Podcast do
   alias Pan.Repo
   alias Pan.Parser.{Download, Feed, Persistor}
-  alias Pan.Updater.RssFeed
+  alias Pan.Updater.{RssFeed, Succession}
   alias PanWeb.Podcast
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
   require Logger
@@ -51,13 +51,22 @@ defmodule Pan.Updater.Podcast do
          feed = %{feed | self_link_url: List.first(visited_urls, feed.self_link_url)},
          {:ok, "go on"} <- Pan.Updater.Feed.needs_update(feed, podcast, forced),
          {:ok, feed_xml} <- Download.download(feed.self_link_url),
+         # before import_to_map stores the new feed's hash: a redirect to a
+         # different show must not be saved later as "nothing to do"
+         :move <- Succession.check_redirect(podcast, visited_urls, feed_xml),
          {:ok, map} <- RssFeed.import_to_map(feed_xml, feed, podcast.id, forced),
          {:ok, _} <- Feed.persist_redirect_target(podcast.id, visited_urls),
+         {:ok, map} <- Succession.check_new_feed_url(podcast, feed, map),
          {:ok, _} <- Persistor.delta_import(map, podcast),
          {:ok, _} <- unpause_and_reset_failure_count(podcast) do
       notify({:ok, "imported"}, podcast)
       {:ok, "Podcast #{podcast.id}: #{podcast.title} updated"}
     else
+      # the podcast's own feed works, see Pan.Updater.Succession
+      {:not_followed, message} ->
+        unpause_and_reset_failure_count(podcast)
+        {:ok, "Podcast #{podcast.id}: #{podcast.title}: #{message}"}
+
       {:redirect, redirect_target} ->
         follow_redirect(
           podcast,

@@ -157,32 +157,6 @@ weeks), with snapshots following.
 
 ---
 
-### Succession check: old feed redirected to a new show (found 2026-10-12)
-Some publishers retire podcast A and redirect its feed to their new podcast B
-to win the listeners over. Today the episode updater follows the redirect and
-copies B's episodes into A (e.g. 38578 "Holding Court" has received every
-"Sixers Talk" episode since 2019; 34909 is "Sixers Talk" itself). Since
-2026-10-12 the monthly refresh at least no longer gives A the title of a
-podcast it shares its feed URL with.
-
-**Decided (2026-10-12):** check at the moment of a redirect in the episode
-updater (`Feed.persist_redirect_target` in `Pan.Updater.Podcast`, and
-`<itunes:new-feed-url>` via `Feed.update_with_redirect_target`), comparing the
-episode titles of the new feed with the stored episodes:
-- at least 50 % known: a move or rename, continue as today;
-- at most 10 % known: a succession. A stays unchanged and is not retired (as
-  long as its feed parses), the redirect is not saved, and B's URL goes into
-  the feed backlog once (an admin decides; protects against takeovers, e.g.
-  via a bought domain);
-- in between: not decided automatically, shown to the admin (duplicates page).
-
-A different show on the *same* URL (no redirect) is covered by the import:
-importing a known feed URL is refused with an error naming the podcast; the
-admin deletes the old podcast (good faith) and imports again, or deletes the
-backlog entry (malicious).
-
----
-
 ### Duplicates page and podcast merge (found 2026-10-12)
 Different podcasts may share a title since 2026-10-12 (unique index dropped);
 the first import identifies a podcast only by its exact feed URL ("if in
@@ -197,7 +171,11 @@ URL.
   one show share GUIDs);
 - same title and overlapping episode titles or enclosure filenames;
 - same title only (for information, e.g. "Deportes", "Embedded").
-Successions (see above) are shown apart, merging them would be wrong.
+Successions are shown apart, merging them would be wrong. Also list the
+podcasts whose feed redirect or `<itunes:new-feed-url>` was left for a review
+by `Pan.Updater.Succession` (title changed, 10–50 % of the episodes known, or
+fewer than 3 episodes; the reason is in `last_error_message`, and an email
+went out when it happened).
 
 **Merge B into A:** B's feed URL and alternate feeds become alternate feeds of
 A; an episode with a matching GUID in A only moves its enclosures, others move
