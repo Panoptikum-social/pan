@@ -117,6 +117,9 @@ defmodule Pan.Updater.Succession do
     with false <- is_nil(new_url) or same_url?(new_url, feed.self_link_url),
          {:ok, %HTTPoison.Response{status_code: 200, body: feed_xml}} <-
            Download.get(new_url, follow_redirect: true),
+         # e.g. an error or landing page: without a feed title it would pass
+         # as "title unchanged"
+         true <- String.contains?(feed_xml, "<rss"),
          {new_title, episode_titles} = RssFeed.titles(feed_xml),
          :move <- act(podcast, new_url, classify(podcast, new_title, episode_titles)) do
       {:ok, map}
@@ -128,9 +131,10 @@ defmodule Pan.Updater.Succession do
       {:not_followed, _message} ->
         {:ok, Map.delete(map, :new_feed_url)}
 
-      # don't move away from a working feed to one that doesn't answer
-      _not_reachable ->
-        Logger.info("#{podcast.id} new-feed-url #{new_url} not reachable, not followed")
+      # don't move away from a working feed to one that doesn't answer with
+      # a feed
+      _not_a_feed ->
+        Logger.info("#{podcast.id} new-feed-url #{new_url} is no feed, not followed")
         {:ok, Map.delete(map, :new_feed_url)}
     end
   end

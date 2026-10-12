@@ -168,6 +168,26 @@ defmodule Pan.Updater.SuccessionTest do
       assert new_feed_url in backlog_urls()
     end
 
+    test "announcing a page that isn't a feed is not saved", %{podcast: podcast, feed: feed} do
+      new_feed_url = TestServer.url("/landing")
+
+      serve(
+        "/feed.xml",
+        rss(
+          "Holding Court",
+          ["Old 1"],
+          "<itunes:new-feed-url>#{new_feed_url}</itunes:new-feed-url>"
+        )
+      )
+
+      serve("/landing", "<!DOCTYPE html><html><body>Welcome to Screencast</body></html>")
+
+      assert {:ok, _message} = Pan.Updater.Podcast.import_new_episodes(podcast)
+
+      assert feed_url(feed) == TestServer.url("/feed.xml")
+      assert backlog_urls() == []
+    end
+
     test "announcing the same show at a new address is saved", %{podcast: podcast, feed: feed} do
       new_feed_url = TestServer.url("/moved.xml")
 
