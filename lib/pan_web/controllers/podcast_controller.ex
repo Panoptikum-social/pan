@@ -1,7 +1,7 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{Category, Feed, Podcast, PageFrontendView}
+  alias PanWeb.{Category, Podcast, PageFrontendView}
   alias Pan.Search
   require Logger
 
@@ -166,26 +166,6 @@ defmodule PanWeb.PodcastController do
 
     put_flash(conn, :info, "Podcast paused.")
     |> redirect(to: databrowser_path(conn, :show, "podcast", id))
-  end
-
-  def duplicates(conn, _params) do
-    duplicate_feeds =
-      from(f in Feed,
-        group_by: f.self_link_url,
-        having: count(f.id) > 1,
-        select: f.self_link_url
-      )
-      |> Repo.all()
-
-    feeds =
-      from(f in Feed,
-        where: f.self_link_url in ^duplicate_feeds,
-        order_by: f.self_link_url,
-        preload: :podcast
-      )
-      |> Repo.all()
-
-    render(conn, "duplicates.html", feeds: feeds)
   end
 
   def update_from_feed(conn, %{"id" => id}) do

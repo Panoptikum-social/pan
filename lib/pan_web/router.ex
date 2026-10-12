@@ -156,6 +156,7 @@ defmodule PanWeb.Router do
       live("/", Live.Admin.Dashboard, :home, as: :dashboard)
       live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
       live("/podcasts/owners", Live.Admin.Podcast.Owners, :owners, as: :podcast)
+      live("/podcasts/duplicates", Live.Admin.Podcast.Duplicates, :duplicates, as: :podcast)
 
       live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
 
@@ -456,7 +457,6 @@ defmodule PanWeb.Router do
     live("/podcasts/stale", Live.Admin.Podcast.Stale, :stale, as: :podcast)
     get("/podcasts/orphans", PodcastController, :orphans)
     get("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)
-    get("/podcasts/duplicates", PodcastController, :duplicates)
     get("/podcasts/:id/update_counters/", PodcastController, :update_counters)
     get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
     get("/podcasts/update_all_counters", PodcastController, :update_all_counters)
