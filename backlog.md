@@ -82,8 +82,6 @@ true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
 uploads only.
 
 **Small known issues:**
-- A rule counts as passed when it had nothing to check (e.g. the enclosure
-  rule on a feed with no episodes); consider hiding those from "Passed".
 - Library tests print an xmerl `[error] fatal` log line for the broken-XML
   test (Pan silences that via `Pan.LoggerFilters`, the library doesn't).
 - Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).

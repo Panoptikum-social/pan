@@ -30,6 +30,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             feed_url: nil,
             findings: [],
             passed: [],
+            not_applicable: [],
             error: nil
           )
 
@@ -45,7 +46,8 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
        status: :done,
        feed_url: feed_url,
        findings: report.findings,
-       passed: report.passed
+       passed: report.passed,
+       not_applicable: report.not_applicable
      )}
   end
 
@@ -61,7 +63,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     podcast_id = socket.assigns.podcast.id
 
     socket
-    |> assign(status: :running, findings: [], passed: [], error: nil)
+    |> assign(status: :running, findings: [], passed: [], not_applicable: [], error: nil)
     |> start_async(:check, fn -> run_check(podcast_id) end)
   end
 
@@ -153,6 +155,21 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
           </li>
         </ul>
       </div>
+
+      <details :if={@status == :done and @not_applicable != []} class="mt-6">
+        <summary class="text-xl font-bold cursor-pointer">
+          Not applicable ({length(@not_applicable)})
+        </summary>
+        <p class="mt-2 text-sm text-gray-dark">
+          The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
+        </p>
+        <ul class="mt-3 list-disc ml-6">
+          <li :for={rule <- @not_applicable}>
+            {rule.description}
+            <span class="text-sm text-gray-dark">({rule.id})</span>
+          </li>
+        </ul>
+      </details>
 
       <button
         phx-click="recheck"

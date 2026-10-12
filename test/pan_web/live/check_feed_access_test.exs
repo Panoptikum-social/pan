@@ -5,6 +5,7 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
   import PanWeb.Router.Helpers
 
   alias Pan.Repo
+  alias PanWeb.Live.Podcast.CheckFeed
   alias PanWeb.{Podcast, User}
 
   defp insert_user(attrs \\ []) do
@@ -52,5 +53,27 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     for user <- [owner, insert_user(admin: true), insert_user(moderator: true)] do
       assert html_response(get(logged_in(conn, user), path), 200) =~ "Feed check"
     end
+  end
+
+  test "rules with nothing to check are listed apart from the passed ones" do
+    {:ok, report} = CheckMyFeed.check(~s(<rss version="2.0"><channel></channel></rss>))
+
+    html =
+      %{
+        podcast: insert_podcast(),
+        status: :done,
+        feed_url: "https://example.com/feed",
+        error: nil,
+        findings: report.findings,
+        passed: report.passed,
+        not_applicable: report.not_applicable
+      }
+      |> CheckFeed.render()
+      |> rendered_to_string()
+
+    assert html =~ "Not applicable (#{length(report.not_applicable)})"
+    [_before, not_applicable_section] = String.split(html, "Not applicable (")
+    assert not_applicable_section =~ "apple.channel.type"
+    refute not_applicable_section =~ "rss2.root"
   end
 end
