@@ -159,15 +159,6 @@ weeks), with snapshots following.
 
 ---
 
-### Persona merge deletes the target's manifestations (found 2026-10-12)
-`PanWeb.PersonaController.merge/2` (`migrate_relations/2`) deletes the
-manifestations (user claims) of the **target** persona
-(`m.persona_id == ^to_id`); the source's manifestations then go with the
-source persona via the cascade. A merge can thus drop the claim of a user who
-owns the target persona. Legacy code from the 2021 import.
-
----
-
 ### Podcast metadata refresh rejected on duplicate title (found 2026-10-02)
 `Persistor.update_from_feed/3` (monthly `RefreshPodcastMetadata` and the
 manual "update from feed" buttons) fails with "title: has already been taken"

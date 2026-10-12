@@ -51,26 +51,28 @@ defmodule PanWeb.PersonaController do
   end
 
   def merge(conn, %{"from" => from, "to" => to}) do
-    from_id = String.to_integer(from)
-    to_id = String.to_integer(to)
+    from_persona = Repo.get!(Persona, String.to_integer(from))
+    to_persona = Repo.get!(Persona, String.to_integer(to))
 
-    # docs listing from's gigs/engagements will have to show to instead
-    copy_ids = Search.Persona.copy_ids(from_id)
-    migrate_relations(from_id, to_id)
+    if from_persona.user_id && to_persona.user_id && from_persona.user_id != to_persona.user_id do
+      conn
+      |> put_flash(:error, "Both personas are owned by different users, not merged.")
+      |> redirect(to: persona_path(conn, :merge_candidates))
+    else
+      # docs listing from's gigs/engagements will have to show to instead
+      copy_ids = Search.Persona.copy_ids(from_persona.id)
+      migrate_relations(from_persona.id, to_persona.id)
+      inherit_attrs(to_persona, from_persona)
 
-    to_persona = Repo.get!(Persona, to_id)
-    from_persona = Repo.get!(Persona, from_id)
+      Repo.delete!(from_persona)
+      Search.Persona.delete_index(from_persona.id)
+      Search.Persona.update_index(to_persona.id)
+      Search.Persona.reset_copies(copy_ids)
 
-    inherit_attrs(to_persona, from_persona)
-
-    Repo.delete!(from_persona)
-    Search.Persona.delete_index(from_id)
-    Search.Persona.update_index(to_id)
-    Search.Persona.reset_copies(copy_ids)
-
-    conn
-    |> put_view(PageFrontendView)
-    |> render("done.html")
+      conn
+      |> put_view(PageFrontendView)
+      |> render("done.html")
+    end
   end
 
   def delete(conn, %{"id" => id}) do
@@ -137,8 +139,17 @@ defmodule PanWeb.PersonaController do
     from(d in PanWeb.Delegation, where: d.persona_id == ^to_id and d.delegate_id == ^from_id)
     |> Repo.delete_all()
 
-    from(m in PanWeb.Manifestation, where: m.persona_id == ^to_id)
+    # users claiming both personas keep their claim on to, the others' claims
+    # move from from to to
+    to_user_ids =
+      from(m in PanWeb.Manifestation, where: m.persona_id == ^to_id, select: m.user_id)
+      |> Repo.all()
+
+    from(m in PanWeb.Manifestation, where: m.persona_id == ^from_id and m.user_id in ^to_user_ids)
     |> Repo.delete_all()
+
+    from(m in PanWeb.Manifestation, where: m.persona_id == ^from_id)
+    |> Repo.update_all(set: [persona_id: to_id])
   end
 
   defp migrate_engagement(engagement, to_id) do
@@ -153,7 +164,7 @@ defmodule PanWeb.PersonaController do
   end
 
   defp inherit_attrs(to_persona, from_persona) do
-    [:uri, :email, :image_url, :image_title, :description, :long_description]
+    [:uri, :email, :image_url, :image_title, :description, :long_description, :user_id]
     |> Enum.each(fn field ->
       from_val = Map.get(from_persona, field)
 
