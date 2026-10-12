@@ -154,3 +154,26 @@ follow button). No separate community subscription.
 
 A first usable version could be steps 0–4 without scroll sync (about 1½–2
 weeks), with snapshots following.
+
+---
+
+### Podcasts holding two different shows (found 2026-10-12)
+Until 2026-10-12 the first import identified a podcast by its title, so a
+different show with the same title was merged into an existing podcast:
+its episodes were added there and its feed URL became an alternate feed.
+Not to be confused with successions a publisher set up on purpose (an old
+feed redirected to a new show, e.g. "Holding Court" -> "Sixers Talk"),
+which stay as they are.
+
+Known cases (dev = prod backup, 2026-10-12): 40663 "Deportes" (ivoox talk
+show + 100 RFI episodes, 2018-11-29), 21986 "Embedded" (embedded.fm + 26 NPR
+"Embedded" episodes, 2018-03-11), probably 20151 "Interface". Found as 23
+candidates: bursts of at least 20 episodes inserted in one minute after the
+podcast's first day, with enclosure hosts the podcast never used before,
+less than 20 % titles in common with its earlier episodes, and later
+episodes only from the old host. A lower bound, small merges don't show up
+this way.
+
+To be tackled after the next restore of the prod backup on dev; how to
+separate the shows is not decided yet.
+
