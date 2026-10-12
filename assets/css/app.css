@@ -32,6 +32,8 @@
   --color-success: #8cc152;
   --color-error: #da4453;  /* grapefruit */
   --color-error-content: white;
+  --color-info-content: white;
+  --color-primary-content: white;
 }
 
 @theme {
