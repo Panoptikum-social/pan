@@ -159,14 +159,12 @@ weeks), with snapshots following.
 
 ---
 
-### Manticore sync: code paths never run yet (found 2026-10-01)
-The Manticore index sync overhaul (2026-10-01) is deployed, but these paths
-have only been compiled, never exercised:
-- category merge
-- persona merge and delete
-- the API persona endpoints
-- the persona thumbnail job
-- the admin orphan button (`Pan.Search.delete_orphans/2`)
+### Persona merge deletes the target's manifestations (found 2026-10-12)
+`PanWeb.PersonaController.merge/2` (`migrate_relations/2`) deletes the
+manifestations (user claims) of the **target** persona
+(`m.persona_id == ^to_id`); the source's manifestations then go with the
+source persona via the cascade. A merge can thus drop the claim of a user who
+owns the target persona. Legacy code from the 2021 import.
 
 ---
 
