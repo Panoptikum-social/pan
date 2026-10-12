@@ -8,6 +8,7 @@ defmodule PanWeb.Admin.QueryBuilder do
     copy_ids = if model == PanWeb.Persona, do: Pan.Search.Persona.copy_ids(record.id)
 
     Repo.delete(record)
+    if model == PanWeb.Podcast, do: PanWeb.Podcast.clear_lonely_namesake(record.title)
 
     search_module = search_module(model)
 

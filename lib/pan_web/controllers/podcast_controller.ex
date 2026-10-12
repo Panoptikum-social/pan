@@ -68,6 +68,7 @@ defmodule PanWeb.PodcastController do
     for episode <- podcast.episodes, do: Search.Episode.delete_index(episode.id)
     Search.Podcast.delete_index(id)
     Repo.delete!(podcast)
+    Podcast.clear_lonely_namesake(podcast.title)
 
     Logger.info("⚠️ Deleted podcast #{podcast.id}: #{podcast.title}")
 

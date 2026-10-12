@@ -120,6 +120,16 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:noreply, update(socket, :feed_titles, &Map.put(&1, key, :fetching))}
   end
 
+  def handle_event("mark_namesakes", %{"ids" => ids}, socket) do
+    ids = ids |> String.split(",") |> Enum.map(&String.to_integer/1)
+    {count, _} = Podcast.mark_namesakes(ids)
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "#{count} podcasts marked as namesakes.")
+     |> load()}
+  end
+
   def handle_event("repair_search_index", _params, socket) do
     liveview = self()
 
@@ -372,6 +382,14 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     <tr :for={{key, podcasts, shared} <- @candidates}>
       <td>
         <.group key={key} podcasts={podcasts} merging={@merging} shared_episode_titles={shared} />
+        <button
+          phx-click="mark_namesakes"
+          phx-value-ids={Enum.map_join(podcasts, ",", & &1.id)}
+          data-confirm={"Mark the #{length(podcasts)} podcasts titled \"#{key}\" as different shows (namesakes)?"}
+          class="mt-2 btn btn-success btn-xs"
+        >
+          Mark as namesakes
+        </button>
       </td>
     </tr>
     """

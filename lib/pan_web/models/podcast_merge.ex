@@ -78,6 +78,7 @@ defmodule PanWeb.PodcastMerge do
     end
 
     Repo.delete!(from_podcast)
+    Podcast.clear_lonely_namesake(from_podcast.title)
 
     Repo.get!(Podcast, to_id)
     |> Podcast.changeset()

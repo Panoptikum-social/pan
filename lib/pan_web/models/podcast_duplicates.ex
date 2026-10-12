@@ -50,14 +50,17 @@ defmodule PanWeb.PodcastDuplicates do
 
   @doc """
   Groups of podcasts with the same title (case and surrounding spaces
-  ignored), as `{title, podcasts, shared_episode_titles}`. For a pair, the
+  ignored) that aren't all marked as namesakes, as
+  `{title, podcasts, shared_episode_titles}`. For a pair, the
   number of episode titles both have tells the same show twice from two
   shows that just share a title; nil for bigger groups.
   """
   def same_title do
     from(p in Podcast,
       group_by: fragment("lower(trim(?))", p.title),
-      having: count(p.id) > 1,
+      # groups an admin marked as namesakes (different shows) are done, unless
+      # another podcast with the title came along since
+      having: count(p.id) > 1 and fragment("not bool_and(?)", p.namesake),
       select: {min(p.title), fragment("array_agg(? order by ?)", p.id, p.id)},
       order_by: fragment("lower(trim(?))", p.title)
     )

@@ -53,6 +53,8 @@ defmodule PanWeb.Podcast do
     field(:thumbnailed, :boolean, default: false)
     field(:last_error_message, :string)
     field(:last_error_occured, :naive_datetime)
+    # a different show with the same title, confirmed by an admin
+    field(:namesake, :boolean, default: false)
     field(:status_code, :string, virtual: true)
     timestamps()
 
@@ -128,7 +130,8 @@ defmodule PanWeb.Podcast do
       :full_text,
       :thumbnailed,
       :last_error_message,
-      :last_error_occured
+      :last_error_occured,
+      :namesake
     ])
     |> validate_required([:title, :update_intervall, :next_update])
   end
@@ -571,6 +574,45 @@ defmodule PanWeb.Podcast do
     podcast
     |> Podcast.changeset(%{image_url: nil})
     |> Repo.update()
+  end
+
+  @doc "Marks podcasts sharing a title as different shows (namesakes)."
+  def mark_namesakes(podcast_ids) do
+    from(p in Podcast, where: p.id in ^podcast_ids)
+    |> Repo.update_all(set: [namesake: true])
+  end
+
+  @doc """
+  The other podcasts marked as namesakes with the same title (case and
+  surrounding spaces ignored), for the podcast page; [] if `podcast` isn't
+  marked itself.
+  """
+  def namesakes(%Podcast{namesake: true} = podcast) do
+    from(p in Podcast,
+      where:
+        p.id != ^podcast.id and p.namesake and
+          fragment("lower(trim(?))", p.title) == fragment("lower(trim(?))", ^podcast.title) and
+          (is_nil(p.blocked) or not p.blocked),
+      order_by: p.id,
+      select: %{id: p.id, title: p.title}
+    )
+    |> Repo.all()
+  end
+
+  def namesakes(_podcast), do: []
+
+  @doc """
+  After a podcast with this title was deleted: a podcast left alone with
+  the title has no namesake any more.
+  """
+  def clear_lonely_namesake(title) do
+    same_title =
+      from(p in Podcast,
+        where: fragment("lower(trim(?))", p.title) == fragment("lower(trim(?))", ^title)
+      )
+
+    if Repo.aggregate(same_title, :count) == 1,
+      do: Repo.update_all(same_title, set: [namesake: false])
   end
 
   def retire(podcast) do

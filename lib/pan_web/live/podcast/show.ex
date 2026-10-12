@@ -16,6 +16,7 @@ defmodule PanWeb.Live.Podcast.Show do
         episodes_count: Episode.count_by_podcast_id(id),
         changeset: %Recommendation{} |> Recommendation.changeset(),
         podcast_thumbnail: Image.get_by_podcast_id(id) || %{},
+        namesakes: Podcast.namesakes(podcast),
         page_title: podcast.title <> " (Podcast)"
       )
 
@@ -72,6 +73,17 @@ defmodule PanWeb.Live.Podcast.Show do
           podcast_thumbnail={@podcast_thumbnail}
           episodes_count={@episodes_count}
         />
+        <p :if={@namesakes != []} class="mt-2 text-sm">
+          {if length(@namesakes) == 1,
+            do: "There is another podcast with the same title:",
+            else: "There are other podcasts with the same title:"}
+          <span :for={{namesake, index} <- Enum.with_index(@namesakes)}>
+            {if index > 0, do: ","}
+            <.link navigate={"/podcasts/#{namesake.id}"} class="text-link hover:text-link-dark">
+              {namesake.title}
+            </.link>
+          </span>
+        </p>
         <.live_component
           module={RecommendationList}
           id="recommendations_list"
