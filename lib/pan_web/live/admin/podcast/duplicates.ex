@@ -103,6 +103,18 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:noreply, socket}
   end
 
+  def handle_event("repair_search_index", _params, socket) do
+    liveview = self()
+
+    Task.start(fn ->
+      summary = Pan.Search.repair_episodes_of_deleted_podcasts()
+      Logger.info("Search index repair after merges: #{inspect(summary)}")
+      send(liveview, {:repair_done, summary})
+    end)
+
+    {:noreply, put_flash(socket, :info, "Repairing the search index ...")}
+  end
+
   # A big podcast takes a while to merge: in the LiveView process the client
   # gives up waiting, reconnects, and the restarted LiveView kills the merge
   # mid-transaction. So it runs in a task of its own, not linked to the page;
@@ -128,6 +140,17 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       end
 
     {:noreply, socket |> update(:merging, &MapSet.delete(&1, from_id)) |> load()}
+  end
+
+  def handle_info({:repair_done, summary}, socket) do
+    {:noreply,
+     put_flash(
+       socket,
+       :info,
+       "Search index repaired: #{summary.deleted_podcasts} deleted podcasts, " <>
+         "#{summary.reflagged_episodes} moved episodes re-flagged in #{summary.target_podcasts} " <>
+         "podcasts, #{summary.deleted_episodes} deleted episodes removed."
+     )}
   end
 
   defp merge(from_id, to_id) do
@@ -330,6 +353,18 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
             Delete alternate feeds
           </button>
         </form>
+      </section>
+
+      <section class="mt-8">
+        <h2 class="text-xl font-bold">Repair search index after merges</h2>
+        <p class="text-sm text-gray-dark max-w-3xl">
+          Finds episodes in the search index that still belong to a podcast that no longer exists,
+          e.g. after a merge that was cut short. Moved episodes and their new podcasts are pushed
+          again, episodes that are gone are removed, so are the deleted podcasts.
+        </p>
+        <button phx-click="repair_search_index" class="mt-2 btn btn-warning btn-sm">
+          Repair search index
+        </button>
       </section>
     </div>
     """

@@ -171,6 +171,18 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     assert render_submit(view, "delete_alternate_feeds", %{"url" => " "}) =~ "Please enter a URL"
   end
 
+  # Manticore isn't reachable in tests, so the repair finds nothing; this only
+  # checks that it runs in the background and reports back
+  test "repairs the search index in the background", %{conn: conn} do
+    {:ok, view, _html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=utilities")
+
+    ExUnit.CaptureLog.capture_log(fn ->
+      assert render_click(view, "repair_search_index", %{}) =~ "Repairing the search index"
+      assert eventually(fn -> render(view) =~ "Search index repaired: 0 deleted podcasts" end)
+    end)
+  end
+
   test "is for admins only", %{conn: conn} do
     assert {:error, {:redirect, _}} =
              live(as(conn, insert_user(admin: false)), "/admin/podcasts/duplicates")

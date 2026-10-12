@@ -207,6 +207,97 @@ defmodule Pan.Search do
   end
 
   @doc """
+  Repairs the episode docs of podcasts that no longer exist, e.g. after a
+  podcast merge (PanWeb.PodcastMerge) whose search index steps were cut
+  short. An episode doc still carrying a deleted podcast's id either belongs
+  to an episode that moved to another podcast (re-flagged, together with
+  that podcast and its personas) or to one that is gone (deleted). The
+  deleted podcasts' own docs are deleted too. Returns a summary map.
+  """
+  def repair_episodes_of_deleted_podcasts do
+    indexed_podcast_ids =
+      manticore_rows(
+        "SELECT podcast_id FROM episodes GROUP BY podcast_id " <>
+          "LIMIT 1000000 OPTION max_matches=1000000"
+      )
+      |> Enum.map(& &1["podcast_id"])
+
+    existing =
+      indexed_podcast_ids
+      |> Enum.chunk_every(10_000)
+      |> Enum.flat_map(fn ids ->
+        from(p in PanWeb.Podcast, where: p.id in ^ids, select: p.id) |> Repo.all()
+      end)
+      |> MapSet.new()
+
+    deleted_podcast_ids = Enum.reject(indexed_podcast_ids, &MapSet.member?(existing, &1))
+
+    {reflagged, deleted, target_podcast_ids} =
+      Enum.reduce(deleted_podcast_ids, {0, 0, MapSet.new()}, fn podcast_id, acc ->
+        repair_episode_docs(podcast_id, 0, acc)
+      end)
+
+    for chunk <- Enum.chunk_every(deleted_podcast_ids, 1000) do
+      Search.Manticore.sql("DELETE FROM podcasts WHERE id IN (#{Enum.join(chunk, ",")})")
+    end
+
+    target_podcast_ids = MapSet.to_list(target_podcast_ids)
+
+    from(p in PanWeb.Podcast, where: p.id in ^target_podcast_ids)
+    |> Repo.update_all(set: [full_text: false])
+
+    target_podcast_ids
+    |> Enum.flat_map(&Search.Persona.ids_for_podcast/1)
+    |> Search.Persona.reset()
+
+    %{
+      deleted_podcasts: length(deleted_podcast_ids),
+      reflagged_episodes: reflagged,
+      deleted_episodes: deleted,
+      target_podcasts: length(target_podcast_ids)
+    }
+  end
+
+  defp repair_episode_docs(podcast_id, after_id, {reflagged, deleted, targets} = acc) do
+    case manticore_rows(
+           "SELECT id FROM episodes WHERE podcast_id = #{podcast_id} AND id > #{after_id} " <>
+             "ORDER BY id ASC LIMIT #{@orphan_chunk_size} OPTION max_matches=#{@orphan_chunk_size}"
+         ) do
+      [] ->
+        acc
+
+      rows ->
+        ids = Enum.map(rows, & &1["id"])
+
+        moved =
+          from(e in PanWeb.Episode, where: e.id in ^ids, select: {e.id, e.podcast_id})
+          |> Repo.all()
+
+        moved_ids = Enum.map(moved, &elem(&1, 0))
+        Search.Episode.reset(moved_ids)
+        gone_ids = ids -- moved_ids
+        Search.Episode.delete_indices(gone_ids)
+
+        acc =
+          {reflagged + length(moved_ids), deleted + length(gone_ids),
+           Enum.into(Enum.map(moved, &elem(&1, 1)), targets)}
+
+        repair_episode_docs(podcast_id, List.last(ids), acc)
+    end
+  end
+
+  defp manticore_rows(query) do
+    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- Search.Manticore.sql(query),
+         {:ok, [%{"data" => rows}]} <- Jason.decode(body) do
+      rows
+    else
+      error ->
+        Logger.error("Manticore query failed: #{query}: #{inspect(error)}")
+        []
+    end
+  end
+
+  @doc """
   `language_ids`, when given a non-empty list, restricts results to
   podcasts/episodes tagged with any of those `PanWeb.Language` ids (already
   fully expanded to every shortcode variant of the languages meant - see
