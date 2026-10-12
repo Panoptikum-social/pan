@@ -154,39 +154,3 @@ follow button). No separate community subscription.
 
 A first usable version could be steps 0–4 without scroll sync (about 1½–2
 weeks), with snapshots following.
-
----
-
-### Duplicates page and podcast merge (found 2026-10-12)
-Different podcasts may share a title since 2026-10-12 (unique index dropped);
-the first import identifies a podcast only by its exact feed URL ("if in
-doubt, import twice"). Duplicates are found and merged by hand afterwards.
-The current `/admin/podcasts/duplicates` only lists feeds with an identical
-URL.
-
-**Duplicates page**, each signal shown separately:
-- same feed URL;
-- one podcast's feed URL is another's alternate feed;
-- same title and overlapping episode GUIDs (format feeds: mp3/aac/ogg/opus of
-  one show share GUIDs);
-- same title and overlapping episode titles or enclosure filenames;
-- same title only (for information, e.g. "Deportes", "Embedded").
-Successions are shown apart, merging them would be wrong. Also list the
-podcasts whose feed redirect or `<itunes:new-feed-url>` was left for a review
-by `Pan.Updater.Succession` (title changed, 10–50 % of the episodes known, or
-fewer than 3 episodes; the reason is in `last_error_message`, and an email
-went out when it happened).
-
-**Merge B into A:** B's feed URL and alternate feeds become alternate feeds of
-A; an episode with a matching GUID in A only moves its enclosures, others move
-as a whole; subscriptions, likes, follows, recommendations, categories,
-communities/curations, engagements, gigs and chapters are moved or
-de-duplicated (the DB foreign keys don't cascade); the search index is
-cleaned up; B is deleted.
-
-**Already mixed up** (title-based imports until 2026-10-12): different shows
-merged into one podcast, e.g. 40663 "Deportes" (ivoox talk show + 100 RFI
-episodes), 21986 "Embedded" (embedded.fm + 26 NPR episodes), probably 20151
-"Interface"; podcasts copying a successor's episodes ("Holding Court"); about
-215 true URL duplicates among the 367 podcasts whose refresh failed on the
-title.
