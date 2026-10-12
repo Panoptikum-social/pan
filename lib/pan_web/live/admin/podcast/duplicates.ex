@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   use PanWeb, :admin_live_view
   alias Pan.Repo
-  alias PanWeb.{Endpoint, Feed, Podcast, PodcastDuplicates, PodcastMerge}
+  alias PanWeb.{AlternateFeed, Endpoint, Feed, Podcast, PodcastDuplicates, PodcastMerge}
   import PanWeb.Router.Helpers
 
   # The alternate feed check finds well over a thousand pairs, mostly old
@@ -18,7 +18,8 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {"same_title", "Same title", "Same title",
      "Several podcasts with the same title. Often different shows (that's fine), sometimes format feeds of one show or a double import."},
     {"alternate", "Alternate feed", "Feed URL is another podcast's alternate feed",
-     "One podcast's feed URL is listed as an alternate feed (e.g. an old URL before a redirect) of another podcast."}
+     "One podcast's feed URL is listed as an alternate feed (e.g. an old URL before a redirect) of another podcast."},
+    {"utilities", "Utilities", "Utilities", "Helpers for cleaning up the data."}
   ]
   @tab_keys Enum.map(@tabs, &elem(&1, 0))
 
@@ -32,6 +33,8 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   end
 
   # also after every action, so the list shows the new state
+  defp load(%{assigns: %{tab: "utilities"}} = socket), do: socket
+
   defp load(%{assigns: %{tab: tab}} = socket) do
     assign_async(socket, :candidates, fn -> {:ok, %{candidates: candidates(tab)}} end)
   end
@@ -77,6 +80,20 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       end
 
     {:noreply, load(socket)}
+  end
+
+  def handle_event("delete_alternate_feeds", %{"url" => url}, socket) do
+    socket =
+      case String.trim(url) do
+        "" ->
+          put_flash(socket, :error, "Please enter a URL.")
+
+        url ->
+          count = AlternateFeed.delete_by_url(url)
+          put_flash(socket, :info, "#{count} alternate feeds with the URL #{url} deleted.")
+      end
+
+    {:noreply, socket}
   end
 
   def handle_event("merge", %{"from_id" => from_id, "to_id" => to_id}, socket) do
@@ -214,28 +231,69 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     """
   end
 
+  attr :tabs, :list, required: true
+  attr :tab, :string, required: true
+
+  defp page_header(assigns) do
+    ~H"""
+    <h1 class="text-3xl">Duplicate podcasts</h1>
+    <p class="max-w-3xl">
+      Since a podcast is identified by its feed URL only, double imports and format feeds
+      (mp3/ogg of one show) end up as separate podcasts. Each check has its own tab.
+    </p>
+
+    <div role="tablist" class="tabs tabs-border mt-4">
+      <.link
+        :for={{key, label, _heading, _description} <- @tabs}
+        patch={podcast_path(Endpoint, :duplicates, tab: key)}
+        role="tab"
+        class={["tab", key == @tab && "tab-active"]}
+      >
+        {label}
+      </.link>
+    </div>
+    """
+  end
+
+  def render(%{tab: "utilities"} = assigns) do
+    ~H"""
+    <div class="m-4">
+      <.page_header tabs={@tabs} tab={@tab} />
+
+      <section class="mt-4">
+        <h2 class="text-xl font-bold">Delete alternate feeds</h2>
+        <p class="text-sm text-gray-dark max-w-3xl">
+          Deletes the alternate feeds with exactly this URL (http and https alike) across all
+          podcasts, e.g. an error page that shows up as a previous URL to restore. Current feed
+          URLs are not changed.
+        </p>
+        <form phx-submit="delete_alternate_feeds" class="mt-2 flex gap-2 items-center">
+          <input
+            type="text"
+            name="url"
+            placeholder="https://www.podomatic.com/404.html"
+            class="input input-bordered input-sm w-full max-w-xl"
+          />
+          <button
+            type="submit"
+            data-confirm="Delete all alternate feeds with this URL, across all podcasts?"
+            class="btn btn-error btn-sm"
+          >
+            Delete alternate feeds
+          </button>
+        </form>
+      </section>
+    </div>
+    """
+  end
+
   def render(assigns) do
     {_key, _label, heading, description} = List.keyfind(@tabs, assigns.tab, 0)
     assigns = assign(assigns, heading: heading, description: description)
 
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">Duplicate podcasts</h1>
-      <p class="max-w-3xl">
-        Since a podcast is identified by its feed URL only, double imports and format feeds
-        (mp3/ogg of one show) end up as separate podcasts. Each check has its own tab.
-      </p>
-
-      <div role="tablist" class="tabs tabs-border mt-4">
-        <.link
-          :for={{key, label, _heading, _description} <- @tabs}
-          patch={podcast_path(Endpoint, :duplicates, tab: key)}
-          role="tab"
-          class={["tab", key == @tab && "tab-active"]}
-        >
-          {label}
-        </.link>
-      </div>
+      <.page_header tabs={@tabs} tab={@tab} />
 
       <section class="mt-4">
         <h2 class="text-xl font-bold">

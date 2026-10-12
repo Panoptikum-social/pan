@@ -129,6 +129,32 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     render_async(view)
   end
 
+  test "deletes alternate feeds by URL across all podcasts", %{conn: conn} do
+    {_a, feed_a} = insert_podcast("A", "https://a.example.com/feed")
+    {_b, feed_b} = insert_podcast("B", "https://b.example.com/feed")
+    Repo.insert!(%AlternateFeed{feed_id: feed_a.id, url: "https://www.podomatic.com/404.html"})
+    Repo.insert!(%AlternateFeed{feed_id: feed_b.id, url: "http://www.podomatic.com/404.html"})
+
+    Repo.insert!(%AlternateFeed{
+      feed_id: feed_b.id,
+      url: "https://www.podomatic.com/404.html?x=1"
+    })
+
+    {:ok, view, html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=utilities")
+
+    assert html =~ "Delete alternate feeds"
+
+    assert render_submit(view, "delete_alternate_feeds", %{
+             "url" => " https://www.podomatic.com/404.html "
+           }) =~ "2 alternate feeds with the URL"
+
+    remaining = from(a in AlternateFeed, select: a.url) |> Repo.all()
+    assert remaining == ["https://www.podomatic.com/404.html?x=1"]
+
+    assert render_submit(view, "delete_alternate_feeds", %{"url" => " "}) =~ "Please enter a URL"
+  end
+
   test "is for admins only", %{conn: conn} do
     assert {:error, {:redirect, _}} =
              live(as(conn, insert_user(admin: false)), "/admin/podcasts/duplicates")
