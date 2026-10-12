@@ -64,6 +64,13 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
       {:ok, view, _html} = live(conn, "/admin/podcasts/duplicates?tab=#{tab}")
       assert render_async(view) =~ expected
     end
+
+    {:ok, view, _html} = live(conn, "/admin/podcasts/duplicates?tab=alternate")
+    html = render_async(view)
+    assert html =~ "old.example.com/feed"
+    assert html =~ "0 identical episode titles"
+    # "Moved show" has the URL in its history, "Stale copy" uses it
+    assert html =~ ~r/has the URL in its history.*Moved show.*uses it as feed URL.*Stale copy/s
   end
 
   test "retires a podcast", %{conn: conn} do

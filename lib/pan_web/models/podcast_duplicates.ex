@@ -33,7 +33,7 @@ defmodule PanWeb.PodcastDuplicates do
   Pairs where one podcast's feed URL is an alternate feed (e.g. an old URL
   before a redirect) of another podcast.
   """
-  def feed_url_is_alternate do
+  def feed_url_is_alternate(counted \\ :all) do
     from(f in Feed,
       join: a in assoc(f, :alternate_feeds),
       join: other in Feed,
@@ -45,6 +45,7 @@ defmodule PanWeb.PodcastDuplicates do
     )
     |> Repo.all()
     |> with_podcasts()
+    |> with_shared_episode_titles(counted)
   end
 
   @doc """
@@ -62,20 +63,42 @@ defmodule PanWeb.PodcastDuplicates do
     )
     |> Repo.all()
     |> with_podcasts()
-    |> Enum.map(fn {title, podcasts} -> {title, podcasts, shared_episode_titles(podcasts)} end)
+    |> with_shared_episode_titles(:all)
   end
 
-  defp shared_episode_titles([%Podcast{id: a}, %Podcast{id: b}]) do
-    from(x in PanWeb.Episode,
-      join: y in PanWeb.Episode,
-      on: y.title == x.title and y.podcast_id == ^b,
-      where: x.podcast_id == ^a,
-      select: count(x.title, :distinct)
-    )
-    |> Repo.one()
+  # [{key, podcasts}] -> [{key, podcasts, shared}], shared being the number
+  # of episode titles both podcasts of a pair have (nil for bigger groups and
+  # beyond the first `counted` entries). One query for all pairs, still slow
+  # for thousands of them (17 s for all alternate feed pairs), hence `counted`.
+  defp with_shared_episode_titles(groups, counted) do
+    {to_count, rest} = if counted == :all, do: {groups, []}, else: Enum.split(groups, counted)
+    pairs = for {_key, [a, b]} <- to_count, uniq: true, do: {a.id, b.id}
+    shared = shared_episode_titles(pairs)
+
+    Enum.map(to_count, fn
+      {key, [a, b] = podcasts} -> {key, podcasts, shared[{a.id, b.id}]}
+      {key, podcasts} -> {key, podcasts, nil}
+    end) ++ Enum.map(rest, fn {key, podcasts} -> {key, podcasts, nil} end)
   end
 
-  defp shared_episode_titles(_podcasts), do: nil
+  defp shared_episode_titles([]), do: %{}
+
+  defp shared_episode_titles(pairs) do
+    {as, bs} = Enum.unzip(pairs)
+
+    Repo.query!(
+      """
+      SELECT p.a, p.b,
+        (SELECT count(DISTINCT x.title) FROM episodes x
+         JOIN episodes y ON y.title = x.title AND y.podcast_id = p.b
+         WHERE x.podcast_id = p.a)
+      FROM unnest($1::bigint[], $2::bigint[]) AS p(a, b)
+      """,
+      [as, bs],
+      timeout: :infinity
+    ).rows
+    |> Map.new(fn [a, b, count] -> {{a, b}, count} end)
+  end
 
   @doc """
   Podcasts whose feed now delivers a different show or needs a review,

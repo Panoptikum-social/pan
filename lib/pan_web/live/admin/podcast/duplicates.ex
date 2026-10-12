@@ -51,7 +51,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   defp candidates("different_show"), do: PodcastDuplicates.marked_by_updater()
   defp candidates("same_feed_url"), do: PodcastDuplicates.same_feed_url()
   defp candidates("same_title"), do: PodcastDuplicates.same_title()
-  defp candidates("alternate"), do: PodcastDuplicates.feed_url_is_alternate()
+  defp candidates("alternate"), do: PodcastDuplicates.feed_url_is_alternate(@max_rows)
 
   def handle_event("retire", %{"id" => id}, socket) do
     podcast = Repo.get!(Podcast, id)
@@ -318,15 +318,25 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     """
   end
 
+  # [history, current]: the first podcast has the URL among its alternate
+  # feeds, the second uses it as its feed URL, see
+  # PodcastDuplicates.feed_url_is_alternate/0
   defp rows(%{tab: "alternate"} = assigns) do
     ~H"""
-    <tr :for={{_url, podcasts} <- @candidates}>
-      <td :for={podcast <- podcasts}>
-        <.podcast_cell
-          podcast={podcast}
-          merge_targets={Enum.reject(podcasts, &(&1.id == podcast.id))}
-          merging={@merging}
-        />
+    <tr :for={{url, [history, current], shared} <- @candidates}>
+      <td>
+        <div class="text-sm font-semibold break-all">{url}</div>
+        <div :if={shared} class="text-sm">{shared} identical episode titles</div>
+        <div class="mt-1 flex gap-6">
+          <div>
+            <div class="text-xs text-gray-dark">has the URL in its history</div>
+            <.podcast_cell podcast={history} merge_targets={[current]} merging={@merging} />
+          </div>
+          <div>
+            <div class="text-xs text-gray-dark">uses it as feed URL</div>
+            <.podcast_cell podcast={current} merge_targets={[history]} merging={@merging} />
+          </div>
+        </div>
       </td>
     </tr>
     """
