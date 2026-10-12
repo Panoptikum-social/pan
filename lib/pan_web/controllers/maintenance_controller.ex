@@ -132,6 +132,33 @@ defmodule PanWeb.MaintenanceController do
     |> render("done.html")
   end
 
+  # Email-only feed owners got no name between 2026-09-05 and 2026-10-12
+  # (bug in Pan.Parser.Persona.get_or_insert/1); this gives them the name the
+  # parser derives from the email and re-flags them, and the podcast/episode
+  # docs carrying their name, for the search index.
+  def fix_nameless_personas(conn, _params) do
+    personas =
+      from(p in Persona, where: is_nil(p.name) and not is_nil(p.email), select: {p.id, p.email})
+      |> Repo.all()
+
+    for {id, email} <- personas do
+      from(p in Persona, where: p.id == ^id)
+      |> Repo.update_all(set: [name: Pan.Parser.Persona.name_from_email(email), full_text: false])
+
+      {episode_ids, podcast_ids} = Pan.Search.Persona.copy_ids(id)
+
+      from(e in Episode, where: e.id in ^episode_ids)
+      |> Repo.update_all(set: [full_text: false])
+
+      from(p in Podcast, where: p.id in ^podcast_ids)
+      |> Repo.update_all(set: [full_text: false])
+    end
+
+    conn
+    |> put_flash(:info, "#{length(personas)} nameless personas got a name.")
+    |> redirect(to: databrowser_path(conn, :index, "persona"))
+  end
+
   # Journal entries are meant to be disposable working notes, not a permanent
   # audit log, so this wipes the table clean instead of letting old entries
   # pile up.

@@ -288,6 +288,11 @@ defmodule PanWeb.Admin.ActionButtons do
         to={persona_path(Endpoint, :merge_candidates)}
         class="btn-outline"
       />
+      <LinkButton.render
+        title="Fix nameless personas"
+        to={maintenance_path(Endpoint, :fix_nameless_personas)}
+        class="btn-warning"
+      />
     </div>
     """
   end

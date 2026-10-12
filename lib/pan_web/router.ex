@@ -482,5 +482,6 @@ defmodule PanWeb.Router do
 
     get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
     get("/maintenance/fix_nils", MaintenanceController, :fix_nils)
+    get("/maintenance/fix_nameless_personas", MaintenanceController, :fix_nameless_personas)
   end
 end

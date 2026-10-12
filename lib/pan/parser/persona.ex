@@ -9,11 +9,12 @@ defmodule Pan.Parser.Persona do
     # %{name: :a, value: [...], attr: [...]} map rather than a string) —
     # drop any non-string value here rather than let it reach UUID.uuid5/2
     # (requires a binary) or an Ecto :string column insert later.
+    # The key is dropped, not set to nil, so the put_new defaults for
+    # :name and :uri below still apply.
     persona_map =
-      persona_map
-      |> Map.update(:uri, nil, &only_if_string/1)
-      |> Map.update(:email, nil, &only_if_string/1)
-      |> Map.update(:name, nil, &only_if_string/1)
+      Map.reject(persona_map, fn {key, value} ->
+        key in [:uri, :email, :name] and not is_binary(value)
+      end)
 
     # The idea is to set the pid to be imported as strong as possible
     # That is panoptikum:pid > uri > email > name; but if the pid in
@@ -35,16 +36,7 @@ defmodule Pan.Parser.Persona do
 
     persona_map =
       if persona_map[:email] do
-        Map.put_new(
-          persona_map,
-          :name,
-          persona_map[:email]
-          |> String.split("@")
-          |> List.first()
-          |> String.split(".")
-          |> Stream.map(&String.capitalize/1)
-          |> Enum.join(" ")
-        )
+        Map.put_new(persona_map, :name, name_from_email(persona_map[:email]))
       else
         persona_map
       end
@@ -64,8 +56,15 @@ defmodule Pan.Parser.Persona do
     end
   end
 
-  defp only_if_string(value) when is_binary(value), do: value
-  defp only_if_string(_value), do: nil
+  @doc ~s("john.doe@example.com" -> "John Doe")
+  def name_from_email(email) do
+    email
+    |> String.split("@")
+    |> List.first()
+    |> String.split(".")
+    |> Stream.map(&String.capitalize/1)
+    |> Enum.join(" ")
+  end
 
   defp find_persona(pid, uri, email) do
     (pid && Repo.get_by(PanWeb.Persona, pid: pid)) ||
