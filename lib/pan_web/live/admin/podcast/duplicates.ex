@@ -36,16 +36,21 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
      )}
   end
 
+  # A new tab drops the previous list (reset): while loading, the old tab's
+  # entries would otherwise be rendered with the new tab's rows, which expect
+  # a different shape.
   def handle_params(params, _uri, socket) do
     tab = if params["tab"] in @tab_keys, do: params["tab"], else: hd(@tab_keys)
-    {:noreply, socket |> assign(tab: tab) |> load()}
+    {:noreply, socket |> assign(tab: tab) |> load(reset: true)}
   end
 
-  # also after every action, so the list shows the new state
-  defp load(%{assigns: %{tab: "utilities"}} = socket), do: socket
+  # also after every action, so the list shows the new state; there the
+  # current list stays visible while reloading
+  defp load(socket, opts \\ [])
+  defp load(%{assigns: %{tab: "utilities"}} = socket, _opts), do: socket
 
-  defp load(%{assigns: %{tab: tab}} = socket) do
-    assign_async(socket, :candidates, fn -> {:ok, %{candidates: candidates(tab)}} end)
+  defp load(%{assigns: %{tab: tab}} = socket, opts) do
+    assign_async(socket, :candidates, fn -> {:ok, %{candidates: candidates(tab)}} end, opts)
   end
 
   defp candidates("different_show"), do: PodcastDuplicates.marked_by_updater()

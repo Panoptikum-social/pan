@@ -72,10 +72,18 @@ defmodule Pan.Search.Persona do
           image_title: persona.image_title || "",
           podcast_ids: Enum.map(persona.podcasts, & &1.id),
           episode_ids: Enum.map(persona.episodes, & &1.id),
+          # an engagement can point to a podcast deleted in the meantime: a
+          # merge running while this batch loads moves engagements and deletes
+          # the merged podcast (it re-flags these personas afterwards)
           engagements:
-            Enum.map(
-              persona.engagements,
-              &%{podcast_title: &1.podcast.title, podcast_id: &1.podcast_id, role: &1.role}
+            for(
+              engagement <- persona.engagements,
+              engagement.podcast,
+              do: %{
+                podcast_title: engagement.podcast.title,
+                podcast_id: engagement.podcast_id,
+                role: engagement.role
+              }
             )
             |> Jason.encode!()
         }

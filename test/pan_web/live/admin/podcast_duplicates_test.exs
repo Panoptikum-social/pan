@@ -221,6 +221,25 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     assert eventually(fn -> render(view) =~ "Feed title: <strong>Sixers Talk</strong>" end)
   end
 
+  # the old tab's list must not be rendered with the new tab's rows while the
+  # new list loads (crashed with a BadMapError)
+  test "switches from a tab with groups to the different show tab", %{conn: conn} do
+    insert_podcast("Deportes", "https://www.ivoox.com/deportes.xml")
+    insert_podcast("Deportes", "https://www.rfi.fr/deportes.xml")
+
+    insert_podcast("Holding Court", "https://example.com/hc.xml",
+      last_error_message: "Feed now delivers a different show (0 % of its episodes known): x"
+    )
+
+    {:ok, view, _html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=same_title")
+
+    assert render_async(view) =~ "identical episode titles"
+
+    view |> element("a[role=tab]", "Different show") |> render_click()
+    assert render_async(view) =~ "0 % of its episodes known"
+  end
+
   test "is for admins only", %{conn: conn} do
     assert {:error, {:redirect, _}} =
              live(as(conn, insert_user(admin: false)), "/admin/podcasts/duplicates")
