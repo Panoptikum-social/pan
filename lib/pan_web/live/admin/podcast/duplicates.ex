@@ -8,25 +8,38 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   # redirect targets; rendering all of them would only bury the rest.
   @max_rows 200
 
+  # {key, tab label, heading, description}; one check per tab, only the
+  # active one is loaded
+  @tabs [
+    {"different_show", "Different show", "Feed delivers a different show",
+     "Marked by the episode updater: the feed redirects to, or announces, a feed with a new title and mostly unknown episodes (not followed, the new feed is in the feed backlog), or the result was unclear and needs a review (an email went out)."},
+    {"same_feed_url", "Same feed URL", "Same feed URL",
+     "Several podcasts with the same feed URL: a double import, or an old feed redirected to its successor."},
+    {"same_title", "Same title", "Same title",
+     "Several podcasts with the same title. Often different shows (that's fine), sometimes format feeds of one show or a double import."},
+    {"alternate", "Alternate feed", "Feed URL is another podcast's alternate feed",
+     "One podcast's feed URL is listed as an alternate feed (e.g. an old URL before a redirect) of another podcast."}
+  ]
+  @tab_keys Enum.map(@tabs, &elem(&1, 0))
+
   def mount(_params, _session, socket) do
-    {:ok,
-     socket
-     |> assign(page_title: "Duplicate podcasts", max_rows: @max_rows)
-     |> load()}
+    {:ok, assign(socket, page_title: "Duplicate podcasts", max_rows: @max_rows, tabs: @tabs)}
   end
 
-  # also after every action, so the lists show the new state
-  defp load(socket) do
-    socket
-    |> assign_async(:marked, fn -> {:ok, %{marked: PodcastDuplicates.marked_by_updater()}} end)
-    |> assign_async(:same_feed_url, fn ->
-      {:ok, %{same_feed_url: PodcastDuplicates.same_feed_url()}}
-    end)
-    |> assign_async(:same_title, fn -> {:ok, %{same_title: PodcastDuplicates.same_title()}} end)
-    |> assign_async(:feed_url_is_alternate, fn ->
-      {:ok, %{feed_url_is_alternate: PodcastDuplicates.feed_url_is_alternate()}}
-    end)
+  def handle_params(params, _uri, socket) do
+    tab = if params["tab"] in @tab_keys, do: params["tab"], else: hd(@tab_keys)
+    {:noreply, socket |> assign(tab: tab) |> load()}
   end
+
+  # also after every action, so the list shows the new state
+  defp load(%{assigns: %{tab: tab}} = socket) do
+    assign_async(socket, :candidates, fn -> {:ok, %{candidates: candidates(tab)}} end)
+  end
+
+  defp candidates("different_show"), do: PodcastDuplicates.marked_by_updater()
+  defp candidates("same_feed_url"), do: PodcastDuplicates.same_feed_url()
+  defp candidates("same_title"), do: PodcastDuplicates.same_title()
+  defp candidates("alternate"), do: PodcastDuplicates.feed_url_is_alternate()
 
   def handle_event("retire", %{"id" => id}, socket) do
     podcast = Repo.get!(Podcast, id)
@@ -136,112 +149,79 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     """
   end
 
-  attr :title, :string, required: true
-  attr :description, :string, required: true
-  attr :result, :map, required: true
-  attr :max_rows, :integer, required: true
-  slot :inner_block, required: true
+  attr :tab, :string, required: true
+  attr :candidates, :list, required: true
 
-  defp section(assigns) do
+  defp rows(%{tab: "different_show"} = assigns) do
     ~H"""
-    <section class="mt-8">
-      <h2 class="text-xl font-bold">
-        {@title}
-        <span :if={@result.ok?} class="font-normal">({length(@result.result)})</span>
-      </h2>
-      <p class="text-sm text-gray-dark max-w-3xl">{@description}</p>
-      <p :if={@result.loading} class="mt-2">Loading ...</p>
-      <p :if={@result.failed} class="mt-2 text-danger">Could not be loaded.</p>
-      <p :if={@result.ok? and @result.result == []} class="mt-2">Nothing found.</p>
-      <p :if={@result.ok? and length(@result.result) > @max_rows} class="mt-2 text-sm">
-        Showing the first {@max_rows}.
-      </p>
-      {render_slot(@inner_block)}
-    </section>
+    <tr :for={podcast <- @candidates}>
+      <td><.podcast_cell podcast={podcast} /></td>
+      <td class="max-w-xl">{podcast.last_error_message}</td>
+    </tr>
+    """
+  end
+
+  defp rows(%{tab: "alternate"} = assigns) do
+    ~H"""
+    <tr :for={{_url, podcasts} <- @candidates}>
+      <td :for={podcast <- podcasts}><.podcast_cell podcast={podcast} /></td>
+    </tr>
+    """
+  end
+
+  # same feed URL, same title: groups
+  defp rows(assigns) do
+    ~H"""
+    <tr :for={{key, podcasts} <- @candidates}>
+      <td><.group key={key} podcasts={podcasts} /></td>
+    </tr>
     """
   end
 
   def render(assigns) do
+    {_key, _label, heading, description} = List.keyfind(@tabs, assigns.tab, 0)
+    assigns = assign(assigns, heading: heading, description: description)
+
     ~H"""
     <div class="m-4">
       <h1 class="text-3xl">Duplicate podcasts</h1>
       <p class="max-w-3xl">
         Since a podcast is identified by its feed URL only, double imports and format feeds
-        (mp3/ogg of one show) end up as separate podcasts. Each check is listed on its own.
+        (mp3/ogg of one show) end up as separate podcasts. Each check has its own tab.
       </p>
 
-      <.section
-        title="Feed delivers a different show"
-        description="Marked by the episode updater: the feed redirects to, or announces, a feed with a new title and mostly unknown episodes (not followed, the new feed is in the feed backlog), or the result was unclear and needs a review (an email went out)."
-        result={@marked}
-        max_rows={@max_rows}
-      >
-        <table
-          :if={@marked.ok? and @marked.result != []}
-          class="table table-zebra table-xs my-4 w-auto"
+      <div role="tablist" class="tabs tabs-border mt-4">
+        <.link
+          :for={{key, label, _heading, _description} <- @tabs}
+          patch={podcast_path(Endpoint, :duplicates, tab: key)}
+          role="tab"
+          class={["tab", key == @tab && "tab-active"]}
         >
-          <tbody>
-            <tr :for={podcast <- Enum.take(@marked.result, @max_rows)}>
-              <td><.podcast_cell podcast={podcast} /></td>
-              <td class="max-w-xl">{podcast.last_error_message}</td>
-            </tr>
-          </tbody>
-        </table>
-      </.section>
+          {label}
+        </.link>
+      </div>
 
-      <.section
-        title="Same feed URL"
-        description="Several podcasts with the same feed URL: a double import, or an old feed redirected to its successor."
-        result={@same_feed_url}
-        max_rows={@max_rows}
-      >
+      <section class="mt-4">
+        <h2 class="text-xl font-bold">
+          {@heading}
+          <span :if={@candidates.ok?} class="font-normal">({length(@candidates.result)})</span>
+        </h2>
+        <p class="text-sm text-gray-dark max-w-3xl">{@description}</p>
+        <p :if={@candidates.loading} class="mt-2">Loading ...</p>
+        <p :if={@candidates.failed} class="mt-2 text-danger">Could not be loaded.</p>
+        <p :if={@candidates.ok? and @candidates.result == []} class="mt-2">Nothing found.</p>
+        <p :if={@candidates.ok? and length(@candidates.result) > @max_rows} class="mt-2 text-sm">
+          Showing the first {@max_rows}.
+        </p>
         <table
-          :if={@same_feed_url.ok? and @same_feed_url.result != []}
+          :if={@candidates.ok? and @candidates.result != []}
           class="table table-zebra table-xs my-4 w-auto"
         >
           <tbody>
-            <tr :for={{url, podcasts} <- Enum.take(@same_feed_url.result, @max_rows)}>
-              <td><.group key={url} podcasts={podcasts} /></td>
-            </tr>
+            <.rows tab={@tab} candidates={Enum.take(@candidates.result, @max_rows)} />
           </tbody>
         </table>
-      </.section>
-
-      <.section
-        title="Same title"
-        description="Several podcasts with the same title. Often different shows (that's fine), sometimes format feeds of one show or a double import."
-        result={@same_title}
-        max_rows={@max_rows}
-      >
-        <table
-          :if={@same_title.ok? and @same_title.result != []}
-          class="table table-zebra table-xs my-4 w-auto"
-        >
-          <tbody>
-            <tr :for={{title, podcasts} <- Enum.take(@same_title.result, @max_rows)}>
-              <td><.group key={title} podcasts={podcasts} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </.section>
-
-      <.section
-        title="Feed URL is another podcast's alternate feed"
-        description="One podcast's feed URL is listed as an alternate feed (e.g. an old URL before a redirect) of another podcast."
-        result={@feed_url_is_alternate}
-        max_rows={@max_rows}
-      >
-        <table
-          :if={@feed_url_is_alternate.ok? and @feed_url_is_alternate.result != []}
-          class="table table-zebra table-xs my-4 w-auto"
-        >
-          <tbody>
-            <tr :for={{_url, podcasts} <- Enum.take(@feed_url_is_alternate.result, @max_rows)}>
-              <td :for={podcast <- podcasts}><.podcast_cell podcast={podcast} /></td>
-            </tr>
-          </tbody>
-        </table>
-      </.section>
+      </section>
     </div>
     """
   end

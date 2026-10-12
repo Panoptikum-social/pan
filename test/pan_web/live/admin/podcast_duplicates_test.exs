@@ -39,14 +39,17 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
       last_error_message: "Feed now delivers a different show (0 % of its episodes known): x"
     )
 
-    {:ok, view, _html} = live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates")
-    html = render_async(view)
+    conn = as(conn, insert_user(admin: true))
 
-    for title <- ["Double import again", "deportes", "Stale copy", "Holding Court"] do
-      assert html =~ title
+    for {tab, expected} <- [
+          {"different_show", "0 % of its episodes known"},
+          {"same_feed_url", "Double import again"},
+          {"same_title", "deportes"},
+          {"alternate", "Stale copy"}
+        ] do
+      {:ok, view, _html} = live(conn, "/admin/podcasts/duplicates?tab=#{tab}")
+      assert render_async(view) =~ expected
     end
-
-    assert html =~ "0 % of its episodes known"
   end
 
   test "retires a podcast", %{conn: conn} do
@@ -94,6 +97,20 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     assert html =~ "is not an alternate feed"
     assert Repo.get!(Feed, feed.id).self_link_url == "https://www.podomatic.com/404.html"
     render_async(view)
+  end
+
+  test "switches tabs and falls back to the first one", %{conn: conn} do
+    insert_podcast("Double import", "https://example.com/double.xml")
+    insert_podcast("Double import again", "http://example.com/double.xml")
+
+    {:ok, view, _html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=nonsense")
+
+    assert render_async(view) =~ "Feed delivers a different show"
+
+    view |> element("a[role=tab]", "Same feed URL") |> render_click()
+    assert_patch(view, "/admin/podcasts/duplicates?tab=same_feed_url")
+    assert render_async(view) =~ "Double import again"
   end
 
   test "is for admins only", %{conn: conn} do
