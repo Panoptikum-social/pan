@@ -9,7 +9,7 @@ defmodule PanWeb.PodcastDuplicates do
 
   import Ecto.Query
   alias Pan.Repo
-  alias PanWeb.{Feed, Podcast}
+  alias PanWeb.{AlternateFeed, Feed, Podcast}
 
   @bare_url "regexp_replace(trim(?), '^https\\?://', '', 'i')"
 
@@ -65,17 +65,23 @@ defmodule PanWeb.PodcastDuplicates do
     from(p in Podcast,
       where: like(p.last_error_message, "Feed now delivers%"),
       order_by: [desc: p.last_error_occured],
-      preload: :feeds
+      preload: ^[feeds: [alternate_feeds: newest_first()]]
     )
     |> Repo.all()
   end
+
+  # the previous URLs offered for a restore
+  defp newest_first, do: from(a in AlternateFeed, order_by: [desc: a.inserted_at])
 
   # [{key, [podcast_id]}] -> [{key, [%Podcast{}]}], with one query for all
   defp with_podcasts(groups) do
     ids = groups |> Enum.flat_map(&elem(&1, 1)) |> Enum.uniq()
 
     podcasts =
-      from(p in Podcast, where: p.id in ^ids, preload: :feeds)
+      from(p in Podcast,
+        where: p.id in ^ids,
+        preload: ^[feeds: [alternate_feeds: newest_first()]]
+      )
       |> Repo.all()
       |> Map.new(&{&1.id, &1})
 

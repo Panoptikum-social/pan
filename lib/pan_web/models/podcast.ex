@@ -573,6 +573,12 @@ defmodule PanWeb.Podcast do
     |> Repo.update()
   end
 
+  def retire(podcast) do
+    podcast
+    |> Podcast.changeset(%{retired: true})
+    |> Repo.update()
+  end
+
   def unretire(podcast) do
     podcast
     |> Podcast.changeset(%{retired: false, failure_count: 0})

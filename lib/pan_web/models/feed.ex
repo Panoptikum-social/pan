@@ -161,6 +161,37 @@ defmodule PanWeb.Feed do
     |> Repo.one()
   end
 
+  @doc """
+  Makes one of the feed's alternate feed URLs (e.g. the URL before a
+  redirect to an error page) the feed URL again; the current URL is kept as
+  an alternate feed. The stored hash and headers belonged to the old URL, and
+  the podcast is due right away, so the next update shows whether it works.
+  """
+  def restore_alternate(%Feed{} = feed, url) do
+    if Repo.exists?(from(a in AlternateFeed, where: a.feed_id == ^feed.id and a.url == ^url)) do
+      Pan.Parser.AlternateFeed.get_or_insert(feed.id, %{
+        url: feed.self_link_url,
+        title: feed.self_link_url
+      })
+
+      from(p in Podcast, where: p.id == ^feed.podcast_id)
+      |> Repo.update_all(set: [next_update: Pan.Parser.MyDateTime.now()])
+
+      feed
+      |> Feed.changeset(%{
+        self_link_url: url,
+        hash: nil,
+        etag: nil,
+        last_modified: nil,
+        trust_last_modified: false,
+        no_headers_available: false
+      })
+      |> Repo.update()
+    else
+      {:error, "#{url} is not an alternate feed of feed #{feed.id}"}
+    end
+  end
+
   def get_by_id(id) do
     Repo.get!(Feed, id)
   end

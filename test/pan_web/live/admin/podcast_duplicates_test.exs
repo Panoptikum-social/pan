@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
   use PanWeb.ConnCase
 
+  import Ecto.Query
   import Phoenix.LiveViewTest
   alias Pan.Repo
   alias PanWeb.{AlternateFeed, Feed, Podcast, User}
@@ -46,6 +47,53 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     end
 
     assert html =~ "0 % of its episodes known"
+  end
+
+  test "retires a podcast", %{conn: conn} do
+    {podcast, _feed} = insert_podcast("Dead", "https://www.podomatic.com/404.html")
+    {:ok, view, _html} = live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates")
+
+    assert render_click(view, "retire", %{"id" => podcast.id}) =~ "retired"
+    assert Repo.get!(Podcast, podcast.id).retired
+    # the lists reload after an action
+    render_async(view)
+  end
+
+  test "restores a previous feed URL and keeps the current one", %{conn: conn} do
+    {podcast, feed} = insert_podcast("Moved away", "https://www.podomatic.com/404.html")
+    Repo.update!(Ecto.Changeset.change(feed, hash: "abc", etag: "x"))
+    Repo.insert!(%AlternateFeed{feed_id: feed.id, url: "https://show.example.com/feed"})
+    {:ok, view, _html} = live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates")
+
+    render_submit(view, "restore", %{
+      "feed_id" => feed.id,
+      "url" => "https://show.example.com/feed"
+    })
+
+    feed = Repo.get!(Feed, feed.id)
+    assert feed.self_link_url == "https://show.example.com/feed"
+    assert feed.hash == nil and feed.etag == nil
+
+    assert Repo.exists?(
+             from(a in AlternateFeed,
+               where: a.feed_id == ^feed.id and a.url == "https://www.podomatic.com/404.html"
+             )
+           )
+
+    assert Repo.get!(Podcast, podcast.id).next_update != ~N[2026-01-01 00:00:00]
+    render_async(view)
+  end
+
+  test "restores only one of the feed's own previous URLs", %{conn: conn} do
+    {_podcast, feed} = insert_podcast("Moved away", "https://www.podomatic.com/404.html")
+    {:ok, view, _html} = live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates")
+
+    html =
+      render_submit(view, "restore", %{"feed_id" => feed.id, "url" => "https://evil.example.com"})
+
+    assert html =~ "is not an alternate feed"
+    assert Repo.get!(Feed, feed.id).self_link_url == "https://www.podomatic.com/404.html"
+    render_async(view)
   end
 
   test "is for admins only", %{conn: conn} do

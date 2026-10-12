@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   use PanWeb, :admin_live_view
-  alias PanWeb.{Endpoint, PodcastDuplicates}
+  alias Pan.Repo
+  alias PanWeb.{Endpoint, Feed, Podcast, PodcastDuplicates}
   import PanWeb.Router.Helpers
 
   # The alternate feed check finds well over a thousand pairs, mostly old
@@ -11,14 +12,58 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:ok,
      socket
      |> assign(page_title: "Duplicate podcasts", max_rows: @max_rows)
-     |> assign_async(:marked, fn -> {:ok, %{marked: PodcastDuplicates.marked_by_updater()}} end)
-     |> assign_async(:same_feed_url, fn ->
-       {:ok, %{same_feed_url: PodcastDuplicates.same_feed_url()}}
-     end)
-     |> assign_async(:same_title, fn -> {:ok, %{same_title: PodcastDuplicates.same_title()}} end)
-     |> assign_async(:feed_url_is_alternate, fn ->
-       {:ok, %{feed_url_is_alternate: PodcastDuplicates.feed_url_is_alternate()}}
-     end)}
+     |> load()}
+  end
+
+  # also after every action, so the lists show the new state
+  defp load(socket) do
+    socket
+    |> assign_async(:marked, fn -> {:ok, %{marked: PodcastDuplicates.marked_by_updater()}} end)
+    |> assign_async(:same_feed_url, fn ->
+      {:ok, %{same_feed_url: PodcastDuplicates.same_feed_url()}}
+    end)
+    |> assign_async(:same_title, fn -> {:ok, %{same_title: PodcastDuplicates.same_title()}} end)
+    |> assign_async(:feed_url_is_alternate, fn ->
+      {:ok, %{feed_url_is_alternate: PodcastDuplicates.feed_url_is_alternate()}}
+    end)
+  end
+
+  def handle_event("retire", %{"id" => id}, socket) do
+    podcast = Repo.get!(Podcast, id)
+
+    socket =
+      case Podcast.retire(podcast) do
+        {:ok, _podcast} -> put_flash(socket, :info, "Podcast #{id} \"#{podcast.title}\" retired.")
+        {:error, _changeset} -> put_flash(socket, :error, "Podcast #{id} could not be retired.")
+      end
+
+    {:noreply, load(socket)}
+  end
+
+  def handle_event("restore", %{"feed_id" => feed_id, "url" => url}, socket) do
+    feed = Repo.get!(Feed, feed_id)
+
+    socket =
+      case Feed.restore_alternate(feed, url) do
+        {:ok, _feed} ->
+          put_flash(
+            socket,
+            :info,
+            "Podcast #{feed.podcast_id}: feed URL is #{url} again, the next update shows whether it works."
+          )
+
+        {:error, message} when is_binary(message) ->
+          put_flash(socket, :error, message)
+
+        {:error, _changeset} ->
+          put_flash(
+            socket,
+            :error,
+            "The feed URL of podcast #{feed.podcast_id} could not be restored."
+          )
+      end
+
+    {:noreply, load(socket)}
   end
 
   attr :podcast, :map, required: true
@@ -44,7 +89,29 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       </span>
       <div :for={feed <- @podcast.feeds} class="text-xs text-gray-dark break-all">
         {feed.self_link_url}
+        <form
+          :if={feed.alternate_feeds != []}
+          phx-submit="restore"
+          class="mt-1 flex gap-1 items-center"
+        >
+          <input type="hidden" name="feed_id" value={feed.id} />
+          <select name="url" class="select select-xs max-w-md">
+            <option :for={alternate <- feed.alternate_feeds} value={alternate.url}>
+              {Calendar.strftime(alternate.inserted_at, "%Y-%m-%d")} {alternate.url}
+            </option>
+          </select>
+          <button type="submit" class="btn btn-info btn-xs">Restore previous</button>
+        </form>
       </div>
+      <button
+        :if={!@podcast.retired}
+        phx-click="retire"
+        phx-value-id={@podcast.id}
+        data-confirm={"Retire podcast #{@podcast.id} \"#{@podcast.title}\"?"}
+        class="mt-1 btn btn-warning btn-xs"
+      >
+        Retire
+      </button>
     </div>
     """
   end
