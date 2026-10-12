@@ -36,7 +36,7 @@ defmodule PanWeb.PodcastMerge do
         )
 
       Search.Podcast.delete_index(from_podcast.id)
-      Enum.each(deleted_episode_ids, &Search.Episode.delete_index/1)
+      Search.Episode.delete_indices(deleted_episode_ids)
       Search.Episode.reset(moved_episode_ids)
       # re-pushed by Pan.Job.PushMissingSearchIndex
       from(p in Podcast, where: p.id == ^to_podcast.id)

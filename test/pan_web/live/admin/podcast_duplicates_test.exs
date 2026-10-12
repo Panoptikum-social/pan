@@ -24,6 +24,20 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     {podcast, feed}
   end
 
+  defp eventually(check, tries \\ 50) do
+    cond do
+      check.() ->
+        true
+
+      tries == 0 ->
+        false
+
+      true ->
+        Process.sleep(20)
+        eventually(check, tries - 1)
+    end
+  end
+
   defp as(conn, user), do: init_test_session(conn, %{"user_id" => user.id, "admin" => user.admin})
 
   test "lists each kind of candidate", %{conn: conn} do
@@ -123,8 +137,10 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     assert render_async(view) =~ "Merge into"
 
     html = render_submit(view, "merge", %{"from_id" => "#{merged.id}", "to_id" => "#{keep.id}"})
+    assert html =~ "Merging podcast #{merged.id} into #{keep.id}"
 
-    assert html =~ "merged into #{keep.id}"
+    # the merge runs in a task of its own and reports back when done
+    assert eventually(fn -> render(view) =~ "merged into #{keep.id}" end)
     refute Repo.get(Podcast, merged.id)
     render_async(view)
   end

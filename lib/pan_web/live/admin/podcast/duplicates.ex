@@ -3,6 +3,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   alias Pan.Repo
   alias PanWeb.{AlternateFeed, Endpoint, Feed, Podcast, PodcastDuplicates, PodcastMerge}
   import PanWeb.Router.Helpers
+  require Logger
 
   # The alternate feed check finds well over a thousand pairs, mostly old
   # redirect targets; rendering all of them would only bury the rest.
@@ -24,7 +25,13 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   @tab_keys Enum.map(@tabs, &elem(&1, 0))
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Duplicate podcasts", max_rows: @max_rows, tabs: @tabs)}
+    {:ok,
+     assign(socket,
+       page_title: "Duplicate podcasts",
+       max_rows: @max_rows,
+       tabs: @tabs,
+       merging: MapSet.new()
+     )}
   end
 
   def handle_params(params, _uri, socket) do
@@ -96,19 +103,51 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:noreply, socket}
   end
 
+  # A big podcast takes a while to merge: in the LiveView process the client
+  # gives up waiting, reconnects, and the restarted LiveView kills the merge
+  # mid-transaction. So it runs in a task of its own, not linked to the page;
+  # if the page is gone by the time it's done, the result is only logged.
   def handle_event("merge", %{"from_id" => from_id, "to_id" => to_id}, socket) do
+    from_id = String.to_integer(from_id)
+    to_id = String.to_integer(to_id)
+    liveview = self()
+
+    Task.start(fn -> send(liveview, {:merge_done, from_id, merge(from_id, to_id)}) end)
+
+    {:noreply,
+     socket
+     |> update(:merging, &MapSet.put(&1, from_id))
+     |> put_flash(:info, "Merging podcast #{from_id} into #{to_id} ...")}
+  end
+
+  def handle_info({:merge_done, from_id, result}, socket) do
     socket =
-      case PodcastMerge.merge(String.to_integer(from_id), String.to_integer(to_id)) do
+      case result do
         {:ok, message} -> put_flash(socket, :info, message)
         {:error, message} -> put_flash(socket, :error, message)
       end
 
-    {:noreply, load(socket)}
+    {:noreply, socket |> update(:merging, &MapSet.delete(&1, from_id)) |> load()}
+  end
+
+  defp merge(from_id, to_id) do
+    result = PodcastMerge.merge(from_id, to_id)
+    Logger.info("Podcast merge #{from_id} -> #{to_id}: #{inspect(result)}")
+    result
+  rescue
+    exception ->
+      Logger.error(
+        "Podcast merge #{from_id} -> #{to_id} failed: " <>
+          Exception.format(:error, exception, __STACKTRACE__)
+      )
+
+      {:error, "Merging podcast #{from_id} into #{to_id} failed: #{Exception.message(exception)}"}
   end
 
   attr :podcast, :map, required: true
   # the other podcasts of the same group, offered as merge targets
   attr :merge_targets, :list, default: []
+  attr :merging, :any, default: MapSet.new()
 
   defp podcast_cell(assigns) do
     ~H"""
@@ -145,7 +184,12 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           <button type="submit" class="btn btn-info btn-xs">Restore previous</button>
         </form>
       </div>
-      <form :if={@merge_targets != []} phx-submit="merge" class="mt-1 flex gap-1 items-center">
+      <p :if={MapSet.member?(@merging, @podcast.id)} class="mt-1 text-sm">Merging ...</p>
+      <form
+        :if={@merge_targets != [] and not MapSet.member?(@merging, @podcast.id)}
+        phx-submit="merge"
+        class="mt-1 flex gap-1 items-center"
+      >
         <input type="hidden" name="from_id" value={@podcast.id} />
         <select name="to_id" class="select select-xs max-w-md">
           <option :for={target <- @merge_targets} value={target.id}>
@@ -179,6 +223,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
 
   attr :key, :string, required: true
   attr :podcasts, :list, required: true
+  attr :merging, :any, required: true
 
   defp group(assigns) do
     assigns = assign(assigns, :side_by_side?, length(assigns.podcasts) <= @max_side_by_side)
@@ -192,6 +237,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
         :for={podcast <- @podcasts}
         podcast={podcast}
         merge_targets={Enum.reject(@podcasts, &(&1.id == podcast.id))}
+        merging={@merging}
       />
     </div>
     """
@@ -199,6 +245,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
 
   attr :tab, :string, required: true
   attr :candidates, :list, required: true
+  attr :merging, :any, required: true
 
   defp rows(%{tab: "different_show"} = assigns) do
     ~H"""
@@ -216,6 +263,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
         <.podcast_cell
           podcast={podcast}
           merge_targets={Enum.reject(podcasts, &(&1.id == podcast.id))}
+          merging={@merging}
         />
       </td>
     </tr>
@@ -226,7 +274,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   defp rows(assigns) do
     ~H"""
     <tr :for={{key, podcasts} <- @candidates}>
-      <td><.group key={key} podcasts={podcasts} /></td>
+      <td><.group key={key} podcasts={podcasts} merging={@merging} /></td>
     </tr>
     """
   end
@@ -312,7 +360,11 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           class="table table-zebra table-xs my-4 w-auto"
         >
           <tbody>
-            <.rows tab={@tab} candidates={Enum.take(@candidates.result, @max_rows)} />
+            <.rows
+              tab={@tab}
+              candidates={Enum.take(@candidates.result, @max_rows)}
+              merging={@merging}
+            />
           </tbody>
         </table>
       </section>

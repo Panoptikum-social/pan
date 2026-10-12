@@ -182,6 +182,14 @@ defmodule Pan.Search.Episode do
     |> Manticore.post("delete", "application/json")
   end
 
+  # one request per 1000 ids instead of one per episode, e.g. for the
+  # thousands of episodes of a merged podcast
+  def delete_indices(ids) do
+    for chunk <- Enum.chunk_every(ids, 1000) do
+      Manticore.sql("DELETE FROM episodes WHERE id IN (#{Enum.join(chunk, ",")})")
+    end
+  end
+
   def delete_index_orphans() do
     Pan.Search.delete_orphans("episodes", Episode)
   end
