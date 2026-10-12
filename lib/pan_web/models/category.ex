@@ -172,48 +172,58 @@ defmodule PanWeb.Category do
     |> Repo.preload(:parent)
   end
 
+  def merge(id, id), do: {:error, "A category can't be merged into itself."}
+
+  # A community is unique per category and carries moderators, curators,
+  # curations and followers, so two of them can't be merged automatically.
   def merge(from_id, to_id) do
-    moved_podcast_ids = Search.Category.podcast_ids(from_id)
+    if Community.get_by_category_id(from_id) && Community.get_by_category_id(to_id) do
+      {:error, "Both categories have a community, merge the communities first."}
+    else
+      moved_podcast_ids = Search.Category.podcast_ids(from_id)
 
-    from(f in Follow, where: f.category_id == ^from_id)
-    |> Repo.update_all(set: [category_id: to_id])
+      from(f in Follow, where: f.category_id == ^from_id)
+      |> Repo.update_all(set: [category_id: to_id])
 
-    from(l in Like, where: l.category_id == ^from_id)
-    |> Repo.update_all(set: [category_id: to_id])
+      from(l in Like, where: l.category_id == ^from_id)
+      |> Repo.update_all(set: [category_id: to_id])
 
-    already_in_to_ids =
+      already_in_to_ids =
+        from(r in "categories_podcasts",
+          where: r.category_id == ^to_id,
+          select: [r.podcast_id]
+        )
+        |> Repo.all()
+
       from(r in "categories_podcasts",
-        where: r.category_id == ^to_id,
-        select: [r.podcast_id]
+        where:
+          r.category_id == ^from_id and
+            r.podcast_id not in ^already_in_to_ids
       )
-      |> Repo.all()
+      |> Repo.update_all(set: [category_id: to_id])
 
-    from(r in "categories_podcasts",
-      where:
-        r.category_id == ^from_id and
-          r.podcast_id not in ^already_in_to_ids
-    )
-    |> Repo.update_all(set: [category_id: to_id])
+      from(r in "categories_podcasts",
+        where:
+          r.category_id == ^from_id and
+            r.podcast_id in ^already_in_to_ids
+      )
+      |> Repo.delete_all()
 
-    from(r in "categories_podcasts",
-      where:
-        r.category_id == ^from_id and
-          r.podcast_id in ^already_in_to_ids
-    )
-    |> Repo.delete_all()
+      from(c in Category, where: c.parent_id == ^from_id)
+      |> Repo.update_all(set: [parent_id: to_id])
 
-    from(c in Category, where: c.parent_id == ^from_id)
-    |> Repo.update_all(set: [parent_id: to_id])
+      from(c in Community, where: c.category_id == ^from_id)
+      |> Repo.update_all(set: [category_id: to_id])
 
-    Pan.Search.Category.delete_index(from_id)
+      Repo.get!(Category, from_id)
+      |> Repo.delete!()
 
-    Repo.get!(Category, from_id)
-    |> Repo.delete!()
+      Search.Category.delete_index(from_id)
+      Search.Category.update_index(to_id)
 
-    Search.Category.delete_index(from_id)
-    Search.Category.update_index(to_id)
-
-    # their docs still list the deleted category
-    Search.Category.reset_podcasts(moved_podcast_ids)
+      # their docs still list the deleted category
+      Search.Category.reset_podcasts(moved_podcast_ids)
+      :ok
+    end
   end
 end

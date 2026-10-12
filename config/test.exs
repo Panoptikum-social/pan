@@ -27,6 +27,11 @@ config :pan, :children, [
   PanWeb.Endpoint
 ]
 
+# Code under test that updates the search index must not reach the dev
+# Manticore on localhost:9308 (sandbox ids would hit real dev docs);
+# Manticore.post/3 returns the connection error instead of raising.
+config :pan, :manticore_url, "http://localhost:1"
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

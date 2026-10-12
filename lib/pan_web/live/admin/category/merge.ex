@@ -7,9 +7,22 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     {:ok, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
   end
 
+  def handle_event("merge", _, %{assigns: %{from_id: from_id, into_id: into_id}} = socket)
+      when is_nil(from_id) or is_nil(into_id) do
+    {:noreply, put_flash(socket, :error, "Select both categories first.")}
+  end
+
   def handle_event("merge", _, %{assigns: assigns} = socket) do
-    Category.merge(assigns.from_id, assigns.into_id)
-    {:noreply, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
+    case Category.merge(assigns.from_id, assigns.into_id) do
+      :ok ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Categories merged.")
+         |> assign(categories: Category.tree(), from_id: nil, into_id: nil)}
+
+      {:error, message} ->
+        {:noreply, put_flash(socket, :error, message)}
+    end
   end
 
   def handle_event("selectFrom", %{"node-id" => from_id}, socket) do
