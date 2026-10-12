@@ -113,6 +113,22 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     assert render_async(view) =~ "Double import again"
   end
 
+  test "merges one podcast of a group into another", %{conn: conn} do
+    {keep, _} = insert_podcast("Double import", "https://example.com/double.xml")
+    {merged, _} = insert_podcast("Double import again", "http://example.com/double.xml")
+
+    {:ok, view, _html} =
+      live(as(conn, insert_user(admin: true)), "/admin/podcasts/duplicates?tab=same_feed_url")
+
+    assert render_async(view) =~ "Merge into"
+
+    html = render_submit(view, "merge", %{"from_id" => "#{merged.id}", "to_id" => "#{keep.id}"})
+
+    assert html =~ "merged into #{keep.id}"
+    refute Repo.get(Podcast, merged.id)
+    render_async(view)
+  end
+
   test "is for admins only", %{conn: conn} do
     assert {:error, {:redirect, _}} =
              live(as(conn, insert_user(admin: false)), "/admin/podcasts/duplicates")

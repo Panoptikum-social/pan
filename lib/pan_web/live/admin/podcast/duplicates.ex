@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   use PanWeb, :admin_live_view
   alias Pan.Repo
-  alias PanWeb.{Endpoint, Feed, Podcast, PodcastDuplicates}
+  alias PanWeb.{Endpoint, Feed, Podcast, PodcastDuplicates, PodcastMerge}
   import PanWeb.Router.Helpers
 
   # The alternate feed check finds well over a thousand pairs, mostly old
@@ -79,7 +79,19 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     {:noreply, load(socket)}
   end
 
+  def handle_event("merge", %{"from_id" => from_id, "to_id" => to_id}, socket) do
+    socket =
+      case PodcastMerge.merge(String.to_integer(from_id), String.to_integer(to_id)) do
+        {:ok, message} -> put_flash(socket, :info, message)
+        {:error, message} -> put_flash(socket, :error, message)
+      end
+
+    {:noreply, load(socket)}
+  end
+
   attr :podcast, :map, required: true
+  # the other podcasts of the same group, offered as merge targets
+  attr :merge_targets, :list, default: []
 
   defp podcast_cell(assigns) do
     ~H"""
@@ -116,6 +128,21 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           <button type="submit" class="btn btn-info btn-xs">Restore previous</button>
         </form>
       </div>
+      <form :if={@merge_targets != []} phx-submit="merge" class="mt-1 flex gap-1 items-center">
+        <input type="hidden" name="from_id" value={@podcast.id} />
+        <select name="to_id" class="select select-xs max-w-md">
+          <option :for={target <- @merge_targets} value={target.id}>
+            {target.id} {target.title}
+          </option>
+        </select>
+        <button
+          type="submit"
+          data-confirm={"Merge podcast #{@podcast.id} \"#{@podcast.title}\" into the selected podcast? Podcast #{@podcast.id} is deleted afterwards."}
+          class="btn btn-error btn-xs"
+        >
+          Merge into
+        </button>
+      </form>
       <button
         :if={!@podcast.retired}
         phx-click="retire"
@@ -144,7 +171,11 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       {@key} <span class="font-normal text-gray-dark">({length(@podcasts)})</span>
     </div>
     <div class={["mt-1", if(@side_by_side?, do: "flex gap-6", else: "flex flex-col gap-2")]}>
-      <.podcast_cell :for={podcast <- @podcasts} podcast={podcast} />
+      <.podcast_cell
+        :for={podcast <- @podcasts}
+        podcast={podcast}
+        merge_targets={Enum.reject(@podcasts, &(&1.id == podcast.id))}
+      />
     </div>
     """
   end
@@ -164,7 +195,12 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   defp rows(%{tab: "alternate"} = assigns) do
     ~H"""
     <tr :for={{_url, podcasts} <- @candidates}>
-      <td :for={podcast <- podcasts}><.podcast_cell podcast={podcast} /></td>
+      <td :for={podcast <- podcasts}>
+        <.podcast_cell
+          podcast={podcast}
+          merge_targets={Enum.reject(podcasts, &(&1.id == podcast.id))}
+        />
+      </td>
     </tr>
     """
   end
