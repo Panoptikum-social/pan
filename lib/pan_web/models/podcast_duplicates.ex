@@ -47,7 +47,12 @@ defmodule PanWeb.PodcastDuplicates do
     |> with_podcasts()
   end
 
-  @doc "Groups of podcasts with the same title (case and surrounding spaces ignored)."
+  @doc """
+  Groups of podcasts with the same title (case and surrounding spaces
+  ignored), as `{title, podcasts, shared_episode_titles}`. For a pair, the
+  number of episode titles both have tells the same show twice from two
+  shows that just share a title; nil for bigger groups.
+  """
   def same_title do
     from(p in Podcast,
       group_by: fragment("lower(trim(?))", p.title),
@@ -57,7 +62,20 @@ defmodule PanWeb.PodcastDuplicates do
     )
     |> Repo.all()
     |> with_podcasts()
+    |> Enum.map(fn {title, podcasts} -> {title, podcasts, shared_episode_titles(podcasts)} end)
   end
+
+  defp shared_episode_titles([%Podcast{id: a}, %Podcast{id: b}]) do
+    from(x in PanWeb.Episode,
+      join: y in PanWeb.Episode,
+      on: y.title == x.title and y.podcast_id == ^b,
+      where: x.podcast_id == ^a,
+      select: count(x.title, :distinct)
+    )
+    |> Repo.one()
+  end
+
+  defp shared_episode_titles(_podcasts), do: nil
 
   @doc """
   Podcasts whose feed now delivers a different show or needs a review,

@@ -267,6 +267,8 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
   # the title once fetched (:fetching meanwhile)
   attr :fetch_url, :string, default: nil
   attr :feed_title, :any, default: nil
+  # same title, pairs only: episode titles both podcasts have
+  attr :shared_episode_titles, :integer, default: nil
 
   defp group(assigns) do
     assigns = assign(assigns, :side_by_side?, length(assigns.podcasts) <= @max_side_by_side)
@@ -274,6 +276,9 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     ~H"""
     <div class="text-sm font-semibold break-all">
       {@key} <span class="font-normal text-gray-dark">({length(@podcasts)})</span>
+    </div>
+    <div :if={@shared_episode_titles} class="text-sm">
+      {@shared_episode_titles} identical episode titles
     </div>
     <div :if={@fetch_url} class="text-sm">
       <button
@@ -347,11 +352,12 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     """
   end
 
-  # same title: groups
-  defp rows(assigns) do
+  defp rows(%{tab: "same_title"} = assigns) do
     ~H"""
-    <tr :for={{key, podcasts} <- @candidates}>
-      <td><.group key={key} podcasts={podcasts} merging={@merging} /></td>
+    <tr :for={{key, podcasts, shared} <- @candidates}>
+      <td>
+        <.group key={key} podcasts={podcasts} merging={@merging} shared_episode_titles={shared} />
+      </td>
     </tr>
     """
   end

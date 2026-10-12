@@ -58,7 +58,7 @@ defmodule PanWeb.Live.Admin.PodcastDuplicatesTest do
     for {tab, expected} <- [
           {"different_show", "0 % of its episodes known"},
           {"same_feed_url", "Double import again"},
-          {"same_title", "deportes"},
+          {"same_title", "0 identical episode titles"},
           {"alternate", "Stale copy"}
         ] do
       {:ok, view, _html} = live(conn, "/admin/podcasts/duplicates?tab=#{tab}")
