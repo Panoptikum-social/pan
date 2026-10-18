@@ -81,10 +81,8 @@ preferred), bit rate/sample rate by channel count, loudness around -16 LKFS,
 true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
 uploads only.
 
-**Small known issues:**
-- Library tests print an xmerl `[error] fatal` log line for the broken-XML
-  test (Pan silences that via `Pan.LoggerFilters`, the library doesn't).
-- Findings only cover the first feed of a podcast (`Feed.get_by_podcast_id/1`).
+**Small known issue:** findings only cover the first feed of a podcast
+(`Feed.get_by_podcast_id/1`).
 
 ---
 
