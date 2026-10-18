@@ -3,6 +3,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   on_mount PanWeb.Live.Auth
 
   alias Pan.Parser.{Download, Feed}
+  alias PanWeb.Component.Pill
   alias PanWeb.Podcast
   import PanWeb.Router.Helpers
 
@@ -108,6 +109,12 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     end
   end
 
+  # One colour per rule set, none of them looking like a severity.
+  defp standard_color(:rss2), do: "bittersweet"
+  defp standard_color(:apple), do: "lavender"
+  defp standard_color(:podcasting20), do: "blue-jeans"
+  defp standard_color(_standard), do: "gray"
+
   def render(assigns) do
     ~H"""
     <div class="m-4 max-w-4xl">
@@ -129,6 +136,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <h2 class="text-xl font-bold">{severity |> Atom.to_string() |> String.capitalize()}</h2>
         <div :for={{finding, details} <- rules} class="mt-3">
           <p>
+            <Pill.render type={standard_color(finding.standard)}>
+              {CheckMyFeed.standard_name(finding.standard)}
+            </Pill.render>
             {finding.description}
             <span class="text-sm text-gray-dark">
               ({finding.rule_id}, <a
@@ -150,6 +160,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <h2 class="text-xl font-bold">Passed</h2>
         <ul class="mt-3 list-disc ml-6">
           <li :for={rule <- @passed}>
+            <Pill.render type={standard_color(rule.standard)}>
+              {CheckMyFeed.standard_name(rule.standard)}
+            </Pill.render>
             {rule.description}
             <span class="text-sm text-gray-dark">({rule.id})</span>
           </li>
@@ -165,6 +178,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </p>
         <ul class="mt-3 list-disc ml-6">
           <li :for={rule <- @not_applicable}>
+            <Pill.render type={standard_color(rule.standard)}>
+              {CheckMyFeed.standard_name(rule.standard)}
+            </Pill.render>
             {rule.description}
             <span class="text-sm text-gray-dark">({rule.id})</span>
           </li>
