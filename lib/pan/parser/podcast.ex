@@ -95,11 +95,11 @@ defmodule Pan.Parser.Podcast do
   defp follow_redirect(podcast, opts, visited_urls, redirect_target) do
     cond do
       redirect_target in visited_urls ->
-        Logger.error("Podcast #{podcast.id}: loop detected")
+        Logger.warning("Podcast #{podcast.id}: loop detected")
         {:error, "loop detected"}
 
       length(visited_urls) >= @max_redirects ->
-        Logger.error("Podcast #{podcast.id}: too many redirects")
+        Logger.warning("Podcast #{podcast.id}: too many redirects")
         {:error, "too many redirects"}
 
       true ->
