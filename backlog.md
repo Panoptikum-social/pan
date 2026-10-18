@@ -82,18 +82,20 @@ section with Pan's own parser output (channel fields, episode summary).
 and non-RFC 822 dates Pan's parser copes with (`Pan.Parser.Leniency`), shown
 even for feeds that aren't well-formed XML.
 
-**Still open, later (agreed):** active probing (below).
-
 **Switching rule sets off** is in since 2026-10-18: a checkbox per rule set on
 the check page, the choice kept in the URL (`?standards=rss2,apple`).
 
-**Active probing (later), collected checklist:** needs downloads of artwork and
-media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
-no alpha channel, real file type vs. extension, 72 dpi, RGB. Enclosures: HEAD
-request (reachable, length matches). Audio for RSS: MP3 or AAC (AAC in MP4
-preferred), bit rate/sample rate by channel count, loudness around -16 LKFS,
-true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
-uploads only.
+**Active probing, phase 1** is in since 2026-10-18 (check_my_feed 0.4.0,
+`Pan.FeedProbe`): a button on the check page probes the artwork of the show
+and of the newest 10 episodes (size 1400-3000 px, square, real file type vs.
+extension, RGB, no alpha channel, 72 dpi) and sends HEAD requests for their
+media files (reachable, length and type match the feed).
+
+**Still open, maybe never: probing phase 2, audio.** Needs ffmpeg on prod (the
+Ubuntu package has ffprobe and the loudness filters) and downloading whole
+audio files. Checklist: MP3 or AAC (AAC in MP4 preferred), bit rate/sample
+rate by channel count, loudness around -16 LKFS, true peak below -1 dBFS.
+WAV/FLAC requirements are for Connect subscriber uploads only.
 
 ---
 
