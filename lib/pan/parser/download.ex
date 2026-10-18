@@ -167,10 +167,10 @@ defmodule Pan.Parser.Download do
   end
 
   defp redirect(url, headers) do
-    header_map = Enum.into(headers, %{})
-
-    redirect_target = Map.get(header_map, "Location") || Map.get(header_map, "location")
-    Feed.check_for_redirect_loop(url, redirect_target)
+    case Enum.find(headers, fn {name, _value} -> String.downcase(name) == "location" end) do
+      {_name, redirect_target} -> Feed.check_for_redirect_loop(url, redirect_target)
+      nil -> {:error, "redirect without location"}
+    end
   end
 
   # extra_options is merged in as-is (e.g. `follow_redirect: true` for a

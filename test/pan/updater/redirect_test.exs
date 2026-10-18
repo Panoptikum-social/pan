@@ -108,6 +108,19 @@ defmodule Pan.Updater.RedirectTest do
       assert feed_url(feed) == TestServer.url("/new-feed.xml")
     end
 
+    test "a redirect without a location header is a feed error", %{
+      podcast: podcast,
+      feed: feed
+    } do
+      TestServer.add("/feed.xml", via: :get, to: &Plug.Conn.resp(&1, 302, ""))
+
+      assert {:error, "redirect without location"} =
+               Pan.Updater.Podcast.import_new_episodes(podcast)
+
+      assert feed_url(feed) == TestServer.url("/feed.xml")
+      assert Repo.get!(Podcast, podcast.id).failure_count == 1
+    end
+
     test "a redirect to the unchanged feed moves the feed URL too", %{
       podcast: podcast,
       feed: feed
