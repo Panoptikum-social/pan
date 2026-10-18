@@ -114,7 +114,7 @@ defmodule PanWeb.PodcastController do
       {:ok, message} -> put_flash(conn, :info, message)
       {:error, message} -> put_flash(conn, :error, message)
     end
-    |> redirect(to: podcast_path(conn, :show, id))
+    |> redirect(to: podcast_frontend_path(conn, :show, id))
   end
 
   def fix_owner(conn, %{"id" => id}) do

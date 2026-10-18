@@ -1,6 +1,5 @@
 defmodule PanWeb.Components.Admin.TextField do
   use PanWeb, :html
-  use Phoenix.Component
 
   attr :name, :atom, required: true
   attr :value, :any, default: nil

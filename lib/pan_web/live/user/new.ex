@@ -2,7 +2,7 @@ defmodule PanWeb.Live.User.New do
   use Phoenix.LiveView, container: {:div, class: "flex-1 flex justify-center"}
   alias PanWeb.{User, Endpoint}
   alias Phoenix.Component
-  use PanWeb, :html
+  import PanWeb.CoreComponents
   import PanWeb.Router.Helpers
 
   def mount(_params, _session, socket) do

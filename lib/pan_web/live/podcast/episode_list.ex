@@ -4,7 +4,6 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PersonaButton
   alias PanWeb.Component.Icon
-  require Integer
 
   attr :episodes, :any, required: false, default: []
   attr :page, :integer, required: false, default: 1

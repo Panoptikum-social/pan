@@ -1,7 +1,6 @@
 defmodule Logger.Backends.ExceptionNotification do
   @behaviour :gen_event
 
-  require Logger
 
   def init(args), do: {:ok, args}
 

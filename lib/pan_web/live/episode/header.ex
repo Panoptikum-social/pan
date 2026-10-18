@@ -132,8 +132,10 @@ defmodule PanWeb.Live.Episode.Header do
                 class="text-link hover:text-link-dark wrap-break-word"
                 href={enclosure.url |> String.trim()}
               >{enclosure.url}</a>
-              <%= if is_integer(enclosure.length) do %>
-                ({Float.round(String.to_integer(enclosure.length) / 1_048_576, 1)} MB)
+              <%= case Integer.parse(enclosure.length || "") do %>
+                <% {bytes, ""} when bytes > 0 -> %>
+                  ({Float.round(bytes / 1_048_576, 1)} MB)
+                <% _ -> %>
               <% end %>
             </dd>
             <dd class="col-start-4">

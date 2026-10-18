@@ -1,6 +1,5 @@
 defmodule PanWeb.Admin.ShowPresenter do
   use PanWeb, :html
-  require Integer
 
   def present(_presenter, _record, _field, _format, true = _redact), do: "** redacted **"
   def present(nil, record, field, format, false), do: present(record, field, format)

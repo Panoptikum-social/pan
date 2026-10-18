@@ -2,7 +2,6 @@ defmodule Pan.Updater.RssFeed do
   alias Pan.Parser.Iterator
   alias Pan.Parser.Helpers
   alias Pan.Updater.{Feed, Filter}
-  require Logger
 
   def import_to_map(feed_xml, feed, podcast_id \\ 0, forced \\ false) do
     url = String.trim(feed.self_link_url)

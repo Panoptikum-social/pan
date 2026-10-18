@@ -4,7 +4,6 @@ defmodule PanWeb.Live.Episode.RecommendationList do
   alias PanWeb.{Endpoint, Recommendation}
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  require Integer
 
   def mount(socket) do
     {:ok, assign(socket, recommendations: [], recommendations_count: 0)}

@@ -1,6 +1,5 @@
 defmodule PanWeb.Components.Admin.DateTimeSelect do
   use PanWeb, :html
-  use Phoenix.Component
 
   attr :name, :string, required: true
   attr :value, :any, default: nil

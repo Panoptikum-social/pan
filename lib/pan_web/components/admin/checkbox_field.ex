@@ -1,6 +1,5 @@
 defmodule PanWeb.Components.Admin.CheckBoxField do
   use PanWeb, :html
-  use Phoenix.Component
 
   attr :name, :string, required: true
   attr :label, :string, required: true
