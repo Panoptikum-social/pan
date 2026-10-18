@@ -155,18 +155,3 @@ follow button). No separate community subscription.
 A first usable version could be steps 0–4 without scroll sync (about 1½–2
 weeks), with snapshots following.
 
----
-
-### Upgrade to OTP 29 (found 2026-10-18)
-On prod (OTP 28.4.2, ssl 11.5.4) OTP's global TLS session ticket store
-`tls_client_ticket_store` crashed with a `TryClauseError` in
-`get_tickets/4` when two connections to `feeds.soundcloud.com` started at
-the same moment (`ImportStalePodcasts` and a manual podcast update): its
-`try ... of` has no clause for a ticket locked by another connection. Both
-handshakes died, the store was restarted by the ssl supervisor; seven error
-mails for one event. ssl 11.7.7 (OTP 29.1.1) has the missing clause.
-hackney enables TLS 1.3 session tickets by default; turning them off
-(`config :hackney, tls_session_resumption: false`) was considered and not
-chosen. Nothing changed for now; the upgrade needs a dependency check like
-the one for OTP 28.
-
