@@ -69,9 +69,15 @@ parser code, since Pan's fix-ups would hide what the tool must report), takes an
 XML string and does no fetching; Pan downloads a fresh copy per check via
 `Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
 
-**Still open, later (agreed):** Podcasting 2.0 rules, active probing (below), the
-info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
-fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
+**Podcasting 2.0 rules** are in since 0.3.0 (2026-10-18): only the tags a feed
+uses are checked, the guid/locked hints only for feeds that use the
+namespace. Left out for later: `podcast:person` role/group against the
+taxonomy list, license identifiers against the license list, and everything
+that needs a download (transcript and chapters files).
+
+**Still open, later (agreed):** active probing (below), the info-level
+"Panoptikum tolerates this" report (the ~70 date formats, entity fixups etc.
+in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
 **Feature request (2026-10-18):** the report should allow switching off rule
 sets. Most podcasts don't follow Podcasting 2.0, and their podcasters don't
