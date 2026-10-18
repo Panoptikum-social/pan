@@ -75,7 +75,11 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
         probe_status: :idle,
         probe_findings: [],
         probe_passed: [],
-        probe_not_applicable: []
+        probe_not_applicable: [],
+        audio_status: :idle,
+        audio_findings: [],
+        audio_passed: [],
+        audio_not_applicable: []
       }
       |> CheckFeed.render()
       |> rendered_to_string()
@@ -185,7 +189,11 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
       probe_status: :idle,
       probe_findings: [],
       probe_passed: [],
-      probe_not_applicable: []
+      probe_not_applicable: [],
+      audio_status: :idle,
+      audio_findings: [],
+      audio_passed: [],
+      audio_not_applicable: []
     }
     |> Map.merge(assigns)
     |> CheckFeed.render()

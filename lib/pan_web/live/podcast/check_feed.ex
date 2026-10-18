@@ -41,6 +41,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             probe_findings: [],
             probe_passed: [],
             probe_not_applicable: [],
+            audio_status: :idle,
+            audio_findings: [],
+            audio_passed: [],
+            audio_not_applicable: [],
             standards: standards(),
             selected: standards()
           )
@@ -76,6 +80,18 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   end
 
   def handle_event("probe", _, socket), do: {:noreply, socket}
+
+  # The first megabyte of the newest episodes' media files, on demand only.
+  def handle_event("probe_audio", _, %{assigns: %{reads: reads}} = socket) when is_map(reads) do
+    {:noreply,
+     socket
+     |> assign(audio_status: :running)
+     |> start_async(:probe_audio, fn ->
+       reads |> FeedProbe.probe_audio() |> CheckMyFeed.check_probes()
+     end)}
+  end
+
+  def handle_event("probe_audio", _, socket), do: {:noreply, socket}
 
   def handle_event("select_standards", params, socket) do
     chosen = Map.get(params, "standards", [])
@@ -140,6 +156,20 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     {:noreply, assign(socket, probe_status: :failed)}
   end
 
+  def handle_async(:probe_audio, {:ok, {:ok, report}}, socket) do
+    {:noreply,
+     assign(socket,
+       audio_status: :done,
+       audio_findings: report.findings,
+       audio_passed: report.passed,
+       audio_not_applicable: report.not_applicable
+     )}
+  end
+
+  def handle_async(:probe_audio, {:exit, _reason}, socket) do
+    {:noreply, assign(socket, audio_status: :failed)}
+  end
+
   def handle_async(:check, {:exit, _reason}, socket) do
     {:noreply, assign(socket, status: :failed, error: "The check crashed unexpectedly.")}
   end
@@ -160,7 +190,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       probe_status: :idle,
       probe_findings: [],
       probe_passed: [],
-      probe_not_applicable: []
+      probe_not_applicable: [],
+      audio_status: :idle,
+      audio_findings: [],
+      audio_passed: [],
+      audio_not_applicable: []
     )
     |> start_async(:check, fn -> run_check(podcast_id) end)
   end
@@ -348,6 +382,16 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
           part of the report below.
         </p>
         <p :if={@probe_status == :failed} class="text-sm text-danger">Probing failed unexpectedly.</p>
+        <p :if={@audio_status == :idle} class="text-sm text-gray-dark">
+          Probing the audio reads the first megabyte of the newest 3 episodes' media files.
+        </p>
+        <p :if={@audio_status == :done} class="text-sm text-gray-dark">
+          The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak
+          refer to that part only.
+        </p>
+        <p :if={@audio_status == :failed} class="text-sm text-danger">
+          Probing the audio failed unexpectedly.
+        </p>
         <button
           phx-click="probe"
           disabled={@probe_status == :running}
@@ -355,6 +399,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
                  disabled:opacity-50"
         >
           {if @probe_status == :running, do: "Probing ...", else: "Probe artwork and episodes"}
+        </button>
+        <button
+          phx-click="probe_audio"
+          disabled={@audio_status == :running}
+          class="mt-2 border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1
+                 disabled:opacity-50"
+        >
+          {if @audio_status == :running, do: "Probing audio ...", else: "Probe audio"}
         </button>
       </div>
 
@@ -365,7 +417,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       <p
         :if={
           @status == :done and !@check_error and @selected != [] and
-            visible(@findings ++ @probe_findings, @selected) == []
+            visible(@findings ++ @probe_findings ++ @audio_findings, @selected) == []
         }
         class="mt-4"
       >
@@ -373,7 +425,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       </p>
 
       <div
-        :for={{severity, rules} <- grouped(visible(@findings ++ @probe_findings, @selected))}
+        :for={
+          {severity, rules} <-
+            grouped(visible(@findings ++ @probe_findings ++ @audio_findings, @selected))
+        }
         :if={@status == :done}
         class="mt-6"
       >
@@ -400,10 +455,13 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </div>
       </div>
 
-      <div :if={@status == :done and visible(@passed ++ @probe_passed, @selected) != []} class="mt-6">
+      <div
+        :if={@status == :done and visible(@passed ++ @probe_passed ++ @audio_passed, @selected) != []}
+        class="mt-6"
+      >
         <h2 class="text-xl font-bold">Passed</h2>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- visible(@passed ++ @probe_passed, @selected)}>
+          <li :for={rule <- visible(@passed ++ @probe_passed ++ @audio_passed, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
@@ -414,17 +472,26 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       </div>
 
       <details
-        :if={@status == :done and visible(@not_applicable ++ @probe_not_applicable, @selected) != []}
+        :if={
+          @status == :done and
+            visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected) !=
+              []
+        }
         class="mt-6"
       >
         <summary class="text-xl font-bold cursor-pointer">
-          Not applicable ({length(visible(@not_applicable ++ @probe_not_applicable, @selected))})
+          Not applicable ({length(
+            visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
+          )})
         </summary>
         <p class="mt-2 text-sm text-gray-dark">
           The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
         </p>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- visible(@not_applicable ++ @probe_not_applicable, @selected)}>
+          <li :for={
+            rule <-
+              visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
+          }>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>

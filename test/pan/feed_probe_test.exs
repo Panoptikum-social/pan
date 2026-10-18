@@ -2,7 +2,8 @@ defmodule Pan.FeedProbeTest do
   @moduledoc """
   Pan.FeedProbe against a local HTTP server (TestServer). Not async: the
   SSRF guard has to let localhost through, see Pan.Updater.RedirectTest.
-  Needs ImageMagick (convert/identify), like the thumbnails do.
+  Needs ImageMagick (convert/identify), like the thumbnails do, and ffmpeg
+  for the audio probes.
   """
   use ExUnit.Case, async: false
 
@@ -72,5 +73,85 @@ defmodule Pan.FeedProbeTest do
     probes = Pan.FeedProbe.probe(%{image_url: TestServer.url("/missing.jpg"), episodes: %{}})
     assert [%{result: {:error, "HTTP 404"}}] = probes.artwork
     assert probes.enclosures == []
+  end
+
+  # A file of `seconds` of sine tone, e.g. "mp3" or "m4a" (no fast start).
+  defp audio_file(extension, seconds, args) do
+    path =
+      Path.join(
+        System.tmp_dir!(),
+        "probe-test-#{System.unique_integer([:positive])}.#{extension}"
+      )
+
+    {_, 0} =
+      System.cmd(
+        "ffmpeg",
+        ["-v", "error", "-f", "lavfi", "-i", "sine=frequency=440:duration=#{seconds}"] ++
+          args ++ [path],
+        stderr_to_stdout: true
+      )
+
+    body = File.read!(path)
+    File.rm(path)
+    body
+  end
+
+  defp audio_reads(path) do
+    %{
+      episodes: %{
+        "e1" => %{
+          title: "Episode 1",
+          publishing_date: ~N[2026-01-01 00:00:00],
+          enclosures: %{"x" => %{url: TestServer.url(path), length: "1", type: "audio/mpeg"}}
+        }
+      }
+    }
+  end
+
+  test "audio: only the first megabyte, even from a server ignoring the range, across a redirect" do
+    mp3 = audio_file("mp3", 130, ["-ac", "1", "-b:a", "128k"])
+    assert byte_size(mp3) > 2_000_000
+
+    # the plug runs in the server process, so the URL is built up front
+    location = TestServer.url("/1.mp3")
+
+    TestServer.add("/old.mp3",
+      via: :get,
+      to: fn conn ->
+        conn
+        |> Plug.Conn.put_resp_header("location", location)
+        |> Plug.Conn.resp(302, "")
+      end
+    )
+
+    TestServer.add("/1.mp3", via: :get, to: &Plug.Conn.resp(&1, 200, mp3))
+
+    assert %{audio: [%{label: "“Episode 1”", result: {:ok, audio}}]} =
+             Pan.FeedProbe.probe_audio(audio_reads("/old.mp3"))
+
+    assert %{codec: "mp3", container: "mp3", channels: 1, sample_rate: 44_100} = audio
+    assert audio.bit_rate == 128_000
+    # 1 MB of 128 kbps is about 65 seconds, not the whole 130
+    assert audio.seconds > 55 and audio.seconds < 75
+    assert is_number(audio.loudness) and is_number(audio.true_peak)
+
+    # check_my_feed has the audio rules (0.5.0 and later)
+    {:ok, report} =
+      CheckMyFeed.check_probes(%{audio: [%{label: "x", url: "x", result: {:ok, audio}}]})
+
+    assert "apple.audio.bit_rate" in Enum.map(
+             report.passed ++ report.findings,
+             &(Map.get(&1, :id) || &1.rule_id)
+           )
+  end
+
+  test "audio: an MP4 whose index sits after the first megabyte" do
+    m4a = audio_file("m4a", 120, ["-c:a", "aac", "-b:a", "128k"])
+    assert byte_size(m4a) > 1_048_576
+
+    TestServer.add("/1.m4a", via: :get, to: &Plug.Conn.resp(&1, 200, m4a))
+
+    assert %{audio: [%{result: {:error, :index_at_end}}]} =
+             Pan.FeedProbe.probe_audio(audio_reads("/1.m4a"))
   end
 end
