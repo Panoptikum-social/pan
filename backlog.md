@@ -79,9 +79,8 @@ that needs a download (transcript and chapters files).
 "Panoptikum tolerates this" report (the ~70 date formats, entity fixups etc.
 in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
-**Feature request (2026-10-18):** the report should allow switching off rule
-sets. Most podcasts don't follow Podcasting 2.0, and their podcasters don't
-intend to.
+**Switching rule sets off** is in since 2026-10-18: a checkbox per rule set on
+the check page, the choice kept in the URL (`?standards=rss2,apple`).
 
 **Active probing (later), collected checklist:** needs downloads of artwork and
 media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
