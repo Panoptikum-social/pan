@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   use PanWeb, :live_view
   on_mount PanWeb.Live.Auth
 
-  alias Pan.Parser.{Download, Feed}
+  alias Pan.Parser.{Download, Feed, Leniency}
   alias PanWeb.Component.Pill
   alias PanWeb.Podcast
   import PanWeb.Router.Helpers
@@ -33,6 +33,8 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             passed: [],
             not_applicable: [],
             reads: nil,
+            leniency: nil,
+            check_error: nil,
             error: nil,
             standards: standards(),
             selected: standards()
@@ -72,7 +74,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     {:noreply, push_patch(socket, to: path <> query)}
   end
 
-  def handle_async(:check, {:ok, {:ok, feed_url, report, reads}}, socket) do
+  def handle_async(:check, {:ok, {:ok, feed_url, {:ok, report}, reads, leniency}}, socket) do
     {:noreply,
      assign(socket,
        status: :done,
@@ -80,7 +82,27 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
        findings: report.findings,
        passed: report.passed,
        not_applicable: report.not_applicable,
-       reads: reads
+       reads: reads,
+       leniency: leniency
+     )}
+  end
+
+  # Not well-formed XML: the rules can't run, but Panoptikum may well read the
+  # feed anyway, so its two sections still show.
+  def handle_async(
+        :check,
+        {:ok, {:ok, feed_url, {:error, {:invalid_xml, reason}}, reads, leniency}},
+        socket
+      ) do
+    {:noreply,
+     assign(socket,
+       status: :done,
+       feed_url: feed_url,
+       check_error:
+         "The feed is not well-formed XML, so the standard rules couldn't be checked: " <>
+           inspect(reason),
+       reads: reads,
+       leniency: leniency
      )}
   end
 
@@ -102,6 +124,8 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       passed: [],
       not_applicable: [],
       reads: nil,
+      leniency: nil,
+      check_error: nil,
       error: nil
     )
     |> start_async(:check, fn -> run_check(podcast_id) end)
@@ -111,9 +135,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     with {:ok, feed} <- Feed.get_by_podcast_id(podcast_id),
          url = String.trim(feed.self_link_url),
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
-           Download.get(url, follow_redirect: true),
-         {:ok, report} <- CheckMyFeed.check(body) do
-      {:ok, url, report, read_by_panoptikum(body, url)}
+           Download.get(url, follow_redirect: true) do
+      {reads, leniency} = read_by_panoptikum(body, url)
+      {:ok, url, CheckMyFeed.check(body), reads, leniency}
     else
       {:error, "not found"} ->
         {:error, "This podcast has no feed."}
@@ -124,25 +148,40 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, "The feed could not be downloaded: #{inspect(reason)}"}
 
-      {:error, {:invalid_xml, reason}} ->
-        {:error, "The feed is not well-formed XML: #{inspect(reason)}"}
-
       other ->
         {:error, "The feed could not be checked: #{inspect(other)}"}
     end
   end
 
-  # Pan's own parser on the same download: what Panoptikum takes from the feed.
-  # It is more lenient than the rules, but a feed it can't read just leaves the
-  # section out.
+  # Pan's own parser on the same download: what Panoptikum takes from the feed
+  # and what it repairs on the way. It is more lenient than the rules, but a
+  # feed it can't read just leaves the sections out.
   defp read_by_panoptikum(body, url) do
-    case Pan.Parser.RssFeed.parse_xml(body, url) do
-      {:ok, map} -> map
-      {:error, _reason} -> nil
-    end
+    reads =
+      case Pan.Parser.RssFeed.parse_xml(body, url) do
+        {:ok, map} -> map
+        {:error, _reason} -> nil
+      end
+
+    {reads, Leniency.report(body)}
   rescue
-    _ -> nil
+    _ -> {nil, nil}
   end
+
+  defp date_line(%{kind: :unreadable, count: count, example: example}),
+    do:
+      "#{dates(count)} Panoptikum can't read, e.g. #{inspect(example)}: it uses the time of the import instead."
+
+  defp date_line(%{kind: :yearless, count: count, example: example, read_as: read_as}),
+    do:
+      "#{dates(count)} without a year, e.g. #{inspect(example)}: Panoptikum assumes the " <>
+        "current year (read as #{read_as})."
+
+  defp date_line(%{count: count, example: example, read_as: read_as}),
+    do: "#{dates(count)} like #{inspect(example)}, read as #{read_as}."
+
+  defp dates(1), do: "1 date"
+  defp dates(count), do: "#{count} dates"
 
   defp channel_rows(map) do
     [
@@ -247,7 +286,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         Freshly downloaded from {@feed_url}
       </p>
 
-      <form phx-change="select_standards" class="mt-4 flex flex-wrap gap-4">
+      <form :if={!@check_error} phx-change="select_standards" class="mt-4 flex flex-wrap gap-4">
         <input type="hidden" name="standards[]" value="" />
         <label :for={standard <- @standards} class="flex items-center gap-1 cursor-pointer">
           <input
@@ -265,9 +304,15 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
       <p :if={@status == :running} class="mt-4">Downloading and checking the feed ...</p>
       <p :if={@status == :failed} class="mt-4 text-danger">{@error}</p>
-      <p :if={@status == :done and @selected == []} class="mt-4">No rule set selected.</p>
+      <p :if={@status == :done and @check_error} class="mt-4 text-danger">{@check_error}</p>
+      <p :if={@status == :done and !@check_error and @selected == []} class="mt-4">
+        No rule set selected.
+      </p>
       <p
-        :if={@status == :done and @selected != [] and visible(@findings, @selected) == []}
+        :if={
+          @status == :done and !@check_error and @selected != [] and
+            visible(@findings, @selected) == []
+        }
         class="mt-4"
       >
         No problems found.
@@ -330,6 +375,31 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             <span class="text-sm text-gray-dark">({rule.id})</span>
           </li>
         </ul>
+      </details>
+
+      <details :if={@status == :done and @leniency} open class="mt-6">
+        <summary class="text-xl font-bold cursor-pointer">Panoptikum reads this anyway</summary>
+        <p class="mt-2 text-sm text-gray-dark">
+          Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth
+          fixing in the feed.
+        </p>
+        <p :if={@leniency.xml == [] and @leniency.dates == []} class="mt-3">
+          Nothing: the feed needs none of Panoptikum's repairs.
+        </p>
+        <div :for={repair <- @leniency.xml} class="mt-3">
+          <p>
+            {repair.label} <span class="text-sm text-gray-dark">({repair.count}×)</span>
+          </p>
+          <ul class="list-disc ml-6">
+            <li :for={example <- repair.examples}><code class="break-all">{example}</code></li>
+          </ul>
+        </div>
+        <div :if={@leniency.dates != []} class="mt-3">
+          <p>Dates in other formats than RFC 822 (such as "Sat, 01 Apr 2023 19:00:00 GMT"):</p>
+          <ul class="list-disc ml-6">
+            <li :for={group <- @leniency.dates}>{date_line(group)}</li>
+          </ul>
+        </div>
       </details>
 
       <details :if={@status == :done and @reads} open class="mt-6">

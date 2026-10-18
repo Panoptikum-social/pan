@@ -90,18 +90,21 @@ defmodule Pan.Parser.RssFeed do
   downloading or storing anything.
   """
   def parse_xml(feed_xml, url) do
-    cleaned =
-      Pan.Parser.Helpers.remove_comments(feed_xml)
-      |> Pan.Parser.Helpers.fix_encoding()
-      |> Pan.Parser.Helpers.normalize_nbsp()
-      |> Pan.Parser.Helpers.remove_doctype()
-      |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
-      |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-      |> Pan.Parser.Helpers.fix_html_entities()
-      |> Pan.Parser.Helpers.fix_character_code_strings()
-      |> String.trim()
+    with {:ok, feed_map} <- feed_xml |> clean_xml() |> xml_to_map(),
+         do: parse_to_map(feed_map, url)
+  end
 
-    with {:ok, feed_map} <- xml_to_map(cleaned), do: parse_to_map(feed_map, url)
+  @doc "The fix-ups Panoptikum applies to a feed's XML before parsing it."
+  def clean_xml(feed_xml) do
+    Pan.Parser.Helpers.remove_comments(feed_xml)
+    |> Pan.Parser.Helpers.fix_encoding()
+    |> Pan.Parser.Helpers.normalize_nbsp()
+    |> Pan.Parser.Helpers.remove_doctype()
+    |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
+    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+    |> Pan.Parser.Helpers.fix_html_entities()
+    |> Pan.Parser.Helpers.fix_character_code_strings()
+    |> String.trim()
   end
 
   def xml_to_map(feed_map) do

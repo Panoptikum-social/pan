@@ -1,7 +1,6 @@
 defmodule Logger.Backends.ExceptionNotification do
   @behaviour :gen_event
 
-
   def init(args), do: {:ok, args}
 
   def handle_event({:error, _group_leader, {Logger, message, timestamp, metadata}}, state) do

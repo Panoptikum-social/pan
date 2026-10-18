@@ -151,6 +151,22 @@ defmodule Pan.Parser.Helpers do
     ensure_naive_in_seconds(datetime, feed_date)
   end
 
+  @doc """
+  How to_naive_datetime/1 reads a feed date: `{:format, format}` for the
+  first of the date formats that matches, `:yearless` when only a format
+  without a year matches (the year is guessed), `:unreadable` when none does
+  (the time of the import is used instead).
+  """
+  def date_format(feed_date) do
+    feed_date = feed_date |> extract_date_string() |> initial_cleanup()
+
+    cond do
+      format = Enum.find(@date_formats, &try_format(feed_date, &1)) -> {:format, format}
+      Enum.find(@yearless_date_formats, &try_format(feed_date, &1)) -> :yearless
+      true -> :unreadable
+    end
+  end
+
   # Retries against formats without a year, for feeds that omit it entirely.
   # Timex fills in a missing year as 0000, so on a successful parse we swap
   # in a guessed one — there's no better hint available at this point than
@@ -433,27 +449,40 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&#xDC;", "Ü")
     |> String.replace("&#xFC;", "ü")
     |> String.replace("&#xDF;", "ß")
-    # A bare XML document only knows 5 predefined entities (amp/lt/gt/apos/
-    # quot) — HTML-authored named entities like &nbsp; or &auml; leak in
-    # constantly from feed producers that treat their description field as
-    # HTML, and xmerl fatals on them (:unknown_entity_ref) since there's no
-    # DTD declaring what they mean. Decode to the real character, same as
-    # the numeric refs above, rather than just dropping/erroring on it.
-    # Covers &nbsp; plus the German umlaut/eszett entities, since this is a
-    # German-language podcast platform and those are what's actually shown
-    # up so far — extend as further named entities surface.
-    |> String.replace("&nbsp;", " ")
-    |> String.replace("&auml;", "ä")
-    |> String.replace("&ouml;", "ö")
-    |> String.replace("&uuml;", "ü")
-    |> String.replace("&Auml;", "Ä")
-    |> String.replace("&Ouml;", "Ö")
-    |> String.replace("&Uuml;", "Ü")
-    |> String.replace("&Atilde;", "Ã")
-    |> String.replace("&szlig;", "ß")
-    |> String.replace("&hellip;", "…")
-    |> String.replace("&ndash;", "–")
-    |> String.replace("&mdash;", "—")
+    |> decode_html_entities()
+  end
+
+  # A bare XML document only knows 5 predefined entities (amp/lt/gt/apos/
+  # quot) — HTML-authored named entities like &nbsp; or &auml; leak in
+  # constantly from feed producers that treat their description field as
+  # HTML, and xmerl fatals on them (:unknown_entity_ref) since there's no
+  # DTD declaring what they mean. Decode to the real character, same as
+  # the numeric refs above, rather than just dropping/erroring on it.
+  # Covers &nbsp; plus the German umlaut/eszett entities, since this is a
+  # German-language podcast platform and those are what's actually shown
+  # up so far — extend as further named entities surface.
+  @html_entities [
+    {"&nbsp;", " "},
+    {"&auml;", "ä"},
+    {"&ouml;", "ö"},
+    {"&uuml;", "ü"},
+    {"&Auml;", "Ä"},
+    {"&Ouml;", "Ö"},
+    {"&Uuml;", "Ü"},
+    {"&Atilde;", "Ã"},
+    {"&szlig;", "ß"},
+    {"&hellip;", "…"},
+    {"&ndash;", "–"},
+    {"&mdash;", "—"}
+  ]
+
+  @doc "The HTML named entities fix_html_entities/1 decodes, e.g. \"&nbsp;\"."
+  def html_entities, do: Enum.map(@html_entities, &elem(&1, 0))
+
+  defp decode_html_entities(xml) do
+    Enum.reduce(@html_entities, xml, fn {entity, char}, xml ->
+      String.replace(xml, entity, char)
+    end)
   end
 
   # Some feed producers double-encode their own output (e.g. re-escaping an

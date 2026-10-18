@@ -69,7 +69,9 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
         not_applicable: report.not_applicable,
         standards: [:rss2, :apple, :podcasting20],
         selected: selected,
-        reads: reads
+        reads: reads,
+        leniency: nil,
+        check_error: nil
       }
       |> CheckFeed.render()
       |> rendered_to_string()
@@ -160,5 +162,63 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
 
     {_report, html} = render_report(xml, [:rss2], nil)
     refute html =~ "What Panoptikum reads from your feed"
+  end
+
+  defp render_page(assigns) do
+    %{
+      podcast: insert_podcast(),
+      status: :done,
+      feed_url: "https://example.com/feed",
+      error: nil,
+      findings: [],
+      passed: [],
+      not_applicable: [],
+      standards: [:rss2, :apple, :podcasting20],
+      selected: [:rss2, :apple, :podcasting20],
+      reads: nil,
+      leniency: nil,
+      check_error: nil
+    }
+    |> Map.merge(assigns)
+    |> CheckFeed.render()
+    |> rendered_to_string()
+  end
+
+  test "what Panoptikum reads anyway, with examples and dates" do
+    xml = """
+    <rss version="2.0"><channel><title>Tom & Jerry</title>
+    <item><title>A</title><pubDate>2023-04-01</pubDate></item></channel></rss>
+    """
+
+    html = render_page(%{leniency: Pan.Parser.Leniency.report(xml)})
+
+    assert html =~ "Panoptikum reads this anyway"
+    assert html =~ "A bare &quot;&amp;&quot;"
+    assert html =~ "Tom &amp; Jerry"
+    assert html =~ "1 date like &quot;2023-04-01&quot;, read as 2023-04-01 00:00:00."
+
+    assert render_page(%{leniency: %{xml: [], dates: []}}) =~
+             "Nothing: the feed needs none of Panoptikum's repairs."
+  end
+
+  test "a feed that isn't well-formed still shows what Panoptikum reads" do
+    xml = "<rss version=\"2.0\"><channel><title>Tom & Jerry</title></channel></rss>"
+    assert {:error, {:invalid_xml, _}} = CheckMyFeed.check(xml)
+    {:ok, reads} = Pan.Parser.RssFeed.parse_xml(xml, "https://example.com/feed")
+
+    html =
+      render_page(%{
+        check_error:
+          "The feed is not well-formed XML, so the standard rules couldn't be checked: x",
+        reads: reads,
+        leniency: Pan.Parser.Leniency.report(xml)
+      })
+
+    assert html =~ "not well-formed XML"
+    assert html =~ "Panoptikum reads this anyway"
+    assert html =~ "What Panoptikum reads from your feed"
+    assert html =~ "Tom &amp; Jerry"
+    refute html =~ "No problems found."
+    refute html =~ "select_standards"
   end
 end
