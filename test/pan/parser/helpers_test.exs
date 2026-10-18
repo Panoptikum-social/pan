@@ -86,13 +86,13 @@ defmodule Pan.Parser.HelpersTest do
 
   describe "fix_html_entities/1" do
     test "decodes HTML named entities that xmerl does not know" do
-      raw = feed("<title>Gr&uuml;&szlig;e &ndash; &Auml;rger &hellip; &mdash;</title>")
+      raw = feed("<title>Gr&uuml;&szlig;e &ndash; &Auml;rger &hellip; &mdash; &Atilde;</title>")
 
       refute parses?(raw)
 
       cleaned = clean(raw)
       assert parses?(cleaned)
-      assert title(cleaned) == "Grüße – Ärger … —"
+      assert title(cleaned) == "Grüße – Ärger … — Ã"
     end
 
     test "&nbsp; becomes a plain ASCII space, not a U+00A0" do

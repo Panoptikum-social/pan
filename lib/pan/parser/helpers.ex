@@ -448,6 +448,7 @@ defmodule Pan.Parser.Helpers do
     |> String.replace("&Auml;", "Ä")
     |> String.replace("&Ouml;", "Ö")
     |> String.replace("&Uuml;", "Ü")
+    |> String.replace("&Atilde;", "Ã")
     |> String.replace("&szlig;", "ß")
     |> String.replace("&hellip;", "…")
     |> String.replace("&ndash;", "–")
