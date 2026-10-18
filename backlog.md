@@ -81,9 +81,6 @@ preferred), bit rate/sample rate by channel count, loudness around -16 LKFS,
 true peak below -1 dBFS. WAV/FLAC requirements are for Connect subscriber
 uploads only.
 
-**Small known issue:** findings only cover the first feed of a podcast
-(`Feed.get_by_podcast_id/1`).
-
 ---
 
 ### Project #3: community pads (found 2026-10-09)
