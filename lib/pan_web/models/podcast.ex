@@ -680,8 +680,25 @@ defmodule PanWeb.Podcast do
     |> Repo.one()
   end
 
+  # Only podcasts with a category and an episode: the random recommendations
+  # page shows one of each for every podcast.
   def random(n) do
     from(p in Podcast,
+      as: :podcast,
+      where:
+        exists(
+          from(cp in "categories_podcasts",
+            where: cp.podcast_id == parent_as(:podcast).id,
+            select: 1
+          )
+        ),
+      where:
+        exists(
+          from(e in Episode,
+            where: e.podcast_id == parent_as(:podcast).id,
+            select: 1
+          )
+        ),
       order_by: fragment("RANDOM()"),
       limit: ^n,
       preload: [:episodes, :categories]
