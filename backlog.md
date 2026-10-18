@@ -73,6 +73,10 @@ XML string and does no fetching; Pan downloads a fresh copy per check via
 info-level "Panoptikum tolerates this" report (the ~70 date formats, entity
 fixups etc. in `lib/pan/parser/helpers.ex`), JSON API (maybe never).
 
+**Feature request (2026-10-18):** the report should allow switching off rule
+sets. Most podcasts don't follow Podcasting 2.0, and their podcasters don't
+intend to.
+
 **Active probing (later), collected checklist:** needs downloads of artwork and
 media, so it is not possible from feed text. Artwork: size 1400-3000 px, square,
 no alpha channel, real file type vs. extension, 72 dpi, RGB. Enclosures: HEAD
