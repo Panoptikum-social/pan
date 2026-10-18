@@ -235,5 +235,13 @@ defmodule Pan.Parser.Download do
     e ->
       Logger.warning("HTTP client crashed for #{url}: #{Exception.message(e)}")
       {:error, %Error{reason: Exception.message(e)}}
+  catch
+    # hackney 4 calls the original connection again after following a
+    # redirect; if the pool has killed it meanwhile, the exit reaches us
+    # (its safe_call only converts noproc/normal/shutdown into
+    # {error, closed}, not killed).
+    :exit, reason ->
+      Logger.warning("HTTP client connection exited for #{url}: #{inspect(reason)}")
+      {:error, %Error{reason: :closed}}
   end
 end

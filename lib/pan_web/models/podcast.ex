@@ -853,6 +853,14 @@ defmodule PanWeb.Podcast do
         podcast
         |> Map.put(:feed_status_code, "probe deadline")
         |> Map.put(:episode_status_code, "probe deadline")
+
+      # Any other crash of a single probe must not take down the whole page.
+      {:exit, reason}, podcast ->
+        Logger.warning("Probing deprecated podcast #{podcast.id} crashed: #{inspect(reason)}")
+
+        podcast
+        |> Map.put(:feed_status_code, "probe crashed")
+        |> Map.put(:episode_status_code, "probe crashed")
     end)
     |> Enum.map(&recommend_action/1)
   end
