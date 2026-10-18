@@ -91,11 +91,12 @@ and of the newest 10 episodes (size 1400-3000 px, square, real file type vs.
 extension, RGB, no alpha channel, 72 dpi) and sends HEAD requests for their
 media files (reachable, length and type match the feed).
 
-**Still open, maybe never: probing phase 2, audio.** Needs ffmpeg on prod (the
-Ubuntu package has ffprobe and the loudness filters) and downloading whole
-audio files. Checklist: MP3 or AAC (AAC in MP4 preferred), bit rate/sample
-rate by channel count, loudness around -16 LKFS, true peak below -1 dBFS.
-WAV/FLAC requirements are for Connect subscriber uploads only.
+**Probing phase 2, audio** is in since 2026-10-18 (check_my_feed 0.5.0): a
+second button probes the first megabyte of the newest 3 episodes' media
+files with ffprobe/ffmpeg (needs ffmpeg on prod, installed 2026-10-18):
+MP3 or AAC, AAC in MP4 recommended, sample rate, bit rate by channels,
+loudness around -16 LKFS and true peak at most -1 dBFS (on that first part
+only), and MP4 files whose index sits at the end.
 
 ---
 
