@@ -155,3 +155,19 @@ follow button). No separate community subscription.
 A first usable version could be steps 0–4 without scroll sync (about 1½–2
 weeks), with snapshots following.
 
+---
+
+### Miscellaneous open items
+
+- **Logger backend for the error mails (found 2026-10-18).** The error mails
+  come from the custom backend `Logger.Backends.ExceptionNotification`,
+  registered via `config :logger, backends: [...]` in `config/prod.exs`.
+  That key has been deprecated since Elixir 1.15 (warning at startup) but
+  still works in 1.20. Options: add `{:logger_backends, "~> 1.0"}` and call
+  `LoggerBackends.add/1` in the application start, or rewrite it as an
+  Erlang `:logger` handler.
+- **Faster compiles (found 2026-10-18).** Elixir 1.20's compiler option
+  `elixirc_options: [module_definition: :interpreted]` can cut compile
+  times on machines with many cores; the `.beam` files stay the same.
+  Worth a try, optional.
+
