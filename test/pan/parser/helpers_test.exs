@@ -106,6 +106,16 @@ defmodule Pan.Parser.HelpersTest do
     test "escapes stray ampersands before decoding entities" do
       assert Helpers.fix_html_entities("Tom & Jerry &auml;") == "Tom &amp; Jerry ä"
     end
+
+    test "escapes a less-than sign followed by whitespace" do
+      raw = feed("<title>Burger < King</title>")
+
+      refute parses?(raw)
+
+      cleaned = clean(raw)
+      assert parses?(cleaned)
+      assert title(cleaned) == "Burger < King"
+    end
   end
 
   describe "unescape_double_escaped_entities/1" do

@@ -425,6 +425,7 @@ defmodule Pan.Parser.Helpers do
     xml
     |> unescape_double_escaped_entities()
     |> escape_stray_ampersands()
+    |> escape_stray_less_thans()
     |> String.replace("&#xC4;", "Ä")
     |> String.replace("&#xE4;", "ä")
     |> String.replace("&#xD6;", "Ö")
@@ -479,6 +480,13 @@ defmodule Pan.Parser.Helpers do
   # left alone here so the decode passes below still see it.
   def escape_stray_ampersands(xml) do
     Regex.replace(~r/&(?![a-zA-Z_:#])/, xml, "&amp;")
+  end
+
+  # A "<" followed by whitespace can never start markup (element names,
+  # "</", "<!" and "<?" all follow it directly), so it's text like
+  # "Burger < King" — xmerl fatals with {:invalid_name, ~c" King "} on it.
+  def escape_stray_less_thans(xml) do
+    Regex.replace(~r/<(?=\s)/, xml, "&lt;")
   end
 
   def fix_encoding(xml) do
