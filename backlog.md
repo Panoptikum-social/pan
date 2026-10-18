@@ -78,11 +78,11 @@ that needs a download (transcript and chapters files).
 **"What Panoptikum reads from your feed"** is in since 2026-10-18: a collapsed
 section with Pan's own parser output (channel fields, episode summary).
 
-**Still open, later (agreed):** active probing (below) and one more report
-section (decided 2026-10-18):
-- "Panoptikum reads this anyway": the non-standard constructs Panoptikum copes
-  with (the ~70 date formats, entity fixups etc. in
-  `lib/pan/parser/helpers.ex`), with a note that other apps may not.
+**"Panoptikum reads this anyway"** is in since 2026-10-18: the XML repairs
+and non-RFC 822 dates Pan's parser copes with (`Pan.Parser.Leniency`), shown
+even for feeds that aren't well-formed XML.
+
+**Still open, later (agreed):** active probing (below).
 
 **Switching rule sets off** is in since 2026-10-18: a checkbox per rule set on
 the check page, the choice kept in the URL (`?standards=rss2,apple`).
