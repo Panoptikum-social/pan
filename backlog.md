@@ -75,8 +75,8 @@ namespace. Left out for later: `podcast:person` role/group against the
 taxonomy list, license identifiers against the license list, and everything
 that needs a download (transcript and chapters files).
 
-**Still open, later (agreed):** active probing (below), JSON API (maybe never),
-and two report sections (decided 2026-10-18, as two separate sections):
+**Still open, later (agreed):** active probing (below) and two report sections
+(decided 2026-10-18, as two separate sections):
 - "Panoptikum reads this anyway": the non-standard constructs Panoptikum copes
   with (the ~70 date formats, entity fixups etc. in
   `lib/pan/parser/helpers.ex`), with a note that other apps may not.
