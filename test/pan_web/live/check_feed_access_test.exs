@@ -55,8 +55,8 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     end
   end
 
-  test "rules with nothing to check are listed apart from the passed ones" do
-    {:ok, report} = CheckMyFeed.check(~s(<rss version="2.0"><channel></channel></rss>))
+  defp render_report(xml, selected) do
+    {:ok, report} = CheckMyFeed.check(xml)
 
     html =
       %{
@@ -66,14 +66,62 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
         error: nil,
         findings: report.findings,
         passed: report.passed,
-        not_applicable: report.not_applicable
+        not_applicable: report.not_applicable,
+        standards: [:rss2, :apple, :podcasting20],
+        selected: selected
       }
       |> CheckFeed.render()
       |> rendered_to_string()
+
+    {report, html}
+  end
+
+  test "rules with nothing to check are listed apart from the passed ones" do
+    {report, html} =
+      render_report(~s(<rss version="2.0"><channel></channel></rss>), [
+        :rss2,
+        :apple,
+        :podcasting20
+      ])
 
     assert html =~ "Not applicable (#{length(report.not_applicable)})"
     [_before, not_applicable_section] = String.split(html, "Not applicable (")
     assert not_applicable_section =~ "apple.channel.type"
     refute not_applicable_section =~ "rss2.root"
+  end
+
+  test "switched-off rule sets are hidden everywhere" do
+    xml = ~s(<rss version="2.0"><channel></channel></rss>)
+    {_report, html} = render_report(xml, [:rss2])
+
+    assert html =~ "rss2.root"
+    refute html =~ "apple."
+    refute html =~ "p20."
+
+    {_report, html} = render_report(xml, [])
+    assert html =~ "No rule set selected."
+    refute html =~ "rss2.root"
+  end
+
+  test "the choice of rule sets is kept in the URL", %{conn: conn} do
+    owner = insert_user()
+    podcast = insert_podcast(user_id: owner.id)
+    path = podcast_frontend_path(@endpoint, :check_feed, podcast)
+
+    {:ok, view, _html} = live(logged_in(conn, owner), path <> "?standards=rss2,podcasting20")
+    assert has_element?(view, ~s(input[value="rss2"][checked]))
+    refute has_element?(view, ~s(input[value="apple"][checked]))
+
+    view
+    |> element("form[phx-change=select_standards]")
+    |> render_change(%{"standards" => ["", "apple"]})
+
+    assert_patch(view, path <> "?standards=apple")
+
+    view
+    |> element("form[phx-change=select_standards]")
+    |> render_change(%{"standards" => ["", "rss2", "apple", "podcasting20"]})
+
+    assert_patch(view, path)
   end
 end

@@ -32,14 +32,44 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             findings: [],
             passed: [],
             not_applicable: [],
-            error: nil
+            error: nil,
+            standards: standards(),
+            selected: standards()
           )
 
         {:ok, if(connected?(socket), do: start_check(socket), else: socket)}
     end
   end
 
+  # ?standards=rss2,apple keeps the choice across reloads and in shared links;
+  # without the parameter all rule sets are shown.
+  def handle_params(params, _uri, socket) do
+    selected =
+      case params["standards"] do
+        nil ->
+          socket.assigns.standards
+
+        list ->
+          Enum.filter(socket.assigns.standards, &(Atom.to_string(&1) in String.split(list, ",")))
+      end
+
+    {:noreply, assign(socket, selected: selected)}
+  end
+
   def handle_event("recheck", _, socket), do: {:noreply, start_check(socket)}
+
+  def handle_event("select_standards", params, socket) do
+    chosen = Map.get(params, "standards", [])
+    selected = Enum.filter(socket.assigns.standards, &(Atom.to_string(&1) in chosen))
+
+    query =
+      if selected == socket.assigns.standards,
+        do: "",
+        else: "?" <> URI.encode_query(standards: Enum.join(selected, ","))
+
+    path = podcast_frontend_path(socket, :check_feed, socket.assigns.podcast)
+    {:noreply, push_patch(socket, to: path <> query)}
+  end
 
   def handle_async(:check, {:ok, {:ok, feed_url, report}}, socket) do
     {:noreply,
@@ -93,6 +123,12 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     end
   end
 
+  # The rule sets in the library's order, e.g. [:rss2, :apple, :podcasting20].
+  defp standards, do: CheckMyFeed.Rules.all() |> Enum.map(& &1.standard) |> Enum.uniq()
+
+  # Findings and rules both carry their rule set in `standard`.
+  defp visible(things, selected), do: Enum.filter(things, &(&1.standard in selected))
+
   # [{severity, [{rule, [detail]}]}], most severe first.
   defp grouped(findings) do
     by_severity = Enum.group_by(findings, & &1.severity)
@@ -128,11 +164,37 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         Freshly downloaded from {@feed_url}
       </p>
 
+      <form phx-change="select_standards" class="mt-4 flex flex-wrap gap-4">
+        <input type="hidden" name="standards[]" value="" />
+        <label :for={standard <- @standards} class="flex items-center gap-1 cursor-pointer">
+          <input
+            type="checkbox"
+            name="standards[]"
+            value={standard}
+            checked={standard in @selected}
+            class="checkbox checkbox-sm"
+          />
+          <Pill.render type={standard_color(standard)}>
+            {CheckMyFeed.standard_name(standard)}
+          </Pill.render>
+        </label>
+      </form>
+
       <p :if={@status == :running} class="mt-4">Downloading and checking the feed ...</p>
       <p :if={@status == :failed} class="mt-4 text-danger">{@error}</p>
-      <p :if={@status == :done and @findings == []} class="mt-4">No problems found.</p>
+      <p :if={@status == :done and @selected == []} class="mt-4">No rule set selected.</p>
+      <p
+        :if={@status == :done and @selected != [] and visible(@findings, @selected) == []}
+        class="mt-4"
+      >
+        No problems found.
+      </p>
 
-      <div :for={{severity, rules} <- grouped(@findings)} :if={@status == :done} class="mt-6">
+      <div
+        :for={{severity, rules} <- grouped(visible(@findings, @selected))}
+        :if={@status == :done}
+        class="mt-6"
+      >
         <h2 class="text-xl font-bold">{severity |> Atom.to_string() |> String.capitalize()}</h2>
         <div :for={{finding, details} <- rules} class="mt-3">
           <p>
@@ -156,10 +218,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </div>
       </div>
 
-      <div :if={@status == :done and @passed != []} class="mt-6">
+      <div :if={@status == :done and visible(@passed, @selected) != []} class="mt-6">
         <h2 class="text-xl font-bold">Passed</h2>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- @passed}>
+          <li :for={rule <- visible(@passed, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
@@ -169,15 +231,15 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </ul>
       </div>
 
-      <details :if={@status == :done and @not_applicable != []} class="mt-6">
+      <details :if={@status == :done and visible(@not_applicable, @selected) != []} class="mt-6">
         <summary class="text-xl font-bold cursor-pointer">
-          Not applicable ({length(@not_applicable)})
+          Not applicable ({length(visible(@not_applicable, @selected))})
         </summary>
         <p class="mt-2 text-sm text-gray-dark">
           The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
         </p>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- @not_applicable}>
+          <li :for={rule <- visible(@not_applicable, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
