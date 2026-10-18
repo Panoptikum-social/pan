@@ -2,6 +2,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   use PanWeb, :live_view
   on_mount PanWeb.Live.Auth
 
+  alias Pan.FeedProbe
   alias Pan.Parser.{Download, Feed, Leniency}
   alias PanWeb.Component.Pill
   alias PanWeb.Podcast
@@ -36,6 +37,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             leniency: nil,
             check_error: nil,
             error: nil,
+            probe_status: :idle,
+            probe_findings: [],
+            probe_passed: [],
+            probe_not_applicable: [],
             standards: standards(),
             selected: standards()
           )
@@ -60,6 +65,17 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   end
 
   def handle_event("recheck", _, socket), do: {:noreply, start_check(socket)}
+
+  # Downloads the artwork and asks for the newest media files, one request at
+  # a time: on demand only, not with every check.
+  def handle_event("probe", _, %{assigns: %{reads: reads}} = socket) when is_map(reads) do
+    {:noreply,
+     socket
+     |> assign(probe_status: :running)
+     |> start_async(:probe, fn -> reads |> FeedProbe.probe() |> CheckMyFeed.check_probes() end)}
+  end
+
+  def handle_event("probe", _, socket), do: {:noreply, socket}
 
   def handle_event("select_standards", params, socket) do
     chosen = Map.get(params, "standards", [])
@@ -110,6 +126,20 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     {:noreply, assign(socket, status: :failed, error: message)}
   end
 
+  def handle_async(:probe, {:ok, {:ok, report}}, socket) do
+    {:noreply,
+     assign(socket,
+       probe_status: :done,
+       probe_findings: report.findings,
+       probe_passed: report.passed,
+       probe_not_applicable: report.not_applicable
+     )}
+  end
+
+  def handle_async(:probe, {:exit, _reason}, socket) do
+    {:noreply, assign(socket, probe_status: :failed)}
+  end
+
   def handle_async(:check, {:exit, _reason}, socket) do
     {:noreply, assign(socket, status: :failed, error: "The check crashed unexpectedly.")}
   end
@@ -126,7 +156,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       reads: nil,
       leniency: nil,
       check_error: nil,
-      error: nil
+      error: nil,
+      probe_status: :idle,
+      probe_findings: [],
+      probe_passed: [],
+      probe_not_applicable: []
     )
     |> start_async(:check, fn -> run_check(podcast_id) end)
   end
@@ -304,6 +338,26 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
       <p :if={@status == :running} class="mt-4">Downloading and checking the feed ...</p>
       <p :if={@status == :failed} class="mt-4 text-danger">{@error}</p>
+      <div :if={@status == :done and !@check_error and @reads} class="mt-4">
+        <p :if={@probe_status == :idle} class="text-sm text-gray-dark">
+          So far only the feed text was checked. Probing downloads the artwork and asks for the
+          media files of the newest 10 episodes.
+        </p>
+        <p :if={@probe_status == :done} class="text-sm text-gray-dark">
+          The artwork and the media files of the newest 10 episodes were probed; their results are
+          part of the report below.
+        </p>
+        <p :if={@probe_status == :failed} class="text-sm text-danger">Probing failed unexpectedly.</p>
+        <button
+          phx-click="probe"
+          disabled={@probe_status == :running}
+          class="mt-2 border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1
+                 disabled:opacity-50"
+        >
+          {if @probe_status == :running, do: "Probing ...", else: "Probe artwork and episodes"}
+        </button>
+      </div>
+
       <p :if={@status == :done and @check_error} class="mt-4 text-danger">{@check_error}</p>
       <p :if={@status == :done and !@check_error and @selected == []} class="mt-4">
         No rule set selected.
@@ -311,7 +365,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       <p
         :if={
           @status == :done and !@check_error and @selected != [] and
-            visible(@findings, @selected) == []
+            visible(@findings ++ @probe_findings, @selected) == []
         }
         class="mt-4"
       >
@@ -319,7 +373,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       </p>
 
       <div
-        :for={{severity, rules} <- grouped(visible(@findings, @selected))}
+        :for={{severity, rules} <- grouped(visible(@findings ++ @probe_findings, @selected))}
         :if={@status == :done}
         class="mt-6"
       >
@@ -346,10 +400,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </div>
       </div>
 
-      <div :if={@status == :done and visible(@passed, @selected) != []} class="mt-6">
+      <div :if={@status == :done and visible(@passed ++ @probe_passed, @selected) != []} class="mt-6">
         <h2 class="text-xl font-bold">Passed</h2>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- visible(@passed, @selected)}>
+          <li :for={rule <- visible(@passed ++ @probe_passed, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
@@ -359,15 +413,18 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </ul>
       </div>
 
-      <details :if={@status == :done and visible(@not_applicable, @selected) != []} class="mt-6">
+      <details
+        :if={@status == :done and visible(@not_applicable ++ @probe_not_applicable, @selected) != []}
+        class="mt-6"
+      >
         <summary class="text-xl font-bold cursor-pointer">
-          Not applicable ({length(visible(@not_applicable, @selected))})
+          Not applicable ({length(visible(@not_applicable ++ @probe_not_applicable, @selected))})
         </summary>
         <p class="mt-2 text-sm text-gray-dark">
           The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
         </p>
         <ul class="mt-3 list-disc ml-6">
-          <li :for={rule <- visible(@not_applicable, @selected)}>
+          <li :for={rule <- visible(@not_applicable ++ @probe_not_applicable, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>

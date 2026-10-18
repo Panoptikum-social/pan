@@ -71,7 +71,11 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
         selected: selected,
         reads: reads,
         leniency: nil,
-        check_error: nil
+        check_error: nil,
+        probe_status: :idle,
+        probe_findings: [],
+        probe_passed: [],
+        probe_not_applicable: []
       }
       |> CheckFeed.render()
       |> rendered_to_string()
@@ -177,7 +181,11 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
       selected: [:rss2, :apple, :podcasting20],
       reads: nil,
       leniency: nil,
-      check_error: nil
+      check_error: nil,
+      probe_status: :idle,
+      probe_findings: [],
+      probe_passed: [],
+      probe_not_applicable: []
     }
     |> Map.merge(assigns)
     |> CheckFeed.render()
@@ -220,5 +228,51 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     assert html =~ "Tom &amp; Jerry"
     refute html =~ "No problems found."
     refute html =~ "select_standards"
+  end
+
+  test "probe results are part of the report" do
+    probes = %{
+      artwork: [
+        %{
+          label: "Artwork",
+          url: "https://example.com/cover.jpg",
+          result:
+            {:ok,
+             %{
+               format: "JPEG",
+               width: 1000,
+               height: 1000,
+               colorspace: "sRGB",
+               alpha: false,
+               dpi: 72.0
+             }}
+        }
+      ]
+    }
+
+    {:ok, report} = CheckMyFeed.check_probes(probes)
+
+    {:ok, reads} =
+      Pan.Parser.RssFeed.parse_xml(
+        ~s(<rss version="2.0"><channel><title>T</title></channel></rss>),
+        "https://example.com/feed"
+      )
+
+    html = render_page(%{reads: reads})
+    assert html =~ "So far only the feed text was checked."
+    assert html =~ "Probe artwork and episodes"
+
+    html =
+      render_page(%{
+        reads: reads,
+        probe_status: :done,
+        probe_findings: report.findings,
+        probe_passed: report.passed,
+        probe_not_applicable: report.not_applicable
+      })
+
+    assert html =~ "Artwork is 1000 × 1000 pixels."
+    assert html =~ "apple.artwork.size"
+    assert html =~ "were probed"
   end
 end

@@ -73,7 +73,7 @@ defmodule Pan.MixProject do
       # XML parser
       {:quinn, "~> 1.1"},
       # feed compliance checker (separate project)
-      {:check_my_feed, "~> 0.3.0"},
+      {:check_my_feed, "~> 0.4.0"},
       # UUID creation
       {:uuid, "~> 1.1"},
       # sanitizing html input (shownotes)
