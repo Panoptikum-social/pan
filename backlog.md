@@ -46,60 +46,6 @@ materializes:
 
 ---
 
-### Project #2: public "check my feed" compliance tool (found 2026-09-01)
-Follow-on idea from Project #1's discussion: a public-facing feature that
-checks a podcast's feed against real standards — RSS 2.0
-(validator.w3.org/feed/docs/rss2.html), Apple Podcasts
-(help.apple.com/itc/podcasts_connect), Podcasting 2.0 (podcasting2.org),
-podcast-standard.org — and reports where it falls short, plus (separately,
-info-level) where Panoptikum silently tolerates non-standard constructs it
-has learned to work around over the years (the ~70 date formats, entity/
-angle-bracket fixups, mixed-content HTML scrubbing, etc. already in
-`lib/pan/parser/helpers.ex` — that catalog of tolerances is *not* a standard
-to check against, it's the mirror image: proof of what's actually out there).
-
-**Status:** the check is live in prod as `PanWeb.Live.Podcast.CheckFeed`. The
-rule engine is the separate Hex library `check_my_feed` (github.com/Panoptikum-social/check-my-feed,
-sibling directory `../check-my-feed`, mirrored privately on code.informatom.com).
-A new library release: bump the version, `mix hex.publish` (2FA), then update
-Pan's requirement and lock.
-
-**Decisions still in force:** the library parses raw feed XML itself (no Pan
-parser code, since Pan's fix-ups would hide what the tool must report), takes an
-XML string and does no fetching; Pan downloads a fresh copy per check via
-`Download.get/2` (SSRF guard applies). Only for podcasts listed in Panoptikum.
-
-**Podcasting 2.0 rules** are in since 0.3.0 (2026-10-18): only the tags a feed
-uses are checked, the guid/locked hints only for feeds that use the
-namespace. Left out for later: `podcast:person` role/group against the
-taxonomy list, license identifiers against the license list, and everything
-that needs a download (transcript and chapters files).
-
-**"What Panoptikum reads from your feed"** is in since 2026-10-18: a collapsed
-section with Pan's own parser output (channel fields, episode summary).
-
-**"Panoptikum reads this anyway"** is in since 2026-10-18: the XML repairs
-and non-RFC 822 dates Pan's parser copes with (`Pan.Parser.Leniency`), shown
-even for feeds that aren't well-formed XML.
-
-**Switching rule sets off** is in since 2026-10-18: a checkbox per rule set on
-the check page, the choice kept in the URL (`?standards=rss2,apple`).
-
-**Active probing, phase 1** is in since 2026-10-18 (check_my_feed 0.4.0,
-`Pan.FeedProbe`): a button on the check page probes the artwork of the show
-and of the newest 10 episodes (size 1400-3000 px, square, real file type vs.
-extension, RGB, no alpha channel, 72 dpi) and sends HEAD requests for their
-media files (reachable, length and type match the feed).
-
-**Probing phase 2, audio** is in since 2026-10-18 (check_my_feed 0.5.0): a
-second button probes the first megabyte of the newest 3 episodes' media
-files with ffprobe/ffmpeg (needs ffmpeg on prod, installed 2026-10-18):
-MP3 or AAC, AAC in MP4 recommended, sample rate, bit rate by channels,
-loudness around -16 LKFS and true peak at most -1 dBFS (on that first part
-only), and MP4 files whose index sits at the end.
-
----
-
 ### Project #3: community pads (found 2026-10-09)
 A pad is basically a markdown field that several users of a community can
 edit synchronously.
@@ -182,4 +128,40 @@ weeks), with snapshots following.
   `elixirc_options: [module_definition: :interpreted]` can cut compile
   times on machines with many cores; the `.beam` files stay the same.
   Worth a try, optional.
+
+---
+
+## Done, kept for reference
+
+### Project #2: public "check my feed" compliance tool (2026-09-01 to 2026-10-18)
+Complete. The feed check page `PanWeb.Live.Podcast.CheckFeed` (owner, admins
+and moderators of a podcast) shows:
+- the rules of the Hex library `check_my_feed` (0.5.0): RSS 2.0, Apple
+  Podcasts and Podcasting 2.0, each rule with a coloured label for its rule
+  set; rule sets can be switched off (`?standards=rss2,apple` in the URL);
+- "Panoptikum reads this anyway" (`Pan.Parser.Leniency`): the XML repairs and
+  non-RFC 822 dates Pan's parser copes with, also for feeds that aren't
+  well-formed XML;
+- "What Panoptikum reads from your feed": Pan's own parser output;
+- two probe buttons (`Pan.FeedProbe`): artwork of the show and the newest 10
+  episodes plus HEAD requests for their media files, and the audio of the
+  newest 3 episodes from the first megabyte of each file (ffprobe/ffmpeg,
+  installed on prod).
+
+**Library:** github.com/Panoptikum-social/check-my-feed, sibling directory
+`../check-my-feed`, mirrored privately on code.informatom.com. A release:
+point Pan at `path: "../check-my-feed"` while working on the library, bump
+the version, push, `mix hex.publish` (2FA), then put Pan back on the Hex
+version.
+
+**Decisions still in force:** the library parses raw feed XML itself (no Pan
+parser code, since Pan's fix-ups would hide what the tool must report) and
+downloads nothing: Pan downloads (SSRF guard applies, probes one request at
+a time) and hands the library the XML or its measurements
+(`CheckMyFeed.check_probes/1`). Only for podcasts listed in Panoptikum.
+
+**Deliberately left out (could be picked up later):** `podcast:person`
+role/group against the Podcast Taxonomy list, license identifiers against
+the license list, transcript and chapters files (would need downloads), a
+JSON API (dropped).
 
