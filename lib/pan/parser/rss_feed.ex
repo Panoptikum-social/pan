@@ -75,21 +75,7 @@ defmodule Pan.Parser.RssFeed do
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-        feed_xml =
-          Pan.Parser.Helpers.remove_comments(feed_xml)
-          |> Pan.Parser.Helpers.fix_encoding()
-          |> Pan.Parser.Helpers.normalize_nbsp()
-          |> Pan.Parser.Helpers.remove_doctype()
-          |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
-          |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-          |> Pan.Parser.Helpers.fix_html_entities()
-          |> Pan.Parser.Helpers.fix_character_code_strings()
-          |> String.trim()
-
-        case xml_to_map(feed_xml) do
-          {:ok, feed_map} -> parse_to_map(feed_map, url)
-          {:error, reason} -> {:error, reason}
-        end
+        parse_xml(feed_xml, url)
 
       {:redirect, redirect_target} ->
         {:redirect, redirect_target}
@@ -97,6 +83,25 @@ defmodule Pan.Parser.RssFeed do
       {:error, reason} ->
         {:error, reason}
     end
+  end
+
+  @doc """
+  The parser's map of a feed's XML, with all its episodes, without
+  downloading or storing anything.
+  """
+  def parse_xml(feed_xml, url) do
+    cleaned =
+      Pan.Parser.Helpers.remove_comments(feed_xml)
+      |> Pan.Parser.Helpers.fix_encoding()
+      |> Pan.Parser.Helpers.normalize_nbsp()
+      |> Pan.Parser.Helpers.remove_doctype()
+      |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
+      |> Pan.Parser.Helpers.remove_extra_angle_brackets()
+      |> Pan.Parser.Helpers.fix_html_entities()
+      |> Pan.Parser.Helpers.fix_character_code_strings()
+      |> String.trim()
+
+    with {:ok, feed_map} <- xml_to_map(cleaned), do: parse_to_map(feed_map, url)
   end
 
   def xml_to_map(feed_map) do

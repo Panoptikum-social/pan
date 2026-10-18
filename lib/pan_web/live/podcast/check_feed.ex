@@ -32,6 +32,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             findings: [],
             passed: [],
             not_applicable: [],
+            reads: nil,
             error: nil,
             standards: standards(),
             selected: standards()
@@ -71,14 +72,15 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     {:noreply, push_patch(socket, to: path <> query)}
   end
 
-  def handle_async(:check, {:ok, {:ok, feed_url, report}}, socket) do
+  def handle_async(:check, {:ok, {:ok, feed_url, report, reads}}, socket) do
     {:noreply,
      assign(socket,
        status: :done,
        feed_url: feed_url,
        findings: report.findings,
        passed: report.passed,
-       not_applicable: report.not_applicable
+       not_applicable: report.not_applicable,
+       reads: reads
      )}
   end
 
@@ -94,7 +96,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     podcast_id = socket.assigns.podcast.id
 
     socket
-    |> assign(status: :running, findings: [], passed: [], not_applicable: [], error: nil)
+    |> assign(
+      status: :running,
+      findings: [],
+      passed: [],
+      not_applicable: [],
+      reads: nil,
+      error: nil
+    )
     |> start_async(:check, fn -> run_check(podcast_id) end)
   end
 
@@ -104,7 +113,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            Download.get(url, follow_redirect: true),
          {:ok, report} <- CheckMyFeed.check(body) do
-      {:ok, url, report}
+      {:ok, url, report, read_by_panoptikum(body, url)}
     else
       {:error, "not found"} ->
         {:error, "This podcast has no feed."}
@@ -122,6 +131,80 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         {:error, "The feed could not be checked: #{inspect(other)}"}
     end
   end
+
+  # Pan's own parser on the same download: what Panoptikum takes from the feed.
+  # It is more lenient than the rules, but a feed it can't read just leaves the
+  # section out.
+  defp read_by_panoptikum(body, url) do
+    case Pan.Parser.RssFeed.parse_xml(body, url) do
+      {:ok, map} -> map
+      {:error, _reason} -> nil
+    end
+  rescue
+    _ -> nil
+  end
+
+  defp channel_rows(map) do
+    [
+      {"Title", map[:title]},
+      {"Description", shorten(map[:description], 300)},
+      {"Website", map[:website]},
+      {"Artwork", map[:image_url]},
+      {"Author", get_in(map, ["author", :name])},
+      {"Owner", owner(map["owner"])},
+      {"Languages", joined(map[:languages], & &1[:shortcode])},
+      {"Categories", joined(map[:categories], &category/1)},
+      {"Explicit", yes_no(map[:explicit])},
+      {"Payment link", map[:payment_link_url]},
+      {"Persons", joined(map[:contributors], &person/1)},
+      {"Last build date", map[:last_build_date] && to_string(map[:last_build_date])},
+      {"New feed URL", map[:new_feed_url]},
+      {"Generator", get_in(map, [:feed, :feed_generator])},
+      {"Hub", get_in(map, [:feed, :hub_link_url])}
+    ]
+  end
+
+  # [{label, count}] over all episodes the parser found.
+  defp episode_summary(map) do
+    episodes = map |> Map.get(:episodes, %{}) |> Map.values()
+
+    for {label, key} <- [
+          {"with audio or video (enclosure)", :enclosures},
+          {"with a publishing date", :publishing_date},
+          {"with a duration", :duration},
+          {"with artwork", :image_url},
+          {"with show notes", :shownotes},
+          {"with chapters (Podlove Simple Chapters in the feed)", :chapters},
+          {"with persons", :contributors}
+        ],
+        do: {label, Enum.count(episodes, &(&1[key] not in [nil, "", %{}, []]))}
+  end
+
+  defp episode_count(map), do: map_size(Map.get(map, :episodes, %{}))
+
+  defp shorten(nil, _length), do: nil
+
+  defp shorten(text, length) do
+    if String.length(text) > length, do: String.slice(text, 0, length) <> " …", else: text
+  end
+
+  defp owner(%{name: name, email: email}) when is_binary(email), do: "#{name} <#{email}>"
+  defp owner(%{name: name}), do: name
+  defp owner(_owner), do: nil
+
+  defp category(%{parent: nil, title: title}), do: title
+  defp category(%{parent: parent, title: title}), do: "#{parent} › #{title}"
+
+  defp person(%{name: name, role: role}) when is_binary(role), do: "#{name} (#{role})"
+  defp person(%{name: name}), do: name
+
+  defp joined(nil, _fun), do: nil
+  defp joined(map, _fun) when map_size(map) == 0, do: nil
+  defp joined(map, fun), do: map |> Map.values() |> Enum.map_join(", ", fun)
+
+  defp yes_no(true), do: "yes"
+  defp yes_no(false), do: "no"
+  defp yes_no(_value), do: nil
 
   # The rule sets in the library's order, e.g. [:rss2, :apple, :podcasting20].
   defp standards, do: CheckMyFeed.Rules.all() |> Enum.map(& &1.standard) |> Enum.uniq()
@@ -246,6 +329,28 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             {rule.description}
             <span class="text-sm text-gray-dark">({rule.id})</span>
           </li>
+        </ul>
+      </details>
+
+      <details :if={@status == :done and @reads} class="mt-6">
+        <summary class="text-xl font-bold cursor-pointer">
+          What Panoptikum reads from your feed
+        </summary>
+        <p class="mt-2 text-sm text-gray-dark">
+          This is what Panoptikum takes from the feed and shows of the show. Its parser is more
+          lenient than the rules above.
+        </p>
+        <table class="mt-3 table table-sm">
+          <tbody>
+            <tr :for={{label, value} <- channel_rows(@reads)}>
+              <th class="align-top whitespace-nowrap">{label}</th>
+              <td class="wrap-break-word">{value || "—"}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="mt-3">{episode_count(@reads)} episodes, of them:</p>
+        <ul class="list-disc ml-6">
+          <li :for={{label, count} <- episode_summary(@reads)}>{count} {label}</li>
         </ul>
       </details>
 

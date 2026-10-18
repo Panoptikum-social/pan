@@ -55,7 +55,7 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     end
   end
 
-  defp render_report(xml, selected) do
+  defp render_report(xml, selected, reads \\ nil) do
     {:ok, report} = CheckMyFeed.check(xml)
 
     html =
@@ -68,7 +68,8 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
         passed: report.passed,
         not_applicable: report.not_applicable,
         standards: [:rss2, :apple, :podcasting20],
-        selected: selected
+        selected: selected,
+        reads: reads
       }
       |> CheckFeed.render()
       |> rendered_to_string()
@@ -123,5 +124,41 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     |> render_change(%{"standards" => ["", "rss2", "apple", "podcasting20"]})
 
     assert_patch(view, path)
+  end
+
+  test "what Panoptikum reads from the feed, by its own parser" do
+    xml = """
+    <rss version="2.0" xmlns:podcast="https://podcastindex.org/namespace/1.0"
+         xmlns:psc="http://podlove.org/simple-chapters">
+      <channel>
+        <title>Reader Show</title>
+        <link>https://example.com</link>
+        <description>About the show</description>
+        <language>de-at</language>
+        <podcast:person role="host">Jane Doe</podcast:person>
+        <item>
+          <title>Episode 1</title>
+          <guid>e1</guid>
+          <enclosure url="https://example.com/1.mp3" length="1" type="audio/mpeg"/>
+          <psc:chapters version="1.2"><psc:chapter start="00:00:00" title="Intro"/></psc:chapters>
+        </item>
+        <item><title>Episode 2</title><guid>e2</guid></item>
+      </channel>
+    </rss>
+    """
+
+    {:ok, reads} = Pan.Parser.RssFeed.parse_xml(xml, "https://example.com/feed")
+    {_report, html} = render_report(xml, [:rss2], reads)
+
+    assert html =~ "What Panoptikum reads from your feed"
+    assert html =~ "Reader Show"
+    assert html =~ "de-at"
+    assert html =~ "Jane Doe (host)"
+    assert html =~ "2 episodes, of them:"
+    assert html =~ "1 with audio or video (enclosure)"
+    assert html =~ "1 with chapters"
+
+    {_report, html} = render_report(xml, [:rss2], nil)
+    refute html =~ "What Panoptikum reads from your feed"
   end
 end
