@@ -332,7 +332,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </ul>
       </details>
 
-      <details :if={@status == :done and @reads} class="mt-6">
+      <details :if={@status == :done and @reads} open class="mt-6">
         <summary class="text-xl font-bold cursor-pointer">
           What Panoptikum reads from your feed
         </summary>
