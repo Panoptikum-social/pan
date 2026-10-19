@@ -8,7 +8,8 @@ defmodule PanWeb.ContentSecurityPolicyTest do
     assert policy =~ "default-src 'self'"
     assert policy =~ "script-src 'self' 'nonce-#{conn.assigns.csp_nonce}'"
     refute policy =~ ~r/script-src[^;]*'unsafe-inline'/
-    refute policy =~ "'unsafe-eval'"
+    # for the Podlove subscribe button's modal, see PanWeb.ContentSecurityPolicy
+    assert policy =~ "'unsafe-eval'"
 
     # put_secure_browser_headers' minimal policy stays the enforced one
     assert get_resp_header(conn, "content-security-policy") == [
