@@ -73,6 +73,8 @@ defmodule Pan.OpmlParser.OpmlTest do
     before = :erlang.system_info(:atom_count)
     assert {:error, message} = Opml.parse(path, user.id)
     assert message =~ "too many distinct"
-    assert :erlang.system_info(:atom_count) == before
+    # its 600 names didn't become atoms; other tests running in parallel may
+    # add a few of their own
+    assert :erlang.system_info(:atom_count) - before < 100
   end
 end
