@@ -107,8 +107,13 @@ defmodule PanWeb.Api.OpmlController do
 
     case opml do
       %PanWeb.Opml{} ->
-        Pan.OpmlParser.Opml.parse(opml.path, user.id)
-        render(conn, "show.json-api", data: opml, opts: [include: "user"])
+        case Pan.OpmlParser.Opml.parse(opml.path, user.id) do
+          {:ok, _count} ->
+            render(conn, "show.json-api", data: opml, opts: [include: "user"])
+
+          {:error, message} ->
+            Helpers.send_error(conn, 422, "OPML not imported", message)
+        end
 
       nil ->
         Helpers.send_404(conn)

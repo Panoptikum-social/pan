@@ -89,10 +89,10 @@ defmodule PanWeb.OpmlController do
   def import(conn, %{"id" => id}) do
     opml = Repo.get!(Opml, id)
 
-    Pan.OpmlParser.Opml.parse(opml.path, opml.user_id)
-
-    conn
-    |> put_flash(:info, "OPML imported successfully.")
+    case Pan.OpmlParser.Opml.parse(opml.path, opml.user_id) do
+      {:ok, count} -> put_flash(conn, :info, "OPML imported successfully, #{count} feeds.")
+      {:error, message} -> put_flash(conn, :error, "OPML not imported: #{message}")
+    end
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 end

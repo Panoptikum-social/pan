@@ -85,17 +85,21 @@ defmodule PanWeb.OpmlFrontendController do
   def import(conn, %{"id" => id}, user) do
     opml = Repo.one(from(o in Opml, where: o.id == ^id and o.user_id == ^user.id))
 
-    Pan.OpmlParser.Opml.parse(opml.path, user.id)
+    case Pan.OpmlParser.Opml.parse(opml.path, user.id) do
+      {:ok, _count} ->
+        put_flash(
+          conn,
+          :info,
+          Phoenix.HTML.raw(
+            "<span class='h3'>Thank you!</span><br/> The OPML was imported into the" <>
+              " feed backlog successfully.<br/> We will parse the feeds as soon as" <>
+              " possible and assign you as listener to the corresponding podcasts."
+          )
+        )
 
-    conn
-    |> put_flash(
-      :info,
-      Phoenix.HTML.raw(
-        "<span class='h3'>Thank you!</span><br/> The OPML was imported into the" <>
-          " feed backlog successfully.<br/> We will parse the feeds as soon as" <>
-          " possible and assign you as listener to the corresponding podcasts."
-      )
-    )
+      {:error, message} ->
+        put_flash(conn, :error, "The OPML could not be imported: #{message}")
+    end
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 end

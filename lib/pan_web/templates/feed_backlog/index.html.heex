@@ -34,9 +34,9 @@
         <tr>
           <td>{feed_backlog.id}</td>
           <td class="leading-6">
-            <%= if URI.parse(feed_backlog.url).scheme do %>
+            <%= if URI.parse(feed_backlog.url).scheme && safe_uri?(feed_backlog.url) do %>
               <.link
-                href={String.downcase(feed_backlog.url)}
+                href={safe_href(feed_backlog.url)}
                 target="_blank"
                 class="text-link hover:text-link-dark"
               >{feed_backlog.url}</.link>

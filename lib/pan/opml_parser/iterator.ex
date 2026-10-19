@@ -1,14 +1,9 @@
 defmodule Pan.OpmlParser.Iterator do
   alias Pan.OpmlParser.Analyzer
 
-  # We are done digging down
-  def parse([], _user_id), do: nil
+  @doc "The feed URLs of the OPML nodes."
+  def parse(nodes), do: Enum.flat_map(nodes, &feed_urls/1)
 
-  def parse([head | tail], user_id) do
-    if is_map(head) do
-      Analyzer.call([head[:name], head[:attr], head[:value]], user_id)
-    end
-
-    parse(tail, user_id)
-  end
+  defp feed_urls(%{name: name, attr: attr, value: value}), do: Analyzer.call([name, attr, value])
+  defp feed_urls(_text), do: []
 end

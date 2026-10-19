@@ -16,6 +16,15 @@ defmodule PanWeb.FeedBacklog do
     struct
     |> cast(params, [:url, :in_progress, :feed_generator, :user_id])
     |> validate_required([:url])
+    |> validate_change(:url, fn :url, url ->
+      case URI.parse(url) do
+        %URI{scheme: scheme, host: host} when scheme in ["http", "https"] and is_binary(host) ->
+          []
+
+        _ ->
+          [url: "must be an http or https URL"]
+      end
+    end)
   end
 
   def subscribe(backlog_feed) do
