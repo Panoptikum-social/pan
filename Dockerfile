@@ -5,12 +5,12 @@
 # `environment:` — see .env.example), not baked into this image at build
 # time — the build itself needs no secrets at all.
 
-ARG ELIXIR_VERSION=1.19.5
-ARG OTP_VERSION=28.4.2
+ARG ELIXIR_VERSION=1.20.4
+ARG OTP_VERSION=29.1.1
 # Matches the QA server's host OS (Ubuntu 24.04 "noble"). Check
 # https://hub.docker.com/r/hexpm/elixir/tags for a current tag for this
 # elixir/otp/ubuntu combination if this one no longer exists.
-ARG UBUNTU_TAG=noble-20260509.1
+ARG UBUNTU_TAG=noble-20260917
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-ubuntu-${UBUNTU_TAG}"
 ARG RUNNER_IMAGE="ubuntu:24.04"
 ARG MIX_ENV=qa
