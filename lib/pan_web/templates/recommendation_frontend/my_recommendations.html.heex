@@ -134,7 +134,7 @@
                     field={f[:comment]}
                     type="text"
                     maxlength="255"
-                    data-chapter={podcast.id}
+                    data-remaining-counter={"remaining#{podcast.id}"}
                     class="input input-bordered w-full"
                   />
                 </div>
@@ -145,12 +145,6 @@
                 </div>
               </div>
             </.form>
-
-            <script>
-              document.querySelector('[data-chapter="<%= podcast.id %>"]').onkeyup = function(){
-                document.getElementById("remaining<%= podcast.id %>").innerHTML = 255 - this.value.length;
-              }
-            </script>
           </li>
         <% end %>
       </ul>

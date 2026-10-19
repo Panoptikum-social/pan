@@ -20,6 +20,7 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
           field={f[:comment]}
           size="100"
           maxlength="255"
+          data-remaining-counter="remaining"
           label="Your recommendation"
           class="max-w-full input"
         />
@@ -27,12 +28,6 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
         <.input type="hidden" field={f[:podcast_id]} value={@podcast.id} />
         <.button type="submit" class="btn btn-primary">Recommend</.button>
       </.form>
-
-      <script>
-        document.getElementById('recommendation_comment').onkeyup = function(){
-            document.getElementById("remaining").innerHTML = 255 - this.value.length;
-        }
-      </script>
     </div>
     <br />
     """

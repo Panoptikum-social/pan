@@ -14,6 +14,7 @@ import { Notification } from "./notification";
 import { PodlovePlayer } from "./podlove_player";
 import { OvertypeField } from "./overtype_field";
 import { LanguageFilterPersistence } from "./language_filter_persistence";
+import "./remaining_characters";
 
 window.Alpine = Alpine;
 Alpine.start();
