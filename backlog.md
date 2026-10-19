@@ -57,7 +57,18 @@ follow button). No separate community subscription.
 
 **Roadmap (estimate 2–3 weeks of focused work):**
 0. Trial (½ day): two browsers editing one pad through a channel with
-   `y_ex`, in dev and in a prod-like release build.
+   `y_ex`, in dev and in a prod-like release build. **Done on dev
+   2026-10-19** (merged into main, e6c8e03c): `/dev/pad_trial` (dev and qa
+   only, no auth, in memory), `PanWeb.UserSocket` + `PanWeb.PadTrialChannel`
+   on `Yex.Sync.SharedDoc` via `Pan.PadRegistry`, browser side
+   `y-phoenix-channel` + `y-codemirror.next` in a separate bundle
+   `pad_trial.js` loaded only by the `PadTrial` hook. Concurrent typing,
+   cursors and reload work; the NIF loads in a prod release and in the QA
+   image. Still to do: the two-browser test on QA (home server).
+   Notes for later: `pad_trial.js` is 725 kB minified (CodeMirror + code
+   block grammars, #276); npm pulled in its own `phoenix` package as a peer
+   dependency of `y-phoenix-channel`, same 1.8.15 as `deps/phoenix` for now
+   (#277); `lib0` is pinned to one version via npm `overrides`.
 1. Data model and pad management (1–2 days): pads and snapshots tables;
    moderators create pads and toggle read only; follower-only access.
 2. Collaboration core (3–5 days): first Phoenix Channel in the app, one
