@@ -136,10 +136,6 @@ weeks), with snapshots following.
   back. The parser matches titles ignoring case and surrounding spaces since
   2026-10-19; no table remembers merges (by decision), so occasional
   re-merging is the plan.
-- **ElixirLS Dialyzer warnings (found 2026-10-19).** The user sees Dialyzer
-  warnings in ElixirLS. Find out whether they are real or a stale PLT/build
-  (`.elixir_ls/` can be deleted to rebuild, see the memory note on stale
-  ElixirLS builds).
 - **Content-Security-Policy without `'unsafe-eval'` (found 2026-10-19).**
   `PanWeb.ContentSecurityPolicy` allows `'unsafe-eval'` in `script-src`
   because the normal Alpine.js build evaluates `x-data`/`@click` expressions
