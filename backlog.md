@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-10-18.
+2026-10-19.
 
 ---
 
@@ -128,3 +128,11 @@ weeks), with snapshots following.
   `elixirc_options: [module_definition: :interpreted]` can cut compile
   times on machines with many cores; the `.beam` files stay the same.
   Worth a try, optional.
+- **Category clean-up, second look (found 2026-10-19).** The user cleans up
+  categories on prod with `/admin/categories/merge` (namesakes colored, empty
+  ones deletable, podcast counts) and restores a prod backup to dev on
+  2026-10-20. Then look at the result again: remaining namesake groups, same
+  titles meaning different things under different parents, strays that grew
+  back. The parser matches titles ignoring case and surrounding spaces since
+  2026-10-19; no table remembers merges (by decision), so occasional
+  re-merging is the plan.
