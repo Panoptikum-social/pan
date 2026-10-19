@@ -83,7 +83,8 @@ follow button). No separate community subscription.
    snapshots, done as ON DELETE CASCADE in the DB (#282); deleting a user
    keeps their snapshots with `user_id` NULL (#283); `/dev/pad_trial` goes
    away in step 2 (#284). Non-followers get the same "not found" for an
-   existing pad as for a missing one.
+   existing pad as for a missing one. **Done 2026-10-19** (f52f26cc), tested
+   on dev by the user.
 2. Collaboration core (3–5 days): first Phoenix Channel in the app, one
    process per open pad holding the Yjs document, cursors/presence, saving
    the Yjs state and markdown copy, stopping when idle, read-only reaching
