@@ -12,6 +12,8 @@ defmodule PanWeb.Component.LinkButton do
   attr :method, :atom, default: :get
   attr :opts, :list, default: []
 
+  slot :inner_block, doc: "shown after the title"
+
   def render(assigns) do
     ~H"""
     <.link
@@ -28,6 +30,7 @@ defmodule PanWeb.Component.LinkButton do
     >
       <Icon.render :if={@icon} name={@icon} class="shrink-0" spaced={true} />
       {@title}
+      {render_slot(@inner_block)}
     </.link>
     """
   end

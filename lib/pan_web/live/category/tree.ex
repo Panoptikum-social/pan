@@ -9,6 +9,14 @@ defmodule PanWeb.Live.Category.Tree do
 
   def render(assigns) do
     ~H"""
+    <p class="px-4 pt-4 text-sm">
+      <.link
+        navigate={category_frontend_path(@socket, :stats)}
+        class="text-link hover:text-link-dark underline"
+      >
+        Category tree with podcast numbers
+      </.link>
+    </p>
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">
       <div :for={{category, counter} <- Enum.with_index(@categories)} class="avoid-column-break">
         <p>

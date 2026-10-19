@@ -44,6 +44,7 @@ defmodule PanWeb.Component.CategoryButton do
   attr :for, :map, default: nil
   attr :index_on_page, :integer, default: nil
   attr :tint, :boolean, default: false, doc: "light tint of the color, for subcategories"
+  attr :count, :integer, default: nil, doc: "number shown after the title, e.g. podcasts"
   attr :truncate, :boolean, default: false
 
   def render(assigns) do
@@ -55,7 +56,9 @@ defmodule PanWeb.Component.CategoryButton do
       icon="folder-heroicons-outline"
       title={@title || @for.title}
       truncate={@truncate}
-    />
+    >
+      <span :if={@count} class="text-xs font-normal opacity-70 tabular-nums">{@count}</span>
+    </LinkButton.render>
     """
   end
 end
