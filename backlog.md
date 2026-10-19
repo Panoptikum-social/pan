@@ -57,14 +57,14 @@ follow button). No separate community subscription.
 
 **Roadmap (estimate 2–3 weeks of focused work):**
 0. Trial (½ day): two browsers editing one pad through a channel with
-   `y_ex`, in dev and in a prod-like release build. **Done on dev
+   `y_ex`, in dev and in a prod-like release build. **Done
    2026-10-19** (merged into main, e6c8e03c): `/dev/pad_trial` (dev and qa
    only, no auth, in memory), `PanWeb.UserSocket` + `PanWeb.PadTrialChannel`
    on `Yex.Sync.SharedDoc` via `Pan.PadRegistry`, browser side
    `y-phoenix-channel` + `y-codemirror.next` in a separate bundle
    `pad_trial.js` loaded only by the `PadTrial` hook. Concurrent typing,
    cursors and reload work; the NIF loads in a prod release and in the QA
-   image. Still to do: the two-browser test on QA (home server).
+   image; the two-browser test on QA passed too (2026-10-19). Step 0 done.
    Notes for later: `pad_trial.js` is 725 kB minified (CodeMirror + code
    block grammars, #276); npm pulled in its own `phoenix` package as a peer
    dependency of `y-phoenix-channel`, same 1.8.15 as `deps/phoenix` for now
