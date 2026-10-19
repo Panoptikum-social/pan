@@ -17,7 +17,7 @@ defmodule PanWeb.Component.PodcastButton do
     <LinkButton.render
       to={Routes.podcast_frontend_path(Endpoint, :show, @id || @for.id)}
       id={@for && "podcast-button-#{@for.id}"}
-      class={["bg-white hover:bg-gray-lighter text-black border-gray", @class]}
+      class={["bg-white hover:bg-gray-lighter text-base-content border-gray", @class]}
       icon="podcast-lineawesome-solid"
       title={truncate_string(@title || @for.title, 80)}
       large={@large}

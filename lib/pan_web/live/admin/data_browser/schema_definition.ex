@@ -47,7 +47,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
           <li :for={{title, index} <- Enum.with_index(@tabs)} class="-mb-px ml-1.5 mt-1">
             <a
               class="inline-block rounded-t px-1 border-gray"
-              x-bind:class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+              x-bind:class={"{ 'disabled text-base-content bg-gray-lightest border-l border-t border-r':
                         selectedTab === #{index},
                         'bg-gray-light text-gray-dark hover:text-gray-darker': selectedTab !== #{index} }"}
               @click.prevent={"selectedTab = #{index}"}
@@ -156,7 +156,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                 >
                   <a
                     class="inline-block rounded-t px-1 border-gray"
-                    x-bind:class={"{ 'disabled text-black bg-gray-lightest border-l border-t border-r':
+                    x-bind:class={"{ 'disabled text-base-content bg-gray-lightest border-l border-t border-r':
                               selectedAssociation === #{assoc_index},
                               'bg-gray-light text-gray-dark hover:text-gray-darker': selectedAssociation !== #{assoc_index} }"}
                     @click.prevent={"selectedAssociation = #{assoc_index}"}
