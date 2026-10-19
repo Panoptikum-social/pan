@@ -37,6 +37,7 @@ config :pan, :children, [
   Pan.Repo,
   PanWeb.Telemetry,
   {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
+  {Registry, keys: :unique, name: Pan.PadRegistry},
   PanWeb.Endpoint
 ]
 
