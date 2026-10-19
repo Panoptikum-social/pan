@@ -21,4 +21,17 @@ defmodule PanWeb.ContentSecurityPolicyTest do
 
     assert first != second
   end
+
+  test "the Podlove Web Player's URL-bearing scripts hash as browsers report them on prod" do
+    hashes = PanWeb.ContentSecurityPolicy.podlove_script_hashes("https://panoptikum.social")
+
+    # on panoptikum.social, Firefox accepted the first two and asked for the third
+    for reported <- [
+          "'sha256-4+hnezgP8/v24b2PA3biARY5j44JfeEruuXP5uSM75w='",
+          "'sha256-CS2MFB5mRjHPstOsYPX9N2sZCiSmRRTZhtLP8atlmUk='",
+          "'sha256-sJpY9trRuGJnOiZ+k6wp8n5K8kqkhv2AIOGVH2laZ1w='"
+        ] do
+      assert reported in hashes
+    end
+  end
 end

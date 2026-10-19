@@ -20,11 +20,11 @@ defmodule PanWeb.ContentSecurityPolicy do
   import Plug.Conn
 
   # Podlove Web Player 5.7.4 (priv/static/web-player/), read from its iframes
-  # in the browser: the modernBrowser check, the iFrameResizer setup and the
-  # app load handler. A new player version needs new hashes.
+  # in the browser: the iFrameResizer setup and the app load handler. A new
+  # player version needs new hashes, and a check of the scripts built in
+  # podlove_scripts/0.
   @podlove_version "5.7.4"
   @podlove_script_hashes [
-    "sha256-2Hl7Do2A2Mw65TEqE1vXsGkiWvJIuCW1p+myKphHYqE=",
     "sha256-6Y0v1n/Y21n6mdU+5WDKH8kQ1ww6CLuplpFeCWJUrlY=",
     "sha256-/CocAxQERUuy7+nrYskHO8hLR8mtDfSuQqZ3lyoxCS4="
   ]
@@ -45,16 +45,38 @@ defmodule PanWeb.ContentSecurityPolicy do
       else: "content-security-policy-report-only"
   end
 
-  # plus the player's and its subscribe button's resource base URL lines,
-  # which contain the site's URL
-  defp podlove_script_hashes do
-    base_url_lines =
-      for app <- ["player", "button"] do
-        "window.resourceBaseUrl = '#{PanWeb.Endpoint.url()}/web-player/#{@podlove_version}/#{app}/';"
-      end
-
-    Enum.map(base_url_lines, &("'sha256-" <> Base.encode64(:crypto.hash(:sha256, &1)) <> "'")) ++
+  @doc false
+  # public for the test, which pins the hashes browsers reported for prod
+  def podlove_script_hashes(url \\ PanWeb.Endpoint.url()) do
+    Enum.map(
+      podlove_scripts(url),
+      &("'sha256-" <> Base.encode64(:crypto.hash(:sha256, &1)) <> "'")
+    ) ++
       Enum.map(@podlove_script_hashes, &"'#{&1}'")
+  end
+
+  # the player's scripts that contain the site's URL, character for character:
+  # the resource base URL of the player and its subscribe button, and the
+  # polyfill loader (in both)
+  defp podlove_scripts(url) do
+    [
+      "window.resourceBaseUrl = '#{url}/web-player/#{@podlove_version}/player/';",
+      "window.resourceBaseUrl = '#{url}/web-player/#{@podlove_version}/button/';",
+      """
+      const modernBrowser = (
+            'fetch' in window &&
+            'assign' in Object
+          );
+
+          if ( !modernBrowser ) {
+            const scriptElement = document.createElement('script');
+
+            scriptElement.async = false;
+            scriptElement.src = '#{url}/web-player/polyfills.js';
+            document.head.appendChild(scriptElement);
+          }\
+      """
+    ]
   end
 
   defp policy(nonce) do
