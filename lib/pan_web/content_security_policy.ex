@@ -9,8 +9,9 @@ defmodule PanWeb.ContentSecurityPolicy do
   violations to its console, and `put_secure_browser_headers`' minimal
   policy (base-uri, frame-ancestors) stays the enforced one.
 
-  - `'unsafe-eval'`: the Podlove subscribe button compiles its modal's
-    templates with `new Function` when it's clicked (prod, 2026-10-19).
+  - `'unsafe-eval'`: the Podlove web player and subscribe button evaluate
+    code at runtime (prod without it, 2026-10-19: the player didn't render,
+    the subscribe button's modal didn't open).
     Alpine runs on its CSP build anyway (assets/js/app.js), so injected
     `x-*` attributes still can't run arbitrary code.
   - script hashes: the Podlove Web Player writes inline scripts into iframes
