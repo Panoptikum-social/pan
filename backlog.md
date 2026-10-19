@@ -65,10 +65,11 @@ follow button). No separate community subscription.
    `pad_trial.js` loaded only by the `PadTrial` hook. Concurrent typing,
    cursors and reload work; the NIF loads in a prod release and in the QA
    image; the two-browser test on QA passed too (2026-10-19). Step 0 done.
-   Notes for later: `pad_trial.js` is 725 kB minified (CodeMirror + code
-   block grammars, #276); npm pulled in its own `phoenix` package as a peer
-   dependency of `y-phoenix-channel`, same 1.8.15 as `deps/phoenix` for now
-   (#277); `lib0` is pinned to one version via npm `overrides`.
+   Notes for later: the editor bundle (now `pad_editor.js`) is 725 kB
+   minified (CodeMirror + code block grammars, #276); `lib0` is pinned to
+   one version via npm `overrides`; `phoenix` in package.json is
+   `file:../deps/phoenix` so the JS client follows mix.lock (#277, fixed
+   064e610b).
 1. Data model and pad management (1–2 days): pads and snapshots tables;
    moderators create pads and toggle read only; follower-only access.
    Decided 2026-10-19: the address is a slug made from the title
