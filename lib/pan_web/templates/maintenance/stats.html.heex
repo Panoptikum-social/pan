@@ -14,22 +14,22 @@
       desc="next update overdue"
     />
     <.attention_stat
-      title="Retirement candidates"
-      metric={:retirement_candidates}
-      value={@retirement_candidates}
-      desc="≥ 9 failures, not yet retired"
+      title="Retired podcasts"
+      metric={:retired_podcasts}
+      value={@retired_podcasts}
+      desc="to be tackled"
     />
     <.attention_stat
-      title="Unindexed episodes"
-      metric={:unindexed_episodes}
-      value={@unindexed_episodes}
-      desc="not in full text search"
+      title="Duplicate podcasts"
+      metric={:duplicate_podcasts}
+      value={@duplicate_podcasts |> Map.values() |> Enum.sum()}
+      desc={"#{@duplicate_podcasts.different_show} different show, #{@duplicate_podcasts.same_feed_url} same feed URL, #{@duplicate_podcasts.same_title} same title, #{@duplicate_podcasts.alternate} alternate feed"}
     />
     <.attention_stat
-      title="Thumbnails missing"
-      metric={:thumbnails_missing}
-      value={@podcasts_without_image + @personas_without_image}
-      desc={"#{@podcasts_without_image} podcasts, #{@personas_without_image} personas"}
+      title="Deletable users"
+      metric={:deletable_users}
+      value={@deletable_users}
+      desc={"marked > #{PanWeb.User.deletion_grace_days()} days, see user retention"}
     />
   </div>
 
@@ -41,7 +41,8 @@
       value={@total_podcasts}
     >
       <.metric label="inactive" value={@inactive_podcasts} />
-      <.metric label="retired" value={@retired_podcasts} />
+      <.metric label="retirement candidates (≥ 9 failures)" value={@retirement_candidates} />
+      <.metric label="thumbnails missing" value={@podcasts_without_image} />
     </.stat_card>
 
     <.stat_card
@@ -60,7 +61,9 @@
       icon="headphones-lineawesome-solid"
       accent="border-t-secondary"
       value={@total_episodes}
-    />
+    >
+      <.metric label="unindexed (not in full text search)" value={@unindexed_episodes} />
+    </.stat_card>
 
     <.stat_card
       title="Users"
@@ -85,6 +88,7 @@
       <.metric label="gigs" value={@total_gigs} />
       <.metric label="manifestations" value={@total_manifestations} />
       <.metric label="delegations" value={@total_delegations} />
+      <.metric label="thumbnails missing" value={@personas_without_image} />
     </.stat_card>
 
     <.stat_card title="Feeds" icon="rss-heroicons-outline" accent="border-t-warning">

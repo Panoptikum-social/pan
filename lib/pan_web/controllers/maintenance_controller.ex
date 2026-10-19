@@ -18,6 +18,7 @@ defmodule PanWeb.MaintenanceController do
     Opml,
     Persona,
     Podcast,
+    PodcastDuplicates,
     Recommendation,
     Subscription,
     User,
@@ -188,6 +189,8 @@ defmodule PanWeb.MaintenanceController do
       from(p in Podcast, where: p.retired == true)
       |> Repo.aggregate(:count)
 
+    duplicate_podcasts = PodcastDuplicates.counts()
+
     retirement_candidates =
       from(p in Podcast, where: p.failure_count >= 9 and not p.retired)
       |> Repo.aggregate(:count)
@@ -228,6 +231,7 @@ defmodule PanWeb.MaintenanceController do
       |> Decimal.round()
 
     total_users = Repo.aggregate(User, :count, :id)
+    deletable_users = User.count_retention_users([:deletable], "")
 
     total_gigs =
       Repo.aggregate(Gig, :count, :id)
@@ -273,11 +277,13 @@ defmodule PanWeb.MaintenanceController do
       inactive_podcasts: inactive_podcasts,
       retired_podcasts: retired_podcasts,
       retirement_candidates: retirement_candidates,
+      duplicate_podcasts: duplicate_podcasts,
       average_update_intervall: average_update_intervall,
       total_podcasts: total_podcasts,
       total_episodes: total_episodes,
       podcasts_per_hour: podcasts_per_hour,
       total_users: total_users,
+      deletable_users: deletable_users,
       total_gigs: total_gigs,
       total_engagements: total_engagements,
       total_personas: total_personas,

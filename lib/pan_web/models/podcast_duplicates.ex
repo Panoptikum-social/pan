@@ -15,18 +15,42 @@ defmodule PanWeb.PodcastDuplicates do
 
   @bare_url "regexp_replace(trim(?), '^https\\?://', '', 'i')"
 
+  @doc """
+  The number of entries per check, as on the tabs of the duplicates page,
+  without loading the podcasts.
+  """
+  def counts do
+    %{
+      different_show: Repo.aggregate(marked_by_updater_query(), :count),
+      same_feed_url: count_rows(same_feed_url_query()),
+      same_title: count_rows(same_title_query()),
+      alternate: count_rows(feed_url_is_alternate_query())
+    }
+  end
+
+  # in SQL, as an Ecto subquery can't select the tuples these queries return
+  defp count_rows(query) do
+    {sql, params} = Repo.to_sql(:all, query)
+    [[count]] = Repo.query!("SELECT count(*) FROM (#{sql}) AS rows", params).rows
+    count
+  end
+
   @doc "Groups of podcasts whose feeds have the same URL (http/https alike)."
   def same_feed_url do
+    same_feed_url_query()
+    |> order_by([f], fragment(@bare_url, f.self_link_url))
+    |> Repo.all()
+    |> with_podcasts()
+  end
+
+  defp same_feed_url_query do
     from(f in Feed,
       group_by: fragment(@bare_url, f.self_link_url),
       having: count(f.id) > 1,
       select:
         {fragment(@bare_url, f.self_link_url),
-         fragment("array_agg(? order by ?)", f.podcast_id, f.podcast_id)},
-      order_by: fragment(@bare_url, f.self_link_url)
+         fragment("array_agg(? order by ?)", f.podcast_id, f.podcast_id)}
     )
-    |> Repo.all()
-    |> with_podcasts()
   end
 
   @doc """
@@ -34,18 +58,22 @@ defmodule PanWeb.PodcastDuplicates do
   before a redirect) of another podcast.
   """
   def feed_url_is_alternate(counted \\ :all) do
+    feed_url_is_alternate_query()
+    |> order_by([f, _a, other], [f.podcast_id, other.podcast_id])
+    |> Repo.all()
+    |> with_podcasts()
+    |> with_shared_episode_titles(counted)
+  end
+
+  defp feed_url_is_alternate_query do
     from(f in Feed,
       join: a in assoc(f, :alternate_feeds),
       join: other in Feed,
       on: fragment(@bare_url, a.url) == fragment(@bare_url, other.self_link_url),
       where: other.podcast_id != f.podcast_id,
       distinct: true,
-      select: {other.self_link_url, [f.podcast_id, other.podcast_id]},
-      order_by: [f.podcast_id, other.podcast_id]
+      select: {other.self_link_url, [f.podcast_id, other.podcast_id]}
     )
-    |> Repo.all()
-    |> with_podcasts()
-    |> with_shared_episode_titles(counted)
   end
 
   @doc """
@@ -56,17 +84,21 @@ defmodule PanWeb.PodcastDuplicates do
   shows that just share a title; nil for bigger groups.
   """
   def same_title do
+    same_title_query()
+    |> order_by([p], fragment("lower(trim(?))", p.title))
+    |> Repo.all()
+    |> with_podcasts()
+    |> with_shared_episode_titles(:all)
+  end
+
+  defp same_title_query do
     from(p in Podcast,
       group_by: fragment("lower(trim(?))", p.title),
       # groups an admin marked as namesakes (different shows) are done, unless
       # another podcast with the title came along since
       having: count(p.id) > 1 and fragment("not bool_and(?)", p.namesake),
-      select: {min(p.title), fragment("array_agg(? order by ?)", p.id, p.id)},
-      order_by: fragment("lower(trim(?))", p.title)
+      select: {min(p.title), fragment("array_agg(? order by ?)", p.id, p.id)}
     )
-    |> Repo.all()
-    |> with_podcasts()
-    |> with_shared_episode_titles(:all)
   end
 
   # [{key, podcasts}] -> [{key, podcasts, shared}], shared being the number
@@ -108,13 +140,15 @@ defmodule PanWeb.PodcastDuplicates do
   marked by Pan.Updater.Succession in last_error_message.
   """
   def marked_by_updater do
-    from(p in Podcast,
-      where: like(p.last_error_message, "Feed now delivers%"),
+    from(p in marked_by_updater_query(),
       order_by: [desc: p.last_error_occured],
       preload: ^[feeds: [alternate_feeds: newest_first()]]
     )
     |> Repo.all()
   end
+
+  defp marked_by_updater_query,
+    do: from(p in Podcast, where: like(p.last_error_message, "Feed now delivers%"))
 
   @doc """
   The channel title the feed at `url` delivers right now, or a short note if

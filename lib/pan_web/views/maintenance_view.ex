@@ -39,15 +39,16 @@ defmodule PanWeb.MaintenanceView do
   end
 
   # {yellow from, red from}, based on the prod backup of 2026-10-10: ~70 stale
-  # podcasts (≈ 20 min of updates at ~230 p/h), 135 retirement candidates
-  # (metadata refresh failures push the count past 10 without retiring),
-  # unindexed episodes ≈ 0 with the search push running every 3 minutes
-  # (~10 000 new episodes a day), 5 missing thumbnails.
+  # podcasts (≈ 20 min of updates at ~230 p/h).
+  # Retired podcasts, duplicate podcasts (the first four tabs of the
+  # duplicates page) and deletable users are to be tackled by hand, so they
+  # turn yellow from the first one; prod backup of 2026-10-18: 0 retired,
+  # 27 duplicates, 0 deletable.
   @thresholds %{
     stale_podcasts: {250, 1_000},
-    retirement_candidates: {250, 500},
-    unindexed_episodes: {1_000, 10_000},
-    thumbnails_missing: {50, 500}
+    retired_podcasts: {1, 25},
+    duplicate_podcasts: {1, 25},
+    deletable_users: {1, 25}
   }
 
   # A number that should stay low: green, yellow or red by @thresholds.
