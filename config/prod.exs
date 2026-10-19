@@ -22,6 +22,10 @@ config :phoenix, :serve_endpoints, true
 
 config :pan, :environment, "prod"
 
+# Content-Security-Policy enforced (PanWeb.ContentSecurityPolicy); dev and
+# test only report, Tidewave's toolbar loads scripts from tidewave.ai
+config :pan, :csp_enforce, true
+
 config :pan, :children, [
   Pan.Repo,
   PanWeb.Telemetry,
