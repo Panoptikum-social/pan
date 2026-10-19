@@ -6,6 +6,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   @empty_class "bg-warning/40"
   @best_candidate_class "bg-info/70"
   @candidate_class "bg-info/20"
+  @no_title_class "bg-error/30"
 
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(from_id: nil, into_id: nil) |> load()}
@@ -20,13 +21,18 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         {id, false} -> {id, @candidate_class}
       end)
 
+    # blank titles are namesakes of each other, the no-title color wins
+    no_title = Map.new(Category.no_title_ids(), &{&1, @no_title_class})
+    marked = Map.merge(Map.new(empty_ids, &{&1, @empty_class}), no_title)
+
     assign(socket,
       categories: Category.tree(),
       podcast_counts: Category.podcast_counts(),
       empty_ids: empty_ids,
-      marked: Map.new(empty_ids, &{&1, @empty_class}),
-      from_marked: Map.merge(Map.new(empty_ids, &{&1, @empty_class}), namesakes),
+      marked: marked,
+      from_marked: marked |> Map.merge(namesakes) |> Map.merge(no_title),
       empty_class: @empty_class,
+      no_title_class: @no_title_class,
       best_candidate_class: @best_candidate_class,
       candidate_class: @candidate_class
     )
@@ -143,6 +149,10 @@ defmodule PanWeb.Live.Admin.Category.Merge do
           <li class="flex items-center gap-2">
             <span class={["inline-block size-4 border border-gray-light", @empty_class]}></span>
             empty (no podcasts, subcategories, follows, likes or community), can be deleted
+          </li>
+          <li class="flex items-center gap-2">
+            <span class={["inline-block size-4 border border-gray-light", @no_title_class]}></span>
+            no title (blank, "0"), merge into the parent or Uncategorized
           </li>
           <li class="flex items-center gap-2">
             <span class={["inline-block size-4 border border-gray-light", @best_candidate_class]}></span>

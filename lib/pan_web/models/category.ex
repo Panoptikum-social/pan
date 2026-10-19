@@ -221,6 +221,13 @@ defmodule PanWeb.Category do
     |> Map.new()
   end
 
+  @doc "Ids of categories whose title has no letter (blank, \"0\"), to be merged by hand."
+  def no_title_ids do
+    from(c in Category, where: fragment("? !~ '[[:alpha:]]'", c.title), select: c.id)
+    |> Repo.all()
+    |> MapSet.new()
+  end
+
   @doc "Ids of categories with nothing attached, safe to delete."
   def empty_ids do
     from(c in empty_query(), select: c.id)
