@@ -58,7 +58,10 @@ if config_env() == :qa do
   config :pan, PanWeb.Endpoint,
     secret_key_base: secret_key_base,
     url: [scheme: "http", host: host, port: port],
-    check_origin: ["http://#{host}:#{port}"]
+    # QA is reached by name and by IP, so accept a websocket whenever its
+    # origin matches the host and port the page itself was requested under,
+    # instead of PAN_HOST only
+    check_origin: :conn
 
   # Defaults to not sending real mail from QA. Switch to Swoosh.Adapters.SMTP
   # (see the prod branch below) if you need to test outgoing mail flows from

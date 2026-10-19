@@ -55,7 +55,9 @@ In `.env`, set:
   ```sh
   openssl rand -base64 48
   ```
-* `PAN_HOST` — change to this server's actual domain/IP.
+* `PAN_HOST` — change to this server's actual domain/IP. Used for absolute
+  URLs (e.g. links in mails); websockets accept whatever host the page was
+  opened under (`check_origin: :conn` in `config/runtime.exs`).
 * `PAN_PORT` — only needed if you change the published port away from
   `4001` (see below).
 
