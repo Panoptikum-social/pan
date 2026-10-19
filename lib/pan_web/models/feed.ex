@@ -192,6 +192,11 @@ defmodule PanWeb.Feed do
     end
   end
 
+  @doc "All feed URLs, as `[[url]]`, for exporting them from the console."
+  def feed_urls do
+    Repo.all(from(f in Feed, select: [f.self_link_url]))
+  end
+
   def get_by_id(id) do
     Repo.get!(Feed, id)
   end

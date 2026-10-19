@@ -1,7 +1,7 @@
 defmodule Pan.Parser.Download do
   require Logger
   alias HTTPoison.{Error, Response}
-  alias Pan.Parser.{Feed, SsrfGuard}
+  alias Pan.Parser.SsrfGuard
 
   @error_map %{
     202 => "202: accepted",
@@ -168,8 +168,34 @@ defmodule Pan.Parser.Download do
 
   defp redirect(url, headers) do
     case Enum.find(headers, fn {name, _value} -> String.downcase(name) == "location" end) do
-      {_name, redirect_target} -> Feed.check_for_redirect_loop(url, redirect_target)
+      {_name, redirect_target} -> check_for_redirect_loop(url, redirect_target)
       nil -> {:error, "redirect without location"}
+    end
+  end
+
+  @doc """
+  `{:redirect, absolute target}` for a redirect from `url` to
+  `redirect_target` (relative targets resolved against `url`), or
+  `{:error, "redirects to itself"}`.
+
+  Only catches a URL redirecting to itself. Cycles across several hops are
+  caught by the callers following the redirects, which track the URLs
+  visited during the current fetch. Deliberately not checked against
+  alternate_feeds: that's history, not a loop — a URL we once moved away
+  from can legitimately become current again (e.g. Zeit für Wissenschaft,
+  podcast 102, stuck on "loop detected" for an http → https redirect whose
+  target had been recorded years earlier).
+  """
+  def check_for_redirect_loop(url, redirect_target) do
+    redirect_target =
+      if String.starts_with?(redirect_target, "http"),
+        do: redirect_target,
+        else: url |> URI.merge(redirect_target) |> to_string()
+
+    if redirect_target == url do
+      {:error, "redirects to itself"}
+    else
+      {:redirect, redirect_target}
     end
   end
 

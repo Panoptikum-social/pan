@@ -1,7 +1,7 @@
 defmodule Pan.Parser.FeedParsingTest do
   @moduledoc """
   Characterization tests for the XML → map core (Pan.Parser.Iterator and
-  Pan.Parser.Analyzer, driven through Pan.Parser.RssFeed.parse_to_map/2).
+  Pan.Parser.Analyzer, driven through Pan.Parser.FeedXml.parse_to_map/2).
 
   They pin down what the parser produces today, and the feed shapes that
   crashed it in production. No database is involved.
@@ -10,7 +10,7 @@ defmodule Pan.Parser.FeedParsingTest do
 
   import ExUnit.CaptureLog
 
-  alias Pan.Parser.RssFeed
+  alias Pan.Parser.FeedXml
 
   @feed_url "https://example.com/feed.xml"
 
@@ -42,8 +42,8 @@ defmodule Pan.Parser.FeedParsingTest do
     </rss>
     """
 
-    {:ok, quinn_map} = RssFeed.xml_to_map(xml)
-    {:ok, map} = RssFeed.parse_to_map(quinn_map, @feed_url)
+    {:ok, quinn_map} = FeedXml.xml_to_map(xml)
+    {:ok, map} = FeedXml.parse_to_map(quinn_map, @feed_url)
     map
   end
 

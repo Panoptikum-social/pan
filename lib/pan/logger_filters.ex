@@ -10,8 +10,8 @@ defmodule Pan.LoggerFilters do
   # unconditionally via the legacy error_logger:error_msg/2 API whenever it
   # hits malformed XML — *before* it raises exit({:fatal, ...}), regardless
   # of whether that exit gets caught downstream. In this app it already is:
-  # Pan.Updater.RssFeed.xml_to_map/2 wraps Quinn.parse/1 in
-  # `catch :exit, {:fatal, error} -> {:error, ...}`, and that error already
+  # Pan.Parser.FeedXml.xml_to_map/1 wraps Quinn.parse/1 in
+  # `catch :exit, error -> {:error, ...}`, and that error already
   # gets logged properly (with podcast id/title context) via
   # Pan.Updater.Podcast.handle_message/3. So this raw report — no
   # stacktrace, no module/mfa metadata, just "<line>- fatal: <reason>" —

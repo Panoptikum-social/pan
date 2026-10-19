@@ -1,6 +1,4 @@
 defmodule Pan.Parser.Helpers do
-  import Ecto.Query
-  alias Pan.Repo
   alias Pan.Parser.MyDateTime
   require Logger
 
@@ -344,11 +342,6 @@ defmodule Pan.Parser.Helpers do
 
   defp deep_resolve(_key, _left, right) do
     right
-  end
-
-  # export feed urls
-  def feed_urls do
-    Repo.all(from(f in PanWeb.Feed, select: [f.self_link_url]))
   end
 
   def remove_comments(xml) do

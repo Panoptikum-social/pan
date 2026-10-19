@@ -1,6 +1,6 @@
 defmodule Pan.Parser.Feed do
   alias Pan.Repo
-  alias Pan.Parser.{AlternateFeed, Helpers}
+  alias Pan.Parser.{AlternateFeed, Download, Helpers}
   alias PanWeb.Feed
 
   def get_or_insert(feed_map, podcast_id) do
@@ -40,7 +40,7 @@ defmodule Pan.Parser.Feed do
   def update_with_redirect_target(id, redirect_target) do
     {:ok, feed} = get_by_podcast_id(id)
 
-    case redirect_target && check_for_redirect_loop(feed.self_link_url, redirect_target) do
+    case redirect_target && Download.check_for_redirect_loop(feed.self_link_url, redirect_target) do
       {:redirect, redirect_target} ->
         AlternateFeed.get_or_insert(feed.id, %{url: feed.self_link_url, title: feed.self_link_url})
 
@@ -53,34 +53,6 @@ defmodule Pan.Parser.Feed do
 
       nil ->
         {:error, "empty redirect target"}
-    end
-  end
-
-  # Only catches a URL redirecting to itself. Cycles across several hops are
-  # caught by the callers following the redirects, which track the URLs
-  # visited during the current fetch. Deliberately not checked against
-  # alternate_feeds: that's history, not a loop — a URL we once moved away
-  # from can legitimately become current again (e.g. Zeit für Wissenschaft,
-  # podcast 102, stuck on "loop detected" for an http → https redirect whose
-  # target had been recorded years earlier).
-  def check_for_redirect_loop(url, redirect_target) do
-    redirect_target =
-      case String.starts_with?(redirect_target, "http") do
-        true ->
-          redirect_target
-
-        false ->
-          String.split(url, "/", parts: 3, trim: true)
-          |> Enum.drop(-1)
-          |> Enum.join("//")
-          |> Kernel.<>("/")
-          |> Kernel.<>(String.trim_leading(redirect_target, "/"))
-      end
-
-    if redirect_target == url do
-      {:error, "redirects to itself"}
-    else
-      {:redirect, redirect_target}
     end
   end
 

@@ -2,7 +2,7 @@ defmodule Pan.Parser.Leniency do
   @moduledoc """
   What Panoptikum reads in a feed although it isn't standard, for the feed
   check page ("Panoptikum reads this anyway"): the XML repairs
-  `Pan.Parser.RssFeed.clean_xml/1` makes, and dates in other formats than
+  `Pan.Parser.FeedXml.clean_xml/1` makes, and dates in other formats than
   RFC 822.
 
   Standard constructs the clean-up touches as well (comments, a DOCTYPE,
@@ -11,7 +11,7 @@ defmodule Pan.Parser.Leniency do
   anything goes inside them.
   """
 
-  alias Pan.Parser.{Helpers, RssFeed}
+  alias Pan.Parser.{FeedXml, Helpers}
 
   @examples 3
   @context_bytes 25
@@ -157,7 +157,7 @@ defmodule Pan.Parser.Leniency do
   ## Dates
 
   defp dates(feed_xml) do
-    case feed_xml |> RssFeed.clean_xml() |> RssFeed.xml_to_map() do
+    case feed_xml |> FeedXml.clean_xml() |> FeedXml.xml_to_map() do
       {:ok, tree} ->
         tree
         |> date_values()

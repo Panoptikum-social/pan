@@ -1,5 +1,5 @@
 defmodule Pan.Parser.RssFeed do
-  alias Pan.Parser.{AlternateFeed, Download, Iterator, Persistor}
+  alias Pan.Parser.{AlternateFeed, Download, FeedXml, Persistor}
   require Logger
 
   # Like the update paths (Pan.Updater.Podcast, Pan.Parser.Podcast), track the
@@ -75,7 +75,7 @@ defmodule Pan.Parser.RssFeed do
 
     case Download.download(url) do
       {:ok, feed_xml} ->
-        parse_xml(feed_xml, url)
+        FeedXml.parse_xml(feed_xml, url)
 
       {:redirect, redirect_target} ->
         {:redirect, redirect_target}
@@ -83,50 +83,6 @@ defmodule Pan.Parser.RssFeed do
       {:error, reason} ->
         {:error, reason}
     end
-  end
-
-  @doc """
-  The parser's map of a feed's XML, with all its episodes, without
-  downloading or storing anything.
-  """
-  def parse_xml(feed_xml, url) do
-    with {:ok, feed_map} <- feed_xml |> clean_xml() |> xml_to_map(),
-         do: parse_to_map(feed_map, url)
-  end
-
-  @doc "The fix-ups Panoptikum applies to a feed's XML before parsing it."
-  def clean_xml(feed_xml) do
-    Pan.Parser.Helpers.remove_comments(feed_xml)
-    |> Pan.Parser.Helpers.fix_encoding()
-    |> Pan.Parser.Helpers.normalize_nbsp()
-    |> Pan.Parser.Helpers.remove_doctype()
-    |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
-    |> Pan.Parser.Helpers.remove_extra_angle_brackets()
-    |> Pan.Parser.Helpers.fix_html_entities()
-    |> Pan.Parser.Helpers.fix_character_code_strings()
-    |> String.trim()
-  end
-
-  def xml_to_map(feed_map) do
-    try do
-      with :ok <- Pan.Parser.XmlNames.check(feed_map), do: {:ok, Quinn.parse(feed_map)}
-    catch
-      :exit, error ->
-        # xmerl's exit reason is a term (e.g. {:fatal, {:error_scanning_entity_ref,
-        # ...}}), not a string — <> on it crashes the crash handler itself.
-        {:error, "Quinn error: " <> inspect(error)}
-    end
-  end
-
-  def parse_to_map(quinn_map, url) do
-    map =
-      %{
-        feed: %{self_link_title: "Feed", self_link_url: url},
-        title: Enum.at(String.split(url, "/"), 2)
-      }
-      |> Iterator.parse(quinn_map)
-
-    {:ok, map}
   end
 
   # Convenience function for runtime measurement

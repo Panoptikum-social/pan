@@ -157,7 +157,7 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     </rss>
     """
 
-    {:ok, reads} = Pan.Parser.RssFeed.parse_xml(xml, "https://example.com/feed")
+    {:ok, reads} = Pan.Parser.FeedXml.parse_xml(xml, "https://example.com/feed")
     {_report, html} = render_report(xml, [:rss2], reads)
 
     assert html =~ "What Panoptikum reads from your feed"
@@ -220,7 +220,7 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
   test "a feed that isn't well-formed still shows what Panoptikum reads" do
     xml = "<rss version=\"2.0\"><channel><title>Tom & Jerry</title></channel></rss>"
     assert {:error, {:invalid_xml, _}} = CheckMyFeed.check(xml)
-    {:ok, reads} = Pan.Parser.RssFeed.parse_xml(xml, "https://example.com/feed")
+    {:ok, reads} = Pan.Parser.FeedXml.parse_xml(xml, "https://example.com/feed")
 
     html =
       render_page(%{
@@ -261,7 +261,7 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     {:ok, report} = CheckMyFeed.check_probes(probes)
 
     {:ok, reads} =
-      Pan.Parser.RssFeed.parse_xml(
+      Pan.Parser.FeedXml.parse_xml(
         ~s(<rss version="2.0"><channel><title>T</title></channel></rss>),
         "https://example.com/feed"
       )

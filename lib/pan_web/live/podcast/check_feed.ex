@@ -230,7 +230,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   # feed it can't read just leaves the sections out.
   defp read_by_panoptikum(body, url) do
     reads =
-      case Pan.Parser.RssFeed.parse_xml(body, url) do
+      case Pan.Parser.FeedXml.parse_xml(body, url) do
         {:ok, map} -> map
         {:error, _reason} -> nil
       end

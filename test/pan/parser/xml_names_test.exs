@@ -38,7 +38,7 @@ defmodule Pan.Parser.XmlNamesTest do
   test "the feed parser refuses such a document before Quinn sees it" do
     xml = document(Enum.map_join(1..300, "", &~s(<f#{&1} g#{&1}="1"/>)))
 
-    assert {:error, message} = Pan.Parser.RssFeed.xml_to_map(xml)
+    assert {:error, message} = Pan.Parser.FeedXml.xml_to_map(xml)
     assert message =~ "too many distinct"
   end
 end
