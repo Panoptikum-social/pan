@@ -95,6 +95,8 @@ defmodule Pan.MixProject do
       {:eqrcode, "~> 0.2.1"},
       # Creating a pidfile
       {:pid_file, "~> 0.2"},
+      # Yjs CRDT for collaboratively edited community pads (NIF, precompiled)
+      {:y_ex, "~> 0.13.0"},
 
       # Mix task invoking esbuild
       {:esbuild, "~> 0.10.0", runtime: Mix.env() == :dev},

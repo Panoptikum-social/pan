@@ -1,11 +1,20 @@
 {
   "dependencies": {
     "@alpinejs/csp": "3.17.4",
+    "@codemirror/lang-markdown": "^6.5.2",
     "@podlove/web-player": "^5.7.4",
     "@tailwindcss/cli": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
+    "codemirror": "^6.0.2",
     "daisyui": "^5.5.14",
+    "lib0": "^0.2.119",
     "tailwindcss": "^4.1.18",
-    "topbar": "^1.0.1"
+    "topbar": "^1.0.1",
+    "y-codemirror.next": "^0.3.6",
+    "y-phoenix-channel": "^0.3.0",
+    "yjs": "^13.6.33"
+  },
+  "overrides": {
+    "lib0": "$lib0"
   }
 }

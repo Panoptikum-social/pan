@@ -90,6 +90,19 @@ const PodloveSubscribeButton = {
   },
 };
 
+// Trial for community pads: the editor bundle is only loaded on /dev/pad_trial
+const PadTrial = {
+  mounted() {
+    const script = document.createElement("script");
+    script.src = "/assets/pad_trial.js";
+    script.onload = () => (this.unmount = window.PanPadTrial.mount(this.el));
+    document.head.appendChild(script);
+  },
+  destroyed() {
+    this.unmount?.();
+  },
+};
+
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
@@ -105,6 +118,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     PodlovePlayer,
     OvertypeField,
     LanguageFilterPersistence,
+    PadTrial,
   },
   params: { _csrf_token: csrfToken }
 });
