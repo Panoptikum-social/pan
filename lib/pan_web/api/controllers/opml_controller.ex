@@ -39,13 +39,16 @@ defmodule PanWeb.Api.OpmlController do
     case upload do
       %Plug.Upload{} ->
         File.mkdir_p("/var/phoenix/pan-uploads/opml/#{user.id}")
-        path = "/var/phoenix/pan-uploads/opml/#{user.id}/#{upload.filename}"
+
+        path =
+          "/var/phoenix/pan-uploads/opml/#{user.id}/#{PanWeb.Upload.safe_filename(upload.filename)}"
+
         File.cp(upload.path, path)
 
         changeset =
           %Opml{
             content_type: upload.content_type,
-            filename: upload.filename,
+            filename: PanWeb.Upload.safe_filename(upload.filename),
             path: path,
             user_id: user.id
           }

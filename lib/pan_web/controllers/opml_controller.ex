@@ -11,7 +11,10 @@ defmodule PanWeb.OpmlController do
     destination_path =
       if upload = opml_params["file"] do
         File.mkdir_p("/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}")
-        path = "/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}/#{upload.filename}"
+
+        path =
+          "/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}/#{PanWeb.Upload.safe_filename(upload.filename)}"
+
         File.cp(upload.path, path)
         path
       else
@@ -22,7 +25,7 @@ defmodule PanWeb.OpmlController do
       if upload do
         Opml.changeset(%Opml{
           content_type: upload.content_type,
-          filename: upload.filename,
+          filename: PanWeb.Upload.safe_filename(upload.filename),
           path: destination_path,
           user_id: opml_params["user_id"]
         })

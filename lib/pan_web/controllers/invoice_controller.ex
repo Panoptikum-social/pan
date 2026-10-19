@@ -24,7 +24,10 @@ defmodule PanWeb.InvoiceController do
     destination_path =
       if upload = invoice_params["file"] do
         File.mkdir_p("/var/phoenix/pan-uploads/invoices/#{invoice_params["user_id"]}")
-        path = "/var/phoenix/pan-uploads/invoices/#{invoice_params["user_id"]}/#{upload.filename}"
+
+        path =
+          "/var/phoenix/pan-uploads/invoices/#{invoice_params["user_id"]}/#{PanWeb.Upload.safe_filename(upload.filename)}"
+
         File.cp(upload.path, path)
         path
       else
@@ -35,7 +38,7 @@ defmodule PanWeb.InvoiceController do
       if upload do
         Invoice.changeset(%Invoice{
           content_type: upload.content_type,
-          filename: upload.filename,
+          filename: PanWeb.Upload.safe_filename(upload.filename),
           path: destination_path,
           user_id: user_id
         })

@@ -17,7 +17,10 @@ defmodule PanWeb.ImageController do
     destination_path =
       if upload = image_params["file"] do
         File.mkdir_p("/var/phoenix/pan-uploads/images/#{record_slug}")
-        path = "/var/phoenix/pan-uploads/images/#{record_slug}/#{upload.filename}"
+
+        path =
+          "/var/phoenix/pan-uploads/images/#{record_slug}/#{PanWeb.Upload.safe_filename(upload.filename)}"
+
         File.cp(upload.path, path)
         path
       else
@@ -28,7 +31,7 @@ defmodule PanWeb.ImageController do
       if upload do
         Image.changeset(%Image{
           content_type: upload.content_type,
-          filename: upload.filename,
+          filename: PanWeb.Upload.safe_filename(upload.filename),
           path: destination_path,
           podcast_id: image_params["podcast_id"],
           persona_id: image_params["persona_id"]
