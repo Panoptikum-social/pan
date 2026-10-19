@@ -124,7 +124,7 @@ defmodule PanWeb.Live.PadTest do
       end
     end
 
-    test "followers read it, without the manage controls",
+    test "followers get the editor, without the manage controls",
          %{conn: conn, community: community, pad: pad} do
       user = insert_user()
       follow(user, community)
@@ -132,7 +132,8 @@ defmodule PanWeb.Live.PadTest do
       {:ok, view, html} =
         live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
 
-      assert html =~ "<strong>secret</strong>"
+      assert html =~ ~s(phx-hook="PadEditor")
+      assert has_element?(view, "#pad-editor-#{pad.id}[data-pad-id='#{pad.id}']")
       refute has_element?(view, "#toggle-read-only")
       refute has_element?(view, "#delete-pad")
     end

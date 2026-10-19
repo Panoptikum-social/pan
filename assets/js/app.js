@@ -90,15 +90,29 @@ const PodloveSubscribeButton = {
   },
 };
 
-// Trial for community pads: the editor bundle is only loaded on /dev/pad_trial
-const PadTrial = {
+// Community pads: the editor bundle (CodeMirror, Yjs) is only loaded on pad pages
+let padEditorLoading = null;
+
+const PadEditor = {
   mounted() {
-    const script = document.createElement("script");
-    script.src = "/assets/pad_trial.js";
-    script.onload = () => (this.unmount = window.PanPadTrial.mount(this.el));
-    document.head.appendChild(script);
+    padEditorLoading ||= new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "/assets/pad_editor.js";
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+
+    padEditorLoading.then(() => {
+      // the page may have been left while the bundle was loading
+      if (this.isDestroyed) return;
+      this.unmount = window.PanPadEditor.mount(this.el, {
+        onDeleted: () => (window.location.href = this.el.dataset.communityUrl),
+      });
+    });
   },
   destroyed() {
+    this.isDestroyed = true;
     this.unmount?.();
   },
 };
@@ -118,7 +132,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
     PodlovePlayer,
     OvertypeField,
     LanguageFilterPersistence,
-    PadTrial,
+    PadEditor,
   },
   params: { _csrf_token: csrfToken }
 });

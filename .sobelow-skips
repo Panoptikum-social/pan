@@ -9,6 +9,7 @@ Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:53,16218F
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:13,486D9D9
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:20,66371A0
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:37,1D06962
+Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:40,3F9997A
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:41,5D82996
 DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/admin/index_grid.ex:88,250802
 DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/admin/index_grid.ex:104,4B3A245

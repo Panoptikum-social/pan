@@ -16,9 +16,8 @@ defmodule PanWeb.Endpoint do
       log: false
     ]
 
-  if Mix.env() in [:dev, :qa] do
-    socket "/socket", PanWeb.UserSocket, websocket: true, longpoll: false
-  end
+  # community pads
+  socket "/socket", PanWeb.UserSocket, websocket: true, longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #

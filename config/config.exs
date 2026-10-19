@@ -39,7 +39,7 @@ config :esbuild,
   version: "0.28.2",
   pan: [
     args:
-      ~w(js/app.js js/pad_trial.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --external:/web-player/* --external:/subscribe-button/*),
+      ~w(js/app.js js/pad_editor.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --external:/web-player/* --external:/subscribe-button/*),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]

@@ -6,13 +6,6 @@ defmodule PanWeb.Router do
     forward "/dev/mailbox", Plug.Swoosh.MailboxPreview
   end
 
-  if Mix.env() in [:dev, :qa] do
-    scope "/dev", PanWeb do
-      pipe_through([:browser])
-      live("/pad_trial", Live.PadTrial, :show)
-    end
-  end
-
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
