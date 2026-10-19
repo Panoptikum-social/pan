@@ -172,6 +172,99 @@ defmodule PanWeb.Category do
     |> Repo.preload(:parent)
   end
 
+  @doc """
+  The other categories with the same title as category `id` (case and
+  surrounding spaces ignored), as `{id, podcast count}`, most podcasts first.
+  """
+  def same_title_candidates(id) do
+    from(c in Category,
+      join: s in Category,
+      on: fragment("lower(trim(?))", s.title) == fragment("lower(trim(?))", c.title),
+      left_join: cp in "categories_podcasts",
+      on: cp.category_id == c.id,
+      where: s.id == ^id and c.id != ^id,
+      group_by: c.id,
+      select: {c.id, count(cp.podcast_id)},
+      order_by: [desc: count(cp.podcast_id), asc: c.id]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  All categories sharing their title with another one (case and surrounding
+  spaces ignored), as `{id, best?}`, best being the one with the most
+  podcasts of its title (the lower id on a tie).
+  """
+  def namesakes do
+    Repo.query!("""
+    SELECT id, rank = 1 FROM (
+      SELECT c.id,
+        count(*) OVER (PARTITION BY lower(trim(c.title))) AS namesakes,
+        row_number() OVER (
+          PARTITION BY lower(trim(c.title))
+          ORDER BY (SELECT count(*) FROM categories_podcasts cp WHERE cp.category_id = c.id) DESC, c.id
+        ) AS rank
+      FROM categories c
+    ) ranked
+    WHERE namesakes > 1
+    """).rows
+    |> Enum.map(fn [id, best?] -> {id, best?} end)
+  end
+
+  @doc "Category id => number of podcasts directly in it (not in subcategories)."
+  def podcast_counts do
+    from(cp in "categories_podcasts",
+      group_by: cp.category_id,
+      select: {cp.category_id, count(cp.podcast_id)}
+    )
+    |> Repo.all()
+    |> Map.new()
+  end
+
+  @doc "Ids of categories with nothing attached, safe to delete."
+  def empty_ids do
+    from(c in empty_query(), select: c.id)
+    |> Repo.all()
+    |> MapSet.new()
+  end
+
+  def delete_empty(id) do
+    case Repo.one(from(c in empty_query(), where: c.id == ^id)) do
+      nil ->
+        {:error,
+         "Only categories without podcasts, subcategories, follows, likes and community can be deleted."}
+
+      category ->
+        Repo.delete!(category)
+        Search.Category.delete_index(id)
+        :ok
+    end
+  end
+
+  # no podcasts, subcategories, follows, likes or community
+  defp empty_query do
+    from(c in Category,
+      as: :category,
+      where:
+        not exists(
+          from(cp in "categories_podcasts",
+            where: cp.category_id == parent_as(:category).id,
+            select: 1
+          )
+        ) and
+          not exists(
+            from(ch in Category, where: ch.parent_id == parent_as(:category).id, select: 1)
+          ) and
+          not exists(
+            from(f in Follow, where: f.category_id == parent_as(:category).id, select: 1)
+          ) and
+          not exists(from(l in Like, where: l.category_id == parent_as(:category).id, select: 1)) and
+          not exists(
+            from(co in Community, where: co.category_id == parent_as(:category).id, select: 1)
+          )
+    )
+  end
+
   def merge(id, id), do: {:error, "A category can't be merged into itself."}
 
   # A community is unique per category and carries moderators, curators,

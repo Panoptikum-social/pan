@@ -1,10 +1,54 @@
 defmodule PanWeb.Live.Admin.Category.Merge do
   use PanWeb, :admin_live_view
   alias PanWeb.Category
-  alias PanWeb.Component.{Tree, EventButton, Icon}
+  alias PanWeb.Component.{Tree, Icon}
+
+  @empty_class "bg-warning/40"
+  @best_candidate_class "bg-info/70"
+  @candidate_class "bg-info/20"
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.tree(), from_id: nil, into_id: nil)}
+    {:ok, socket |> assign(from_id: nil, into_id: nil) |> load()}
+  end
+
+  defp load(socket) do
+    empty_ids = Category.empty_ids()
+
+    namesakes =
+      Map.new(Category.namesakes(), fn
+        {id, true} -> {id, @best_candidate_class}
+        {id, false} -> {id, @candidate_class}
+      end)
+
+    assign(socket,
+      categories: Category.tree(),
+      podcast_counts: Category.podcast_counts(),
+      empty_ids: empty_ids,
+      marked: Map.new(empty_ids, &{&1, @empty_class}),
+      from_marked: Map.merge(Map.new(empty_ids, &{&1, @empty_class}), namesakes),
+      empty_class: @empty_class,
+      best_candidate_class: @best_candidate_class,
+      candidate_class: @candidate_class
+    )
+    |> mark_candidates()
+  end
+
+  # the right tree also shows the same-title categories of the left
+  # selection, the one with the most podcasts stronger
+  defp mark_candidates(%{assigns: %{from_id: nil, marked: marked}} = socket),
+    do: assign(socket, into_marked: marked)
+
+  defp mark_candidates(%{assigns: %{from_id: from_id, marked: marked}} = socket) do
+    candidates =
+      from_id
+      |> Category.same_title_candidates()
+      |> Enum.with_index()
+      |> Map.new(fn
+        {{id, _count}, 0} -> {id, @best_candidate_class}
+        {{id, _count}, _index} -> {id, @candidate_class}
+      end)
+
+    assign(socket, into_marked: Map.merge(marked, candidates))
   end
 
   def handle_event("merge", _, %{assigns: %{from_id: from_id, into_id: into_id}} = socket)
@@ -18,7 +62,26 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         {:noreply,
          socket
          |> put_flash(:info, "Categories merged.")
-         |> assign(categories: Category.tree(), from_id: nil, into_id: nil)}
+         |> assign(from_id: nil, into_id: nil)
+         |> load()}
+
+      {:error, message} ->
+        {:noreply, put_flash(socket, :error, message)}
+    end
+  end
+
+  def handle_event("delete", _, %{assigns: %{from_id: nil}} = socket) do
+    {:noreply, put_flash(socket, :error, "Select the category to delete on the left first.")}
+  end
+
+  def handle_event("delete", _, %{assigns: %{from_id: from_id}} = socket) do
+    case Category.delete_empty(from_id) do
+      :ok ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Category deleted.")
+         |> assign(from_id: nil, into_id: nil)
+         |> load()}
 
       {:error, message} ->
         {:noreply, put_flash(socket, :error, message)}
@@ -26,7 +89,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   end
 
   def handle_event("selectFrom", %{"node-id" => from_id}, socket) do
-    {:noreply, assign(socket, from_id: from_id |> String.to_integer())}
+    {:noreply, socket |> assign(from_id: String.to_integer(from_id)) |> mark_candidates()}
   end
 
   def handle_event("selectInto", %{"node-id" => into_id}, socket) do
@@ -44,6 +107,8 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         nodes={@categories}
         select="selectFrom"
         selected_id={@from_id}
+        marked={@from_marked}
+        counts={@podcast_counts}
       />
       <.live_component
         module={Tree}
@@ -51,14 +116,43 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         nodes={@categories}
         select="selectInto"
         selected_id={@into_id}
+        marked={@into_marked}
+        counts={@podcast_counts}
       />
 
-      <div>
-        <EventButton.render event="merge">
+      <div class="sticky top-4 self-start">
+        <button phx-click="merge" class="btn btn-warning btn-sm block">
           <Icon.render name="folder-heroicons-outline" />
           <Icon.render name="arrow-sm-right-heroicons-outline" />
           <Icon.render name="folder-heroicons-outline" /> Merge Categories
-        </EventButton.render>
+        </button>
+
+        <button
+          phx-click="delete"
+          data-confirm="Delete the category selected on the left?"
+          disabled={not MapSet.member?(@empty_ids, @from_id)}
+          class="btn btn-error btn-sm mt-4 block"
+        >
+          Delete Category (left)
+        </button>
+
+        <ul class="mt-6 space-y-1 text-sm">
+          <li class="flex items-center gap-2">
+            <span class="inline-block size-4 border border-gray-light bg-success"></span> selected
+          </li>
+          <li class="flex items-center gap-2">
+            <span class={["inline-block size-4 border border-gray-light", @empty_class]}></span>
+            empty (no podcasts, subcategories, follows, likes or community), can be deleted
+          </li>
+          <li class="flex items-center gap-2">
+            <span class={["inline-block size-4 border border-gray-light", @best_candidate_class]}></span>
+            left: most podcasts of its title; right: of the left selection's namesakes
+          </li>
+          <li class="flex items-center gap-2">
+            <span class={["inline-block size-4 border border-gray-light", @candidate_class]}></span>
+            left: has a namesake with more podcasts; right: other namesakes of the left selection
+          </li>
+        </ul>
       </div>
     </div>
     """
