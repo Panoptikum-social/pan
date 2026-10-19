@@ -144,8 +144,3 @@ weeks), with snapshots following.
   --force` would downgrade typography to 0.5.4, so not that. Check again
   after the next `@tailwindcss/cli` / `@tailwindcss/typography` releases
   (`cd assets && npm audit`).
-- **`NODE_TLS_REJECT_UNAUTHORIZED=0` on the dev machine (found 2026-10-19).**
-  Every `npm` call warns that it's set in the environment. It switches off
-  certificate checks for all Node HTTPS connections, npm's registry
-  downloads included. Find where it's set (shell profile, IDE settings) and
-  remove it, unless it's still needed for something specific.
