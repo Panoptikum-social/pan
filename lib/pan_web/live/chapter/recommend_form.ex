@@ -32,7 +32,12 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
           class="max-w-full input"
         />
         <span id={"remaining-chapter-#{@chapter.id}"}>{@remaining}</span>
-        <.input type="hidden" field={f[:chapter_id]} value={@chapter.id} />
+        <.input
+          type="hidden"
+          field={f[:chapter_id]}
+          id={"chapter-id-#{@id}"}
+          value={@chapter.id}
+        />
         <.button
           type="submit"
           class="py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"
