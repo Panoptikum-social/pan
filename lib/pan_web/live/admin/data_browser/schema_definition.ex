@@ -29,6 +29,11 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
     |> List.last()
   end
 
+  # a field's Ecto type: an atom like :string, or a composite like
+  # {:array, :string} or {:parameterized, {Ecto.Enum, ...}}
+  defp type_name(type) when is_atom(type), do: Atom.to_string(type)
+  defp type_name(type), do: inspect(type)
+
   def render(assigns) do
     ~H"""
     <div class="m-2 border border-gray rounded">
@@ -133,7 +138,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                     if(Integer.is_odd(index), do: "bg-white"),
                     if(Integer.is_even(index), do: "bg-gray-lighter")
                   ]}>
-                    {@model.__schema__(:type, field) |> Atom.to_string()}
+                    {@model.__schema__(:type, field) |> type_name()}
                   </div>
                 </td>
               </tr>
@@ -186,7 +191,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.cardinality |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :defaults)}>
                     <td class="bg-white">
                       <div class="font-mono">Defaults</div>
                     </td>
@@ -195,7 +200,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                         :for={default <- details.defaults}
                         class="mx-1 flex space-x-2 justify-start"
                       >
-                        {default |> Atom.to_string()}
+                        {inspect(default)}
                       </div>
                     </td>
                   </tr>
@@ -216,7 +221,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                         :for={default <- details.join_defaults}
                         class="mx-1 flex space-x-2 justify-start"
                       >
-                        {default |> Atom.to_string()}
+                        {inspect(default)}
                       </div>
                     </td>
                   </tr>
@@ -253,7 +258,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       </div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :on_cast)}>
                     <td class="bg-white">
                       <div class="font-mono">On Cast</div>
                     </td>
@@ -261,7 +266,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.on_cast |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :on_replace)}>
                     <td class="bg-white">
                       <div class="font-mono">On Replace</div>
                     </td>
@@ -277,7 +282,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.on_delete |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :ordered)}>
                     <td class="bg-white">
                       <div class="font-mono">Ordered</div>
                     </td>
@@ -285,7 +290,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.ordered |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :owner)}>
                     <td class="bg-white">
                       <div class="font-mono">Owner</div>
                     </td>
@@ -293,7 +298,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.owner |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :owner_key)}>
                     <td class="bg-white">
                       <div class="font-mono">Owner Key</div>
                     </td>
@@ -301,7 +306,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.owner_key |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :queryable)}>
                     <td class="bg-white">
                       <div class="font-mono">Queryable</div>
                     </td>
@@ -309,7 +314,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.queryable |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :related)}>
                     <td class="bg-white">
                       <div class="font-mono">Related</div>
                     </td>
@@ -325,7 +330,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.related_key |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :relationship)}>
                     <td class="bg-white">
                       <div class="font-mono">Relationship</div>
                     </td>
@@ -333,7 +338,7 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.relationship |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :unique)}>
                     <td class="bg-white">
                       <div class="font-mono">Unique</div>
                     </td>
@@ -341,13 +346,13 @@ defmodule PanWeb.Live.Admin.Databrowser.SchemaDefinition do
                       <div>{details.unique |> Atom.to_string()}</div>
                     </td>
                   </tr>
-                  <tr>
+                  <tr :if={Map.has_key?(details, :where)}>
                     <td class="bg-white">
                       <div class="font-mono">Where</div>
                     </td>
                     <td>
                       <div :for={where <- details.where} class="flex space-x-2 justify-start">
-                        {where |> Atom.to_string()}
+                        {inspect(where)}
                       </div>
                     </td>
                   </tr>
