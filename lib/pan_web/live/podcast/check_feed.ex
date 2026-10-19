@@ -203,7 +203,8 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     with {:ok, feed} <- Feed.get_by_podcast_id(podcast_id),
          url = String.trim(feed.self_link_url),
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
-           Download.get(url, follow_redirect: true) do
+           Download.get(url, follow_redirect: true),
+         :ok <- Pan.Parser.XmlNames.check(body) do
       {reads, leniency} = read_by_panoptikum(body, url)
       {:ok, url, CheckMyFeed.check(body), reads, leniency}
     else
@@ -215,6 +216,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, "The feed could not be downloaded: #{inspect(reason)}"}
+
+      {:error, message} when is_binary(message) ->
+        {:error, message}
 
       other ->
         {:error, "The feed could not be checked: #{inspect(other)}"}

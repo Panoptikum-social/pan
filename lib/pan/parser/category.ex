@@ -91,7 +91,9 @@ defmodule Pan.Parser.Category do
             |> Pan.Parser.Helpers.remove_doctype()
             |> Pan.Parser.Helpers.remove_duplicate_xml_declarations()
             |> Pan.Parser.Helpers.normalize_nbsp()
-            |> Quinn.parse()
+
+          :ok = Pan.Parser.XmlNames.check(feed_map)
+          feed_map = Quinn.parse(feed_map)
 
           map = Pan.Parser.Iterator.parse(%{}, feed_map)
           podcast = Pan.Repo.preload(feed, :podcast).podcast

@@ -61,7 +61,10 @@ defmodule Pan.Updater.RssFeed do
 
   defp xml_to_map(feed_xml, podcast_id) do
     try do
-      {:ok, Quinn.parse(feed_xml)}
+      case Pan.Parser.XmlNames.check(feed_xml) do
+        :ok -> {:ok, Quinn.parse(feed_xml)}
+        {:error, message} -> {:error, "Podcast: #{podcast_id} #{message}"}
+      end
     catch
       :exit, {:fatal, error} ->
         {:error,

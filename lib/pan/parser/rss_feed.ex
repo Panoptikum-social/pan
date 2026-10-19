@@ -109,7 +109,7 @@ defmodule Pan.Parser.RssFeed do
 
   def xml_to_map(feed_map) do
     try do
-      {:ok, Quinn.parse(feed_map)}
+      with :ok <- Pan.Parser.XmlNames.check(feed_map), do: {:ok, Quinn.parse(feed_map)}
     catch
       :exit, error ->
         # xmerl's exit reason is a term (e.g. {:fatal, {:error_scanning_entity_ref,
