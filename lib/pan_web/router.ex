@@ -13,6 +13,7 @@ defmodule PanWeb.Router do
     plug(:put_root_layout, html: {PanWeb.LayoutView, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(PanWeb.ContentSecurityPolicy)
     plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
@@ -23,6 +24,7 @@ defmodule PanWeb.Router do
     plug(:put_root_layout, html: {PanWeb.LayoutView, :minimal_root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
+    plug(PanWeb.ContentSecurityPolicy)
     plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
@@ -397,7 +399,7 @@ defmodule PanWeb.Router do
   scope "/admin", PanWeb do
     pipe_through([:browser, :authenticate_admin, :admin_layout])
 
-    live_dashboard("/dashboard", metrics: PanWeb.Telemetry)
+    live_dashboard("/dashboard", metrics: PanWeb.Telemetry, csp_nonce_assign_key: :csp_nonce)
     get("/episodes/remove_duplicates", EpisodeController, :remove_duplicates)
 
     get(
