@@ -104,6 +104,8 @@ defmodule Pan.MixProject do
       {:tailwind, "~> 0.5.1", runtime: Mix.env() == :dev},
       # Code analysis
       {:credo, "~> 1.5", only: [:dev, :test]},
+      # security-focused static analysis (mix sobelow)
+      {:sobelow, "~> 0.16", only: [:dev, :test], runtime: false},
       # codegen/installer framework, required by the claude package's installer
       {:igniter, "~> 0.8", only: [:dev, :test]},
       # Claude Code project integration (hooks, MCP servers incl. Tidewave, CLAUDE.md usage rules)

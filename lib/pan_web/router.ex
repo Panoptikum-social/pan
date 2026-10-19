@@ -26,6 +26,9 @@ defmodule PanWeb.Router do
     plug(PanWeb.Auth, repo: Pan.Repo)
   end
 
+  # no CSRF protection needed: PanWeb.Api.Auth only accepts a token from the
+  # Authorization header, which browsers don't send cross-site on their own
+  # sobelow_skip ["Config.CSRF"]
   pipeline :json_api do
     plug(:accepts, ["json-api"])
     plug(:fetch_session)
