@@ -8,20 +8,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## Open backlog items
 
-### Project #1: extract the pure feed-parsing core out of `lib/pan/parser/` (found 2026-09-01)
-Phase 1 (isolate and test the core in-repo) is done since 2026-10-19: the
-core is Analyzer, Download, FeedXml, Helpers, Iterator, Leniency,
-MyDateTime, SsrfGuard and XmlNames, guarded by
-`test/pan/parser/core_boundary_test.exs`; its output map has atom field
-names and random-UUID collection keys (documented in
-`FeedXml.parse_to_map/2`).
-
-**Phase 2 — package extraction, only if reuse elsewhere shows up.**
-- Split the isolated core into its own `mix.exs` (path or git dep first;
-  Hex.pm publish only if there's real external interest).
-
----
-
 ### Project #3: community pads (found 2026-10-09)
 A pad is basically a markdown field that several users of a community can
 edit synchronously.
