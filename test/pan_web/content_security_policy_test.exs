@@ -6,8 +6,9 @@ defmodule PanWeb.ContentSecurityPolicyTest do
 
     assert [policy] = get_resp_header(conn, "content-security-policy-report-only")
     assert policy =~ "default-src 'self'"
-    assert policy =~ "script-src 'self' 'nonce-#{conn.assigns.csp_nonce}' 'unsafe-eval'"
+    assert policy =~ "script-src 'self' 'nonce-#{conn.assigns.csp_nonce}'"
     refute policy =~ ~r/script-src[^;]*'unsafe-inline'/
+    refute policy =~ "'unsafe-eval'"
 
     # put_secure_browser_headers' minimal policy stays the enforced one
     assert get_resp_header(conn, "content-security-policy") == [

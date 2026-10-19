@@ -9,7 +9,9 @@ defmodule PanWeb.ContentSecurityPolicy do
   violations to its console, and `put_secure_browser_headers`' minimal
   policy (base-uri, frame-ancestors) stays the enforced one.
 
-  - `'unsafe-eval'`: Alpine.js evaluates its expressions with `new Function`.
+  - no `'unsafe-eval'`: Alpine runs on its CSP build (assets/js/app.js), and
+    the Podlove player and subscribe button don't need eval either (tested
+    2026-10-19, their template compilers are never called).
   - script hashes: the Podlove Web Player writes inline scripts into iframes
     without a src, which inherit this policy (see @podlove_script_hashes).
   - `style-src 'unsafe-inline'`: LiveView, topbar and Alpine set `style`
@@ -84,7 +86,7 @@ defmodule PanWeb.ContentSecurityPolicy do
       [
         "default-src 'self'",
         Enum.join(
-          ["script-src 'self' 'nonce-#{nonce}' 'unsafe-eval'" | podlove_script_hashes()],
+          ["script-src 'self' 'nonce-#{nonce}'" | podlove_script_hashes()],
           " "
         ),
         "style-src 'self' 'unsafe-inline'",
