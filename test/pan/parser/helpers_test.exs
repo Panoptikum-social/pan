@@ -17,7 +17,6 @@ defmodule Pan.Parser.HelpersTest do
     |> Helpers.remove_duplicate_xml_declarations()
     |> Helpers.remove_extra_angle_brackets()
     |> Helpers.fix_html_entities()
-    |> Helpers.fix_character_code_strings()
     |> String.trim()
   end
 
@@ -232,6 +231,37 @@ defmodule Pan.Parser.HelpersTest do
       assert clean(raw) |> title() == "a b"
     end
 
+    test "the declaration is rewritten to UTF-8, as the text is UTF-8 afterwards" do
+      latin1 =
+        <<(~s(<?xml version="1.0" encoding="ISO-8859-1"?><rss><title>Caf)), 0xE9,
+          "</title></rss>">>
+
+      assert Helpers.fix_encoding(latin1) ==
+               ~s(<?xml version="1.0" encoding="UTF-8"?><rss><title>Café</title></rss>)
+    end
+
+    test "a UTF-8 feed mislabeled as ISO-8859-1 reads correctly" do
+      raw =
+        ~s(<?xml version="1.0" encoding="ISO-8859-1"?><rss><channel><title>Connexió</title></channel></rss>)
+
+      assert clean(raw) |> title() == "Connexió"
+    end
+
+    test "lowercase windows-1252 in single quotes is readable" do
+      raw =
+        <<(~s(<?xml version='1.0' encoding='windows-1252'?><rss><channel><title>It)), 0x92,
+          "s</title></channel></rss>">>
+
+      assert clean(raw) |> title() == "It’s"
+    end
+
+    test "only the leading declaration changes, not text that looks like one" do
+      xml =
+        ~s(<?xml version="1.0" encoding="UTF-8"?><rss><title>encoding="ISO-8859-1"</title></rss>)
+
+      assert Helpers.fix_encoding(xml) == xml
+    end
+
     test "the cleaned cp1252 feed parses" do
       raw = feed(<<"<title>It", 0x92, "s</title>">>)
 
@@ -256,15 +286,6 @@ defmodule Pan.Parser.HelpersTest do
 
     test "removes the backspace control character, which is illegal in XML" do
       assert Helpers.remove_extra_angle_brackets("a\bb") == "ab"
-    end
-  end
-
-  describe "fix_character_code_strings/1" do
-    test "replaces the Windows-1252 encoding name, which Erlang does not know" do
-      xml = ~s(<?xml version="1.0" encoding="Windows-1252"?><rss/>)
-
-      assert Helpers.fix_character_code_strings(xml) ==
-               ~s(<?xml version="1.0" encoding="iso-8859-1"?><rss/>)
     end
   end
 

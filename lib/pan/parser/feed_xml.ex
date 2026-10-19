@@ -33,7 +33,6 @@ defmodule Pan.Parser.FeedXml do
     |> Helpers.remove_duplicate_xml_declarations()
     |> Helpers.remove_extra_angle_brackets()
     |> Helpers.fix_html_entities()
-    |> Helpers.fix_character_code_strings()
     |> String.trim()
   end
 

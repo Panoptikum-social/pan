@@ -58,9 +58,10 @@ defmodule Pan.Parser.Leniency do
       encoding(feed_xml),
       found(
         "The XML declaration names the encoding Windows-1252, which the XML parser " <>
-          "doesn't know; Panoptikum reads it as ISO-8859-1.",
-        ~r/Windows-1252/,
-        text
+          "doesn't know; Panoptikum converts the feed to UTF-8 itself.",
+        # raw bytes, maybe not valid UTF-8: no u flag, the BOM as its bytes
+        ~r/\A(?:\xEF\xBB\xBF)?\s*<\?xml\b[^>]*encoding\s*=\s*["']windows-1252["']/i,
+        feed_xml
       ),
       found(
         "HTML entities that XML doesn't know (such as &nbsp; or &auml;); Panoptikum " <>

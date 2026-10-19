@@ -420,11 +420,6 @@ defmodule Pan.Parser.Helpers do
     end
   end
 
-  def fix_character_code_strings(xml) do
-    # Erlang does not know of 1252, that's the best we can do for now
-    Regex.replace(~r/Windows-1252/Us, xml, "iso-8859-1")
-  end
-
   def remove_extra_angle_brackets(xml) do
     xml = Regex.replace(~r/>>/Us, xml, ">")
     Regex.replace(~r//Us, xml, "")
@@ -511,6 +506,9 @@ defmodule Pan.Parser.Helpers do
     Regex.replace(~r/<(?=\s)/, xml, "&lt;")
   end
 
+  # the encoding attribute of a leading XML declaration (after an optional BOM)
+  @declared_encoding ~r/\A(\x{FEFF}?\s*<\?xml\b[^>]*?\bencoding\s*=\s*)(["'])[^"']*\2/u
+
   def fix_encoding(xml) do
     # Windows-1252 is a strict superset of ISO-8859-1 for every byte except
     # 0x80-0x9F: ISO-8859-1 leaves those as unprintable C1 control
@@ -520,7 +518,13 @@ defmodule Pan.Parser.Helpers do
     # typographic punctuation (curly quotes, en/em dash, ellipsis, €, ...).
     # Genuinely ISO-8859-1 content decodes identically either way, so
     # there's no downside to assuming the more common cp1252 here.
-    if String.valid?(xml), do: xml, else: :iconv.convert("WINDOWS-1252", "utf-8", xml)
+    xml = if String.valid?(xml), do: xml, else: :iconv.convert("WINDOWS-1252", "utf-8", xml)
+
+    # From here on the text is UTF-8, so the XML declaration has to say so:
+    # xmerl decodes by the declared encoding, so an encoding="ISO-8859-1"
+    # left in place turned every é into Ã© (Catalan 3cat feeds, 2026-10-19),
+    # and xmerl doesn't know windows-1252 at all.
+    Regex.replace(@declared_encoding, xml, "\\1\\2UTF-8\\2", global: false)
   end
 
   def to_255(nil), do: nil
