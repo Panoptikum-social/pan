@@ -14,7 +14,7 @@
     data-js-view-name="StaticTemplateView"
   >
     <nav
-      x-data="{ navbarOpen: (Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024) }"
+      x-data="navbar"
       class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
       x-bind:class="{'lg:p-1': !navbarOpen}"
     >

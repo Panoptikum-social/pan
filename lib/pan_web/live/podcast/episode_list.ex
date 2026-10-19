@@ -43,12 +43,11 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                   <span
                     :if={gig.self_proclaimed}
                     class="relative"
-                    x-data="{ detailsOpen: false }"
+                    x-data="detailsToggle"
                   >
                     <div
                       class="inline"
-                      @click="detailsOpen = !detailsOpen
-                                 $nextTick(() => $refs.detailsCloseButton.focus())"
+                      @click="toggleDetails"
                     >
                       <Icon.render name="information-circle-heroicons" />
                     </div>

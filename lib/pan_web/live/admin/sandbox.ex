@@ -13,11 +13,11 @@ defmodule PanWeb.Live.Admin.Sandbox do
     ~H"""
     <div
       class="m-4"
-      x-data="{isShow: false}"
+      x-data="toast"
     >
       <button
         class="btn"
-        x-on:click="isShow = true; setTimeout(() => isShow = false, 5000)"
+        x-on:click="show"
       >Trigger</button>
       <div
         x-show="isShow"

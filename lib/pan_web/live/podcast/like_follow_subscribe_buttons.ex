@@ -60,12 +60,11 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             </button>
             <span
               class="relative"
-              x-data="{ metadataOpen: false }"
+              x-data="metadataToggle"
             >
               <div
                 class="inline"
-                @click="metadataOpen = !metadataOpen
-                          $nextTick(() => $refs.metadataCloseButton.focus())"
+                @click="toggleMetadata"
               >
                 <Icon.render name="information-circle-heroicons" />
               </div>

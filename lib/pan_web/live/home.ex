@@ -23,11 +23,10 @@ defmodule PanWeb.Live.Home do
     ~H"""
     <div class="flex-1 justify-self-center m-2">
       <div
-        x-data="{ cookie_consent: true }"
-        x-init="() => {cookie_consent = localStorage.getItem('cookie_consent')}"
+        x-data="cookieConsent"
         class="text-center mb-2"
       >
-        <div x-show="cookie_consent != 'true'" x-cloak>
+        <div x-show="!consented" x-cloak>
           Panoptikum.social uses cookies only out of technical necessity. See our
           <.link
             href="https://blog.panoptikum.social/privacy"
@@ -35,7 +34,7 @@ defmodule PanWeb.Live.Home do
           > Privacy Page</.link>
           for details.
           <button
-            @click.prevent="cookie_consent = 'true'; localStorage.setItem('cookie_consent', 'true')"
+            @click.prevent="consent"
             class="btn btn-sm"
           >
             I agree

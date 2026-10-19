@@ -35,11 +35,10 @@ defmodule PanWeb.Admin.GridPresenterWithDetails do
         if(Integer.is_even(@index) && !@dye, do: "bg-white"),
         if(@dye, do: "bg-sunflower-lighter")
       ]}
-      x-data="{ detailsOpen: false }"
+      x-data="detailsToggle"
     >
       <div
-        @click="detailsOpen = !detailsOpen
-                   $nextTick(() => $refs.detailsCloseButton.focus())"
+        @click="toggleDetails"
         class="truncate"
       >
         {present(@presenter, @record, @field, @type)}
@@ -71,7 +70,7 @@ defmodule PanWeb.Admin.GridPresenterWithDetails do
         @width,
         if(Integer.is_odd(@index), do: "bg-gray-lighter")
       ]}
-      x-data="{ detailsOpen: false }"
+      x-data="detailsToggle"
     >
       ** redacted **
     </div>

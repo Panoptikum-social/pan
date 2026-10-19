@@ -4,7 +4,11 @@
 // Configure module entry points in "webpack.config.js".
 // Import deps with the dep name or local files with a relative path, for example:
 //     import socket from "./socket"
-import Alpine from "alpinejs";
+// Alpine's CSP build: evaluates x-* expressions without eval, so the
+// Content-Security-Policy needs no 'unsafe-eval'. It can't reach globals
+// (window, Math, localStorage, setTimeout) or run arrow functions in
+// templates; code that needs them lives in the components below.
+import Alpine from "@alpinejs/csp";
 import "phoenix_html";
 import { Socket } from "phoenix";
 import topbar from "topbar";
@@ -15,6 +19,51 @@ import { PodlovePlayer } from "./podlove_player";
 import { OvertypeField } from "./overtype_field";
 import { LanguageFilterPersistence } from "./language_filter_persistence";
 import "./remaining_characters";
+
+// the sidebar starts open on wide screens
+Alpine.data("navbar", () => ({
+  navbarOpen:
+    Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) >= 1024,
+}));
+
+// the cookie notice on the start page, until it's confirmed once
+Alpine.data("cookieConsent", () => ({
+  consented: true,
+  init() {
+    this.consented = localStorage.getItem("cookie_consent") === "true";
+  },
+  consent() {
+    this.consented = true;
+    localStorage.setItem("cookie_consent", "true");
+  },
+}));
+
+// info popovers (podcast and episode metadata, episode and admin grid
+// details): the toggle moves the focus to the popover's close button
+Alpine.data("metadataToggle", () => ({
+  metadataOpen: false,
+  toggleMetadata() {
+    this.metadataOpen = !this.metadataOpen;
+    this.$nextTick(() => this.$refs.metadataCloseButton?.focus());
+  },
+}));
+
+Alpine.data("detailsToggle", () => ({
+  detailsOpen: false,
+  toggleDetails() {
+    this.detailsOpen = !this.detailsOpen;
+    this.$nextTick(() => this.$refs.detailsCloseButton?.focus());
+  },
+}));
+
+// a notice that hides itself after five seconds (admin sandbox)
+Alpine.data("toast", () => ({
+  isShow: false,
+  show() {
+    this.isShow = true;
+    setTimeout(() => (this.isShow = false), 5000);
+  },
+}));
 
 window.Alpine = Alpine;
 Alpine.start();

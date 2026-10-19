@@ -93,12 +93,11 @@ defmodule PanWeb.Live.Episode.Header do
                 <span
                   :if={gig.self_proclaimed}
                   class="relative"
-                  x-data="{ metadataOpen: false }"
+                  x-data="metadataToggle"
                 >
                   <div
                     class="inline"
-                    @click="metadataOpen = !metadataOpen
-                               $nextTick(() => $refs.metadataCloseButton.focus())"
+                    @click="toggleMetadata"
                   >
                     <Icon.render name="information-circle-heroicons" />
                   </div>
