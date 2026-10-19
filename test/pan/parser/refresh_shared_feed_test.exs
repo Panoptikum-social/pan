@@ -39,4 +39,40 @@ defmodule Pan.Parser.RefreshSharedFeedTest do
     assert {:ok, _message} = refresh(rfi, "Deportes", "https://www.rfi.fr/deportes.xml")
     assert Repo.get!(Podcast, rfi.id).title == "Deportes"
   end
+
+  test "a refresh replaces the managing editor instead of adding one" do
+    podcast = insert_podcast_with_feed("Edited Show", "https://feeds.example.com/edited")
+
+    for name <- ["Old Ed", "Older Ed"] do
+      persona =
+        Repo.insert!(%PanWeb.Persona{name: name, pid: "pid-#{name}", uri: "#{name}@example.com"})
+
+      Repo.insert!(%PanWeb.Engagement{
+        persona_id: persona.id,
+        podcast_id: podcast.id,
+        role: "managing editor"
+      })
+    end
+
+    assert {:ok, _message} =
+             Persistor.update_from_feed(
+               %{
+                 title: "Edited Show",
+                 feed: %{self_link_url: "https://feeds.example.com/edited"},
+                 managing_editor: %{name: "New Ed", email: "new.ed@example.com"}
+               },
+               podcast,
+               skip_episodes: true
+             )
+
+    engagements =
+      Repo.all(
+        from(e in PanWeb.Engagement,
+          where: e.podcast_id == ^podcast.id and e.role == "managing editor",
+          preload: :persona
+        )
+      )
+
+    assert [%{persona: %{name: "New Ed"}}] = engagements
+  end
 end

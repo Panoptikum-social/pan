@@ -160,7 +160,7 @@ defmodule Pan.Parser.Persistor do
 
     map[:author] && Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
 
-    PodcastContributor.delete_role(podcast.id, "managing_editor")
+    PodcastContributor.delete_role(podcast.id, "managing editor")
 
     map[:managing_editor] &&
       PodcastContributor.get_or_insert(map[:managing_editor], "managing editor", podcast.id)
