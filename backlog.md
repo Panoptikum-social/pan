@@ -9,39 +9,16 @@ Claude's per-machine memory) so they survive across computers. Last synced
 ## Open backlog items
 
 ### Project #1: extract the pure feed-parsing core out of `lib/pan/parser/` (found 2026-09-01)
-Prompted by the `scrub/1` mixed-content crash (`Pan.Job.RefreshPodcastMetadata`,
-fixed same day, commit `cf82e1f2`). Assessed feasibility of pulling the feed
-parser out as its own Elixir package — full writeup in that day's conversation.
-Verdict: the directory splits cleanly into a DB-free "XML → map" core
-(`analyzer.ex`, `iterator.ex`, `helpers.ex`, `rss_feed.ex`'s `xml_to_map`/
-`parse_to_map`, `my_date_time.ex`, ~1,800 LOC, depends only on `quinn`/
-`html_sanitize_ex`/`timex`) versus a majority that's genuinely Panoptikum
-business logic (`persistor.ex` + the `podcast`/`feed`/`episode`/`category`/
-`language`/`contributor`/`author`/`persona`/`podcast_contributor`/
-`alternate_feed`/`chapter`/`enclosure` modules — Ecto upserts, counters,
-thumbnail caching, cascade-delete guarding, PubSub). `download.ex` sits in
-the middle: its redirect-following calls into `Feed.check_for_redirect_loop/3`,
-which queries the `alternate_feeds` table — not actually DB-free today.
+Phase 1 (isolate and test the core in-repo) is done since 2026-10-19: the
+core is Analyzer, Download, FeedXml, Helpers, Iterator, Leniency,
+MyDateTime, SsrfGuard and XmlNames, guarded by
+`test/pan/parser/core_boundary_test.exs`; its output map has atom field
+names and random-UUID collection keys (documented in
+`FeedXml.parse_to_map/2`).
 
-Two-phase project, phase 1 motivated entirely on its own (isolation/
-testability), phase 2 optional and only worth it if genuine reuse elsewhere
-materializes:
-
-**Phase 1 — isolate & test the parsing core (in-repo, no package yet).**
-Done on 2026-10-19 (6ccfe5af): the core is Analyzer, Download, FeedXml (new,
-the pure part of the former RssFeed, also used by the updater instead of its
-copies), Helpers, Iterator, Leniency, MyDateTime, SsrfGuard and XmlNames;
-`test/pan/parser/core_boundary_test.exs` fails if one of them calls an app or
-Ecto module outside that list. `feed_urls/0` moved to PanWeb.Feed, the
-redirect-loop check (pure since 4435c94a) into Download. Still open:
-- Give the output map a documented, consistent shape (today it mixes string
-  and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-
-**Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
-- Split the now-isolated core into its own `mix.exs` (path or git dep first;
+**Phase 2 — package extraction, only if reuse elsewhere shows up.**
+- Split the isolated core into its own `mix.exs` (path or git dep first;
   Hex.pm publish only if there's real external interest).
-- No sunk cost from phase 1 either way — the boundary work is required for
-  testability regardless of whether phase 2 ever happens.
 
 ---
 
