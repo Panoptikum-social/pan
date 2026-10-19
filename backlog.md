@@ -88,7 +88,14 @@ follow button). No separate community subscription.
 2. Collaboration core (3–5 days): first Phoenix Channel in the app, one
    process per open pad holding the Yjs document, cursors/presence, saving
    the Yjs state and markdown copy, stopping when idle, read-only reaching
-   open editors.
+   open editors. **Done 2026-10-19** (6b67c5b4), tested on dev by the user:
+   `PanWeb.PadServer` (Yex.DocServer under `Pan.PadSupervisor`, saves 2 s
+   after the last edit and on stop, stops 10 s after the last viewer),
+   `PanWeb.PadChannel` (followers only, read only enforced on the server,
+   read only/deletion pushed to open editors), socket with a
+   Phoenix.Token from the pad page, editor on the pad page
+   (`assets/js/pad_editor.js`), trial removed. Still open for step 3: split
+   view, mobile tabs, scroll sync; the editor is basic so far.
 3. Browser side (2–3 days): CodeMirror 6 + Yjs + channel connector via the
    existing esbuild/`package.json`; split view, mobile tabs, scroll sync.
 4. Server-rendered preview (½ day).
