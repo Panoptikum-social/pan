@@ -4,27 +4,34 @@ defmodule Pan.Parser.Category do
   alias Pan.Repo
   alias PanWeb.Category
 
+  # Titles match ignoring case and surrounding spaces, so "sports & recreation"
+  # doesn't become a second "Sports & Recreation". Where such variants exist
+  # side by side already, the exact title wins, then the oldest one.
   def get_or_insert(title, nil) do
-    case Repo.one(from(c in Category, where: c.title == ^title and is_nil(c.parent_id))) do
-      nil ->
-        Repo.insert(%Category{title: title})
+    title = String.trim(title)
 
-      category ->
-        {:ok, category}
+    case Repo.one(from(c in matching(title), where: is_nil(c.parent_id))) do
+      nil -> Repo.insert(%Category{title: title})
+      category -> {:ok, category}
     end
   end
 
   def get_or_insert(title, parent_title) do
     {:ok, parent} = get_or_insert(parent_title, nil)
+    title = String.trim(title)
 
-    case Repo.one(from(c in Category, where: c.title == ^title and c.parent_id == ^parent.id)) do
-      nil ->
-        %Category{title: title, parent_id: parent.id}
-        |> Repo.insert()
-
-      category ->
-        {:ok, category}
+    case Repo.one(from(c in matching(title), where: c.parent_id == ^parent.id)) do
+      nil -> Repo.insert(%Category{title: title, parent_id: parent.id})
+      category -> {:ok, category}
     end
+  end
+
+  defp matching(title) do
+    from(c in Category,
+      where: fragment("lower(trim(?))", c.title) == ^String.downcase(title),
+      order_by: [desc: c.title == ^title, asc: c.id],
+      limit: 1
+    )
   end
 
   def persist_many(categories_map, podcast) do
