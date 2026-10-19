@@ -51,26 +51,41 @@ defmodule PanWeb.MaintenanceView do
     deletable_users: {1, 25}
   }
 
-  # A number that should stay low: green, yellow or red by @thresholds.
-  def attention_stat(assigns) do
-    {yellow, red} = Map.fetch!(@thresholds, assigns.metric)
+  # Numbers that should stay low, yellow or red by @thresholds; green ones
+  # are left out, and the whole section when all are green.
+  def needs_attention(assigns) do
+    stats =
+      for stat <- assigns.stats,
+          {yellow, red} = Map.fetch!(@thresholds, stat.metric),
+          level = level(stat.value, yellow, red),
+          level != "success" do
+        Map.merge(stat, %{
+          level: level,
+          yellow: delimit_integer(yellow, " "),
+          red: delimit_integer(red, " ")
+        })
+      end
 
-    assigns =
-      assign(assigns,
-        level: level(assigns.value, yellow, red),
-        yellow: delimit_integer(yellow, " "),
-        red: delimit_integer(red, " ")
-      )
+    assigns = assign(assigns, stats: stats)
 
     ~H"""
-    <div class={["stat", level_class(@level)]}>
-      <div class="stat-figure">
-        <span class={["status status-xl", status_class(@level)]} aria-label={@level}></span>
+    <div :if={@stats != []}>
+      <h2 class="text-sm font-semibold uppercase tracking-wide opacity-60 mb-2">
+        Needs attention
+      </h2>
+      <div class="stats stats-vertical sm:stats-horizontal bg-base-100 border border-base-300 shadow-sm w-full mb-8">
+        <div :for={stat <- @stats} class={["stat", level_class(stat.level)]}>
+          <div class="stat-figure">
+            <span class={["status status-xl", status_class(stat.level)]} aria-label={stat.level}></span>
+          </div>
+          <div class="stat-title">
+            <.link href={stat.href} target="_blank" class="link link-hover">{stat.title}</.link>
+          </div>
+          <div class="stat-value text-3xl tabular-nums">{delimit_integer(stat.value, " ")}</div>
+          <div class="stat-desc">{stat.desc}</div>
+          <div class="stat-desc opacity-70">yellow ≥ {stat.yellow}, red ≥ {stat.red}</div>
+        </div>
       </div>
-      <div class="stat-title">{@title}</div>
-      <div class="stat-value text-3xl tabular-nums">{delimit_integer(@value, " ")}</div>
-      <div :if={assigns[:desc]} class="stat-desc">{@desc}</div>
-      <div class="stat-desc opacity-70">yellow ≥ {@yellow}, red ≥ {@red}</div>
     </div>
     """
   end
@@ -82,11 +97,9 @@ defmodule PanWeb.MaintenanceView do
   # spelled out, so Tailwind picks the classes up
   defp level_class("error"), do: "bg-error/10"
   defp level_class("warning"), do: "bg-warning/15"
-  defp level_class("success"), do: "bg-success/10"
 
   defp status_class("error"), do: "status-error"
   defp status_class("warning"), do: "status-warning"
-  defp status_class("success"), do: "status-success"
 
   def delimit_integer(number, delimiter) do
     abs(number)

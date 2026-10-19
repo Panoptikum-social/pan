@@ -3,35 +3,37 @@
     Statistics
   </h1>
 
-  <h2 class="text-sm font-semibold uppercase tracking-wide opacity-60 mb-2">
-    Needs attention
-  </h2>
-  <div class="stats stats-vertical sm:stats-horizontal bg-base-100 border border-base-300 shadow-sm w-full mb-8">
-    <.attention_stat
-      title="Stale podcasts"
-      metric={:stale_podcasts}
-      value={@stale_podcasts}
-      desc="next update overdue"
-    />
-    <.attention_stat
-      title="Retired podcasts"
-      metric={:retired_podcasts}
-      value={@retired_podcasts}
-      desc="to be tackled"
-    />
-    <.attention_stat
-      title="Duplicate podcasts"
-      metric={:duplicate_podcasts}
-      value={@duplicate_podcasts |> Map.values() |> Enum.sum()}
-      desc={"#{@duplicate_podcasts.different_show} different show, #{@duplicate_podcasts.same_feed_url} same feed URL, #{@duplicate_podcasts.same_title} same title, #{@duplicate_podcasts.alternate} alternate feed"}
-    />
-    <.attention_stat
-      title="Deletable users"
-      metric={:deletable_users}
-      value={@deletable_users}
-      desc={"marked > #{PanWeb.User.deletion_grace_days()} days, see user retention"}
-    />
-  </div>
+  <.needs_attention stats={[
+    %{
+      title: "Stale podcasts",
+      metric: :stale_podcasts,
+      value: @stale_podcasts,
+      desc: "next update overdue",
+      href: podcast_path(@conn, :stale)
+    },
+    %{
+      title: "Retired podcasts",
+      metric: :retired_podcasts,
+      value: @retired_podcasts,
+      desc: "to be tackled",
+      href: podcast_path(@conn, :deprecated)
+    },
+    %{
+      title: "Duplicate podcasts",
+      metric: :duplicate_podcasts,
+      value: @duplicate_podcasts |> Map.values() |> Enum.sum(),
+      desc:
+        "#{@duplicate_podcasts.different_show} different show, #{@duplicate_podcasts.same_feed_url} same feed URL, #{@duplicate_podcasts.same_title} same title, #{@duplicate_podcasts.alternate} alternate feed",
+      href: podcast_path(@conn, :duplicates)
+    },
+    %{
+      title: "Deletable users",
+      metric: :deletable_users,
+      value: @deletable_users,
+      desc: "marked > #{PanWeb.User.deletion_grace_days()} days",
+      href: user_path(@conn, :retention)
+    }
+  ]} />
 
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <.stat_card
