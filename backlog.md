@@ -36,8 +36,6 @@ Ecto module outside that list. `feed_urls/0` moved to PanWeb.Feed, the
 redirect-loop check (pure since 4435c94a) into Download. Still open:
 - Give the output map a documented, consistent shape (today it mixes string
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-- Tests for the rarer tag aliases. Unknown tags are skipped silently on
-  purpose (no ignore lists, no logging).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;

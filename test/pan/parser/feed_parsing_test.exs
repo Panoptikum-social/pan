@@ -643,4 +643,70 @@ defmodule Pan.Parser.FeedParsingTest do
       refute Map.has_key?(parse("<googleplay:author>Jane</googleplay:author>"), "author")
     end
   end
+
+  describe "tag aliases" do
+    # Every alias has to produce what its canonical tag produces. Each group is
+    # {canonical, aliases, snippet with X for the tag name, :channel | :item}.
+    @aliases [
+      {"itunes:explicit", ~w(iTunes:explicit explicit), "<X>yes</X>", :channel},
+      {"itunes:image", ~w(iTunes:image), ~s(<X href="https://e.com/a.jpg"/>), :channel},
+      {"itunes:image", ~w(iTunes:image), "<X>https://e.com/a.jpg</X>", :channel},
+      {"itunes:image", ~w(iTunes:image), ~s(<image><X href="https://e.com/a.jpg"/></image>),
+       :channel},
+      {"itunes:subtitle", ~w(iTunes:subtitle subtitle), "<X>Sub</X>", :channel},
+      {"itunes:owner", ~w(owner),
+       "<X><itunes:name>Jane</itunes:name><itunes:email>j@e.com</itunes:email></X>", :channel},
+      {"itunes:author", ~w(author artist), "<X>Jane</X>", :channel},
+      {"managingEditor", ~w(managingeditor manageEditor), "<X>ed@e.com (Ed)</X>", :channel},
+      {"itunes:name", ~w(name itunes:author itunes:caption),
+       "<itunes:owner><X>Jane</X><itunes:email>j@e.com</itunes:email></itunes:owner>", :channel},
+      {"itunes:image", ~w(iTunes:image itunes_image), ~s(<X href="https://e.com/e.jpg"/>), :item},
+      {"image", ~w(imageurl), "<X><url>https://e.com/e.jpg</url></X>", :item},
+      {"itunes:summary", ~w(summary itunes_summary atom:summary), "<X>Sum</X>", :item},
+      {"itunes:subtitle", ~w(subtitle itunes_subtitle), "<X>Sub</X>", :item},
+      {"itunes:duration", ~w(itunes_duration duration), "<X>01:02:03</X>", :item},
+      {"pubDate", ~w(pubdate itunes:pubDate dc:date pubDateShort),
+       "<X>Mon, 02 Jan 2023 10:00:00 +0000</X>", :item},
+      {"itunes:author",
+       ~w(authors iTunes:author itunes_author googleplay:author dc:publisher Author),
+       "<X>Jane</X>", :item},
+      {"psc:chapters", ~w(chapters),
+       ~s(<X version="1.2"><psc:chapter start="00:00:00" title="Intro"/></X>), :item},
+      {"psc:chapter", ~w(chapter),
+       ~s(<psc:chapters version="1.2"><X start="00:00:00" title="Intro"/></psc:chapters>), :item}
+    ]
+
+    defp alias_result(tag, snippet, :channel), do: parse(String.replace(snippet, "X", tag))
+
+    defp alias_result(tag, snippet, :item) do
+      ("<item><title>T</title><guid>g</guid>" <> String.replace(snippet, "X", tag) <> "</item>")
+      |> parse()
+      |> episodes()
+    end
+
+    # maps keyed by random UUIDs (episodes, chapters, ...) become sorted lists
+    defp comparable(%{} = map) when not is_struct(map) do
+      if map != %{} and Enum.all?(Map.keys(map), &uuid?/1),
+        do: map |> Map.values() |> Enum.map(&comparable/1) |> Enum.sort(),
+        else: Map.new(map, fn {key, value} -> {key, comparable(value)} end)
+    end
+
+    defp comparable(list) when is_list(list), do: list |> Enum.map(&comparable/1) |> Enum.sort()
+    defp comparable(other), do: other
+
+    defp uuid?(key), do: is_binary(key) and String.match?(key, ~r/^[0-9a-f-]{36}$/)
+
+    for {canonical, aliases, snippet, level} <- @aliases, alias_tag <- aliases do
+      test "#{alias_tag} reads like #{canonical} (#{level}: #{snippet})" do
+        canonical = unquote(canonical)
+        snippet = unquote(snippet)
+        level = unquote(level)
+        expected = comparable(alias_result(canonical, snippet, level))
+
+        # the canonical tag has to produce something, or the comparison proves nothing
+        refute expected == comparable(alias_result("ignored-tag-x", snippet, level))
+        assert comparable(alias_result(unquote(alias_tag), snippet, level)) == expected
+      end
+    end
+  end
 end
