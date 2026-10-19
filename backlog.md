@@ -28,15 +28,16 @@ testability), phase 2 optional and only worth it if genuine reuse elsewhere
 materializes:
 
 **Phase 1 — isolate & test the parsing core (in-repo, no package yet).**
-- Move `feed_urls/0` out of `helpers.ex` (its one stray `Repo.all` call).
-- Make `Download`'s redirect-loop check injectable/optional so fetching
-  doesn't require `Feed.check_for_redirect_loop`.
+Done on 2026-10-19 (6ccfe5af): the core is Analyzer, Download, FeedXml (new,
+the pure part of the former RssFeed, also used by the updater instead of its
+copies), Helpers, Iterator, Leniency, MyDateTime, SsrfGuard and XmlNames;
+`test/pan/parser/core_boundary_test.exs` fails if one of them calls an app or
+Ecto module outside that list. `feed_urls/0` moved to PanWeb.Feed, the
+redirect-loop check (pure since 4435c94a) into Download. Still open:
 - Give the output map a documented, consistent shape (today it mixes string
   and atom keys, e.g. `map["owner"]` vs. `map[:episodes]` in `persistor.ex`).
-- Test coverage is largely done: `Helpers` (`test/pan/parser/helpers_test.exs`) and
-  `Analyzer`/`Iterator` (`test/pan/parser/feed_parsing_test.exs`, ~50 tests) since
-  2026-09-21. Only the rarer tag aliases are still uncovered. Unknown tags are
-  skipped silently on purpose (no ignore lists, no logging).
+- Tests for the rarer tag aliases. Unknown tags are skipped silently on
+  purpose (no ignore lists, no logging).
 
 **Phase 2 — actual package extraction (only if reuse elsewhere shows up).**
 - Split the now-isolated core into its own `mix.exs` (path or git dep first;
