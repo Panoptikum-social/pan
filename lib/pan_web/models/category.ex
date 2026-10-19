@@ -272,6 +272,64 @@ defmodule PanWeb.Category do
     )
   end
 
+  # The tree shows three levels (see tree/0), so a move must not go deeper.
+  @max_depth 3
+
+  @doc """
+  Makes category `id` (with its subcategories) a subcategory of `parent_id`.
+  Search docs only carry category ids and titles, so nothing is re-indexed.
+  """
+  def move_into(id, id), do: {:error, "A category can't be moved into itself."}
+
+  def move_into(id, parent_id) do
+    category = Repo.get!(Category, id)
+    ancestor_ids = ancestor_ids(parent_id)
+
+    cond do
+      category.parent_id == parent_id ->
+        {:error, "The category is already a subcategory there."}
+
+      id in ancestor_ids ->
+        {:error, "A category can't be moved into one of its own subcategories."}
+
+      length(ancestor_ids) + height(id) > @max_depth ->
+        {:error, "That would make the tree deeper than #{@max_depth} levels."}
+
+      has_child_titled?(parent_id, category.title) ->
+        {:error, "The target has a subcategory with that title already, merge instead."}
+
+      true ->
+        category |> Ecto.Changeset.change(parent_id: parent_id) |> Repo.update!()
+        :ok
+    end
+  end
+
+  # [id, its parent's id, ...] up to the top level
+  defp ancestor_ids(nil), do: []
+
+  defp ancestor_ids(id),
+    do: [
+      id | ancestor_ids(Repo.one!(from(c in Category, where: c.id == ^id, select: c.parent_id)))
+    ]
+
+  # levels of the subtree below and including category `id`
+  defp height(id) do
+    from(c in Category, where: c.parent_id == ^id, select: c.id)
+    |> Repo.all()
+    |> Enum.map(&height/1)
+    |> Enum.max(fn -> 0 end)
+    |> Kernel.+(1)
+  end
+
+  defp has_child_titled?(parent_id, title) do
+    from(c in Category,
+      where:
+        c.parent_id == ^parent_id and
+          fragment("lower(trim(?))", c.title) == ^String.downcase(String.trim(title))
+    )
+    |> Repo.exists?()
+  end
+
   def merge(id, id), do: {:error, "A category can't be merged into itself."}
 
   # A community is unique per category and carries moderators, curators,

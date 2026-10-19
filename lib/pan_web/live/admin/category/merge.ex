@@ -76,6 +76,25 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     end
   end
 
+  def handle_event("move_into", _, %{assigns: %{from_id: from_id, into_id: into_id}} = socket)
+      when is_nil(from_id) or is_nil(into_id) do
+    {:noreply, put_flash(socket, :error, "Select both categories first.")}
+  end
+
+  def handle_event("move_into", _, %{assigns: assigns} = socket) do
+    case Category.move_into(assigns.from_id, assigns.into_id) do
+      :ok ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Category moved.")
+         |> assign(from_id: nil, into_id: nil)
+         |> load()}
+
+      {:error, message} ->
+        {:noreply, put_flash(socket, :error, message)}
+    end
+  end
+
   def handle_event("delete", _, %{assigns: %{from_id: nil}} = socket) do
     {:noreply, put_flash(socket, :error, "Select the category to delete on the left first.")}
   end
@@ -131,6 +150,16 @@ defmodule PanWeb.Live.Admin.Category.Merge do
           <Icon.render name="folder-heroicons-outline" />
           <Icon.render name="arrow-sm-right-heroicons-outline" />
           <Icon.render name="folder-heroicons-outline" /> Merge Categories
+        </button>
+
+        <button
+          phx-click="move_into"
+          disabled={is_nil(@from_id) or is_nil(@into_id)}
+          class="btn btn-info btn-sm mt-4 block"
+        >
+          <Icon.render name="folder-heroicons-outline" />
+          <Icon.render name="arrow-sm-right-heroicons-outline" />
+          <Icon.render name="folder-open-heroicons-outline" /> Move into (left → right)
         </button>
 
         <button
