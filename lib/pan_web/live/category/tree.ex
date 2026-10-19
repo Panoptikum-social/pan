@@ -18,6 +18,8 @@ defmodule PanWeb.Live.Category.Tree do
           <CategoryButton.render
             :for={subcategory <- category.children}
             for={subcategory}
+            index_on_page={counter}
+            tint={true}
             class="px-1.5 py-0.5 mx-0.5 my-0.5"
             truncate={true}
           />

@@ -22,7 +22,7 @@ defmodule PanWeb.Live.Category.StatsTree do
         <p class="mt-6 -mx-0.5">
           <%= for subcategory <- category.children do %>
             <nobr>
-              <CategoryButton.render for={subcategory} index_on_page={1} truncate />
+              <CategoryButton.render for={subcategory} index_on_page={counter} tint truncate />
               <span class="align-top">{length(subcategory.podcasts)}</span>
             </nobr>
             &nbsp;
