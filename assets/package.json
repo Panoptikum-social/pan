@@ -9,6 +9,7 @@
     "codemirror": "^6.0.2",
     "daisyui": "^5.5.14",
     "lib0": "^0.2.119",
+    "phoenix": "file:../deps/phoenix",
     "tailwindcss": "^4.1.18",
     "topbar": "^1.0.1",
     "y-codemirror.next": "^0.3.6",
