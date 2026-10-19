@@ -136,9 +136,3 @@ weeks), with snapshots following.
   back. The parser matches titles ignoring case and surrounding spaces since
   2026-10-19; no table remembers merges (by decision), so occasional
   re-merging is the plan.
-- **Content-Security-Policy without `'unsafe-eval'` (found 2026-10-19).**
-  `PanWeb.ContentSecurityPolicy` allows `'unsafe-eval'` in `script-src`
-  because the normal Alpine.js build evaluates `x-data`/`@click` expressions
-  with `new Function`. Alpine's CSP build (`@alpinejs/csp`) avoids that, but
-  every inline Alpine expression in the templates has to become a component
-  registered with `Alpine.data`. Do once the policy is enforced and stable.
