@@ -36,7 +36,7 @@ config :tailwind,
   path: Path.expand("../assets/node_modules/.bin/tailwindcss", __DIR__)
 
 config :esbuild,
-  version: "0.13.10",
+  version: "0.28.2",
   pan: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/* --external:/web-player/* --external:/subscribe-button/*),
