@@ -27,17 +27,16 @@ defmodule Pan.Parser.Persistor do
         :contributors,
         :languages,
         :categories,
-        "owner",
-        :categories,
-        "author",
-        "managing_editor"
+        :owner,
+        :author,
+        :managing_editor
       ])
 
     feed_map = Map.drop(map[:feed], [:alternate_feeds])
     alternate_feeds_map = map[:feed][:alternate_feeds]
 
     with {:ok, podcast} <- Podcast.get_or_insert(podcast_map, podcast_id, feed_urls) do
-      Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+      Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
 
       {:ok, feed} = Feed.get_or_insert(feed_map, podcast.id)
 
@@ -46,10 +45,10 @@ defmodule Pan.Parser.Persistor do
 
       Language.persist_many(map[:languages], podcast)
 
-      map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+      map[:owner] && PodcastContributor.get_or_insert(map[:owner], "owner", podcast.id)
 
-      map["managing_editor"] &&
-        PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
+      map[:managing_editor] &&
+        PodcastContributor.get_or_insert(map[:managing_editor], "managing editor", podcast.id)
 
       Contributor.persist_many(map[:contributors], podcast)
 
@@ -100,10 +99,9 @@ defmodule Pan.Parser.Persistor do
         :contributors,
         :languages,
         :categories,
-        "owner",
-        :categories,
-        "author",
-        "managing_editor"
+        :owner,
+        :author,
+        :managing_editor
       ])
       |> maybe_put_image(image_url, image_title)
 
@@ -158,14 +156,14 @@ defmodule Pan.Parser.Persistor do
     if image_url, do: update_thumbnail(podcast)
 
     PodcastContributor.delete_role(podcast.id, "owner")
-    map["owner"] && PodcastContributor.get_or_insert(map["owner"], "owner", podcast.id)
+    map[:owner] && PodcastContributor.get_or_insert(map[:owner], "owner", podcast.id)
 
-    map["author"] && Author.get_or_insert_persona_and_engagement(map["author"], podcast.id)
+    map[:author] && Author.get_or_insert_persona_and_engagement(map[:author], podcast.id)
 
     PodcastContributor.delete_role(podcast.id, "managing_editor")
 
-    map["managing_editor"] &&
-      PodcastContributor.get_or_insert(map["managing_editor"], "managing editor", podcast.id)
+    map[:managing_editor] &&
+      PodcastContributor.get_or_insert(map[:managing_editor], "managing editor", podcast.id)
 
     {:ok, feed} = Feed.get_by_podcast_id(podcast.id)
 

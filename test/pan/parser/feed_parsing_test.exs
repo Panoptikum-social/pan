@@ -117,8 +117,8 @@ defmodule Pan.Parser.FeedParsingTest do
         </itunes:owner>
         """)
 
-      assert map["author"] == %{name: "Jane"}
-      assert map["owner"] == %{name: "Jane", email: "jane@example.com"}
+      assert map[:author] == %{name: "Jane"}
+      assert map[:owner] == %{name: "Jane", email: "jane@example.com"}
     end
 
     test "nested itunes categories keep their parent" do
@@ -378,6 +378,26 @@ defmodule Pan.Parser.FeedParsingTest do
   end
 
   describe "channel people" do
+    test "owner, author and managing editor are atom keys, like every top-level key" do
+      map =
+        parse("""
+        <title>Show</title>
+        <itunes:owner><itunes:name>Olga</itunes:name><itunes:email>o@example.com</itunes:email></itunes:owner>
+        <itunes:author>Ann</itunes:author>
+        <managingEditor>ed@example.com (Ed)</managingEditor>
+        <item><title>One</title><guid>g1</guid></item>
+        """)
+
+      assert map.owner == %{name: "Olga", email: "o@example.com"}
+      assert map.author == %{name: "Ann"}
+      assert map.managing_editor == %{name: "ed@example.com (Ed)"}
+      assert map |> Map.keys() |> Enum.all?(&is_atom/1)
+      # nested keys stay strings: episodes are keyed by random UUIDs
+      assert [key] = Map.keys(map.episodes)
+      assert is_binary(key)
+      assert map.episodes[key].guid == "g1"
+    end
+
     test "later author tags merge over earlier ones" do
       map =
         parse("""
@@ -385,13 +405,13 @@ defmodule Pan.Parser.FeedParsingTest do
         <atom:author><atom:name>Ann</atom:name><atom:email>ann@example.com</atom:email></atom:author>
         """)
 
-      assert map["author"] == %{name: "Ann", email: "ann@example.com"}
+      assert map[:author] == %{name: "Ann", email: "ann@example.com"}
     end
 
     test "a plain managingEditor is stored as managing_editor" do
       map = parse("<managingEditor>ed@example.com (Ed)</managingEditor>")
 
-      assert map["managing_editor"] == %{name: "ed@example.com (Ed)"}
+      assert map[:managing_editor] == %{name: "ed@example.com (Ed)"}
     end
 
     test "atom:contributor collects name, uri and pid" do
@@ -640,7 +660,7 @@ defmodule Pan.Parser.FeedParsingTest do
 
     test "a channel googleplay:author is still ignored" do
       # it was on the ignore list although the author clause listed it too
-      refute Map.has_key?(parse("<googleplay:author>Jane</googleplay:author>"), "author")
+      refute Map.has_key?(parse("<googleplay:author>Jane</googleplay:author>"), :author)
     end
   end
 

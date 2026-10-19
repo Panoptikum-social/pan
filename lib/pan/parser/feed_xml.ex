@@ -49,7 +49,25 @@ defmodule Pan.Parser.FeedXml do
       {:error, "Quinn error: " <> inspect(error)}
   end
 
-  @doc "The parser's map of Quinn's node tree; `url` is the feed's URL."
+  @doc """
+  The parser's map of Quinn's node tree; `url` is the feed's URL.
+
+  Field names are fixed atoms; collections are keyed by random UUID strings.
+  Nothing from the feed becomes an atom (the atom table is never garbage
+  collected):
+
+  - podcast fields: `:title`, `:website`, `:description`, `:summary`,
+    `:explicit`, `:image_url`, `:image_title`, `:last_build_date`,
+    `:new_feed_url`, `:payment_link_url`, ...
+  - people: `:owner`, `:author`, `:managing_editor` (maps with `:name`,
+    `:email`, ...), `:contributors` (random UUID => person)
+  - `:feed`: `:self_link_url`, `:self_link_title`, links, `:feed_generator`,
+    `:alternate_feeds`, ...
+  - `:languages`, `:categories`: random UUID => map
+  - `:episodes`: random UUID => episode map (the GUID is its `:guid`), whose
+    `:enclosures`, `:chapters` and `:contributors` are keyed by random UUIDs
+    as well
+  """
   def parse_to_map(quinn_map, url) do
     map =
       %{

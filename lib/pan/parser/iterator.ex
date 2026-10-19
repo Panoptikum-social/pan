@@ -90,7 +90,7 @@ defmodule Pan.Parser.Iterator do
         %{name: String.slice(head, 0, 255)}
       end
 
-    Helpers.deep_merge(map, %{role => contributor_map})
+    Helpers.deep_merge(map, %{role_key(role) => contributor_map})
     |> parse(:podcast_contributor, role, tail)
   end
 
@@ -127,4 +127,10 @@ defmodule Pan.Parser.Iterator do
     Helpers.deep_merge(map, %{contributors: %{contributor_uuid => contributor_map}})
     |> parse("episode-contributor", tail, contributor_uuid)
   end
+
+  # The role names the analyzer clauses ("owner", ...) and the key in the
+  # parser's map. Spelled out so no atom is ever made from feed data.
+  defp role_key("owner"), do: :owner
+  defp role_key("author"), do: :author
+  defp role_key("managing_editor"), do: :managing_editor
 end
