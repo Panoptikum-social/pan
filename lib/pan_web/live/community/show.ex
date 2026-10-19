@@ -9,6 +9,7 @@ defmodule PanWeb.Live.Community.Show do
   alias PanWeb.Component.PersonaButton
   alias PanWeb.Component.UserButton
   alias PanWeb.Component.LinkButton
+  alias PanWeb.Pad
 
   def mount(%{"id" => id}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
@@ -19,11 +20,48 @@ defmodule PanWeb.Live.Community.Show do
 
       community ->
         {:ok,
-         assign(socket,
+         socket
+         |> assign(
            community: community,
            community_personas: Community.personas(community.id),
            page_title: community.title <> " (Community)"
-         )}
+         )
+         |> assign_pads()}
+    end
+  end
+
+  # pads are only shown to followers, and the form for a new one only to
+  # followers who also moderate the community
+  defp assign_pads(%{assigns: %{community: community, current_user_id: user_id}} = socket) do
+    permissions = Pad.permissions(user_id, community.id)
+
+    assign(socket,
+      pad_permissions: permissions,
+      pads: if(permissions.read, do: Pad.all_of_community(community.id), else: []),
+      pad_form: to_form(Pad.changeset(%Pad{}), as: :pad)
+    )
+  end
+
+  def handle_info({:follow_toggled, _following}, socket) do
+    {:noreply, assign_pads(socket)}
+  end
+
+  def handle_event("create_pad", %{"pad" => params}, socket) do
+    %{community: community, current_user_id: user_id} = socket.assigns
+
+    if Pad.permissions(user_id, community.id).manage do
+      case Pad.create(community.id, params) do
+        {:ok, pad} ->
+          {:noreply,
+           push_navigate(socket,
+             to: pad_frontend_path(socket, :show, community.id, pad.slug)
+           )}
+
+        {:error, changeset} ->
+          {:noreply, assign(socket, pad_form: to_form(changeset, as: :pad))}
+      end
+    else
+      {:noreply, assign_pads(socket)}
     end
   end
 
@@ -65,7 +103,38 @@ defmodule PanWeb.Live.Community.Show do
             current_user_id={@current_user_id}
             model={Community}
             instance={@community}
+            notify_parent={true}
           />
+        </div>
+
+        <div :if={@pad_permissions.read} class="mt-4">
+          <h3 class="text-lg font-semibold">Pads</h3>
+          <p class="text-sm text-gray-dark mt-1">
+            Markdown documents that the followers of this community write together.
+          </p>
+          <ul :if={@pads != []} class="list-disc m-4">
+            <li :for={pad <- @pads}>
+              <.link
+                navigate={pad_frontend_path(@socket, :show, @community.id, pad.slug)}
+                class="text-link hover:text-link-dark"
+              >
+                {pad.title}
+              </.link>
+              <span :if={pad.read_only} class="badge badge-sm badge-ghost ml-2">read only</span>
+            </li>
+          </ul>
+          <p :if={@pads == []} class="my-2">No pads yet.</p>
+
+          <.form
+            :if={@pad_permissions.manage}
+            for={@pad_form}
+            id="new-pad-form"
+            phx-submit="create_pad"
+            class="flex items-start gap-2 mt-2"
+          >
+            <.input field={@pad_form[:title]} placeholder="Title of the new pad" />
+            <.button class="btn btn-primary">New pad</.button>
+          </.form>
         </div>
 
         <div class="mt-4 flex flex-col gap-3">

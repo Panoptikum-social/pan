@@ -28,6 +28,9 @@ defmodule PanWeb.Component.FollowButton do
   def handle_event("toggle-follow", _params, %{assigns: assigns} = socket) do
     assigns.model.follow(assigns.instance.id, assigns.current_user_id)
 
+    # the community page shows its pads to followers only
+    if assigns[:notify_parent], do: send(self(), {:follow_toggled, !assigns.following})
+
     socket =
       assign(socket,
         following: !assigns.following,
@@ -41,6 +44,7 @@ defmodule PanWeb.Component.FollowButton do
   attr :current_user_id, :integer, required: true
   attr :instance, :map, required: true
   attr :model, :atom, required: true
+  attr :notify_parent, :boolean, default: false
 
   def render(assigns) do
     ~H"""

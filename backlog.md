@@ -71,6 +71,19 @@ follow button). No separate community subscription.
    (#277); `lib0` is pinned to one version via npm `overrides`.
 1. Data model and pad management (1–2 days): pads and snapshots tables;
    moderators create pads and toggle read only; follower-only access.
+   Decided 2026-10-19: the address is a slug made from the title
+   (`/communities/:id/pads/:slug`; umlauts spelled out, accents dropped,
+   non-Latin letters kept; titles with the same slug clash, renaming
+   changes the slug, old links break) (#278); community moderators who
+   follow may rename and delete pads, deleting takes the snapshots along
+   (#279); "New pad" only for moderators who follow, and "My Moderations"
+   warns about moderated communities that aren't followed (#280); pads
+   list + "New pad" on the community page, read-only toggle, rename and
+   delete on the pad page (#281); deleting a community deletes its pads and
+   snapshots, done as ON DELETE CASCADE in the DB (#282); deleting a user
+   keeps their snapshots with `user_id` NULL (#283); `/dev/pad_trial` goes
+   away in step 2 (#284). Non-followers get the same "not found" for an
+   existing pad as for a missing one.
 2. Collaboration core (3–5 days): first Phoenix Channel in the app, one
    process per open pad holding the Yjs document, cursors/presence, saving
    the Yjs state and markdown copy, stopping when idle, read-only reaching

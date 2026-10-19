@@ -3,6 +3,22 @@
     My Moderations
   </h1>
 
+  <div :if={@unfollowed_communities != []} class="alert alert-warning my-4 block">
+    <p class="font-semibold">You don't follow every community you moderate.</p>
+    <p>
+      Pads of a community can only be seen, edited and created by its followers, moderators
+      included. Follow these communities to work with their pads:
+    </p>
+    <ul class="list-disc ml-6 mt-2">
+      <li :for={community <- @unfollowed_communities}>
+        <.link
+          href={community_frontend_path(@conn, :show, community)}
+          class="link"
+        >{community.title}</.link>
+      </li>
+    </ul>
+  </div>
+
   <ul class="list-disc m-4">
     <%= for category <- @categories do %>
       <li>
