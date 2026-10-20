@@ -20,6 +20,7 @@ import {
 import { EditorState, Compartment } from "@codemirror/state";
 import { defaultKeymap } from "@codemirror/commands";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
+import { mountToolbar } from "./pad_toolbar";
 
 // CodeMirror's basicSetup without autocompletion, linting and anything that
 // needs a language (no syntax highlighting, by decision, it keeps the bundle
@@ -85,7 +86,7 @@ window.PanPadEditor = {
 
     const readOnly = new Compartment();
     const view = new EditorView({
-      parent: el.querySelector("[data-pane=editor]"),
+      parent: el.querySelector("[data-editor]"),
       extensions: [
         setup,
         EditorView.lineWrapping,
@@ -96,6 +97,9 @@ window.PanPadEditor = {
       ],
     });
 
+    const setToolbarReadOnly = mountToolbar(el.querySelector("[data-toolbar]"), view);
+    setToolbarReadOnly(el.dataset.readOnly === "true");
+
     syncScroll([view.scrollDOM, el.querySelector("[data-pane=preview]")]);
 
     // rendered on the server by PanWeb.PadServer, sanitized like all user markdown
@@ -104,6 +108,7 @@ window.PanPadEditor = {
 
     provider.channel.on("read_only", ({ read_only }) => {
       view.dispatch({ effects: readOnly.reconfigure(readOnlyExtension(read_only)) });
+      setToolbarReadOnly(read_only);
     });
 
     provider.channel.on("deleted", () => onDeleted());

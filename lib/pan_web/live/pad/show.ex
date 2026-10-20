@@ -134,12 +134,21 @@ defmodule PanWeb.Live.Pad.Show do
           data-community-url={community_frontend_path(@socket, :show, @community.id)}
           class="mt-4 grid gap-4 md:grid-cols-2"
         >
-          <div id="pad-pane-edit" data-pane="editor" class="h-[70vh] border border-base-300 rounded">
+          <div
+            id="pad-pane-edit"
+            class="h-[70vh] flex flex-col border border-base-content/40 rounded bg-base-100"
+          >
+            <div
+              data-toolbar
+              class="flex flex-wrap items-center gap-0.5 border-b border-base-content/40 p-1"
+            >
+            </div>
+            <div data-editor class="flex-1 min-h-0"></div>
           </div>
           <div
             id="pad-pane-preview"
             data-pane="preview"
-            class="h-[70vh] overflow-y-auto border border-base-300 rounded p-4 max-md:hidden"
+            class="h-[70vh] overflow-y-auto border border-base-content/40 rounded bg-base-100 p-4 max-md:hidden"
           >
             <div data-preview class="prose max-w-none">{markdown(@pad.markdown)}</div>
           </div>
