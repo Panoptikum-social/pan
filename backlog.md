@@ -104,6 +104,10 @@ follow button). No separate community subscription.
    language and no syntax highlighting at all (#288, not needed); undo is
    Yjs' own, so it only undoes your own edits. 725 → 448 kB minified,
    247 → 142 kB gzipped.
+   Markdown toolbar above the editor (#289, `assets/js/pad_toolbar.js`):
+   OverType's default buttons and icons without view mode, plus a code
+   block button; no keyboard shortcuts (not needed). Panes with a white
+   background and stronger borders.
 4. Server-rendered preview (½ day). **Done 2026-10-20**: `PadServer`
    renders with `markdown/1` at most every 300 ms while the text changes
    (throttled like saving, a strict debounce would show nothing during
