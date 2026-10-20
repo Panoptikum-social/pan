@@ -31,10 +31,11 @@ Claude's per-machine memory) so they survive across computers. Last synced
   it, then the namesake subcategories below. Sports & Recreation → Sports,
   Science & Medicine → Science, Games & Hobbies → Leisure, Government &
   Organizations → Government. Deployed 2026-10-20; on prod the user did
-  Sports, Science, Government and Games & Hobbies the same day. Still open:
-  the non-Apple subcategories per parent (old Apple ones and strays). The
-  parser still re-creates names feeds use; no mapping table (by decision),
-  so occasional strays remain.
+  Sports, Science and Government the same day, History subcategories into
+  top level History. Still open: Games & Hobbies → Leisure and the
+  non-Apple subcategories per parent (old Apple ones and strays, suggested
+  merges #305–#322 on 2026-10-20). The parser still re-creates names feeds
+  use; no mapping table (by decision), so occasional strays remain.
 - **npm audit advisories in the build tools (found 2026-10-19).** `braces`
   3.0.3 (high, via `@tailwindcss/cli` → `@parcel/watcher` → `micromatch`) and
   `postcss-selector-parser` 6.0.10 (moderate, via `@tailwindcss/typography`
