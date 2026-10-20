@@ -121,6 +121,13 @@ follow button). No separate community subscription.
    half a page, acceptable.
 5. Snapshots (1–2 days): idle timer, snapshot on last leave, "Save version"
    button, version list, restore.
+   **Done 2026-10-20**, tested on dev by the user: automatic 5 minutes
+   after the last edit, on last leave and on process stop, skipped if the
+   text equals the latest snapshot; "Save version" with an optional note
+   always saves; every follower saves and restores; read only blocks
+   restoring, not saving; version list on the pad page (UTC time, author or
+   "automatic", note, View, Restore), updated for all viewers through
+   PubSub; Print prints only the shown version (`pan:print` in app.js).
 6. Tests and deploy (2–3 days): channel tests with several clients,
    permission tests, NIF loading in the prod build.
 
