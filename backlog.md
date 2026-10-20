@@ -65,8 +65,7 @@ follow button). No separate community subscription.
    `pad_trial.js` loaded only by the `PadTrial` hook. Concurrent typing,
    cursors and reload work; the NIF loads in a prod release and in the QA
    image; the two-browser test on QA passed too (2026-10-19). Step 0 done.
-   Notes for later: the editor bundle (now `pad_editor.js`) is 725 kB
-   minified (CodeMirror + code block grammars, #276); `lib0` is pinned to
+   Notes for later: `lib0` is pinned to
    one version via npm `overrides`; `phoenix` in package.json is
    `file:../deps/phoenix` so the JS client follows mix.lock (#277, fixed
    064e610b).
@@ -95,11 +94,23 @@ follow button). No separate community subscription.
    `PanWeb.PadChannel` (followers only, read only enforced on the server,
    read only/deletion pushed to open editors), socket with a
    Phoenix.Token from the pad page, editor on the pad page
-   (`assets/js/pad_editor.js`), trial removed. Still open for step 3: split
-   view, mobile tabs, scroll sync; the editor is basic so far.
+   (`assets/js/pad_editor.js`), trial removed.
 3. Browser side (2–3 days): CodeMirror 6 + Yjs + channel connector via the
    existing esbuild/`package.json`; split view, mobile tabs, scroll sync.
-4. Server-rendered preview (½ day).
+   **Done 2026-10-20**: two columns from `md` up, Edit/Preview tabs below
+   (no scroll sync needed there, by decision), scroll sync by percentage
+   driven by the pane under the pointer/focus. Bundle (#276): own setup
+   instead of `basicSetup` without autocompletion/lint (#287), no markdown
+   language and no syntax highlighting at all (#288, not needed); undo is
+   Yjs' own, so it only undoes your own edits. 725 → 448 kB minified,
+   247 → 142 kB gzipped.
+4. Server-rendered preview (½ day). **Done 2026-10-20**: `PadServer`
+   renders with `markdown/1` at most every 300 ms while the text changes
+   (throttled like saving, a strict debounce would show nothing during
+   continuous typing) and sends it to every channel, and to each new one
+   on joining; checked in the browser with an edit through the pad
+   process. Scroll sync tested by the user with a long pad: off by up to
+   half a page, acceptable.
 5. Snapshots (1–2 days): idle timer, snapshot on last leave, "Save version"
    button, version list, restore.
 6. Tests and deploy (2–3 days): channel tests with several clients,
@@ -134,6 +145,10 @@ weeks), with snapshots following.
   back. The parser matches titles ignoring case and surrounding spaces since
   2026-10-19; no table remembers merges (by decision), so occasional
   re-merging is the plan.
+- **Check that nginx gzips the assets on prod (found 2026-10-20).** The
+  endpoint serves `/assets` with `gzip: false`; the user is pretty sure
+  nginx compresses them for browsers that support it. Test it (e.g. the
+  `Content-Encoding` of `pad_editor.js`, 725 kB minified, 247 kB gzipped).
 - **npm audit advisories in the build tools (found 2026-10-19).** `braces`
   3.0.3 (high, via `@tailwindcss/cli` → `@parcel/watcher` → `micromatch`) and
   `postcss-selector-parser` 6.0.10 (moderate, via `@tailwindcss/typography`
