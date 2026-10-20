@@ -21,6 +21,7 @@ import { EditorState, Compartment } from "@codemirror/state";
 import { defaultKeymap } from "@codemirror/commands";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import { mountToolbar } from "./pad_toolbar";
+import { selectionHighlight } from "./pad_selection";
 
 // CodeMirror's basicSetup without autocompletion, linting and anything that
 // needs a language (no syntax highlighting, by decision, it keeps the bundle
@@ -85,6 +86,8 @@ window.PanPadEditor = {
     });
 
     const readOnly = new Compartment();
+    const preview = el.querySelector("[data-preview]");
+    const [highlightExtension, refreshHighlight] = selectionHighlight(preview);
     const view = new EditorView({
       parent: el.querySelector("[data-editor]"),
       extensions: [
@@ -94,6 +97,7 @@ window.PanPadEditor = {
         EditorView.theme({ "&": { height: "100%" }, ".cm-scroller": { overflow: "auto" } }),
         readOnly.of(readOnlyExtension(el.dataset.readOnly === "true")),
         yCollab(ydoc.getText(textName), provider.awareness),
+        highlightExtension,
       ],
     });
 
@@ -103,8 +107,10 @@ window.PanPadEditor = {
     syncScroll([view.scrollDOM, el.querySelector("[data-pane=preview]")]);
 
     // rendered on the server by PanWeb.PadServer, sanitized like all user markdown
-    const preview = el.querySelector("[data-preview]");
-    provider.channel.on("preview", ({ html }) => (preview.innerHTML = html));
+    provider.channel.on("preview", ({ html }) => {
+      preview.innerHTML = html;
+      refreshHighlight();
+    });
 
     provider.channel.on("read_only", ({ read_only }) => {
       view.dispatch({ effects: readOnly.reconfigure(readOnlyExtension(read_only)) });

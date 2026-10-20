@@ -145,7 +145,8 @@ defmodule PanWeb.PadChannelTest do
     push(socket_a, "yjs", {:binary, edit(Yex.Doc.new(), "# Hello pad")})
     # rendered 300 ms after the edit
     assert_push("preview", %{html: html}, 1000)
-    assert html =~ "<h1>Hello pad</h1>"
+    # with source positions, for the selection highlight
+    assert html =~ ~s(<h1 data-sourcepos="1:1-1:11">Hello pad</h1>)
     assert_push("preview", %{html: ^html})
 
     # a browser joining now gets the current text, not the last save

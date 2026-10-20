@@ -205,7 +205,7 @@ defmodule PanWeb.PadServer do
     doc
     |> Yex.Doc.get_text(@text)
     |> Yex.Text.to_string()
-    |> PanWeb.ViewHelpers.markdown()
+    |> PanWeb.ViewHelpers.markdown(sourcepos: true)
     |> Phoenix.HTML.safe_to_string()
   end
 

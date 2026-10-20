@@ -150,7 +150,9 @@ defmodule PanWeb.Live.Pad.Show do
             data-pane="preview"
             class="h-[70vh] overflow-y-auto border border-base-content/40 rounded bg-base-100 p-4 max-md:hidden"
           >
-            <div data-preview class="prose max-w-none">{markdown(@pad.markdown)}</div>
+            <div data-preview class="prose max-w-none">
+              {markdown(@pad.markdown, sourcepos: true)}
+            </div>
           </div>
         </div>
 

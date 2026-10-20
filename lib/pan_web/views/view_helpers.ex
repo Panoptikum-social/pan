@@ -13,11 +13,17 @@ defmodule PanWeb.ViewHelpers do
 
   # User written markdown (persona long descriptions, curations): GitHub
   # flavoured tables, strikethrough and autolinks, raw HTML and images dropped.
-  def markdown(nil), do: nil
+  # `sourcepos: true` marks the elements with their source positions, for the
+  # selection highlight in the pad preview.
+  def markdown(content, options \\ [])
+  def markdown(nil, _options), do: nil
 
-  def markdown(content) do
+  def markdown(content, options) do
     content
-    |> MDEx.to_html!(extension: [table: true, strikethrough: true, autolink: true])
+    |> MDEx.to_html!(
+      extension: [table: true, strikethrough: true, autolink: true],
+      render: [sourcepos: Keyword.get(options, :sourcepos, false)]
+    )
     |> HtmlSanitizeEx.Scrubber.MarkdownWithoutImages.sanitize()
     |> HTML.raw()
   end
