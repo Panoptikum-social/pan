@@ -108,6 +108,10 @@ follow button). No separate community subscription.
    OverType's default buttons and icons without view mode, plus a code
    block button; no keyboard shortcuts (not needed). Panes with a white
    background and stronger borders.
+   Selection highlight in the preview (#291, `assets/js/pad_selection.js`):
+   the pad preview is rendered with MDEx `sourcepos`, the sanitizer keeps
+   `data-sourcepos`; a selection highlights the innermost blocks it
+   touches, or the inline element (bold, link, ...) it lies within.
 4. Server-rendered preview (½ day). **Done 2026-10-20**: `PadServer`
    renders with `markdown/1` at most every 300 ms while the text changes
    (throttled like saving, a strict debounce would show nothing during
