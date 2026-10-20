@@ -77,6 +77,11 @@ defmodule PanWeb.PadChannel do
     {:noreply, socket}
   end
 
+  def handle_info({:preview, html}, socket) do
+    push(socket, "preview", %{html: html})
+    {:noreply, socket}
+  end
+
   # the pad process stopped under us (it crashed, or stopped right as we
   # joined): start it again and let the browser sync anew
   def handle_info(

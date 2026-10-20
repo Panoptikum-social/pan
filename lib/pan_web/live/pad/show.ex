@@ -5,6 +5,7 @@ defmodule PanWeb.Live.Pad.Show do
   alias Pan.Repo
   alias PanWeb.{Community, Pad, PadChannel, PadServer, User, UserSocket}
   alias PanWeb.Component.Panel
+  alias Phoenix.LiveView.JS
 
   # The editor (PadEditor hook, assets/js/pad_editor.js) syncs through
   # PanWeb.PadChannel. Visitors and non-followers get the same "not found" as
@@ -73,6 +74,16 @@ defmodule PanWeb.Live.Pad.Show do
   @cursor_colors ~w(#30bced #6eeb83 #ffbc42 #ee6352 #9ac2c9 #8acb88 #1be7ff #c45ab3)
   defp cursor_color(user_id), do: Enum.at(@cursor_colors, rem(user_id, length(@cursor_colors)))
 
+  # below the md breakpoint only one pane is visible, switched by the tabs
+  defp show_pane(pane) do
+    other = if pane == "edit", do: "preview", else: "edit"
+
+    JS.remove_class("max-md:hidden", to: "#pad-pane-#{pane}")
+    |> JS.add_class("max-md:hidden", to: "#pad-pane-#{other}")
+    |> JS.add_class("tab-active", to: "#pad-tab-#{pane}")
+    |> JS.remove_class("tab-active", to: "#pad-tab-#{other}")
+  end
+
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
@@ -96,6 +107,20 @@ defmodule PanWeb.Live.Pad.Show do
           <span :if={@pad.read_only} class="badge badge-sm badge-ghost ml-2">read only</span>
         </p>
 
+        <div role="tablist" class="tabs tabs-border mt-4 md:hidden">
+          <button
+            id="pad-tab-edit"
+            role="tab"
+            class="tab tab-active"
+            phx-click={show_pane("edit")}
+          >
+            Edit
+          </button>
+          <button id="pad-tab-preview" role="tab" class="tab" phx-click={show_pane("preview")}>
+            Preview
+          </button>
+        </div>
+
         <div
           id={"pad-editor-#{@pad.id}"}
           phx-hook="PadEditor"
@@ -107,8 +132,17 @@ defmodule PanWeb.Live.Pad.Show do
           data-user-name={@user_name}
           data-user-color={cursor_color(@current_user_id)}
           data-community-url={community_frontend_path(@socket, :show, @community.id)}
-          class="mt-4 border border-base-300 rounded min-h-64"
+          class="mt-4 grid gap-4 md:grid-cols-2"
         >
+          <div id="pad-pane-edit" data-pane="editor" class="h-[70vh] border border-base-300 rounded">
+          </div>
+          <div
+            id="pad-pane-preview"
+            data-pane="preview"
+            class="h-[70vh] overflow-y-auto border border-base-300 rounded p-4 max-md:hidden"
+          >
+            <div data-preview class="prose max-w-none">{markdown(@pad.markdown)}</div>
+          </div>
         </div>
 
         <div :if={@permissions.manage} class="mt-8 border-t border-base-300 pt-4">

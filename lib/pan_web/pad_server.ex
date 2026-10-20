@@ -4,6 +4,10 @@ defmodule PanWeb.PadServer do
   people editing it observe it: document and awareness (cursor) updates from
   one are sent on to all others.
 
+  The preview, the text rendered with `PanWeb.ViewHelpers.markdown/1`, is
+  sent as `{:preview, html}` to every observer at most every 300 ms while
+  the text changes, and to each new observer right away.
+
   The Yjs state and a markdown copy of the text are saved a moment after the
   last edit and when the process stops, which it does a little while after
   the last observer has left (and on shutdown). Read only is enforced by
@@ -20,6 +24,7 @@ defmodule PanWeb.PadServer do
   # the Y.Text holding the pad's markdown, shared with the browser
   @text "body"
   @save_after :timer.seconds(2)
+  @preview_after 300
   @stop_after :timer.seconds(10)
 
   @doc "The running process of a pad, started if needed."
@@ -63,7 +68,10 @@ defmodule PanWeb.PadServer do
     end
   end
 
-  @doc "Receive `{:yjs, message, server}` for every update from the others."
+  @doc """
+  Receive `{:yjs, message, server}` for every update from the others and
+  `{:preview, html}` for the rendered text.
+  """
   def observe(server), do: GenServer.call(server, {:observe, self()})
 
   def text_name, do: @text
@@ -86,6 +94,7 @@ defmodule PanWeb.PadServer do
        awareness_clients: %{},
        dirty: false,
        save_timer: nil,
+       preview_timer: nil,
        stop_timer: Process.send_after(self(), :stop_if_unobserved, @stop_after)
      )}
   end
@@ -93,6 +102,7 @@ defmodule PanWeb.PadServer do
   @impl true
   def handle_call({:observe, client}, _from, %{assigns: assigns} = state) do
     observers = Map.put_new_lazy(assigns.observers, client, fn -> Process.monitor(client) end)
+    send(client, {:preview, preview(state)})
     {:reply, :ok, assign(state, observers: observers)}
   end
 
@@ -103,7 +113,7 @@ defmodule PanWeb.PadServer do
       broadcast(message, origin, state)
     end
 
-    {:noreply, schedule_save(state)}
+    {:noreply, state |> schedule_save() |> schedule_preview()}
   end
 
   @impl true
@@ -142,6 +152,12 @@ defmodule PanWeb.PadServer do
 
   def handle_info(:save, state), do: {:noreply, save(state)}
 
+  def handle_info(:preview, %{assigns: %{observers: observers}} = state) do
+    html = preview(state)
+    for {client, _ref} <- observers, do: send(client, {:preview, html})
+    {:noreply, assign(state, preview_timer: nil)}
+  end
+
   def handle_info(:stop_if_unobserved, %{assigns: %{observers: observers}} = state)
       when observers == %{},
       do: {:stop, :normal, state}
@@ -178,6 +194,20 @@ defmodule PanWeb.PadServer do
   end
 
   defp schedule_save(state), do: assign(state, dirty: true)
+
+  defp schedule_preview(%{assigns: %{preview_timer: nil}} = state) do
+    assign(state, preview_timer: Process.send_after(self(), :preview, @preview_after))
+  end
+
+  defp schedule_preview(state), do: state
+
+  defp preview(%{doc: doc}) do
+    doc
+    |> Yex.Doc.get_text(@text)
+    |> Yex.Text.to_string()
+    |> PanWeb.ViewHelpers.markdown()
+    |> Phoenix.HTML.safe_to_string()
+  end
 
   defp save(%{assigns: %{dirty: false}} = state), do: state
 

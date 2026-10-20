@@ -135,6 +135,26 @@ defmodule PanWeb.PadChannelTest do
     assert saved.yjs_state
   end
 
+  test "the rendered preview reaches every browser", %{pad: pad, follower: follower} do
+    {_reply, socket_a} = join_pad(follower, pad)
+    {_reply, socket_b} = join_pad(follower, pad)
+    # on joining, of the still empty pad
+    assert_push("preview", %{html: ""})
+    assert_push("preview", %{html: ""})
+
+    push(socket_a, "yjs", {:binary, edit(Yex.Doc.new(), "# Hello pad")})
+    # rendered 300 ms after the edit
+    assert_push("preview", %{html: html}, 1000)
+    assert html =~ "<h1>Hello pad</h1>"
+    assert_push("preview", %{html: ^html})
+
+    # a browser joining now gets the current text, not the last save
+    {_reply, socket_c} = join_pad(follower, pad)
+    assert_push("preview", %{html: ^html})
+
+    close_all([socket_a, socket_b, socket_c], pad)
+  end
+
   test "a browser joining later gets the saved text", %{pad: pad, follower: follower} do
     {_reply, socket} = join_pad(follower, pad)
     push(socket, "yjs", {:binary, edit(Yex.Doc.new(), "Kept")})

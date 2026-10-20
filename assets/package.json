@@ -1,12 +1,13 @@
 {
   "dependencies": {
     "@alpinejs/csp": "3.17.4",
-    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/search": "^6.7.2",
     "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.15",
     "@podlove/web-player": "^5.7.4",
     "@tailwindcss/cli": "^4.1.18",
     "@tailwindcss/typography": "^0.5.19",
-    "codemirror": "^6.0.2",
     "daisyui": "^5.5.14",
     "lib0": "^0.2.119",
     "phoenix": "file:../deps/phoenix",
