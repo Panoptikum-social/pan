@@ -20,9 +20,8 @@ defmodule PanWeb.CategoryMergeTest do
     refute Repo.get(Category, from.id)
     assert Repo.get!(Community, community.id).category_id == to.id
 
-    # let the background task of Search.Category.reset_podcasts/1 finish
-    # before the sandbox owner exits
-    Process.sleep(100)
+    # the re-flagging for search, see Search.Category.reset_podcasts/1
+    Pan.Search.ReflagQueue.flush()
   end
 
   test "refuses to merge two categories that both have a community" do

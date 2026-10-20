@@ -61,21 +61,11 @@ defmodule Pan.Search.Category do
   @doc """
   Podcast and episode docs carry copies of their categories (ids and
   titles, rendered as links in search results), so a category rename or
-  merge leaves them stale. Re-flags those podcasts and all their episodes
-  for Pan.Job.PushMissingSearchIndex — in a background task, as a big
-  category spans millions of episodes.
+  merge leaves them stale. Queues those podcasts and all their episodes for
+  re-flagging for Pan.Job.PushMissingSearchIndex (Pan.Search.ReflagQueue),
+  as a big category spans millions of episodes.
   """
-  def reset_podcasts(podcast_ids) do
-    Task.start(fn ->
-      from(p in PanWeb.Podcast, where: p.id in ^podcast_ids)
-      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
-
-      from(e in PanWeb.Episode, where: e.podcast_id in ^podcast_ids)
-      |> Repo.update_all([set: [full_text: false]], timeout: :infinity)
-
-      Logger.info("Re-flagged #{length(podcast_ids)} podcasts and their episodes for search")
-    end)
-  end
+  def reset_podcasts(podcast_ids), do: Pan.Search.ReflagQueue.add(podcast_ids)
 
   def delete_index(id) do
     %{index: "categories", id: id}

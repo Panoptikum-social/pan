@@ -26,6 +26,7 @@ config :pan, :children, [
   {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
   {Registry, keys: :unique, name: Pan.PadRegistry},
   {DynamicSupervisor, name: Pan.PadSupervisor, strategy: :one_for_one},
+  Pan.Search.ReflagQueue,
   PanWeb.Endpoint
 ]
 
@@ -38,3 +39,7 @@ config :pan, :manticore_url, "http://localhost:1"
 config :logger, level: :warn
 
 config :pan, Pan.Mailer, adapter: Swoosh.Adapters.Test
+
+# re-flagging for search only on Pan.Search.ReflagQueue.flush/0, nothing runs
+# after a test's sandbox owner has exited
+config :pan, Pan.Search.ReflagQueue, manual: true

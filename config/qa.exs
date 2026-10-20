@@ -34,6 +34,7 @@ config :pan, :children, [
   {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
   {Registry, keys: :unique, name: Pan.PadRegistry},
   {DynamicSupervisor, name: Pan.PadSupervisor, strategy: :one_for_one},
+  Pan.Search.ReflagQueue,
   PanWeb.Endpoint,
   Pan.Job.ImportStalePodcasts,
   Pan.Job.RefreshPodcastMetadata,
