@@ -10,16 +10,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **Logger backend for the error mails (found 2026-10-18).** The error mails
-  come from the custom backend `Logger.Backends.ExceptionNotification`,
-  registered via `config :logger, backends: [...]` in `config/prod.exs`.
-  That key has been deprecated since Elixir 1.15 (warning at startup) but
-  still works in 1.20. Options: add `{:logger_backends, "~> 1.0"}` and call
-  `LoggerBackends.add/1` in the application start, or rewrite it as an
-  Erlang `:logger` handler. Also (found 2026-10-19): it has no
-  `handle_event(:flush, state)` clause, so it crashes with a
-  FunctionClauseError whenever Logger flushes, e.g. at the end of
-  `bin/pan eval` and on every stop. Harmless for the mails, one-line fix.
 - **Faster compiles (found 2026-10-18).** Elixir 1.20's compiler option
   `elixirc_options: [module_definition: :interpreted]` can cut compile
   times on machines with many cores; the `.beam` files stay the same.
