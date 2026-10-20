@@ -149,10 +149,6 @@ weeks), with snapshots following.
   back. The parser matches titles ignoring case and surrounding spaces since
   2026-10-19; no table remembers merges (by decision), so occasional
   re-merging is the plan.
-- **Check that nginx gzips the assets on prod (found 2026-10-20).** The
-  endpoint serves `/assets` with `gzip: false`; the user is pretty sure
-  nginx compresses them for browsers that support it. Test it (e.g. the
-  `Content-Encoding` of `pad_editor.js`, 725 kB minified, 247 kB gzipped).
 - **npm audit advisories in the build tools (found 2026-10-19).** `braces`
   3.0.3 (high, via `@tailwindcss/cli` → `@parcel/watcher` → `micromatch`) and
   `postcss-selector-parser` 6.0.10 (moderate, via `@tailwindcss/typography`
