@@ -6,6 +6,8 @@ defmodule PanWeb.Category do
   schema "categories" do
     field(:title, :string)
     field(:full_text, :boolean, default: false)
+    # on Apple Podcasts' current list, see Pan.AppleCategories
+    field(:apple, :boolean, default: false)
 
     has_many(:children, PanWeb.Category, foreign_key: :parent_id, preload_order: [asc: :title])
     has_one(:community, Community)
@@ -22,7 +24,7 @@ defmodule PanWeb.Category do
 
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :parent_id, :full_text])
+    |> cast(params, [:title, :parent_id, :full_text, :apple])
     |> validate_required([:title])
   end
 
@@ -235,7 +237,22 @@ defmodule PanWeb.Category do
     |> MapSet.new()
   end
 
+  # Apple Podcasts' current categories (Pan.AppleCategories) are the target
+  # of the clean-up, so they stay where they are.
+  @apple_message "Apple categories can't be deleted, merged away or moved."
+
+  @doc "Ids of the categories on Apple Podcasts' current list."
+  def apple_ids do
+    from(c in Category, where: c.apple, select: c.id) |> Repo.all() |> MapSet.new()
+  end
+
+  defp apple?(id), do: Repo.exists?(from(c in Category, where: c.id == ^id and c.apple))
+
   def delete_empty(id) do
+    if apple?(id), do: {:error, @apple_message}, else: do_delete_empty(id)
+  end
+
+  defp do_delete_empty(id) do
     case Repo.one(from(c in empty_query(), where: c.id == ^id)) do
       nil ->
         {:error,
@@ -248,17 +265,19 @@ defmodule PanWeb.Category do
     end
   end
 
-  # no podcasts, subcategories, follows, likes or community
+  # no podcasts, subcategories, follows, likes or community, and not an
+  # Apple category
   defp empty_query do
     from(c in Category,
       as: :category,
       where:
-        not exists(
-          from(cp in "categories_podcasts",
-            where: cp.category_id == parent_as(:category).id,
-            select: 1
-          )
-        ) and
+        not c.apple and
+          not exists(
+            from(cp in "categories_podcasts",
+              where: cp.category_id == parent_as(:category).id,
+              select: 1
+            )
+          ) and
           not exists(
             from(ch in Category, where: ch.parent_id == parent_as(:category).id, select: 1)
           ) and
@@ -286,6 +305,9 @@ defmodule PanWeb.Category do
     ancestor_ids = ancestor_ids(parent_id)
 
     cond do
+      category.apple ->
+        {:error, @apple_message}
+
       category.parent_id == parent_id ->
         {:error, "The category is already a subcategory there."}
 
@@ -335,53 +357,62 @@ defmodule PanWeb.Category do
   # A community is unique per category and carries moderators, curators,
   # curations and followers, so two of them can't be merged automatically.
   def merge(from_id, to_id) do
-    if Community.get_by_category_id(from_id) && Community.get_by_category_id(to_id) do
-      {:error, "Both categories have a community, merge the communities first."}
-    else
-      moved_podcast_ids = Search.Category.podcast_ids(from_id)
+    cond do
+      apple?(from_id) ->
+        {:error, @apple_message <> " Merge the other one into it instead."}
 
-      from(f in Follow, where: f.category_id == ^from_id)
-      |> Repo.update_all(set: [category_id: to_id])
+      Community.get_by_category_id(from_id) && Community.get_by_category_id(to_id) ->
+        {:error, "Both categories have a community, merge the communities first."}
 
-      from(l in Like, where: l.category_id == ^from_id)
-      |> Repo.update_all(set: [category_id: to_id])
-
-      already_in_to_ids =
-        from(r in "categories_podcasts",
-          where: r.category_id == ^to_id,
-          select: [r.podcast_id]
-        )
-        |> Repo.all()
-
-      from(r in "categories_podcasts",
-        where:
-          r.category_id == ^from_id and
-            r.podcast_id not in ^already_in_to_ids
-      )
-      |> Repo.update_all(set: [category_id: to_id])
-
-      from(r in "categories_podcasts",
-        where:
-          r.category_id == ^from_id and
-            r.podcast_id in ^already_in_to_ids
-      )
-      |> Repo.delete_all()
-
-      from(c in Category, where: c.parent_id == ^from_id)
-      |> Repo.update_all(set: [parent_id: to_id])
-
-      from(c in Community, where: c.category_id == ^from_id)
-      |> Repo.update_all(set: [category_id: to_id])
-
-      Repo.get!(Category, from_id)
-      |> Repo.delete!()
-
-      Search.Category.delete_index(from_id)
-      Search.Category.update_index(to_id)
-
-      # their docs still list the deleted category
-      Search.Category.reset_podcasts(moved_podcast_ids)
-      :ok
+      true ->
+        do_merge(from_id, to_id)
     end
+  end
+
+  defp do_merge(from_id, to_id) do
+    moved_podcast_ids = Search.Category.podcast_ids(from_id)
+
+    from(f in Follow, where: f.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    from(l in Like, where: l.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    already_in_to_ids =
+      from(r in "categories_podcasts",
+        where: r.category_id == ^to_id,
+        select: [r.podcast_id]
+      )
+      |> Repo.all()
+
+    from(r in "categories_podcasts",
+      where:
+        r.category_id == ^from_id and
+          r.podcast_id not in ^already_in_to_ids
+    )
+    |> Repo.update_all(set: [category_id: to_id])
+
+    from(r in "categories_podcasts",
+      where:
+        r.category_id == ^from_id and
+          r.podcast_id in ^already_in_to_ids
+    )
+    |> Repo.delete_all()
+
+    from(c in Category, where: c.parent_id == ^from_id)
+    |> Repo.update_all(set: [parent_id: to_id])
+
+    from(c in Community, where: c.category_id == ^from_id)
+    |> Repo.update_all(set: [category_id: to_id])
+
+    Repo.get!(Category, from_id)
+    |> Repo.delete!()
+
+    Search.Category.delete_index(from_id)
+    Search.Category.update_index(to_id)
+
+    # their docs still list the deleted category
+    Search.Category.reset_podcasts(moved_podcast_ids)
+    :ok
   end
 end

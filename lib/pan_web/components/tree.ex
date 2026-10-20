@@ -47,6 +47,7 @@ defmodule PanWeb.Component.Tree do
   attr :selected_id, :integer, default: nil
   attr :marked, :map, default: %{}, doc: "node id => background class, below the selection"
   attr :counts, :map, default: nil, doc: "node id => number shown after the title"
+  attr :badges, :map, default: %{}, doc: "node id => short label shown after the title"
 
   def render(assigns) do
     ~H"""
@@ -99,6 +100,9 @@ defmodule PanWeb.Component.Tree do
         </button>
 
         {node.title}
+        <span :if={@badges[node.id]} class="badge badge-xs badge-neutral ml-1">
+          {@badges[node.id]}
+        </span>
         <span :if={@counts} class="ml-1 text-xs opacity-60 tabular-nums">
           {Map.get(@counts, node.id, 0)}
         </span>

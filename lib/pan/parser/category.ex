@@ -26,7 +26,12 @@ defmodule Pan.Parser.Category do
     end
   end
 
-  defp matching(title) do
+  @doc """
+  The query for the category titled `title` (ignoring case and surrounding
+  spaces), the exact title first, then the oldest; also used for the Apple
+  flags (Pan.AppleCategories).
+  """
+  def matching(title) do
     from(c in Category,
       where: fragment("lower(trim(?))", c.title) == ^String.downcase(title),
       order_by: [desc: c.title == ^title, asc: c.id],

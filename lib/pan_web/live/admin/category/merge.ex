@@ -27,6 +27,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
     assign(socket,
       categories: Category.tree(),
+      apple_badges: Map.new(Category.apple_ids(), &{&1, "Apple"}),
       podcast_counts: Category.podcast_counts(),
       empty_ids: empty_ids,
       marked: marked,
@@ -113,12 +114,29 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     end
   end
 
+  def handle_event("update_apple", _, socket) do
+    case Pan.AppleCategories.update() do
+      {:ok, result} ->
+        {:noreply, socket |> put_flash(:info, apple_message(result)) |> load()}
+
+      {:error, message} ->
+        {:noreply, put_flash(socket, :error, message)}
+    end
+  end
+
   def handle_event("selectFrom", %{"node-id" => from_id}, socket) do
     {:noreply, socket |> assign(from_id: String.to_integer(from_id)) |> mark_candidates()}
   end
 
   def handle_event("selectInto", %{"node-id" => into_id}, socket) do
     {:noreply, assign(socket, into_id: into_id |> String.to_integer())}
+  end
+
+  defp apple_message(%{apple: apple, flagged: flagged, unflagged: unflagged, missing: missing}) do
+    "#{apple} Apple categories (#{flagged} newly flagged, #{unflagged} unflagged)." <>
+      if missing == [],
+        do: "",
+        else: " On Apple's list, not here yet: " <> Enum.join(missing, ", ") <> "."
   end
 
   def render(assigns) do
@@ -134,6 +152,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         selected_id={@from_id}
         marked={@from_marked}
         counts={@podcast_counts}
+        badges={@apple_badges}
       />
       <.live_component
         module={Tree}
@@ -143,6 +162,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         selected_id={@into_id}
         marked={@into_marked}
         counts={@podcast_counts}
+        badges={@apple_badges}
       />
 
       <div class="sticky top-4 self-start">
@@ -171,7 +191,15 @@ defmodule PanWeb.Live.Admin.Category.Merge do
           Delete Category (left)
         </button>
 
+        <button phx-click="update_apple" class="btn btn-neutral btn-sm mt-4 block">
+          Update Apple flags
+        </button>
+
         <ul class="mt-6 space-y-1 text-sm">
+          <li class="flex items-center gap-2">
+            <span class="badge badge-xs badge-neutral">Apple</span>
+            on Apple Podcasts' current list: merge into it, it can't be deleted, merged away or moved
+          </li>
           <li class="flex items-center gap-2">
             <span class="inline-block size-4 border border-gray-light bg-success"></span> selected
           </li>
