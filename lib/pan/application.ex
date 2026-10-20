@@ -9,6 +9,9 @@ defmodule Pan.Application do
       {&Pan.LoggerFilters.silence_xmerl_fatal/2, []}
     )
 
+    # the error mails in prod (Pan.ExceptionNotification), no handlers elsewhere
+    :ok = Logger.add_handlers(:pan)
+
     children = Application.get_env(:pan, :children)
     opts = [strategy: :one_for_one, name: Pan.Supervisor]
     Supervisor.start_link(children, opts)

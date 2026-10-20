@@ -13,8 +13,10 @@ config :pan, PanWeb.Endpoint,
   check_origin: ["https://panoptikum.social", "https://ansible.local"],
   version: Mix.Project.config()[:version]
 
-config :logger,
-  backends: [:console, {Logger.Backends.ExceptionNotification, :exception_notification}]
+# errors are mailed to the admins (added in Pan.Application)
+config :pan, :logger, [
+  {:handler, :exception_notification, Pan.ExceptionNotification, %{level: :error}}
+]
 
 config :logger, level: :info
 

@@ -187,7 +187,7 @@ defmodule Pan.Updater.Succession do
 
   # Raised and rescued right here, so the update ends cleanly; logged as an
   # error, the exception goes out by email in prod
-  # (Logger.Backends.ExceptionNotification).
+  # (Pan.ExceptionNotification).
   defp notify_admin(podcast, message) do
     raise ReviewNeeded, message: "Podcast #{podcast.id} \"#{podcast.title}\": #{message}"
   rescue
