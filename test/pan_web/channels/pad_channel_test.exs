@@ -11,6 +11,7 @@ defmodule PanWeb.PadChannelTest do
     Pad,
     PadChannel,
     PadServer,
+    PadSnapshot,
     User,
     UserSocket
   }
@@ -63,6 +64,16 @@ defmodule PanWeb.PadChannelTest do
     case Sync.message_decode!(message) do
       {:sync, {:sync_step2, diff}} -> diff
       _other -> receive_step2()
+    end
+  end
+
+  # the next document update, skipping what is left of the initial sync
+  defp receive_update do
+    assert_push("yjs", {:binary, message})
+
+    case Sync.message_decode!(message) do
+      {:sync, {:sync_update, update}} -> update
+      _other -> receive_update()
     end
   end
 
@@ -154,6 +165,47 @@ defmodule PanWeb.PadChannelTest do
     assert_push("preview", %{html: ^html})
 
     close_all([socket_a, socket_b, socket_c], pad)
+  end
+
+  test "the last one leaving takes a snapshot, unless the text is unchanged",
+       %{pad: pad, follower: follower} do
+    {_reply, socket} = join_pad(follower, pad)
+    push(socket, "yjs", {:binary, edit(Yex.Doc.new(), "Version one")})
+    push(socket, "yjs_sync", {:binary, sync_step1(Yex.Doc.new())})
+    receive_step2()
+    server = PadServer.whereis(pad.id)
+
+    Process.unlink(socket.channel_pid)
+    close(socket)
+    # the pad process has handled the channel's going away
+    :sys.get_state(server)
+    assert [%{markdown: "Version one", user_id: nil, note: nil}] = Repo.all(PadSnapshot)
+
+    {_reply, socket} = join_pad(follower, pad)
+    Process.unlink(socket.channel_pid)
+    close(socket)
+    :sys.get_state(server)
+    assert Repo.aggregate(PadSnapshot, :count) == 1
+
+    close_all([], pad)
+  end
+
+  test "a restore reaches the open editors", %{pad: pad, follower: follower} do
+    {_reply, socket} = join_pad(follower, pad)
+    doc = Yex.Doc.new()
+    push(socket, "yjs_sync", {:binary, sync_step1(doc)})
+    :ok = Yex.apply_update(doc, receive_step2())
+
+    # the preview on joining, of the still empty pad
+    assert_push("preview", %{html: ""})
+    :ok = PadServer.restore(pad.id, "Restored text")
+
+    :ok = Yex.apply_update(doc, receive_update())
+    assert text(doc) == "Restored text"
+    assert_push("preview", %{html: html}, 1000)
+    assert html =~ "Restored text"
+
+    close_all([socket], pad)
   end
 
   test "a browser joining later gets the saved text", %{pad: pad, follower: follower} do

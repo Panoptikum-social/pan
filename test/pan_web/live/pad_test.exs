@@ -5,7 +5,7 @@ defmodule PanWeb.Live.PadTest do
   import PanWeb.Router.Helpers
 
   alias Pan.Repo
-  alias PanWeb.{Category, Community, Follow, Moderation, Pad, User}
+  alias PanWeb.{Category, Community, Follow, Moderation, Pad, PadServer, PadSnapshot, User}
 
   defp insert_user do
     n = System.unique_integer([:positive])
@@ -163,6 +163,45 @@ defmodule PanWeb.Live.PadTest do
 
       assert to == community_frontend_path(@endpoint, :show, community)
       refute Repo.get(Pad, pad.id)
+    end
+
+    test "a follower saves, views and restores versions, not while read only",
+         %{conn: conn, community: community, pad: pad} do
+      user = insert_user()
+      follow(user, community)
+
+      {:ok, view, _html} =
+        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
+
+      html =
+        view
+        |> form("#save-version-form", version: %{note: "Before the meeting"})
+        |> render_submit()
+
+      assert html =~ "Version saved."
+      assert render(view) =~ "Before the meeting"
+      assert [%{user_id: user_id, note: "Before the meeting"}] = Repo.all(PadSnapshot)
+      assert user_id == user.id
+
+      old = Repo.insert!(%PadSnapshot{pad_id: pad.id, markdown: "An *older* text"})
+      send(view.pid, :snapshots_changed)
+
+      assert view |> element("#pad-version-#{old.id} button", "View") |> render_click() =~
+               "<em>older</em>"
+
+      assert render(view) =~ "automatic"
+
+      view |> element("#pad-version-#{old.id} button", "Restore") |> render_click()
+      server = PadServer.whereis(pad.id)
+      text = :sys.get_state(server).doc |> Yex.Doc.get_text(PadServer.text_name())
+      assert Yex.Text.to_string(text) == "An *older* text"
+
+      pad |> Pad.read_only_changeset(true) |> Repo.update!()
+
+      assert view |> element("#pad-version-#{old.id} button", "Restore") |> render_click() =~
+               "This pad is read only."
+
+      DynamicSupervisor.terminate_child(Pan.PadSupervisor, server)
     end
 
     test "manage events from a moderator who stopped following are refused",

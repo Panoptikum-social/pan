@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Pad.Show do
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias Pan.Repo
-  alias PanWeb.{Community, Pad, PadChannel, PadServer, User, UserSocket}
+  alias PanWeb.{Community, Pad, PadChannel, PadServer, PadSnapshot, User, UserSocket}
   alias PanWeb.Component.Panel
   alias Phoenix.LiveView.JS
 
@@ -15,12 +15,19 @@ defmodule PanWeb.Live.Pad.Show do
          %{read: true} = permissions <-
            Pad.permissions(socket.assigns.current_user_id, community.id),
          %Pad{} = pad <- Pad.get_by_slug(community.id, slug) do
+      if connected?(socket) do
+        Phoenix.PubSub.subscribe(:pan_pubsub, PadServer.snapshots_topic(pad.id))
+      end
+
       {:ok,
        assign(socket,
          community: community,
          pad: pad,
          permissions: permissions,
          rename_form: to_form(Pad.changeset(pad), as: :pad),
+         version_form: version_form(),
+         snapshots: PadSnapshot.list_for(pad.id),
+         shown_snapshot: nil,
          user_name: Repo.get!(User, socket.assigns.current_user_id).name,
          page_title: pad.title <> " (Pad, " <> community.title <> ")"
        )}
@@ -29,9 +36,24 @@ defmodule PanWeb.Live.Pad.Show do
     end
   end
 
+  defp version_form, do: to_form(%{"note" => ""}, as: :version)
+
+  # Versions are for every follower, managing only for moderators who follow.
+  # The permission is checked again on every event, a follow or moderation
+  # may have ended since the page was opened.
+  @version_events ~w(save_version show_version restore_version)
+
+  def handle_event(event, params, socket) when event in @version_events do
+    %{community: community, pad: pad, current_user_id: user_id} = socket.assigns
+
+    if Pad.permissions(user_id, community.id).read do
+      version(event, params, Repo.get!(Pad, pad.id), socket)
+    else
+      {:noreply, put_flash(socket, :error, "Only followers of this community can do that.")}
+    end
+  end
+
   def handle_event(event, params, socket) do
-    # the permission is checked again on every event, a follow or moderation
-    # may have ended since the page was opened
     %{community: community, pad: pad, current_user_id: user_id} = socket.assigns
 
     if Pad.permissions(user_id, community.id).manage do
@@ -39,6 +61,45 @@ defmodule PanWeb.Live.Pad.Show do
     else
       {:noreply, put_flash(socket, :error, "Only moderators of this community can do that.")}
     end
+  end
+
+  # the list itself is reloaded through PubSub, for everybody on the page
+  defp version("save_version", %{"version" => %{"note" => note}}, pad, socket) do
+    case PadServer.save_version(pad.id, socket.assigns.current_user_id, note) do
+      {:ok, _snapshot} ->
+        {:noreply,
+         socket |> assign(version_form: version_form()) |> put_flash(:info, "Version saved.")}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, version_form: to_form(changeset, as: :version))}
+    end
+  end
+
+  defp version("show_version", %{"id" => id}, pad, socket) do
+    snapshot = Repo.get_by!(PadSnapshot, id: id, pad_id: pad.id)
+
+    shown =
+      if socket.assigns.shown_snapshot && socket.assigns.shown_snapshot.id == snapshot.id,
+        do: nil,
+        else: snapshot
+
+    {:noreply, assign(socket, shown_snapshot: shown)}
+  end
+
+  defp version("restore_version", _params, %Pad{read_only: true}, socket) do
+    {:noreply, put_flash(socket, :error, "This pad is read only.")}
+  end
+
+  defp version("restore_version", %{"id" => id}, pad, socket) do
+    snapshot = Repo.get_by!(PadSnapshot, id: id, pad_id: pad.id)
+    :ok = PadServer.restore(pad.id, snapshot.markdown)
+
+    {:noreply,
+     put_flash(socket, :info, "Version restored. Restoring an earlier version undoes it.")}
+  end
+
+  def handle_info(:snapshots_changed, socket) do
+    {:noreply, assign(socket, snapshots: PadSnapshot.list_for(socket.assigns.pad.id))}
   end
 
   defp manage("toggle_read_only", _params, pad, socket) do
@@ -69,6 +130,10 @@ defmodule PanWeb.Live.Pad.Show do
      |> put_flash(:info, "Pad \"#{pad.title}\" deleted.")
      |> push_navigate(to: community_frontend_path(socket, :show, socket.assigns.community.id))}
   end
+
+  defp snapshot_author(%{user_id: nil, note: nil}), do: "automatic"
+  defp snapshot_author(%{user_name: nil}), do: "by a former user"
+  defp snapshot_author(%{user_name: name}), do: "by " <> name
 
   # the same color for a user's cursor everywhere
   @cursor_colors ~w(#30bced #6eeb83 #ffbc42 #ee6352 #9ac2c9 #8acb88 #1be7ff #c45ab3)
@@ -154,6 +219,72 @@ defmodule PanWeb.Live.Pad.Show do
               {markdown(@pad.markdown, sourcepos: true)}
             </div>
           </div>
+        </div>
+
+        <div class="mt-8 border-t border-base-300 pt-4">
+          <h3 class="text-lg font-semibold">Versions</h3>
+          <p class="text-sm">
+            A version is saved automatically 5 minutes after the last edit and when the
+            last person leaves the pad, unless the text is unchanged.
+          </p>
+
+          <.form
+            for={@version_form}
+            id="save-version-form"
+            phx-submit="save_version"
+            class="flex items-start gap-2 mt-2"
+          >
+            <.input field={@version_form[:note]} placeholder="Note (optional)" />
+            <.button class="btn btn-primary">Save version</.button>
+          </.form>
+
+          <p :if={@snapshots == []} class="text-sm mt-2">No versions yet.</p>
+
+          <ul :if={@snapshots != []} id="pad-versions" class="mt-2 divide-y divide-base-300">
+            <li :for={snapshot <- @snapshots} id={"pad-version-#{snapshot.id}"} class="py-2">
+              <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+                <span class="font-mono">
+                  {Calendar.strftime(snapshot.inserted_at, "%Y-%m-%d %H:%M")} UTC
+                </span>
+                <span>{snapshot_author(snapshot)}</span>
+                <span :if={snapshot.note} class="italic">{snapshot.note}</span>
+                <span class="ml-auto flex gap-2">
+                  <button
+                    phx-click="show_version"
+                    phx-value-id={snapshot.id}
+                    class="btn btn-ghost btn-xs"
+                  >
+                    {if @shown_snapshot && @shown_snapshot.id == snapshot.id,
+                      do: "Hide",
+                      else: "View"}
+                  </button>
+                  <button
+                    :if={@shown_snapshot && @shown_snapshot.id == snapshot.id}
+                    phx-click={JS.dispatch("pan:print", to: "#pad-version-content-#{snapshot.id}")}
+                    class="btn btn-ghost btn-xs"
+                  >
+                    Print
+                  </button>
+                  <button
+                    :if={!@pad.read_only}
+                    phx-click="restore_version"
+                    phx-value-id={snapshot.id}
+                    data-confirm="Replace the current text with this version? Everybody editing sees it at once."
+                    class="btn btn-primary btn-xs"
+                  >
+                    Restore
+                  </button>
+                </span>
+              </div>
+              <div
+                :if={@shown_snapshot && @shown_snapshot.id == snapshot.id}
+                id={"pad-version-content-#{snapshot.id}"}
+                class="prose max-w-none mt-2 p-4 border border-base-content/40 rounded bg-base-100"
+              >
+                {markdown(@shown_snapshot.markdown)}
+              </div>
+            </li>
+          </ul>
         </div>
 
         <div :if={@permissions.manage} class="mt-8 border-t border-base-300 pt-4">

@@ -205,3 +205,19 @@
 .phx-disconnected * {
   pointer-events: none;
 }
+
+/* printing a single element, see "pan:print" in app.js */
+@media print {
+  body.printing > :not(#print-root) {
+    display: none !important;
+  }
+  #print-root {
+    border: none;
+    padding: 0;
+  }
+}
+@media screen {
+  #print-root {
+    display: none;
+  }
+}

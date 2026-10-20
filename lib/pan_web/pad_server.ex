@@ -10,13 +10,20 @@ defmodule PanWeb.PadServer do
 
   The Yjs state and a markdown copy of the text are saved a moment after the
   last edit and when the process stops, which it does a little while after
-  the last observer has left (and on shutdown). Read only is enforced by
+  the last observer has left (and on shutdown).
+
+  Snapshots (`PanWeb.PadSnapshot`) are taken automatically 5 minutes after
+  the last edit, when the last observer leaves and on stop, each skipped if
+  the text is the same as in the latest snapshot; "Save version" always
+  takes one. Viewers of the pad page learn about new snapshots through
+  PubSub (`snapshots_topic/1`). Restoring replaces the text as an edit of
+  this process, so it reaches everybody like any other edit. Read only is enforced by
   `PanWeb.PadChannel`, before messages get here.
   """
   use Yex.DocServer
 
   alias Pan.Repo
-  alias PanWeb.Pad
+  alias PanWeb.{Pad, PadSnapshot}
   alias Yex.{Awareness, Sync}
 
   import Ecto.Query, only: [from: 2]
@@ -25,6 +32,7 @@ defmodule PanWeb.PadServer do
   @text "body"
   @save_after :timer.seconds(2)
   @preview_after 300
+  @snapshot_after :timer.minutes(5)
   @stop_after :timer.seconds(10)
 
   @doc "The running process of a pad, started if needed."
@@ -76,6 +84,22 @@ defmodule PanWeb.PadServer do
 
   def text_name, do: @text
 
+  def snapshots_topic(pad_id), do: "pad_snapshots:#{pad_id}"
+
+  @doc "Takes a snapshot of the current text, by a user and with an optional note."
+  def save_version(pad_id, user_id, note) do
+    with {:ok, server} <- find_or_start(pad_id) do
+      GenServer.call(server, {:save_version, user_id, note})
+    end
+  end
+
+  @doc "Replaces the text, as an edit everybody sees."
+  def restore(pad_id, markdown) do
+    with {:ok, server} <- find_or_start(pad_id) do
+      GenServer.call(server, {:restore, markdown})
+    end
+  end
+
   @impl true
   def init(option, %{doc: doc} = state) do
     # so that terminate/2 saves on shutdown, too
@@ -95,6 +119,7 @@ defmodule PanWeb.PadServer do
        dirty: false,
        save_timer: nil,
        preview_timer: nil,
+       snapshot_timer: nil,
        stop_timer: Process.send_after(self(), :stop_if_unobserved, @stop_after)
      )}
   end
@@ -106,6 +131,21 @@ defmodule PanWeb.PadServer do
     {:reply, :ok, assign(state, observers: observers)}
   end
 
+  def handle_call({:save_version, user_id, note}, _from, state) do
+    {:reply, insert_snapshot(state, %{user_id: user_id, note: note}), state}
+  end
+
+  def handle_call({:restore, markdown}, _from, %{doc: doc} = state) do
+    text = Yex.Doc.get_text(doc, @text)
+
+    Yex.Doc.transaction(doc, :restore, fn ->
+      Yex.Text.delete(text, 0, Yex.Text.length(text))
+      Yex.Text.insert(text, 0, markdown)
+    end)
+
+    {:reply, :ok, state}
+  end
+
   @impl true
   def handle_update_v1(_doc, update, origin, state) do
     with {:ok, sync} <- Sync.get_update(update),
@@ -113,7 +153,7 @@ defmodule PanWeb.PadServer do
       broadcast(message, origin, state)
     end
 
-    {:noreply, state |> schedule_save() |> schedule_preview()}
+    {:noreply, state |> schedule_save() |> schedule_preview() |> schedule_snapshot()}
   end
 
   @impl true
@@ -143,6 +183,8 @@ defmodule PanWeb.PadServer do
       )
 
     if state.assigns.observers == %{} do
+      state = auto_snapshot(state)
+
       {:noreply,
        assign(state, stop_timer: Process.send_after(self(), :stop_if_unobserved, @stop_after))}
     else
@@ -151,6 +193,8 @@ defmodule PanWeb.PadServer do
   end
 
   def handle_info(:save, state), do: {:noreply, save(state)}
+
+  def handle_info(:snapshot, state), do: {:noreply, auto_snapshot(state)}
 
   def handle_info(:preview, %{assigns: %{observers: observers}} = state) do
     html = preview(state)
@@ -168,7 +212,7 @@ defmodule PanWeb.PadServer do
 
   @impl true
   def terminate(_reason, state) do
-    save(state)
+    state |> save() |> auto_snapshot()
     :ok
   end
 
@@ -200,6 +244,37 @@ defmodule PanWeb.PadServer do
   end
 
   defp schedule_preview(state), do: state
+
+  # 5 minutes after the last edit
+  defp schedule_snapshot(%{assigns: assigns} = state) do
+    if assigns.snapshot_timer, do: Process.cancel_timer(assigns.snapshot_timer)
+    assign(state, snapshot_timer: Process.send_after(self(), :snapshot, @snapshot_after))
+  end
+
+  defp auto_snapshot(%{assigns: assigns} = state) do
+    if assigns.snapshot_timer, do: Process.cancel_timer(assigns.snapshot_timer)
+
+    if text(state) != PadSnapshot.latest_markdown(assigns.pad_id) do
+      insert_snapshot(state, %{})
+    end
+
+    assign(state, snapshot_timer: nil)
+  end
+
+  defp insert_snapshot(%{assigns: assigns} = state, attributes) do
+    result =
+      %PadSnapshot{pad_id: assigns.pad_id, user_id: attributes[:user_id], markdown: text(state)}
+      |> PadSnapshot.changeset(%{note: attributes[:note]})
+      |> Repo.insert()
+
+    with {:ok, _snapshot} <- result do
+      Phoenix.PubSub.broadcast(:pan_pubsub, snapshots_topic(assigns.pad_id), :snapshots_changed)
+    end
+
+    result
+  end
+
+  defp text(%{doc: doc}), do: doc |> Yex.Doc.get_text(@text) |> Yex.Text.to_string()
 
   defp preview(%{doc: doc}) do
     doc

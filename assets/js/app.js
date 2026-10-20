@@ -157,6 +157,27 @@ window.addEventListener("phx:page-loading-stop", () => {
   topbar.hide();
 });
 
+// Prints only the element a "pan:print" event is dispatched to (e.g. a pad
+// version): a copy of it is the only thing on the page while printing.
+window.addEventListener("pan:print", (event) => {
+  const root = document.createElement("div");
+  root.id = "print-root";
+  root.className = event.target.className;
+  root.innerHTML = event.target.innerHTML;
+  document.body.appendChild(root);
+  document.body.classList.add("printing");
+
+  window.addEventListener(
+    "afterprint",
+    () => {
+      root.remove();
+      document.body.classList.remove("printing");
+    },
+    { once: true },
+  );
+  window.print();
+});
+
 // connect if there are any LiveViews on the page
 liveSocket.connect();
 
