@@ -10,10 +10,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **Faster compiles (found 2026-10-18).** Elixir 1.20's compiler option
-  `elixirc_options: [module_definition: :interpreted]` can cut compile
-  times on machines with many cores; the `.beam` files stay the same.
-  Worth a try, optional.
 - **Category clean-up, second look (found 2026-10-19).** The user cleans up
   categories on prod with `/admin/categories/merge` (namesakes colored, empty
   ones deletable, podcast counts) and restores a prod backup to dev on
