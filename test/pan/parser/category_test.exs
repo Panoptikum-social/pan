@@ -40,4 +40,70 @@ defmodule Pan.Parser.CategoryTest do
     assert {:ok, category} = ParserCategory.get_or_insert(" #{title}  ", nil)
     assert category.title == title
   end
+
+  describe "mappings" do
+    alias PanWeb.CategoryMapping
+
+    test "a mapped top level name gives the target, nothing new is created" do
+      target = Repo.insert!(%Category{title: unique_title("Sports")})
+      old = unique_title("Sports & Recreation")
+      CategoryMapping.put(nil, old, target.id)
+
+      assert {:ok, %{id: id}} = ParserCategory.get_or_insert(" #{String.upcase(old)} ", nil)
+      assert id == target.id
+      refute Repo.exists?(from(c in Category, where: c.title == ^old))
+    end
+
+    test "a mapped subcategory gives the target, its parent isn't created" do
+      news = Repo.insert!(%Category{title: unique_title("News")})
+      target = Repo.insert!(%Category{title: "Tech News", parent_id: news.id})
+      parent = unique_title("Old Technology")
+      CategoryMapping.put(parent, "Tech News", target.id)
+
+      assert {:ok, %{id: id}} = ParserCategory.get_or_insert("tech news", parent)
+      assert id == target.id
+      refute Repo.exists?(from(c in Category, where: c.title == ^parent))
+    end
+
+    test "a subcategory below a mapped parent without its own mapping is skipped" do
+      target = Repo.insert!(%Category{title: unique_title("Sports")})
+      old = unique_title("Sports & Recreation")
+      CategoryMapping.put(nil, old, target.id)
+
+      assert ParserCategory.get_or_insert("Amateur", old) == :skip
+      refute Repo.exists?(from(c in Category, where: c.title == ^old))
+    end
+
+    test "persist_many files the podcast under the targets, also when it's there already" do
+      target = Repo.insert!(%Category{title: unique_title("Sports")})
+      old = unique_title("Sports & Recreation")
+      CategoryMapping.put(nil, old, target.id)
+      podcast = Repo.insert!(%PanWeb.Podcast{title: unique_title("Podcast"), update_intervall: 1})
+
+      categories = %{
+        "a" => %{title: old, parent: nil},
+        "b" => %{title: "Amateur", parent: old}
+      }
+
+      ParserCategory.persist_many(categories, podcast)
+      ParserCategory.persist_many(categories, Repo.get!(PanWeb.Podcast, podcast.id))
+
+      assert podcast_category_ids(podcast) == [target.id]
+    end
+
+    test "putting the same names again replaces the target" do
+      first = Repo.insert!(%Category{title: unique_title("First")})
+      second = Repo.insert!(%Category{title: unique_title("Second")})
+      old = unique_title("Old name")
+      CategoryMapping.put(nil, old, first.id)
+      CategoryMapping.put(nil, " #{String.downcase(old)}", second.id)
+
+      assert CategoryMapping.target(nil, old).id == second.id
+    end
+
+    defp podcast_category_ids(podcast) do
+      from(r in "categories_podcasts", where: r.podcast_id == ^podcast.id, select: r.category_id)
+      |> Repo.all()
+    end
+  end
 end

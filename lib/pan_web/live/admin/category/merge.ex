@@ -1,6 +1,6 @@
 defmodule PanWeb.Live.Admin.Category.Merge do
   use PanWeb, :admin_live_view
-  alias PanWeb.Category
+  alias PanWeb.{Category, CategoryMapping, Endpoint}
   alias PanWeb.Component.{Tree, Icon}
 
   @empty_class "bg-warning/40"
@@ -8,9 +8,16 @@ defmodule PanWeb.Live.Admin.Category.Merge do
   @candidate_class "bg-info/20"
   @no_title_class "bg-error/30"
 
+  @tabs [{"merge", "Merge"}, {"mappings", "Mappings"}]
+
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(from_id: nil, into_id: nil) |> load()}
+    {:ok, socket |> assign(from_id: nil, into_id: nil, tabs: @tabs) |> load()}
   end
+
+  def handle_params(%{"tab" => "mappings"}, _uri, socket),
+    do: {:noreply, assign(socket, tab: "mappings")}
+
+  def handle_params(_params, _uri, socket), do: {:noreply, assign(socket, tab: "merge")}
 
   defp load(socket) do
     empty_ids = Category.empty_ids()
@@ -27,6 +34,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
     assign(socket,
       categories: Category.tree(),
+      mappings: CategoryMapping.list(),
       apple_badges: Map.new(Category.apple_ids(), &{&1, "Apple"}),
       podcast_counts: Category.podcast_counts(),
       empty_ids: empty_ids,
@@ -124,6 +132,11 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     end
   end
 
+  def handle_event("delete_mapping", %{"id" => id}, socket) do
+    CategoryMapping.delete(String.to_integer(id))
+    {:noreply, socket |> put_flash(:info, "Mapping deleted.") |> load()}
+  end
+
   def handle_event("selectFrom", %{"node-id" => from_id}, socket) do
     {:noreply, socket |> assign(from_id: String.to_integer(from_id)) |> mark_candidates()}
   end
@@ -143,7 +156,21 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     ~H"""
     <h1 class="text-3xl m-4">Merging categories</h1>
 
-    <div class="flex m-4 space-x-4">
+    <div role="tablist" class="tabs tabs-border mx-4">
+      <.link
+        :for={{key, label} <- @tabs}
+        patch={category_path(Endpoint, :merge, tab: key)}
+        role="tab"
+        class={["tab", key == @tab && "tab-active"]}
+      >
+        {label}
+        <span :if={key == "mappings"} class="badge badge-sm badge-neutral ml-2">
+          {length(@mappings)}
+        </span>
+      </.link>
+    </div>
+
+    <div :if={@tab == "merge"} class="flex m-4 space-x-4">
       <.live_component
         module={Tree}
         id="fromTree"
@@ -222,6 +249,47 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         </ul>
       </div>
     </div>
+
+    <div :if={@tab == "mappings"} class="m-4">
+      <p class="text-sm my-2 max-w-3xl">
+        Feeds using a name on the left get the category on the right instead, the name isn't created
+        again. A subcategory below a mapped parent needs its own mapping, else it's skipped.
+        Merging records the merged category's names here.
+      </p>
+
+      <p :if={@mappings == []} class="text-sm italic">No mappings yet.</p>
+
+      <table :if={@mappings != []} id="category-mappings" class="table table-sm w-auto">
+        <thead>
+          <tr>
+            <th>Name in feeds</th>
+            <th>Filed under</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :for={mapping <- @mappings} id={"category-mapping-#{mapping.id}"}>
+            <td>{names(mapping.parent_title, mapping.title)}</td>
+            <td>
+              {names(mapping.category.parent && mapping.category.parent.title, mapping.category.title)}
+            </td>
+            <td>
+              <button
+                phx-click="delete_mapping"
+                phx-value-id={mapping.id}
+                data-confirm="Delete this mapping? Feeds using the name create it again."
+                class="btn btn-error btn-xs"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     """
   end
+
+  defp names(nil, title), do: title
+  defp names(parent_title, title), do: "#{parent_title} › #{title}"
 end

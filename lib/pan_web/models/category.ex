@@ -1,7 +1,7 @@
 defmodule PanWeb.Category do
   use PanWeb, :model
   alias Pan.{Repo, Search}
-  alias PanWeb.{Follow, Like, Category, Community}
+  alias PanWeb.{Follow, Like, Category, CategoryMapping, Community}
 
   schema "categories" do
     field(:title, :string)
@@ -405,8 +405,10 @@ defmodule PanWeb.Category do
     from(c in Community, where: c.category_id == ^from_id)
     |> Repo.update_all(set: [category_id: to_id])
 
-    Repo.get!(Category, from_id)
-    |> Repo.delete!()
+    merged = Repo.get!(Category, from_id) |> Repo.preload(:parent)
+    record_mapping(merged, Repo.get!(Category, to_id) |> Repo.preload(:parent))
+    CategoryMapping.repoint(from_id, to_id)
+    Repo.delete!(merged)
 
     Search.Category.delete_index(from_id)
     Search.Category.update_index(to_id)
@@ -415,4 +417,19 @@ defmodule PanWeb.Category do
     Search.Category.reset_podcasts(moved_podcast_ids)
     :ok
   end
+
+  # Feeds using the merged category's names land in the target from now on
+  # (Pan.Parser.Category). Names the target has itself need no mapping, nor
+  # does a blank title (the parser skips those).
+  defp record_mapping(from, to) do
+    from_names = {names_key(from.parent), names_key(from)}
+
+    unless from_names == {names_key(to.parent), names_key(to)} or names_key(from) == "" do
+      CategoryMapping.put(from.parent && from.parent.title, from.title, to.id)
+    end
+  end
+
+  defp names_key(nil), do: ""
+  defp names_key(%Category{title: nil}), do: ""
+  defp names_key(%Category{title: title}), do: title |> String.trim() |> String.downcase()
 end

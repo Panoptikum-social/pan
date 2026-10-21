@@ -2,27 +2,41 @@ defmodule Pan.Parser.Category do
   import Ecto.Query
   alias Pan.Parser.SsrfGuard
   alias Pan.Repo
-  alias PanWeb.Category
+  alias PanWeb.{Category, CategoryMapping}
 
-  # Titles match ignoring case and surrounding spaces, so "sports & recreation"
-  # doesn't become a second "Sports & Recreation". Where such variants exist
-  # side by side already, the exact title wins, then the oldest one.
-  def get_or_insert(title, nil) do
-    title = String.trim(title)
+  @doc """
+  The category for a feed's `title` (below `parent_title`, nil for top level).
+  A CategoryMapping of these names wins. Otherwise titles match ignoring
+  case and surrounding spaces, so "sports & recreation" doesn't become a
+  second "Sports & Recreation"; where such variants exist side by side
+  already, the exact title wins, then the oldest one. A subcategory below a
+  mapped parent needs a mapping of its own, else it's skipped (`:skip`), so
+  the old parent doesn't come back.
+  """
+  def get_or_insert(title, parent_title) do
+    case CategoryMapping.target(parent_title, title) do
+      nil -> find_or_insert(String.trim(title), parent_title)
+      category -> {:ok, category}
+    end
+  end
 
+  defp find_or_insert(title, nil) do
     case Repo.one(from(c in matching(title), where: is_nil(c.parent_id))) do
       nil -> Repo.insert(%Category{title: title})
       category -> {:ok, category}
     end
   end
 
-  def get_or_insert(title, parent_title) do
-    {:ok, parent} = get_or_insert(parent_title, nil)
-    title = String.trim(title)
+  defp find_or_insert(title, parent_title) do
+    if CategoryMapping.target(nil, parent_title) do
+      :skip
+    else
+      {:ok, parent} = find_or_insert(String.trim(parent_title), nil)
 
-    case Repo.one(from(c in matching(title), where: c.parent_id == ^parent.id)) do
-      nil -> Repo.insert(%Category{title: title, parent_id: parent.id})
-      category -> {:ok, category}
+      case Repo.one(from(c in matching(title), where: c.parent_id == ^parent.id)) do
+        nil -> Repo.insert(%Category{title: title, parent_id: parent.id})
+        category -> {:ok, category}
+      end
     end
   end
 
@@ -49,8 +63,11 @@ defmodule Pan.Parser.Category do
         # match nothing in SQL anyway), raising instead of just skipping it.
         |> Enum.reject(fn {_, category_map} -> blank?(category_map[:title]) end)
         |> Enum.map(fn {_, category_map} ->
-          {:ok, category} = get_or_insert(category_map[:title], category_map[:parent])
-          category
+          get_or_insert(category_map[:title], category_map[:parent])
+        end)
+        |> Enum.flat_map(fn
+          {:ok, category} -> [category]
+          :skip -> []
         end)
 
       categories = Enum.uniq(categories)
