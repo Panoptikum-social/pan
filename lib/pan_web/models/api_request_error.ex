@@ -8,7 +8,7 @@ defmodule PanWeb.ApiRequestError do
   use PanWeb, :model
   alias Pan.Parser.Helpers
   alias Pan.Repo
-  alias PanWeb.{ApiRequestError, FormerPodcast, Podcast}
+  alias PanWeb.{ApiRequestError, Feed, FormerPodcast, Podcast}
 
   @kept_days 7
 
@@ -50,23 +50,29 @@ defmodule PanWeb.ApiRequestError do
       on: p.id == e.podcast_id,
       left_join: f in FormerPodcast,
       on: f.id == e.podcast_id,
+      # every podcast has exactly one feed
+      left_join: feed in Feed,
+      on: feed.podcast_id == p.id,
       where:
         e.inserted_at > ^hours_ago(24) and not is_nil(e.podcast_id) and
           (e.podcast_id in ^podcast_ids or is_nil(p.id)),
       order_by: [desc: e.inserted_at, desc: e.id],
-      select: {e, p.title, f}
+      select: {e, p.title, f, feed.id}
     )
     |> Repo.all()
-    |> Enum.group_by(fn {error, _title, _former} -> error.podcast_id end)
-    |> Enum.map(fn {podcast_id, [{latest, podcast_title, former} | _] = errors} ->
+    |> Enum.group_by(fn {error, _title, _former, _feed_id} -> error.podcast_id end)
+    |> Enum.map(fn {podcast_id, [{latest, podcast_title, former, feed_id} | _] = errors} ->
       %{
         podcast_id: podcast_id,
         podcast_title: podcast_title,
         former: former,
+        feed_id: feed_id,
         latest: latest,
         count: length(errors),
         endpoints:
-          errors |> Enum.map(fn {error, _title, _former} -> error.endpoint end) |> Enum.uniq()
+          errors
+          |> Enum.map(fn {error, _title, _former, _feed_id} -> error.endpoint end)
+          |> Enum.uniq()
       }
     end)
     |> Enum.sort_by(& &1.latest.inserted_at, {:desc, NaiveDateTime})

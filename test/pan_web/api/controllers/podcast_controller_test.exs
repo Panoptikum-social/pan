@@ -5,7 +5,7 @@ defmodule PanWeb.Api.PodcastControllerTest do
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   alias Pan.Repo
-  alias PanWeb.{ApiRequestError, Category, FormerPodcast, Podcast, User}
+  alias PanWeb.{ApiRequestError, Category, Feed, FormerPodcast, Podcast, User}
 
   defp insert_user(_context) do
     user =
@@ -266,6 +266,7 @@ defmodule PanWeb.Api.PodcastControllerTest do
       own = insert_podcast(%{})
       other = insert_podcast(%{})
       Repo.insert_all("categories_podcasts", [%{category_id: category.id, podcast_id: own.id}])
+      feed = Repo.insert!(%Feed{podcast_id: own.id, self_link_url: "https://own.example.com"})
 
       ApiRequestError.record(own.id, "show", 504, "Feed download failed", "403: forbidden")
       ApiRequestError.record(own.id, "trigger_episode_update", 504, "Feed download failed", "503")
@@ -286,9 +287,11 @@ defmodule PanWeb.Api.PodcastControllerTest do
       assert own_entry.count == 2
       assert own_entry.latest.detail == "503"
       assert own_entry.endpoints == ["trigger_episode_update", "show"]
+      assert own_entry.feed_id == feed.id
 
       assert deleted.podcast_id == 999_999_999
       assert deleted.podcast_title == nil
+      assert deleted.feed_id == nil
     end
   end
 end

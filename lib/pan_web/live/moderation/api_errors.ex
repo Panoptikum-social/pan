@@ -91,6 +91,19 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                   no longer exists
                 </span>
                 <span class="text-sm">(ID {error.podcast_id})</span>
+                <.link
+                  :if={error.feed_id}
+                  href={
+                    Routes.moderation_frontend_path(
+                      @socket,
+                      :edit_feed,
+                      @category.id,
+                      error.feed_id
+                    )
+                  }
+                  target="_blank"
+                  class="btn btn-primary btn-xs ml-1"
+                >Fix feed</.link>
               </td>
               <td class="max-w-xl">
                 <span class="font-semibold">{error.latest.title}</span>
