@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Moderation.ApiErrors do
   use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{ApiRequestError, Category, Moderation}
+  alias PanWeb.{ApiRequestError, Category, CategoryPodcast, Moderation}
   alias PanWeb.Router.Helpers, as: Routes
 
   # :id is the category id, as on the other moderation pages
@@ -20,6 +20,17 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
   def handle_event("reload", _params, socket) do
     {:noreply,
      assign(socket, errors: ApiRequestError.last_day_by_podcast(socket.assigns.category.id))}
+  end
+
+  # only out of the community: moderators don't delete podcasts
+  def handle_event("remove", %{"podcast_id" => podcast_id}, socket) do
+    category = socket.assigns.category
+    CategoryPodcast.delete(category.id, String.to_integer(podcast_id))
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Podcast #{podcast_id} removed from #{category.title}.")
+     |> assign(errors: ApiRequestError.last_day_by_podcast(category.id))}
   end
 
   defp vienna_string(naive_date_time) do
@@ -104,6 +115,16 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                   target="_blank"
                   class="btn btn-primary btn-xs ml-1"
                 >Fix feed</.link>
+                <button
+                  :if={error.podcast_title}
+                  type="button"
+                  phx-click="remove"
+                  phx-value-podcast_id={error.podcast_id}
+                  data-confirm={"Remove \"#{error.podcast_title}\" from #{@category.title}? The podcast stays on Panoptikum."}
+                  class="btn btn-warning btn-xs ml-1"
+                >
+                  Remove from community
+                </button>
               </td>
               <td class="max-w-xl">
                 <span class="font-semibold">{error.latest.title}</span>
