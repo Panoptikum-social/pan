@@ -70,6 +70,18 @@ defmodule PanWeb.Community do
     |> Repo.preload(:moderators)
   end
 
+  @doc "Titles of the communities whose category the podcast is in."
+  def titles_for_podcast(podcast_id) do
+    from(c in Community,
+      join: cp in "categories_podcasts",
+      on: cp.category_id == c.category_id,
+      where: cp.podcast_id == ^podcast_id,
+      order_by: c.title,
+      select: c.title
+    )
+    |> Repo.all()
+  end
+
   def personas(id) do
     from(p in (Community |> Repo.get!(id) |> Ecto.assoc(:personas)), order_by: p.name)
     |> Repo.all()

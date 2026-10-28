@@ -7,7 +7,10 @@ defmodule PanWeb.PodcastMergeTest do
     AlternateFeed,
     Enclosure,
     Episode,
+    Category,
+    Community,
     Feed,
+    FormerPodcast,
     Like,
     Podcast,
     PodcastMerge,
@@ -130,5 +133,43 @@ defmodule PanWeb.PodcastMergeTest do
   test "refuses to merge a podcast into itself" do
     {a, _} = insert_podcast("A", "https://a.example.com/feed")
     assert {:error, _message} = PodcastMerge.merge(a.id, a.id)
+  end
+
+  defp put_in_community(podcast) do
+    n = System.unique_integer([:positive])
+    category = Repo.insert!(%Category{title: "Community category #{n}"})
+    Repo.insert!(%Community{title: "Community #{n}", category_id: category.id})
+    Repo.insert_all("categories_podcasts", [%{category_id: category.id, podcast_id: podcast.id}])
+  end
+
+  test "records the merged podcast as former podcast, earlier ones follow along" do
+    {a, _} = insert_podcast("A", "https://a.example.com/feed")
+    {b, _} = insert_podcast("B", "https://b.example.com/feed")
+    {c, _} = insert_podcast("C", "https://c.example.com/feed")
+
+    assert {:ok, _message} = PodcastMerge.merge(c.id, b.id)
+    assert {:ok, _message} = PodcastMerge.merge(b.id, a.id)
+
+    assert %FormerPodcast{title: "B", feed_url: "https://b.example.com/feed", new_id: new_id} =
+             Repo.get(FormerPodcast, b.id)
+
+    assert new_id == a.id
+    assert Repo.get(FormerPodcast, c.id).new_id == a.id
+
+    {detail, meta} = FormerPodcast.not_found(c.id)
+    assert detail =~ "(C) was merged into the podcast with Panoptikum ID #{a.id}"
+    assert meta == %{new_id: a.id}
+  end
+
+  test "a community podcast is only merged into a podcast of a community" do
+    {a, _} = insert_podcast("A", "https://a.example.com/feed")
+    {b, _} = insert_podcast("B", "https://b.example.com/feed")
+    put_in_community(b)
+
+    assert {:error, message} = PodcastMerge.merge(b.id, a.id)
+    assert message =~ "merge #{a.id} into #{b.id} instead"
+    assert Repo.get(Podcast, b.id)
+
+    assert {:ok, _message} = PodcastMerge.merge(a.id, b.id)
   end
 end

@@ -5,7 +5,7 @@ defmodule PanWeb.Api.PodcastControllerTest do
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   alias Pan.Repo
-  alias PanWeb.{ApiRequestError, Category, Podcast, User}
+  alias PanWeb.{ApiRequestError, Category, FormerPodcast, Podcast, User}
 
   defp insert_user(_context) do
     user =
@@ -198,6 +198,36 @@ defmodule PanWeb.Api.PodcastControllerTest do
 
       assert error["detail"] == "Podcast with Panoptikum ID 999999999 no longer exists."
       assert [%{endpoint: "trigger_episode_update"}] = Repo.all(ApiRequestError)
+    end
+  end
+
+  describe "former podcasts" do
+    test "a merged id names the new id in detail and meta", %{conn: conn} do
+      Repo.insert!(%FormerPodcast{id: 999_999_998, title: "Old Show", new_id: 42})
+
+      error =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get(Routes.api_podcast_path(conn, :show, 999_999_998))
+        |> first_error(404)
+
+      assert error["detail"] ==
+               "Podcast with Panoptikum ID 999999998 (Old Show) was merged into the podcast " <>
+                 "with Panoptikum ID 42, please use that ID."
+
+      assert error["meta"] == %{"new_id" => 42}
+    end
+
+    test "a deleted id says so", %{conn: conn, token: token} do
+      Repo.insert!(%FormerPodcast{id: 999_999_997, title: "Gone Show"})
+
+      error =
+        authenticated_conn(conn, token)
+        |> get(Routes.api_podcast_path(conn, :trigger_episode_update, 999_999_997))
+        |> first_error(404)
+
+      assert error["detail"] == "Podcast with Panoptikum ID 999999997 (Gone Show) was deleted."
+      refute error["meta"]
     end
   end
 

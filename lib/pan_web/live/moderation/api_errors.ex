@@ -84,7 +84,12 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                   }
                   class="link"
                 >{error.podcast_title}</.link>
-                <span :if={!error.podcast_title} class="italic">no longer exists</span>
+                <span :if={!error.podcast_title && error.former} class="italic">
+                  {error.former.title}
+                </span>
+                <span :if={!error.podcast_title && !error.former} class="italic">
+                  no longer exists
+                </span>
                 <span class="text-sm">(ID {error.podcast_id})</span>
               </td>
               <td class="max-w-xl">

@@ -1,7 +1,18 @@
 defmodule PanWeb.Api.PodcastController do
   use PanWeb, :controller
   use JaSerializer
-  alias PanWeb.{Api.Helpers, ApiRequestError, Episode, Like, Podcast, Subscription, User}
+
+  alias PanWeb.{
+    Api.Helpers,
+    ApiRequestError,
+    Episode,
+    FormerPodcast,
+    Like,
+    Podcast,
+    Subscription,
+    User
+  }
+
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
 
   import Pan.Parser.MyDateTime,
@@ -128,11 +139,14 @@ defmodule PanWeb.Api.PodcastController do
         opts: [page: links, include: includes]
       )
     else
-      Helpers.send_404(conn, no_longer_exists(id))
+      send_not_found(conn, id)
     end
   end
 
-  defp no_longer_exists(id), do: "Podcast with Panoptikum ID #{id} no longer exists."
+  defp send_not_found(conn, id) do
+    {detail, meta} = FormerPodcast.not_found(id)
+    Helpers.send_error(conn, 404, "Not found", detail, meta)
+  end
 
   defp record_errors(conn, _opts) do
     Plug.Conn.register_before_send(conn, fn
@@ -165,7 +179,7 @@ defmodule PanWeb.Api.PodcastController do
 
     cond do
       !podcast ->
-        Helpers.send_404(conn, no_longer_exists(id))
+        send_not_found(conn, id)
 
       podcast.retired ->
         Helpers.send_error(
@@ -213,7 +227,7 @@ defmodule PanWeb.Api.PodcastController do
 
     cond do
       !podcast ->
-        Helpers.send_404(conn, no_longer_exists(id))
+        send_not_found(conn, id)
 
       podcast.retired ->
         Helpers.send_error(

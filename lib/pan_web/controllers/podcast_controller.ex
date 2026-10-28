@@ -1,7 +1,7 @@
 defmodule PanWeb.PodcastController do
   use PanWeb, :controller
 
-  alias PanWeb.{Category, Podcast, PageFrontendView}
+  alias PanWeb.{Category, FormerPodcast, Podcast, PageFrontendView}
   alias Pan.Search
   require Logger
 
@@ -67,6 +67,7 @@ defmodule PanWeb.PodcastController do
 
     for episode <- podcast.episodes, do: Search.Episode.delete_index(episode.id)
     Search.Podcast.delete_index(id)
+    FormerPodcast.record(podcast)
     Repo.delete!(podcast)
     Podcast.clear_lonely_namesake(podcast.title)
 

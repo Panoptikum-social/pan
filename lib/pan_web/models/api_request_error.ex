@@ -8,7 +8,7 @@ defmodule PanWeb.ApiRequestError do
   use PanWeb, :model
   alias Pan.Parser.Helpers
   alias Pan.Repo
-  alias PanWeb.{ApiRequestError, Podcast}
+  alias PanWeb.{ApiRequestError, FormerPodcast, Podcast}
 
   @kept_days 7
 
@@ -39,8 +39,8 @@ defmodule PanWeb.ApiRequestError do
 
   @doc """
   The failed requests of the last 24 hours on podcasts of the category, plus
-  those on podcasts that no longer exist, one entry per podcast with its
-  latest error, newest first.
+  those on podcasts that no longer exist (with their PanWeb.FormerPodcast
+  if known), one entry per podcast with its latest error, newest first.
   """
   def last_day_by_podcast(category_id) do
     podcast_ids = Podcast.ids_by_category_id(category_id)
@@ -48,21 +48,25 @@ defmodule PanWeb.ApiRequestError do
     from(e in ApiRequestError,
       left_join: p in Podcast,
       on: p.id == e.podcast_id,
+      left_join: f in FormerPodcast,
+      on: f.id == e.podcast_id,
       where:
         e.inserted_at > ^hours_ago(24) and not is_nil(e.podcast_id) and
           (e.podcast_id in ^podcast_ids or is_nil(p.id)),
       order_by: [desc: e.inserted_at, desc: e.id],
-      select: {e, p.title}
+      select: {e, p.title, f}
     )
     |> Repo.all()
-    |> Enum.group_by(fn {error, _title} -> error.podcast_id end)
-    |> Enum.map(fn {podcast_id, [{latest, podcast_title} | _] = errors} ->
+    |> Enum.group_by(fn {error, _title, _former} -> error.podcast_id end)
+    |> Enum.map(fn {podcast_id, [{latest, podcast_title, former} | _] = errors} ->
       %{
         podcast_id: podcast_id,
         podcast_title: podcast_title,
+        former: former,
         latest: latest,
         count: length(errors),
-        endpoints: errors |> Enum.map(fn {error, _title} -> error.endpoint end) |> Enum.uniq()
+        endpoints:
+          errors |> Enum.map(fn {error, _title, _former} -> error.endpoint end) |> Enum.uniq()
       }
     end)
     |> Enum.sort_by(& &1.latest.inserted_at, {:desc, NaiveDateTime})

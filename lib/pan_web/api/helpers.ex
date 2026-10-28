@@ -11,8 +11,6 @@ defmodule PanWeb.Api.Helpers do
     |> halt()
   end
 
-  def send_404(conn, detail), do: send_error(conn, 404, "Not found", detail)
-
   # 504 for any failed feed download, not only timeouts: clients may rely on
   # the status, the reason is in the detail
   def send_504(conn, reason), do: send_error(conn, 504, "Feed download failed", reason)

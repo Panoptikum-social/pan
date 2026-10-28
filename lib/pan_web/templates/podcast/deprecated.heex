@@ -79,6 +79,10 @@
               <.link
                 href={podcast_path(@conn, :delete, deprecated_podcast)}
                 method="delete"
+                data-confirm={
+                  deprecated_podcast.community_ids != [] &&
+                    "Podcast #{deprecated_podcast.id} \"#{deprecated_podcast.title}\" is in community #{Enum.join(deprecated_podcast.community_ids, ", ")}. Delete anyway?"
+                }
                 target="_blank"
                 class="btn btn-error btn-xs"
               >Delete</.link>

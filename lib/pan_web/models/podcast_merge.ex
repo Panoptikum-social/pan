@@ -12,6 +12,9 @@ defmodule PanWeb.PodcastMerge do
     engagements move, without creating duplicates; recommendations move.
   - A keeps its metadata; it takes over B's owner if it has none, and
     podcasts owned by different users are not merged.
+  - If only B is in a community, it isn't merged into A (the community's
+    API clients would lose B's id); merge A into B instead.
+  - B's id is recorded as a PanWeb.FormerPodcast pointing to A.
 
   The DB foreign keys don't cascade, so every reference is handled here.
   """
@@ -19,7 +22,7 @@ defmodule PanWeb.PodcastMerge do
   import Ecto.Query
   alias Pan.Repo
   alias Pan.Search
-  alias PanWeb.{AlternateFeed, Feed, Podcast}
+  alias PanWeb.{AlternateFeed, Community, Feed, FormerPodcast, Podcast}
 
   def merge(id, id), do: {:error, "A podcast can't be merged into itself."}
 
@@ -27,27 +30,36 @@ defmodule PanWeb.PodcastMerge do
     from_podcast = Repo.get!(Podcast, from_id)
     to_podcast = Repo.get!(Podcast, to_id)
 
-    if from_podcast.user_id && to_podcast.user_id && from_podcast.user_id != to_podcast.user_id do
-      {:error, "Both podcasts are owned by different users, not merged."}
-    else
-      {:ok, {deleted_episode_ids, moved_episode_ids}} =
-        Repo.transaction(fn -> merge_in_transaction(from_podcast, to_podcast) end,
-          timeout: :infinity
-        )
+    from_communities = Community.titles_for_podcast(from_id)
 
-      Search.Podcast.delete_index(from_podcast.id)
-      Search.Episode.delete_indices(deleted_episode_ids)
-      Search.Episode.reset(moved_episode_ids)
-      # re-pushed by Pan.Job.PushMissingSearchIndex
-      from(p in Podcast, where: p.id == ^to_podcast.id)
-      |> Repo.update_all(set: [full_text: false])
+    cond do
+      from_podcast.user_id && to_podcast.user_id && from_podcast.user_id != to_podcast.user_id ->
+        {:error, "Both podcasts are owned by different users, not merged."}
 
-      Search.Persona.reset(Search.Persona.ids_for_podcast(to_podcast.id))
+      from_communities != [] and Community.titles_for_podcast(to_id) == [] ->
+        {:error,
+         "Podcast #{from_id} is in the community #{Enum.join(from_communities, ", ")}, " <>
+           "#{to_id} is not: merge #{to_id} into #{from_id} instead, so the community keeps its ID."}
 
-      {:ok,
-       "Podcast #{from_podcast.id} \"#{from_podcast.title}\" merged into #{to_podcast.id} " <>
-         "\"#{to_podcast.title}\": #{length(moved_episode_ids)} episodes moved, " <>
-         "#{length(deleted_episode_ids)} merged into existing ones."}
+      true ->
+        {:ok, {deleted_episode_ids, moved_episode_ids}} =
+          Repo.transaction(fn -> merge_in_transaction(from_podcast, to_podcast) end,
+            timeout: :infinity
+          )
+
+        Search.Podcast.delete_index(from_podcast.id)
+        Search.Episode.delete_indices(deleted_episode_ids)
+        Search.Episode.reset(moved_episode_ids)
+        # re-pushed by Pan.Job.PushMissingSearchIndex
+        from(p in Podcast, where: p.id == ^to_podcast.id)
+        |> Repo.update_all(set: [full_text: false])
+
+        Search.Persona.reset(Search.Persona.ids_for_podcast(to_podcast.id))
+
+        {:ok,
+         "Podcast #{from_podcast.id} \"#{from_podcast.title}\" merged into #{to_podcast.id} " <>
+           "\"#{to_podcast.title}\": #{length(moved_episode_ids)} episodes moved, " <>
+           "#{length(deleted_episode_ids)} merged into existing ones."}
     end
   end
 
@@ -55,6 +67,8 @@ defmodule PanWeb.PodcastMerge do
     from_id = from_podcast.id
     to_id = to_podcast.id
 
+    # before move_feeds, which takes B's feed away
+    FormerPodcast.record(from_podcast, to_id)
     move_feeds(from_id, to_id)
     deleted_episode_ids = merge_shared_episodes(from_id, to_id)
 
