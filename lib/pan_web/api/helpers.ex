@@ -1,7 +1,7 @@
 defmodule PanWeb.Api.Helpers do
   alias PanWeb.Api.ErrorView
   import Phoenix.Controller, only: [put_view: 2, render: 2, render: 3]
-  import Plug.Conn, only: [put_status: 2, halt: 1]
+  import Plug.Conn, only: [put_status: 2, halt: 1, put_private: 3]
 
   def send_404(conn) do
     conn
@@ -11,20 +11,11 @@ defmodule PanWeb.Api.Helpers do
     |> halt()
   end
 
-  def send_504(conn, reason) do
-    conn
-    |> put_view(ErrorView)
-    |> put_status(504)
-    |> render(:errors,
-      data: %{
-        code: 504,
-        status: 504,
-        title: "Timeout when trying to download feed:",
-        detail: reason
-      }
-    )
-    |> halt()
-  end
+  def send_404(conn, detail), do: send_error(conn, 404, "Not found", detail)
+
+  # 504 for any failed feed download, not only timeouts: clients may rely on
+  # the status, the reason is in the detail
+  def send_504(conn, reason), do: send_error(conn, 504, "Feed download failed", reason)
 
   def send_401(conn, reason) do
     conn
@@ -39,6 +30,8 @@ defmodule PanWeb.Api.Helpers do
     data = if meta, do: Map.put(data, :meta, meta), else: data
 
     conn
+    # read by PanWeb.Api.PodcastController's error recording
+    |> put_private(:api_error, data)
     |> put_view(ErrorView)
     |> put_status(code)
     |> render(:errors, data: data)

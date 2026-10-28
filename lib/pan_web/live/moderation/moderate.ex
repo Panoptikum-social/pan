@@ -204,6 +204,11 @@ defmodule PanWeb.Live.Moderation.Moderate do
         Moderating {@category.title}
       </h1>
 
+      <.link
+        navigate={Routes.moderation_frontend_path(@socket, :api_errors, @category.id)}
+        class="link"
+      >API errors of the last 24 hours</.link>
+
       <form phx-submit="add-feed" class="my-4 flex gap-2 max-w-2xl">
         <input
           type="text"

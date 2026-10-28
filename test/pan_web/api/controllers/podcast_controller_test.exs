@@ -1,10 +1,11 @@
 defmodule PanWeb.Api.PodcastControllerTest do
   use PanWeb.ConnCase
 
+  import Ecto.Query, only: [from: 2]
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2]
 
   alias Pan.Repo
-  alias PanWeb.{Podcast, User}
+  alias PanWeb.{ApiRequestError, Category, Podcast, User}
 
   defp insert_user(_context) do
     user =
@@ -169,6 +170,95 @@ defmodule PanWeb.Api.PodcastControllerTest do
 
       assert error["meta"]["last_error_occured"] ==
                NaiveDateTime.to_iso8601(podcast.last_error_occured)
+    end
+  end
+
+  describe "podcasts that no longer exist" do
+    test "show returns a JSON 404 and records it", %{conn: conn} do
+      error =
+        conn
+        |> put_req_header("accept", "application/vnd.api+json")
+        |> get(Routes.api_podcast_path(conn, :show, 999_999_999))
+        |> first_error(404)
+
+      assert error["detail"] == "Podcast with Panoptikum ID 999999999 no longer exists."
+
+      assert [%{podcast_id: 999_999_999, endpoint: "show", status: 404}] =
+               Repo.all(ApiRequestError)
+    end
+
+    test "trigger_episode_update returns a JSON 404 instead of the HTML page", %{
+      conn: conn,
+      token: token
+    } do
+      error =
+        authenticated_conn(conn, token)
+        |> get(Routes.api_podcast_path(conn, :trigger_episode_update, 999_999_999))
+        |> first_error(404)
+
+      assert error["detail"] == "Podcast with Panoptikum ID 999999999 no longer exists."
+      assert [%{endpoint: "trigger_episode_update"}] = Repo.all(ApiRequestError)
+    end
+  end
+
+  describe "error recording" do
+    test "records the error title and detail of a failed request", %{conn: conn, token: token} do
+      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -2)})
+
+      authenticated_conn(conn, token)
+      |> get(Routes.api_podcast_path(conn, :trigger_episode_update, podcast.id))
+      |> first_error(429)
+
+      assert [%{podcast_id: id, status: 429, title: "Too many requests", detail: detail}] =
+               Repo.all(ApiRequestError)
+
+      assert id == podcast.id
+      assert detail =~ "seconds."
+    end
+
+    test "does not record trigger_update, which wisspod.de doesn't poll", %{
+      conn: conn,
+      token: token
+    } do
+      podcast = insert_podcast(%{manually_updated_at: time_shift(now(), minutes: -2)})
+
+      authenticated_conn(conn, token)
+      |> get(Routes.api_podcast_path(conn, :trigger_update, podcast.id))
+      |> first_error(429)
+
+      assert Repo.all(ApiRequestError) == []
+    end
+  end
+
+  describe "ApiRequestError.last_day_by_podcast/1" do
+    test "groups the community's and deleted podcasts' errors, skips others and old ones" do
+      category = Repo.insert!(%Category{title: "Community #{System.unique_integer([:positive])}"})
+      own = insert_podcast(%{})
+      other = insert_podcast(%{})
+      Repo.insert_all("categories_podcasts", [%{category_id: category.id, podcast_id: own.id}])
+
+      ApiRequestError.record(own.id, "show", 504, "Feed download failed", "403: forbidden")
+      ApiRequestError.record(own.id, "trigger_episode_update", 504, "Feed download failed", "503")
+      ApiRequestError.record(other.id, "show", 504, "Feed download failed", "500")
+      ApiRequestError.record(999_999_999, "show", 404, "Not found", "gone")
+
+      old = ApiRequestError.record(own.id, "show", 504, "Feed download failed", "old")
+
+      Repo.update_all(from(e in ApiRequestError, where: e.id == ^old.id),
+        set: [inserted_at: time_shift(now(), hours: -25)]
+      )
+
+      assert [own_entry, deleted] =
+               ApiRequestError.last_day_by_podcast(category.id) |> Enum.sort_by(& &1.podcast_id)
+
+      assert own_entry.podcast_id == own.id
+      assert own_entry.podcast_title == own.title
+      assert own_entry.count == 2
+      assert own_entry.latest.detail == "503"
+      assert own_entry.endpoints == ["trigger_episode_update", "show"]
+
+      assert deleted.podcast_id == 999_999_999
+      assert deleted.podcast_title == nil
     end
   end
 end

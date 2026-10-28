@@ -373,6 +373,10 @@ defmodule PanWeb.Router do
     live("/curators", Live.Moderation.Curators, :curators, as: :moderation_frontend)
     live("/moderation/:id", Live.Moderation.Moderate, :moderation, as: :moderation_frontend)
 
+    live("/moderation/:id/api_errors", Live.Moderation.ApiErrors, :api_errors,
+      as: :moderation_frontend
+    )
+
     live(
       "/moderation/:id/podcast/:podcast_id/episodes",
       Live.Moderation.EpisodeGrid,

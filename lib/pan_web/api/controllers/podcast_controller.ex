@@ -1,11 +1,14 @@
 defmodule PanWeb.Api.PodcastController do
   use PanWeb, :controller
   use JaSerializer
-  alias PanWeb.{Api.Helpers, Episode, Like, Podcast, Subscription, User}
+  alias PanWeb.{Api.Helpers, ApiRequestError, Episode, Like, Podcast, Subscription, User}
   import PanWeb.Api.Helpers, only: [send_504: 2, add_etag_header: 2]
 
   import Pan.Parser.MyDateTime,
     only: [now: 0, time_shift: 2, time_diff: 3, in_the_past?: 1]
+
+  # the two endpoints wisspod.de polls, for the moderators' API error page
+  plug(:record_errors when action in [:show, :trigger_episode_update])
 
   def action(conn, _) do
     apply(__MODULE__, action_name(conn), [conn, conn.params, conn.assigns.current_user])
@@ -125,14 +128,45 @@ defmodule PanWeb.Api.PodcastController do
         opts: [page: links, include: includes]
       )
     else
-      Helpers.send_404(conn)
+      Helpers.send_404(conn, no_longer_exists(id))
     end
   end
 
+  defp no_longer_exists(id), do: "Podcast with Panoptikum ID #{id} no longer exists."
+
+  defp record_errors(conn, _opts) do
+    Plug.Conn.register_before_send(conn, fn
+      %{status: status} = conn when status >= 400 ->
+        error = conn.private[:api_error] || %{}
+
+        podcast_id =
+          case Integer.parse(conn.params["id"] || "") do
+            {id, ""} -> id
+            _ -> nil
+          end
+
+        ApiRequestError.record(
+          podcast_id,
+          Atom.to_string(action_name(conn)),
+          status,
+          error[:title],
+          error[:detail]
+        )
+
+        conn
+
+      conn ->
+        conn
+    end)
+  end
+
   def trigger_update(conn, %{"id" => id} = params, _user) do
-    podcast = Repo.get!(Podcast, id)
+    podcast = Repo.get(Podcast, id)
 
     cond do
+      !podcast ->
+        Helpers.send_404(conn, no_longer_exists(id))
+
       podcast.retired ->
         Helpers.send_error(
           conn,
@@ -175,9 +209,12 @@ defmodule PanWeb.Api.PodcastController do
   end
 
   def trigger_episode_update(conn, %{"id" => id} = params, _user) do
-    podcast = Repo.get!(Podcast, id)
+    podcast = Repo.get(Podcast, id)
 
     cond do
+      !podcast ->
+        Helpers.send_404(conn, no_longer_exists(id))
+
       podcast.retired ->
         Helpers.send_error(
           conn,

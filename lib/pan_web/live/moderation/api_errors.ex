@@ -1,0 +1,105 @@
+defmodule PanWeb.Live.Moderation.ApiErrors do
+  use PanWeb, :live_view
+  on_mount PanWeb.Live.AssignUserAndAdmin
+  alias PanWeb.{ApiRequestError, Category, Moderation}
+  alias PanWeb.Router.Helpers, as: Routes
+
+  # :id is the category id, as on the other moderation pages
+  def mount(%{"id" => id}, session, socket) do
+    if Moderation.get_by_catagory_id_and_user_id(id, session["user_id"]) || socket.assigns.admin do
+      {:ok,
+       assign(socket,
+         category: Category.get_by_id(id),
+         errors: ApiRequestError.last_day_by_podcast(id)
+       )}
+    else
+      {:ok, assign(socket, error: "not_found")}
+    end
+  end
+
+  def handle_event("reload", _params, socket) do
+    {:noreply,
+     assign(socket, errors: ApiRequestError.last_day_by_podcast(socket.assigns.category.id))}
+  end
+
+  defp vienna_string(naive_date_time) do
+    naive_date_time
+    |> DateTime.from_naive!("Etc/UTC")
+    |> DateTime.shift_zone!("Europe/Vienna")
+    |> Calendar.strftime("%d.%m.%Y %H:%M")
+  end
+
+  def render(%{error: "not_found"} = assigns) do
+    ~H"""
+    <div class="m-12">
+      This is not one of your moderations
+    </div>
+    """
+  end
+
+  def render(assigns) do
+    ~H"""
+    <div class="m-4">
+      <h1 class="text-2xl">
+        API errors in {@category.title}
+      </h1>
+
+      <p class="my-4 max-w-3xl">
+        Failed API requests of the last 24 hours on podcasts of this community and on podcasts
+        that no longer exist, one row per podcast with its latest error. Times are Vienna time.
+        <.link
+          navigate={Routes.moderation_frontend_path(@socket, :moderation, @category.id)}
+          class="link"
+        >Back to the moderation</.link>
+      </p>
+
+      <button type="button" phx-click="reload" class="btn btn-primary btn-sm">Reload</button>
+
+      <p :if={@errors == []} class="my-4">No failed API requests in the last 24 hours.</p>
+
+      <div :if={@errors != []} class="my-4 overflow-x-auto">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Podcast</th>
+              <th>Error</th>
+              <th>Status</th>
+              <th>Failed</th>
+              <th>Last failure</th>
+              <th>Endpoints</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr :for={error <- @errors}>
+              <td>
+                <.link
+                  :if={error.podcast_title}
+                  navigate={
+                    Routes.moderation_frontend_path(
+                      @socket,
+                      :edit_podcast,
+                      @category.id,
+                      error.podcast_id
+                    )
+                  }
+                  class="link"
+                >{error.podcast_title}</.link>
+                <span :if={!error.podcast_title} class="italic">no longer exists</span>
+                <span class="text-sm">(ID {error.podcast_id})</span>
+              </td>
+              <td class="max-w-xl">
+                <span class="font-semibold">{error.latest.title}</span>
+                <span :if={error.latest.detail}>{error.latest.detail}</span>
+              </td>
+              <td>{error.latest.status}</td>
+              <td>{error.count}×</td>
+              <td class="whitespace-nowrap">{vienna_string(error.latest.inserted_at)}</td>
+              <td class="text-sm">{Enum.join(error.endpoints, ", ")}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    """
+  end
+end
