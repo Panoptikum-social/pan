@@ -73,6 +73,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
           <thead>
             <tr>
               <th>Podcast</th>
+              <th></th>
               <th>Error</th>
               <th>Status</th>
               <th>Failed</th>
@@ -102,29 +103,33 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                   no longer exists
                 </span>
                 <span class="text-sm">(ID {error.podcast_id})</span>
-                <.link
-                  :if={error.feed_id}
-                  href={
-                    Routes.moderation_frontend_path(
-                      @socket,
-                      :edit_feed,
-                      @category.id,
-                      error.feed_id
-                    )
-                  }
-                  target="_blank"
-                  class="btn btn-primary btn-xs ml-1"
-                >Fix feed</.link>
-                <button
-                  :if={error.podcast_title}
-                  type="button"
-                  phx-click="remove"
-                  phx-value-podcast_id={error.podcast_id}
-                  data-confirm={"Remove \"#{error.podcast_title}\" from #{@category.title}? The podcast stays on Panoptikum."}
-                  class="btn btn-warning btn-xs ml-1"
-                >
-                  Remove from community
-                </button>
+              </td>
+              <td>
+                <div class="flex gap-1 whitespace-nowrap">
+                  <.link
+                    :if={error.feed_id}
+                    href={
+                      Routes.moderation_frontend_path(
+                        @socket,
+                        :edit_feed,
+                        @category.id,
+                        error.feed_id
+                      )
+                    }
+                    target="_blank"
+                    class="btn btn-primary btn-xs"
+                  >Fix feed</.link>
+                  <button
+                    :if={error.podcast_title}
+                    type="button"
+                    phx-click="remove"
+                    phx-value-podcast_id={error.podcast_id}
+                    data-confirm={"Remove \"#{error.podcast_title}\" from #{@category.title}? The podcast stays on Panoptikum."}
+                    class="btn btn-warning btn-xs"
+                  >
+                    Remove from community
+                  </button>
+                </div>
               </td>
               <td class="max-w-xl">
                 <span class="font-semibold">{error.latest.title}</span>
