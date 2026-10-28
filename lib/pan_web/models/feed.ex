@@ -163,33 +163,41 @@ defmodule PanWeb.Feed do
 
   @doc """
   Makes one of the feed's alternate feed URLs (e.g. the URL before a
-  redirect to an error page) the feed URL again; the current URL is kept as
-  an alternate feed. The stored hash and headers belonged to the old URL, and
-  the podcast is due right away, so the next update shows whether it works.
+  redirect to an error page) the feed URL again, see change_url/2.
   """
   def restore_alternate(%Feed{} = feed, url) do
     if Repo.exists?(from(a in AlternateFeed, where: a.feed_id == ^feed.id and a.url == ^url)) do
-      Pan.Parser.AlternateFeed.get_or_insert(feed.id, %{
-        url: feed.self_link_url,
-        title: feed.self_link_url
-      })
-
-      from(p in Podcast, where: p.id == ^feed.podcast_id)
-      |> Repo.update_all(set: [next_update: Pan.Parser.MyDateTime.now()])
-
-      feed
-      |> Feed.changeset(%{
-        self_link_url: url,
-        hash: nil,
-        etag: nil,
-        last_modified: nil,
-        trust_last_modified: false,
-        no_headers_available: false
-      })
-      |> Repo.update()
+      change_url(feed, url)
     else
       {:error, "#{url} is not an alternate feed of feed #{feed.id}"}
     end
+  end
+
+  @doc """
+  Gives the feed a new URL; the current one (`feed` as loaded before any
+  change) is kept as an alternate feed. The stored hash and headers belonged
+  to the old URL, and the podcast is due right away, so the next update shows
+  whether the new one works.
+  """
+  def change_url(%Feed{} = feed, url) do
+    Pan.Parser.AlternateFeed.get_or_insert(feed.id, %{
+      url: feed.self_link_url,
+      title: feed.self_link_url
+    })
+
+    from(p in Podcast, where: p.id == ^feed.podcast_id)
+    |> Repo.update_all(set: [next_update: Pan.Parser.MyDateTime.now()])
+
+    feed
+    |> Feed.changeset(%{
+      self_link_url: url,
+      hash: nil,
+      etag: nil,
+      last_modified: nil,
+      trust_last_modified: false,
+      no_headers_available: false
+    })
+    |> Repo.update()
   end
 
   @doc "All feed URLs, as `[[url]]`, for exporting them from the console."

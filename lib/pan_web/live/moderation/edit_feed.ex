@@ -1,7 +1,9 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
   use PanWeb, :admin_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{Moderation, Feed, Podcast}
+  import Ecto.Query, only: [from: 2]
+  alias Pan.Repo
+  alias PanWeb.{AlternateFeed, Feed, Moderation, Podcast}
   alias PanWeb.Admin.Naming
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
@@ -39,7 +41,13 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     podcast_ids = Podcast.ids_by_category_id(category_id)
 
     if moderation && Enum.member?(podcast_ids, feed.podcast_id) do
-      {:ok, assign(socket, feed: feed, cols: cols, category_id: category_id)}
+      {:ok,
+       assign(socket,
+         feed: feed,
+         cols: cols,
+         category_id: category_id,
+         alternate_feeds: previous_urls(feed)
+       )}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -50,7 +58,20 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     {:noreply, socket}
   end
 
+  # The form saves the feed as it is; a changed URL gets the same treatment
+  # as a restored one (old URL kept, caching reset, updated soon).
   def handle_info({:saved, %{message: message}}, socket) do
+    old_feed = socket.assigns.feed
+    new_url = Feed.get_by_id(old_feed.id).self_link_url
+
+    message =
+      if new_url != old_feed.self_link_url do
+        Feed.change_url(old_feed, new_url)
+        message <> " The next update shows whether the new URL works."
+      else
+        message
+      end
+
     feed_grid_path =
       Routes.moderation_frontend_path(
         socket,
@@ -60,6 +81,37 @@ defmodule PanWeb.Live.Moderation.EditFeed do
       )
 
     {:noreply, socket |> put_flash(:info, message) |> push_navigate(to: feed_grid_path)}
+  end
+
+  def handle_event("restore", %{"url" => url}, socket) do
+    feed = socket.assigns.feed
+
+    socket =
+      case Feed.restore_alternate(feed, url) do
+        {:ok, feed} ->
+          socket
+          |> assign(feed: feed, alternate_feeds: previous_urls(feed))
+          |> put_flash(
+            :info,
+            "The feed URL is #{url} again, the next update shows whether it works."
+          )
+
+        {:error, message} when is_binary(message) ->
+          put_flash(socket, :error, message)
+
+        {:error, _changeset} ->
+          put_flash(socket, :error, "The feed URL could not be restored.")
+      end
+
+    {:noreply, socket}
+  end
+
+  defp previous_urls(feed) do
+    from(a in AlternateFeed,
+      where: a.feed_id == ^feed.id and a.url != ^feed.self_link_url,
+      order_by: [desc: a.inserted_at]
+    )
+    |> Repo.all()
   end
 
   def render(%{error: "not_found"} = assigns) do
@@ -79,6 +131,22 @@ defmodule PanWeb.Live.Moderation.EditFeed do
       model={Feed}
       cols={@cols}
     />
+
+    <form :if={@alternate_feeds != []} phx-submit="restore" class="m-4 flex gap-2 items-center">
+      <span>Restore a previous URL</span>
+      <select name="url" class="select select-sm max-w-xl">
+        <option :for={alternate <- @alternate_feeds} value={alternate.url}>
+          {Calendar.strftime(alternate.inserted_at, "%Y-%m-%d")} {alternate.url}
+        </option>
+      </select>
+      <button
+        type="submit"
+        data-confirm="Make the selected URL the feed URL again?"
+        class="btn btn-primary btn-sm"
+      >
+        Restore
+      </button>
+    </form>
     """
   end
 end
