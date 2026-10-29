@@ -197,9 +197,11 @@ defmodule PanWeb.UserFrontendController do
     categories =
       from(r in CategoryPodcast,
         join: c in assoc(r, :category),
+        left_join: parent in assoc(c, :parent),
         where: r.podcast_id in ^podcasts_subscribed_ids,
-        group_by: c.id,
-        select: [count(r.category_id), c.id, c.title],
+        group_by: [c.id, parent.id],
+        # a subcategory in its parent's color, as in Category.color_map/0
+        select: [count(r.category_id), c.id, c.title, c.icon, coalesce(parent.color, c.color)],
         order_by: [desc: count(r.category_id)],
         limit: 10
       )

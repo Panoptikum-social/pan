@@ -10,11 +10,11 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **#444 Category ranking on My Podcasts without icons (found 2026-10-29
-  during #432):** the "categories my podcasts are assigned to" panel gets
-  `[count, id, title]` from a raw query in UserFrontendController.my_podcasts,
-  so CategoryLink shows the folder icon and no color there. Add icon and the
-  color (Category.color_map/0) to the query.
+- **#446 Wrong icon after the counts on My Podcasts (found 2026-10-29
+  during #444):** the category ranking in
+  templates/user_frontend/my_podcasts.html.heex shows the `user` icon after
+  each count, but the count is the number of my subscribed podcasts in that
+  category. Check the recommendation/also-liked panels there too.
 
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
   table (1c6a0807, Mappings tab on /admin/categories/merge, 34 old Apple
