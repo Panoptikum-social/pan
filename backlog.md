@@ -64,13 +64,6 @@ the same day: Latte/Mocha on every page, System (prefers-color-scheme) as
 default, toggle in the sidebar, Bootflat palette and the old light theme
 removed. Remaining items:
 
-- **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
-  `color` on categories, Pan.CategoryIcons proposals + "Fill missing icons"
-  on /admin/categories/merge, CategoryLink on /categories and
-  /categories/stats, `text-ctp-*` tokens: Latte shades darkened to 3:1).
-  Open: press "Fill missing icons" on prod right after the deploy (else the
-  public tree shows only folders); an icon/color picker in the admin
-  (today plain text fields in the data browser).
 - **#445 Podlove subscribe button and web player in the theme:** style both
   to match Latte/Mocha and DESIGN.md (no solid color areas beyond the main
   action). Both are third-party widgets with their own configuration/theme

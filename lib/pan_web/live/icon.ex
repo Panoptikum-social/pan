@@ -109,6 +109,27 @@ defmodule PanWeb.Live.Icon do
 
   def exists?(name), do: valid_name?(name) and File.exists?(path(name))
 
+  # every icon name, sorted, for the category icon picker (backlog.md #439)
+  def names do
+    key = {__MODULE__, :names}
+
+    case :persistent_term.get(key, nil) do
+      nil ->
+        names =
+          Application.app_dir(:pan, "priv/icons/tabler")
+          |> File.ls!()
+          |> Enum.filter(&String.ends_with?(&1, ".svg"))
+          |> Enum.map(&String.trim_trailing(&1, ".svg"))
+          |> Enum.sort()
+
+        :persistent_term.put(key, names)
+        names
+
+      names ->
+        names
+    end
+  end
+
   defp svg(name) do
     key = {__MODULE__, name}
 

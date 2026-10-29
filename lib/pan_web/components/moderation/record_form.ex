@@ -160,7 +160,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
           </fieldset>
         </div>
 
-        <.button type="submit">Save</.button>
+        <.button type="submit" class="btn btn-primary mt-4">Save</.button>
       </.form>
     </div>
     """
