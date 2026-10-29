@@ -41,12 +41,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   and clear_journal destroy data). Make them POST/DELETE and pass `method:`
   to the LinkButtons on the dashboard (data-confirm works with either).
 
-- **#446 Wrong icon after the counts on My Podcasts (found 2026-10-29
-  during #444):** the category ranking in
-  templates/user_frontend/my_podcasts.html.heex shows the `user` icon after
-  each count, but the count is the number of my subscribed podcasts in that
-  category. Check the recommendation/also-liked panels there too.
-
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
   table (1c6a0807, Mappings tab on /admin/categories/merge, 34 old Apple
   names seeded) went to prod 2026-10-21, with the stray merges there. Check
