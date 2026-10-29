@@ -1,15 +1,14 @@
 defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
   use PanWeb, :live_component
-  alias Phoenix.HTML
   alias PanWeb.{Endpoint, Image}
 
   def handle_event("read-config", _, socket) do
     podcast = socket.assigns.podcast
 
     config = %{
-      title: HTML.javascript_escape(podcast.title || ""),
-      subtitle: HTML.javascript_escape(podcast.summary || ""),
-      description: HTML.javascript_escape(podcast.description || ""),
+      title: podcast.title || "",
+      subtitle: podcast.summary || "",
+      description: podcast.description || "",
       cover: cover_url(Image.get_by_podcast_id(podcast.id)),
       feeds: feed_config(podcast.feeds)
     }
@@ -21,7 +20,7 @@ defmodule PanWeb.Live.Podcast.PodloveSubscribeButton do
   # Content-Security-Policy only allows images from our own host
   defp cover_url(%Image{path: path, filename: filename})
        when is_binary(path) and is_binary(filename),
-       do: Endpoint.url() <> path <> filename
+       do: "https://panoptikum.social" <> path <> filename
 
   defp cover_url(_), do: Endpoint.url() <> "/images/missing-podcast.png"
 

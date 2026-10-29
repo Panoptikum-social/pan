@@ -57,6 +57,21 @@ const panTheme = {
     toolbarActive: "var(--color-base-300)",
     placeholder: muted(50),
   },
+  // the preview (eye button); only setTheme applies these, not the constructor
+  previewColors: {
+    text: "var(--color-base-content)",
+    h1: "inherit",
+    h2: "inherit",
+    h3: "inherit",
+    strong: "inherit",
+    em: "inherit",
+    link: "var(--color-base-content)",
+    code: "var(--color-base-content)",
+    codeBg: "var(--color-base-200)",
+    blockquote: muted(70),
+    hr: muted(50),
+    bg: "transparent",
+  },
 };
 
 let OvertypeField = {
@@ -75,6 +90,7 @@ let OvertypeField = {
         minHeight: "200px",
         textareaProps: { name: textarea.name, id: textarea.id },
       });
+      this.editor.setTheme(panTheme);
     });
   },
 

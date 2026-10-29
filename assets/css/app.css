@@ -55,8 +55,11 @@
   --color-success-content: #1e1e2e;
   --color-warning: #df8e1d; /* yellow */
   --color-warning-content: #1e1e2e;
-  /* outline button text and frame: yellow and green darkened (hue and
+  /* outline button text and frame: light accents darkened (hue and
      saturation kept) to 4.5:1 on mantle, like red */
+  --color-primary-strong: #0d5af4;
+  --color-accent-strong: #be1d93;
+  --color-info-strong: #036f9a;
   --color-warning-strong: #925d13;
   --color-success-strong: #307820;
   --color-error: #d20f39; /* red */
@@ -93,6 +96,9 @@
   --color-success-content: #1e1e2e;
   --color-warning: #f9e2af; /* yellow */
   --color-warning-content: #1e1e2e;
+  --color-primary-strong: #89b4fa;
+  --color-accent-strong: #f5c2e7;
+  --color-info-strong: #89dceb;
   --color-warning-strong: #f9e2af;
   --color-success-strong: #a6e3a1;
   --color-error: #f38ba8; /* red */
@@ -244,8 +250,63 @@
 .badge.badge-outline {
   border-color: var(--badge-color, var(--color-base-content));
 }
-/* yellow and green outline buttons as intense as red (see the themes); the
+/* the Podlove iframes (subscribe button, web player) declare no
+   color-scheme; under Mocha the browser would paint an opaque white backdrop
+   behind them, e.g. beside the player on wide pages */
+#subscribe-button iframe,
+.podlove-player iframe {
+  color-scheme: light;
+}
+/* the subscribe button's popup is rendered into our page with its own
+   stylesheet (white panels, gray text); "html" outweighs its id selectors */
+html #podlove-subscribe-popup #podlove-subscribe-popup-modal .podlove-logo,
+html #podlove-subscribe-popup #podlove-subscribe-panel-podcast .podcast-cover-placeholder {
+  background-color: var(--color-base-200);
+  color: var(--color-base-content);
+}
+html #podlove-subscribe-popup #podlove-subscribe-popup-modal .top-bar,
+html #podlove-subscribe-popup #podlove-subscribe-panel-clients .device-cloud-switch button {
+  color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+}
+html #podlove-subscribe-popup #podlove-subscribe-panel-podcast,
+html #podlove-subscribe-popup #podlove-subscribe-panel-clients,
+html #podlove-subscribe-popup #podlove-subscribe-panel-finish {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+html #podlove-subscribe-popup #podlove-subscribe-panel-clients .device-cloud-switch {
+  background-color: var(--color-base-200);
+  border-color: var(--color-base-300);
+}
+html #podlove-subscribe-popup #podlove-subscribe-panel-clients li {
+  border-bottom-color: var(--color-base-300);
+}
+html #podlove-subscribe-popup #podlove-subscribe-popup-close-button,
+html #podlove-subscribe-popup #podlove-subscribe-popup-help-button,
+html #podlove-subscribe-popup .podlove-subscribe-back-button {
+  color: var(--color-primary-strong);
+}
+html #podlove-subscribe-popup .podlove-subscribe-button {
+  color: var(--color-primary-content);
+}
+html #podlove-subscribe-popup input {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}
+/* light-colored outline buttons as intense as red (see the themes); the
    hover fill keeps the theme color */
+.btn.btn-outline.btn-primary:not(:hover, :focus-visible, .btn-active) {
+  --btn-rest-fg: var(--color-primary-strong);
+  --btn-border: var(--color-primary-strong);
+}
+.btn.btn-outline.btn-accent:not(:hover, :focus-visible, .btn-active) {
+  --btn-rest-fg: var(--color-accent-strong);
+  --btn-border: var(--color-accent-strong);
+}
+.btn.btn-outline.btn-info:not(:hover, :focus-visible, .btn-active) {
+  --btn-rest-fg: var(--color-info-strong);
+  --btn-border: var(--color-info-strong);
+}
 .btn.btn-outline.btn-warning:not(:hover, :focus-visible, .btn-active) {
   --btn-rest-fg: var(--color-warning-strong);
   --btn-border: var(--color-warning-strong);

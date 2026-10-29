@@ -72,22 +72,51 @@ Alpine.start();
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
+// The subscribe button is an iframe that reads its color once, so a theme
+// change (toggle or OS setting) builds it again; it has no state to lose.
+const SUBSCRIBE_COLORS = { latte: "#1e66f5", mocha: "#89b4fa" };
+const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+function currentTheme() {
+  const chosen = document.documentElement.getAttribute("data-theme");
+  if (chosen === "latte" || chosen === "mocha") return chosen;
+  return darkScheme.matches ? "mocha" : "latte";
+}
+
 const PodloveSubscribeButton = {
   mounted() {
     this.pushEventTo(this.el, "read-config", {}, (resp, ref) => {
       window['podcastData'] = resp;
-      const scripttag = document.createElement('script');
-      scripttag.async = true;
-      scripttag.src = '/subscribe-button/javascripts/app.js';
-      scripttag.setAttribute('class', 'podlove-subscribe-button');
-      scripttag.setAttribute('data-language', 'en');
-      scripttag.setAttribute('data-size', 'medium');
-      scripttag.setAttribute('data-json-data', 'podcastData');
-      scripttag.setAttribute('data-color', '#ED5565');
-      scripttag.setAttribute('data-format', 'rectangle');
-      scripttag.setAttribute('data-style', 'filled');
-      this.el.appendChild(scripttag);
+      this.build();
     });
+
+    this.rebuild = () => {
+      if (this.theme && this.theme !== currentTheme()) this.build();
+    };
+    this.observer = new MutationObserver(this.rebuild);
+    this.observer.observe(document.documentElement, { attributeFilter: ["data-theme"] });
+    darkScheme.addEventListener("change", this.rebuild);
+  },
+
+  build() {
+    this.theme = currentTheme();
+    this.el.replaceChildren();
+    const scripttag = document.createElement('script');
+    scripttag.async = true;
+    scripttag.src = '/subscribe-button/javascripts/app.js';
+    scripttag.setAttribute('class', 'podlove-subscribe-button');
+    scripttag.setAttribute('data-language', 'en');
+    scripttag.setAttribute('data-size', 'medium');
+    scripttag.setAttribute('data-json-data', 'podcastData');
+    scripttag.setAttribute('data-color', SUBSCRIBE_COLORS[this.theme]);
+    scripttag.setAttribute('data-format', 'rectangle');
+    scripttag.setAttribute('data-style', 'outline');
+    this.el.appendChild(scripttag);
+  },
+
+  destroyed() {
+    this.observer.disconnect();
+    darkScheme.removeEventListener("change", this.rebuild);
   },
 };
 

@@ -1,7 +1,6 @@
 defmodule PanWeb.Live.Episode.PodlovePlayer do
   use PanWeb, :live_component
   alias PanWeb.{Endpoint, Image}
-  alias Phoenix.HTML
   import PanWeb.Router.Helpers
 
   def handle_event("read-config", _, %{assigns: assigns} = socket) do
@@ -32,7 +31,6 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
       publicationDate: episode.publishing_date,
       duration: episode.duration,
       link: episode_frontend_url(Endpoint, :show, episode.id),
-      theme: %{main: "#eee"},
       tabs: %{chapters: true},
       contributors: contributorlist(episode.gigs),
       chapters: chapterlist(episode.chapters),
@@ -42,7 +40,7 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
 
   defp poster_url(%Image{path: path, filename: filename})
        when is_binary(path) and is_binary(filename),
-       do: Endpoint.url() <> path <> filename
+       do: "https://panoptikum.social" <> path <> filename
 
   defp poster_url(_), do: Endpoint.url() <> "/images/missing-podcast.png"
 
@@ -55,8 +53,8 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
   defp chapterlist(chapters) do
     Enum.map(chapters, fn chapter ->
       %{
-        start: HTML.javascript_escape(chapter.start || ""),
-        title: HTML.javascript_escape(chapter.title || "")
+        start: chapter.start || "",
+        title: chapter.title || ""
       }
     end)
   end

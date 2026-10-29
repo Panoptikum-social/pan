@@ -54,7 +54,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             <button
               phx-click="trigger-update"
               phx-target={@myself}
-              class="btn btn-warning btn-sm"
+              class="btn btn-outline btn-warning btn-sm"
             >
               <Icon.render name="settings" /> Metadata Update
             </button>
@@ -80,7 +80,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                 </p>
                 <button
                   @click="metadataOpen = false"
-                  class="btn btn-info btn-sm mt-4"
+                  class="btn btn-outline btn-info btn-sm mt-4"
                   x-ref="metadataCloseButton"
                 >
                   Close
@@ -102,7 +102,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             href={podcast_frontend_path(Endpoint, :claim, @podcast)}
             method="post"
             data-confirm="We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
-            class="btn btn-primary btn-sm"
+            class="btn btn-outline btn-primary btn-sm"
           >
             Claim this podcast
           </.link>
@@ -110,7 +110,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         <div :if={Podcast.manageable_by?(@podcast, @current_user_id)} class="mt-4">
           <.link
             navigate={podcast_frontend_path(Endpoint, :check_feed, @podcast)}
-            class="btn btn-info btn-sm"
+            class="btn btn-outline btn-info btn-sm"
           >
             Check feed
           </.link>
