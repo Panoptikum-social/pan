@@ -28,27 +28,6 @@ defmodule PanWeb.ViewHelpers do
     |> HTML.raw()
   end
 
-  def btn_cycle(counter) do
-    Enum.at(
-      [
-        "btn-default",
-        "btn-gray-lighter",
-        "btn-gray",
-        "btn-gray-darker",
-        "btn-success",
-        "btn-info",
-        "btn-primary",
-        "btn-blue-jeans",
-        "btn-lavender",
-        "btn-pink-rose",
-        "btn-danger",
-        "btn-bittersweet",
-        "btn-warning"
-      ],
-      rem(counter, 13)
-    )
-  end
-
   def truncate_string(nil, _len), do: ""
 
   def truncate_string(string, len) do

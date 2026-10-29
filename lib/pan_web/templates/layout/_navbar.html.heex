@@ -247,4 +247,5 @@
 
 <div x-bind:class="{'hidden': !navbarOpen}">
   {render("_navbar_items.html", conn: @conn, current_user: @current_user)}
+  <PanWeb.Component.ThemeToggle.render />
 </div>

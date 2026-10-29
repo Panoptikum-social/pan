@@ -1,7 +1,8 @@
 defmodule PanWeb.Component.ThemeToggle do
   use PanWeb, :html
 
-  # Latte / Mocha / System switch, handled in assets/js/theme_toggle.js
+  # Latte / System / Mocha switch in the sidebar, handled in
+  # assets/js/theme_toggle.js
   def render(assigns) do
     assigns =
       assign(assigns, :choices, [
@@ -11,7 +12,7 @@ defmodule PanWeb.Component.ThemeToggle do
       ])
 
     ~H"""
-    <div class="flex justify-end px-4 pt-2">
+    <div class="mt-4">
       <div class="join" role="group" aria-label="Color theme">
         <button
           :for={{choice, icon, name} <- @choices}

@@ -2,11 +2,12 @@
 @source "../css";
 @source "../../lib/**/*.{ex,eex,heex,sface}";
 @source "../js/**/*.js";
-@source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
 /* category colors come from the database, see PanWeb.Category.colors/0 */
 @source inline("{text,border}-ctp-{rosewater,flamingo,pink,mauve,red,maroon,peach,yellow,green,teal,sky,sapphire,blue,lavender}");
+/* only our own themes: latte (default) and mocha (prefers-color-scheme: dark),
+   see DESIGN.md */
 @plugin "daisyui" {
-  themes: light --default;
+  themes: false;
 }
 @plugin "daisyui/theme";
 @plugin "@tailwindcss/typography";
@@ -24,32 +25,17 @@
   color utility to any element that depends on these defaults.
 */
 
-@plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  --color-primary: #37bc98; /* mint */
-  --color-secondary: #967adc; /* lavender */
-  --color-accent: #d770ad; /* pink-rose */
-  --color-neutral: #434a54; /* gray-darker */
-  --color-info: #3bafda; /* aqua */
-  --color-warning: #f6bb42;  /* sunflower */
-  --color-success: #8cc152;
-  --color-error: #da4453;  /* grapefruit */
-  --color-error-content: white;
-  --color-info-content: white;
-  --color-primary-content: white;
-  /* Latte text instead of DaisyUI's almost black, which looks bold */
-  --color-base-content: #4c4f69;
-}
 
 /*
   Catppuccin Latte (light) and Mocha (dark), https://catppuccin.com/palette
   Every color/content pair meets WCAG AA (4.5:1). Latte's light accents need
   dark text (#1e1e2e, Mocha base), only blue, mauve and red take white.
-  Used by the admin layouts via data-theme for now, see backlog.md #435.
+  Latte is the default, Mocha follows prefers-color-scheme: dark; a choice in
+  the theme toggle sets data-theme on <html> (assets/js/theme_toggle.js).
 */
 @plugin "daisyui/theme" {
   name: "latte";
+  default: true;
   color-scheme: light;
   --color-base-100: #eff1f5; /* base */
   --color-base-200: #e6e9ef; /* mantle */
@@ -83,6 +69,7 @@
 
 @plugin "daisyui/theme" {
   name: "mocha";
+  prefersdark: true;
   color-scheme: dark;
   --color-base-100: #1e1e2e; /* base */
   --color-base-200: #181825; /* mantle */
@@ -150,59 +137,6 @@
     --color-ctp-lavender: #6a7cdf;
     --color-current: currentColor;
 
-/* Bootflat colors: base */
-    --color-blue-jeans-light: #5d9cec;
-    --color-blue-jeans: #4a89dc;
-    --color-aqua-light: #4fc1e9;
-    --color-aqua: #3bafda;
-    --color-mint-light: #48cfad;
-    --color-mint-lighter: #00c997;
-    --color-mint: #37bc9b;
-    --color-grass-light: #a0d468;
-    --color-grass-lighter: #c8e5a1;
-    --color-grass: #8cc152;
-    --color-sunflower-light: #ffce54;
-    --color-sunflower-lighter: #ffe299;
-    --color-sunflower: #f6bb42;
-    --color-bittersweet-light: #fc6e51;
-    --color-bittersweet: #e9573f;
-    --color-grapefruit-light: #ed5565;
-    --color-grapefruit: #da4453;
-    --color-lavender-light: #ac92ec;
-    --color-lavender: #967adc;
-    --color-pink-rose-light: #ec87c0;
-    --color-pink-rose: #d770ad;
-
-/* Bootflat colors: shades of gray */
-    --color-white: #ffffff;
-    --color-gray-lightest: #f5f7fa;
-    --color-gray-lighter: #e6e9ed;
-    --color-gray-light: #ccd1d9;
-    --color-gray: #aab2bd;
-    --color-gray-dark: #656d78;
-    --color-gray-darker: #434a54;
-    --color-black: #000000;
-
-/* Bootflat colors: functional colors */
-    --color-success-light: #b9df90;
-    --color-success: #8cc152;
-    --color-success-dark: #3c763d;
-    --color-warning-light: #ffdd87;
-    --color-warning: #f6bb42;  /* sunflower */
-    --color-warning-dark: #c3880f;
-    --color-danger-light: #f2838f;
-    --color-danger: #da4453;  /* grapefruit */
-    --color-danger-dark: #a94442;
-    --color-info-light: #7cd1ef;
-    --color-info: #3bafda; /* aqua */
-    --color-info-dark: #31708f;
-    --color-nav-background: #434a54; /* dark gray */
-    --color-link-dark: #175042; /* mint-darker */
-    --color-link: #257e68; /* mint-dark */
-    --color-primary-light: #48cfad;
-    --color-primary: #37bc98; /* mint */
-    --color-primary-dark: #048965;
-
     --font-sans: 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: 'Ubuntu Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
@@ -247,7 +181,7 @@
   [multiple],
   textarea,
   select {
-    @apply px-2 py-1 rounded-md border-gray-light shadow-xs;
+    @apply px-2 py-1 rounded-md border-base-300 shadow-xs;
   }
 
   .scrollbar-gray {

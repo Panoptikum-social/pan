@@ -28,6 +28,16 @@
     </.live_title>
   <% end %>
 
+  <%!-- a theme chosen in the toggle, set before the first paint; without one
+       the CSS follows prefers-color-scheme (assets/js/theme_toggle.js) --%>
+  <script nonce={@conn.assigns[:csp_nonce]}>
+    try {
+      var theme = localStorage.getItem("pan_theme");
+      if (theme === "latte" || theme === "mocha") {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+    } catch (e) {}
+  </script>
   <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")} />
   <script
     defer

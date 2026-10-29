@@ -1,13 +1,11 @@
-// Latte / Mocha / System switch (backlog.md #436). Pages marked with
-// data-themed-page (the admin and moderation layouts) get the theme on
-// <html>, so sidebar and footer follow it; on all other pages it is removed
-// again, also after a live navigation from a themed page to a public one.
-// The choice is a per-browser convenience in localStorage. Listening on the
-// document and re-applying after live navigation keeps this working across
-// LiveView re-renders and needs no inline script (Content-Security-Policy).
+// Latte / System / Mocha switch in the sidebar (DESIGN.md, Themes). Without a
+// data-theme on <html> the CSS follows prefers-color-scheme (latte light,
+// mocha dark); choosing Latte or Mocha sets it. The choice is a per-browser
+// convenience in localStorage, applied before the first paint by the script
+// in _head.html.heex. Listening on the document needs no inline script
+// (Content-Security-Policy) and survives LiveView re-renders.
 const STORAGE_KEY = "pan_theme";
-const DEFAULT_CHOICE = "latte";
-const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const DEFAULT_CHOICE = "system";
 
 let choice = DEFAULT_CHOICE;
 try {
@@ -17,11 +15,8 @@ try {
 }
 
 function applyTheme() {
-  const theme =
-    choice === "system" ? (darkQuery.matches ? "mocha" : "latte") : choice;
-
-  if (document.querySelector("[data-themed-page]")) {
-    document.documentElement.setAttribute("data-theme", theme);
+  if (choice === "latte" || choice === "mocha") {
+    document.documentElement.setAttribute("data-theme", choice);
   } else {
     document.documentElement.removeAttribute("data-theme");
   }
@@ -47,6 +42,5 @@ document.addEventListener("click", (event) => {
   }
 });
 
-darkQuery.addEventListener("change", applyTheme);
 window.addEventListener("phx:page-loading-stop", applyTheme);
 document.addEventListener("DOMContentLoaded", applyTheme);

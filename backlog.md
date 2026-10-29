@@ -59,8 +59,10 @@ blocks in app.css (all pairs AA; Latte light accents take dark text
 the admin layouts' `<main>` via data-theme. #432 done for the admin (shared
 admin modules, LiveView admin pages, admin controller templates; links in
 text color + underline, gray gradients replaced by solid base colors).
-#432 (semantic classes everywhere) done 2026-10-29 (28bd5b7a). Plan, in
-order:
+#432 (semantic classes everywhere) done 2026-10-29 (28bd5b7a); #436/#437
+the same day: Latte/Mocha on every page, System (prefers-color-scheme) as
+default, toggle in the sidebar, Bootflat palette and the old light theme
+removed. Remaining items:
 
 - **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
   `color` on categories, Pan.CategoryIcons proposals + "Fill missing icons"
@@ -74,12 +76,3 @@ order:
   action). Both are third-party widgets with their own configuration/theme
   (player: config theme tokens; subscribe button: its own color option), so
   check what they allow; check with real clicks/playback, not only renders.
-- **#435 Order:** admin converted
-  and tested via `data-theme` toggle → moderation (done) → public site → re-enable automatic
-  dark mode.
-- **#436 Theme toggle:** done for admin and moderation (Latte /
-  Mocha / System, assets/js/theme_toggle.js, localStorage `pan_theme`).
-  Still open: the same for the public site, once it uses the themes.
-- **#437 Remove the Bootflat palette** from `@theme` at the end, so leftover
-  uses stop generating and show up by grep; also rework `.alert-*` and
-  `.invalid-feedback` in app.css (use `-light`/`-dark` + `text-black`).

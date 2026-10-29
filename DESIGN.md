@@ -104,9 +104,13 @@ theme. Categories: each top level category has its own color (column
 
 ## Themes
 
-- Admin and moderation pages follow the Latte / Mocha / System toggle
-  (`PanWeb.Component.ThemeToggle`, localStorage `pan_theme`); the theme sits
-  on `<html>`, set for `/admin` and `/moderator`
-  (`PanWeb.LayoutView.themed?/1`).
-- The public site is on DaisyUI's `light` theme until its templates are
-  converted (backlog.md, Catppuccin section).
+- Latte and Mocha are the only themes (`app.css`). Without a choice the page
+  follows the OS: Latte on light systems, Mocha on dark ones
+  (`prefers-color-scheme`, pure CSS, no flash).
+- The toggle (sun / monitor / moon, `PanWeb.Component.ThemeToggle`) sits in
+  the sidebar below the menu on every page. Latte or Mocha set `data-theme`
+  on `<html>`, "System" removes it; the choice is kept in localStorage
+  (`pan_theme`) and applied before the first paint by a nonce'd script in
+  `_head.html.heex` (CSP).
+- Check new pages in both themes; a headless Chrome with
+  `--blink-settings=preferredColorScheme=0` renders the dark one.
