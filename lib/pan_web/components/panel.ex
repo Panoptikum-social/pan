@@ -1,8 +1,8 @@
 defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
-  # Neutral headings, the panel framed in the color of what it lists; the
-  # icons in the content carry the color (backlog.md #433).
+  # Neutral headings, the panel framed in the color of what it is about
+  # (its purpose); the icons in the content carry the color (DESIGN.md).
   @heading_colors %{
     "info" => "border-ctp-sky",
     "category" => "border-category",
@@ -15,7 +15,9 @@ defmodule PanWeb.Component.Panel do
     "engagement" => "border-ctp-peach",
     "gig" => "border-ctp-green",
     "recommendation" => "border-recommendation",
-    "message" => "border-ctp-pink"
+    "message" => "border-ctp-pink",
+    "subscription" => "border-ctp-blue",
+    "follow" => "border-ctp-lavender"
   }
 
   def border_color_class(purpose), do: Map.get(@heading_colors, purpose, "border-base-300")

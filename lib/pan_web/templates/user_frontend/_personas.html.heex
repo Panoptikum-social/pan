@@ -11,28 +11,23 @@
 <%= unless @user.podcaster == true do %>
   <p>
     You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to
-    <.link href={user_frontend_path(@conn, :edit)} class="text-link hover:text-link-dark">Edit your data</.link>
+    <.link href={user_frontend_path(@conn, :edit)} class="underline hover:text-primary">Edit your data</.link>
     ?
   </p>
 <% end %>
 
 <%= for persona <- @user.personas do %>
-  <div x-data="{expanded: false}" class="p-4 pb-2 border border-dotted border-gray">
+  <div x-data="{expanded: false}" class="p-4 pb-2 border border-dotted border-base-300">
     <div class="panel-heading flex flex-wrap justify-between">
       <a
         @click.prevent="expanded = !expanded"
-        class="text-link hover:text-link-dark cursor-pointer"
+        class="underline hover:text-primary cursor-pointer"
       >
         {icon("file-search")}
         {persona.name} (pid: {persona.pid} )
       </a>
 
-      <.link
-        href={persona_frontend_path(@conn, :show, persona)}
-        class="bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm whitespace-nowrap truncate max-x-full"
-      >
-        {icon("user", class: "h-4 w-4 inline")} {persona.name}
-      </.link>
+      <PanWeb.Component.PersonaButton.render for={persona} class="truncate max-w-full" />
     </div>
     <div x-show="expanded" class="grid grid-cols-1 lg:grid-cols-4 gap-4">
       <div class="mt-2">
@@ -42,7 +37,7 @@
               src={thumbnail.path <> thumbnail.filename}
               width="150"
               alt={persona.image_title}
-              class="p-1 border border-gray-light rounded"
+              class="p-1 border border-base-300 rounded"
               id="photo"
             />
           <% else %>
@@ -50,19 +45,19 @@
               src="/images/missing-persona.png"
               alt="missing image"
               width="150"
-              class="p-1 border border-gray-light rounded"
+              class="p-1 border border-base-300 rounded"
             />
           <% end %>
 
           <div class="self-start flex flex-col gap-2">
             <.link
               href={persona_frontend_path(@conn, :edit, persona)}
-              class="bg-warning hover:bg-warning-light text-white border border-gray rounded px-2 py-1 text-sm"
+              class="btn btn-warning btn-sm"
             >Edit persona</.link>
             <.link
               href={persona_frontend_path(@conn, :show, persona)}
               target="_blank"
-              class="bg-lavender hover:bg-lavender-light text-white border border-gray rounded px-2 py-1 text-sm"
+              class="btn btn-sm"
             >Show persona</.link>
           </div>
         </div>
@@ -122,17 +117,15 @@
                       delegate_id: delegate_persona.id
                     )
                   }
-                  class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm my-1"
+                  class="btn btn-warning btn-xs"
                 >
                   {icon("unlink", class: "h-4 w-4 inline")} Cancel Delegation
                 </.link>
                 {icon("link")}
-                <.link
-                  href={persona_frontend_path(@conn, :show, delegate_persona)}
-                  class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                >
-                  {icon("user", class: "h-4 w-4 inline")} {delegate_persona.name}
-                </.link>
+                <PanWeb.Component.PersonaButton.render
+                  for={delegate_persona}
+                  class="truncate max-w-full"
+                />
                 <span>(pid: {delegate_persona.pid} )</span>
               </li>
             <% end %>
@@ -148,17 +141,15 @@
                         delegate_id: delegate_persona.id
                       )
                     }
-                    class="bg-primary text-white border border-gray-dark hover:bg-primary-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
+                    class="btn btn-primary btn-xs"
                   >
                     {icon("link", class: "h-4 w-4 inline")} Delegate
                   </.link>
                   {icon("unlink")}
-                  <.link
-                    href={persona_frontend_path(@conn, :show, delegate_persona)}
-                    class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                  >
-                    {icon("user", class: "h-4 w-4 inline")} {delegate_persona.name}
-                  </.link>
+                  <PanWeb.Component.PersonaButton.render
+                    for={delegate_persona}
+                    class="truncate max-w-full"
+                  />
                   <span>(pid: {delegate_persona.pid} )</span>
                 </li>
               <% end %>
@@ -178,17 +169,15 @@
             <li class="flex flex-wrap space-x-2 items-center">
               <.link
                 href={persona_frontend_path(@conn, :cancel_redirect, persona.id)}
-                class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm mb-1"
+                class="btn btn-warning btn-xs"
               >
                 {icon("unlink", class: "h-4 w-4 inline")} Cancel Redirection
               </.link>
               {icon("arrow-right")}
-              <.link
-                href={persona_frontend_path(@conn, :show, persona.redirect.pid)}
-                class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-              >
-                {icon("user", class: "h-4 w-4 inline")} {persona.redirect.name}
-              </.link>
+              <PanWeb.Component.PersonaButton.render
+                for={persona.redirect}
+                class="truncate max-w-full"
+              />
               <span>(pid: {persona.redirect.pid} )</span>
             </li>
           <% else %>
@@ -203,17 +192,15 @@
                         target_id: target_persona.id
                       )
                     }
-                    class="bg-danger text-white border border-gray-dark hover:bg-danger-light inline-block shadow max-w-full py-1 px-2 rounded text-sm mb-1"
+                    class="btn btn-error btn-xs"
                   >
                     {icon("arrow-right", class: "h-4 w-4 inline")} Redirect
                   </.link>
                   {icon("unlink")}
-                  <.link
-                    href={persona_frontend_path(@conn, :show, target_persona.id)}
-                    class="bg-lavender text-white border border-gray-dark hover:bg-lavender-light inline-block shadow truncate max-w-full py-1 px-2 rounded text-sm"
-                  >
-                    {icon("user", class: "h-4 w-4 inline")} {target_persona.name}
-                  </.link>
+                  <PanWeb.Component.PersonaButton.render
+                    for={target_persona}
+                    class="truncate max-w-full"
+                  />
                   <span>(pid: {target_persona.pid} )</span>
                 </li>
               <% end %>

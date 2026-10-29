@@ -1,20 +1,12 @@
 <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
   <div class="flex flex-col space-y-4">
-    <div class="border border-gray-light rounded-lg">
-      <div class="bg-gray-light p-2">
-        Your Podcast Recommendations
-      </div>
-      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
+    <PanWeb.Component.Panel.render heading="Your Podcast Recommendations" purpose="recommendation">
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @podcast_recommendations do %>
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
-              <.link
-                href={podcast_frontend_path(@conn, :show, recommendation.podcast)}
-                class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-              >
-                {icon("microphone", class: "h-4 w-4 inline")} {recommendation.podcast.title}
-              </.link>
-              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
+              <PanWeb.Component.PodcastButton.render for={recommendation.podcast} />
+              <span class="text-sm text-base-content/70">{to_string(recommendation.inserted_at)}</span>
             </div>
             {recommendation.comment}
             <p class="text-right">
@@ -22,37 +14,24 @@
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
                 data-confirm="Are you sure?"
-                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+                class="btn btn-error btn-xs"
               >Delete</.link>
             </p>
           </li>
         <% end %>
       </ul>
-    </div>
+    </PanWeb.Component.Panel.render>
 
-    <div class="border border-gray-light rounded-lg">
-      <div class="bg-info text-white p-2">
-        Your Episode Recommendations
-      </div>
-      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
+    <PanWeb.Component.Panel.render heading="Your Episode Recommendations" purpose="recommendation">
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @episode_recommendations do %>
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <div class="flex flex-col space-y-1">
-                <.link
-                  href={podcast_frontend_path(@conn, :show, recommendation.episode.podcast)}
-                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-                >
-                  {icon("microphone", class: "h-4 w-4 inline")} {recommendation.episode.podcast.title}
-                </.link>
-                <.link
-                  href={episode_frontend_path(@conn, :show, recommendation.episode)}
-                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-                >
-                  {icon("headphones", class: "h-4 w-4 inline")} {recommendation.episode.title}
-                </.link>
+                <PanWeb.Component.PodcastButton.render for={recommendation.episode.podcast} />
+                <PanWeb.Component.EpisodeButton.render for={recommendation.episode} />
               </div>
-              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
+              <span class="text-sm text-base-content/70">{to_string(recommendation.inserted_at)}</span>
             </div>
             {recommendation.comment}
             <p class="text-right">
@@ -60,42 +39,29 @@
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
                 data-confirm="Are you sure?"
-                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+                class="btn btn-error btn-xs"
               >Delete</.link>
             </p>
           </li>
         <% end %>
       </ul>
-    </div>
+    </PanWeb.Component.Panel.render>
 
-    <div class="border border-gray-light rounded-lg">
-      <div class="bg-aqua text-white p-2">
-        Your Chapter Recommendations
-      </div>
-      <ul class="m-4 flex flex-col divide-y divide-dashed divide-gray">
+    <PanWeb.Component.Panel.render heading="Your Chapter Recommendations" purpose="recommendation">
+      <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @chapter_recommendations do %>
           <li class="mt-2 pt-2">
             <div class="flex justify-between">
               <div class="flex flex-col space-y-1">
-                <.link
-                  href={
-                    podcast_frontend_path(@conn, :show, recommendation.chapter.episode.podcast)
-                  }
-                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-                >
-                  {icon("microphone", class: "h-4 w-4 inline")} {recommendation.chapter.episode.podcast.title}
-                </.link>
-                <.link
-                  href={episode_frontend_path(@conn, :show, recommendation.chapter.episode)}
-                  class="border border-gray text-sm rounded p-1 bg-white hover:bg-gray-lightest"
-                >
-                  {icon("headphones", class: "h-4 w-4 inline")} {recommendation.chapter.episode.title}
-                </.link>
+                <PanWeb.Component.PodcastButton.render for={
+                  recommendation.chapter.episode.podcast
+                } />
+                <PanWeb.Component.EpisodeButton.render for={recommendation.chapter.episode} />
                 <span class="text-sm">
                   {icon("indent-increase", class: "h-4 w-4 inline")} {recommendation.chapter.title}
                 </span>
               </div>
-              <span class="text-sm text-gray-dark">{to_string(recommendation.inserted_at)}</span>
+              <span class="text-sm text-base-content/70">{to_string(recommendation.inserted_at)}</span>
             </div>
             {recommendation.comment}
             <p class="text-right">
@@ -103,20 +69,17 @@
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
                 data-confirm="Are you sure?"
-                class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+                class="btn btn-error btn-xs"
               >Delete</.link>
             </p>
           </li>
         <% end %>
       </ul>
-    </div>
+    </PanWeb.Component.Panel.render>
   </div>
 
   <div>
-    <div class="border border-gray-light rounded-lg">
-      <div class="bg-mint text-white p-2">
-        Unrecommended Podcasts
-      </div>
+    <PanWeb.Component.Panel.render heading="Unrecommended Podcasts" purpose="podcast">
       <ul class="m-4 flex flex-col space-y-4">
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
@@ -125,7 +88,7 @@
                 <div class="grow">
                   <div class="flex justify-between">
                     Your recommendation for: &nbsp; {podcast.title}
-                    <small class="text-muted pull-right" id={"remaining#{podcast.id}"}>
+                    <small class="text-base-content/70" id={"remaining#{podcast.id}"}>
                       255
                     </small>
                   </div>
@@ -139,15 +102,13 @@
                   />
                 </div>
                 <div class="shrink-0 self-end">
-                  <button type="submit" class="btn btn-info btn-sm">{icon(
-                    "thumb-up"
-                  )} Recommend</button>
+                  <button type="submit" class="btn btn-info btn-sm">{icon("thumb-up")} Recommend</button>
                 </div>
               </div>
             </.form>
           </li>
         <% end %>
       </ul>
-    </div>
+    </PanWeb.Component.Panel.render>
   </div>
 </div>

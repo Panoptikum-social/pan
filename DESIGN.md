@@ -9,7 +9,7 @@ discussion. Themes are [Catppuccin](https://catppuccin.com/palette) Latte
 | Role | Means | Looks like |
 |---|---|---|
 | Colored icon | what something **is** | the entity's or the icon's own color, title in the text color |
-| Color line | what a container **holds** | a panel framed in the color of its content, neutral heading |
+| Color line | what a container is **about** | a panel framed in the color of its purpose, neutral heading |
 | Neutral | everything **readable** | text, headings, links in the text color; base-100/200/300 surfaces |
 | Filled color | **actions and states** | buttons, badges, flash messages; nothing else is filled |
 
@@ -77,7 +77,10 @@ theme. Categories: each top level category has its own color (column
   `UserButton` and `CategoryLink`, all on `EntityLink` (colored icon +
   title). No label like "Podcast" in front: the icon says it.
 - **Panels:** `Panel` with `purpose="episode"` etc.: neutral `base-300`
-  heading, the whole panel framed (2px) in the purpose's color.
+  heading, the whole panel framed (2px) in the purpose's color. Panels side
+  by side get different purposes (on My Podcasts: podcast, subscription,
+  like, follow, recommendation, popular, category), not seven times the
+  same color.
 - **Buttons:** `class="btn btn-primary"` and the other DaisyUI variants;
   `<.button>` without a class is muted (`btn-soft`).
 

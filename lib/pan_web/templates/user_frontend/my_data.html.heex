@@ -8,7 +8,7 @@
     <.link
       href={user_frontend_path(@conn, :my_profile)}
       target="_blank"
-      class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md"
+      class="btn btn-sm"
     >
       {icon("user-circle")} My Profile
     </.link>
@@ -19,7 +19,7 @@
 <p class="my-4">
   <.link
     href={user_json_download_path(@conn, :download)}
-    class="border border-gray btn btn-primary"
+    class="btn btn-primary"
   >
     {icon("file-download")} Download
   </.link>
@@ -51,7 +51,7 @@
     <.link
       href={opml_frontend_path(@conn, :index)}
       target="_blank"
-      class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md"
+      class="btn btn-sm"
     >
       {icon("file-download")} My OPMLs
     </.link>
@@ -84,7 +84,7 @@ You can even delete all manifestations as personas, you created so far, at once,
       href={manifestation_frontend_path(@conn, :delete, persona.id)}
       method="delete"
       data-confirm="Are you sure?"
-      class="border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap"
+      class="btn btn-error btn-xs whitespace-nowrap"
     >Delete Manifestation</.link>
   </h3>
 
@@ -113,7 +113,7 @@ You can even delete all manifestations as personas, you created so far, at once,
       href={persona_frontend_path(@conn, :disconnect, persona.id)}
       method="post"
       data-confirm="Are you sure?"
-      class="border border-gray bg-danger hover:bg-danger-light text-sm text-white py-1 px-2 rounded-md whitespace-nowrap"
+      class="btn btn-error btn-xs whitespace-nowrap"
     >Disconnect Persona</.link>
   </h3>
 
@@ -170,7 +170,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
       <.link
         href={podcast_frontend_path(@conn, :show, podcast)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{podcast.title}</.link>
     </li>
   <% end %>
@@ -198,7 +198,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
       <.link
         href={podcast_frontend_path(@conn, :show, podcast)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{podcast.title}</.link>
     </li>
   <% end %>
@@ -226,7 +226,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
       <.link
         href={podcast_frontend_path(@conn, :show, podcast)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{podcast.title}</.link>
     </li>
   <% end %>
@@ -254,7 +254,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
       <.link
         href={episode_frontend_path(@conn, :show, episode)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{episode.title}</.link>
     </li>
   <% end %>
@@ -282,7 +282,7 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
       <.link
         href={episode_frontend_path(@conn, :show, chapter.episode)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{chapter.title}</.link>
     </li>
   <% end %>
@@ -310,7 +310,7 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
       <.link
         href={user_frontend_path(@conn, :show, user)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{user.name}</.link>
     </li>
   <% end %>
@@ -338,7 +338,7 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
       <.link
         href={user_frontend_path(@conn, :show, user)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{user.name}</.link>
     </li>
   <% end %>
@@ -366,7 +366,7 @@ You can even unfollow all the personas, you followed so far at once, by clicking
       <.link
         href={persona_frontend_path(@conn, :show, persona)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{persona.name}</.link>
     </li>
   <% end %>
@@ -394,7 +394,7 @@ You can even unlike all the personas, you followed so far at once, by clicking &
       <.link
         href={persona_frontend_path(@conn, :show, persona)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{persona.name}</.link>
     </li>
   <% end %>
@@ -422,7 +422,7 @@ You can even unfollow all the categories, you followed so far at once, by clicki
       <.link
         href={category_frontend_path(@conn, :show, category)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{category.title}</.link>
     </li>
   <% end %>
@@ -450,7 +450,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
       <.link
         href={category_frontend_path(@conn, :show, category)}
         target="_blank"
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >{category.title}</.link>
     </li>
   <% end %>
@@ -495,20 +495,20 @@ You can even delete all the recommendations, you created so far, at once, by cli
               <.link
                 href={podcast_frontend_path(@conn, :show, recommendation.podcast)}
                 target="_blank"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{recommendation.podcast.title}</.link>
             <% recommendation.episode -> %>
               Episode:
               <.link
                 href={episode_frontend_path(@conn, :show, recommendation.episode)}
                 target="_blank"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{recommendation.episode.title}</.link>
             <% recommendation.chapter -> %>
               <.link
                 href={episode_frontend_path(@conn, :show, recommendation.chapter.episode_id)}
                 target="_blank"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{recommendation.chapter.title}</.link>
           <% end %>
         </td>
@@ -525,7 +525,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
             href={recommendation_frontend_path(@conn, :delete, recommendation)}
             method="delete"
             data-confirm="Are you sure?"
-            class="border border-gray bg-danger hover:bg-danger-light text-white py-1 px-2 text-sm rounded-md"
+            class="btn btn-error btn-xs"
           >Delete</.link>
         </td>
       </tr>
@@ -533,8 +533,8 @@ You can even delete all the recommendations, you created so far, at once, by cli
   </tbody>
 </table>
 
-<div class="bg-danger-light/50 p-4 max-w-xl rounded-xl my-4">
-  <h2 class="text-lg text-danger-dark">
+<div class="border-2 border-error p-4 max-w-xl rounded-xl my-4">
+  <h2 class="text-lg text-error">
     Danger Zone
   </h2>
 

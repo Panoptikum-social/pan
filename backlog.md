@@ -10,6 +10,12 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
+- **#444 Category ranking on My Podcasts without icons (found 2026-10-29
+  during #432):** the "categories my podcasts are assigned to" panel gets
+  `[count, id, title]` from a raw query in UserFrontendController.my_podcasts,
+  so CategoryLink shows the folder icon and no color there. Add icon and the
+  color (Category.color_map/0) to the query.
+
 - **#443 Deprecated logger level (found 2026-10-29 during #440):** config/test.exs:39
   sets `config :logger, level: :warn`; Elixir 1.20 warns on every test
   run ("please use :warning instead").
