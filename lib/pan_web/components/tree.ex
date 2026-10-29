@@ -100,7 +100,7 @@ defmodule PanWeb.Component.Tree do
         </button>
 
         {node.title}
-        <span :if={@badges[node.id]} class="badge badge-xs badge-neutral ml-1">
+        <span :if={@badges[node.id]} class="badge badge-xs badge-outline badge-neutral ml-1">
           {@badges[node.id]}
         </span>
         <span :if={@counts} class="ml-1 text-xs opacity-60 tabular-nums">

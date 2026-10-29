@@ -144,6 +144,12 @@ defmodule PanWeb.Category do
     |> Map.new()
   end
 
+  def icon_map do
+    from(c in Category, where: not is_nil(c.icon), select: {c.id, c.icon})
+    |> Repo.all()
+    |> Map.new()
+  end
+
   def stats_tree do
     from(c in Category,
       order_by: :title,

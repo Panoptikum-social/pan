@@ -173,7 +173,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         class={["tab", key == @tab && "tab-active"]}
       >
         {label}
-        <span :if={key == "mappings"} class="badge badge-sm badge-neutral ml-2">
+        <span :if={key == "mappings"} class="badge badge-sm badge-outline badge-neutral ml-2">
           {length(@mappings)}
         </span>
       </.link>
@@ -237,7 +237,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
         <ul class="mt-6 space-y-1 text-sm">
           <li class="flex items-center gap-2">
-            <span class="badge badge-xs badge-neutral">Apple</span>
+            <span class="badge badge-xs badge-outline badge-neutral">Apple</span>
             on Apple Podcasts' current list: merge into it, it can't be deleted, merged away or moved
           </li>
           <li class="flex items-center gap-2">

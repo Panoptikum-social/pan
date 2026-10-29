@@ -21,14 +21,14 @@ defmodule PanWeb.Live.Podcast.Header do
     <div :if={@admin} class="fixed top-0 right-0 mt-4 mr-8 space-x-4">
       <a
         href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >
         <Icon.render name="settings" /> Show Podcast
       </a>
 
       <a
         href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")}
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >
         <Icon.render name="rss" /> Alternate Feeds
       </a>
@@ -38,7 +38,7 @@ defmodule PanWeb.Live.Podcast.Header do
 
     <p
       :if={@podcast.retired}
-      class="p-2 border border-warning-dark bg-warning-light/50 rounded-xl mb-4 container max-w-3xl my-4"
+      class="alert alert-soft alert-warning container max-w-3xl my-4"
       role="alert"
     >
       We retired this podcast, because we couldn't parse it for 10 consecutive times.
@@ -48,7 +48,7 @@ defmodule PanWeb.Live.Podcast.Header do
       <div class="flex flex-col space-y-4 lg:space-y-0 xl:flex-row">
         <div class="flex flex-col md:flex-row md:space-x-4">
           <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
-            <div id="thumbnail" class="border border-gray-light shadow m-auto ">
+            <div id="thumbnail" class="border border-base-300 shadow m-auto ">
               <img
                 :if={Map.has_key?(@podcast_thumbnail, :path)}
                 src={"https://panoptikum.social#{@podcast_thumbnail.path}#{@podcast_thumbnail.filename}"}
@@ -77,7 +77,7 @@ defmodule PanWeb.Live.Podcast.Header do
           <dd :if={@podcast.website} class="col-span-3">
             <a
               href={@podcast.website}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >{@podcast.website}</a>
           </dd>
           <dt class="justify-self-end font-medium">Description</dt>
@@ -86,7 +86,7 @@ defmodule PanWeb.Live.Podcast.Header do
           <dd :if={@podcast.payment_link_url} class="col-span-3">
             <a
               href={@podcast.payment_link_url |> String.trim()}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >
               {@podcast.payment_link_title || "Support"}
             </a>
@@ -144,7 +144,7 @@ defmodule PanWeb.Live.Podcast.Header do
           <dd class="col-span-3">
             <a
               href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >Detail page</a>
           </dd>
           <dt class="justify-self-end font-medium">Categories</dt>

@@ -2,12 +2,12 @@ defmodule PanWeb.Live.Search do
   use PanWeb, :live_view
   on_mount(PanWeb.Live.AssignUserAndAdmin)
   import PanWeb.Router.Helpers
-  import PanWeb.ViewHelpers, only: [icon: 1]
+  import PanWeb.ViewHelpers, only: [icon: 2]
   alias PanWeb.Component.Pill
-  alias PanWeb.Component.LinkButton
+  alias PanWeb.Component.{CategoryLink, PersonaButton, PodcastButton}
   alias Pan.Search
   alias Pan.Repo
-  alias PanWeb.{Endpoint, Language, User}
+  alias PanWeb.{Category, Endpoint, Language, User}
 
   # only these two indices carry language_ids in Manticore (see
   # Pan.Search.Podcast/Episode) - categories/personas aren't language-specific
@@ -25,7 +25,9 @@ defmodule PanWeb.Live.Search do
     {:ok,
      assign(socket,
        language_groups: language_groups,
-       selected_representative_ids: selected_representative_ids
+       selected_representative_ids: selected_representative_ids,
+       category_icons: Category.icon_map(),
+       category_colors: Category.color_map()
      )}
   end
 
@@ -164,33 +166,31 @@ defmodule PanWeb.Live.Search do
     end
   end
 
-  defp heading(index) do
-    {:safe, icon} =
-      case index do
-        "episodes" -> icon("headphones")
-        "podcasts" -> icon("microphone")
-        "categories" -> icon("folder")
-        "personas" -> icon("user-star")
-      end
+  defp heading_icon("episodes", _id, _icons), do: "headphones"
+  defp heading_icon("podcasts", _id, _icons), do: "microphone"
+  defp heading_icon("personas", _id, _icons), do: "user-star"
+  defp heading_icon("categories", id, icons), do: icons[to_integer(id)] || "folder"
 
-    case index do
-      "episodes" -> (icon <> " Episode &nbsp;") |> raw
-      "podcasts" -> (icon <> " Podcast &nbsp;") |> raw
-      "categories" -> (icon <> " Category &nbsp;") |> raw
-      "personas" -> (icon <> " Persona &nbsp;") |> raw
-    end
+  # categories in their tree color, the others in their entity color
+  defp heading_color("categories", id, colors) do
+    if color = colors[to_integer(id)], do: "text-ctp-#{color}", else: ""
   end
+
+  defp heading_color(_index, _id, _colors), do: ""
+
+  defp to_integer(id) when is_integer(id), do: id
+  defp to_integer(id), do: String.to_integer(id)
 
   def render(assigns) do
     ~H"""
-    <div class="sticky top-0 z-50 bg-gray-lightest pb-2 p-6">
+    <div class="sticky top-0 z-50 bg-base-200 pb-2 p-6">
       <h1 class="text-3xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
       <p class="mt-2">
         You might want to search for
         <.link
           :if={@index != "categories"}
           patch={search_frontend_path(Endpoint, :search, "categories", @term)}
-          class="text-link hover:text-link-dark visited:text-mint"
+          class="underline hover:text-primary"
         >
           categories
         </.link>
@@ -198,7 +198,7 @@ defmodule PanWeb.Live.Search do
         <.link
           :if={@index != "podcasts"}
           patch={search_frontend_path(Endpoint, :search, "podcasts", @term)}
-          class="text-link hover:text-link-dark visited:text-mint"
+          class="underline hover:text-primary"
         >
           podcasts
         </.link>
@@ -206,7 +206,7 @@ defmodule PanWeb.Live.Search do
         <.link
           :if={@index != "personas"}
           patch={search_frontend_path(Endpoint, :search, "personas", @term)}
-          class="text-link hover:text-link-dark visited:text-mint"
+          class="underline hover:text-primary"
         >
           personas
         </.link>
@@ -214,7 +214,7 @@ defmodule PanWeb.Live.Search do
         <.link
           :if={@index != "episodes"}
           patch={search_frontend_path(Endpoint, :search, "episodes", @term)}
-          class="text-link hover:text-link-dark visited:text-mint"
+          class="underline hover:text-primary"
         >
           episodes
         </.link>
@@ -261,7 +261,7 @@ defmodule PanWeb.Live.Search do
         >
           search in all languages available
         </button>
-        <span class="text-xs text-gray-dark">
+        <span class="text-xs text-base-content/70">
           ({language_filter_status(@selected_representative_ids, @language_groups)})
         </span>
       </div>
@@ -270,7 +270,7 @@ defmodule PanWeb.Live.Search do
     <ul
       id="search_results"
       phx-update={@update}
-      class="flex flex-col divide-y divide-gray divide-dotted space-y-4 m-4"
+      class="flex flex-col divide-y divide-base-300 divide-dotted space-y-4 m-4"
     >
       <li
         :for={hit <- @hits["hits"]}
@@ -279,7 +279,7 @@ defmodule PanWeb.Live.Search do
       >
         <div
           :if={hit["_source"]["thumbnail_url"] not in [nil, ""]}
-          class="flex-none p-2 my-2 border border-gray-light shadow mx-auto lg:mx-0"
+          class="flex-none p-2 my-2 border border-base-300 shadow mx-auto lg:mx-0"
         >
           <img
             src={"https://panoptikum.social#{hit["_source"]["thumbnail_url"]}"}
@@ -293,10 +293,13 @@ defmodule PanWeb.Live.Search do
 
         <div class="max-w-5xl">
           <h2 class="text-2xl">
-            {heading(@index)}
+            {icon(heading_icon(@index, hit["_id"], @category_icons),
+              class:
+                "size-6 inline align-text-bottom #{heading_color(@index, hit["_id"], @category_colors)}"
+            )}
             <a
               href={show_path(@index, hit["_id"])}
-              class="text-link hover:text-link-dark visited:text-mint"
+              class="underline hover:text-primary"
             >
               {hit["_source"]["title"] || hit["_source"]["name"]}
             </a>
@@ -308,7 +311,7 @@ defmodule PanWeb.Live.Search do
           <p class="text-sm">
             <a
               href={show_path(@index, hit["_id"])}
-              class="text-mint hover:text-mint-light"
+              class="text-base-content/70 hover:underline"
             >
               https://panoptikum.social{show_path(@index, hit["_id"])}
             </a>
@@ -330,56 +333,44 @@ defmodule PanWeb.Live.Search do
 
           <p :if={hit["_source"]["gigs"]} class="leading-9">
             <%= for gig <- hit["_source"]["gigs"] do %>
-              <LinkButton.render
-                to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
-                class="bg-lavender text-white border border-gray-dark
-                                hover:bg-lavender-light hover:border-lavender"
-                icon="user-star"
-                title={gig["persona_name"]}
-              />
+              <PersonaButton.render id={gig["persona_id"]} name={gig["persona_name"]} class="mr-2" />
               <Pill.render type="lavender">{gig["role"]}</Pill.render>
             <% end %>
           </p>
 
-          <LinkButton.render
+          <PodcastButton.render
             :if={hit["_source"]["podcast_id"]}
-            to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
-            class="btn-outline"
-            icon="microphone"
+            id={hit["_source"]["podcast_id"]}
             title={hit["_source"]["podcast"]["title"]}
-            truncate={true}
+            truncate
           />
 
           <p :if={hit["_source"]["engagements"]} class="leading-9">
             <%= for engagement <- hit["_source"]["engagements"] do %>
-              <LinkButton.render
+              <PersonaButton.render
                 :if={@index == "podcasts"}
-                to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
-                class="bg-lavender text-white border border-gray-dark
-                                  hover:bg-lavender-light hover:border-lavender"
-                icon="user-star"
-                title={engagement["persona_name"]}
+                id={engagement["persona_id"]}
+                name={engagement["persona_name"]}
+                class="mr-2"
               />
-              <LinkButton.render
+              <PodcastButton.render
                 :if={@index != "podcasts"}
-                to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
-                class="btn-outline"
-                icon="microphone"
+                id={engagement["podcast_id"]}
                 title={engagement["podcast_title"]}
+                class="mr-2"
               />
               <Pill.render type="lavender">{engagement["role"]}</Pill.render>
             <% end %>
           </p>
 
           <p :if={hit["_source"]["categories"]} class="leading-9">
-            <LinkButton.render
+            <CategoryLink.render
               :for={category <- hit["_source"]["categories"]}
-              to={category_frontend_path(Endpoint, :show, category["id"])}
-              class="btn-outline"
-              large={false}
-              icon="folder"
-              title={category["title"]}
-              truncate={false}
+              for={
+                %{id: category["id"], title: category["title"], icon: @category_icons[category["id"]]}
+              }
+              color={@category_colors[category["id"]]}
+              class="mr-3"
             />
           </p>
         </div>

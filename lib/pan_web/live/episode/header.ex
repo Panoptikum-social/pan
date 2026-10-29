@@ -35,7 +35,7 @@ defmodule PanWeb.Live.Episode.Header do
         <EpisodeButton.render for={@episode} large class="my-2" />
       </h1>
 
-      <div class="flex flex-col md:flex-row my-4 space-y-4 md:space-y-0 md:space-x-4 md:divide-x md:divide-dotted md:divide-gray">
+      <div class="flex flex-col md:flex-row my-4 space-y-4 md:space-y-0 md:space-x-4 md:divide-x md:divide-dotted md:divide-base-300">
         <%= if (@episode.description && @episode.description != @episode.shownotes) ||
               (@episode.summary && @episode.summary != @episode.description) do %>
           <div class="flex-1">
@@ -69,7 +69,7 @@ defmodule PanWeb.Live.Episode.Header do
           <%= if @episode.link do %>
             <dt class="justify-self-end font-medium">Link</dt>
             <dd class="col-span-3">
-              <a class="text-link hover:text-link-dark" href={@episode.link}>{@episode.link}</a>
+              <a class="underline hover:text-primary" href={@episode.link}>{@episode.link}</a>
             </dd>
           <% end %>
           <%= if @episode.deep_link do %>
@@ -78,7 +78,7 @@ defmodule PanWeb.Live.Episode.Header do
               <a
                 href={@episode.deep_link}
                 id="metadata"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{@episode.deep_link}</a>
             </dd>
           <% end %>
@@ -103,7 +103,7 @@ defmodule PanWeb.Live.Episode.Header do
                   </div>
                   <div
                     x-show="metadataOpen"
-                    class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96 z-10"
+                    class="absolute right-0 mx-auto items-center bg-base-200 border border-base-300 p-4 w-96 z-10"
                   >
                     <h1 class="text-3xl">Info</h1>
                     <p class="mt-4">
@@ -111,8 +111,7 @@ defmodule PanWeb.Live.Episode.Header do
                     </p>
                     <button
                       @click="metadataOpen = false"
-                      class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
-                                  focus:ring-2 focus:ring-info-light"
+                      class="btn btn-info btn-sm mt-4"
                       x-ref="metadataCloseButton"
                     >
                       Close
@@ -128,7 +127,7 @@ defmodule PanWeb.Live.Episode.Header do
           <%= for enclosure <- @episode.enclosures do %>
             <dd class="col-start-2 col-span-2">
               <a
-                class="text-link hover:text-link-dark wrap-break-word"
+                class="underline hover:text-primary wrap-break-word"
                 href={enclosure.url |> String.trim()}
               >{enclosure.url}</a>
               <%= case Integer.parse(enclosure.length || "") do %>

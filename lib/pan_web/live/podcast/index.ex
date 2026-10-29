@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
           <div class="grid grid-cols-3 grid-flow-row auto-rows-min">
             <div :if={podcast.website}>
-              <label class="badge badge-error m-1">
+              <label class="badge badge-outline badge-error m-1">
                 Website
               </label>
             </div>
@@ -80,7 +80,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div>
-              <label class="badge badge-info m-1">
+              <label class="badge badge-outline badge-info m-1">
                 Available&nbsp;since
               </label>
             </div>
@@ -91,7 +91,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div>
-              <label class="badge badge-warning m-1">
+              <label class="badge badge-outline badge-warning m-1">
                 Categories
               </label>
             </div>
@@ -105,7 +105,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div>
-              <label class="badge m-1 bg-aqua text-white">
+              <label class="badge badge-outline badge-info m-1">
                 Contributors
               </label>
             </div>
@@ -117,7 +117,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div :if={podcast.payment_link_url}>
-              <label class="badge badge-info m-1">
+              <label class="badge badge-outline badge-info m-1">
                 Support
               </label>
             </div>

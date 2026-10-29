@@ -350,11 +350,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     <div class="m-4 max-w-4xl">
       <h1 class="text-3xl">Feed check</h1>
       <p class="mt-2">
-        <.link navigate={"/podcasts/#{@podcast.id}"} class="text-link hover:text-link-dark">
+        <.link navigate={"/podcasts/#{@podcast.id}"} class="underline hover:text-primary">
           {@podcast.title}
         </.link>
       </p>
-      <p :if={@feed_url} class="text-sm text-gray-dark break-all">
+      <p :if={@feed_url} class="text-sm text-base-content/70 break-all">
         Freshly downloaded from {@feed_url}
       </p>
 
@@ -375,46 +375,44 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       </form>
 
       <p :if={@status == :running} class="mt-4">Downloading and checking the feed ...</p>
-      <p :if={@status == :failed} class="mt-4 text-danger">{@error}</p>
+      <p :if={@status == :failed} class="mt-4 text-error">{@error}</p>
       <div :if={@status == :done and !@check_error and @reads} class="mt-4">
-        <p :if={@probe_status == :idle} class="text-sm text-gray-dark">
+        <p :if={@probe_status == :idle} class="text-sm text-base-content/70">
           So far only the feed text was checked. Probing downloads the artwork and asks for the
           media files of the newest 10 episodes.
         </p>
-        <p :if={@probe_status == :done} class="text-sm text-gray-dark">
+        <p :if={@probe_status == :done} class="text-sm text-base-content/70">
           The artwork and the media files of the newest 10 episodes were probed; their results are
           part of the report below.
         </p>
-        <p :if={@probe_status == :failed} class="text-sm text-danger">Probing failed unexpectedly.</p>
-        <p :if={@audio_status == :idle} class="text-sm text-gray-dark">
+        <p :if={@probe_status == :failed} class="text-sm text-error">Probing failed unexpectedly.</p>
+        <p :if={@audio_status == :idle} class="text-sm text-base-content/70">
           Probing the audio reads the first megabyte of the newest 3 episodes' media files.
         </p>
-        <p :if={@audio_status == :done} class="text-sm text-gray-dark">
+        <p :if={@audio_status == :done} class="text-sm text-base-content/70">
           The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak
           refer to that part only.
         </p>
-        <p :if={@audio_status == :failed} class="text-sm text-danger">
+        <p :if={@audio_status == :failed} class="text-sm text-error">
           Probing the audio failed unexpectedly.
         </p>
         <button
           phx-click="probe"
           disabled={@probe_status == :running}
-          class="mt-2 border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1
-                 disabled:opacity-50"
+          class="mt-2 btn btn-info btn-sm disabled:opacity-50"
         >
           {if @probe_status == :running, do: "Probing ...", else: "Probe artwork and episodes"}
         </button>
         <button
           phx-click="probe_audio"
           disabled={@audio_status == :running}
-          class="mt-2 border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1
-                 disabled:opacity-50"
+          class="mt-2 btn btn-info btn-sm disabled:opacity-50"
         >
           {if @audio_status == :running, do: "Probing audio ...", else: "Probe audio"}
         </button>
       </div>
 
-      <p :if={@status == :done and @check_error} class="mt-4 text-danger">{@check_error}</p>
+      <p :if={@status == :done and @check_error} class="mt-4 text-error">{@check_error}</p>
       <p :if={@status == :done and !@check_error and @selected == []} class="mt-4">
         No rule set selected.
       </p>
@@ -443,11 +441,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
               {CheckMyFeed.standard_name(finding.standard)}
             </Pill.render>
             {finding.description}
-            <span class="text-sm text-gray-dark">
+            <span class="text-sm text-base-content/70">
               ({finding.rule_id}, <a
                 href={finding.spec_url}
                 target="_blank"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >
                 spec
               </a>)
@@ -470,7 +468,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
             {rule.description}
-            <span class="text-sm text-gray-dark">({rule.id})</span>
+            <span class="text-sm text-base-content/70">({rule.id})</span>
           </li>
         </ul>
       </div>
@@ -488,7 +486,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
           )})
         </summary>
-        <p class="mt-2 text-sm text-gray-dark">
+        <p class="mt-2 text-sm text-base-content/70">
           The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
         </p>
         <ul class="mt-3 list-disc ml-6">
@@ -500,14 +498,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
               {CheckMyFeed.standard_name(rule.standard)}
             </Pill.render>
             {rule.description}
-            <span class="text-sm text-gray-dark">({rule.id})</span>
+            <span class="text-sm text-base-content/70">({rule.id})</span>
           </li>
         </ul>
       </details>
 
       <details :if={@status == :done and @leniency} open class="mt-6">
         <summary class="text-xl font-bold cursor-pointer">Panoptikum reads this anyway</summary>
-        <p class="mt-2 text-sm text-gray-dark">
+        <p class="mt-2 text-sm text-base-content/70">
           Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth
           fixing in the feed.
         </p>
@@ -516,7 +514,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </p>
         <div :for={repair <- @leniency.xml} class="mt-3">
           <p>
-            {repair.label} <span class="text-sm text-gray-dark">({repair.count}×)</span>
+            {repair.label} <span class="text-sm text-base-content/70">({repair.count}×)</span>
           </p>
           <ul class="list-disc ml-6">
             <li :for={example <- repair.examples}><code class="break-all">{example}</code></li>
@@ -534,7 +532,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <summary class="text-xl font-bold cursor-pointer">
           What Panoptikum reads from your feed
         </summary>
-        <p class="mt-2 text-sm text-gray-dark">
+        <p class="mt-2 text-sm text-base-content/70">
           This is what Panoptikum takes from the feed and shows of the show. Its parser is more
           lenient than the rules above.
         </p>
@@ -555,8 +553,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       <button
         phx-click="recheck"
         disabled={@status == :running}
-        class="mt-6 border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1
-               disabled:opacity-50"
+        class="mt-6 btn btn-info btn-sm disabled:opacity-50"
       >
         {if @status == :running, do: "Checking ...", else: "Check again"}
       </button>

@@ -1,6 +1,14 @@
 defmodule PanWeb.Component.Pill do
   use PanWeb, :html
 
+  # roles and labels as outline badges: the color in the frame, the text in
+  # the text color (DESIGN.md); literal classes, so Tailwind generates them
+  @badges %{
+    "success" => "badge-success",
+    "lavender" => "badge-secondary",
+    "info" => "badge-info"
+  }
+
   attr :type, :string, default: "info"
   attr :id, :string, default: nil
   attr :large, :boolean, default: false
@@ -8,16 +16,10 @@ defmodule PanWeb.Component.Pill do
   slot :inner_block, required: true
 
   def render(assigns) do
+    assigns = assign(assigns, :badge, Map.get(@badges, assigns.type, "badge-neutral"))
+
     ~H"""
-    <span
-      class={[
-        "inline-block leading-none text-center whitespace-nowrap align-baseline text-white",
-        "bg-#{@type} hover:bg-#{@type}-dark",
-        !@large && "p-1 rounded-md text-xs",
-        @large && "py-2 px-3 rounded-xl text-sm"
-      ]}
-      id={@id}
-    >
+    <span class={["badge badge-outline whitespace-nowrap", @badge, !@large && "badge-sm"]} id={@id}>
       {render_slot(@inner_block)}
     </span>
     """

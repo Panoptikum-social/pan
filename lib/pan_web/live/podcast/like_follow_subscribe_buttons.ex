@@ -54,7 +54,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             <button
               phx-click="trigger-update"
               phx-target={@myself}
-              class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1"
+              class="btn btn-warning btn-sm"
             >
               <Icon.render name="settings" /> Metadata Update
             </button>
@@ -70,7 +70,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               </div>
               <div
                 x-show="metadataOpen"
-                class="absolute left-0 mx-auto items-center bg-gray-lightest border border-gray p-4 w-96"
+                class="absolute left-0 mx-auto items-center bg-base-200 border border-base-300 p-4 w-96"
               >
                 <h1 class="text-3xl">Info</h1>
                 <p class="mt-4">
@@ -80,8 +80,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                 </p>
                 <button
                   @click="metadataOpen = false"
-                  class="bg-info hover:bg-info-light text-white p-2 rounded mt-4
-                              focus:ring-2 focus:ring-info-light"
+                  class="btn btn-info btn-sm mt-4"
                   x-ref="metadataCloseButton"
                 >
                   Close
@@ -103,7 +102,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             href={podcast_frontend_path(Endpoint, :claim, @podcast)}
             method="post"
             data-confirm="We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
-            class="inline-block border border-gray-darker rounded bg-primary hover:bg-primary-light text-white px-2 py-1"
+            class="btn btn-primary btn-sm"
           >
             Claim this podcast
           </.link>
@@ -111,7 +110,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
         <div :if={Podcast.manageable_by?(@podcast, @current_user_id)} class="mt-4">
           <.link
             navigate={podcast_frontend_path(Endpoint, :check_feed, @podcast)}
-            class="inline-block border border-gray-darker rounded bg-info hover:bg-info-light text-white px-2 py-1"
+            class="btn btn-info btn-sm"
           >
             Check feed
           </.link>
@@ -119,19 +118,18 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
       <% else %>
         {@podcast.likes_count} <Icon.render name="heart" />
         Likes &nbsp; &nbsp; {@podcast.followers_count}
-        <Icon.render name="message" />
-        Followers &nbsp; &nbsp; {@podcast.subscriptions_count}
+        <Icon.render name="message" /> Followers &nbsp; &nbsp; {@podcast.subscriptions_count}
         <Icon.render name="user" /> Subscribers
         <p class="mt-4">
           <i>
             <a
               href={user_frontend_path(Endpoint, :new)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >Sign up</a>
             /
             <a
               href={session_path(Endpoint, :new)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >Log in</a>
             to like, follow, recommend and subscribe!
           </i>

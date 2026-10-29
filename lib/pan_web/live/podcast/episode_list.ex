@@ -39,7 +39,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
               <nobr>
                 <PersonaButton.render for={persona} />
                 <%= for gig <- gigs do %>
-                  <span class="badge bg-lavender-light text-white" id={"gig-#{gig.id}"}>{gig.role}</span>
+                  <span class="badge badge-outline badge-secondary" id={"gig-#{gig.id}"}>{gig.role}</span>
                   <span
                     :if={gig.self_proclaimed}
                     class="relative"

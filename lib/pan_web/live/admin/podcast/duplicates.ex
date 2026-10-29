@@ -220,7 +220,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
       </.link>
       <span class="text-sm text-base-content/70">
         {@podcast.episodes_count || 0} episodes
-        <span :if={@podcast.retired} class="badge badge-warning badge-sm">retired</span>
+        <span :if={@podcast.retired} class="badge badge-outline badge-warning badge-sm">retired</span>
       </span>
       <div :for={feed <- @podcast.feeds} class="text-xs text-base-content/70 break-all">
         {feed.self_link_url}

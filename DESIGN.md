@@ -11,10 +11,11 @@ discussion. Themes are [Catppuccin](https://catppuccin.com/palette) Latte
 | Colored icon | what something **is** | the entity's or the icon's own color, title in the text color |
 | Color line | what a container is **about** | a panel framed in the color of its purpose, neutral heading |
 | Neutral | everything **readable** | text, headings, links in the text color; base-100/200/300 surfaces |
-| Filled color | **actions and states** | buttons, badges, flash messages; nothing else is filled |
+| Filled color | **actions** | the main button of a section; nothing else is filled |
 
 When something new comes up: a thing gets an icon, a container gets a frame,
-an action gets a filled button.
+an action gets a button (filled only for the main action). No solid color
+areas otherwise: labels are outline badges, messages soft alerts.
 
 ## Colors
 
@@ -81,15 +82,21 @@ theme. Categories: each top level category has its own color (column
   by side get different purposes (on My Podcasts: podcast, subscription,
   like, follow, recommendation, popular, category), not seven times the
   same color.
-- **Buttons:** `class="btn btn-primary"` and the other DaisyUI variants;
-  `<.button>` without a class is muted (`btn-soft`).
+- **Buttons:** the main action of a section filled (`btn btn-primary`
+  etc.), secondary ones `btn-soft` or `btn-outline`; `<.button>` without a
+  class is muted (`btn-soft`).
+- **Badges** (roles, types, labels; `Pill`): `badge badge-outline
+  badge-<color>`, the color in the frame, the text in the text color (rule in
+  `app.css`, the accents don't reach AA as small text).
+- **Alerts and flash messages:** `alert alert-soft alert-<color>`, light tint,
+  text in the text color.
 
 ## Don'ts
 
 - No fixed colors (`bg-white`, `text-gray-*`, `text-black`, the old Bootflat
   names like `bg-lavender`): they don't follow the theme.
 - No gradients.
-- No colored backgrounds for things that aren't actions or states.
+- No solid color areas except main action buttons.
 - No white text on accent colors outside the AA-checked theme pairs.
 
 ## Themes
