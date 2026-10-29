@@ -45,9 +45,9 @@ defmodule PanWeb.Live.Podcast.Header do
     </p>
 
     <div id="header" class="flex flex-col space-y-4 md:justify-between md:space-y-0 md:flex-row mt-4">
-      <div class="flex flex-col space-y-4 lg:space-y-0 xl:flex-row">
-        <div class="flex flex-col md:flex-row md:space-x-4">
-          <div class="flex-none p-2 xl:mr-4 my-2 self-center lg:self-start">
+      <div class="flex flex-col space-y-4 lg:space-y-0 2xl:flex-row min-w-0">
+        <div class="flex flex-col md:flex-row md:space-x-4 min-w-0 2xl:flex-1">
+          <div class="flex-none p-2 2xl:mr-4 my-2 self-center lg:self-start">
             <div id="thumbnail" class="border border-base-300 shadow m-auto ">
               <img
                 :if={Map.has_key?(@podcast_thumbnail, :path)}
@@ -67,23 +67,25 @@ defmodule PanWeb.Live.Podcast.Header do
               />
             </div>
           </div>
-          <div>
-            <p>{@podcast.summary |> raw}</p>
+          <div class="min-w-0">
+            <p class="wrap-break-word">{@podcast.summary |> raw}</p>
           </div>
         </div>
 
-        <dl class="grid grid-cols-4 gap-x-4 gap-y-2">
+        <dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 min-w-0 2xl:w-md 2xl:flex-none [&>dd]:min-w-0 [&>dd]:wrap-break-word">
           <dt :if={@podcast.website} class="justify-self-end font-medium">Website</dt>
-          <dd :if={@podcast.website} class="col-span-3">
+          <dd :if={@podcast.website}>
             <a
               href={@podcast.website}
               class="underline hover:text-primary"
             >{@podcast.website}</a>
           </dd>
-          <dt class="justify-self-end font-medium">Description</dt>
-          <dd class="col-span-3">{@podcast.description}</dd>
+          <dt :if={separate_description?(@podcast)} class="justify-self-end font-medium">
+            Description
+          </dt>
+          <dd :if={separate_description?(@podcast)}>{@podcast.description}</dd>
           <dt :if={@podcast.payment_link_url} class="justify-self-end font-medium">Support</dt>
-          <dd :if={@podcast.payment_link_url} class="col-span-3">
+          <dd :if={@podcast.payment_link_url}>
             <a
               href={@podcast.payment_link_url |> String.trim()}
               class="underline hover:text-primary"
@@ -92,17 +94,17 @@ defmodule PanWeb.Live.Podcast.Header do
             </a>
           </dd>
           <dt class="justify-self-end font-medium">Language</dt>
-          <dd class="col-span-3">
+          <dd>
             <span :for={language <- @podcast.languages}>{language.emoji} {language.name}</span>
           </dd>
           <dt :if={@podcast.last_build_date} class="justify-self-end font-medium">last modified</dt>
-          <dd :if={@podcast.last_build_date} class="col-span-3">
+          <dd :if={@podcast.last_build_date}>
             {Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}
           </dd>
           <dt :if={@podcast.latest_episode_publishing_date} class="justify-self-end font-medium">
             last episode published
           </dt>
-          <dd :if={@podcast.latest_episode_publishing_date} class="col-span-3">
+          <dd :if={@podcast.latest_episode_publishing_date}>
             {Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}
           </dd>
           <dt
@@ -111,44 +113,41 @@ defmodule PanWeb.Live.Podcast.Header do
           >
             publication frequency
           </dt>
-          <dd
-            :if={@podcast.publication_frequency && @podcast.publication_frequency > 0}
-            class="col-span-3"
-          >
+          <dd :if={@podcast.publication_frequency && @podcast.publication_frequency > 0}>
             {@podcast.publication_frequency |> Float.round(2)} days
           </dd>
 
           <dt class="justify-self-end font-medium">Contributors</dt>
           <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
-            <dd class="col-start-2 col-span-2">
+            <dd class="col-start-2 flex flex-wrap items-center gap-x-4 gap-y-1">
               <PersonaButton.render for={persona} />
-            </dd>
-            <dd class="col-start-4">
-              <Pill.render :for={engagement <- engagements} type="lavender">
-                {engagement.role |> String.capitalize()}
-              </Pill.render>
+              <span class="flex flex-wrap gap-1">
+                <Pill.render :for={engagement <- engagements} type="lavender">
+                  {engagement.role |> String.capitalize()}
+                </Pill.render>
+              </span>
             </dd>
           <% end %>
           <dt class="justify-self-end font-medium">Explicit</dt>
-          <dd class="col-span-3">{@podcast.explicit}</dd>
+          <dd>{@podcast.explicit}</dd>
           <dt
             id="metadata"
             class="justify-self-end font-medium"
           >
             Number of Episodes
           </dt>
-          <dd class="col-span-3">{@episodes_count}</dd>
+          <dd>{@episodes_count}</dd>
           <dt class="justify-self-end font-medium">
             <Icon.render name="rss" /> Rss-Feeds
           </dt>
-          <dd class="col-span-3">
+          <dd>
             <a
               href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
               class="underline hover:text-primary"
             >Detail page</a>
           </dd>
           <dt class="justify-self-end font-medium">Categories</dt>
-          <dd class="col-span-3 leading-10">
+          <dd class="leading-10">
             <CategoryLink.render
               :for={category <- @podcast.categories}
               for={category}
@@ -177,4 +176,11 @@ defmodule PanWeb.Live.Podcast.Header do
     />
     """
   end
+
+  # many feeds repeat the summary as description, shown once next to the cover
+  defp separate_description?(%{description: description, summary: summary})
+       when is_binary(description),
+       do: String.trim(description) not in ["", String.trim(summary || "")]
+
+  defp separate_description?(_podcast), do: false
 end

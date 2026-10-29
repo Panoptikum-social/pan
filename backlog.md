@@ -17,10 +17,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   text; Latte yellow/green would need the `-strong` shades as on outline
   buttons) and review the ~7 `btn-soft` uses plus the `<.button>` default.
 
-- **#454 Podcast header overlaps (found 2026-10-29 during #445):** on
-  /podcasts/:id (e.g. 93) the description text runs into the "Website"
-  column of the header (lib/pan_web/live/podcast/header.ex) at ~1300 px.
-
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,
