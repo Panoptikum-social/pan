@@ -27,7 +27,9 @@ always looks the same.
   dark text (`#1e1e2e`), only blue, mauve and red take white.
 - **Surfaces:** `base-100` (cards, inputs), `base-200` (page), `base-300`
   (sidebar, headings, borders, striped rows; Catppuccin surface0).
-- **Text:** `text-base-content`, secondary text `text-base-content/70`.
+- **Text:** `text-base-content`, secondary text `text-base-content/70`. In
+  the light themes that is Latte text `#4c4f69`, never (almost) black:
+  black text on light backgrounds looks bold.
 - **Links:** text color, underlined (or underline on hover for entity
   links), `hover:text-primary`. No colored link text: Latte blue on the
   background is below AA.

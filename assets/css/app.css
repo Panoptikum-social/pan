@@ -38,6 +38,8 @@
   --color-error-content: white;
   --color-info-content: white;
   --color-primary-content: white;
+  /* Latte text instead of DaisyUI's almost black, which looks bold */
+  --color-base-content: #4c4f69;
 }
 
 /*
