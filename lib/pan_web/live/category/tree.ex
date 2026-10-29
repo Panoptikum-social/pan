@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Category.Tree do
   use PanWeb, :live_view
   alias PanWeb.Category
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, categories: Category.public_tree(), page_title: "Category Tree")}
@@ -18,21 +18,16 @@ defmodule PanWeb.Live.Category.Tree do
       </.link>
     </p>
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">
-      <div :for={{category, counter} <- Enum.with_index(@categories)} class="avoid-column-break">
-        <p>
-          <CategoryButton.render for={category} index_on_page={counter} large={true} />
-        </p>
-        <p class="mt-6 -mx-0.5">
-          <CategoryButton.render
+      <div :for={category <- @categories} class="avoid-column-break">
+        <CategoryLink.render for={category} color={category.color} large />
+        <p class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+          <CategoryLink.render
             :for={subcategory <- category.children}
             for={subcategory}
-            index_on_page={counter}
-            tint={true}
-            class="px-1.5 py-0.5 mx-0.5 my-0.5"
-            truncate={true}
+            color={category.color}
           />
         </p>
-        <hr class="w-full mt-4 border-t border-gray-lightest break-before-avoid" />
+        <hr class="w-full my-4 border-t border-base-300 break-before-avoid" />
       </div>
     </div>
     """

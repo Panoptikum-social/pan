@@ -3,6 +3,8 @@
 @source "../../lib/**/*.{ex,eex,heex,sface}";
 @source "../js/**/*.js";
 @source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
+/* category colors come from the database, see PanWeb.Category.colors/0 */
+@source inline("text-ctp-{rosewater,flamingo,pink,mauve,red,maroon,peach,yellow,green,teal,sky,sapphire,blue,lavender}");
 @plugin "daisyui" {
   themes: light --default;
 }
@@ -100,6 +102,20 @@
   --color-warning-content: #1e1e2e;
   --color-error: #f38ba8; /* red */
   --color-error-content: #1e1e2e;
+  --color-ctp-rosewater: #f5e0dc;
+  --color-ctp-flamingo: #f2cdcd;
+  --color-ctp-pink: #f5c2e7;
+  --color-ctp-mauve: #cba6f7;
+  --color-ctp-red: #f38ba8;
+  --color-ctp-maroon: #eba0ac;
+  --color-ctp-peach: #fab387;
+  --color-ctp-yellow: #f9e2af;
+  --color-ctp-green: #a6e3a1;
+  --color-ctp-teal: #94e2d5;
+  --color-ctp-sky: #89dceb;
+  --color-ctp-sapphire: #74c7ec;
+  --color-ctp-blue: #89b4fa;
+  --color-ctp-lavender: #b4befe;
   --radius-selector: 0.5rem;
   --radius-field: 0.25rem;
   --radius-box: 0.5rem;
@@ -112,6 +128,24 @@
 
 @theme {
     --color-transparent: transparent;
+
+/* Catppuccin accents for colored icons (category colors). Latte shades
+   darkened towards Latte text until they reach 3:1 on Latte mantle; the mocha
+   theme overrides them with the original Mocha accents. */
+    --color-ctp-rosewater: #aa7573;
+    --color-ctp-flamingo: #b96e74;
+    --color-ctp-pink: #b368a9;
+    --color-ctp-mauve: #8839ef;
+    --color-ctp-red: #d20f39;
+    --color-ctp-maroon: #e64553;
+    --color-ctp-peach: #da601e;
+    --color-ctp-yellow: #ac7838;
+    --color-ctp-green: #429434;
+    --color-ctp-teal: #179299;
+    --color-ctp-sky: #1a8bc0;
+    --color-ctp-sapphire: #298fa6;
+    --color-ctp-blue: #1e66f5;
+    --color-ctp-lavender: #6a7cdf;
     --color-current: currentColor;
 
 /* Bootflat colors: base */

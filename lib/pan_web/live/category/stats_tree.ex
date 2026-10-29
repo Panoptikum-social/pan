@@ -1,7 +1,7 @@
 defmodule PanWeb.Live.Category.StatsTree do
   use PanWeb, :live_view
   alias PanWeb.Category
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
 
   def mount(_params, _session, socket) do
     {:ok,
@@ -23,27 +23,22 @@ defmodule PanWeb.Live.Category.StatsTree do
       </.link>
     </p>
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">
-      <div :for={{category, counter} <- Enum.with_index(@categories)} class="avoid-column-break">
-        <p>
-          <CategoryButton.render
-            for={category}
-            index_on_page={counter}
-            large
-            count={length(category.podcasts)}
-          />
-        </p>
-        <p class="mt-6 -mx-0.5">
-          <CategoryButton.render
+      <div :for={category <- @categories} class="avoid-column-break">
+        <CategoryLink.render
+          for={category}
+          color={category.color}
+          large
+          count={length(category.podcasts)}
+        />
+        <p class="mt-3 flex flex-wrap gap-x-4 gap-y-1.5">
+          <CategoryLink.render
             :for={subcategory <- category.children}
             for={subcategory}
-            index_on_page={counter}
-            tint
+            color={category.color}
             count={length(subcategory.podcasts)}
-            class="px-1.5 py-0.5 mx-0.5 my-0.5"
-            truncate
           />
         </p>
-        <hr class="w-full mt-4 border-t border-gray-lightest break-before-avoid" />
+        <hr class="w-full my-4 border-t border-base-300 break-before-avoid" />
       </div>
     </div>
     """

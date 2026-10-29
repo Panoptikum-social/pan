@@ -19,6 +19,8 @@ defmodule PanWeb.Live.Icon do
     end
   end
 
+  def exists?(name), do: valid_name?(name) and File.exists?(path(name))
+
   defp svg(name) do
     key = {__MODULE__, name}
 
@@ -33,13 +35,9 @@ defmodule PanWeb.Live.Icon do
     end
   end
 
-  # the name check keeps names from the database (category icons) inside the
-  # icon directory
   defp load(name) do
-    path = Application.app_dir(:pan, "priv/icons/tabler/#{name}.svg")
-
-    if is_binary(name) and name =~ ~r/\A[a-z0-9-]+\z/ and File.exists?(path) do
-      path
+    if exists?(name) do
+      path(name)
       |> File.read!()
       |> String.replace(~r/\s+(width|height|class)="[^"]*"/, "", global: true)
       |> String.replace(~r/>\s+</, "><")
@@ -50,4 +48,9 @@ defmodule PanWeb.Live.Icon do
       ""
     end
   end
+
+  # keeps names from the database (category icons) inside the icon directory
+  defp valid_name?(name), do: is_binary(name) and name =~ ~r/\A[a-z0-9-]+\z/
+
+  defp path(name), do: Application.app_dir(:pan, "priv/icons/tabler/#{name}.svg")
 end

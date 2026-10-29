@@ -8,6 +8,9 @@ defmodule PanWeb.Category do
     field(:full_text, :boolean, default: false)
     # on Apple Podcasts' current list, see Pan.AppleCategories
     field(:apple, :boolean, default: false)
+    # Tabler icon name and Catppuccin accent name, see colors/0
+    field(:icon, :string)
+    field(:color, :string)
 
     has_many(:children, PanWeb.Category, foreign_key: :parent_id, preload_order: [asc: :title])
     has_one(:community, Community)
@@ -22,10 +25,19 @@ defmodule PanWeb.Category do
     timestamps()
   end
 
+  @colors ~w(rosewater flamingo pink mauve red maroon peach yellow green teal sky sapphire blue
+              lavender)
+
+  def colors, do: @colors
+
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :parent_id, :full_text, :apple])
+    |> cast(params, [:title, :parent_id, :full_text, :apple, :icon, :color])
     |> validate_required([:title])
+    |> validate_change(:icon, fn :icon, icon ->
+      if PanWeb.Live.Icon.exists?(icon), do: [], else: [icon: "is not a Tabler icon"]
+    end)
+    |> validate_inclusion(:color, @colors)
   end
 
   def like(category_id, user_id) do
@@ -88,7 +100,7 @@ defmodule PanWeb.Category do
       order_by: :title,
       preload: [children: :children],
       where: is_nil(c.parent_id),
-      select: [:id, :title, children: [:id, :title]]
+      select: [:id, :title, :icon, :color, children: [:id, :title, :icon]]
     )
     |> Repo.all()
   end
@@ -127,7 +139,14 @@ defmodule PanWeb.Category do
       where: is_nil(c.parent_id),
       preload: [children: :children],
       preload: [:podcasts, children: :podcasts],
-      select: [:id, :title, podcasts: :id, children: [:id, :title, podcasts: :id]]
+      select: [
+        :id,
+        :title,
+        :icon,
+        :color,
+        podcasts: :id,
+        children: [:id, :title, :icon, podcasts: :id]
+      ]
     )
     |> Repo.all()
   end

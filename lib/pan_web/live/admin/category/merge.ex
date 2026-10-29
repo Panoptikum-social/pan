@@ -132,6 +132,15 @@ defmodule PanWeb.Live.Admin.Category.Merge do
     end
   end
 
+  def handle_event("fill_icons", _, socket) do
+    %{icons: icons, colors: colors} = Pan.CategoryIcons.fill_missing()
+
+    {:noreply,
+     socket
+     |> put_flash(:info, "Filled #{icons} empty icons and #{colors} empty colors.")
+     |> load()}
+  end
+
   def handle_event("delete_mapping", %{"id" => id}, socket) do
     CategoryMapping.delete(String.to_integer(id))
     {:noreply, socket |> put_flash(:info, "Mapping deleted.") |> load()}
@@ -220,6 +229,10 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
         <button phx-click="update_apple" class="btn btn-neutral btn-sm mt-4 block">
           Update Apple flags
+        </button>
+
+        <button phx-click="fill_icons" class="btn btn-neutral btn-sm mt-4 block">
+          Fill missing icons
         </button>
 
         <ul class="mt-6 space-y-1 text-sm">

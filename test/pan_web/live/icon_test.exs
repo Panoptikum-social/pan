@@ -27,4 +27,12 @@ defmodule PanWeb.Live.IconTest do
                "Unknown icon"
     end
   end
+
+  test "exists? only for names of vendored icons" do
+    assert Icon.exists?("microphone")
+    assert Icon.exists?("heart-filled")
+    refute Icon.exists?("no-such-icon")
+    refute Icon.exists?("../../../mix")
+    refute Icon.exists?(nil)
+  end
 end

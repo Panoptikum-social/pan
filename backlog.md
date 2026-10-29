@@ -69,17 +69,16 @@ Plan, in order:
   (base text color, underline on hover). No emoji (can't be themed). Less
   space than buttons, which easily touch each other; avoids white-on-pastel
   contrast trouble. Do together with #433. Open: whether `large` header
-  buttons keep a filled background.
-- **#439 Distinct icon per category, then links there too:** (Tabler Icons
-  are in, #440: any name from priv/icons/tabler works) every category
-  (top level and subcategories) gets its own icon, so the category tree can
-  also switch to colored links (replaces the chips in #434). Decided
-  2026-10-29: icon stored in a column on `categories`, editable in admin;
-  folder icon as fallback for strays without one; stable color per top-level
-  category, subcategories inherit it (replaces the per-page rotation by
-  `index_on_page`).
-- **#434 Rainbow category tree stays** (until #439) as a deliberate exception: fixed
-  rotation through the Catppuccin accents (exist in both flavours).
+  buttons keep a filled background. CategoryButton's color rotation
+  (`index_on_page`, `tint`) is unused since the trees use CategoryLink
+  (#439): drop it then.
+- **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
+  `color` on categories, Pan.CategoryIcons proposals + "Fill missing icons"
+  on /admin/categories/merge, CategoryLink on /categories and
+  /categories/stats, `text-ctp-*` tokens: Latte shades darkened to 3:1).
+  Open: press "Fill missing icons" on prod right after the deploy (else the
+  public tree shows only folders); an icon/color picker in the admin
+  (today plain text fields in the data browser).
 - **#435 Order:** admin converted
   and tested via `data-theme` toggle → moderation (done) → public site → re-enable automatic
   dark mode.
