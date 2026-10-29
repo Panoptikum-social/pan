@@ -21,11 +21,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   /podcasts/:id (e.g. 93) the description text runs into the "Website"
   column of the header (lib/pan_web/live/podcast/header.ex) at ~1300 px.
 
-- **#455 Dead Podlove hook sidecars (found 2026-10-29 during #445):**
-  lib/pan_web/live/episode/podlove_player.hooks.js and
-  lib/pan_web/live/podcast/podlove_subscribe_button.hooks.js look unused,
-  the hooks live in assets/js (podlove_player.js, app.js). Check and delete.
-
 - **#456 QR code in Mocha (found 2026-10-29):** the subscribe QR code is
   black on white in both themes. Proposal: keep normal polarity (inverted
   codes are optional in the standard, not every scanner reads them) but in
