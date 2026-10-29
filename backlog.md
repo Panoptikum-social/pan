@@ -61,10 +61,9 @@ admin modules, LiveView admin pages, admin controller templates; links in
 text color + underline, gray gradients replaced by solid base colors).
 Plan, in order:
 
-- **#432 Semantic classes instead of fixed colors** (admin and moderation
-  (#442, `:moderation_live_view`) done; on the public site sidebar, footer,
-  entity links, panels and category tree done 2026-10-29 (#433, #438), the
-  rest open): replace `bg-white`,
+- **#432 Semantic classes instead of fixed colors** (done 2026-10-29 for
+  admin, moderation and all public templates, 28bd5b7a; no fixed class is
+  left in lib/; what remains is the Bootflat palette in app.css, #437): replace `bg-white`,
   `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
   `text-base-content(/70)`, `border-base-300`, theme colors.
 - **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
