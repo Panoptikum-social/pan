@@ -25,13 +25,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   --force` would downgrade typography to 0.5.4, so not that. Check again
   after the next `@tailwindcss/cli` / `@tailwindcss/typography` releases
   (`cd assets && npm audit`).
-
-### Admin grid duplication (found 2026-10-29 during #432)
-
-- **#441 IndexGrid / ModerationGrid near-duplicates:**
-  lib/pan_web/admin/index_grid.ex and moderation_grid.ex share most of their
-  markup; the toolbar button class string is copied ~16 times across both.
-  Likewise grid_presenter.ex vs grid_presenter_with_details.ex and
-  data_block.ex vs relations_block.ex (same striped-row classes), and
-  admin/record_form.ex vs components/moderation/record_form.ex. Candidate:
-  one toolbar-button component and shared row helpers.
