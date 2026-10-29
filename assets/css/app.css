@@ -55,6 +55,10 @@
   --color-success-content: #1e1e2e;
   --color-warning: #df8e1d; /* yellow */
   --color-warning-content: #1e1e2e;
+  /* outline button text and frame: yellow and green darkened (hue and
+     saturation kept) to 4.5:1 on mantle, like red */
+  --color-warning-strong: #925d13;
+  --color-success-strong: #307820;
   --color-error: #d20f39; /* red */
   --color-error-content: #ffffff;
   --radius-selector: 0.5rem;
@@ -89,6 +93,8 @@
   --color-success-content: #1e1e2e;
   --color-warning: #f9e2af; /* yellow */
   --color-warning-content: #1e1e2e;
+  --color-warning-strong: #f9e2af;
+  --color-success-strong: #a6e3a1;
   --color-error: #f38ba8; /* red */
   --color-error-content: #1e1e2e;
   --color-ctp-rosewater: #f5e0dc;
@@ -237,6 +243,16 @@
 }
 .badge.badge-outline {
   border-color: var(--badge-color, var(--color-base-content));
+}
+/* yellow and green outline buttons as intense as red (see the themes); the
+   hover fill keeps the theme color */
+.btn.btn-outline.btn-warning:not(:hover, :focus-visible, .btn-active) {
+  --btn-rest-fg: var(--color-warning-strong);
+  --btn-border: var(--color-warning-strong);
+}
+.btn.btn-outline.btn-success:not(:hover, :focus-visible, .btn-active) {
+  --btn-rest-fg: var(--color-success-strong);
+  --btn-border: var(--color-success-strong);
 }
 
 /* LiveView specific classes for your customizations */

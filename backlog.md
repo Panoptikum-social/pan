@@ -10,6 +10,27 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
+- **#450 Soft buttons in the text color (found 2026-10-29 on /admin):**
+  the unlayered rule `.btn.btn-soft { color: var(--color-base-content) }`
+  in assets/css/app.css makes every soft button a pale tint with gray text,
+  which looks disabled. Decide whether to drop it (DaisyUI's colored soft
+  text; Latte yellow/green would need the `-strong` shades as on outline
+  buttons) and review the ~7 `btn-soft` uses plus the `<.button>` default.
+
+- **#451 Solid green "open – mark done" column (found 2026-10-29):** on
+  /curator/communities/:id every open podcast's toggle is a filled
+  `btn-success` (lib/pan_web/live/curation/community.ex), a solid green
+  column against DESIGN.md. Candidate: `btn-outline btn-success` for open,
+  `btn-outline` for done.
+
+- **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
+  checking the /admin buttons):** /search/push_missing, reset_all,
+  delete_orphans, migrate and /maintenance/catch_up_thumbnailed,
+  clear_journal, exception_notification are `get` in router.ex, so a
+  browser prefetch or reloading a visited URL can trigger them (reset_all
+  and clear_journal destroy data). Make them POST/DELETE and pass `method:`
+  to the LinkButtons on the dashboard (data-confirm works with either).
+
 - **#446 Wrong icon after the counts on My Podcasts (found 2026-10-29
   during #444):** the category ranking in
   templates/user_frontend/my_podcasts.html.heex shows the `user` icon after

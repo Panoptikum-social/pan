@@ -145,50 +145,53 @@ defmodule PanWeb.Live.Admin.Dashboard do
           opts={[target: "_blank"]}
         />
         <LinkButton.render
-          title="Catch up missing thumbnailed booleans"
-          to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
-          class="btn-warning"
-        />
-        <LinkButton.render
-          title="Trigger exception notification"
-          to={maintenance_path(Endpoint, :exception_notification)}
-          class="btn-success"
-        />
-        <LinkButton.render
           title="View Journal"
           to={databrowser_path(Endpoint, :index, "journal")}
           class="btn-outline"
         />
+      </div>
+      <div class="mx-2 flex flex-wrap gap-4 items-center border border-base-300 p-2 max-w-4xl">
+        <span class="font-mono">Maintenance</span>
+        <LinkButton.render
+          title="Catch up missing thumbnailed booleans"
+          to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
+          class="btn-outline btn-warning"
+        />
+        <LinkButton.render
+          title="Trigger exception notification"
+          to={maintenance_path(Endpoint, :exception_notification)}
+          class="btn-outline btn-success"
+        />
         <LinkButton.render
           title="Clear Journal"
           to={maintenance_path(Endpoint, :clear_journal)}
-          class="btn-error"
+          class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
       </div>
-      <div class="mx-2 flex flex-wrap gap-4 items-center border border-base-300 p-2 max-w-4xl">
+      <div class="mx-2 flex flex-wrap gap-4 items-center border border-t-0 border-base-300 p-2 max-w-4xl">
         <span class="font-mono">Full text Search</span>
         <LinkButton.render
           title="Push Missing"
           to={search_path(Endpoint, :push_missing)}
-          class="btn-warning"
+          class="btn-outline btn-warning"
         />
         <LinkButton.render
           title="Migrate Manticore Search Indices"
           to={search_path(Endpoint, :migrate)}
-          class="btn-error"
+          class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
         <LinkButton.render
           title="Delete Orphaned Index Entries"
           to={search_path(Endpoint, :delete_orphans)}
-          class="btn-error"
+          class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
         <LinkButton.render
           title="Reset all Records"
           to={search_path(Endpoint, :reset_all)}
-          class="btn-error"
+          class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
       </div>
