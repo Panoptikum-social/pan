@@ -106,6 +106,11 @@ defmodule PanWeb.Admin.ActionButtons do
         to={category_path(Endpoint, :merge)}
         class="btn-outline"
       />
+      <LinkButton.render
+        title="Icons and Colors"
+        to={category_path(Endpoint, :merge, tab: "icons")}
+        class="btn-outline"
+      />
     </div>
     """
   end

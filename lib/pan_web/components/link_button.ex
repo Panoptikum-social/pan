@@ -25,7 +25,7 @@ defmodule PanWeb.Component.LinkButton do
         @truncate && "truncate max-w-full",
         !@large && "btn-sm"
       ]}
-      method={@method}
+      method={to_string(@method)}
       {@opts}
     >
       <Icon.render :if={@icon} name={@icon} class="shrink-0" spaced={true} />

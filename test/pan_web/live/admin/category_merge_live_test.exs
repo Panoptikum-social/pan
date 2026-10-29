@@ -42,6 +42,7 @@ defmodule PanWeb.Live.Admin.CategoryMergeLiveTest do
     child = Repo.insert!(%Category{title: "Books", parent_id: parent.id})
 
     {:ok, view, _html} = live(as_admin(conn), "/admin/categories/merge?tab=icons")
+    assert has_element?(view, "#category-icons")
     refute has_element?(view, "#icon-editor")
 
     view |> element("#category-icon-#{parent.id} button") |> render_click()
