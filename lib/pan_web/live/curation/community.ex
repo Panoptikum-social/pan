@@ -46,7 +46,12 @@ defmodule PanWeb.Live.Curation.Community do
 
   def handle_event("toggle_open", %{"podcast_id" => podcast_id, "open" => open}, socket) do
     if socket.assigns.permissions.manage do
-      Curation.set_open(socket.assigns.community, String.to_integer(podcast_id), open == "true")
+      Curation.set_open(
+        socket.assigns.community,
+        String.to_integer(podcast_id),
+        open == "true",
+        socket.assigns.current_user_id
+      )
     end
 
     {:noreply, fetch(socket)}
@@ -109,6 +114,9 @@ defmodule PanWeb.Live.Curation.Community do
                 phx-click="toggle_open"
                 phx-value-podcast_id={podcast.id}
                 phx-value-open={to_string(!podcast.open)}
+                data-confirm={
+                  podcast.open && "Mark this podcast as done? It disappears from the open list."
+                }
                 class={["btn btn-xs btn-outline", podcast.open && "btn-success"]}
               >
                 {if podcast.open, do: "open – mark done", else: "done – reopen"}

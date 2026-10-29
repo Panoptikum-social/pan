@@ -112,11 +112,27 @@ defmodule PanWeb.Curation do
     Repo.get_by(CategoryPodcast, category_id: category_id, podcast_id: podcast_id)
   end
 
-  def set_open(%Community{category_id: category_id}, podcast_id, open) do
-    from(cp in CategoryPodcast,
-      where: cp.category_id == ^category_id and cp.podcast_id == ^podcast_id
-    )
-    |> Repo.update_all(set: [open_for_curation: open])
+  # journaled, so an unintended "mark done" can be found again (backlog.md #452)
+  def set_open(%Community{id: community_id, category_id: category_id}, podcast_id, open, user_id) do
+    {count, _} =
+      from(cp in CategoryPodcast,
+        where: cp.category_id == ^category_id and cp.podcast_id == ^podcast_id
+      )
+      |> Repo.update_all(set: [open_for_curation: open])
+
+    if count > 0 do
+      PanWeb.Journal.log(%{
+        module: __MODULE__,
+        method: if(open, do: "reopen", else: "mark_done"),
+        text:
+          "podcast #{podcast_id} in community #{community_id} " <>
+            if(open, do: "reopened", else: "marked done") <> " by user #{user_id}",
+        before: not open,
+        after: open
+      })
+    end
+
+    {count, nil}
   end
 
   def for_podcast(community_id, podcast_id) do
