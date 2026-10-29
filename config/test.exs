@@ -36,7 +36,7 @@ config :pan, :children, [
 config :pan, :manticore_url, "http://localhost:1"
 
 # Print only warnings and errors during test
-config :logger, level: :warn
+config :logger, level: :warning
 
 config :pan, Pan.Mailer, adapter: Swoosh.Adapters.Test
 
