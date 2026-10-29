@@ -8,35 +8,28 @@ defmodule PanWeb.OpmlController do
   end
 
   def create(conn, %{"opml" => opml_params}) do
-    destination_path =
-      if upload = opml_params["file"] do
-        File.mkdir_p("/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}")
+    upload = opml_params["file"]
+    user_id = opml_params["user_id"]
+    filename = upload && PanWeb.Upload.safe_filename(upload.filename)
 
-        path =
-          "/var/phoenix/pan-uploads/opml/#{opml_params["user_id"]}/#{PanWeb.Upload.safe_filename(upload.filename)}"
-
-        File.cp(upload.path, path)
-        path
-      else
-        ""
-      end
-
+    # through cast, so an empty or non-numeric user is a form error instead
+    # of an Ecto.ChangeError at insert; the file is only copied (and the path
+    # only used) once user_id is a valid id
     changeset =
-      if upload do
-        Opml.changeset(%Opml{
-          content_type: upload.content_type,
-          filename: PanWeb.Upload.safe_filename(upload.filename),
-          path: destination_path,
-          user_id: opml_params["user_id"]
-        })
-      else
-        Opml.changeset(%Opml{
-          content_type: nil,
-          filename: nil,
-          path: destination_path,
-          user_id: opml_params["user_id"]
-        })
-      end
+      %Opml{}
+      |> Opml.changeset(%{
+        content_type: upload && upload.content_type,
+        filename: filename,
+        path: upload && "/var/phoenix/pan-uploads/opml/#{user_id}/#{filename}",
+        user_id: user_id
+      })
+      |> Ecto.Changeset.validate_required([:user_id])
+
+    if changeset.valid? do
+      path = Ecto.Changeset.get_field(changeset, :path)
+      File.mkdir_p!(Path.dirname(path))
+      File.cp!(upload.path, path)
+    end
 
     case Repo.insert(changeset) do
       {:ok, _opml} ->

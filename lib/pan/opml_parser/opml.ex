@@ -11,9 +11,15 @@ defmodule Pan.OpmlParser.Opml do
   `user_id`. Returns `{:ok, number of feeds}` or `{:error, message}`; a file
   with more than #{@max_feeds} feeds is refused as a whole.
   """
-  def parse(path, user_id) do
-    {:ok, feed_xml} = File.read(path)
+  def parse(path, user_id), do: parse(File.read(path), path, user_id)
 
+  # e.g. an upload from prod referenced in the dev database (restored backup)
+  defp parse({:error, reason}, path, _user_id) do
+    Logger.error("OPML import: #{path} can't be read: #{inspect(reason)}")
+    {:error, "the OPML file can't be read (#{:file.format_error(reason)})"}
+  end
+
+  defp parse({:ok, feed_xml}, path, user_id) do
     Logger.error("OPML- Import: Path: #{path}")
 
     # This is a user-uploaded file, so unlike a fetched podcast feed it's

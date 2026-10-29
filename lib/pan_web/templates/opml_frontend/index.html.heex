@@ -23,6 +23,7 @@
             <td class="leading-8">
               <.link
                 href={opml_frontend_path(@conn, :import, opml)}
+                method="post"
                 class="btn btn-outline btn-info btn-sm whitespace-nowrap"
               >
                 {icon("settings", class: "inline w-4 h-4 align-text-top")} Parse

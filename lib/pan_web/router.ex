@@ -122,7 +122,7 @@ defmodule PanWeb.Router do
     post("/like_all_subscribed_podcasts", LikeController, :like_all_subscribed_podcasts)
     post("/follow_all_subscribed_podcasts", FollowController, :follow_all_subscribed_podcasts)
 
-    get("/opmls/:id/import", OpmlController, :import)
+    post("/opmls/:id/import", OpmlController, :import)
     resources("/opmls", OpmlController, only: [:index, :show, :create, :delete])
 
     resources("/feed_backlogs", FeedBacklogController, only: [:show, :create])
@@ -322,7 +322,7 @@ defmodule PanWeb.Router do
     live("/podcasts/:id/check_feed", Live.Podcast.CheckFeed, :check_feed, as: :podcast_frontend)
 
     resources("/opmls", OpmlFrontendController, only: [:new, :create, :index, :delete])
-    get("/opmls/:id/import", OpmlFrontendController, :import)
+    post("/opmls/:id/import", OpmlFrontendController, :import)
     get("/opmls/:id/download", OpmlFrontendController, :download)
 
     resources("/feed_backlogs", FeedBacklogFrontendController, only: [:new, :create])

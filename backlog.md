@@ -10,11 +10,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **#459 User OPML import is a GET (found 2026-10-29 during #449):**
-  /pan/opmls/:id/import (OpmlFrontendController.import, "Import" on the
-  user's OPML list) imports on GET; same prefetch/reload risk as #449, but
-  only for the user's own OPML. Make it POST.
-
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
   table (1c6a0807, Mappings tab on /admin/categories/merge, 34 old Apple
   names seeded) went to prod 2026-10-21, with the stray merges there. Check
