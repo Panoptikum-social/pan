@@ -10,7 +10,12 @@ defmodule PanWeb.Component.OvertypeField do
     ~H"""
     <div class="fieldset mb-2 w-full">
       <span class="label mb-1">{@label}</span>
-      <div id={"#{@field.id}-overtype"} phx-hook="OvertypeField" phx-update="ignore">
+      <div
+        id={"#{@field.id}-overtype"}
+        phx-hook="OvertypeField"
+        phx-update="ignore"
+        class="border border-base-300 rounded-field overflow-hidden"
+      >
         <textarea id={@field.id} name={@field.name} rows="10" class="w-full textarea">{Phoenix.HTML.Form.normalize_value("textarea", @field.value)}</textarea>
       </div>
     </div>
