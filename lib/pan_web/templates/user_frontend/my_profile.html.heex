@@ -2,7 +2,7 @@
   <div class="float-right">
     <.link
       href={user_frontend_path(@conn, :edit)}
-      class="bg-warning hover:bg-warning-light border border-gray px-3 py-2 text-white rounded"
+      class="btn btn-warning"
     >Edit your data</.link>
   </div>
   <h1 class="text-3xl">
@@ -64,7 +64,7 @@
         {Calendar.strftime(invoice.inserted_at, "%x %H:%M")} &nbsp; &nbsp;
         <.link
           href={invoice_frontend_path(@conn, :download, invoice)}
-          class="text-link hover:text-link-dark"
+          class="underline hover:text-primary"
         >
           {icon("file-download")} {invoice.filename}
         </.link>

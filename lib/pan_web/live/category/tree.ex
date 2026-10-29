@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Category.Tree do
     <p class="px-4 pt-4 text-sm">
       <.link
         navigate={category_frontend_path(@socket, :stats)}
-        class="text-link hover:text-link-dark underline"
+        class="underline hover:text-primary"
       >
         Category tree with podcast numbers
       </.link>

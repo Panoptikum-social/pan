@@ -47,7 +47,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         :if={@not_claimed_yet}
         event="toggle-claim"
         target={@myself}
-        class="text-lavender border-lavender bg-white hover:bg-gray-lightest"
+        class="btn-outline btn-secondary"
         alt={"Claim contribution for #{@persona.pid}"}
         icon="user-plus"
         title={@persona.name}
@@ -56,7 +56,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         :if={!@not_claimed_yet}
         event="toggle-claim"
         target={@myself}
-        class="text-white border-lavender bg-lavender hover:bg-lavender-light"
+        class="btn-secondary"
         alt={"Withdraw contribution for #{@persona.pid}"}
         icon="user-minus"
         title={@persona.name}

@@ -35,7 +35,7 @@ defmodule PanWeb.Live.Session.New do
             Forgot your password? -
             <.link
               href={user_path(Endpoint, :forgot_password)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >
               Get an email with a login link
             </.link>
@@ -44,7 +44,7 @@ defmodule PanWeb.Live.Session.New do
             No account yet? -
             <.link
               href={user_frontend_path(Endpoint, :new)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >
               Sign up
             </.link>

@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Category.StatsTree do
       Podcasts per category.
       <.link
         navigate={category_frontend_path(@socket, :index)}
-        class="text-link hover:text-link-dark underline"
+        class="underline hover:text-primary"
       >
         Category tree without numbers
       </.link>

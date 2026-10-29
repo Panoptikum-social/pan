@@ -109,7 +109,9 @@ defmodule PanWeb.Live.Persona.Edit do
           placeholder="@username@domain.social"
           class="w-full input"
         />
-        <p class="text-gray">(support is experimental and data might not be imported currently)</p>
+        <p class="text-base-content/70">
+          (support is experimental and data might not be imported currently)
+        </p>
 
         <.input
           field={f[:image_url]}
@@ -136,7 +138,7 @@ defmodule PanWeb.Live.Persona.Edit do
 
       <a
         href={user_frontend_path(Endpoint, :my_profile)}
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >Back</a>
     </div>
     """

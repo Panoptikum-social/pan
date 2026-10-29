@@ -23,7 +23,7 @@ defmodule PanWeb.Live.Episode.ChapterList do
               data-ref="podlove-player"
               data-action="play"
               data-time={chapter.start}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >{chapter.start}</a>
             {chapter.title}
             <br :if={@current_user_id} />

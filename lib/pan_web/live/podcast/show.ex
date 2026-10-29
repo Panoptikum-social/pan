@@ -81,7 +81,7 @@ defmodule PanWeb.Live.Podcast.Show do
             else: "There are other podcasts with the same title:"}
           <span :for={{namesake, index} <- Enum.with_index(@namesakes)}>
             {if index > 0, do: ","}
-            <.link navigate={"/podcasts/#{namesake.id}"} class="text-link hover:text-link-dark">
+            <.link navigate={"/podcasts/#{namesake.id}"} class="underline hover:text-primary">
               {namesake.title}
             </.link>
           </span>

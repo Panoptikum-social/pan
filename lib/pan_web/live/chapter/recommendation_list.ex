@@ -23,12 +23,12 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
       <div class="float-right">
         <a
           href="https://blog.panoptikum.social/complaints"
-          class="text-link hover-text-link-dark"
+          class="underline hover:text-primary"
         >Complain</a>
       </div>
 
       <h3 class="text-xl">Recommendations</h3>
-      <ul class="my-4 bg-white">
+      <ul class="my-4 bg-base-100">
         <li
           :for={recommendation <- @chapter.recommendations}
           id={"chapter-#{@chapter.id}"}
@@ -37,19 +37,22 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
             <nobr>
               <a
                 href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
-                class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white"
+                class="btn btn-soft btn-info btn-xs"
                 alt="tweet it"
               >tweet</a>
               <a
                 href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
-                class="bg-grass px-2 py-1 my-4 rounded-xl text-white"
+                class="btn btn-soft btn-success btn-xs"
                 alt="send an email"
               >mail</a>
             </nobr>
           </p>
 
           <b>{recommendation.user.name}:</b> {recommendation.comment}
-          <span class="pull-right">{Calendar.strftime(recommendation.inserted_at, "%x %H:%M")}</span>
+          <span class="float-right text-sm text-base-content/70">{Calendar.strftime(
+            recommendation.inserted_at,
+            "%x %H:%M"
+          )}</span>
         </li>
       </ul>
     </div>

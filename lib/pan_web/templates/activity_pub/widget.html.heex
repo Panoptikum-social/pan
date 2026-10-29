@@ -1,8 +1,8 @@
 <ul class="my-4 list-disc ml-8">
   <%= if @toots do %>
     <%= for toot <- @toots do %>
-      <li class="media text-gray-darkest">
-        <div class="pull-left">
+      <li class="media text-base-content">
+        <div class="float-left">
           <img src={toot.attributed_to_image} height="70" alt={toot.name} class="thumbnail" />
         </div>
 
@@ -10,8 +10,8 @@
           <b>
             {toot.name}
           </b>
-          <span class="text-gray-dark">
-            <.link href={toot.actor_url} class="text-link hover:text-link-dark">{toot.preferred_username}</.link>
+          <span class="text-base-content/70">
+            <.link href={toot.actor_url} class="underline hover:text-primary">{toot.preferred_username}</.link>
             - {if toot.boosted, do: "boosted"}
             {toot.published}
           </span>
@@ -22,7 +22,7 @@
               {toot.attributed_to_name}
             </b>
             <span>
-              <.link href={toot.attributed_to_url} class="text-link hover:text-link-dark">{toot.attributed_to_preferred_username}</.link>
+              <.link href={toot.attributed_to_url} class="underline hover:text-primary">{toot.attributed_to_preferred_username}</.link>
               -
             </span>
           <% end %>

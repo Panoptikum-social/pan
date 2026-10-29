@@ -40,7 +40,7 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
         />
         <.button
           type="submit"
-          class="py-2 px-4 rounded-lg font-medium text-white bg-aqua hover:bg-aqua-light"
+          class="btn btn-info btn-sm"
         >Recommend</.button>
       </.form>
     </div>

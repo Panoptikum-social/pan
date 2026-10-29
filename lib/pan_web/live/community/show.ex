@@ -85,14 +85,14 @@ defmodule PanWeb.Live.Community.Show do
             href={safe_href(@community.website)}
             rel="me"
             target="_blank"
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >
             {@community.website}
           </.link>
           <span :if={!safe_uri?(@community.website)}>{@community.website}</span>
         </p>
 
-        <p :if={@community.fediverse_address} class="mt-2 text-gray-dark">
+        <p :if={@community.fediverse_address} class="mt-2 text-base-content/70">
           {@community.fediverse_address}
         </p>
 
@@ -109,14 +109,14 @@ defmodule PanWeb.Live.Community.Show do
 
         <div :if={@pad_permissions.read} class="mt-4">
           <h3 class="text-lg font-semibold">Pads</h3>
-          <p class="text-sm text-gray-dark mt-1">
+          <p class="text-sm text-base-content/70 mt-1">
             Markdown documents that the followers of this community write together.
           </p>
           <ul :if={@pads != []} class="list-disc m-4">
             <li :for={pad <- @pads}>
               <.link
                 navigate={pad_frontend_path(@socket, :show, @community.id, pad.slug)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >
                 {pad.title}
               </.link>
@@ -180,7 +180,7 @@ defmodule PanWeb.Live.Community.Show do
 
         <div :if={@community_personas != []} class="mt-4">
           <h3 class="text-lg font-semibold">Members ({length(@community_personas)})</h3>
-          <p class="text-sm text-gray-dark mt-1">
+          <p class="text-sm text-base-content/70 mt-1">
             The people behind the podcasts in this community — hosts, co-hosts, producers, and
             other contributors.
           </p>

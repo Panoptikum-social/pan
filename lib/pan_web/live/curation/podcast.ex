@@ -65,7 +65,7 @@ defmodule PanWeb.Live.Curation.Podcast do
     <div class="m-4 max-w-4xl">
       <.link
         navigate={Routes.curation_frontend_path(@socket, :community, @community)}
-        class="text-link hover:text-link-dark text-sm"
+        class="underline hover:text-primary text-sm"
       >
         ← {@community.title}
       </.link>
@@ -73,7 +73,7 @@ defmodule PanWeb.Live.Curation.Podcast do
       <h1 class="text-3xl">
         <.link
           href={Routes.podcast_frontend_path(@socket, :show, @podcast)}
-          class="text-link hover:text-link-dark"
+          class="underline hover:text-primary"
         >
           {@podcast.title}
         </.link>
@@ -89,7 +89,7 @@ defmodule PanWeb.Live.Curation.Podcast do
           <span class="font-semibold">
             {if curation.user, do: curation.user.name, else: "former curator"}
           </span>
-          <span class="text-xs text-gray-dark">
+          <span class="text-xs text-base-content/70">
             {Calendar.strftime(curation.updated_at, "%Y-%m-%d %H:%M")}
           </span>
         </div>

@@ -30,7 +30,7 @@ defmodule PanWeb.Live.Home do
           Panoptikum.social uses cookies only out of technical necessity. See our
           <.link
             href="https://blog.panoptikum.social/privacy"
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           > Privacy Page</.link>
           for details.
           <button
@@ -90,7 +90,7 @@ defmodule PanWeb.Live.Home do
             <p class="mt-4">
               <a
                 href={podcast_frontend_path(Endpoint, :index)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >show more...</a>
             </p>
           </Panel.render>
@@ -111,7 +111,7 @@ defmodule PanWeb.Live.Home do
             <p class="mt-4">
               <a
                 href={episode_frontend_path(Endpoint, :index)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >show more...</a>
             </p>
           </Panel.render>
@@ -132,7 +132,7 @@ defmodule PanWeb.Live.Home do
             <p class="mt-4">
               <a
                 href={recommendation_frontend_path(Endpoint, :index)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >show more...</a>
             </p>
           </Panel.render>

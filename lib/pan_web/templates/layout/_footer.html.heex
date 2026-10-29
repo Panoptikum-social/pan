@@ -1,120 +1,46 @@
-<ul class="flex flex-wrap space-x-4 mr-12">
-  <li class="uppercase">
-    Meta
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/code_of_conduct">
-      Code of Conduct
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/privacy">
-      Privacy
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/complaints">
-      Complaints
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/community">
-      Community
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/api">
-      API
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/imprint">
-      Imprint
-    </a>
-  </li>
-</ul>
-<ul class="flex flex-wrap space-x-4 mr-12">
-  <li class="uppercase">
-    About
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/">
-      About
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/blog">
-      Blog
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/talks">
-      Talks
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/community">
-      FAQ
-    </a>
-  </li>
-</ul>
-<ul class="flex flex-wrap space-x-4 mr-12">
-  <li class="uppercase">
-    Features
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/podcaster-manual/">
-      Podcaster Manual
-    </a>
-  </li>
-  <li>
-    <a href="https://blog.panoptikum.social/listener-manual/">
-      Listener Manual
-    </a>
-  </li>
-  <li>
-    <a href="/recommendations/random">
-      Random
-    </a>
-  </li>
-  <li>
-    <a href="/personas">
-      Podcasters
-    </a>
-  </li>
-  <li>
-    <a href="/podcasts">
-      New podcasts
-    </a>
-  </li>
-  <li>
-    <a href="/episodes">
-      New episodes
-    </a>
-  </li>
-</ul>
-<ul class="flex flex-wrap space-x-4 mr-12">
-  <li class="uppercase">
-    Support
-  </li>
-  <li>
-    <a href="https://www.waldgruber.at">
-      Community Manager Sonja
-    </a>
-  </li>
-  <li>
-    <a href="https://carmenh.dev/">
-      Bot Expert Carmen
-    </a>
-  </li>
-</ul>
-<ul class="flex flex-wrap space-x-4">
-  <li class="uppercase">
-    Development & Hosting
-  </li>
-  <li>
-    <a href="https://www.informatom.com">
-      Informatom EDV-Dienstleistungen e.U.
+<ul
+  :for={
+    {section, links} <- [
+      {"Meta",
+       [
+         {"https://blog.panoptikum.social/code_of_conduct", "heart-handshake", "Code of Conduct"},
+         {"https://blog.panoptikum.social/privacy", "lock", "Privacy"},
+         {"https://blog.panoptikum.social/complaints", "flag", "Complaints"},
+         {"https://blog.panoptikum.social/community", "users-group", "Community"},
+         {"https://blog.panoptikum.social/api", "api", "API"},
+         {"https://blog.panoptikum.social/imprint", "id", "Imprint"}
+       ]},
+      {"About",
+       [
+         {"https://blog.panoptikum.social/", "help-circle-filled", "About"},
+         {"https://blog.panoptikum.social/blog", "news", "Blog"},
+         {"https://blog.panoptikum.social/talks", "presentation", "Talks"},
+         {"https://blog.panoptikum.social/community", "help", "FAQ"}
+       ]},
+      {"Features",
+       [
+         {"https://blog.panoptikum.social/podcaster-manual/", "book", "Podcaster Manual"},
+         {"https://blog.panoptikum.social/listener-manual/", "book-2", "Listener Manual"},
+         {"/recommendations/random", "flask", "Random"},
+         {"/personas", "user-star", "Podcasters"},
+         {"/podcasts", "microphone", "New podcasts"},
+         {"/episodes", "headphones", "New episodes"}
+       ]},
+      {"Support",
+       [
+         {"https://www.waldgruber.at", "user-heart", "Community Manager Sonja"},
+         {"https://carmenh.dev/", "robot", "Bot Expert Carmen"}
+       ]},
+      {"Development & Hosting",
+       [{"https://www.informatom.com", "code", "Informatom EDV-Dienstleistungen e.U."}]}
+    ]
+  }
+  class="flex flex-wrap items-center gap-x-4 mr-12"
+>
+  <li class="uppercase text-base-content/70">{section}</li>
+  <li :for={{href, icon, label} <- links}>
+    <a href={href} class="inline-flex items-center gap-1 hover:underline">
+      {icon(icon, class: "size-4 shrink-0")} {label}
     </a>
   </li>
 </ul>

@@ -130,7 +130,7 @@ defmodule PanWeb.Live.Category.Show do
             href="#"
             phx-click="set-language-filter"
             phx-value-language_id={language.id}
-            class="text-link hover:text-link-dark mx-2"
+            class="underline hover:text-primary mx-2"
           >
             {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
           </a>
@@ -141,7 +141,7 @@ defmodule PanWeb.Live.Category.Show do
             <a
               href="#"
               phx-click="reset-language-filter"
-              class="text-link hover:text-link-dark mx-2"
+              class="underline hover:text-primary mx-2"
             >🗑️ Clear language filter</a>
           </div>
           <h2 class="text-2xl mt-4">

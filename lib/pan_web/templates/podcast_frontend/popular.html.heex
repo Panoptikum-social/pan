@@ -1,12 +1,11 @@
-<div class="rounded-xl shadow max-w-screen-md m-auto">
-  <div class="p-3 rounded-t-xl bg-info text-white">
-    Top 100 subscribed Podcasts
-  </div>
-  <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
-    {render("_wide_top_list_table.html",
-      podcasts: @popular_podcasts,
-      icon: "user-filled",
-      conn: @conn
-    )}
-  </div>
-</div>
+<PanWeb.Component.Panel.render
+  heading="Top 100 subscribed Podcasts"
+  purpose="popular"
+  class="max-w-screen-md m-auto"
+>
+  {render("_wide_top_list_table.html",
+    podcasts: @popular_podcasts,
+    icon: "user-filled",
+    conn: @conn
+  )}
+</PanWeb.Component.Panel.render>

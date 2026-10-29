@@ -1,16 +1,16 @@
-<div class="rounded-xl shadow">
-  <div class="p-3 rounded-t-xl bg-primary">
+<div class="rounded-xl shadow border-2 border-podcast">
+  <div class="p-3 rounded-t-[0.6rem] bg-base-300 border-b-2 border-podcast">
     <.link
       href={podcast_frontend_path(@conn, :show, @podcast.id)}
-      class="truncate text-white hover:text-gray-lighter"
+      class="truncate hover:underline"
     >
       {icon("microphone", class: "w-4 h-4 inline align-text-top")} {@podcast.title}
     </.link>
   </div>
 
-  <div class="border-l border-r border-b border-gray-lighter rounded-b-xl">
+  <div>
     <div class="flex flex-col md:flex-row p-4">
-      <div class="flex-none p-2 xl:mr-4 my-2 border border-gray-light shadow m-auto">
+      <div class="flex-none p-2 xl:mr-4 my-2 border border-base-300 shadow m-auto">
         <%= if podcast_thumbnail = @podcast.thumbnails != [] && List.first(@podcast.thumbnails) do %>
           <img
             src={"https://panoptikum.social#{podcast_thumbnail.path}#{podcast_thumbnail.filename}"}
@@ -35,7 +35,7 @@
             <%= if safe_uri?(@podcast.website) do %>
               <.link
                 href={safe_href(@podcast.website)}
-                class="text-link truncate hover:text-link-dark"
+                class="underline truncate hover:text-primary"
               >{@podcast.website}</.link>
             <% else %>
               <span class="truncate">{@podcast.website}</span>
@@ -60,12 +60,7 @@
         </div>
         <div class="col-span-2 flex flex-col space-y-1">
           <%= for category <- @podcast.categories do %>
-            <.link
-              href={category_frontend_path(@conn, :show, category)}
-              class="self-start border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 rounded-md truncate max-w-full"
-            >
-              {icon("folder-open", class: "w-4 h-4 inline align-text-top")} {category.title}
-            </.link>
+            <PanWeb.Component.CategoryLink.render for={category} truncate />
           <% end %>
         </div>
 
@@ -76,14 +71,11 @@
         </div>
         <div class="col-span-2 grid grid-cols-3 gap-1 place-items-start">
           <%= for engagement <- @podcast.engagements do %>
-            <.link
-              href={persona_frontend_path(@conn, :show, engagement.persona)}
-              class="self-start border border-gray-dark bg-lavender hover:bg-lavender-light text-white text-sm py-1 px-2 rounded-md truncate max-w-full col-span-2"
-            >
-              {icon("user", class: "w-4 h-4 inline align-text-top")} {engagement.persona.name}
-            </.link>
-            <span class="inline-block eading-none text-center whitespace-nowrap
-                        align-baseline bg-success hover:bg-success-dark text-white p-1 rounded-md text-xs">
+            <PanWeb.Component.PersonaButton.render
+              for={engagement.persona}
+              class="col-span-2 truncate max-w-full"
+            />
+            <span class="badge badge-outline badge-success badge-sm">
               {engagement.role}
             </span>
           <% end %>
@@ -96,7 +88,7 @@
           <%= if safe_uri?(@podcast.payment_link_url) do %>
             <.link
               href={safe_href(@podcast.payment_link_url)}
-              class="col-span-2 text-link hover:text-link-dark"
+              class="col-span-2 underline hover:text-primary"
             >{@podcast.payment_link_title}</.link>
           <% else %>
             <span class="col-span-2">{@podcast.payment_link_title}</span>

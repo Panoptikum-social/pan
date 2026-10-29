@@ -13,7 +13,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
     ~H"""
     <h1 class="text-3xl">Episodes</h1>
 
-    <table class="w-full table-fixed md:table-auto border border-separate border-gray-light mt-4">
+    <table class="table table-sm table-zebra mt-4">
       <thead>
         <tr class="flex flex-col sm:table-row">
           <th>Date</th>
@@ -25,21 +25,21 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
         <tr
           :for={{dom_id, episode} <- @episodes}
           id={dom_id}
-          class="flex flex-col sm:table-row even:bg-gray-lighter"
+          class="flex flex-col sm:table-row"
         >
-          <td class="p-2 text-center">
+          <td class="align-top whitespace-nowrap">
             {episode.publishing_date && Calendar.strftime(episode.publishing_date, "%x")}
           </td>
-          <td class="p-2">
+          <td class="align-top">
             <p><EpisodeButton.render for={episode} truncate /></p>
             {episode.description |> HtmlSanitizeEx.strip_tags() |> truncate_string(255)}
           </td>
-          <td class="p-2 leading-10">
+          <td class="align-top leading-8">
             <%= for {persona, gigs} <- Enum.group_by(episode.gigs, &Map.get(&1, :persona)) do %>
               <nobr>
                 <PersonaButton.render for={persona} />
                 <%= for gig <- gigs do %>
-                  <span class="badge badge-outline badge-secondary" id={"gig-#{gig.id}"}>{gig.role}</span>
+                  <span class="badge badge-outline badge-secondary badge-sm" id={"gig-#{gig.id}"}>{gig.role}</span>
                   <span
                     :if={gig.self_proclaimed}
                     class="relative"
@@ -53,7 +53,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                     </div>
                     <div
                       x-show="detailsOpen"
-                      class="absolute right-0 mx-auto items-center bg-gray-lightest border border-gray p-4"
+                      class="absolute right-0 mx-auto items-center bg-base-200 border border-base-300 p-4"
                     >
                       <h1 class="text-3xl">Info</h1>
                       <p class="mt-4">

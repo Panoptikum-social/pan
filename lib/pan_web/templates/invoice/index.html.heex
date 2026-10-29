@@ -27,17 +27,17 @@
           <td>
             <.link
               href={invoice_path(@conn, :show, invoice)}
-              class="bg-info text-white border border-gray-dark hover:bg-info-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+              class="btn btn-info btn-xs truncate max-w-full"
             >Show</.link>
             <.link
               href={invoice_path(@conn, :edit, invoice)}
-              class="bg-warning text-white border border-gray-dark hover:bg-warning-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+              class="btn btn-warning btn-xs truncate max-w-full"
             >Edit</.link>
             <.link
               href={invoice_path(@conn, :delete, invoice)}
               method="delete"
               data-confirm="Are you sure?"
-              class="bg-danger text-white border border-gray-dark hover:bg-danger-light inline-block shadow truncate max-w-full py-0.5 px-1 rounded text-sm"
+              class="btn btn-error btn-xs truncate max-w-full"
             >Delete</.link>
           </td>
         </tr>
@@ -45,5 +45,5 @@
     </tbody>
   </table>
 
-  <.link href={invoice_path(@conn, :new)} class="text-link hover:text-link-dark">New invoice</.link>
+  <.link href={invoice_path(@conn, :new)} class="underline hover:text-primary">New invoice</.link>
 </div>

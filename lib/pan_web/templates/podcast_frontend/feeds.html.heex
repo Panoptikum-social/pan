@@ -2,16 +2,19 @@
   <%= if @podcast.blocked == true do %>
     This podcast may not be published here, sorry.
   <% else %>
-    <div class="rounded-xl shadow">
-      <div class="p-3 rounded-t-xl bg-warning text-white">
+    <div class="rounded-xl shadow border-2 border-podcast">
+      <div class="p-3 rounded-t-[0.6rem] bg-base-300 border-b-2 border-podcast">
         {icon("rss")} Feeds for
-        <.link href={podcast_frontend_path(@conn, :show, @podcast)}>{@podcast.title}</.link>
+        <.link
+          href={podcast_frontend_path(@conn, :show, @podcast)}
+          class="underline hover:text-primary"
+        >{@podcast.title}</.link>
       </div>
-      <div class="border-l border-r border-b border-gray-lighter rounded-b-xl p-4">
+      <div class="p-4">
         <ul class="list-disc ml-4">
           <%= for feed <- @podcast.feeds do %>
             <li>
-              <.link href={feed.self_link_url} class="text-link hover:text-link-dark">{feed.self_link_title ||
+              <.link href={feed.self_link_url} class="underline hover:text-primary">{feed.self_link_title ||
                 feed.self_link_url}</.link>
               <%= if feed.alternate_feeds != [] do %>
                 <h2 class="text-2xl my-4">
@@ -22,7 +25,7 @@
                     <li>
                       <.link
                         href={String.downcase(alternate_feed.url)}
-                        class="text-link hover:text-link-dark"
+                        class="underline hover:text-primary"
                       >{alternate_feed.title}</.link>
                     </li>
                   <% end %>

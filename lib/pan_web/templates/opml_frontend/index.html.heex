@@ -23,14 +23,14 @@
             <td class="leading-8">
               <.link
                 href={opml_frontend_path(@conn, :import, opml)}
-                class="btn btn-info btn-sm whitespace-nowrap text-white"
+                class="btn btn-info btn-sm whitespace-nowrap"
               >
                 {icon("settings", class: "inline w-4 h-4 align-text-top")} Parse
               </.link>
               &nbsp;
               <.link
                 href={opml_frontend_path(@conn, :download, opml)}
-                class="btn btn-primary btn-sm whitespace-nowrap text-white"
+                class="btn btn-primary btn-sm whitespace-nowrap"
               >
                 {icon("file-download",
                   class: "inline w-4 h-4 align-text-top"
@@ -56,5 +56,5 @@
     </p>
   <% end %>
 
-  <.link href={opml_frontend_path(@conn, :new)} class="text-link hover:text-link-dark">New OPML</.link>
+  <.link href={opml_frontend_path(@conn, :new)} class="underline hover:text-primary">New OPML</.link>
 </div>

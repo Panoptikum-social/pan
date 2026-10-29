@@ -88,7 +88,7 @@ defmodule PanWeb.Live.Curation.Community do
             <td>
               <.link
                 navigate={Routes.curation_frontend_path(@socket, :podcast, @community, podcast.id)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >
                 {podcast.title}
               </.link>

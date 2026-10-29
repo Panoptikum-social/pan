@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Curation.Index do
         <li :for={community <- @communities}>
           <.link
             navigate={Routes.curation_frontend_path(@socket, :community, community)}
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >
             {community.title}
           </.link>

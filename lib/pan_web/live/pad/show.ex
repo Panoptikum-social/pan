@@ -165,7 +165,7 @@ defmodule PanWeb.Live.Pad.Show do
           Pad of the community
           <.link
             navigate={community_frontend_path(@socket, :show, @community.id)}
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >
             {@community.title}
           </.link>

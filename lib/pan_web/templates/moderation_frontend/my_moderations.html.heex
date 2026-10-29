@@ -24,7 +24,7 @@
       <li>
         <.link
           href={moderation_frontend_path(@conn, :moderation, category)}
-          class="text-link hover:text-link-dark"
+          class="underline hover:text-primary"
         >{category.title}</.link>
       </li>
     <% end %>
@@ -32,6 +32,6 @@
 
   <.link
     href={moderation_frontend_path(@conn, :curators)}
-    class="text-link hover:text-link-dark"
+    class="underline hover:text-primary"
   >Assign curators to my communities</.link>
 </div>

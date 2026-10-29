@@ -63,7 +63,7 @@ defmodule PanWeb.Live.User.New do
         <.error
           :if={{"has already been taken", []} == @changeset.errors[:email]}
           name="welcome_back"
-          class="p-4 border border-warning-dark bg-warning-light/50 rounded-xl mb-4"
+          class="alert alert-soft alert-warning mb-4"
         >
           <h2 class="text-lg">Welcome back!</h2>
 
@@ -71,7 +71,7 @@ defmodule PanWeb.Live.User.New do
             There is already a user account with this email address.<br /> Please
             <.link
               href={user_path(@socket, :forgot_password)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >
               Request a login link
             </.link>

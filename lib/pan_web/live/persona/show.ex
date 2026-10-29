@@ -122,7 +122,7 @@ defmodule PanWeb.Live.Persona.Show do
                   href={safe_href(@persona.uri)}
                   rel="me"
                   target="_blank"
-                  class="text-link hover:text-link-dark"
+                  class="underline hover:text-primary"
                 >{@persona.uri}</.link>
                 <span :if={!safe_uri?(@persona.uri)}>{@persona.uri}</span>
               </td>
@@ -184,7 +184,7 @@ defmodule PanWeb.Live.Persona.Show do
             You didn't say you are a podcaster in
             <.link
               href={user_frontend_path(Endpoint, :my_profile)}
-              class="text-link hover:text-link-dark"
+              class="underline hover:text-primary"
             >My Profile</.link>
             yet.
           </p>
@@ -333,7 +333,7 @@ defmodule PanWeb.Live.Persona.Show do
           <tr
             :for={{dom_id, row} <- @streams.gig_rows}
             id={dom_id}
-            class="flex flex-col sm:table-row odd:bg-gray-lighter"
+            class="flex flex-col sm:table-row odd:bg-base-200"
           >
             <td align="center" class="px-2 py-2">
               {row.episode.publishing_date && Calendar.strftime(row.episode.publishing_date, "%x")}

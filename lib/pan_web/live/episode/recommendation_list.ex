@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.Episode.RecommendationList do
   use PanWeb, :live_component
   alias PanWeb.Live.Episode.RecommendForm
+  alias PanWeb.Component.UserButton
   alias PanWeb.{Endpoint, Recommendation}
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
@@ -34,24 +35,24 @@ defmodule PanWeb.Live.Episode.RecommendationList do
 
   def render(assigns) do
     ~H"""
-    <div class="mt-4">
+    <div class="mt-4 max-w-4xl">
       <div :if={@episode.recommendations != [] or @current_user_id}>
         <div :if={@episode.recommendations != []} class="float-right">
           <a
             href="https://blog.panoptikum.social/complaints"
-            class="text-link hover-text-link-dark"
+            class="underline hover:text-primary"
           >Complain</a>
         </div>
 
         <h2 class="text-2xl">Recommendations</h2>
 
         <div :if={@episode.recommendations != []}>
-          <table class="border border-separate border-gray-lighter">
+          <table class="table table-sm table-zebra mt-4">
             <thead>
               <tr>
                 <th>User</th>
                 <th>Recommendation</th>
-                <th>Date</th>
+                <th class="text-right">Date</th>
               </tr>
             </thead>
             <tbody id="latest_recommendations">
@@ -59,25 +60,23 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                 :for={recommendation <- @episode.recommendations}
                 id={"recommendation-row-#{recommendation.id}"}
               >
-                <td>
-                  <p :if={@current_user_id == recommendation.user_id} class="mb-2">
-                    <nobr>
-                      <a
-                        href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
-                        class="bg-aqua hover:bg-aqua-light px-2 py-1 my-4 rounded-xl text-white"
-                        alt="tweet it"
-                      >tweet</a>
-                      <a
-                        href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
-                        class="bg-grass-light px-2 py-1 my-4 rounded-xl text-white"
-                        alt="send an email"
-                      >mail</a>
-                    </nobr>
-                  </p>
-                  {recommendation.user.name}
+                <td class="align-top whitespace-nowrap">
+                  <UserButton.render for={recommendation.user} />
+                  <div :if={@current_user_id == recommendation.user_id} class="mt-1 flex gap-1">
+                    <a
+                      href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
+                      class="btn btn-soft btn-info btn-xs"
+                      alt="tweet it"
+                    >tweet</a>
+                    <a
+                      href={"mailto:?subject=#{social(@episode, recommendation)}&body=#{social_url(@episode)}"}
+                      class="btn btn-soft btn-success btn-xs"
+                      alt="send an email"
+                    >mail</a>
+                  </div>
                 </td>
-                <td>{recommendation.comment}</td>
-                <td align="right">
+                <td class="align-top">{recommendation.comment}</td>
+                <td class="align-top text-right whitespace-nowrap">
                   {Calendar.strftime(recommendation.inserted_at, "%x")}
                 </td>
               </tr>

@@ -74,6 +74,11 @@ Plan, in order:
   Open: press "Fill missing icons" on prod right after the deploy (else the
   public tree shows only folders); an icon/color picker in the admin
   (today plain text fields in the data browser).
+- **#445 Podlove subscribe button and web player in the theme:** style both
+  to match Latte/Mocha and DESIGN.md (no solid color areas beyond the main
+  action). Both are third-party widgets with their own configuration/theme
+  (player: config theme tokens; subscribe button: its own color option), so
+  check what they allow; check with real clicks/playback, not only renders.
 - **#435 Order:** admin converted
   and tested via `data-theme` toggle → moderation (done) → public site → re-enable automatic
   dark mode.

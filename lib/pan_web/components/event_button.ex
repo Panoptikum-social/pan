@@ -22,7 +22,7 @@ defmodule PanWeb.Component.EventButton do
       class={[
         "border border-solid inline-block shadow",
         @class,
-        !@class && "bg-gray-lighter hover:bg-gray-lightest",
+        !@class && "bg-base-300 hover:bg-base-200",
         @truncate && "truncate max-w-full",
         !@large && "py-1 px-2 rounded text-sm",
         @large && "py-2 px-3 rounded-md"

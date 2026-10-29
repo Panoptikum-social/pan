@@ -34,7 +34,10 @@ defmodule PanWeb.Live.Recommendation.Random do
         <p :for={r <- @recommendations} class="mt-4 leading-9">
           Fortuna opted for the episode &nbsp; <EpisodeButton.render for={r.episode} /> &nbsp;
           from the podcast &nbsp; <PodcastButton.render for={r.podcast} /> &nbsp;
-          in the category &nbsp;<CategoryLink.render for={r.category} color={@category_colors[r.category.id]} /> &nbsp;.
+          in the category &nbsp;<CategoryLink.render
+            for={r.category}
+            color={@category_colors[r.category.id]}
+          /> &nbsp;.
         </p>
       </div>
       """

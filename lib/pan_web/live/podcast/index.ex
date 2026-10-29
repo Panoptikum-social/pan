@@ -50,7 +50,7 @@ defmodule PanWeb.Live.Podcast.Index do
         target={podcast_frontend_path(Endpoint, :show, podcast.id)}
       >
         <div class="flex flex-col md:flex-row md:items-start md:space-x-2 mx-2 mt-4">
-          <div class="flex-none p-2 xl:mx-4 my-2 xl:my-0 border border-gray-light shadow m-auto">
+          <div class="flex-none p-2 xl:mx-4 my-2 xl:my-0 border border-base-300 shadow m-auto">
             <img
               :if={podcast.thumbnails != []}
               src={"https://panoptikum.social#{thumbnail(podcast).path}#{thumbnail(podcast).filename}"}

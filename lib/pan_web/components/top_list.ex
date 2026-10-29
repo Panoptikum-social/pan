@@ -42,7 +42,7 @@ defmodule PanWeb.Component.TopList do
     ~H"""
     <table class="w-full table-fixed mt-2">
       <%= for {rank, count, items} <- prepare_for_toplist(@items) do %>
-        <tr class="odd:bg-gray-lightest">
+        <tr class="odd:bg-base-200">
           <td class="text-right py-2 w-10">
             {rank}.
           </td>

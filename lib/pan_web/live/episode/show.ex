@@ -74,7 +74,7 @@ defmodule PanWeb.Live.Episode.Show do
           <div id="shownotes" class="lg:w-1/2 mt-4 lg:mt-0">
             <div :if={@episode.shownotes}>
               <h2 class="text-2xl">Shownotes</h2>
-              <div class="my-2 prose max-w-none bg-white lg:p-2">{raw(@episode.shownotes)}</div>
+              <div class="my-2 prose max-w-none bg-base-100 lg:p-2">{raw(@episode.shownotes)}</div>
             </div>
           </div>
         </div>

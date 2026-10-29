@@ -25,7 +25,7 @@ defmodule PanWeb.Live.Community.Index do
     ~H"""
     <div class="m-4">
       <h1 class="text-3xl">Communities</h1>
-      <p class="mt-2 text-gray-dark">
+      <p class="mt-2 text-base-content/70">
         Panoptikum's communities are curated groups of podcasts and podcasters around a
         shared theme, each with its own moderators and members.
       </p>
@@ -39,11 +39,11 @@ defmodule PanWeb.Live.Community.Index do
             <h2 class="text-xl font-semibold">
               <.link
                 href={community_frontend_path(@socket, :show, community)}
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{community.title}</.link>
             </h2>
             <p :if={community.description} class="mt-2">{community.description}</p>
-            <ul class="mt-2 flex flex-wrap gap-x-4 text-gray-dark">
+            <ul class="mt-2 flex flex-wrap gap-x-4 text-base-content/70">
               <li :for={{word, count} <- counts.figures}>{count} {Inflex.inflect(word, count)}</li>
             </ul>
           </div>

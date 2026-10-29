@@ -22,9 +22,9 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
           maxlength="255"
           data-remaining-counter="remaining"
           label="Your recommendation"
-          class="max-w-full input"
+          class="input w-full max-w-4xl"
         />
-        <p class="help-block text-muted"><span id="remaining">255</span> characters left</p>
+        <p class="text-sm text-base-content/70"><span id="remaining">255</span> characters left</p>
         <.input type="hidden" field={f[:podcast_id]} value={@podcast.id} />
         <.button type="submit" class="btn btn-primary">Recommend</.button>
       </.form>

@@ -1,6 +1,7 @@
 defmodule PanWeb.Live.Podcast.RecommendationList do
   use PanWeb, :live_component
   alias PanWeb.Live.Podcast.RecommendForm
+  alias PanWeb.Component.UserButton
   alias PanWeb.{Endpoint, Recommendation}
   import PanWeb.Router.Helpers
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
@@ -54,48 +55,42 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
 
   def render(assigns) do
     ~H"""
-    <div class="my-4">
+    <div class="my-4 max-w-4xl">
       <div :if={@recommendations_count > 0} class="float-right">
         <a
           href="https://blog.panoptikum.social/complaints"
-          class="text-link hover-text-link-dark"
+          class="underline hover:text-primary"
         >Complain</a>
       </div>
       <h2 id="recommendations" class="text-2xl">Recommendations</h2>
       <div :if={@recommendations_count > 0}>
-        <table class="border border-separate border-gray-lighter mt-4 w-full">
+        <table class="table table-sm table-zebra mt-4">
           <thead>
             <tr>
-              <th class="p-2">User</th>
-              <th class="p-2">Recommendation</th>
-              <th class="p-2">Date</th>
+              <th>User</th>
+              <th>Recommendation</th>
+              <th class="text-right">Date</th>
             </tr>
           </thead>
           <tbody id="latest_recommendations" phx-update="stream">
-            <tr
-              :for={{dom_id, recommendation} <- @streams.recommendations}
-              id={dom_id}
-              class="even:bg-gray-lighter"
-            >
-              <td class="p-2">
-                <p :if={@current_user_id == recommendation.user_id} class="mb-2">
-                  <nobr>
-                    <a
-                      href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
-                      class="bg-aqua hover:bg-aqua-light px-3 py-2 my-4 rounded-full text-white"
-                      alt="tweet it"
-                    >tweet</a>
-                    <a
-                      href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
-                      class="bg-grass-light px-3 py-2 my-4 rounded-full text-white"
-                      alt="send an email"
-                    >mail</a>
-                  </nobr>
-                </p>
-                {recommendation.user.name}
+            <tr :for={{dom_id, recommendation} <- @streams.recommendations} id={dom_id}>
+              <td class="align-top whitespace-nowrap">
+                <UserButton.render for={recommendation.user} />
+                <div :if={@current_user_id == recommendation.user_id} class="mt-1 flex gap-1">
+                  <a
+                    href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
+                    class="btn btn-soft btn-info btn-xs"
+                    alt="tweet it"
+                  >tweet</a>
+                  <a
+                    href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
+                    class="btn btn-soft btn-success btn-xs"
+                    alt="send an email"
+                  >mail</a>
+                </div>
               </td>
-              <td class="p-2">{recommendation.comment}</td>
-              <td class="p-2" align="right">
+              <td class="align-top">{recommendation.comment}</td>
+              <td class="align-top text-right whitespace-nowrap">
                 {Calendar.strftime(recommendation.inserted_at, "%x")}
               </td>
             </tr>
