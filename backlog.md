@@ -17,6 +17,27 @@ Claude's per-machine memory) so they survive across computers. Last synced
   text; Latte yellow/green would need the `-strong` shades as on outline
   buttons) and review the ~7 `btn-soft` uses plus the `<.button>` default.
 
+- **#454 Podcast header overlaps (found 2026-10-29 during #445):** on
+  /podcasts/:id (e.g. 93) the description text runs into the "Website"
+  column of the header (lib/pan_web/live/podcast/header.ex) at ~1300 px.
+
+- **#455 Dead Podlove hook sidecars (found 2026-10-29 during #445):**
+  lib/pan_web/live/episode/podlove_player.hooks.js and
+  lib/pan_web/live/podcast/podlove_subscribe_button.hooks.js look unused,
+  the hooks live in assets/js (podlove_player.js, app.js). Check and delete.
+
+- **#456 QR code in Mocha (found 2026-10-29):** the subscribe QR code is
+  black on white in both themes. Proposal: keep normal polarity (inverted
+  codes are optional in the standard, not every scanner reads them) but in
+  Mocha draw Mocha base #1e1e2e on Mocha text #cdd6f4 (11:1).
+  `EQRCode.svg` takes `color:`/`background_color:`; a `?theme=` param on
+  /qrcode/:code and two `<img>` in PanWeb.Component.QRCode, CSS shows one.
+
+- **#457 Remaining filled buttons (found 2026-10-29):** ~133 `btn btn-<color>`
+  without `btn-outline`/`btn-soft` across lib/. DESIGN.md: only the main
+  action of a section is filled; the others become `btn-outline btn-<color>`
+  (Latte `-strong` shades exist for all light accents).
+
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,
@@ -56,27 +77,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   data_block.ex vs relations_block.ex (same striped-row classes), and
   admin/record_form.ex vs components/moderation/record_form.ex. Candidate:
   one toolbar-button component and shared row helpers.
-
-### Catppuccin themes (Latte light + Mocha dark), from 2026-10-29
-
-A moderator reported the site almost unreadable on macOS in dark mode.
-Likely cause: `@plugin "daisyui";` in assets/css/app.css enables DaisyUI's
-stock `dark` theme with `--prefersdark`, so DaisyUI colors go dark while
-~500 hard-coded classes (`bg-white`, `gray-*`, raw Bootflat colors like
-`bg-lavender`) stay light. #430 (2026-10-29) turned the automatic dark theme
-off (`themes: light --default`). #431 (e41d71eb): `latte` and `mocha` theme
-blocks in app.css (all pairs AA; Latte light accents take dark text
-#1e1e2e; base-300 = surface0, crust was too close to mantle), used only by
-the admin layouts' `<main>` via data-theme. #432 done for the admin (shared
-admin modules, LiveView admin pages, admin controller templates; links in
-text color + underline, gray gradients replaced by solid base colors).
-#432 (semantic classes everywhere) done 2026-10-29 (28bd5b7a); #436/#437
-the same day: Latte/Mocha on every page, System (prefers-color-scheme) as
-default, toggle in the sidebar, Bootflat palette and the old light theme
-removed. Remaining items:
-
-- **#445 Podlove subscribe button and web player in the theme:** style both
-  to match Latte/Mocha and DESIGN.md (no solid color areas beyond the main
-  action). Both are third-party widgets with their own configuration/theme
-  (player: config theme tokens; subscribe button: its own color option), so
-  check what they allow; check with real clicks/playback, not only renders.
