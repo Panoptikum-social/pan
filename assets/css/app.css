@@ -238,13 +238,13 @@
   @apply border border-error bg-error/10 text-base-content px-2 py-0.5 my-1 rounded-sm;
 }
 
-/* Labels, messages and secondary buttons without solid color areas
-   (DESIGN.md): outline badges, soft alerts and soft buttons keep the color
-   in the frame or tint, the text in the text color, which the accents would
-   not reach AA for. Unlayered, so they win over DaisyUI's component colors. */
+/* Labels and messages without solid color areas (DESIGN.md): outline
+   badges and soft alerts keep the color in the frame or tint, the text in
+   the text color, which the accents would not reach AA for. Unlayered, so
+   they win over DaisyUI's component colors. (Buttons are filled or outline,
+   no soft ones: those looked disabled, #450.) */
 .badge.badge-outline,
-.alert.alert-soft,
-.btn.btn-soft {
+.alert.alert-soft {
   color: var(--color-base-content);
 }
 .badge.badge-outline {

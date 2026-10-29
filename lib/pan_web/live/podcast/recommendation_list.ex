@@ -79,12 +79,12 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
                 <div :if={@current_user_id == recommendation.user_id} class="mt-1 flex gap-1">
                   <a
                     href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
-                    class="btn btn-soft btn-info btn-xs"
+                    class="btn btn-outline btn-info btn-xs"
                     alt="tweet it"
                   >tweet</a>
                   <a
                     href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
-                    class="btn btn-soft btn-success btn-xs"
+                    class="btn btn-outline btn-success btn-xs"
                     alt="send an email"
                   >mail</a>
                 </div>

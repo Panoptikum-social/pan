@@ -10,13 +10,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **#450 Soft buttons in the text color (found 2026-10-29 on /admin):**
-  the unlayered rule `.btn.btn-soft { color: var(--color-base-content) }`
-  in assets/css/app.css makes every soft button a pale tint with gray text,
-  which looks disabled. Decide whether to drop it (DaisyUI's colored soft
-  text; Latte yellow/green would need the `-strong` shades as on outline
-  buttons) and review the ~7 `btn-soft` uses plus the `<.button>` default.
-
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,

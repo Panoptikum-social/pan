@@ -86,12 +86,13 @@ theme. Categories: each top level category has its own color (column
   like, follow, recommendation, popular, category), not seven times the
   same color.
 - **Buttons:** the main action of a section filled (`btn btn-primary`
-  etc.), secondary ones `btn-soft` or `btn-outline`; `<.button>` without a
-  class is muted (`btn-soft`). Colored outline buttons (`btn-outline
-  btn-error` etc.) show frame and text in the color; in Latte yellow and
-  green use darker shades (`--color-warning-strong`, `--color-success-strong`,
-  4.5:1 like red), the hover fill stays the theme color. A soft or outline
-  button without a color looks disabled next to colored ones.
+  etc.), all others `btn-outline btn-<color>`, no soft buttons (they looked
+  disabled); `<.button>` without a class is `btn-primary btn-outline`.
+  Colored outline buttons show frame and text in the color; in Latte the
+  light accents use darker shades (`--color-<color>-strong` for primary,
+  accent, info, warning, success; 4.5:1 like red), the hover fill stays the
+  theme color. An outline button without a color looks disabled next to
+  colored ones.
 - **Badges** (roles, types, labels; `Pill`): `badge badge-outline
   badge-<color>`, the color in the frame, the text in the text color (rule in
   `app.css`, the accents don't reach AA as small text).
