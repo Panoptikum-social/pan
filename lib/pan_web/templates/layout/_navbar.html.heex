@@ -1,13 +1,13 @@
 <div
-  class="flex justify-between items-start lg:items-center"
+  class="flex justify-between items-start gap-3"
   x-bind:class="{'lg:flex-col': !navbarOpen}"
 >
-  <div class="flex flex-col">
-    <a href="/" class="text-2xl font-bold">
+  <div class="flex flex-col gap-1.5 min-w-0">
+    <a href="/" class="flex items-center gap-2 text-xl font-bold">
       <svg
         width="40"
         height="40"
-        class="align-middle inline"
+        class="shrink-0"
         x-bind:class="{'lg:w-5 lg:h-5': !navbarOpen}"
         alt="Panoptikum Logo, Link to Home"
         xmlns="http://www.w3.org/2000/svg"
@@ -177,15 +177,22 @@
           transform="matrix(1 0 0 1.04726 0 -.104)"
         />
       </svg>
-      <span x-bind:class="{'lg:hidden': !navbarOpen}">Panoptikum.social</span>
+      <span x-bind:class="{'lg:hidden': !navbarOpen}">Panoptikum</span>
     </a>
     <%= if badge = environment_badge() do %>
       <% {label, badge_class} = badge %>
-      <span class={"badge #{badge_class} badge-sm w-fit"}>{label}</span>
+      <span
+        class={"badge badge-outline #{badge_class} badge-sm w-fit ml-12"}
+        x-bind:class="{'lg:ml-0': !navbarOpen}"
+      >{label}</span>
     <% end %>
   </div>
 
-  <button @click="navbarOpen = !navbarOpen" class="focus:outline-none" aria-label="toggle sidebar">
+  <button
+    @click="navbarOpen = !navbarOpen"
+    class="shrink-0 mt-2 focus:outline-none"
+    aria-label="toggle sidebar"
+  >
     <svg
       x-show="navbarOpen"
       xmlns="http://www.w3.org/2000/svg"
