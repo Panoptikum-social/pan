@@ -3,12 +3,13 @@ defmodule PanWeb.QRCodeFrontendController do
 
   # Mocha keeps the normal polarity (dark modules on light; inverted codes
   # are optional in the standard), only in Mocha base on Mocha text, 11:1
-  # (backlog.md #456). Latte stays black on white.
+  # (backlog.md #456). Latte is black on a transparent background, the tile
+  # around it (app.css) takes the page color.
   def generate(conn, %{"code" => code} = params) do
     colors =
       case params["theme"] do
         "mocha" -> [color: "#1e1e2e", background_color: "#cdd6f4"]
-        _ -> []
+        _ -> [background_color: :transparent]
       end
 
     svg =

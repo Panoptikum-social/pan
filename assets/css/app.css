@@ -37,8 +37,10 @@
   name: "latte";
   default: true;
   color-scheme: light;
-  --color-base-100: #eff1f5; /* base */
-  --color-base-200: #e6e9ef; /* mantle */
+  /* page in Latte base (mantle looked gray, the page was almost white before
+     the themes), cards and inputs white so panels still stand out */
+  --color-base-100: #ffffff;
+  --color-base-200: #eff1f5; /* base */
   --color-base-300: #ccd0da; /* surface0: crust is too close to mantle for headings and borders */
   --color-base-content: #4c4f69; /* text */
   --color-primary: #1e66f5; /* blue */
@@ -258,7 +260,8 @@
 .qr-mocha {
   box-sizing: content-box;
   padding: 24px;
-  background-color: #ffffff;
+  /* the Latte SVG is transparent, so the tile is the page color */
+  background-color: var(--color-base-200);
 }
 .qr-mocha {
   display: none;

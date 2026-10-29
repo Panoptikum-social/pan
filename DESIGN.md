@@ -27,7 +27,9 @@ always looks the same.
   Every color/content pair meets WCAG AA (4.5:1). Latte's light accents take
   dark text (`#1e1e2e`), only blue, mauve and red take white.
 - **Surfaces:** `base-100` (cards, inputs), `base-200` (page), `base-300`
-  (sidebar, headings, borders, striped rows; Catppuccin surface0).
+  (sidebar, headings, borders, striped rows; Catppuccin surface0). In Latte
+  the page is Latte base `#eff1f5` and cards are white (mantle as page
+  looked gray); in Mocha the page is mantle, cards base.
 - **Text:** `text-base-content`, secondary text `text-base-content/70`. In
   the light themes that is Latte text `#4c4f69`, never (almost) black:
   black text on light backgrounds looks bold.
