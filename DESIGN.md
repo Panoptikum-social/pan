@@ -9,11 +9,11 @@ discussion. Themes are [Catppuccin](https://catppuccin.com/palette) Latte
 | Role | Means | Looks like |
 |---|---|---|
 | Colored icon | what something **is** | the entity's or the icon's own color, title in the text color |
-| Color line | what a container is **about** | a panel framed in the color of its purpose, neutral heading |
+| Color line | what a container is **about** | a line under the panel heading, in the color of its purpose |
 | Neutral | everything **readable** | text, headings, links in the text color; base-100/200/300 surfaces |
 | Filled color | **actions** | the main button of a section; nothing else is filled |
 
-When something new comes up: a thing gets an icon, a container gets a frame,
+When something new comes up: a thing gets an icon, a container gets a color line,
 an action gets a button (filled only for the main action). No solid color
 areas otherwise: labels are outline badges, messages soft alerts.
 
@@ -77,8 +77,11 @@ theme. Categories: each top level category has its own color (column
 - **Entity links:** `PodcastButton`, `EpisodeButton`, `PersonaButton`,
   `UserButton` and `CategoryLink`, all on `EntityLink` (colored icon +
   title). No label like "Podcast" in front: the icon says it.
-- **Panels:** `Panel` with `purpose="episode"` etc.: neutral `base-300`
-  heading, the whole panel framed (2px) in the purpose's color. Panels side
+- **Panels:** `Panel` with `purpose="episode"` etc.: one `base-100`
+  surface (rounded, shadow), the heading only set apart by `font-semibold`
+  and a 2px line underneath in the purpose's color. Tried and dropped: a
+  frame around the whole panel (too much color), a darker `base-300`
+  heading bar (too heavy). Panels side
   by side get different purposes (on My Podcasts: podcast, subscription,
   like, follow, recommendation, popular, category), not seven times the
   same color.

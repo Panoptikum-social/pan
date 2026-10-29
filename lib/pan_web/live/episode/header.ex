@@ -30,9 +30,10 @@ defmodule PanWeb.Live.Episode.Header do
   def render(assigns) do
     ~H"""
     <div>
-      <h1 class="leading-10">
-        <PodcastButton.render for={@episode.podcast} large /> &nbsp; / &nbsp;
-        <EpisodeButton.render for={@episode} large class="my-2" />
+      <h1 class="flex flex-wrap items-center gap-x-3 gap-y-1 my-2">
+        <PodcastButton.render for={@episode.podcast} large />
+        <span class="text-xl">/</span>
+        <EpisodeButton.render for={@episode} large />
       </h1>
 
       <div class="flex flex-col md:flex-row my-4 space-y-4 md:space-y-0 md:space-x-4 md:divide-x md:divide-dotted md:divide-base-300">

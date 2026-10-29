@@ -19,7 +19,7 @@ defmodule PanWeb.Component.EntityLink do
       id={@id}
       href={@to}
       class={[
-        "inline-flex items-center gap-1.5 align-middle hover:underline",
+        "inline-flex items-center gap-1.5 align-bottom hover:underline",
         @large && "text-xl font-semibold",
         @truncate && "max-w-full",
         @class

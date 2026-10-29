@@ -1,8 +1,9 @@
 defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
-  # Neutral headings, the panel framed in the color of what it is about
-  # (its purpose); the icons in the content carry the color (DESIGN.md).
+  # One surface, the heading set apart only by weight and a line in the
+  # color of what the panel is about (its purpose); the icons in the content
+  # carry the color (DESIGN.md).
   @heading_colors %{
     "info" => "border-ctp-sky",
     "category" => "border-category",
@@ -37,12 +38,12 @@ defmodule PanWeb.Component.Panel do
     ~H"""
     <div
       aria-label="panel"
-      class={["rounded-xl shadow border-2", border_color_class(@purpose), @class]}
+      class={["rounded-xl shadow bg-base-100", @class]}
       id={@id}
     >
       <div
         aria-label="panel heading"
-        class={["p-3 rounded-t-[0.6rem] bg-base-300 border-b-2", border_color_class(@purpose)]}
+        class={["px-4 py-3 font-semibold border-b-2", border_color_class(@purpose)]}
       >
         {render_slot(@panel_heading)}
 
