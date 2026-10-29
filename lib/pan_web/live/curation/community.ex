@@ -109,7 +109,7 @@ defmodule PanWeb.Live.Curation.Community do
                 phx-click="toggle_open"
                 phx-value-podcast_id={podcast.id}
                 phx-value-open={to_string(!podcast.open)}
-                class={["btn btn-xs", if(podcast.open, do: "btn-success", else: "btn-outline")]}
+                class={["btn btn-xs btn-outline", podcast.open && "btn-success"]}
               >
                 {if podcast.open, do: "open – mark done", else: "done – reopen"}
               </button>

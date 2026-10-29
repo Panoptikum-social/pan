@@ -17,12 +17,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   text; Latte yellow/green would need the `-strong` shades as on outline
   buttons) and review the ~7 `btn-soft` uses plus the `<.button>` default.
 
-- **#451 Solid green "open – mark done" column (found 2026-10-29):** on
-  /curator/communities/:id every open podcast's toggle is a filled
-  `btn-success` (lib/pan_web/live/curation/community.ex), a solid green
-  column against DESIGN.md. Candidate: `btn-outline btn-success` for open,
-  `btn-outline` for done.
-
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,
