@@ -270,7 +270,7 @@ defmodule PanWeb.Live.Pad.Show do
                     phx-click="restore_version"
                     phx-value-id={snapshot.id}
                     data-confirm="Replace the current text with this version? Everybody editing sees it at once."
-                    class="btn btn-primary btn-xs"
+                    class="btn btn-outline btn-primary btn-xs"
                   >
                     Restore
                   </button>
@@ -291,7 +291,7 @@ defmodule PanWeb.Live.Pad.Show do
           <h3 class="text-lg font-semibold">Manage this pad</h3>
 
           <div class="flex items-center gap-3 mt-2">
-            <button id="toggle-read-only" phx-click="toggle_read_only" class="btn btn-primary btn-sm">
+            <button id="toggle-read-only" phx-click="toggle_read_only" class="btn btn-outline btn-primary btn-sm">
               {if @pad.read_only, do: "Make editable", else: "Make read only"}
             </button>
             <span class="text-sm">Read only freezes the pad for everybody, moderators included.</span>
@@ -312,7 +312,7 @@ defmodule PanWeb.Live.Pad.Show do
             id="delete-pad"
             phx-click="delete"
             data-confirm={"Delete the pad \"#{@pad.title}\" and all its saved versions?"}
-            class="btn btn-error btn-sm mt-4"
+            class="btn btn-outline btn-error btn-sm mt-4"
           >
             Delete pad
           </button>

@@ -284,7 +284,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
         <button
           phx-click="move_into"
           disabled={is_nil(@from_id) or is_nil(@into_id)}
-          class="btn btn-info btn-sm mt-4 block"
+          class="btn btn-outline btn-info btn-sm mt-4 block"
         >
           <Icon.render name="folder" />
           <Icon.render name="arrow-right" />
@@ -295,16 +295,16 @@ defmodule PanWeb.Live.Admin.Category.Merge do
           phx-click="delete"
           data-confirm="Delete the category selected on the left?"
           disabled={not MapSet.member?(@empty_ids, @from_id)}
-          class="btn btn-error btn-sm mt-4 block"
+          class="btn btn-outline btn-error btn-sm mt-4 block"
         >
           Delete Category (left)
         </button>
 
-        <button phx-click="update_apple" class="btn btn-neutral btn-sm mt-4 block">
+        <button phx-click="update_apple" class="btn btn-outline btn-neutral btn-sm mt-4 block">
           Update Apple flags
         </button>
 
-        <button phx-click="fill_icons" class="btn btn-neutral btn-sm mt-4 block">
+        <button phx-click="fill_icons" class="btn btn-outline btn-neutral btn-sm mt-4 block">
           Fill missing icons
         </button>
 
@@ -364,7 +364,7 @@ defmodule PanWeb.Live.Admin.Category.Merge do
                 phx-click="delete_mapping"
                 phx-value-id={mapping.id}
                 data-confirm="Delete this mapping? Feeds using the name create it again."
-                class="btn btn-error btn-xs"
+                class="btn btn-outline btn-error btn-xs"
               >
                 Delete
               </button>

@@ -89,7 +89,7 @@ defmodule PanWeb.Live.Admin.Podcast.Owners do
                 phx-click="unassign"
                 phx-value-podcast_id={podcast.id}
                 data-confirm={"Unassign #{podcast.title}?"}
-                class="btn btn-warning btn-xs ml-2"
+                class="btn btn-outline btn-warning btn-xs ml-2"
               >
                 Unassign
               </button>

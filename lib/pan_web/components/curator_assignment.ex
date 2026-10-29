@@ -28,7 +28,7 @@ defmodule PanWeb.Component.CuratorAssignment do
                 phx-value-community_id={community.id}
                 phx-value-user_id={curator.id}
                 data-confirm={"Remove #{curator.username} as curator of #{community.title}?"}
-                class="btn btn-warning btn-xs"
+                class="btn btn-outline btn-warning btn-xs"
               >
                 Remove
               </button>

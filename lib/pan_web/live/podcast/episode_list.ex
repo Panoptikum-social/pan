@@ -62,7 +62,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                       <p>
                         <button
                           @click="detailsOpen = false"
-                          class="btn btn-info btn-sm mt-4"
+                          class="btn btn-outline btn-info btn-sm mt-4"
                           x-ref="detailsCloseButton"
                         >
                           Close

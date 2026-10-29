@@ -40,7 +40,7 @@
                 href={
                   episode_frontend_path(@conn, :show, Enum.at(deprecated_podcast.episodes, 0).id)
                 }
-                class="btn btn-info btn-sm max-w-60 justify-start"
+                class="btn btn-outline btn-info btn-sm max-w-60 justify-start"
               >
                 <span class="truncate min-w-0">
                   {Enum.at(deprecated_podcast.episodes, 0).title}
@@ -62,13 +62,13 @@
                   href={podcast_path(@conn, :delete, deprecated_podcast)}
                   method="delete"
                   target="_blank"
-                  class="btn btn-error btn-xs"
+                  class="btn btn-outline btn-error btn-xs"
                 >Delete</.link>
               <% :unretire -> %>
                 <.link
                   href={podcast_path(@conn, :unretire, deprecated_podcast)}
                   target="_blank"
-                  class="btn btn-info btn-xs"
+                  class="btn btn-outline btn-info btn-xs"
                 >Unretire</.link>
               <% :inconclusive -> %>
                 inconclusive
@@ -84,14 +84,14 @@
                     "Podcast #{deprecated_podcast.id} \"#{deprecated_podcast.title}\" is in community #{Enum.join(deprecated_podcast.community_ids, ", ")}. Delete anyway?"
                 }
                 target="_blank"
-                class="btn btn-error btn-xs"
+                class="btn btn-outline btn-error btn-xs"
               >Delete</.link>
             <% end %>
             <%= if deprecated_podcast.recommended_action != :unretire do %>
               <.link
                 href={podcast_path(@conn, :unretire, deprecated_podcast)}
                 target="_blank"
-                class="btn btn-info btn-xs"
+                class="btn btn-outline btn-info btn-xs"
               >Unretire</.link>
             <% end %>
           </td>

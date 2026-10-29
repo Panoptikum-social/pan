@@ -235,7 +235,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
               {Calendar.strftime(alternate.inserted_at, "%Y-%m-%d")} {alternate.url}
             </option>
           </select>
-          <button type="submit" class="btn btn-info btn-xs">Restore previous</button>
+          <button type="submit" class="btn btn-outline btn-info btn-xs">Restore previous</button>
         </form>
       </div>
       <p :if={MapSet.member?(@merging, @podcast.id)} class="mt-1 text-sm">Merging ...</p>
@@ -253,7 +253,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
         <button
           type="submit"
           data-confirm={"Merge podcast #{@podcast.id} \"#{@podcast.title}\" into the selected podcast? Podcast #{@podcast.id} is deleted afterwards."}
-          class="btn btn-error btn-xs"
+          class="btn btn-outline btn-error btn-xs"
         >
           Merge into
         </button>
@@ -263,7 +263,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
         phx-click="retire"
         phx-value-id={@podcast.id}
         data-confirm={"Retire podcast #{@podcast.id} \"#{@podcast.title}\"?"}
-        class="mt-1 btn btn-warning btn-xs"
+        class="mt-1 btn btn-outline btn-warning btn-xs"
       >
         Retire
       </button>
@@ -386,7 +386,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           phx-click="mark_namesakes"
           phx-value-ids={Enum.map_join(podcasts, ",", & &1.id)}
           data-confirm={"Mark the #{length(podcasts)} podcasts titled \"#{key}\" as different shows (namesakes)?"}
-          class="mt-2 btn btn-success btn-xs"
+          class="mt-2 btn btn-outline btn-success btn-xs"
         >
           Mark as namesakes
         </button>
@@ -441,7 +441,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           <button
             type="submit"
             data-confirm="Delete all alternate feeds with this URL, across all podcasts?"
-            class="btn btn-error btn-sm"
+            class="btn btn-outline btn-error btn-sm"
           >
             Delete alternate feeds
           </button>
@@ -455,7 +455,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           e.g. after a merge that was cut short. Moved episodes and their new podcasts are pushed
           again, episodes that are gone are removed, so are the deleted podcasts.
         </p>
-        <button phx-click="repair_search_index" class="mt-2 btn btn-warning btn-sm">
+        <button phx-click="repair_search_index" class="mt-2 btn btn-outline btn-warning btn-sm">
           Repair search index
         </button>
       </section>

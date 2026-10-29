@@ -399,14 +399,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <button
           phx-click="probe"
           disabled={@probe_status == :running}
-          class="mt-2 btn btn-info btn-sm disabled:opacity-50"
+          class="mt-2 btn btn-outline btn-info btn-sm disabled:opacity-50"
         >
           {if @probe_status == :running, do: "Probing ...", else: "Probe artwork and episodes"}
         </button>
         <button
           phx-click="probe_audio"
           disabled={@audio_status == :running}
-          class="mt-2 btn btn-info btn-sm disabled:opacity-50"
+          class="mt-2 btn btn-outline btn-info btn-sm disabled:opacity-50"
         >
           {if @audio_status == :running, do: "Probing audio ...", else: "Probe audio"}
         </button>
@@ -553,7 +553,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       <button
         phx-click="recheck"
         disabled={@status == :running}
-        class="mt-6 btn btn-info btn-sm disabled:opacity-50"
+        class="mt-6 btn btn-outline btn-info btn-sm disabled:opacity-50"
       >
         {if @status == :running, do: "Checking ...", else: "Check again"}
       </button>

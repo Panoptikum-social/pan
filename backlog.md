@@ -33,11 +33,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   `EQRCode.svg` takes `color:`/`background_color:`; a `?theme=` param on
   /qrcode/:code and two `<img>` in PanWeb.Component.QRCode, CSS shows one.
 
-- **#457 Remaining filled buttons (found 2026-10-29):** ~133 `btn btn-<color>`
-  without `btn-outline`/`btn-soft` across lib/. DESIGN.md: only the main
-  action of a section is filled; the others become `btn-outline btn-<color>`
-  (Latte `-strong` shades exist for all light accents).
-
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,

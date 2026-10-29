@@ -27,17 +27,17 @@
           <td>
             <.link
               href={invoice_path(@conn, :show, invoice)}
-              class="btn btn-info btn-xs truncate max-w-full"
+              class="btn btn-outline btn-info btn-xs truncate max-w-full"
             >Show</.link>
             <.link
               href={invoice_path(@conn, :edit, invoice)}
-              class="btn btn-warning btn-xs truncate max-w-full"
+              class="btn btn-outline btn-warning btn-xs truncate max-w-full"
             >Edit</.link>
             <.link
               href={invoice_path(@conn, :delete, invoice)}
               method="delete"
               data-confirm="Are you sure?"
-              class="btn btn-error btn-xs truncate max-w-full"
+              class="btn btn-outline btn-error btn-xs truncate max-w-full"
             >Delete</.link>
           </td>
         </tr>

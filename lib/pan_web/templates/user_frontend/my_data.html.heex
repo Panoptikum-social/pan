@@ -72,7 +72,7 @@ You can even delete all manifestations as personas, you created so far, at once,
   href={manifestation_frontend_path(@conn, :delete_all)}
   method="delete"
   data-confirm="Are you sure? All manifestations will be deleted!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Delete all manifestations
 </.link>
@@ -84,7 +84,7 @@ You can even delete all manifestations as personas, you created so far, at once,
       href={manifestation_frontend_path(@conn, :delete, persona.id)}
       method="delete"
       data-confirm="Are you sure?"
-      class="btn btn-error btn-xs whitespace-nowrap"
+      class="btn btn-outline btn-error btn-xs whitespace-nowrap"
     >Delete Manifestation</.link>
   </h3>
 
@@ -113,7 +113,7 @@ You can even delete all manifestations as personas, you created so far, at once,
       href={persona_frontend_path(@conn, :disconnect, persona.id)}
       method="post"
       data-confirm="Are you sure?"
-      class="btn btn-error btn-xs whitespace-nowrap"
+      class="btn btn-outline btn-error btn-xs whitespace-nowrap"
     >Disconnect Persona</.link>
   </h3>
 
@@ -159,7 +159,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
   href={subscription_frontend_path(@conn, :delete_all)}
   method="delete"
   data-confirm="Are you sure? All subscriptions will be deleted!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Delete all subscriptions
 </.link>
@@ -187,7 +187,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
   href={follow_frontend_path(@conn, :unfollow_all_podcasts)}
   method="delete"
   data-confirm="Are you sure? All podcasts will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unfollow all podcasts
 </.link>
@@ -215,7 +215,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
   href={like_frontend_path(@conn, :unlike_all_podcasts)}
   method="delete"
   data-confirm="Are you sure? All podcasts will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all podcasts
 </.link>
@@ -243,7 +243,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
   href={like_frontend_path(@conn, :unlike_all_episodes)}
   method="delete"
   data-confirm="Are you sure? All episodes will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all episodes
 </.link>
@@ -271,7 +271,7 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
   href={like_frontend_path(@conn, :unlike_all_chapters)}
   method="delete"
   data-confirm="Are you sure? All chapters will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all chapters
 </.link>
@@ -299,7 +299,7 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
   href={like_frontend_path(@conn, :unlike_all_users)}
   method="delete"
   data-confirm="Are you sure? All users will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all users
 </.link>
@@ -327,7 +327,7 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
   href={follow_frontend_path(@conn, :unfollow_all_users)}
   method="delete"
   data-confirm="Are you sure? All users will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unfollow all users
 </.link>
@@ -355,7 +355,7 @@ You can even unfollow all the personas, you followed so far at once, by clicking
   href={follow_frontend_path(@conn, :unfollow_all_personas)}
   method="delete"
   data-confirm="Are you sure? All personas will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unfollow all personas
 </.link>
@@ -383,7 +383,7 @@ You can even unlike all the personas, you followed so far at once, by clicking &
   href={like_frontend_path(@conn, :unlike_all_personas)}
   method="delete"
   data-confirm="Are you sure? All personas will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all personas
 </.link>
@@ -411,7 +411,7 @@ You can even unfollow all the categories, you followed so far at once, by clicki
   href={follow_frontend_path(@conn, :unfollow_all_categories)}
   method="delete"
   data-confirm="Are you sure? All categories will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unfollow all categories
 </.link>
@@ -439,7 +439,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
   href={like_frontend_path(@conn, :unlike_all_categories)}
   method="delete"
   data-confirm="Are you sure? All categories will be unfollowed!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Unlike all categories
 </.link>
@@ -468,7 +468,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
   href={recommendation_frontend_path(@conn, :delete_all)}
   method="delete"
   data-confirm="Are you sure? All recommendations will be deleted!"
-  class="btn btn-error whitespace-nowrap leading-10"
+  class="btn btn-outline btn-error whitespace-nowrap leading-10"
 >
   {icon("alert-triangle")} Delete all recommendations
 </.link>
@@ -525,7 +525,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
             href={recommendation_frontend_path(@conn, :delete, recommendation)}
             method="delete"
             data-confirm="Are you sure?"
-            class="btn btn-error btn-xs"
+            class="btn btn-outline btn-error btn-xs"
           >Delete</.link>
         </td>
       </tr>
@@ -547,7 +547,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
     href={user_frontend_path(@conn, :delete_my_account)}
     method="delete"
     data-confirm="Are you sure? Your account would be deleted!"
-    class="btn btn-error"
+    class="btn btn-outline btn-error"
   >
     {icon("alert-triangle")} Delete my account
   </.link>

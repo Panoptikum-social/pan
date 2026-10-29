@@ -112,7 +112,7 @@ defmodule PanWeb.Live.Episode.Header do
                     </p>
                     <button
                       @click="metadataOpen = false"
-                      class="btn btn-info btn-sm mt-4"
+                      class="btn btn-outline btn-info btn-sm mt-4"
                       x-ref="metadataCloseButton"
                     >
                       Close

@@ -52,7 +52,7 @@
           <div class="self-start flex flex-col gap-2">
             <.link
               href={persona_frontend_path(@conn, :edit, persona)}
-              class="btn btn-warning btn-sm"
+              class="btn btn-outline btn-warning btn-sm"
             >Edit persona</.link>
             <.link
               href={persona_frontend_path(@conn, :show, persona)}
@@ -117,7 +117,7 @@
                       delegate_id: delegate_persona.id
                     )
                   }
-                  class="btn btn-warning btn-xs"
+                  class="btn btn-outline btn-warning btn-xs"
                 >
                   {icon("unlink", class: "h-4 w-4 inline")} Cancel Delegation
                 </.link>
@@ -141,7 +141,7 @@
                         delegate_id: delegate_persona.id
                       )
                     }
-                    class="btn btn-primary btn-xs"
+                    class="btn btn-outline btn-primary btn-xs"
                   >
                     {icon("link", class: "h-4 w-4 inline")} Delegate
                   </.link>
@@ -169,7 +169,7 @@
             <li class="flex flex-wrap space-x-2 items-center">
               <.link
                 href={persona_frontend_path(@conn, :cancel_redirect, persona.id)}
-                class="btn btn-warning btn-xs"
+                class="btn btn-outline btn-warning btn-xs"
               >
                 {icon("unlink", class: "h-4 w-4 inline")} Cancel Redirection
               </.link>
@@ -192,7 +192,7 @@
                         target_id: target_persona.id
                       )
                     }
-                    class="btn btn-error btn-xs"
+                    class="btn btn-outline btn-error btn-xs"
                   >
                     {icon("arrow-right", class: "h-4 w-4 inline")} Redirect
                   </.link>

@@ -221,7 +221,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
         <button
           phx-click="mark"
           disabled={MapSet.size(@selected) == 0}
-          class="btn btn-warning btn-sm"
+          class="btn btn-outline btn-warning btn-sm"
         >
           Mark for deletion
         </button>
@@ -229,7 +229,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
           phx-click="send_notices"
           disabled={MapSet.size(@selected) == 0}
           data-confirm={"Send a deletion notice to #{MapSet.size(@selected)} users and mark them for deletion?"}
-          class="btn btn-info btn-sm"
+          class="btn btn-outline btn-info btn-sm"
         >
           Send notice
         </button>
@@ -245,7 +245,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
           phx-click="delete"
           disabled={MapSet.size(@selected) == 0}
           data-confirm="Delete the selected users and their data for good?"
-          class="btn btn-error btn-sm"
+          class="btn btn-outline btn-error btn-sm"
         >
           Delete selected
         </button>

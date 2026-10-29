@@ -64,7 +64,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
         >Back to the moderation</.link>
       </p>
 
-      <button type="button" phx-click="reload" class="btn btn-primary btn-sm">Reload</button>
+      <button type="button" phx-click="reload" class="btn btn-outline btn-primary btn-sm">Reload</button>
 
       <p :if={@errors == []} class="my-4">No failed API requests in the last 24 hours.</p>
 
@@ -117,7 +117,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                       )
                     }
                     target="_blank"
-                    class="btn btn-primary btn-xs"
+                    class="btn btn-outline btn-primary btn-xs"
                   >Fix feed</.link>
                   <button
                     :if={error.podcast_title}
@@ -125,7 +125,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                     phx-click="remove"
                     phx-value-podcast_id={error.podcast_id}
                     data-confirm={"Remove \"#{error.podcast_title}\" from #{@category.title}? The podcast stays on Panoptikum."}
-                    class="btn btn-warning btn-xs"
+                    class="btn btn-outline btn-warning btn-xs"
                   >
                     Remove from community
                   </button>
