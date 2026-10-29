@@ -56,22 +56,11 @@ text color + underline, gray gradients replaced by solid base colors).
 Plan, in order:
 
 - **#432 Semantic classes instead of fixed colors** (admin and moderation
-  (#442, `:moderation_live_view`) done, public site open): replace `bg-white`,
+  (#442, `:moderation_live_view`) done; on the public site sidebar, footer,
+  entity links, panels and category tree done 2026-10-29 (#433, #438), the
+  rest open): replace `bg-white`,
   `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
   `text-base-content(/70)`, `border-base-300`, theme colors.
-- **#433 Entity colors as theme tokens:** podcast, episode, category,
-  recommendation (+ `-content`) defined per theme, used through one class or
-  component each (e.g. `btn-podcast`), so episode and podcast buttons stop
-  differing.
-- **#438 Entity buttons → colored links** (decided 2026-10-29): podcast,
-  episode, category, persona, user components (built on `LinkButton`) render
-  the entity's SVG icon in its entity color, then the title as a plain link
-  (base text color, underline on hover). No emoji (can't be themed). Less
-  space than buttons, which easily touch each other; avoids white-on-pastel
-  contrast trouble. Do together with #433. Open: whether `large` header
-  buttons keep a filled background. CategoryButton's color rotation
-  (`index_on_page`, `tint`) is unused since the trees use CategoryLink
-  (#439): drop it then.
 - **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
   `color` on categories, Pan.CategoryIcons proposals + "Fill missing icons"
   on /admin/categories/merge, CategoryLink on /categories and

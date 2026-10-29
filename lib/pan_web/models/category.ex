@@ -133,6 +133,17 @@ defmodule PanWeb.Category do
     end)
   end
 
+  # id => color for every category: a top level category's own, a
+  # subcategory's parent's (backlog.md #439)
+  def color_map do
+    from(c in Category,
+      left_join: p in assoc(c, :parent),
+      select: {c.id, coalesce(p.color, c.color)}
+    )
+    |> Repo.all()
+    |> Map.new()
+  end
+
   def stats_tree do
     from(c in Category,
       order_by: :title,

@@ -8,6 +8,10 @@ defmodule PanWeb.LayoutView do
   explicitly opt in) — see `config :pan, :environment` in
   config/dev.exs/qa.exs/prod.exs.
   """
+  # admin and moderation pages follow the Latte / Mocha theme toggle, the
+  # public site stays on the light theme for now (backlog.md #435)
+  def themed?(conn), do: String.starts_with?(conn.request_path, ["/admin", "/moderator"])
+
   def environment_badge do
     case Application.get_env(:pan, :environment) do
       "dev" -> {"DEV", "badge-success"}

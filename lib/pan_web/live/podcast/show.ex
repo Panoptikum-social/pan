@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Podcast.Show do
   use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
 
-  alias PanWeb.{Recommendation, Podcast, Episode, Image}
+  alias PanWeb.{Category, Recommendation, Podcast, Episode, Image}
   alias PanWeb.Live.Podcast.{Header, RecommendationList, EpisodeList}
 
   def mount(%{"id" => id}, _session, socket) do
@@ -11,6 +11,7 @@ defmodule PanWeb.Live.Podcast.Show do
     socket =
       assign(socket,
         podcast: podcast,
+        category_colors: Category.color_map(),
         page: 1,
         per_page: 10,
         episodes_count: Episode.count_by_podcast_id(id),
@@ -72,6 +73,7 @@ defmodule PanWeb.Live.Podcast.Show do
           podcast={@podcast}
           podcast_thumbnail={@podcast_thumbnail}
           episodes_count={@episodes_count}
+          category_colors={@category_colors}
         />
         <p :if={@namesakes != []} class="mt-2 text-sm">
           {if length(@namesakes) == 1,

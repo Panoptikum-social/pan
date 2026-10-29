@@ -7,7 +7,7 @@ defmodule PanWeb.Live.Category.Show do
   alias PanWeb.Component.Panel
   alias PanWeb.Component.FollowButton
   alias PanWeb.Component.LikeButton
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.Icon
 
@@ -24,6 +24,7 @@ defmodule PanWeb.Live.Category.Show do
       {:ok,
        assign(socket,
          category: category,
+         category_colors: Category.color_map(),
          page_title: category.title <> " (Category)",
          languages: languages,
          language: language,
@@ -113,10 +114,11 @@ defmodule PanWeb.Live.Category.Show do
       </div>
       <div aria-label="panel-body" class="p-4">
         <div :if={@category.children != []} class="flex flex-wrap">
-          <CategoryButton.render
+          <CategoryLink.render
             :for={subcategory <- @category.children}
             for={subcategory}
-            class="mr-2 mb-2"
+            color={@category_colors[subcategory.id]}
+            class="mr-4 mb-2"
           />
         </div>
 
@@ -157,7 +159,7 @@ defmodule PanWeb.Live.Category.Show do
           <PodcastButton.render
             :for={podcast <- @podcasts}
             for={podcast}
-            class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+            class="m-2"
           />
         </div>
 

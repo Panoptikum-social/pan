@@ -1,6 +1,6 @@
 defmodule PanWeb.Component.UserButton do
   use PanWeb, :html
-  alias PanWeb.Component.LinkButton
+  alias PanWeb.Component.EntityLink
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
@@ -11,13 +11,11 @@ defmodule PanWeb.Component.UserButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render
+    <EntityLink.render
       to={Routes.user_frontend_path(Endpoint, :show, @id || @for.id)}
-      class={[
-        "bg-bittersweet text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet",
-        @class
-      ]}
+      class={@class}
       icon="woman"
+      icon_class="text-user"
       title={@name || @for.name}
     />
     """

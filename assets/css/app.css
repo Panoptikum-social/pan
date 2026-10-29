@@ -4,7 +4,7 @@
 @source "../js/**/*.js";
 @source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
 /* category colors come from the database, see PanWeb.Category.colors/0 */
-@source inline("text-ctp-{rosewater,flamingo,pink,mauve,red,maroon,peach,yellow,green,teal,sky,sapphire,blue,lavender}");
+@source inline("{text,border}-ctp-{rosewater,flamingo,pink,mauve,red,maroon,peach,yellow,green,teal,sky,sapphire,blue,lavender}");
 @plugin "daisyui" {
   themes: light --default;
 }
@@ -200,14 +200,6 @@
     --color-primary-light: #48cfad;
     --color-primary: #37bc98; /* mint */
     --color-primary-dark: #048965;
-    --color-podcast-light: #ffce54; /* sunflower-light */
-    --color-podcast: #f6bb42; /* sunflower */
-    --color-category-light: #fc6e51; /* bittersweet-light */
-    --color-category: #e9573f; /* bittersweet */
-    --color-episode-light: #48cfad; /* mint-light */
-    --color-episode: #37bc9b; /* mint */
-    --color-recommendation-light: #ac92ec; /* lavender-light */
-    --color-recommendation: #967adc; /* lavender */
 
     --font-sans: 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: 'Ubuntu Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -215,6 +207,17 @@
     --max-width-grid: 1630px;
 };
 
+
+/* entity colors (backlog.md #433), referencing the Catppuccin accents so
+   they follow the theme; inline, so the reference is resolved where used */
+@theme inline {
+  --color-podcast: var(--color-ctp-peach);
+  --color-episode: var(--color-ctp-teal);
+  --color-category: var(--color-ctp-maroon);
+  --color-persona: var(--color-ctp-mauve);
+  --color-user: var(--color-ctp-flamingo);
+  --color-recommendation: var(--color-ctp-green);
+}
 
 @layer base {
   *,
@@ -246,7 +249,8 @@
   }
 
   .scrollbar-gray {
-    scrollbar-color: #aab2bd #f5f7fa;
+    scrollbar-color: color-mix(in oklch, var(--color-base-content) 40%, transparent)
+      var(--color-base-200);
   }
   .avoid-column-break {
     break-inside: avoid-column;
@@ -312,6 +316,21 @@
 }
 .phx-disconnected * {
   pointer-events: none;
+}
+
+/* icons on filled backgrounds keep the text color instead of their own
+   (see PanWeb.Live.Icon); unlayered, so it wins over the color utilities */
+:is(
+    .btn-primary, .btn-secondary, .btn-accent, .btn-neutral,
+    .btn-info, .btn-success, .btn-warning, .btn-error,
+    .badge-primary, .badge-secondary, .badge-accent, .badge-neutral,
+    .badge-info, .badge-success, .badge-warning, .badge-error,
+    .text-white, .text-primary-content, .text-secondary-content,
+    .text-accent-content, .text-neutral-content, .text-info-content,
+    .text-success-content, .text-warning-content, .text-error-content
+  ):not(.btn-outline, .btn-soft, .btn-ghost, .btn-link, .badge-outline, .badge-soft)
+  svg {
+  color: currentColor;
 }
 
 /* printing a single element, see "pan:print" in app.js */

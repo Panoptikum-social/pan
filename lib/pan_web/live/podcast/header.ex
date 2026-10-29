@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Podcast.Header do
   alias PanWeb.Component.Pill
   alias PanWeb.Component.QRCode
   alias PanWeb.Component.PersonaButton
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
   alias PanWeb.Component.Icon
   import PanWeb.Router.Helpers
   alias PanWeb.Live.Podcast.{ListFollowSubscribeButtons, PodloveSubscribeButton}
@@ -14,6 +14,7 @@ defmodule PanWeb.Live.Podcast.Header do
   attr :podcast, :map, required: true
   attr :episodes_count, :integer, required: true
   attr :podcast_thumbnail, :map, required: true
+  attr :category_colors, :map, default: %{}
 
   def render(assigns) do
     ~H"""
@@ -148,7 +149,12 @@ defmodule PanWeb.Live.Podcast.Header do
           </dd>
           <dt class="justify-self-end font-medium">Categories</dt>
           <dd class="col-span-3 leading-10">
-            <CategoryButton.render :for={category <- @podcast.categories} for={category} />
+            <CategoryLink.render
+              :for={category <- @podcast.categories}
+              for={category}
+              color={@category_colors[category.id]}
+              class="mr-3"
+            />
           </dd>
         </dl>
       </div>

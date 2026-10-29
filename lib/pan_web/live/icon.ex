@@ -2,7 +2,71 @@ defmodule PanWeb.Live.Icon do
   # Tabler Icons, vendored in priv/icons/tabler (see the README there):
   # outline icons by name ("microphone"), filled ones as "<name>-filled".
   # Each SVG is read on first use and cached in :persistent_term.
+  #
+  # Icons have a fixed color each (@colors, Catppuccin accents, backlog.md
+  # #438) unless the class sets a text color; on filled backgrounds a CSS rule
+  # in app.css gives them the text color again.
   require Logger
+
+  @colors %{
+    "microphone" => "peach",
+    "headphones" => "teal",
+    "user-star" => "mauve",
+    "woman" => "flamingo",
+    "folder" => "maroon",
+    "folder-open" => "maroon",
+    "map" => "maroon",
+    "calendar" => "blue",
+    "stopwatch" => "sapphire",
+    "photo" => "pink",
+    "rss" => "peach",
+    "news" => "red",
+    "file-music" => "teal",
+    "file-download" => "teal",
+    "file-search" => "sapphire",
+    "search" => "sky",
+    "filter" => "sapphire",
+    "adjustments-horizontal" => "sapphire",
+    "settings" => "sapphire",
+    "link" => "blue",
+    "unlink" => "red",
+    "arrow-right" => "blue",
+    "refresh" => "blue",
+    "sort-ascending" => "blue",
+    "sort-descending" => "blue",
+    "indent-increase" => "lavender",
+    "user" => "lavender",
+    "users" => "lavender",
+    "user-circle" => "lavender",
+    "user-filled" => "lavender",
+    "user-plus" => "green",
+    "user-minus" => "red",
+    "spy" => "rosewater",
+    "heart" => "red",
+    "heart-filled" => "red",
+    "thumb-up" => "green",
+    "gift" => "pink",
+    "flask" => "green",
+    "messages" => "pink",
+    "messages-filled" => "pink",
+    "message" => "pink",
+    "briefcase" => "blue",
+    "pencil" => "yellow",
+    "trash" => "red",
+    "x" => "red",
+    "login" => "green",
+    "logout" => "red",
+    "alert-triangle" => "yellow",
+    "alert-circle" => "red",
+    "info-circle" => "sky",
+    "help-circle-filled" => "sky",
+    "sun" => "yellow",
+    "moon" => "lavender",
+    "device-desktop" => "sapphire"
+  }
+
+  # a text-* class that sets a color, not a size or alignment
+  @text_color ~r/(?:^|\s)(?:[a-z-]+:)?text-(?!(?:xs|sm|base|lg|xl|\d+xl|left|center|right|justify|start|end|wrap|nowrap|balance|pretty|clip|ellipsis)(?:\s|$))/
 
   def to_string(name), do: to_string(name, class: "h-6 w-6 inline")
 
@@ -13,9 +77,20 @@ defmodule PanWeb.Live.Icon do
 
       svg ->
         class_attribute =
-          Phoenix.HTML.attributes_escape(class: class) |> Phoenix.HTML.safe_to_string()
+          Phoenix.HTML.attributes_escape(class: with_color(class, name))
+          |> Phoenix.HTML.safe_to_string()
 
         String.replace(svg, "<svg", "<svg" <> class_attribute, global: false)
+    end
+  end
+
+  defp with_color(class, name) do
+    case @colors[name] do
+      color when is_binary(color) and is_binary(class) ->
+        if class =~ @text_color, do: class, else: "#{class} text-ctp-#{color}"
+
+      _ ->
+        class
     end
   end
 

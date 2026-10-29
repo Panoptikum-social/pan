@@ -1,7 +1,7 @@
 defmodule PanWeb.Component.PersonaButton do
   use PanWeb, :html
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  alias PanWeb.Component.LinkButton
+  alias PanWeb.Component.EntityLink
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
@@ -12,13 +12,11 @@ defmodule PanWeb.Component.PersonaButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render
+    <EntityLink.render
       to={Routes.persona_frontend_path(Endpoint, :show, @id || @for.id)}
-      class={[
-        "bg-lavender text-white border border-gray-dark hover:bg-lavender-light hover:border-lavender",
-        @class
-      ]}
+      class={@class}
       icon="user-star"
+      icon_class="text-persona"
       title={truncate_string(@name || @for.name, 80)}
     />
     """

@@ -1,6 +1,7 @@
-// Latte / Mocha / System switch for elements marked with
-// data-theme-toggle-scope (the admin and moderation layouts' <main>, see
-// backlog.md #436).
+// Latte / Mocha / System switch (backlog.md #436). Pages marked with
+// data-themed-page (the admin and moderation layouts) get the theme on
+// <html>, so sidebar and footer follow it; on all other pages it is removed
+// again, also after a live navigation from a themed page to a public one.
 // The choice is a per-browser convenience in localStorage. Listening on the
 // document and re-applying after live navigation keeps this working across
 // LiveView re-renders and needs no inline script (Content-Security-Policy).
@@ -19,9 +20,11 @@ function applyTheme() {
   const theme =
     choice === "system" ? (darkQuery.matches ? "mocha" : "latte") : choice;
 
-  document.querySelectorAll("[data-theme-toggle-scope]").forEach((scope) => {
-    scope.setAttribute("data-theme", theme);
-  });
+  if (document.querySelector("[data-themed-page]")) {
+    document.documentElement.setAttribute("data-theme", theme);
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+  }
 
   document.querySelectorAll("[data-theme-choice]").forEach((button) => {
     const active = button.dataset.themeChoice === choice;

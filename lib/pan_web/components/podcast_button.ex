@@ -1,7 +1,7 @@
 defmodule PanWeb.Component.PodcastButton do
   use PanWeb, :html
   import PanWeb.ViewHelpers, only: [truncate_string: 2]
-  alias PanWeb.Component.LinkButton
+  alias PanWeb.Component.EntityLink
   alias PanWeb.Router.Helpers, as: Routes
   alias PanWeb.Endpoint
 
@@ -14,11 +14,12 @@ defmodule PanWeb.Component.PodcastButton do
 
   def render(assigns) do
     ~H"""
-    <LinkButton.render
+    <EntityLink.render
       to={Routes.podcast_frontend_path(Endpoint, :show, @id || @for.id)}
       id={@for && "podcast-button-#{@for.id}"}
-      class={["bg-white hover:bg-gray-lighter text-base-content border-gray", @class]}
+      class={@class}
       icon="microphone"
+      icon_class="text-podcast"
       title={truncate_string(@title || @for.title, 80)}
       large={@large}
       truncate={@truncate}

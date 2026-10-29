@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Recommendation.Random do
   use PanWeb, :live_view
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.PodcastButton
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
   alias PanWeb.{Podcast, Category}
 
   def mount(_params, _session, socket) do
@@ -18,6 +18,7 @@ defmodule PanWeb.Live.Recommendation.Random do
       {:ok,
        assign(socket,
          recommendations: recommendations,
+         category_colors: Category.color_map(),
          page_title: "A Dozen Random Recommendations"
        )}
     else
@@ -33,7 +34,7 @@ defmodule PanWeb.Live.Recommendation.Random do
         <p :for={r <- @recommendations} class="mt-4 leading-9">
           Fortuna opted for the episode &nbsp; <EpisodeButton.render for={r.episode} /> &nbsp;
           from the podcast &nbsp; <PodcastButton.render for={r.podcast} /> &nbsp;
-          in the category &nbsp;<CategoryButton.render for={r.category} /> &nbsp;.
+          in the category &nbsp;<CategoryLink.render for={r.category} color={@category_colors[r.category.id]} /> &nbsp;.
         </p>
       </div>
       """

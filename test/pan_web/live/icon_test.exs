@@ -13,12 +13,22 @@ defmodule PanWeb.Live.IconTest do
     refute svg =~ "icon-tabler"
   end
 
+  test "adds the icon's own color unless the class sets a text color" do
+    assert Icon.to_string("calendar", class: "size-5 text-sm") =~
+             ~s(class="size-5 text-sm text-ctp-blue")
+
+    assert Icon.to_string("calendar", class: "size-5 text-podcast") =~
+             ~s(class="size-5 text-podcast")
+
+    assert Icon.to_string("podium", class: "size-5") =~ ~s(class="size-5")
+  end
+
   test "renders a filled icon by its -filled name" do
     assert Icon.to_string("heart-filled", class: "size-4") =~ ~s(fill="currentColor")
   end
 
   test "escapes the class" do
-    assert Icon.to_string("x", class: ~s(a" onload="b)) =~ ~s(class="a&quot; onload=&quot;b")
+    assert Icon.to_string("podium", class: ~s(a" onload="b)) =~ ~s(class="a&quot; onload=&quot;b")
   end
 
   test "unknown names and names outside the icon directory render nothing" do

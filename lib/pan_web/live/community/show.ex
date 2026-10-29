@@ -173,7 +173,7 @@ defmodule PanWeb.Live.Community.Show do
             <UserButton.render
               :for={moderator <- @community.moderators}
               for={moderator}
-              class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+              class="m-2"
             />
           </div>
         </div>
@@ -188,7 +188,7 @@ defmodule PanWeb.Live.Community.Show do
             <PersonaButton.render
               :for={persona <- @community_personas}
               for={persona}
-              class="m-2 h-auto min-h-10 py-2 whitespace-normal text-center leading-snug"
+              class="m-2"
             />
           </div>
         </div>

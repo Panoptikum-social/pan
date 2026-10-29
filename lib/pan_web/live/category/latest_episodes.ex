@@ -44,7 +44,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
       >
         <div :for={{dom_id, episode} <- @streams.latest_episodes} id={dom_id} class="my-2">
           <p class="mb-1">
-            Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} />
+            <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} />
           </p>
           <EpisodeCard.render for={episode} />
         </div>

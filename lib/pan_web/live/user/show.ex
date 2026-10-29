@@ -1,14 +1,14 @@
 defmodule PanWeb.Live.User.Show do
   use PanWeb, :live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{User, Like}
+  alias PanWeb.{Category, User, Like}
 
   alias PanWeb.Component.Panel
   alias PanWeb.Component.FollowButton
   alias PanWeb.Component.LikeButton
   alias PanWeb.Component.EpisodeButton
   alias PanWeb.Component.UserButton
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
   alias PanWeb.Component.PodcastButton
   alias PanWeb.Component.Icon
 
@@ -18,6 +18,7 @@ defmodule PanWeb.Live.User.Show do
     {:ok,
      assign(socket,
        user: user,
+       category_colors: Category.color_map(),
        podcast_related_likes: Like.get_podcast_related(id),
        page_title: user.name <> " (User)"
      )}
@@ -109,7 +110,7 @@ defmodule PanWeb.Live.User.Show do
       >
         <p class="leading-10 m-4">
           <span :for={category <- @user.categories_i_like}>
-            <CategoryButton.render for={category} /> &nbsp;
+            <CategoryLink.render for={category} color={@category_colors[category.id]} /> &nbsp;
           </span>
         </p>
       </Panel.render>

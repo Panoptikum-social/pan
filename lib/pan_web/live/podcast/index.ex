@@ -1,18 +1,19 @@
 defmodule PanWeb.Live.Podcast.Index do
   use PanWeb, :live_view
   import PanWeb.Router.Helpers
-  alias PanWeb.{Podcast, Endpoint}
+  alias PanWeb.{Category, Podcast, Endpoint}
   alias PanWeb.Component.Panel
   alias PanWeb.Component.Pill
   alias PanWeb.Component.Icon
   alias PanWeb.Component.PersonaButton
-  alias PanWeb.Component.CategoryButton
+  alias PanWeb.Component.CategoryLink
 
   def mount(_params, _session, socket) do
     podcasts = Podcast.latest_for_index(1, 15)
 
     socket =
       assign(socket,
+        category_colors: Category.color_map(),
         page: 1,
         per_page: 15,
         page_title: "Latest Podcasts",
@@ -95,7 +96,12 @@ defmodule PanWeb.Live.Podcast.Index do
               </label>
             </div>
             <div class="col-span-2 leading-9">
-              <CategoryButton.render :for={category <- podcast.categories} for={category} />
+              <CategoryLink.render
+                :for={category <- podcast.categories}
+                for={category}
+                color={@category_colors[category.id]}
+                class="mr-3"
+              />
             </div>
 
             <div>

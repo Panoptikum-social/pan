@@ -1,22 +1,24 @@
 defmodule PanWeb.Component.Panel do
   use PanWeb, :html
 
+  # Neutral headings, the panel framed in the color of what it lists; the
+  # icons in the content carry the color (backlog.md #433).
   @heading_colors %{
-    "info" => "bg-info text-white",
-    "category" => "bg-category text-white",
-    "podcast" => "bg-podcast text-white",
-    "persona" => "bg-warning text-white",
-    "popular" => "bg-aqua text-white",
-    "like" => "bg-grapefruit text-white",
-    "user" => "bg-lavender text-white",
-    "episode" => "bg-episode text-white",
-    "engagement" => "bg-bittersweet text-white",
-    "gig" => "bg-mint text-white",
-    "recommendation" => "bg-recommendation text-white",
-    "message" => "bg-success text-white"
+    "info" => "border-ctp-sky",
+    "category" => "border-category",
+    "podcast" => "border-podcast",
+    "persona" => "border-persona",
+    "popular" => "border-ctp-sky",
+    "like" => "border-ctp-red",
+    "user" => "border-user",
+    "episode" => "border-episode",
+    "engagement" => "border-ctp-peach",
+    "gig" => "border-ctp-green",
+    "recommendation" => "border-recommendation",
+    "message" => "border-ctp-pink"
   }
 
-  def heading_color_classes(purpose), do: Map.get(@heading_colors, purpose, "bg-white")
+  def border_color_class(purpose), do: Map.get(@heading_colors, purpose, "border-base-300")
 
   attr :heading, :string, default: nil
   attr :purpose, :string, default: "default"
@@ -33,24 +35,24 @@ defmodule PanWeb.Component.Panel do
     ~H"""
     <div
       aria-label="panel"
-      class={["rounded-xl shadow", @class]}
+      class={["rounded-xl shadow border-2", border_color_class(@purpose), @class]}
       id={@id}
     >
       <div
         aria-label="panel heading"
-        class={["p-3 rounded-t-xl", heading_color_classes(@purpose)]}
+        class={["p-3 rounded-t-[0.6rem] bg-base-300 border-b-2", border_color_class(@purpose)]}
       >
         {render_slot(@panel_heading)}
 
         <%= if @target do %>
           <.link
             href={@target}
-            class="hover:text-gray-lighter"
+            class="hover:underline"
           >{@heading}</.link>
           <.link
             :if={@heading_right}
             href={@target}
-            class="float-right hover:text-gray-lighter"
+            class="float-right hover:underline"
           >{@heading_right}</.link>
         <% else %>
           {@heading}

@@ -43,7 +43,7 @@ defmodule PanWeb.Live.Episode.Index do
           class="p-2 rounded-xl shadow"
         >
           <p class="mb-1">
-            Podcast <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} />
+            <PodcastButton.render id={episode.podcast_id} title={episode.podcast_title} />
           </p>
           <EpisodeCard.render for={episode} />
         </div>
