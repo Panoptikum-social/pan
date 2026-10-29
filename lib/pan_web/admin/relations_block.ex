@@ -21,18 +21,18 @@ defmodule PanWeb.Admin.RelationsBlock do
     >
       <%= for {association, index} <- @model.__schema__(:associations) |> Enum.with_index do %>
         <div class={[
-          "px-2 py-0.5 text-gray-darker italic text-right",
-          Integer.is_even(index) && "bg-white",
-          Integer.is_odd(index) && "bg-gray-lightest",
-          index > 0 && "border-t-2 border-gray-lighter"
+          "px-2 py-0.5 text-base-content italic text-right",
+          Integer.is_even(index) && "bg-base-100",
+          Integer.is_odd(index) && "bg-base-200",
+          index > 0 && "border-t-2 border-base-300"
         ]}>
           {type(@model, association)}
         </div>
         <div class={[
           "w-full pl-4 pr-2 py-0.5",
-          Integer.is_even(index) && "bg-white",
-          Integer.is_odd(index) && "bg-gray-lightest",
-          index > 0 && "border-t-2 border-gray-lighter"
+          Integer.is_even(index) && "bg-base-100",
+          Integer.is_odd(index) && "bg-base-200",
+          index > 0 && "border-t-2 border-base-300"
         ]}>
           <AssociationLink.render
             for={@model.__schema__(:association, association)}

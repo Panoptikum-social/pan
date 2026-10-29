@@ -32,7 +32,7 @@ defmodule PanWeb.Admin.RecordCard do
     <div class="m-2">
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
-          <span class="text-gray-dark">
+          <span class="text-base-content/70">
             Show&nbsp;<span class="font-semibold">{Naming.module_without_namespace(@model)}</span>
           </span>
           <h1 class="max-w-5xl w-full truncate">{Naming.title_from_record(@record)}</h1>
@@ -40,7 +40,7 @@ defmodule PanWeb.Admin.RecordCard do
         <span>
           <.link
             navigate={Naming.path(%{model: @model, action: :index, path_helper: @path_helper})}
-            class="text-link hover:text-link-dark underline"
+            class="underline hover:text-primary"
           >
             {Naming.module_without_namespace(@model)}&nbsp;List
           </.link>
@@ -50,7 +50,7 @@ defmodule PanWeb.Admin.RecordCard do
             navigate={
               Naming.path(%{model: @model, action: :edit, path_helper: @path_helper, record: @record})
             }
-            class="text-link hover:text-link-dark underline"
+            class="underline hover:text-primary"
           >
             Edit {Naming.module_without_namespace(@model)}
           </.link>
@@ -67,7 +67,7 @@ defmodule PanWeb.Admin.RecordCard do
                 Map.get(@record, hd(tl(@primary_key)))
               )
             }
-            class="text-link hover:text-link-dark underline"
+            class="underline hover:text-primary"
           >
             Edit {Naming.module_without_namespace(@model)}
           </.link>
@@ -75,48 +75,48 @@ defmodule PanWeb.Admin.RecordCard do
       </div>
 
       <div class="flex flex-col md:flex-row space-x-4 items-start mt-4">
-        <fieldset class="border border-gray bg-white rounded p-1">
-          <legend class="bg-white px-4 border border-gray rounded-lg">Numeric Fields</legend>
+        <fieldset class="border border-base-300 bg-base-100 rounded p-1">
+          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Numeric Fields</legend>
           <DataBlock.render
             columns={number_columns(assigns)}
             record={@record}
             model={@model}
           />
         </fieldset>
-        <fieldset class="border border-gray bg-white rounded p-1">
-          <legend class="bg-white px-4 border border-gray rounded-lg">Date & Time Fields</legend>
+        <fieldset class="border border-base-300 bg-base-100 rounded p-1">
+          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Date & Time Fields</legend>
           <DataBlock.render
             columns={datetime_columns(assigns)}
             record={@record}
             model={@model}
           />
         </fieldset>
-        <fieldset class="border border-gray bg-white rounded p-1">
-          <legend class="bg-white px-4 border border-gray rounded-lg">Boolean Fields</legend>
+        <fieldset class="border border-base-300 bg-base-100 rounded p-1">
+          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Boolean Fields</legend>
           <DataBlock.render
             columns={boolean_columns(assigns)}
             record={@record}
             model={@model}
           />
         </fieldset>
-        <fieldset class="border border-gray bg-white rounded p-1">
-          <legend class="bg-white px-4 border border-gray rounded-lg">Relations</legend>
+        <fieldset class="border border-base-300 bg-base-100 rounded p-1">
+          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Relations</legend>
           <RelationsBlock.render
             record={@record}
             model={@model}
           />
         </fieldset>
       </div>
-      <fieldset class="border border-gray bg-white rounded p-1 mt-4">
-        <legend class="bg-white px-4 border border-gray rounded-lg">String Fields</legend>
+      <fieldset class="border border-base-300 bg-base-100 rounded p-1 mt-4">
+        <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">String Fields</legend>
         <DataBlock.render
           columns={string_columns(assigns)}
           record={@record}
           model={@model}
         />
       </fieldset>
-      <fieldset class="border border-gray bg-white rounded p-1 mt-4">
-        <legend class="bg-white px-4 border border-gray rounded-lg">Text Fields</legend>
+      <fieldset class="border border-base-300 bg-base-100 rounded p-1 mt-4">
+        <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Text Fields</legend>
         <DataBlock.render
           columns={text_columns(assigns)}
           record={@record}

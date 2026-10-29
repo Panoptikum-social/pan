@@ -26,6 +26,15 @@ Claude's per-machine memory) so they survive across computers. Last synced
   after the next `@tailwindcss/cli` / `@tailwindcss/typography` releases
   (`cd assets && npm audit`).
 
+### Admin grid duplication (found 2026-10-29 during #432)
+
+- **#441 IndexGrid / ModerationGrid near-duplicates:**
+  lib/pan_web/admin/index_grid.ex and moderation_grid.ex share most of their
+  markup; the toolbar button class string is copied ~16 times across both.
+  Likewise grid_presenter.ex vs grid_presenter_with_details.ex and
+  data_block.ex vs relations_block.ex (same striped-row classes). Candidate:
+  one toolbar-button component and shared row helpers.
+
 ### Catppuccin themes (Latte light + Mocha dark), from 2026-10-29
 
 A moderator reported the site almost unreadable on macOS in dark mode.
@@ -33,12 +42,11 @@ Likely cause: `@plugin "daisyui";` in assets/css/app.css enables DaisyUI's
 stock `dark` theme with `--prefersdark`, so DaisyUI colors go dark while
 ~500 hard-coded classes (`bg-white`, `gray-*`, raw Bootflat colors like
 `bg-lavender`) stay light. #430 (2026-10-29) turned the automatic dark theme
-off (`themes: light --default`). Plan, in order:
+off (`themes: light --default`). #431 (e41d71eb): `latte` and `mocha` theme
+blocks in app.css (all pairs AA; Latte light accents take dark text
+#1e1e2e), used only by the admin layouts' `<main>` via data-theme. Plan, in
+order:
 
-- **#431 Catppuccin Latte + Mocha** as two `@plugin "daisyui/theme"` blocks
-  (base-100/200/300 = base/mantle/crust, base-content = text, neutral =
-  surface/overlay). Latte is pastel: most `*-content` colors must be dark,
-  not white as today.
 - **#432 Semantic classes instead of fixed colors:** replace `bg-white`,
   `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
   `text-base-content(/70)`, `border-base-300`, theme colors.
@@ -70,10 +78,18 @@ off (`themes: light --default`). Plan, in order:
   `index_on_page`).
 - **#434 Rainbow category tree stays** (until #439) as a deliberate exception: fixed
   rotation through the Catppuccin accents (exist in both flavours).
-- **#435 Order:** theme blocks with prefersdark off → admin converted
-  and tested via `data-theme` toggle → public site → re-enable automatic
+- **#442 Moderation as its own step** (between admin and public site): the 5
+  LiveViews in lib/pan_web/live/moderation use the public `:live_view`
+  layout. Give them a `:moderation_live_view` with a layout like the admin
+  one (data-theme + toggle), but only together with converting their
+  templates, so moderators never get offered a half-done Mocha.
+  ModerationGrid is already converted (#432 admin step).
+- **#435 Order:** admin converted
+  and tested via `data-theme` toggle → moderation (#442) → public site → re-enable automatic
   dark mode.
-- **#436 Theme toggle** (light / dark / system), choice in localStorage.
+- **#436 Theme toggle:** done for the admin (Latte / Mocha / System,
+  assets/js/theme_toggle.js, e41d71eb). Still open: the same for the public
+  site, once it uses the themes.
 - **#437 Remove the Bootflat palette** from `@theme` at the end, so leftover
   uses stop generating and show up by grep; also rework `.alert-*` and
   `.invalid-feedback` in app.css (use `-light`/`-dark` + `text-black`).

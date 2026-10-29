@@ -18,7 +18,7 @@ defmodule PanWeb.Admin.ShowPresenter do
 
   def present(:string, data) do
     if String.starts_with?(data, ["http://", "https://"]) do
-      "<a class=\"text-link hover:text-link-dark\" href=\"#{data}\">#{data}</a>"
+      "<a class=\"underline hover:text-primary\" href=\"#{data}\">#{data}</a>"
       |> raw
     else
       data

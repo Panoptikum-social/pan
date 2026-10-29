@@ -59,7 +59,7 @@ defmodule PanWeb.Admin.Pagination do
         </PaginationLink.render>
       </div>
 
-      <div class="sm:border-l border-gray px-4 py-1 text-center">
+      <div class="sm:border-l border-base-300 px-4 py-1 text-center">
         Records {(@page - 1) * @per_page + 1} to {min(@page * @per_page, @nr_of_filtered)} of {if @nr_of_filtered >
                                                                                                     0,
                                                                                                   do:

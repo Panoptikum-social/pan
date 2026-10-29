@@ -55,7 +55,7 @@ defmodule PanWeb.Admin.AssociationLink do
     ~H"""
     <.link
       navigate={@to}
-      class="text-link hover:text-link-dark text-medium underline"
+      class="underline hover:text-primary"
     >
       {@link_title}
     </.link>

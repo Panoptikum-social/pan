@@ -103,7 +103,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
     <.live_component
       module={IndexGrid}
       id="owner_table"
-      color_class="from-pink-rose-light via-pink-rose to-pink-rose-light"
+      color_class="bg-accent text-accent-content"
       heading={Naming.module_without_namespace(@owner_model)}
       model={@owner_model}
       cols={@owner_cols}
@@ -116,7 +116,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       module={IndexGrid}
       id="join_through_table"
       class="mt-8"
-      color_class="from-lavender-light via-lavender to-lavender-light"
+      color_class="bg-secondary text-secondary-content"
       heading={"Join Through " <> Naming.model_in_plural(@join_through_model)}
       model={@join_through_model}
       cols={@join_through_cols}
@@ -129,7 +129,7 @@ defmodule PanWeb.Live.Admin.Databrowser.ManyToMany do
       module={IndexGrid}
       id="many_to_many_table"
       class="mt-8"
-      color_class="from-mint-light via-mint to-mint-light"
+      color_class="bg-success text-success-content"
       heading={"Many To Many " <> Naming.model_in_plural(@model)}
       model={@model}
       cols={@cols}

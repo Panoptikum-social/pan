@@ -30,24 +30,24 @@ defmodule PanWeb.Admin.Explorer do
     ~H"""
     <div
       id={@id}
-      class={["m-2 border border-gray rounded", @class]}
+      class={["m-2 border border-base-300 rounded", @class]}
     >
-      <h1 class="p-1 border-b border-t-rounded border-gray text-center bg-linear-to-r from-gray-light
-                via-gray-lighter to-gray-light font-mono">
+      <h1 class="p-1 border-b border-t-rounded border-base-300 text-center bg-linear-to-r from-base-300
+                via-base-200 to-base-300 font-mono">
         {@title}
       </h1>
 
       <div
         :if={@toolbar_items != []}
-        class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
-                  via-gray-lighter to-gray-light space-x-5 border-b border-gray"
+        class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-base-100
+                  via-base-200 to-base-300 space-x-5 border-b border-base-300"
       >
         <button
           :for={toolbar_item <- @toolbar_items}
           phx-click={toolbar_item.message}
           disabled={Tools.disabled?(toolbar_item.when_selected_count, @selected_count)}
-          class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
-                       lg:px-2 lg:py-0 m-1 rounded disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+          class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
+                       lg:px-2 lg:py-0 m-1 rounded disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
         >
           {toolbar_item.title}
         </button>
@@ -58,7 +58,7 @@ defmodule PanWeb.Admin.Explorer do
           <tr>
             <th
               :for={col <- @cols}
-              class="px-2 py-1 border border-gray-lightest bg-white italic text-center"
+              class="px-2 py-1 border border-base-200 bg-base-100 italic text-center"
             >
               {col.title}
             </th>
@@ -69,11 +69,11 @@ defmodule PanWeb.Admin.Explorer do
             :for={item <- @items}
             phx-click="select"
             phx-value-id={item.id}
-            class={["cursor-pointer", if(item.selected, do: "bg-sunflower-lighter", else: "bg-white")]}
+            class={["cursor-pointer", if(item.selected, do: "bg-warning/25", else: "bg-base-100")]}
           >
             <td
               :for={col <- @cols}
-              class={["px-1 border border-gray-lightest", col[:class]]}
+              class={["px-1 border border-base-200", col[:class]]}
             >
               {render_slot(col, item)}
             </td>
@@ -88,7 +88,7 @@ defmodule PanWeb.Admin.Explorer do
           phx-value-id={item.id}
           class={[
             "cursor-pointer m-1",
-            if(item.selected, do: "bg-sunflower-lighter", else: "bg-white")
+            if(item.selected, do: "bg-warning/25", else: "bg-base-100")
           ]}
         >
           {render_slot(@cols, item)}

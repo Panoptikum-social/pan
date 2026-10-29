@@ -14,7 +14,7 @@ defmodule PanWeb.Admin.PaginationLink do
     <button
       href="#"
       class={[
-        "border border-gray bg-white hover:bg-gray-lighter px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
+        "border border-base-300 bg-base-100 hover:bg-base-300 px-1 py-0.5 lg:px-2 lg:py-0 my-1 rounded",
         @class
       ]}
       phx-click={@click}

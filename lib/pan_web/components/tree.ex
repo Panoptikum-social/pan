@@ -81,11 +81,11 @@ defmodule PanWeb.Component.Tree do
         phx-click={@select}
         phx-value-node-id={node.id}
         class={[
-          "px-2 py-0.5 border border-gray-light",
-          if(@selected_id == node.id, do: "bg-success", else: @marked[node.id])
+          "px-2 py-0.5 border border-base-300",
+          if(@selected_id == node.id, do: "bg-success text-success-content", else: @marked[node.id])
         ]}
       >
-        <span class="font-mono text-gray-light">
+        <span class="font-mono text-base-content/50">
           {raw(String.duplicate("&nbsp;", @indentation_level))}
         </span>
 

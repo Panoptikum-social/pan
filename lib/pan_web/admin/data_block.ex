@@ -16,18 +16,18 @@ defmodule PanWeb.Admin.DataBlock do
     >
       <%= for {column, index} <- Enum.with_index(@columns) do %>
         <div class={[
-          "px-2 py-0.5 text-gray-darker italic text-right",
-          Integer.is_even(index) && "bg-white",
-          Integer.is_odd(index) && "bg-gray-lightest",
-          index > 0 && "border-t-2 border-gray-lighter"
+          "px-2 py-0.5 text-base-content italic text-right",
+          Integer.is_even(index) && "bg-base-100",
+          Integer.is_odd(index) && "bg-base-200",
+          index > 0 && "border-t-2 border-base-300"
         ]}>
           {Naming.title_from_field(column.field)}
         </div>
         <div class={[
           "w-full pl-4 pr-2 py-0.5",
-          Integer.is_even(index) && "bg-white",
-          Integer.is_odd(index) && "bg-gray-lightest",
-          index > 0 && "border-t-2 border-gray-lighter"
+          Integer.is_even(index) && "bg-base-100",
+          Integer.is_odd(index) && "bg-base-200",
+          index > 0 && "border-t-2 border-base-300"
         ]}>
           <ShowPresenter.render
             record={@record}

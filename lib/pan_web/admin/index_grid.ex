@@ -28,7 +28,7 @@ defmodule PanWeb.Admin.IndexGrid do
        primary_key: [],
        nr_of_pages: -1,
        nr_of_filtered: -1,
-       color_class: "from-bittersweet-light via-bittersweet to-bittersweet-light",
+       color_class: "bg-primary text-primary-content",
        class: "",
        path_helper: nil
      )}
@@ -368,20 +368,20 @@ defmodule PanWeb.Admin.IndexGrid do
   def render(assigns) do
     ~H"""
     <div id={@id}>
-      <div class={["my-2 sm:m-4 border border-gray rounded shadow-lg", @class]}>
-        <h1 class={["p-1 border border-t-rounded border-gray-dark text-center bg-linear-to-r
-                    font-mono text-white font-semibold rounded-t", @color_class]}>
+      <div class={["my-2 sm:m-4 border border-base-300 rounded shadow-lg", @class]}>
+        <h1 class={["p-1 border border-t-rounded border-base-content/30 text-center
+                    font-mono font-semibold rounded-t", @color_class]}>
           {@heading}
         </h1>
 
-        <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-gray-lightest
-                    via-gray-lighter to-gray-light border-b border-gray items-center">
-          <div class="sm:border-r border-gray flex">
+        <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-base-100
+                    via-base-200 to-base-300 border-b border-base-300 items-center">
+          <div class="sm:border-r border-base-300 flex">
             <button
               :if={:show in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                           disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:one, @selected_records |> length)}
               phx-click="show"
               phx-target={@myself}
@@ -391,9 +391,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={:show_frontend in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
-                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                          disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:one, @selected_records |> length)}
               phx-click="show_frontend"
               phx-target={@myself}
@@ -403,9 +403,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={:edit in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                           disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:one, @selected_records |> length)}
               phx-click="edit"
               phx-target={@myself}
@@ -415,9 +415,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={!@request_confirmation && :delete in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                           disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
               phx-click="toggle_request_confirmation"
               phx-target={@myself}
@@ -430,9 +430,9 @@ defmodule PanWeb.Admin.IndexGrid do
                 do: "record",
                 else: "records"}?
               <button
-                class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
-                            disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                            disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
                 disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                 phx-click="delete"
                 phx-target={@myself}
@@ -440,9 +440,9 @@ defmodule PanWeb.Admin.IndexGrid do
                 Yes
               </button>
               <button
-                class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+                class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                              lg:px-2 lg:py-0 m-1 rounded
-                             disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                             disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
                 disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
                 phx-click="toggle_request_confirmation"
                 phx-target={@myself}
@@ -453,9 +453,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={:link in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                            lg:px-2 lg:py-0 m-1 rounded
-                           disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                           disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
               phx-click="link"
               phx-target={@myself}
@@ -465,9 +465,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={:link in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
-                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                          disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:nonzero, @selected_records |> length)}
               phx-click="unlink"
               phx-target={@myself}
@@ -477,9 +477,9 @@ defmodule PanWeb.Admin.IndexGrid do
 
             <button
               :if={:new_mediating in @buttons}
-              class="border border-gray bg-white hover:bg-gray-lightest px-1 py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                           lg:px-2 lg:py-0 m-1 rounded
-                          disabled:opacity-50 disabled:bg-gray-lightest disabled:pointer-events-none"
+                          disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:one, @selected_records |> length)}
               phx-click="associate"
               phx-target={@myself}
@@ -490,12 +490,12 @@ defmodule PanWeb.Admin.IndexGrid do
             <.link
               :if={:new in @buttons}
               navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
-              class="border border-gray bg-white hover:bg-gray-lightest py-0.5
+              class="border border-base-300 bg-base-100 hover:bg-base-200 py-0.5
                           lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r"
             >🆕 New</.link>
           </div>
 
-          <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-gray">
+          <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-base-300">
             <PerPageLink.render delta="-5" click="per_page" target={@myself} />
             <PerPageLink.render delta="-3" click="per_page" target={@myself} />
             <PerPageLink.render delta="-1" click="per_page" target={@myself} />
@@ -509,7 +509,7 @@ defmodule PanWeb.Admin.IndexGrid do
             :if={:assignment_filter in @buttons}
             phx-click="toggle_hide_filtered"
             phx-target={@myself}
-            class="border border-gray bg-white hover:bg-lightest px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded"
+            class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded"
           >
             {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
           </button>
@@ -520,10 +520,10 @@ defmodule PanWeb.Admin.IndexGrid do
             as={:search_mode}
             phx-change="set_search_mode"
             phx-target={@myself}
-            class="px-2 sm:border-r border-gray flex items-center gap-1"
+            class="px-2 sm:border-r border-base-300 flex items-center gap-1"
           >
             <label class="text-sm">🔍 Search mode</label>
-            <select name="search_mode" class="border border-gray rounded px-1 py-0.5 text-sm">
+            <select name="search_mode" class="border border-base-300 rounded px-1 py-0.5 text-sm">
               <option value="exact" selected={@search_mode == :exact}>exact</option>
               <option value="starts_with" selected={@search_mode == :starts_with}>
                 starts with
@@ -536,8 +536,8 @@ defmodule PanWeb.Admin.IndexGrid do
 
         <Pagination.render
           :if={:pagination in @buttons}
-          class="pl-2 border-b border-gray rounded-b bg-linear-to-r from-gray-lightest
-                                  via-gray-lighter to-gray-light"
+          class="pl-2 border-b border-base-300 rounded-b bg-linear-to-r from-base-100
+                                  via-base-200 to-base-300"
           click="paginate"
           target={@myself}
           page={@page}

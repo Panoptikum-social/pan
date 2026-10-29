@@ -72,10 +72,10 @@ defmodule PanWeb.Admin.DataTable do
   def render(assigns) do
     ~H"""
     <div
-      class="m-1 pb-1 grid bg-gray-lightest gap-0.5 overflow-x-auto border border-gray-lightest"
+      class="m-1 pb-1 grid bg-base-200 gap-0.5 overflow-x-auto border border-base-200"
       style={"grid-template-columns: 6rem #{Enum.map(@cols, &width/1) |> Enum.join(" ")};"}
     >
-      <div class="bg-white italic grid place-content-center text-sm text-center px-1">
+      <div class="bg-base-100 italic grid place-content-center text-sm text-center px-1">
         <input
           :if={@records != []}
           type="checkbox"
@@ -88,7 +88,7 @@ defmodule PanWeb.Admin.DataTable do
       </div>
       <div
         :for={column <- @cols}
-        class="bg-white italic grid place-content-center text-sm text-center"
+        class="bg-base-100 italic grid place-content-center text-sm text-center"
       >
         <SortLink.render
           click={@sort}
@@ -103,7 +103,7 @@ defmodule PanWeb.Admin.DataTable do
 
       <div
         :if={:search in @buttons}
-        class="bg-gray-lighter text-center p-1 italic text-sm"
+        class="bg-base-300 text-center p-1 italic text-sm"
       >
         Search →
       </div>
@@ -111,7 +111,7 @@ defmodule PanWeb.Admin.DataTable do
       <div
         :for={column <- @cols}
         :if={:search in @buttons}
-        class={["bg-gray-lighter p-1", if(column.type == :integer, do: "text-right")]}
+        class={["bg-base-300 p-1", if(column.type == :integer, do: "text-right")]}
       >
         <.form
           :if={
@@ -140,9 +140,9 @@ defmodule PanWeb.Admin.DataTable do
       <%= for {record, index} <- @records |> Enum.with_index do %>
         <div class={[
           "text-center",
-          if(Integer.is_odd(index) && !dyed?(record, assigns), do: "bg-gray-lighter"),
-          if(Integer.is_even(index) && !dyed?(record, assigns), do: "bg-white"),
-          if(dyed?(record, assigns), do: "bg-sunflower-lighter")
+          if(Integer.is_odd(index) && !dyed?(record, assigns), do: "bg-base-300"),
+          if(Integer.is_even(index) && !dyed?(record, assigns), do: "bg-base-100"),
+          if(dyed?(record, assigns), do: "bg-warning/25")
         ]}>
           <input
             :if={Map.has_key?(record, :id)}

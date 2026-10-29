@@ -252,7 +252,7 @@ defmodule PanWeb.Admin.ActionButtons do
       <LinkButton.render
         title="Update all counters"
         to={podcast_path(Endpoint, :update_all_counters)}
-        class="bg-danger hover:bg-danger-dark border-gray"
+        class="btn-error"
       />
       <LinkButton.render
         title="Fix languages"

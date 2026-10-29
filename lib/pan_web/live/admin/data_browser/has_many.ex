@@ -59,7 +59,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
     <.live_component
       module={IndexGrid}
       id="owner_table"
-      color_class="from-grapefruit-light via-grapefruit to-grapefruit-light"
+      color_class="bg-error text-error-content"
       heading={Naming.module_without_namespace(@owner_model)}
       model={@owner_model}
       cols={@owner_cols}
@@ -72,7 +72,7 @@ defmodule PanWeb.Live.Admin.Databrowser.HasMany do
       module={IndexGrid}
       id="has_many_table"
       class="mt-8"
-      color_class="from-blue-jeans-light via-blue-jeans to-blue-jeans-light"
+      color_class="bg-info text-info-content"
       heading={"Has Many " <> Naming.model_in_plural(@model)}
       model={@model}
       cols={@cols}
