@@ -59,13 +59,9 @@ blocks in app.css (all pairs AA; Latte light accents take dark text
 the admin layouts' `<main>` via data-theme. #432 done for the admin (shared
 admin modules, LiveView admin pages, admin controller templates; links in
 text color + underline, gray gradients replaced by solid base colors).
-Plan, in order:
+#432 (semantic classes everywhere) done 2026-10-29 (28bd5b7a). Plan, in
+order:
 
-- **#432 Semantic classes instead of fixed colors** (done 2026-10-29 for
-  admin, moderation and all public templates, 28bd5b7a; no fixed class is
-  left in lib/; what remains is the Bootflat palette in app.css, #437): replace `bg-white`,
-  `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
-  `text-base-content(/70)`, `border-base-300`, theme colors.
 - **#439 Category icons and colors:** tree pages done 2026-10-29 (`icon` +
   `color` on categories, Pan.CategoryIcons proposals + "Fill missing icons"
   on /admin/categories/merge, CategoryLink on /categories and
