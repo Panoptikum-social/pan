@@ -98,6 +98,11 @@ theme. Categories: each top level category has its own color (column
 - **Alerts and flash messages:** `alert alert-soft alert-<color>`, light tint,
   text in the text color.
 
+- **QR codes:** normal polarity in both themes (dark modules on light),
+  Mocha in Mocha base on Mocha text; always a light quiet zone outside the
+  150px code (padding, not shrinking the code: smaller modules stopped
+  phones from scanning).
+
 ## Don'ts
 
 - No fixed colors (`bg-white`, `text-gray-*`, `text-black`, the old Bootflat

@@ -21,13 +21,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   /podcasts/:id (e.g. 93) the description text runs into the "Website"
   column of the header (lib/pan_web/live/podcast/header.ex) at ~1300 px.
 
-- **#456 QR code in Mocha (found 2026-10-29):** the subscribe QR code is
-  black on white in both themes. Proposal: keep normal polarity (inverted
-  codes are optional in the standard, not every scanner reads them) but in
-  Mocha draw Mocha base #1e1e2e on Mocha text #cdd6f4 (11:1).
-  `EQRCode.svg` takes `color:`/`background_color:`; a `?theme=` param on
-  /qrcode/:code and two `<img>` in PanWeb.Component.QRCode, CSS shows one.
-
 - **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
   checking the /admin buttons):** /search/push_missing, reset_all,
   delete_orphans, migrate and /maintenance/catch_up_thumbnailed,

@@ -250,6 +250,34 @@
 .badge.badge-outline {
   border-color: var(--badge-color, var(--color-base-content));
 }
+/* QR codes in both variants (PanWeb.Component.QRCode), one per theme. The
+   SVG has no quiet zone, the padding adds the light margin scanners need
+   outside the 150px code: at least 4 modules (6px each for the smallest,
+   25-module code; longer URLs give more, smaller modules). */
+.qr-latte,
+.qr-mocha {
+  box-sizing: content-box;
+  padding: 24px;
+  background-color: #ffffff;
+}
+.qr-mocha {
+  display: none;
+  background-color: #cdd6f4;
+}
+:root[data-theme="mocha"] .qr-latte {
+  display: none;
+}
+:root[data-theme="mocha"] .qr-mocha {
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="latte"]) .qr-latte {
+    display: none;
+  }
+  :root:not([data-theme="latte"]) .qr-mocha {
+    display: block;
+  }
+}
 /* the Podlove iframes (subscribe button, web player) declare no
    color-scheme; under Mocha the browser would paint an opaque white backdrop
    behind them, e.g. beside the player on wide pages */

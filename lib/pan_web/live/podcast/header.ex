@@ -159,7 +159,7 @@ defmodule PanWeb.Live.Podcast.Header do
         </dl>
       </div>
 
-      <div role="qrcode" class="flex flex-col items-end">
+      <div role="qrcode" class="flex flex-col items-center gap-2">
         <QRCode.render for={podcast_frontend_url(Endpoint, :subscribe_button, @podcast)} />
         <.live_component
           module={PodloveSubscribeButton}
