@@ -44,10 +44,14 @@ stock `dark` theme with `--prefersdark`, so DaisyUI colors go dark while
 `bg-lavender`) stay light. #430 (2026-10-29) turned the automatic dark theme
 off (`themes: light --default`). #431 (e41d71eb): `latte` and `mocha` theme
 blocks in app.css (all pairs AA; Latte light accents take dark text
-#1e1e2e), used only by the admin layouts' `<main>` via data-theme. Plan, in
-order:
+#1e1e2e; base-300 = surface0, crust was too close to mantle), used only by
+the admin layouts' `<main>` via data-theme. #432 done for the admin (shared
+admin modules, LiveView admin pages, admin controller templates; links in
+text color + underline, gray gradients replaced by solid base colors).
+Plan, in order:
 
-- **#432 Semantic classes instead of fixed colors:** replace `bg-white`,
+- **#432 Semantic classes instead of fixed colors** (admin done, moderation
+  and public site open): replace `bg-white`,
   `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
   `text-base-content(/70)`, `border-base-300`, theme colors.
 - **#433 Entity colors as theme tokens:** podcast, episode, category,

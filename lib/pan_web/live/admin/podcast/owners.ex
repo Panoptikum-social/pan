@@ -79,7 +79,7 @@ defmodule PanWeb.Live.Admin.Podcast.Owners do
               <.link href={podcast_frontend_path(PanWeb.Endpoint, :show, podcast)} class="link">
                 {podcast.title}
               </.link>
-              <span class="text-xs text-gray-dark">#{podcast.id}</span>
+              <span class="text-xs text-base-content/70">#{podcast.id}</span>
             </td>
             <td class="text-sm">{Enum.join(podcast.feed_owner_emails, ", ")}</td>
             <td>

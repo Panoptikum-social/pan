@@ -24,8 +24,8 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
 
   def render(assigns) do
     ~H"""
-    <div class="m-2 border border-gray rounded">
-      <h1 class="p-1 border-b border-gray text-center bg-linear-to-r from-gray-light via-gray-lighter to-gray-light font-mono">
+    <div class="m-2 border border-base-300 rounded">
+      <h1 class="p-1 border-b border-base-300 text-center bg-base-300 font-mono">
         Database Indices for Resource
         <span class="italic">{Naming.module_without_namespace(@model)}</span>
       </h1>
@@ -33,7 +33,7 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
         class="grid mb-1"
         style="grid-template-columns: max-content 1fr;"
       >
-        <div class="px-2 font-semibold py-0.5 text-gray-darker italic text-right">
+        <div class="px-2 font-semibold py-0.5 text-base-content italic text-right">
           Index Name
         </div>
         <div class="w-full font-semibold pl-4 pr-2 py-0.5">
@@ -41,18 +41,18 @@ defmodule PanWeb.Live.Admin.Databrowser.DbIndex do
         </div>
         <%= for {[name, definition], index} <- get_indices(assigns) |> Enum.with_index do %>
           <div class={[
-            "px-2 py-0.5 text-gray-darker italic text-right",
-            if(Integer.is_even(index), do: "bg-white"),
-            if(Integer.is_odd(index), do: "bg-gray-lightest"),
-            if(index > 0, do: "border-t-2 border-gray-lighter")
+            "px-2 py-0.5 text-base-content italic text-right",
+            if(Integer.is_even(index), do: "bg-base-100"),
+            if(Integer.is_odd(index), do: "bg-base-200"),
+            if(index > 0, do: "border-t-2 border-base-300")
           ]}>
             {name}
           </div>
           <div class={[
             "w-full pl-4 pr-2 py-0.5",
-            if(Integer.is_even(index), do: "bg-white"),
-            if(Integer.is_odd(index), do: "bg-gray-lightest"),
-            if(index > 0, do: "border-t-2 border-gray-lighter")
+            if(Integer.is_even(index), do: "bg-base-100"),
+            if(Integer.is_odd(index), do: "bg-base-200"),
+            if(index > 0, do: "border-t-2 border-base-300")
           ]}>
             {definition}
           </div>

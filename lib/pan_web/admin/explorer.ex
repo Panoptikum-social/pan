@@ -32,15 +32,13 @@ defmodule PanWeb.Admin.Explorer do
       id={@id}
       class={["m-2 border border-base-300 rounded", @class]}
     >
-      <h1 class="p-1 border-b border-t-rounded border-base-300 text-center bg-linear-to-r from-base-300
-                via-base-200 to-base-300 font-mono">
+      <h1 class="p-1 border-b border-t-rounded border-base-300 text-center bg-base-300 font-mono">
         {@title}
       </h1>
 
       <div
         :if={@toolbar_items != []}
-        class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-base-100
-                  via-base-200 to-base-300 space-x-5 border-b border-base-300"
+        class="flex flex-col sm:flex-row justify-start bg-base-200 space-x-5 border-b border-base-300"
       >
         <button
           :for={toolbar_item <- @toolbar_items}

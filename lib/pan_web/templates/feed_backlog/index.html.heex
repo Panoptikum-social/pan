@@ -1,10 +1,10 @@
 <div class="m-4">
   <div class="flex justify-end space-x-4">
     <.link href={feed_backlog_path(@conn, :import_100)} class="btn btn-warning">Import 100</.link>
-    <.link href={feed_backlog_path(@conn, :subscribe)} class="border border-gray btn btn-primary">Subscribe All</.link>
+    <.link href={feed_backlog_path(@conn, :subscribe)} class="btn btn-primary">Subscribe All</.link>
     <.link
       href={feed_backlog_path(@conn, :subscribe50)}
-      class="border border-gray btn btn-primary"
+      class="btn btn-primary"
     >Subscribe 50</.link>
     <.link
       href={feed_backlog_path(@conn, :delete_all)}
@@ -38,7 +38,7 @@
               <.link
                 href={safe_href(feed_backlog.url)}
                 target="_blank"
-                class="text-link hover:text-link-dark"
+                class="underline hover:text-primary"
               >{feed_backlog.url}</.link>
               <br />
             <% else %>
@@ -55,7 +55,7 @@
                   )
                 }
                 method="post"
-                class="border border-gray bg-primary hover:bg-primary-light text-white text-sm py-1 px-2 rounded"
+                class="btn btn-primary btn-sm"
               >
                 {icon("rss-heroicons-outline", class: "align-text-top w-4 h-4 inline")} Create alternate feed
               </.link>
@@ -91,5 +91,5 @@
     </tbody>
   </table>
 
-  <.link href={feed_backlog_path(@conn, :new)} class="text-link hover:text-link-dark">New feed backlog</.link>
+  <.link href={feed_backlog_path(@conn, :new)} class="underline hover:text-primary">New feed backlog</.link>
 </div>

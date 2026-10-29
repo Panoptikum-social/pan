@@ -49,7 +49,7 @@
   color-scheme: light;
   --color-base-100: #eff1f5; /* base */
   --color-base-200: #e6e9ef; /* mantle */
-  --color-base-300: #dce0e8; /* crust */
+  --color-base-300: #ccd0da; /* surface0: crust is too close to mantle for headings and borders */
   --color-base-content: #4c4f69; /* text */
   --color-primary: #1e66f5; /* blue */
   --color-primary-content: #ffffff;
@@ -82,7 +82,7 @@
   color-scheme: dark;
   --color-base-100: #1e1e2e; /* base */
   --color-base-200: #181825; /* mantle */
-  --color-base-300: #11111b; /* crust */
+  --color-base-300: #313244; /* surface0 */
   --color-base-content: #cdd6f4; /* text */
   --color-primary: #89b4fa; /* blue */
   --color-primary-content: #1e1e2e;

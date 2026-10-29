@@ -35,7 +35,7 @@
             )
           }
           method="post"
-          class="border border-black bg-info hover:bg-info-light text-white py-2 px-3 rounded-md"
+          class="btn btn-info"
         >
           {icon("rss-heroicons-outline")} Create alternate feed
         </.link>
@@ -46,8 +46,8 @@
 
   <.link
     href={feed_backlog_path(@conn, :edit, @feed_backlog)}
-    class="text-link hover:text-link-dark"
+    class="underline hover:text-primary"
   >Edit</.link>
   &nbsp;
-  <.link href={feed_backlog_path(@conn, :index)} class="text-link hover:text-link-dark">Back</.link>
+  <.link href={feed_backlog_path(@conn, :index)} class="underline hover:text-primary">Back</.link>
 </div>

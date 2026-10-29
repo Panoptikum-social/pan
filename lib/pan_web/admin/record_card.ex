@@ -84,7 +84,9 @@ defmodule PanWeb.Admin.RecordCard do
           />
         </fieldset>
         <fieldset class="border border-base-300 bg-base-100 rounded p-1">
-          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">Date & Time Fields</legend>
+          <legend class="bg-base-100 px-4 border border-base-300 rounded-lg">
+            Date & Time Fields
+          </legend>
           <DataBlock.render
             columns={datetime_columns(assigns)}
             record={@record}

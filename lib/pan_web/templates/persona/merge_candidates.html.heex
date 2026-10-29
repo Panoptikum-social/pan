@@ -8,7 +8,7 @@
         <li>
           <.link
             href={persona_path(@conn, :merge_candidate_group, name: name)}
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >{name}</.link>
           ( {frequency} )
         </li>
@@ -24,7 +24,7 @@
         <li>
           <.link
             href={persona_path(@conn, :merge_candidate_group, email: email)}
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >{email}</.link>
           ( {frequency} )
         </li>

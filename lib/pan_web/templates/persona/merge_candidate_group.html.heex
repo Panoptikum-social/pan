@@ -10,7 +10,7 @@
         <td>
           <.link
             href={persona_frontend_path(@conn, :show, persona.id)}
-            class="text-link hover:text-link-dark"
+            class="underline hover:text-primary"
           >{persona.id}</.link>
         </td>
       <% end %>
@@ -59,7 +59,7 @@
             <%= unless persona.id == persona_to.id do %>
               <.link
                 href={persona_path(@conn, :merge, from: persona.id, to: persona_to.id)}
-                class="border border-black rounded p-0.5 hover:text-gray-dark"
+                class="border border-base-content/50 rounded p-0.5 hover:text-base-content/70"
               >{persona_to.id}</.link>
             <% end %>
           <% end %>

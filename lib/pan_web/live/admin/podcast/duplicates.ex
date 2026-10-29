@@ -208,21 +208,21 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
     <div>
       <.link
         navigate={databrowser_path(Endpoint, :show, "podcast", @podcast.id)}
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >
         {@podcast.id}
       </.link>
       <.link
         navigate={podcast_frontend_path(Endpoint, :show, @podcast.id)}
-        class="text-link hover:text-link-dark"
+        class="underline hover:text-primary"
       >
         {@podcast.title}
       </.link>
-      <span class="text-sm text-gray-dark">
+      <span class="text-sm text-base-content/70">
         {@podcast.episodes_count || 0} episodes
         <span :if={@podcast.retired} class="badge badge-warning badge-sm">retired</span>
       </span>
-      <div :for={feed <- @podcast.feeds} class="text-xs text-gray-dark break-all">
+      <div :for={feed <- @podcast.feeds} class="text-xs text-base-content/70 break-all">
         {feed.self_link_url}
         <form
           :if={feed.alternate_feeds != []}
@@ -290,7 +290,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
 
     ~H"""
     <div class="text-sm font-semibold break-all">
-      {@key} <span class="font-normal text-gray-dark">({length(@podcasts)})</span>
+      {@key} <span class="font-normal text-base-content/70">({length(@podcasts)})</span>
     </div>
     <div :if={@shared_episode_titles} class="text-sm">
       {@shared_episode_titles} identical episode titles
@@ -344,11 +344,11 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
         <div :if={shared} class="text-sm">{shared} identical episode titles</div>
         <div class="mt-1 flex gap-6">
           <div>
-            <div class="text-xs text-gray-dark">has the URL in its history</div>
+            <div class="text-xs text-base-content/70">has the URL in its history</div>
             <.podcast_cell podcast={history} merge_targets={[current]} merging={@merging} />
           </div>
           <div>
-            <div class="text-xs text-gray-dark">uses it as feed URL</div>
+            <div class="text-xs text-base-content/70">uses it as feed URL</div>
             <.podcast_cell podcast={current} merge_targets={[history]} merging={@merging} />
           </div>
         </div>
@@ -426,7 +426,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
 
       <section class="mt-4">
         <h2 class="text-xl font-bold">Delete alternate feeds</h2>
-        <p class="text-sm text-gray-dark max-w-3xl">
+        <p class="text-sm text-base-content/70 max-w-3xl">
           Deletes the alternate feeds with exactly this URL (http and https alike) across all
           podcasts, e.g. an error page that shows up as a previous URL to restore. Current feed
           URLs are not changed.
@@ -450,7 +450,7 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
 
       <section class="mt-8">
         <h2 class="text-xl font-bold">Repair search index after merges</h2>
-        <p class="text-sm text-gray-dark max-w-3xl">
+        <p class="text-sm text-base-content/70 max-w-3xl">
           Finds episodes in the search index that still belong to a podcast that no longer exists,
           e.g. after a merge that was cut short. Moved episodes and their new podcasts are pushed
           again, episodes that are gone are removed, so are the deleted podcasts.
@@ -476,9 +476,9 @@ defmodule PanWeb.Live.Admin.Podcast.Duplicates do
           {@heading}
           <span :if={@candidates.ok?} class="font-normal">({length(@candidates.result)})</span>
         </h2>
-        <p class="text-sm text-gray-dark max-w-3xl">{@description}</p>
+        <p class="text-sm text-base-content/70 max-w-3xl">{@description}</p>
         <p :if={@candidates.loading} class="mt-2">Loading ...</p>
-        <p :if={@candidates.failed} class="mt-2 text-danger">Could not be loaded.</p>
+        <p :if={@candidates.failed} class="mt-2 text-error">Could not be loaded.</p>
         <p :if={@candidates.ok? and @candidates.result == []} class="mt-2">Nothing found.</p>
         <p :if={@candidates.ok? and length(@candidates.result) > @max_rows} class="mt-2 text-sm">
           Showing the first {@max_rows}.

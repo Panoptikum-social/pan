@@ -374,8 +374,7 @@ defmodule PanWeb.Admin.IndexGrid do
           {@heading}
         </h1>
 
-        <div class="flex flex-col sm:flex-row justify-start bg-linear-to-r from-base-100
-                    via-base-200 to-base-300 border-b border-base-300 items-center">
+        <div class="flex flex-col sm:flex-row justify-start bg-base-200 border-b border-base-300 items-center">
           <div class="sm:border-r border-base-300 flex">
             <button
               :if={:show in @buttons}
@@ -536,8 +535,7 @@ defmodule PanWeb.Admin.IndexGrid do
 
         <Pagination.render
           :if={:pagination in @buttons}
-          class="pl-2 border-b border-base-300 rounded-b bg-linear-to-r from-base-100
-                                  via-base-200 to-base-300"
+          class="pl-2 border-b border-base-300 rounded-b bg-base-200"
           click="paginate"
           target={@myself}
           page={@page}

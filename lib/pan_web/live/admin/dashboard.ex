@@ -111,7 +111,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
         </:cols>
       </.live_component>
 
-      <div class="-mt-2 mx-2 flex flex-wrap gap-4 border-x border-gray p-2 max-w-4xl">
+      <div class="-mt-2 mx-2 flex flex-wrap gap-4 border-x border-base-300 p-2 max-w-4xl">
         <LinkButton.render
           title="Live Dashboard"
           to={live_dashboard_path(Endpoint, :home)}
@@ -166,7 +166,7 @@ defmodule PanWeb.Live.Admin.Dashboard do
           opts={[data: [confirm: "Are you sure?"]]}
         />
       </div>
-      <div class="mx-2 flex flex-wrap gap-4 items-center border border-gray p-2 max-w-4xl">
+      <div class="mx-2 flex flex-wrap gap-4 items-center border border-base-300 p-2 max-w-4xl">
         <span class="font-mono">Full text Search</span>
         <LinkButton.render
           title="Push Missing"

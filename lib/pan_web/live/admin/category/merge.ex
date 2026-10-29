@@ -228,22 +228,22 @@ defmodule PanWeb.Live.Admin.Category.Merge do
             on Apple Podcasts' current list: merge into it, it can't be deleted, merged away or moved
           </li>
           <li class="flex items-center gap-2">
-            <span class="inline-block size-4 border border-gray-light bg-success"></span> selected
+            <span class="inline-block size-4 border border-base-300 bg-success"></span> selected
           </li>
           <li class="flex items-center gap-2">
-            <span class={["inline-block size-4 border border-gray-light", @empty_class]}></span>
+            <span class={["inline-block size-4 border border-base-300", @empty_class]}></span>
             empty (no podcasts, subcategories, follows, likes or community), can be deleted
           </li>
           <li class="flex items-center gap-2">
-            <span class={["inline-block size-4 border border-gray-light", @no_title_class]}></span>
+            <span class={["inline-block size-4 border border-base-300", @no_title_class]}></span>
             no title (blank, "0"), merge into the parent or Uncategorized
           </li>
           <li class="flex items-center gap-2">
-            <span class={["inline-block size-4 border border-gray-light", @best_candidate_class]}></span>
+            <span class={["inline-block size-4 border border-base-300", @best_candidate_class]}></span>
             left: most podcasts of its title; right: of the left selection's namesakes
           </li>
           <li class="flex items-center gap-2">
-            <span class={["inline-block size-4 border border-gray-light", @candidate_class]}></span>
+            <span class={["inline-block size-4 border border-base-300", @candidate_class]}></span>
             left: has a namesake with more podcasts; right: other namesakes of the left selection
           </li>
         </ul>

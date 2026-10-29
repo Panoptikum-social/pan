@@ -164,7 +164,9 @@ defmodule PanWeb.Admin.RecordForm do
             />
           </fieldset>
           <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
-            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Date & Time Fields</legend>
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
+              Date & Time Fields
+            </legend>
             <DateTimeSelect.render
               :for={column <- ColumnsFilter.datetime_columns(assigns)}
               name={column.field}

@@ -164,7 +164,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
                 title="Delete"
                 to={opml_path(Endpoint, :delete, opml.id)}
                 method={:delete}
-                class="text-sm border-danger-dark bg-danger hover:bg-danger-light text-white"
+                class="text-sm border-error bg-error hover:bg-error/80 text-error-content"
                 opts={[confirm: "Are you sure?"]}
               />
             </td>
