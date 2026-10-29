@@ -46,6 +46,14 @@ off (`themes: light --default`). Plan, in order:
   recommendation (+ `-content`) defined per theme, used through one class or
   component each (e.g. `btn-podcast`), so episode and podcast buttons stop
   differing.
+- **#440 Switch to Tabler Icons** (decided 2026-10-29, before #438/#439,
+  which depend on it): today 54 icon templates in
+  lib/pan_web/templates/live/icon/ mix Heroicons (40) and Line Awesome (13,
+  unmaintained). Tabler (MIT, ~5,900 icons, `currentColor`) covers category
+  topics. Vendor the full outline set (~5,000 SVGs) into the repo, rendered
+  by name, so the #439 admin can pick any icon; replace the 54 existing
+  icons by Tabler equivalents. Also fixes the misspelled
+  `clock-horoicons-outline.html.heex`.
 - **#438 Entity buttons → colored links** (decided 2026-10-29): podcast,
   episode, category, persona, user components (built on `LinkButton`) render
   the entity's SVG icon in its entity color, then the title as a plain link

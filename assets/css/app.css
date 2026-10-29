@@ -38,6 +38,78 @@
   --color-primary-content: white;
 }
 
+/*
+  Catppuccin Latte (light) and Mocha (dark), https://catppuccin.com/palette
+  Every color/content pair meets WCAG AA (4.5:1). Latte's light accents need
+  dark text (#1e1e2e, Mocha base), only blue, mauve and red take white.
+  Used by the admin layouts via data-theme for now, see backlog.md #435.
+*/
+@plugin "daisyui/theme" {
+  name: "latte";
+  color-scheme: light;
+  --color-base-100: #eff1f5; /* base */
+  --color-base-200: #e6e9ef; /* mantle */
+  --color-base-300: #dce0e8; /* crust */
+  --color-base-content: #4c4f69; /* text */
+  --color-primary: #1e66f5; /* blue */
+  --color-primary-content: #ffffff;
+  --color-secondary: #8839ef; /* mauve */
+  --color-secondary-content: #ffffff;
+  --color-accent: #ea76cb; /* pink */
+  --color-accent-content: #1e1e2e;
+  --color-neutral: #4c4f69; /* text */
+  --color-neutral-content: #eff1f5;
+  --color-info: #04a5e5; /* sky */
+  --color-info-content: #1e1e2e;
+  --color-success: #40a02b; /* green */
+  --color-success-content: #1e1e2e;
+  --color-warning: #df8e1d; /* yellow */
+  --color-warning-content: #1e1e2e;
+  --color-error: #d20f39; /* red */
+  --color-error-content: #ffffff;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "mocha";
+  color-scheme: dark;
+  --color-base-100: #1e1e2e; /* base */
+  --color-base-200: #181825; /* mantle */
+  --color-base-300: #11111b; /* crust */
+  --color-base-content: #cdd6f4; /* text */
+  --color-primary: #89b4fa; /* blue */
+  --color-primary-content: #1e1e2e;
+  --color-secondary: #cba6f7; /* mauve */
+  --color-secondary-content: #1e1e2e;
+  --color-accent: #f5c2e7; /* pink */
+  --color-accent-content: #1e1e2e;
+  --color-neutral: #45475a; /* surface1 */
+  --color-neutral-content: #cdd6f4;
+  --color-info: #89dceb; /* sky */
+  --color-info-content: #1e1e2e;
+  --color-success: #a6e3a1; /* green */
+  --color-success-content: #1e1e2e;
+  --color-warning: #f9e2af; /* yellow */
+  --color-warning-content: #1e1e2e;
+  --color-error: #f38ba8; /* red */
+  --color-error-content: #1e1e2e;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
 @theme {
     --color-transparent: transparent;
     --color-current: currentColor;

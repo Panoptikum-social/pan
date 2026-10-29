@@ -1,4 +1,11 @@
-<main role="main" class="bg-gray-lightest mb-4 min-h-screen text-base-content">
+<main
+  role="main"
+  data-theme="latte"
+  data-theme-toggle-scope
+  phx-mounted={Phoenix.LiveView.JS.ignore_attributes(["data-theme"])}
+  class="bg-base-200 mb-4 min-h-screen text-base-content"
+>
+  <PanWeb.Components.Admin.ThemeToggle.render />
   <.flash kind={:info} flash={@flash} />
   <.flash kind={:error} flash={@flash} />
   {@inner_content}
