@@ -40,6 +40,45 @@ const setup = [
   keymap.of([...yUndoManagerKeymap, ...defaultKeymap, ...searchKeymap]),
 ];
 
+// CodeMirror's base theme is light (gutter, active line, selection, cursor,
+// search panel); our CSS variables make it follow Latte, Mocha and the toggle
+const muted = (percent) =>
+  `color-mix(in oklab, var(--color-base-content) ${percent}%, transparent)`;
+
+const panTheme = EditorView.theme({
+  "&": { height: "100%", color: "var(--color-base-content)" },
+  ".cm-scroller": { overflow: "auto" },
+  ".cm-content": { caretColor: "var(--color-base-content)" },
+  ".cm-cursor, .cm-dropCursor": { borderLeftColor: "var(--color-base-content)" },
+  ".cm-gutters": {
+    backgroundColor: "var(--color-base-200)",
+    color: muted(60),
+    borderRight: "1px solid var(--color-base-300)",
+  },
+  ".cm-activeLineGutter": { backgroundColor: "var(--color-base-300)" },
+  ".cm-activeLine": { backgroundColor: muted(6) },
+  ".cm-selectionBackground, &.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground, .cm-content ::selection":
+    { backgroundColor: "color-mix(in oklab, var(--color-primary) 25%, transparent)" },
+  ".cm-selectionMatch": { backgroundColor: "color-mix(in oklab, var(--color-warning) 25%, transparent)" },
+  ".cm-panels": {
+    backgroundColor: "var(--color-base-200)",
+    color: "var(--color-base-content)",
+    borderColor: "var(--color-base-300)",
+  },
+  ".cm-textfield": {
+    backgroundColor: "var(--color-base-100)",
+    color: "var(--color-base-content)",
+    borderColor: "var(--color-base-300)",
+  },
+  ".cm-button": {
+    backgroundImage: "none",
+    backgroundColor: "var(--color-base-100)",
+    color: "var(--color-base-content)",
+    borderColor: "var(--color-base-300)",
+  },
+  ".cm-searchMatch": { backgroundColor: "color-mix(in oklab, var(--color-warning) 35%, transparent)" },
+});
+
 function readOnlyExtension(readOnly) {
   return [EditorState.readOnly.of(readOnly), EditorView.editable.of(!readOnly)];
 }
@@ -93,8 +132,8 @@ window.PanPadEditor = {
       extensions: [
         setup,
         EditorView.lineWrapping,
-        // fill the pane and scroll inside it, for the scroll sync
-        EditorView.theme({ "&": { height: "100%" }, ".cm-scroller": { overflow: "auto" } }),
+        // fills the pane and scrolls inside it (scroll sync), in our theme
+        panTheme,
         readOnly.of(readOnlyExtension(el.dataset.readOnly === "true")),
         yCollab(ydoc.getText(textName), provider.awareness),
         highlightExtension,

@@ -217,7 +217,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
           required
           class="flex-1 border border-base-300 rounded px-2 py-1"
         />
-        <button type="submit" class="btn btn-outline btn-primary btn-sm">Add feed</button>
+        <button type="submit" class="btn btn-primary btn-sm">Add feed</button>
       </form>
 
       <form phx-change="search-existing-podcast" class="my-4 max-w-2xl">
