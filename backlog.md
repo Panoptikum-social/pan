@@ -46,7 +46,21 @@ off (`themes: light --default`). Plan, in order:
   recommendation (+ `-content`) defined per theme, used through one class or
   component each (e.g. `btn-podcast`), so episode and podcast buttons stop
   differing.
-- **#434 Rainbow category tree stays** as a deliberate exception: fixed
+- **#438 Entity buttons → colored links** (decided 2026-10-29): podcast,
+  episode, category, persona, user components (built on `LinkButton`) render
+  the entity's SVG icon in its entity color, then the title as a plain link
+  (base text color, underline on hover). No emoji (can't be themed). Less
+  space than buttons, which easily touch each other; avoids white-on-pastel
+  contrast trouble. Do together with #433. Open: whether `large` header
+  buttons keep a filled background.
+- **#439 Distinct icon per category, then links there too:** every category
+  (top level and subcategories) gets its own icon, so the category tree can
+  also switch to colored links (replaces the chips in #434). Decided
+  2026-10-29: icon stored in a column on `categories`, editable in admin;
+  folder icon as fallback for strays without one; stable color per top-level
+  category, subcategories inherit it (replaces the per-page rotation by
+  `index_on_page`).
+- **#434 Rainbow category tree stays** (until #439) as a deliberate exception: fixed
   rotation through the Catppuccin accents (exist in both flavours).
 - **#435 Order:** theme blocks with prefersdark off → admin converted
   and tested via `data-theme` toggle → public site → re-enable automatic
