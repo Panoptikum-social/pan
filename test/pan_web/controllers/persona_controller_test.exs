@@ -30,7 +30,7 @@ defmodule PanWeb.PersonaControllerTest do
 
     conn
     |> init_test_session(%{"user_id" => admin.id, "admin" => true})
-    |> get("/admin/personas/merge", %{"from" => from.id, "to" => to.id})
+    |> post("/admin/personas/merge", %{"from" => to_string(from.id), "to" => to_string(to.id)})
     |> tap(fn _conn ->
       # let the background task of Search.Persona.reset_copies/1 finish
       # before the sandbox owner exits

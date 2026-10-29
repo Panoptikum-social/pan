@@ -1,6 +1,6 @@
 defmodule PanWeb.UserController do
   use PanWeb, :controller
-  alias PanWeb.{Subscription, User, PageFrontendView}
+  alias PanWeb.User
 
   plug(:authenticate_user when action in [:index, :show])
 
@@ -68,24 +68,6 @@ defmodule PanWeb.UserController do
     |> Repo.delete!()
 
     render(conn, "merge.html")
-  end
-
-  def push_subscriptions(conn, %{"user_id" => user_id, "category_id" => category_id}, _user) do
-    # pushes all of a user's subscribed podcasts into a category (e.g. for a community)
-    podcast_ids =
-      from(s in Subscription,
-        where: s.user_id == ^user_id,
-        select: s.podcast_id
-      )
-      |> Repo.all()
-
-    for podcast_id <- podcast_ids do
-      PanWeb.CategoryPodcast.get_or_insert(String.to_integer(category_id), podcast_id)
-    end
-
-    conn
-    |> put_view(PageFrontendView)
-    |> render("done.html")
   end
 
   def edit_password(conn, %{"id" => id}, _user) do

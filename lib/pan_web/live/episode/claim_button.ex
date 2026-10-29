@@ -56,7 +56,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         :if={!@not_claimed_yet}
         event="toggle-claim"
         target={@myself}
-        class="btn-secondary"
+        class="btn-outline btn-secondary"
         alt={"Withdraw contribution for #{@persona.pid}"}
         icon="user-minus"
         title={@persona.name}

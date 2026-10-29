@@ -1,6 +1,11 @@
 <div class="m-4">
   <div class="float-right">
-    <.link href={podcast_path(@conn, :assign_to_unsorted)} class="btn btn-outline btn-warning btn-sm">Assign all to 'Unsorted'</.link>
+    <.link
+      method="post"
+      data-confirm="Are you sure?"
+      href={podcast_path(@conn, :assign_to_unsorted)}
+      class="btn btn-outline btn-warning btn-sm"
+    >Assign all to 'Unsorted'</.link>
   </div>
 
   <h1 class="text-3xl">Orphans</h1>

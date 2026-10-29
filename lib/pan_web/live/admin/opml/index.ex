@@ -147,8 +147,10 @@ defmodule PanWeb.Live.Admin.Opml.Index do
             <td>
               <LinkButton.render
                 title="Parse"
+                method={:post}
+                opts={[data: [confirm: "Are you sure?"]]}
                 to={opml_path(Endpoint, :import, opml.id)}
-                class="btn-primary"
+                class="btn-outline btn-primary"
               />
               <LinkButton.render
                 title="Show"
@@ -157,7 +159,7 @@ defmodule PanWeb.Live.Admin.Opml.Index do
               />
               <LinkButton.render
                 title="Edit"
-                class="btn-warning"
+                class="btn-outline btn-warning"
                 to={opml_path(Endpoint, :edit, opml.id)}
               />
               <LinkButton.render

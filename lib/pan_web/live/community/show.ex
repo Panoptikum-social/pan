@@ -142,7 +142,7 @@ defmodule PanWeb.Live.Community.Show do
             <LinkButton.render
               to={category_frontend_path(@socket, :show, @community.category_id)}
               title="Browse podcasts"
-              class="btn-primary w-44 justify-center shrink-0"
+              class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
             <span>shows every podcast in this community.</span>
           </div>
@@ -150,7 +150,7 @@ defmodule PanWeb.Live.Community.Show do
             <LinkButton.render
               to={category_frontend_path(@socket, :latest_episodes, @community.category_id)}
               title="Latest episodes"
-              class="btn-primary w-44 justify-center shrink-0"
+              class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
             <span>
               gives you a timeline view starting with the most current episode from podcasts in
@@ -161,7 +161,7 @@ defmodule PanWeb.Live.Community.Show do
             <LinkButton.render
               to={category_frontend_path(@socket, :categorized, @community.category_id)}
               title="Categorized"
-              class="btn-primary w-44 justify-center shrink-0"
+              class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
             <span>sorts the podcasts in this community by the other categories they are listed in.</span>
           </div>

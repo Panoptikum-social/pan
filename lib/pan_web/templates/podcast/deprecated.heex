@@ -66,6 +66,8 @@
                 >Delete</.link>
               <% :unretire -> %>
                 <.link
+                  method="post"
+                  data-confirm="Are you sure?"
                   href={podcast_path(@conn, :unretire, deprecated_podcast)}
                   target="_blank"
                   class="btn btn-outline btn-info btn-xs"
@@ -89,6 +91,8 @@
             <% end %>
             <%= if deprecated_podcast.recommended_action != :unretire do %>
               <.link
+                method="post"
+                data-confirm="Are you sure?"
                 href={podcast_path(@conn, :unretire, deprecated_podcast)}
                 target="_blank"
                 class="btn btn-outline btn-info btn-xs"

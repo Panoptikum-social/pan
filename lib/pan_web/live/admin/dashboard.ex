@@ -154,16 +154,21 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <span class="font-mono">Maintenance</span>
         <LinkButton.render
           title="Catch up missing thumbnailed booleans"
+          method={:post}
+          opts={[data: [confirm: "Are you sure?"]]}
           to={maintenance_path(Endpoint, :catch_up_thumbnailed)}
           class="btn-outline btn-warning"
         />
         <LinkButton.render
           title="Trigger exception notification"
+          method={:post}
+          opts={[data: [confirm: "Are you sure?"]]}
           to={maintenance_path(Endpoint, :exception_notification)}
           class="btn-outline btn-success"
         />
         <LinkButton.render
           title="Clear Journal"
+          method={:post}
           to={maintenance_path(Endpoint, :clear_journal)}
           class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
@@ -173,23 +178,28 @@ defmodule PanWeb.Live.Admin.Dashboard do
         <span class="font-mono">Full text Search</span>
         <LinkButton.render
           title="Push Missing"
+          method={:post}
+          opts={[data: [confirm: "Are you sure?"]]}
           to={search_path(Endpoint, :push_missing)}
           class="btn-outline btn-warning"
         />
         <LinkButton.render
           title="Migrate Manticore Search Indices"
+          method={:post}
           to={search_path(Endpoint, :migrate)}
           class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
         <LinkButton.render
           title="Delete Orphaned Index Entries"
+          method={:post}
           to={search_path(Endpoint, :delete_orphans)}
           class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}
         />
         <LinkButton.render
           title="Reset all Records"
+          method={:post}
           to={search_path(Endpoint, :reset_all)}
           class="btn-outline btn-error"
           opts={[data: [confirm: "Are you sure?"]]}

@@ -30,7 +30,7 @@ defmodule PanWeb.MaintenanceControllerTest do
 
     Repo.insert!(%Engagement{podcast_id: podcast.id, persona_id: persona.id, role: "owner"})
 
-    conn = get(logged_in_admin(conn), "/admin/maintenance/fix_nameless_personas")
+    conn = post(logged_in_admin(conn), "/admin/maintenance/fix_nameless_personas")
 
     assert redirected_to(conn) == "/admin/databrowser/persona"
     assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "nameless personas got a name"

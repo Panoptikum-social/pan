@@ -36,18 +36,22 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render
         title="Cache missing images"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={image_path(Endpoint, :cache_missing)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Remove duplicate images"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={image_path(Endpoint, :remove_duplicates)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Upload new image"
         to={image_path(Endpoint, :new)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -59,7 +63,7 @@ defmodule PanWeb.Admin.ActionButtons do
       <LinkButton.render
         title="Make primary"
         to={feed_path(Endpoint, :make_only, @record)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
         method={:post}
       />
     </div>
@@ -72,15 +76,7 @@ defmodule PanWeb.Admin.ActionButtons do
       <LinkButton.render
         title="Edit Password"
         to={user_path(Endpoint, :edit_password, @record)}
-        class="btn-warning"
-      />
-    </div>
-    <div class="m-2 flex space-x-4 text-align-top">
-      <span>no admin interface exists for</span>
-      <LinkButton.render
-        title="Push Subscriptions"
-        to="/admin/users/:user_id/category/:category_id/push_subscriptions"
-        class="btn-primary"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -149,23 +145,29 @@ defmodule PanWeb.Admin.ActionButtons do
       />
       <LinkButton.render
         title="Import 100"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={feed_backlog_path(Endpoint, :import_100)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Subscribe All"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={feed_backlog_path(Endpoint, :subscribe)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Subscribe 50"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={feed_backlog_path(Endpoint, :subscribe50)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Delete All"
         to={feed_backlog_path(Endpoint, :delete_all)}
-        class="btn-error"
+        class="btn-outline btn-error"
         opts={[method: :delete, data: [confirm: "Are you sure?"]]}
       />
     </div>
@@ -177,50 +179,66 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4">
       <LinkButton.render
         title="Pause"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :pause, @record)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Touch"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :touch, @record)}
-        class="btn-info"
+        class="btn-outline btn-info"
       />
       <LinkButton.render
         title="Delta import"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :delta_import, @record)}
-        class="btn-primary"
+        class="btn-outline btn-primary"
       />
       <LinkButton.render
         title="Forced delta import"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :forced_delta_import, @record)}
-        class="btn-primary"
+        class="btn-outline btn-primary"
       />
       <LinkButton.render
         title="Delete"
         to={podcast_path(Endpoint, :delete, @record)}
-        class="btn-error"
+        class="btn-outline btn-error"
         method={:delete}
         opts={[data: [confirm: "Are you sure?"]]}
       />
       <LinkButton.render
         title="Contributor import"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :contributor_import, @record)}
-        class="btn-success"
+        class="btn-outline btn-success"
       />
       <LinkButton.render
         title="Update from feed"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :update_from_feed, @record)}
-        class="btn-primary"
+        class="btn-outline btn-primary"
       />
       <LinkButton.render
         title="Update counters"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :update_counters, @record)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Fix owner"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :fix_owner, @record)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -251,18 +269,24 @@ defmodule PanWeb.Admin.ActionButtons do
       />
       <LinkButton.render
         title="Update missing counters"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :update_missing_counters)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
       <LinkButton.render
         title="Update all counters"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :update_all_counters)}
-        class="btn-error"
+        class="btn-outline btn-error"
       />
       <LinkButton.render
         title="Fix languages"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={podcast_path(Endpoint, :fix_languages)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -273,13 +297,17 @@ defmodule PanWeb.Admin.ActionButtons do
     <div class="m-2 flex space-x-4 items-center">
       <LinkButton.render
         title="Remove duplicates"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={episode_path(Endpoint, :remove_duplicates)}
         class="btn-outline"
       />
       <LinkButton.render
         title="Remove javascript from shownotes"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={episode_path(Endpoint, :remove_javascript_from_shownotes)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -295,8 +323,10 @@ defmodule PanWeb.Admin.ActionButtons do
       />
       <LinkButton.render
         title="Fix nameless personas"
+        method={:post}
+        opts={[data: [confirm: "Are you sure?"]]}
         to={maintenance_path(Endpoint, :fix_nameless_personas)}
-        class="btn-warning"
+        class="btn-outline btn-warning"
       />
     </div>
     """
@@ -308,7 +338,7 @@ defmodule PanWeb.Admin.ActionButtons do
       <LinkButton.render
         title="Delete"
         to={persona_path(Endpoint, :delete, @record)}
-        class="btn-error"
+        class="btn-outline btn-error"
         method={:delete}
         opts={[data: [confirm: "Are you sure?"]]}
       />

@@ -294,7 +294,7 @@ defmodule PanWeb.Live.Admin.User.Retention do
               <LinkButton.render
                 title={user.id}
                 to={databrowser_path(Endpoint, :show, "user", user.id)}
-                class="btn-primary"
+                class="btn-outline btn-primary"
               />
             </td>
             <td>{user.username}</td>

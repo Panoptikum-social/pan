@@ -405,9 +405,9 @@ defmodule PanWeb.Router do
     pipe_through([:browser, :authenticate_admin, :admin_layout])
 
     live_dashboard("/dashboard", metrics: PanWeb.Telemetry, csp_nonce_assign_key: :csp_nonce)
-    get("/episodes/remove_duplicates", EpisodeController, :remove_duplicates)
+    post("/episodes/remove_duplicates", EpisodeController, :remove_duplicates)
 
-    get(
+    post(
       "/episodes/remove_javascript_from_shownotes",
       EpisodeController,
       :remove_javascript_from_shownotes
@@ -415,17 +415,11 @@ defmodule PanWeb.Router do
 
     get("/personas/merge_candidates", PersonaController, :merge_candidates)
     get("/personas/merge_candidate_group", PersonaController, :merge_candidate_group)
-    get("/personas/merge", PersonaController, :merge)
+    post("/personas/merge", PersonaController, :merge)
     resources("/personas", PersonaController, only: [:delete])
 
     get("/edit_password/:id", UserController, :edit_password)
     put("/update_password/:id", UserController, :update_password)
-
-    get(
-      "/users/:user_id/category/:category_id/push_subscriptions",
-      UserController,
-      :push_subscriptions
-    )
 
     get("/users/merge", UserController, :merge)
     live("/users/retention", Live.Admin.User.Retention, :retention, as: :user)
@@ -438,40 +432,40 @@ defmodule PanWeb.Router do
     live("/categories/merge", Live.Admin.Category.Merge, :merge, as: :category)
     live("/communities/curators", Live.Admin.Community.Curators, :curators, as: :community)
 
-    get("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
-    get("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)
-    get("/backlog_feeds/import_100", FeedBacklogController, :import_100)
-    get("/backlog_feeds/:id/import", FeedBacklogController, :import)
+    post("/backlog_feeds/subscribe", FeedBacklogController, :subscribe)
+    post("/backlog_feeds/subscribe50", FeedBacklogController, :subscribe50)
+    post("/backlog_feeds/import_100", FeedBacklogController, :import_100)
+    post("/backlog_feeds/:id/import", FeedBacklogController, :import)
     delete("/feed_backlogs/delete_all", FeedBacklogController, :delete_all)
     resources("/backlog_feeds", FeedBacklogController)
 
-    get("/opmls/:id/import", OpmlController, :import)
+    post("/opmls/:id/import", OpmlController, :import)
     live("/opmls", Live.Admin.Opml.Index, :index, as: :opml)
     resources("/opmls", OpmlController, only: [:new, :create, :show, :update, :edit, :delete])
 
     resources("/invoices", InvoiceController)
 
-    get("/images/cache_missing", ImageController, :cache_missing)
-    get("/images/remove_duplicates", ImageController, :remove_duplicates)
+    post("/images/cache_missing", ImageController, :cache_missing)
+    post("/images/remove_duplicates", ImageController, :remove_duplicates)
     resources("/images", ImageController, only: [:new, :create])
 
-    get("/podcasts/:id/pause", PodcastController, :pause)
-    get("/podcasts/:id/touch", PodcastController, :touch)
-    get("/podcasts/:id/contributor_import", PodcastController, :contributor_import)
-    get("/podcasts/:id/delta_import", PodcastController, :delta_import)
-    get("/podcasts/:id/forced_delta_import", PodcastController, :forced_delta_import)
-    get("/podcasts/:id/fix_owner", PodcastController, :fix_owner)
-    get("/podcasts/:id/unretire", PodcastController, :unretire)
-    get("/podcasts/fix_languages", PodcastController, :fix_languages)
-    get("/podcasts/:id/update_from_feed", PodcastController, :update_from_feed)
+    post("/podcasts/:id/pause", PodcastController, :pause)
+    post("/podcasts/:id/touch", PodcastController, :touch)
+    post("/podcasts/:id/contributor_import", PodcastController, :contributor_import)
+    post("/podcasts/:id/delta_import", PodcastController, :delta_import)
+    post("/podcasts/:id/forced_delta_import", PodcastController, :forced_delta_import)
+    post("/podcasts/:id/fix_owner", PodcastController, :fix_owner)
+    post("/podcasts/:id/unretire", PodcastController, :unretire)
+    post("/podcasts/fix_languages", PodcastController, :fix_languages)
+    post("/podcasts/:id/update_from_feed", PodcastController, :update_from_feed)
     live("/podcasts/stale", Live.Admin.Podcast.Stale, :stale, as: :podcast)
     get("/podcasts/orphans", PodcastController, :orphans)
-    get("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)
-    get("/podcasts/:id/update_counters/", PodcastController, :update_counters)
-    get("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
-    get("/podcasts/update_all_counters", PodcastController, :update_all_counters)
+    post("/podcasts/assign_to_unsorted", PodcastController, :assign_to_unsorted)
+    post("/podcasts/:id/update_counters/", PodcastController, :update_counters)
+    post("/podcasts/update_missing_counters", PodcastController, :update_missing_counters)
+    post("/podcasts/update_all_counters", PodcastController, :update_all_counters)
 
-    get(
+    post(
       "/podcasts/:id/remove_unwanted_references",
       PodcastController,
       :remove_unwanted_references
@@ -480,18 +474,18 @@ defmodule PanWeb.Router do
     get("/podcasts/deprecated", PodcastController, :deprecated)
     resources("/podcasts", PodcastController, only: [:delete])
 
-    get("/search/push_missing", SearchController, :push_missing)
-    get("/search/reset_all", SearchController, :reset_all)
-    get("/search/delete_orphans", SearchController, :delete_orphans)
-    get("/search/migrate", SearchController, :migrate)
+    post("/search/push_missing", SearchController, :push_missing)
+    post("/search/reset_all", SearchController, :reset_all)
+    post("/search/delete_orphans", SearchController, :delete_orphans)
+    post("/search/migrate", SearchController, :migrate)
 
     get("/maintenance/stats", MaintenanceController, :stats)
-    get("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
+    post("/maintenance/catch_up_thumbnailed", MaintenanceController, :catch_up_thumbnailed)
 
-    get("/maintenance/clear_journal", MaintenanceController, :clear_journal)
+    post("/maintenance/clear_journal", MaintenanceController, :clear_journal)
 
-    get("/maintenance/exception_notification", MaintenanceController, :exception_notification)
-    get("/maintenance/fix_nils", MaintenanceController, :fix_nils)
-    get("/maintenance/fix_nameless_personas", MaintenanceController, :fix_nameless_personas)
+    post("/maintenance/exception_notification", MaintenanceController, :exception_notification)
+    post("/maintenance/fix_nils", MaintenanceController, :fix_nils)
+    post("/maintenance/fix_nameless_personas", MaintenanceController, :fix_nameless_personas)
   end
 end

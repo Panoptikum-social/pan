@@ -158,7 +158,7 @@ defmodule PanWeb.Live.Admin.Podcast.Stale do
               <LinkButton.render
                 title={podcast.id}
                 to={databrowser_path(Endpoint, :show, "podcast", podcast.id)}
-                class="btn-primary"
+                class="btn-outline btn-primary"
               />
             </td>
             <td>{podcast.title}</td>

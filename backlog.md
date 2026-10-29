@@ -10,13 +10,10 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
-- **#449 Admin maintenance actions on GET routes (found 2026-10-29 while
-  checking the /admin buttons):** /search/push_missing, reset_all,
-  delete_orphans, migrate and /maintenance/catch_up_thumbnailed,
-  clear_journal, exception_notification are `get` in router.ex, so a
-  browser prefetch or reloading a visited URL can trigger them (reset_all
-  and clear_journal destroy data). Make them POST/DELETE and pass `method:`
-  to the LinkButtons on the dashboard (data-confirm works with either).
+- **#459 User OPML import is a GET (found 2026-10-29 during #449):**
+  /pan/opmls/:id/import (OpmlFrontendController.import, "Import" on the
+  user's OPML list) imports on GET; same prefetch/reload risk as #449, but
+  only for the user's own OPML. Make it POST.
 
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
   table (1c6a0807, Mappings tab on /admin/categories/merge, 34 old Apple
