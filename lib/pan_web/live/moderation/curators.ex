@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Moderation.Curators do
-  use PanWeb, :live_view
+  use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.Component.CuratorAssignment
   alias PanWeb.{Curatorship, Moderation}

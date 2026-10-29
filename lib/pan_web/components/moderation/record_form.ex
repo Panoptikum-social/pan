@@ -85,7 +85,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
     <div class="m-2" id={@id}>
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
-          <div class="text-gray-dark whitespace-nowrap">
+          <div class="text-base-content/70 whitespace-nowrap">
             Edit <span class="font-semibold">{module_name(@model)}</span>
           </div>
           <h1 class="max-w-5xl w-full truncate">
@@ -107,8 +107,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
         </.error>
 
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">
-          <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
-            <legend class="px-4 border border-gray rounded-lg bg-white">Numeric Fields</legend>
+          <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Numeric Fields</legend>
             <NumberField.render
               :for={column <- ColumnsFilter.number_columns(assigns)}
               name={column.field}
@@ -116,8 +116,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
           </fieldset>
-          <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
-            <legend class="px-4 border border-gray rounded-lg bg-white">Date & Time Fields</legend>
+          <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Date & Time Fields</legend>
             <DateTimeSelect.render
               :for={column <- ColumnsFilter.datetime_columns(assigns)}
               name={column.field}
@@ -125,8 +125,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
           </fieldset>
-          <fieldset class="border border-gray bg-gray-lightest rounded-xl p-2">
-            <legend class="px-4 border border-gray rounded-lg bg-white">Boolean Fields</legend>
+          <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Boolean Fields</legend>
             <CheckBoxField.render
               :for={column <- ColumnsFilter.boolean_columns(assigns)}
               name={column.field}
@@ -138,8 +138,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
         </div>
 
         <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
-          <fieldset class="flex-1 border border-gray bg-gray-lightest rounded-xl p-2">
-            <legend class="px-4 border border-gray rounded-lg bg-white">String Fields</legend>
+          <fieldset class="flex-1 border border-base-300 bg-base-200 rounded-xl p-2">
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">String Fields</legend>
             <TextField.render
               :for={column <- ColumnsFilter.string_columns(assigns)}
               name={column.field}
@@ -147,8 +147,8 @@ defmodule PanWeb.Component.Moderation.RecordForm do
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
           </fieldset>
-          <fieldset class="flex-1 flex flex-col border border-gray bg-gray-lightest rounded-xl p-2">
-            <legend class="px-4 border border-gray rounded-lg bg-white">Text Fields</legend>
+          <fieldset class="flex-1 flex flex-col border border-base-300 bg-base-200 rounded-xl p-2">
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Text Fields</legend>
             <TextAreaField.render
               :for={column <- ColumnsFilter.text_columns(assigns)}
               name={column.field}

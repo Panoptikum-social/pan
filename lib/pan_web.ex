@@ -149,6 +149,15 @@ defmodule PanWeb do
     end
   end
 
+  def moderation_live_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {PanWeb.LayoutView, :live_moderation}
+
+      unquote(view_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent

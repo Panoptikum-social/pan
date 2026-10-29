@@ -1,4 +1,4 @@
-defmodule PanWeb.Components.Admin.ThemeToggle do
+defmodule PanWeb.Component.ThemeToggle do
   use PanWeb, :html
 
   # Latte / Mocha / System switch, handled in assets/js/theme_toggle.js

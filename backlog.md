@@ -32,7 +32,8 @@ Claude's per-machine memory) so they survive across computers. Last synced
   lib/pan_web/admin/index_grid.ex and moderation_grid.ex share most of their
   markup; the toolbar button class string is copied ~16 times across both.
   Likewise grid_presenter.ex vs grid_presenter_with_details.ex and
-  data_block.ex vs relations_block.ex (same striped-row classes). Candidate:
+  data_block.ex vs relations_block.ex (same striped-row classes), and
+  admin/record_form.ex vs components/moderation/record_form.ex. Candidate:
   one toolbar-button component and shared row helpers.
 
 ### Catppuccin themes (Latte light + Mocha dark), from 2026-10-29
@@ -50,8 +51,8 @@ admin modules, LiveView admin pages, admin controller templates; links in
 text color + underline, gray gradients replaced by solid base colors).
 Plan, in order:
 
-- **#432 Semantic classes instead of fixed colors** (admin done, moderation
-  and public site open): replace `bg-white`,
+- **#432 Semantic classes instead of fixed colors** (admin and moderation
+  (#442, `:moderation_live_view`) done, public site open): replace `bg-white`,
   `text-gray-*`, `border-gray-*`, raw Bootflat colors with `bg-base-*`,
   `text-base-content(/70)`, `border-base-300`, theme colors.
 - **#433 Entity colors as theme tokens:** podcast, episode, category,
@@ -82,18 +83,12 @@ Plan, in order:
   `index_on_page`).
 - **#434 Rainbow category tree stays** (until #439) as a deliberate exception: fixed
   rotation through the Catppuccin accents (exist in both flavours).
-- **#442 Moderation as its own step** (between admin and public site): the 5
-  LiveViews in lib/pan_web/live/moderation use the public `:live_view`
-  layout. Give them a `:moderation_live_view` with a layout like the admin
-  one (data-theme + toggle), but only together with converting their
-  templates, so moderators never get offered a half-done Mocha.
-  ModerationGrid is already converted (#432 admin step).
 - **#435 Order:** admin converted
-  and tested via `data-theme` toggle → moderation (#442) → public site → re-enable automatic
+  and tested via `data-theme` toggle → moderation (done) → public site → re-enable automatic
   dark mode.
-- **#436 Theme toggle:** done for the admin (Latte / Mocha / System,
-  assets/js/theme_toggle.js, e41d71eb). Still open: the same for the public
-  site, once it uses the themes.
+- **#436 Theme toggle:** done for admin and moderation (Latte /
+  Mocha / System, assets/js/theme_toggle.js, localStorage `pan_theme`).
+  Still open: the same for the public site, once it uses the themes.
 - **#437 Remove the Bootflat palette** from `@theme` at the end, so leftover
   uses stop generating and show up by grep; also rework `.alert-*` and
   `.invalid-feedback` in app.css (use `-light`/`-dark` + `text-black`).

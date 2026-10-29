@@ -1,9 +1,10 @@
 // Latte / Mocha / System switch for elements marked with
-// data-theme-toggle-scope (the admin layouts' <main>, see backlog.md #436).
+// data-theme-toggle-scope (the admin and moderation layouts' <main>, see
+// backlog.md #436).
 // The choice is a per-browser convenience in localStorage. Listening on the
 // document and re-applying after live navigation keeps this working across
 // LiveView re-renders and needs no inline script (Content-Security-Policy).
-const STORAGE_KEY = "pan_admin_theme";
+const STORAGE_KEY = "pan_theme";
 const DEFAULT_CHOICE = "latte";
 const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
 

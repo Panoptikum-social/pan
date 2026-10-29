@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Moderation.Moderate do
-  use PanWeb, :live_view
+  use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{CategoryPodcast, Feed, Moderation, Podcast}
   alias PanWeb.Admin.Naming
@@ -215,7 +215,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
           name="url"
           placeholder="Paste a podcast feed URL to add it to your moderation..."
           required
-          class="flex-1 border border-gray rounded px-2 py-1"
+          class="flex-1 border border-base-300 rounded px-2 py-1"
         />
         <button type="submit" class="btn btn-primary btn-sm">Add feed</button>
       </form>
@@ -227,20 +227,20 @@ defmodule PanWeb.Live.Moderation.Moderate do
           value={@existing_search_term}
           placeholder="...or search for an existing Panoptikum podcast by title"
           phx-debounce="300"
-          class="w-full border border-gray rounded px-2 py-1"
+          class="w-full border border-base-300 rounded px-2 py-1"
         />
       </form>
 
       <ul
         :if={@existing_search_results != []}
-        class="my-4 max-w-2xl divide-y divide-gray border border-gray rounded"
+        class="my-4 max-w-2xl divide-y divide-base-300 border border-base-300 rounded"
       >
         <li
           :for={podcast <- @existing_search_results}
           class="flex items-center justify-between gap-2 px-2 py-1"
         >
           <span>{podcast.title}</span>
-          <span :if={podcast.id in @podcast_ids} class="text-sm text-gray-dark">
+          <span :if={podcast.id in @podcast_ids} class="text-sm text-base-content/70">
             Already in your moderation
           </span>
           <button

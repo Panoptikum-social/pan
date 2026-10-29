@@ -1,5 +1,5 @@
 defmodule PanWeb.Live.Moderation.ApiErrors do
-  use PanWeb, :live_view
+  use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{ApiRequestError, Category, CategoryPodcast, Moderation}
   alias PanWeb.Router.Helpers, as: Routes
