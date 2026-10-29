@@ -3,7 +3,9 @@
 @source "../../lib/**/*.{ex,eex,heex,sface}";
 @source "../js/**/*.js";
 @source inline("bg-success-light,text-success-dark,bg-warning-light,text-warning-dark,bg-danger-light,text-danger-dark");
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light --default;
+}
 @plugin "daisyui/theme";
 @plugin "@tailwindcss/typography";
 
