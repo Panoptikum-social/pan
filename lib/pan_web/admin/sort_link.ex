@@ -34,10 +34,10 @@ defmodule PanWeb.Admin.SortLink do
           0 first
         <% end %>
         <%= if @sort_order |> Atom.to_string() |> String.starts_with?("asc") do %>
-          {icon("sort-up-lineawesome-solid", class: "h-5 w-5 inline align-text-bottom")}
+          {icon("sort-ascending", class: "h-5 w-5 inline align-text-bottom")}
         <% end %>
         <%= if @sort_order |> Atom.to_string() |> String.starts_with?("desc") do %>
-          {icon("sort-down-lineawesome-solid", class: "h-5 w-5 inline align-text-bottom")}
+          {icon("sort-descending", class: "h-5 w-5 inline align-text-bottom")}
         <% end %>
       <% end %>
       {render_slot(@inner_block)}

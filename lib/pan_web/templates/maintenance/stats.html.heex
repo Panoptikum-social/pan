@@ -38,7 +38,7 @@
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
     <.stat_card
       title="Podcasts"
-      icon="podcast-lineawesome-solid"
+      icon="microphone"
       accent="border-t-primary"
       value={@total_podcasts}
     >
@@ -49,7 +49,7 @@
 
     <.stat_card
       title="Updates"
-      icon="cog-heroicons-outline"
+      icon="settings"
       accent="border-t-info"
       value={@podcasts_per_hour}
       unit="p/h"
@@ -60,7 +60,7 @@
 
     <.stat_card
       title="Episodes"
-      icon="headphones-lineawesome-solid"
+      icon="headphones"
       accent="border-t-secondary"
       value={@total_episodes}
     >
@@ -69,7 +69,7 @@
 
     <.stat_card
       title="Users"
-      icon="user-heroicons-outline"
+      icon="user"
       accent="border-t-accent"
       value={@total_users}
     >
@@ -82,7 +82,7 @@
 
     <.stat_card
       title="Personas"
-      icon="user-astronaut-lineawesome-solid"
+      icon="user-star"
       accent="border-t-success"
       value={@total_personas}
     >
@@ -93,7 +93,7 @@
       <.metric label="thumbnails missing" value={@personas_without_image} />
     </.stat_card>
 
-    <.stat_card title="Feeds" icon="rss-heroicons-outline" accent="border-t-warning">
+    <.stat_card title="Feeds" icon="rss" accent="border-t-warning">
       <.metric label="without headers" value={@feeds_without_headers} />
       <.metric label="with etag" value={@feeds_with_etag} />
       <.metric label="with last modified" value={@feeds_with_last_modified} />
@@ -101,7 +101,7 @@
 
     <.stat_card
       title="Categories & languages"
-      icon="folder-open-heroicons-outline"
+      icon="folder-open"
       accent="border-t-neutral"
     >
       <.metric label="categories" value={@total_categories} />

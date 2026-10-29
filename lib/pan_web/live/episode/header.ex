@@ -99,7 +99,7 @@ defmodule PanWeb.Live.Episode.Header do
                     class="inline"
                     @click="toggleMetadata"
                   >
-                    <Icon.render name="information-circle-heroicons" />
+                    <Icon.render name="info-circle" />
                   </div>
                   <div
                     x-show="metadataOpen"

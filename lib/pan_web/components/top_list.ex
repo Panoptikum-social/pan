@@ -35,7 +35,7 @@ defmodule PanWeb.Component.TopList do
   defp add_rank([], {_rank, acc}), do: acc
 
   attr :items, :list, required: true
-  attr :icon, :string, default: "heart-heroicons-outline"
+  attr :icon, :string, default: "heart"
   attr :purpose, :string, default: nil
 
   def render(assigns) do

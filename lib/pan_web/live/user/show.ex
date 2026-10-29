@@ -73,7 +73,7 @@ defmodule PanWeb.Live.User.Show do
               {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;
               <PodcastButton.render for={like.chapter.episode.podcast} class="truncate max-w-full" />
               / <EpisodeButton.render for={like.chapter.episode} /> /
-              <Icon.render name="indent-lineawesome-solid" /> {like.chapter.title} />
+              <Icon.render name="indent-increase" /> {like.chapter.title} />
             </span>
             <span :if={like.episode_id != nil && is_nil(like.chapter_id)}>
               {Calendar.strftime(like.inserted_at, "%x")}: &nbsp;

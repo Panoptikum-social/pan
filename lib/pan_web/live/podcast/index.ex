@@ -85,7 +85,7 @@ defmodule PanWeb.Live.Podcast.Index do
             </div>
 
             <div class="col-span-2">
-              <Icon.render name="calendar-heroicons-outline" />
+              <Icon.render name="calendar" />
               {Calendar.strftime(podcast.inserted_at, "%x")}
             </div>
 

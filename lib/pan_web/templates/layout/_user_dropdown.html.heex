@@ -1,55 +1,55 @@
 <ul>
   <li class="border-t-2 py-1"></li>
   <li class="uppercase text-right py-1">
-    {nav_icon("user-heroicons-outline")}
+    {nav_icon("user")}
     {@current_user.username}
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_profile)}>
-      {nav_icon("user-circle-heroicons-outline")} My Profile
+      {nav_icon("user-circle")} My Profile
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :edit_password)}>
-      {nav_icon("user-secret-lineawesome-outline")} Change Password
+      {nav_icon("spy")} Change Password
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_podcasts)}>
-      {nav_icon("podcast-lineawesome-solid")} My Podcasts
+      {nav_icon("microphone")} My Podcasts
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :my_recommendations)}>
-      {nav_icon("gift-heroicons-outline")} My Recommendations
+      {nav_icon("gift")} My Recommendations
     </.link>
   </li>
   <%= if @current_user.moderator do %>
     <li class="py-1">
-      {nav_icon("user-astronaut-lineawesome-solid")}
+      {nav_icon("user-star")}
       <.link href={moderation_frontend_path(@conn, :my_moderations)}>My Moderations</.link>
     </li>
   <% end %>
   <%= if @current_user.curator || @current_user.moderator || @current_user.admin do %>
     <li class="py-1">
       <.link href={curation_frontend_path(@conn, :index)}>
-        {nav_icon("pencil-heroicons-outline")} My Curations
+        {nav_icon("pencil")} My Curations
       </.link>
     </li>
   <% end %>
   <li class="py-1">
     <.link href={feed_backlog_frontend_path(@conn, :new)}>
-      {nav_icon("rss-heroicons-outline")} Suggest a Podcast
+      {nav_icon("rss")} Suggest a Podcast
     </.link>
   </li>
   <li class="py-1">
     <.link href={opml_frontend_path(@conn, :index)}>
-      {nav_icon("file-audio-lineawesome")} My OPMLs
+      {nav_icon("file-music")} My OPMLs
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_data)}>
-      {nav_icon("briefcase-heroicons-outline")} My Data
+      {nav_icon("briefcase")} My Data
     </.link>
   </li>
 </ul>

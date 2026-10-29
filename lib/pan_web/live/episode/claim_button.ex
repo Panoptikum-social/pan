@@ -49,7 +49,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         target={@myself}
         class="text-lavender border-lavender bg-white hover:bg-gray-lightest"
         alt={"Claim contribution for #{@persona.pid}"}
-        icon="user-add-heroicons-outline"
+        icon="user-plus"
         title={@persona.name}
       />
       <EventButton.render
@@ -58,7 +58,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         target={@myself}
         class="text-white border-lavender bg-lavender hover:bg-lavender-light"
         alt={"Withdraw contribution for #{@persona.pid}"}
-        icon="user-remove-heroicons-outline"
+        icon="user-minus"
         title={@persona.name}
       />
     </span>

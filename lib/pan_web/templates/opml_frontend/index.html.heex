@@ -25,14 +25,14 @@
                 href={opml_frontend_path(@conn, :import, opml)}
                 class="btn btn-info btn-sm whitespace-nowrap text-white"
               >
-                {icon("cog-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Parse
+                {icon("settings", class: "inline w-4 h-4 align-text-top")} Parse
               </.link>
               &nbsp;
               <.link
                 href={opml_frontend_path(@conn, :download, opml)}
                 class="btn btn-primary btn-sm whitespace-nowrap text-white"
               >
-                {icon("document-download-heroicons-outline",
+                {icon("file-download",
                   class: "inline w-4 h-4 align-text-top"
                 )} Download
               </.link>
@@ -43,7 +43,7 @@
                 data-confirm="Are you sure?"
                 class="btn btn-error btn-sm whitespace-nowrap"
               >
-                {icon("trash-heroicons-outline", class: "inline w-4 h-4 align-text-top")} Delete
+                {icon("trash", class: "inline w-4 h-4 align-text-top")} Delete
               </.link>
             </td>
           </tr>

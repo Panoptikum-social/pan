@@ -17,7 +17,7 @@ defmodule PanWeb.Component.UserButton do
         "bg-bittersweet text-white border-gray-dark hover:bg-bittersweet-light hover:border-bittersweet",
         @class
       ]}
-      icon="female-lineawesome-solid"
+      icon="woman"
       title={@name || @for.name}
     />
     """

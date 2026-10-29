@@ -60,13 +60,13 @@
   <ul class="list-disc my-4 ml-4">
     <%= for invoice <- @user.invoices do %>
       <li>
-        {icon("calendar-heroicons-outline")}
+        {icon("calendar")}
         {Calendar.strftime(invoice.inserted_at, "%x %H:%M")} &nbsp; &nbsp;
         <.link
           href={invoice_frontend_path(@conn, :download, invoice)}
           class="text-link hover:text-link-dark"
         >
-          {icon("document-download-heroicons-outline")} {invoice.filename}
+          {icon("file-download")} {invoice.filename}
         </.link>
       </li>
     <% end %>

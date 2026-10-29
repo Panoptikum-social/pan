@@ -44,7 +44,7 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
         phx-target={@myself}
         class="btn btn-success btn-sm my-2"
       >
-        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-solid" /> Unsubscribe
+        {@podcast.subscriptions_count} <Icon.render name="user-filled" /> Unsubscribe
       </button>
       <button
         :if={!@subscribed}
@@ -52,7 +52,7 @@ defmodule PanWeb.Live.Podcast.SubscribeButton do
         phx-target={@myself}
         class="btn btn-error btn-sm my-2"
       >
-        {@podcast.subscriptions_count} <Icon.render name="user-heroicons-outline" /> Subscribe
+        {@podcast.subscriptions_count} <Icon.render name="user" /> Subscribe
       </button>
     </span>
     """

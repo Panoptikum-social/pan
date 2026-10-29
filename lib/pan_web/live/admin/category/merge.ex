@@ -194,9 +194,9 @@ defmodule PanWeb.Live.Admin.Category.Merge do
 
       <div class="sticky top-4 self-start">
         <button phx-click="merge" class="btn btn-warning btn-sm block">
-          <Icon.render name="folder-heroicons-outline" />
-          <Icon.render name="arrow-sm-right-heroicons-outline" />
-          <Icon.render name="folder-heroicons-outline" /> Merge Categories
+          <Icon.render name="folder" />
+          <Icon.render name="arrow-right" />
+          <Icon.render name="folder" /> Merge Categories
         </button>
 
         <button
@@ -204,9 +204,9 @@ defmodule PanWeb.Live.Admin.Category.Merge do
           disabled={is_nil(@from_id) or is_nil(@into_id)}
           class="btn btn-info btn-sm mt-4 block"
         >
-          <Icon.render name="folder-heroicons-outline" />
-          <Icon.render name="arrow-sm-right-heroicons-outline" />
-          <Icon.render name="folder-open-heroicons-outline" /> Move into (left → right)
+          <Icon.render name="folder" />
+          <Icon.render name="arrow-right" />
+          <Icon.render name="folder-open" /> Move into (left → right)
         </button>
 
         <button

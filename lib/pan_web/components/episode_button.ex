@@ -17,7 +17,7 @@ defmodule PanWeb.Component.EpisodeButton do
     <LinkButton.render
       to={Routes.episode_frontend_path(Endpoint, :show, @id || @for.id)}
       class={["bg-aqua text-white border-gray-dark hover:bg-aqua-light hover:border-aqua", @class]}
-      icon="headphones-lineawesome-solid"
+      icon="headphones"
       title={truncate_string(@title || @for.title, 80)}
       large={@large}
       truncate={@truncate}

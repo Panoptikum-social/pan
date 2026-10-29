@@ -10,7 +10,7 @@
       target="_blank"
       class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md"
     >
-      {icon("user-circle-heroicons-outline")} My Profile
+      {icon("user-circle")} My Profile
     </.link>
   </div>
   <h2 class="text-2xl">Account</h2>
@@ -21,7 +21,7 @@
     href={user_json_download_path(@conn, :download)}
     class="border border-gray btn btn-primary"
   >
-    {icon("document-download-heroicons-outline")} Download
+    {icon("file-download")} Download
   </.link>
   all my data as JSON-File
 </p>
@@ -53,7 +53,7 @@
       target="_blank"
       class="border border-gray-darker text-gray-darkest hover:bg-gray-lighter py-2 px-3 rounded-md"
     >
-      {icon("document-download-heroicons-outline")} My OPMLs
+      {icon("file-download")} My OPMLs
     </.link>
   </div>
   <h2 class="text-2xl">OPML Files</h2>
@@ -74,7 +74,7 @@ You can even delete all manifestations as personas, you created so far, at once,
   data-confirm="Are you sure? All manifestations will be deleted!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Delete all manifestations
+  {icon("alert-triangle")} Delete all manifestations
 </.link>
 
 <%= for persona <- @user.personas do %>
@@ -161,7 +161,7 @@ You can even delete all the subscriptions, you created so far, at once, by click
   data-confirm="Are you sure? All subscriptions will be deleted!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Delete all subscriptions
+  {icon("alert-triangle")} Delete all subscriptions
 </.link>
 
 <ul class="list-disc m-4">
@@ -189,7 +189,7 @@ You can even unfollow all the podcasts, you followed so far at once, by clicking
   data-confirm="Are you sure? All podcasts will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unfollow all podcasts
+  {icon("alert-triangle")} Unfollow all podcasts
 </.link>
 
 <ul class="list-disc m-4">
@@ -217,7 +217,7 @@ You can even unlike all the podcasts, you followed so far at once, by clicking &
   data-confirm="Are you sure? All podcasts will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all podcasts
+  {icon("alert-triangle")} Unlike all podcasts
 </.link>
 
 <ul class="list-disc m-4">
@@ -245,7 +245,7 @@ You can even unlike all the episodes, you followed so far at once, by clicking &
   data-confirm="Are you sure? All episodes will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all episodes
+  {icon("alert-triangle")} Unlike all episodes
 </.link>
 
 <ul class="list-disc m-4">
@@ -273,7 +273,7 @@ You can even unlike all the chapters, you followed so far at once, by clicking &
   data-confirm="Are you sure? All chapters will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all chapters
+  {icon("alert-triangle")} Unlike all chapters
 </.link>
 
 <ul class="list-disc m-4">
@@ -301,7 +301,7 @@ You can even unlike all the users, you followed so far at once, by clicking &nbs
   data-confirm="Are you sure? All users will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all users
+  {icon("alert-triangle")} Unlike all users
 </.link>
 
 <ul class="list-disc m-4">
@@ -329,7 +329,7 @@ You can even unfollow all the users, you followed so far at once, by clicking &n
   data-confirm="Are you sure? All users will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unfollow all users
+  {icon("alert-triangle")} Unfollow all users
 </.link>
 
 <ul class="list-disc m-4">
@@ -357,7 +357,7 @@ You can even unfollow all the personas, you followed so far at once, by clicking
   data-confirm="Are you sure? All personas will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unfollow all personas
+  {icon("alert-triangle")} Unfollow all personas
 </.link>
 
 <ul class="list-disc m-4">
@@ -385,7 +385,7 @@ You can even unlike all the personas, you followed so far at once, by clicking &
   data-confirm="Are you sure? All personas will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all personas
+  {icon("alert-triangle")} Unlike all personas
 </.link>
 
 <ul class="list-disc m-4">
@@ -413,7 +413,7 @@ You can even unfollow all the categories, you followed so far at once, by clicki
   data-confirm="Are you sure? All categories will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unfollow all categories
+  {icon("alert-triangle")} Unfollow all categories
 </.link>
 
 <ul class="list-disc m-4">
@@ -441,7 +441,7 @@ You can even unlike all the categories, you followed so far at once, by clicking
   data-confirm="Are you sure? All categories will be unfollowed!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Unlike all categories
+  {icon("alert-triangle")} Unlike all categories
 </.link>
 
 <ul class="list-disc m-4">
@@ -470,7 +470,7 @@ You can even delete all the recommendations, you created so far, at once, by cli
   data-confirm="Are you sure? All recommendations will be deleted!"
   class="btn btn-error whitespace-nowrap leading-10"
 >
-  {icon("exclamation-heroicons-outline")} Delete all recommendations
+  {icon("alert-triangle")} Delete all recommendations
 </.link>
 
 <table class="table table-zebra table-xs my-4 w-auto">
@@ -549,6 +549,6 @@ You can even delete all the recommendations, you created so far, at once, by cli
     data-confirm="Are you sure? Your account would be deleted!"
     class="btn btn-error"
   >
-    {icon("exclamation-heroicons-outline")} Delete my account
+    {icon("alert-triangle")} Delete my account
   </.link>
 </div>

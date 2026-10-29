@@ -49,7 +49,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                       class="inline"
                       @click="toggleDetails"
                     >
-                      <Icon.render name="information-circle-heroicons" />
+                      <Icon.render name="info-circle" />
                     </div>
                     <div
                       x-show="detailsOpen"

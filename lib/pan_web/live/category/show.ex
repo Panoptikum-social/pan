@@ -80,7 +80,7 @@ defmodule PanWeb.Live.Category.Show do
     <Panel.render purpose="category" class="m-4">
       <:panel_heading>
         <.link href={category_frontend_path(@socket, :index)} class="hover:text-blue-400">
-          <Icon.render name="folder-heroicons-outline" /> Panoptikum
+          <Icon.render name="folder" /> Panoptikum
         </.link>
         /
         <span :if={@category.parent}>
@@ -88,11 +88,11 @@ defmodule PanWeb.Live.Category.Show do
             href={category_frontend_path(@socket, :show, @category.parent)}
             class="hover:text-blue-400"
           >
-            <Icon.render name="folder-heroicons-outline" /> {@category.parent.title}
+            <Icon.render name="folder" /> {@category.parent.title}
           </.link>
           /
         </span>
-        <Icon.render name="folder-open-heroicons-outline" /> {@category.title}
+        <Icon.render name="folder-open" /> {@category.title}
       </:panel_heading>
 
       <div :if={@current_user_id} class="m-4">

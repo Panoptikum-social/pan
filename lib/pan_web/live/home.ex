@@ -55,7 +55,7 @@ defmodule PanWeb.Live.Home do
             <TopList.render
               items={@liked_podcasts}
               purpose="podcast"
-              icon="heart-heroicons-outline"
+              icon="heart"
             />
           </Panel.render>
 
@@ -69,7 +69,7 @@ defmodule PanWeb.Live.Home do
             <TopList.render
               items={@popular_podcasts}
               purpose="podcast"
-              icon="user-heroicons-outline"
+              icon="user"
             />
           </Panel.render>
         </div>

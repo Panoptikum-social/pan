@@ -10,6 +10,10 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Miscellaneous open items
 
+- **#443 Deprecated logger level (found 2026-10-29 during #440):** config/test.exs:39
+  sets `config :logger, level: :warn`; Elixir 1.20 warns on every test
+  run ("please use :warning instead").
+
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
   table (1c6a0807, Mappings tab on /admin/categories/merge, 34 old Apple
   names seeded) went to prod 2026-10-21, with the stray merges there. Check
@@ -59,14 +63,6 @@ Plan, in order:
   recommendation (+ `-content`) defined per theme, used through one class or
   component each (e.g. `btn-podcast`), so episode and podcast buttons stop
   differing.
-- **#440 Switch to Tabler Icons** (decided 2026-10-29, before #438/#439,
-  which depend on it): today 54 icon templates in
-  lib/pan_web/templates/live/icon/ mix Heroicons (40) and Line Awesome (13,
-  unmaintained). Tabler (MIT, ~5,900 icons, `currentColor`) covers category
-  topics. Vendor the full outline set (~5,000 SVGs) into the repo, rendered
-  by name, so the #439 admin can pick any icon; replace the 54 existing
-  icons by Tabler equivalents. Also fixes the misspelled
-  `clock-horoicons-outline.html.heex`.
 - **#438 Entity buttons → colored links** (decided 2026-10-29): podcast,
   episode, category, persona, user components (built on `LinkButton`) render
   the entity's SVG icon in its entity color, then the title as a plain link
@@ -74,7 +70,8 @@ Plan, in order:
   space than buttons, which easily touch each other; avoids white-on-pastel
   contrast trouble. Do together with #433. Open: whether `large` header
   buttons keep a filled background.
-- **#439 Distinct icon per category, then links there too:** every category
+- **#439 Distinct icon per category, then links there too:** (Tabler Icons
+  are in, #440: any name from priv/icons/tabler works) every category
   (top level and subcategories) gets its own icon, so the category tree can
   also switch to colored links (replaces the chips in #434). Decided
   2026-10-29: icon stored in a column on `categories`, editable in admin;

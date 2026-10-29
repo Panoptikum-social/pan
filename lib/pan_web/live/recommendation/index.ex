@@ -48,7 +48,7 @@ defmodule PanWeb.Live.Recommendation.Index do
           <div class="flex justify-between">
             <span><UserButton.render for={recommendation.user} /> recommended</span>
             <div>
-              <Icon.render name="calendar-heroicons-outline" />
+              <Icon.render name="calendar" />
               {Calendar.strftime(recommendation.inserted_at, "%x")}
             </div>
           </div>
@@ -67,12 +67,12 @@ defmodule PanWeb.Live.Recommendation.Index do
             <span :if={recommendation.chapter_id}>
               <PodcastButton.render for={recommendation.chapter.episode.podcast} /><br />
               <EpisodeButton.render for={recommendation.chapter.episode} /><br />
-              <Icon.render name="indent-lineawesome-solid" /> {recommendation.chapter.title}
+              <Icon.render name="indent-increase" /> {recommendation.chapter.title}
             </span>
           </p>
 
           <p>
-            <Icon.render name="thumb-up-heroicons-outline" />
+            <Icon.render name="thumb-up" />
             <i>„{recommendation.comment}"</i>
           </p>
         </div>

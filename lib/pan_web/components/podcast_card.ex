@@ -12,7 +12,7 @@ defmodule PanWeb.Component.PodcastCard do
     <PodcastButton.render for={@for} />
 
     <p :if={@for.inserted_at} class="mt-1">
-      <Icon.render name="calendar-heroicons-outline" />
+      <Icon.render name="calendar" />
       {Calendar.strftime(@for.inserted_at, "%x")}
     </p>
 
@@ -21,7 +21,7 @@ defmodule PanWeb.Component.PodcastCard do
     </p>
 
     <p :if={@for.description} class="mt-1">
-      <Icon.render name="photograph-heroicons-outline" /> {truncate_string(@for.description, 500)}
+      <Icon.render name="photo" /> {truncate_string(@for.description, 500)}
     </p>
     """
   end

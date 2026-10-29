@@ -56,7 +56,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               phx-target={@myself}
               class="border border-gray-darker rounded bg-warning hover:bg-warning-light px-2 py-1"
             >
-              <Icon.render name="cog-heroicons-outline" /> Metadata Update
+              <Icon.render name="settings" /> Metadata Update
             </button>
             <span
               class="relative"
@@ -66,7 +66,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                 class="inline"
                 @click="toggleMetadata"
               >
-                <Icon.render name="information-circle-heroicons" />
+                <Icon.render name="info-circle" />
               </div>
               <div
                 x-show="metadataOpen"
@@ -117,11 +117,11 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
           </.link>
         </div>
       <% else %>
-        {@podcast.likes_count} <Icon.render name="heart-heroicons-outline" />
+        {@podcast.likes_count} <Icon.render name="heart" />
         Likes &nbsp; &nbsp; {@podcast.followers_count}
-        <Icon.render name="annotation-heroicons-outline" />
+        <Icon.render name="message" />
         Followers &nbsp; &nbsp; {@podcast.subscriptions_count}
-        <Icon.render name="user-heroicons-outline" /> Subscribers
+        <Icon.render name="user" /> Subscribers
         <p class="mt-4">
           <i>
             <a

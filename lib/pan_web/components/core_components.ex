@@ -19,7 +19,7 @@ defmodule PanWeb.CoreComponents do
       we build on. You will use it for layout, sizing, flexbox, grid, and
       spacing.
 
-    * [Heroicons](https://heroicons.com) - see `icon/1` for usage.
+    * [Tabler Icons](https://tabler.io/icons) - see `icon/1` for usage.
 
     * [Phoenix.Component](https://hexdocs.pm/phoenix_live_view/Phoenix.Component.html) -
       the component system used by Phoenix. Some components, such as `<.link>`
@@ -65,9 +65,9 @@ defmodule PanWeb.CoreComponents do
         @kind == :error && "alert-error"
       ]}>
         {if @kind == :info,
-          do: PanWeb.ViewHelpers.icon("information-circle-heroicons", class: "size-5 shrink-0")}
+          do: PanWeb.ViewHelpers.icon("info-circle", class: "size-5 shrink-0")}
         {if @kind == :error,
-          do: PanWeb.ViewHelpers.icon("exclamation-heroicons-outline", class: "size-5 shrink-0")}
+          do: PanWeb.ViewHelpers.icon("alert-triangle", class: "size-5 shrink-0")}
         <div>
           <p :if={@title} class="font-semibold">{@title}</p>
           <p>{msg}</p>
@@ -309,7 +309,7 @@ defmodule PanWeb.CoreComponents do
   def error(assigns) do
     ~H"""
     <p class="mt-1.5 flex gap-2 items-center text-sm text-error">
-      <.icon name="hero-exclamation-circle" class="size-5" />
+      <.icon name="alert-circle" class="size-5" />
       {render_slot(@inner_block)}
     </p>
     """
@@ -429,29 +429,19 @@ defmodule PanWeb.CoreComponents do
   end
 
   @doc """
-  Renders a [Heroicon](https://heroicons.com).
-
-  Heroicons come in three styles – outline, solid, and mini.
-  By default, the outline style is used, but solid and mini may
-  be applied by using the `-solid` and `-mini` suffix.
-
-  You can customize the size and colors of the icons by setting
-  width, height, and background color classes.
-
-  Icons are extracted from the `deps/heroicons` directory and bundled within
-  your compiled app.css by the plugin in `assets/vendor/heroicons.js`.
+  Renders a Tabler icon by name, see `PanWeb.Live.Icon`.
 
   ## Examples
 
-      <.icon name="hero-x-mark" />
-      <.icon name="hero-arrow-path" class="ml-1 size-3 motion-safe:animate-spin" />
+      <.icon name="x" />
+      <.icon name="refresh" class="ml-1 size-3 motion-safe:animate-spin" />
   """
   attr :name, :string, required: true
-  attr :class, :any, default: "size-4"
+  attr :class, :string, default: "size-4"
 
-  def icon(%{name: "hero-" <> _} = assigns) do
+  def icon(assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    {PanWeb.ViewHelpers.icon(@name, class: @class)}
     """
   end
 

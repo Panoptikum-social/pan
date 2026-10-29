@@ -4,7 +4,7 @@
       href={podcast_frontend_path(@conn, :show, @podcast.id)}
       class="truncate text-white hover:text-gray-lighter"
     >
-      {icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top")} {@podcast.title}
+      {icon("microphone", class: "w-4 h-4 inline align-text-top")} {@podcast.title}
     </.link>
   </div>
 
@@ -49,7 +49,7 @@
           </label>
         </div>
         <div class="col-span-2">
-          {icon("calendar-heroicons-outline")}
+          {icon("calendar")}
           {Calendar.strftime(@podcast.inserted_at, "%x")}
         </div>
 
@@ -64,7 +64,7 @@
               href={category_frontend_path(@conn, :show, category)}
               class="self-start border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 rounded-md truncate max-w-full"
             >
-              {icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top")} {category.title}
+              {icon("folder-open", class: "w-4 h-4 inline align-text-top")} {category.title}
             </.link>
           <% end %>
         </div>
@@ -80,7 +80,7 @@
               href={persona_frontend_path(@conn, :show, engagement.persona)}
               class="self-start border border-gray-dark bg-lavender hover:bg-lavender-light text-white text-sm py-1 px-2 rounded-md truncate max-w-full col-span-2"
             >
-              {icon("user-heroicons-outline", class: "w-4 h-4 inline align-text-top")} {engagement.persona.name}
+              {icon("user", class: "w-4 h-4 inline align-text-top")} {engagement.persona.name}
             </.link>
             <span class="inline-block eading-none text-center whitespace-nowrap
                         align-baseline bg-success hover:bg-success-dark text-white p-1 rounded-md text-xs">

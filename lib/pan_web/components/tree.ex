@@ -58,9 +58,9 @@ defmodule PanWeb.Component.Tree do
         class="btn btn-sm btn-outline btn-primary self-start mb-2"
       >
         <%= if @expanded == %{} do %>
-          <Icon.render name="folder-open-heroicons-outline" /> Expand all
+          <Icon.render name="folder-open" /> Expand all
         <% else %>
-          <Icon.render name="folder-heroicons-outline" /> Collapse all
+          <Icon.render name="folder" /> Collapse all
         <% end %>
       </button>
       {render_tree(assigns, @nodes, 0, @myself)}
@@ -95,8 +95,8 @@ defmodule PanWeb.Component.Tree do
           phx-value-node-id={node.id}
           phx-target={@myself}
         >
-          <Icon.render :if={@expanded[node.id]} name="folder-open-heroicons-outline" />
-          <Icon.render :if={!@expanded[node.id]} name="folder-heroicons-outline" />
+          <Icon.render :if={@expanded[node.id]} name="folder-open" />
+          <Icon.render :if={!@expanded[node.id]} name="folder" />
         </button>
 
         {node.title}

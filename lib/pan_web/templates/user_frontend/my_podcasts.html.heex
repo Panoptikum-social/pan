@@ -17,7 +17,7 @@
             href={podcast_frontend_path(@conn, :show, podcast)}
             class="border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate"
           >
-            {icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top")} {podcast.title}
+            {icon("microphone", class: "inline w-4 h-4 align-text-top")} {podcast.title}
           </.link>
         <% end %>
       </p>
@@ -35,7 +35,7 @@
             href={podcast_frontend_path(@conn, :show, podcast)}
             class="border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate"
           >
-            {icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top")} {podcast.title}
+            {icon("microphone", class: "inline w-4 h-4 align-text-top")} {podcast.title}
           </.link>
         <% end %>
       </p>
@@ -44,7 +44,7 @@
         method="post"
         class="border border-gray btn btn-primary"
       >
-        {icon("heart-heroicons-outline", class: "w-4 h-4 inline align-baseline")} Like all subscribed
+        {icon("heart", class: "w-4 h-4 inline align-baseline")} Like all subscribed
       </.link>
       &nbsp;
       <.link
@@ -52,7 +52,7 @@
         method="post"
         class="border border-gray bg-info hover:bg-info-light text-white py-2 px-3 rounded-md"
       >
-        {icon("heart-heroicons-outline", class: "w-4 h-4 inline align-baseline")} Follow all subscribed
+        {icon("heart", class: "w-4 h-4 inline align-baseline")} Follow all subscribed
       </.link>
     </div>
   </div>
@@ -68,7 +68,7 @@
             href={podcast_frontend_path(@conn, :show, podcast)}
             class="border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate"
           >
-            {icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top")} {podcast.title}
+            {icon("microphone", class: "inline w-4 h-4 align-text-top")} {podcast.title}
           </.link>
         <% end %>
       </p>
@@ -86,7 +86,7 @@
             href={podcast_frontend_path(@conn, :show, podcast)}
             class="border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 my-1 mr-1 rounded-md truncate"
           >
-            {icon("podcast-lineawesome-solid", class: "inline w-4 h-4 align-text-top")} {podcast.title}
+            {icon("microphone", class: "inline w-4 h-4 align-text-top")} {podcast.title}
           </.link>
         <% end %>
       </p>
@@ -106,14 +106,14 @@
           href={podcast_frontend_path(@conn, :show, id)}
           class="justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         >
-          {icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top")} {truncate_string(
+          {icon("microphone", class: "w-4 h-4 inline align-text-top")} {truncate_string(
             title,
             50
           )}
         </.link>
         <div class="col-span-2 justify-self-end">
           {count}
-          {icon("user-heroicons-outline", class: "w-4 h-4 inline")}
+          {icon("user", class: "w-4 h-4 inline")}
         </div>
       <% end %>
     </div>
@@ -130,14 +130,14 @@
           href={podcast_frontend_path(@conn, :show, id)}
           class="justify-self-start col-span-9 border border-gray-dark hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         >
-          {icon("podcast-lineawesome-solid", class: "w-4 h-4 inline align-text-top")} {truncate_string(
+          {icon("microphone", class: "w-4 h-4 inline align-text-top")} {truncate_string(
             title,
             50
           )}
         </.link>
         <div class="col-span-2 justify-self-end">
           {count}
-          {icon("user-heroicons-outline", class: "w-4 h-4 inline")}
+          {icon("user", class: "w-4 h-4 inline")}
         </div>
       <% end %>
     </div>
@@ -154,14 +154,14 @@
           href={category_frontend_path(@conn, :show, id)}
           class="justify-self-start col-span-9 border border-gray-dark bg-gray-lighter hover:bg-gray-light text-sm py-1 px-2 mr-1 rounded-md truncate max-w-full"
         >
-          {icon("folder-open-heroicons-outline", class: "w-4 h-4 inline align-text-top")} {truncate_string(
+          {icon("folder-open", class: "w-4 h-4 inline align-text-top")} {truncate_string(
             title,
             50
           )}
         </.link>
         <div class="col-span-2 justify-self-end">
           {count}
-          {icon("user-heroicons-outline", class: "w-4 h-4 inline")}
+          {icon("user", class: "w-4 h-4 inline")}
         </div>
       <% end %>
     </div>

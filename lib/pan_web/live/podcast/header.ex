@@ -22,14 +22,14 @@ defmodule PanWeb.Live.Podcast.Header do
         href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
         class="text-link hover:text-link-dark"
       >
-        <Icon.render name="cog-heroicons-outline" /> Show Podcast
+        <Icon.render name="settings" /> Show Podcast
       </a>
 
       <a
         href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")}
         class="text-link hover:text-link-dark"
       >
-        <Icon.render name="rss-heroicons-outline" /> Alternate Feeds
+        <Icon.render name="rss" /> Alternate Feeds
       </a>
     </div>
 
@@ -138,7 +138,7 @@ defmodule PanWeb.Live.Podcast.Header do
           </dt>
           <dd class="col-span-3">{@episodes_count}</dd>
           <dt class="justify-self-end font-medium">
-            <Icon.render name="rss-heroicons-outline" /> Rss-Feeds
+            <Icon.render name="rss" /> Rss-Feeds
           </dt>
           <dd class="col-span-3">
             <a

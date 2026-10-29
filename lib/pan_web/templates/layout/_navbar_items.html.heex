@@ -12,7 +12,7 @@
     class="p-2 text-white text-sm rounded bg-gray hover:bg-gray-light align-middle"
     title="Submit"
   >
-    {nav_icon("search-heroicons-outline")}
+    {nav_icon("search")}
   </button>
 </form>
 
@@ -23,49 +23,49 @@
       title="Categories"
       class="visible-xs-inline"
     >
-      {nav_icon("map-heroicons-outline")} Categories
+      {nav_icon("map")} Categories
     </.link>
   </li>
   <li class="py-1">
     <.link href={community_frontend_path(@conn, :index)} title="Communities">
-      {nav_icon("users-lineawesome-solid")} Communities
+      {nav_icon("users")} Communities
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :random)}>
-      {nav_icon("beaker-heroicons-outline")} Random Recommendation
+      {nav_icon("flask")} Random Recommendation
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :index)}>
-      {nav_icon("gift-heroicons-outline")} Latest Recommendations
+      {nav_icon("gift")} Latest Recommendations
     </.link>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/">
-      {nav_icon("question-mark-circle-heroicons-solid")} About
+      {nav_icon("help-circle-filled")} About
     </a>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/blog">
-      {nav_icon("newspaper-heroicons-outline")} Blog
+      {nav_icon("news")} Blog
     </a>
   </li>
   <li class="py-1">
     <.link href={persona_frontend_path(@conn, :index)}>
-      {nav_icon("user-astronaut-lineawesome-solid")} Podcasters
+      {nav_icon("user-star")} Podcasters
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :index)}>
-      {nav_icon("user-heroicons-outline")} Users
+      {nav_icon("user")} Users
     </.link>
   </li>
 
   <%= if @current_user do %>
     <%= if @current_user.admin do %>
       <li class="py-1">
-        {nav_icon("adjustments-heroicons-outline")}
+        {nav_icon("adjustments-horizontal")}
         <.link href={dashboard_path(@conn, :home)}>Administration</.link>
       </li>
     <% end %>
@@ -76,18 +76,18 @@
     <li class="border-t-2"></li>
     <li class="py-1">
       <.link href={session_path(@conn, :delete, @current_user)} method="delete">
-        {nav_icon("logout-heroicons-outline")} Log Out
+        {nav_icon("logout")} Log Out
       </.link>
     </li>
   <% else %>
     <li class="py-1">
       <.link href={user_frontend_path(@conn, :new)}>
-        {nav_icon("pencil-heroicons-outline")} Sign Up
+        {nav_icon("pencil")} Sign Up
       </.link>
     </li>
     <li class="py-1">
       <.link href={session_path(@conn, :new)}>
-        {nav_icon("login-heroicons-outline")} Log In
+        {nav_icon("login")} Log In
       </.link>
     </li>
   <% end %>

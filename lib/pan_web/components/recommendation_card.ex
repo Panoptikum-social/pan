@@ -11,7 +11,7 @@ defmodule PanWeb.Component.RecommendationCard do
     ~H"""
     <p>
       <span :if={@for.inserted_at} class="float-right">
-        at <Icon.render name="calendar-heroicons-outline" />
+        at <Icon.render name="calendar" />
         {Calendar.strftime(@for.inserted_at, "%x")}
       </span>
       <UserButton.render for={@for.user} /> recommended
@@ -32,7 +32,7 @@ defmodule PanWeb.Component.RecommendationCard do
 
     <%= if @for.chapter do %>
       <p class="mt-2">
-        the chapter <Icon.render name="indent-lineawesome-solid" /> {@for.chapter.title}
+        the chapter <Icon.render name="indent-increase" /> {@for.chapter.title}
       </p>
       <p class="mt-2">
         from episode <EpisodeButton.render for={@for.chapter.episode} />
@@ -43,7 +43,7 @@ defmodule PanWeb.Component.RecommendationCard do
     <% end %>
 
     <p class="mt-2">
-      with <Icon.render name="thumb-up-heroicons-outline" /> <i>„{@for.comment}"</i>
+      with <Icon.render name="thumb-up" /> <i>„{@for.comment}"</i>
     </p>
     """
   end

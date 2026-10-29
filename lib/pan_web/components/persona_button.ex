@@ -18,7 +18,7 @@ defmodule PanWeb.Component.PersonaButton do
         "bg-lavender text-white border border-gray-dark hover:bg-lavender-light hover:border-lavender",
         @class
       ]}
-      icon="user-astronaut-lineawesome-solid"
+      icon="user-star"
       title={truncate_string(@name || @for.name, 80)}
     />
     """

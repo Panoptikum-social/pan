@@ -53,7 +53,7 @@ defmodule PanWeb.Component.CategoryButton do
       to={Routes.category_frontend_path(Endpoint, :show, @id || @for.id)}
       class={[color_class(@index_on_page, @tint), @class]}
       large={@large}
-      icon="folder-heroicons-outline"
+      icon="folder"
       title={@title || @for.title}
       truncate={@truncate}
     >

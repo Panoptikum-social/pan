@@ -167,10 +167,10 @@ defmodule PanWeb.Live.Search do
   defp heading(index) do
     {:safe, icon} =
       case index do
-        "episodes" -> icon("headphones-lineawesome-solid")
-        "podcasts" -> icon("podcast-lineawesome-solid")
-        "categories" -> icon("folder-heroicons-outline")
-        "personas" -> icon("user-astronaut-lineawesome-solid")
+        "episodes" -> icon("headphones")
+        "podcasts" -> icon("microphone")
+        "categories" -> icon("folder")
+        "personas" -> icon("user-star")
       end
 
     case index do
@@ -334,7 +334,7 @@ defmodule PanWeb.Live.Search do
                 to={persona_frontend_path(PanWeb.Endpoint, :show, gig["persona_id"])}
                 class="bg-lavender text-white border border-gray-dark
                                 hover:bg-lavender-light hover:border-lavender"
-                icon="user-astronaut-lineawesome-solid"
+                icon="user-star"
                 title={gig["persona_name"]}
               />
               <Pill.render type="lavender">{gig["role"]}</Pill.render>
@@ -345,7 +345,7 @@ defmodule PanWeb.Live.Search do
             :if={hit["_source"]["podcast_id"]}
             to={podcast_frontend_path(PanWeb.Endpoint, :show, hit["_source"]["podcast_id"])}
             class="btn-outline"
-            icon="podcast-lineawesome-solid"
+            icon="microphone"
             title={hit["_source"]["podcast"]["title"]}
             truncate={true}
           />
@@ -357,14 +357,14 @@ defmodule PanWeb.Live.Search do
                 to={persona_frontend_path(Endpoint, :show, engagement["persona_id"])}
                 class="bg-lavender text-white border border-gray-dark
                                   hover:bg-lavender-light hover:border-lavender"
-                icon="user-astronaut-lineawesome-solid"
+                icon="user-star"
                 title={engagement["persona_name"]}
               />
               <LinkButton.render
                 :if={@index != "podcasts"}
                 to={podcast_frontend_path(Endpoint, :show, engagement["podcast_id"])}
                 class="btn-outline"
-                icon="podcast-lineawesome-solid"
+                icon="microphone"
                 title={engagement["podcast_title"]}
               />
               <Pill.render type="lavender">{engagement["role"]}</Pill.render>
@@ -377,7 +377,7 @@ defmodule PanWeb.Live.Search do
               to={category_frontend_path(Endpoint, :show, category["id"])}
               class="btn-outline"
               large={false}
-              icon="folder-heroicons-outline"
+              icon="folder"
               title={category["title"]}
               truncate={false}
             />
