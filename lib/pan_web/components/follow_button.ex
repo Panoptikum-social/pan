@@ -53,7 +53,7 @@ defmodule PanWeb.Component.FollowButton do
         <button
           phx-click="toggle-follow"
           phx-target={@myself}
-          class="btn btn-outline btn-success btn-sm my-2"
+          class="btn btn-outline btn-error btn-sm my-2"
         >
           {@followers_count} <Icon.render name="messages-filled" /> Unfollow
         </button>
@@ -61,7 +61,7 @@ defmodule PanWeb.Component.FollowButton do
         <button
           phx-click="toggle-follow"
           phx-target={@myself}
-          class="btn btn-outline btn-error btn-sm my-2"
+          class="btn btn-outline btn-success btn-sm my-2"
         >
           {@followers_count} <Icon.render name="messages" /> Follow
         </button>

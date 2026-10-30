@@ -95,6 +95,9 @@ theme. Categories: each top level category has its own color (column
   accent, info, warning, success; 4.5:1 like red), the hover fill stays the
   theme color. An outline button without a color looks disabled next to
   colored ones.
+- **Toggle buttons** (Follow, Like, Subscribe): the "good" action green
+  (`btn-success`), its undo (Unfollow, Unlike, Unsubscribe) red
+  (`btn-error`).
 - **Badges** (roles, types, labels; `Pill`): `badge badge-outline
   badge-<color>`, the color in the frame, the text in the text color (rule in
   `app.css`, the accents don't reach AA as small text).
