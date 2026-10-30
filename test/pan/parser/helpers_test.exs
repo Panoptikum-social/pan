@@ -115,6 +115,16 @@ defmodule Pan.Parser.HelpersTest do
       assert parses?(cleaned)
       assert title(cleaned) == "Burger < King"
     end
+
+    test "escapes a less-than sign directly before a greater-than sign" do
+      raw = feed("<title>A <> B</title>")
+
+      refute parses?(raw)
+
+      cleaned = clean(raw)
+      assert parses?(cleaned)
+      assert title(cleaned) == "A <> B"
+    end
   end
 
   describe "unescape_double_escaped_entities/1" do

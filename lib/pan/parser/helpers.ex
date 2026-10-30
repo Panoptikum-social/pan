@@ -500,11 +500,12 @@ defmodule Pan.Parser.Helpers do
     Regex.replace(~r/&(?![a-zA-Z_:#])/, xml, "&amp;")
   end
 
-  # A "<" followed by whitespace can never start markup (element names,
-  # "</", "<!" and "<?" all follow it directly), so it's text like
-  # "Burger < King" — xmerl fatals with {:invalid_name, ~c" King "} on it.
+  # A "<" followed by whitespace or ">" can never start markup (element
+  # names, "</", "<!" and "<?" all follow it directly), so it's text like
+  # "Burger < King" or "A <> B" — xmerl fatals with
+  # {:invalid_name, ~c" King "} or {:invalid_name, ~c">"} on it.
   def escape_stray_less_thans(xml) do
-    Regex.replace(~r/<(?=\s)/, xml, "&lt;")
+    Regex.replace(~r/<(?=[\s>])/, xml, "&lt;")
   end
 
   # the encoding attribute of a leading XML declaration (after an optional BOM)
