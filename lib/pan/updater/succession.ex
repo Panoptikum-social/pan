@@ -23,7 +23,7 @@ defmodule Pan.Updater.Succession do
   """
 
   import Ecto.Query
-  alias Pan.Parser.{Download, Helpers}
+  alias Pan.Parser.Download
   alias Pan.Repo
   alias Pan.Updater.RssFeed
   alias PanWeb.{Episode, Feed, FeedBacklog, Podcast}
@@ -161,7 +161,7 @@ defmodule Pan.Updater.Succession do
         "episodes known), not followed, needs a review"
 
     # one email per case, not one per update
-    if podcast.last_error_message != Helpers.to_255(message), do: notify_admin(podcast, message)
+    if podcast.last_error_message != message, do: notify_admin(podcast, message)
 
     record_message(podcast, message)
     {:not_followed, message}
@@ -179,7 +179,7 @@ defmodule Pan.Updater.Succession do
   # No failure_count: the podcast's own feed works, it must not be retired.
   defp record_message(podcast, message) do
     Podcast.changeset(podcast, %{
-      last_error_message: Helpers.to_255(message),
+      last_error_message: message,
       last_error_occured: now()
     })
     |> Repo.update(force: true)

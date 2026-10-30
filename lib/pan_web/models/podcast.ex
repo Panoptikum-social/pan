@@ -1,7 +1,6 @@
 defmodule PanWeb.Podcast do
   use PanWeb, :model
   import Pan.Parser.MyDateTime, only: [now: 0, time_shift: 2, time_diff: 3]
-  alias Pan.Parser.Helpers
   alias Pan.{Repo, Search}
   require Logger
 
@@ -347,11 +346,9 @@ defmodule PanWeb.Podcast do
     podcast
     |> Podcast.changeset(%{
       failure_count: (podcast.failure_count || 0) + 1,
-      # last_error_message is varchar(255) — a crash's full formatted
-      # message + stacktrace (Exception.format/3) regularly runs far past
-      # that, and an uncaught length overflow here would crash the error
-      # *recorder* itself, taking the whole job down a second time.
-      last_error_message: Helpers.to_255(message),
+      # a text column, kept in full; a non-string reason (e.g. SsrfGuard's
+      # :blocked_host) wouldn't pass the changeset's cast
+      last_error_message: if(is_binary(message), do: message, else: inspect(message)),
       last_error_occured: now()
     })
     |> Repo.update(force: true)

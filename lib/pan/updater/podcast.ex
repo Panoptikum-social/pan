@@ -118,17 +118,19 @@ defmodule Pan.Updater.Podcast do
   end
 
   defp handle_message(podcast, message, no_failure_count_increase) do
+    message =
+      case message do
+        %HTTPoison.Error{reason: reason} -> inspect(reason)
+        message when is_binary(message) -> message
+        # e.g. SsrfGuard's :blocked_host, which the changeset wouldn't cast
+        other -> inspect(other)
+      end
+
     unless no_failure_count_increase == :no_failure_count_increase do
       increase_failure_count_and_persist_error(podcast, message)
     end
 
     Logger.warning(message)
-
-    message =
-      case message do
-        %HTTPoison.Error{reason: reason} -> inspect(reason)
-        _ -> message
-      end
 
     notify({:error, message}, podcast)
     {:error, message}
