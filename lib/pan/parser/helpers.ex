@@ -459,6 +459,7 @@ defmodule Pan.Parser.Helpers do
     {"&Uuml;", "Ü"},
     {"&Atilde;", "Ã"},
     {"&szlig;", "ß"},
+    {"&oelig;", "œ"},
     {"&hellip;", "…"},
     {"&ndash;", "–"},
     {"&mdash;", "—"}
