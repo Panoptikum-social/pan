@@ -14,7 +14,12 @@ defmodule PanWeb.PadTest do
 
   defp insert_community do
     category = Repo.insert!(%Category{title: "Pad category #{System.unique_integer()}"})
-    Repo.insert!(%Community{title: "Pad community", category_id: category.id})
+
+    Repo.insert!(%Community{
+      title: "Pad community",
+      slug: "pad-community-#{category.id}",
+      category_id: category.id
+    })
   end
 
   describe "slugify/1" do

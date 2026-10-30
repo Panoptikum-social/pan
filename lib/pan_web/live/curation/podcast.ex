@@ -5,8 +5,8 @@ defmodule PanWeb.Live.Curation.Podcast do
   alias PanWeb.Component.{CurationGrade, OvertypeField}
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => id, "podcast_id" => podcast_id}, _session, socket) do
-    community = Community.get_by_id(id)
+  def mount(%{"id" => slug, "podcast_id" => podcast_id}, _session, socket) do
+    community = Community.get_by_slug!(slug)
     podcast_id = String.to_integer(podcast_id)
     permissions = Curation.permissions(socket.assigns.current_user_id, community.id)
     category_podcast = Curation.category_podcast(community, podcast_id)

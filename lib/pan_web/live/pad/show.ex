@@ -10,8 +10,8 @@ defmodule PanWeb.Live.Pad.Show do
   # The editor (PadEditor hook, assets/js/pad_editor.js) syncs through
   # PanWeb.PadChannel. Visitors and non-followers get the same "not found" as
   # for a pad that doesn't exist, so they can't tell which pads there are.
-  def mount(%{"id" => community_id, "slug" => slug}, _session, socket) do
-    with %Community{} = community <- Community.find_by_id(community_id),
+  def mount(%{"id" => community_slug, "slug" => slug}, _session, socket) do
+    with %Community{} = community <- Community.find_by_slug(community_slug),
          %{read: true} = permissions <-
            Pad.permissions(socket.assigns.current_user_id, community.id),
          %Pad{} = pad <- Pad.get_by_slug(community.id, slug) do
@@ -32,7 +32,12 @@ defmodule PanWeb.Live.Pad.Show do
          page_title: pad.title <> " (Pad, " <> community.title <> ")"
        )}
     else
-      _ -> {:ok, assign(socket, error: "not_found", page_title: "Pad not found")}
+      _ ->
+        if community = Community.get_by_legacy_id(community_slug) do
+          {:ok, push_navigate(socket, to: pad_frontend_path(socket, :show, community, slug))}
+        else
+          {:ok, assign(socket, error: "not_found", page_title: "Pad not found")}
+        end
     end
   end
 
@@ -113,7 +118,7 @@ defmodule PanWeb.Live.Pad.Show do
       {:ok, pad} ->
         {:noreply,
          push_navigate(socket,
-           to: pad_frontend_path(socket, :show, socket.assigns.community.id, pad.slug)
+           to: pad_frontend_path(socket, :show, socket.assigns.community, pad.slug)
          )}
 
       {:error, changeset} ->
@@ -128,7 +133,7 @@ defmodule PanWeb.Live.Pad.Show do
     {:noreply,
      socket
      |> put_flash(:info, "Pad \"#{pad.title}\" deleted.")
-     |> push_navigate(to: community_frontend_path(socket, :show, socket.assigns.community.id))}
+     |> push_navigate(to: community_frontend_path(socket, :show, socket.assigns.community))}
   end
 
   defp snapshot_author(%{user_id: nil, note: nil}), do: "automatic"
@@ -164,7 +169,7 @@ defmodule PanWeb.Live.Pad.Show do
         <p class="text-sm">
           Pad of the community
           <.link
-            navigate={community_frontend_path(@socket, :show, @community.id)}
+            navigate={community_frontend_path(@socket, :show, @community)}
             class="underline hover:text-primary"
           >
             {@community.title}
@@ -196,7 +201,7 @@ defmodule PanWeb.Live.Pad.Show do
           data-read-only={to_string(@pad.read_only)}
           data-user-name={@user_name}
           data-user-color={cursor_color(@current_user_id)}
-          data-community-url={community_frontend_path(@socket, :show, @community.id)}
+          data-community-url={community_frontend_path(@socket, :show, @community)}
           class="mt-4 grid gap-4 md:grid-cols-2"
         >
           <div

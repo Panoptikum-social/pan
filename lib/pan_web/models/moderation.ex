@@ -32,10 +32,10 @@ defmodule PanWeb.Moderation do
     |> Repo.all()
   end
 
-  def get_by_catagory_id_and_user_id(category_id, user_id) do
+  def get_by_community_slug_and_user_id(slug, user_id) do
     from(m in Moderation,
       join: c in assoc(m, :community),
-      where: c.category_id == ^category_id and m.user_id == ^user_id,
+      where: c.slug == ^slug and m.user_id == ^user_id,
       preload: [community: :category]
     )
     |> Repo.one()

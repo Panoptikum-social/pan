@@ -138,7 +138,13 @@ defmodule PanWeb.PodcastMergeTest do
   defp put_in_community(podcast) do
     n = System.unique_integer([:positive])
     category = Repo.insert!(%Category{title: "Community category #{n}"})
-    Repo.insert!(%Community{title: "Community #{n}", category_id: category.id})
+
+    Repo.insert!(%Community{
+      title: "Community #{n}",
+      slug: "community-#{n}",
+      category_id: category.id
+    })
+
     Repo.insert_all("categories_podcasts", [%{category_id: category.id, podcast_id: podcast.id}])
   end
 

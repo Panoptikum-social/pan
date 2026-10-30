@@ -20,7 +20,12 @@ defmodule PanWeb.Live.PadTest do
 
   defp insert_community do
     category = Repo.insert!(%Category{title: "Pad live category #{System.unique_integer()}"})
-    Repo.insert!(%Community{title: "Pad live community", category_id: category.id})
+
+    Repo.insert!(%Community{
+      title: "Pad live community",
+      slug: "pad-live-community-#{category.id}",
+      category_id: category.id
+    })
   end
 
   defp follow(user, community),
@@ -39,6 +44,13 @@ defmodule PanWeb.Live.PadTest do
   end
 
   describe "community page" do
+    test "an old link with the id goes to the slug address", %{conn: conn, community: community} do
+      path = community_frontend_path(@endpoint, :show, community)
+
+      assert {:error, {:live_redirect, %{to: ^path}}} =
+               live(conn, "/communities/#{community.id}")
+    end
+
     test "visitors and non-followers don't see the pads", %{conn: conn, community: community} do
       path = community_frontend_path(@endpoint, :show, community)
 
@@ -93,7 +105,7 @@ defmodule PanWeb.Live.PadTest do
       assert {:error, {:live_redirect, %{to: to}}} =
                view |> form("#new-pad-form", pad: %{title: "Ideas für 2027"}) |> render_submit()
 
-      assert to == pad_frontend_path(@endpoint, :show, community.id, "ideas-fuer-2027")
+      assert to == pad_frontend_path(@endpoint, :show, community, "ideas-fuer-2027")
       assert Pad.get_by_slug(community.id, "ideas-fuer-2027")
     end
 
@@ -115,7 +127,7 @@ defmodule PanWeb.Live.PadTest do
          %{conn: conn, community: community, pad: pad} do
       moderator = insert_user()
       moderate(moderator, community)
-      path = pad_frontend_path(@endpoint, :show, community.id, pad.slug)
+      path = pad_frontend_path(@endpoint, :show, community, pad.slug)
 
       for conn <- [conn, logged_in(conn, insert_user()), logged_in(conn, moderator)] do
         {:ok, _view, html} = live(conn, path)
@@ -130,7 +142,7 @@ defmodule PanWeb.Live.PadTest do
       follow(user, community)
 
       {:ok, view, html} =
-        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
+        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community, pad.slug))
 
       assert html =~ ~s(phx-hook="PadEditor")
       assert has_element?(view, "#pad-editor-#{pad.id}[data-pad-id='#{pad.id}']")
@@ -145,7 +157,7 @@ defmodule PanWeb.Live.PadTest do
       moderate(user, community)
 
       {:ok, view, _html} =
-        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
+        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community, pad.slug))
 
       view |> element("#toggle-read-only") |> render_click()
       assert Repo.get!(Pad, pad.id).read_only
@@ -154,7 +166,7 @@ defmodule PanWeb.Live.PadTest do
       assert {:error, {:live_redirect, %{to: to}}} =
                view |> form("#rename-pad-form", pad: %{title: "Old notes"}) |> render_submit()
 
-      assert to == pad_frontend_path(@endpoint, :show, community.id, "old-notes")
+      assert to == pad_frontend_path(@endpoint, :show, community, "old-notes")
 
       {:ok, view, _html} = live(logged_in(conn, user), to)
 
@@ -171,7 +183,7 @@ defmodule PanWeb.Live.PadTest do
       follow(user, community)
 
       {:ok, view, _html} =
-        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
+        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community, pad.slug))
 
       html =
         view
@@ -211,7 +223,7 @@ defmodule PanWeb.Live.PadTest do
       moderate(user, community)
 
       {:ok, view, _html} =
-        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community.id, pad.slug))
+        live(logged_in(conn, user), pad_frontend_path(@endpoint, :show, community, pad.slug))
 
       Repo.delete!(follow)
       assert view |> element("#delete-pad") |> render_click() =~ "Only moderators"

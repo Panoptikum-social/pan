@@ -5,6 +5,7 @@ defmodule PanWeb.Community do
 
   schema "communities" do
     field(:title, :string)
+    field(:slug, :string)
     field(:website, :string)
     field(:description, Ecto.EctoText)
     field(:fediverse_address, :string)
@@ -25,7 +26,27 @@ defmodule PanWeb.Community do
     |> validate_length(:title, max: 255)
     |> validate_length(:website, max: 255)
     |> validate_length(:fediverse_address, max: 255)
+    |> put_slug()
     |> unique_constraint(:category_id)
+    |> unique_constraint(:title,
+      name: :communities_slug_index,
+      message: "a community with this or a very similar title already exists"
+    )
+  end
+
+  # the community's address, changes along with the title (old links break,
+  # by decision)
+  defp put_slug(changeset) do
+    case get_change(changeset, :title) do
+      nil ->
+        changeset
+
+      title ->
+        case PanWeb.Pad.slugify(title) do
+          "" -> add_error(changeset, :title, "needs at least one letter or digit")
+          slug -> put_change(changeset, :slug, slug)
+        end
+    end
   end
 
   def follow(community_id, user_id) do
@@ -60,6 +81,22 @@ defmodule PanWeb.Community do
     |> Repo.preload(moderators: from(u in User, order_by: u.name))
   end
 
+  def find_by_slug(slug) do
+    Repo.get_by(Community, slug: slug)
+    |> Repo.preload(moderators: from(u in User, order_by: u.name))
+  end
+
+  def get_by_slug(slug), do: Repo.get_by(Community, slug: slug)
+  def get_by_slug!(slug), do: Repo.get_by!(Community, slug: slug)
+
+  @doc "Links from before #483 carry the id instead of the slug."
+  def get_by_legacy_id(param) do
+    case Integer.parse(param) do
+      {id, ""} -> Repo.get(Community, id)
+      _ -> nil
+    end
+  end
+
   def all do
     from(c in Community, order_by: c.title)
     |> Repo.all()
@@ -86,4 +123,8 @@ defmodule PanWeb.Community do
     from(p in (Community |> Repo.get!(id) |> Ecto.assoc(:personas)), order_by: p.name)
     |> Repo.all()
   end
+end
+
+defimpl Phoenix.Param, for: PanWeb.Community do
+  def to_param(%{slug: slug}), do: slug
 end

@@ -25,7 +25,14 @@ defmodule PanWeb.PadChannelTest do
 
   setup do
     category = Repo.insert!(%Category{title: "Pad channel category #{System.unique_integer()}"})
-    community = Repo.insert!(%Community{title: "Pad channel community", category_id: category.id})
+
+    community =
+      Repo.insert!(%Community{
+        title: "Pad channel community",
+        slug: "pad-channel-community-#{category.id}",
+        category_id: category.id
+      })
+
     {:ok, pad} = Pad.create(community.id, %{"title" => "Notes"})
 
     follower = insert_user()

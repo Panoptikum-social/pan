@@ -6,8 +6,8 @@ defmodule PanWeb.Live.Moderation.Moderate do
   alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => id}, session, socket) do
-    moderation = Moderation.get_by_catagory_id_and_user_id(id, session["user_id"])
+  def mount(%{"id" => slug}, session, socket) do
+    moderation = Moderation.get_by_community_slug_and_user_id(slug, session["user_id"])
 
     columns = [
       :id,
@@ -48,14 +48,13 @@ defmodule PanWeb.Live.Moderation.Moderate do
         }
       )
 
-    podcast_ids = Podcast.ids_by_category_id(id)
-
     if moderation do
       {:ok,
        assign(socket,
+         community: moderation.community,
          category: moderation.community.category,
          cols: cols,
-         podcast_ids: podcast_ids,
+         podcast_ids: Podcast.ids_by_category_id(moderation.community.category_id),
          existing_search_term: "",
          existing_search_results: []
        )}
@@ -70,25 +69,25 @@ defmodule PanWeb.Live.Moderation.Moderate do
   end
 
   def handle_info({:show_episodes, podcast_id}, socket) do
-    category_id = socket.assigns[:category].id
+    community = socket.assigns.community
 
     episode_grid_path =
-      Routes.moderation_frontend_path(socket, :episode_grid, category_id, podcast_id)
+      Routes.moderation_frontend_path(socket, :episode_grid, community, podcast_id)
 
     {:noreply, push_navigate(socket, to: episode_grid_path)}
   end
 
   def handle_info({:show_feeds, podcast_id}, socket) do
-    category_id = socket.assigns[:category].id
-    feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, category_id, podcast_id)
+    community = socket.assigns.community
+    feed_grid_path = Routes.moderation_frontend_path(socket, :feed_grid, community, podcast_id)
     {:noreply, push_navigate(socket, to: feed_grid_path)}
   end
 
   def handle_info({:edit_podcast, podcast_id}, socket) do
-    category_id = socket.assigns[:category].id
+    community = socket.assigns.community
 
     edit_podcast_path =
-      Routes.moderation_frontend_path(socket, :edit_podcast, category_id, podcast_id)
+      Routes.moderation_frontend_path(socket, :edit_podcast, community, podcast_id)
 
     {:noreply, push_navigate(socket, to: edit_podcast_path)}
   end
@@ -205,7 +204,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
       </h1>
 
       <.link
-        navigate={Routes.moderation_frontend_path(@socket, :api_errors, @category.id)}
+        navigate={Routes.moderation_frontend_path(@socket, :api_errors, @community)}
         class="link"
       >API errors of the last 24 hours</.link>
 

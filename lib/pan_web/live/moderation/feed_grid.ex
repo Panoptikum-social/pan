@@ -6,8 +6,8 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => category_id, "podcast_id" => podcast_id}, session, socket) do
-    moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
+  def mount(%{"id" => slug, "podcast_id" => podcast_id}, session, socket) do
+    moderation = Moderation.get_by_community_slug_and_user_id(slug, session["user_id"])
     podcast = Podcast.get_by_id(podcast_id)
 
     columns = [
@@ -41,12 +41,17 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
         }
       )
 
-    feed_ids = Feed.ids_by_category_id_and_podcast_id(category_id, podcast_id)
-    podcast_ids = Podcast.ids_by_category_id(category_id)
+    category_id = moderation && moderation.community.category_id
 
-    if moderation && Enum.member?(podcast_ids, String.to_integer(podcast_id)) do
+    if moderation &&
+         Enum.member?(Podcast.ids_by_category_id(category_id), String.to_integer(podcast_id)) do
       {:ok,
-       assign(socket, podcast: podcast, category_id: category_id, cols: cols, feed_ids: feed_ids)}
+       assign(socket,
+         podcast: podcast,
+         community: moderation.community,
+         cols: cols,
+         feed_ids: Feed.ids_by_category_id_and_podcast_id(category_id, podcast_id)
+       )}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -58,8 +63,8 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   end
 
   def handle_info({:edit_feed, feed_id}, socket) do
-    category_id = socket.assigns[:category_id]
-    edit_feed_path = Routes.moderation_frontend_path(socket, :edit_feed, category_id, feed_id)
+    community = socket.assigns.community
+    edit_feed_path = Routes.moderation_frontend_path(socket, :edit_feed, community, feed_id)
     {:noreply, push_navigate(socket, to: edit_feed_path)}
   end
 

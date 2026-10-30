@@ -20,12 +20,12 @@
   </div>
 
   <ul class="list-disc m-4">
-    <%= for category <- @categories do %>
+    <%= for community <- @communities do %>
       <li>
         <.link
-          href={moderation_frontend_path(@conn, :moderation, category)}
+          href={moderation_frontend_path(@conn, :moderation, community)}
           class="underline hover:text-primary"
-        >{category.title}</.link>
+        >{community.title}</.link>
       </li>
     <% end %>
   </ul>

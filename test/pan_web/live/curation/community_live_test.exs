@@ -21,7 +21,11 @@ defmodule PanWeb.Live.Curation.CommunityLiveTest do
     category = Repo.insert!(%Category{title: "Curation category #{n}"})
 
     community =
-      Repo.insert!(%Community{title: "Curation community #{n}", category_id: category.id})
+      Repo.insert!(%Community{
+        title: "Curation community #{n}",
+        slug: "curation-community-#{n}",
+        category_id: category.id
+      })
 
     Repo.insert!(%Moderation{user_id: moderator.id, community_id: community.id})
     podcast = Repo.insert!(%Podcast{title: "Curation podcast #{n}", description: "d"})
@@ -47,7 +51,7 @@ defmodule PanWeb.Live.Curation.CommunityLiveTest do
     community: community,
     podcast: podcast
   } do
-    {:ok, view, _html} = live(conn, "/curator/communities/#{community.id}")
+    {:ok, view, _html} = live(conn, "/curator/communities/#{community.slug}")
 
     button = element(view, "button[phx-value-podcast_id='#{podcast.id}']")
     assert render(button) =~ "data-confirm=\"Mark this podcast as done?"

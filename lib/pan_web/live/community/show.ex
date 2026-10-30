@@ -11,12 +11,16 @@ defmodule PanWeb.Live.Community.Show do
   alias PanWeb.Component.LinkButton
   alias PanWeb.Pad
 
-  def mount(%{"id" => id}, session, socket) do
+  def mount(%{"id" => slug}, session, socket) do
     socket = assign(socket, current_user_id: session["user_id"])
 
-    case Community.find_by_id(id) do
+    case Community.find_by_slug(slug) do
       nil ->
-        {:ok, assign(socket, error: "not_found")}
+        if community = Community.get_by_legacy_id(slug) do
+          {:ok, push_navigate(socket, to: community_frontend_path(socket, :show, community))}
+        else
+          {:ok, assign(socket, error: "not_found")}
+        end
 
       community ->
         {:ok,
@@ -54,7 +58,7 @@ defmodule PanWeb.Live.Community.Show do
         {:ok, pad} ->
           {:noreply,
            push_navigate(socket,
-             to: pad_frontend_path(socket, :show, community.id, pad.slug)
+             to: pad_frontend_path(socket, :show, community, pad.slug)
            )}
 
         {:error, changeset} ->
@@ -115,7 +119,7 @@ defmodule PanWeb.Live.Community.Show do
           <ul :if={@pads != []} class="list-disc m-4">
             <li :for={pad <- @pads}>
               <.link
-                navigate={pad_frontend_path(@socket, :show, @community.id, pad.slug)}
+                navigate={pad_frontend_path(@socket, :show, @community, pad.slug)}
                 class="underline hover:text-primary"
               >
                 {pad.title}

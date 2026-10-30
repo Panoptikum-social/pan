@@ -5,8 +5,8 @@ defmodule PanWeb.Live.Curation.Community do
   alias PanWeb.Component.CurationGrade
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => id}, _session, socket) do
-    community = Community.get_by_id(id)
+  def mount(%{"id" => slug}, _session, socket) do
+    community = Community.get_by_slug!(slug)
     permissions = Curation.permissions(socket.assigns.current_user_id, community.id)
 
     if permissions.read do

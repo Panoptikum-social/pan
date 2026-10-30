@@ -7,8 +7,8 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => category_id, "episode_id" => episode_id}, session, socket) do
-    moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
+  def mount(%{"id" => slug, "episode_id" => episode_id}, session, socket) do
+    moderation = Moderation.get_by_community_slug_and_user_id(slug, session["user_id"])
     episode = Episode.get_by_id(episode_id)
 
     # Deliberately not the full Episode schema — a moderator-facing allowlist.
@@ -43,10 +43,12 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
         }
       )
 
-    podcast_ids = Podcast.ids_by_category_id(category_id)
-
-    if moderation && Enum.member?(podcast_ids, episode.podcast_id) do
-      {:ok, assign(socket, episode: episode, cols: cols, category_id: category_id)}
+    if moderation &&
+         Enum.member?(
+           Podcast.ids_by_category_id(moderation.community.category_id),
+           episode.podcast_id
+         ) do
+      {:ok, assign(socket, episode: episode, cols: cols, community: moderation.community)}
     else
       {:ok, assign(socket, error: "not_found")}
     end
@@ -62,7 +64,7 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
       Routes.moderation_frontend_path(
         socket,
         :episode_grid,
-        socket.assigns.category_id,
+        socket.assigns.community,
         socket.assigns.episode.podcast_id
       )
 

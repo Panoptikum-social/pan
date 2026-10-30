@@ -1,16 +1,21 @@
 defmodule PanWeb.Live.Moderation.ApiErrors do
   use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
-  alias PanWeb.{ApiRequestError, Category, CategoryPodcast, Moderation}
+  alias PanWeb.{ApiRequestError, Category, CategoryPodcast, Community, Moderation}
   alias PanWeb.Router.Helpers, as: Routes
 
-  # :id is the category id, as on the other moderation pages
-  def mount(%{"id" => id}, session, socket) do
-    if Moderation.get_by_catagory_id_and_user_id(id, session["user_id"]) || socket.assigns.admin do
+  # :id is the community slug, as on the other moderation pages
+  def mount(%{"id" => slug}, session, socket) do
+    community = Community.get_by_slug(slug)
+
+    if community &&
+         (Moderation.get_by_community_slug_and_user_id(slug, session["user_id"]) ||
+            socket.assigns.admin) do
       {:ok,
        assign(socket,
-         category: Category.get_by_id(id),
-         errors: ApiRequestError.last_day_by_podcast(id)
+         community: community,
+         category: Category.get_by_id(community.category_id),
+         errors: ApiRequestError.last_day_by_podcast(community.category_id)
        )}
     else
       {:ok, assign(socket, error: "not_found")}
@@ -59,7 +64,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
         Failed API requests of the last 24 hours on podcasts of this community and on podcasts
         that no longer exist, one row per podcast with its latest error. Times are Vienna time.
         <.link
-          navigate={Routes.moderation_frontend_path(@socket, :moderation, @category.id)}
+          navigate={Routes.moderation_frontend_path(@socket, :moderation, @community)}
           class="link"
         >Back to the moderation</.link>
       </p>
@@ -90,7 +95,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                     Routes.moderation_frontend_path(
                       @socket,
                       :edit_podcast,
-                      @category.id,
+                      @community,
                       error.podcast_id
                     )
                   }
@@ -112,7 +117,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                       Routes.moderation_frontend_path(
                         @socket,
                         :edit_feed,
-                        @category.id,
+                        @community,
                         error.feed_id
                       )
                     }

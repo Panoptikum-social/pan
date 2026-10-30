@@ -22,7 +22,13 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
 
   setup do
     category = Repo.insert!(%Category{title: "API errors category #{System.unique_integer()}"})
-    community = Repo.insert!(%Community{title: "API errors community", category_id: category.id})
+
+    community =
+      Repo.insert!(%Community{
+        title: "API errors community",
+        slug: "api-errors-community-#{category.id}",
+        category_id: category.id
+      })
 
     podcast =
       Repo.insert!(%Podcast{
@@ -49,7 +55,6 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
 
   test "moderators of the community see the errors with a link to fix the feed", %{
     conn: conn,
-    category: category,
     community: community,
     feed: feed
   } do
@@ -57,18 +62,18 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
     Repo.insert!(%Moderation{user_id: moderator.id, community_id: community.id})
 
     {:ok, _view, html} =
-      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, category))
+      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, community))
 
     assert html =~ "Broken Show"
     assert html =~ "Feed download failed"
-    assert html =~ moderation_frontend_path(@endpoint, :edit_feed, category.id, feed.id)
+    assert html =~ moderation_frontend_path(@endpoint, :edit_feed, community, feed.id)
   end
 
-  test "other moderators don't", %{conn: conn, category: category} do
+  test "other moderators don't", %{conn: conn, community: community} do
     {:ok, _view, html} =
       live(
         logged_in(conn, insert_moderator()),
-        moderation_frontend_path(@endpoint, :api_errors, category)
+        moderation_frontend_path(@endpoint, :api_errors, community)
       )
 
     assert html =~ "This is not one of your moderations"
@@ -85,7 +90,7 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
     Repo.insert!(%Moderation{user_id: moderator.id, community_id: community.id})
 
     {:ok, view, _html} =
-      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, category))
+      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, community))
 
     html = view |> element("button", "Remove from community") |> render_click()
 

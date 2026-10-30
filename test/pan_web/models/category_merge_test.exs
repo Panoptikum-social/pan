@@ -7,7 +7,11 @@ defmodule PanWeb.CategoryMergeTest do
   defp insert_category(title), do: Repo.insert!(%Category{title: title})
 
   defp insert_community(category) do
-    Repo.insert!(%Community{title: "Community of #{category.title}", category_id: category.id})
+    Repo.insert!(%Community{
+      title: "Community of #{category.title}",
+      slug: "community-#{category.id}",
+      category_id: category.id
+    })
   end
 
   test "the community of the merged category moves to the target category" do

@@ -8,8 +8,8 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
-  def mount(%{"id" => category_id, "feed_id" => feed_id}, session, socket) do
-    moderation = Moderation.get_by_catagory_id_and_user_id(category_id, session["user_id"])
+  def mount(%{"id" => slug, "feed_id" => feed_id}, session, socket) do
+    moderation = Moderation.get_by_community_slug_and_user_id(slug, session["user_id"])
     feed = Feed.get_by_id(feed_id)
 
     # Deliberately not the full Feed schema — a moderator-facing allowlist.
@@ -38,14 +38,16 @@ defmodule PanWeb.Live.Moderation.EditFeed do
         }
       )
 
-    podcast_ids = Podcast.ids_by_category_id(category_id)
-
-    if moderation && Enum.member?(podcast_ids, feed.podcast_id) do
+    if moderation &&
+         Enum.member?(
+           Podcast.ids_by_category_id(moderation.community.category_id),
+           feed.podcast_id
+         ) do
       {:ok,
        assign(socket,
          feed: feed,
          cols: cols,
-         category_id: category_id,
+         community: moderation.community,
          alternate_feeds: previous_urls(feed)
        )}
     else
@@ -76,7 +78,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
       Routes.moderation_frontend_path(
         socket,
         :feed_grid,
-        socket.assigns.category_id,
+        socket.assigns.community,
         socket.assigns.feed.podcast_id
       )
 
