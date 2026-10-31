@@ -117,7 +117,7 @@ defmodule PanWeb.Live.Curation.Community do
                 data-confirm={
                   podcast.open && "Mark this podcast as done? It disappears from the open list."
                 }
-                class={["btn btn-xs btn-outline", podcast.open && "btn-success"]}
+                class={["btn btn-xs btn-outline whitespace-nowrap", podcast.open && "btn-success"]}
               >
                 {if podcast.open, do: "open – mark done", else: "done – reopen"}
               </button>
