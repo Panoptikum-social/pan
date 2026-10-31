@@ -49,31 +49,14 @@ Claude's per-machine memory) so they survive across computers. Last synced
   with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
   too.
 
-- **Dark-mode screenshots for the Listener and Podcaster Manual (started
-  2026-10-31).** The manuals in the qed site
-  (`/daten/DATA/rust/sites/blog.panoptikum.social`, `pages/manuals/`) still
-  show 2017 screenshots. Decisions: new file names, only the manuals point to
-  them, the old 2016–2018 blog posts keep their images (#486); taken on the
-  dev server with headless Chrome in Mocha (#487); screenshots of removed or
-  changed features get a list for Stefan to decide (#488); a demo user, not a
-  real account (#489). Scripts and the 10 finished images are in
-  `/daten/DATA/phoenix/pan-assets/manual-screenshots/` (`npm install` there
-  first; `lib.mjs` logs in with a token from `PanWeb.Auth.sign_token(:link,
-  user_id)`).
-  - Done: user menu, My Profile, Update Profile, persona with and without
-    email address (claim panels), claim warning, Metadata Update, retired
-    podcast notice, claiming a contribution (before/after).
-  - First, after each dev DB restore: recreate the demo data — user `demo`
-    ("Demo Podcaster", demo@example.com, podcaster, email verified; its
-    first login creates persona "Demo Podcaster"), personas "D. Podcaster"
-    (no email), "Demo Co-Host" (demo-cohost@example.com) and "Demo und
-    Co-Host" with gigs and engagements on Aua-uff-Code! (podcast 104, five
-    latest episodes); claim D. Podcaster, claim Demo Co-Host by email (grant
-    link from /dev/mailbox), claim a contribution on episode 6206480.
-  - To do: claim request email and "email sent" page, Edit persona before
-    and after (PID `demo-podcaster`, image, description), public persona
-    page, delegations (D. Podcaster and Demo Co-Host → Demo Podcaster),
-    listener screenshots, the #488 list (Podlove 5.7.4 dialogs,
-    Twitter/Facebook sharing, mail client, withdraw tooltip), then import
-    the images and update the two manual pages through the qed MCP server.
-  - Persona-editing shots need 16d5e143 (#492, #493), committed, on dev.
+- **Manual text follow-ups (found 2026-10-31, after the new dark-mode
+  screenshots).** In the qed site (`pages/manuals/`), wording for Stefan to
+  decide:
+  - #508 The Listener Manual has a "My Messages" section, but the app has no
+    My Messages any more.
+  - #509 The Podcaster Manual's Edit persona list names a "Description
+    header" field; the form now has Description and Long description (plus
+    Uri and Fediverse Address, not mentioned).
+  - #510 The walkthrough is Sonja's story (waldgruber, 4 personas, 2
+    delegated), the pictures show the demo user; a note says so. Rewrite
+    the story around the demo user, or keep it.
