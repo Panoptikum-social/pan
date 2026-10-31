@@ -2,7 +2,7 @@
 
 Open work items and pending design decisions, kept here (rather than only in
 Claude's per-machine memory) so they survive across computers. Last synced
-2026-10-29.
+2026-10-31.
 
 ---
 
@@ -25,3 +25,46 @@ Claude's per-machine memory) so they survive across computers. Last synced
   --force` would downgrade typography to 0.5.4, so not that. Check again
   after the next `@tailwindcss/cli` / `@tailwindcss/typography` releases
   (`cd assets && npm audit`).
+
+- **#496 Parser saves unknown language codes without a name (found
+  2026-10-31).** `Pan.Parser.Language.get_or_insert/1` inserts every
+  language code it doesn't know yet with a UUID as `name` and `"_ is
+  missing"` as `emoji`; they show up as "_ is missing <uuid>" in "Languages
+  I speak" on Update Profile. 34 such rows came in since 2026-09-01 and were
+  named by hand on prod 2026-10-31 (console script). New ones will keep
+  coming until the parser handles unknown codes differently; how is open.
+
+- **#491 Persona page: avatar overlaps the Claiming panel (found
+  2026-10-31).** On a persona page with an email address, when a logged-in
+  podcaster sees the "Claim" panel, the avatar sticks out of the persona card
+  over the Claiming panel, at 1280 px and still at 1440 px wide. Seen on
+  dev with persona "Demo Co-Host" (see the manual screenshots item below).
+
+- **Dark-mode screenshots for the Listener and Podcaster Manual (started
+  2026-10-31).** The manuals in the qed site
+  (`/daten/DATA/rust/sites/blog.panoptikum.social`, `pages/manuals/`) still
+  show 2017 screenshots. Decisions: new file names, only the manuals point to
+  them, the old 2016–2018 blog posts keep their images (#486); taken on the
+  dev server with headless Chrome in Mocha (#487); screenshots of removed or
+  changed features get a list for Stefan to decide (#488); a demo user, not a
+  real account (#489). Scripts and the 10 finished images are in
+  `/daten/DATA/phoenix/pan-assets/manual-screenshots/` (`npm install` there
+  first; `lib.mjs` logs in with a token from `PanWeb.Auth.sign_token(:link,
+  user_id)`).
+  - Done: user menu, My Profile, Update Profile, persona with and without
+    email address (claim panels), claim warning, Metadata Update, retired
+    podcast notice, claiming a contribution (before/after).
+  - First, after each dev DB restore: recreate the demo data — user `demo`
+    ("Demo Podcaster", demo@example.com, podcaster, email verified; its
+    first login creates persona "Demo Podcaster"), personas "D. Podcaster"
+    (no email), "Demo Co-Host" (demo-cohost@example.com) and "Demo und
+    Co-Host" with gigs and engagements on Aua-uff-Code! (podcast 104, five
+    latest episodes); claim D. Podcaster, claim Demo Co-Host by email (grant
+    link from /dev/mailbox), claim a contribution on episode 6206480.
+  - To do: claim request email and "email sent" page, Edit persona before
+    and after (PID `demo-podcaster`, image, description), public persona
+    page, delegations (D. Podcaster and Demo Co-Host → Demo Podcaster),
+    listener screenshots, the #488 list (Podlove 5.7.4 dialogs,
+    Twitter/Facebook sharing, mail client, withdraw tooltip), then import
+    the images and update the two manual pages through the qed MCP server.
+  - Persona-editing shots need 16d5e143 (#492, #493), committed, on dev.
