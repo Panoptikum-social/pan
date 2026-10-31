@@ -100,8 +100,8 @@ defmodule PanWeb.Live.Persona.Show do
     ~H"""
     <div class="m-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
       <Panel.render heading={@persona.name} purpose="user">
-        <div class="flex flex-col md:flex-row m-4">
-          <table>
+        <div class="flex flex-wrap m-4">
+          <table class="grow basis-64">
             <tr>
               <td class="px-4 text-right font-semibold">PanoptikumID</td>
               <td>{@persona.pid}</td>

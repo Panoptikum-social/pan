@@ -34,11 +34,12 @@ Claude's per-machine memory) so they survive across computers. Last synced
   named by hand on prod 2026-10-31 (console script). New ones will keep
   coming until the parser handles unknown codes differently; how is open.
 
-- **#491 Persona page: avatar overlaps the Claiming panel (found
-  2026-10-31).** On a persona page with an email address, when a logged-in
-  podcaster sees the "Claim" panel, the avatar sticks out of the persona card
-  over the Claiming panel, at 1280 px and still at 1440 px wide. Seen on
-  dev with persona "Demo Co-Host" (see the manual screenshots item below).
+- **#498 Stale `podcasts.subscriptions_count` (found 2026-10-31).** The
+  Subscribe button shows the stored count, which is only recomputed on a
+  subscribe toggle (`Podcast.update_subscriptions_count/1`). On dev, podcast
+  104 showed 19 while it has 16 subscriptions; after one toggle it was right.
+  Counts go stale when subscriptions disappear another way (e.g. user or
+  podcast deletion, merges). Same question for the like and follow counts.
 
 - **Dark-mode screenshots for the Listener and Podcaster Manual (started
   2026-10-31).** The manuals in the qed site

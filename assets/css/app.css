@@ -363,8 +363,9 @@ html #podlove-subscribe-popup input {
   pointer-events: none;
 }
 
-/* icons on filled backgrounds keep the text color instead of their own
-   (see PanWeb.Live.Icon); unlayered, so it wins over the color utilities */
+/* icons on filled backgrounds and in colored outline buttons keep the text
+   color instead of their own (see PanWeb.Live.Icon); unlayered, so it wins
+   over the color utilities */
 :is(
     .btn-primary, .btn-secondary, .btn-accent, .btn-neutral,
     .btn-info, .btn-success, .btn-warning, .btn-error,
@@ -373,7 +374,7 @@ html #podlove-subscribe-popup input {
     .text-white, .text-primary-content, .text-secondary-content,
     .text-accent-content, .text-neutral-content, .text-info-content,
     .text-success-content, .text-warning-content, .text-error-content
-  ):not(.btn-outline, .btn-soft, .btn-ghost, .btn-link, .badge-outline, .badge-soft)
+  ):not(.btn-soft, .btn-ghost, .btn-link, .badge-outline, .badge-soft)
   svg {
   color: currentColor;
 }

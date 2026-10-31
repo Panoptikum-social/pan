@@ -69,8 +69,9 @@ theme. Categories: each top level category has its own color (column
 - Every icon has a fixed color, see `@colors` in `PanWeb.Live.Icon`; add new
   icons there. A `text-*` color in the class overrides it.
 - On filled backgrounds (filled buttons and badges, `text-white`,
-  `text-*-content`) icons take the text color automatically (rule in
-  `app.css`), so no blue icon on a blue button.
+  `text-*-content`) and in colored outline buttons icons take the text color
+  automatically (rule in `app.css`), so no blue icon on a blue button and no
+  red heart on a green Like button (#497).
 - Categories: own icon per category (`categories.icon`), proposals and the
   "Fill missing icons" button in `Pan.CategoryIcons`; folder as fallback.
 
