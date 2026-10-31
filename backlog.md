@@ -48,15 +48,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   address). `confirm_podcast_claim_link_html_email/4` right below escapes
   with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
   too.
-
-- **Manual text follow-ups (found 2026-10-31, after the new dark-mode
-  screenshots).** In the qed site (`pages/manuals/`), wording for Stefan to
-  decide:
-  - #508 The Listener Manual has a "My Messages" section, but the app has no
-    My Messages any more.
-  - #509 The Podcaster Manual's Edit persona list names a "Description
-    header" field; the form now has Description and Long description (plus
-    Uri and Fediverse Address, not mentioned).
-  - #510 The walkthrough is Sonja's story (waldgruber, 4 personas, 2
-    delegated), the pictures show the demo user; a note says so. Rewrite
-    the story around the demo user, or keep it.
