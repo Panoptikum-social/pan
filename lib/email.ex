@@ -118,7 +118,7 @@ defmodule Pan.Email do
             <p>The User with the full name
               <b> #{user.name} </b>
               in <a href="https://panoptikum.social"> Panoptikum.social </a>
-              would like to have access to manifest her/himself to the persona with your email address.
+              would like to be added as a manifestation of the persona with your email address.
             </p>
             <p>The user's user name is
               <b> #{user.username} </b>

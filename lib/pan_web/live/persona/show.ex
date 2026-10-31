@@ -249,7 +249,7 @@ defmodule PanWeb.Live.Persona.Show do
             class="m-4"
           >
             <p>
-              You can send an email to the owner of this persona and ask her for permission
+              You can send an email to the owner of this persona and ask for permission
               to add you as a manifestation of this persona.<br />
               Your name, username and email address will be sent alongside in the email
               to give the owner a chance to get in contact with you.
