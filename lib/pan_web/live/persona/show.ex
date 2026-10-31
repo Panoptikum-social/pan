@@ -305,7 +305,7 @@ defmodule PanWeb.Live.Persona.Show do
           <tr :for={{podcast, engagements} <- Enum.group_by(@engagements, &Map.get(&1, :podcast))}>
             <td class="px-2"><PodcastButton.render for={podcast} /></td>
             <td class="px-2">
-              <Pill.render :for={engagement <- engagements} type="success">
+              <Pill.render :for={engagement <- Enum.uniq_by(engagements, & &1.role)} type="success">
                 {engagement.role}
               </Pill.render>
             </td>
@@ -341,7 +341,11 @@ defmodule PanWeb.Live.Persona.Show do
             <td class="px-2 py-2"><PodcastButton.render for={row.episode.podcast} /></td>
             <td class="px-2 py-2"><EpisodeButton.render for={row.episode} /></td>
             <td class="px-2 py-2">
-              <Pill.render :for={gig <- row.gigs} id={"gig-#{gig.id}"} type="success">
+              <Pill.render
+                :for={gig <- Enum.uniq_by(row.gigs, & &1.role)}
+                id={"gig-#{gig.id}"}
+                type="success"
+              >
                 {gig.role}
               </Pill.render>
             </td>
