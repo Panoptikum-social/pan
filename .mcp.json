@@ -3,6 +3,13 @@
     "tidewave": {
       "type": "http",
       "url": "http://localhost:4000/tidewave/mcp"
+    },
+    "qed-panoptikum-social": {
+      "command": "/daten/DATA/rust/qed/target/debug/qed",
+      "args": [
+        "mcp",
+        "/daten/DATA/rust/sites/blog.panoptikum.social"
+      ]
     }
   }
 }
