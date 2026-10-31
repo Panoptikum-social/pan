@@ -29,9 +29,9 @@
 
       <PanWeb.Component.PersonaButton.render for={persona} class="truncate max-w-full" />
     </div>
-    <div x-show="expanded" class="grid grid-cols-1 lg:grid-cols-4 gap-4">
+    <div x-show="expanded" class="grid grid-cols-1 xl:grid-cols-2 gap-8">
       <div class="mt-2">
-        <div class="flex justify-between">
+        <div class="flex items-start gap-4">
           <%= if thumbnail = List.first(persona.thumbnails) do %>
             <img
               src={thumbnail.path <> thumbnail.filename}
@@ -49,7 +49,7 @@
             />
           <% end %>
 
-          <div class="self-start flex flex-col gap-2">
+          <div class="flex flex-col gap-2">
             <.link
               href={persona_frontend_path(@conn, :edit, persona)}
               class="btn btn-outline btn-warning btn-sm"
@@ -62,32 +62,32 @@
           </div>
         </div>
 
-        <dl class="grid grid-cols-3 gap-x-4">
+        <dl class="grid grid-cols-[auto_1fr] gap-x-4 mt-4">
           <dt class="justify-self-end">PanoptikumID</dt>
-          <dd class="col-span-2">{persona.pid}</dd>
+          <dd class="min-w-0 break-words">{persona.pid}</dd>
 
           <dt class="justify-self-end">Name</dt>
-          <dd class="col-span-2">{persona.name}</dd>
+          <dd class="min-w-0 break-words">{persona.name}</dd>
 
           <dt class="justify-self-end">Uri</dt>
-          <dd class="col-span-2">{persona.uri}</dd>
+          <dd class="min-w-0 break-words">{persona.uri}</dd>
 
           <dt class="justify-self-end">Email</dt>
-          <dd class="col-span-2">{persona.email}</dd>
+          <dd class="min-w-0 break-words">{persona.email}</dd>
 
           <dt class="justify-self-end">Description</dt>
-          <dd class="col-span-2">{persona.description}</dd>
+          <dd class="min-w-0 break-words">{persona.description}</dd>
 
           <dt class="justify-self-end">Image url</dt>
-          <dd class="col-span-2">
+          <dd class="min-w-0 break-words">
             {if persona.image_url, do: truncate_string(persona.image_url, 40)}
           </dd>
 
           <dt class="justify-self-end">Image title</dt>
-          <dd class="col-span-2">{persona.image_title}</dd>
+          <dd class="min-w-0 break-words">{persona.image_title}</dd>
 
           <dt class="justify-self-end text-right">Fediverse<br />Address</dt>
-          <dd class="col-span-2">{persona.fediverse_address}</dd>
+          <dd class="min-w-0 break-words">{persona.fediverse_address}</dd>
         </dl>
 
         <%= if persona.user_id do %>
@@ -98,7 +98,7 @@
         <% end %>
       </div>
 
-      <div class="lg:col-span-3">
+      <div>
         <h2 class="text-2xl">
           Delegations
         </h2>

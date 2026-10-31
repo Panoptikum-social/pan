@@ -70,7 +70,7 @@ defmodule PanWeb.Persona do
       :thumbnailed,
       :fediverse_address
     ])
-    |> validate_required([:pid, :name, :uri])
+    |> validate_required([:pid, :name])
     |> validate_length(:uri, max: 255)
     |> validate_length(:image_url, max: 255)
     |> validate_length(:image_title, max: 255)
@@ -91,7 +91,7 @@ defmodule PanWeb.Persona do
       :long_description,
       :fediverse_address
     ])
-    |> validate_required([:pid, :name, :uri])
+    |> validate_required([:pid, :name])
     |> validate_length(:uri, max: 255)
     |> validate_length(:image_url, max: 255)
     |> validate_length(:image_title, max: 255)
@@ -214,7 +214,7 @@ defmodule PanWeb.Persona do
 
   def clear_image_url(persona) do
     persona
-    |> Persona.changeset(%{image_url: nil, uri: persona.uri || persona.pid})
+    |> Persona.changeset(%{image_url: nil})
     |> Repo.update()
   end
 
