@@ -18,6 +18,7 @@
     "yjs": "^13.6.33"
   },
   "overrides": {
-    "lib0": "$lib0"
+    "lib0": "$lib0",
+    "postcss-selector-parser": "^6.1.5"
   }
 }

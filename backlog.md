@@ -17,15 +17,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   through the podcasts (rotation until about 2026-11-21), and merge any new
   strays (sub before parent, so the mapping gets the name feeds use).
 
-- **npm audit advisories in the build tools (found 2026-10-19).** `braces`
-  3.0.3 (high, via `@tailwindcss/cli` → `@parcel/watcher` → `micromatch`) and
-  `postcss-selector-parser` 6.0.10 (moderate, via `@tailwindcss/typography`
-  0.5.20). Both are denial of service on hostile input and run only at build
-  time on our own templates and CSS, never in the browser. `npm audit fix
-  --force` would downgrade typography to 0.5.4, so not that. Check again
-  after the next `@tailwindcss/cli` / `@tailwindcss/typography` releases
-  (`cd assets && npm audit`).
-
 - **#496 Parser saves unknown language codes without a name (found
   2026-10-31).** `Pan.Parser.Language.get_or_insert/1` inserts every
   language code it doesn't know yet with a UUID as `name` and `"_ is
@@ -61,7 +52,11 @@ Claude's per-machine memory) so they survive across computers. Last synced
   Demo setup on dev (moderator + curator of Wisspod, example curations,
   "Manual demo pad") is gone after a dev restore; recipe in Claude's memory.
 
-- **Dependency vulnerability fixes (added 2026-11-01).**
-
 - **General manual improvements of the user and podcaster manual (added
   2026-11-01).** In the qed site, `pages/manuals/`.
+
+- **#516 LiveView test warning: form without id (found 2026-11-01).** The
+  standards form (`phx-change="select_standards"`, check feed page) has no
+  `id`, so `test/pan_web/live/check_feed_access_test.exs:122` warns
+  "Detected a form with phx-change but missing id". Without an id LiveView
+  can't restore the form after a reconnect. Fix: give the form an id.

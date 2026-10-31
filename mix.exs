@@ -49,7 +49,7 @@ defmodule Pan.MixProject do
       # HTML parser
       {:floki, "~> 0.38.0"},
       # classic view layer
-      {:phoenix_html, "~> 4.3.0"},
+      {:phoenix_html, "~> 4.4"},
       # live metrics dashboard
       {:phoenix_live_dashboard, "~> 0.9.0"},
       # phoenix classic views
