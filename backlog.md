@@ -40,18 +40,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
   too.
 
-- **Moderator and Curator Manual: two held-back screenshots (2026-10-31).**
-  The manuals are published with 15 screenshots. Open for Stefan to
-  decide:
-  - #514 Curators page ("Curators of my communities"): the shot shows the
-    usernames of all real Wisspod curators (informatom, pikarl, rupi42ai,
-    susticle, tomkalei). Use it, or leave the Curators section without one.
-  - #515 API errors page: empty on dev (no errors in the last 24 hours).
-    a) no picture, b) on dev move a few real error rows into the last 24
-    hours and take the shot, c) take it on prod.
-  Demo setup on dev (moderator + curator of Wisspod, example curations,
-  "Manual demo pad") is gone after a dev restore; recipe in Claude's memory.
-
 - **General manual improvements of the user and podcaster manual (added
   2026-11-01).** In the qed site, `pages/manuals/`.
 
