@@ -8,7 +8,7 @@
   >
     <nav
       x-data="navbar"
-      class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto"
+      class="h-full flex flex-col p-4 justify-start lg:overflow-y-auto bg-sidebar sidebar-line"
       x-bind:class="{'lg:p-1': !navbarOpen}"
     >
       {render("_navbar.html", conn: @conn, current_user: @current_user)}
@@ -19,7 +19,7 @@
         {@inner_content}
       </div>
 
-      <footer class="p-4 flex flex-wrap">
+      <footer class="p-4 flex flex-wrap bg-sidebar footer-line">
         {render("_footer.html", conn: @conn, current_user: @current_user)}
       </footer>
     </div>

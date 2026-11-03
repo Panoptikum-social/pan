@@ -105,6 +105,8 @@
   --color-success-strong: #a6e3a1;
   --color-error: #f38ba8; /* red */
   --color-error-content: #1e1e2e;
+  --color-sidebar: #313244; /* surface0 */
+  --color-sidebar-field: #1e1e2e; /* base */
   --color-ctp-rosewater: #f5e0dc;
   --color-ctp-flamingo: #f2cdcd;
   --color-ctp-pink: #f5c2e7;
@@ -151,6 +153,11 @@
     --color-ctp-lavender: #6a7cdf;
     --color-current: currentColor;
 
+/* sidebar: white in Latte, the search field in Latte base so it shows on
+   white; the mocha theme overrides both */
+    --color-sidebar: #ffffff;
+    --color-sidebar-field: #eff1f5;
+
     --font-sans: 'Ubuntu', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: 'Ubuntu Mono', SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
@@ -167,6 +174,35 @@
   --color-persona: var(--color-ctp-mauve);
   --color-user: var(--color-ctp-flamingo);
   --color-recommendation: var(--color-ctp-green);
+}
+
+/* sidebar color line: the Catppuccin accents as a rainbow, under the
+   sidebar while it sits on top (mobile), beside the content from lg on;
+   the footer gets the same line on top */
+.sidebar-line,
+.footer-line {
+  --rainbow: var(--color-ctp-red), var(--color-ctp-peach),
+    var(--color-ctp-yellow), var(--color-ctp-green), var(--color-ctp-sky),
+    var(--color-ctp-blue), var(--color-ctp-mauve);
+}
+.footer-line {
+  border-top: 2px solid;
+  border-image: linear-gradient(to right, var(--rainbow)) 1;
+}
+.sidebar-line {
+  border-bottom: 2px solid;
+  border-image: linear-gradient(to right, var(--rainbow)) 1;
+}
+@media (width >= 64rem) {
+  .sidebar-line {
+    border-bottom: 0;
+    border-right: 2px solid;
+    border-image-source: linear-gradient(to bottom, var(--rainbow));
+  }
+}
+/* the separators in the sidebar menu (border-t-2) in the same rainbow */
+.sidebar-line .sidebar-divider {
+  border-image: linear-gradient(to right, var(--rainbow)) 1;
 }
 
 @layer base {

@@ -42,7 +42,7 @@ defmodule PanWeb.Live.Home do
         </div>
       </div>
 
-      <div class="max-w-7xl mx-auto
+      <div class="max-w-7xl mx-auto pt-6
                   flex flex-col space-y-4 justify-items-auto
                   lg:flex-row lg:space-y-0 lg:space-x-4">
         <div aria-label="left column" class="flex-1">

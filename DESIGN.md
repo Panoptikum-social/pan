@@ -27,9 +27,11 @@ always looks the same.
   Every color/content pair meets WCAG AA (4.5:1). Latte's light accents take
   dark text (`#1e1e2e`), only blue, mauve and red take white.
 - **Surfaces:** `base-100` (cards, inputs), `base-200` (page), `base-300`
-  (sidebar, headings, borders, striped rows; Catppuccin surface0). In Latte
+  (headings, borders, striped rows; Catppuccin surface0). In Latte
   the page is Latte base `#eff1f5` and cards are white (mantle as page
-  looked gray); in Mocha the page is mantle, cards base.
+  looked gray); in Mocha the page is mantle, cards base. The sidebar uses
+  `bg-sidebar`: white in Latte, surface0 in Mocha, with a 2px rainbow
+  color line towards the content; the footer too, with the line on top.
 - **Text:** `text-base-content`, secondary text `text-base-content/70`. In
   the light themes that is Latte text `#4c4f69`, never (almost) black:
   black text on light backgrounds looks bold.
@@ -114,7 +116,9 @@ theme. Categories: each top level category has its own color (column
 
 - No fixed colors (`bg-white`, `text-gray-*`, `text-black`, the old Bootflat
   names like `bg-lavender`): they don't follow the theme.
-- No gradients.
+- No gradients. The one exception: the sidebar's color line, a rainbow of
+  the Catppuccin accents (`.sidebar-line`, `.footer-line` on top of the
+  footer, and `.sidebar-divider` for the separators in the sidebar menu).
 - No solid color areas except main action buttons.
 - No white text on accent colors outside the AA-checked theme pairs.
 

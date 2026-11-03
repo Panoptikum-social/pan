@@ -5,11 +5,11 @@
     name="search[term]"
     size="15"
     placeholder="Search"
-    class="flex-1 bg-base-100 text-base-content"
+    class="flex-1 bg-sidebar-field text-base-content"
   /> &nbsp;
   <button
     type="submit"
-    class="p-2 text-sm rounded border border-base-300 bg-base-100 hover:bg-base-200 align-middle"
+    class="p-2 text-sm rounded border border-base-300 bg-sidebar-field hover:bg-base-300 align-middle"
     title="Submit"
   >
     {nav_icon("search")}
@@ -32,6 +32,16 @@
     </.link>
   </li>
   <li class="py-1">
+    <.link href={podcast_frontend_path(@conn, :index)}>
+      {nav_icon("microphone")} New Podcasts
+    </.link>
+  </li>
+  <li class="py-1">
+    <.link href={episode_frontend_path(@conn, :index)}>
+      {nav_icon("headphones")} New Episodes
+    </.link>
+  </li>
+  <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :random)}>
       {nav_icon("flask")} Random Recommendation
     </.link>
@@ -43,12 +53,17 @@
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/">
-      {nav_icon("help-circle-filled")} About
+      {nav_icon("help")} About
     </a>
   </li>
   <li class="py-1">
-    <a href="https://blog.panoptikum.social/blog">
+    <a href="https://blog.panoptikum.social/blog/">
       {nav_icon("news")} Blog
+    </a>
+  </li>
+  <li class="py-1">
+    <a href="https://blog.panoptikum.social/manuals/">
+      {nav_icon("book")} Manuals
     </a>
   </li>
   <li class="py-1">
@@ -73,7 +88,7 @@
     <li class="py-1">
       {render("_user_dropdown.html", conn: @conn, current_user: @current_user)}
     </li>
-    <li class="border-t-2"></li>
+    <li class="border-t-2 sidebar-divider"></li>
     <li class="py-1">
       <.link href={session_path(@conn, :delete, @current_user)} method="delete">
         {nav_icon("logout")} Log Out
