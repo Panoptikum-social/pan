@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Home do
         <div x-show="!consented" x-cloak>
           Panoptikum.social uses cookies only out of technical necessity. See our
           <.link
-            href="https://blog.panoptikum.social/privacy"
+            href="https://blog.panoptikum.social/privacy/"
             class="underline hover:text-primary"
           > Privacy Page</.link>
           for details.

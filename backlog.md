@@ -60,10 +60,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   `id`, so `test/pan_web/live/check_feed_access_test.exs:122` warns
   "Detected a form with phx-change but missing id". Without an id LiveView
   can't restore the form after a reconnect. Fix: give the form an id.
-- **#520 Blog links without trailing slash (found 2026-11-03).** The qed
-  blog answers `/privacy`, `/complaints` etc. with a 301 to the same path
-  with a slash. Sidebar and footer are fixed; still without slash:
-  `privacy` in `lib/pan_web/live/home.ex` (cookie notice) and
-  `lib/pan_web/templates/user/forgot_password.html.heex`, `complaints` in
-  the three `recommendation_list.ex` LiveViews (chapter, episode, podcast).
-  Fix: add the slash.

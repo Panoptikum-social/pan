@@ -58,7 +58,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
     <div class="my-4 max-w-4xl">
       <div :if={@recommendations_count > 0} class="float-right">
         <a
-          href="https://blog.panoptikum.social/complaints"
+          href="https://blog.panoptikum.social/complaints/"
           class="underline hover:text-primary"
         >Complain</a>
       </div>
