@@ -40,15 +40,16 @@ Claude's per-machine memory) so they survive across computers. Last synced
   with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
   too.
 
-- **Listener and Podcaster Manual: missing screenshots (2026-11-03).** In
-  the qed site, `pages/manuals/listener-manual.md` and `podcaster-manual.md`.
-  - Missing screenshots (demo data on dev is gone after a restore, recipe in
-    Claude's memory; or shots from prod):
-    - #535 Listener: start page, sidebar/categories, search results, podcast
-      page with like/follow/subscribe, My Podcasts, My Data, sign up.
-    - #536 Podcaster: QR code / subscribe button, persona search, Claim this
-      podcast and Check feed (with #528/#529).
+- **#538 Sign Up form shows an error before anything is entered (found
+  2026-11-03).** `/users/new` (`PanWeb.Live.User.New`) renders "The form is
+  not filled out fully." on the first, empty page, on dev and prod. Once
+  fixed, add a sign-up screenshot to the Listener Manual ("Sign up" section;
+  the last open part of #535).
 
+- **#537 `/users/<non-integer>` answers 400 instead of 404 (found
+  2026-11-03).** `PanWeb.Live.User.Show.mount/3` passes the id straight into
+  `User.get_for_show/1`, so e.g. `/users/my_podcasts` raises
+  `Ecto.Query.CastError` (prod: 400 Bad Request, dev: the debug error page).
 - **#516 LiveView test warning: form without id (found 2026-11-01).** The
   standards form (`phx-change="select_standards"`, check feed page) has no
   `id`, so `test/pan_web/live/check_feed_access_test.exs:122` warns
