@@ -44,8 +44,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   2026-11-03).** `PanWeb.Live.User.Show.mount/3` passes the id straight into
   `User.get_for_show/1`, so e.g. `/users/my_podcasts` raises
   `Ecto.Query.CastError` (prod: 400 Bad Request, dev: the debug error page).
-- **#516 LiveView test warning: form without id (found 2026-11-01).** The
-  standards form (`phx-change="select_standards"`, check feed page) has no
-  `id`, so `test/pan_web/live/check_feed_access_test.exs:122` warns
-  "Detected a form with phx-change but missing id". Without an id LiveView
-  can't restore the form after a reconnect. Fix: give the form an id.

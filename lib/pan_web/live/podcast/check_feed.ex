@@ -358,7 +358,12 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         Freshly downloaded from {@feed_url}
       </p>
 
-      <form :if={!@check_error} phx-change="select_standards" class="mt-4 flex flex-wrap gap-4">
+      <form
+        :if={!@check_error}
+        id="standards-form"
+        phx-change="select_standards"
+        class="mt-4 flex flex-wrap gap-4"
+      >
         <input type="hidden" name="standards[]" value="" />
         <label :for={standard <- @standards} class="flex items-center gap-1 cursor-pointer">
           <input
