@@ -10,7 +10,8 @@ defmodule PanWeb.Live.User.New do
       User.registration_changeset(%User{})
       |> Map.put(:action, :insert)
 
-    {:ok, assign(socket, changeset: changeset, user: %User{}, page_title: "Sign Up")}
+    {:ok,
+     assign(socket, changeset: changeset, user: %User{}, submitted: false, page_title: "Sign Up")}
   end
 
   def handle_event("validate", %{"user" => user_params}, %{assigns: assigns} = socket) do
@@ -41,7 +42,7 @@ defmodule PanWeb.Live.User.New do
          |> push_navigate(to: session_path(Endpoint, :new))}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, changeset: changeset)}
+        {:noreply, assign(socket, changeset: changeset, submitted: true)}
     end
   end
 
@@ -53,10 +54,11 @@ defmodule PanWeb.Live.User.New do
       <.form
         :let={f}
         for={@changeset}
+        id="sign-up-form"
         phx-change="validate"
         phx-submit="create"
       >
-        <.error :if={!@changeset.valid?}>
+        <.error :if={@submitted and !@changeset.valid?}>
           The form is not filled out fully.
         </.error>
 

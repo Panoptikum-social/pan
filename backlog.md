@@ -40,12 +40,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
   too.
 
-- **#538 Sign Up form shows an error before anything is entered (found
-  2026-11-03).** `/users/new` (`PanWeb.Live.User.New`) renders "The form is
-  not filled out fully." on the first, empty page, on dev and prod. Once
-  fixed, add a sign-up screenshot to the Listener Manual ("Sign up" section;
-  the last open part of #535).
-
 - **#537 `/users/<non-integer>` answers 400 instead of 404 (found
   2026-11-03).** `PanWeb.Live.User.Show.mount/3` passes the id straight into
   `User.get_for_show/1`, so e.g. `/users/my_podcasts` raises
