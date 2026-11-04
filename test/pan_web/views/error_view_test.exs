@@ -21,7 +21,17 @@ defmodule PanWeb.ErrorViewTest do
     conn = get(conn, "/this/path/does/not/exist")
 
     assert conn.status == 404
-    assert response(conn, 404) =~ "This url makes no sense for us."
+    html = response(conn, 404)
+    assert html =~ "404 Not Found"
+    assert html =~ "doesn't exist (anymore)"
+    assert html =~ ~r{<title>\s*404 Not Found · Panoptikum\s*</title>}
+  end
+
+  # #537: a non-integer id raises Ecto.NoResultsError via PanWeb.PathId.
+  test "renders 404.html for a non-integer id", %{conn: conn} do
+    {404, _headers, body} = assert_error_sent(404, fn -> get(conn, "/users/abc") end)
+
+    assert body =~ "404 Not Found"
   end
 
   test "renders 500.html" do

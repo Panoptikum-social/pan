@@ -23,8 +23,21 @@
 
     <div class="flex-1 min-h-full flex flex-col overflow-x-auto">
       <div class="bg-base-200 flex-1 text-base-content justify-self-center">
-        <div class="mx-auto max-w-lg mt-12">
-          This url makes no sense for us.
+        <div class="mx-auto max-w-lg mt-12 px-4 space-y-4">
+          <h1 class="text-3xl font-semibold">
+            {@conn.status} {Plug.Conn.Status.reason_phrase(@conn.status)}
+          </h1>
+          <p :if={@conn.status == 404}>
+            The page you requested doesn't exist (anymore). Please check the address,
+            or use the search in the navigation.
+          </p>
+          <p :if={@conn.status != 404}>
+            We couldn't make sense of this request. Please check the address,
+            or use the search in the navigation.
+          </p>
+          <p>
+            <a class="link link-primary" href="/">Go to the start page</a>
+          </p>
         </div>
       </div>
 

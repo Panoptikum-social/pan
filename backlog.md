@@ -31,4 +31,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   104 showed 19 while it has 16 subscriptions; after one toggle it was right.
   Counts go stale when subscriptions disappear another way (e.g. user or
   podcast deletion, merges). Same question for the like and follow counts.
-
