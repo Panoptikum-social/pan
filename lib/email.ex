@@ -50,7 +50,7 @@ defmodule Pan.Email do
             <meta name="viewport" content="width=device-width">
           </head>
           <body>
-            <p>Hello #{user.username}!</p>
+            <p>Hello #{escape(user.username)}!</p>
             <p>Your Panoptikum account is marked for deletion:</p>
             <ul>#{reason_items}</ul>
             <p>Unless you log in before #{delete_after}, your account and its data will be deleted.
@@ -116,14 +116,14 @@ defmodule Pan.Email do
           <body>
             <p>Hello!</p>
             <p>The User with the full name
-              <b> #{user.name} </b>
+              <b> #{escape(user.name)} </b>
               in <a href="https://panoptikum.social"> Panoptikum.social </a>
               would like to be added as a manifestation of the persona with your email address.
             </p>
             <p>The user's user name is
-              <b> #{user.username} </b>
+              <b> #{escape(user.username)} </b>
               with the email address
-              <a href="mailto:#{user.email}">#{user.email}</a>
+              <a href="mailto:#{escape(user.email)}">#{escape(user.email)}</a>
               .
             </p>
             <p>You could ...
@@ -145,8 +145,6 @@ defmodule Pan.Email do
   end
 
   def confirm_podcast_claim_link_html_email(token, user, podcast, email_address) do
-    escape = &(&1 |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string())
-
     grant_url =
       PanWeb.Router.Helpers.podcast_frontend_url(PanWeb.Endpoint, :confirm_ownership, podcast,
         token: token
@@ -165,10 +163,10 @@ defmodule Pan.Email do
           </head>
           <body>
             <p>Hello!</p>
-            <p>The user <b>#{escape.(user.name)}</b> (user name <b>#{escape.(user.username)}</b>,
-              email address #{escape.(user.email)}) in
+            <p>The user <b>#{escape(user.name)}</b> (user name <b>#{escape(user.username)}</b>,
+              email address #{escape(user.email)}) in
               <a href="https://panoptikum.social">Panoptikum.social</a>
-              would like to manage the podcast <b>#{escape.(podcast.title)}</b>. Your address is
+              would like to manage the podcast <b>#{escape(podcast.title)}</b>. Your address is
               listed as the owner in that podcast's feed.
             </p>
             <p>You could ...
@@ -197,4 +195,8 @@ defmodule Pan.Email do
       text_body: mail_body
     )
   end
+
+  # User and feed data go into HTML mail bodies, some of them sent to third
+  # parties (persona and podcast claims), so they must not carry markup.
+  defp escape(value), do: value |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
 end

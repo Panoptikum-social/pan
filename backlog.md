@@ -32,14 +32,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   Counts go stale when subscriptions disappear another way (e.g. user or
   podcast deletion, merges). Same question for the like and follow counts.
 
-- **#502 Persona claim mail doesn't escape user data (found 2026-10-31).**
-  `Pan.Email.confirm_persona_claim_link_html_email/3` puts `user.name`,
-  `user.username` and `user.email` into the HTML body unescaped, so a user
-  can inject HTML into a mail sent to a third party (the persona's email
-  address). `confirm_podcast_claim_link_html_email/4` right below escapes
-  with `Phoenix.HTML.html_escape/1`; check the other mails in `lib/email.ex`
-  too.
-
 - **#537 `/users/<non-integer>` answers 400 instead of 404 (found
   2026-11-03).** `PanWeb.Live.User.Show.mount/3` passes the id straight into
   `User.get_for_show/1`, so e.g. `/users/my_podcasts` raises
