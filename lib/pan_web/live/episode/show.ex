@@ -9,7 +9,7 @@ defmodule PanWeb.Live.Episode.Show do
 
     case Episode.get_by_id_for_episode_show(id) do
       nil ->
-        {:ok, socket |> put_flash(:error, "Episode not found.") |> redirect(to: "/")}
+        raise Ecto.NoResultsError, queryable: Episode
 
       episode ->
         {:ok,

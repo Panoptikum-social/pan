@@ -168,16 +168,6 @@ defmodule PanWeb.Category do
     |> Repo.all()
   end
 
-  def by_id_exists?(id) do
-    from(Category,
-      where: [id: ^id],
-      select: [:id]
-    )
-    |> Repo.one()
-    |> is_nil()
-    |> Kernel.not()
-  end
-
   def has_community?(id) do
     from(Community,
       where: [category_id: ^id],

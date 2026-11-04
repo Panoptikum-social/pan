@@ -3,6 +3,8 @@ defmodule PanWeb.CategoryFrontendController do
   alias PanWeb.{Category, Podcast}
 
   def categorized(conn, %{"id" => id}) do
+    id = PanWeb.PathId.to_integer!(id, Category)
+
     category =
       Category
       |> Repo.get!(id)

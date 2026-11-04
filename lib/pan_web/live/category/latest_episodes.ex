@@ -6,6 +6,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   alias PanWeb.Component.EpisodeCard
 
   def mount(%{"id" => id}, _session, socket) do
+    id = PanWeb.PathId.to_integer!(id, Category)
     podcast_ids = Podcast.ids_by_category_id(id)
     category = Category.get_by_id_with_parent(id)
 

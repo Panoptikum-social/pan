@@ -13,38 +13,31 @@ defmodule PanWeb.Live.Category.StatsShow do
     page = 1
     per_page = 100
 
-    if Category.by_id_exists?(id) do
-      category = Category.get_with_children_and_parent(id)
-      languages = Language.get_by_category_id(category.id)
+    id = PanWeb.PathId.to_integer!(id, Category)
 
-      {:ok,
-       assign(socket,
-         category: category,
-         page_title: category.title <> " (Category)",
-         languages: languages,
-         language: language,
-         page: page,
-         per_page: per_page,
-         podcasts: Podcast.get_all_by_category_id_and_language(category.id),
-         update_action: "append"
-       )}
-    else
-      {:ok, assign(socket, error: "not_found")}
-    end
+    category =
+      Category.get_with_children_and_parent(id) ||
+        raise(Ecto.NoResultsError, queryable: Category)
+
+    languages = Language.get_by_category_id(category.id)
+
+    {:ok,
+     assign(socket,
+       category: category,
+       page_title: category.title <> " (Category)",
+       languages: languages,
+       language: language,
+       page: page,
+       per_page: per_page,
+       podcasts: Podcast.get_all_by_category_id_and_language(category.id),
+       update_action: "append"
+     )}
   end
 
   def amount(language_name, podcasts) do
     podcasts
     |> Enum.filter(fn p -> p.language_name == language_name end)
     |> length
-  end
-
-  def render(%{error: "not_found"} = assigns) do
-    ~H"""
-    <div class="m-12">
-      A category with this id could not be found
-    </div>
-    """
   end
 
   def render(assigns) do

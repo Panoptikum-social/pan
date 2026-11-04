@@ -17,25 +17,26 @@ defmodule PanWeb.Live.Category.Show do
     page = 1
     per_page = 100
 
-    if Category.by_id_exists?(id) do
-      category = Category.get_with_children_and_parent(id)
-      languages = Language.get_by_category_id(category.id)
+    id = PanWeb.PathId.to_integer!(id, Category)
 
-      {:ok,
-       assign(socket,
-         category: category,
-         category_colors: Category.color_map(),
-         page_title: category.title <> " (Category)",
-         languages: languages,
-         language: language,
-         page: page,
-         per_page: per_page,
-         update_action: "append"
-       )
-       |> fetch()}
-    else
-      {:ok, assign(socket, error: "not_found")}
-    end
+    category =
+      Category.get_with_children_and_parent(id) ||
+        raise(Ecto.NoResultsError, queryable: Category)
+
+    languages = Language.get_by_category_id(category.id)
+
+    {:ok,
+     assign(socket,
+       category: category,
+       category_colors: Category.color_map(),
+       page_title: category.title <> " (Category)",
+       languages: languages,
+       language: language,
+       page: page,
+       per_page: per_page,
+       update_action: "append"
+     )
+     |> fetch()}
   end
 
   defp fetch(
@@ -66,14 +67,6 @@ defmodule PanWeb.Live.Category.Show do
     {:noreply,
      assign(socket, language: nil, page: 1, update_action: "replace")
      |> fetch()}
-  end
-
-  def render(%{error: "not_found"} = assigns) do
-    ~H"""
-    <div class="m-12">
-      A category with this id could not be found
-    </div>
-    """
   end
 
   def render(assigns) do
