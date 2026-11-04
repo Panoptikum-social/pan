@@ -85,7 +85,10 @@ defmodule Pan.Parser.HelpersTest do
 
   describe "fix_html_entities/1" do
     test "decodes HTML named entities that xmerl does not know" do
-      raw = feed("<title>Gr&uuml;&szlig;e &ndash; &Auml;rger &hellip; &mdash; &Atilde; &oelig;</title>")
+      raw =
+        feed(
+          "<title>Gr&uuml;&szlig;e &ndash; &Auml;rger &hellip; &mdash; &Atilde; &oelig;</title>"
+        )
 
       refute parses?(raw)
 

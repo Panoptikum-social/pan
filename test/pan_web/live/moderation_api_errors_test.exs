@@ -62,7 +62,10 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
     Repo.insert!(%Moderation{user_id: moderator.id, community_id: community.id})
 
     {:ok, _view, html} =
-      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, community))
+      live(
+        logged_in(conn, moderator),
+        moderation_frontend_path(@endpoint, :api_errors, community)
+      )
 
     assert html =~ "Broken Show"
     assert html =~ "Feed download failed"
@@ -90,7 +93,10 @@ defmodule PanWeb.Live.ModerationApiErrorsTest do
     Repo.insert!(%Moderation{user_id: moderator.id, community_id: community.id})
 
     {:ok, view, _html} =
-      live(logged_in(conn, moderator), moderation_frontend_path(@endpoint, :api_errors, community))
+      live(
+        logged_in(conn, moderator),
+        moderation_frontend_path(@endpoint, :api_errors, community)
+      )
 
     html = view |> element("button", "Remove from community") |> render_click()
 
