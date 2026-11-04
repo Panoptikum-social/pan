@@ -13,6 +13,7 @@ defmodule PanWeb.Live.User.Show do
   alias PanWeb.Component.Icon
 
   def mount(%{"id" => id}, _session, socket) do
+    id = PanWeb.PathId.to_integer!(id, User)
     user = User.get_for_show(id)
 
     {:ok,

@@ -5,6 +5,8 @@ defmodule PanWeb.Live.Episode.Show do
   alias PanWeb.Live.Episode.{Header, RecommendationList, ChapterList, PodlovePlayer}
 
   def mount(%{"id" => id}, _session, socket) do
+    id = PanWeb.PathId.to_integer!(id, Episode)
+
     case Episode.get_by_id_for_episode_show(id) do
       nil ->
         {:ok, socket |> put_flash(:error, "Episode not found.") |> redirect(to: "/")}

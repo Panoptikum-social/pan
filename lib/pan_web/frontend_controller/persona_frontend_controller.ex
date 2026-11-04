@@ -8,7 +8,7 @@ defmodule PanWeb.PersonaFrontendController do
   end
 
   def show(conn, %{"id" => id}, _user) do
-    persona = Repo.get!(Persona, id)
+    persona = Repo.get!(Persona, PanWeb.PathId.to_integer!(id, Persona))
 
     case persona.redirect_id do
       nil ->

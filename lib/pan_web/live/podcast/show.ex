@@ -6,6 +6,7 @@ defmodule PanWeb.Live.Podcast.Show do
   alias PanWeb.Live.Podcast.{Header, RecommendationList, EpisodeList}
 
   def mount(%{"id" => id}, _session, socket) do
+    id = PanWeb.PathId.to_integer!(id, Podcast)
     podcast = Podcast.get_by_id_for_show(id)
 
     socket =

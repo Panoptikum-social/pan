@@ -32,7 +32,12 @@ Claude's per-machine memory) so they survive across computers. Last synced
   Counts go stale when subscriptions disappear another way (e.g. user or
   podcast deletion, merges). Same question for the like and follow counts.
 
-- **#537 `/users/<non-integer>` answers 400 instead of 404 (found
-  2026-11-03).** `PanWeb.Live.User.Show.mount/3` passes the id straight into
-  `User.get_for_show/1`, so e.g. `/users/my_podcasts` raises
-  `Ecto.Query.CastError` (prod: 400 Bad Request, dev: the debug error page).
+- **#557 `/episodes/<missing id>` redirects instead of 404 (found
+  2026-11-04).** `PanWeb.Live.Episode.Show.mount/3` answers an unknown
+  numeric id with a flash "Episode not found." and a redirect to `/` (302);
+  users, podcasts and personas answer 404. Whether the redirect is wanted is
+  open.
+
+- **#558 `/categories/<missing id>` answers 200 (found 2026-11-04).**
+  `/categories/999999999` renders a page instead of a 404; not looked into
+  yet. (`/categories/abc` still answers 400, it wasn't part of #537.)
