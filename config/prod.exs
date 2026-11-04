@@ -41,5 +41,6 @@ config :pan, :children, [
   Pan.Job.RefreshPodcastMetadata,
   Pan.Job.CacheMissingImages,
   Pan.Job.PushMissingSearchIndex,
-  Pan.Job.SendRetentionNotices
+  Pan.Job.SendRetentionNotices,
+  Pan.Job.UpdatePodcastCounters
 ]

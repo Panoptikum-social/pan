@@ -16,10 +16,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
   whether old names still come back while the monthly metadata refresh runs
   through the podcasts (rotation until about 2026-11-21), and merge any new
   strays (sub before parent, so the mapping gets the name feeds use).
-
-- **#498 Stale `podcasts.subscriptions_count` (found 2026-10-31).** The
-  Subscribe button shows the stored count, which is only recomputed on a
-  subscribe toggle (`Podcast.update_subscriptions_count/1`). On dev, podcast
-  104 showed 19 while it has 16 subscriptions; after one toggle it was right.
-  Counts go stale when subscriptions disappear another way (e.g. user or
-  podcast deletion, merges). Same question for the like and follow counts.
