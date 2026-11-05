@@ -43,10 +43,14 @@ Decided 2026-11-05:
 - Phase 3 (frontend), gettext domain "frontend", in steps:
   #577 layout and navigation (done 2026-11-05), #578
   account and login (done 2026-11-05), #579 browsing pages (done 2026-11-05), #580 podcaster tools (done 2026-11-05), #581
-  emails (#568), #582 translated data (#566, #567, #571, #569).
+  emails (#568, done 2026-11-05), #582 translated data (#566, #567, #571, #569).
 - #583 Emails to recipients without a known language: login link and
   verification in the current page language, others English. The page
   language is saved as the user setting on registration.
+- #591 Podcast claim mail: in the podcast's language if it lists exactly
+  one supported language (region cut off), else English.
+- #592 Persona claim mail: the persona's user setting, else the languages
+  of its podcasts (engagements and gigs) by the #591 rule.
 - #584 check_my_feed rule messages stay English (like parser messages);
   only the page around them gets translated.
 - #585 German category titles get entered on a small admin page

@@ -106,11 +106,11 @@ defmodule PanWeb.PersonaFrontendController do
   end
 
   def claim(conn, %{"id" => id}, user) do
-    email = Repo.get(Persona, id).email
+    persona = Repo.get(Persona, id)
 
     PanWeb.Endpoint
     |> Phoenix.Token.sign("persona", id)
-    |> Pan.Email.confirm_persona_claim_link_html_email(user, email)
+    |> Pan.Email.confirm_persona_claim_link_html_email(user, persona)
     |> Pan.Mailer.deliver()
 
     render(conn, "email_sent.html")

@@ -221,4 +221,86 @@ defmodule PanWeb.LocaleTest do
 
     assert html =~ "Die Communitys von Panoptikum"
   end
+
+  test "the login link email goes out in the page language (#583)", %{conn: conn} do
+    import Swoosh.TestAssertions
+    user = insert_user(nil)
+
+    conn
+    |> put_req_cookie("locale", "de")
+    |> post("/request_login_link", %{"user" => %{"email" => user.email}})
+
+    assert_email_sent(fn email ->
+      email.subject == "Panoptikum - Login-Link" and email.html_body =~ "anmelden"
+    end)
+  end
+
+  describe "claim request mails (#591, #592)" do
+    import Swoosh.TestAssertions
+    alias PanWeb.{Engagement, Language, Persona, Podcast}
+
+    defp podcast_in(shortcodes) do
+      podcast = Repo.insert!(%Podcast{title: "Sprachpodcast", description: "d"})
+
+      for code <- shortcodes do
+        language = Repo.insert!(%Language{shortcode: code, name: code})
+
+        Repo.insert_all("languages_podcasts", [
+          %{language_id: language.id, podcast_id: podcast.id}
+        ])
+      end
+
+      podcast
+    end
+
+    test "one supported language decides, several or none mean English" do
+      assert PanWeb.Locale.from_language_codes(["de-AT"]) == "de"
+      assert PanWeb.Locale.from_language_codes(["de", "de-de", "fr"]) == "de"
+      assert PanWeb.Locale.from_language_codes(["de", "en-us"]) == "en"
+      assert PanWeb.Locale.from_language_codes(["fr"]) == "en"
+      assert PanWeb.Locale.from_language_codes([]) == "en"
+    end
+
+    test "the podcast claim mail uses the podcast's language" do
+      podcast = podcast_in(["de-at"])
+      claimant = insert_user(nil)
+
+      "token"
+      |> Pan.Email.confirm_podcast_claim_link_html_email(claimant, podcast, "owner@example.com")
+      |> Pan.Mailer.deliver()
+
+      assert_email_sent(fn email ->
+        email.subject == "Panoptikum - Anfrage zur Verwaltung eines Podcasts" and
+          email.html_body =~ "Sprachpodcast"
+      end)
+
+      assert Gettext.get_locale(PanWeb.Gettext) == "en"
+    end
+
+    test "the persona claim mail uses the persona's podcasts, unless its user has a setting" do
+      podcast = podcast_in(["de"])
+      claimant = insert_user(nil)
+      persona = Repo.insert!(%Persona{pid: "p-#{claimant.id}", name: "P", email: "p@example.com"})
+      Repo.insert!(%Engagement{persona_id: persona.id, podcast_id: podcast.id, role: "host"})
+
+      "token"
+      |> Pan.Email.confirm_persona_claim_link_html_email(claimant, persona)
+      |> Pan.Mailer.deliver()
+
+      assert_email_sent(fn email ->
+        email.subject == "Panoptikum - Anfrage zur Übernahme einer Persona"
+      end)
+
+      english_user = insert_user("en")
+      persona = Repo.update!(Ecto.Changeset.change(persona, user_id: english_user.id))
+
+      "token"
+      |> Pan.Email.confirm_persona_claim_link_html_email(claimant, persona)
+      |> Pan.Mailer.deliver()
+
+      assert_email_sent(fn email ->
+        email.subject == "Panoptikum - Persona manifestation confirmation request"
+      end)
+    end
+  end
 end

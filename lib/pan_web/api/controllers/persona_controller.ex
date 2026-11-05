@@ -304,7 +304,7 @@ defmodule PanWeb.Api.PersonaController do
         if persona.email do
           PanWeb.Endpoint
           |> Phoenix.Token.sign("persona", id)
-          |> Pan.Email.confirm_persona_claim_link_html_email(user, persona.email)
+          |> Pan.Email.confirm_persona_claim_link_html_email(user, persona)
           |> Pan.Mailer.deliver()
 
           conn

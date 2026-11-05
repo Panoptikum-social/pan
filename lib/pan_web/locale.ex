@@ -48,6 +48,22 @@ defmodule PanWeb.Locale do
 
   def cookie, do: @cookie
 
+  @doc """
+  The locale for mail to someone whose setting we don't know, from the
+  language codes of their podcasts (#591, #592): the one supported language
+  among them ("de-at" counts as "de"), English if there are several or none.
+  """
+  def from_language_codes(codes) do
+    codes
+    |> Enum.map(&(&1 |> String.downcase() |> String.split(["-", "_"]) |> hd()))
+    |> Enum.filter(&(&1 in @locales))
+    |> Enum.uniq()
+    |> case do
+      [locale] -> locale
+      _none_or_several -> @default_locale
+    end
+  end
+
   def on_mount(:english, _params, _session, socket) do
     Gettext.put_locale(PanWeb.Gettext, @default_locale)
     {:cont, Phoenix.Component.assign(socket, :locale, @default_locale)}

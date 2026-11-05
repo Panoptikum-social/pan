@@ -1077,6 +1077,17 @@ defmodule PanWeb.Podcast do
 
   @claim_token_max_age 48 * 3600
 
+  @doc "The shortcodes of the podcast's languages, e.g. [\"de-at\"]."
+  def language_codes(podcast_id) do
+    from(l in Language,
+      join: lp in "languages_podcasts",
+      on: lp.language_id == l.id,
+      where: lp.podcast_id == ^podcast_id,
+      select: l.shortcode
+    )
+    |> Repo.all()
+  end
+
   @doc "The distinct email addresses of the podcast's owner personas."
   def feed_owner_emails(podcast_id) do
     from(engagement in Engagement,

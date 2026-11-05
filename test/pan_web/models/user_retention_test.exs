@@ -205,6 +205,22 @@ defmodule PanWeb.UserRetentionTest do
       assert Repo.get!(User, inactive_unverified.id).marked_for_deletion_at
     end
 
+    test "goes out in the recipient's language (#583)" do
+      german = insert_user(email_verified: false, locale: "de")
+      date = Date.utc_today() |> Date.add(30) |> Calendar.strftime("%d.%m.%Y")
+
+      User.send_retention_notices([german.id])
+
+      assert_email_sent(fn email ->
+        email.to == [{"", german.email}] and
+          email.subject == "Panoptikum - Ihr Konto wird bald gelöscht" and
+          email.html_body =~ "noch nicht bestätigt" and
+          email.html_body =~ "vor dem #{date}"
+      end)
+
+      assert Gettext.get_locale(PanWeb.Gettext) == "en"
+    end
+
     test "names only the reasons that apply" do
       unverified = insert_user(email_verified: false)
       inactive = insert_user(email_verified: true, last_login_at: days_ago(900))

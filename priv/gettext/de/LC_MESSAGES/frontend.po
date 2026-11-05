@@ -2765,6 +2765,7 @@ msgstr "Frisch heruntergeladen von %{url}"
 msgid "Generator"
 msgstr "Generator"
 
+#: lib/email.ex:151
 #: lib/pan_web/frontend_views/persona_frontend_view.ex:8
 #, elixir-autogen, elixir-format
 msgid "Grant Access"
@@ -3301,3 +3302,164 @@ msgstr "mit Shownotes"
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "ja"
+
+#: lib/email.ex:72
+#, elixir-autogen, elixir-format
+msgid "%Y-%m-%d"
+msgstr "%d.%m.%Y"
+
+#: lib/email.ex:28
+#: lib/email.ex:74
+#: lib/email.ex:99
+#: lib/email.ex:154
+#: lib/email.ex:196
+#, elixir-autogen, elixir-format
+msgid "- The Panoptikum Team."
+msgstr "– Das Panoptikum-Team"
+
+#: lib/email.ex:87
+#, elixir-autogen, elixir-format
+msgid "Email Verification"
+msgstr "E-Mail-Bestätigung"
+
+#: lib/email.ex:69
+#, elixir-autogen, elixir-format
+msgid "Hello %{username}!"
+msgstr "Hallo %{username}!"
+
+#: lib/email.ex:26
+#: lib/email.ex:96
+#: lib/email.ex:143
+#: lib/email.ex:187
+#, elixir-autogen, elixir-format
+msgid "Hello!"
+msgstr "Hallo!"
+
+#: lib/email.ex:98
+#, elixir-autogen, elixir-format
+msgid "If you don't verify your email address, you won't be able to claim personas."
+msgstr "Solange Sie Ihre E-Mail-Adresse nicht bestätigen, können Sie keine Personas übernehmen."
+
+#: lib/email.ex:73
+#, elixir-autogen, elixir-format
+msgid "If you don't want to keep your account, you don't have to do anything."
+msgstr "Wenn Sie Ihr Konto nicht behalten möchten, müssen Sie nichts tun."
+
+#: lib/email.ex:17
+#: lib/email.ex:27
+#: lib/email.ex:72
+#, elixir-autogen, elixir-format
+msgid "Login link"
+msgstr "Login-Link"
+
+#: lib/email.ex:97
+#, elixir-autogen, elixir-format
+msgid "Please verify your email address by clicking on this link: %{link}"
+msgstr "Bitte bestätigen Sie Ihre E-Mail-Adresse über diesen Link: %{link}"
+
+#: lib/email.ex:72
+#, elixir-autogen, elixir-format
+msgid "Unless you log in before %{date}, your account and its data will be deleted. To keep it, just use this %{link}. It logs you in and verifies your email address. It is valid for 30 days."
+msgstr "Wenn Sie sich nicht vor dem %{date} anmelden, werden Ihr Konto und seine Daten gelöscht. Um es zu behalten, verwenden Sie einfach diesen %{link}. Er meldet Sie an und bestätigt Ihre E-Mail-Adresse. Er ist 30 Tage gültig."
+
+#: lib/email.ex:97
+#, elixir-autogen, elixir-format
+msgid "Verify Email"
+msgstr "E-Mail bestätigen"
+
+#: lib/email.ex:27
+#, elixir-autogen, elixir-format
+msgid "You can now login using this %{link}."
+msgstr "Sie können sich jetzt über diesen %{link} anmelden."
+
+#: lib/email.ex:50
+#, elixir-autogen, elixir-format
+msgid "You have not logged in for more than two years."
+msgstr "Sie haben sich seit mehr als zwei Jahren nicht angemeldet."
+
+#: lib/email.ex:54
+#, elixir-autogen, elixir-format
+msgid "You have not verified your email address yet."
+msgstr "Sie haben Ihre E-Mail-Adresse noch nicht bestätigt."
+
+#: lib/email.ex:70
+#, elixir-autogen, elixir-format
+msgid "Your Panoptikum account is marked for deletion:"
+msgstr "Ihr Panoptikum-Konto ist zur Löschung vorgemerkt:"
+
+#: lib/email.ex:60
+#, elixir-autogen, elixir-format
+msgid "Your account will be deleted soon"
+msgstr "Ihr Konto wird bald gelöscht"
+
+#: lib/email.ex:193
+#, elixir-autogen, elixir-format
+msgid "Confirm ownership"
+msgstr "Eigentum bestätigen"
+
+#: lib/email.ex:134
+#, elixir-autogen, elixir-format
+msgid "Persona manifestation confirmation request"
+msgstr "Anfrage zur Übernahme einer Persona"
+
+#: lib/email.ex:178
+#, elixir-autogen, elixir-format
+msgid "Podcast ownership confirmation request"
+msgstr "Anfrage zur Verwaltung eines Podcasts"
+
+#: lib/email.ex:188
+#, elixir-autogen, elixir-format
+msgid "The user %{name} (user name %{username}, email address %{email}) in %{panoptikum} would like to manage the podcast %{podcast}. Your address is listed as the owner in that podcast's feed."
+msgstr "Die Benutzer:in %{name} (Benutzername %{username}, E-Mail-Adresse %{email}) auf %{panoptikum} möchte den Podcast %{podcast} verwalten. Ihre Adresse ist im Feed dieses Podcasts als Eigentümer:in eingetragen."
+
+#: lib/email.ex:144
+#, elixir-autogen, elixir-format
+msgid "The user with the full name %{name} in %{panoptikum} would like to be added as a manifestation of the persona with your email address."
+msgstr "Die Benutzer:in mit dem vollständigen Namen %{name} auf %{panoptikum} möchte als Manifestation der Persona mit Ihrer E-Mail-Adresse eingetragen werden."
+
+#: lib/email.ex:145
+#, elixir-autogen, elixir-format
+msgid "The user's user name is %{username} with the email address %{email}."
+msgstr "Der Benutzername ist %{username}, die E-Mail-Adresse %{email}."
+
+#: lib/email.ex:146
+#: lib/email.ex:189
+#, elixir-autogen, elixir-format
+msgid "You could ..."
+msgstr "Sie können ..."
+
+#: lib/email.ex:150
+#, elixir-autogen, elixir-format
+msgid "check out the user's %{profile} in Panoptikum before."
+msgstr "vorher das %{profile} der Person auf Panoptikum ansehen."
+
+#: lib/email.ex:193
+#, elixir-autogen, elixir-format
+msgid "confirm within the next 48 hours by opening this link and approving there: %{link}"
+msgstr "innerhalb der nächsten 48 Stunden bestätigen, indem Sie diesen Link öffnen und dort genehmigen: %{link}"
+
+#: lib/email.ex:151
+#, elixir-autogen, elixir-format
+msgid "grant access to your persona within the next 48 hours by clicking on this link: %{link}"
+msgstr "innerhalb der nächsten 48 Stunden über diesen Link Zugriff auf Ihre Persona gewähren: %{link}"
+
+#: lib/email.ex:148
+#: lib/email.ex:191
+#, elixir-autogen, elixir-format
+msgid "ignore this mail, if you don't want to provide access."
+msgstr "diese E-Mail ignorieren, wenn Sie keinen Zugriff gewähren möchten."
+
+#: lib/email.ex:150
+#, elixir-autogen, elixir-format
+msgid "public profile"
+msgstr "öffentliche Profil"
+
+#: lib/email.ex:192
+#, elixir-autogen, elixir-format
+msgid "reply to this email, if you have questions before you want to provide access."
+msgstr "auf diese E-Mail antworten, wenn Sie vorher Fragen haben."
+
+#: lib/email.ex:149
+#, elixir-autogen, elixir-format
+msgid "reply to this email, if you have questions to that user, before you want to provide access."
+msgstr "auf diese E-Mail antworten, wenn Sie vorher Fragen an diese Person haben."

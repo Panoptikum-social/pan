@@ -8,6 +8,7 @@ defmodule PanWeb.Persona do
     Follow,
     Gig,
     Image,
+    Language,
     Like,
     Manifestation,
     Persona,
@@ -51,6 +52,32 @@ defmodule PanWeb.Persona do
     )
 
     timestamps()
+  end
+
+  @doc """
+  The shortcodes of the languages of the podcasts the persona contributes to,
+  through engagements (podcasts) and gigs (episodes).
+  """
+  def language_codes(persona_id) do
+    engaged =
+      from(e in Engagement, where: e.persona_id == ^persona_id, select: e.podcast_id)
+
+    gigged =
+      from(g in Gig,
+        join: e in Episode,
+        on: e.id == g.episode_id,
+        where: g.persona_id == ^persona_id,
+        select: e.podcast_id
+      )
+
+    from(l in Language,
+      join: lp in "languages_podcasts",
+      on: lp.language_id == l.id,
+      where: lp.podcast_id in subquery(engaged) or lp.podcast_id in subquery(gigged),
+      distinct: true,
+      select: l.shortcode
+    )
+    |> Repo.all()
   end
 
   def changeset(struct, params \\ %{}) do
