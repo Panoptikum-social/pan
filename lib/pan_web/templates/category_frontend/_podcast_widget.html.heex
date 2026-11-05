@@ -21,14 +21,19 @@
             class="wrap-break-word text-xs"
           />
         <% else %>
-          <img src="/images/missing-podcast.png" alt="missing image" width="150" height="150" />
+          <img
+            src="/images/missing-podcast.png"
+            alt={dgettext("frontend", "missing image")}
+            width="150"
+            height="150"
+          />
         <% end %>
       </div>
       <div class="grid grid-cols-3 gap-x-4 gap-y-2">
         <%= if @podcast.website do %>
           <div class="text-right">
             <label class="label">
-              Website
+              {dgettext("frontend", "Website")}
             </label>
           </div>
           <div class="col-span-2">
@@ -45,7 +50,7 @@
 
         <div class="text-right">
           <label class="label">
-            Available since
+            {dgettext("frontend", "Available since")}
           </label>
         </div>
         <div class="col-span-2">
@@ -55,7 +60,7 @@
 
         <div class="text-right">
           <label class="label">
-            Categories
+            {dgettext("frontend", "Categories")}
           </label>
         </div>
         <div class="col-span-2 flex flex-col space-y-1">
@@ -66,7 +71,7 @@
 
         <div class="text-right">
           <label class="label">
-            Contributors
+            {dgettext("frontend", "Contributors")}
           </label>
         </div>
         <div class="col-span-2 grid grid-cols-3 gap-1 place-items-start">
@@ -83,7 +88,7 @@
 
         <%= if @podcast.payment_link_url do %>
           <div class="text-right">
-            Support
+            {dgettext("frontend", "Support")}
           </div>
           <%= if safe_uri?(@podcast.payment_link_url) do %>
             <.link
@@ -99,13 +104,13 @@
 
     <div class="m-4">
       <h4 class="text-lg">
-        Description
+        {dgettext("frontend", "Description")}
       </h4>
       {@podcast.description}
 
       <%= if @podcast.description != @podcast.summary do %>
         <h4 class="text-lg">
-          Summary
+          {dgettext("frontend", "Summary")}
         </h4>
         {@podcast.summary}
       <% end %>

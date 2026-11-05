@@ -29,7 +29,7 @@ defmodule PanWeb.Live.Category.Show do
      assign(socket,
        category: category,
        category_colors: Category.color_map(),
-       page_title: category.title <> " (Category)",
+       page_title: dgettext("frontend", "%{title} (Category)", title: category.title),
        languages: languages,
        language: language,
        page: page,
@@ -115,7 +115,7 @@ defmodule PanWeb.Live.Category.Show do
           />
         </div>
 
-        <h3 class="pt-4 text-xl">Click on a language to filter</h3>
+        <h3 class="pt-4 text-xl">{dgettext("frontend", "Click on a language to filter")}</h3>
 
         <div class="flex flex-wrap py-4">
           <a
@@ -135,13 +135,13 @@ defmodule PanWeb.Live.Category.Show do
               href="#"
               phx-click="reset-language-filter"
               class="underline hover:text-primary mx-2"
-            >🗑️ Clear language filter</a>
+            >{dgettext("frontend", "🗑️ Clear language filter")}</a>
           </div>
           <h2 class="text-2xl mt-4">
             Podcasts in {@language.name} {@language.emoji}
           </h2>
         <% else %>
-          <h2 class="text-2xl mt-4">Podcasts in any language</h2>
+          <h2 class="text-2xl mt-4">{dgettext("frontend", "Podcasts in any language")}</h2>
         <% end %>
 
         <div

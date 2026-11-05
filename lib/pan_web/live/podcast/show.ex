@@ -43,9 +43,24 @@ defmodule PanWeb.Live.Podcast.Show do
      |> stream(:episodes, episodes, reset: true)}
   end
 
+  # progress messages broadcast in English by the parser
+  def handle_info(%{content: content} = payload, socket) do
+    {:noreply,
+     push_event(socket, "notification", %{payload | content: translate_progress(content)})}
+  end
+
   def handle_info(payload, socket) do
     {:noreply, push_event(socket, "notification", payload)}
   end
+
+  defp translate_progress("Downloading Feed"), do: dgettext("frontend", "Downloading Feed")
+  defp translate_progress("Parsing feed"), do: dgettext("frontend", "Parsing feed")
+  defp translate_progress("Updating from feed"), do: dgettext("frontend", "Updating from feed")
+
+  defp translate_progress("Finished updating Podcast " <> title),
+    do: dgettext("frontend", "Finished updating Podcast %{title}", title: title)
+
+  defp translate_progress(content), do: content
 
   def handle_event("load-more", _, %{assigns: assigns} = socket) do
     page = assigns.page + 1
@@ -65,7 +80,7 @@ defmodule PanWeb.Live.Podcast.Show do
       id="notification-hook-target"
     >
       <span :if={@podcast && @podcast.blocked == true}>
-        This podcast may not be published here, sorry.
+        {dgettext("frontend", "This podcast may not be published here, sorry.")}
       </span>
       <div :if={!(@podcast && @podcast.blocked == true)}>
         <Header.render
@@ -78,8 +93,8 @@ defmodule PanWeb.Live.Podcast.Show do
         />
         <p :if={@namesakes != []} class="mt-2 text-sm">
           {if length(@namesakes) == 1,
-            do: "There is another podcast with the same title:",
-            else: "There are other podcasts with the same title:"}
+            do: dgettext("frontend", "There is another podcast with the same title:"),
+            else: dgettext("frontend", "There are other podcasts with the same title:")}
           <span :for={{namesake, index} <- Enum.with_index(@namesakes)}>
             {if index > 0, do: ","}
             <.link navigate={"/podcasts/#{namesake.id}"} class="underline hover:text-primary">

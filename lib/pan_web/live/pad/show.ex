@@ -29,14 +29,19 @@ defmodule PanWeb.Live.Pad.Show do
          snapshots: PadSnapshot.list_for(pad.id),
          shown_snapshot: nil,
          user_name: Repo.get!(User, socket.assigns.current_user_id).name,
-         page_title: pad.title <> " (Pad, " <> community.title <> ")"
+         page_title:
+           dgettext("frontend", "%{pad} (Pad, %{community})",
+             pad: pad.title,
+             community: community.title
+           )
        )}
     else
       _ ->
         if community = Community.get_by_legacy_id(community_slug) do
           {:ok, push_navigate(socket, to: pad_frontend_path(socket, :show, community, slug))}
         else
-          {:ok, assign(socket, error: "not_found", page_title: "Pad not found")}
+          {:ok,
+           assign(socket, error: "not_found", page_title: dgettext("frontend", "Pad not found"))}
         end
     end
   end
@@ -54,7 +59,12 @@ defmodule PanWeb.Live.Pad.Show do
     if Pad.permissions(user_id, community.id).read do
       version(event, params, Repo.get!(Pad, pad.id), socket)
     else
-      {:noreply, put_flash(socket, :error, "Only followers of this community can do that.")}
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         dgettext("frontend", "Only followers of this community can do that.")
+       )}
     end
   end
 
@@ -64,7 +74,12 @@ defmodule PanWeb.Live.Pad.Show do
     if Pad.permissions(user_id, community.id).manage do
       manage(event, params, Repo.get!(Pad, pad.id), socket)
     else
-      {:noreply, put_flash(socket, :error, "Only moderators of this community can do that.")}
+      {:noreply,
+       put_flash(
+         socket,
+         :error,
+         dgettext("frontend", "Only moderators of this community can do that.")
+       )}
     end
   end
 
@@ -73,7 +88,9 @@ defmodule PanWeb.Live.Pad.Show do
     case PadServer.save_version(pad.id, socket.assigns.current_user_id, note) do
       {:ok, _snapshot} ->
         {:noreply,
-         socket |> assign(version_form: version_form()) |> put_flash(:info, "Version saved.")}
+         socket
+         |> assign(version_form: version_form())
+         |> put_flash(:info, dgettext("frontend", "Version saved."))}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, version_form: to_form(changeset, as: :version))}
@@ -92,7 +109,7 @@ defmodule PanWeb.Live.Pad.Show do
   end
 
   defp version("restore_version", _params, %Pad{read_only: true}, socket) do
-    {:noreply, put_flash(socket, :error, "This pad is read only.")}
+    {:noreply, put_flash(socket, :error, dgettext("frontend", "This pad is read only."))}
   end
 
   defp version("restore_version", %{"id" => id}, pad, socket) do
@@ -100,7 +117,11 @@ defmodule PanWeb.Live.Pad.Show do
     :ok = PadServer.restore(pad.id, snapshot.markdown)
 
     {:noreply,
-     put_flash(socket, :info, "Version restored. Restoring an earlier version undoes it.")}
+     put_flash(
+       socket,
+       :info,
+       dgettext("frontend", "Version restored. Restoring an earlier version undoes it.")
+     )}
   end
 
   def handle_info(:snapshots_changed, socket) do
@@ -132,7 +153,7 @@ defmodule PanWeb.Live.Pad.Show do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Pad \"#{pad.title}\" deleted.")
+     |> put_flash(:info, dgettext("frontend", "Pad \"%{title}\" deleted.", title: pad.title))
      |> push_navigate(to: community_frontend_path(socket, :show, socket.assigns.community))}
   end
 
@@ -157,7 +178,10 @@ defmodule PanWeb.Live.Pad.Show do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This pad could not be found. Pads can only be seen by followers of their community.
+      {dgettext(
+        "frontend",
+        "This pad could not be found. Pads can only be seen by followers of their community."
+      )}
     </div>
     """
   end
@@ -167,14 +191,17 @@ defmodule PanWeb.Live.Pad.Show do
     <Panel.render purpose="episode" heading={@pad.title} class="m-4">
       <div aria-label="panel-body" class="p-4">
         <p class="text-sm">
-          Pad of the community
+          {dgettext("frontend", "Pad of the community")}
           <.link
             navigate={community_frontend_path(@socket, :show, @community)}
             class="underline hover:text-primary"
           >
             {@community.title}
           </.link>
-          <span :if={@pad.read_only} class="badge badge-sm badge-ghost ml-2">read only</span>
+          <span :if={@pad.read_only} class="badge badge-sm badge-ghost ml-2">{dgettext(
+            "frontend",
+            "read only"
+          )}</span>
         </p>
 
         <div role="tablist" class="tabs tabs-border mt-4 md:hidden">
@@ -184,10 +211,10 @@ defmodule PanWeb.Live.Pad.Show do
             class="tab tab-active"
             phx-click={show_pane("edit")}
           >
-            Edit
+            {dgettext("frontend", "Edit")}
           </button>
           <button id="pad-tab-preview" role="tab" class="tab" phx-click={show_pane("preview")}>
-            Preview
+            {dgettext("frontend", "Preview")}
           </button>
         </div>
 
@@ -227,10 +254,12 @@ defmodule PanWeb.Live.Pad.Show do
         </div>
 
         <div class="mt-8 border-t border-base-300 pt-4">
-          <h3 class="text-lg font-semibold">Versions</h3>
+          <h3 class="text-lg font-semibold">{dgettext("frontend", "Versions")}</h3>
           <p class="text-sm">
-            A version is saved automatically 5 minutes after the last edit and when the
-            last person leaves the pad, unless the text is unchanged.
+            {dgettext(
+              "frontend",
+              "A version is saved automatically 5 minutes after the last edit and when the last person leaves the pad, unless the text is unchanged."
+            )}
           </p>
 
           <.form
@@ -239,11 +268,16 @@ defmodule PanWeb.Live.Pad.Show do
             phx-submit="save_version"
             class="flex items-start gap-2 mt-2"
           >
-            <.input field={@version_form[:note]} placeholder="Note (optional)" />
-            <.button class="btn btn-primary">Save version</.button>
+            <.input
+              field={@version_form[:note]}
+              placeholder={dgettext("frontend", "Note (optional)")}
+            />
+            <.button class="btn btn-primary">{dgettext("frontend", "Save version")}</.button>
           </.form>
 
-          <p :if={@snapshots == []} class="text-sm mt-2">No versions yet.</p>
+          <p :if={@snapshots == []} class="text-sm mt-2">
+            {dgettext("frontend", "No versions yet.")}
+          </p>
 
           <ul :if={@snapshots != []} id="pad-versions" class="mt-2 divide-y divide-base-300">
             <li :for={snapshot <- @snapshots} id={"pad-version-#{snapshot.id}"} class="py-2">
@@ -268,16 +302,21 @@ defmodule PanWeb.Live.Pad.Show do
                     phx-click={JS.dispatch("pan:print", to: "#pad-version-content-#{snapshot.id}")}
                     class="btn btn-ghost btn-xs"
                   >
-                    Print
+                    {dgettext("frontend", "Print")}
                   </button>
                   <button
                     :if={!@pad.read_only}
                     phx-click="restore_version"
                     phx-value-id={snapshot.id}
-                    data-confirm="Replace the current text with this version? Everybody editing sees it at once."
+                    data-confirm={
+                      dgettext(
+                        "frontend",
+                        "Replace the current text with this version? Everybody editing sees it at once."
+                      )
+                    }
                     class="btn btn-outline btn-primary btn-xs"
                   >
-                    Restore
+                    {dgettext("frontend", "Restore")}
                   </button>
                 </span>
               </div>
@@ -293,7 +332,7 @@ defmodule PanWeb.Live.Pad.Show do
         </div>
 
         <div :if={@permissions.manage} class="mt-8 border-t border-base-300 pt-4">
-          <h3 class="text-lg font-semibold">Manage this pad</h3>
+          <h3 class="text-lg font-semibold">{dgettext("frontend", "Manage this pad")}</h3>
 
           <div class="flex items-center gap-3 mt-2">
             <button
@@ -303,7 +342,10 @@ defmodule PanWeb.Live.Pad.Show do
             >
               {if @pad.read_only, do: "Make editable", else: "Make read only"}
             </button>
-            <span class="text-sm">Read only freezes the pad for everybody, moderators included.</span>
+            <span class="text-sm">{dgettext(
+              "frontend",
+              "Read only freezes the pad for everybody, moderators included."
+            )}</span>
           </div>
 
           <.form
@@ -313,9 +355,11 @@ defmodule PanWeb.Live.Pad.Show do
             class="flex items-start gap-2 mt-4"
           >
             <.input field={@rename_form[:title]} />
-            <.button class="btn btn-primary">Rename</.button>
+            <.button class="btn btn-primary">{dgettext("frontend", "Rename")}</.button>
           </.form>
-          <p class="text-sm">Renaming changes the pad's address, old links stop working.</p>
+          <p class="text-sm">
+            {dgettext("frontend", "Renaming changes the pad's address, old links stop working.")}
+          </p>
 
           <button
             id="delete-pad"
@@ -323,7 +367,7 @@ defmodule PanWeb.Live.Pad.Show do
             data-confirm={"Delete the pad \"#{@pad.title}\" and all its saved versions?"}
             class="btn btn-outline btn-error btn-sm mt-4"
           >
-            Delete pad
+            {dgettext("frontend", "Delete pad")}
           </button>
         </div>
       </div>

@@ -7,19 +7,19 @@ defmodule PanWeb.Live.Category.StatsTree do
     {:ok,
      assign(socket,
        categories: Category.stats_tree(),
-       page_title: "Category Tree with Statistics"
+       page_title: dgettext("frontend", "Category Tree with Statistics")
      )}
   end
 
   def render(assigns) do
     ~H"""
     <p class="px-4 pt-4 text-sm">
-      Podcasts per category.
+      {dgettext("frontend", "Podcasts per category.")}
       <.link
         navigate={category_frontend_path(@socket, :index)}
         class="underline hover:text-primary"
       >
-        Category tree without numbers
+        {dgettext("frontend", "Category tree without numbers")}
       </.link>
     </p>
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">

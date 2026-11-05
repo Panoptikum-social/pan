@@ -11,7 +11,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all categories successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all categories successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -20,7 +20,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all chapters successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all chapters successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -29,7 +29,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all episodes successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all episodes successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -38,7 +38,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all personas successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all personas successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -47,7 +47,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all podcasts successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all podcasts successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -56,7 +56,7 @@ defmodule PanWeb.LikeFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "Unliked all users successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unliked all users successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 end

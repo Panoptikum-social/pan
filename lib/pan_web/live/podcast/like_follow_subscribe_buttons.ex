@@ -56,7 +56,7 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
               phx-target={@myself}
               class="btn btn-outline btn-warning btn-sm"
             >
-              <Icon.render name="settings" /> Metadata Update
+              <Icon.render name="settings" /> {dgettext("frontend", "Metadata Update")}
             </button>
             <span
               class="relative"
@@ -72,39 +72,44 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
                 x-show="metadataOpen"
                 class="absolute left-0 mx-auto items-center bg-base-200 border border-base-300 p-4 w-96"
               >
-                <h1 class="text-3xl">Info</h1>
+                <h1 class="text-3xl">{dgettext("frontend", "Info")}</h1>
                 <p class="mt-4">
-                  You can manually trigger a metadata update for this podcast every 5 minutes,
-                  if you are impatient. This still will take some time, so keep track of
-                  the status updates. And refresh the page with [F5] when told so..
+                  {dgettext(
+                    "frontend",
+                    "You can manually trigger a metadata update for this podcast every 5 minutes, if you are impatient. This still will take some time, so keep track of the status updates. And refresh the page with [F5] when told so.."
+                  )}
                 </p>
                 <button
                   @click="metadataOpen = false"
                   class="btn btn-outline btn-info btn-sm mt-4"
                   x-ref="metadataCloseButton"
                 >
-                  Close
+                  {dgettext("frontend", "Close")}
                 </button>
               </div>
             </span>
           </div>
         <% else %>
           <small>
-            A manual update will be available in {time_diff(
-              time_shift(@podcast.manually_updated_at, minutes: 5),
-              now(),
-              :seconds
-            )} seconds.
+            {dgettext("frontend", "A manual update will be available in %{seconds} seconds.",
+              seconds:
+                time_diff(time_shift(@podcast.manually_updated_at, minutes: 5), now(), :seconds)
+            )}
           </small>
         <% end %>
         <div :if={is_nil(@podcast.user_id)} class="mt-4">
           <.link
             href={podcast_frontend_path(Endpoint, :claim, @podcast)}
             method="post"
-            data-confirm="We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
+            data-confirm={
+              dgettext(
+                "frontend",
+                "We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
+              )
+            }
             class="btn btn-outline btn-primary btn-sm"
           >
-            Claim this podcast
+            {dgettext("frontend", "Claim this podcast")}
           </.link>
         </div>
         <div :if={Podcast.manageable_by?(@podcast, @current_user_id)} class="mt-4">
@@ -112,26 +117,26 @@ defmodule PanWeb.Live.Podcast.ListFollowSubscribeButtons do
             navigate={podcast_frontend_path(Endpoint, :check_feed, @podcast)}
             class="btn btn-outline btn-info btn-sm"
           >
-            Check feed
+            {dgettext("frontend", "Check feed")}
           </.link>
         </div>
       <% else %>
         {@podcast.likes_count} <Icon.render name="heart" />
-        Likes &nbsp; &nbsp; {@podcast.followers_count}
-        <Icon.render name="message" /> Followers &nbsp; &nbsp; {@podcast.subscriptions_count}
-        <Icon.render name="user" /> Subscribers
+        {dgettext("frontend", "Likes")} &nbsp; &nbsp; {@podcast.followers_count}
+        <Icon.render name="message" /> {dgettext("frontend", "Followers")} &nbsp; &nbsp; {@podcast.subscriptions_count}
+        <Icon.render name="user" /> {dgettext("frontend", "Subscribers")}
         <p class="mt-4">
           <i>
             <a
               href={user_frontend_path(Endpoint, :new)}
               class="underline hover:text-primary"
-            >Sign up</a>
+            >{dgettext("frontend", "Sign up")}</a>
             /
             <a
               href={session_path(Endpoint, :new)}
               class="underline hover:text-primary"
-            >Log in</a>
-            to like, follow, recommend and subscribe!
+            >{dgettext("frontend", "Log in")}</a>
+            {dgettext("frontend", "to like, follow, recommend and subscribe!")}
           </i>
         </p>
       <% end %>

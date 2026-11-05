@@ -16,7 +16,7 @@ defmodule PanWeb.FollowFrontendController do
     )
 
     conn
-    |> put_flash(:info, "Unfollowed successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unfollowed successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -30,7 +30,7 @@ defmodule PanWeb.FollowFrontendController do
     )
 
     conn
-    |> put_flash(:info, "Unfollowed successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unfollowed successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -44,7 +44,7 @@ defmodule PanWeb.FollowFrontendController do
     )
 
     conn
-    |> put_flash(:info, "Unfollowed successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unfollowed successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -58,7 +58,7 @@ defmodule PanWeb.FollowFrontendController do
     )
 
     conn
-    |> put_flash(:info, "Unfollowed successfully.")
+    |> put_flash(:info, dgettext("frontend", "Unfollowed successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 end

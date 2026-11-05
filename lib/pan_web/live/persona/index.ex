@@ -4,7 +4,7 @@ defmodule PanWeb.Live.Persona.Index do
   alias PanWeb.Admin.IndexGrid
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Personas")}
+    {:ok, assign(socket, page_title: dgettext("frontend", "Personas"))}
   end
 
   def handle_info({:count, id: id, module: module}, socket) do
@@ -15,12 +15,12 @@ defmodule PanWeb.Live.Persona.Index do
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">All Personas</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "All Personas")}</h1>
 
       <.live_component
         module={IndexGrid}
         id="persona-indexgrid"
-        heading="Listing records for Personas"
+        heading={dgettext("frontend", "Listing records for Personas")}
         model={Persona}
         path_helper={:persona_frontend_path}
         cols={[

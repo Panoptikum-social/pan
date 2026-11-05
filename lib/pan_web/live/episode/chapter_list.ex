@@ -10,10 +10,12 @@ defmodule PanWeb.Live.Episode.ChapterList do
   def render(assigns) do
     ~H"""
     <div :if={@episode.chapters != []} class="my-4">
-      <h3 class="text-xl" id="chapters">Deeplinks to Chapters</h3>
+      <h3 class="text-xl" id="chapters">{dgettext("frontend", "Deeplinks to Chapters")}</h3>
 
       <div class="grid grid-cols-3 gap-2">
-        <h4 :if={@current_user_id} class="text-lg col-start-2 col-span-2">Your recommendation:</h4>
+        <h4 :if={@current_user_id} class="text-lg col-start-2 col-span-2">
+          {dgettext("frontend", "Your recommendation:")}
+        </h4>
 
         <%= for chapter <- @episode.chapters do %>
           <div>

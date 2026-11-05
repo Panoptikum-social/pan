@@ -10,7 +10,7 @@ defmodule PanWeb.InvoiceFrontendController do
     case Repo.one(from(i in Invoice, where: i.id == ^id and i.user_id == ^user.id)) do
       nil ->
         conn
-        |> put_flash(:error, "This is not a valid invoice for you")
+        |> put_flash(:error, dgettext("frontend", "This is not a valid invoice for you"))
         |> redirect(to: user_frontend_path(conn, :my_profile))
         |> halt()
 

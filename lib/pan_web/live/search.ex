@@ -146,9 +146,14 @@ defmodule PanWeb.Live.Search do
 
   defp language_filter_status(selected, groups) do
     cond do
-      MapSet.size(selected) == 0 -> "searching in all languages available"
-      MapSet.size(selected) == length(groups) -> "restricted to all your languages"
-      true -> "restricted to your selected languages"
+      MapSet.size(selected) == 0 ->
+        dgettext("frontend", "searching in all languages available")
+
+      MapSet.size(selected) == length(groups) ->
+        dgettext("frontend", "restricted to all your languages")
+
+      true ->
+        dgettext("frontend", "restricted to your selected languages")
     end
   end
 
@@ -165,6 +170,20 @@ defmodule PanWeb.Live.Search do
       "podcasts" -> podcast_frontend_path(Endpoint, :show, id)
     end
   end
+
+  defp index_name("categories"), do: dgettext("frontend", "categories")
+  defp index_name("podcasts"), do: dgettext("frontend", "podcasts")
+  defp index_name("personas"), do: dgettext("frontend", "personas")
+  defp index_name("episodes"), do: dgettext("frontend", "episodes")
+  defp index_name(index), do: index
+
+  defp highlight_label("title"), do: dgettext("frontend", "Title")
+  defp highlight_label("name"), do: dgettext("frontend", "Name")
+  defp highlight_label("description"), do: dgettext("frontend", "Description")
+  defp highlight_label("summary"), do: dgettext("frontend", "Summary")
+  defp highlight_label("subtitle"), do: dgettext("frontend", "Subtitle")
+  defp highlight_label("shownotes"), do: dgettext("frontend", "Shownotes")
+  defp highlight_label(key), do: String.capitalize(key)
 
   defp heading_icon("episodes", _id, _icons), do: "headphones"
   defp heading_icon("podcasts", _id, _icons), do: "microphone"
@@ -184,15 +203,20 @@ defmodule PanWeb.Live.Search do
   def render(assigns) do
     ~H"""
     <div class="sticky top-0 z-50 bg-base-200 pb-2 p-6">
-      <h1 class="text-3xl">{@total} {@index |> String.capitalize()} found for <i>{@term}</i></h1>
+      <h1 class="text-3xl">
+        {dgettext("frontend", "%{count} %{index} found for",
+          count: @total,
+          index: @index |> index_name() |> String.capitalize()
+        )} <i>{@term}</i>
+      </h1>
       <p class="mt-2">
-        You might want to search for
+        {dgettext("frontend", "You might want to search for")}
         <.link
           :if={@index != "categories"}
           patch={search_frontend_path(Endpoint, :search, "categories", @term)}
           class="underline hover:text-primary"
         >
-          categories
+          {index_name("categories")}
         </.link>
         {if @index != "categories", do: raw(" | ")}
         <.link
@@ -200,7 +224,7 @@ defmodule PanWeb.Live.Search do
           patch={search_frontend_path(Endpoint, :search, "podcasts", @term)}
           class="underline hover:text-primary"
         >
-          podcasts
+          {index_name("podcasts")}
         </.link>
         {if @index != "podcasts", do: raw(" | ")}
         <.link
@@ -208,7 +232,7 @@ defmodule PanWeb.Live.Search do
           patch={search_frontend_path(Endpoint, :search, "personas", @term)}
           class="underline hover:text-primary"
         >
-          personas
+          {index_name("personas")}
         </.link>
         {if @index not in ["personas", "episodes"], do: raw(" | ")}
         <.link
@@ -216,11 +240,13 @@ defmodule PanWeb.Live.Search do
           patch={search_frontend_path(Endpoint, :search, "episodes", @term)}
           class="underline hover:text-primary"
         >
-          episodes
+          {index_name("episodes")}
         </.link>
-        instead.<br />
-        You can mask your search terms with an asterisk at the end or the beginning of the search term,
-        as long as there are at least 3 characters left.
+        {dgettext("frontend", "instead.")}<br />
+        {dgettext(
+          "frontend",
+          "You can mask your search terms with an asterisk at the end or the beginning of the search term, as long as there are at least 3 characters left."
+        )}
       </p>
 
       <div
@@ -229,7 +255,7 @@ defmodule PanWeb.Live.Search do
         phx-hook="LanguageFilterPersistence"
         class="mt-3 flex flex-wrap items-center gap-2"
       >
-        <span class="text-sm font-mono">Languages:</span>
+        <span class="text-sm font-mono">{dgettext("frontend", "Languages:")}</span>
         <button
           :for={group <- @language_groups}
           type="button"
@@ -251,7 +277,7 @@ defmodule PanWeb.Live.Search do
           phx-click="select-all-languages"
           class="btn btn-xs btn-ghost underline"
         >
-          reset to all my languages
+          {dgettext("frontend", "reset to all my languages")}
         </button>
         <button
           :if={MapSet.size(@selected_representative_ids) > 0}
@@ -259,7 +285,7 @@ defmodule PanWeb.Live.Search do
           phx-click="clear-language-filter"
           class="btn btn-xs btn-ghost underline"
         >
-          search in all languages available
+          {dgettext("frontend", "search in all languages available")}
         </button>
         <span class="text-xs text-base-content/70">
           ({language_filter_status(@selected_representative_ids, @language_groups)})
@@ -320,13 +346,13 @@ defmodule PanWeb.Live.Search do
           <table class="table w-auto text-sm">
             <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
               <tr :for={highlight_value <- highlight_values}>
-                <td class="text-right align-top pr-4">{highlight_key |> String.capitalize()}</td>
+                <td class="text-right align-top pr-4">{highlight_label(highlight_key)}</td>
                 <td>{highlight_value |> raw}</td>
               </tr>
             <% end %>
 
             <tr :if={hit["_source"]["inserted_at"]}>
-              <td class="text-right pr-4">Imported</td>
+              <td class="text-right pr-4">{dgettext("frontend", "Imported")}</td>
               <td>{hit["_source"]["inserted_at"] |> format_datetime()}</td>
             </tr>
           </table>

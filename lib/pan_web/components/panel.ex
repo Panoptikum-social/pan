@@ -66,7 +66,7 @@ defmodule PanWeb.Component.Panel do
         <%= if @inner_block != [] do %>
           {render_slot(@inner_block)}
         <% else %>
-          No content defined!
+          {dgettext("frontend", "No content defined!")}
         <% end %>
       </div>
     </div>

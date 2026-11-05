@@ -36,7 +36,7 @@ defmodule PanWeb.Live.Persona.Show do
           gigs_per_page: 10,
           persona_thumbnail: persona_thumbnail,
           engagements: engagements,
-          page_title: (persona.name || "Persona") <> " (Persona)"
+          page_title: dgettext("frontend", "%{name} (Persona)", name: persona.name || "Persona")
         )
         |> fetch_gigs
 
@@ -83,7 +83,7 @@ defmodule PanWeb.Live.Persona.Show do
   def render(%{not_found: true} = assigns) do
     ~H"""
     <div class="m-4">
-      We don't know a persona with that name.
+      {dgettext("frontend", "We don't know a persona with that name.")}
     </div>
     """
   end
@@ -91,7 +91,7 @@ defmodule PanWeb.Live.Persona.Show do
   def render(%{wrong_token: true} = assigns) do
     ~H"""
     <div class="m-4">
-      The crawler sent the wrong token.
+      {dgettext("frontend", "The crawler sent the wrong token.")}
     </div>
     """
   end
@@ -103,19 +103,19 @@ defmodule PanWeb.Live.Persona.Show do
         <div class="flex flex-wrap m-4">
           <table class="grow basis-64">
             <tr>
-              <td class="px-4 text-right font-semibold">PanoptikumID</td>
+              <td class="px-4 text-right font-semibold">{dgettext("frontend", "PanoptikumID")}</td>
               <td>{@persona.pid}</td>
             </tr>
             <tr>
-              <td class="px-4 text-right font-semibold">Permalink (URI)</td>
+              <td class="px-4 text-right font-semibold">{dgettext("frontend", "Permalink (URI)")}</td>
               <td>{Endpoint.url()}/{@persona.pid}</td>
             </tr>
             <tr>
-              <td class="px-4 text-right font-semibold">Name</td>
+              <td class="px-4 text-right font-semibold">{dgettext("frontend", "Name")}</td>
               <td>{@persona.name}</td>
             </tr>
             <tr :if={@persona.uri}>
-              <td class="px-4 text-right font-semibold">Uri</td>
+              <td class="px-4 text-right font-semibold">{dgettext("frontend", "Uri")}</td>
               <td>
                 <.link
                   :if={safe_uri?(@persona.uri)}
@@ -128,7 +128,7 @@ defmodule PanWeb.Live.Persona.Show do
               </td>
             </tr>
             <tr>
-              <td class="px-4 text-right font-semibold">ID</td>
+              <td class="px-4 text-right font-semibold">{dgettext("frontend", "ID")}</td>
               <td>{@persona.id}</td>
             </tr>
           </table>
@@ -145,7 +145,7 @@ defmodule PanWeb.Live.Persona.Show do
             <img
               :if={!Map.has_key?(@persona_thumbnail, :path)}
               src="/images/missing-persona.png"
-              alt="missing image"
+              alt={dgettext("frontend", "missing image")}
               width="150"
               height="150"
             />
@@ -171,32 +171,42 @@ defmodule PanWeb.Live.Persona.Show do
       </Panel.render>
 
       <div>
-        <Panel.render :if={!@current_user} heading="Claiming not available" purpose="persona">
-          <p class="m-4">You can only claim personas, if you are logged in.</p>
+        <Panel.render
+          :if={!@current_user}
+          heading={dgettext("frontend", "Claiming not available")}
+          purpose="persona"
+        >
+          <p class="m-4">
+            {dgettext("frontend", "You can only claim personas, if you are logged in.")}
+          </p>
         </Panel.render>
 
         <Panel.render
           :if={@current_user && !@current_user.podcaster}
-          heading="Claiming not available"
+          heading={dgettext("frontend", "Claiming not available")}
           purpose="persona"
         >
           <p class="m-4">
-            You didn't say you are a podcaster in
+            {dgettext("frontend", "You didn't say you are a podcaster in")}
             <.link
               href={user_frontend_path(Endpoint, :my_profile)}
               class="underline hover:text-primary"
-            >My Profile</.link>
-            yet.
+            >{dgettext("frontend", "My Profile")}</.link>
+            {dgettext("frontend", "yet.")}
           </p>
         </Panel.render>
 
         <Panel.render
           :if={@current_user && @current_user.podcaster && !@current_user.email_verified}
-          heading="Claiming not available"
+          heading={dgettext("frontend", "Claiming not available")}
           purpose="persona"
         >
-          <p class="m-4">You didn't verify your email address by clicking on the
-            verification link in the email sent to you after login.</p>
+          <p class="m-4">
+            {dgettext(
+              "frontend",
+              "You didn't verify your email address by clicking on the verification link in the email sent to you after login."
+            )}
+          </p>
         </Panel.render>
 
         <Panel.render
@@ -204,17 +214,22 @@ defmodule PanWeb.Live.Persona.Show do
             @current_user && @current_user.podcaster && @current_user.email_verified &&
               !@persona.email
           }
-          heading="Claiming"
+          heading={dgettext("frontend", "Claiming")}
           purpose="persona"
         >
           <div class="m-4">
-            <p>Please take the time to read the text on the following screen carefully.</p>
+            <p>
+              {dgettext(
+                "frontend",
+                "Please take the time to read the text on the following screen carefully."
+              )}
+            </p>
             <p>
               <.link
                 href={persona_frontend_path(Endpoint, :warning, @persona)}
                 class="btn btn-warning btn-sm mt-4"
               >
-                Start claiming process
+                {dgettext("frontend", "Start claiming process")}
               </.link>
             </p>
           </div>
@@ -225,7 +240,7 @@ defmodule PanWeb.Live.Persona.Show do
             @current_user && @current_user.podcaster && @current_user.email_verified &&
               @persona.email
           }
-          heading="Claiming"
+          heading={dgettext("frontend", "Claiming")}
           purpose="persona"
         >
           <p
@@ -237,7 +252,7 @@ defmodule PanWeb.Live.Persona.Show do
             }
             class="m-4"
           >
-            You have claimed this persona already.
+            {dgettext("frontend", "You have claimed this persona already.")}
           </p>
           <div
             :if={
@@ -249,19 +264,23 @@ defmodule PanWeb.Live.Persona.Show do
             class="m-4"
           >
             <p>
-              You can send an email to the owner of this persona and ask for permission
-              to add you as a manifestation of this persona.<br />
-              Your name, username and email address will be sent alongside in the email
-              to give the owner a chance to get in contact with you.
+              {dgettext(
+                "frontend",
+                "You can send an email to the owner of this persona and ask for permission to add you as a manifestation of this persona."
+              )}<br />
+              {dgettext(
+                "frontend",
+                "Your name, username and email address will be sent alongside in the email to give the owner a chance to get in contact with you."
+              )}
             </p>
 
             <.link
               href={persona_frontend_path(Endpoint, :claim, @persona)}
               method="post"
-              data-confirm="Are you sure?"
+              data-confirm={dgettext("frontend", "Are you sure?")}
               class="btn btn-warning btn-sm mt-4"
             >
-              Claim
+              {dgettext("frontend", "Claim")}
             </.link>
           </div>
         </Panel.render>
@@ -281,7 +300,9 @@ defmodule PanWeb.Live.Persona.Show do
 
     <Panel.render
       :if={false && @persona.fediverse_address}
-      heading={"#{@persona.fediverse_address} in the Fediverse"}
+      heading={
+        dgettext("frontend", "%{address} in the Fediverse", address: @persona.fediverse_address)
+      }
       purpose="gig"
       class="m-4 max-w-7xl"
     >
@@ -290,15 +311,15 @@ defmodule PanWeb.Live.Persona.Show do
 
     <Panel.render
       :if={@engagements != []}
-      heading={"Engagements, #{@persona.name} has entered"}
+      heading={dgettext("frontend", "Engagements, %{name} has entered", name: @persona.name)}
       purpose="engagement"
       class="m-4"
     >
       <table class="m-4">
         <thead>
           <tr>
-            <th>Podcast</th>
-            <th>Role</th>
+            <th>{dgettext("frontend", "Podcast")}</th>
+            <th>{dgettext("frontend", "Role")}</th>
           </tr>
         </thead>
         <tbody>
@@ -316,17 +337,17 @@ defmodule PanWeb.Live.Persona.Show do
 
     <Panel.render
       :if={@has_gigs}
-      heading={"Gigs, #{@persona.name} has been engaged in"}
+      heading={dgettext("frontend", "Gigs, %{name} has been engaged in", name: @persona.name)}
       purpose="gig"
       class="m-4"
     >
       <table class="m-4">
         <thead>
           <tr class="flex flex-col sm:table-row">
-            <th>Date</th>
-            <th>Podcast</th>
-            <th>Episode</th>
-            <th>Role</th>
+            <th>{dgettext("frontend", "Date")}</th>
+            <th>{dgettext("frontend", "Podcast")}</th>
+            <th>{dgettext("frontend", "Episode")}</th>
+            <th>{dgettext("frontend", "Role")}</th>
           </tr>
         </thead>
         <tbody phx-update="stream" id="gigs-table-body">

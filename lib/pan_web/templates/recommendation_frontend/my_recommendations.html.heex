@@ -1,6 +1,9 @@
 <div class="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
   <div class="flex flex-col space-y-4">
-    <PanWeb.Component.Panel.render heading="Your Podcast Recommendations" purpose="recommendation">
+    <PanWeb.Component.Panel.render
+      heading={dgettext("frontend", "Your Podcast Recommendations")}
+      purpose="recommendation"
+    >
       <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @podcast_recommendations do %>
           <li class="mt-2 pt-2">
@@ -13,16 +16,19 @@
               <.link
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
-                data-confirm="Are you sure?"
+                data-confirm={dgettext("frontend", "Are you sure?")}
                 class="btn btn-outline btn-error btn-xs"
-              >Delete</.link>
+              >{dgettext("frontend", "Delete")}</.link>
             </p>
           </li>
         <% end %>
       </ul>
     </PanWeb.Component.Panel.render>
 
-    <PanWeb.Component.Panel.render heading="Your Episode Recommendations" purpose="recommendation">
+    <PanWeb.Component.Panel.render
+      heading={dgettext("frontend", "Your Episode Recommendations")}
+      purpose="recommendation"
+    >
       <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @episode_recommendations do %>
           <li class="mt-2 pt-2">
@@ -38,16 +44,19 @@
               <.link
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
-                data-confirm="Are you sure?"
+                data-confirm={dgettext("frontend", "Are you sure?")}
                 class="btn btn-outline btn-error btn-xs"
-              >Delete</.link>
+              >{dgettext("frontend", "Delete")}</.link>
             </p>
           </li>
         <% end %>
       </ul>
     </PanWeb.Component.Panel.render>
 
-    <PanWeb.Component.Panel.render heading="Your Chapter Recommendations" purpose="recommendation">
+    <PanWeb.Component.Panel.render
+      heading={dgettext("frontend", "Your Chapter Recommendations")}
+      purpose="recommendation"
+    >
       <ul class="m-4 flex flex-col divide-y divide-dashed divide-base-300">
         <%= for recommendation <- @chapter_recommendations do %>
           <li class="mt-2 pt-2">
@@ -68,9 +77,9 @@
               <.link
                 href={recommendation_frontend_path(@conn, :delete, recommendation)}
                 method="delete"
-                data-confirm="Are you sure?"
+                data-confirm={dgettext("frontend", "Are you sure?")}
                 class="btn btn-outline btn-error btn-xs"
-              >Delete</.link>
+              >{dgettext("frontend", "Delete")}</.link>
             </p>
           </li>
         <% end %>
@@ -79,7 +88,10 @@
   </div>
 
   <div>
-    <PanWeb.Component.Panel.render heading="Unrecommended Podcasts" purpose="podcast">
+    <PanWeb.Component.Panel.render
+      heading={dgettext("frontend", "Unrecommended Podcasts")}
+      purpose="podcast"
+    >
       <ul class="m-4 flex flex-col space-y-4">
         <%= for podcast <- @unrecommended_podcasts do %>
           <li>
@@ -102,7 +114,10 @@
                   />
                 </div>
                 <div class="shrink-0 self-end">
-                  <button type="submit" class="btn btn-info btn-sm">{icon("thumb-up")} Recommend</button>
+                  <button type="submit" class="btn btn-info btn-sm">{icon("thumb-up")} {dgettext(
+                    "frontend",
+                    "Recommend"
+                  )}</button>
                 </div>
               </div>
             </.form>

@@ -9,14 +9,14 @@ defmodule PanWeb.Component.QRCode do
     ~H"""
     <img
       src={"/qrcode/#{URI.encode_www_form(@for)}"}
-      alt="QR code"
+      alt={dgettext("frontend", "QR code")}
       class="qr-latte max-w-none"
       width="150"
       height="150"
     />
     <img
       src={"/qrcode/#{URI.encode_www_form(@for)}?theme=mocha"}
-      alt="QR code"
+      alt={dgettext("frontend", "QR code")}
       class="qr-mocha max-w-none"
       width="150"
       height="150"

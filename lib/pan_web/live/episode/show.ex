@@ -17,8 +17,10 @@ defmodule PanWeb.Live.Episode.Show do
            episode: episode,
            changeset: %Recommendation{} |> Recommendation.changeset(),
            page_title:
-             (episode.title || "Episode") <>
-               " from " <> (episode.podcast.title || "Podcast") <> " (Podcast)"
+             dgettext("frontend", "%{episode} from %{podcast} (Podcast)",
+               episode: episode.title || "Episode",
+               podcast: episode.podcast.title || "Podcast"
+             )
          )}
     end
   end
@@ -43,7 +45,7 @@ defmodule PanWeb.Live.Episode.Show do
     ~H"""
     <div class="m-4">
       <span :if={@episode.podcast.blocked}>
-        This episode may not be published here, sorry.
+        {dgettext("frontend", "This episode may not be published here, sorry.")}
       </span>
       <div :if={!@episode.podcast.blocked}>
         <.live_component
@@ -63,7 +65,7 @@ defmodule PanWeb.Live.Episode.Show do
         <div class="flex flex-col md:flex-row">
           <video :if={major_mimetype(@episode) == "video"} width="640" height="480" controls>
             <source :for={enclosure <- @episode.enclosures} src={enclosure.url} />
-            Your browser does not support the video tag.
+            {dgettext("frontend", "Your browser does not support the video tag.")}
           </video>
           <.live_component
             :if={major_mimetype(@episode) != "video"}
@@ -75,7 +77,7 @@ defmodule PanWeb.Live.Episode.Show do
 
           <div id="shownotes" class="lg:w-1/2 mt-4 lg:mt-0">
             <div :if={@episode.shownotes}>
-              <h2 class="text-2xl">Shownotes</h2>
+              <h2 class="text-2xl">{dgettext("frontend", "Shownotes")}</h2>
               <div class="my-2 prose max-w-none bg-base-100 lg:p-2">{raw(@episode.shownotes)}</div>
             </div>
           </div>

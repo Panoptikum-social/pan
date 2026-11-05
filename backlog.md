@@ -42,7 +42,7 @@ Decided 2026-11-05:
   de/moderation.po.
 - Phase 3 (frontend), gettext domain "frontend", in steps:
   #577 layout and navigation (done 2026-11-05), #578
-  account and login (done 2026-11-05), #579 browsing pages, #580 podcaster tools, #581
+  account and login (done 2026-11-05), #579 browsing pages (done 2026-11-05), #580 podcaster tools, #581
   emails (#568), #582 translated data (#566, #567, #571, #569).
 - #583 Emails to recipients without a known language: login link and
   verification in the current page language, others English. The page
@@ -57,6 +57,9 @@ Decided 2026-11-05:
   (_personas.html.heex: toggle_delegation, redirect, cancel_redirect) are
   GET links that change data; the POST + "Are you sure?" rule (#449)
   says POST. User decides later.
+- Podlove: the subscribe button gets the page language (data-language)
+  and the web player gets it via PLAYER_SET_LANGUAGE on its store; the
+  player otherwise follows the browser language (#579).
 - #576 Cleanup: the moderation edit pages (EditPodcast, EditEpisode,
   EditFeed) use `:admin_live_view` and override its English with
   `on_mount PanWeb.Locale`. Moving them to `:moderation_live_view` would

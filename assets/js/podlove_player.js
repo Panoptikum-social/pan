@@ -46,6 +46,12 @@ let PodlovePlayer = {
         .then((store) => {
           this.store = store;
           registerExternalEvents("podlove-player")(store);
+          // the player picks its language from the browser; the page language
+          // (PanWeb.Locale sets <html lang>) wins. Unknown ones fall back to English.
+          store.dispatch({
+            type: "PLAYER_SET_LANGUAGE",
+            payload: document.documentElement.lang || "en",
+          });
         });
     });
 

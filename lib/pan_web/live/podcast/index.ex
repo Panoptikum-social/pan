@@ -16,7 +16,7 @@ defmodule PanWeb.Live.Podcast.Index do
         category_colors: Category.color_map(),
         page: 1,
         per_page: 15,
-        page_title: "Latest Podcasts",
+        page_title: dgettext("frontend", "Latest Podcasts"),
         has_more: length(podcasts) == 15
       )
 
@@ -39,7 +39,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
   def render(assigns) do
     ~H"""
-    <h1 class="text-3xl m-4">Latest Podcasts</h1>
+    <h1 class="text-3xl m-4">{dgettext("frontend", "Latest Podcasts")}</h1>
 
     <div id="latest_podcasts" phx-update="stream" class="m-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
       <Panel.render
@@ -63,7 +63,7 @@ defmodule PanWeb.Live.Podcast.Index do
             <img
               :if={podcast.thumbnails == []}
               src="/images/missing-podcast.png"
-              alt="missing image"
+              alt={dgettext("frontend", "missing image")}
               width="150"
               height="150"
             />
@@ -72,7 +72,7 @@ defmodule PanWeb.Live.Podcast.Index do
           <div class="grid grid-cols-3 grid-flow-row auto-rows-min">
             <div :if={podcast.website}>
               <label class="badge badge-outline badge-error m-1">
-                Website
+                {dgettext("frontend", "Website")}
               </label>
             </div>
             <div :if={podcast.website} class="col-span-2 wrap-break-word">
@@ -81,7 +81,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
             <div>
               <label class="badge badge-outline badge-info m-1">
-                Available&nbsp;since
+                <span class="whitespace-nowrap">{dgettext("frontend", "Available since")}</span>
               </label>
             </div>
 
@@ -92,7 +92,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
             <div>
               <label class="badge badge-outline badge-warning m-1">
-                Categories
+                {dgettext("frontend", "Categories")}
               </label>
             </div>
             <div class="col-span-2 leading-9">
@@ -106,7 +106,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
             <div>
               <label class="badge badge-outline badge-info m-1">
-                Contributors
+                {dgettext("frontend", "Contributors")}
               </label>
             </div>
             <div class="leading-9 col-span-2">
@@ -118,7 +118,7 @@ defmodule PanWeb.Live.Podcast.Index do
 
             <div :if={podcast.payment_link_url}>
               <label class="badge badge-outline badge-info m-1">
-                Support
+                {dgettext("frontend", "Support")}
               </label>
             </div>
             <div :if={podcast.payment_link_url} class="col-span-2">
@@ -128,10 +128,10 @@ defmodule PanWeb.Live.Podcast.Index do
         </div>
 
         <div class="m-4">
-          <h4 class="text-lg">Description</h4>
+          <h4 class="text-lg">{dgettext("frontend", "Description")}</h4>
           <p>{podcast.description}</p>
           <div :if={podcast.description != podcast.summary}>
-            <h4 class="text-lg">Summary</h4>
+            <h4 class="text-lg">{dgettext("frontend", "Summary")}</h4>
             <p>{podcast.summary}</p>
           </div>
         </div>

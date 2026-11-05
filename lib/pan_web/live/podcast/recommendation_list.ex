@@ -60,16 +60,16 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
         <a
           href="https://blog.panoptikum.social/complaints/"
           class="underline hover:text-primary"
-        >Complain</a>
+        >{dgettext("frontend", "Complain")}</a>
       </div>
-      <h2 id="recommendations" class="text-2xl">Recommendations</h2>
+      <h2 id="recommendations" class="text-2xl">{dgettext("frontend", "Recommendations")}</h2>
       <div :if={@recommendations_count > 0}>
         <table class="table table-sm table-zebra mt-4">
           <thead>
             <tr>
-              <th>User</th>
-              <th>Recommendation</th>
-              <th class="text-right">Date</th>
+              <th>{dgettext("frontend", "User")}</th>
+              <th>{dgettext("frontend", "Recommendation")}</th>
+              <th class="text-right">{dgettext("frontend", "Date")}</th>
             </tr>
           </thead>
           <tbody id="latest_recommendations" phx-update="stream">
@@ -80,13 +80,13 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
                   <a
                     href={"https://twitter.com/intent/tweet?text=#{social(@podcast, recommendation)}&url=#{social_url(@podcast)}"}
                     class="btn btn-outline btn-info btn-xs"
-                    alt="tweet it"
-                  >tweet</a>
+                    alt={dgettext("frontend", "tweet it")}
+                  >{dgettext("frontend", "tweet")}</a>
                   <a
                     href={"mailto:?subject=#{social(@podcast, recommendation)}&body=#{social_url(@podcast)}"}
                     class="btn btn-outline btn-success btn-xs"
-                    alt="send an email"
-                  >mail</a>
+                    alt={dgettext("frontend", "send an email")}
+                  >{dgettext("frontend", "mail")}</a>
                 </div>
               </td>
               <td class="align-top">{recommendation.comment}</td>
@@ -102,7 +102,7 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
           phx-target={@myself}
           class="btn btn-outline btn-info btn-sm m-4"
         >
-          Load more
+          {dgettext("frontend", "Load more")}
         </button>
       </div>
 

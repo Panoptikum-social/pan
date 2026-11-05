@@ -10,7 +10,7 @@ defmodule PanWeb.SubscriptionFrontendController do
     Repo.delete_all(from(s in Subscription, where: s.user_id == ^user.id))
 
     conn
-    |> put_flash(:info, "Deleted all your subscriptions successfully.")
+    |> put_flash(:info, dgettext("frontend", "Deleted all your subscriptions successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 end

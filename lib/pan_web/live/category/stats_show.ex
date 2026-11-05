@@ -24,7 +24,7 @@ defmodule PanWeb.Live.Category.StatsShow do
     {:ok,
      assign(socket,
        category: category,
-       page_title: category.title <> " (Category)",
+       page_title: dgettext("frontend", "%{title} (Category)", title: category.title),
        languages: languages,
        language: language,
        page: page,
@@ -72,7 +72,7 @@ defmodule PanWeb.Live.Category.StatsShow do
           />
         </div>
 
-        <h3 class="pt-4 text-xl">Click on a language to filter</h3>
+        <h3 class="pt-4 text-xl">{dgettext("frontend", "Click on a language to filter")}</h3>
 
         <div class="flex flex-wrap py-4">
           <div :for={language <- @languages} class="mr-8">
@@ -86,11 +86,11 @@ defmodule PanWeb.Live.Category.StatsShow do
             {amount(@language.name, @podcasts)} Podcasts in {@language.name} {@language.emoji}
           </h2>
         <% else %>
-          <h2 class="text-2xl mt-4">Podcasts in any language</h2>
+          <h2 class="text-2xl mt-4">{dgettext("frontend", "Podcasts in any language")}</h2>
         <% end %>
 
         <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
-          Podcast Buttons not shown in this view.
+          {dgettext("frontend", "Podcast Buttons not shown in this view.")}
         </div>
       </div>
     </Panel.render>

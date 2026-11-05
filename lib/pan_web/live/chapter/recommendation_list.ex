@@ -24,10 +24,10 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
         <a
           href="https://blog.panoptikum.social/complaints/"
           class="underline hover:text-primary"
-        >Complain</a>
+        >{dgettext("frontend", "Complain")}</a>
       </div>
 
-      <h3 class="text-xl">Recommendations</h3>
+      <h3 class="text-xl">{dgettext("frontend", "Recommendations")}</h3>
       <ul class="my-4 bg-base-100">
         <li
           :for={recommendation <- @chapter.recommendations}
@@ -38,13 +38,13 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
               <a
                 href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
                 class="btn btn-outline btn-info btn-xs"
-                alt="tweet it"
-              >tweet</a>
+                alt={dgettext("frontend", "tweet it")}
+              >{dgettext("frontend", "tweet")}</a>
               <a
                 href={"mailto:?subject=#{social(@chapter, recommendation)}&body=#{social_url(@episode)}"}
                 class="btn btn-outline btn-success btn-xs"
-                alt="send an email"
-              >mail</a>
+                alt={dgettext("frontend", "send an email")}
+              >{dgettext("frontend", "mail")}</a>
             </nobr>
           </p>
 

@@ -21,12 +21,14 @@ defmodule PanWeb.Live.Podcast.RecommendForm do
           size="100"
           maxlength="255"
           data-remaining-counter="remaining"
-          label="Your recommendation"
+          label={dgettext("frontend", "Your recommendation")}
           class="input w-full max-w-4xl"
         />
-        <p class="text-sm text-base-content/70"><span id="remaining">255</span> characters left</p>
+        <p class="text-sm text-base-content/70">
+          <span id="remaining">255</span> {dgettext("frontend", "characters left")}
+        </p>
         <.input type="hidden" field={f[:podcast_id]} value={@podcast.id} />
-        <.button type="submit" class="btn btn-primary">Recommend</.button>
+        <.button type="submit" class="btn btn-primary">{dgettext("frontend", "Recommend")}</.button>
       </.form>
     </div>
     <br />

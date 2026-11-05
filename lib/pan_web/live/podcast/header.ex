@@ -23,14 +23,14 @@ defmodule PanWeb.Live.Podcast.Header do
         href={databrowser_path(Endpoint, :show, "podcast", @podcast)}
         class="underline hover:text-primary"
       >
-        <Icon.render name="settings" /> Show Podcast
+        <Icon.render name="settings" /> {dgettext("frontend", "Show Podcast")}
       </a>
 
       <a
         href={databrowser_path(Endpoint, :has_many, "feed", @podcast.feeds |> hd, "alternate_feeds")}
         class="underline hover:text-primary"
       >
-        <Icon.render name="rss" /> Alternate Feeds
+        <Icon.render name="rss" /> {dgettext("frontend", "Alternate Feeds")}
       </a>
     </div>
 
@@ -41,7 +41,10 @@ defmodule PanWeb.Live.Podcast.Header do
       class="alert alert-soft alert-warning container max-w-3xl my-4"
       role="alert"
     >
-      We retired this podcast, because we couldn't parse it for 10 consecutive times.
+      {dgettext(
+        "frontend",
+        "We retired this podcast, because we couldn't parse it for 10 consecutive times."
+      )}
     </p>
 
     <div id="header" class="flex flex-col space-y-4 md:justify-between md:space-y-0 md:flex-row mt-4">
@@ -61,7 +64,7 @@ defmodule PanWeb.Live.Podcast.Header do
               <img
                 :if={!Map.has_key?(@podcast_thumbnail, :path)}
                 src="/images/missing-podcast.png"
-                alt="missing image"
+                alt={dgettext("frontend", "missing image")}
                 width="150"
                 height="150"
               />
@@ -73,7 +76,9 @@ defmodule PanWeb.Live.Podcast.Header do
         </div>
 
         <dl class="grid grid-cols-[max-content_minmax(0,1fr)] gap-x-4 gap-y-2 min-w-0 2xl:w-md 2xl:flex-none [&>dd]:min-w-0 [&>dd]:wrap-break-word">
-          <dt :if={@podcast.website} class="justify-self-end font-medium">Website</dt>
+          <dt :if={@podcast.website} class="justify-self-end font-medium">
+            {dgettext("frontend", "Website")}
+          </dt>
           <dd :if={@podcast.website}>
             <a
               href={@podcast.website}
@@ -81,10 +86,12 @@ defmodule PanWeb.Live.Podcast.Header do
             >{@podcast.website}</a>
           </dd>
           <dt :if={separate_description?(@podcast)} class="justify-self-end font-medium">
-            Description
+            {dgettext("frontend", "Description")}
           </dt>
           <dd :if={separate_description?(@podcast)}>{@podcast.description}</dd>
-          <dt :if={@podcast.payment_link_url} class="justify-self-end font-medium">Support</dt>
+          <dt :if={@podcast.payment_link_url} class="justify-self-end font-medium">
+            {dgettext("frontend", "Support")}
+          </dt>
           <dd :if={@podcast.payment_link_url}>
             <a
               href={@podcast.payment_link_url |> String.trim()}
@@ -93,16 +100,18 @@ defmodule PanWeb.Live.Podcast.Header do
               {@podcast.payment_link_title || "Support"}
             </a>
           </dd>
-          <dt class="justify-self-end font-medium">Language</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Language")}</dt>
           <dd>
             <span :for={language <- @podcast.languages}>{language.emoji} {language.name}</span>
           </dd>
-          <dt :if={@podcast.last_build_date} class="justify-self-end font-medium">last modified</dt>
+          <dt :if={@podcast.last_build_date} class="justify-self-end font-medium">
+            {dgettext("frontend", "last modified")}
+          </dt>
           <dd :if={@podcast.last_build_date}>
             {Calendar.strftime(@podcast.last_build_date, "%x %H:%M")}
           </dd>
           <dt :if={@podcast.latest_episode_publishing_date} class="justify-self-end font-medium">
-            last episode published
+            {dgettext("frontend", "last episode published")}
           </dt>
           <dd :if={@podcast.latest_episode_publishing_date}>
             {Calendar.strftime(@podcast.latest_episode_publishing_date, "%x %H:%M")}
@@ -111,13 +120,15 @@ defmodule PanWeb.Live.Podcast.Header do
             :if={@podcast.publication_frequency && @podcast.publication_frequency > 0}
             class="justify-self-end font-medium"
           >
-            publication frequency
+            {dgettext("frontend", "publication frequency")}
           </dt>
           <dd :if={@podcast.publication_frequency && @podcast.publication_frequency > 0}>
-            {@podcast.publication_frequency |> Float.round(2)} days
+            {dgettext("frontend", "%{count} days",
+              count: Float.round(@podcast.publication_frequency, 2)
+            )}
           </dd>
 
-          <dt class="justify-self-end font-medium">Contributors</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Contributors")}</dt>
           <%= for {persona, engagements} <- Enum.group_by(@podcast.engagements, &Map.get(&1, :persona)) do %>
             <dd class="col-start-2 flex flex-wrap items-center gap-x-4 gap-y-1">
               <PersonaButton.render for={persona} />
@@ -128,25 +139,25 @@ defmodule PanWeb.Live.Podcast.Header do
               </span>
             </dd>
           <% end %>
-          <dt class="justify-self-end font-medium">Explicit</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Explicit")}</dt>
           <dd>{@podcast.explicit}</dd>
           <dt
             id="metadata"
             class="justify-self-end font-medium"
           >
-            Number of Episodes
+            {dgettext("frontend", "Number of Episodes")}
           </dt>
           <dd>{@episodes_count}</dd>
           <dt class="justify-self-end font-medium">
-            <Icon.render name="rss" /> Rss-Feeds
+            <Icon.render name="rss" /> {dgettext("frontend", "Rss-Feeds")}
           </dt>
           <dd>
             <a
               href={podcast_frontend_path(Endpoint, :feeds, @podcast)}
               class="underline hover:text-primary"
-            >Detail page</a>
+            >{dgettext("frontend", "Detail page")}</a>
           </dd>
-          <dt class="justify-self-end font-medium">Categories</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Categories")}</dt>
           <dd class="leading-10">
             <CategoryLink.render
               :for={category <- @podcast.categories}

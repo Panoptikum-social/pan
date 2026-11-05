@@ -17,7 +17,8 @@ defmodule PanWeb.Component.PodcastCard do
     </p>
 
     <p :if={@for.author_name} class="mt-1">
-      Author <PersonaButton.render name={@for.author_name} id={@for.author_id} />
+      {dgettext("frontend", "Author")}
+      <PersonaButton.render name={@for.author_name} id={@for.author_id} />
     </p>
 
     <p :if={@for.description} class="mt-1">

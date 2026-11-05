@@ -11,7 +11,7 @@ defmodule PanWeb.ManifestationFrontendController do
     |> Repo.delete!()
 
     conn
-    |> put_flash(:info, "Manifestation deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "Manifestation deleted successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 
@@ -25,7 +25,7 @@ defmodule PanWeb.ManifestationFrontendController do
     |> Repo.update_all([])
 
     conn
-    |> put_flash(:info, "All manifestation deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "All manifestations deleted successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 end

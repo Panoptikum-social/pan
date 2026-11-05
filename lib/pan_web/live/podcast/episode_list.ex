@@ -11,14 +11,14 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
 
   def render(assigns) do
     ~H"""
-    <h1 class="text-3xl">Episodes</h1>
+    <h1 class="text-3xl">{dgettext("frontend", "Episodes")}</h1>
 
     <table class="table table-sm table-zebra mt-4">
       <thead>
         <tr class="flex flex-col sm:table-row">
-          <th>Date</th>
-          <th>Title &amp; Description</th>
-          <th>Contributors</th>
+          <th>{dgettext("frontend", "Date")}</th>
+          <th>{dgettext("frontend", "Title & Description")}</th>
+          <th>{dgettext("frontend", "Contributors")}</th>
         </tr>
       </thead>
       <tbody id="table-body-episodes" phx-update="stream">
@@ -55,9 +55,12 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                       x-show="detailsOpen"
                       class="absolute right-0 mx-auto items-center bg-base-200 border border-base-300 p-4"
                     >
-                      <h1 class="text-3xl">Info</h1>
+                      <h1 class="text-3xl">{dgettext("frontend", "Info")}</h1>
                       <p class="mt-4">
-                        This contribution is claimed by a user and not source of the podcast feed.
+                        {dgettext(
+                          "frontend",
+                          "This contribution is claimed by a user and not source of the podcast feed."
+                        )}
                       </p>
                       <p>
                         <button
@@ -65,7 +68,7 @@ defmodule PanWeb.Live.Podcast.EpisodeList do
                           class="btn btn-outline btn-info btn-sm mt-4"
                           x-ref="detailsCloseButton"
                         >
-                          Close
+                          {dgettext("frontend", "Close")}
                         </button>
                       </p>
                     </div>

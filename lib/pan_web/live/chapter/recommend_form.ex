@@ -25,7 +25,7 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
           phx-keyup="on-change"
           phx-target={@myself}
           field={f[:comment]}
-          label="Your recommendation"
+          label={dgettext("frontend", "Your recommendation")}
           id={"text-#{@id}"}
           size="100"
           maxlength="255"
@@ -41,7 +41,7 @@ defmodule PanWeb.Live.Chapter.RecommendForm do
         <.button
           type="submit"
           class="btn btn-info btn-sm"
-        >Recommend</.button>
+        >{dgettext("frontend", "Recommend")}</.button>
       </.form>
     </div>
     """

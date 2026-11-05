@@ -53,7 +53,7 @@ defmodule PanWeb.Component.LikeButton do
           phx-target={@myself}
           class="btn btn-outline btn-error btn-sm my-2"
         >
-          {@likes_count} <Icon.render name="heart-filled" /> Unlike
+          {@likes_count} <Icon.render name="heart-filled" /> {dgettext("frontend", "Unlike")}
         </button>
       <% else %>
         <button
@@ -61,7 +61,7 @@ defmodule PanWeb.Component.LikeButton do
           phx-target={@myself}
           class="btn btn-outline btn-success btn-sm my-2"
         >
-          {@likes_count} <Icon.render name="heart" /> Like
+          {@likes_count} <Icon.render name="heart" /> {dgettext("frontend", "Like")}
         </button>
       <% end %>
     </span>

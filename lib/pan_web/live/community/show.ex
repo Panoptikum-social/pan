@@ -72,7 +72,7 @@ defmodule PanWeb.Live.Community.Show do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      A community with this id could not be found
+      {dgettext("frontend", "A community with this id could not be found")}
     </div>
     """
   end
@@ -112,9 +112,12 @@ defmodule PanWeb.Live.Community.Show do
         </div>
 
         <div :if={@pad_permissions.read} class="mt-4">
-          <h3 class="text-lg font-semibold">Pads</h3>
+          <h3 class="text-lg font-semibold">{dgettext("frontend", "Pads")}</h3>
           <p class="text-sm text-base-content/70 mt-1">
-            Markdown documents that the followers of this community write together.
+            {dgettext(
+              "frontend",
+              "Markdown documents that the followers of this community write together."
+            )}
           </p>
           <ul :if={@pads != []} class="list-disc m-4">
             <li :for={pad <- @pads}>
@@ -124,10 +127,13 @@ defmodule PanWeb.Live.Community.Show do
               >
                 {pad.title}
               </.link>
-              <span :if={pad.read_only} class="badge badge-sm badge-ghost ml-2">read only</span>
+              <span :if={pad.read_only} class="badge badge-sm badge-ghost ml-2">{dgettext(
+                "frontend",
+                "read only"
+              )}</span>
             </li>
           </ul>
-          <p :if={@pads == []} class="my-2">No pads yet.</p>
+          <p :if={@pads == []} class="my-2">{dgettext("frontend", "No pads yet.")}</p>
 
           <.form
             :if={@pad_permissions.manage}
@@ -136,8 +142,11 @@ defmodule PanWeb.Live.Community.Show do
             phx-submit="create_pad"
             class="flex items-start gap-2 mt-2"
           >
-            <.input field={@pad_form[:title]} placeholder="Title of the new pad" />
-            <.button class="btn btn-primary">New pad</.button>
+            <.input
+              field={@pad_form[:title]}
+              placeholder={dgettext("frontend", "Title of the new pad")}
+            />
+            <.button class="btn btn-primary">{dgettext("frontend", "New pad")}</.button>
           </.form>
         </div>
 
@@ -145,34 +154,39 @@ defmodule PanWeb.Live.Community.Show do
           <div class="flex items-center gap-3">
             <LinkButton.render
               to={category_frontend_path(@socket, :show, @community.category_id)}
-              title="Browse podcasts"
+              title={dgettext("frontend", "Browse podcasts")}
               class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
-            <span>shows every podcast in this community.</span>
+            <span>{dgettext("frontend", "shows every podcast in this community.")}</span>
           </div>
           <div class="flex items-center gap-3">
             <LinkButton.render
               to={category_frontend_path(@socket, :latest_episodes, @community.category_id)}
-              title="Latest episodes"
+              title={dgettext("frontend", "Latest episodes")}
               class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
             <span>
-              gives you a timeline view starting with the most current episode from podcasts in
-              this community.
+              {dgettext(
+                "frontend",
+                "gives you a timeline view starting with the most current episode from podcasts in this community."
+              )}
             </span>
           </div>
           <div class="flex items-center gap-3">
             <LinkButton.render
               to={category_frontend_path(@socket, :categorized, @community.category_id)}
-              title="Categorized"
+              title={dgettext("frontend", "Categorized")}
               class="btn-outline btn-primary w-44 justify-center shrink-0"
             />
-            <span>sorts the podcasts in this community by the other categories they are listed in.</span>
+            <span>{dgettext(
+              "frontend",
+              "sorts the podcasts in this community by the other categories they are listed in."
+            )}</span>
           </div>
         </div>
 
         <div :if={@community.moderators != []} class="mt-4">
-          <h3 class="text-lg font-semibold">Moderators</h3>
+          <h3 class="text-lg font-semibold">{dgettext("frontend", "Moderators")}</h3>
           <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
             <UserButton.render
               :for={moderator <- @community.moderators}
@@ -185,8 +199,10 @@ defmodule PanWeb.Live.Community.Show do
         <div :if={@community_personas != []} class="mt-4">
           <h3 class="text-lg font-semibold">Members ({length(@community_personas)})</h3>
           <p class="text-sm text-base-content/70 mt-1">
-            The people behind the podcasts in this community — hosts, co-hosts, producers, and
-            other contributors.
+            {dgettext(
+              "frontend",
+              "The people behind the podcasts in this community — hosts, co-hosts, producers, and other contributors."
+            )}
           </p>
           <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 py-4">
             <PersonaButton.render

@@ -7,7 +7,11 @@ defmodule PanWeb.Live.Episode.Player do
     episode = Episode.get_by_id_for_episode_player(id)
 
     {:ok,
-     assign(socket, episode: episode, page_title: "Player Page for #{episode.title} (Episode)")}
+     assign(socket,
+       episode: episode,
+       page_title:
+         dgettext("frontend", "Player Page for %{episode} (Episode)", episode: episode.title)
+     )}
   end
 
   def render(assigns) do

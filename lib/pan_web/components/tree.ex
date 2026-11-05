@@ -58,9 +58,9 @@ defmodule PanWeb.Component.Tree do
         class="btn btn-sm btn-outline btn-primary self-start mb-2"
       >
         <%= if @expanded == %{} do %>
-          <Icon.render name="folder-open" /> Expand all
+          <Icon.render name="folder-open" /> {dgettext("frontend", "Expand all")}
         <% else %>
-          <Icon.render name="folder" /> Collapse all
+          <Icon.render name="folder" /> {dgettext("frontend", "Collapse all")}
         <% end %>
       </button>
       {render_tree(assigns, @nodes, 0, @myself)}

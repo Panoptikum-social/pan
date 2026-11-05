@@ -15,7 +15,7 @@ defmodule PanWeb.Live.Home do
        latest_podcast: Podcast.latest(),
        latest_episode: Episode.latest(),
        latest_recommendation: Recommendation.latest(),
-       page_title: "The Podcast Panoptikum "
+       page_title: dgettext("frontend", "The Podcast Panoptikum")
      )}
   end
 
@@ -27,17 +27,20 @@ defmodule PanWeb.Live.Home do
         class="text-center mb-2"
       >
         <div x-show="!consented" x-cloak>
-          Panoptikum.social uses cookies only out of technical necessity. See our
+          {dgettext(
+            "frontend",
+            "Panoptikum.social uses cookies only out of technical necessity. See our"
+          )}
           <.link
             href="https://blog.panoptikum.social/privacy/"
             class="underline hover:text-primary"
-          > Privacy Page</.link>
-          for details.
+          >{dgettext("frontend", "Privacy Page")}</.link>
+          {dgettext("frontend", "for details.")}
           <button
             @click.prevent="consent"
             class="btn btn-sm"
           >
-            I agree
+            {dgettext("frontend", "I agree")}
           </button>
         </div>
       </div>
@@ -45,9 +48,9 @@ defmodule PanWeb.Live.Home do
       <div class="max-w-7xl mx-auto pt-6
                   flex flex-col space-y-4 justify-items-auto
                   lg:flex-row lg:space-y-0 lg:space-x-4">
-        <div aria-label="left column" class="flex-1">
+        <div aria-label={dgettext("frontend", "left column")} class="flex-1">
           <Panel.render
-            heading="Top 10 most liked Podcasts"
+            heading={dgettext("frontend", "Top 10 most liked Podcasts")}
             heading_right="more ..."
             target={podcast_frontend_path(Endpoint, :liked)}
             purpose="like"
@@ -60,7 +63,7 @@ defmodule PanWeb.Live.Home do
           </Panel.render>
 
           <Panel.render
-            heading="Top 10 subscribed Podcasts"
+            heading={dgettext("frontend", "Top 10 subscribed Podcasts")}
             heading_right="more ..."
             target={podcast_frontend_path(Endpoint, :popular)}
             purpose="popular"
@@ -76,7 +79,7 @@ defmodule PanWeb.Live.Home do
 
         <div class="flex-1">
           <Panel.render
-            heading="Latest Podcast"
+            heading={dgettext("frontend", "Latest Podcast")}
             heading_right="more ..."
             target={podcast_frontend_path(Endpoint, :index)}
             purpose="podcast"
@@ -85,18 +88,18 @@ defmodule PanWeb.Live.Home do
             <%= if @latest_podcast do %>
               <PodcastCard.render for={@latest_podcast} />
             <% else %>
-              <p>No podcasts yet.</p>
+              <p>{dgettext("frontend", "No podcasts yet.")}</p>
             <% end %>
             <p class="mt-4">
               <a
                 href={podcast_frontend_path(Endpoint, :index)}
                 class="underline hover:text-primary"
-              >show more...</a>
+              >{dgettext("frontend", "show more...")}</a>
             </p>
           </Panel.render>
 
           <Panel.render
-            heading="Latest Episode"
+            heading={dgettext("frontend", "Latest Episode")}
             heading_right="more ..."
             target={episode_frontend_path(Endpoint, :index)}
             purpose="episode"
@@ -106,18 +109,18 @@ defmodule PanWeb.Live.Home do
             <%= if @latest_episode do %>
               <EpisodeCard.render for={@latest_episode} />
             <% else %>
-              <p>No episodes yet.</p>
+              <p>{dgettext("frontend", "No episodes yet.")}</p>
             <% end %>
             <p class="mt-4">
               <a
                 href={episode_frontend_path(Endpoint, :index)}
                 class="underline hover:text-primary"
-              >show more...</a>
+              >{dgettext("frontend", "show more...")}</a>
             </p>
           </Panel.render>
 
           <Panel.render
-            heading="Latest Recommendation"
+            heading={dgettext("frontend", "Latest Recommendation")}
             heading_right="more ..."
             target={recommendation_frontend_path(Endpoint, :index)}
             purpose="recommendation"
@@ -127,13 +130,13 @@ defmodule PanWeb.Live.Home do
             <%= if @latest_recommendation do %>
               <RecommendationCard.render for={@latest_recommendation} />
             <% else %>
-              <p>No recommendations yet.</p>
+              <p>{dgettext("frontend", "No recommendations yet.")}</p>
             <% end %>
             <p class="mt-4">
               <a
                 href={recommendation_frontend_path(Endpoint, :index)}
                 class="underline hover:text-primary"
-              >show more...</a>
+              >{dgettext("frontend", "show more...")}</a>
             </p>
           </Panel.render>
         </div>

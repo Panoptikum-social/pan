@@ -1,10 +1,10 @@
 <div class="m-2">
   <%= if @podcast.blocked == true do %>
-    This podcast may not be published here, sorry.
+    {dgettext("frontend", "This podcast may not be published here, sorry.")}
   <% else %>
     <div class="rounded-xl shadow bg-base-100">
       <div class="px-4 py-3 font-semibold border-b-2 border-podcast">
-        {icon("rss")} Feeds for
+        {icon("rss")} {dgettext("frontend", "Feeds for")}
         <.link
           href={podcast_frontend_path(@conn, :show, @podcast)}
           class="underline hover:text-primary"
@@ -18,7 +18,7 @@
                 feed.self_link_url}</.link>
               <%= if feed.alternate_feeds != [] do %>
                 <h2 class="text-2xl my-4">
-                  Alternate feeds
+                  {dgettext("frontend", "Alternate feeds")}
                 </h2>
                 <ul class="list-disc">
                   <%= for alternate_feed <- feed.alternate_feeds do %>

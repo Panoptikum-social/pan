@@ -21,7 +21,7 @@ defmodule PanWeb.Live.User.Show do
        user: user,
        category_colors: Category.color_map(),
        podcast_related_likes: Like.get_podcast_related(id),
-       page_title: user.name <> " (User)"
+       page_title: dgettext("frontend", "%{name} (User)", name: user.name)
      )}
   end
 
@@ -50,7 +50,7 @@ defmodule PanWeb.Live.User.Show do
       <Panel.render
         :if={@user.share_subscriptions}
         purpose="podcast"
-        heading={"Podcasts, #{@user.name} has subscribed to"}
+        heading={dgettext("frontend", "Podcasts, %{name} has subscribed to", name: @user.name)}
         class="my-4"
       >
         <p class="flex flex-wrap my-4">
@@ -66,7 +66,7 @@ defmodule PanWeb.Live.User.Show do
       <Panel.render
         :if={@podcast_related_likes != []}
         purpose="like"
-        heading={"Podcast, #{@user.name} likes"}
+        heading={dgettext("frontend", "Podcasts, %{name} likes", name: @user.name)}
         class="my-4"
       >
         <div class="m-4">
@@ -93,7 +93,7 @@ defmodule PanWeb.Live.User.Show do
       <Panel.render
         :if={@user.users_i_like != []}
         purpose="popular"
-        heading={"Persons, #{@user.name} likes"}
+        heading={dgettext("frontend", "Personas, %{name} likes", name: @user.name)}
         class="my-4"
       >
         <p class="leading-10 m-4">
@@ -106,7 +106,7 @@ defmodule PanWeb.Live.User.Show do
       <Panel.render
         :if={@user.categories_i_like != []}
         purpose="category"
-        heading={"Categories, #{@user.name} likes"}
+        heading={dgettext("frontend", "Categories, %{name} likes", name: @user.name)}
         class="my-4"
       >
         <p class="leading-10 m-4">

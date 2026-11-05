@@ -19,10 +19,10 @@ defmodule PanWeb.Live.Recommendation.Random do
        assign(socket,
          recommendations: recommendations,
          category_colors: Category.color_map(),
-         page_title: "A Dozen Random Recommendations"
+         page_title: dgettext("frontend", "A Dozen Random Recommendations")
        )}
     else
-      {:ok, assign(socket, page_title: "A Dozen Random Recommendations")}
+      {:ok, assign(socket, page_title: dgettext("frontend", "A Dozen Random Recommendations"))}
     end
   end
 
@@ -30,11 +30,13 @@ defmodule PanWeb.Live.Recommendation.Random do
     if Map.has_key?(assigns, :recommendations) do
       ~H"""
       <div class="m-4">
-        <h1 class="text-3xl">A Dozen Random Recommendations</h1>
+        <h1 class="text-3xl">{dgettext("frontend", "A Dozen Random Recommendations")}</h1>
         <p :for={r <- @recommendations} class="mt-4 leading-9">
-          Fortuna opted for the episode &nbsp; <EpisodeButton.render for={r.episode} /> &nbsp;
-          from the podcast &nbsp; <PodcastButton.render for={r.podcast} /> &nbsp;
-          in the category &nbsp;<CategoryLink.render
+          {dgettext("frontend", "Fortuna opted for the episode")} &nbsp;
+          <EpisodeButton.render for={r.episode} />
+          &nbsp; {dgettext("frontend", "from the podcast")} &nbsp;
+          <PodcastButton.render for={r.podcast} />
+          &nbsp; {dgettext("frontend", "in the category")} &nbsp;<CategoryLink.render
             for={r.category}
             color={@category_colors[r.category.id]}
           /> &nbsp;.
@@ -44,8 +46,8 @@ defmodule PanWeb.Live.Recommendation.Random do
     else
       ~H"""
       <div class="m-4">
-        <h1 class="text-3xl">A Dozen Random Recommendations</h1>
-        <p class="mt-4 leading-9">loading ...</p>
+        <h1 class="text-3xl">{dgettext("frontend", "A Dozen Random Recommendations")}</h1>
+        <p class="mt-4 leading-9">{dgettext("frontend", "loading ...")}</p>
       </div>
       """
     end

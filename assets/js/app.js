@@ -106,7 +106,9 @@ const PodloveSubscribeButton = {
     scripttag.async = true;
     scripttag.src = '/subscribe-button/javascripts/app.js';
     scripttag.setAttribute('class', 'podlove-subscribe-button');
-    scripttag.setAttribute('data-language', 'en');
+    // the page language (PanWeb.Locale sets <html lang>); the button falls
+    // back to its default for languages it doesn't know
+    scripttag.setAttribute('data-language', document.documentElement.lang || 'en');
     scripttag.setAttribute('data-size', 'medium');
     scripttag.setAttribute('data-json-data', 'podcastData');
     scripttag.setAttribute('data-color', SUBSCRIBE_COLORS[this.theme]);

@@ -41,40 +41,40 @@ defmodule PanWeb.Live.Episode.Header do
               (@episode.summary && @episode.summary != @episode.description) do %>
           <div class="flex-1">
             <%= if @episode.description && @episode.description != @episode.shownotes do %>
-              <h2 class="text-2xl">Description</h2>
+              <h2 class="text-2xl">{dgettext("frontend", "Description")}</h2>
               <p>{@episode.description |> HtmlSanitizeEx.strip_tags()}</p>
             <% end %>
 
             <%= if @episode.summary && @episode.summary != @episode.description do %>
-              <h2 class="text-2xl">Summary</h2>
+              <h2 class="text-2xl">{dgettext("frontend", "Summary")}</h2>
               <p>{raw(@episode.summary)}</p>
             <% end %>
           </div>
         <% end %>
 
         <dl class="flex-1 grid content-start grid-cols-4 gap-x-4 gap-y-2">
-          <dt class="justify-self-end font-medium">Subtitle</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Subtitle")}</dt>
           <dd class="col-span-3">{@episode.subtitle}</dd>
           <%= if @episode.payment_link_url do %>
-            <dt class="justify-self-end font-medium">Support</dt>
+            <dt class="justify-self-end font-medium">{dgettext("frontend", "Support")}</dt>
             <dd class="col-span-3">
               <a href={@episode.payment_link_url}>{@episode.payment_link_title}</a>
             </dd>
           <% end %>
-          <dt class="justify-self-end font-medium">Duration</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Duration")}</dt>
           <dd class="col-span-3">{@episode.duration}</dd>
           <%= if @episode.publishing_date do %>
-            <dt class="text-right font-medium">Publishing date</dt>
+            <dt class="text-right font-medium">{dgettext("frontend", "Publishing date")}</dt>
             <dd class="col-span-3">{Calendar.strftime(@episode.publishing_date, "%x %H:%M")}</dd>
           <% end %>
           <%= if @episode.link do %>
-            <dt class="justify-self-end font-medium">Link</dt>
+            <dt class="justify-self-end font-medium">{dgettext("frontend", "Link")}</dt>
             <dd class="col-span-3">
               <a class="underline hover:text-primary" href={@episode.link}>{@episode.link}</a>
             </dd>
           <% end %>
           <%= if @episode.deep_link do %>
-            <dt class="justify-self-end font-medium">Deep link</dt>
+            <dt class="justify-self-end font-medium">{dgettext("frontend", "Deep link")}</dt>
             <dd class="col-span-3">
               <a
                 href={@episode.deep_link}
@@ -83,7 +83,7 @@ defmodule PanWeb.Live.Episode.Header do
               >{@episode.deep_link}</a>
             </dd>
           <% end %>
-          <dt class="justify-self-end font-medium">Contributors</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Contributors")}</dt>
           <%= for {persona, gigs} <- @episode.gigs |> Enum.group_by(&Map.get(&1, :persona)) do %>
             <dd class="col-start-2 col-span-2">
               <PersonaButton.render for={persona} />
@@ -106,16 +106,19 @@ defmodule PanWeb.Live.Episode.Header do
                     x-show="metadataOpen"
                     class="absolute right-0 mx-auto items-center bg-base-200 border border-base-300 p-4 w-96 z-10"
                   >
-                    <h1 class="text-3xl">Info</h1>
+                    <h1 class="text-3xl">{dgettext("frontend", "Info")}</h1>
                     <p class="mt-4">
-                      This contribution is claimed by a user and not source of the podcast feed.
+                      {dgettext(
+                        "frontend",
+                        "This contribution is claimed by a user and not source of the podcast feed."
+                      )}
                     </p>
                     <button
                       @click="metadataOpen = false"
                       class="btn btn-outline btn-info btn-sm mt-4"
                       x-ref="metadataCloseButton"
                     >
-                      Close
+                      {dgettext("frontend", "Close")}
                     </button>
                   </div>
                 </span>
@@ -124,7 +127,7 @@ defmodule PanWeb.Live.Episode.Header do
             </dd>
           <% end %>
 
-          <dt class="justify-self-end font-medium">Enclosures</dt>
+          <dt class="justify-self-end font-medium">{dgettext("frontend", "Enclosures")}</dt>
           <%= for enclosure <- @episode.enclosures do %>
             <dd class="col-start-2 col-span-2">
               <a
@@ -145,7 +148,7 @@ defmodule PanWeb.Live.Episode.Header do
       </div>
 
       <div :if={@current_user_id} class="my-4">
-        <h3 class="text-xl">Claim contribution</h3>
+        <h3 class="text-xl">{dgettext("frontend", "Claim contribution")}</h3>
         <p class="mb-4 leading-10">
           <.live_component
             :for={persona <- @current_user.personas}

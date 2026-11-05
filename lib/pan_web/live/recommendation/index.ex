@@ -13,7 +13,7 @@ defmodule PanWeb.Live.Recommendation.Index do
       assign(socket,
         page: 1,
         per_page: 21,
-        page_title: "Latest Recommendations",
+        page_title: dgettext("frontend", "Latest Recommendations"),
         has_more: length(recommendations) == 21
       )
 
@@ -33,7 +33,7 @@ defmodule PanWeb.Live.Recommendation.Index do
   def render(assigns) do
     ~H"""
     <div class="p-4">
-      <h1 class="text-3xl">Latest Recommendations</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "Latest Recommendations")}</h1>
 
       <div
         id="recommendations-grid"
@@ -46,7 +46,7 @@ defmodule PanWeb.Live.Recommendation.Index do
           class="m-2 p-2 rounded shadow"
         >
           <div class="flex justify-between">
-            <span><UserButton.render for={recommendation.user} /> recommended</span>
+            <span><UserButton.render for={recommendation.user} /> {dgettext("frontend", "recommended")}</span>
             <div>
               <Icon.render name="calendar" />
               {Calendar.strftime(recommendation.inserted_at, "%x")}

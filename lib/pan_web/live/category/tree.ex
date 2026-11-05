@@ -4,7 +4,11 @@ defmodule PanWeb.Live.Category.Tree do
   alias PanWeb.Component.CategoryLink
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, categories: Category.public_tree(), page_title: "Category Tree")}
+    {:ok,
+     assign(socket,
+       categories: Category.public_tree(),
+       page_title: dgettext("frontend", "Category Tree")
+     )}
   end
 
   def render(assigns) do
@@ -14,7 +18,7 @@ defmodule PanWeb.Live.Category.Tree do
         navigate={category_frontend_path(@socket, :stats)}
         class="underline hover:text-primary"
       >
-        Category tree with podcast numbers
+        {dgettext("frontend", "Category tree with podcast numbers")}
       </.link>
     </p>
     <div class="lg:columns-2 xl:columns-3 2xl:columns-4 w-full p-4">

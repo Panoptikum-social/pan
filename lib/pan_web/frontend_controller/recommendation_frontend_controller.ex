@@ -76,7 +76,7 @@ defmodule PanWeb.RecommendationFrontendController do
     Repo.insert(changeset)
 
     conn
-    |> put_flash(:info, "Your recommendation has been added.")
+    |> put_flash(:info, dgettext("frontend", "Your recommendation has been added."))
     |> redirect_to_back
   end
 
@@ -85,7 +85,7 @@ defmodule PanWeb.RecommendationFrontendController do
     |> Repo.delete!()
 
     conn
-    |> put_flash(:info, "Recommendation deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "Recommendation deleted successfully."))
     |> redirect(to: recommendation_frontend_path(conn, :my_recommendations))
   end
 
@@ -94,7 +94,7 @@ defmodule PanWeb.RecommendationFrontendController do
     |> Repo.delete_all()
 
     conn
-    |> put_flash(:info, "All recommendations deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "All recommendations deleted successfully."))
     |> redirect(to: recommendation_frontend_path(conn, :my_recommendations))
   end
 

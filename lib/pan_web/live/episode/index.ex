@@ -12,7 +12,7 @@ defmodule PanWeb.Live.Episode.Index do
       assign(socket,
         page: 1,
         per_page: 15,
-        page_title: "Latest Episodes",
+        page_title: dgettext("frontend", "Latest Episodes"),
         has_more: length(episodes) == 15
       )
 
@@ -31,7 +31,7 @@ defmodule PanWeb.Live.Episode.Index do
 
   def render(assigns) do
     ~H"""
-    <Panel.render heading="Latest Episodes" purpose="episode" class="m-4">
+    <Panel.render heading={dgettext("frontend", "Latest Episodes")} purpose="episode" class="m-4">
       <div
         id="latest_episodes"
         phx-update="stream"

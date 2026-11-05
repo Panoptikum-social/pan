@@ -18,16 +18,19 @@ defmodule PanWeb.Live.Community.Index do
         }
       end
 
-    {:ok, assign(socket, communities: communities, page_title: "Communities")}
+    {:ok,
+     assign(socket, communities: communities, page_title: dgettext("frontend", "Communities"))}
   end
 
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">Communities</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "Communities")}</h1>
       <p class="mt-2 text-base-content/70">
-        Panoptikum's communities are curated groups of podcasts and podcasters around a
-        shared theme, each with its own moderators and members.
+        {dgettext(
+          "frontend",
+          "Panoptikum's communities are curated groups of podcasts and podcasters around a shared theme, each with its own moderators and members."
+        )}
       </p>
 
       <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">

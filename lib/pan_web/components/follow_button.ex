@@ -55,7 +55,7 @@ defmodule PanWeb.Component.FollowButton do
           phx-target={@myself}
           class="btn btn-outline btn-error btn-sm my-2"
         >
-          {@followers_count} <Icon.render name="messages-filled" /> Unfollow
+          {@followers_count} <Icon.render name="messages-filled" /> {dgettext("frontend", "Unfollow")}
         </button>
       <% else %>
         <button
@@ -63,7 +63,7 @@ defmodule PanWeb.Component.FollowButton do
           phx-target={@myself}
           class="btn btn-outline btn-success btn-sm my-2"
         >
-          {@followers_count} <Icon.render name="messages" /> Follow
+          {@followers_count} <Icon.render name="messages" /> {dgettext("frontend", "Follow")}
         </button>
       <% end %>
     </span>

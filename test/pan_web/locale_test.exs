@@ -215,4 +215,10 @@ defmodule PanWeb.LocaleTest do
       assert Repo.get_by!(User, username: "neu_#{unique}").locale == "de"
     end
   end
+
+  test "browsing pages render in German (#579)", %{conn: conn} do
+    html = conn |> put_req_cookie("locale", "de") |> get("/communities") |> html_response(200)
+
+    assert html =~ "Die Communitys von Panoptikum"
+  end
 end
