@@ -10,15 +10,10 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Project #4: multilingual Panoptikum (started 2026-11-05)
 
-English and German; curations, moderations and frontend are done (decisions
-and code map in Claude's memory, project_multilingual). Open:
+English and German; curations, moderations and frontend are done and
+deployed (decisions and code map in Claude's memory, project_multilingual).
+Open:
 
-- Deploy: prod needs two migrations (users.locale, translation columns
-  with Apple's German category names and German language names) and an
-  assets build (language switcher, Podlove language). Then in the prod
-  console `Pan.Search.Category.migrate()` and `batch_reset()` (the push
-  job refills the 490 category docs within minutes), and check
-  /admin/translations for strays without German.
 - #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
   once those pages are translated, the links get fixed.
 - #563 Check whether the existing users_languages table can serve as a
