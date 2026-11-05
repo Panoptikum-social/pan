@@ -214,7 +214,23 @@ defmodule PanWeb.Live.CheckFeedAccessTest do
     assert html =~ "1 date like &quot;2023-04-01&quot;, read as 2023-04-01 00:00:00."
 
     assert render_page(%{leniency: %{xml: [], dates: []}}) =~
-             "Nothing: the feed needs none of Panoptikum's repairs."
+             "Nothing: the feed needs none of Panoptikum&#39;s repairs."
+  end
+
+  test "the page chrome is German, the rule texts stay English (#584)" do
+    xml = """
+    <rss version="2.0"><channel><title>Tom & Jerry</title>
+    <item><title>A</title><pubDate>2023-04-01</pubDate></item></channel></rss>
+    """
+
+    Gettext.put_locale(PanWeb.Gettext, "de")
+    html = render_page(%{leniency: Pan.Parser.Leniency.report(xml)})
+
+    assert html =~ "Feed-Prüfung"
+    assert html =~ "Panoptikum liest das trotzdem"
+    assert html =~ "1 Datumsangabe wie &quot;2023-04-01&quot;"
+  after
+    Gettext.put_locale(PanWeb.Gettext, "en")
   end
 
   test "a feed that isn't well-formed still shows what Panoptikum reads" do

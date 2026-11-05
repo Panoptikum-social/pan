@@ -48,7 +48,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         event="toggle-claim"
         target={@myself}
         class="btn-outline btn-secondary"
-        alt={"Claim contribution for #{@persona.pid}"}
+        alt={dgettext("frontend", "Claim contribution for %{pid}", pid: @persona.pid)}
         icon="user-plus"
         title={@persona.name}
       />
@@ -57,7 +57,7 @@ defmodule PanWeb.Live.Episode.ClaimButton do
         event="toggle-claim"
         target={@myself}
         class="btn-outline btn-secondary"
-        alt={"Withdraw contribution for #{@persona.pid}"}
+        alt={dgettext("frontend", "Withdraw contribution for %{pid}", pid: @persona.pid)}
         icon="user-minus"
         title={@persona.name}
       />

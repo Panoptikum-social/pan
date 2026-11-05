@@ -20,14 +20,17 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       not Podcast.manageable_by?(podcast, socket.assigns.current_user_id) ->
         {:ok,
          socket
-         |> put_flash(:error, "The feed check is available to the podcast's owner only.")
+         |> put_flash(
+           :error,
+           dgettext("frontend", "The feed check is available to the podcast's owner only.")
+         )
          |> push_navigate(to: podcast_frontend_path(PanWeb.Endpoint, :show, podcast))}
 
       true ->
         socket =
           assign(socket,
             podcast: podcast,
-            page_title: "Feed check for #{podcast.title}",
+            page_title: dgettext("frontend", "Feed check for %{podcast}", podcast: podcast.title),
             status: :running,
             feed_url: nil,
             findings: [],
@@ -131,8 +134,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
        status: :done,
        feed_url: feed_url,
        check_error:
-         "The feed is not well-formed XML, so the standard rules couldn't be checked: " <>
-           inspect(reason),
+         dgettext(
+           "frontend",
+           "The feed is not well-formed XML, so the standard rules couldn't be checked: %{reason}",
+           reason: inspect(reason)
+         ),
        reads: reads,
        leniency: leniency
      )}
@@ -171,7 +177,11 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   end
 
   def handle_async(:check, {:exit, _reason}, socket) do
-    {:noreply, assign(socket, status: :failed, error: "The check crashed unexpectedly.")}
+    {:noreply,
+     assign(socket,
+       status: :failed,
+       error: dgettext("frontend", "The check crashed unexpectedly.")
+     )}
   end
 
   defp start_check(socket) do
@@ -209,19 +219,23 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       {:ok, url, CheckMyFeed.check(body), reads, leniency}
     else
       {:error, "not found"} ->
-        {:error, "This podcast has no feed."}
+        {:error, dgettext("frontend", "This podcast has no feed.")}
 
       {:ok, %HTTPoison.Response{status_code: code}} ->
-        {:error, "The feed server answered with HTTP #{code}."}
+        {:error, dgettext("frontend", "The feed server answered with HTTP %{code}.", code: code)}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, "The feed could not be downloaded: #{inspect(reason)}"}
+        {:error,
+         dgettext("frontend", "The feed could not be downloaded: %{reason}",
+           reason: inspect(reason)
+         )}
 
       {:error, message} when is_binary(message) ->
         {:error, message}
 
       other ->
-        {:error, "The feed could not be checked: #{inspect(other)}"}
+        {:error,
+         dgettext("frontend", "The feed could not be checked: %{reason}", reason: inspect(other))}
     end
   end
 
@@ -242,36 +256,51 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
   defp date_line(%{kind: :unreadable, count: count, example: example}),
     do:
-      "#{dates(count)} Panoptikum can't read, e.g. #{inspect(example)}: it uses the time of the import instead."
+      dgettext(
+        "frontend",
+        "%{dates} Panoptikum can't read, e.g. %{example}: it uses the time of the import instead.",
+        dates: dates(count),
+        example: inspect(example)
+      )
 
   defp date_line(%{kind: :yearless, count: count, example: example, read_as: read_as}),
     do:
-      "#{dates(count)} without a year, e.g. #{inspect(example)}: Panoptikum assumes the " <>
-        "current year (read as #{read_as})."
+      dgettext(
+        "frontend",
+        "%{dates} without a year, e.g. %{example}: Panoptikum assumes the current year (read as %{read_as}).",
+        dates: dates(count),
+        example: inspect(example),
+        read_as: read_as
+      )
 
   defp date_line(%{count: count, example: example, read_as: read_as}),
-    do: "#{dates(count)} like #{inspect(example)}, read as #{read_as}."
+    do:
+      dgettext("frontend", "%{dates} like %{example}, read as %{read_as}.",
+        dates: dates(count),
+        example: inspect(example),
+        read_as: read_as
+      )
 
-  defp dates(1), do: "1 date"
-  defp dates(count), do: "#{count} dates"
+  defp dates(count), do: dngettext("frontend", "%{count} date", "%{count} dates", count)
 
   defp channel_rows(map) do
     [
-      {"Title", map[:title]},
-      {"Description", shorten(map[:description], 300)},
-      {"Website", map[:website]},
-      {"Artwork", map[:image_url]},
-      {"Author", get_in(map, [:author, :name])},
-      {"Owner", owner(map[:owner])},
-      {"Languages", joined(map[:languages], & &1[:shortcode])},
-      {"Categories", joined(map[:categories], &category/1)},
-      {"Explicit", yes_no(map[:explicit])},
-      {"Payment link", map[:payment_link_url]},
-      {"Persons", joined(map[:contributors], &person/1)},
-      {"Last build date", map[:last_build_date] && to_string(map[:last_build_date])},
-      {"New feed URL", map[:new_feed_url]},
-      {"Generator", get_in(map, [:feed, :feed_generator])},
-      {"Hub", get_in(map, [:feed, :hub_link_url])}
+      {dgettext("frontend", "Title"), map[:title]},
+      {dgettext("frontend", "Description"), shorten(map[:description], 300)},
+      {dgettext("frontend", "Website"), map[:website]},
+      {dgettext("frontend", "Artwork"), map[:image_url]},
+      {dgettext("frontend", "Author"), get_in(map, [:author, :name])},
+      {dgettext("frontend", "Owner"), owner(map[:owner])},
+      {dgettext("frontend", "Languages"), joined(map[:languages], & &1[:shortcode])},
+      {dgettext("frontend", "Categories"), joined(map[:categories], &category/1)},
+      {dgettext("frontend", "Explicit"), yes_no(map[:explicit])},
+      {dgettext("frontend", "Payment link"), map[:payment_link_url]},
+      {dgettext("frontend", "Persons"), joined(map[:contributors], &person/1)},
+      {dgettext("frontend", "Last build date"),
+       map[:last_build_date] && to_string(map[:last_build_date])},
+      {dgettext("frontend", "New feed URL"), map[:new_feed_url]},
+      {dgettext("frontend", "Generator"), get_in(map, [:feed, :feed_generator])},
+      {dgettext("frontend", "Hub"), get_in(map, [:feed, :hub_link_url])}
     ]
   end
 
@@ -280,13 +309,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     episodes = map |> Map.get(:episodes, %{}) |> Map.values()
 
     for {label, key} <- [
-          {"with audio or video (enclosure)", :enclosures},
-          {"with a publishing date", :publishing_date},
-          {"with a duration", :duration},
-          {"with artwork", :image_url},
-          {"with show notes", :shownotes},
-          {"with chapters (Podlove Simple Chapters in the feed)", :chapters},
-          {"with persons", :contributors}
+          {dgettext("frontend", "with audio or video (enclosure)"), :enclosures},
+          {dgettext("frontend", "with a publishing date"), :publishing_date},
+          {dgettext("frontend", "with a duration"), :duration},
+          {dgettext("frontend", "with artwork"), :image_url},
+          {dgettext("frontend", "with show notes"), :shownotes},
+          {dgettext("frontend", "with chapters (Podlove Simple Chapters in the feed)"),
+           :chapters},
+          {dgettext("frontend", "with persons"), :contributors}
         ],
         do: {label, Enum.count(episodes, &(&1[key] not in [nil, "", %{}, []]))}
   end
@@ -313,8 +343,8 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   defp joined(map, _fun) when map_size(map) == 0, do: nil
   defp joined(map, fun), do: map |> Map.values() |> Enum.map_join(", ", fun)
 
-  defp yes_no(true), do: "yes"
-  defp yes_no(false), do: "no"
+  defp yes_no(true), do: dgettext("frontend", "yes")
+  defp yes_no(false), do: dgettext("frontend", "no")
   defp yes_no(_value), do: nil
 
   # The rule sets in the library's order, e.g. [:rss2, :apple, :podcasting20].
@@ -339,6 +369,10 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
     end
   end
 
+  defp severity_name(:error), do: dgettext("frontend", "Errors")
+  defp severity_name(:warning), do: dgettext("frontend", "Warnings")
+  defp severity_name(:info), do: dgettext("frontend", "Notes")
+
   # One colour per rule set, none of them looking like a severity.
   defp standard_color(:rss2), do: "bittersweet"
   defp standard_color(:apple), do: "lavender"
@@ -348,14 +382,14 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   def render(assigns) do
     ~H"""
     <div class="m-4 max-w-4xl">
-      <h1 class="text-3xl">Feed check</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "Feed check")}</h1>
       <p class="mt-2">
         <.link navigate={"/podcasts/#{@podcast.id}"} class="underline hover:text-primary">
           {@podcast.title}
         </.link>
       </p>
       <p :if={@feed_url} class="text-sm text-base-content/70 break-all">
-        Freshly downloaded from {@feed_url}
+        {dgettext("frontend", "Freshly downloaded from %{url}", url: @feed_url)}
       </p>
 
       <form
@@ -379,47 +413,64 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         </label>
       </form>
 
-      <p :if={@status == :running} class="mt-4">Downloading and checking the feed ...</p>
+      <p :if={@status == :running} class="mt-4">
+        {dgettext("frontend", "Downloading and checking the feed ...")}
+      </p>
       <p :if={@status == :failed} class="mt-4 text-error">{@error}</p>
       <div :if={@status == :done and !@check_error and @reads} class="mt-4">
         <p :if={@probe_status == :idle} class="text-sm text-base-content/70">
-          So far only the feed text was checked. Probing downloads the artwork and asks for the
-          media files of the newest 10 episodes.
+          {dgettext(
+            "frontend",
+            "So far only the feed text was checked. Probing downloads the artwork and asks for the media files of the newest 10 episodes."
+          )}
         </p>
         <p :if={@probe_status == :done} class="text-sm text-base-content/70">
-          The artwork and the media files of the newest 10 episodes were probed; their results are
-          part of the report below.
+          {dgettext(
+            "frontend",
+            "The artwork and the media files of the newest 10 episodes were probed; their results are part of the report below."
+          )}
         </p>
-        <p :if={@probe_status == :failed} class="text-sm text-error">Probing failed unexpectedly.</p>
+        <p :if={@probe_status == :failed} class="text-sm text-error">
+          {dgettext("frontend", "Probing failed unexpectedly.")}
+        </p>
         <p :if={@audio_status == :idle} class="text-sm text-base-content/70">
-          Probing the audio reads the first megabyte of the newest 3 episodes' media files.
+          {dgettext(
+            "frontend",
+            "Probing the audio reads the first megabyte of the newest 3 episodes' media files."
+          )}
         </p>
         <p :if={@audio_status == :done} class="text-sm text-base-content/70">
-          The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak
-          refer to that part only.
+          {dgettext(
+            "frontend",
+            "The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak refer to that part only."
+          )}
         </p>
         <p :if={@audio_status == :failed} class="text-sm text-error">
-          Probing the audio failed unexpectedly.
+          {dgettext("frontend", "Probing the audio failed unexpectedly.")}
         </p>
         <button
           phx-click="probe"
           disabled={@probe_status == :running}
           class="mt-2 btn btn-outline btn-info btn-sm disabled:opacity-50"
         >
-          {if @probe_status == :running, do: "Probing ...", else: "Probe artwork and episodes"}
+          {if @probe_status == :running,
+            do: dgettext("frontend", "Probing ..."),
+            else: dgettext("frontend", "Probe artwork and episodes")}
         </button>
         <button
           phx-click="probe_audio"
           disabled={@audio_status == :running}
           class="mt-2 btn btn-outline btn-info btn-sm disabled:opacity-50"
         >
-          {if @audio_status == :running, do: "Probing audio ...", else: "Probe audio"}
+          {if @audio_status == :running,
+            do: dgettext("frontend", "Probing audio ..."),
+            else: dgettext("frontend", "Probe audio")}
         </button>
       </div>
 
       <p :if={@status == :done and @check_error} class="mt-4 text-error">{@check_error}</p>
       <p :if={@status == :done and !@check_error and @selected == []} class="mt-4">
-        No rule set selected.
+        {dgettext("frontend", "No rule set selected.")}
       </p>
       <p
         :if={
@@ -428,7 +479,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         }
         class="mt-4"
       >
-        No problems found.
+        {dgettext("frontend", "No problems found.")}
       </p>
 
       <div
@@ -439,7 +490,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         :if={@status == :done}
         class="mt-6"
       >
-        <h2 class="text-xl font-bold">{severity |> Atom.to_string() |> String.capitalize()}</h2>
+        <h2 class="text-xl font-bold">{severity_name(severity)}</h2>
         <div :for={{finding, details} <- rules} class="mt-3">
           <p>
             <Pill.render type={standard_color(finding.standard)}>
@@ -452,7 +503,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
                 target="_blank"
                 class="underline hover:text-primary"
               >
-                spec
+                {dgettext("frontend", "spec")}
               </a>)
             </span>
           </p>
@@ -466,7 +517,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         :if={@status == :done and visible(@passed ++ @probe_passed ++ @audio_passed, @selected) != []}
         class="mt-6"
       >
-        <h2 class="text-xl font-bold">Passed</h2>
+        <h2 class="text-xl font-bold">{dgettext("frontend", "Passed")}</h2>
         <ul class="mt-3 list-disc ml-6">
           <li :for={rule <- visible(@passed ++ @probe_passed ++ @audio_passed, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
@@ -487,12 +538,18 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         class="mt-6"
       >
         <summary class="text-xl font-bold cursor-pointer">
-          Not applicable ({length(
-            visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
-          )})
+          {dgettext("frontend", "Not applicable (%{count})",
+            count:
+              length(
+                visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
+              )
+          )}
         </summary>
         <p class="mt-2 text-sm text-base-content/70">
-          The feed has nothing for these rules to check, e.g. an optional tag it doesn't use.
+          {dgettext(
+            "frontend",
+            "The feed has nothing for these rules to check, e.g. an optional tag it doesn't use."
+          )}
         </p>
         <ul class="mt-3 list-disc ml-6">
           <li :for={
@@ -509,13 +566,17 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       </details>
 
       <details :if={@status == :done and @leniency} open class="mt-6">
-        <summary class="text-xl font-bold cursor-pointer">Panoptikum reads this anyway</summary>
+        <summary class="text-xl font-bold cursor-pointer">
+          {dgettext("frontend", "Panoptikum reads this anyway")}
+        </summary>
         <p class="mt-2 text-sm text-base-content/70">
-          Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth
-          fixing in the feed.
+          {dgettext(
+            "frontend",
+            "Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth fixing in the feed."
+          )}
         </p>
         <p :if={@leniency.xml == [] and @leniency.dates == []} class="mt-3">
-          Nothing: the feed needs none of Panoptikum's repairs.
+          {dgettext("frontend", "Nothing: the feed needs none of Panoptikum's repairs.")}
         </p>
         <div :for={repair <- @leniency.xml} class="mt-3">
           <p>
@@ -526,7 +587,12 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
           </ul>
         </div>
         <div :if={@leniency.dates != []} class="mt-3">
-          <p>Dates in other formats than RFC 822 (such as "Sat, 01 Apr 2023 19:00:00 GMT"):</p>
+          <p>
+            {dgettext(
+              "frontend",
+              "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 GMT\"):"
+            )}
+          </p>
           <ul class="list-disc ml-6">
             <li :for={group <- @leniency.dates}>{date_line(group)}</li>
           </ul>
@@ -535,11 +601,13 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
       <details :if={@status == :done and @reads} open class="mt-6">
         <summary class="text-xl font-bold cursor-pointer">
-          What Panoptikum reads from your feed
+          {dgettext("frontend", "What Panoptikum reads from your feed")}
         </summary>
         <p class="mt-2 text-sm text-base-content/70">
-          This is what Panoptikum takes from the feed and shows of the show. Its parser is more
-          lenient than the rules above.
+          {dgettext(
+            "frontend",
+            "This is what Panoptikum takes from the feed and shows of the show. Its parser is more lenient than the rules above."
+          )}
         </p>
         <table class="mt-3 table table-sm">
           <tbody>
@@ -549,7 +617,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             </tr>
           </tbody>
         </table>
-        <p class="mt-3">{episode_count(@reads)} episodes, of them:</p>
+        <p class="mt-3">
+          {dgettext("frontend", "%{count} episodes, of them:", count: episode_count(@reads))}
+        </p>
         <ul class="list-disc ml-6">
           <li :for={{label, count} <- episode_summary(@reads)}>{count} {label}</li>
         </ul>
@@ -560,7 +630,9 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         disabled={@status == :running}
         class="mt-6 btn btn-outline btn-info btn-sm disabled:opacity-50"
       >
-        {if @status == :running, do: "Checking ...", else: "Check again"}
+        {if @status == :running,
+          do: dgettext("frontend", "Checking ..."),
+          else: dgettext("frontend", "Check again")}
       </button>
     </div>
     """

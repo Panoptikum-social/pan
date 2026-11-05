@@ -1,16 +1,16 @@
 <div class="m-4">
   <h1 class="text-3xl">
-    My OPML files
+    {dgettext("frontend", "My OPML files")}
   </h1>
 
   <%= if @opmls != [] do %>
     <table class="table table-zebra table-xs my-4 w-auto">
       <thead>
         <tr>
-          <th>Content type</th>
-          <th>Filename</th>
-          <th>Upload date</th>
-          <th>Actions</th>
+          <th>{dgettext("frontend", "Content type")}</th>
+          <th>{dgettext("frontend", "Filename")}</th>
+          <th>{dgettext("frontend", "Upload date")}</th>
+          <th>{dgettext("frontend", "Actions")}</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,10 @@
                 method="post"
                 class="btn btn-outline btn-info btn-sm whitespace-nowrap"
               >
-                {icon("settings", class: "inline w-4 h-4 align-text-top")} Parse
+                {icon("settings", class: "inline w-4 h-4 align-text-top")} {dgettext(
+                  "frontend",
+                  "Parse"
+                )}
               </.link>
               &nbsp;
               <.link
@@ -35,16 +38,19 @@
               >
                 {icon("file-download",
                   class: "inline w-4 h-4 align-text-top"
-                )} Download
+                )} {dgettext("frontend", "Download")}
               </.link>
               &nbsp;
               <.link
                 href={opml_frontend_path(@conn, :delete, opml)}
                 method="delete"
-                data-confirm="Are you sure?"
+                data-confirm={dgettext("frontend", "Are you sure?")}
                 class="btn btn-outline btn-error btn-sm whitespace-nowrap"
               >
-                {icon("trash", class: "inline w-4 h-4 align-text-top")} Delete
+                {icon("trash", class: "inline w-4 h-4 align-text-top")} {dgettext(
+                  "frontend",
+                  "Delete"
+                )}
               </.link>
             </td>
           </tr>
@@ -53,9 +59,12 @@
     </table>
   <% else %>
     <p class="m-4">
-      No OPML files uploaded so far
+      {dgettext("frontend", "No OPML files uploaded so far")}
     </p>
   <% end %>
 
-  <.link href={opml_frontend_path(@conn, :new)} class="underline hover:text-primary">New OPML</.link>
+  <.link href={opml_frontend_path(@conn, :new)} class="underline hover:text-primary">{dgettext(
+    "frontend",
+    "New OPML"
+  )}</.link>
 </div>

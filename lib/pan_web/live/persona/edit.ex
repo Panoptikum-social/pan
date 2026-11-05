@@ -21,7 +21,8 @@ defmodule PanWeb.Live.Persona.Edit do
            persona: manifestation.persona,
            current_user: User.get_by_id(assigns.current_user_id),
            changeset: Persona.changeset(manifestation.persona) |> Map.put(:action, :insert),
-           page_title: "Edit Persona #{manifestation.persona.name}"
+           page_title:
+             dgettext("frontend", "Edit Persona %{name}", name: manifestation.persona.name)
          )}
     end
   end
@@ -46,7 +47,7 @@ defmodule PanWeb.Live.Persona.Edit do
 
         {:noreply,
          socket
-         |> put_flash(:info, "Persona updated successfully.")
+         |> put_flash(:info, dgettext("frontend", "Persona updated successfully."))
          |> push_navigate(to: user_frontend_path(Endpoint, :my_profile))}
 
       {:error, changeset} ->
@@ -57,7 +58,7 @@ defmodule PanWeb.Live.Persona.Edit do
   def render(%{not_allowed: true} = assigns) do
     ~H"""
     <div class="m-4">
-      You are not allowed to change this persona.
+      {dgettext("frontend", "You are not allowed to change this persona.")}
     </div>
     """
   end
@@ -65,7 +66,7 @@ defmodule PanWeb.Live.Persona.Edit do
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">Edit persona</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "Edit persona")}</h1>
 
       <.form
         :let={f}
@@ -75,71 +76,74 @@ defmodule PanWeb.Live.Persona.Edit do
         phx-submit="save"
       >
         <.error :if={!@changeset.valid?}>
-          This persona is not valid. Please check the errors below!
+          {dgettext("frontend", "This persona is not valid. Please check the errors below!")}
         </.error>
 
         <.input
           field={f[:pid]}
           class="input"
-          label="PanoptikumID"
+          label={dgettext("frontend", "PanoptikumID")}
         />
 
         <.input
           field={f[:name]}
-          label="Name"
+          label={dgettext("frontend", "Name")}
           class="w-full input"
         />
 
         <.input
           field={f[:uri]}
-          label="Uri"
+          label={dgettext("frontend", "Uri")}
           class="w-full input"
         />
 
         <.input
           type="email"
           field={f[:email]}
-          label="Email"
+          label={dgettext("frontend", "Email")}
           class="w-full input"
         />
 
         <.input
           field={f[:fediverse_address]}
-          label="Fediverse Address"
+          label={dgettext("frontend", "Fediverse Address")}
           placeholder="@username@domain.social"
           class="w-full input"
         />
         <p class="text-base-content/70">
-          (support is experimental and data might not be imported currently)
+          {dgettext("frontend", "(support is experimental and data might not be imported currently)")}
         </p>
 
         <.input
           field={f[:image_url]}
-          label="Image URL"
+          label={dgettext("frontend", "Image URL")}
           class="input w-full"
         />
 
         <.input
           field={f[:image_title]}
           class="input w-full"
-          label="Image title"
+          label={dgettext("frontend", "Image title")}
         />
 
         <.input
           field={f[:description]}
           class="input w-full"
-          label="Description"
+          label={dgettext("frontend", "Description")}
         />
 
-        <OvertypeField.render field={f[:long_description]} label="Long description" />
+        <OvertypeField.render
+          field={f[:long_description]}
+          label={dgettext("frontend", "Long description")}
+        />
 
-        <.button type="submit" class="btn btn-info">Submit</.button>
+        <.button type="submit" class="btn btn-info">{dgettext("frontend", "Submit")}</.button>
       </.form>
 
       <a
         href={user_frontend_path(Endpoint, :my_profile)}
         class="underline hover:text-primary"
-      >Back</a>
+      >{dgettext("frontend", "Back")}</a>
     </div>
     """
   end

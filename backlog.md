@@ -42,7 +42,7 @@ Decided 2026-11-05:
   de/moderation.po.
 - Phase 3 (frontend), gettext domain "frontend", in steps:
   #577 layout and navigation (done 2026-11-05), #578
-  account and login (done 2026-11-05), #579 browsing pages (done 2026-11-05), #580 podcaster tools, #581
+  account and login (done 2026-11-05), #579 browsing pages (done 2026-11-05), #580 podcaster tools (done 2026-11-05), #581
   emails (#568), #582 translated data (#566, #567, #571, #569).
 - #583 Emails to recipients without a known language: login link and
   verification in the current page language, others English. The page

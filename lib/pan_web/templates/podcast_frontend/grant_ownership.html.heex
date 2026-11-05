@@ -1,10 +1,17 @@
 <div class="m-4 max-w-2xl">
-  <h1 class="text-2xl mb-4">Confirm podcast ownership</h1>
+  <h1 class="text-2xl mb-4">{dgettext("frontend", "Confirm podcast ownership")}</h1>
 
   <div :if={@claimant}>
     <p class="mb-4">
-      The user <b>{@claimant.name}</b>
-      (user name <b>{@claimant.username}</b>) asks to manage the podcast <b>{@podcast.title}</b>. Approve only if you are the owner of that podcast or know that user.
+      {raw(
+        dgettext(
+          "frontend",
+          "The user %{name} (user name %{username}) asks to manage the podcast %{podcast}. Approve only if you are the owner of that podcast or know that user.",
+          name: bold(@claimant.name),
+          username: bold(@claimant.username),
+          podcast: bold(@podcast.title)
+        )
+      )}
     </p>
     <.form
       for={%{}}
@@ -12,13 +19,13 @@
       method="post"
     >
       <input type="hidden" name="token" value={@token} />
-      <button class="btn btn-primary">Approve</button>
+      <button class="btn btn-primary">{dgettext("frontend", "Approve")}</button>
     </.form>
   </div>
 
   <p :if={!@claimant}>
     <.link href={podcast_frontend_path(@conn, :show, @podcast)} class="link">
-      Back to {@podcast.title}
+      {dgettext("frontend", "Back to %{podcast}", podcast: @podcast.title)}
     </.link>
   </p>
 </div>

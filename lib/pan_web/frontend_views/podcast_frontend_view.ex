@@ -2,11 +2,23 @@ defmodule PanWeb.PodcastFrontendView do
   use PanWeb, :view
 
   def title("feeds.html", assigns),
-    do: "Feeds for #{assigns.podcast.title} (Podcast) · Panoptikum"
+    do:
+      dgettext("frontend", "Feeds for %{podcast} (Podcast)", podcast: assigns.podcast.title) <>
+        " · Panoptikum"
 
-  def title("liked.html", _assigns), do: "Most Liked Podcasts · Panoptikum"
-  def title("popular.html", _assigns), do: "Most Subscribed Podcasts · Panoptikum"
+  def title("liked.html", _assigns),
+    do: dgettext("frontend", "Most Liked Podcasts") <> " · Panoptikum"
+
+  def title("popular.html", _assigns),
+    do: dgettext("frontend", "Most Subscribed Podcasts") <> " · Panoptikum"
+
   def title(_, _assigns), do: "🎧 · Panoptikum"
+
+  # bold, escaped value for a translated sentence that goes through raw/1
+  def bold(text) do
+    escaped = text |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+    "<b>" <> escaped <> "</b>"
+  end
 
   def prepare_for_toplist(podcasts) do
     podcasts

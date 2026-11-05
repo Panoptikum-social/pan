@@ -1,13 +1,15 @@
 <h1 class="text-3xl">
-  Suggest a new Podcast
+  {dgettext("frontend", "Suggest a new Podcast")}
 </h1>
 
 <p class="mt-4">
-  Please note: Only links to RSS feeds can be handled by the feed parser.
+  {dgettext("frontend", "Please note: Only links to RSS feeds can be handled by the feed parser.")}
 </p>
 <p>
-  Links to the website of the podcast or even
-  the link to the podcast on a different podcast directory will be discarded.
+  {dgettext(
+    "frontend",
+    "Links to the website of the podcast or even the link to the podcast on a different podcast directory will be discarded."
+  )}
 </p>
 
 <.form
@@ -17,13 +19,24 @@
   class="p-4 mb-4 flex flex-col items-start space-y-4"
 >
   <.error :if={@changeset.action}>
-    Oops, something went wrong! Please check the errors below.
+    {dgettext("frontend", "Oops, something went wrong! Please check the errors below.")}
   </.error>
-  <.input field={f[:url]} type="text" label="RSS Feed Url" class="input w-96 sm:w-auto" />
+  <.input
+    field={f[:url]}
+    type="text"
+    label={dgettext("frontend", "RSS Feed Url")}
+    class="input w-96 sm:w-auto"
+  />
   <div class="flex flex-col">
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">{dgettext("frontend", "Submit")}</button>
   </div>
 </.form>
-If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at
-<.link href={opml_frontend_path(@conn, :index)} class="underline hover:text-primary">My OPMLs</.link>
+{dgettext(
+  "frontend",
+  "If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at"
+)}
+<.link href={opml_frontend_path(@conn, :index)} class="underline hover:text-primary">{dgettext(
+  "frontend",
+  "My OPMLs"
+)}</.link>
 in your personal menu.

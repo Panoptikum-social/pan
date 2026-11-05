@@ -32,6 +32,7 @@ msgstr ""
 msgid "Bot Expert Carmen"
 msgstr ""
 
+#: lib/pan_web/live/podcast/check_feed.ex:295
 #: lib/pan_web/live/podcast/header.ex:160
 #: lib/pan_web/live/podcast/index.ex:95
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:63
@@ -134,23 +135,27 @@ msgstr ""
 msgid "Meta"
 msgstr ""
 
+#: lib/pan_web/frontend_views/user_frontend_view.ex:9
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:55
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "My Data"
 msgstr ""
 
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:38
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:50
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "My OPMLs"
 msgstr ""
 
+#: lib/pan_web/frontend_views/user_frontend_view.ex:12
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "My Podcasts"
 msgstr ""
 
+#: lib/pan_web/frontend_views/user_frontend_view.ex:15
 #: lib/pan_web/live/persona/show.ex:194
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:9
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:13
@@ -159,6 +164,7 @@ msgstr ""
 msgid "My Profile"
 msgstr ""
 
+#: lib/pan_web/frontend_views/recommendation_frontend_view.ex:5
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "My Recommendations"
@@ -208,11 +214,15 @@ msgstr ""
 msgid "Sign Up"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:140
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:31
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:13
+#: lib/pan_web/templates/opml_frontend/new.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Submit"
 msgstr ""
 
+#: lib/pan_web/frontend_views/feed_backlog_frontend_view.ex:5
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Suggest a Podcast"
@@ -242,6 +252,7 @@ msgstr ""
 msgid "The page you requested doesn't exist (anymore). Please check the address, or use the search in the navigation."
 msgstr ""
 
+#: lib/pan_web/frontend_views/user_frontend_view.ex:8
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:79
 #: lib/pan_web/templates/user_frontend/index.html.heex:2
 #, elixir-autogen, elixir-format
@@ -273,6 +284,7 @@ msgstr ""
 msgid "Account updated successfully."
 msgstr ""
 
+#: lib/pan_web/templates/opml_frontend/index.html.heex:13
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:552
 #, elixir-autogen, elixir-format
 msgid "Actions"
@@ -299,6 +311,8 @@ msgid "Are you a human? ;-)"
 msgstr ""
 
 #: lib/pan_web/live/persona/show.ex:280
+#: lib/pan_web/templates/opml_frontend/index.html.heex:47
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:124
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:19
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:47
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:80
@@ -459,6 +473,7 @@ msgstr ""
 msgid "Delegations"
 msgstr ""
 
+#: lib/pan_web/templates/opml_frontend/index.html.heex:50
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:21
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:49
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:82
@@ -493,10 +508,13 @@ msgid "Delete my account"
 msgstr ""
 
 #: lib/pan_web/live/episode/header.ex:44
+#: lib/pan_web/live/persona/edit.ex:132
+#: lib/pan_web/live/podcast/check_feed.ex:289
 #: lib/pan_web/live/podcast/header.ex:89
 #: lib/pan_web/live/podcast/index.ex:131
 #: lib/pan_web/live/search.ex:182
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:107
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:93
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:87
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:104
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:133
@@ -514,11 +532,13 @@ msgstr ""
 msgid "Disconnect Persona"
 msgstr ""
 
+#: lib/pan_web/templates/opml_frontend/index.html.heex:41
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Download"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:69
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Edit persona"
@@ -530,6 +550,7 @@ msgstr ""
 msgid "Edit your data"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:103
 #: lib/pan_web/templates/user/forgot_password.html.heex:14
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:84
 #: lib/pan_web/templates/user_frontend/edit.html.heex:32
@@ -679,6 +700,7 @@ msgstr ""
 msgid "If you subtract two from 44, you get... *"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:126
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Image title"
@@ -701,6 +723,7 @@ msgstr ""
 
 #: lib/pan_web/controllers/session_controller.ex:73
 #: lib/pan_web/controllers/session_controller.ex:124
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:149
 #, elixir-autogen, elixir-format
 msgid "Invalid token!"
 msgstr ""
@@ -802,8 +825,10 @@ msgstr ""
 msgid "My invoices"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:90
 #: lib/pan_web/live/persona/show.ex:114
 #: lib/pan_web/live/search.ex:181
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:72
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:78
 #: lib/pan_web/templates/user_frontend/edit.html.heex:18
 #: lib/pan_web/templates/user_frontend/edit.html.heex:19
@@ -844,13 +869,17 @@ msgstr ""
 msgid "Object"
 msgstr ""
 
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:22
+#: lib/pan_web/templates/opml_frontend/new.html.heex:14
 #: lib/pan_web/templates/user_frontend/edit.html.heex:13
 #: lib/pan_web/templates/user_frontend/edit_password.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Oops, something went wrong! Please check the errors below."
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:85
 #: lib/pan_web/live/persona/show.ex:106
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:65
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:75
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:96
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:125
@@ -1039,6 +1068,7 @@ msgstr ""
 
 #: lib/pan_web/controllers/session_controller.ex:68
 #: lib/pan_web/controllers/session_controller.ex:119
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:144
 #, elixir-autogen, elixir-format
 msgid "The token has expired already!"
 msgstr ""
@@ -1058,6 +1088,7 @@ msgstr ""
 msgid "This persona is currently not redirected."
 msgstr ""
 
+#: lib/pan_web/live/podcast/check_feed.ex:288
 #: lib/pan_web/live/search.ex:180
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:108
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:137
@@ -1115,13 +1146,16 @@ msgstr ""
 msgid "Unlike all users"
 msgstr ""
 
+#: lib/pan_web/frontend_views/user_frontend_view.ex:7
 #: lib/pan_web/templates/user_frontend/edit.html.heex:3
 #: lib/pan_web/templates/user_frontend/edit.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Update Profile"
 msgstr ""
 
+#: lib/pan_web/live/persona/edit.ex:96
 #: lib/pan_web/live/persona/show.ex:118
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:79
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:81
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:100
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:129
@@ -1433,6 +1467,7 @@ msgid "Alternate feeds"
 msgstr ""
 
 #: lib/pan_web/components/podcast_card.ex:20
+#: lib/pan_web/live/podcast/check_feed.ex:292
 #, elixir-autogen, elixir-format
 msgid "Author"
 msgstr ""
@@ -1484,6 +1519,7 @@ msgid "Check feed"
 msgstr ""
 
 #: lib/pan_web/live/persona/show.ex:283
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "Claim"
 msgstr ""
@@ -1610,6 +1646,7 @@ msgstr ""
 msgid "Expand all"
 msgstr ""
 
+#: lib/pan_web/live/podcast/check_feed.ex:296
 #: lib/pan_web/live/podcast/header.ex:142
 #, elixir-autogen, elixir-format
 msgid "Explicit"
@@ -2245,6 +2282,7 @@ msgstr ""
 msgid "We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
 msgstr ""
 
+#: lib/pan_web/live/podcast/check_feed.ex:290
 #: lib/pan_web/live/podcast/header.ex:80
 #: lib/pan_web/live/podcast/index.ex:75
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:36
@@ -2541,4 +2579,725 @@ msgstr ""
 #: lib/pan_web/live/podcast/episode_list.ex:20
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Title & Description"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:284
+#, elixir-autogen, elixir-format, fuzzy
+msgid "%{count} date"
+msgid_plural "%{count} dates"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:621
+#, elixir-autogen, elixir-format
+msgid "%{count} episodes, of them:"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:259
+#, elixir-autogen, elixir-format
+msgid "%{dates} Panoptikum can't read, e.g. %{example}: it uses the time of the import instead."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:278
+#, elixir-autogen, elixir-format
+msgid "%{dates} like %{example}, read as %{read_as}."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:268
+#, elixir-autogen, elixir-format
+msgid "%{dates} without a year, e.g. %{example}: Panoptikum assumes the current year (read as %{read_as})."
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:114
+#, elixir-autogen, elixir-format
+msgid "(support is experimental and data might not be imported currently)"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "A message of concern"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "A permanent connection between your account and this persona will be established. That connection will stay in place, also if you will change persona data later on."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:133
+#, elixir-autogen, elixir-format
+msgid "Access has been granted successfully!"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:138
+#, elixir-autogen, elixir-format
+msgid "Access was already in place!"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/email_sent.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "An email has been sent to the email address of the persona."
+msgstr ""
+
+#: lib/pan_web/templates/podcast_frontend/grant_ownership.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Approve"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:291
+#, elixir-autogen, elixir-format
+msgid "Artwork"
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:146
+#: lib/pan_web/templates/opml_frontend/new.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr ""
+
+#: lib/pan_web/templates/podcast_frontend/grant_ownership.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Back to %{podcast}"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:635
+#, elixir-autogen, elixir-format
+msgid "Check again"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:634
+#, elixir-autogen, elixir-format
+msgid "Checking ..."
+msgstr ""
+
+#: lib/pan_web/live/episode/claim_button.ex:51
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Claim contribution for %{pid}"
+msgstr ""
+
+#: lib/pan_web/templates/podcast_frontend/grant_ownership.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Confirm podcast ownership"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Content type"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:591
+#, elixir-autogen, elixir-format
+msgid "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 GMT\"):"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:100
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Delegation deleted successfully."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:86
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Description heading"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:417
+#, elixir-autogen, elixir-format
+msgid "Downloading and checking the feed ..."
+msgstr ""
+
+#: lib/pan_web/frontend_views/user_frontend_view.ex:5
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Edit Password"
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:25
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Edit Persona %{name}"
+msgstr ""
+
+#: lib/pan_web/frontend_views/persona_frontend_view.ex:5
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Email Sent"
+msgstr ""
+
+#: lib/pan_web/frontend_views/page_frontend_view.ex:5
+#, elixir-autogen, elixir-format
+msgid "Error Occurred"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:372
+#, elixir-autogen, elixir-format
+msgid "Errors"
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:109
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:109
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Fediverse Address"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:385
+#, elixir-autogen, elixir-format
+msgid "Feed check"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:33
+#, elixir-autogen, elixir-format
+msgid "Feed check for %{podcast}"
+msgstr ""
+
+#: lib/pan_web/frontend_views/podcast_frontend_view.ex:6
+#, elixir-autogen, elixir-format
+msgid "Feeds for %{podcast} (Podcast)"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:11
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Filename"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:392
+#, elixir-autogen, elixir-format
+msgid "Freshly downloaded from %{url}"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:302
+#, elixir-autogen, elixir-format
+msgid "Generator"
+msgstr ""
+
+#: lib/pan_web/frontend_views/persona_frontend_view.ex:8
+#, elixir-autogen, elixir-format
+msgid "Grant Access"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:303
+#, elixir-autogen, elixir-format
+msgid "Hub"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "If we would have to spend time to deal with conflicting persona claiming issues manually, that time couldn't be available to bring the project forward. Worst case, this feature would be disabled all together."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "If you click claim, the following will happen:"
+msgstr ""
+
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "If you want to suggest several or all the podcasts you listen to at once, you can upload an OPML file at"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:100
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Image"
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:119
+#, elixir-autogen, elixir-format
+msgid "Image URL"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:294
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Languages"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:299
+#, elixir-autogen, elixir-format
+msgid "Last build date"
+msgstr ""
+
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Links to the website of the podcast or even the link to the podcast on a different podcast directory will be discarded."
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:137
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Long description"
+msgstr ""
+
+#: lib/pan_web/frontend_views/user_frontend_view.ex:17
+#, elixir-autogen, elixir-format
+msgid "Missing user id"
+msgstr ""
+
+#: lib/pan_web/frontend_views/podcast_frontend_view.ex:10
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Most Liked Podcasts"
+msgstr ""
+
+#: lib/pan_web/frontend_views/podcast_frontend_view.ex:13
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Most Subscribed Podcasts"
+msgstr ""
+
+#: lib/pan_web/frontend_views/opml_frontend_view.ex:4
+#: lib/pan_web/templates/opml_frontend/index.html.heex:3
+#, elixir-autogen, elixir-format, fuzzy
+msgid "My OPML files"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "New OPML"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:301
+#, elixir-autogen, elixir-format
+msgid "New feed URL"
+msgstr ""
+
+#: lib/pan_web/frontend_views/category_frontend_view.ex:8
+#, elixir-autogen, elixir-format, fuzzy
+msgid "No Community"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "No OPML files uploaded so far"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:54
+#, elixir-autogen, elixir-format
+msgid "No file selected!"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:482
+#, elixir-autogen, elixir-format
+msgid "No problems found."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:473
+#, elixir-autogen, elixir-format
+msgid "No rule set selected."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:541
+#, elixir-autogen, elixir-format
+msgid "Not applicable (%{count})"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:573
+#, elixir-autogen, elixir-format
+msgid "Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth fixing in the feed."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:374
+#, elixir-autogen, elixir-format
+msgid "Notes"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:579
+#, elixir-autogen, elixir-format
+msgid "Nothing: the feed needs none of Panoptikum's repairs."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:65
+#, elixir-autogen, elixir-format
+msgid "OPML deleted successfully."
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/new.html.heex:17
+#, elixir-autogen, elixir-format, fuzzy
+msgid "OPML-File"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "On claiming this persona"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:44
+#, elixir-autogen, elixir-format
+msgid "Opml created successfully."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:293
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:75
+#, elixir-autogen, elixir-format
+msgid "Ownership confirmed. The user manages this podcast now."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:570
+#, elixir-autogen, elixir-format
+msgid "Panoptikum reads this anyway"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:29
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Parse"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:520
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Passed"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:297
+#, elixir-autogen, elixir-format
+msgid "Payment link"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:172
+#, elixir-autogen, elixir-format
+msgid "Persona claimed successfully."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:58
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Persona data"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:93
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Persona delegated successfully."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:188
+#, elixir-autogen, elixir-format
+msgid "Persona disconnected successfully."
+msgstr ""
+
+#: lib/pan_web/frontend_views/persona_frontend_view.ex:11
+#, elixir-autogen, elixir-format
+msgid "Persona not Found"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:41
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Persona redirected successfully."
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:50
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Persona updated successfully."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:298
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Persons"
+msgstr ""
+
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Please note: Only links to RSS feeds can be handled by the feed parser."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:12
+#, elixir-autogen, elixir-format
+msgid "Please verify your email address first."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Please, only do claim this persona, if you are the person behind the persona yourself or if you are a legitimate representative of the group or organisation represented by the persona."
+msgstr ""
+
+#: lib/pan_web/frontend_views/category_frontend_view.ex:5
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Podcasts Categorized"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:458
+#, elixir-autogen, elixir-format
+msgid "Probe artwork and episodes"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:467
+#, elixir-autogen, elixir-format
+msgid "Probe audio"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:457
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Probing ..."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:466
+#, elixir-autogen, elixir-format
+msgid "Probing audio ..."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:434
+#, elixir-autogen, elixir-format
+msgid "Probing failed unexpectedly."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:449
+#, elixir-autogen, elixir-format
+msgid "Probing the audio failed unexpectedly."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:437
+#, elixir-autogen, elixir-format
+msgid "Probing the audio reads the first megabyte of the newest 3 episodes' media files."
+msgstr ""
+
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "RSS Feed Url"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:65
+#, elixir-autogen, elixir-format
+msgid "Redirect cancelled successfully."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:422
+#, elixir-autogen, elixir-format
+msgid "So far only the feed text was checked. Probing downloads the artwork and asks for the media files of the newest 10 episodes."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "So please act responsibly."
+msgstr ""
+
+#: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:2
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Suggest a new Podcast"
+msgstr ""
+
+#: lib/pan_web/frontend_views/page_frontend_view.ex:4
+#, elixir-autogen, elixir-format
+msgid "Task Done"
+msgstr ""
+
+#: lib/pan_web/frontend_views/page_frontend_view.ex:6
+#, elixir-autogen, elixir-format
+msgid "Task Started"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:93
+#, elixir-autogen, elixir-format
+msgid "Thank you! The OPML was imported into the feed backlog successfully. We will parse the feeds as soon as possible and assign you as listener to the corresponding podcasts."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:103
+#, elixir-autogen, elixir-format
+msgid "The OPML could not be imported: %{message}"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:428
+#, elixir-autogen, elixir-format
+msgid "The artwork and the media files of the newest 10 episodes were probed; their results are part of the report below."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:443
+#, elixir-autogen, elixir-format
+msgid "The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak refer to that part only."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:183
+#, elixir-autogen, elixir-format
+msgid "The check crashed unexpectedly."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:25
+#, elixir-autogen, elixir-format
+msgid "The feed check is available to the podcast's owner only."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:238
+#, elixir-autogen, elixir-format
+msgid "The feed could not be checked: %{reason}"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:229
+#, elixir-autogen, elixir-format
+msgid "The feed could not be downloaded: %{reason}"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:549
+#, elixir-autogen, elixir-format
+msgid "The feed has nothing for these rules to check, e.g. an optional tag it doesn't use."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:137
+#, elixir-autogen, elixir-format
+msgid "The feed is not well-formed XML, so the standard rules couldn't be checked: %{reason}"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:23
+#, elixir-autogen, elixir-format
+msgid "The feed lists no owner email address, so we cannot send a confirmation."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:225
+#, elixir-autogen, elixir-format
+msgid "The feed server answered with HTTP %{code}."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:86
+#, elixir-autogen, elixir-format, fuzzy
+msgid "The link has expired."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:91
+#, elixir-autogen, elixir-format
+msgid "The link is invalid."
+msgstr ""
+
+#: lib/pan_web/templates/podcast_frontend/grant_ownership.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "The user %{name} (user name %{username}) asks to manage the podcast %{podcast}. Approve only if you are the owner of that podcast or know that user."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "There hasn't been provided any email address alongside this persona within the feed(s). So we basically have to trust you, that you claim this persona responsibly."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/opml_frontend_controller.ex:73
+#, elixir-autogen, elixir-format, fuzzy
+msgid "This is not a valid OPML for you"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:607
+#, elixir-autogen, elixir-format
+msgid "This is what Panoptikum takes from the feed and shows of the show. Its parser is more lenient than the rules above."
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:79
+#, elixir-autogen, elixir-format
+msgid "This persona is not valid. Please check the errors below!"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:222
+#, elixir-autogen, elixir-format
+msgid "This podcast has no feed."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:89
+#, elixir-autogen, elixir-format
+msgid "This podcast is managed by someone already."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:16
+#, elixir-autogen, elixir-format
+msgid "This podcast is managed by someone already. Please contact us if that is wrong."
+msgstr ""
+
+#: lib/pan_web/frontend_views/opml_frontend_view.ex:7
+#: lib/pan_web/templates/opml_frontend/new.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "Upload an OPML File"
+msgstr ""
+
+#: lib/pan_web/templates/opml_frontend/index.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Upload date"
+msgstr ""
+
+#: lib/pan_web/frontend_views/persona_frontend_view.ex:14
+#, elixir-autogen, elixir-format
+msgid "Warning: Claiming a Person"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:373
+#, elixir-autogen, elixir-format
+msgid "Warnings"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:38
+#, elixir-autogen, elixir-format
+msgid "We sent a confirmation link to the owner address listed in the feed."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:604
+#, elixir-autogen, elixir-format
+msgid "What Panoptikum reads from your feed"
+msgstr ""
+
+#: lib/pan_web/live/episode/claim_button.ex:60
+#, elixir-autogen, elixir-format
+msgid "Withdraw contribution for %{pid}"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "You are about to claim the following persona:"
+msgstr ""
+
+#: lib/pan_web/live/persona/edit.ex:61
+#, elixir-autogen, elixir-format
+msgid "You are not allowed to change this persona."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:176
+#, elixir-autogen, elixir-format
+msgid "You are not allowed to claim this persona!"
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "You will gain access to this persona."
+msgstr ""
+
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Your email address will be added to this persona. It will be used to send emails to other users aiming to claim this persona as well."
+msgstr ""
+
+#: lib/pan_web/frontend_controller/feed_backlog_frontend_controller.ex:23
+#, elixir-autogen, elixir-format
+msgid "Your feed suggestion has been uploaded, it will be processed asap."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:347
+#, elixir-autogen, elixir-format
+msgid "no"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:506
+#, elixir-autogen, elixir-format
+msgid "spec"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:314
+#, elixir-autogen, elixir-format
+msgid "with a duration"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:313
+#, elixir-autogen, elixir-format
+msgid "with a publishing date"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:315
+#, elixir-autogen, elixir-format
+msgid "with artwork"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:312
+#, elixir-autogen, elixir-format
+msgid "with audio or video (enclosure)"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:317
+#, elixir-autogen, elixir-format
+msgid "with chapters (Podlove Simple Chapters in the feed)"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:319
+#, elixir-autogen, elixir-format, fuzzy
+msgid "with persons"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:316
+#, elixir-autogen, elixir-format
+msgid "with show notes"
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:346
+#, elixir-autogen, elixir-format
+msgid "yes"
 msgstr ""

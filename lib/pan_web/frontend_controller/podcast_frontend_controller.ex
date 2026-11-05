@@ -9,14 +9,21 @@ defmodule PanWeb.PodcastFrontendController do
     {level, message} =
       cond do
         not user.email_verified ->
-          {:error, "Please verify your email address first."}
+          {:error, dgettext("frontend", "Please verify your email address first.")}
 
         podcast.user_id ->
           {:error,
-           "This podcast is managed by someone already. Please contact us if that is wrong."}
+           dgettext(
+             "frontend",
+             "This podcast is managed by someone already. Please contact us if that is wrong."
+           )}
 
         emails == [] ->
-          {:error, "The feed lists no owner email address, so we cannot send a confirmation."}
+          {:error,
+           dgettext(
+             "frontend",
+             "The feed lists no owner email address, so we cannot send a confirmation."
+           )}
 
         true ->
           token = Podcast.claim_token(podcast.id, user.id)
@@ -27,7 +34,11 @@ defmodule PanWeb.PodcastFrontendController do
             |> Pan.Mailer.deliver()
           end
 
-          {:info, "We sent a confirmation link to the owner address listed in the feed."}
+          {:info,
+           dgettext(
+             "frontend",
+             "We sent a confirmation link to the owner address listed in the feed."
+           )}
       end
 
     conn
@@ -59,7 +70,10 @@ defmodule PanWeb.PodcastFrontendController do
     with {:ok, user_id} <- Podcast.verify_claim_token(token, podcast.id),
          :ok <- Podcast.claim_by_confirmation(podcast.id, user_id) do
       conn
-      |> put_flash(:info, "Ownership confirmed. The user manages this podcast now.")
+      |> put_flash(
+        :info,
+        dgettext("frontend", "Ownership confirmed. The user manages this podcast now.")
+      )
       |> render("grant_ownership.html", podcast: podcast, claimant: nil, token: nil)
     else
       {:error, reason} ->
@@ -69,9 +83,12 @@ defmodule PanWeb.PodcastFrontendController do
     end
   end
 
-  defp claim_error(:expired), do: "The link has expired."
-  defp claim_error(:already_assigned), do: "This podcast is managed by someone already."
-  defp claim_error(_reason), do: "The link is invalid."
+  defp claim_error(:expired), do: dgettext("frontend", "The link has expired.")
+
+  defp claim_error(:already_assigned),
+    do: dgettext("frontend", "This podcast is managed by someone already.")
+
+  defp claim_error(_reason), do: dgettext("frontend", "The link is invalid.")
 
   def feeds(conn, %{"id" => id}) do
     podcast =

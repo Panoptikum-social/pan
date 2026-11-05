@@ -41,7 +41,7 @@ defmodule PanWeb.OpmlFrontendController do
     case Repo.insert(changeset) do
       {:ok, _opml} ->
         conn
-        |> put_flash(:info, "Opml created successfully.")
+        |> put_flash(:info, dgettext("frontend", "Opml created successfully."))
         |> redirect(to: opml_frontend_path(conn, :index))
 
       {:error, changeset} ->
@@ -51,7 +51,7 @@ defmodule PanWeb.OpmlFrontendController do
 
   def create(conn, _, _user) do
     conn
-    |> put_flash(:info, "No file selected!")
+    |> put_flash(:info, dgettext("frontend", "No file selected!"))
     |> redirect(to: opml_frontend_path(conn, :new))
   end
 
@@ -62,7 +62,7 @@ defmodule PanWeb.OpmlFrontendController do
     Repo.delete!(opml)
 
     conn
-    |> put_flash(:info, "OPML deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "OPML deleted successfully."))
     |> redirect(to: opml_frontend_path(conn, :index))
   end
 
@@ -70,7 +70,7 @@ defmodule PanWeb.OpmlFrontendController do
     case Repo.one(from(o in Opml, where: o.id == ^id and o.user_id == ^user.id)) do
       nil ->
         conn
-        |> put_flash(:error, "This is not a valid OPML for you")
+        |> put_flash(:error, dgettext("frontend", "This is not a valid OPML for you"))
         |> redirect(to: opml_frontend_path(conn, :index))
         |> halt()
 
@@ -90,15 +90,18 @@ defmodule PanWeb.OpmlFrontendController do
         put_flash(
           conn,
           :info,
-          Phoenix.HTML.raw(
-            "<span class='h3'>Thank you!</span><br/> The OPML was imported into the" <>
-              " feed backlog successfully.<br/> We will parse the feeds as soon as" <>
-              " possible and assign you as listener to the corresponding podcasts."
+          dgettext(
+            "frontend",
+            "Thank you! The OPML was imported into the feed backlog successfully. We will parse the feeds as soon as possible and assign you as listener to the corresponding podcasts."
           )
         )
 
       {:error, message} ->
-        put_flash(conn, :error, "The OPML could not be imported: #{message}")
+        put_flash(
+          conn,
+          :error,
+          dgettext("frontend", "The OPML could not be imported: %{message}", message: message)
+        )
     end
     |> redirect(to: opml_frontend_path(conn, :index))
   end

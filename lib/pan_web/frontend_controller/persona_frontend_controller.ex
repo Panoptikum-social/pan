@@ -38,7 +38,7 @@ defmodule PanWeb.PersonaFrontendController do
       Search.Persona.delete_index(id)
 
       conn
-      |> put_flash(:info, "Persona redirected successfully.")
+      |> put_flash(:info, dgettext("frontend", "Persona redirected successfully."))
       |> redirect(to: user_frontend_path(conn, :my_profile))
     else
       render(conn, "not_allowed.html")
@@ -62,7 +62,7 @@ defmodule PanWeb.PersonaFrontendController do
       Search.Persona.update_index(id)
 
       conn
-      |> put_flash(:info, "Redirect cancelled successfully.")
+      |> put_flash(:info, dgettext("frontend", "Redirect cancelled successfully."))
       |> redirect(to: user_frontend_path(conn, :my_profile))
     else
       render(conn, "not_allowed.html")
@@ -90,14 +90,14 @@ defmodule PanWeb.PersonaFrontendController do
           |> Repo.insert()
 
           conn
-          |> put_flash(:info, "Persona delegated successfully.")
+          |> put_flash(:info, dgettext("frontend", "Persona delegated successfully."))
           |> redirect(to: user_frontend_path(conn, :my_profile))
 
         delegation ->
           Repo.delete!(delegation)
 
           conn
-          |> put_flash(:info, "Delegation deleted successfully.")
+          |> put_flash(:info, dgettext("frontend", "Delegation deleted successfully."))
           |> redirect(to: user_frontend_path(conn, :my_profile))
       end
     else
@@ -130,23 +130,23 @@ defmodule PanWeb.PersonaFrontendController do
             |> Repo.insert()
 
             conn
-            |> put_flash(:info, "Access has been granted successfully!")
+            |> put_flash(:info, dgettext("frontend", "Access has been granted successfully!"))
             |> render("grant_access.html")
 
           _delegation ->
             conn
-            |> put_flash(:info, "Access was already in place!")
+            |> put_flash(:info, dgettext("frontend", "Access was already in place!"))
             |> render("grant_access.html")
         end
 
       {:error, :expired} ->
         conn
-        |> put_flash(:error, "The token has expired already!")
+        |> put_flash(:error, dgettext("frontend", "The token has expired already!"))
         |> render("grant_access.html")
 
       {:error, :invalid} ->
         conn
-        |> put_flash(:error, "Invalid token!")
+        |> put_flash(:error, dgettext("frontend", "Invalid token!"))
         |> render("grant_access.html")
     end
   end
@@ -169,11 +169,11 @@ defmodule PanWeb.PersonaFrontendController do
       |> Repo.insert()
 
       conn
-      |> put_flash(:info, "Persona claimed successfully.")
+      |> put_flash(:info, dgettext("frontend", "Persona claimed successfully."))
       |> redirect(to: persona_frontend_path(conn, :show, persona))
     else
       conn
-      |> put_flash(:error, "You are not allowed to claim this persona!")
+      |> put_flash(:error, dgettext("frontend", "You are not allowed to claim this persona!"))
       |> render("warning.html", persona: persona)
     end
   end
@@ -185,7 +185,7 @@ defmodule PanWeb.PersonaFrontendController do
     |> Repo.update()
 
     conn
-    |> put_flash(:info, "Persona disconnected successfully.")
+    |> put_flash(:info, dgettext("frontend", "Persona disconnected successfully."))
     |> redirect(to: user_frontend_path(conn, :my_data))
   end
 end

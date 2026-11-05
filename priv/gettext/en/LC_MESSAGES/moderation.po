@@ -217,6 +217,7 @@ msgstr ""
 msgid "Moderating %{category}"
 msgstr ""
 
+#: lib/pan_web/frontend_views/moderation_frontend_view.ex:5
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:30
 #: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:3
 #, elixir-autogen, elixir-format

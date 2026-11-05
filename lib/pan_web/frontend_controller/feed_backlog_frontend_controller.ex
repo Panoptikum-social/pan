@@ -18,7 +18,13 @@ defmodule PanWeb.FeedBacklogFrontendController do
     case Repo.insert(changeset) do
       {:ok, _feed_backlog} ->
         conn
-        |> put_flash(:info, "Your feed suggestion has been uploaded, it will be processed asap.")
+        |> put_flash(
+          :info,
+          dgettext(
+            "frontend",
+            "Your feed suggestion has been uploaded, it will be processed asap."
+          )
+        )
         |> redirect(to: feed_backlog_frontend_path(conn, :new))
 
       {:error, changeset} ->
