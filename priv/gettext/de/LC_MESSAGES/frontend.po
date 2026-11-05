@@ -33,7 +33,7 @@ msgid "Bot Expert Carmen"
 msgstr "Bot-Expertin Carmen"
 
 #: lib/pan_web/live/podcast/check_feed.ex:295
-#: lib/pan_web/live/podcast/header.ex:160
+#: lib/pan_web/live/podcast/header.ex:162
 #: lib/pan_web/live/podcast/index.ex:95
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:63
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:23
@@ -1148,7 +1148,7 @@ msgstr "Alle Benutzer:innen-Likes entfernen"
 
 #: lib/pan_web/frontend_views/user_frontend_view.ex:7
 #: lib/pan_web/templates/user_frontend/edit.html.heex:3
-#: lib/pan_web/templates/user_frontend/edit.html.heex:80
+#: lib/pan_web/templates/user_frontend/edit.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Update Profile"
 msgstr "Profil aktualisieren"
@@ -1387,7 +1387,7 @@ msgstr "%{address} im Fediverse"
 msgid "%{count} %{index} found for"
 msgstr "%{count} %{index} gefunden für"
 
-#: lib/pan_web/live/podcast/header.ex:126
+#: lib/pan_web/live/podcast/header.ex:128
 #, elixir-autogen, elixir-format
 msgid "%{count} days"
 msgstr "%{count} Tage"
@@ -1412,8 +1412,8 @@ msgstr "%{name} (Benutzer:in)"
 msgid "%{pad} (Pad, %{community})"
 msgstr "%{pad} (Pad, %{community})"
 
-#: lib/pan_web/live/category/show.ex:32
-#: lib/pan_web/live/category/stats_show.ex:27
+#: lib/pan_web/live/category/show.ex:33
+#: lib/pan_web/live/category/stats_show.ex:28
 #, elixir-autogen, elixir-format
 msgid "%{title} (Category)"
 msgstr "%{title} (Kategorie)"
@@ -1547,8 +1547,8 @@ msgstr "Übernahme"
 msgid "Claiming not available"
 msgstr "Übernahme nicht möglich"
 
-#: lib/pan_web/live/category/show.ex:118
-#: lib/pan_web/live/category/stats_show.ex:75
+#: lib/pan_web/live/category/show.ex:121
+#: lib/pan_web/live/category/stats_show.ex:78
 #, elixir-autogen, elixir-format
 msgid "Click on a language to filter"
 msgstr "Zum Filtern auf eine Sprache klicken"
@@ -1574,7 +1574,7 @@ msgstr "Beschweren"
 
 #: lib/pan_web/live/episode/header.ex:86
 #: lib/pan_web/live/podcast/episode_list.ex:21
-#: lib/pan_web/live/podcast/header.ex:131
+#: lib/pan_web/live/podcast/header.ex:133
 #: lib/pan_web/live/podcast/index.ex:109
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:74
 #, elixir-autogen, elixir-format
@@ -1601,7 +1601,7 @@ msgstr "Pad löschen"
 msgid "Deleted all your subscriptions successfully."
 msgstr "Alle Ihre Abonnements gelöscht."
 
-#: lib/pan_web/live/podcast/header.ex:158
+#: lib/pan_web/live/podcast/header.ex:160
 #, elixir-autogen, elixir-format
 msgid "Detail page"
 msgstr "Detailseite"
@@ -1647,7 +1647,7 @@ msgid "Expand all"
 msgstr "Alle aufklappen"
 
 #: lib/pan_web/live/podcast/check_feed.ex:296
-#: lib/pan_web/live/podcast/header.ex:142
+#: lib/pan_web/live/podcast/header.ex:144
 #, elixir-autogen, elixir-format
 msgid "Explicit"
 msgstr "Explizit"
@@ -1725,7 +1725,7 @@ msgstr "Neueste Episode"
 msgid "Latest Episodes"
 msgstr "Neueste Episoden"
 
-#: lib/pan_web/live/category/latest_episodes.ex:44
+#: lib/pan_web/live/category/latest_episodes.ex:45
 #, elixir-autogen, elixir-format
 msgid "Latest Episodes for %{category}"
 msgstr "Neueste Episoden in %{category}"
@@ -1852,7 +1852,7 @@ msgstr "Noch keine Versionen."
 msgid "Note (optional)"
 msgstr "Notiz (optional)"
 
-#: lib/pan_web/live/podcast/header.ex:148
+#: lib/pan_web/live/podcast/header.ex:150
 #, elixir-autogen, elixir-format
 msgid "Number of Episodes"
 msgstr "Anzahl der Episoden"
@@ -1928,13 +1928,13 @@ msgstr "Bitte nehmen Sie sich die Zeit, den Text auf der nächsten Seite sorgfä
 msgid "Podcast"
 msgstr "Podcast"
 
-#: lib/pan_web/live/category/stats_show.ex:93
+#: lib/pan_web/live/category/stats_show.ex:101
 #, elixir-autogen, elixir-format
 msgid "Podcast Buttons not shown in this view."
 msgstr "In dieser Ansicht werden keine Podcast-Buttons angezeigt."
 
-#: lib/pan_web/live/category/show.ex:144
-#: lib/pan_web/live/category/stats_show.ex:89
+#: lib/pan_web/live/category/show.ex:151
+#: lib/pan_web/live/category/stats_show.ex:97
 #, elixir-autogen, elixir-format
 msgid "Podcasts in any language"
 msgstr "Podcasts in allen Sprachen"
@@ -2030,7 +2030,7 @@ msgstr "Wiederherstellen"
 msgid "Role"
 msgstr "Rolle"
 
-#: lib/pan_web/live/podcast/header.ex:152
+#: lib/pan_web/live/podcast/header.ex:154
 #, elixir-autogen, elixir-format
 msgid "Rss-Feeds"
 msgstr "RSS-Feeds"
@@ -2424,12 +2424,12 @@ msgstr "in der Kategorie"
 msgid "instead."
 msgstr "suchen."
 
-#: lib/pan_web/live/podcast/header.ex:114
+#: lib/pan_web/live/podcast/header.ex:116
 #, elixir-autogen, elixir-format
 msgid "last episode published"
 msgstr "letzte Episode veröffentlicht"
 
-#: lib/pan_web/live/podcast/header.ex:108
+#: lib/pan_web/live/podcast/header.ex:110
 #, elixir-autogen, elixir-format
 msgid "last modified"
 msgstr "zuletzt geändert"
@@ -2461,7 +2461,7 @@ msgstr "Personas"
 msgid "podcasts"
 msgstr "Podcasts"
 
-#: lib/pan_web/live/podcast/header.ex:123
+#: lib/pan_web/live/podcast/header.ex:125
 #, elixir-autogen, elixir-format
 msgid "publication frequency"
 msgstr "Erscheinungsrhythmus"
@@ -2571,7 +2571,7 @@ msgstr "mit"
 msgid "yet."
 msgstr "noch nicht angegeben, Podcaster:in zu sein."
 
-#: lib/pan_web/live/category/show.ex:138
+#: lib/pan_web/live/category/show.ex:143
 #, elixir-autogen, elixir-format
 msgid "🗑️ Clear language filter"
 msgstr "🗑️ Sprachfilter löschen"
@@ -3463,3 +3463,19 @@ msgstr "auf diese E-Mail antworten, wenn Sie vorher Fragen haben."
 #, elixir-autogen, elixir-format
 msgid "reply to this email, if you have questions to that user, before you want to provide access."
 msgstr "auf diese E-Mail antworten, wenn Sie vorher Fragen an diese Person haben."
+
+#: lib/pan_web/live/category/stats_show.ex:91
+#, elixir-autogen, elixir-format
+msgid "%{count} Podcasts in %{language}"
+msgstr "%{count} Podcasts auf %{language}"
+
+#: lib/pan_web/live/category/show.ex:133
+#: lib/pan_web/live/category/stats_show.ex:84
+#, elixir-autogen, elixir-format
+msgid "Language unknown"
+msgstr "Sprache unbekannt"
+
+#: lib/pan_web/live/category/show.ex:146
+#, elixir-autogen, elixir-format
+msgid "Podcasts in %{language}"
+msgstr "Podcasts auf %{language}"

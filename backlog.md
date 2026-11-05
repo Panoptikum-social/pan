@@ -13,16 +13,14 @@ Claude's per-machine memory) so they survive across computers. Last synced
 English and German; curations, moderations and frontend are done (decisions
 and code map in Claude's memory, project_multilingual). Open:
 
-- #582 Translated data, the last step of phase 3:
-  - #566/#567 category titles and language names in a JSONB map column on
-    the record, keyed by locale (e.g. `%{"de" => "..."}`).
-  - #585 German category titles get entered on a small admin page
-    (English UI) listing categories with a German field each.
+- #582 Translated data, the last step of phase 3, still open:
   - #571 gig/engagement roles: gettext lookup, falling back to the stored
     value.
   - #569 search finds categories by their translated titles too.
-- Deploy: prod needs the users.locale migration and an assets build
-  (language switcher, Podlove language).
+- Deploy: prod needs two migrations (users.locale, translation columns
+  with Apple's German category names and German language names) and an
+  assets build (language switcher, Podlove language). Then check
+  /admin/translations for strays without German.
 - #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
   once those pages are translated, the links get fixed.
 - #563 Check whether the existing users_languages table can serve as a

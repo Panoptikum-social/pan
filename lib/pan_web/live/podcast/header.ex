@@ -102,7 +102,9 @@ defmodule PanWeb.Live.Podcast.Header do
           </dd>
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Language")}</dt>
           <dd>
-            <span :for={language <- @podcast.languages}>{language.emoji} {language.name}</span>
+            <span :for={language <- @podcast.languages}>{language.emoji} {PanWeb.Translations.language_name(
+              language
+            )}</span>
           </dd>
           <dt :if={@podcast.last_build_date} class="justify-self-end font-medium">
             {dgettext("frontend", "last modified")}

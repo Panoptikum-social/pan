@@ -8,6 +8,7 @@ defmodule PanWeb.Language do
     field(:shortcode, :string)
     field(:name, :string)
     field(:emoji, :string)
+    field(:name_translations, :map, default: %{})
     timestamps()
 
     many_to_many(:podcasts, PanWeb.Podcast, join_through: "languages_podcasts")
@@ -55,9 +56,37 @@ defmodule PanWeb.Language do
     |> Enum.map(fn {{name, emoji}, languages} ->
       ids = languages |> Enum.map(& &1.id) |> Enum.sort()
 
-      %{name: name, emoji: emoji, ids: ids, representative_id: hd(ids)}
+      %{
+        name: name,
+        emoji: emoji,
+        ids: ids,
+        representative_id: hd(ids),
+        shortcodes: languages |> Enum.map(& &1.shortcode) |> Enum.sort(),
+        translations: hd(Enum.sort_by(languages, & &1.id)).name_translations
+      }
     end)
     |> Enum.sort_by(& &1.name)
+  end
+
+  @doc """
+  Sets (or with an empty text removes) the name in `locale` for every row of
+  a language group, so all shortcode variants show the same name (#593), and
+  reloads the cached translations.
+  """
+  def put_translation(ids, locale, text) do
+    for language <- Repo.all(from(l in Language, where: l.id in ^ids)) do
+      translations =
+        case String.trim(text || "") do
+          "" -> Map.delete(language.name_translations, locale)
+          trimmed -> Map.put(language.name_translations, locale, trimmed)
+        end
+
+      language
+      |> Ecto.Changeset.change(name_translations: translations)
+      |> Repo.update!()
+    end
+
+    PanWeb.Translations.refresh()
   end
 
   @doc """

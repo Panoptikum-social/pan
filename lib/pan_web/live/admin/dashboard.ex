@@ -138,6 +138,11 @@ defmodule PanWeb.Live.Admin.Dashboard do
           class="btn-outline"
         />
         <LinkButton.render
+          title="Translations"
+          to={translations_path(Endpoint, :translations)}
+          class="btn-outline"
+        />
+        <LinkButton.render
           :if={Application.get_env(:pan, :environment) == "dev"}
           title="Dev Mailbox"
           to="/dev/mailbox"

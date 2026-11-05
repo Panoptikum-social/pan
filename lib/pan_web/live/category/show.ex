@@ -29,7 +29,10 @@ defmodule PanWeb.Live.Category.Show do
      assign(socket,
        category: category,
        category_colors: Category.color_map(),
-       page_title: dgettext("frontend", "%{title} (Category)", title: category.title),
+       page_title:
+         dgettext("frontend", "%{title} (Category)",
+           title: PanWeb.Translations.category_title(category)
+         ),
        languages: languages,
        language: language,
        page: page,
@@ -82,11 +85,11 @@ defmodule PanWeb.Live.Category.Show do
             href={category_frontend_path(@socket, :show, @category.parent)}
             class="hover:text-blue-400"
           >
-            <Icon.render name="folder" /> {@category.parent.title}
+            <Icon.render name="folder" /> {PanWeb.Translations.category_title(@category.parent)}
           </.link>
           /
         </span>
-        <Icon.render name="folder-open" /> {@category.title}
+        <Icon.render name="folder-open" /> {PanWeb.Translations.category_title(@category)}
       </:panel_heading>
 
       <div :if={@current_user_id} class="m-4">
@@ -125,7 +128,9 @@ defmodule PanWeb.Live.Category.Show do
             phx-value-language_id={language.id}
             class="underline hover:text-primary mx-2"
           >
-            {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
+            {language.emoji || "🏳️"} &nbsp; {if language.name,
+              do: PanWeb.Translations.language_name(language),
+              else: dgettext("frontend", "Language unknown")}
           </a>
         </div>
 
@@ -138,7 +143,9 @@ defmodule PanWeb.Live.Category.Show do
             >{dgettext("frontend", "🗑️ Clear language filter")}</a>
           </div>
           <h2 class="text-2xl mt-4">
-            Podcasts in {@language.name} {@language.emoji}
+            {dgettext("frontend", "Podcasts in %{language}",
+              language: PanWeb.Translations.language_name(@language)
+            )} {@language.emoji}
           </h2>
         <% else %>
           <h2 class="text-2xl mt-4">{dgettext("frontend", "Podcasts in any language")}</h2>

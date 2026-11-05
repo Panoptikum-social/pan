@@ -4,17 +4,17 @@
 /
 <%= if @category.parent do %>
   <.link href={category_frontend_path(@conn, :show, @category.parent.id)}>
-    {icon("folder-open")} {@category.parent.title}
+    {icon("folder-open")} {PanWeb.Translations.category_title(@category.parent)}
   </.link>
   /
 <% end %>
 <.link href={category_frontend_path(@conn, :show, @category)}>
-  {icon("folder-open")} {@category.title}
+  {icon("folder-open")} {PanWeb.Translations.category_title(@category)}
 </.link>
 
 <h1 class="text-3xl my-4">
   {icon("folder-open")}
-  {@category.title}
+  {PanWeb.Translations.category_title(@category)}
 </h1>
 
 <div x-data="{ selectedTab: 0}" class="pt-4">
@@ -30,7 +30,7 @@
           @click.prevent={"selectedTab = #{index}"}
           to="#"
         >
-          {category.title}
+          {PanWeb.Translations.category_title(category)}
         </a>
       </li>
     <% end %>

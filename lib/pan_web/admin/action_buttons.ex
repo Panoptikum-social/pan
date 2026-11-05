@@ -107,6 +107,11 @@ defmodule PanWeb.Admin.ActionButtons do
         to={category_path(Endpoint, :merge, tab: "icons")}
         class="btn-outline"
       />
+      <LinkButton.render
+        title="Translations"
+        to={translations_path(Endpoint, :translations)}
+        class="btn-outline"
+      />
     </div>
     """
   end

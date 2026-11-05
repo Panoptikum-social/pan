@@ -5,6 +5,7 @@ defmodule PanWeb.Category do
 
   schema "categories" do
     field(:title, :string)
+    field(:title_translations, :map, default: %{})
     field(:full_text, :boolean, default: false)
     # on Apple Podcasts' current list, see Pan.AppleCategories
     field(:apple, :boolean, default: false)
@@ -135,6 +136,43 @@ defmodule PanWeb.Category do
 
   # id => color for every category: a top level category's own, a
   # subcategory's parent's (backlog.md #439)
+  @doc """
+  Sets (or with an empty text removes) the category's title in `locale`
+  (#585) and reloads the cached translations.
+  """
+  def put_translation(id, locale, text) do
+    category = Repo.get!(Category, id)
+    translations = put_or_drop(category.title_translations, locale, text)
+
+    category
+    |> Ecto.Changeset.change(title_translations: translations)
+    |> Repo.update!()
+
+    PanWeb.Translations.refresh()
+  end
+
+  defp put_or_drop(translations, locale, text) do
+    case String.trim(text || "") do
+      "" -> Map.delete(translations, locale)
+      trimmed -> Map.put(translations, locale, trimmed)
+    end
+  end
+
+  @doc "Categories with their parent's title, for the translations page (#585)."
+  def translation_list do
+    from(c in Category,
+      left_join: p in assoc(c, :parent),
+      order_by: [asc: coalesce(p.title, c.title), asc: not is_nil(c.parent_id), asc: c.title],
+      select: %{
+        id: c.id,
+        title: c.title,
+        parent_title: p.title,
+        translations: c.title_translations
+      }
+    )
+    |> Repo.all()
+  end
+
   def color_map do
     from(c in Category,
       left_join: p in assoc(c, :parent),

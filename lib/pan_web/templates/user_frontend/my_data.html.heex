@@ -478,7 +478,7 @@
         href={category_frontend_path(@conn, :show, category)}
         target="_blank"
         class="underline hover:text-primary"
-      >{category.title}</.link>
+      >{PanWeb.Translations.category_title(category)}</.link>
     </li>
   <% end %>
 </ul>
@@ -511,7 +511,7 @@
         href={category_frontend_path(@conn, :show, category)}
         target="_blank"
         class="underline hover:text-primary"
-      >{category.title}</.link>
+      >{PanWeb.Translations.category_title(category)}</.link>
     </li>
   <% end %>
 </ul>

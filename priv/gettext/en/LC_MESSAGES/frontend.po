@@ -33,7 +33,7 @@ msgid "Bot Expert Carmen"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:295
-#: lib/pan_web/live/podcast/header.ex:160
+#: lib/pan_web/live/podcast/header.ex:162
 #: lib/pan_web/live/podcast/index.ex:95
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:63
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:23
@@ -1148,7 +1148,7 @@ msgstr ""
 
 #: lib/pan_web/frontend_views/user_frontend_view.ex:7
 #: lib/pan_web/templates/user_frontend/edit.html.heex:3
-#: lib/pan_web/templates/user_frontend/edit.html.heex:80
+#: lib/pan_web/templates/user_frontend/edit.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Update Profile"
 msgstr ""
@@ -1387,7 +1387,7 @@ msgstr ""
 msgid "%{count} %{index} found for"
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:126
+#: lib/pan_web/live/podcast/header.ex:128
 #, elixir-autogen, elixir-format
 msgid "%{count} days"
 msgstr ""
@@ -1412,8 +1412,8 @@ msgstr ""
 msgid "%{pad} (Pad, %{community})"
 msgstr ""
 
-#: lib/pan_web/live/category/show.ex:32
-#: lib/pan_web/live/category/stats_show.ex:27
+#: lib/pan_web/live/category/show.ex:33
+#: lib/pan_web/live/category/stats_show.ex:28
 #, elixir-autogen, elixir-format
 msgid "%{title} (Category)"
 msgstr ""
@@ -1547,8 +1547,8 @@ msgstr ""
 msgid "Claiming not available"
 msgstr ""
 
-#: lib/pan_web/live/category/show.ex:118
-#: lib/pan_web/live/category/stats_show.ex:75
+#: lib/pan_web/live/category/show.ex:121
+#: lib/pan_web/live/category/stats_show.ex:78
 #, elixir-autogen, elixir-format
 msgid "Click on a language to filter"
 msgstr ""
@@ -1574,7 +1574,7 @@ msgstr ""
 
 #: lib/pan_web/live/episode/header.ex:86
 #: lib/pan_web/live/podcast/episode_list.ex:21
-#: lib/pan_web/live/podcast/header.ex:131
+#: lib/pan_web/live/podcast/header.ex:133
 #: lib/pan_web/live/podcast/index.ex:109
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:74
 #, elixir-autogen, elixir-format
@@ -1601,7 +1601,7 @@ msgstr ""
 msgid "Deleted all your subscriptions successfully."
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:158
+#: lib/pan_web/live/podcast/header.ex:160
 #, elixir-autogen, elixir-format
 msgid "Detail page"
 msgstr ""
@@ -1647,7 +1647,7 @@ msgid "Expand all"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:296
-#: lib/pan_web/live/podcast/header.ex:142
+#: lib/pan_web/live/podcast/header.ex:144
 #, elixir-autogen, elixir-format
 msgid "Explicit"
 msgstr ""
@@ -1725,7 +1725,7 @@ msgstr ""
 msgid "Latest Episodes"
 msgstr ""
 
-#: lib/pan_web/live/category/latest_episodes.ex:44
+#: lib/pan_web/live/category/latest_episodes.ex:45
 #, elixir-autogen, elixir-format
 msgid "Latest Episodes for %{category}"
 msgstr ""
@@ -1852,7 +1852,7 @@ msgstr ""
 msgid "Note (optional)"
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:148
+#: lib/pan_web/live/podcast/header.ex:150
 #, elixir-autogen, elixir-format
 msgid "Number of Episodes"
 msgstr ""
@@ -1928,13 +1928,13 @@ msgstr ""
 msgid "Podcast"
 msgstr ""
 
-#: lib/pan_web/live/category/stats_show.ex:93
+#: lib/pan_web/live/category/stats_show.ex:101
 #, elixir-autogen, elixir-format
 msgid "Podcast Buttons not shown in this view."
 msgstr ""
 
-#: lib/pan_web/live/category/show.ex:144
-#: lib/pan_web/live/category/stats_show.ex:89
+#: lib/pan_web/live/category/show.ex:151
+#: lib/pan_web/live/category/stats_show.ex:97
 #, elixir-autogen, elixir-format, fuzzy
 msgid "Podcasts in any language"
 msgstr ""
@@ -2030,7 +2030,7 @@ msgstr ""
 msgid "Role"
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:152
+#: lib/pan_web/live/podcast/header.ex:154
 #, elixir-autogen, elixir-format
 msgid "Rss-Feeds"
 msgstr ""
@@ -2424,12 +2424,12 @@ msgstr ""
 msgid "instead."
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:114
+#: lib/pan_web/live/podcast/header.ex:116
 #, elixir-autogen, elixir-format
 msgid "last episode published"
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:108
+#: lib/pan_web/live/podcast/header.ex:110
 #, elixir-autogen, elixir-format
 msgid "last modified"
 msgstr ""
@@ -2461,7 +2461,7 @@ msgstr ""
 msgid "podcasts"
 msgstr ""
 
-#: lib/pan_web/live/podcast/header.ex:123
+#: lib/pan_web/live/podcast/header.ex:125
 #, elixir-autogen, elixir-format
 msgid "publication frequency"
 msgstr ""
@@ -2571,7 +2571,7 @@ msgstr ""
 msgid "yet."
 msgstr ""
 
-#: lib/pan_web/live/category/show.ex:138
+#: lib/pan_web/live/category/show.ex:143
 #, elixir-autogen, elixir-format
 msgid "🗑️ Clear language filter"
 msgstr ""
@@ -3462,4 +3462,20 @@ msgstr ""
 #: lib/email.ex:149
 #, elixir-autogen, elixir-format
 msgid "reply to this email, if you have questions to that user, before you want to provide access."
+msgstr ""
+
+#: lib/pan_web/live/category/stats_show.ex:91
+#, elixir-autogen, elixir-format
+msgid "%{count} Podcasts in %{language}"
+msgstr ""
+
+#: lib/pan_web/live/category/show.ex:133
+#: lib/pan_web/live/category/stats_show.ex:84
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Language unknown"
+msgstr ""
+
+#: lib/pan_web/live/category/show.ex:146
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Podcasts in %{language}"
 msgstr ""

@@ -24,7 +24,10 @@ defmodule PanWeb.Live.Category.StatsShow do
     {:ok,
      assign(socket,
        category: category,
-       page_title: dgettext("frontend", "%{title} (Category)", title: category.title),
+       page_title:
+         dgettext("frontend", "%{title} (Category)",
+           title: PanWeb.Translations.category_title(category)
+         ),
        languages: languages,
        language: language,
        page: page,
@@ -53,11 +56,11 @@ defmodule PanWeb.Live.Category.StatsShow do
             href={category_frontend_path(@socket, :show_stats, @category.parent)}
             class="hover:text-blue-400"
           >
-            <Icon.render name="folder" /> {@category.parent.title}
+            <Icon.render name="folder" /> {PanWeb.Translations.category_title(@category.parent)}
           </.link>
           /
         </span>
-        <Icon.render name="folder-open" /> {@category.title}
+        <Icon.render name="folder-open" /> {PanWeb.Translations.category_title(@category)}
       </:panel_heading>
 
       <div aria-label="panel-body" class="p-4">
@@ -67,7 +70,7 @@ defmodule PanWeb.Live.Category.StatsShow do
             to={category_frontend_path(@socket, :show_stats, subcategory.id)}
             class="btn-outline mr-2 mb-2"
             icon="folder"
-            title={subcategory.title}
+            title={PanWeb.Translations.category_title(subcategory)}
             truncate={true}
           />
         </div>
@@ -76,14 +79,19 @@ defmodule PanWeb.Live.Category.StatsShow do
 
         <div class="flex flex-wrap py-4">
           <div :for={language <- @languages} class="mr-8">
-            {language.emoji || "🏳️"} &nbsp; {language.name || "Language unknown"}
+            {language.emoji || "🏳️"} &nbsp; {if language.name,
+              do: PanWeb.Translations.language_name(language),
+              else: dgettext("frontend", "Language unknown")}
             {amount(language.name, @podcasts)}
           </div>
         </div>
 
         <%= if @language do %>
           <h2 class="text-2xl mt-4">
-            {amount(@language.name, @podcasts)} Podcasts in {@language.name} {@language.emoji}
+            {dgettext("frontend", "%{count} Podcasts in %{language}",
+              count: amount(@language.name, @podcasts),
+              language: PanWeb.Translations.language_name(@language)
+            )} {@language.emoji}
           </h2>
         <% else %>
           <h2 class="text-2xl mt-4">{dgettext("frontend", "Podcasts in any language")}</h2>

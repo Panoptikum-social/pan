@@ -20,7 +20,7 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
         podcast_ids: podcast_ids,
         page_title:
           dgettext("frontend", "Latest Episodes in %{category} (Category)",
-            category: category.title
+            category: PanWeb.Translations.category_title(category)
           ),
         has_more: length(episodes) == 15
       )
@@ -41,7 +41,11 @@ defmodule PanWeb.Live.Category.LatestEpisodes do
   def render(assigns) do
     ~H"""
     <Panel.render
-      heading={dgettext("frontend", "Latest Episodes for %{category}", category: @category.title)}
+      heading={
+        dgettext("frontend", "Latest Episodes for %{category}",
+          category: PanWeb.Translations.category_title(@category)
+        )
+      }
       purpose="episode"
       class="m-4"
     >

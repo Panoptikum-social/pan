@@ -72,7 +72,10 @@
             checked={Enum.any?(group.ids, &(&1 in @selected_language_ids))}
             class="checkbox checkbox-xs shrink-0"
           />
-          <span class="truncate">{group.emoji} {group.name}</span>
+          <span class="truncate">{group.emoji} {PanWeb.Translations.language_name(
+            group.representative_id,
+            group.name
+          )}</span>
         </label>
       </div>
     </fieldset>

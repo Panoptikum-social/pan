@@ -21,7 +21,7 @@ defmodule PanWeb.Component.CategoryLink do
       to={Routes.category_frontend_path(Endpoint, :show, @for.id)}
       icon={@for.icon || "folder"}
       icon_class={@color && "text-ctp-#{@color}"}
-      title={@for.title}
+      title={PanWeb.Translations.category_title(@for)}
       large={@large}
       truncate={@truncate}
       class={@class}

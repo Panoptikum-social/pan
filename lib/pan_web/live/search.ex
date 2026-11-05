@@ -269,7 +269,7 @@ defmodule PanWeb.Live.Search do
             )
           ]}
         >
-          {group.emoji} {group.name}
+          {group.emoji} {PanWeb.Translations.language_name(group.representative_id, group.name)}
         </button>
         <button
           :if={MapSet.size(@selected_representative_ids) < length(@language_groups)}

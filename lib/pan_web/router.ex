@@ -166,6 +166,7 @@ defmodule PanWeb.Router do
       live("/sandbox", Live.Admin.Sandbox, :home, as: :sandbox)
       live("/podcasts/owners", Live.Admin.Podcast.Owners, :owners, as: :podcast)
       live("/podcasts/duplicates", Live.Admin.Podcast.Duplicates, :duplicates, as: :podcast)
+      live("/translations", Live.Admin.Translations, :translations, as: :translations)
 
       live("/databrowser/:resource", Live.Admin.Databrowser.Index, :index, as: :databrowser)
 
