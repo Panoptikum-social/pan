@@ -207,7 +207,7 @@ msgstr "Podcasts"
 msgid "Make curator & assign"
 msgstr "Zur Kurator:in machen und zuweisen"
 
-#: lib/pan_web/live/moderation/edit_feed.ex:154
+#: lib/pan_web/live/moderation/edit_feed.ex:152
 #, elixir-autogen, elixir-format
 msgid "Make the selected URL the feed URL again?"
 msgstr "Die ausgewählte URL wieder zur Feed-URL machen?"
@@ -354,12 +354,12 @@ msgstr "Aus der Community entfernen"
 msgid "Remove this podcast from your moderation?"
 msgstr "Diesen Podcast aus Ihrer Moderation entfernen?"
 
-#: lib/pan_web/live/moderation/edit_feed.ex:157
+#: lib/pan_web/live/moderation/edit_feed.ex:155
 #, elixir-autogen, elixir-format
 msgid "Restore"
 msgstr "Wiederherstellen"
 
-#: lib/pan_web/live/moderation/edit_feed.ex:146
+#: lib/pan_web/live/moderation/edit_feed.ex:144
 #, elixir-autogen, elixir-format
 msgid "Restore a previous URL"
 msgstr "Eine frühere URL wiederherstellen"
@@ -399,22 +399,22 @@ msgstr "Textfelder (kurz)"
 msgid "Text Fields"
 msgstr "Textfelder (lang)"
 
-#: lib/pan_web/live/moderation/edit_feed.ex:113
+#: lib/pan_web/live/moderation/edit_feed.ex:111
 #, elixir-autogen, elixir-format
 msgid "The feed URL could not be restored."
 msgstr "Die Feed-URL konnte nicht wiederhergestellt werden."
 
-#: lib/pan_web/live/moderation/edit_feed.ex:102
+#: lib/pan_web/live/moderation/edit_feed.ex:100
 #, elixir-autogen, elixir-format
 msgid "The feed URL is %{url} again, the next update shows whether it works."
 msgstr "Die Feed-URL ist wieder %{url}, die nächste Aktualisierung zeigt, ob sie funktioniert."
 
-#: lib/pan_web/live/moderation/edit_feed.ex:76
+#: lib/pan_web/live/moderation/edit_feed.ex:74
 #, elixir-autogen, elixir-format
 msgid "The next update shows whether the new URL works."
 msgstr "Die nächste Aktualisierung zeigt, ob die neue URL funktioniert."
 
-#: lib/pan_web/live/moderation/edit_episode.ex:79
+#: lib/pan_web/live/moderation/edit_episode.ex:77
 #, elixir-autogen, elixir-format
 msgid "This episode/category combination is not within your moderations."
 msgstr "Diese Kombination aus Episode und Kategorie gehört nicht zu Ihren Moderationen."
@@ -425,8 +425,8 @@ msgstr "Diese Kombination aus Episode und Kategorie gehört nicht zu Ihren Moder
 msgid "This is not one of your moderations."
 msgstr "Das ist keine Ihrer Moderationen."
 
-#: lib/pan_web/live/moderation/edit_feed.ex:130
-#: lib/pan_web/live/moderation/edit_podcast.ex:79
+#: lib/pan_web/live/moderation/edit_feed.ex:128
+#: lib/pan_web/live/moderation/edit_podcast.ex:77
 #: lib/pan_web/live/moderation/episode_grid.ex:74
 #: lib/pan_web/live/moderation/feed_grid.ex:74
 #, elixir-autogen, elixir-format

@@ -207,7 +207,7 @@ msgstr ""
 msgid "Make curator & assign"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:154
+#: lib/pan_web/live/moderation/edit_feed.ex:152
 #, elixir-autogen, elixir-format
 msgid "Make the selected URL the feed URL again?"
 msgstr ""
@@ -354,12 +354,12 @@ msgstr ""
 msgid "Remove this podcast from your moderation?"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:157
+#: lib/pan_web/live/moderation/edit_feed.ex:155
 #, elixir-autogen, elixir-format
 msgid "Restore"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:146
+#: lib/pan_web/live/moderation/edit_feed.ex:144
 #, elixir-autogen, elixir-format
 msgid "Restore a previous URL"
 msgstr ""
@@ -399,22 +399,22 @@ msgstr ""
 msgid "Text Fields"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:113
+#: lib/pan_web/live/moderation/edit_feed.ex:111
 #, elixir-autogen, elixir-format
 msgid "The feed URL could not be restored."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:102
+#: lib/pan_web/live/moderation/edit_feed.ex:100
 #, elixir-autogen, elixir-format
 msgid "The feed URL is %{url} again, the next update shows whether it works."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:76
+#: lib/pan_web/live/moderation/edit_feed.ex:74
 #, elixir-autogen, elixir-format
 msgid "The next update shows whether the new URL works."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:79
+#: lib/pan_web/live/moderation/edit_episode.ex:77
 #, elixir-autogen, elixir-format
 msgid "This episode/category combination is not within your moderations."
 msgstr ""
@@ -425,8 +425,8 @@ msgstr ""
 msgid "This is not one of your moderations."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:130
-#: lib/pan_web/live/moderation/edit_podcast.ex:79
+#: lib/pan_web/live/moderation/edit_feed.ex:128
+#: lib/pan_web/live/moderation/edit_podcast.ex:77
 #: lib/pan_web/live/moderation/episode_grid.ex:74
 #: lib/pan_web/live/moderation/feed_grid.ex:74
 #, elixir-autogen, elixir-format
