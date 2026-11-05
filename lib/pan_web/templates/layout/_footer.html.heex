@@ -1,27 +1,30 @@
 <ul
   :for={
     {section, links} <- [
-      {"Meta",
+      {dgettext("frontend", "Meta"),
        [
          {"https://blog.panoptikum.social/code_of_conduct/", "heart-handshake",
-          "Code of Conduct"},
-         {"https://blog.panoptikum.social/privacy/", "lock", "Privacy"},
-         {"https://blog.panoptikum.social/complaints/", "flag", "Complaints"},
-         {"https://blog.panoptikum.social/community/", "users-group", "Community"},
+          dgettext("frontend", "Code of Conduct")},
+         {"https://blog.panoptikum.social/privacy/", "lock", dgettext("frontend", "Privacy")},
+         {"https://blog.panoptikum.social/complaints/", "flag",
+          dgettext("frontend", "Complaints")},
+         {"https://blog.panoptikum.social/community/", "users-group",
+          dgettext("frontend", "Community")},
          {"https://blog.panoptikum.social/api/", "api", "API"},
-         {"https://blog.panoptikum.social/imprint/", "id", "Imprint"}
+         {"https://blog.panoptikum.social/imprint/", "id", dgettext("frontend", "Imprint")}
        ]},
-      {"About",
+      {dgettext("frontend", "About"),
        [
-         {"https://blog.panoptikum.social/talks/", "presentation", "Talks"},
-         {"https://blog.panoptikum.social/community/", "help", "FAQ"}
+         {"https://blog.panoptikum.social/talks/", "presentation", dgettext("frontend", "Talks")},
+         {"https://blog.panoptikum.social/community/", "help", dgettext("frontend", "FAQ")}
        ]},
-      {"Support",
+      {dgettext("frontend", "Support"),
        [
-         {"https://www.waldgruber.at", "user-heart", "Community Manager Sonja"},
-         {"https://carmenh.dev/", "robot", "Bot Expert Carmen"}
+         {"https://www.waldgruber.at", "user-heart",
+          dgettext("frontend", "Community Manager Sonja")},
+         {"https://carmenh.dev/", "robot", dgettext("frontend", "Bot Expert Carmen")}
        ]},
-      {"Development & Hosting",
+      {dgettext("frontend", "Development & Hosting"),
        [{"https://www.informatom.com", "code", "Informatom EDV-Dienstleistungen e.U."}]}
     ]
   }

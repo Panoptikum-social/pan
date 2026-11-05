@@ -7,13 +7,13 @@ defmodule PanWeb.Component.ThemeToggle do
     assigns =
       assign(assigns, :choices, [
         {"latte", "sun", "Latte"},
-        {"system", "device-desktop", "System"},
+        {"system", "device-desktop", dgettext("frontend", "System")},
         {"mocha", "moon", "Mocha"}
       ])
 
     ~H"""
     <div class="mt-4">
-      <div class="join" role="group" aria-label="Color theme">
+      <div class="join" role="group" aria-label={dgettext("frontend", "Color theme")}>
         <button
           :for={{choice, icon, name} <- @choices}
           type="button"

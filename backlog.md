@@ -40,6 +40,19 @@ Decided 2026-11-05:
   moderation RecordForm, CuratorAssignment, Pagination and DataTable
   (shared with admin, where they stay English); German in
   de/moderation.po.
+- Phase 3 (frontend), gettext domain "frontend", in steps:
+  #577 layout and navigation (done 2026-11-05), #578
+  account and login, #579 browsing pages, #580 podcaster tools, #581
+  emails (#568), #582 translated data (#566, #567, #571, #569).
+- #583 Emails to recipients without a known language: login link and
+  verification in the current page language, others English. The page
+  language is saved as the user setting on registration.
+- #584 check_my_feed rule messages stay English (like parser messages);
+  only the page around them gets translated.
+- #585 German category titles get entered on a small admin page
+  (English UI) listing categories with a German field each.
+- #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
+  once those pages are translated, the links get fixed.
 - #576 Cleanup: the moderation edit pages (EditPodcast, EditEpisode,
   EditFeed) use `:admin_live_view` and override its English with
   `on_mount PanWeb.Locale`. Moving them to `:moderation_live_view` would

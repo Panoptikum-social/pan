@@ -1,0 +1,235 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:16
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Administration"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Blog"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Bot Expert Carmen"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:23
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Categories"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Change Password"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Code of Conduct"
+msgstr ""
+
+#: lib/pan_web/components/theme_toggle.ex:16
+#, elixir-autogen, elixir-format
+msgid "Color theme"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:32
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Communities"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Community"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Community Manager Sonja"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Complaints"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Development & Hosting"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "FAQ"
+msgstr ""
+
+#: lib/pan_web/templates/error/not_found.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Go to the start page"
+msgstr ""
+
+#: lib/pan_web/templates/error/not_found.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Hosted by"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Imprint"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Latest Recommendations"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "Log In"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Log Out"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Manuals"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Meta"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "My Data"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "My OPMLs"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "My Podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "My Profile"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "My Recommendations"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "New Episodes"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "New Podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Panoptikum Logo, Link to Home"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Podcasters"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Privacy"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Random Recommendation"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "Sign Up"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Submit"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Suggest a Podcast"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Support"
+msgstr ""
+
+#: lib/pan_web/components/theme_toggle.ex:10
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_footer.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Talks"
+msgstr ""
+
+#: lib/pan_web/templates/error/not_found.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The page you requested doesn't exist (anymore). Please check the address, or use the search in the navigation."
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr ""
+
+#: lib/pan_web/templates/error/not_found.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "We couldn't make sense of this request. Please check the address, or use the search in the navigation."
+msgstr ""
+
+#: lib/pan_web/templates/layout/_navbar.html.heex:194
+#, elixir-autogen, elixir-format
+msgid "toggle sidebar"
+msgstr ""

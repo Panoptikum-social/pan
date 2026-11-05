@@ -28,15 +28,19 @@
             {@conn.status} {Plug.Conn.Status.reason_phrase(@conn.status)}
           </h1>
           <p :if={@conn.status == 404}>
-            The page you requested doesn't exist (anymore). Please check the address,
-            or use the search in the navigation.
+            {dgettext(
+              "frontend",
+              "The page you requested doesn't exist (anymore). Please check the address, or use the search in the navigation."
+            )}
           </p>
           <p :if={@conn.status != 404}>
-            We couldn't make sense of this request. Please check the address,
-            or use the search in the navigation.
+            {dgettext(
+              "frontend",
+              "We couldn't make sense of this request. Please check the address, or use the search in the navigation."
+            )}
           </p>
           <p>
-            <a class="link link-primary" href="/">Go to the start page</a>
+            <a class="link link-primary" href="/">{dgettext("frontend", "Go to the start page")}</a>
           </p>
         </div>
       </div>
@@ -47,7 +51,7 @@
       </footer>
       <div class="flex justify-center w-full font-medium pb-4">
         <p>
-          Hosted by
+          {dgettext("frontend", "Hosted by")}
           <a class="underline hover:text-primary" href="https://www.informatom.com">
             Informatom EDV-Dienstleistungen e.U.
           </a>

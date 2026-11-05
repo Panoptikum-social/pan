@@ -23,7 +23,7 @@ defmodule PanWeb.ErrorViewTest do
     assert conn.status == 404
     html = response(conn, 404)
     assert html =~ "404 Not Found"
-    assert html =~ "doesn't exist (anymore)"
+    assert html =~ "doesn&#39;t exist (anymore)"
     assert html =~ ~r{<title>\s*404 Not Found · Panoptikum\s*</title>}
   end
 

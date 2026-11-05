@@ -1,0 +1,235 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:16
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr "Über Panoptikum"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Administration"
+msgstr "Administration"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:64
+#, elixir-autogen, elixir-format
+msgid "Blog"
+msgstr "Blog"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Bot Expert Carmen"
+msgstr "Bot-Expertin Carmen"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:23
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Categories"
+msgstr "Kategorien"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Change Password"
+msgstr "Passwort ändern"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Code of Conduct"
+msgstr "Verhaltenskodex"
+
+#: lib/pan_web/components/theme_toggle.ex:16
+#, elixir-autogen, elixir-format
+msgid "Color theme"
+msgstr "Farbschema"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:32
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Communities"
+msgstr "Communitys"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Community"
+msgstr "Community"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Community Manager Sonja"
+msgstr "Community-Managerin Sonja"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Complaints"
+msgstr "Beschwerden"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Development & Hosting"
+msgstr "Entwicklung & Hosting"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "FAQ"
+msgstr "FAQ"
+
+#: lib/pan_web/templates/error/not_found.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Go to the start page"
+msgstr "Zur Startseite"
+
+#: lib/pan_web/templates/error/not_found.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Hosted by"
+msgstr "Gehostet von"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Imprint"
+msgstr "Impressum"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Latest Recommendations"
+msgstr "Neueste Empfehlungen"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:108
+#, elixir-autogen, elixir-format
+msgid "Log In"
+msgstr "Anmelden"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Manuals"
+msgstr "Handbücher"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Meta"
+msgstr "Meta"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "My Data"
+msgstr "Meine Daten"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "My OPMLs"
+msgstr "Meine OPMLs"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "My Podcasts"
+msgstr "Meine Podcasts"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "My Profile"
+msgstr "Mein Profil"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "My Recommendations"
+msgstr "Meine Empfehlungen"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "New Episodes"
+msgstr "Neue Episoden"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "New Podcasts"
+msgstr "Neue Podcasts"
+
+#: lib/pan_web/templates/layout/_navbar.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Panoptikum Logo, Link to Home"
+msgstr "Panoptikum-Logo, Link zur Startseite"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Podcasters"
+msgstr "Podcaster:innen"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Privacy"
+msgstr "Datenschutz"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Random Recommendation"
+msgstr "Zufällige Empfehlung"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Suche"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Submit"
+msgstr "Absenden"
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Suggest a Podcast"
+msgstr "Podcast vorschlagen"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Support"
+msgstr "Unterstützung"
+
+#: lib/pan_web/components/theme_toggle.ex:10
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "System"
+
+#: lib/pan_web/templates/layout/_footer.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Talks"
+msgstr "Vorträge"
+
+#: lib/pan_web/templates/error/not_found.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The page you requested doesn't exist (anymore). Please check the address, or use the search in the navigation."
+msgstr "Die angeforderte Seite gibt es nicht (mehr). Bitte prüfen Sie die Adresse oder nutzen Sie die Suche in der Navigation."
+
+#: lib/pan_web/templates/layout/_navbar_items.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Benutzer:innen"
+
+#: lib/pan_web/templates/error/not_found.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "We couldn't make sense of this request. Please check the address, or use the search in the navigation."
+msgstr "Mit dieser Anfrage konnten wir nichts anfangen. Bitte prüfen Sie die Adresse oder nutzen Sie die Suche in der Navigation."
+
+#: lib/pan_web/templates/layout/_navbar.html.heex:194
+#, elixir-autogen, elixir-format
+msgid "toggle sidebar"
+msgstr "Seitenleiste ein-/ausblenden"

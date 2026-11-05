@@ -9,7 +9,7 @@
         height="40"
         class="shrink-0"
         x-bind:class="{'lg:w-5 lg:h-5': !navbarOpen}"
-        alt="Panoptikum Logo, Link to Home"
+        alt={dgettext("frontend", "Panoptikum Logo, Link to Home")}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"
       >
@@ -191,7 +191,7 @@
   <button
     @click="navbarOpen = !navbarOpen"
     class="shrink-0 mt-2 focus:outline-none"
-    aria-label="toggle sidebar"
+    aria-label={dgettext("frontend", "toggle sidebar")}
   >
     <svg
       x-show="navbarOpen"

@@ -4,13 +4,13 @@
     type="text"
     name="search[term]"
     size="15"
-    placeholder="Search"
+    placeholder={dgettext("frontend", "Search")}
     class="flex-1 bg-sidebar-field text-base-content"
   /> &nbsp;
   <button
     type="submit"
     class="p-2 text-sm rounded border border-base-300 bg-sidebar-field hover:bg-base-300 align-middle"
-    title="Submit"
+    title={dgettext("frontend", "Submit")}
   >
     {nav_icon("search")}
   </button>
@@ -20,60 +20,63 @@
   <li class="py-1">
     <.link
       href={category_frontend_path(@conn, :index)}
-      title="Categories"
+      title={dgettext("frontend", "Categories")}
       class="visible-xs-inline"
     >
-      {nav_icon("map")} Categories
+      {nav_icon("map")} {dgettext("frontend", "Categories")}
     </.link>
   </li>
   <li class="py-1">
-    <.link href={community_frontend_path(@conn, :index)} title="Communities">
-      {nav_icon("users")} Communities
+    <.link
+      href={community_frontend_path(@conn, :index)}
+      title={dgettext("frontend", "Communities")}
+    >
+      {nav_icon("users")} {dgettext("frontend", "Communities")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={podcast_frontend_path(@conn, :index)}>
-      {nav_icon("microphone")} New Podcasts
+      {nav_icon("microphone")} {dgettext("frontend", "New Podcasts")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={episode_frontend_path(@conn, :index)}>
-      {nav_icon("headphones")} New Episodes
+      {nav_icon("headphones")} {dgettext("frontend", "New Episodes")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :random)}>
-      {nav_icon("flask")} Random Recommendation
+      {nav_icon("flask")} {dgettext("frontend", "Random Recommendation")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :index)}>
-      {nav_icon("gift")} Latest Recommendations
+      {nav_icon("gift")} {dgettext("frontend", "Latest Recommendations")}
     </.link>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/">
-      {nav_icon("help")} About
+      {nav_icon("help")} {dgettext("frontend", "About")}
     </a>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/blog/">
-      {nav_icon("news")} Blog
+      {nav_icon("news")} {dgettext("frontend", "Blog")}
     </a>
   </li>
   <li class="py-1">
     <a href="https://blog.panoptikum.social/manuals/">
-      {nav_icon("book")} Manuals
+      {nav_icon("book")} {dgettext("frontend", "Manuals")}
     </a>
   </li>
   <li class="py-1">
     <.link href={persona_frontend_path(@conn, :index)}>
-      {nav_icon("user-star")} Podcasters
+      {nav_icon("user-star")} {dgettext("frontend", "Podcasters")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :index)}>
-      {nav_icon("user")} Users
+      {nav_icon("user")} {dgettext("frontend", "Users")}
     </.link>
   </li>
 
@@ -81,7 +84,7 @@
     <%= if @current_user.admin do %>
       <li class="py-1">
         {nav_icon("adjustments-horizontal")}
-        <.link href={dashboard_path(@conn, :home)}>Administration</.link>
+        <.link href={dashboard_path(@conn, :home)}>{dgettext("frontend", "Administration")}</.link>
       </li>
     <% end %>
 
@@ -91,18 +94,18 @@
     <li class="border-t-2 sidebar-divider"></li>
     <li class="py-1">
       <.link href={session_path(@conn, :delete, @current_user)} method="delete">
-        {nav_icon("logout")} Log Out
+        {nav_icon("logout")} {dgettext("frontend", "Log Out")}
       </.link>
     </li>
   <% else %>
     <li class="py-1">
       <.link href={user_frontend_path(@conn, :new)}>
-        {nav_icon("pencil")} Sign Up
+        {nav_icon("pencil")} {dgettext("frontend", "Sign Up")}
       </.link>
     </li>
     <li class="py-1">
       <.link href={session_path(@conn, :new)}>
-        {nav_icon("login")} Log In
+        {nav_icon("login")} {dgettext("frontend", "Log In")}
       </.link>
     </li>
   <% end %>

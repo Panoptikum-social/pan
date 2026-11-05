@@ -6,22 +6,22 @@
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_profile)}>
-      {nav_icon("user-circle")} My Profile
+      {nav_icon("user-circle")} {dgettext("frontend", "My Profile")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :edit_password)}>
-      {nav_icon("spy")} Change Password
+      {nav_icon("spy")} {dgettext("frontend", "Change Password")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_podcasts)}>
-      {nav_icon("microphone")} My Podcasts
+      {nav_icon("microphone")} {dgettext("frontend", "My Podcasts")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={recommendation_frontend_path(@conn, :my_recommendations)}>
-      {nav_icon("gift")} My Recommendations
+      {nav_icon("gift")} {dgettext("frontend", "My Recommendations")}
     </.link>
   </li>
   <%= if @current_user.moderator do %>
@@ -42,17 +42,17 @@
   <% end %>
   <li class="py-1">
     <.link href={feed_backlog_frontend_path(@conn, :new)}>
-      {nav_icon("rss")} Suggest a Podcast
+      {nav_icon("rss")} {dgettext("frontend", "Suggest a Podcast")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={opml_frontend_path(@conn, :index)}>
-      {nav_icon("file-music")} My OPMLs
+      {nav_icon("file-music")} {dgettext("frontend", "My OPMLs")}
     </.link>
   </li>
   <li class="py-1">
     <.link href={user_frontend_path(@conn, :my_data)}>
-      {nav_icon("briefcase")} My Data
+      {nav_icon("briefcase")} {dgettext("frontend", "My Data")}
     </.link>
   </li>
 </ul>
