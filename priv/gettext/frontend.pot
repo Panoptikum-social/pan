@@ -300,7 +300,7 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_profile.html.heex:59
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "All invoices, that appear here, have been paid already."
 msgstr ""
@@ -749,6 +749,7 @@ msgid "Is podcaster?"
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/edit.html.heex:54
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Languages I speak"
 msgstr ""
@@ -820,7 +821,7 @@ msgstr ""
 msgid "Manage"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_profile.html.heex:57
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "My invoices"
 msgstr ""
@@ -3783,4 +3784,9 @@ msgstr ""
 #: lib/pan_web/live/search.ex:191
 #, elixir-autogen, elixir-format
 msgid "Translations"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "No languages selected."
 msgstr ""

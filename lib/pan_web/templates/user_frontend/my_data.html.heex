@@ -45,6 +45,8 @@
   <dd>{@user.share_follows}</dd>
   <dt class="text-right">{dgettext("frontend", "Interface language")}</dt>
   <dd>{@user.locale}</dd>
+  <dt class="text-right">{dgettext("frontend", "Languages I speak")}</dt>
+  <dd>{@user.languages |> Enum.map(& &1.shortcode) |> Enum.sort() |> Enum.join(", ")}</dd>
 </dl>
 
 <div class="mt-8 mb-4">

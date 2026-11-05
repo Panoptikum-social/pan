@@ -19,6 +19,7 @@ defmodule PanWeb.UserJsonDownloadView do
 
   has_many(:personas, serializer: PanWeb.Api.PlainPersonaView, include: true)
   has_many(:opmls, serializer: PanWeb.Api.PlainOpmlView, include: true)
+  has_many(:languages, serializer: PanWeb.Api.LanguageView, include: true)
   has_many(:invoices, serializer: PanWeb.Api.InvoiceView, include: true)
 
   has_many(:podcasts_i_subscribed, serializer: PanWeb.Api.PlainPodcastView, include: true)

@@ -113,4 +113,60 @@ defmodule PanWeb.TranslationsTest do
 
     refute Repo.get!(Category, child.id).full_text
   end
+
+  test "My Profile lists the languages the user speaks, once per language", %{conn: conn} do
+    n = System.unique_integer([:positive])
+
+    user =
+      Repo.insert!(%User{
+        name: "Profile",
+        username: "profile_#{n}",
+        email: "profile_#{n}@example.com",
+        locale: "de"
+      })
+
+    n = System.unique_integer([:positive])
+
+    de =
+      Repo.insert!(%PanWeb.Language{
+        shortcode: "q#{n}",
+        name: "Qish",
+        emoji: "🏳️",
+        name_translations: %{"de" => "Quisch"}
+      })
+
+    de_at = Repo.insert!(%PanWeb.Language{shortcode: "q#{n}-at", name: "Qish", emoji: "🏳️"})
+
+    Repo.insert_all("users_languages", [
+      %{user_id: user.id, language_id: de.id},
+      %{user_id: user.id, language_id: de_at.id}
+    ])
+
+    Translations.refresh()
+
+    html =
+      conn
+      |> init_test_session(%{"user_id" => user.id})
+      |> get("/pan/my_profile")
+      |> html_response(200)
+
+    assert html =~ "Sprachen, die ich spreche"
+    assert length(String.split(html, "Quisch")) == 2
+
+    data_html =
+      build_conn()
+      |> init_test_session(%{"user_id" => user.id})
+      |> get("/pan/my_data")
+      |> html_response(200)
+
+    assert data_html =~ "#{de.shortcode}, #{de_at.shortcode}"
+
+    json =
+      build_conn()
+      |> init_test_session(%{"user_id" => user.id})
+      |> get("/mydata/download")
+      |> response(200)
+
+    assert json =~ de_at.shortcode
+  end
 end

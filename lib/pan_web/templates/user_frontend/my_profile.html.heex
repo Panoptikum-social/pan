@@ -50,6 +50,17 @@
       {dgettext("frontend", "I do not share my subscriptions.")}
     <% end %>
   </div>
+
+  <div class="justify-self-end">{dgettext("frontend", "Languages I speak")}</div>
+  <div>
+    <span :if={@user.languages == []}>{dgettext("frontend", "No languages selected.")}</span>
+    <span
+      :for={language <- @user.languages |> Enum.uniq_by(&PanWeb.Language.group_key/1)}
+      class="mr-3 whitespace-nowrap"
+    >
+      {language.emoji} {PanWeb.Translations.language_name(language)}
+    </span>
+  </div>
 </div>
 
 <%= if @user.invoices != [] do %>

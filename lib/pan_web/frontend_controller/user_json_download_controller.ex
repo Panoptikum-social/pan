@@ -14,6 +14,7 @@ defmodule PanWeb.UserJsonDownloadController do
         :user_personas,
         :personas,
         :invoices,
+        :languages,
         :podcasts_i_subscribed,
         :opmls,
         :users_i_like,

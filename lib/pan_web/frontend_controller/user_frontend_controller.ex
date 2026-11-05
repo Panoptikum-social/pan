@@ -84,6 +84,7 @@ defmodule PanWeb.UserFrontendController do
         :user_personas,
         :personas,
         :invoices,
+        :languages,
         :podcasts_i_subscribed,
         :opmls,
         :users_i_like,
@@ -110,7 +111,7 @@ defmodule PanWeb.UserFrontendController do
     Persona.create_user_persona(user)
 
     user =
-      Repo.preload(user, :invoices)
+      Repo.preload(user, [:invoices, :languages])
       |> Repo.preload(
         personas:
           from(Persona,
