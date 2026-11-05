@@ -303,4 +303,22 @@ defmodule PanWeb.LocaleTest do
       end)
     end
   end
+
+  test "links to the qed site lead German users to /de/ where a translation exists (#586)" do
+    Gettext.put_locale(PanWeb.Gettext, "de")
+    assert PanWeb.Blog.url("/privacy/") == "https://blog.panoptikum.social/de/privacy/"
+    assert PanWeb.Blog.url("/") == "https://blog.panoptikum.social/de/"
+    assert PanWeb.Blog.url("/blog/") == "https://blog.panoptikum.social/blog/"
+    assert PanWeb.Blog.url("/api/") == "https://blog.panoptikum.social/api/"
+
+    Gettext.put_locale(PanWeb.Gettext, "en")
+    assert PanWeb.Blog.url("/privacy/") == "https://blog.panoptikum.social/privacy/"
+  end
+
+  test "the footer links to the German legal pages", %{conn: conn} do
+    html = conn |> put_req_cookie("locale", "de") |> get("/") |> html_response(200)
+
+    assert html =~ ~s(href="https://blog.panoptikum.social/de/imprint/")
+    assert html =~ ~s(href="https://blog.panoptikum.social/de/code-of-conduct/")
+  end
 end

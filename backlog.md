@@ -14,8 +14,6 @@ English and German; curations, moderations and frontend are done and
 deployed (decisions and code map in Claude's memory, project_multilingual).
 Open:
 
-- #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
-  once those pages are translated, the links get fixed.
 - #600 German screenshots for the German manuals on the qed site (they
   show the English interface for now, #599).
 - #601 German main menu on the qed site: the hand-made menu in site.toml

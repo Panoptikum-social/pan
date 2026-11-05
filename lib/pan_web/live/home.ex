@@ -32,7 +32,7 @@ defmodule PanWeb.Live.Home do
             "Panoptikum.social uses cookies only out of technical necessity. See our"
           )}
           <.link
-            href="https://blog.panoptikum.social/privacy/"
+            href={PanWeb.Blog.url("/privacy/")}
             class="underline hover:text-primary"
           >{dgettext("frontend", "Privacy Page")}</.link>
           {dgettext("frontend", "for details.")}

@@ -3,20 +3,18 @@
     {section, links} <- [
       {dgettext("frontend", "Meta"),
        [
-         {"https://blog.panoptikum.social/code_of_conduct/", "heart-handshake",
+         {PanWeb.Blog.url("/code-of-conduct/"), "heart-handshake",
           dgettext("frontend", "Code of Conduct")},
-         {"https://blog.panoptikum.social/privacy/", "lock", dgettext("frontend", "Privacy")},
-         {"https://blog.panoptikum.social/complaints/", "flag",
-          dgettext("frontend", "Complaints")},
-         {"https://blog.panoptikum.social/community/", "users-group",
-          dgettext("frontend", "Community")},
-         {"https://blog.panoptikum.social/api/", "api", "API"},
-         {"https://blog.panoptikum.social/imprint/", "id", dgettext("frontend", "Imprint")}
+         {PanWeb.Blog.url("/privacy/"), "lock", dgettext("frontend", "Privacy")},
+         {PanWeb.Blog.url("/complaints/"), "flag", dgettext("frontend", "Complaints")},
+         {PanWeb.Blog.url("/community/"), "users-group", dgettext("frontend", "Community")},
+         {PanWeb.Blog.url("/api/"), "api", "API"},
+         {PanWeb.Blog.url("/imprint/"), "id", dgettext("frontend", "Imprint")}
        ]},
       {dgettext("frontend", "About"),
        [
-         {"https://blog.panoptikum.social/talks/", "presentation", dgettext("frontend", "Talks")},
-         {"https://blog.panoptikum.social/community/", "help", dgettext("frontend", "FAQ")}
+         {PanWeb.Blog.url("/talks/"), "presentation", dgettext("frontend", "Talks")},
+         {PanWeb.Blog.url("/community/"), "help", dgettext("frontend", "FAQ")}
        ]},
       {dgettext("frontend", "Support"),
        [
