@@ -441,7 +441,7 @@ msgid "Click on the user link to open the user show page in a new tab to un/like
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:553
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr ""
 
@@ -809,12 +809,12 @@ msgstr ""
 
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:138
 #: lib/pan_web/live/session/new.ex:44
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Log in"
 msgstr ""
 
 #: lib/pan_web/live/session/new.ex:15
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Login"
 msgstr ""
 
@@ -936,12 +936,12 @@ msgid "Please"
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:564
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcast:"
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:28
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcaster"
 msgstr ""
 
@@ -964,7 +964,7 @@ msgstr ""
 #: lib/pan_web/live/episode/recommendation_list.ex:47
 #: lib/pan_web/live/podcast/recommendation_list.ex:65
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:521
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Recommendations"
 msgstr ""
 
@@ -1020,7 +1020,7 @@ msgstr ""
 
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:133
 #: lib/pan_web/live/session/new.ex:63
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Sign up"
 msgstr ""
 
@@ -1446,7 +1446,7 @@ msgid "A version is saved automatically 5 minutes after the last edit and when t
 msgstr ""
 
 #: lib/pan_web/live/persona/index.ex:18
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "All Personas"
 msgstr ""
 
@@ -1493,12 +1493,12 @@ msgid "Categories, %{name} likes"
 msgstr ""
 
 #: lib/pan_web/live/community/show.ex:178
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Categorized"
 msgstr ""
 
 #: lib/pan_web/live/category/tree.ex:10
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Category Tree"
 msgstr ""
 
@@ -1572,7 +1572,7 @@ msgstr ""
 #: lib/pan_web/live/chapter/recommendation_list.ex:27
 #: lib/pan_web/live/episode/recommendation_list.ex:44
 #: lib/pan_web/live/podcast/recommendation_list.ex:63
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Complain"
 msgstr ""
 
@@ -1596,7 +1596,7 @@ msgid "Deeplinks to Chapters"
 msgstr ""
 
 #: lib/pan_web/live/pad/show.ex:370
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Delete pad"
 msgstr ""
 
@@ -1611,7 +1611,7 @@ msgid "Detail page"
 msgstr ""
 
 #: lib/pan_web/live/podcast/show.ex:56
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Downloading Feed"
 msgstr ""
 
@@ -1636,12 +1636,12 @@ msgid "Engagements, %{name} has entered"
 msgstr ""
 
 #: lib/pan_web/live/persona/show.ex:349
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Episode"
 msgstr ""
 
 #: lib/pan_web/live/podcast/episode_list.ex:14
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Episodes"
 msgstr ""
 
@@ -1667,12 +1667,12 @@ msgid "Finished updating Podcast %{title}"
 msgstr ""
 
 #: lib/pan_web/components/follow_button.ex:66
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Follow"
 msgstr ""
 
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:126
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Followers"
 msgstr ""
 
@@ -1709,12 +1709,12 @@ msgid "Info"
 msgstr ""
 
 #: lib/pan_web/live/podcast/header.ex:103
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Language"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:264
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Languages:"
 msgstr ""
 
@@ -1751,7 +1751,7 @@ msgid "Latest Podcasts"
 msgstr ""
 
 #: lib/pan_web/live/home.ex:123
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Latest Recommendation"
 msgstr ""
 
@@ -1766,7 +1766,7 @@ msgid "Like"
 msgstr ""
 
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:125
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Likes"
 msgstr ""
 
@@ -1928,7 +1928,7 @@ msgstr ""
 
 #: lib/pan_web/live/persona/show.ex:321
 #: lib/pan_web/live/persona/show.ex:348
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcast"
 msgstr ""
 
@@ -1939,12 +1939,12 @@ msgstr ""
 
 #: lib/pan_web/live/category/show.ex:151
 #: lib/pan_web/live/category/stats_show.ex:97
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcasts in any language"
 msgstr ""
 
 #: lib/pan_web/live/category/stats_tree.ex:17
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcasts per category."
 msgstr ""
 
@@ -1969,7 +1969,7 @@ msgid "Print"
 msgstr ""
 
 #: lib/pan_web/live/home.ex:37
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Privacy Page"
 msgstr ""
 
@@ -1993,23 +1993,23 @@ msgstr ""
 #: lib/pan_web/live/episode/recommend_form.ex:31
 #: lib/pan_web/live/podcast/recommend_form.ex:31
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:117
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Recommend"
 msgstr ""
 
 #: lib/pan_web/live/episode/recommendation_list.ex:54
 #: lib/pan_web/live/podcast/recommendation_list.ex:71
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Recommendation"
 msgstr ""
 
 #: lib/pan_web/frontend_controller/recommendation_frontend_controller.ex:88
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Recommendation deleted successfully."
 msgstr ""
 
 #: lib/pan_web/live/pad/show.ex:358
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr ""
 
@@ -2066,12 +2066,12 @@ msgid "Start claiming process"
 msgstr ""
 
 #: lib/pan_web/live/podcast/subscribe_button.ex:56
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Subscribe"
 msgstr ""
 
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:127
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Subscribers"
 msgstr ""
 
@@ -2187,7 +2187,7 @@ msgid "Uh, an error has happened!"
 msgstr ""
 
 #: lib/pan_web/components/follow_button.ex:58
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unfollow"
 msgstr ""
 
@@ -2205,12 +2205,12 @@ msgid "Unlike"
 msgstr ""
 
 #: lib/pan_web/frontend_controller/like_frontend_controller.ex:14
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unliked all categories successfully."
 msgstr ""
 
 #: lib/pan_web/frontend_controller/like_frontend_controller.ex:23
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unliked all chapters successfully."
 msgstr ""
 
@@ -2220,7 +2220,7 @@ msgid "Unliked all episodes successfully."
 msgstr ""
 
 #: lib/pan_web/frontend_controller/like_frontend_controller.ex:41
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unliked all personas successfully."
 msgstr ""
 
@@ -2230,7 +2230,7 @@ msgid "Unliked all podcasts successfully."
 msgstr ""
 
 #: lib/pan_web/frontend_controller/like_frontend_controller.ex:59
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Unliked all users successfully."
 msgstr ""
 
@@ -2251,7 +2251,7 @@ msgstr ""
 
 #: lib/pan_web/live/episode/recommendation_list.ex:53
 #: lib/pan_web/live/podcast/recommendation_list.ex:70
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
 
@@ -2266,7 +2266,7 @@ msgid "Version saved."
 msgstr ""
 
 #: lib/pan_web/live/pad/show.ex:257
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Versions"
 msgstr ""
 
@@ -2377,12 +2377,12 @@ msgid "Your recommendation:"
 msgstr ""
 
 #: lib/pan_web/components/recommendation_card.ex:14
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "at"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:179
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "categories"
 msgstr ""
 
@@ -2393,7 +2393,7 @@ msgid "characters left"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:182
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "episodes"
 msgstr ""
 
@@ -2451,17 +2451,17 @@ msgstr ""
 #: lib/pan_web/live/chapter/recommendation_list.ex:47
 #: lib/pan_web/live/episode/recommendation_list.ex:75
 #: lib/pan_web/live/podcast/recommendation_list.ex:89
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "mail"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:181
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "personas"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:180
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "podcasts"
 msgstr ""
 
@@ -2581,12 +2581,12 @@ msgid "🗑️ Clear language filter"
 msgstr ""
 
 #: lib/pan_web/live/podcast/episode_list.ex:20
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Title & Description"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:284
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "%{count} date"
 msgid_plural "%{count} dates"
 msgstr[0] ""
@@ -2674,7 +2674,7 @@ msgid "Checking ..."
 msgstr ""
 
 #: lib/pan_web/live/episode/claim_button.ex:51
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Claim contribution for %{pid}"
 msgstr ""
 
@@ -2694,12 +2694,12 @@ msgid "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 
 msgstr ""
 
 #: lib/pan_web/frontend_controller/persona_frontend_controller.ex:104
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Delegation deleted successfully."
 msgstr ""
 
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Description heading"
 msgstr ""
 
@@ -2709,17 +2709,17 @@ msgid "Downloading and checking the feed ..."
 msgstr ""
 
 #: lib/pan_web/frontend_views/user_frontend_view.ex:5
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Edit Password"
 msgstr ""
 
 #: lib/pan_web/live/persona/edit.ex:25
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Edit Persona %{name}"
 msgstr ""
 
 #: lib/pan_web/frontend_views/persona_frontend_view.ex:5
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Email Sent"
 msgstr ""
 
@@ -2735,7 +2735,7 @@ msgstr ""
 
 #: lib/pan_web/live/persona/edit.ex:109
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:109
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Fediverse Address"
 msgstr ""
 
@@ -2755,7 +2755,7 @@ msgid "Feeds for %{podcast} (Podcast)"
 msgstr ""
 
 #: lib/pan_web/templates/opml_frontend/index.html.heex:11
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Filename"
 msgstr ""
 
@@ -2796,7 +2796,7 @@ msgid "If you want to suggest several or all the podcasts you listen to at once,
 msgstr ""
 
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:100
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Image"
 msgstr ""
 
@@ -2806,7 +2806,7 @@ msgid "Image URL"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:294
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr ""
 
@@ -2821,7 +2821,7 @@ msgid "Links to the website of the podcast or even the link to the podcast on a 
 msgstr ""
 
 #: lib/pan_web/live/persona/edit.ex:137
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Long description"
 msgstr ""
 
@@ -2831,18 +2831,18 @@ msgid "Missing user id"
 msgstr ""
 
 #: lib/pan_web/frontend_views/podcast_frontend_view.ex:10
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Most Liked Podcasts"
 msgstr ""
 
 #: lib/pan_web/frontend_views/podcast_frontend_view.ex:13
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Most Subscribed Podcasts"
 msgstr ""
 
 #: lib/pan_web/frontend_views/opml_frontend_view.ex:4
 #: lib/pan_web/templates/opml_frontend/index.html.heex:3
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "My OPML files"
 msgstr ""
 
@@ -2857,7 +2857,7 @@ msgid "New feed URL"
 msgstr ""
 
 #: lib/pan_web/frontend_views/category_frontend_view.ex:8
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "No Community"
 msgstr ""
 
@@ -2907,7 +2907,7 @@ msgid "OPML deleted successfully."
 msgstr ""
 
 #: lib/pan_web/templates/opml_frontend/new.html.heex:17
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "OPML-File"
 msgstr ""
 
@@ -2937,12 +2937,12 @@ msgid "Panoptikum reads this anyway"
 msgstr ""
 
 #: lib/pan_web/templates/opml_frontend/index.html.heex:29
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Parse"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:520
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Passed"
 msgstr ""
 
@@ -2957,12 +2957,12 @@ msgid "Persona claimed successfully."
 msgstr ""
 
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:58
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Persona data"
 msgstr ""
 
 #: lib/pan_web/frontend_controller/persona_frontend_controller.ex:97
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Persona delegated successfully."
 msgstr ""
 
@@ -2977,17 +2977,17 @@ msgid "Persona not Found"
 msgstr ""
 
 #: lib/pan_web/frontend_controller/persona_frontend_controller.ex:41
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Persona redirected successfully."
 msgstr ""
 
 #: lib/pan_web/live/persona/edit.ex:50
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Persona updated successfully."
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:298
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Persons"
 msgstr ""
 
@@ -3007,7 +3007,7 @@ msgid "Please, only do claim this persona, if you are the person behind the pers
 msgstr ""
 
 #: lib/pan_web/frontend_views/category_frontend_view.ex:5
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcasts Categorized"
 msgstr ""
 
@@ -3022,7 +3022,7 @@ msgid "Probe audio"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:457
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Probing ..."
 msgstr ""
 
@@ -3067,7 +3067,7 @@ msgid "So please act responsibly."
 msgstr ""
 
 #: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:2
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Suggest a new Podcast"
 msgstr ""
 
@@ -3142,7 +3142,7 @@ msgid "The feed server answered with HTTP %{code}."
 msgstr ""
 
 #: lib/pan_web/frontend_controller/podcast_frontend_controller.ex:86
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "The link has expired."
 msgstr ""
 
@@ -3162,7 +3162,7 @@ msgid "There hasn't been provided any email address alongside this persona withi
 msgstr ""
 
 #: lib/pan_web/frontend_controller/opml_frontend_controller.ex:73
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "This is not a valid OPML for you"
 msgstr ""
 
@@ -3296,7 +3296,7 @@ msgid "with chapters (Podlove Simple Chapters in the feed)"
 msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:319
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "with persons"
 msgstr ""
 
@@ -3355,12 +3355,12 @@ msgstr ""
 #: lib/email.ex:17
 #: lib/email.ex:27
 #: lib/email.ex:72
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Login link"
 msgstr ""
 
 #: lib/email.ex:97
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Please verify your email address by clicking on this link: %{link}"
 msgstr ""
 
@@ -3400,7 +3400,7 @@ msgid "Your account will be deleted soon"
 msgstr ""
 
 #: lib/email.ex:193
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Confirm ownership"
 msgstr ""
 
@@ -3478,12 +3478,12 @@ msgstr ""
 
 #: lib/pan_web/live/category/show.ex:133
 #: lib/pan_web/live/category/stats_show.ex:84
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Language unknown"
 msgstr ""
 
 #: lib/pan_web/live/category/show.ex:146
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Podcasts in %{language}"
 msgstr ""
 
@@ -3528,7 +3528,7 @@ msgid "audio engineer"
 msgstr ""
 
 #: lib/pan_web/translations.ex:24
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "author"
 msgstr ""
 
@@ -3568,7 +3568,7 @@ msgid "content manager"
 msgstr ""
 
 #: lib/pan_web/translations.ex:26
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "contributor"
 msgstr ""
 
@@ -3668,12 +3668,12 @@ msgid "music production"
 msgstr ""
 
 #: lib/pan_web/translations.ex:78
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "narrator"
 msgstr ""
 
 #: lib/pan_web/translations.ex:25
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "owner"
 msgstr ""
 
@@ -3788,7 +3788,7 @@ msgid "writer"
 msgstr ""
 
 #: lib/pan_web/live/search.ex:191
-#, elixir-autogen, elixir-format, fuzzy
+#, elixir-autogen, elixir-format
 msgid "Translations"
 msgstr ""
 
