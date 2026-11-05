@@ -20,6 +20,7 @@ import { OvertypeField } from "./overtype_field";
 import { LanguageFilterPersistence } from "./language_filter_persistence";
 import "./remaining_characters";
 import "./theme_toggle";
+import "./language_toggle";
 
 // the sidebar starts open on wide screens
 Alpine.data("navbar", () => ({

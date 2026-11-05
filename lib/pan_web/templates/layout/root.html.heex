@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang={assigns[:locale] || "en"} class="h-full">
   {render("_head.html", conn: @conn)}
 
   <body

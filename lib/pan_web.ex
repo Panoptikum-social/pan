@@ -58,7 +58,7 @@ defmodule PanWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import PanWeb.Gettext
+      use Gettext, backend: PanWeb.Gettext
     end
   end
 
@@ -75,7 +75,7 @@ defmodule PanWeb do
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
       import PanWeb.Router.Helpers
-      import PanWeb.Gettext
+      use Gettext, backend: PanWeb.Gettext
 
       import PanWeb.Auth,
         only: [
@@ -93,7 +93,6 @@ defmodule PanWeb do
 
       import Ecto.Convenience, only: [total_estimated: 1]
       import Plug.Conn
-      import PanWeb.Gettext
     end
   end
 
@@ -124,7 +123,7 @@ defmodule PanWeb do
       # These are our panoptkum-specific view helpers
       import PanWeb.ViewHelpers
 
-      import PanWeb.Gettext
+      use Gettext, backend: PanWeb.Gettext
       import PanWeb.Router.Helpers
       alias PanWeb.Router.Helpers, as: Routes
     end
@@ -134,6 +133,8 @@ defmodule PanWeb do
     quote do
       use Phoenix.LiveView,
         layout: {PanWeb.LayoutView, :live}
+
+      on_mount PanWeb.Locale
 
       unquote(view_helpers())
     end
@@ -145,6 +146,8 @@ defmodule PanWeb do
         layout: {PanWeb.LayoutView, :live_admin},
         container: {:div, class: "flex-1 w-full"}
 
+      on_mount {PanWeb.Locale, :english}
+
       unquote(view_helpers())
     end
   end
@@ -153,6 +156,8 @@ defmodule PanWeb do
     quote do
       use Phoenix.LiveView,
         layout: {PanWeb.LayoutView, :live_moderation}
+
+      on_mount PanWeb.Locale
 
       unquote(view_helpers())
     end

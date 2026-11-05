@@ -15,6 +15,7 @@ defmodule PanWeb.Router do
     plug(:put_secure_browser_headers)
     plug(PanWeb.ContentSecurityPolicy)
     plug(PanWeb.Auth, repo: Pan.Repo)
+    plug(PanWeb.Locale)
   end
 
   pipeline :browser_minimal_root_layout do
@@ -26,6 +27,7 @@ defmodule PanWeb.Router do
     plug(:put_secure_browser_headers)
     plug(PanWeb.ContentSecurityPolicy)
     plug(PanWeb.Auth, repo: Pan.Repo)
+    plug(PanWeb.Locale)
   end
 
   # no CSRF protection needed: PanWeb.Api.Auth only accepts a token from the
@@ -45,6 +47,7 @@ defmodule PanWeb.Router do
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
     plug(PanWeb.Auth, repo: Pan.Repo)
+    plug(PanWeb.Locale)
   end
 
   pipeline :api do
@@ -53,6 +56,7 @@ defmodule PanWeb.Router do
 
   pipeline :admin_layout do
     plug(:put_layout, html: {PanWeb.LayoutView, :admin})
+    plug(PanWeb.Locale, force: "en")
   end
 
   scope "/jsonapi", PanWeb.Api, as: :api do

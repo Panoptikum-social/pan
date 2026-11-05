@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.User.New do
   use Phoenix.LiveView, container: {:div, class: "flex-1 flex justify-center"}
+  on_mount PanWeb.Locale
   alias PanWeb.{User, Endpoint}
   alias Phoenix.Component
   import PanWeb.CoreComponents

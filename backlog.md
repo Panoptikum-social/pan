@@ -26,6 +26,13 @@ Decided 2026-11-05:
 - #564 Groundwork is the first step of phase 1: locale plug + LiveView
   on_mount, gettext extract/merge workflow, core components translated
   (this changes buttons and labels on all pages).
+  Done (uncommitted, 2026-11-05): PanWeb.Locale plug + on_mount, admin
+  forced to English, `use Gettext` fixed in pan_web.ex, de locale with
+  changeset errors and core components, `<html lang>` from the locale.
+  Missing: the user setting from #563.
+- #573 Language switcher EN/DE in the sidebar, like the theme switcher
+  (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js, sets
+  the "locale" cookie and reloads). Built 2026-11-05, uncommitted.
 - #565 One gettext domain per phase (curation, moderation, ...), via
   dgettext.
 - #566 Translated data (category titles) in a JSONB map column on the
@@ -38,6 +45,8 @@ Decided 2026-11-05:
 - #571 Gig/engagement roles get translated (gettext lookup, falling back
   to the stored value).
 - #572 Curation grade labels get translated.
+- #569 Search finds categories by their translated titles too
+  (phase 3).
 - Not translated: anything people write (podcast and episode data,
   community titles, curation texts, pads, comments), because the central
   element, the episode audio, stays in its language anyway.
@@ -45,10 +54,6 @@ Decided 2026-11-05:
 - Not translated: admin stays English only (dropped as phase 4, the
   former "backend"). Admin pages must stay English even for German users,
   since they share the core components.
-
-Still open:
-
-- #569 Search: should Manticore find categories by translated titles?
 
 ### Miscellaneous open items
 
