@@ -10,95 +10,33 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Project #4: multilingual Panoptikum (started 2026-11-05)
 
-Make Panoptikum multilingual: mostly the interface, but also some data,
-e.g. category titles get translations.
+English and German; curations, moderations and frontend are done (decisions
+and code map in Claude's memory, project_multilingual). Open:
 
-Order (decided): 1. curations, 2. moderations, 3. frontend.
-
-Decided 2026-11-05:
-
-- #562 Languages: English and German. Maybe Italian, French and Spanish
-  once everything is finished (far on the horizon).
-- #563 Locale choice: user setting, then browser Accept-Language, then
-  English. No URL prefix. Logged-out visitors get a switcher that stores
-  the choice in a cookie. (The existing users_languages table is
-  something else; check whether it can serve as a default.)
-- #564 Groundwork is the first step of phase 1: locale plug + LiveView
-  on_mount, gettext extract/merge workflow, core components translated
-  (this changes buttons and labels on all pages).
-  Done 2026-11-05 (dc660b57): PanWeb.Locale plug + on_mount, admin
-  forced to English, `use Gettext` fixed in pan_web.ex, de locale with
-  changeset errors and core components, `<html lang>` from the locale.
-  User setting (users.locale, wins over cookie and browser) committed
-  2026-11-05; not deployed yet (prod needs the migration).
-- Phase 1 (curations) done 2026-11-05: the three curation
-  LiveViews, grade labels, "My Curations" in the user menu; German in
-  de/curation.po ("Sie", colon gender form, e.g. "Kurator:in").
-  CuratorAssignment (admin + moderator pages) goes with phase 2.
-- Phase 2 (moderations) done 2026-11-05: the moderation
-  LiveViews, My Moderations page + menu entry, ModerationGrid, the
-  moderation RecordForm, CuratorAssignment, Pagination and DataTable
-  (shared with admin, where they stay English); German in
-  de/moderation.po.
-- Phase 3 (frontend), gettext domain "frontend", in steps:
-  #577 layout and navigation (done 2026-11-05), #578
-  account and login (done 2026-11-05), #579 browsing pages (done 2026-11-05), #580 podcaster tools (done 2026-11-05), #581
-  emails (#568, done 2026-11-05), #582 translated data (#566, #567, #571, #569).
-- #583 Emails to recipients without a known language: login link and
-  verification in the current page language, others English. The page
-  language is saved as the user setting on registration.
-- #591 Podcast claim mail: in the podcast's language if it lists exactly
-  one supported language (region cut off), else English.
-- #592 Persona claim mail: the persona's user setting, else the languages
-  of its podcasts (engagements and gigs) by the #591 rule.
-- #584 check_my_feed rule messages stay English (like parser messages);
-  only the page around them gets translated.
-- #585 German category titles get entered on a small admin page
-  (English UI) listing categories with a German field each.
+- #582 Translated data, the last step of phase 3:
+  - #566/#567 category titles and language names in a JSONB map column on
+    the record, keyed by locale (e.g. `%{"de" => "..."}`).
+  - #585 German category titles get entered on a small admin page
+    (English UI) listing categories with a German field each.
+  - #571 gig/engagement roles: gettext lookup, falling back to the stored
+    value.
+  - #569 search finds categories by their translated titles too.
+- Deploy: prod needs the users.locale migration and an assets build
+  (language switcher, Podlove language).
 - #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
   once those pages are translated, the links get fixed.
+- #563 Check whether the existing users_languages table can serve as a
+  default for the interface language.
+- #562 Maybe Italian, French and Spanish once everything is finished (far
+  on the horizon).
 - #590 Cleanup: the persona delegation/redirection links on My Profile
   (_personas.html.heex: toggle_delegation, redirect, cancel_redirect) are
   GET links that change data; the POST + "Are you sure?" rule (#449)
   says POST. User decides later.
-- Podlove: the subscribe button gets the page language (data-language)
-  and the web player gets it via PLAYER_SET_LANGUAGE on its store; the
-  player otherwise follows the browser language (#579).
 - #576 Cleanup: the moderation edit pages (EditPodcast, EditEpisode,
   EditFeed) use `:admin_live_view` and override its English with
   `on_mount PanWeb.Locale`. Moving them to `:moderation_live_view` would
   be cleaner but changes padding/width; user decides later.
-- #574 Moderation grids and edit pages: column and field labels (made
-  from DB field names) stay English; headings, buttons, flash messages
-  and help texts get translated.
-- #575 Flash messages wrapping a feed parser error: only the wrapping
-  sentence is translated, the parser's message stays English.
-- #573 Language switcher EN/DE in the sidebar, like the theme switcher
-  (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js). It
-  POSTs to /locale (no "Are you sure?" for a language switch, OK by the
-  user), which sets the cookie and, for logged-in users, the setting;
-  then the page reloads. First version in dc660b57.
-- #565 One gettext domain per phase (curation, moderation, ...), via
-  dgettext.
-- #566 Translated data (category titles) in a JSONB map column on the
-  record, keyed by locale (e.g. `%{"de" => "..."}`).
-- #567 Language names get translated too.
-- #568 Emails go out in the recipient's language, not in the language of
-  whoever triggered them.
-- #570 Dates and numbers: translate month names only where pages show
-  them; no ex_cldr unless really needed.
-- #571 Gig/engagement roles get translated (gettext lookup, falling back
-  to the stored value).
-- #572 Curation grade labels get translated.
-- #569 Search finds categories by their translated titles too
-  (phase 3).
-- Not translated: anything people write (podcast and episode data,
-  community titles, curation texts, pads, comments), because the central
-  element, the episode audio, stays in its language anyway.
-- Not translated: the API stays English only.
-- Not translated: admin stays English only (dropped as phase 4, the
-  former "backend"). Admin pages must stay English even for German users,
-  since they share the core components.
 
 ### Miscellaneous open items
 
