@@ -1595,7 +1595,7 @@ msgstr ""
 msgid "Deeplinks to Chapters"
 msgstr ""
 
-#: lib/pan_web/live/pad/show.ex:370
+#: lib/pan_web/live/pad/show.ex:372
 #, elixir-autogen, elixir-format
 msgid "Delete pad"
 msgstr ""
@@ -1984,7 +1984,7 @@ msgstr ""
 msgid "QR code"
 msgstr ""
 
-#: lib/pan_web/live/pad/show.ex:345
+#: lib/pan_web/live/pad/show.ex:347
 #, elixir-autogen, elixir-format
 msgid "Read only freezes the pad for everybody, moderators included."
 msgstr ""
@@ -2008,12 +2008,12 @@ msgstr ""
 msgid "Recommendation deleted successfully."
 msgstr ""
 
-#: lib/pan_web/live/pad/show.ex:358
+#: lib/pan_web/live/pad/show.ex:360
 #, elixir-autogen, elixir-format
 msgid "Rename"
 msgstr ""
 
-#: lib/pan_web/live/pad/show.ex:361
+#: lib/pan_web/live/pad/show.ex:363
 #, elixir-autogen, elixir-format
 msgid "Renaming changes the pad's address, old links stop working."
 msgstr ""
@@ -3795,4 +3795,44 @@ msgstr ""
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "No languages selected."
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:297
+#, elixir-autogen, elixir-format
+msgid "Hide"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:344
+#, elixir-autogen, elixir-format
+msgid "Make editable"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:345
+#, elixir-autogen, elixir-format
+msgid "Make read only"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:298
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:160
+#, elixir-autogen, elixir-format
+msgid "automatic"
+msgstr ""
+
+#: lib/pan_web/templates/activity_pub/widget.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "boosted"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:162
+#, elixir-autogen, elixir-format
+msgid "by %{name}"
+msgstr ""
+
+#: lib/pan_web/live/pad/show.ex:161
+#, elixir-autogen, elixir-format
+msgid "by a former user"
 msgstr ""

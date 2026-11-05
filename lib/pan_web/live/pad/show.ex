@@ -157,9 +157,9 @@ defmodule PanWeb.Live.Pad.Show do
      |> push_navigate(to: community_frontend_path(socket, :show, socket.assigns.community))}
   end
 
-  defp snapshot_author(%{user_id: nil, note: nil}), do: "automatic"
-  defp snapshot_author(%{user_name: nil}), do: "by a former user"
-  defp snapshot_author(%{user_name: name}), do: "by " <> name
+  defp snapshot_author(%{user_id: nil, note: nil}), do: dgettext("frontend", "automatic")
+  defp snapshot_author(%{user_name: nil}), do: dgettext("frontend", "by a former user")
+  defp snapshot_author(%{user_name: name}), do: dgettext("frontend", "by %{name}", name: name)
 
   # the same color for a user's cursor everywhere
   @cursor_colors ~w(#30bced #6eeb83 #ffbc42 #ee6352 #9ac2c9 #8acb88 #1be7ff #c45ab3)
@@ -294,8 +294,8 @@ defmodule PanWeb.Live.Pad.Show do
                     class="btn btn-ghost btn-xs"
                   >
                     {if @shown_snapshot && @shown_snapshot.id == snapshot.id,
-                      do: "Hide",
-                      else: "View"}
+                      do: dgettext("frontend", "Hide"),
+                      else: dgettext("frontend", "View")}
                   </button>
                   <button
                     :if={@shown_snapshot && @shown_snapshot.id == snapshot.id}
@@ -340,7 +340,9 @@ defmodule PanWeb.Live.Pad.Show do
               phx-click="toggle_read_only"
               class="btn btn-outline btn-primary btn-sm"
             >
-              {if @pad.read_only, do: "Make editable", else: "Make read only"}
+              {if @pad.read_only,
+                do: dgettext("frontend", "Make editable"),
+                else: dgettext("frontend", "Make read only")}
             </button>
             <span class="text-sm">{dgettext(
               "frontend",

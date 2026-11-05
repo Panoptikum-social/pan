@@ -12,7 +12,7 @@
           </b>
           <span class="text-base-content/70">
             <.link href={toot.actor_url} class="underline hover:text-primary">{toot.preferred_username}</.link>
-            - {if toot.boosted, do: "boosted"}
+            - {if toot.boosted, do: dgettext("frontend", "boosted")}
             {toot.published}
           </span>
           <br />
