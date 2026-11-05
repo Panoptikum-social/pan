@@ -16,8 +16,6 @@ Open:
 
 - #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
   once those pages are translated, the links get fixed.
-- #563 Check whether the existing users_languages table can serve as a
-  default for the interface language.
 - #562 Maybe Italian, French and Spanish once everything is finished (far
   on the horizon).
 - #590 Cleanup: the persona delegation/redirection links on My Profile
