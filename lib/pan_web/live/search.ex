@@ -171,6 +171,11 @@ defmodule PanWeb.Live.Search do
     end
   end
 
+  defp result_title("categories", hit),
+    do: PanWeb.Translations.category_title(hit["_id"], hit["_source"]["title"])
+
+  defp result_title(_index, hit), do: hit["_source"]["title"] || hit["_source"]["name"]
+
   defp index_name("categories"), do: dgettext("frontend", "categories")
   defp index_name("podcasts"), do: dgettext("frontend", "podcasts")
   defp index_name("personas"), do: dgettext("frontend", "personas")
@@ -183,6 +188,7 @@ defmodule PanWeb.Live.Search do
   defp highlight_label("summary"), do: dgettext("frontend", "Summary")
   defp highlight_label("subtitle"), do: dgettext("frontend", "Subtitle")
   defp highlight_label("shownotes"), do: dgettext("frontend", "Shownotes")
+  defp highlight_label("translations"), do: dgettext("frontend", "Translations")
   defp highlight_label(key), do: String.capitalize(key)
 
   defp heading_icon("episodes", _id, _icons), do: "headphones"
@@ -327,7 +333,7 @@ defmodule PanWeb.Live.Search do
               href={show_path(@index, hit["_id"])}
               class="underline hover:text-primary"
             >
-              {hit["_source"]["title"] || hit["_source"]["name"]}
+              {result_title(@index, hit)}
             </a>
             <span :if={hit["_source"]["languages"]}>
               <span :for={language <- hit["_source"]["languages"]}>{language["emoji"]}</span>

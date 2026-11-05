@@ -512,7 +512,7 @@ msgstr "Mein Konto löschen"
 #: lib/pan_web/live/podcast/check_feed.ex:289
 #: lib/pan_web/live/podcast/header.ex:89
 #: lib/pan_web/live/podcast/index.ex:131
-#: lib/pan_web/live/search.ex:182
+#: lib/pan_web/live/search.ex:187
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:107
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:93
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:87
@@ -827,7 +827,7 @@ msgstr "Meine Rechnungen"
 
 #: lib/pan_web/live/persona/edit.ex:90
 #: lib/pan_web/live/persona/show.ex:114
-#: lib/pan_web/live/search.ex:181
+#: lib/pan_web/live/search.ex:186
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:72
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:78
 #: lib/pan_web/templates/user_frontend/edit.html.heex:18
@@ -1089,7 +1089,7 @@ msgid "This persona is currently not redirected."
 msgstr "Diese Persona wird derzeit nicht weitergeleitet."
 
 #: lib/pan_web/live/podcast/check_feed.ex:288
-#: lib/pan_web/live/search.ex:180
+#: lib/pan_web/live/search.ex:185
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:108
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:137
 #, elixir-autogen, elixir-format
@@ -1382,7 +1382,7 @@ msgstr "per E-Mail an, um sich in Ihr bestehendes Konto einzuloggen und Ihr Pass
 msgid "%{address} in the Fediverse"
 msgstr "%{address} im Fediverse"
 
-#: lib/pan_web/live/search.ex:207
+#: lib/pan_web/live/search.ex:213
 #, elixir-autogen, elixir-format
 msgid "%{count} %{index} found for"
 msgstr "%{count} %{index} gefunden für"
@@ -1692,7 +1692,7 @@ msgstr "Einverstanden"
 msgid "ID"
 msgstr "ID"
 
-#: lib/pan_web/live/search.ex:355
+#: lib/pan_web/live/search.ex:361
 #, elixir-autogen, elixir-format
 msgid "Imported"
 msgstr "Importiert"
@@ -1709,7 +1709,7 @@ msgstr "Info"
 msgid "Language"
 msgstr "Sprache"
 
-#: lib/pan_web/live/search.ex:258
+#: lib/pan_web/live/search.ex:264
 #, elixir-autogen, elixir-format
 msgid "Languages:"
 msgstr "Sprachen:"
@@ -2046,7 +2046,7 @@ msgid "Show Podcast"
 msgstr "Podcast anzeigen"
 
 #: lib/pan_web/live/episode/show.ex:80
-#: lib/pan_web/live/search.ex:185
+#: lib/pan_web/live/search.ex:190
 #, elixir-autogen, elixir-format
 msgid "Shownotes"
 msgstr "Shownotes"
@@ -2072,14 +2072,14 @@ msgid "Subscribers"
 msgstr "Abonnent:innen"
 
 #: lib/pan_web/live/episode/header.ex:56
-#: lib/pan_web/live/search.ex:184
+#: lib/pan_web/live/search.ex:189
 #, elixir-autogen, elixir-format
 msgid "Subtitle"
 msgstr "Untertitel"
 
 #: lib/pan_web/live/episode/header.ex:49
 #: lib/pan_web/live/podcast/index.ex:134
-#: lib/pan_web/live/search.ex:183
+#: lib/pan_web/live/search.ex:188
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:113
 #, elixir-autogen, elixir-format
 msgid "Summary"
@@ -2295,7 +2295,7 @@ msgstr "Website"
 msgid "You can manually trigger a metadata update for this podcast every 5 minutes, if you are impatient. This still will take some time, so keep track of the status updates. And refresh the page with [F5] when told so.."
 msgstr "Wenn Sie ungeduldig sind, können Sie alle 5 Minuten eine Aktualisierung der Metadaten dieses Podcasts anstoßen. Das dauert trotzdem etwas, achten Sie also auf die Statusmeldungen. Und laden Sie die Seite mit [F5] neu, wenn Sie dazu aufgefordert werden."
 
-#: lib/pan_web/live/search.ex:246
+#: lib/pan_web/live/search.ex:252
 #, elixir-autogen, elixir-format
 msgid "You can mask your search terms with an asterisk at the end or the beginning of the search term, as long as there are at least 3 characters left."
 msgstr "Sie können Suchbegriffe am Anfang oder Ende mit einem Sternchen maskieren, solange mindestens 3 Zeichen übrig bleiben."
@@ -2325,7 +2325,7 @@ msgstr "Sie haben Ihre E-Mail-Adresse noch nicht über den Bestätigungslink in 
 msgid "You have claimed this persona already."
 msgstr "Sie haben diese Persona bereits übernommen."
 
-#: lib/pan_web/live/search.ex:213
+#: lib/pan_web/live/search.ex:219
 #, elixir-autogen, elixir-format
 msgid "You might want to search for"
 msgstr "Vielleicht möchten Sie stattdessen nach"
@@ -2377,7 +2377,7 @@ msgstr "Ihre Empfehlung:"
 msgid "at"
 msgstr "am"
 
-#: lib/pan_web/live/search.ex:174
+#: lib/pan_web/live/search.ex:179
 #, elixir-autogen, elixir-format
 msgid "categories"
 msgstr "Kategorien"
@@ -2388,7 +2388,7 @@ msgstr "Kategorien"
 msgid "characters left"
 msgstr "Zeichen übrig"
 
-#: lib/pan_web/live/search.ex:177
+#: lib/pan_web/live/search.ex:182
 #, elixir-autogen, elixir-format
 msgid "episodes"
 msgstr "Episoden"
@@ -2419,7 +2419,7 @@ msgstr "zeigt eine Zeitleiste, beginnend mit der neuesten Episode aus den Podcas
 msgid "in the category"
 msgstr "in der Kategorie"
 
-#: lib/pan_web/live/search.ex:245
+#: lib/pan_web/live/search.ex:251
 #, elixir-autogen, elixir-format
 msgid "instead."
 msgstr "suchen."
@@ -2451,12 +2451,12 @@ msgstr "wird geladen ..."
 msgid "mail"
 msgstr "E-Mail"
 
-#: lib/pan_web/live/search.ex:176
+#: lib/pan_web/live/search.ex:181
 #, elixir-autogen, elixir-format
 msgid "personas"
 msgstr "Personas"
 
-#: lib/pan_web/live/search.ex:175
+#: lib/pan_web/live/search.ex:180
 #, elixir-autogen, elixir-format
 msgid "podcasts"
 msgstr "Podcasts"
@@ -2478,7 +2478,7 @@ msgstr "nur lesen"
 msgid "recommended"
 msgstr "empfiehlt"
 
-#: lib/pan_web/live/search.ex:280
+#: lib/pan_web/live/search.ex:286
 #, elixir-autogen, elixir-format
 msgid "reset to all my languages"
 msgstr "auf alle meine Sprachen zurücksetzen"
@@ -2493,7 +2493,7 @@ msgstr "auf alle Ihre Sprachen beschränkt"
 msgid "restricted to your selected languages"
 msgstr "auf Ihre ausgewählten Sprachen beschränkt"
 
-#: lib/pan_web/live/search.ex:288
+#: lib/pan_web/live/search.ex:294
 #, elixir-autogen, elixir-format
 msgid "search in all languages available"
 msgstr "in allen verfügbaren Sprachen suchen"
@@ -3779,3 +3779,8 @@ msgstr "Sprecher:in"
 #, elixir-autogen, elixir-format
 msgid "writer"
 msgstr "Autor:in"
+
+#: lib/pan_web/live/search.ex:191
+#, elixir-autogen, elixir-format
+msgid "Translations"
+msgstr "Übersetzungen"

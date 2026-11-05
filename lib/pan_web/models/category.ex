@@ -144,8 +144,10 @@ defmodule PanWeb.Category do
     category = Repo.get!(Category, id)
     translations = put_or_drop(category.title_translations, locale, text)
 
+    # full_text: false re-pushes the search document with the translations
+    # (#569, Pan.Job.PushMissingSearchIndex)
     category
-    |> Ecto.Changeset.change(title_translations: translations)
+    |> Ecto.Changeset.change(title_translations: translations, full_text: false)
     |> Repo.update!()
 
     PanWeb.Translations.refresh()

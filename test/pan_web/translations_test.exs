@@ -101,4 +101,16 @@ defmodule PanWeb.TranslationsTest do
     Gettext.put_locale(PanWeb.Gettext, "en")
     assert Translations.role("guest") == "guest"
   end
+
+  test "the search document carries the translated titles (#569)", %{parent: parent} do
+    assert %{replace: %{doc: %{translations: "Kunst"}}} =
+             Pan.Search.Category.manticore_struct(parent)
+  end
+
+  test "saving a translation re-flags the category for the search push", %{child: child} do
+    Repo.update!(Ecto.Changeset.change(child, full_text: true))
+    Category.put_translation(child.id, "de", "Unübersetzt")
+
+    refute Repo.get!(Category, child.id).full_text
+  end
 end

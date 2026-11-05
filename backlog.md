@@ -13,11 +13,11 @@ Claude's per-machine memory) so they survive across computers. Last synced
 English and German; curations, moderations and frontend are done (decisions
 and code map in Claude's memory, project_multilingual). Open:
 
-- #582 Translated data, the last step of phase 3, still open:
-  - #569 search finds categories by their translated titles too.
 - Deploy: prod needs two migrations (users.locale, translation columns
   with Apple's German category names and German language names) and an
-  assets build (language switcher, Podlove language). Then check
+  assets build (language switcher, Podlove language). Then in the prod
+  console `Pan.Search.Category.migrate()` and `batch_reset()` (the push
+  job refills the 490 category docs within minutes), and check
   /admin/translations for strays without German.
 - #586 Links to the qed site (About, Manuals, Privacy, ...) stay English;
   once those pages are translated, the links get fixed.

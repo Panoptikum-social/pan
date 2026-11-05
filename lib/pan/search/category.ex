@@ -7,11 +7,12 @@ defmodule Pan.Search.Category do
 
   def migrate() do
     Manticore.sql("DROP TABLE categories")
-    Manticore.sql("CREATE TABLE categories(title text) min_infix_len='2'")
+    # translations: all translated titles, so "Kunst" finds "Arts" (#569)
+    Manticore.sql("CREATE TABLE categories(title text, translations text) min_infix_len='2'")
   end
 
   def selects() do
-    [:id, :title]
+    [:id, :title, :title_translations]
   end
 
   def batch_index() do
@@ -30,7 +31,10 @@ defmodule Pan.Search.Category do
       replace: %{
         index: "categories",
         id: category.id,
-        doc: %{title: category.title || ""}
+        doc: %{
+          title: category.title || "",
+          translations: (category.title_translations || %{}) |> Map.values() |> Enum.join(" ")
+        }
       }
     }
   end
