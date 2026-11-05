@@ -26,13 +26,16 @@ Decided 2026-11-05:
 - #564 Groundwork is the first step of phase 1: locale plug + LiveView
   on_mount, gettext extract/merge workflow, core components translated
   (this changes buttons and labels on all pages).
-  Done (uncommitted, 2026-11-05): PanWeb.Locale plug + on_mount, admin
+  Done 2026-11-05 (dc660b57): PanWeb.Locale plug + on_mount, admin
   forced to English, `use Gettext` fixed in pan_web.ex, de locale with
   changeset errors and core components, `<html lang>` from the locale.
-  Missing: the user setting from #563.
+  User setting (users.locale, wins over cookie and browser) committed
+  2026-11-05; not deployed yet (prod needs the migration).
 - #573 Language switcher EN/DE in the sidebar, like the theme switcher
-  (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js, sets
-  the "locale" cookie and reloads). Built 2026-11-05, uncommitted.
+  (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js). It
+  POSTs to /locale (no "Are you sure?" for a language switch, OK by the
+  user), which sets the cookie and, for logged-in users, the setting;
+  then the page reloads. First version in dc660b57.
 - #565 One gettext domain per phase (curation, moderation, ...), via
   dgettext.
 - #566 Translated data (category titles) in a JSONB map column on the

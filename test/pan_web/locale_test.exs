@@ -1,6 +1,20 @@
 defmodule PanWeb.LocaleTest do
   use PanWeb.ConnCase, async: true
 
+  alias Pan.Repo
+  alias PanWeb.User
+
+  defp insert_user(locale) do
+    unique = System.unique_integer([:positive])
+
+    Repo.insert!(%User{
+      name: "Locale",
+      username: "locale_#{unique}",
+      email: "locale_#{unique}@example.com",
+      locale: locale
+    })
+  end
+
   defp run_plug(conn, opts \\ []) do
     conn
     |> Plug.Test.init_test_session(%{})
@@ -103,5 +117,71 @@ defmodule PanWeb.LocaleTest do
     assert PanWeb.CoreComponents.translate_error(
              {"should be at least %{count} character(s)", [count: 3]}
            ) == "muss mindestens 3 Zeichen lang sein"
+  end
+
+  test "the user setting wins over cookie and Accept-Language", %{conn: conn} do
+    user = insert_user("de")
+
+    conn =
+      conn
+      |> put_req_header("accept-language", "en")
+      |> put_req_cookie("locale", "en")
+      |> Plug.Test.init_test_session(%{})
+      |> assign(:current_user, user)
+      |> PanWeb.Locale.call([])
+
+    assert conn.assigns.locale == "de"
+  end
+
+  test "a user without a setting falls back to the cookie", %{conn: conn} do
+    user = insert_user(nil)
+
+    conn =
+      conn
+      |> put_req_cookie("locale", "de")
+      |> Plug.Test.init_test_session(%{})
+      |> assign(:current_user, user)
+      |> PanWeb.Locale.call([])
+
+    assert conn.assigns.locale == "de"
+  end
+
+  describe "POST /locale" do
+    test "logged out: sets the cookie only", %{conn: conn} do
+      conn = post(conn, "/locale", %{"locale" => "de"})
+
+      assert response(conn, 204)
+      assert conn.resp_cookies["locale"].value == "de"
+    end
+
+    test "logged in: sets the cookie and the user setting", %{conn: conn} do
+      user = insert_user(nil)
+
+      conn =
+        conn
+        |> init_test_session(%{"user_id" => user.id})
+        |> post("/locale", %{"locale" => "de"})
+
+      assert response(conn, 204)
+      assert conn.resp_cookies["locale"].value == "de"
+      assert Repo.get!(User, user.id).locale == "de"
+    end
+
+    test "rejects unsupported locales", %{conn: conn} do
+      user = insert_user("en")
+
+      conn =
+        conn
+        |> init_test_session(%{"user_id" => user.id})
+        |> post("/locale", %{"locale" => "xx"})
+
+      assert response(conn, 400)
+      refute conn.resp_cookies["locale"]
+      assert Repo.get!(User, user.id).locale == "en"
+    end
+
+    test "rejects a missing locale", %{conn: conn} do
+      assert conn |> post("/locale", %{}) |> response(400)
+    end
   end
 end

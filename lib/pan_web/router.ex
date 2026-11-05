@@ -228,6 +228,7 @@ defmodule PanWeb.Router do
     pipe_through([:browser])
 
     live("/", Live.Home, :index, as: :page_frontend)
+    post("/locale", LocaleController, :update)
     live("/communities", Live.Community.Index, :index, as: :community_frontend)
     live("/communities/:id", Live.Community.Show, :show, as: :community_frontend)
     live("/communities/:id/pads/:slug", Live.Pad.Show, :show, as: :pad_frontend)

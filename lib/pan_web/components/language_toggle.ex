@@ -2,8 +2,8 @@ defmodule PanWeb.Component.LanguageToggle do
   use PanWeb, :html
 
   # EN / DE switch in the sidebar, next to the theme toggle, handled in
-  # assets/js/language_toggle.js. The choice goes into the "locale" cookie,
-  # which PanWeb.Locale reads. Language names stay in their own language.
+  # assets/js/language_toggle.js, which posts the choice to
+  # PanWeb.LocaleController. Language names stay in their own language.
   attr :locale, :string, default: "en"
 
   def render(assigns) do

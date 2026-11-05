@@ -13,7 +13,8 @@ defmodule PanWeb.UserJsonDownloadView do
     :email_verified,
     :last_login_at,
     :share_subscriptions,
-    :share_follows
+    :share_follows,
+    :locale
   ])
 
   has_many(:personas, serializer: PanWeb.Api.PlainPersonaView, include: true)

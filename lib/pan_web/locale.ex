@@ -2,9 +2,10 @@ defmodule PanWeb.Locale do
   @moduledoc """
   Chooses the interface language (Project #4, #563).
 
-  As a plug, it picks the locale for a request: the "locale" cookie (set by
-  the language switcher), then the browser's Accept-Language header, then
-  English. It sets the Gettext locale for the request process, assigns
+  As a plug, it picks the locale for a request: the logged-in user's
+  setting, then the "locale" cookie, then the browser's Accept-Language
+  header, then English. The EN/DE switcher in the sidebar sets the cookie
+  and, for logged-in users, the setting (PanWeb.LocaleController). It sets the Gettext locale for the request process, assigns
   `:locale` and stores it in the session, so LiveViews get the same one.
 
   As an `on_mount` hook, it sets the Gettext locale again in the LiveView
@@ -33,7 +34,8 @@ defmodule PanWeb.Locale do
     conn = fetch_cookies(conn)
 
     locale =
-      supported(conn.cookies[@cookie]) ||
+      user_locale(conn.assigns[:current_user]) ||
+        supported(conn.cookies[@cookie]) ||
         from_accept_language(get_req_header(conn, "accept-language")) ||
         @default_locale
 
@@ -43,6 +45,8 @@ defmodule PanWeb.Locale do
     |> put_session("locale", locale)
     |> assign(:locale, locale)
   end
+
+  def cookie, do: @cookie
 
   def on_mount(:english, _params, _session, socket) do
     Gettext.put_locale(PanWeb.Gettext, @default_locale)
@@ -54,6 +58,9 @@ defmodule PanWeb.Locale do
     Gettext.put_locale(PanWeb.Gettext, locale)
     {:cont, Phoenix.Component.assign(socket, :locale, locale)}
   end
+
+  defp user_locale(%{locale: locale}), do: supported(locale)
+  defp user_locale(_no_user), do: nil
 
   defp supported(locale) when locale in @locales, do: locale
   defp supported(_locale), do: nil

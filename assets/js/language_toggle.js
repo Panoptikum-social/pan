@@ -1,15 +1,26 @@
-// EN / DE switch in the sidebar (Project #4). The choice goes into the
-// "locale" cookie, which PanWeb.Locale reads on the next request, so the page
-// is reloaded to render in the new language. Listening on the document needs
-// no inline script (Content-Security-Policy) and survives LiveView re-renders.
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
-
-document.addEventListener("click", (event) => {
+// EN / DE switch in the sidebar (Project #4). POST /locale sets the "locale"
+// cookie and, for logged-in users, their setting (PanWeb.LocaleController);
+// then the page is reloaded to render in the new language. Listening on the
+// document needs no inline script (Content-Security-Policy) and survives
+// LiveView re-renders.
+document.addEventListener("click", async (event) => {
   const button = event.target.closest("[data-locale-choice]");
 
   if (button && !button.classList.contains("btn-active")) {
-    const locale = encodeURIComponent(button.dataset.localeChoice);
-    document.cookie = `locale=${locale}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
-    window.location.reload();
+    const csrfToken = document
+      .querySelector("meta[name='csrf-token']")
+      .getAttribute("content");
+
+    const body = new URLSearchParams({ locale: button.dataset.localeChoice });
+
+    const response = await fetch("/locale", {
+      method: "POST",
+      headers: { "x-csrf-token": csrfToken },
+      body: body,
+    });
+
+    if (response.ok) {
+      window.location.reload();
+    }
   }
 });

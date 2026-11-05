@@ -50,6 +50,7 @@ defmodule PanWeb.User do
     field(:marked_for_deletion_at, :naive_datetime)
     field(:share_subscriptions, :boolean, default: false)
     field(:share_follows, :boolean, default: false)
+    field(:locale, :string)
     field(:bot_check, :integer, virtual: true)
     timestamps()
 
@@ -170,6 +171,14 @@ defmodule PanWeb.User do
     |> validate_length(:username, min: 3, max: 30)
     |> unique_constraint(:username)
     |> unique_constraint(:email)
+  end
+
+  # interface language, set by the EN/DE switcher in the sidebar (#563)
+  def locale_changeset(struct, params) do
+    struct
+    |> cast(params, [:locale])
+    |> validate_required([:locale])
+    |> validate_inclusion(:locale, PanWeb.Locale.locales())
   end
 
   def registration_changeset(struct, params \\ %{}) do
