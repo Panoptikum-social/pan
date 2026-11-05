@@ -144,7 +144,7 @@ msgstr ""
 
 #: lib/pan_web/templates/feed_backlog_frontend/new.html.heex:38
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:50
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:58
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "My OPMLs"
 msgstr ""
@@ -285,7 +285,7 @@ msgid "Account updated successfully."
 msgstr ""
 
 #: lib/pan_web/templates/opml_frontend/index.html.heex:13
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:552
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:554
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr ""
@@ -316,79 +316,79 @@ msgstr ""
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:19
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:47
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:80
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:90
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:119
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:595
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:92
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:121
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:597
 #, elixir-autogen, elixir-format
 msgid "Are you sure?"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:468
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:470
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All categories will be unfollowed!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:501
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:503
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All categories will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:306
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:308
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All chapters will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:273
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:275
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All episodes will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:78
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All manifestations will be deleted!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:402
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:404
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All personas will be unfollowed!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:435
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:437
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All personas will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:207
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:209
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All podcasts will be unfollowed!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:240
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:242
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All podcasts will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:538
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:540
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All recommendations will be deleted!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:174
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:176
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All subscriptions will be deleted!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:369
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:371
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All users will be unfollowed!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:336
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:338
 #, elixir-autogen, elixir-format
 msgid "Are you sure? All users will be unliked!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:623
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:625
 #, elixir-autogen, elixir-format
 msgid "Are you sure? Your account would be deleted!"
 msgstr ""
@@ -403,42 +403,42 @@ msgstr ""
 msgid "Cancel Redirection"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:456
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:489
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:458
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:491
 #, elixir-autogen, elixir-format
 msgid "Click on the category link to open the category show page in a new tab to un/like, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:294
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:296
 #, elixir-autogen, elixir-format
 msgid "Click on the chapter link to open the episode show page in a new tab to un/like, un/subscribe, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:261
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:263
 #, elixir-autogen, elixir-format
 msgid "Click on the episode link to open the episode show page in a new tab to un/like, un/subscribe, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:390
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:423
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:392
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "Click on the persona link to open the persona show page in a new tab to un/like, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:162
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:195
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:228
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:164
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:197
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:230
 #, elixir-autogen, elixir-format
 msgid "Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:327
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:357
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:329
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:359
 #, elixir-autogen, elixir-format
 msgid "Click on the user link to open the user show page in a new tab to un/like, un/follow."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:551
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:553
 #, elixir-autogen, elixir-format
 msgid "Comment"
 msgstr ""
@@ -448,7 +448,7 @@ msgstr ""
 msgid "Create Account"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:606
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:608
 #, elixir-autogen, elixir-format
 msgid "Danger Zone"
 msgstr ""
@@ -457,8 +457,8 @@ msgstr ""
 #: lib/pan_web/live/persona/show.ex:347
 #: lib/pan_web/live/podcast/episode_list.ex:19
 #: lib/pan_web/live/podcast/recommendation_list.ex:72
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:149
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:548
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:151
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:550
 #, elixir-autogen, elixir-format
 msgid "Date"
 msgstr ""
@@ -477,32 +477,32 @@ msgstr ""
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:21
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:49
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:82
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:597
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:599
 #, elixir-autogen, elixir-format
 msgid "Delete"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:92
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:94
 #, elixir-autogen, elixir-format
 msgid "Delete Manifestation"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:81
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:83
 #, elixir-autogen, elixir-format
 msgid "Delete all manifestations"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:541
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:543
 #, elixir-autogen, elixir-format
 msgid "Delete all recommendations"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:177
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "Delete all subscriptions"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:626
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:628
 #, elixir-autogen, elixir-format
 msgid "Delete my account"
 msgstr ""
@@ -516,8 +516,8 @@ msgstr ""
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:107
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:93
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:87
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:104
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:133
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:106
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:135
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr ""
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Did not get it, or is the link too old?"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:121
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "Disconnect Persona"
 msgstr ""
@@ -556,8 +556,8 @@ msgstr ""
 #: lib/pan_web/templates/user_frontend/edit.html.heex:32
 #: lib/pan_web/templates/user_frontend/edit.html.heex:33
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:34
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:102
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:131
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:104
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:133
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Email"
@@ -578,7 +578,7 @@ msgstr ""
 msgid "Email address verified?"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:569
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:571
 #, elixir-autogen, elixir-format
 msgid "Episode:"
 msgstr ""
@@ -588,7 +588,7 @@ msgstr ""
 msgid "Fediverse"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:151
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:153
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr ""
@@ -598,27 +598,27 @@ msgstr ""
 msgid "Follow all subscribed"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:453
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:455
 #, elixir-autogen, elixir-format
 msgid "Followed Categories"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:387
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:389
 #, elixir-autogen, elixir-format
 msgid "Followed Personas"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:192
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:194
 #, elixir-autogen, elixir-format
 msgid "Followed Podcasts"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:354
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "Followed Users"
 msgstr ""
 
-#: lib/pan_web/frontend_controller/user_frontend_controller.ex:274
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:275
 #, elixir-autogen, elixir-format
 msgid "Followed all podcasts you had subscribed to."
 msgstr ""
@@ -733,12 +733,12 @@ msgstr ""
 msgid "Invalid username/password combination!"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:142
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "Invoices"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:143
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:145
 #, elixir-autogen, elixir-format
 msgid "Invoices cannot be deleted, we have to store them due to fiscal regulations."
 msgstr ""
@@ -749,6 +749,7 @@ msgid "Is podcaster?"
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/edit.html.heex:54
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:48
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Languages I speak"
@@ -764,37 +765,37 @@ msgstr ""
 msgid "Like all subscribed"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:486
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:488
 #, elixir-autogen, elixir-format
 msgid "Liked Categories"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:291
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:293
 #, elixir-autogen, elixir-format
 msgid "Liked Chapters"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:258
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:260
 #, elixir-autogen, elixir-format
 msgid "Liked Episodes"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:420
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:422
 #, elixir-autogen, elixir-format
 msgid "Liked Personas"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:225
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:227
 #, elixir-autogen, elixir-format
 msgid "Liked Podcasts"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:324
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:326
 #, elixir-autogen, elixir-format
 msgid "Liked Users"
 msgstr ""
 
-#: lib/pan_web/frontend_controller/user_frontend_controller.ex:244
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:245
 #, elixir-autogen, elixir-format
 msgid "Liked all podcasts you had subscribed to."
 msgstr ""
@@ -816,7 +817,7 @@ msgid "Login"
 msgstr ""
 
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:7
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:52
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Manage"
 msgstr ""
@@ -834,8 +835,8 @@ msgstr ""
 #: lib/pan_web/templates/user_frontend/edit.html.heex:18
 #: lib/pan_web/templates/user_frontend/edit.html.heex:19
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:30
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:98
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:127
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:100
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:129
 #, elixir-autogen, elixir-format
 msgid "Name"
 msgstr ""
@@ -860,12 +861,12 @@ msgstr ""
 msgid "OK."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:61
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "OPML Files"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:547
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:549
 #, elixir-autogen, elixir-format
 msgid "Object"
 msgstr ""
@@ -882,8 +883,8 @@ msgstr ""
 #: lib/pan_web/live/persona/show.ex:106
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:65
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:75
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:96
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:125
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:98
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:127
 #, elixir-autogen, elixir-format
 msgid "PanoptikumID"
 msgstr ""
@@ -922,7 +923,7 @@ msgstr ""
 
 #: lib/pan_web/live/persona/index.ex:7
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:2
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:70
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "Personas"
 msgstr ""
@@ -932,7 +933,7 @@ msgstr ""
 msgid "Please"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:562
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:564
 #, elixir-autogen, elixir-format
 msgid "Podcast:"
 msgstr ""
@@ -960,7 +961,7 @@ msgstr ""
 #: lib/pan_web/live/chapter/recommendation_list.ex:30
 #: lib/pan_web/live/episode/recommendation_list.ex:47
 #: lib/pan_web/live/podcast/recommendation_list.ex:65
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:519
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:521
 #, elixir-autogen, elixir-format
 msgid "Recommendations"
 msgstr ""
@@ -1026,7 +1027,7 @@ msgstr ""
 msgid "Submitting this form will transfer a session cookie to the server."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:159
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:161
 #, elixir-autogen, elixir-format
 msgid "Subscribed Podcasts"
 msgstr ""
@@ -1091,58 +1092,58 @@ msgstr ""
 
 #: lib/pan_web/live/podcast/check_feed.ex:288
 #: lib/pan_web/live/search.ex:185
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:108
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:137
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:110
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:139
 #, elixir-autogen, elixir-format
 msgid "Title"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:471
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:473
 #, elixir-autogen, elixir-format
 msgid "Unfollow all categories"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:405
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:407
 #, elixir-autogen, elixir-format
 msgid "Unfollow all personas"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:210
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "Unfollow all podcasts"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:372
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:374
 #, elixir-autogen, elixir-format
 msgid "Unfollow all users"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:504
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:506
 #, elixir-autogen, elixir-format
 msgid "Unlike all categories"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:309
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:311
 #, elixir-autogen, elixir-format
 msgid "Unlike all chapters"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:276
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:278
 #, elixir-autogen, elixir-format
 msgid "Unlike all episodes"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:438
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:440
 #, elixir-autogen, elixir-format
 msgid "Unlike all personas"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:243
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:245
 #, elixir-autogen, elixir-format
 msgid "Unlike all podcasts"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:339
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:341
 #, elixir-autogen, elixir-format
 msgid "Unlike all users"
 msgstr ""
@@ -1158,14 +1159,14 @@ msgstr ""
 #: lib/pan_web/live/persona/show.ex:118
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:79
 #: lib/pan_web/templates/user_frontend/_personas.html.heex:81
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:100
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:129
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:102
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:131
 #, elixir-autogen, elixir-format
 msgid "Uri"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:106
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:135
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:108
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:137
 #, elixir-autogen, elixir-format
 msgid "Url"
 msgstr ""
@@ -1180,7 +1181,7 @@ msgstr ""
 msgid "User Name"
 msgstr ""
 
-#: lib/pan_web/frontend_controller/user_frontend_controller.ex:283
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:284
 #, elixir-autogen, elixir-format
 msgid "User deleted successfully."
 msgstr ""
@@ -1217,7 +1218,7 @@ msgstr ""
 msgid "We sent you a new verification email. Please click the link in it, then log in."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:614
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:616
 #, elixir-autogen, elixir-format
 msgid "We would be really sad to see you leave. But you can always sign up for a new account."
 msgstr ""
@@ -1243,82 +1244,82 @@ msgstr ""
 msgid "You can close this tab or window now."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:522
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:524
 #, elixir-autogen, elixir-format
 msgid "You can delete a recommendation by clicking the Delete button next to it."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:526
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:528
 #, elixir-autogen, elixir-format
 msgid "You can double check the context by clicking the podcast or episode link, that will open podcast or episode in a new tab, respectively."
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:71
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:73
 #, elixir-autogen, elixir-format
 msgid "You can even delete all manifestations as personas, you created so far, at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:531
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:533
 #, elixir-autogen, elixir-format
 msgid "You can even delete all the recommendations, you created so far, at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:167
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:169
 #, elixir-autogen, elixir-format
 msgid "You can even delete all the subscriptions, you created so far, at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:461
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:463
 #, elixir-autogen, elixir-format
 msgid "You can even unfollow all the categories, you followed so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:395
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:397
 #, elixir-autogen, elixir-format
 msgid "You can even unfollow all the personas, you followed so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:200
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:202
 #, elixir-autogen, elixir-format
 msgid "You can even unfollow all the podcasts, you followed so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:362
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:364
 #, elixir-autogen, elixir-format
 msgid "You can even unfollow all the users, you followed so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:494
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:496
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the categories, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:299
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:301
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the chapters, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:266
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:268
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the episodes, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:428
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:430
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the personas, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:233
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:235
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the podcasts, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:332
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:334
 #, elixir-autogen, elixir-format
 msgid "You can even unlike all the users, you liked so far at once, by clicking"
 msgstr ""
 
-#: lib/pan_web/templates/user_frontend/my_data.html.heex:610
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:612
 #, elixir-autogen, elixir-format
 msgid "You can of course delete your account. This will delete all your data as well."
 msgstr ""
