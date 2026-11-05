@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
-  use PanWeb, :admin_live_view
-  # admin layout, but a moderation page: overrides the admin's English
-  on_mount PanWeb.Locale
+  use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo

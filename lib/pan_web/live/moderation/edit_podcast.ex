@@ -1,7 +1,5 @@
 defmodule PanWeb.Live.Moderation.EditPodcast do
-  use PanWeb, :admin_live_view
-  # admin layout, but a moderation page: overrides the admin's English
-  on_mount PanWeb.Locale
+  use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
   alias PanWeb.Admin.Naming

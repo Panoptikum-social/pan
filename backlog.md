@@ -18,10 +18,6 @@ Open:
   once those pages are translated, the links get fixed.
 - #562 Maybe Italian, French and Spanish once everything is finished (far
   on the horizon).
-- #576 Cleanup: the moderation edit pages (EditPodcast, EditEpisode,
-  EditFeed) use `:admin_live_view` and override its English with
-  `on_mount PanWeb.Locale`. Moving them to `:moderation_live_view` would
-  be cleaner but changes padding/width; user decides later.
 
 ### Miscellaneous open items
 
