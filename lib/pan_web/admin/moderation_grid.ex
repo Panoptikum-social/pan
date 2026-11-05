@@ -267,7 +267,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="show_episodes"
               phx-target={@myself}
             >
-              🔍 List of Episodes
+              🔍 {dgettext("moderation", "List of Episodes")}
             </button>
 
             <button
@@ -279,7 +279,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="show_feeds"
               phx-target={@myself}
             >
-              🔍 List of Feeds
+              🔍 {dgettext("moderation", "List of Feeds")}
             </button>
 
             <button
@@ -291,7 +291,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="edit_podcast"
               phx-target={@myself}
             >
-              ✏️ Edit Podcast
+              ✏️ {dgettext("moderation", "Edit Podcast")}
             </button>
 
             <button
@@ -303,7 +303,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="edit_episode"
               phx-target={@myself}
             >
-              ✏️ Edit Episode
+              ✏️ {dgettext("moderation", "Edit Episode")}
             </button>
 
             <button
@@ -315,7 +315,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="edit_feed"
               phx-target={@myself}
             >
-              ✏️ Edit Feed
+              ✏️ {dgettext("moderation", "Edit Feed")}
             </button>
 
             <button
@@ -327,7 +327,7 @@ defmodule PanWeb.Admin.ModerationGrid do
               phx-click="show_in_frontend"
               phx-target={@myself}
             >
-              🔍 Show in Frontend
+              🔍 {dgettext("moderation", "Show in Frontend")}
             </button>
 
             <button
@@ -336,11 +336,11 @@ defmodule PanWeb.Admin.ModerationGrid do
                            lg:px-2 lg:py-0 m-1 rounded
                            disabled:opacity-50 disabled:bg-base-200 disabled:pointer-events-none"
               disabled={Tools.disabled?(:one, @selected_records |> length)}
-              data-confirm="Remove this podcast from your moderation?"
+              data-confirm={dgettext("moderation", "Remove this podcast from your moderation?")}
               phx-click="remove_from_moderation"
               phx-target={@myself}
             >
-              🗑️ Remove from Moderation
+              🗑️ {dgettext("moderation", "Remove from Moderation")}
             </button>
           </div>
 
@@ -348,7 +348,7 @@ defmodule PanWeb.Admin.ModerationGrid do
             <PerPageLink.render delta="-5" click="per_page" target={@myself} />
             <PerPageLink.render delta="-3" click="per_page" target={@myself} />
             <PerPageLink.render delta="-1" click="per_page" target={@myself} />
-            <span class="hidden sm:inline">Records</span>
+            <span class="hidden sm:inline">{dgettext("moderation", "Records")}</span>
             <PerPageLink.render delta="+1" click="per_page" target={@myself} />
             <PerPageLink.render delta="+3" click="per_page" target={@myself} />
             <PerPageLink.render delta="+5" click="per_page" target={@myself} />
@@ -362,14 +362,20 @@ defmodule PanWeb.Admin.ModerationGrid do
             phx-target={@myself}
             class="px-2 sm:border-r border-base-300 flex items-center gap-1"
           >
-            <label class="text-sm">🔍 Search mode</label>
+            <label class="text-sm">🔍 {dgettext("moderation", "Search mode")}</label>
             <select name="search_mode" class="border border-base-300 rounded px-1 py-0.5 text-sm">
-              <option value="exact" selected={@search_mode == :exact}>exact</option>
-              <option value="starts_with" selected={@search_mode == :starts_with}>
-                starts with
+              <option value="exact" selected={@search_mode == :exact}>
+                {dgettext("moderation", "exact")}
               </option>
-              <option value="ends_with" selected={@search_mode == :ends_with}>ends with</option>
-              <option value="contains" selected={@search_mode == :contains}>contains</option>
+              <option value="starts_with" selected={@search_mode == :starts_with}>
+                {dgettext("moderation", "starts with")}
+              </option>
+              <option value="ends_with" selected={@search_mode == :ends_with}>
+                {dgettext("moderation", "ends with")}
+              </option>
+              <option value="contains" selected={@search_mode == :contains}>
+                {dgettext("moderation", "contains")}
+              </option>
             </select>
           </.form>
         </div>

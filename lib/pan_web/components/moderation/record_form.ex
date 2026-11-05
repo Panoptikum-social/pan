@@ -36,8 +36,11 @@ defmodule PanWeb.Component.Moderation.RecordForm do
     |> List.last()
   end
 
-  def updated_or_created(:loaded), do: " updated"
-  def updated_or_created(:built), do: " created"
+  def saved_message(model, :loaded),
+    do: dgettext("moderation", "%{model} updated.", model: module_name(model))
+
+  def saved_message(model, :built),
+    do: dgettext("moderation", "%{model} created.", model: module_name(model))
 
   def handle_event("validate", params, socket) do
     model = socket.assigns.model
@@ -66,7 +69,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
     case response do
       {:ok, saved_record} ->
         PanWeb.Admin.QueryBuilder.update_index(model, saved_record, changeset.changes)
-        send(self(), {:saved, %{message: to_string(model) <> updated_or_created(record_state)}})
+        send(self(), {:saved, %{message: saved_message(model, record_state)}})
         {:noreply, socket}
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -86,7 +89,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
       <div class="flex justify-between items-end">
         <span class="flex items-end space-x-2 text-2xl">
           <div class="text-base-content/70 whitespace-nowrap">
-            Edit <span class="font-semibold">{module_name(@model)}</span>
+            {dgettext("moderation", "Edit")} <span class="font-semibold">{module_name(@model)}</span>
           </div>
           <h1 class="max-w-5xl w-full truncate">
             {Naming.title_from_record(@record)}
@@ -103,12 +106,14 @@ defmodule PanWeb.Component.Moderation.RecordForm do
         phx-target={"#" <> @id}
       >
         <.error :if={!@changeset.valid?}>
-          This record is not valid. Please check the errors below!
+          {dgettext("moderation", "This record is not valid. Please check the errors below!")}
         </.error>
 
         <div class="flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4">
           <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
-            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Numeric Fields</legend>
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
+              {dgettext("moderation", "Numeric Fields")}
+            </legend>
             <NumberField.render
               :for={column <- ColumnsFilter.number_columns(assigns)}
               name={column.field}
@@ -118,7 +123,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
           </fieldset>
           <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
             <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
-              Date & Time Fields
+              {dgettext("moderation", "Date & Time Fields")}
             </legend>
             <DateTimeSelect.render
               :for={column <- ColumnsFilter.datetime_columns(assigns)}
@@ -128,7 +133,9 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             />
           </fieldset>
           <fieldset class="border border-base-300 bg-base-200 rounded-xl p-2">
-            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Boolean Fields</legend>
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
+              {dgettext("moderation", "Boolean Fields")}
+            </legend>
             <CheckBoxField.render
               :for={column <- ColumnsFilter.boolean_columns(assigns)}
               name={column.field}
@@ -141,7 +148,9 @@ defmodule PanWeb.Component.Moderation.RecordForm do
 
         <div class="mt-4 flex flex-col space-y-4 xl:space-y-0 xl:flex-row xl:space-x-4 w-full">
           <fieldset class="flex-1 border border-base-300 bg-base-200 rounded-xl p-2">
-            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">String Fields</legend>
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
+              {dgettext("moderation", "String Fields")}
+            </legend>
             <TextField.render
               :for={column <- ColumnsFilter.string_columns(assigns)}
               name={column.field}
@@ -150,7 +159,9 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             />
           </fieldset>
           <fieldset class="flex-1 flex flex-col border border-base-300 bg-base-200 rounded-xl p-2">
-            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">Text Fields</legend>
+            <legend class="px-4 border border-base-300 rounded-lg bg-base-100">
+              {dgettext("moderation", "Text Fields")}
+            </legend>
             <TextAreaField.render
               :for={column <- ColumnsFilter.text_columns(assigns)}
               name={column.field}
@@ -160,7 +171,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
           </fieldset>
         </div>
 
-        <.button type="submit" class="btn btn-primary mt-4">Save</.button>
+        <.button type="submit" class="btn btn-primary mt-4">{dgettext("moderation", "Save")}</.button>
       </.form>
     </div>
     """

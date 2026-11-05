@@ -35,6 +35,20 @@ Decided 2026-11-05:
   LiveViews, grade labels, "My Curations" in the user menu; German in
   de/curation.po ("Sie", colon gender form, e.g. "Kurator:in").
   CuratorAssignment (admin + moderator pages) goes with phase 2.
+- Phase 2 (moderations) done 2026-11-05: the moderation
+  LiveViews, My Moderations page + menu entry, ModerationGrid, the
+  moderation RecordForm, CuratorAssignment, Pagination and DataTable
+  (shared with admin, where they stay English); German in
+  de/moderation.po.
+- #576 Cleanup: the moderation edit pages (EditPodcast, EditEpisode,
+  EditFeed) use `:admin_live_view` and override its English with
+  `on_mount PanWeb.Locale`. Moving them to `:moderation_live_view` would
+  be cleaner but changes padding/width; user decides later.
+- #574 Moderation grids and edit pages: column and field labels (made
+  from DB field names) stay English; headings, buttons, flash messages
+  and help texts get translated.
+- #575 Flash messages wrapping a feed parser error: only the wrapping
+  sentence is translated, the parser's message stays English.
 - #573 Language switcher EN/DE in the sidebar, like the theme switcher
   (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js). It
   POSTs to /locale (no "Are you sure?" for a language switch, OK by the

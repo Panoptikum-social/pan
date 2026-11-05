@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This podcast/category combination is not within your moderations.
+      {dgettext("moderation", "This podcast/category combination is not within your moderations.")}
     </div>
     """
   end
@@ -80,13 +80,15 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
     ~H"""
     <div class="m-4">
       <h1 class="text-2xl">
-        Podcast {@podcast.title} / Feeds
+        {dgettext("moderation", "Podcast %{podcast} / Feeds", podcast: @podcast.title)}
       </h1>
 
       <.live_component
         module={ModerationGrid}
         id="episodes_table"
-        heading={"Listing Feeds for Podcast #{@podcast.title}"}
+        heading={
+          dgettext("moderation", "Listing Feeds for Podcast %{podcast}", podcast: @podcast.title)
+        }
         model={Feed}
         cols={@cols}
         search_filter={{:id, @feed_ids}}

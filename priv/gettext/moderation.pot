@@ -1,0 +1,493 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:43
+#, elixir-autogen, elixir-format
+msgid "%{model} created."
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:40
+#, elixir-autogen, elixir-format
+msgid "%{model} updated."
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:41
+#, elixir-autogen, elixir-format
+msgid "%{username} is now a curator of this community."
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:246
+#, elixir-autogen, elixir-format
+msgid "...or search for an existing Panoptikum podcast by title"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:66
+#, elixir-autogen, elixir-format
+msgid "API errors in %{category}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:225
+#, elixir-autogen, elixir-format
+msgid "API errors of the last 24 hours"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:272
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:237
+#, elixir-autogen, elixir-format
+msgid "Add feed"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:160
+#, elixir-autogen, elixir-format
+msgid "Added to your moderation, but the refresh failed: %{message}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:263
+#, elixir-autogen, elixir-format
+msgid "Already in your moderation"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:51
+#, elixir-autogen, elixir-format
+msgid "Assign"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:17
+#, elixir-autogen, elixir-format
+msgid "Assign curator"
+msgstr ""
+
+#: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Assign curators to my communities"
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:31
+#: lib/pan_web/live/moderation/curators.ex:54
+#, elixir-autogen, elixir-format
+msgid "Assigning failed."
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:77
+#, elixir-autogen, elixir-format
+msgid "Back to the moderation"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:137
+#, elixir-autogen, elixir-format
+msgid "Boolean Fields"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:15
+#, elixir-autogen, elixir-format
+msgid "Community"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:134
+#, elixir-autogen, elixir-format
+msgid "Could not import that feed: %{error}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:30
+#, elixir-autogen, elixir-format
+msgid "Curator assigned."
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:60
+#, elixir-autogen, elixir-format
+msgid "Curator removed."
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:16
+#, elixir-autogen, elixir-format
+msgid "Curators"
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:66
+#, elixir-autogen, elixir-format
+msgid "Curators of my communities"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:126
+#, elixir-autogen, elixir-format
+msgid "Date & Time Fields"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:92
+#, elixir-autogen, elixir-format
+msgid "Edit"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:306
+#, elixir-autogen, elixir-format
+msgid "Edit Episode"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:318
+#, elixir-autogen, elixir-format
+msgid "Edit Feed"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:294
+#, elixir-autogen, elixir-format
+msgid "Edit Podcast"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:99
+#, elixir-autogen, elixir-format
+msgid "Endpoints"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:95
+#, elixir-autogen, elixir-format
+msgid "Error"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:97
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:70
+#, elixir-autogen, elixir-format
+msgid "Failed API requests of the last 24 hours on podcasts of this community and on podcasts that no longer exist, one row per podcast with its latest error. Times are Vienna time."
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:139
+#, elixir-autogen, elixir-format
+msgid "Fix feed"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:98
+#, elixir-autogen, elixir-format
+msgid "Last failure"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:270
+#, elixir-autogen, elixir-format
+msgid "List of Episodes"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:282
+#, elixir-autogen, elixir-format
+msgid "List of Feeds"
+msgstr ""
+
+#: lib/pan_web/live/moderation/episode_grid.ex:90
+#, elixir-autogen, elixir-format
+msgid "Listing Episodes for Podcast %{podcast}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/feed_grid.ex:90
+#, elixir-autogen, elixir-format
+msgid "Listing Feeds for Podcast %{podcast}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:280
+#, elixir-autogen, elixir-format
+msgid "Listing Podcasts"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:65
+#, elixir-autogen, elixir-format
+msgid "Make curator & assign"
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:154
+#, elixir-autogen, elixir-format
+msgid "Make the selected URL the feed URL again?"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:219
+#, elixir-autogen, elixir-format
+msgid "Moderating %{category}"
+msgstr ""
+
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:30
+#: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "My Moderations"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:124
+#, elixir-autogen, elixir-format
+msgid "New podcast imported and added to your moderation."
+msgstr ""
+
+#: lib/pan_web/admin/pagination.ex:61
+#, elixir-autogen, elixir-format
+msgid "Next"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:72
+#, elixir-autogen, elixir-format
+msgid "No communities."
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:86
+#, elixir-autogen, elixir-format
+msgid "No failed API requests in the last 24 hours."
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:50
+#, elixir-autogen, elixir-format
+msgid "No user \"%{username}\" found."
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:115
+#, elixir-autogen, elixir-format
+msgid "Numeric Fields"
+msgstr ""
+
+#: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Pads of a community can only be seen, edited and created by its followers, moderators included. Follow these communities to work with their pads:"
+msgstr ""
+
+#: lib/pan_web/admin/pagination.ex:48
+#, elixir-autogen, elixir-format
+msgid "Page %{page} of %{pages}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:232
+#, elixir-autogen, elixir-format
+msgid "Paste a podcast feed URL to add it to your moderation..."
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:69
+#, elixir-autogen, elixir-format
+msgid "Pick an existing curator, or make any user a curator by their username. Removing a curator keeps their curations; only admins can take the curator role away."
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:93
+#, elixir-autogen, elixir-format
+msgid "Podcast"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:39
+#, elixir-autogen, elixir-format
+msgid "Podcast %{id} removed from %{category}."
+msgstr ""
+
+#: lib/pan_web/live/moderation/episode_grid.ex:83
+#, elixir-autogen, elixir-format
+msgid "Podcast %{podcast} / Episodes"
+msgstr ""
+
+#: lib/pan_web/live/moderation/feed_grid.ex:83
+#, elixir-autogen, elixir-format
+msgid "Podcast %{podcast} / Feeds"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:189
+#, elixir-autogen, elixir-format
+msgid "Podcast added to your moderation."
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:105
+#, elixir-autogen, elixir-format
+msgid "Podcast removed from your moderation."
+msgstr ""
+
+#: lib/pan_web/admin/pagination.ex:35
+#, elixir-autogen, elixir-format
+msgid "Previous"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:351
+#, elixir-autogen, elixir-format
+msgid "Records"
+msgstr ""
+
+#: lib/pan_web/admin/pagination.ex:66
+#, elixir-autogen, elixir-format
+msgid "Records %{from} to %{to} of %{filtered} (%{unfiltered} unfiltered)"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:80
+#, elixir-autogen, elixir-format
+msgid "Reload"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:38
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:146
+#, elixir-autogen, elixir-format
+msgid "Remove \"%{podcast}\" from %{category}? The podcast stays on Panoptikum."
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:31
+#, elixir-autogen, elixir-format
+msgid "Remove %{username} as curator of %{community}?"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:343
+#, elixir-autogen, elixir-format
+msgid "Remove from Moderation"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:155
+#, elixir-autogen, elixir-format
+msgid "Remove from community"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:339
+#, elixir-autogen, elixir-format
+msgid "Remove this podcast from your moderation?"
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:157
+#, elixir-autogen, elixir-format
+msgid "Restore"
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:146
+#, elixir-autogen, elixir-format
+msgid "Restore a previous URL"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:174
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:365
+#, elixir-autogen, elixir-format
+msgid "Search mode"
+msgstr ""
+
+#: lib/pan_web/admin/data_table.ex:86
+#, elixir-autogen, elixir-format
+msgid "Select all displayed"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:330
+#, elixir-autogen, elixir-format
+msgid "Show in Frontend"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:96
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:152
+#, elixir-autogen, elixir-format
+msgid "String Fields"
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:163
+#, elixir-autogen, elixir-format
+msgid "Text Fields"
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:113
+#, elixir-autogen, elixir-format
+msgid "The feed URL could not be restored."
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:102
+#, elixir-autogen, elixir-format
+msgid "The feed URL is %{url} again, the next update shows whether it works."
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:76
+#, elixir-autogen, elixir-format
+msgid "The next update shows whether the new URL works."
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_episode.ex:79
+#, elixir-autogen, elixir-format
+msgid "This episode/category combination is not within your moderations."
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:57
+#: lib/pan_web/live/moderation/moderate.ex:210
+#, elixir-autogen, elixir-format
+msgid "This is not one of your moderations."
+msgstr ""
+
+#: lib/pan_web/live/moderation/edit_feed.ex:130
+#: lib/pan_web/live/moderation/edit_podcast.ex:79
+#: lib/pan_web/live/moderation/episode_grid.ex:74
+#: lib/pan_web/live/moderation/feed_grid.ex:74
+#, elixir-autogen, elixir-format
+msgid "This podcast/category combination is not within your moderations."
+msgstr ""
+
+#: lib/pan_web/components/moderation/record_form.ex:109
+#, elixir-autogen, elixir-format
+msgid "This record is not valid. Please check the errors below!"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:150
+#, elixir-autogen, elixir-format
+msgid "We already know that podcast and added it to your moderation."
+msgstr ""
+
+#: lib/pan_web/live/moderation/curators.ex:24
+#, elixir-autogen, elixir-format
+msgid "You do not moderate this community."
+msgstr ""
+
+#: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "You don't follow every community you moderate."
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:377
+#, elixir-autogen, elixir-format
+msgid "contains"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:374
+#, elixir-autogen, elixir-format
+msgid "ends with"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:368
+#, elixir-autogen, elixir-format
+msgid "exact"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:54
+#, elixir-autogen, elixir-format
+msgid "no further curators available"
+msgstr ""
+
+#: lib/pan_web/live/moderation/api_errors.ex:121
+#, elixir-autogen, elixir-format
+msgid "no longer exists"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:41
+#, elixir-autogen, elixir-format
+msgid "none"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_grid.ex:371
+#, elixir-autogen, elixir-format
+msgid "starts with"
+msgstr ""
+
+#: lib/pan_web/components/curator_assignment.ex:61
+#, elixir-autogen, elixir-format
+msgid "username"
+msgstr ""

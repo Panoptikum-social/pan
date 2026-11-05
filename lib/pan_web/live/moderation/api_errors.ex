@@ -34,7 +34,13 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
 
     {:noreply,
      socket
-     |> put_flash(:info, "Podcast #{podcast_id} removed from #{category.title}.")
+     |> put_flash(
+       :info,
+       dgettext("moderation", "Podcast %{id} removed from %{category}.",
+         id: podcast_id,
+         category: category.title
+       )
+     )
      |> assign(errors: ApiRequestError.last_day_by_podcast(category.id))}
   end
 
@@ -48,7 +54,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This is not one of your moderations
+      {dgettext("moderation", "This is not one of your moderations.")}
     </div>
     """
   end
@@ -57,33 +63,40 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
     ~H"""
     <div class="m-4">
       <h1 class="text-2xl">
-        API errors in {@category.title}
+        {dgettext("moderation", "API errors in %{category}", category: @category.title)}
       </h1>
 
       <p class="my-4 max-w-3xl">
-        Failed API requests of the last 24 hours on podcasts of this community and on podcasts
-        that no longer exist, one row per podcast with its latest error. Times are Vienna time.
+        {dgettext(
+          "moderation",
+          "Failed API requests of the last 24 hours on podcasts of this community and on podcasts that no longer exist, one row per podcast with its latest error. Times are Vienna time."
+        )}
         <.link
           navigate={Routes.moderation_frontend_path(@socket, :moderation, @community)}
           class="link"
-        >Back to the moderation</.link>
+        >{dgettext("moderation", "Back to the moderation")}</.link>
       </p>
 
-      <button type="button" phx-click="reload" class="btn btn-outline btn-primary btn-sm">Reload</button>
+      <button type="button" phx-click="reload" class="btn btn-outline btn-primary btn-sm">{dgettext(
+        "moderation",
+        "Reload"
+      )}</button>
 
-      <p :if={@errors == []} class="my-4">No failed API requests in the last 24 hours.</p>
+      <p :if={@errors == []} class="my-4">
+        {dgettext("moderation", "No failed API requests in the last 24 hours.")}
+      </p>
 
       <div :if={@errors != []} class="my-4 overflow-x-auto">
         <table class="table table-sm">
           <thead>
             <tr>
-              <th>Podcast</th>
+              <th>{dgettext("moderation", "Podcast")}</th>
               <th></th>
-              <th>Error</th>
-              <th>Status</th>
-              <th>Failed</th>
-              <th>Last failure</th>
-              <th>Endpoints</th>
+              <th>{dgettext("moderation", "Error")}</th>
+              <th>{dgettext("moderation", "Status")}</th>
+              <th>{dgettext("moderation", "Failed")}</th>
+              <th>{dgettext("moderation", "Last failure")}</th>
+              <th>{dgettext("moderation", "Endpoints")}</th>
             </tr>
           </thead>
           <tbody>
@@ -105,7 +118,7 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                   {error.former.title}
                 </span>
                 <span :if={!error.podcast_title && !error.former} class="italic">
-                  no longer exists
+                  {dgettext("moderation", "no longer exists")}
                 </span>
                 <span class="text-sm">(ID {error.podcast_id})</span>
               </td>
@@ -123,16 +136,23 @@ defmodule PanWeb.Live.Moderation.ApiErrors do
                     }
                     target="_blank"
                     class="btn btn-outline btn-primary btn-xs"
-                  >Fix feed</.link>
+                  >{dgettext("moderation", "Fix feed")}</.link>
                   <button
                     :if={error.podcast_title}
                     type="button"
                     phx-click="remove"
                     phx-value-podcast_id={error.podcast_id}
-                    data-confirm={"Remove \"#{error.podcast_title}\" from #{@category.title}? The podcast stays on Panoptikum."}
+                    data-confirm={
+                      dgettext(
+                        "moderation",
+                        "Remove \"%{podcast}\" from %{category}? The podcast stays on Panoptikum.",
+                        podcast: error.podcast_title,
+                        category: @category.title
+                      )
+                    }
                     class="btn btn-outline btn-warning btn-xs"
                   >
-                    Remove from community
+                    {dgettext("moderation", "Remove from community")}
                   </button>
                 </div>
               </td>

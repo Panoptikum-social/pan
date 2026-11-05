@@ -27,7 +27,10 @@
   <%= if @current_user.moderator do %>
     <li class="py-1">
       {nav_icon("user-star")}
-      <.link href={moderation_frontend_path(@conn, :my_moderations)}>My Moderations</.link>
+      <.link href={moderation_frontend_path(@conn, :my_moderations)}>{dgettext(
+        "moderation",
+        "My Moderations"
+      )}</.link>
     </li>
   <% end %>
   <%= if @current_user.curator || @current_user.moderator || @current_user.admin do %>

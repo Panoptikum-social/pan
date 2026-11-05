@@ -102,7 +102,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
 
     socket =
       socket
-      |> put_flash(:info, "Podcast removed from your moderation.")
+      |> put_flash(:info, dgettext("moderation", "Podcast removed from your moderation."))
       |> refresh_podcast_grid()
 
     {:noreply, socket}
@@ -117,13 +117,22 @@ defmodule PanWeb.Live.Moderation.Moderate do
           case Pan.Parser.RssFeed.initial_import(url) do
             {:ok, podcast_id} ->
               CategoryPodcast.get_or_insert(category_id, podcast_id)
-              put_flash(socket, :info, "New podcast imported and added to your moderation.")
+
+              put_flash(
+                socket,
+                :info,
+                dgettext("moderation", "New podcast imported and added to your moderation.")
+              )
 
             {:error, {:known_feed, podcast_id}} ->
               put_flash(socket, :error, Pan.Parser.Podcast.known_feed_message(podcast_id))
 
             {:error, error} ->
-              put_flash(socket, :error, "Could not import that feed: #{error}")
+              put_flash(
+                socket,
+                :error,
+                dgettext("moderation", "Could not import that feed: %{error}", error: error)
+              )
           end
 
         feed ->
@@ -138,14 +147,21 @@ defmodule PanWeb.Live.Moderation.Moderate do
               put_flash(
                 socket,
                 :info,
-                "We already know that podcast and added it to your moderation."
+                dgettext(
+                  "moderation",
+                  "We already know that podcast and added it to your moderation."
+                )
               )
 
             {:error, message} ->
               put_flash(
                 socket,
                 :error,
-                "Added to your moderation, but the refresh failed: #{message}"
+                dgettext(
+                  "moderation",
+                  "Added to your moderation, but the refresh failed: %{message}",
+                  message: message
+                )
               )
           end
       end
@@ -170,7 +186,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
 
     socket =
       socket
-      |> put_flash(:info, "Podcast added to your moderation.")
+      |> put_flash(:info, dgettext("moderation", "Podcast added to your moderation."))
       |> refresh_podcast_grid()
 
     {:noreply, socket}
@@ -191,7 +207,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This is not one of your moderations
+      {dgettext("moderation", "This is not one of your moderations.")}
     </div>
     """
   end
@@ -200,23 +216,25 @@ defmodule PanWeb.Live.Moderation.Moderate do
     ~H"""
     <div class="m-4">
       <h1 class="text-2xl">
-        Moderating {@category.title}
+        {dgettext("moderation", "Moderating %{category}", category: @category.title)}
       </h1>
 
       <.link
         navigate={Routes.moderation_frontend_path(@socket, :api_errors, @community)}
         class="link"
-      >API errors of the last 24 hours</.link>
+      >{dgettext("moderation", "API errors of the last 24 hours")}</.link>
 
       <form phx-submit="add-feed" class="my-4 flex gap-2 max-w-2xl">
         <input
           type="text"
           name="url"
-          placeholder="Paste a podcast feed URL to add it to your moderation..."
+          placeholder={
+            dgettext("moderation", "Paste a podcast feed URL to add it to your moderation...")
+          }
           required
           class="flex-1 border border-base-300 rounded px-2 py-1"
         />
-        <button type="submit" class="btn btn-primary btn-sm">Add feed</button>
+        <button type="submit" class="btn btn-primary btn-sm">{dgettext("moderation", "Add feed")}</button>
       </form>
 
       <form phx-change="search-existing-podcast" class="my-4 max-w-2xl">
@@ -224,7 +242,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
           type="text"
           name="term"
           value={@existing_search_term}
-          placeholder="...or search for an existing Panoptikum podcast by title"
+          placeholder={
+            dgettext("moderation", "...or search for an existing Panoptikum podcast by title")
+          }
           phx-debounce="300"
           class="w-full border border-base-300 rounded px-2 py-1"
         />
@@ -240,7 +260,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
         >
           <span>{podcast.title}</span>
           <span :if={podcast.id in @podcast_ids} class="text-sm text-base-content/70">
-            Already in your moderation
+            {dgettext("moderation", "Already in your moderation")}
           </span>
           <button
             :if={podcast.id not in @podcast_ids}
@@ -249,7 +269,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
             phx-value-id={podcast.id}
             class="btn btn-outline btn-primary btn-sm"
           >
-            ➕ Add
+            ➕ {dgettext("moderation", "Add")}
           </button>
         </li>
       </ul>
@@ -257,7 +277,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
       <.live_component
         module={ModerationGrid}
         id="moderation_table"
-        heading="Listing Podcasts"
+        heading={dgettext("moderation", "Listing Podcasts")}
         model={Podcast}
         cols={@cols}
         search_filter={{:id, @podcast_ids}}

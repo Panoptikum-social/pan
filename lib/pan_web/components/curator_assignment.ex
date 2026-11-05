@@ -12,9 +12,9 @@ defmodule PanWeb.Component.CuratorAssignment do
     <table class="table table-sm">
       <thead>
         <tr>
-          <th>Community</th>
-          <th>Curators</th>
-          <th>Assign curator</th>
+          <th>{dgettext("moderation", "Community")}</th>
+          <th>{dgettext("moderation", "Curators")}</th>
+          <th>{dgettext("moderation", "Assign curator")}</th>
         </tr>
       </thead>
       <tbody>
@@ -27,13 +27,18 @@ defmodule PanWeb.Component.CuratorAssignment do
                 phx-click="unassign"
                 phx-value-community_id={community.id}
                 phx-value-user_id={curator.id}
-                data-confirm={"Remove #{curator.username} as curator of #{community.title}?"}
+                data-confirm={
+                  dgettext("moderation", "Remove %{username} as curator of %{community}?",
+                    username: curator.username,
+                    community: community.title
+                  )
+                }
                 class="btn btn-outline btn-warning btn-xs"
               >
-                Remove
+                {dgettext("moderation", "Remove")}
               </button>
             </div>
-            <span :if={community.curators == []} class="text-sm">none</span>
+            <span :if={community.curators == []} class="text-sm">{dgettext("moderation", "none")}</span>
           </td>
           <td>
             <form :if={candidates != []} phx-submit="assign" class="flex gap-2">
@@ -43,28 +48,28 @@ defmodule PanWeb.Component.CuratorAssignment do
                   {candidate.username} ({candidate.name})
                 </option>
               </select>
-              <button class="btn btn-primary btn-xs">Assign</button>
+              <button class="btn btn-primary btn-xs">{dgettext("moderation", "Assign")}</button>
             </form>
             <span :if={candidates == [] && !@by_username} class="text-sm">
-              no further curators available
+              {dgettext("moderation", "no further curators available")}
             </span>
             <form :if={@by_username} phx-submit="assign_by_username" class="flex gap-2 mt-2">
               <input type="hidden" name="community_id" value={community.id} />
               <input
                 type="text"
                 name="username"
-                placeholder="username"
+                placeholder={dgettext("moderation", "username")}
                 autocomplete="off"
                 class="input input-bordered input-xs"
               />
-              <button class="btn btn-primary btn-xs">Make curator & assign</button>
+              <button class="btn btn-primary btn-xs">{dgettext("moderation", "Make curator & assign")}</button>
             </form>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <p :if={@entries == []} class="my-4">No communities.</p>
+    <p :if={@entries == []} class="my-4">{dgettext("moderation", "No communities.")}</p>
     """
   end
 end

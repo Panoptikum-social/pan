@@ -1,5 +1,7 @@
 defmodule PanWeb.Live.Moderation.EditFeed do
   use PanWeb, :admin_live_view
+  # admin layout, but a moderation page: overrides the admin's English
+  on_mount PanWeb.Locale
   on_mount PanWeb.Live.AssignUserAndAdmin
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
@@ -69,7 +71,9 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     message =
       if new_url != old_feed.self_link_url do
         Feed.change_url(old_feed, new_url)
-        message <> " The next update shows whether the new URL works."
+
+        message <>
+          " " <> dgettext("moderation", "The next update shows whether the new URL works.")
       else
         message
       end
@@ -95,14 +99,18 @@ defmodule PanWeb.Live.Moderation.EditFeed do
           |> assign(feed: feed, alternate_feeds: previous_urls(feed))
           |> put_flash(
             :info,
-            "The feed URL is #{url} again, the next update shows whether it works."
+            dgettext(
+              "moderation",
+              "The feed URL is %{url} again, the next update shows whether it works.",
+              url: url
+            )
           )
 
         {:error, message} when is_binary(message) ->
           put_flash(socket, :error, message)
 
         {:error, _changeset} ->
-          put_flash(socket, :error, "The feed URL could not be restored.")
+          put_flash(socket, :error, dgettext("moderation", "The feed URL could not be restored."))
       end
 
     {:noreply, socket}
@@ -119,7 +127,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This podcast/category combination is not within your moderations.
+      {dgettext("moderation", "This podcast/category combination is not within your moderations.")}
     </div>
     """
   end
@@ -135,7 +143,7 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     />
 
     <form :if={@alternate_feeds != []} phx-submit="restore" class="m-4 flex gap-2 items-center">
-      <span>Restore a previous URL</span>
+      <span>{dgettext("moderation", "Restore a previous URL")}</span>
       <select name="url" class="select select-sm max-w-xl">
         <option :for={alternate <- @alternate_feeds} value={alternate.url}>
           {Calendar.strftime(alternate.inserted_at, "%Y-%m-%d")} {alternate.url}
@@ -143,10 +151,10 @@ defmodule PanWeb.Live.Moderation.EditFeed do
       </select>
       <button
         type="submit"
-        data-confirm="Make the selected URL the feed URL again?"
+        data-confirm={dgettext("moderation", "Make the selected URL the feed URL again?")}
         class="btn btn-primary btn-sm"
       >
-        Restore
+        {dgettext("moderation", "Restore")}
       </button>
     </form>
     """

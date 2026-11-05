@@ -52,7 +52,7 @@ msgid "Mark this podcast as done? It disappears from the open list."
 msgstr ""
 
 #: lib/pan_web/live/curation/index.ex:14
-#: lib/pan_web/templates/layout/_user_dropdown.html.heex:36
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "My Curations"
 msgstr ""

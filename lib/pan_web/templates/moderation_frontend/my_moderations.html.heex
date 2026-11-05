@@ -1,13 +1,17 @@
 <div class="m-4">
   <h1 class="text-3xl">
-    My Moderations
+    {dgettext("moderation", "My Moderations")}
   </h1>
 
   <div :if={@unfollowed_communities != []} class="alert alert-soft alert-warning my-4 block">
-    <p class="font-semibold">You don't follow every community you moderate.</p>
+    <p class="font-semibold">
+      {dgettext("moderation", "You don't follow every community you moderate.")}
+    </p>
     <p>
-      Pads of a community can only be seen, edited and created by its followers, moderators
-      included. Follow these communities to work with their pads:
+      {dgettext(
+        "moderation",
+        "Pads of a community can only be seen, edited and created by its followers, moderators included. Follow these communities to work with their pads:"
+      )}
     </p>
     <ul class="list-disc ml-6 mt-2">
       <li :for={community <- @unfollowed_communities}>
@@ -33,5 +37,5 @@
   <.link
     href={moderation_frontend_path(@conn, :curators)}
     class="underline hover:text-primary"
-  >Assign curators to my communities</.link>
+  >{dgettext("moderation", "Assign curators to my communities")}</.link>
 </div>

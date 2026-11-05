@@ -1,5 +1,7 @@
 defmodule PanWeb.Live.Moderation.EditEpisode do
   use PanWeb, :admin_live_view
+  # admin layout, but a moderation page: overrides the admin's English
+  on_mount PanWeb.Locale
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Moderation, Podcast, Episode}
@@ -74,7 +76,10 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
   def render(%{error: "not_found"} = assigns) do
     ~H"""
     <div class="m-12">
-      This episode/category combination is not within your moderations.
+      {dgettext(
+        "moderation",
+        "This episode/category combination is not within your moderations."
+      )}
     </div>
     """
   end

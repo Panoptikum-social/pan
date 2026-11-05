@@ -83,7 +83,7 @@ defmodule PanWeb.Admin.DataTable do
           checked={Enum.all?(@records, &selected?(&1, @selected_records))}
           phx-click={@select_all}
           phx-target={@target}
-          title="Select all displayed"
+          title={dgettext("moderation", "Select all displayed")}
         />
       </div>
       <div

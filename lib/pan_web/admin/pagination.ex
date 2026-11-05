@@ -32,7 +32,7 @@ defmodule PanWeb.Admin.Pagination do
           page={@page - 1}
           class="rounded-l"
         >
-          Previous
+          {dgettext("moderation", "Previous")}
         </PaginationLink.render>
         <%= for i <- 1..@page do %>
           <PaginationLink.render
@@ -45,7 +45,10 @@ defmodule PanWeb.Admin.Pagination do
             {i}
           </PaginationLink.render>
           <span :if={i == @page}>
-            Page {i} of {if @nr_of_pages > 0, do: @nr_of_pages, else: "?? "}
+            {dgettext("moderation", "Page %{page} of %{pages}",
+              page: i,
+              pages: if(@nr_of_pages > 0, do: @nr_of_pages, else: "??")
+            )}
           </span>
         <% end %>
         <PaginationLink.render
@@ -55,21 +58,19 @@ defmodule PanWeb.Admin.Pagination do
           page={@page + 1}
           class="rounded-r"
         >
-          Next
+          {dgettext("moderation", "Next")}
         </PaginationLink.render>
       </div>
 
       <div class="sm:border-l border-base-300 px-4 py-1 text-center">
-        Records {(@page - 1) * @per_page + 1} to {min(@page * @per_page, @nr_of_filtered)} of {if @nr_of_filtered >
-                                                                                                    0,
-                                                                                                  do:
-                                                                                                    format(
-                                                                                                      @nr_of_filtered
-                                                                                                    ),
-                                                                                                  else:
-                                                                                                    "??"} ({if @nr_of_unfiltered,
-          do: format(@nr_of_unfiltered),
-          else: "??"}&nbsp;unfiltered)
+        {dgettext(
+          "moderation",
+          "Records %{from} to %{to} of %{filtered} (%{unfiltered} unfiltered)",
+          from: (@page - 1) * @per_page + 1,
+          to: min(@page * @per_page, @nr_of_filtered),
+          filtered: if(@nr_of_filtered > 0, do: format(@nr_of_filtered), else: "??"),
+          unfiltered: if(@nr_of_unfiltered, do: format(@nr_of_unfiltered), else: "??")
+        )}
       </div>
     </div>
     """
