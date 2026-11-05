@@ -14,8 +14,6 @@ English and German; curations, moderations and frontend are done (decisions
 and code map in Claude's memory, project_multilingual). Open:
 
 - #582 Translated data, the last step of phase 3, still open:
-  - #571 gig/engagement roles: gettext lookup, falling back to the stored
-    value.
   - #569 search finds categories by their translated titles too.
 - Deploy: prod needs two migrations (users.locale, translation columns
   with Apple's German category names and German language names) and an

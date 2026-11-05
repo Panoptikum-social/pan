@@ -112,7 +112,7 @@ defmodule PanWeb.Live.Podcast.Index do
             <div class="leading-9 col-span-2">
               <span :for={engagement <- podcast.engagements}>
                 <PersonaButton.render for={engagement.persona} />
-                <Pill.render type="success">{engagement.role}</Pill.render>
+                <Pill.render type="success">{PanWeb.Translations.role(engagement.role)}</Pill.render>
               </span>
             </div>
 

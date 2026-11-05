@@ -360,7 +360,7 @@ defmodule PanWeb.Live.Search do
           <p :if={hit["_source"]["gigs"]} class="leading-9">
             <%= for gig <- hit["_source"]["gigs"] do %>
               <PersonaButton.render id={gig["persona_id"]} name={gig["persona_name"]} class="mr-2" />
-              <Pill.render type="lavender">{gig["role"]}</Pill.render>
+              <Pill.render type="lavender">{PanWeb.Translations.role(gig["role"])}</Pill.render>
             <% end %>
           </p>
 
@@ -385,7 +385,9 @@ defmodule PanWeb.Live.Search do
                 title={engagement["podcast_title"]}
                 class="mr-2"
               />
-              <Pill.render type="lavender">{engagement["role"]}</Pill.render>
+              <Pill.render type="lavender">
+                {PanWeb.Translations.role(engagement["role"])}
+              </Pill.render>
             <% end %>
           </p>
 

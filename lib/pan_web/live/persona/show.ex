@@ -327,7 +327,7 @@ defmodule PanWeb.Live.Persona.Show do
             <td class="px-2"><PodcastButton.render for={podcast} /></td>
             <td class="px-2">
               <Pill.render :for={engagement <- Enum.uniq_by(engagements, & &1.role)} type="success">
-                {engagement.role}
+                {PanWeb.Translations.role(engagement.role)}
               </Pill.render>
             </td>
           </tr>
@@ -367,7 +367,7 @@ defmodule PanWeb.Live.Persona.Show do
                 id={"gig-#{gig.id}"}
                 type="success"
               >
-                {gig.role}
+                {PanWeb.Translations.role(gig.role)}
               </Pill.render>
             </td>
           </tr>

@@ -1524,7 +1524,7 @@ msgstr "Feed prüfen"
 msgid "Claim"
 msgstr "Übernehmen"
 
-#: lib/pan_web/live/episode/header.ex:151
+#: lib/pan_web/live/episode/header.ex:153
 #, elixir-autogen, elixir-format
 msgid "Claim contribution"
 msgstr "Mitwirkung eintragen"
@@ -1553,8 +1553,8 @@ msgstr "Übernahme nicht möglich"
 msgid "Click on a language to filter"
 msgstr "Zum Filtern auf eine Sprache klicken"
 
-#: lib/pan_web/live/episode/header.ex:121
-#: lib/pan_web/live/podcast/episode_list.ex:71
+#: lib/pan_web/live/episode/header.ex:123
+#: lib/pan_web/live/podcast/episode_list.ex:73
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:87
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -1621,7 +1621,7 @@ msgstr "Dauer"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: lib/pan_web/live/episode/header.ex:130
+#: lib/pan_web/live/episode/header.ex:132
 #, elixir-autogen, elixir-format
 msgid "Enclosures"
 msgstr "Mediendateien"
@@ -1697,8 +1697,8 @@ msgstr "ID"
 msgid "Imported"
 msgstr "Importiert"
 
-#: lib/pan_web/live/episode/header.ex:109
-#: lib/pan_web/live/podcast/episode_list.ex:58
+#: lib/pan_web/live/episode/header.ex:111
+#: lib/pan_web/live/podcast/episode_list.ex:60
 #: lib/pan_web/live/podcast/like_follow_subscribe_buttons.ex:75
 #, elixir-autogen, elixir-format
 msgid "Info"
@@ -2120,8 +2120,8 @@ msgstr "Es gibt andere Podcasts mit demselben Titel:"
 msgid "There is another podcast with the same title:"
 msgstr "Es gibt einen anderen Podcast mit demselben Titel:"
 
-#: lib/pan_web/live/episode/header.ex:111
-#: lib/pan_web/live/podcast/episode_list.ex:60
+#: lib/pan_web/live/episode/header.ex:113
+#: lib/pan_web/live/podcast/episode_list.ex:62
 #, elixir-autogen, elixir-format
 msgid "This contribution is claimed by a user and not source of the podcast feed."
 msgstr "Diese Mitwirkung wurde von einer Benutzer:in eingetragen und stammt nicht aus dem Feed des Podcasts."
@@ -3479,3 +3479,303 @@ msgstr "Sprache unbekannt"
 #, elixir-autogen, elixir-format
 msgid "Podcasts in %{language}"
 msgstr "Podcasts auf %{language}"
+
+#: lib/pan_web/translations.ex:77
+#, elixir-autogen, elixir-format
+msgid "actor"
+msgstr "Schauspieler:in"
+
+#: lib/pan_web/translations.ex:79
+#, elixir-autogen, elixir-format
+msgid "announcer"
+msgstr "Ansager:in"
+
+#: lib/pan_web/translations.ex:74
+#, elixir-autogen, elixir-format
+msgid "assistant camera"
+msgstr "Kameraassistenz"
+
+#: lib/pan_web/translations.ex:28
+#, elixir-autogen, elixir-format
+msgid "assistant director"
+msgstr "Regieassistenz"
+
+#: lib/pan_web/translations.ex:75
+#, elixir-autogen, elixir-format
+msgid "assistant editor"
+msgstr "Schnittassistenz"
+
+#: lib/pan_web/translations.ex:32
+#, elixir-autogen, elixir-format
+msgid "associate producer"
+msgstr "Associate Producer"
+
+#: lib/pan_web/translations.ex:52
+#, elixir-autogen, elixir-format
+msgid "audio editor"
+msgstr "Audio-Schnitt"
+
+#: lib/pan_web/translations.ex:49
+#, elixir-autogen, elixir-format
+msgid "audio engineer"
+msgstr "Toningenieur:in"
+
+#: lib/pan_web/translations.ex:24
+#, elixir-autogen, elixir-format
+msgid "author"
+msgstr "Autor:in"
+
+#: lib/pan_web/translations.ex:60
+#, elixir-autogen, elixir-format
+msgid "booking coordinator"
+msgstr "Booking"
+
+#: lib/pan_web/translations.ex:73
+#, elixir-autogen, elixir-format
+msgid "camera grip"
+msgstr "Kamerabühne"
+
+#: lib/pan_web/translations.ex:71
+#, elixir-autogen, elixir-format
+msgid "camera operator"
+msgstr "Kamera"
+
+#: lib/pan_web/translations.ex:21
+#, elixir-autogen, elixir-format
+msgid "co-host"
+msgstr "Co-Host"
+
+#: lib/pan_web/translations.ex:55
+#, elixir-autogen, elixir-format
+msgid "composer"
+msgstr "Komponist:in"
+
+#: lib/pan_web/translations.ex:69
+#, elixir-autogen, elixir-format
+msgid "consultant"
+msgstr "Beratung"
+
+#: lib/pan_web/translations.ex:62
+#, elixir-autogen, elixir-format
+msgid "content manager"
+msgstr "Content-Manager:in"
+
+#: lib/pan_web/translations.ex:26
+#, elixir-autogen, elixir-format
+msgid "contributor"
+msgstr "Mitwirkende:r"
+
+#: lib/pan_web/translations.ex:67
+#, elixir-autogen, elixir-format
+msgid "cover art designer"
+msgstr "Cover-Gestaltung"
+
+#: lib/pan_web/translations.ex:34
+#, elixir-autogen, elixir-format
+msgid "creative director"
+msgstr "Creative Director"
+
+#: lib/pan_web/translations.ex:33
+#, elixir-autogen, elixir-format
+msgid "development producer"
+msgstr "Development Producer"
+
+#: lib/pan_web/translations.ex:27
+#, elixir-autogen, elixir-format
+msgid "director"
+msgstr "Regie"
+
+#: lib/pan_web/translations.ex:41
+#, elixir-autogen, elixir-format
+msgid "editor"
+msgstr "Redaktion"
+
+#: lib/pan_web/translations.ex:29
+#, elixir-autogen, elixir-format
+msgid "executive producer"
+msgstr "Executive Producer"
+
+#: lib/pan_web/translations.ex:42
+#, elixir-autogen, elixir-format
+msgid "fact checker"
+msgstr "Faktencheck"
+
+#: lib/pan_web/translations.ex:54
+#, elixir-autogen, elixir-format
+msgid "foley artist"
+msgstr "Geräuschemacher:in"
+
+#: lib/pan_web/translations.ex:66
+#, elixir-autogen, elixir-format
+msgid "graphic designer"
+msgstr "Grafikdesign"
+
+#: lib/pan_web/translations.ex:23
+#, elixir-autogen, elixir-format
+msgid "guest"
+msgstr "Gast"
+
+#: lib/pan_web/translations.ex:22
+#, elixir-autogen, elixir-format
+msgid "guest host"
+msgstr "Gast-Host"
+
+#: lib/pan_web/translations.ex:20
+#, elixir-autogen, elixir-format
+msgid "host"
+msgstr "Host"
+
+#: lib/pan_web/translations.ex:70
+#, elixir-autogen, elixir-format
+msgid "intern"
+msgstr "Praktikant:in"
+
+#: lib/pan_web/translations.ex:72
+#, elixir-autogen, elixir-format
+msgid "lighting designer"
+msgstr "Lichtgestaltung"
+
+#: lib/pan_web/translations.ex:45
+#, elixir-autogen, elixir-format
+msgid "logger"
+msgstr "Logging"
+
+#: lib/pan_web/translations.ex:37
+#, elixir-autogen, elixir-format
+msgid "managing editor"
+msgstr "Chefredaktion"
+
+#: lib/pan_web/translations.ex:63
+#, elixir-autogen, elixir-format
+msgid "marketing manager"
+msgstr "Marketing"
+
+#: lib/pan_web/translations.ex:58
+#, elixir-autogen, elixir-format
+msgid "music contributor"
+msgstr "Musikbeitrag"
+
+#: lib/pan_web/translations.ex:57
+#, elixir-autogen, elixir-format
+msgid "music production"
+msgstr "Musikproduktion"
+
+#: lib/pan_web/translations.ex:78
+#, elixir-autogen, elixir-format
+msgid "narrator"
+msgstr "Erzähler:in"
+
+#: lib/pan_web/translations.ex:25
+#, elixir-autogen, elixir-format
+msgid "owner"
+msgstr "Eigentümer:in"
+
+#: lib/pan_web/translations.ex:51
+#, elixir-autogen, elixir-format
+msgid "post production engineer"
+msgstr "Postproduktion"
+
+#: lib/pan_web/translations.ex:31
+#, elixir-autogen, elixir-format
+msgid "producer"
+msgstr "Produzent:in"
+
+#: lib/pan_web/translations.ex:61
+#, elixir-autogen, elixir-format
+msgid "production assistant"
+msgstr "Produktionsassistenz"
+
+#: lib/pan_web/translations.ex:59
+#, elixir-autogen, elixir-format
+msgid "production coordinator"
+msgstr "Produktionskoordination"
+
+#: lib/pan_web/translations.ex:50
+#, elixir-autogen, elixir-format
+msgid "remote recording engineer"
+msgstr "Remote-Aufnahme"
+
+#: lib/pan_web/translations.ex:40
+#, elixir-autogen, elixir-format
+msgid "researcher"
+msgstr "Recherche"
+
+#: lib/pan_web/translations.ex:65
+#, elixir-autogen, elixir-format
+msgid "sales manager"
+msgstr "Vertriebsleitung"
+
+#: lib/pan_web/translations.ex:64
+#, elixir-autogen, elixir-format
+msgid "sales representative"
+msgstr "Vertrieb"
+
+#: lib/pan_web/translations.ex:39
+#, elixir-autogen, elixir-format
+msgid "script coordinator"
+msgstr "Skriptkoordination"
+
+#: lib/pan_web/translations.ex:38
+#, elixir-autogen, elixir-format
+msgid "script editor"
+msgstr "Skriptredaktion"
+
+#: lib/pan_web/translations.ex:30
+#, elixir-autogen, elixir-format
+msgid "senior producer"
+msgstr "Senior Producer"
+
+#: lib/pan_web/translations.ex:68
+#, elixir-autogen, elixir-format
+msgid "social media manager"
+msgstr "Social-Media-Manager:in"
+
+#: lib/pan_web/translations.ex:53
+#, elixir-autogen, elixir-format
+msgid "sound designer"
+msgstr "Sounddesign"
+
+#: lib/pan_web/translations.ex:36
+#, elixir-autogen, elixir-format
+msgid "story editor"
+msgstr "Story-Redaktion"
+
+#: lib/pan_web/translations.ex:46
+#, elixir-autogen, elixir-format
+msgid "studio coordinator"
+msgstr "Studiokoordination"
+
+#: lib/pan_web/translations.ex:47
+#, elixir-autogen, elixir-format
+msgid "technical director"
+msgstr "Technische Leitung"
+
+#: lib/pan_web/translations.ex:48
+#, elixir-autogen, elixir-format
+msgid "technical manager"
+msgstr "Technik"
+
+#: lib/pan_web/translations.ex:56
+#, elixir-autogen, elixir-format
+msgid "theme music"
+msgstr "Titelmusik"
+
+#: lib/pan_web/translations.ex:44
+#, elixir-autogen, elixir-format
+msgid "transcriber"
+msgstr "Transkription"
+
+#: lib/pan_web/translations.ex:43
+#, elixir-autogen, elixir-format
+msgid "translator"
+msgstr "Übersetzer:in"
+
+#: lib/pan_web/translations.ex:76
+#, elixir-autogen, elixir-format
+msgid "voice actor"
+msgstr "Sprecher:in"
+
+#: lib/pan_web/translations.ex:35
+#, elixir-autogen, elixir-format
+msgid "writer"
+msgstr "Autor:in"

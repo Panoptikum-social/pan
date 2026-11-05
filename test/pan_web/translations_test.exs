@@ -91,4 +91,14 @@ defmodule PanWeb.TranslationsTest do
 
     assert Repo.get!(Category, child.id).title_translations == %{}
   end
+
+  test "known roles get translated, unknown ones stay as stored (#571)" do
+    Gettext.put_locale(PanWeb.Gettext, "de")
+    assert Translations.role("guest") == "Gast"
+    assert Translations.role("co-host") == "Co-Host"
+    assert Translations.role("chief vibes officer") == "chief vibes officer"
+
+    Gettext.put_locale(PanWeb.Gettext, "en")
+    assert Translations.role("guest") == "guest"
+  end
 end

@@ -46,7 +46,10 @@ defmodule PanWeb.Live.Episode.PodlovePlayer do
 
   defp contributorlist(gigs) do
     Enum.map(gigs, fn gig ->
-      %{name: gig.persona.name, role: %{id: 1, slug: gig.role, title: gig.role}}
+      %{
+        name: gig.persona.name,
+        role: %{id: 1, slug: gig.role, title: PanWeb.Translations.role(gig.role)}
+      }
     end)
   end
 

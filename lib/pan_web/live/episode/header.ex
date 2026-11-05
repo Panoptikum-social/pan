@@ -90,7 +90,9 @@ defmodule PanWeb.Live.Episode.Header do
             </dd>
             <dd class="col-start-4">
               <%= for gig <- gigs do %>
-                <Pill.render type="success" id={"gig-#{gig.id}"}>{gig.role}</Pill.render>
+                <Pill.render type="success" id={"gig-#{gig.id}"}>
+                  {PanWeb.Translations.role(gig.role)}
+                </Pill.render>
                 <span
                   :if={gig.self_proclaimed}
                   class="relative"
