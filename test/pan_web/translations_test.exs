@@ -79,6 +79,10 @@ defmodule PanWeb.TranslationsTest do
     # admin stays English, also for a German admin
     assert html =~ "Only rows without German"
 
+    # ... but sidebar and switcher follow the user's language (#596)
+    assert html =~ "Kategorien"
+    assert html =~ ~r/class="btn btn-xs join-item btn-active"\s+data-locale-choice="de"/
+
     view
     |> form("#category-#{child.id} form", %{"text" => "Unübersetzt"})
     |> render_submit()

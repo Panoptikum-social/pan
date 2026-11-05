@@ -25,9 +25,14 @@ defmodule PanWeb.Locale do
 
   def init(opts), do: opts
 
+  # Admin pages: the content is forced to English, the sidebar and footer
+  # keep the user's language (:nav_locale, #596), so the switcher visibly works.
   def call(conn, force: locale) do
     Gettext.put_locale(PanWeb.Gettext, locale)
-    assign(conn, :locale, locale)
+
+    conn
+    |> assign(:nav_locale, conn.assigns[:locale] || @default_locale)
+    |> assign(:locale, locale)
   end
 
   def call(conn, _opts) do

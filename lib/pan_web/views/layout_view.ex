@@ -2,6 +2,19 @@ defmodule PanWeb.LayoutView do
   use PanWeb, :view
 
   @doc """
+  Renders a layout partial (sidebar, footer) in the user's language, also on
+  admin pages whose content is forced to English (#596). Rendered to iodata
+  inside `with_locale/3`, as HEEx would otherwise evaluate it later.
+  """
+  def in_nav_locale(conn, template, assigns) do
+    Gettext.with_locale(PanWeb.Gettext, nav_locale(conn), fn ->
+      __MODULE__ |> Phoenix.View.render_to_iodata(template, assigns) |> Phoenix.HTML.raw()
+    end)
+  end
+
+  def nav_locale(conn), do: conn.assigns[:nav_locale] || conn.assigns[:locale] || "en"
+
+  @doc """
   `{label, DaisyUI badge class}` for the current environment, shown in the
   sidebar just below the logo so it's obvious at a glance which environment
   you're looking at. `nil` in prod (or any environment that doesn't

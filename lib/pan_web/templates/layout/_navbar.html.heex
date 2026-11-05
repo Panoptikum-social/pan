@@ -248,5 +248,5 @@
 <div x-bind:class="{'hidden': !navbarOpen}">
   {render("_navbar_items.html", conn: @conn, current_user: @current_user)}
   <PanWeb.Component.ThemeToggle.render />
-  <PanWeb.Component.LanguageToggle.render locale={@conn.assigns[:locale] || "en"} />
+  <PanWeb.Component.LanguageToggle.render locale={nav_locale(@conn)} />
 </div>
