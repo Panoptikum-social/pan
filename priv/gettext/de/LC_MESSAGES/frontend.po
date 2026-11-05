@@ -316,6 +316,8 @@ msgstr "Sind Sie ein Mensch? ;-)"
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:19
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:47
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:80
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:136
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:197
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:92
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:121
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:597
@@ -393,12 +395,12 @@ msgstr "Sind Sie sicher? Alle Benutzer:innen-Likes werden entfernt!"
 msgid "Are you sure? Your account would be deleted!"
 msgstr "Sind Sie sicher? Ihr Konto wird gelöscht!"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:137
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:139
 #, elixir-autogen, elixir-format
 msgid "Cancel Delegation"
 msgstr "Delegierung aufheben"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:195
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "Cancel Redirection"
 msgstr "Weiterleitung aufheben"
@@ -463,7 +465,7 @@ msgstr "Gefahrenzone"
 msgid "Date"
 msgstr "Datum"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:164
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:167
 #, elixir-autogen, elixir-format
 msgid "Delegate"
 msgstr "Delegieren"
@@ -723,7 +725,7 @@ msgstr "Ungültiger Link!"
 
 #: lib/pan_web/controllers/session_controller.ex:73
 #: lib/pan_web/controllers/session_controller.ex:124
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:149
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:155
 #, elixir-autogen, elixir-format
 msgid "Invalid token!"
 msgstr "Ungültiges Token!"
@@ -966,12 +968,12 @@ msgstr "Podcasts, die ich verwalte"
 msgid "Recommendations"
 msgstr "Empfehlungen"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:221
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:227
 #, elixir-autogen, elixir-format
 msgid "Redirect"
 msgstr "Weiterleiten"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:179
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:182
 #, elixir-autogen, elixir-format
 msgid "Redirection"
 msgstr "Weiterleitung"
@@ -1063,14 +1065,14 @@ msgstr "Das Formular ist nicht vollständig ausgefüllt."
 msgid "The link has expired already!"
 msgstr "Der Link ist bereits abgelaufen!"
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:182
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "The redirection redirects the persona profile page to the profile page of the target persona."
 msgstr "Die Weiterleitung leitet die Profilseite der Persona auf die Profilseite der Ziel-Persona weiter."
 
 #: lib/pan_web/controllers/session_controller.ex:68
 #: lib/pan_web/controllers/session_controller.ex:119
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:144
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:150
 #, elixir-autogen, elixir-format
 msgid "The token has expired already!"
 msgstr "Das Token ist bereits abgelaufen!"
@@ -1085,7 +1087,7 @@ msgstr "Es gibt bereits ein Konto mit dieser E-Mail-Adresse."
 msgid "This persona has been generated automatically, because you checked the podcaster checkbox."
 msgstr "Diese Persona wurde automatisch angelegt, weil Sie angegeben haben, Podcaster:in zu sein."
 
-#: lib/pan_web/templates/user_frontend/_personas.html.heex:208
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:213
 #, elixir-autogen, elixir-format
 msgid "This persona is currently not redirected."
 msgstr "Diese Persona wird derzeit nicht weitergeleitet."
@@ -2625,12 +2627,12 @@ msgstr "Ein Anliegen"
 msgid "A permanent connection between your account and this persona will be established. That connection will stay in place, also if you will change persona data later on."
 msgstr "Ihr Konto wird dauerhaft mit dieser Persona verbunden. Die Verbindung bleibt bestehen, auch wenn Sie die Daten der Persona später ändern."
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:133
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:139
 #, elixir-autogen, elixir-format
 msgid "Access has been granted successfully!"
 msgstr "Zugriff gewährt!"
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:138
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:144
 #, elixir-autogen, elixir-format
 msgid "Access was already in place!"
 msgstr "Der Zugriff bestand bereits!"
@@ -2691,7 +2693,7 @@ msgstr "Inhaltstyp"
 msgid "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 GMT\"):"
 msgstr "Datumsangaben in anderen Formaten als RFC 822 (wie „Sat, 01 Apr 2023 19:00:00 GMT“):"
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:100
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:104
 #, elixir-autogen, elixir-format
 msgid "Delegation deleted successfully."
 msgstr "Delegierung gelöscht."
@@ -2949,7 +2951,7 @@ msgstr "Bestanden"
 msgid "Payment link"
 msgstr "Zahlungslink"
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:172
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:178
 #, elixir-autogen, elixir-format
 msgid "Persona claimed successfully."
 msgstr "Persona übernommen."
@@ -2959,12 +2961,12 @@ msgstr "Persona übernommen."
 msgid "Persona data"
 msgstr "Daten der Persona"
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:93
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:97
 #, elixir-autogen, elixir-format
 msgid "Persona delegated successfully."
 msgstr "Persona delegiert."
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:188
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:194
 #, elixir-autogen, elixir-format
 msgid "Persona disconnected successfully."
 msgstr "Persona getrennt."
@@ -3049,7 +3051,7 @@ msgstr "Die Audio-Prüfung liest das erste Megabyte der Mediendateien der 3 neue
 msgid "RSS Feed Url"
 msgstr "RSS-Feed-URL"
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:65
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:67
 #, elixir-autogen, elixir-format
 msgid "Redirect cancelled successfully."
 msgstr "Weiterleitung aufgehoben."
@@ -3230,12 +3232,15 @@ msgstr "Mitwirkung für %{pid} zurückziehen"
 msgid "You are about to claim the following persona:"
 msgstr "Sie sind dabei, folgende Persona zu übernehmen:"
 
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:45
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:71
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:109
 #: lib/pan_web/live/persona/edit.ex:61
 #, elixir-autogen, elixir-format
 msgid "You are not allowed to change this persona."
 msgstr "Sie dürfen diese Persona nicht ändern."
 
-#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:176
+#: lib/pan_web/frontend_controller/persona_frontend_controller.ex:182
 #, elixir-autogen, elixir-format
 msgid "You are not allowed to claim this persona!"
 msgstr "Sie dürfen diese Persona nicht übernehmen!"

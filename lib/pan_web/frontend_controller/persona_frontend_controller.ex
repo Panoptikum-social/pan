@@ -41,7 +41,9 @@ defmodule PanWeb.PersonaFrontendController do
       |> put_flash(:info, dgettext("frontend", "Persona redirected successfully."))
       |> redirect(to: user_frontend_path(conn, :my_profile))
     else
-      render(conn, "not_allowed.html")
+      conn
+      |> put_flash(:error, dgettext("frontend", "You are not allowed to change this persona."))
+      |> redirect(to: user_frontend_path(conn, :my_profile))
     end
   end
 
@@ -65,7 +67,9 @@ defmodule PanWeb.PersonaFrontendController do
       |> put_flash(:info, dgettext("frontend", "Redirect cancelled successfully."))
       |> redirect(to: user_frontend_path(conn, :my_profile))
     else
-      render(conn, "not_allowed.html")
+      conn
+      |> put_flash(:error, dgettext("frontend", "You are not allowed to change this persona."))
+      |> redirect(to: user_frontend_path(conn, :my_profile))
     end
   end
 
@@ -101,7 +105,9 @@ defmodule PanWeb.PersonaFrontendController do
           |> redirect(to: user_frontend_path(conn, :my_profile))
       end
     else
-      render(conn, "not_allowed.html")
+      conn
+      |> put_flash(:error, dgettext("frontend", "You are not allowed to change this persona."))
+      |> redirect(to: user_frontend_path(conn, :my_profile))
     end
   end
 

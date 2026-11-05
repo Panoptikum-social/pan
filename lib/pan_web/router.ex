@@ -354,9 +354,9 @@ defmodule PanWeb.Router do
     delete("/manifestations/delete_all", ManifestationFrontendController, :delete_all)
     resources("/manifestations", ManifestationFrontendController, only: [:delete])
 
-    get("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
-    get("/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
-    get("/personas/:id/redirect", PersonaFrontendController, :redirect)
+    post("/personas/:id/toggle_delegation", PersonaFrontendController, :toggle_delegation)
+    post("/personas/:id/cancel_redirect", PersonaFrontendController, :cancel_redirect)
+    post("/personas/:id/redirect", PersonaFrontendController, :redirect)
 
     get("/invoices/:id/", InvoiceFrontendController, :download)
   end

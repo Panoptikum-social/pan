@@ -132,6 +132,8 @@
                       delegate_id: delegate_persona.id
                     )
                   }
+                  method="post"
+                  data-confirm={dgettext("frontend", "Are you sure?")}
                   class="btn btn-outline btn-warning btn-xs"
                 >
                   {icon("unlink", class: "h-4 w-4 inline")} {dgettext(
@@ -159,6 +161,7 @@
                         delegate_id: delegate_persona.id
                       )
                     }
+                    method="post"
                     class="btn btn-outline btn-primary btn-xs"
                   >
                     {icon("link", class: "h-4 w-4 inline")} {dgettext("frontend", "Delegate")}
@@ -190,6 +193,8 @@
             <li class="flex flex-wrap space-x-2 items-center">
               <.link
                 href={persona_frontend_path(@conn, :cancel_redirect, persona.id)}
+                method="post"
+                data-confirm={dgettext("frontend", "Are you sure?")}
                 class="btn btn-outline btn-warning btn-xs"
               >
                 {icon("unlink", class: "h-4 w-4 inline")} {dgettext(
@@ -216,6 +221,7 @@
                         target_id: target_persona.id
                       )
                     }
+                    method="post"
                     class="btn btn-outline btn-error btn-xs"
                   >
                     {icon("arrow-right", class: "h-4 w-4 inline")} {dgettext(
