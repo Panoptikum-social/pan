@@ -11,7 +11,7 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:16
+#: lib/pan_web/templates/layout/_footer.html.heex:14
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "About"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:25
+#: lib/pan_web/templates/layout/_footer.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Bot Expert Carmen"
 msgstr ""
@@ -67,27 +67,27 @@ msgstr ""
 msgid "Communities"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:12
+#: lib/pan_web/templates/layout/_footer.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:24
+#: lib/pan_web/templates/layout/_footer.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Community Manager Sonja"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:10
+#: lib/pan_web/templates/layout/_footer.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Complaints"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:27
+#: lib/pan_web/templates/layout/_footer.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Development & Hosting"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:19
+#: lib/pan_web/templates/layout/_footer.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr ""
@@ -102,7 +102,7 @@ msgstr ""
 msgid "Hosted by"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:14
+#: lib/pan_web/templates/layout/_footer.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Imprint"
 msgstr ""
@@ -232,7 +232,7 @@ msgstr ""
 #: lib/pan_web/live/podcast/header.ex:93
 #: lib/pan_web/live/podcast/index.ex:121
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:91
-#: lib/pan_web/templates/layout/_footer.html.heex:21
+#: lib/pan_web/templates/layout/_footer.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr ""
@@ -242,7 +242,7 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: lib/pan_web/templates/layout/_footer.html.heex:18
+#: lib/pan_web/templates/layout/_footer.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Talks"
 msgstr ""

@@ -11,7 +11,7 @@ msgstr ""
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:16
+#: lib/pan_web/templates/layout/_footer.html.heex:14
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "About"
@@ -27,7 +27,7 @@ msgstr "Administration"
 msgid "Blog"
 msgstr "Blog"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:25
+#: lib/pan_web/templates/layout/_footer.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Bot Expert Carmen"
 msgstr "Bot-Expertin Carmen"
@@ -67,27 +67,27 @@ msgstr "Farbschema"
 msgid "Communities"
 msgstr "Communitys"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:12
+#: lib/pan_web/templates/layout/_footer.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr "Community"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:24
+#: lib/pan_web/templates/layout/_footer.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Community Manager Sonja"
 msgstr "Community-Managerin Sonja"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:10
+#: lib/pan_web/templates/layout/_footer.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Complaints"
 msgstr "Beschwerden"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:27
+#: lib/pan_web/templates/layout/_footer.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Development & Hosting"
 msgstr "Entwicklung & Hosting"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:19
+#: lib/pan_web/templates/layout/_footer.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr "FAQ"
@@ -102,7 +102,7 @@ msgstr "Zur Startseite"
 msgid "Hosted by"
 msgstr "Gehostet von"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:14
+#: lib/pan_web/templates/layout/_footer.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Imprint"
 msgstr "Impressum"
@@ -232,7 +232,7 @@ msgstr "Podcast vorschlagen"
 #: lib/pan_web/live/podcast/header.ex:93
 #: lib/pan_web/live/podcast/index.ex:121
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:91
-#: lib/pan_web/templates/layout/_footer.html.heex:21
+#: lib/pan_web/templates/layout/_footer.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr "Unterstützung"
@@ -242,7 +242,7 @@ msgstr "Unterstützung"
 msgid "System"
 msgstr "System"
 
-#: lib/pan_web/templates/layout/_footer.html.heex:18
+#: lib/pan_web/templates/layout/_footer.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Talks"
 msgstr "Vorträge"
