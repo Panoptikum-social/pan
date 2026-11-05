@@ -31,6 +31,10 @@ Decided 2026-11-05:
   changeset errors and core components, `<html lang>` from the locale.
   User setting (users.locale, wins over cookie and browser) committed
   2026-11-05; not deployed yet (prod needs the migration).
+- Phase 1 (curations) done 2026-11-05: the three curation
+  LiveViews, grade labels, "My Curations" in the user menu; German in
+  de/curation.po ("Sie", colon gender form, e.g. "Kurator:in").
+  CuratorAssignment (admin + moderator pages) goes with phase 2.
 - #573 Language switcher EN/DE in the sidebar, like the theme switcher
   (PanWeb.Component.LanguageToggle + assets/js/language_toggle.js). It
   POSTs to /locale (no "Are you sure?" for a language switch, OK by the

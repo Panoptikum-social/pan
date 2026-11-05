@@ -1,0 +1,178 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/pan_web/live/curation/podcast.ex:120
+#, elixir-autogen, elixir-format
+msgid "Choose a grade"
+msgstr "Bewertung wählen"
+
+#: lib/pan_web/live/curation/community.ex:91
+#, elixir-autogen, elixir-format
+msgid "Curated by me"
+msgstr "Von mir kuratiert"
+
+#: lib/pan_web/live/curation/podcast.ex:88
+#, elixir-autogen, elixir-format
+msgid "Curation of this podcast is done."
+msgstr "Die Kuratierung dieses Podcasts ist abgeschlossen."
+
+#: lib/pan_web/live/curation/podcast.ex:62
+#, elixir-autogen, elixir-format
+msgid "Curation saved."
+msgstr "Kuratierung gespeichert."
+
+#: lib/pan_web/live/curation/community.ex:64
+#, elixir-autogen, elixir-format
+msgid "Curations in %{community}"
+msgstr "Kuratierungen in %{community}"
+
+#: lib/pan_web/live/curation/podcast.ex:119
+#, elixir-autogen, elixir-format
+msgid "Grade"
+msgstr "Bewertung"
+
+#: lib/pan_web/live/curation/community.ex:90
+#, elixir-autogen, elixir-format
+msgid "Grades"
+msgstr "Bewertungen"
+
+#: lib/pan_web/live/curation/community.ex:123
+#, elixir-autogen, elixir-format
+msgid "Mark this podcast as done? It disappears from the open list."
+msgstr "Diesen Podcast als erledigt markieren? Er verschwindet aus der Liste der offenen Podcasts."
+
+#: lib/pan_web/live/curation/index.ex:14
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "My Curations"
+msgstr "Meine Kuratierungen"
+
+#: lib/pan_web/live/curation/podcast.ex:115
+#, elixir-autogen, elixir-format
+msgid "My curation"
+msgstr "Meine Kuratierung"
+
+#: lib/pan_web/live/curation/podcast.ex:106
+#, elixir-autogen, elixir-format
+msgid "No curations yet."
+msgstr "Noch keine Kuratierungen."
+
+#: lib/pan_web/live/curation/community.ex:139
+#, elixir-autogen, elixir-format
+msgid "No podcasts."
+msgstr "Keine Podcasts."
+
+#: lib/pan_web/live/curation/community.ex:92
+#, elixir-autogen, elixir-format
+msgid "Open for curation"
+msgstr "Offen zur Kuratierung"
+
+#: lib/pan_web/live/curation/community.ex:89
+#, elixir-autogen, elixir-format
+msgid "Podcast"
+msgstr "Podcast"
+
+#: lib/pan_web/live/curation/community.ex:74
+#, elixir-autogen, elixir-format
+msgid "Podcast title"
+msgstr "Podcast-Titel"
+
+#: lib/pan_web/live/curation/podcast.ex:124
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "Speichern"
+
+#: lib/pan_web/live/curation/podcast.ex:66
+#, elixir-autogen, elixir-format
+msgid "Saving failed, please choose a grade."
+msgstr "Speichern fehlgeschlagen, bitte wählen Sie eine Bewertung."
+
+#: lib/pan_web/live/curation/podcast.ex:123
+#, elixir-autogen, elixir-format
+msgid "Text (Markdown)"
+msgstr "Text (Markdown)"
+
+#: lib/pan_web/live/curation/podcast.ex:58
+#, elixir-autogen, elixir-format
+msgid "This podcast is no longer open for curation."
+msgstr "Dieser Podcast ist nicht mehr zur Kuratierung offen."
+
+#: lib/pan_web/live/curation/podcast.ex:29
+#, elixir-autogen, elixir-format
+msgid "This podcast is not up for curation in this community."
+msgstr "Dieser Podcast steht in dieser Community nicht zur Kuratierung."
+
+#: lib/pan_web/live/curation/community.ex:20
+#, elixir-autogen, elixir-format
+msgid "You are not a curator of this community."
+msgstr "Sie sind nicht Kurator:in dieser Community."
+
+#: lib/pan_web/live/curation/index.ex:28
+#, elixir-autogen, elixir-format
+msgid "You are not curating or moderating any community."
+msgstr "Sie kuratieren oder moderieren keine Community."
+
+#: lib/pan_web/live/curation/community.ex:82
+#, elixir-autogen, elixir-format
+msgid "all"
+msgstr "alle"
+
+#: lib/pan_web/models/curation.ex:36
+#, elixir-autogen, elixir-format
+msgid "declined"
+msgstr "abgelehnt"
+
+#: lib/pan_web/live/curation/community.ex:81
+#, elixir-autogen, elixir-format
+msgid "done"
+msgstr "erledigt"
+
+#: lib/pan_web/live/curation/community.ex:132
+#, elixir-autogen, elixir-format
+msgid "done – reopen"
+msgstr "erledigt – wieder öffnen"
+
+#: lib/pan_web/live/curation/podcast.ex:97
+#, elixir-autogen, elixir-format
+msgid "former curator"
+msgstr "ehemalige:r Kurator:in"
+
+#: lib/pan_web/models/curation.ex:34
+#, elixir-autogen, elixir-format
+msgid "indifferent"
+msgstr "neutral"
+
+#: lib/pan_web/live/curation/community.ex:79
+#, elixir-autogen, elixir-format
+msgid "open for curation"
+msgstr "offen zur Kuratierung"
+
+#: lib/pan_web/live/curation/community.ex:131
+#, elixir-autogen, elixir-format
+msgid "open – mark done"
+msgstr "offen – als erledigt markieren"
+
+#: lib/pan_web/models/curation.ex:35
+#, elixir-autogen, elixir-format
+msgid "rather declined"
+msgstr "eher abgelehnt"
+
+#: lib/pan_web/models/curation.ex:33
+#, elixir-autogen, elixir-format
+msgid "rather recommended"
+msgstr "eher empfohlen"
+
+#: lib/pan_web/models/curation.ex:32
+#, elixir-autogen, elixir-format
+msgid "recommended"
+msgstr "empfohlen"

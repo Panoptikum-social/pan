@@ -24,7 +24,10 @@ defmodule PanWeb.Live.Curation.Podcast do
     else
       {:ok,
        socket
-       |> put_flash(:error, "This podcast is not up for curation in this community.")
+       |> put_flash(
+         :error,
+         dgettext("curation", "This podcast is not up for curation in this community.")
+       )
        |> redirect(to: Routes.curation_frontend_path(socket, :index))}
     end
   end
@@ -50,13 +53,17 @@ defmodule PanWeb.Live.Curation.Podcast do
         {:noreply,
          socket
          |> assign(open: open)
-         |> put_flash(:error, "This podcast is no longer open for curation.")}
+         |> put_flash(
+           :error,
+           dgettext("curation", "This podcast is no longer open for curation.")
+         )}
 
       match?({:ok, _}, Curation.save(assigns.mine, params)) ->
-        {:noreply, socket |> put_flash(:info, "Curation saved.") |> fetch()}
+        {:noreply, socket |> put_flash(:info, dgettext("curation", "Curation saved.")) |> fetch()}
 
       true ->
-        {:noreply, put_flash(socket, :error, "Saving failed, please choose a grade.")}
+        {:noreply,
+         put_flash(socket, :error, dgettext("curation", "Saving failed, please choose a grade."))}
     end
   end
 
@@ -78,7 +85,7 @@ defmodule PanWeb.Live.Curation.Podcast do
           {@podcast.title}
         </.link>
       </h1>
-      <p :if={!@open} class="my-2">Curation of this podcast is done.</p>
+      <p :if={!@open} class="my-2">{dgettext("curation", "Curation of this podcast is done.")}</p>
 
       <div
         :for={curation <- @curations}
@@ -87,7 +94,7 @@ defmodule PanWeb.Live.Curation.Podcast do
         <div class="flex items-center gap-2">
           <CurationGrade.badge grade={curation.grade} />
           <span class="font-semibold">
-            {if curation.user, do: curation.user.name, else: "former curator"}
+            {if curation.user, do: curation.user.name, else: dgettext("curation", "former curator")}
           </span>
           <span class="text-xs text-base-content/70">
             {Calendar.strftime(curation.updated_at, "%Y-%m-%d %H:%M")}
@@ -96,7 +103,7 @@ defmodule PanWeb.Live.Curation.Podcast do
         <div class="prose mt-2">{markdown(curation.text)}</div>
       </div>
 
-      <p :if={@curations == []} class="my-4">No curations yet.</p>
+      <p :if={@curations == []} class="my-4">{dgettext("curation", "No curations yet.")}</p>
 
       <.form
         :if={@permissions.curate && @open}
@@ -105,16 +112,16 @@ defmodule PanWeb.Live.Curation.Podcast do
         phx-submit="save"
         class="my-6"
       >
-        <h2 class="text-xl">My curation</h2>
+        <h2 class="text-xl">{dgettext("curation", "My curation")}</h2>
         <.input
           type="select"
           field={@form[:grade]}
-          label="Grade"
-          prompt="Choose a grade"
+          label={dgettext("curation", "Grade")}
+          prompt={dgettext("curation", "Choose a grade")}
           options={Enum.map(Curation.grades(), &{Curation.grade_label(&1), &1})}
         />
-        <OvertypeField.render field={@form[:text]} label="Text (Markdown)" />
-        <.button class="btn btn-primary">Save</.button>
+        <OvertypeField.render field={@form[:text]} label={dgettext("curation", "Text (Markdown)")} />
+        <.button class="btn btn-primary">{dgettext("curation", "Save")}</.button>
       </.form>
     </div>
     """

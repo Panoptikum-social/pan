@@ -11,7 +11,7 @@ defmodule PanWeb.Live.Curation.Index do
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">My Curations</h1>
+      <h1 class="text-3xl">{dgettext("curation", "My Curations")}</h1>
 
       <ul class="list-disc m-4">
         <li :for={community <- @communities}>
@@ -24,7 +24,9 @@ defmodule PanWeb.Live.Curation.Index do
         </li>
       </ul>
 
-      <p :if={@communities == []}>You are not curating or moderating any community.</p>
+      <p :if={@communities == []}>
+        {dgettext("curation", "You are not curating or moderating any community.")}
+      </p>
     </div>
     """
   end

@@ -17,7 +17,7 @@ defmodule PanWeb.Live.Curation.Community do
     else
       {:ok,
        socket
-       |> put_flash(:error, "You are not a curator of this community.")
+       |> put_flash(:error, dgettext("curation", "You are not a curator of this community."))
        |> redirect(to: Routes.curation_frontend_path(socket, :index))}
     end
   end
@@ -60,7 +60,9 @@ defmodule PanWeb.Live.Curation.Community do
   def render(assigns) do
     ~H"""
     <div class="m-4">
-      <h1 class="text-3xl">Curations in {@community.title}</h1>
+      <h1 class="text-3xl">
+        {dgettext("curation", "Curations in %{community}", community: @community.title)}
+      </h1>
 
       <form id="curation-filter" phx-change="filter" phx-submit="filter" class="my-4 flex gap-4">
         <input
@@ -69,23 +71,25 @@ defmodule PanWeb.Live.Curation.Community do
           value={@search}
           phx-debounce="300"
           autocomplete="off"
-          placeholder="Podcast title"
+          placeholder={dgettext("curation", "Podcast title")}
           class="input input-bordered input-sm w-full max-w-md"
         />
         <select :if={@permissions.manage} name="filter" class="select select-bordered select-sm">
-          <option value="open" selected={@filter == :open}>open for curation</option>
-          <option value="done" selected={@filter == :done}>done</option>
-          <option value="all" selected={@filter == :all}>all</option>
+          <option value="open" selected={@filter == :open}>
+            {dgettext("curation", "open for curation")}
+          </option>
+          <option value="done" selected={@filter == :done}>{dgettext("curation", "done")}</option>
+          <option value="all" selected={@filter == :all}>{dgettext("curation", "all")}</option>
         </select>
       </form>
 
       <table class="table table-sm">
         <thead>
           <tr>
-            <th>Podcast</th>
-            <th>Grades</th>
-            <th>Curated by me</th>
-            <th :if={@permissions.manage}>Open for curation</th>
+            <th>{dgettext("curation", "Podcast")}</th>
+            <th>{dgettext("curation", "Grades")}</th>
+            <th>{dgettext("curation", "Curated by me")}</th>
+            <th :if={@permissions.manage}>{dgettext("curation", "Open for curation")}</th>
           </tr>
         </thead>
         <tbody>
@@ -115,18 +119,24 @@ defmodule PanWeb.Live.Curation.Community do
                 phx-value-podcast_id={podcast.id}
                 phx-value-open={to_string(!podcast.open)}
                 data-confirm={
-                  podcast.open && "Mark this podcast as done? It disappears from the open list."
+                  podcast.open &&
+                    dgettext(
+                      "curation",
+                      "Mark this podcast as done? It disappears from the open list."
+                    )
                 }
                 class={["btn btn-xs btn-outline whitespace-nowrap", podcast.open && "btn-success"]}
               >
-                {if podcast.open, do: "open – mark done", else: "done – reopen"}
+                {if podcast.open,
+                  do: dgettext("curation", "open – mark done"),
+                  else: dgettext("curation", "done – reopen")}
               </button>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <p :if={@podcasts == []} class="my-4">No podcasts.</p>
+      <p :if={@podcasts == []} class="my-4">{dgettext("curation", "No podcasts.")}</p>
     </div>
     """
   end

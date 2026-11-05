@@ -33,7 +33,7 @@
   <%= if @current_user.curator || @current_user.moderator || @current_user.admin do %>
     <li class="py-1">
       <.link href={curation_frontend_path(@conn, :index)}>
-        {nav_icon("pencil")} My Curations
+        {nav_icon("pencil")} {dgettext("curation", "My Curations")}
       </.link>
     </li>
   <% end %>

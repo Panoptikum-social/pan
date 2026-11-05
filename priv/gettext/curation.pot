@@ -1,0 +1,178 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:120
+#, elixir-autogen, elixir-format
+msgid "Choose a grade"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:91
+#, elixir-autogen, elixir-format
+msgid "Curated by me"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:88
+#, elixir-autogen, elixir-format
+msgid "Curation of this podcast is done."
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:62
+#, elixir-autogen, elixir-format
+msgid "Curation saved."
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:64
+#, elixir-autogen, elixir-format
+msgid "Curations in %{community}"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:119
+#, elixir-autogen, elixir-format
+msgid "Grade"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:90
+#, elixir-autogen, elixir-format
+msgid "Grades"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:123
+#, elixir-autogen, elixir-format
+msgid "Mark this podcast as done? It disappears from the open list."
+msgstr ""
+
+#: lib/pan_web/live/curation/index.ex:14
+#: lib/pan_web/templates/layout/_user_dropdown.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "My Curations"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:115
+#, elixir-autogen, elixir-format
+msgid "My curation"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:106
+#, elixir-autogen, elixir-format
+msgid "No curations yet."
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:139
+#, elixir-autogen, elixir-format
+msgid "No podcasts."
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:92
+#, elixir-autogen, elixir-format
+msgid "Open for curation"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:89
+#, elixir-autogen, elixir-format
+msgid "Podcast"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:74
+#, elixir-autogen, elixir-format
+msgid "Podcast title"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:124
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:66
+#, elixir-autogen, elixir-format
+msgid "Saving failed, please choose a grade."
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:123
+#, elixir-autogen, elixir-format
+msgid "Text (Markdown)"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:58
+#, elixir-autogen, elixir-format
+msgid "This podcast is no longer open for curation."
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:29
+#, elixir-autogen, elixir-format
+msgid "This podcast is not up for curation in this community."
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:20
+#, elixir-autogen, elixir-format
+msgid "You are not a curator of this community."
+msgstr ""
+
+#: lib/pan_web/live/curation/index.ex:28
+#, elixir-autogen, elixir-format
+msgid "You are not curating or moderating any community."
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:82
+#, elixir-autogen, elixir-format
+msgid "all"
+msgstr ""
+
+#: lib/pan_web/models/curation.ex:36
+#, elixir-autogen, elixir-format
+msgid "declined"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:81
+#, elixir-autogen, elixir-format
+msgid "done"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:132
+#, elixir-autogen, elixir-format
+msgid "done – reopen"
+msgstr ""
+
+#: lib/pan_web/live/curation/podcast.ex:97
+#, elixir-autogen, elixir-format
+msgid "former curator"
+msgstr ""
+
+#: lib/pan_web/models/curation.ex:34
+#, elixir-autogen, elixir-format
+msgid "indifferent"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:79
+#, elixir-autogen, elixir-format
+msgid "open for curation"
+msgstr ""
+
+#: lib/pan_web/live/curation/community.ex:131
+#, elixir-autogen, elixir-format
+msgid "open – mark done"
+msgstr ""
+
+#: lib/pan_web/models/curation.ex:35
+#, elixir-autogen, elixir-format
+msgid "rather declined"
+msgstr ""
+
+#: lib/pan_web/models/curation.ex:33
+#, elixir-autogen, elixir-format
+msgid "rather recommended"
+msgstr ""
+
+#: lib/pan_web/models/curation.ex:32
+#, elixir-autogen, elixir-format
+msgid "recommended"
+msgstr ""

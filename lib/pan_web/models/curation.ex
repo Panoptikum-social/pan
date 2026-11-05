@@ -1,5 +1,6 @@
 defmodule PanWeb.Curation do
   use PanWeb, :model
+  use Gettext, backend: PanWeb.Gettext
   alias Pan.Repo
   alias PanWeb.{CategoryPodcast, Community, Curation, Curatorship, Moderation, User}
 
@@ -28,7 +29,11 @@ defmodule PanWeb.Curation do
 
   def grades, do: @grades
 
-  def grade_label(grade), do: grade |> to_string() |> String.replace("_", " ")
+  def grade_label(:recommended), do: dgettext("curation", "recommended")
+  def grade_label(:rather_recommended), do: dgettext("curation", "rather recommended")
+  def grade_label(:indifferent), do: dgettext("curation", "indifferent")
+  def grade_label(:rather_declined), do: dgettext("curation", "rather declined")
+  def grade_label(:declined), do: dgettext("curation", "declined")
 
   @doc """
   What a user may do with the curations of a community: `curate` (write their

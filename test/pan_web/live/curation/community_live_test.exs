@@ -76,4 +76,21 @@ defmodule PanWeb.Live.Curation.CommunityLiveTest do
              "podcast #{podcast.id} in community #{community.id} reopened by user #{moderator.id}"
            ]
   end
+
+  test "renders in German for a user with locale de", %{
+    conn: conn,
+    moderator: moderator,
+    community: community,
+    podcast: podcast
+  } do
+    moderator |> User.locale_changeset(%{locale: "de"}) |> Repo.update!()
+
+    {:ok, view, html} = live(conn, "/curator/communities/#{community.slug}")
+
+    assert html =~ "Kuratierungen in #{community.title}"
+
+    button = element(view, "button[phx-value-podcast_id='#{podcast.id}']")
+    assert render(button) =~ "offen – als erledigt markieren"
+    assert render(button) =~ "data-confirm=\"Diesen Podcast als erledigt markieren?"
+  end
 end
