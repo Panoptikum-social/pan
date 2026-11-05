@@ -1,5 +1,6 @@
 defmodule PanWeb.Live.User.New do
   use Phoenix.LiveView, container: {:div, class: "flex-1 flex justify-center"}
+  use Gettext, backend: PanWeb.Gettext
   on_mount PanWeb.Locale
   alias PanWeb.{User, Endpoint}
   alias Phoenix.Component
@@ -12,7 +13,12 @@ defmodule PanWeb.Live.User.New do
       |> Map.put(:action, :insert)
 
     {:ok,
-     assign(socket, changeset: changeset, user: %User{}, submitted: false, page_title: "Sign Up")}
+     assign(socket,
+       changeset: changeset,
+       user: %User{},
+       submitted: false,
+       page_title: dgettext("frontend", "Sign Up")
+     )}
   end
 
   def handle_event("validate", %{"user" => user_params}, %{assigns: assigns} = socket) do
@@ -24,7 +30,11 @@ defmodule PanWeb.Live.User.New do
   end
 
   def handle_event("create", %{"user" => user_params}, %{assigns: assigns} = socket) do
-    changeset = User.registration_changeset(assigns.user, user_params)
+    # the page language becomes the user's setting, for later emails (#583)
+    changeset =
+      assigns.user
+      |> User.registration_changeset(user_params)
+      |> Ecto.Changeset.put_change(:locale, assigns.locale)
 
     case Pan.Repo.insert(changeset) do
       {:ok, user} ->
@@ -33,10 +43,12 @@ defmodule PanWeb.Live.User.New do
         Pan.Email.email_verification_link_html_email(token, user.email)
         |> Pan.Mailer.deliver()
 
-        message = """
-        Your account @#{user.username} has been created! Please verify your email address
-        via the verification link in the email sent to you, you can't log in before.
-        """
+        message =
+          dgettext(
+            "frontend",
+            "Your account @%{username} has been created! Please verify your email address via the verification link in the email sent to you, you can't log in before.",
+            username: user.username
+          )
 
         {:noreply,
          put_flash(socket, :info, message)
@@ -50,7 +62,7 @@ defmodule PanWeb.Live.User.New do
   def render(assigns) do
     ~H"""
     <div class="max-w-lg m-4">
-      <h1 class="text-3xl">Sign Up</h1>
+      <h1 class="text-3xl">{dgettext("frontend", "Sign Up")}</h1>
 
       <.form
         :let={f}
@@ -60,7 +72,7 @@ defmodule PanWeb.Live.User.New do
         phx-submit="create"
       >
         <.error :if={@submitted and !@changeset.valid?}>
-          The form is not filled out fully.
+          {dgettext("frontend", "The form is not filled out fully.")}
         </.error>
 
         <.error
@@ -68,24 +80,29 @@ defmodule PanWeb.Live.User.New do
           name="welcome_back"
           class="alert alert-soft alert-warning mb-4"
         >
-          <h2 class="text-lg">Welcome back!</h2>
+          <h2 class="text-lg">{dgettext("frontend", "Welcome back!")}</h2>
 
           <p>
-            There is already a user account with this email address.<br /> Please
+            {dgettext("frontend", "There is already a user account with this email address.")}<br /> {dgettext(
+              "frontend",
+              "Please"
+            )}
             <.link
               href={user_path(@socket, :forgot_password)}
               class="underline hover:text-primary"
             >
-              Request a login link
+              {dgettext("frontend", "Request a login link")}
             </.link>
-            via email to login to your existing account and
-            reset your password.
+            {dgettext(
+              "frontend",
+              "via email to login to your existing account and reset your password."
+            )}
           </p>
         </.error>
 
         <.input
           field={f[:name]}
-          label="Name *"
+          label={dgettext("frontend", "Name *")}
           class="w-full input validator"
           required
           show_errors={false}
@@ -93,7 +110,7 @@ defmodule PanWeb.Live.User.New do
 
         <.input
           field={f[:username]}
-          label="Username *"
+          label={dgettext("frontend", "Username *")}
           class="w-full input"
           required
           show_errors={false}
@@ -102,7 +119,7 @@ defmodule PanWeb.Live.User.New do
         <.input
           type="email"
           field={f[:email]}
-          label="Email *"
+          label={dgettext("frontend", "Email *")}
           class="w-full input"
           required
           show_errors={false}
@@ -118,7 +135,7 @@ defmodule PanWeb.Live.User.New do
               do: Enum.map(f[:password].errors, &translate_error(&1)),
               else: []
           }
-          label="Password *"
+          label={dgettext("frontend", "Password *")}
           class="w-full input"
           show_errors={false}
         />
@@ -133,7 +150,7 @@ defmodule PanWeb.Live.User.New do
               do: Enum.map(f[:password_confirmation].errors, &translate_error(&1)),
               else: []
           }
-          label="Password Confirmation *"
+          label={dgettext("frontend", "Password Confirmation *")}
           class="w-full input"
           show_errors={false}
         />
@@ -141,20 +158,20 @@ defmodule PanWeb.Live.User.New do
         <.input
           type="checkbox"
           field={f[:podcaster]}
-          label="I am a podcaster"
+          label={dgettext("frontend", "I am a podcaster")}
         />
 
         <.input
           type="number"
           field={f[:bot_check]}
           required
-          label="If you subtract two from 44, you get... *"
-          placeholder="Are you a human? ;-)"
+          label={dgettext("frontend", "If you subtract two from 44, you get... *")}
+          placeholder={dgettext("frontend", "Are you a human? ;-)")}
           class="w-full input"
           show_errors={false}
         />
 
-        <input type="submit" value="Create Account" class="btn btn-primary" />
+        <input type="submit" value={dgettext("frontend", "Create Account")} class="btn btn-primary" />
       </.form>
     </div>
     """

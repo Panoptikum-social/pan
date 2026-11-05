@@ -42,7 +42,7 @@ defmodule PanWeb.UserFrontendController do
     with {:ok, updated_user} <- Repo.update(changeset),
          {:ok, _} <- User.update_languages(updated_user, language_group_ids) do
       conn
-      |> put_flash(:info, "Account updated successfully.")
+      |> put_flash(:info, dgettext("frontend", "Account updated successfully."))
       |> redirect(to: user_frontend_path(conn, :my_profile))
     else
       {:error, changeset} ->
@@ -69,7 +69,7 @@ defmodule PanWeb.UserFrontendController do
     case Repo.update(changeset) do
       {:ok, _user} ->
         conn
-        |> put_flash(:info, "Password updated successfully.")
+        |> put_flash(:info, dgettext("frontend", "Password updated successfully."))
         |> redirect(to: user_frontend_path(conn, :my_profile))
 
       {:error, changeset} ->
@@ -241,7 +241,7 @@ defmodule PanWeb.UserFrontendController do
     end
 
     conn
-    |> put_flash(:info, "Liked all podcasts you had subscribed to.")
+    |> put_flash(:info, dgettext("frontend", "Liked all podcasts you had subscribed to."))
     |> redirect(to: user_frontend_path(conn, :my_podcasts))
   end
 
@@ -271,7 +271,7 @@ defmodule PanWeb.UserFrontendController do
     end
 
     conn
-    |> put_flash(:info, "Followed all podcasts you had subscribed to.")
+    |> put_flash(:info, dgettext("frontend", "Followed all podcasts you had subscribed to."))
     |> redirect(to: user_frontend_path(conn, :my_podcasts))
   end
 
@@ -280,7 +280,7 @@ defmodule PanWeb.UserFrontendController do
     |> Repo.delete!()
 
     conn
-    |> put_flash(:info, "User deleted successfully.")
+    |> put_flash(:info, dgettext("frontend", "User deleted successfully."))
     |> redirect(to: "/")
   end
 end

@@ -1,13 +1,18 @@
 <div class="m-4 max-w-lg">
-  <h1 class="text-3xl">Email address not verified</h1>
+  <h1 class="text-3xl">{dgettext("frontend", "Email address not verified")}</h1>
   <p class="my-4">
-    You can't log in before you have verified your email address, by clicking on the
-    verification link in the email we sent to you.
+    {dgettext(
+      "frontend",
+      "You can't log in before you have verified your email address, by clicking on the verification link in the email we sent to you."
+    )}
   </p>
-  <p class="my-4">Did not get it, or is the link too old?</p>
+  <p class="my-4">{dgettext("frontend", "Did not get it, or is the link too old?")}</p>
 
   <.form for={%{}} action={session_path(@conn, :resend_verification)}>
     <input type="hidden" name="token" value={@token} />
-    <button type="submit" class="btn btn-primary">Send verification email again</button>
+    <button type="submit" class="btn btn-primary">{dgettext(
+      "frontend",
+      "Send verification email again"
+    )}</button>
   </.form>
 </div>

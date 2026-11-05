@@ -5,14 +5,14 @@ defmodule PanWeb.Live.Session.New do
   alias PanWeb.Endpoint
 
   def mount(params, _session, socket) do
-    {:ok, assign(socket, page_title: "Log In", form: to_form(params))}
+    {:ok, assign(socket, page_title: dgettext("frontend", "Log In"), form: to_form(params))}
   end
 
   def render(assigns) do
     ~H"""
     <div class="m-4 flex justify-center">
       <div class="max-w-lg my-4">
-        <h1 class="text-3xl">Login</h1>
+        <h1 class="text-3xl">{dgettext("frontend", "Login")}</h1>
 
         <.form
           :let={f}
@@ -21,32 +21,46 @@ defmodule PanWeb.Live.Session.New do
           as={:session}
           autocomplete="off"
         >
-          <.input field={f[:username]} label="Username or email" class="w-full input" />
+          <.input
+            field={f[:username]}
+            label={dgettext("frontend", "Username or email")}
+            class="w-full input"
+          />
 
-          <.input field={f[:password]} label="Password" type="password" class="w-full input" value="" />
+          <.input
+            field={f[:password]}
+            label={dgettext("frontend", "Password")}
+            type="password"
+            class="w-full input"
+            value=""
+          />
 
-          <.input field={f[:remember_me]} type="checkbox" label="Remember me for 30 days" />
+          <.input
+            field={f[:remember_me]}
+            type="checkbox"
+            label={dgettext("frontend", "Remember me for 30 days")}
+          />
 
-          <.button type="submit" class="btn btn-primary">Log in</.button>
+          <.button type="submit" class="btn btn-primary">{dgettext("frontend", "Log in")}</.button>
         </.form>
 
         <ul class="list-disc mt-4 ml-8">
           <li>
-            Forgot your password? -
+            {dgettext("frontend", "Forgot your password?")} -
             <.link
               href={user_path(Endpoint, :forgot_password)}
               class="underline hover:text-primary"
             >
-              Get an email with a login link
+              {dgettext("frontend", "Get an email with a login link")}
             </.link>
           </li>
           <li>
-            No account yet? -
+            {dgettext("frontend", "No account yet?")} -
             <.link
               href={user_frontend_path(Endpoint, :new)}
               class="underline hover:text-primary"
             >
-              Sign up
+              {dgettext("frontend", "Sign up")}
             </.link>
           </li>
         </ul>

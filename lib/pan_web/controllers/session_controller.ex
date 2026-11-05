@@ -6,7 +6,7 @@ defmodule PanWeb.SessionController do
 
     case PanWeb.Auth.login_by_username_and_pass(conn, user, given_pass, remember_me?) do
       {:ok, conn} ->
-        conn = put_flash(conn, :info, "Welcome back!")
+        conn = put_flash(conn, :info, dgettext("frontend", "Welcome back!"))
 
         if get_session(conn, :desired_url) do
           redirect(conn, to: get_session(conn, :desired_url))
@@ -20,7 +20,7 @@ defmodule PanWeb.SessionController do
 
       {:error, _reason, conn} ->
         conn
-        |> put_flash(:error, "Invalid username/password combination!")
+        |> put_flash(:error, dgettext("frontend", "Invalid username/password combination!"))
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -39,13 +39,19 @@ defmodule PanWeb.SessionController do
         conn
         |> put_flash(
           :info,
-          "We sent you a new verification email. Please click the link in it, then log in."
+          dgettext(
+            "frontend",
+            "We sent you a new verification email. Please click the link in it, then log in."
+          )
         )
         |> redirect(to: session_path(conn, :new))
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "That request has expired, please log in again.")
+        |> put_flash(
+          :error,
+          dgettext("frontend", "That request has expired, please log in again.")
+        )
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -54,17 +60,17 @@ defmodule PanWeb.SessionController do
     case PanWeb.Auth.login_by_token(conn, token) do
       {:ok, conn} ->
         conn
-        |> put_flash(:info, "Welcome back, please set your new password!")
+        |> put_flash(:info, dgettext("frontend", "Welcome back, please set your new password!"))
         |> redirect(to: user_frontend_path(conn, :edit_password))
 
       {:error, :expired} ->
         conn
-        |> put_flash(:error, "The token has expired already!")
+        |> put_flash(:error, dgettext("frontend", "The token has expired already!"))
         |> redirect(to: session_path(conn, :new))
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Invalid token!")
+        |> put_flash(:error, dgettext("frontend", "Invalid token!"))
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -75,18 +81,21 @@ defmodule PanWeb.SessionController do
         conn
         |> put_flash(
           :info,
-          "Welcome back! Your account is kept and your email address is verified."
+          dgettext(
+            "frontend",
+            "Welcome back! Your account is kept and your email address is verified."
+          )
         )
         |> redirect(to: user_frontend_path(conn, :my_profile))
 
       {:error, :expired} ->
         conn
-        |> put_flash(:error, "The link has expired already!")
+        |> put_flash(:error, dgettext("frontend", "The link has expired already!"))
         |> redirect(to: session_path(conn, :new))
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Invalid link!")
+        |> put_flash(:error, dgettext("frontend", "Invalid link!"))
         |> redirect(to: session_path(conn, :new))
     end
   end
@@ -101,18 +110,18 @@ defmodule PanWeb.SessionController do
     case PanWeb.Auth.login_by_token(conn, token) do
       {:ok, conn} ->
         conn
-        |> put_flash(:info, "Thank you for verifying your email address!")
+        |> put_flash(:info, dgettext("frontend", "Thank you for verifying your email address!"))
 
         render(conn, "email_verified.html")
 
       {:error, :expired} ->
         conn
-        |> put_flash(:error, "The token has expired already!")
+        |> put_flash(:error, dgettext("frontend", "The token has expired already!"))
         |> render("error.html")
 
       {:error, _reason} ->
         conn
-        |> put_flash(:error, "Invalid token!")
+        |> put_flash(:error, dgettext("frontend", "Invalid token!"))
         |> render("error.html")
     end
   end

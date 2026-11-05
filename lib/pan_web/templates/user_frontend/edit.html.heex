@@ -1,6 +1,6 @@
 <div class="m-auto max-w-6xl">
   <h1 class="text-3xl">
-    Update Profile
+    {dgettext("frontend", "Update Profile")}
   </h1>
 
   <.form
@@ -10,30 +10,53 @@
     class="p-4 flex flex-col items-start space-y-4"
   >
     <.error :if={@changeset.action}>
-      Oops, something went wrong! Please check the errors below.
+      {dgettext("frontend", "Oops, something went wrong! Please check the errors below.")}
     </.error>
-    <.input field={f[:name]} type="text" label="Name" placeholder="Name" class="input" />
+    <.input
+      field={f[:name]}
+      type="text"
+      label={dgettext("frontend", "Name")}
+      placeholder={dgettext("frontend", "Name")}
+      class="input"
+    />
     <.input
       field={f[:username]}
       type="text"
-      label="Username"
-      placeholder="Username"
+      label={dgettext("frontend", "Username")}
+      placeholder={dgettext("frontend", "Username")}
       class="input"
     />
-    <.input field={f[:email]} type="email" label="Email" placeholder="Email" class="input" />
-    <.input field={f[:podcaster]} type="checkbox" label="I am a podcaster" />
-    <.input field={f[:share_follows]} type="checkbox" label="I want to share my followings" />
+    <.input
+      field={f[:email]}
+      type="email"
+      label={dgettext("frontend", "Email")}
+      placeholder={dgettext("frontend", "Email")}
+      class="input"
+    />
+    <.input
+      field={f[:podcaster]}
+      type="checkbox"
+      label={dgettext("frontend", "I am a podcaster")}
+    />
+    <.input
+      field={f[:share_follows]}
+      type="checkbox"
+      label={dgettext("frontend", "I want to share my followings")}
+    />
     <.input
       field={f[:share_subscriptions]}
       type="checkbox"
-      label="I want to share my subscriptions"
+      label={dgettext("frontend", "I want to share my subscriptions")}
     />
 
     <fieldset class="w-full">
       <legend class="mb-1">
-        Languages I speak
+        {dgettext("frontend", "Languages I speak")}
         <span class="block text-xs font-normal text-base-content/70">
-          Used to optionally restrict search results to podcasts/episodes in these languages.
+          {dgettext(
+            "frontend",
+            "Used to optionally restrict search results to podcasts/episodes in these languages."
+          )}
         </span>
       </legend>
       <input type="hidden" name="user[language_group_ids][]" value="" />
@@ -54,6 +77,6 @@
       </div>
     </fieldset>
 
-    <button type="submit" class="btn btn-primary">Update Profile</button>
+    <button type="submit" class="btn btn-primary">{dgettext("frontend", "Update Profile")}</button>
   </.form>
 </div>

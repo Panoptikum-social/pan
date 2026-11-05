@@ -39,6 +39,8 @@ msgid "Categories"
 msgstr ""
 
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:14
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:3
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Change Password"
 msgstr ""
@@ -104,6 +106,7 @@ msgstr ""
 msgid "Latest Recommendations"
 msgstr ""
 
+#: lib/pan_web/live/session/new.ex:8
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Log In"
@@ -125,11 +128,13 @@ msgid "Meta"
 msgstr ""
 
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:55
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "My Data"
 msgstr ""
 
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:50
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "My OPMLs"
 msgstr ""
@@ -140,6 +145,8 @@ msgid "My Podcasts"
 msgstr ""
 
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:9
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:13
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "My Profile"
 msgstr ""
@@ -170,6 +177,8 @@ msgid "Podcasters"
 msgstr ""
 
 #: lib/pan_web/templates/layout/_footer.html.heex:8
+#: lib/pan_web/templates/user/forgot_password.html.heex:22
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Privacy"
 msgstr ""
@@ -184,6 +193,8 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+#: lib/pan_web/live/user/new.ex:20
+#: lib/pan_web/live/user/new.ex:65
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:103
 #, elixir-autogen, elixir-format
 msgid "Sign Up"
@@ -220,6 +231,7 @@ msgid "The page you requested doesn't exist (anymore). Please check the address,
 msgstr ""
 
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:79
+#: lib/pan_web/templates/user_frontend/index.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Users"
 msgstr ""
@@ -232,4 +244,1057 @@ msgstr ""
 #: lib/pan_web/templates/layout/_navbar.html.heex:194
 #, elixir-autogen, elixir-format
 msgid "toggle sidebar"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:119
+#, elixir-autogen, elixir-format
+msgid "A delegation lets the gigs (i.e. contributions to episodes) and engagements (i.e. contributions to podcasts) of the persona also appear on the profile page of the target persona."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:45
+#, elixir-autogen, elixir-format
+msgid "Account updated successfully."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:552
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:99
+#, elixir-autogen, elixir-format
+msgid "Address"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "All invoices, that appear here, have been paid already."
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:169
+#, elixir-autogen, elixir-format
+msgid "Are you a human? ;-)"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:90
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:119
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:595
+#, elixir-autogen, elixir-format
+msgid "Are you sure?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:468
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All categories will be unfollowed!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:501
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All categories will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:306
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All chapters will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:273
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All episodes will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All manifestations will be deleted!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:402
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All personas will be unfollowed!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:435
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All personas will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:207
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All podcasts will be unfollowed!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:240
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All podcasts will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:538
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All recommendations will be deleted!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:174
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All subscriptions will be deleted!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:369
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All users will be unfollowed!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:336
+#, elixir-autogen, elixir-format
+msgid "Are you sure? All users will be unliked!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:623
+#, elixir-autogen, elixir-format
+msgid "Are you sure? Your account would be deleted!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:137
+#, elixir-autogen, elixir-format
+msgid "Cancel Delegation"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:195
+#, elixir-autogen, elixir-format
+msgid "Cancel Redirection"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:456
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:489
+#, elixir-autogen, elixir-format
+msgid "Click on the category link to open the category show page in a new tab to un/like, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:294
+#, elixir-autogen, elixir-format
+msgid "Click on the chapter link to open the episode show page in a new tab to un/like, un/subscribe, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:261
+#, elixir-autogen, elixir-format
+msgid "Click on the episode link to open the episode show page in a new tab to un/like, un/subscribe, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:390
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:423
+#, elixir-autogen, elixir-format
+msgid "Click on the persona link to open the persona show page in a new tab to un/like, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:162
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:195
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:228
+#, elixir-autogen, elixir-format
+msgid "Click on the podcast link to open the podcast show page in a new tab to un/like, un/subscribe, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:327
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:357
+#, elixir-autogen, elixir-format
+msgid "Click on the user link to open the user show page in a new tab to un/like, un/follow."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:551
+#, elixir-autogen, elixir-format
+msgid "Comment"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:174
+#, elixir-autogen, elixir-format
+msgid "Create Account"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:606
+#, elixir-autogen, elixir-format
+msgid "Danger Zone"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:149
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:548
+#, elixir-autogen, elixir-format
+msgid "Date"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "Delegate"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "Delegations"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:597
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "Delete Manifestation"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "Delete all manifestations"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:541
+#, elixir-autogen, elixir-format
+msgid "Delete all recommendations"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:177
+#, elixir-autogen, elixir-format
+msgid "Delete all subscriptions"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:626
+#, elixir-autogen, elixir-format
+msgid "Delete my account"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:87
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:104
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:133
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr ""
+
+#: lib/pan_web/templates/session/unverified.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Did not get it, or is the link too old?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:121
+#, elixir-autogen, elixir-format
+msgid "Disconnect Persona"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Download"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Edit persona"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:20
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Edit your data"
+msgstr ""
+
+#: lib/pan_web/templates/user/forgot_password.html.heex:14
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:84
+#: lib/pan_web/templates/user_frontend/edit.html.heex:32
+#: lib/pan_web/templates/user_frontend/edit.html.heex:33
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:34
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:102
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:131
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:122
+#, elixir-autogen, elixir-format
+msgid "Email *"
+msgstr ""
+
+#: lib/pan_web/templates/session/unverified.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Email address not verified"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Email address verified?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:569
+#, elixir-autogen, elixir-format
+msgid "Episode:"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:99
+#, elixir-autogen, elixir-format
+msgid "Fediverse"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:151
+#, elixir-autogen, elixir-format
+msgid "File"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Follow all subscribed"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:453
+#, elixir-autogen, elixir-format
+msgid "Followed Categories"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:387
+#, elixir-autogen, elixir-format
+msgid "Followed Personas"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:192
+#, elixir-autogen, elixir-format
+msgid "Followed Podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:354
+#, elixir-autogen, elixir-format
+msgid "Followed Users"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:274
+#, elixir-autogen, elixir-format
+msgid "Followed all podcasts you had subscribed to."
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:49
+#: lib/pan_web/templates/user/forgot_password.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Forgot your password?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Full Name"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:54
+#, elixir-autogen, elixir-format
+msgid "Get an email with a login link"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:161
+#: lib/pan_web/templates/user_frontend/edit.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "I am a podcaster"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "I am a podcaster myself."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "I am not a podcaster."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "I do currently share my followings."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "I do currently share my subscriptions."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "I do not share my followings."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "I do not share my subscriptions."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "I have admin privileges."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "I want to share my followings"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "I want to share my subscriptions"
+msgstr ""
+
+#: lib/pan_web/templates/user/login_link_sent.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "If we found a user with this email address, we sent them an email containing a login link."
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:168
+#, elixir-autogen, elixir-format
+msgid "If you subtract two from 44, you get... *"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:95
+#, elixir-autogen, elixir-format
+msgid "Image title"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Image url"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Interface language"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:98
+#, elixir-autogen, elixir-format
+msgid "Invalid link!"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:73
+#: lib/pan_web/controllers/session_controller.ex:124
+#, elixir-autogen, elixir-format
+msgid "Invalid token!"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:23
+#, elixir-autogen, elixir-format
+msgid "Invalid username/password combination!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:142
+#, elixir-autogen, elixir-format
+msgid "Invoices"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:143
+#, elixir-autogen, elixir-format
+msgid "Invoices cannot be deleted, we have to store them due to fiscal regulations."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Is podcaster?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Languages I speak"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Last login"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Like all subscribed"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:486
+#, elixir-autogen, elixir-format
+msgid "Liked Categories"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:291
+#, elixir-autogen, elixir-format
+msgid "Liked Chapters"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:258
+#, elixir-autogen, elixir-format
+msgid "Liked Episodes"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:420
+#, elixir-autogen, elixir-format
+msgid "Liked Personas"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:225
+#, elixir-autogen, elixir-format
+msgid "Liked Podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:324
+#, elixir-autogen, elixir-format
+msgid "Liked Users"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:244
+#, elixir-autogen, elixir-format
+msgid "Liked all podcasts you had subscribed to."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Listeners of the podcasts you listen to, also listen to"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:44
+#, elixir-autogen, elixir-format
+msgid "Log in"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:15
+#, elixir-autogen, elixir-format
+msgid "Login"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:7
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Manage"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "My invoices"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:78
+#: lib/pan_web/templates/user_frontend/edit.html.heex:18
+#: lib/pan_web/templates/user_frontend/edit.html.heex:19
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:30
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:98
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:105
+#, elixir-autogen, elixir-format
+msgid "Name *"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:58
+#, elixir-autogen, elixir-format
+msgid "No account yet?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "None yet. Podcasts whose feed lists your verified email address as owner are assigned to you here automatically."
+msgstr ""
+
+#: lib/pan_web/templates/user/login_link_sent.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "OK."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "OPML Files"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:547
+#, elixir-autogen, elixir-format
+msgid "Object"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:13
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Oops, something went wrong! Please check the errors below."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:75
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:96
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:125
+#, elixir-autogen, elixir-format
+msgid "PanoptikumID"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:32
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:18
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:138
+#, elixir-autogen, elixir-format
+msgid "Password *"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Password Confirmation"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:153
+#, elixir-autogen, elixir-format
+msgid "Password Confirmation *"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit_password.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Password confirmation"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:72
+#, elixir-autogen, elixir-format
+msgid "Password updated successfully."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:2
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Personas"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:86
+#, elixir-autogen, elixir-format
+msgid "Please"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:562
+#, elixir-autogen, elixir-format
+msgid "Podcast:"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Podcaster"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Podcasts I follow"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Podcasts I like"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Podcasts I manage"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:519
+#, elixir-autogen, elixir-format
+msgid "Recommendations"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:221
+#, elixir-autogen, elixir-format
+msgid "Redirect"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:179
+#, elixir-autogen, elixir-format
+msgid "Redirection"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:41
+#, elixir-autogen, elixir-format
+msgid "Remember me for 30 days"
+msgstr ""
+
+#: lib/pan_web/templates/user/forgot_password.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Request Login Link"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:94
+#, elixir-autogen, elixir-format
+msgid "Request a login link"
+msgstr ""
+
+#: lib/pan_web/templates/user/forgot_password.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "See"
+msgstr ""
+
+#: lib/pan_web/templates/session/unverified.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Send verification email again"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Shares follows?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "Shares subscriptions?"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Show persona"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:63
+#, elixir-autogen, elixir-format
+msgid "Sign up"
+msgstr ""
+
+#: lib/pan_web/templates/user/forgot_password.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Submitting this form will transfer a session cookie to the server."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Subscribed Podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Subscriptions"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:113
+#: lib/pan_web/templates/session/email_verified.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Thank you for verifying your email address!"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:53
+#, elixir-autogen, elixir-format
+msgid "That request has expired, please log in again."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "The categories my podcasts are assigned to"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:75
+#, elixir-autogen, elixir-format
+msgid "The form is not filled out fully."
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:93
+#, elixir-autogen, elixir-format
+msgid "The link has expired already!"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:182
+#, elixir-autogen, elixir-format
+msgid "The redirection redirects the persona profile page to the profile page of the target persona."
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:68
+#: lib/pan_web/controllers/session_controller.ex:119
+#, elixir-autogen, elixir-format
+msgid "The token has expired already!"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:86
+#, elixir-autogen, elixir-format
+msgid "There is already a user account with this email address."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "This persona has been generated automatically, because you checked the podcaster checkbox."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "This persona is currently not redirected."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:108
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:137
+#, elixir-autogen, elixir-format
+msgid "Title"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:471
+#, elixir-autogen, elixir-format
+msgid "Unfollow all categories"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:405
+#, elixir-autogen, elixir-format
+msgid "Unfollow all personas"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:210
+#, elixir-autogen, elixir-format
+msgid "Unfollow all podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:372
+#, elixir-autogen, elixir-format
+msgid "Unfollow all users"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:504
+#, elixir-autogen, elixir-format
+msgid "Unlike all categories"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:309
+#, elixir-autogen, elixir-format
+msgid "Unlike all chapters"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:276
+#, elixir-autogen, elixir-format
+msgid "Unlike all episodes"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:438
+#, elixir-autogen, elixir-format
+msgid "Unlike all personas"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:243
+#, elixir-autogen, elixir-format
+msgid "Unlike all podcasts"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:339
+#, elixir-autogen, elixir-format
+msgid "Unlike all users"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:3
+#: lib/pan_web/templates/user_frontend/edit.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Update Profile"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:81
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:100
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:129
+#, elixir-autogen, elixir-format
+msgid "Uri"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:106
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Url"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Used to optionally restrict search results to podcasts/episodes in these languages."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_profile.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "User Name"
+msgstr ""
+
+#: lib/pan_web/frontend_controller/user_frontend_controller.ex:283
+#, elixir-autogen, elixir-format
+msgid "User deleted successfully."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/edit.html.heex:25
+#: lib/pan_web/templates/user_frontend/edit.html.heex:26
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Username"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:113
+#, elixir-autogen, elixir-format
+msgid "Username *"
+msgstr ""
+
+#: lib/pan_web/live/session/new.ex:26
+#, elixir-autogen, elixir-format
+msgid "Username or email"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_podcasts.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "Users, who like the same podcasts as you, also like"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "We call all these different identities personas."
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:42
+#, elixir-autogen, elixir-format
+msgid "We sent you a new verification email. Please click the link in it, then log in."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:614
+#, elixir-autogen, elixir-format
+msgid "We would be really sad to see you leave. But you can always sign up for a new account."
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:9
+#: lib/pan_web/live/user/new.ex:83
+#, elixir-autogen, elixir-format
+msgid "Welcome back!"
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:84
+#, elixir-autogen, elixir-format
+msgid "Welcome back! Your account is kept and your email address is verified."
+msgstr ""
+
+#: lib/pan_web/controllers/session_controller.ex:63
+#, elixir-autogen, elixir-format
+msgid "Welcome back, please set your new password!"
+msgstr ""
+
+#: lib/pan_web/templates/session/email_verified.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "You can close this tab or window now."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:522
+#, elixir-autogen, elixir-format
+msgid "You can delete a recommendation by clicking the Delete button next to it."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:526
+#, elixir-autogen, elixir-format
+msgid "You can double check the context by clicking the podcast or episode link, that will open podcast or episode in a new tab, respectively."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "You can even delete all manifestations as personas, you created so far, at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:531
+#, elixir-autogen, elixir-format
+msgid "You can even delete all the recommendations, you created so far, at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:167
+#, elixir-autogen, elixir-format
+msgid "You can even delete all the subscriptions, you created so far, at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:461
+#, elixir-autogen, elixir-format
+msgid "You can even unfollow all the categories, you followed so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:395
+#, elixir-autogen, elixir-format
+msgid "You can even unfollow all the personas, you followed so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:200
+#, elixir-autogen, elixir-format
+msgid "You can even unfollow all the podcasts, you followed so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:362
+#, elixir-autogen, elixir-format
+msgid "You can even unfollow all the users, you followed so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:494
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the categories, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:299
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the chapters, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:266
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the episodes, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:428
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the personas, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:233
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the podcasts, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:332
+#, elixir-autogen, elixir-format
+msgid "You can even unlike all the users, you liked so far at once, by clicking"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:610
+#, elixir-autogen, elixir-format
+msgid "You can of course delete your account. This will delete all your data as well."
+msgstr ""
+
+#: lib/pan_web/templates/session/unverified.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "You can't log in before you have verified your email address, by clicking on the verification link in the email we sent to you."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "You don't see any personas here, because you didn't say you are a podcaster yet. Do you want to"
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "You might be podcasting in the name of an organisation, a group or use an alias, when you appear contributing to a podcast."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/nan.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "You should provide a user id."
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:47
+#, elixir-autogen, elixir-format
+msgid "Your account @%{username} has been created! Please verify your email address via the verification link in the email sent to you, you can't log in before."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Your personas are your different identities when you are podcasting."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/my_data.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "all my data as JSON-File"
+msgstr ""
+
+#: lib/pan_web/templates/user/forgot_password.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "for details."
+msgstr ""
+
+#: lib/pan_web/templates/user_frontend/_personas.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "missing image"
+msgstr ""
+
+#: lib/pan_web/live/user/new.ex:96
+#, elixir-autogen, elixir-format
+msgid "via email to login to your existing account and reset your password."
 msgstr ""

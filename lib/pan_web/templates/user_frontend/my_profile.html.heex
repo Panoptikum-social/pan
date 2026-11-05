@@ -3,60 +3,60 @@
     <.link
       href={user_frontend_path(@conn, :edit)}
       class="btn btn-warning"
-    >Edit your data</.link>
+    >{dgettext("frontend", "Edit your data")}</.link>
   </div>
   <h1 class="text-3xl">
-    My Profile
+    {dgettext("frontend", "My Profile")}
   </h1>
 </div>
 
 <div class="grid grid-cols-2 gap-4">
-  <div class="justify-self-end">User Name</div>
+  <div class="justify-self-end">{dgettext("frontend", "User Name")}</div>
   <div>{@user.username}</div>
 
-  <div class="justify-self-end">Full Name</div>
+  <div class="justify-self-end">{dgettext("frontend", "Full Name")}</div>
   <div>{@user.name}</div>
 
-  <div class="justify-self-end">Email</div>
+  <div class="justify-self-end">{dgettext("frontend", "Email")}</div>
   <div>{@user.email}</div>
 
   <%= if @user.admin do %>
-    <div class="justify-self-end">Admin</div>
-    <div>I have admin priviliges.</div>
+    <div class="justify-self-end">{dgettext("frontend", "Admin")}</div>
+    <div>{dgettext("frontend", "I have admin privileges.")}</div>
   <% end %>
 
-  <div class="justify-self-end">Podcaster</div>
+  <div class="justify-self-end">{dgettext("frontend", "Podcaster")}</div>
   <div>
     <%= if @user.podcaster do %>
-      I am a podcaster myself.
+      {dgettext("frontend", "I am a podcaster myself.")}
     <% else %>
-      I am not a podcaster.
+      {dgettext("frontend", "I am not a podcaster.")}
     <% end %>
   </div>
 
-  <div class="justify-self-end">Privacy</div>
+  <div class="justify-self-end">{dgettext("frontend", "Privacy")}</div>
   <div>
     <%= if @user.share_follows do %>
-      I do currently share my followings.
+      {dgettext("frontend", "I do currently share my followings.")}
     <% else %>
-      I do not share my followings.
+      {dgettext("frontend", "I do not share my followings.")}
     <% end %>
   </div>
 
   <div class="col-start-2">
     <%= if @user.share_subscriptions do %>
-      I do currently share my subscriptions.
+      {dgettext("frontend", "I do currently share my subscriptions.")}
     <% else %>
-      I do not share my subscriptions.
+      {dgettext("frontend", "I do not share my subscriptions.")}
     <% end %>
   </div>
 </div>
 
 <%= if @user.invoices != [] do %>
   <h2 class="text-2xl my-4">
-    My invoices
+    {dgettext("frontend", "My invoices")}
   </h2>
-  All invoices, that appear hear, have been paid already.
+  {dgettext("frontend", "All invoices, that appear here, have been paid already.")}
   <ul class="list-disc my-4 ml-4">
     <%= for invoice <- @user.invoices do %>
       <li>

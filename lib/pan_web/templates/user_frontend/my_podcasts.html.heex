@@ -3,9 +3,16 @@
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-  <PanWeb.Component.Panel.render heading="Podcasts I manage" purpose="podcast" content_class="p-4">
+  <PanWeb.Component.Panel.render
+    heading={dgettext("frontend", "Podcasts I manage")}
+    purpose="podcast"
+    content_class="p-4"
+  >
     <p :if={@podcasts_i_own == []} class="text-sm">
-      None yet. Podcasts whose feed lists your verified email address as owner are assigned to you here automatically.
+      {dgettext(
+        "frontend",
+        "None yet. Podcasts whose feed lists your verified email address as owner are assigned to you here automatically."
+      )}
     </p>
     <p class="flex flex-wrap gap-x-4 gap-y-1">
       <PanWeb.Component.PodcastButton.render
@@ -19,7 +26,7 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
   <PanWeb.Component.Panel.render
-    heading="Subscriptions"
+    heading={dgettext("frontend", "Subscriptions")}
     purpose="subscription"
     content_class="p-4"
   >
@@ -35,18 +42,22 @@
       method="post"
       class="btn btn-outline btn-primary btn-sm"
     >
-      {icon("heart", class: "w-4 h-4")} Like all subscribed
+      {icon("heart", class: "w-4 h-4")} {dgettext("frontend", "Like all subscribed")}
     </.link>
     <.link
       href={user_frontend_path(@conn, :follow_all_subscribed)}
       method="post"
       class="btn btn-outline btn-info btn-sm"
     >
-      {icon("messages", class: "w-4 h-4")} Follow all subscribed
+      {icon("messages", class: "w-4 h-4")} {dgettext("frontend", "Follow all subscribed")}
     </.link>
   </PanWeb.Component.Panel.render>
 
-  <PanWeb.Component.Panel.render heading="Podcasts I like" purpose="like" content_class="p-4">
+  <PanWeb.Component.Panel.render
+    heading={dgettext("frontend", "Podcasts I like")}
+    purpose="like"
+    content_class="p-4"
+  >
     <p class="flex flex-wrap gap-x-4 gap-y-1">
       <PanWeb.Component.PodcastButton.render
         :for={podcast <- @podcasts_i_like}
@@ -56,7 +67,11 @@
     </p>
   </PanWeb.Component.Panel.render>
 
-  <PanWeb.Component.Panel.render heading="Podcasts I follow" purpose="follow" content_class="p-4">
+  <PanWeb.Component.Panel.render
+    heading={dgettext("frontend", "Podcasts I follow")}
+    purpose="follow"
+    content_class="p-4"
+  >
     <p class="flex flex-wrap gap-x-4 gap-y-1">
       <PanWeb.Component.PodcastButton.render
         :for={podcast <- @user.podcasts_i_follow}
@@ -69,7 +84,7 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
   <PanWeb.Component.Panel.render
-    heading="Listeners of the podcasts you listen to, also listen to"
+    heading={dgettext("frontend", "Listeners of the podcasts you listen to, also listen to")}
     purpose="recommendation"
     content_class="p-4 grid grid-cols-12 gap-x-4 gap-y-2"
   >
@@ -89,7 +104,7 @@
   </PanWeb.Component.Panel.render>
 
   <PanWeb.Component.Panel.render
-    heading="Users, who like the same podcasts as you, also like"
+    heading={dgettext("frontend", "Users, who like the same podcasts as you, also like")}
     purpose="popular"
     content_class="p-4 grid grid-cols-12 gap-x-4 gap-y-2"
   >
@@ -109,7 +124,7 @@
   </PanWeb.Component.Panel.render>
 
   <PanWeb.Component.Panel.render
-    heading="The categories my podcasts are assigned to"
+    heading={dgettext("frontend", "The categories my podcasts are assigned to")}
     purpose="category"
     content_class="p-4 grid grid-cols-12 gap-x-4 gap-y-2"
   >

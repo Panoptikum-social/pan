@@ -1,5 +1,5 @@
 <h1 class="text-3xl">
-  Users
+  {dgettext("frontend", "Users")}
 </h1>
 
 <% grouped_users = Enum.group_by(@users, fn p -> p.name |> String.first() |> String.upcase() end) %>

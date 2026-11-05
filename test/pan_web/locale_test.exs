@@ -184,4 +184,35 @@ defmodule PanWeb.LocaleTest do
       assert conn |> post("/locale", %{}) |> response(400)
     end
   end
+
+  describe "account pages (#578)" do
+    import Phoenix.LiveViewTest
+
+    test "the login page renders in German", %{conn: conn} do
+      {:ok, _view, html} = conn |> put_req_cookie("locale", "de") |> live("/sessions/new")
+
+      assert html =~ "Anmeldung"
+      assert html =~ "30 Tage angemeldet bleiben"
+    end
+
+    test "signing up saves the page language as the user setting", %{conn: conn} do
+      {:ok, view, _html} = conn |> put_req_cookie("locale", "de") |> live("/users/new")
+      unique = System.unique_integer([:positive])
+
+      view
+      |> form("#sign-up-form",
+        user: %{
+          name: "Neue Benutzerin",
+          username: "neu_#{unique}",
+          email: "neu_#{unique}@example.com",
+          password: "geheim1234",
+          password_confirmation: "geheim1234",
+          bot_check: 42
+        }
+      )
+      |> render_submit()
+
+      assert Repo.get_by!(User, username: "neu_#{unique}").locale == "de"
+    end
+  end
 end
