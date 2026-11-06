@@ -2,6 +2,7 @@ defmodule PanWeb.Components.Admin.DateTimeSelect do
   use PanWeb, :html
 
   attr :name, :string, required: true
+  attr :label, :string, default: nil
   attr :value, :any, default: nil
   attr :redact, :boolean, required: false, default: false
 
@@ -9,7 +10,7 @@ defmodule PanWeb.Components.Admin.DateTimeSelect do
     ~H"""
     <%= if @redact do %>
       <.input
-        label={Phoenix.Naming.humanize(@name)}
+        label={@label || Phoenix.Naming.humanize(@name)}
         value="** redacted **"
         readonly
         class="w-full input input-sm"
@@ -17,7 +18,7 @@ defmodule PanWeb.Components.Admin.DateTimeSelect do
     <% else %>
       <.input
         type="datetime-local"
-        label={Phoenix.Naming.humanize(@name)}
+        label={@label || Phoenix.Naming.humanize(@name)}
         name={@name}
         value={@value}
         class="w-full input input-sm"

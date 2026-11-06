@@ -21,9 +21,6 @@ Open:
   Claude blurs/crops and imports them as `...-de.png` (#609).
 - Untranslated or odd spots in the German UI, found while taking the #600
   screenshots (user decides):
-  - #612 Category names still English: International subcategories
-    (Brazilian, Canadian, Dutch, French, German, Italian, Japanese),
-    Digital Culture, Management & Marketing, College & High School.
   - #617 Data tables: column headers in the moderation tables English
     (Title, Last Build Date, Blocked, 0 first, Search →); the persona
     search on /personas English throughout (Show, Records, Search mode,
@@ -34,8 +31,6 @@ Open:
     named Galician, #625 se/SE German name); console snippet tested on
     dev 2026-11-06, waits for the prod run. #626 German names entered on
     prod by the user.
-  - #621 Moderator Edit podcast form: raw English field names (Update
-    intervall, Title, Image url, Explicit, Retired, ...).
 - #616 Podlove player sometimes loads too narrow (313 px instead of the
   column width) until the window is resized; seen in headless Chrome in
   both languages, check in a real browser.

@@ -117,6 +117,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             <NumberField.render
               :for={column <- ColumnsFilter.number_columns(assigns)}
               name={column.field}
+              label={column.label}
               value={Ecto.Changeset.get_field(@changeset, column.field)}
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
@@ -128,6 +129,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             <DateTimeSelect.render
               :for={column <- ColumnsFilter.datetime_columns(assigns)}
               name={column.field}
+              label={column.label}
               value={Ecto.Changeset.get_field(@changeset, column.field)}
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
@@ -139,7 +141,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             <CheckBoxField.render
               :for={column <- ColumnsFilter.boolean_columns(assigns)}
               name={column.field}
-              label={column.field}
+              label={column.label}
               value={Ecto.Changeset.get_field(@changeset, column.field)}
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
@@ -154,6 +156,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             <TextField.render
               :for={column <- ColumnsFilter.string_columns(assigns)}
               name={column.field}
+              label={column.label}
               value={Ecto.Changeset.get_field(@changeset, column.field)}
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />
@@ -165,6 +168,7 @@ defmodule PanWeb.Component.Moderation.RecordForm do
             <TextAreaField.render
               :for={column <- ColumnsFilter.text_columns(assigns)}
               name={column.field}
+              label={column.label}
               value={Ecto.Changeset.get_field(@changeset, column.field)}
               redact={@model.__schema__(:redact_fields) |> Enum.member?(column.field)}
             />

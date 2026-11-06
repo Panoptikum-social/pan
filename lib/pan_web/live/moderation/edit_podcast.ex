@@ -22,30 +22,32 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     # (admin-only). :update_paused and :retired stay editable so a moderator
     # can resume/un-retire a podcast themselves after fixing a feed issue.
     columns = [
-      :title,
-      :website,
-      :description,
-      :summary,
-      :image_title,
-      :image_url,
-      :payment_link_title,
-      :payment_link_url,
-      :explicit,
-      :update_paused,
-      :update_intervall,
-      :retired
+      title: dgettext("moderation", "Title"),
+      website: dgettext("moderation", "Website"),
+      description: dgettext("moderation", "Description"),
+      summary: dgettext("moderation", "Summary"),
+      image_title: dgettext("moderation", "Image title"),
+      image_url: dgettext("moderation", "Image URL"),
+      payment_link_title: dgettext("moderation", "Payment link title"),
+      payment_link_url: dgettext("moderation", "Payment link URL"),
+      explicit: dgettext("moderation", "Explicit"),
+      update_paused: dgettext("moderation", "Update paused"),
+      update_intervall: dgettext("moderation", "Update interval (hours)"),
+      retired: dgettext("moderation", "Retired")
     ]
 
     cols =
       Enum.map(
         columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(Podcast, &1),
-          searchable: true,
-          sortable: true
-        }
+        fn {field, label} ->
+          %{
+            field: field,
+            label: label,
+            type: Naming.type_of_field(Podcast, field),
+            searchable: true,
+            sortable: true
+          }
+        end
       )
 
     if moderation &&

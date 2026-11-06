@@ -22,20 +22,22 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     # and :self_link_url stay editable so a moderator can fix a feed's URL
     # by hand if it moved.
     columns = [
-      :self_link_title,
-      :self_link_url
+      self_link_title: dgettext("moderation", "Feed title"),
+      self_link_url: dgettext("moderation", "Feed URL")
     ]
 
     cols =
       Enum.map(
         columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(Feed, &1),
-          searchable: true,
-          sortable: true
-        }
+        fn {field, label} ->
+          %{
+            field: field,
+            label: label,
+            type: Naming.type_of_field(Feed, field),
+            searchable: true,
+            sortable: true
+          }
+        end
       )
 
     if moderation &&

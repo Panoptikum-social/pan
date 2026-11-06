@@ -16,31 +16,33 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
     # + Ecto-managed timestamps), :full_text (internal search-index flag), and
     # :guid (feed-derived unique id, not meaningfully hand-edited).
     columns = [
-      :title,
-      :link,
-      :publishing_date,
-      :description,
-      :shownotes,
-      :payment_link_title,
-      :payment_link_url,
-      :deep_link,
-      :duration,
-      :subtitle,
-      :summary,
-      :image_title,
-      :image_url
+      title: dgettext("moderation", "Title"),
+      link: dgettext("moderation", "Link"),
+      publishing_date: dgettext("moderation", "Publishing date"),
+      description: dgettext("moderation", "Description"),
+      shownotes: dgettext("moderation", "Shownotes"),
+      payment_link_title: dgettext("moderation", "Payment link title"),
+      payment_link_url: dgettext("moderation", "Payment link URL"),
+      deep_link: dgettext("moderation", "Deep link"),
+      duration: dgettext("moderation", "Duration"),
+      subtitle: dgettext("moderation", "Subtitle"),
+      summary: dgettext("moderation", "Summary"),
+      image_title: dgettext("moderation", "Image title"),
+      image_url: dgettext("moderation", "Image URL")
     ]
 
     cols =
       Enum.map(
         columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(Episode, &1),
-          searchable: true,
-          sortable: true
-        }
+        fn {field, label} ->
+          %{
+            field: field,
+            label: label,
+            type: Naming.type_of_field(Episode, field),
+            searchable: true,
+            sortable: true
+          }
+        end
       )
 
     if moderation &&

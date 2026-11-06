@@ -2,6 +2,7 @@ defmodule PanWeb.Components.Admin.TextField do
   use PanWeb, :html
 
   attr :name, :atom, required: true
+  attr :label, :string, default: nil
   attr :value, :any, default: nil
   attr :redact, :boolean, required: false, default: false
 
@@ -9,7 +10,7 @@ defmodule PanWeb.Components.Admin.TextField do
     ~H"""
     <%= if @redact do %>
       <.input
-        label={Phoenix.Naming.humanize(@name)}
+        label={@label || Phoenix.Naming.humanize(@name)}
         name={@name}
         value="** redacted **"
         readonly
@@ -17,7 +18,7 @@ defmodule PanWeb.Components.Admin.TextField do
       />
     <% else %>
       <.input
-        label={Phoenix.Naming.humanize(@name)}
+        label={@label || Phoenix.Naming.humanize(@name)}
         name={@name}
         value={@value}
         class="w-full input input-sm"
