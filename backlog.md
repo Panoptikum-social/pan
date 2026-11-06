@@ -22,8 +22,6 @@ Open:
 - #618 Feed check messages in German (#627: check_my_feed 0.6.0 on Hex,
   Pan uses it). Left: deploy, then publish the qed version with the German
   podcaster manual (it no longer says the rule texts are English).
-- #562 Maybe Italian, French and Spanish once everything is finished (far
-  on the horizon).
 
 ### Miscellaneous open items
 
