@@ -74,7 +74,7 @@ msgstr "Kurator:in zuweisen"
 #: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Assign curators to my communities"
-msgstr "Meinen Communitys Kurator:innen zuweisen"
+msgstr "Meinen Communities Kurator:innen zuweisen"
 
 #: lib/pan_web/live/moderation/curators.ex:31
 #: lib/pan_web/live/moderation/curators.ex:54
@@ -120,7 +120,7 @@ msgstr "Kurator:innen"
 #: lib/pan_web/live/moderation/curators.ex:66
 #, elixir-autogen, elixir-format
 msgid "Curators of my communities"
-msgstr "Kurator:innen meiner Communitys"
+msgstr "Kurator:innen meiner Communities"
 
 #: lib/pan_web/components/moderation/record_form.ex:126
 #, elixir-autogen, elixir-format
@@ -237,7 +237,7 @@ msgstr "Weiter"
 #: lib/pan_web/components/curator_assignment.ex:72
 #, elixir-autogen, elixir-format
 msgid "No communities."
-msgstr "Keine Communitys."
+msgstr "Keine Communities."
 
 #: lib/pan_web/live/moderation/api_errors.ex:86
 #, elixir-autogen, elixir-format
@@ -257,7 +257,7 @@ msgstr "Zahlenfelder"
 #: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Pads of a community can only be seen, edited and created by its followers, moderators included. Follow these communities to work with their pads:"
-msgstr "Die Pads einer Community können nur ihre Follower:innen sehen, bearbeiten und anlegen, auch Moderator:innen. Folgen Sie diesen Communitys, um mit ihren Pads zu arbeiten:"
+msgstr "Die Pads einer Community können nur ihre Follower:innen sehen, bearbeiten und anlegen, auch Moderator:innen. Folgen Sie diesen Communities, um mit ihren Pads zu arbeiten:"
 
 #: lib/pan_web/admin/pagination.ex:48
 #, elixir-autogen, elixir-format
@@ -451,7 +451,7 @@ msgstr "Sie moderieren diese Community nicht."
 #: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:8
 #, elixir-autogen, elixir-format
 msgid "You don't follow every community you moderate."
-msgstr "Sie folgen nicht allen Communitys, die Sie moderieren."
+msgstr "Sie folgen nicht allen Communities, die Sie moderieren."
 
 #: lib/pan_web/admin/moderation_grid.ex:377
 #, elixir-autogen, elixir-format

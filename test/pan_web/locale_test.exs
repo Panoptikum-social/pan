@@ -219,7 +219,7 @@ defmodule PanWeb.LocaleTest do
   test "browsing pages render in German (#579)", %{conn: conn} do
     html = conn |> put_req_cookie("locale", "de") |> get("/communities") |> html_response(200)
 
-    assert html =~ "Die Communitys von Panoptikum"
+    assert html =~ "Die Communities von Panoptikum"
   end
 
   test "the login link email goes out in the page language (#583)", %{conn: conn} do

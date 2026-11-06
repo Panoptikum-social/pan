@@ -65,7 +65,7 @@ msgstr "Farbschema"
 #: lib/pan_web/templates/layout/_navbar_items.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Communities"
-msgstr "Communitys"
+msgstr "Communities"
 
 #: lib/pan_web/templates/layout/_footer.html.heex:10
 #, elixir-autogen, elixir-format
@@ -1894,7 +1894,7 @@ msgstr "Pads"
 #: lib/pan_web/live/community/index.ex:30
 #, elixir-autogen, elixir-format
 msgid "Panoptikum's communities are curated groups of podcasts and podcasters around a shared theme, each with its own moderators and members."
-msgstr "Die Communitys von Panoptikum sind kuratierte Gruppen von Podcasts und Podcaster:innen zu einem gemeinsamen Thema, jede mit eigenen Moderator:innen und Mitgliedern."
+msgstr "Die Communities von Panoptikum sind kuratierte Gruppen von Podcasts und Podcaster:innen zu einem gemeinsamen Thema, jede mit eigenen Moderator:innen und Mitgliedern."
 
 #: lib/pan_web/live/home.ex:30
 #, elixir-autogen, elixir-format
