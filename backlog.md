@@ -16,9 +16,6 @@ Open:
 
 - #600 German screenshots for the German manuals on the qed site (they
   show the English interface for now, #599).
-- #603 Outdated content on the qed start page (both languages): the site
-  is described as built with Jekyll and jekyll-Octopod (it's qed now), and
-  Twitter @panoptikumIO is given as contact (also on the Imprint).
 - #562 Maybe Italian, French and Spanish once everything is finished (far
   on the horizon).
 
