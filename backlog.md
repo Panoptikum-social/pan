@@ -24,14 +24,16 @@ Open:
   - #612 Category names still English: International subcategories
     (Brazilian, Canadian, Dutch, French, German, Italian, Japanese),
     Digital Culture, Management & Marketing, College & High School.
-  - #613 Roles on the podcast page stay English (Owner, Author,
-    Contributor, Managing editor); the episode page translates them.
   - #617 Data tables: column headers in the moderation tables English
     (Title, Last Build Date, Blocked, 0 first, Search →); the persona
     search on /personas English throughout (Show, Records, Search mode,
     starts with).
   - #618 Feed check messages English (they come from check_my_feed).
-  - #620 Language list: "Assyrian" untranslated, "Katalanisch" twice.
+  - #620 Language list: duplicate groups and wrong names are data
+    (#622 Catalan emoji, #623 es-SP emoji with a trailing space, #624 ga
+    named Galician, #625 se/SE German name); console snippet tested on
+    dev 2026-11-06, waits for the prod run. #626 German names entered on
+    prod by the user.
   - #621 Moderator Edit podcast form: raw English field names (Update
     intervall, Title, Image url, Explicit, Retired, ...).
 - #616 Podlove player sometimes loads too narrow (313 px instead of the

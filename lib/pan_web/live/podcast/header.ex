@@ -136,7 +136,7 @@ defmodule PanWeb.Live.Podcast.Header do
               <PersonaButton.render for={persona} />
               <span class="flex flex-wrap gap-1">
                 <Pill.render :for={engagement <- engagements} type="lavender">
-                  {engagement.role |> String.capitalize()}
+                  {PanWeb.Translations.role(engagement.role)}
                 </Pill.render>
               </span>
             </dd>
