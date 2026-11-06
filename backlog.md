@@ -8,16 +8,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ## Open backlog items
 
-### Project #4: multilingual Panoptikum (started 2026-11-05)
-
-English and German; curations, moderations and frontend are done and
-deployed (decisions and code map in Claude's memory, project_multilingual).
-Open:
-
-- #618 Feed check messages in German (#627: check_my_feed 0.6.0 on Hex,
-  Pan uses it). Left: deploy, then publish the qed version with the German
-  podcaster manual (it no longer says the rule texts are English).
-
 ### Miscellaneous open items
 
 - **Revisit the category merge (next days, from 2026-10-21).** The mapping
