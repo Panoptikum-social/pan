@@ -16,9 +16,6 @@ Open:
 
 - #600 German screenshots for the German manuals on the qed site (they
   show the English interface for now, #599).
-- #601 German main menu on the qed site: the hand-made menu in site.toml
-  has English titles, which qed shows in every language. Waits for
-  per-language menu titles in qed (user fixes qed).
 - #603 Outdated content on the qed start page (both languages): the site
   is described as built with Jekyll and jekyll-Octopod (it's qed now), and
   Twitter @panoptikumIO is given as contact (also on the Imprint).
