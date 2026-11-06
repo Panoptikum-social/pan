@@ -6,7 +6,13 @@ defmodule PanWeb.Admin.GridPresenterWithDetails do
     do: presenter.(record)
 
   def present(_presenter, record, field, :boolean), do: format_boolean(Map.get(record, field))
+  def present(_presenter, record, field, :map), do: format_map(Map.get(record, field))
   def present(_presenter, record, field, _format), do: Map.get(record, field)
+
+  defp format_map(map) when is_map(map),
+    do: Enum.map_join(map, ", ", fn {key, value} -> "#{key}: #{value}" end)
+
+  defp format_map(other), do: other
 
   defp format_boolean(true), do: "✔️"
   defp format_boolean(false), do: "❌"

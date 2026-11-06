@@ -55,6 +55,9 @@ defmodule PanWeb.Admin.ShowPresenter do
     )
   end
 
+  def present(:map, data) when is_map(data),
+    do: Enum.map_join(data, ", ", fn {key, value} -> "#{key}: #{value}" end)
+
   def present(_unknown_format, data), do: data
 
   attr :presenter, :any, default: nil
