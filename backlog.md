@@ -21,10 +21,6 @@ Open:
   Claude blurs/crops and imports them as `...-de.png` (#609).
 - Untranslated or odd spots in the German UI, found while taking the #600
   screenshots (user decides):
-  - #617 Data tables: column headers in the moderation tables English
-    (Title, Last Build Date, Blocked, 0 first, Search →); the persona
-    search on /personas English throughout (Show, Records, Search mode,
-    starts with).
   - #618 Feed check messages English (they come from check_my_feed).
   - #620 Language list: duplicate groups and wrong names are data
     (#622 Catalan emoji, #623 es-SP emoji with a trailing space, #624 ga

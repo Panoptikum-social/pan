@@ -3,8 +3,8 @@ defmodule PanWeb.Live.Moderation.EditFeed do
   on_mount PanWeb.Live.AssignUserAndAdmin
   import Ecto.Query, only: [from: 2]
   alias Pan.Repo
+  alias PanWeb.Admin.ModerationLabels
   alias PanWeb.{AlternateFeed, Feed, Moderation, Podcast}
-  alias PanWeb.Admin.Naming
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
@@ -22,23 +22,11 @@ defmodule PanWeb.Live.Moderation.EditFeed do
     # and :self_link_url stay editable so a moderator can fix a feed's URL
     # by hand if it moved.
     columns = [
-      self_link_title: dgettext("moderation", "Feed title"),
-      self_link_url: dgettext("moderation", "Feed URL")
+      :self_link_title,
+      :self_link_url
     ]
 
-    cols =
-      Enum.map(
-        columns,
-        fn {field, label} ->
-          %{
-            field: field,
-            label: label,
-            type: Naming.type_of_field(Feed, field),
-            searchable: true,
-            sortable: true
-          }
-        end
-      )
+    cols = ModerationLabels.columns(Feed, columns)
 
     if moderation &&
          Enum.member?(

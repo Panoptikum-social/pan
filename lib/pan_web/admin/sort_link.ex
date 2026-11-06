@@ -29,9 +29,9 @@ defmodule PanWeb.Admin.SortLink do
     >
       <%= if @sort_by == @field do %>
         <%= if @sort_order |> Atom.to_string() |> String.ends_with?("last") do %>
-          0 last
+          {dgettext("moderation", "0 last")}
         <% else %>
-          0 first
+          {dgettext("moderation", "0 first")}
         <% end %>
         <%= if @sort_order |> Atom.to_string() |> String.starts_with?("asc") do %>
           {icon("sort-ascending", class: "h-5 w-5 inline align-text-bottom")}

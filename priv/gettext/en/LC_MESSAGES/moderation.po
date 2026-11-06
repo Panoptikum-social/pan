@@ -26,7 +26,7 @@ msgstr ""
 msgid "%{username} is now a curator of this community."
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:246
+#: lib/pan_web/live/moderation/moderate.ex:236
 #, elixir-autogen, elixir-format
 msgid "...or search for an existing Panoptikum podcast by title"
 msgstr ""
@@ -36,27 +36,27 @@ msgstr ""
 msgid "API errors in %{category}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:225
+#: lib/pan_web/live/moderation/moderate.ex:215
 #, elixir-autogen, elixir-format
 msgid "API errors of the last 24 hours"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:272
+#: lib/pan_web/live/moderation/moderate.ex:262
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:237
+#: lib/pan_web/live/moderation/moderate.ex:227
 #, elixir-autogen, elixir-format
 msgid "Add feed"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:160
+#: lib/pan_web/live/moderation/moderate.ex:150
 #, elixir-autogen, elixir-format
 msgid "Added to your moderation, but the refresh failed: %{message}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:263
+#: lib/pan_web/live/moderation/moderate.ex:253
 #, elixir-autogen, elixir-format
 msgid "Already in your moderation"
 msgstr ""
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Community"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:134
+#: lib/pan_web/live/moderation/moderate.ex:124
 #, elixir-autogen, elixir-format
 msgid "Could not import that feed: %{error}"
 msgstr ""
@@ -127,6 +127,7 @@ msgstr ""
 msgid "Date & Time Fields"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:412
 #: lib/pan_web/components/moderation/record_form.ex:92
 #, elixir-autogen, elixir-format
 msgid "Edit"
@@ -187,17 +188,17 @@ msgstr ""
 msgid "List of Feeds"
 msgstr ""
 
-#: lib/pan_web/live/moderation/episode_grid.ex:90
+#: lib/pan_web/live/moderation/episode_grid.ex:80
 #, elixir-autogen, elixir-format
 msgid "Listing Episodes for Podcast %{podcast}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/feed_grid.ex:90
+#: lib/pan_web/live/moderation/feed_grid.ex:80
 #, elixir-autogen, elixir-format
 msgid "Listing Feeds for Podcast %{podcast}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:280
+#: lib/pan_web/live/moderation/moderate.ex:270
 #, elixir-autogen, elixir-format
 msgid "Listing Podcasts"
 msgstr ""
@@ -207,12 +208,12 @@ msgstr ""
 msgid "Make curator & assign"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:154
+#: lib/pan_web/live/moderation/edit_feed.ex:142
 #, elixir-autogen, elixir-format
 msgid "Make the selected URL the feed URL again?"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:219
+#: lib/pan_web/live/moderation/moderate.ex:209
 #, elixir-autogen, elixir-format
 msgid "Moderating %{category}"
 msgstr ""
@@ -224,7 +225,7 @@ msgstr ""
 msgid "My Moderations"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:124
+#: lib/pan_web/live/moderation/moderate.ex:114
 #, elixir-autogen, elixir-format
 msgid "New podcast imported and added to your moderation."
 msgstr ""
@@ -264,7 +265,7 @@ msgstr ""
 msgid "Page %{page} of %{pages}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:232
+#: lib/pan_web/live/moderation/moderate.ex:222
 #, elixir-autogen, elixir-format
 msgid "Paste a podcast feed URL to add it to your moderation..."
 msgstr ""
@@ -284,22 +285,22 @@ msgstr ""
 msgid "Podcast %{id} removed from %{category}."
 msgstr ""
 
-#: lib/pan_web/live/moderation/episode_grid.ex:83
+#: lib/pan_web/live/moderation/episode_grid.ex:73
 #, elixir-autogen, elixir-format
 msgid "Podcast %{podcast} / Episodes"
 msgstr ""
 
-#: lib/pan_web/live/moderation/feed_grid.ex:83
+#: lib/pan_web/live/moderation/feed_grid.ex:73
 #, elixir-autogen, elixir-format
 msgid "Podcast %{podcast} / Feeds"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:189
+#: lib/pan_web/live/moderation/moderate.ex:179
 #, elixir-autogen, elixir-format
 msgid "Podcast added to your moderation."
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:105
+#: lib/pan_web/live/moderation/moderate.ex:95
 #, elixir-autogen, elixir-format
 msgid "Podcast removed from your moderation."
 msgstr ""
@@ -309,6 +310,7 @@ msgstr ""
 msgid "Previous"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:504
 #: lib/pan_web/admin/moderation_grid.ex:351
 #, elixir-autogen, elixir-format
 msgid "Records"
@@ -354,12 +356,12 @@ msgstr ""
 msgid "Remove this podcast from your moderation?"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:157
+#: lib/pan_web/live/moderation/edit_feed.ex:145
 #, elixir-autogen, elixir-format
 msgid "Restore"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:146
+#: lib/pan_web/live/moderation/edit_feed.ex:134
 #, elixir-autogen, elixir-format
 msgid "Restore a previous URL"
 msgstr ""
@@ -369,6 +371,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:529
 #: lib/pan_web/admin/moderation_grid.ex:365
 #, elixir-autogen, elixir-format
 msgid "Search mode"
@@ -399,36 +402,36 @@ msgstr ""
 msgid "Text Fields"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:113
+#: lib/pan_web/live/moderation/edit_feed.ex:101
 #, elixir-autogen, elixir-format
 msgid "The feed URL could not be restored."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:102
+#: lib/pan_web/live/moderation/edit_feed.ex:90
 #, elixir-autogen, elixir-format
 msgid "The feed URL is %{url} again, the next update shows whether it works."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:76
+#: lib/pan_web/live/moderation/edit_feed.ex:64
 #, elixir-autogen, elixir-format
 msgid "The next update shows whether the new URL works."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:79
+#: lib/pan_web/live/moderation/edit_episode.ex:67
 #, elixir-autogen, elixir-format
 msgid "This episode/category combination is not within your moderations."
 msgstr ""
 
 #: lib/pan_web/live/moderation/api_errors.ex:57
-#: lib/pan_web/live/moderation/moderate.ex:210
+#: lib/pan_web/live/moderation/moderate.ex:200
 #, elixir-autogen, elixir-format
 msgid "This is not one of your moderations."
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:130
-#: lib/pan_web/live/moderation/edit_podcast.ex:79
-#: lib/pan_web/live/moderation/episode_grid.ex:74
-#: lib/pan_web/live/moderation/feed_grid.ex:74
+#: lib/pan_web/live/moderation/edit_feed.ex:118
+#: lib/pan_web/live/moderation/edit_podcast.ex:67
+#: lib/pan_web/live/moderation/episode_grid.ex:64
+#: lib/pan_web/live/moderation/feed_grid.ex:64
 #, elixir-autogen, elixir-format
 msgid "This podcast/category combination is not within your moderations."
 msgstr ""
@@ -438,7 +441,7 @@ msgstr ""
 msgid "This record is not valid. Please check the errors below!"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:150
+#: lib/pan_web/live/moderation/moderate.ex:140
 #, elixir-autogen, elixir-format
 msgid "We already know that podcast and added it to your moderation."
 msgstr ""
@@ -453,16 +456,19 @@ msgstr ""
 msgid "You don't follow every community you moderate."
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:541
 #: lib/pan_web/admin/moderation_grid.ex:377
 #, elixir-autogen, elixir-format
 msgid "contains"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:538
 #: lib/pan_web/admin/moderation_grid.ex:374
 #, elixir-autogen, elixir-format
 msgid "ends with"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:532
 #: lib/pan_web/admin/moderation_grid.ex:368
 #, elixir-autogen, elixir-format
 msgid "exact"
@@ -483,6 +489,7 @@ msgstr ""
 msgid "none"
 msgstr ""
 
+#: lib/pan_web/admin/index_grid.ex:535
 #: lib/pan_web/admin/moderation_grid.ex:371
 #, elixir-autogen, elixir-format
 msgid "starts with"
@@ -493,109 +500,331 @@ msgstr ""
 msgid "username"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:26
+#: lib/pan_web/admin/moderation_labels.ex:29
 #, elixir-autogen, elixir-format
 msgid "Deep link"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:22
-#: lib/pan_web/live/moderation/edit_podcast.ex:27
+#: lib/pan_web/admin/moderation_labels.ex:30
 #, elixir-autogen, elixir-format
 msgid "Description"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:27
+#: lib/pan_web/admin/moderation_labels.ex:64
 #, elixir-autogen, elixir-format
 msgid "Duration"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_podcast.ex:33
+#: lib/pan_web/admin/moderation_labels.ex:38
 #, elixir-autogen, elixir-format
 msgid "Explicit"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:26
+#: lib/pan_web/admin/moderation_labels.ex:66
 #, elixir-autogen, elixir-format
 msgid "Feed URL"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_feed.ex:25
+#: lib/pan_web/admin/moderation_labels.ex:65
 #, elixir-autogen, elixir-format
 msgid "Feed title"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:31
-#: lib/pan_web/live/moderation/edit_podcast.ex:30
+#: lib/pan_web/admin/moderation_labels.ex:35
 #, elixir-autogen, elixir-format
 msgid "Image URL"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:30
-#: lib/pan_web/live/moderation/edit_podcast.ex:29
+#: lib/pan_web/admin/moderation_labels.ex:34
 #, elixir-autogen, elixir-format
 msgid "Image title"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:20
+#: lib/pan_web/admin/index_grid.ex:465
+#: lib/pan_web/admin/moderation_labels.ex:28
 #, elixir-autogen, elixir-format
 msgid "Link"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:25
-#: lib/pan_web/live/moderation/edit_podcast.ex:32
+#: lib/pan_web/admin/moderation_labels.ex:37
 #, elixir-autogen, elixir-format
 msgid "Payment link URL"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:24
-#: lib/pan_web/live/moderation/edit_podcast.ex:31
+#: lib/pan_web/admin/moderation_labels.ex:36
 #, elixir-autogen, elixir-format
 msgid "Payment link title"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:21
+#: lib/pan_web/admin/moderation_labels.ex:62
 #, elixir-autogen, elixir-format
 msgid "Publishing date"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_podcast.ex:36
+#: lib/pan_web/admin/moderation_labels.ex:44
 #, elixir-autogen, elixir-format
 msgid "Retired"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:23
+#: lib/pan_web/admin/moderation_labels.ex:33
 #, elixir-autogen, elixir-format
 msgid "Shownotes"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:28
+#: lib/pan_web/admin/moderation_labels.ex:32
 #, elixir-autogen, elixir-format
 msgid "Subtitle"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:29
-#: lib/pan_web/live/moderation/edit_podcast.ex:28
+#: lib/pan_web/admin/moderation_labels.ex:31
 #, elixir-autogen, elixir-format
 msgid "Summary"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_episode.ex:19
-#: lib/pan_web/live/moderation/edit_podcast.ex:25
+#: lib/pan_web/admin/moderation_labels.ex:26
 #, elixir-autogen, elixir-format
 msgid "Title"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_podcast.ex:35
+#: lib/pan_web/admin/moderation_labels.ex:41
 #, elixir-autogen, elixir-format
 msgid "Update interval (hours)"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_podcast.ex:34
+#: lib/pan_web/admin/moderation_labels.ex:40
 #, elixir-autogen, elixir-format
 msgid "Update paused"
 msgstr ""
 
-#: lib/pan_web/live/moderation/edit_podcast.ex:26
+#: lib/pan_web/admin/moderation_labels.ex:27
 #, elixir-autogen, elixir-format
 msgid "Website"
+msgstr ""
+
+#: lib/pan_web/admin/sort_link.ex:34
+#, elixir-autogen, elixir-format
+msgid "0 first"
+msgstr ""
+
+#: lib/pan_web/admin/sort_link.ex:32
+#, elixir-autogen, elixir-format
+msgid "0 last"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:39
+#, elixir-autogen, elixir-format
+msgid "Blocked"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:78
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:424
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:428
+#, elixir-autogen, elixir-format
+msgid "Delete %{count} record?"
+msgid_plural "Delete %{count} records?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/pan_web/admin/moderation_labels.ex:73
+#, elixir-autogen, elixir-format
+msgid "ETag"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:47
+#, elixir-autogen, elixir-format
+msgid "Episodes"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:45
+#, elixir-autogen, elixir-format
+msgid "Failures in a row"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:72
+#, elixir-autogen, elixir-format
+msgid "Feed generator"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:69
+#, elixir-autogen, elixir-format
+msgid "First page URL"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:48
+#, elixir-autogen, elixir-format
+msgid "Followers"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:58
+#, elixir-autogen, elixir-format
+msgid "Full text indexed"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:63
+#, elixir-autogen, elixir-format
+msgid "GUID"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:77
+#, elixir-autogen, elixir-format
+msgid "Hash"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:518
+#, elixir-autogen, elixir-format
+msgid "Hide unassigned"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:71
+#, elixir-autogen, elixir-format
+msgid "Hub URL"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:25
+#, elixir-autogen, elixir-format
+msgid "ID"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:51
+#, elixir-autogen, elixir-format
+msgid "Last build date"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:60
+#, elixir-autogen, elixir-format
+msgid "Last error"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:61
+#, elixir-autogen, elixir-format
+msgid "Last error at"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:74
+#, elixir-autogen, elixir-format
+msgid "Last modified"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:70
+#, elixir-autogen, elixir-format
+msgid "Last page URL"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:54
+#, elixir-autogen, elixir-format
+msgid "Latest episode published"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:49
+#, elixir-autogen, elixir-format
+msgid "Likes"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:57
+#, elixir-autogen, elixir-format
+msgid "Manually updated"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:497
+#, elixir-autogen, elixir-format
+msgid "New"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:489
+#, elixir-autogen, elixir-format
+msgid "New association"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:67
+#, elixir-autogen, elixir-format
+msgid "Next page URL"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:43
+#, elixir-autogen, elixir-format
+msgid "Next podcast update"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:42
+#, elixir-autogen, elixir-format
+msgid "Next update"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:452
+#, elixir-autogen, elixir-format
+msgid "No"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:76
+#, elixir-autogen, elixir-format
+msgid "No caching headers"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:68
+#, elixir-autogen, elixir-format
+msgid "Previous page URL"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:56
+#, elixir-autogen, elixir-format
+msgid "Publication frequency (days)"
+msgstr ""
+
+#: lib/pan_web/admin/data_table.ex:108
+#, elixir-autogen, elixir-format
+msgid "Search →"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:388
+#: lib/pan_web/admin/index_grid.ex:400
+#, elixir-autogen, elixir-format
+msgid "Show"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:517
+#, elixir-autogen, elixir-format
+msgid "Show unassigned"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:50
+#, elixir-autogen, elixir-format
+msgid "Subscriptions"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:59
+#, elixir-autogen, elixir-format
+msgid "Thumbnail created"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:75
+#, elixir-autogen, elixir-format
+msgid "Trust Last-Modified"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:46
+#, elixir-autogen, elixir-format
+msgid "Unique identifier"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:477
+#, elixir-autogen, elixir-format
+msgid "Unlink"
+msgstr ""
+
+#: lib/pan_web/admin/moderation_labels.ex:79
+#, elixir-autogen, elixir-format
+msgid "Updated"
+msgstr ""
+
+#: lib/pan_web/admin/index_grid.ex:442
+#, elixir-autogen, elixir-format
+msgid "Yes"
 msgstr ""

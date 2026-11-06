@@ -88,7 +88,7 @@ defmodule PanWeb.Admin.DataTable do
       </div>
       <div
         :for={column <- @cols}
-        class="bg-base-100 italic grid place-content-center text-sm text-center"
+        class="bg-base-100 italic grid place-content-center text-sm text-center hyphens-auto [overflow-wrap:anywhere]"
       >
         <SortLink.render
           click={@sort}
@@ -105,7 +105,7 @@ defmodule PanWeb.Admin.DataTable do
         :if={:search in @buttons}
         class="bg-base-300 text-center p-1 italic text-sm"
       >
-        Search →
+        {dgettext("moderation", "Search →")}
       </div>
 
       <div

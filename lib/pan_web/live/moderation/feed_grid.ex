@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
   use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast, Feed}
-  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ModerationLabels
   alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 
@@ -29,17 +29,7 @@ defmodule PanWeb.Live.Moderation.FeedGrid do
       :updated_at
     ]
 
-    cols =
-      Enum.map(
-        columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(Feed, &1),
-          searchable: true,
-          sortable: true
-        }
-      )
+    cols = ModerationLabels.columns(Feed, columns)
 
     category_id = moderation && moderation.community.category_id
 

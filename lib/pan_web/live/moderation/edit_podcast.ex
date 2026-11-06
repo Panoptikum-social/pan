@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
   use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{Moderation, Podcast}
-  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ModerationLabels
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
@@ -22,33 +22,21 @@ defmodule PanWeb.Live.Moderation.EditPodcast do
     # (admin-only). :update_paused and :retired stay editable so a moderator
     # can resume/un-retire a podcast themselves after fixing a feed issue.
     columns = [
-      title: dgettext("moderation", "Title"),
-      website: dgettext("moderation", "Website"),
-      description: dgettext("moderation", "Description"),
-      summary: dgettext("moderation", "Summary"),
-      image_title: dgettext("moderation", "Image title"),
-      image_url: dgettext("moderation", "Image URL"),
-      payment_link_title: dgettext("moderation", "Payment link title"),
-      payment_link_url: dgettext("moderation", "Payment link URL"),
-      explicit: dgettext("moderation", "Explicit"),
-      update_paused: dgettext("moderation", "Update paused"),
-      update_intervall: dgettext("moderation", "Update interval (hours)"),
-      retired: dgettext("moderation", "Retired")
+      :title,
+      :website,
+      :description,
+      :summary,
+      :image_title,
+      :image_url,
+      :payment_link_title,
+      :payment_link_url,
+      :explicit,
+      :update_paused,
+      :update_intervall,
+      :retired
     ]
 
-    cols =
-      Enum.map(
-        columns,
-        fn {field, label} ->
-          %{
-            field: field,
-            label: label,
-            type: Naming.type_of_field(Podcast, field),
-            searchable: true,
-            sortable: true
-          }
-        end
-      )
+    cols = ModerationLabels.columns(Podcast, columns)
 
     if moderation &&
          Enum.member?(

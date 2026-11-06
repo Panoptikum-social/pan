@@ -24,9 +24,27 @@ defmodule PanWeb.Live.Persona.Index do
         model={Persona}
         path_helper={:persona_frontend_path}
         cols={[
-          %{field: :id, label: "Id", type: :integer, searchable: true, sortable: true},
-          %{field: :name, label: "Name", type: :string, searchable: true, sortable: true},
-          %{field: :pid, label: "PanoptikumID", type: :string, searchable: true, sortable: true}
+          %{
+            field: :id,
+            label: dgettext("frontend", "ID"),
+            type: :integer,
+            searchable: true,
+            sortable: true
+          },
+          %{
+            field: :name,
+            label: dgettext("frontend", "Name"),
+            type: :string,
+            searchable: true,
+            sortable: true
+          },
+          %{
+            field: :pid,
+            label: dgettext("frontend", "PanoptikumID"),
+            type: :string,
+            searchable: true,
+            sortable: true
+          }
         ]}
         buttons={[:show_frontend, :pagination, :number_of_records, :search]}
       />

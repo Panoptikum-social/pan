@@ -385,7 +385,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="show"
               phx-target={@myself}
             >
-              🔍 Show
+              🔍 {dgettext("moderation", "Show")}
             </button>
 
             <button
@@ -397,7 +397,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="show_frontend"
               phx-target={@myself}
             >
-              🔍 Show
+              🔍 {dgettext("moderation", "Show")}
             </button>
 
             <button
@@ -409,7 +409,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="edit"
               phx-target={@myself}
             >
-              🖊️ Edit
+              🖊️ {dgettext("moderation", "Edit")}
             </button>
 
             <button
@@ -421,13 +421,16 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="toggle_request_confirmation"
               phx-target={@myself}
             >
-              🗑️ Delete
+              🗑️ {dgettext("moderation", "Delete")}
             </button>
 
             <div :if={@request_confirmation} class="px-2">
-              Delete {@selected_records |> length} {if @selected_records |> length == 1,
-                do: "record",
-                else: "records"}?
+              {dngettext(
+                "moderation",
+                "Delete %{count} record?",
+                "Delete %{count} records?",
+                length(@selected_records)
+              )}
               <button
                 class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
                             lg:px-2 lg:py-0 m-1 rounded
@@ -436,7 +439,7 @@ defmodule PanWeb.Admin.IndexGrid do
                 phx-click="delete"
                 phx-target={@myself}
               >
-                Yes
+                {dgettext("moderation", "Yes")}
               </button>
               <button
                 class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5
@@ -446,7 +449,7 @@ defmodule PanWeb.Admin.IndexGrid do
                 phx-click="toggle_request_confirmation"
                 phx-target={@myself}
               >
-                No
+                {dgettext("moderation", "No")}
               </button>
             </div>
 
@@ -459,7 +462,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="link"
               phx-target={@myself}
             >
-              🔗 Link
+              🔗 {dgettext("moderation", "Link")}
             </button>
 
             <button
@@ -471,7 +474,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="unlink"
               phx-target={@myself}
             >
-              ✂️ Unlink
+              ✂️ {dgettext("moderation", "Unlink")}
             </button>
 
             <button
@@ -483,7 +486,7 @@ defmodule PanWeb.Admin.IndexGrid do
               phx-click="associate"
               phx-target={@myself}
             >
-              ↔️ New association
+              ↔️ {dgettext("moderation", "New association")}
             </button>
 
             <.link
@@ -491,14 +494,14 @@ defmodule PanWeb.Admin.IndexGrid do
               navigate={Naming.path(%{model: @model, action: :new, path_helper: @path_helper})}
               class="border border-base-300 bg-base-100 hover:bg-base-200 py-0.5
                           lg:mr-2 px-2 lg:py-0 m-1 rounded sm:border-r"
-            >🆕 New</.link>
+            >🆕 {dgettext("moderation", "New")}</.link>
           </div>
 
           <div :if={:number_of_records in @buttons} class="px-4 sm:border-r border-base-300">
             <PerPageLink.render delta="-5" click="per_page" target={@myself} />
             <PerPageLink.render delta="-3" click="per_page" target={@myself} />
             <PerPageLink.render delta="-1" click="per_page" target={@myself} />
-            <span class="hidden sm:inline">Records</span>
+            <span class="hidden sm:inline">{dgettext("moderation", "Records")}</span>
             <PerPageLink.render delta="+1" click="per_page" target={@myself} />
             <PerPageLink.render delta="+3" click="per_page" target={@myself} />
             <PerPageLink.render delta="+5" click="per_page" target={@myself} />
@@ -510,7 +513,9 @@ defmodule PanWeb.Admin.IndexGrid do
             phx-target={@myself}
             class="border border-base-300 bg-base-100 hover:bg-base-200 px-1 py-0.5 lg:px-2 lg:py-0 m-1 rounded"
           >
-            {if @hide_filtered, do: "Show unassigned", else: "Hide unassigned"}
+            {if @hide_filtered,
+              do: dgettext("moderation", "Show unassigned"),
+              else: dgettext("moderation", "Hide unassigned")}
           </button>
 
           <.form
@@ -521,14 +526,20 @@ defmodule PanWeb.Admin.IndexGrid do
             phx-target={@myself}
             class="px-2 sm:border-r border-base-300 flex items-center gap-1"
           >
-            <label class="text-sm">🔍 Search mode</label>
+            <label class="text-sm">🔍 {dgettext("moderation", "Search mode")}</label>
             <select name="search_mode" class="border border-base-300 rounded px-1 py-0.5 text-sm">
-              <option value="exact" selected={@search_mode == :exact}>exact</option>
-              <option value="starts_with" selected={@search_mode == :starts_with}>
-                starts with
+              <option value="exact" selected={@search_mode == :exact}>
+                {dgettext("moderation", "exact")}
               </option>
-              <option value="ends_with" selected={@search_mode == :ends_with}>ends with</option>
-              <option value="contains" selected={@search_mode == :contains}>contains</option>
+              <option value="starts_with" selected={@search_mode == :starts_with}>
+                {dgettext("moderation", "starts with")}
+              </option>
+              <option value="ends_with" selected={@search_mode == :ends_with}>
+                {dgettext("moderation", "ends with")}
+              </option>
+              <option value="contains" selected={@search_mode == :contains}>
+                {dgettext("moderation", "contains")}
+              </option>
             </select>
           </.form>
         </div>

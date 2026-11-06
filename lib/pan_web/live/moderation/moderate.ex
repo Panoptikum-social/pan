@@ -2,7 +2,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
   use PanWeb, :moderation_live_view
   on_mount PanWeb.Live.AssignUserAndAdmin
   alias PanWeb.{CategoryPodcast, Feed, Moderation, Podcast}
-  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ModerationLabels
   alias PanWeb.Admin.ModerationGrid
   alias PanWeb.Router.Helpers, as: Routes
 
@@ -36,17 +36,7 @@ defmodule PanWeb.Live.Moderation.Moderate do
       :updated_at
     ]
 
-    cols =
-      Enum.map(
-        columns,
-        &%{
-          field: &1,
-          label: Naming.title_from_field(&1),
-          type: Naming.type_of_field(Podcast, &1),
-          searchable: true,
-          sortable: true
-        }
-      )
+    cols = ModerationLabels.columns(Podcast, columns)
 
     if moderation do
       {:ok,

@@ -3,7 +3,7 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
   on_mount PanWeb.Live.AssignUserAndAdmin
 
   alias PanWeb.{Moderation, Podcast, Episode}
-  alias PanWeb.Admin.Naming
+  alias PanWeb.Admin.ModerationLabels
   alias PanWeb.Component.Moderation.RecordForm
   alias PanWeb.Router.Helpers, as: Routes
 
@@ -16,34 +16,22 @@ defmodule PanWeb.Live.Moderation.EditEpisode do
     # + Ecto-managed timestamps), :full_text (internal search-index flag), and
     # :guid (feed-derived unique id, not meaningfully hand-edited).
     columns = [
-      title: dgettext("moderation", "Title"),
-      link: dgettext("moderation", "Link"),
-      publishing_date: dgettext("moderation", "Publishing date"),
-      description: dgettext("moderation", "Description"),
-      shownotes: dgettext("moderation", "Shownotes"),
-      payment_link_title: dgettext("moderation", "Payment link title"),
-      payment_link_url: dgettext("moderation", "Payment link URL"),
-      deep_link: dgettext("moderation", "Deep link"),
-      duration: dgettext("moderation", "Duration"),
-      subtitle: dgettext("moderation", "Subtitle"),
-      summary: dgettext("moderation", "Summary"),
-      image_title: dgettext("moderation", "Image title"),
-      image_url: dgettext("moderation", "Image URL")
+      :title,
+      :link,
+      :publishing_date,
+      :description,
+      :shownotes,
+      :payment_link_title,
+      :payment_link_url,
+      :deep_link,
+      :duration,
+      :subtitle,
+      :summary,
+      :image_title,
+      :image_url
     ]
 
-    cols =
-      Enum.map(
-        columns,
-        fn {field, label} ->
-          %{
-            field: field,
-            label: label,
-            type: Naming.type_of_field(Episode, field),
-            searchable: true,
-            sortable: true
-          }
-        end
-      )
+    cols = ModerationLabels.columns(Episode, columns)
 
     if moderation &&
          Enum.member?(
