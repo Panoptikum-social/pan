@@ -88,6 +88,8 @@ let OvertypeField = {
         theme: panTheme,
         autoResize: true,
         minHeight: "200px",
+        // translated on the server (PanWeb.Component.OvertypeField)
+        placeholder: this.el.dataset.placeholder,
         textareaProps: { name: textarea.name, id: textarea.id },
       });
       this.editor.setTheme(panTheme);

@@ -8,10 +8,14 @@ defmodule PanWeb.Component.LanguageToggle do
 
   def render(assigns) do
     assigns =
-      assign(assigns, :choices, [
-        {"en", "EN", "English"},
-        {"de", "DE", "Deutsch"}
-      ])
+      assign(
+        assigns,
+        :choices,
+        for(
+          locale <- PanWeb.Locale.locales(),
+          do: {locale, String.upcase(locale), PanWeb.Locale.name(locale)}
+        )
+      )
 
     ~H"""
     <div class="mt-2">

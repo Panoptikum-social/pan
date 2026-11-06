@@ -2592,7 +2592,7 @@ msgid_plural "%{count} dates"
 msgstr[0] "%{count} Datumsangabe"
 msgstr[1] "%{count} Datumsangaben"
 
-#: lib/pan_web/live/podcast/check_feed.ex:621
+#: lib/pan_web/live/podcast/check_feed.ex:617
 #, elixir-autogen, elixir-format
 msgid "%{count} episodes, of them:"
 msgstr "%{count} Episoden, davon:"
@@ -2663,12 +2663,12 @@ msgstr "Zurück"
 msgid "Back to %{podcast}"
 msgstr "Zurück zu %{podcast}"
 
-#: lib/pan_web/live/podcast/check_feed.ex:635
+#: lib/pan_web/live/podcast/check_feed.ex:631
 #, elixir-autogen, elixir-format
 msgid "Check again"
 msgstr "Erneut prüfen"
 
-#: lib/pan_web/live/podcast/check_feed.ex:634
+#: lib/pan_web/live/podcast/check_feed.ex:630
 #, elixir-autogen, elixir-format
 msgid "Checking ..."
 msgstr "Wird geprüft ..."
@@ -2688,7 +2688,7 @@ msgstr "Eigentum am Podcast bestätigen"
 msgid "Content type"
 msgstr "Inhaltstyp"
 
-#: lib/pan_web/live/podcast/check_feed.ex:591
+#: lib/pan_web/live/podcast/check_feed.ex:587
 #, elixir-autogen, elixir-format
 msgid "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 GMT\"):"
 msgstr "Datumsangaben in anderen Formaten als RFC 822 (wie „Sat, 01 Apr 2023 19:00:00 GMT“):"
@@ -2703,7 +2703,7 @@ msgstr "Delegierung gelöscht."
 msgid "Description heading"
 msgstr "Überschrift der Beschreibung"
 
-#: lib/pan_web/live/podcast/check_feed.ex:417
+#: lib/pan_web/live/podcast/check_feed.ex:413
 #, elixir-autogen, elixir-format
 msgid "Downloading and checking the feed ..."
 msgstr "Der Feed wird heruntergeladen und geprüft ..."
@@ -2728,7 +2728,7 @@ msgstr "E-Mail gesendet"
 msgid "Error Occurred"
 msgstr "Fehler aufgetreten"
 
-#: lib/pan_web/live/podcast/check_feed.ex:372
+#: lib/pan_web/live/podcast/check_feed.ex:368
 #, elixir-autogen, elixir-format
 msgid "Errors"
 msgstr "Fehler"
@@ -2739,7 +2739,7 @@ msgstr "Fehler"
 msgid "Fediverse Address"
 msgstr "Fediverse-Adresse"
 
-#: lib/pan_web/live/podcast/check_feed.ex:385
+#: lib/pan_web/live/podcast/check_feed.ex:381
 #, elixir-autogen, elixir-format
 msgid "Feed check"
 msgstr "Feed-Prüfung"
@@ -2759,7 +2759,7 @@ msgstr "Feeds für %{podcast} (Podcast)"
 msgid "Filename"
 msgstr "Dateiname"
 
-#: lib/pan_web/live/podcast/check_feed.ex:392
+#: lib/pan_web/live/podcast/check_feed.ex:388
 #, elixir-autogen, elixir-format
 msgid "Freshly downloaded from %{url}"
 msgstr "Frisch heruntergeladen von %{url}"
@@ -2871,32 +2871,32 @@ msgstr "Bisher keine OPML-Dateien hochgeladen"
 msgid "No file selected!"
 msgstr "Keine Datei ausgewählt!"
 
-#: lib/pan_web/live/podcast/check_feed.ex:482
+#: lib/pan_web/live/podcast/check_feed.ex:478
 #, elixir-autogen, elixir-format
 msgid "No problems found."
 msgstr "Keine Probleme gefunden."
 
-#: lib/pan_web/live/podcast/check_feed.ex:473
+#: lib/pan_web/live/podcast/check_feed.ex:469
 #, elixir-autogen, elixir-format
 msgid "No rule set selected."
 msgstr "Kein Regelwerk ausgewählt."
 
-#: lib/pan_web/live/podcast/check_feed.ex:541
+#: lib/pan_web/live/podcast/check_feed.ex:537
 #, elixir-autogen, elixir-format
 msgid "Not applicable (%{count})"
 msgstr "Nicht anwendbar (%{count})"
 
-#: lib/pan_web/live/podcast/check_feed.ex:573
+#: lib/pan_web/live/podcast/check_feed.ex:569
 #, elixir-autogen, elixir-format
 msgid "Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth fixing in the feed."
 msgstr "Nicht standardkonform, aber Panoptikum kommt damit zurecht. Andere Podcast-Apps vielleicht nicht, daher lohnt es sich, das im Feed zu korrigieren."
 
-#: lib/pan_web/live/podcast/check_feed.ex:374
+#: lib/pan_web/live/podcast/check_feed.ex:370
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr "Hinweise"
 
-#: lib/pan_web/live/podcast/check_feed.ex:579
+#: lib/pan_web/live/podcast/check_feed.ex:575
 #, elixir-autogen, elixir-format
 msgid "Nothing: the feed needs none of Panoptikum's repairs."
 msgstr "Nichts: Der Feed braucht keine von Panoptikums Reparaturen."
@@ -2931,7 +2931,7 @@ msgstr "Eigentümer:in"
 msgid "Ownership confirmed. The user manages this podcast now."
 msgstr "Eigentum bestätigt. Die Benutzer:in verwaltet diesen Podcast jetzt."
 
-#: lib/pan_web/live/podcast/check_feed.ex:570
+#: lib/pan_web/live/podcast/check_feed.ex:566
 #, elixir-autogen, elixir-format
 msgid "Panoptikum reads this anyway"
 msgstr "Panoptikum liest das trotzdem"
@@ -2941,7 +2941,7 @@ msgstr "Panoptikum liest das trotzdem"
 msgid "Parse"
 msgstr "Verarbeiten"
 
-#: lib/pan_web/live/podcast/check_feed.ex:520
+#: lib/pan_web/live/podcast/check_feed.ex:516
 #, elixir-autogen, elixir-format
 msgid "Passed"
 msgstr "Bestanden"
@@ -3011,37 +3011,37 @@ msgstr "Bitte übernehmen Sie diese Persona nur, wenn Sie selbst die Person dahi
 msgid "Podcasts Categorized"
 msgstr "Podcasts nach Kategorien"
 
-#: lib/pan_web/live/podcast/check_feed.ex:458
+#: lib/pan_web/live/podcast/check_feed.ex:454
 #, elixir-autogen, elixir-format
 msgid "Probe artwork and episodes"
 msgstr "Artwork und Episoden prüfen"
 
-#: lib/pan_web/live/podcast/check_feed.ex:467
+#: lib/pan_web/live/podcast/check_feed.ex:463
 #, elixir-autogen, elixir-format
 msgid "Probe audio"
 msgstr "Audio prüfen"
 
-#: lib/pan_web/live/podcast/check_feed.ex:457
+#: lib/pan_web/live/podcast/check_feed.ex:453
 #, elixir-autogen, elixir-format
 msgid "Probing ..."
 msgstr "Wird geprüft ..."
 
-#: lib/pan_web/live/podcast/check_feed.ex:466
+#: lib/pan_web/live/podcast/check_feed.ex:462
 #, elixir-autogen, elixir-format
 msgid "Probing audio ..."
 msgstr "Audio wird geprüft ..."
 
-#: lib/pan_web/live/podcast/check_feed.ex:434
+#: lib/pan_web/live/podcast/check_feed.ex:430
 #, elixir-autogen, elixir-format
 msgid "Probing failed unexpectedly."
 msgstr "Die Prüfung ist unerwartet fehlgeschlagen."
 
-#: lib/pan_web/live/podcast/check_feed.ex:449
+#: lib/pan_web/live/podcast/check_feed.ex:445
 #, elixir-autogen, elixir-format
 msgid "Probing the audio failed unexpectedly."
 msgstr "Die Audio-Prüfung ist unerwartet fehlgeschlagen."
 
-#: lib/pan_web/live/podcast/check_feed.ex:437
+#: lib/pan_web/live/podcast/check_feed.ex:433
 #, elixir-autogen, elixir-format
 msgid "Probing the audio reads the first megabyte of the newest 3 episodes' media files."
 msgstr "Die Audio-Prüfung liest das erste Megabyte der Mediendateien der 3 neuesten Episoden."
@@ -3056,7 +3056,7 @@ msgstr "RSS-Feed-URL"
 msgid "Redirect cancelled successfully."
 msgstr "Weiterleitung aufgehoben."
 
-#: lib/pan_web/live/podcast/check_feed.ex:422
+#: lib/pan_web/live/podcast/check_feed.ex:418
 #, elixir-autogen, elixir-format
 msgid "So far only the feed text was checked. Probing downloads the artwork and asks for the media files of the newest 10 episodes."
 msgstr "Bisher wurde nur der Text des Feeds geprüft. Die Prüfung lädt das Artwork und fragt die Mediendateien der 10 neuesten Episoden ab."
@@ -3091,12 +3091,12 @@ msgstr "Danke! Die OPML wurde in die Feed-Warteschlange importiert. Wir verarbei
 msgid "The OPML could not be imported: %{message}"
 msgstr "Die OPML konnte nicht importiert werden: %{message}"
 
-#: lib/pan_web/live/podcast/check_feed.ex:428
+#: lib/pan_web/live/podcast/check_feed.ex:424
 #, elixir-autogen, elixir-format
 msgid "The artwork and the media files of the newest 10 episodes were probed; their results are part of the report below."
 msgstr "Das Artwork und die Mediendateien der 10 neuesten Episoden wurden geprüft, die Ergebnisse stehen im Bericht unten."
 
-#: lib/pan_web/live/podcast/check_feed.ex:443
+#: lib/pan_web/live/podcast/check_feed.ex:439
 #, elixir-autogen, elixir-format
 msgid "The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak refer to that part only."
 msgstr "Das Audio der 3 neuesten Episoden wurde anhand des ersten Megabytes geprüft, Lautheit und Spitzenpegel beziehen sich nur auf diesen Teil."
@@ -3121,7 +3121,7 @@ msgstr "Der Feed konnte nicht geprüft werden: %{reason}"
 msgid "The feed could not be downloaded: %{reason}"
 msgstr "Der Feed konnte nicht heruntergeladen werden: %{reason}"
 
-#: lib/pan_web/live/podcast/check_feed.ex:549
+#: lib/pan_web/live/podcast/check_feed.ex:545
 #, elixir-autogen, elixir-format
 msgid "The feed has nothing for these rules to check, e.g. an optional tag it doesn't use."
 msgstr "Der Feed bietet diesen Regeln nichts zu prüfen, z. B. ein optionales Tag, das er nicht verwendet."
@@ -3166,7 +3166,7 @@ msgstr "Die Feeds nennen zu dieser Persona keine E-Mail-Adresse. Wir müssen Ihn
 msgid "This is not a valid OPML for you"
 msgstr "Das ist keine gültige OPML für Sie"
 
-#: lib/pan_web/live/podcast/check_feed.ex:607
+#: lib/pan_web/live/podcast/check_feed.ex:603
 #, elixir-autogen, elixir-format
 msgid "This is what Panoptikum takes from the feed and shows of the show. Its parser is more lenient than the rules above."
 msgstr "Das übernimmt Panoptikum aus dem Feed und zeigt es von der Sendung an. Sein Parser ist nachsichtiger als die Regeln oben."
@@ -3207,7 +3207,7 @@ msgstr "Hochgeladen am"
 msgid "Warning: Claiming a Person"
 msgstr "Achtung: Eine Persona übernehmen"
 
-#: lib/pan_web/live/podcast/check_feed.ex:373
+#: lib/pan_web/live/podcast/check_feed.ex:369
 #, elixir-autogen, elixir-format
 msgid "Warnings"
 msgstr "Warnungen"
@@ -3217,7 +3217,7 @@ msgstr "Warnungen"
 msgid "We sent a confirmation link to the owner address listed in the feed."
 msgstr "Wir haben einen Bestätigungslink an die Eigentümer:innen-Adresse aus dem Feed geschickt."
 
-#: lib/pan_web/live/podcast/check_feed.ex:604
+#: lib/pan_web/live/podcast/check_feed.ex:600
 #, elixir-autogen, elixir-format
 msgid "What Panoptikum reads from your feed"
 msgstr "Was Panoptikum aus Ihrem Feed liest"
@@ -3260,12 +3260,12 @@ msgstr "Ihre E-Mail-Adresse wird dieser Persona hinzugefügt. An sie gehen E-Mai
 msgid "Your feed suggestion has been uploaded, it will be processed asap."
 msgstr "Ihr Feed-Vorschlag wurde hochgeladen und wird so bald wie möglich verarbeitet."
 
-#: lib/pan_web/live/podcast/check_feed.ex:347
+#: lib/pan_web/components/core_components.ex:538
 #, elixir-autogen, elixir-format
 msgid "no"
 msgstr "nein"
 
-#: lib/pan_web/live/podcast/check_feed.ex:506
+#: lib/pan_web/live/podcast/check_feed.ex:502
 #, elixir-autogen, elixir-format
 msgid "spec"
 msgstr "Spezifikation"
@@ -3305,7 +3305,7 @@ msgstr "mit Personen"
 msgid "with show notes"
 msgstr "mit Shownotes"
 
-#: lib/pan_web/live/podcast/check_feed.ex:346
+#: lib/pan_web/components/core_components.ex:537
 #, elixir-autogen, elixir-format
 msgid "yes"
 msgstr "ja"
@@ -3836,3 +3836,17 @@ msgstr "von %{name}"
 #, elixir-autogen, elixir-format
 msgid "by a former user"
 msgstr "von einer ehemaligen Benutzer:in"
+
+#: lib/pan_web/live/home.ex:54
+#: lib/pan_web/live/home.ex:67
+#: lib/pan_web/live/home.ex:83
+#: lib/pan_web/live/home.ex:103
+#: lib/pan_web/live/home.ex:124
+#, elixir-autogen, elixir-format
+msgid "more ..."
+msgstr "mehr ..."
+
+#: lib/pan_web/components/overtype_field.ex:17
+#, elixir-autogen, elixir-format
+msgid "Start typing..."
+msgstr "Hier schreiben ..."

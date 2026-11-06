@@ -142,7 +142,7 @@ defmodule PanWeb.Live.Podcast.Header do
             </dd>
           <% end %>
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Explicit")}</dt>
-          <dd>{@podcast.explicit}</dd>
+          <dd>{yes_no(@podcast.explicit)}</dd>
           <dt
             id="metadata"
             class="justify-self-end font-medium"

@@ -51,7 +51,7 @@ defmodule PanWeb.Live.Home do
         <div aria-label={dgettext("frontend", "left column")} class="flex-1">
           <Panel.render
             heading={dgettext("frontend", "Top 10 most liked Podcasts")}
-            heading_right="more ..."
+            heading_right={dgettext("frontend", "more ...")}
             target={podcast_frontend_path(Endpoint, :liked)}
             purpose="like"
           >
@@ -64,7 +64,7 @@ defmodule PanWeb.Live.Home do
 
           <Panel.render
             heading={dgettext("frontend", "Top 10 subscribed Podcasts")}
-            heading_right="more ..."
+            heading_right={dgettext("frontend", "more ...")}
             target={podcast_frontend_path(Endpoint, :popular)}
             purpose="popular"
             class="mt-4"
@@ -80,7 +80,7 @@ defmodule PanWeb.Live.Home do
         <div class="flex-1">
           <Panel.render
             heading={dgettext("frontend", "Latest Podcast")}
-            heading_right="more ..."
+            heading_right={dgettext("frontend", "more ...")}
             target={podcast_frontend_path(Endpoint, :index)}
             purpose="podcast"
             content_class="p-4"
@@ -100,7 +100,7 @@ defmodule PanWeb.Live.Home do
 
           <Panel.render
             heading={dgettext("frontend", "Latest Episode")}
-            heading_right="more ..."
+            heading_right={dgettext("frontend", "more ...")}
             target={episode_frontend_path(Endpoint, :index)}
             purpose="episode"
             content_class="p-4"
@@ -121,7 +121,7 @@ defmodule PanWeb.Live.Home do
 
           <Panel.render
             heading={dgettext("frontend", "Latest Recommendation")}
-            heading_right="more ..."
+            heading_right={dgettext("frontend", "more ...")}
             target={recommendation_frontend_path(Endpoint, :index)}
             purpose="recommendation"
             class="mt-4"

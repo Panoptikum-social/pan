@@ -34,17 +34,17 @@
   <dt class="text-right">{dgettext("frontend", "Email")}</dt>
   <dd>{@user.email}</dd>
   <dt class="text-right">{dgettext("frontend", "Email address verified?")}</dt>
-  <dd>{@user.email_verified}</dd>
+  <dd>{yes_no(@user.email_verified)}</dd>
   <dt class="text-right">{dgettext("frontend", "Last login")}</dt>
-  <dd>{@user.last_login_at}</dd>
+  <dd>{@user.last_login_at && Calendar.strftime(@user.last_login_at, "%Y-%m-%d %H:%M")}</dd>
   <dt class="text-right">{dgettext("frontend", "Is podcaster?")}</dt>
-  <dd>{@user.podcaster}</dd>
+  <dd>{yes_no(@user.podcaster)}</dd>
   <dt class="text-right">{dgettext("frontend", "Shares subscriptions?")}</dt>
-  <dd>{@user.share_subscriptions}</dd>
+  <dd>{yes_no(@user.share_subscriptions)}</dd>
   <dt class="text-right">{dgettext("frontend", "Shares follows?")}</dt>
-  <dd>{@user.share_follows}</dd>
+  <dd>{yes_no(@user.share_follows)}</dd>
   <dt class="text-right">{dgettext("frontend", "Interface language")}</dt>
-  <dd>{@user.locale}</dd>
+  <dd>{PanWeb.Locale.name(@user.locale)}</dd>
   <dt class="text-right">{dgettext("frontend", "Languages I speak")}</dt>
   <dd>{@user.languages |> Enum.map(& &1.shortcode) |> Enum.sort() |> Enum.join(", ")}</dd>
 </dl>

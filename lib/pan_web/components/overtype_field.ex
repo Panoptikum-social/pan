@@ -14,6 +14,7 @@ defmodule PanWeb.Component.OvertypeField do
         id={"#{@field.id}-overtype"}
         phx-hook="OvertypeField"
         phx-update="ignore"
+        data-placeholder={dgettext("frontend", "Start typing...")}
         class="border border-base-300 rounded-field overflow-hidden"
       >
         <textarea id={@field.id} name={@field.name} rows="10" class="w-full textarea">{Phoenix.HTML.Form.normalize_value("textarea", @field.value)}</textarea>

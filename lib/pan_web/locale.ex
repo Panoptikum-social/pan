@@ -23,6 +23,11 @@ defmodule PanWeb.Locale do
   def locales, do: @locales
   def default_locale, do: @default_locale
 
+  @doc "A locale's name in its own language (\"Deutsch\"); nil for unknown ones."
+  def name("en"), do: "English"
+  def name("de"), do: "Deutsch"
+  def name(_locale), do: nil
+
   def init(opts), do: opts
 
   # Admin pages: the content is forced to English, the sidebar and footer

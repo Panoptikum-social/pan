@@ -343,10 +343,6 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
   defp joined(map, _fun) when map_size(map) == 0, do: nil
   defp joined(map, fun), do: map |> Map.values() |> Enum.map_join(", ", fun)
 
-  defp yes_no(true), do: dgettext("frontend", "yes")
-  defp yes_no(false), do: dgettext("frontend", "no")
-  defp yes_no(_value), do: nil
-
   # The rule sets in the library's order, e.g. [:rss2, :apple, :podcasting20].
   defp standards, do: CheckMyFeed.Rules.all() |> Enum.map(& &1.standard) |> Enum.uniq()
 

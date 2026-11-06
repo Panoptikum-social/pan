@@ -21,7 +21,7 @@ msgstr "Aktionen"
 msgid "close"
 msgstr "schließen"
 
-#: lib/pan_web/components/language_toggle.ex:18
+#: lib/pan_web/components/language_toggle.ex:22
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Sprache"

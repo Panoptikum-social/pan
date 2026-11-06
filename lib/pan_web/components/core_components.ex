@@ -530,4 +530,11 @@ defmodule PanWeb.CoreComponents do
   Whether `uri` can be rendered as a link via `safe_href/1`.
   """
   def safe_uri?(uri), do: safe_href(uri) != nil
+
+  @doc """
+  A boolean as "yes"/"no" in the current language; anything else (nil) renders nothing.
+  """
+  def yes_no(true), do: dgettext("frontend", "yes")
+  def yes_no(false), do: dgettext("frontend", "no")
+  def yes_no(_value), do: nil
 end
