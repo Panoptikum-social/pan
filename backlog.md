@@ -22,14 +22,6 @@ Open:
 - Untranslated or odd spots in the German UI, found while taking the #600
   screenshots (user decides):
   - #618 Feed check messages English (they come from check_my_feed).
-  - #620 Language list: duplicate groups and wrong names are data
-    (#622 Catalan emoji, #623 es-SP emoji with a trailing space, #624 ga
-    named Galician, #625 se/SE German name); console snippet tested on
-    dev 2026-11-06, waits for the prod run. #626 German names entered on
-    prod by the user.
-- #616 Podlove player sometimes loads too narrow (313 px instead of the
-  column width) until the window is resized; seen in headless Chrome in
-  both languages, check in a real browser.
 - #562 Maybe Italian, French and Spanish once everything is finished (far
   on the horizon).
 
