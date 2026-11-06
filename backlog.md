@@ -33,6 +33,3 @@ Open:
   whether old names still come back while the monthly metadata refresh runs
   through the podcasts (rotation until about 2026-11-21), and merge any new
   strays (sub before parent, so the mapping gets the name feeds use).
-- #604 Dead code: `PanWeb.Admin.GridPresenter` (lib/pan_web/admin/grid_presenter.ex)
-  is referenced nowhere; only `GridPresenterWithDetails` is used by the
-  admin data table. Delete it?
