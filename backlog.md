@@ -19,9 +19,9 @@ Open:
   taken on prod, API errors (manual-mod-api-errors.png, names blurred) and
   curators page (manual-mod-curators.png); the user takes them in German,
   Claude blurs/crops and imports them as `...-de.png` (#609).
-- Untranslated or odd spots in the German UI, found while taking the #600
-  screenshots (user decides):
-  - #618 Feed check messages English (they come from check_my_feed).
+- #618 Feed check messages in German (#627: check_my_feed 0.6.0 on Hex,
+  Pan uses it). Left: deploy, then publish the qed version with the German
+  podcaster manual (it no longer says the rule texts are English).
 - #562 Maybe Italian, French and Spanish once everything is finished (far
   on the horizon).
 

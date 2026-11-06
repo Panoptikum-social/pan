@@ -32,7 +32,7 @@ msgstr ""
 msgid "Bot Expert Carmen"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:295
+#: lib/pan_web/live/podcast/check_feed.ex:316
 #: lib/pan_web/live/podcast/header.ex:162
 #: lib/pan_web/live/podcast/index.ex:95
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:63
@@ -511,7 +511,7 @@ msgstr ""
 
 #: lib/pan_web/live/episode/header.ex:44
 #: lib/pan_web/live/persona/edit.ex:132
-#: lib/pan_web/live/podcast/check_feed.ex:289
+#: lib/pan_web/live/podcast/check_feed.ex:310
 #: lib/pan_web/live/podcast/header.ex:89
 #: lib/pan_web/live/podcast/index.ex:131
 #: lib/pan_web/live/search.ex:187
@@ -1094,7 +1094,7 @@ msgstr ""
 msgid "This persona is currently not redirected."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:288
+#: lib/pan_web/live/podcast/check_feed.ex:309
 #: lib/pan_web/live/search.ex:185
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:110
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:139
@@ -1473,7 +1473,7 @@ msgid "Alternate feeds"
 msgstr ""
 
 #: lib/pan_web/components/podcast_card.ex:20
-#: lib/pan_web/live/podcast/check_feed.ex:292
+#: lib/pan_web/live/podcast/check_feed.ex:313
 #, elixir-autogen, elixir-format
 msgid "Author"
 msgstr ""
@@ -1652,7 +1652,7 @@ msgstr ""
 msgid "Expand all"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:296
+#: lib/pan_web/live/podcast/check_feed.ex:317
 #: lib/pan_web/live/podcast/header.ex:144
 #, elixir-autogen, elixir-format
 msgid "Explicit"
@@ -2289,7 +2289,7 @@ msgstr ""
 msgid "We will send a confirmation link to the owner address listed in the podcast's feed. Continue?"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:290
+#: lib/pan_web/live/podcast/check_feed.ex:311
 #: lib/pan_web/live/podcast/header.ex:80
 #: lib/pan_web/live/podcast/index.ex:75
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:36
@@ -2588,29 +2588,29 @@ msgstr ""
 msgid "Title & Description"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:284
+#: lib/pan_web/live/podcast/check_feed.ex:305
 #, elixir-autogen, elixir-format
 msgid "%{count} date"
 msgid_plural "%{count} dates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:617
+#: lib/pan_web/live/podcast/check_feed.ex:638
 #, elixir-autogen, elixir-format
 msgid "%{count} episodes, of them:"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:259
+#: lib/pan_web/live/podcast/check_feed.ex:280
 #, elixir-autogen, elixir-format
 msgid "%{dates} Panoptikum can't read, e.g. %{example}: it uses the time of the import instead."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:278
+#: lib/pan_web/live/podcast/check_feed.ex:299
 #, elixir-autogen, elixir-format
 msgid "%{dates} like %{example}, read as %{read_as}."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:268
+#: lib/pan_web/live/podcast/check_feed.ex:289
 #, elixir-autogen, elixir-format
 msgid "%{dates} without a year, e.g. %{example}: Panoptikum assumes the current year (read as %{read_as})."
 msgstr ""
@@ -2650,7 +2650,8 @@ msgstr ""
 msgid "Approve"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:291
+#: lib/pan_web/live/podcast/check_feed.ex:228
+#: lib/pan_web/live/podcast/check_feed.ex:312
 #, elixir-autogen, elixir-format
 msgid "Artwork"
 msgstr ""
@@ -2666,12 +2667,12 @@ msgstr ""
 msgid "Back to %{podcast}"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:631
+#: lib/pan_web/live/podcast/check_feed.ex:652
 #, elixir-autogen, elixir-format
 msgid "Check again"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:630
+#: lib/pan_web/live/podcast/check_feed.ex:651
 #, elixir-autogen, elixir-format
 msgid "Checking ..."
 msgstr ""
@@ -2691,7 +2692,7 @@ msgstr ""
 msgid "Content type"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:587
+#: lib/pan_web/live/podcast/check_feed.ex:608
 #, elixir-autogen, elixir-format
 msgid "Dates in other formats than RFC 822 (such as \"Sat, 01 Apr 2023 19:00:00 GMT\"):"
 msgstr ""
@@ -2706,7 +2707,7 @@ msgstr ""
 msgid "Description heading"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:413
+#: lib/pan_web/live/podcast/check_feed.ex:434
 #, elixir-autogen, elixir-format
 msgid "Downloading and checking the feed ..."
 msgstr ""
@@ -2731,7 +2732,7 @@ msgstr ""
 msgid "Error Occurred"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:368
+#: lib/pan_web/live/podcast/check_feed.ex:389
 #, elixir-autogen, elixir-format
 msgid "Errors"
 msgstr ""
@@ -2742,7 +2743,7 @@ msgstr ""
 msgid "Fediverse Address"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:381
+#: lib/pan_web/live/podcast/check_feed.ex:402
 #, elixir-autogen, elixir-format
 msgid "Feed check"
 msgstr ""
@@ -2762,12 +2763,12 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:388
+#: lib/pan_web/live/podcast/check_feed.ex:409
 #, elixir-autogen, elixir-format
 msgid "Freshly downloaded from %{url}"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:302
+#: lib/pan_web/live/podcast/check_feed.ex:323
 #, elixir-autogen, elixir-format
 msgid "Generator"
 msgstr ""
@@ -2778,7 +2779,7 @@ msgstr ""
 msgid "Grant Access"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:303
+#: lib/pan_web/live/podcast/check_feed.ex:324
 #, elixir-autogen, elixir-format
 msgid "Hub"
 msgstr ""
@@ -2808,12 +2809,12 @@ msgstr ""
 msgid "Image URL"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:294
+#: lib/pan_web/live/podcast/check_feed.ex:315
 #, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:299
+#: lib/pan_web/live/podcast/check_feed.ex:320
 #, elixir-autogen, elixir-format
 msgid "Last build date"
 msgstr ""
@@ -2854,7 +2855,7 @@ msgstr ""
 msgid "New OPML"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:301
+#: lib/pan_web/live/podcast/check_feed.ex:322
 #, elixir-autogen, elixir-format
 msgid "New feed URL"
 msgstr ""
@@ -2874,32 +2875,32 @@ msgstr ""
 msgid "No file selected!"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:478
+#: lib/pan_web/live/podcast/check_feed.ex:499
 #, elixir-autogen, elixir-format
 msgid "No problems found."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:469
+#: lib/pan_web/live/podcast/check_feed.ex:490
 #, elixir-autogen, elixir-format
 msgid "No rule set selected."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:537
+#: lib/pan_web/live/podcast/check_feed.ex:558
 #, elixir-autogen, elixir-format
 msgid "Not applicable (%{count})"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:569
+#: lib/pan_web/live/podcast/check_feed.ex:590
 #, elixir-autogen, elixir-format
 msgid "Not standard, but Panoptikum copes with it. Other podcast apps may not, so it's worth fixing in the feed."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:370
+#: lib/pan_web/live/podcast/check_feed.ex:391
 #, elixir-autogen, elixir-format
 msgid "Notes"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:575
+#: lib/pan_web/live/podcast/check_feed.ex:596
 #, elixir-autogen, elixir-format
 msgid "Nothing: the feed needs none of Panoptikum's repairs."
 msgstr ""
@@ -2924,7 +2925,7 @@ msgstr ""
 msgid "Opml created successfully."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:293
+#: lib/pan_web/live/podcast/check_feed.ex:314
 #, elixir-autogen, elixir-format
 msgid "Owner"
 msgstr ""
@@ -2934,7 +2935,7 @@ msgstr ""
 msgid "Ownership confirmed. The user manages this podcast now."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:566
+#: lib/pan_web/live/podcast/check_feed.ex:587
 #, elixir-autogen, elixir-format
 msgid "Panoptikum reads this anyway"
 msgstr ""
@@ -2944,12 +2945,12 @@ msgstr ""
 msgid "Parse"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:516
+#: lib/pan_web/live/podcast/check_feed.ex:537
 #, elixir-autogen, elixir-format
 msgid "Passed"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:297
+#: lib/pan_web/live/podcast/check_feed.ex:318
 #, elixir-autogen, elixir-format
 msgid "Payment link"
 msgstr ""
@@ -2989,7 +2990,7 @@ msgstr ""
 msgid "Persona updated successfully."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:298
+#: lib/pan_web/live/podcast/check_feed.ex:319
 #, elixir-autogen, elixir-format
 msgid "Persons"
 msgstr ""
@@ -3014,37 +3015,37 @@ msgstr ""
 msgid "Podcasts Categorized"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:454
+#: lib/pan_web/live/podcast/check_feed.ex:475
 #, elixir-autogen, elixir-format
 msgid "Probe artwork and episodes"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:463
+#: lib/pan_web/live/podcast/check_feed.ex:484
 #, elixir-autogen, elixir-format
 msgid "Probe audio"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:453
+#: lib/pan_web/live/podcast/check_feed.ex:474
 #, elixir-autogen, elixir-format
 msgid "Probing ..."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:462
+#: lib/pan_web/live/podcast/check_feed.ex:483
 #, elixir-autogen, elixir-format
 msgid "Probing audio ..."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:430
+#: lib/pan_web/live/podcast/check_feed.ex:451
 #, elixir-autogen, elixir-format
 msgid "Probing failed unexpectedly."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:445
+#: lib/pan_web/live/podcast/check_feed.ex:466
 #, elixir-autogen, elixir-format
 msgid "Probing the audio failed unexpectedly."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:433
+#: lib/pan_web/live/podcast/check_feed.ex:454
 #, elixir-autogen, elixir-format
 msgid "Probing the audio reads the first megabyte of the newest 3 episodes' media files."
 msgstr ""
@@ -3059,7 +3060,7 @@ msgstr ""
 msgid "Redirect cancelled successfully."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:418
+#: lib/pan_web/live/podcast/check_feed.ex:439
 #, elixir-autogen, elixir-format
 msgid "So far only the feed text was checked. Probing downloads the artwork and asks for the media files of the newest 10 episodes."
 msgstr ""
@@ -3094,17 +3095,17 @@ msgstr ""
 msgid "The OPML could not be imported: %{message}"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:424
+#: lib/pan_web/live/podcast/check_feed.ex:445
 #, elixir-autogen, elixir-format
 msgid "The artwork and the media files of the newest 10 episodes were probed; their results are part of the report below."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:439
+#: lib/pan_web/live/podcast/check_feed.ex:460
 #, elixir-autogen, elixir-format
 msgid "The audio of the newest 3 episodes was probed on its first megabyte; loudness and peak refer to that part only."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:183
+#: lib/pan_web/live/podcast/check_feed.ex:189
 #, elixir-autogen, elixir-format
 msgid "The check crashed unexpectedly."
 msgstr ""
@@ -3114,22 +3115,22 @@ msgstr ""
 msgid "The feed check is available to the podcast's owner only."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:238
+#: lib/pan_web/live/podcast/check_feed.ex:259
 #, elixir-autogen, elixir-format
 msgid "The feed could not be checked: %{reason}"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:229
+#: lib/pan_web/live/podcast/check_feed.ex:250
 #, elixir-autogen, elixir-format
 msgid "The feed could not be downloaded: %{reason}"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:545
+#: lib/pan_web/live/podcast/check_feed.ex:566
 #, elixir-autogen, elixir-format
 msgid "The feed has nothing for these rules to check, e.g. an optional tag it doesn't use."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:137
+#: lib/pan_web/live/podcast/check_feed.ex:143
 #, elixir-autogen, elixir-format
 msgid "The feed is not well-formed XML, so the standard rules couldn't be checked: %{reason}"
 msgstr ""
@@ -3139,7 +3140,7 @@ msgstr ""
 msgid "The feed lists no owner email address, so we cannot send a confirmation."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:225
+#: lib/pan_web/live/podcast/check_feed.ex:246
 #, elixir-autogen, elixir-format
 msgid "The feed server answered with HTTP %{code}."
 msgstr ""
@@ -3169,7 +3170,7 @@ msgstr ""
 msgid "This is not a valid OPML for you"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:603
+#: lib/pan_web/live/podcast/check_feed.ex:624
 #, elixir-autogen, elixir-format
 msgid "This is what Panoptikum takes from the feed and shows of the show. Its parser is more lenient than the rules above."
 msgstr ""
@@ -3179,7 +3180,7 @@ msgstr ""
 msgid "This persona is not valid. Please check the errors below!"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:222
+#: lib/pan_web/live/podcast/check_feed.ex:243
 #, elixir-autogen, elixir-format
 msgid "This podcast has no feed."
 msgstr ""
@@ -3210,7 +3211,7 @@ msgstr ""
 msgid "Warning: Claiming a Person"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:369
+#: lib/pan_web/live/podcast/check_feed.ex:390
 #, elixir-autogen, elixir-format
 msgid "Warnings"
 msgstr ""
@@ -3220,7 +3221,7 @@ msgstr ""
 msgid "We sent a confirmation link to the owner address listed in the feed."
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:600
+#: lib/pan_web/live/podcast/check_feed.ex:621
 #, elixir-autogen, elixir-format
 msgid "What Panoptikum reads from your feed"
 msgstr ""
@@ -3268,42 +3269,42 @@ msgstr ""
 msgid "no"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:502
+#: lib/pan_web/live/podcast/check_feed.ex:523
 #, elixir-autogen, elixir-format
 msgid "spec"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:314
+#: lib/pan_web/live/podcast/check_feed.ex:335
 #, elixir-autogen, elixir-format
 msgid "with a duration"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:313
+#: lib/pan_web/live/podcast/check_feed.ex:334
 #, elixir-autogen, elixir-format
 msgid "with a publishing date"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:315
+#: lib/pan_web/live/podcast/check_feed.ex:336
 #, elixir-autogen, elixir-format
 msgid "with artwork"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:312
+#: lib/pan_web/live/podcast/check_feed.ex:333
 #, elixir-autogen, elixir-format
 msgid "with audio or video (enclosure)"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:317
+#: lib/pan_web/live/podcast/check_feed.ex:338
 #, elixir-autogen, elixir-format
 msgid "with chapters (Podlove Simple Chapters in the feed)"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:319
+#: lib/pan_web/live/podcast/check_feed.ex:340
 #, elixir-autogen, elixir-format
 msgid "with persons"
 msgstr ""
 
-#: lib/pan_web/live/podcast/check_feed.ex:316
+#: lib/pan_web/live/podcast/check_feed.ex:337
 #, elixir-autogen, elixir-format
 msgid "with show notes"
 msgstr ""
@@ -3852,4 +3853,9 @@ msgstr ""
 #: lib/pan_web/components/overtype_field.ex:17
 #, elixir-autogen, elixir-format
 msgid "Start typing..."
+msgstr ""
+
+#: lib/pan_web/live/podcast/check_feed.ex:229
+#, elixir-autogen, elixir-format
+msgid "Artwork of %{title}"
 msgstr ""

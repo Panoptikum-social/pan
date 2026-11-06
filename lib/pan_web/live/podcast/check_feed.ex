@@ -75,22 +75,28 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
   # Downloads the artwork and asks for the newest media files, one request at
   # a time: on demand only, not with every check.
-  def handle_event("probe", _, %{assigns: %{reads: reads}} = socket) when is_map(reads) do
+  def handle_event("probe", _, %{assigns: %{reads: reads, locale: locale}} = socket)
+      when is_map(reads) do
     {:noreply,
      socket
      |> assign(probe_status: :running)
-     |> start_async(:probe, fn -> reads |> FeedProbe.probe() |> CheckMyFeed.check_probes() end)}
+     |> start_async(:probe, fn ->
+       in_locale(locale)
+       reads |> FeedProbe.probe(artwork_labels()) |> CheckMyFeed.check_probes(locale: locale)
+     end)}
   end
 
   def handle_event("probe", _, socket), do: {:noreply, socket}
 
   # The first megabyte of the newest episodes' media files, on demand only.
-  def handle_event("probe_audio", _, %{assigns: %{reads: reads}} = socket) when is_map(reads) do
+  def handle_event("probe_audio", _, %{assigns: %{reads: reads, locale: locale}} = socket)
+      when is_map(reads) do
     {:noreply,
      socket
      |> assign(audio_status: :running)
      |> start_async(:probe_audio, fn ->
-       reads |> FeedProbe.probe_audio() |> CheckMyFeed.check_probes()
+       in_locale(locale)
+       reads |> FeedProbe.probe_audio() |> CheckMyFeed.check_probes(locale: locale)
      end)}
   end
 
@@ -186,6 +192,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
 
   defp start_check(socket) do
     podcast_id = socket.assigns.podcast.id
+    locale = socket.assigns.locale
 
     socket
     |> assign(
@@ -206,17 +213,31 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
       audio_passed: [],
       audio_not_applicable: []
     )
-    |> start_async(:check, fn -> run_check(podcast_id) end)
+    |> start_async(:check, fn ->
+      in_locale(locale)
+      run_check(podcast_id, locale)
+    end)
   end
 
-  defp run_check(podcast_id) do
+  # async tasks run in their own process, which doesn't inherit the Gettext
+  # locale of the LiveView
+  defp in_locale(locale), do: Gettext.put_locale(PanWeb.Gettext, locale)
+
+  defp artwork_labels do
+    %{
+      artwork: dgettext("frontend", "Artwork"),
+      episode_artwork: &dgettext("frontend", "Artwork of %{title}", title: &1)
+    }
+  end
+
+  defp run_check(podcast_id, locale) do
     with {:ok, feed} <- Feed.get_by_podcast_id(podcast_id),
          url = String.trim(feed.self_link_url),
          {:ok, %HTTPoison.Response{status_code: 200, body: body}} <-
            Download.get(url, follow_redirect: true),
          :ok <- Pan.Parser.XmlNames.check(body) do
       {reads, leniency} = read_by_panoptikum(body, url)
-      {:ok, url, CheckMyFeed.check(body), reads, leniency}
+      {:ok, url, CheckMyFeed.check(body, locale: locale), reads, leniency}
     else
       {:error, "not found"} ->
         {:error, dgettext("frontend", "This podcast has no feed.")}
@@ -404,7 +425,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             class="checkbox checkbox-sm"
           />
           <Pill.render type={standard_color(standard)}>
-            {CheckMyFeed.standard_name(standard)}
+            {CheckMyFeed.standard_name(standard, locale: @locale)}
           </Pill.render>
         </label>
       </form>
@@ -490,7 +511,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <div :for={{finding, details} <- rules} class="mt-3">
           <p>
             <Pill.render type={standard_color(finding.standard)}>
-              {CheckMyFeed.standard_name(finding.standard)}
+              {CheckMyFeed.standard_name(finding.standard, locale: @locale)}
             </Pill.render>
             {finding.description}
             <span class="text-sm text-base-content/70">
@@ -517,7 +538,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
         <ul class="mt-3 list-disc ml-6">
           <li :for={rule <- visible(@passed ++ @probe_passed ++ @audio_passed, @selected)}>
             <Pill.render type={standard_color(rule.standard)}>
-              {CheckMyFeed.standard_name(rule.standard)}
+              {CheckMyFeed.standard_name(rule.standard, locale: @locale)}
             </Pill.render>
             {rule.description}
             <span class="text-sm text-base-content/70">({rule.id})</span>
@@ -553,7 +574,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
               visible(@not_applicable ++ @probe_not_applicable ++ @audio_not_applicable, @selected)
           }>
             <Pill.render type={standard_color(rule.standard)}>
-              {CheckMyFeed.standard_name(rule.standard)}
+              {CheckMyFeed.standard_name(rule.standard, locale: @locale)}
             </Pill.render>
             {rule.description}
             <span class="text-sm text-base-content/70">({rule.id})</span>

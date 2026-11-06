@@ -22,13 +22,19 @@ defmodule Pan.FeedProbe do
   @max_redirects 5
   @user_agent "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
 
-  @doc "The probes for `CheckMyFeed.check_probes/1`, from Pan's parser map of the feed."
-  def probe(reads) do
+  @doc """
+  The probes for `CheckMyFeed.check_probes/2`, from Pan's parser map of the feed.
+
+  `labels` names the artwork in the findings: `:artwork` for the show's,
+  `:episode_artwork` a function of the episode title for an episode's (the
+  web layer passes translated ones, this module has no gettext).
+  """
+  def probe(reads, labels \\ default_labels()) do
     episodes = newest_episodes(reads)
-    %{artwork: artwork(reads, episodes), enclosures: enclosures(episodes)}
+    %{artwork: artwork(reads, episodes, labels), enclosures: enclosures(episodes)}
   end
 
-  @doc "The audio probes for `CheckMyFeed.check_probes/1`: the newest episodes' first megabyte."
+  @doc "The audio probes for `CheckMyFeed.check_probes/2`: the newest episodes' first megabyte."
   def probe_audio(reads) do
     audio =
       for episode <- reads |> newest_episodes() |> Enum.take(@audio_episodes),
@@ -53,12 +59,15 @@ defmodule Pan.FeedProbe do
 
   ## Artwork
 
-  defp artwork(reads, episodes) do
+  defp default_labels, do: %{artwork: "Artwork", episode_artwork: &"Artwork of #{&1}"}
+
+  defp artwork(reads, episodes, labels) do
     show = reads[:image_url]
 
     targets =
-      [{"Artwork", show}] ++
-        for episode <- episodes, do: {"Artwork of #{title(episode)}", episode[:image_url]}
+      [{labels.artwork, show}] ++
+        for episode <- episodes,
+            do: {labels.episode_artwork.(title(episode)), episode[:image_url]}
 
     targets
     |> Enum.reject(fn {_label, url} -> blank?(url) end)
