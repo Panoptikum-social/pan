@@ -14,11 +14,6 @@ English and German; curations, moderations and frontend are done and
 deployed (decisions and code map in Claude's memory, project_multilingual).
 Open:
 
-- #600 German screenshots for the German manuals: 51 of 53 done
-  2026-11-06 (qed version saved, not published). Missing: the two shots
-  taken on prod, API errors (manual-mod-api-errors.png, names blurred) and
-  curators page (manual-mod-curators.png); the user takes them in German,
-  Claude blurs/crops and imports them as `...-de.png` (#609).
 - #618 Feed check messages in German (#627: check_my_feed 0.6.0 on Hex,
   Pan uses it). Left: deploy, then publish the qed version with the German
   podcaster manual (it no longer says the rule texts are English).
