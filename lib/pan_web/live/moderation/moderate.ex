@@ -107,11 +107,17 @@ defmodule PanWeb.Live.Moderation.Moderate do
           case Pan.Parser.RssFeed.initial_import(url) do
             {:ok, podcast_id} ->
               CategoryPodcast.get_or_insert(category_id, podcast_id)
+              podcast = Podcast.get_by_id(podcast_id)
 
               put_flash(
                 socket,
                 :info,
-                dgettext("moderation", "New podcast imported and added to your moderation.")
+                dgettext(
+                  "moderation",
+                  "New podcast %{id} \"%{title}\" imported and added to your moderation.",
+                  id: podcast.id,
+                  title: podcast.title
+                )
               )
 
             {:error, {:known_feed, podcast_id}} ->
@@ -139,7 +145,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
                 :info,
                 dgettext(
                   "moderation",
-                  "We already know that podcast and added it to your moderation."
+                  "We already know that podcast (%{id} \"%{title}\") and added it to your moderation.",
+                  id: podcast.id,
+                  title: podcast.title
                 )
               )
 
@@ -149,7 +157,9 @@ defmodule PanWeb.Live.Moderation.Moderate do
                 :error,
                 dgettext(
                   "moderation",
-                  "Added to your moderation, but the refresh failed: %{message}",
+                  "Podcast %{id} \"%{title}\" added to your moderation, but the refresh failed: %{message}",
+                  id: podcast.id,
+                  title: podcast.title,
                   message: message
                 )
               )

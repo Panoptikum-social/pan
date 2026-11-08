@@ -26,7 +26,7 @@ msgstr ""
 msgid "%{username} is now a curator of this community."
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:236
+#: lib/pan_web/live/moderation/moderate.ex:246
 #, elixir-autogen, elixir-format
 msgid "...or search for an existing Panoptikum podcast by title"
 msgstr ""
@@ -36,27 +36,22 @@ msgstr ""
 msgid "API errors in %{category}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:215
+#: lib/pan_web/live/moderation/moderate.ex:225
 #, elixir-autogen, elixir-format
 msgid "API errors of the last 24 hours"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:262
+#: lib/pan_web/live/moderation/moderate.ex:272
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:227
+#: lib/pan_web/live/moderation/moderate.ex:237
 #, elixir-autogen, elixir-format
 msgid "Add feed"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:150
-#, elixir-autogen, elixir-format
-msgid "Added to your moderation, but the refresh failed: %{message}"
-msgstr ""
-
-#: lib/pan_web/live/moderation/moderate.ex:253
+#: lib/pan_web/live/moderation/moderate.ex:263
 #, elixir-autogen, elixir-format
 msgid "Already in your moderation"
 msgstr ""
@@ -97,7 +92,7 @@ msgstr ""
 msgid "Community"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:124
+#: lib/pan_web/live/moderation/moderate.ex:130
 #, elixir-autogen, elixir-format
 msgid "Could not import that feed: %{error}"
 msgstr ""
@@ -198,7 +193,7 @@ msgstr ""
 msgid "Listing Feeds for Podcast %{podcast}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:270
+#: lib/pan_web/live/moderation/moderate.ex:280
 #, elixir-autogen, elixir-format
 msgid "Listing Podcasts"
 msgstr ""
@@ -213,7 +208,7 @@ msgstr ""
 msgid "Make the selected URL the feed URL again?"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:209
+#: lib/pan_web/live/moderation/moderate.ex:219
 #, elixir-autogen, elixir-format
 msgid "Moderating %{category}"
 msgstr ""
@@ -223,11 +218,6 @@ msgstr ""
 #: lib/pan_web/templates/moderation_frontend/my_moderations.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "My Moderations"
-msgstr ""
-
-#: lib/pan_web/live/moderation/moderate.ex:114
-#, elixir-autogen, elixir-format
-msgid "New podcast imported and added to your moderation."
 msgstr ""
 
 #: lib/pan_web/admin/pagination.ex:61
@@ -265,7 +255,7 @@ msgstr ""
 msgid "Page %{page} of %{pages}"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:222
+#: lib/pan_web/live/moderation/moderate.ex:232
 #, elixir-autogen, elixir-format
 msgid "Paste a podcast feed URL to add it to your moderation..."
 msgstr ""
@@ -295,7 +285,7 @@ msgstr ""
 msgid "Podcast %{podcast} / Feeds"
 msgstr ""
 
-#: lib/pan_web/live/moderation/moderate.ex:179
+#: lib/pan_web/live/moderation/moderate.ex:189
 #, elixir-autogen, elixir-format
 msgid "Podcast added to your moderation."
 msgstr ""
@@ -423,7 +413,7 @@ msgid "This episode/category combination is not within your moderations."
 msgstr ""
 
 #: lib/pan_web/live/moderation/api_errors.ex:57
-#: lib/pan_web/live/moderation/moderate.ex:200
+#: lib/pan_web/live/moderation/moderate.ex:210
 #, elixir-autogen, elixir-format
 msgid "This is not one of your moderations."
 msgstr ""
@@ -439,11 +429,6 @@ msgstr ""
 #: lib/pan_web/components/moderation/record_form.ex:109
 #, elixir-autogen, elixir-format
 msgid "This record is not valid. Please check the errors below!"
-msgstr ""
-
-#: lib/pan_web/live/moderation/moderate.ex:140
-#, elixir-autogen, elixir-format
-msgid "We already know that podcast and added it to your moderation."
 msgstr ""
 
 #: lib/pan_web/live/moderation/curators.ex:24
@@ -827,4 +812,19 @@ msgstr ""
 #: lib/pan_web/admin/index_grid.ex:442
 #, elixir-autogen, elixir-format
 msgid "Yes"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:115
+#, elixir-autogen, elixir-format
+msgid "New podcast %{id} \"%{title}\" imported and added to your moderation."
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:158
+#, elixir-autogen, elixir-format
+msgid "Podcast %{id} \"%{title}\" added to your moderation, but the refresh failed: %{message}"
+msgstr ""
+
+#: lib/pan_web/live/moderation/moderate.ex:146
+#, elixir-autogen, elixir-format
+msgid "We already know that podcast (%{id} \"%{title}\") and added it to your moderation."
 msgstr ""
