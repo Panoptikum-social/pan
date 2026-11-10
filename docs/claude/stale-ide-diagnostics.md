@@ -1,0 +1,5 @@
+After editing a file with the Edit tool (not through the VSCode UI), the Problems panel / inline squiggles from the Elixir extension (ElixirLS/credo-language-server) can keep showing an old diagnostic at its old line/column even after the underlying issue is fixed and verified via a fresh `mix credo --all` / `git log` — e.g. a "nested too deep" credo finding that persisted at the pre-edit line number after the code was already refactored and committed.
+
+**Why:** the language server's diagnostics cache isn't always invalidated by an out-of-editor file write; it can miss the refresh trigger it'd get from an in-editor keystroke.
+
+**How to apply:** when the user reports a lingering IDE diagnostic that contradicts a CLI tool's fresh output (credo, compiler, etc.), check the CLI ground truth first (rerun the check) rather than assuming the fix is wrong — if the CLI is clean, tell the user it's likely a stale diagnostic and suggest closing/reopening the file in the editor (confirmed sufficient once, 2026-09-05) before escalating to reloading the window or restarting the language server.

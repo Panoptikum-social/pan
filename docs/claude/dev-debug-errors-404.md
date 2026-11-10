@@ -1,0 +1,4 @@
+`config/dev.exs` sets `debug_errors: true`, so in dev every raised exception, including deliberate 404s such as `Ecto.NoResultsError` from `PanWeb.PathId.to_integer!/2`, shows Phoenix's debug page (stack trace, status still 404) instead of the real "404 Not Found" page (lib/pan_web/templates/error/not_found.html.heex). On 2026-11-04 the user took that for a regression ("worse than before") after #557 turned a dev-friendly redirect into a 404.
+
+**Why:** the user only learned afterwards that this is a dev setting; prod renders the real page.
+**How to apply:** when a change turns something into a raised 404/400, tell the user upfront that dev will show the debug page. Verify the rendered page via tests (`assert_error_sent/2`, see test/pan_web/views/error_view_test.exs) or on prod. The user tests error pages on prod and doesn't want a dev switch for debug_errors (declined 2026-11-04). `mix phx.server` takes no config arguments.

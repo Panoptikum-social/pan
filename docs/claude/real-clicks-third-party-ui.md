@@ -1,0 +1,4 @@
+When a change can affect third-party widgets (Podlove web player, Podlove subscribe button, OverType), don't conclude "works" from rendering checks or from `dispatchEvent` clicks in the Tidewave browser. On 2026-10-19 dropping CSP `'unsafe-eval'` looked fine on dev (player iframe "loaded", button rendered, synthetic click opened nothing either way), but on prod the player didn't render and the subscribe modal didn't open; `'unsafe-eval'` had to be restored (0116c1cb).
+
+**Why:** some code paths only run on a real user click or real playback; a synthetic click that does nothing can't tell "blocked" from "not a trusted event".
+**How to apply:** for such changes, ask the user to do the real interaction (click, play) on dev or prod before calling it done, and say plainly which parts were only render-checked. The user accepts "test on prod, take it back if broken" ([content-security-policy](content-security-policy.md)), but expects a quick revert ready.

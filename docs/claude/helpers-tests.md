@@ -1,0 +1,7 @@
+`test/pan/parser/helpers_test.exs` (79 tests, no DB) covers XML repair (nbsp, stray `&`, entities, DOCTYPE/XXE, duplicate `<?xml?>`, cp1252), a 28-row date table, `to_255`, `scrub`, small helpers. Each xmerl regression asserts raw input fails in xmerl and cleaned input parses (helper `clean/1` copies the cleanup chain that the 4 XML entry points each spell out separately).
+
+**Findings:** no bugs. `to_naive_datetime/1` drops UTC offsets (`10:00 +0200` stored as `10:00`, wall time), now pinned by tests; user was told, made no decision to change it. `remove_extra_angle_brackets/1`'s second regex is `~r/\b/` with a literal backspace char (strips U+0008).
+
+**Why:** first step of backlog Project #1 phase 1 ([parser-extraction-roadmap](parser-extraction-roadmap.md)). When a new feed crash is fixed, add its regression here.
+
+**How to apply:** `Analyzer`/`Iterator` are covered by `test/pan/parser/feed_parsing_test.exs` (2026-09-21, ~50 tests, no DB, feeds go through Quinn + `RssFeed.parse_to_map/2`; UUID-keyed maps are compared via `Map.values`). Add a case there for each new feed-shape crash. Mixed content (raw markup in an element) is flattened with `Helpers.flatten_to_string/1`, joined with spaces since Quinn trims text nodes. Unknown tags are skipped silently on purpose (ignore lists and logging removed, user decision: nobody adds tags anymore). Still open: `feed_urls/0` (Repo call) is untested until it moves out of Helpers. See [parser-hardening-sprint-sept14](parser-hardening-sprint-sept14.md) for the crash history.

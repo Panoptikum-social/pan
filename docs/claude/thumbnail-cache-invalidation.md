@@ -1,0 +1,5 @@
+When deciding whether to re-download/regenerate a cached asset (e.g. a podcast/persona thumbnail) tied to a URL, don't gate the regeneration on "did the URL string change." The user explicitly rejected this optimization when implemented in `Persistor.update_from_feed/2`.
+
+**Why:** a feed's image URL can stay the same while the image file behind it changes (e.g. a podcast host replaces artwork.jpg in place). Comparing old vs. new `image_url` and skipping the download when equal would miss those updates — the whole point of syncing from the feed is to catch content changes, not just URL changes.
+
+**How to apply:** for any "sync cached asset from external source" logic, regenerate whenever the source *has* the asset (non-nil/present), unconditionally — don't add an equality short-circuit against the previous value unless the user asks for that as a perf optimization. Applies beyond images: any cache invalidation tied to an external mutable resource identified by a stable URL/ID. Originally learned from `Persistor.update_from_feed/2`'s podcast-thumbnail sync (`lib/pan/parser/persistor.ex`).

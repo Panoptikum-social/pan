@@ -1,0 +1,5 @@
+Any route that changes data is `post` (or put/delete), never `get`, and its button sends that method and asks "Are you sure?" first (`LinkButton` with `method={:post}` + `opts={[data: [confirm: "Are you sure?"]]}`, `<.link method="post" data-confirm=…>`). This covers admin maintenance/toolbar actions, user actions like the OPML import, and the JSON API too (the user said "change it as well to post" for /jsonapi/pan/opmls/:id/import, docs in ../../jekyll/blog.panoptikum.social/pages/api.md updated with it).
+
+**Why:** a reload, a browser prefetch or a crawler could fire GET actions like Reset all Records or Clear Journal (#449). The confirm was the user's own addition ("maybe also hide them behind are you sure?").
+
+**How to apply:** when adding or touching an action, check its router verb and the caller's method; tests must use `post(...)` with string params. Plain pages (e.g. /admin/maintenance/stats) stay GET. Exception (user decision 2026-10-30): the Unretire buttons on /admin/podcasts/deprecated stay POST but have no "Are you sure?". Related: [catppuccin-themes](catppuccin-themes.md) (outline buttons), [jekyll-docs-repo](jekyll-docs-repo.md).

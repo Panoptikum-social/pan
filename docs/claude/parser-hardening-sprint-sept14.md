@@ -1,0 +1,19 @@
+2026-09-14: user fed me a sequence of live prod error-log lines and Journal entries one at a time ("here's the next one"); each got root-caused and fixed (or confirmed already-fine) individually. Index of the individual fixes, in order:
+
+1. project_xmerl_entity_whackamole — `&auml;`/`&ouml;`/`&uuml;`/etc. (German umlauts) crashed xmerl with `:unknown_entity_ref`; decoded in `fix_html_entities/1`.
+2. project_xxe_doctype_hardening — DOCTYPE/DTD fetch is an XXE/SSRF-adjacent vector *and* crashed on OTP28; `remove_doctype/1`. Same session, folded in: duplicate/misplaced `<?xml ...?>` declarations crash `:invalid_target_name`; `remove_duplicate_xml_declarations/1`.
+3. [no-single-letter-aliases](no-single-letter-aliases.md) / [avoid-single-use-helper](avoid-single-use-helper.md) — two readability preferences captured along the way (unrelated to parser work).
+4. project_databrowser_column_width — unrelated admin UI request (widen Journal's "after" column), handled same session.
+5. project_hackney_happy_eyeballs_crash — hackney's IPv4/IPv6 race leaks a stray timer message into the calling GenServer; catch-all `handle_info/2` on all 4 job GenServers. Also removed a dangling `config/dev.secret.exs` symlink that broke `mix format --check-formatted`.
+6. project_contributor_empty_element_crash — `"contributor"` mode's empty `<atom:uri></atom:uri>` crash; later superseded/generalized by #7.
+7. project_analyzer_call2_catchall — the real fix: one generic catch-all for `Analyzer.call/2`'s whole role-based family (contributor/owner/author/episode_author/chapter/managing_editor), triggered by `"managing_editor"` having zero clauses at all (Cloudflare email-obfuscation `<a>` tag).
+8. project_to_255_non_binary_crash — `Helpers.to_255/1` crashed on non-binary input (SsrfGuard's `:blocked_host` atom); now `inspect/1`-stringifies first. Confirmed podcast 15567's SSRF block was a real transient DNS issue on the feed host's end, not a false positive.
+9. project_nbsp_invalid_name_crash — literal U+00A0 byte in markup structure crashes `:invalid_name`; `normalize_nbsp/1`, plus `fix_html_entities/1`'s own `&nbsp;` decode was itself producing the bug.
+10. project_stray_ampersand_invalid_name_crash — bare `&` not starting a real entity ref (obfuscated JS) crashes `:invalid_name`; generalized `escape_stray_ampersands/1`.
+
+End-of-session verification pass: user cross-checked 6 more Journal entries against everything fixed above. Result — **2 were genuine crashes, both already covered** (#7's managing_editor case, #6/#7's contributor case); **3 were `"Quinn error: " <> inspect(...)"` entries that were never crashes at all**, already gracefully caught by `Pan.Parser.RssFeed.xml_to_map/1`'s `catch :exit, error -> {:error, ...}` — these are load-bearing facts worth remembering directly:
+  - `{:unique_att_spec_required, _name}` (a genuinely duplicated attribute on one element, e.g. `isPermaLink` or `xmlns:content` declared twice) — **working as designed, not a bug**. No principled auto-repair exists (unlike a stray `&` or nbsp byte, there's no safe canonical answer for which duplicate value is "correct"); already the exact shape silenced at the raw-log level in `logger_filters.ex`.
+  - `:unexpected_end` (xmerl hits EOF mid-document) — **working as designed**, almost always a truncated download (network cut off mid-transfer), not malformed markup to fix.
+  - The 6th entry (`:invalid_target_name` duplicate `<?xml?>` decl) was a genuine **failure→success upgrade** from fix #2 above — previously a graceful failure, now actually parses successfully.
+
+**How to apply:** if a future prod log shows `"Quinn error: " <> inspect({:fatal, {{:error, {:unique_att_spec_required, _}}, ...}})` or `{:unexpected_end, ...}`, recognize it immediately as already-handled-gracefully noise, not a new bug to chase — don't re-derive this from scratch.

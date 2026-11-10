@@ -1,0 +1,5 @@
+While widening the Journal `:after` column (project_databrowser_column_width), I split `PanWeb.Admin.DataTable.width/1` into `width/1` (field-name special case) + a new private `width_for_type/1` helper for the type-based fallback clauses. User asked "you could merge width and width for type into one function?" — folded `width_for_type/1`'s clauses back into `width/1` as more pattern-matched heads (`defp width(%{field: :after}), do: ...`, `defp width(%{type: :id}), do: ...`, etc.), since it had exactly one call site (inside `width/1` itself).
+
+**Why:** splitting into a helper is only worth it when the helper is reused elsewhere or the combined function would be unreadably long; here it was neither — just more pattern-matched clauses on the same arity, which Elixir handles natively without a second function.
+
+**How to apply:** before introducing a new private helper `defp`, check whether it has (or will have) more than one call site. If not, prefer adding more clauses to the existing function via pattern matching over splitting it out — ask first only when genuinely ambiguous, otherwise just write it this way by default in this codebase.

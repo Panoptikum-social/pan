@@ -1,0 +1,5 @@
+To check pad behaviour in the browser connected to Tidewave (live preview, scroll, highlight), edit the user's dev pad through the pad process: build a local `Yex.Doc` from `Yex.encode_state_as_update(:sys.get_state(server).doc)`, change its text, encode the diff and send it with `PanWeb.PadServer.process_message_v1(server, Sync.message_encode!({:sync, {:sync_update, update}}), self())`. Remove test text the same way afterwards. Synthetic `execCommand` typing doesn't reach CodeMirror; DOM selections (Range + `getSelection`) do work for selection tests.
+
+**Why:** 2026-10-20 I hesitated to edit the user's pad from the server side; the user said "it's the same, as if another user would do it". The Yex doc built in one tidewave eval dies with that eval's process, so build a fresh one per call.
+
+**How to apply:** prefer this over asking the user to type when a check only needs an edit to arrive; still ask for real clicks for UI interactions ([real-clicks-third-party-ui](real-clicks-third-party-ui.md)). Dev only, never on prod. See [community-pads](community-pads.md).
