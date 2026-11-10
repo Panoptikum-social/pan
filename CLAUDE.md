@@ -1,6 +1,6 @@
 # Panoptikum: project knowledge for Claude
 
-This file and [docs/claude/](docs/claude/) hold everything Claude has learned about this project (moved here from Claude's local memory on 2026-11-10). **Save new learnings here, not in local memory:** a short rule in this file, details in a `docs/claude/<topic>.md` file listed in the index below. Commit these changes like any other change. Never write IP addresses, private hostnames or names of private people into these files (the repo is public).
+This file and [docs/claude/](docs/claude/) hold everything Claude has learned about this project (moved here from Claude's local memory on 2026-11-10). **Save new learnings here, not in local memory:** a short rule in this file, details in a `docs/claude/<topic>.md` file listed in the index below. Commit these changes like any other change. Never write IP addresses, private hostnames or names of private people into these files (the repo is public). Keep this section above the `<!-- usage-rules-start -->` marker: `mix usage_rules.sync` only rewrites the part between the markers and keeps the text before and after.
 
 Panoptikum is a podcast discovery platform (panoptikum.social): OTP app `pan`, Elixir/Phoenix 1.8/Postgres, LiveView-heavy, Manticore for search. Domain logic in `lib/pan/` (parser, updater, search, jobs, mailer), web layer in `lib/pan_web/`. See [overview](docs/claude/overview.md).
 
