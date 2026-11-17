@@ -228,11 +228,19 @@ defmodule PanWeb.User do
   # "deliverable later" can't drift apart. See the "SendRetentionNotices mailer
   # crash" incident: malformed stored addresses crashed the sender instead of
   # just failing to send.
+  # gen_smtp 1.3.0's parser raises ArgumentError instead of returning an
+  # error for some syntax errors, e.g. an address followed by a space and a
+  # word ("a@example.com Foo"): its yecc error formatting calls
+  # atom_to_list/1 on a charlist. That crashed the sign-up LiveView (#634).
   defp validate_deliverable_email(changeset) do
     validate_change(changeset, :email, fn :email, email ->
-      case :smtp_util.parse_rfc5322_addresses(email) do
-        {:ok, _addresses} -> []
-        {:error, _reason} -> [email: "is not a valid email address"]
+      try do
+        case :smtp_util.parse_rfc5322_addresses(email) do
+          {:ok, _addresses} -> []
+          {:error, _reason} -> [email: "is not a valid email address"]
+        end
+      rescue
+        ArgumentError -> [email: "is not a valid email address"]
       end
     end)
   end

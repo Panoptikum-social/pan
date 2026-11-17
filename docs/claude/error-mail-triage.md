@@ -7,7 +7,7 @@ When the user pastes exception-notification mails (prod Logger backend mails eve
 - Unknown HTTP status → `Download.download/1` logs "status_code unknown" and returns :ok → WithClauseError in the updater; add the code to the list + `@error_map` (see [download-unknown-status-log](download-unknown-status-log.md)).
 - hackney 4.8.5 `safe_call` doesn't convert `killed` exits; `Download.request/3` catches exits since 3eeec04d.
 - OTP 28 ssl ticket store TryClauseError on concurrent TLS 1.3 handshakes: accepted until OTP 29 (backlog.md).
-- `{:invalid_name, ~c"…"}` from xmerl = a stray "<" in text: whitespace after it (#170) or ">" after it (#480, "A <> B") are escaped by `Helpers.escape_stray_less_thans/1`; reproduce with plain `elixir -e ':xmerl_scan.string(...)'` (no app, no DB needed).
+- `{:invalid_name, ~c"…"}` from xmerl = a stray "<" in text: whitespace after it (#170) or ">" after it (#480, "A <> B") are escaped by `Helpers.escape_stray_less_thans/1`; "<" before a tag ("<<a href", `~c"<a hre"`, #630) is deliberately NOT repaired, the publisher has to fix it; reproduce with plain `elixir -e ':xmerl_scan.string(...)'` (no app, no DB needed).
 - `"value too long for type character varying(255)"` on podcasts.last_error_message: gone since b9b1516b (column is text, #473). Long TLS texts (bad_certificate with host names) are wanted in full.
 - `Manticore bulk insert request failed … :checkout_timeout`: shared hackney default pool busy; handled, retried next PushMissingSearchIndex run — leave it (#477).
 - A podcast behind an ImportStalePodcasts crash: the last `<id> ⬇ <title>` line before the crash in `journalctl -t pan --since "-5 days" | grep -B40 "crashed" | grep -E "⬇|crashed"`.

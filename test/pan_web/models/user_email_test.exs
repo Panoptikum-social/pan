@@ -38,4 +38,19 @@ defmodule PanWeb.UserEmailTest do
     refute changeset.valid?
     assert Keyword.has_key?(changeset.errors, :email)
   end
+
+  # gen_smtp's parser raises on these instead of returning an error (#634)
+  for email <- ["someone@example.com Foo", "someone@example.com Foo&"] do
+    test "#{inspect(email)} is rejected as invalid, not a crash" do
+      for changeset_fun <- [
+            &User.registration_changeset/2,
+            &User.changeset/2,
+            &User.self_change_changeset/2
+          ] do
+        changeset = changeset_fun.(%User{}, %{@params | "email" => unquote(email)})
+        refute changeset.valid?
+        assert {"is not a valid email address", _} = changeset.errors[:email]
+      end
+    end
+  end
 end

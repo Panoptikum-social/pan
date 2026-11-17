@@ -460,6 +460,9 @@ defmodule Pan.Parser.Helpers do
     {"&Atilde;", "Ã"},
     {"&szlig;", "ß"},
     {"&oelig;", "œ"},
+    {"&rsquo;", "’"},
+    {"&bull;", "•"},
+    {"&iexcl;", "¡"},
     {"&hellip;", "…"},
     {"&ndash;", "–"},
     {"&mdash;", "—"}
