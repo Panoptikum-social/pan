@@ -6,7 +6,7 @@ Panoptikum is a podcast discovery platform (panoptikum.social): OTP app `pan`, E
 
 ## Working with the user
 
-- **Number** findings, options and open items, and keep the numbering going across sessions. **Next new number: #640.** History: [numbered-lists](docs/claude/numbered-lists.md). Update the next number here when you use new ones.
+- **Number** findings, options and open items, and keep the numbering going across sessions. **Next new number: #647.** History: [numbered-lists](docs/claude/numbered-lists.md). Update the next number here when you use new ones.
 - While the user is "still exploring", only investigate and answer. Edit the backlog or code only on an explicit request. Go step by step; the user prefers manual over automatic ([exploring-vs-deciding](docs/claude/exploring-vs-deciding.md)).
 - Don't put your own ideas into backlog items or summaries as if they were decided. Ask when the wording is vague ([no-invented-scope](docs/claude/no-invented-scope.md)).
 - [backlog.md](backlog.md) holds only open work. Delete finished items and put reference knowledge into docs/claude ([backlog-md-sync](docs/claude/backlog-md-sync.md), [backlog-only-open](docs/claude/backlog-only-open.md)). Cleanups noticed during other work become a numbered backlog item; the user decides later ([cleanup-findings-to-backlog](docs/claude/cleanup-findings-to-backlog.md)).
