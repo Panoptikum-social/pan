@@ -33,3 +33,16 @@ The update to sobelow 0.19 (3a840c33) brought 30 findings back, which
   `.sobelow-skips`, as on 2026-10-19. About two-thirds are categories
   reviewed then (XSS.Raw on sanitized markdown, upload traversal,
   Config.CSP, SQL from `to_sql`), apparently fingerprinted anew by 0.19.
+
+### Pending dependency updates (from 2026-11-17)
+
+- **#640 npm audit: picomatch ReDoS** (GHSA-fc5q-39xc-vjpf, 4 high entries
+  for one issue) via micromatch → `@parcel/watcher` → `@tailwindcss/cli`
+  4.3.x, the Tailwind CLI's file watcher: build time only, never in the app
+  or the browser. `cd assets && npm audit fix` says it can fix it; diff the
+  built CSS/JS before and after. Prod deploy then needs `npm install`.
+- **#642 timex 3.7.13 → 4.0.0.** Major version, blocked by
+  `{:timex, "~> 3.7"}` in mix.exs: needs the constraint change and a check
+  of what 4.0 breaks.
+- **#643 usage_rules 1.2.8 → 1.3.1** (dev only). Blocked by `"~> 1.2.7"`
+  in mix.exs: small constraint change.
