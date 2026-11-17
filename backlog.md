@@ -24,6 +24,9 @@ Claude's per-machine memory) so they survive across computers. Last synced
   4.3.x, the Tailwind CLI's file watcher: build time only, never in the app
   or the browser. `cd assets && npm audit fix` says it can fix it; diff the
   built CSS/JS before and after. Prod deploy then needs `npm install`.
-- **#642 timex 3.7.13 → 4.0.0.** Major version, blocked by
+  Not in the running app (prod only runs the CLI while building the
+  release); deferred by the user to 2026-11-18.
+- **#642 timex 3.7.13 → 4.0.0.** Runs in prod (no `only:`), but no known
+  advisory; deferred by the user to 2026-11-18. Major version, blocked by
   `{:timex, "~> 3.7"}` in mix.exs: needs the constraint change and a check
   of what 4.0 breaks.
