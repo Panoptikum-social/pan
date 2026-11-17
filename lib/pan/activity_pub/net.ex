@@ -3,8 +3,7 @@ defmodule Pan.ActivityPub.Net do
   # curl -H "Accept: application/activity+json" https://pleroma.panoptikum.social/users/informatom | python -m json.tool
 
   @options [
-    "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)",
-    ssl: [{:versions, [:"tlsv1.2", :"tlsv1.1", :tlsv1]}]
+    "User-Agent": "Mozilla/5.0 (compatible; Panoptikum; +https://panoptikum.social/)"
   ]
   @headers [Accept: "application/activity+json"]
 

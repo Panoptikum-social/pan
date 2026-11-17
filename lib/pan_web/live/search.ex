@@ -353,7 +353,7 @@ defmodule PanWeb.Live.Search do
             <%= for {highlight_key, highlight_values} <- hit["highlight"] do %>
               <tr :for={highlight_value <- highlight_values}>
                 <td class="text-right align-top pr-4">{highlight_label(highlight_key)}</td>
-                <td>{highlight_value |> raw}</td>
+                <td>{Search.highlight_html(highlight_value)}</td>
               </tr>
             <% end %>
 

@@ -297,6 +297,25 @@ defmodule Pan.Search do
     end
   end
 
+  @before_match "<strong style=\"color: #DA4453;\">"
+  @after_match "</strong>"
+
+  @doc """
+  A highlight snippet from `query/1` as safe HTML: everything escaped except
+  the match markers. Manticore strips tags from snippets but decodes entities,
+  so stored text like `&lt;img onerror=…&gt;` comes back as live markup (#648).
+  """
+  def highlight_html(snippet) do
+    snippet
+    |> Phoenix.HTML.html_escape()
+    |> Phoenix.HTML.safe_to_string()
+    |> String.replace(escaped(@before_match), @before_match)
+    |> String.replace(escaped(@after_match), @after_match)
+    |> Phoenix.HTML.raw()
+  end
+
+  defp escaped(marker), do: marker |> Phoenix.HTML.html_escape() |> Phoenix.HTML.safe_to_string()
+
   @doc """
   `language_ids`, when given a non-empty list, restricts results to
   podcasts/episodes tagged with any of those `PanWeb.Language` ids (already
@@ -321,8 +340,8 @@ defmodule Pan.Search do
         highlight: %{
           no_match_size: 0,
           around: 8,
-          before_match: "<strong style=\"color: #DA4453;\">",
-          after_match: "</strong>"
+          before_match: @before_match,
+          after_match: @after_match
         }
       }
       |> Jason.encode!()

@@ -71,7 +71,7 @@ defmodule PanWeb.Live.Podcast.Header do
             </div>
           </div>
           <div class="min-w-0">
-            <p class="wrap-break-word">{@podcast.summary |> raw}</p>
+            <p class="wrap-break-word">{@podcast.summary |> Pan.Parser.Helpers.scrub() |> raw}</p>
           </div>
         </div>
 

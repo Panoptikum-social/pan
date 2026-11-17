@@ -1,16 +1,25 @@
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:15,73EE125
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:22,274163E
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:26,ED973B
+Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:27,560DC6
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:33,584D65D
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:37,22346A5
+Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:39,4D8EEF8
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:44,63941E6
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:46,69424DB
+Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:48,67D0E9
 Config.CSP: Missing Content-Security-Policy,lib/pan_web/router.ex:53,16218F
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:13,486D9D9
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:20,66371A0
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:37,1D06962
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:40,3F9997A
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:41,5D82996
+Config.TLSVerify: TLS Certificate Verification Disabled,daten/DATA/phoenix/pan/lib/pan/parser/category.ex:96,2501EDB
+Config.TLSVerify: TLS Certificate Verification Disabled,daten/DATA/phoenix/pan/lib/pan/updater/feed.ex:33,703A72C
+Crypto.WeakHash: Weak or Inappropriate Hash,lib/pan/parser/helpers.ex:621,61916A3
+Crypto.WeakHash: Weak or Inappropriate Hash,lib/pan_web/api/helpers.ex:46,78F48DD
+DOS.ModuleConcat: Atom Creation in Dynamic Module Names,lib/pan_web/admin/query_builder.ex:60,531FE94
+DOS.Regex: Potential Resource Risk in Dynamic Regex Compilation,lib/pan/parser/leniency.ex:55,19E0F31
 DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/admin/index_grid.ex:88,250802
 DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/admin/index_grid.ex:104,4B3A245
 DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/admin/index_grid.ex:105,5A4CECE
@@ -29,47 +38,66 @@ DOS.StringToAtom: Unsafe `String.to_atom`,lib/pan_web/live/admin/podcast/stale.e
 SQL.Query: SQL injection,lib/pan_web/live/admin/data_browser/db_index.ex:16,5937EBD
 SQL.Query: SQL injection,lib/pan_web/models/podcast_duplicates.ex:34,2EF63F0
 SQL.Query: SQL injection,lib/pan_web/models/podcast_merge.ex:227,4976B6C
+SQL.Query: SQL injection,lib/pan_web/models/podcast_merge.ex:241,3231AE5
+Traversal.FileModule: Directory Traversal in `File.cp!`,lib/pan_web/controllers/opml_controller.ex:31,1F0A00F
 Traversal.FileModule: Directory Traversal in `File.cp`,lib/pan_web/api/controllers/opml_controller.ex:46,15797D0
 Traversal.FileModule: Directory Traversal in `File.cp`,lib/pan_web/controllers/image_controller.ex:24,2DFF988
 Traversal.FileModule: Directory Traversal in `File.cp`,lib/pan_web/controllers/invoice_controller.ex:31,22DBE15
 Traversal.FileModule: Directory Traversal in `File.cp`,lib/pan_web/controllers/opml_controller.ex:18,529A5AF
 Traversal.FileModule: Directory Traversal in `File.cp`,lib/pan_web/frontend_controller/opml_frontend_controller.ex:27,945C29
+Traversal.FileModule: Directory Traversal in `File.mkdir_p!`,lib/pan_web/controllers/opml_controller.ex:30,77E43A8
 Traversal.FileModule: Directory Traversal in `File.mkdir_p!`,lib/pan_web/models/image.ex:82,20EFB84
 Traversal.FileModule: Directory Traversal in `File.mkdir_p`,lib/pan_web/api/controllers/opml_controller.ex:41,46C2E71
 Traversal.FileModule: Directory Traversal in `File.mkdir_p`,lib/pan_web/controllers/image_controller.ex:19,4630BFE
 Traversal.FileModule: Directory Traversal in `File.mkdir_p`,lib/pan_web/controllers/invoice_controller.ex:26,1B51B39
 Traversal.FileModule: Directory Traversal in `File.mkdir_p`,lib/pan_web/controllers/opml_controller.ex:13,5CAB70A
 Traversal.FileModule: Directory Traversal in `File.mkdir_p`,lib/pan_web/frontend_controller/opml_frontend_controller.ex:22,2CA5C93
+Traversal.FileModule: Directory Traversal in `File.read!`,lib/pan_web/live/icon.ex:150,6F95CF1
+Traversal.FileModule: Directory Traversal in `File.read`,lib/pan/opml_parser/opml.ex:14,3281D13
 Traversal.FileModule: Directory Traversal in `File.read`,lib/pan/opml_parser/opml.ex:15,344A648
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan/feed_probe.ex:103,728630E
+Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan/feed_probe.ex:112,39E9739
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan/feed_probe.ex:185,72D72E4
+Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan/feed_probe.ex:194,6C1AF2E
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/api/controllers/opml_controller.ex:87,5EDA39E
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/controllers/invoice_controller.ex:94,509AD22
+Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/controllers/opml_controller.ex:74,192B767
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/controllers/opml_controller.ex:81,4BDAC45
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/frontend_controller/opml_frontend_controller.ex:61,46A272A
 Traversal.FileModule: Directory Traversal in `File.rm`,lib/pan_web/models/image.ex:61,14F806B
 Traversal.FileModule: Directory Traversal in `File.write!`,lib/pan/feed_probe.ex:94,7A3F48F
+Traversal.FileModule: Directory Traversal in `File.write!`,lib/pan/feed_probe.ex:103,7B051CC
 Traversal.FileModule: Directory Traversal in `File.write!`,lib/pan/feed_probe.ex:183,4D07C85
+Traversal.FileModule: Directory Traversal in `File.write!`,lib/pan/feed_probe.ex:192,5E74245
 Traversal.FileModule: Directory Traversal in `File.write!`,lib/pan_web/models/image.ex:83,629A55B
 Traversal.SendFile: Directory Traversal in `send_file`,lib/pan_web/frontend_controller/invoice_frontend_controller.ex:21,3AD5907
 Traversal.SendFile: Directory Traversal in `send_file`,lib/pan_web/frontend_controller/opml_frontend_controller.ex:81,4D6E7B6
 XSS.Raw: XSS,lib/pan/activity_pub/view.ex:17,F8DFC4
 XSS.Raw: XSS,lib/pan/activity_pub/view.ex:22,1E83427
 XSS.Raw: XSS,lib/pan/activity_pub/view.ex:26,55482B9
+XSS.Raw: XSS,lib/pan/search.ex:314,5B92349
 XSS.Raw: XSS,lib/pan_web/admin/show_presenter.ex:22,73503FD
 XSS.Raw: XSS,lib/pan_web/admin/show_presenter.ex:38,54E205
 XSS.Raw: XSS,lib/pan_web/admin/show_presenter.ex:41,66895F2
 XSS.Raw: XSS,lib/pan_web/admin/show_presenter.ex:50,7911CC8
 XSS.Raw: XSS,lib/pan_web/components/tree.ex:88,215B62C
+XSS.Raw: XSS,lib/pan_web/components/tree.ex:89,2929130
 XSS.Raw: XSS,lib/pan_web/frontend_views/page_frontend_view.ex:11,3BE4AD2
 XSS.Raw: XSS,lib/pan_web/live/episode/header.ex:49,6B77CDC
+XSS.Raw: XSS,lib/pan_web/live/episode/header.ex:50,326FCBF
 XSS.Raw: XSS,lib/pan_web/live/episode/show.ex:77,2EC0F28
+XSS.Raw: XSS,lib/pan_web/live/episode/show.ex:81,19B1F2E
 XSS.Raw: XSS,lib/pan_web/live/podcast/header.ex:70,1E83F37
+XSS.Raw: XSS,lib/pan_web/live/podcast/header.ex:74,5710320
 XSS.Raw: XSS,lib/pan_web/live/search.ex:177,722B1CF
 XSS.Raw: XSS,lib/pan_web/live/search.ex:178,3B6A54D
 XSS.Raw: XSS,lib/pan_web/live/search.ex:179,2924CEB
 XSS.Raw: XSS,lib/pan_web/live/search.ex:180,19DDDBE
 XSS.Raw: XSS,lib/pan_web/live/search.ex:321,7DF295E
+XSS.Raw: XSS,lib/pan_web/templates/podcast_frontend/grant_ownership.html.heex:6,1B4718B
+XSS.Raw: XSS,lib/pan_web/views/layout_view.ex:11,40E1FFB
 XSS.Raw: XSS,lib/pan_web/views/view_helpers.ex:9,3DDBD31
 XSS.Raw: XSS,lib/pan_web/views/view_helpers.ex:22,2D7FAE
+XSS.Raw: XSS,lib/pan_web/views/view_helpers.ex:28,C3EC09
 XSS.SendResp: XSS in `send_resp`,lib/pan_web/frontend_controller/qrcode_frontend_controller.ex:12,695DBDA
+XSS.SendResp: XSS in `send_resp`,lib/pan_web/frontend_controller/qrcode_frontend_controller.ex:22,22248B7
