@@ -6,7 +6,7 @@ Panoptikum is a podcast discovery platform (panoptikum.social): OTP app `pan`, E
 
 ## Working with the user
 
-- **Number** findings, options and open items, and keep the numbering going across sessions. **Next new number: #647.** History: [numbered-lists](docs/claude/numbered-lists.md). Update the next number here when you use new ones.
+- **Number** findings, options and open items, and keep the numbering going across sessions. **Next new number: #651.** History: [numbered-lists](docs/claude/numbered-lists.md). Update the next number here when you use new ones.
 - While the user is "still exploring", only investigate and answer. Edit the backlog or code only on an explicit request. Go step by step; the user prefers manual over automatic ([exploring-vs-deciding](docs/claude/exploring-vs-deciding.md)).
 - Don't put your own ideas into backlog items or summaries as if they were decided. Ask when the wording is vague ([no-invented-scope](docs/claude/no-invented-scope.md)).
 - [backlog.md](backlog.md) holds only open work, and all of it: every open or deferred numbered item goes in. Delete finished items and put reference knowledge into docs/claude ([backlog-md-sync](docs/claude/backlog-md-sync.md), [backlog-only-open](docs/claude/backlog-only-open.md)). Cleanups noticed during other work become a numbered backlog item; the user decides later ([cleanup-findings-to-backlog](docs/claude/cleanup-findings-to-backlog.md)).
@@ -34,6 +34,8 @@ Panoptikum is a podcast discovery platform (panoptikum.social): OTP app `pan`, E
 ## Tools and environment
 
 - Bash: start mix commands with `export PATH=$HOME/.asdf/shims:$PATH;` and check the exit status, since empty grep output is not a clean compile. Check compiles with `mix compile 2>&1 | grep -iE "error|exception"` ([mix-path](docs/claude/mix-path.md), [compile-check](docs/claude/compile-check.md)).
+- If a needed local service (Manticore, tidewave/dev server, Postgres) isn't running, stop and ask the user to start it right away; don't investigate around it or start it yourself.
+- After a dependency update the user restarts the dev server (compilation breaks otherwise); that drops the tidewave MCP connection, which the user reconnects with `/mcp`. A "failed to connect" notice doesn't mean the server is down: check port 4000 before saying so.
 - Use tidewave for DB inspection and evals. If it's unavailable, ask the user: no ad-hoc `mix run`/psql ([use-tidewave-for-db](docs/claude/use-tidewave-for-db.md)). Evals time out at 30 s: long jobs via Task + progress file + a background until-loop ([tidewave-long-running](docs/claude/tidewave-long-running.md)).
 - The dev DB is a restored prod backup (usually last night): its data is prod evidence ([dev-db-prod-backup](docs/claude/dev-db-prod-backup.md)). Six background jobs run on prod only, none in dev ([dev-background-jobs-disabled](docs/claude/dev-background-jobs-disabled.md)).
 - IDE markers can lag behind: trust fresh `mix credo`/compile. An ElixirLS dep error on mix.exs while the CLI is fine → delete `.elixir_ls/` and restart ([stale-ide-diagnostics](docs/claude/stale-ide-diagnostics.md), [elixir-ls-stale-build](docs/claude/elixir-ls-stale-build.md)).
