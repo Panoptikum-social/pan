@@ -27,5 +27,3 @@ Claude's per-machine memory) so they survive across computers. Last synced
 - **#642 timex 3.7.13 → 4.0.0.** Major version, blocked by
   `{:timex, "~> 3.7"}` in mix.exs: needs the constraint change and a check
   of what 4.0 breaks.
-- **#643 usage_rules 1.2.8 → 1.3.1** (dev only). Blocked by `"~> 1.2.7"`
-  in mix.exs: small constraint change.

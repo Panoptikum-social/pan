@@ -11,7 +11,24 @@ defmodule Pan.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      listeners: [Phoenix.CodeReloader]
+      listeners: [Phoenix.CodeReloader],
+      usage_rules: usage_rules()
+    ]
+  end
+
+  # `mix usage_rules.sync` rewrites only the part of CLAUDE.md between the
+  # usage-rules markers; sub-rules (e.g. phoenix:liveview) are included.
+  defp usage_rules do
+    [
+      file: "CLAUDE.md",
+      usage_rules: [
+        {:mdex, link: :markdown},
+        {:igniter, link: :markdown},
+        {:claude, link: :markdown},
+        {:usage_rules, link: :markdown},
+        {:phoenix, link: :markdown},
+        {:sobelow, link: :markdown}
+      ]
     ]
   end
 
@@ -35,7 +52,7 @@ defmodule Pan.MixProject do
   defp deps do
     [
       {:tidewave, "~> 0.4", only: [:dev]},
-      {:usage_rules, "~> 1.2.7", only: [:dev]},
+      {:usage_rules, "~> 1.3", only: [:dev]},
       # web framework
       {:phoenix, "~> 1.8.1"},
       # phoenix support for ecto

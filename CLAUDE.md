@@ -108,14 +108,6 @@ Panoptikum is a podcast discovery platform (panoptikum.social): OTP app `pan`, E
 - [business-cards](docs/claude/business-cards.md): Panoptikum business card in `../pan-assets/business-cards/`
 
 <!-- usage-rules-start -->
-<!-- usage-rules-header -->
-# Usage Rules
-
-**IMPORTANT**: Consult these usage rules early and often when working with the packages listed below.
-Before attempting to use any of these packages or to discover if you should use them, review their
-usage rules to understand the correct patterns, conventions, and best practices.
-<!-- usage-rules-header-end -->
-
 <!-- mdex-start -->
 ## mdex usage
 _Fast and extensible Markdown for Elixir_
@@ -140,7 +132,7 @@ _Batteries-included Claude Code integration for Elixir projects_
 <!-- claude:subagents-end -->
 <!-- usage_rules-start -->
 ## usage_rules usage
-_A dev tool for Elixir projects to gather LLM usage rules from dependencies_
+_A config-driven dev tool for Elixir projects to manage AGENTS.md files and agent skills from dependencies_
 
 [usage_rules usage rules](deps/usage_rules/usage-rules.md)
 <!-- usage_rules-end -->
@@ -172,4 +164,10 @@ _A dev tool for Elixir projects to gather LLM usage rules from dependencies_
 ## phoenix:phoenix usage
 [phoenix:phoenix usage rules](deps/phoenix/usage-rules/phoenix.md)
 <!-- phoenix:phoenix-end -->
+<!-- sobelow-start -->
+## sobelow usage
+_Security-focused static analysis for Elixir & the Phoenix framework_
+
+[sobelow usage rules](deps/sobelow/usage-rules.md)
+<!-- sobelow-end -->
 <!-- usage-rules-end -->
