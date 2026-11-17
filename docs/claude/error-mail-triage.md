@@ -11,3 +11,7 @@ When the user pastes exception-notification mails (prod Logger backend mails eve
 - `"value too long for type character varying(255)"` on podcasts.last_error_message: gone since b9b1516b (column is text, #473). Long TLS texts (bad_certificate with host names) are wanted in full.
 - `Manticore bulk insert request failed … :checkout_timeout`: shared hackney default pool busy; handled, retried next PushMissingSearchIndex run — leave it (#477).
 - A podcast behind an ImportStalePodcasts crash: the last `<id> ⬇ <title>` line before the crash in `journalctl -t pan --since "-5 days" | grep -B40 "crashed" | grep -E "⬇|crashed"`.
+- `{:unknown_entity_ref, :name}` from xmerl: add that one entity to `@html_entities` in `Pan.Parser.Helpers` and to the entity test (#166 rule; &rsquo; &bull; &iexcl; added f595d895).
+- Quinn `FunctionClauseError` in `parse_record/2` on an `{:xmlPI, :php, …}`: raw PHP source served as the feed (bureau42). Not handled in the parser by decision (#172/#173); the user retires the podcast by hand (#632, podcast 48824).
+- `ArgumentError` "not an atom" from `:smtp_rfc5322_parse.yeccerror/1` in `User.validate_deliverable_email/1`: gen_smtp 1.3.0 raises on e.g. "addr word"; rescued since f595d895 (#634).
+- `BadMapError … nil` in `Podcast.probe_deprecated/1` (/deprecated admin page 500): a retired podcast without an episode with enclosure. The probe tasks are linked, so a raise kills the request despite the `{:exit, reason}` clause. Not fixed by decision (#637/#638); the user deletes or handles the podcast by hand (#639).
