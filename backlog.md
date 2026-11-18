@@ -16,6 +16,7 @@ Claude's per-machine memory) so they survive across computers. Last synced
   whether old names still come back while the monthly metadata refresh runs
   through the podcasts (rotation until about 2026-11-21), and merge any new
   strays (sub before parent, so the mapping gets the name feeds use).
+  Last check 2026-11-18 (next: any id above 2857).
 
 ### Pending dependency updates (from 2026-11-17)
 
