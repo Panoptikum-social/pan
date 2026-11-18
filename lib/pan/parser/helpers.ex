@@ -35,7 +35,6 @@ defmodule Pan.Parser.Helpers do
     "{WDshort} {D} {Mshort} {YYYY}",
     "{WDshort} {0D}-{Mshort}-{YYYY} {ISOtime} {Z}",
     "{WDshort} {0D}-{Mshort}-{YYYY} {ISOtime} {Zname}",
-    "{WDshort} {D} {Mshort} {ISOtime} {Zname}",
     # American weekday-first, month before day
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Z}",
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime} {Zname}",
@@ -45,7 +44,6 @@ defmodule Pan.Parser.Helpers do
     "{WDshort} {Mshort} {D} {YYYY} {ISOtime}",
     "{WDshort} {Mshort} {D} {YYYY} {Z}",
     "{WDshort} {Mshort} {D} {YYYY}",
-    "{WDshort} {Mshort} {D} {ISOtime} {Z}",
     "{WDshort}  {Mshort} {D} {YYYY} {ISOtime}",
     # Unusual weekday-prefixed formats
     "{WDshort} {0D}/{0M}/{YYYY} - {h24}:{m}",

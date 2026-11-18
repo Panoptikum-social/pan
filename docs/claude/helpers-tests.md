@@ -2,6 +2,8 @@
 
 **Findings:** no bugs. `to_naive_datetime/1` drops UTC offsets (`10:00 +0200` stored as `10:00`, wall time), now pinned by tests; user was told, made no decision to change it. `remove_extra_angle_brackets/1`'s second regex is `~r/\b/` with a literal backspace char (strips U+0008).
 
+**Timex 4.0 (2026-11-18, #642):** formats without `{YYYY}` belong only in `@yearless_date_formats` (which fills in the current year); in `@date_formats` they return year 0000. Two such duplicates sat in `@date_formats` and were masked because Timex 3.7's `{Zname}` didn't accept `+0200`; Timex 4 does, so the yearless test failed until they were removed. Also new in 4.0: `{RFC3339z}`/`{ISO:Extended}` reject trailing text (`2024-01-01T10:00:00Z junk`, `…+02:00 (CEST)` now `:unreadable`; #702 closed by the user 2026-11-18, accepted as is). Month names now match case-insensitively.
+
 **Why:** first step of backlog Project #1 phase 1 ([parser-extraction-roadmap](parser-extraction-roadmap.md)). When a new feed crash is fixed, add its regression here.
 
 **How to apply:** `Analyzer`/`Iterator` are covered by `test/pan/parser/feed_parsing_test.exs` (2026-09-21, ~50 tests, no DB, feeds go through Quinn + `RssFeed.parse_to_map/2`; UUID-keyed maps are compared via `Map.values`). Add a case there for each new feed-shape crash. Mixed content (raw markup in an element) is flattened with `Helpers.flatten_to_string/1`, joined with spaces since Quinn trims text nodes. Unknown tags are skipped silently on purpose (ignore lists and logging removed, user decision: nobody adds tags anymore). Still open: `feed_urls/0` (Repo call) is untested until it moves out of Helpers. See [parser-hardening-sprint-sept14](parser-hardening-sprint-sept14.md) for the crash history.

@@ -77,14 +77,14 @@ defmodule Pan.MixProject do
       {:telemetry_metrics, "~> 1.2.0"},
       # telemetry poller
       {:telemetry_poller, "~> 1.3.0"},
-      # i18n library, override necessary because of unnecessary dependency restriction from timex
-      {:gettext, "~> 1.0.2", override: true},
+      # i18n library
+      {:gettext, "~> 1.0.2"},
       # web server
       {:bandit, "~> 1.0"},
       # algorithm used for comeonin
       {:bcrypt_elixir, "~> 3.0"},
       # time conversion
-      {:timex, "~> 3.7"},
+      {:timex, "~> 4.0"},
       # http client
       {:httpoison, "~> 3.0"},
       # XML parser

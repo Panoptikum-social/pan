@@ -18,13 +18,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   strays (sub before parent, so the mapping gets the name feeds use).
   Last check 2026-11-18 (next: any id above 2857).
 
-### Pending dependency updates (from 2026-11-17)
-
-- **#642 timex 3.7.13 → 4.0.0.** Runs in prod (no `only:`), but no known
-  advisory; deferred by the user to 2026-11-18. Major version, blocked by
-  `{:timex, "~> 3.7"}` in mix.exs: needs the constraint change and a check
-  of what 4.0 breaks.
-
 ### Later dependency updates (waiting for an upstream fix)
 
 - **#640 npm audit: picomatch ReDoS** (GHSA-fc5q-39xc-vjpf, 4 high entries
