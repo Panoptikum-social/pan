@@ -36,3 +36,5 @@ content color in the browser and add an explicit `-content` override if it looks
 - **Badges:** `badge badge-info|error|warning`; custom colors as override on `badge`.
 - **Alerts:** form changeset error boxes `alert-danger`; layout flashes
   `alert-info empty:hidden` / `alert-danger empty:hidden`.
+
+**Tailwind 4.3.5 drops DaisyUI's `.join` rules (found 2026-11-18, #640):** the build warns "Invalid empty selector" and the `.join` focus/hover `z-index` rules are missing from the CSS; affects theme_toggle.ex and language_toggle.ex. JS builds were byte-identical. On the next Tailwind bump, diff the minified CSS/JS builds before and after and check for dropped rules and new build warnings. @parcel/watcher's install script (npm 11 `allowScripts` warning) is a no-op unless `npm_config_build_from_source=true`; no approval needed. Prod deploy then needs `npm install`.
