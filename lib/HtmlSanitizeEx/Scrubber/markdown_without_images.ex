@@ -4,6 +4,11 @@ defmodule HtmlSanitizeEx.Scrubber.MarkdownWithoutImages do
   must not make visitors' browsers load anything from third party servers.
   An image is replaced by its alt text. `data-sourcepos` (the source lines
   and columns an element comes from) is kept for the pad preview.
+
+  Links to http(s) URLs open in a new tab (#706): the `a` clause below first
+  scrubs the attributes with the generated `scrub_attributes/2` (href scheme
+  check, attribute allowlist), then appends `target` and `rel`. `target` and
+  `rel` from the input are dropped, since they aren't in the allowlist.
   """
 
   use HtmlSanitizeEx, extend: :strip_tags
@@ -13,10 +18,20 @@ defmodule HtmlSanitizeEx.Scrubber.MarkdownWithoutImages do
     |> Enum.find_value("", fn {name, value} -> if name == "alt", do: value end)
   end
 
+  def scrub({"a", attributes, children}) do
+    attributes = scrub_attributes("a", attributes)
+
+    case List.keyfind(attributes, "href", 0) do
+      {"href", "http" <> _rest} ->
+        {"a", attributes ++ [{"target", "_blank"}, {"rel", "noopener noreferrer"}], children}
+
+      _other ->
+        {"a", attributes, children}
+    end
+  end
+
   allow_tag_with_uri_attributes("a", ["href"], ["http", "https", "mailto"])
   allow_tag_with_these_attributes("a", ["name", "title", "data-sourcepos"])
-  allow_tag_with_this_attribute_values("a", "target", ["_blank"])
-  allow_tag_with_this_attribute_values("a", "rel", ["noopener", "noreferrer"])
   allow_tag_with_these_attributes("b", ["data-sourcepos"])
   allow_tag_with_these_attributes("blockquote", ["data-sourcepos"])
   allow_tag_with_these_attributes("br", ["data-sourcepos"])

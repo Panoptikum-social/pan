@@ -26,21 +26,16 @@ Claude's per-machine memory) so they survive across computers. Last synced
   code readability issues, 51 software design suggestions (2026-11-20);
   plain `mix credo` is clean on the files touched by #705. To be tackled
   separately.
-
-### Feature requests
-
-- **#703 Links to external URLs open in a new tab** with
-  `target="_blank" rel="noopener noreferrer"`, server side, no JavaScript.
-  Done: all links to the blog domain (`PanWeb.Blog.url/1`: navbar, footer,
-  forgot password, home, the three "Complain" links) and all other external
-  links in templates (#705: `<.external_link>` in core_components, the
-  "tweet" buttons by hand). Open:
-  - **#706 Markdown: add `target`/`rel` in `PanWeb.ViewHelpers.markdown/2`**
-    (pads incl. live preview, persona long descriptions, curations) with a
-    Floki pass after sanitizing, on every `<a>` whose href starts with
-    `http`. Not in the scrubber: its `rel` allowlist drops the combined
-    value, and a custom `scrub({"a", ...})` clause would replace the
-    generated href check.
+- **#709 Markdown links with an uppercase scheme lose their href.**
+  `[a](HTTPS://example.org)` or an autolink `HTTP://...` renders as a bare
+  `<a>` (dead text): the scrubber's scheme check
+  (`allow_tag_with_uri_attributes`) is case-sensitive. Found 2026-11-20
+  during #706.
+- **#710 Sobelow: `Crypto.WeakHash` in `Pan.Parser.Helpers.md5hash/1`**
+  (lib/pan/parser/helpers.ex:619) is reported again: the code is unchanged
+  since 2021, but the file changed after the 2026-11-17 review (039c5690,
+  timex 4.0), so its `.sobelow-skips` fingerprint no longer matches.
+  Re-review and re-mark.
 
 ### Later dependency updates (waiting for an upstream fix)
 
