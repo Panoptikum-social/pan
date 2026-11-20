@@ -56,7 +56,7 @@ defmodule PanWeb.Admin.DataTable do
   attr :buttons, :list, required: true
   attr :model, :any, required: true
   attr :search_options, :map, default: %{}
-  attr :search_mode, :atom, default: :exact
+  attr :search_mode, :atom, default: :contains
   attr :hide_filtered, :boolean, default: true
   attr :records, :list, default: []
   attr :path_helper, :atom, default: nil

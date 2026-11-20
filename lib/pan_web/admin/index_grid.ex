@@ -21,7 +21,7 @@ defmodule PanWeb.Admin.IndexGrid do
        second_search_filter: {},
        per_page: 20,
        page: 1,
-       search_mode: :exact,
+       search_mode: :contains,
        hide_filtered: true,
        sort_by: :id,
        sort_order: :asc,

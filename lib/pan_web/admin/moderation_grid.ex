@@ -17,7 +17,7 @@ defmodule PanWeb.Admin.ModerationGrid do
        selected_records: [],
        search_options: %{},
        page: 1,
-       search_mode: :starts_with,
+       search_mode: :contains,
        sort_by: :id,
        sort_order: :asc,
        primary_key: [],

@@ -18,6 +18,17 @@ Claude's per-machine memory) so they survive across computers. Last synced
   strays (sub before parent, so the mapping gets the name feeds use).
   Last check 2026-11-18 (next: any id above 2857).
 
+### Feature requests
+
+- **#703 Links to external URLs open in a new tab.** About 25 templates
+  render external links by hand (podcast/episode headers, community and
+  persona pages, podcast widget, feeds page, orphans, ActivityPub toots,
+  check_feed spec links, blog links in navbar/footer); further external
+  links come inside rendered HTML (episode descriptions, shownotes, pads).
+  Open decisions: a global click handler in `app.js` (covers rendered HTML
+  too) or `target="_blank" rel="noopener noreferrer"` per template; whether
+  the blog/docs site counts as external.
+
 ### Later dependency updates (waiting for an upstream fix)
 
 - **#640 npm audit: picomatch ReDoS** (GHSA-fc5q-39xc-vjpf, 4 high entries
