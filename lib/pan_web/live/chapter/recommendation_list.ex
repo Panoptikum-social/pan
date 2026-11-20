@@ -23,6 +23,8 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
       <div class="float-right">
         <a
           href={PanWeb.Blog.url("/complaints/")}
+          target="_blank"
+          rel="noopener noreferrer"
           class="underline hover:text-primary"
         >{dgettext("frontend", "Complain")}</a>
       </div>

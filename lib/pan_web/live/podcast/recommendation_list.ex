@@ -59,6 +59,8 @@ defmodule PanWeb.Live.Podcast.RecommendationList do
       <div :if={@recommendations_count > 0} class="float-right">
         <a
           href={PanWeb.Blog.url("/complaints/")}
+          target="_blank"
+          rel="noopener noreferrer"
           class="underline hover:text-primary"
         >{dgettext("frontend", "Complain")}</a>
       </div>

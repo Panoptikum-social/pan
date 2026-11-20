@@ -191,7 +191,7 @@ msgid "Podcasters"
 msgstr "Podcaster:innen"
 
 #: lib/pan_web/templates/layout/_footer.html.heex:8
-#: lib/pan_web/templates/user/forgot_password.html.heex:22
+#: lib/pan_web/templates/user/forgot_password.html.heex:27
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Privacy"
@@ -455,10 +455,10 @@ msgstr "Konto anlegen"
 msgid "Danger Zone"
 msgstr "Gefahrenzone"
 
-#: lib/pan_web/live/episode/recommendation_list.ex:55
+#: lib/pan_web/live/episode/recommendation_list.ex:57
 #: lib/pan_web/live/persona/show.ex:347
 #: lib/pan_web/live/podcast/episode_list.ex:19
-#: lib/pan_web/live/podcast/recommendation_list.ex:72
+#: lib/pan_web/live/podcast/recommendation_list.ex:74
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:151
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:550
 #, elixir-autogen, elixir-format
@@ -962,9 +962,9 @@ msgstr "Podcasts, die mir gefallen"
 msgid "Podcasts I manage"
 msgstr "Podcasts, die ich verwalte"
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:30
-#: lib/pan_web/live/episode/recommendation_list.ex:47
-#: lib/pan_web/live/podcast/recommendation_list.ex:65
+#: lib/pan_web/live/chapter/recommendation_list.ex:32
+#: lib/pan_web/live/episode/recommendation_list.ex:49
+#: lib/pan_web/live/podcast/recommendation_list.ex:67
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:521
 #, elixir-autogen, elixir-format
 msgid "Recommendations"
@@ -985,7 +985,7 @@ msgstr "Weiterleitung"
 msgid "Remember me for 30 days"
 msgstr "30 Tage angemeldet bleiben"
 
-#: lib/pan_web/templates/user/forgot_password.html.heex:27
+#: lib/pan_web/templates/user/forgot_password.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Request Login Link"
 msgstr "Login-Link anfordern"
@@ -1363,8 +1363,8 @@ msgstr "Ihre Personas sind Ihre verschiedenen Identitäten beim Podcasten."
 msgid "all my data as JSON-File"
 msgstr "alle meine Daten als JSON-Datei"
 
-#: lib/pan_web/live/home.ex:38
-#: lib/pan_web/templates/user/forgot_password.html.heex:24
+#: lib/pan_web/live/home.ex:40
+#: lib/pan_web/templates/user/forgot_password.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "for details."
 msgstr "für Details."
@@ -1571,9 +1571,9 @@ msgstr "Schließen"
 msgid "Collapse all"
 msgstr "Alle zuklappen"
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:27
-#: lib/pan_web/live/episode/recommendation_list.ex:44
-#: lib/pan_web/live/podcast/recommendation_list.ex:63
+#: lib/pan_web/live/chapter/recommendation_list.ex:29
+#: lib/pan_web/live/episode/recommendation_list.ex:46
+#: lib/pan_web/live/podcast/recommendation_list.ex:65
 #, elixir-autogen, elixir-format
 msgid "Complain"
 msgstr "Beschweren"
@@ -1688,7 +1688,7 @@ msgstr "Fortuna wählte die Episode"
 msgid "Gigs, %{name} has been engaged in"
 msgstr "Gigs von %{name}"
 
-#: lib/pan_web/live/home.ex:43
+#: lib/pan_web/live/home.ex:45
 #, elixir-autogen, elixir-format
 msgid "I agree"
 msgstr "Einverstanden"
@@ -1721,7 +1721,7 @@ msgstr "Sprache"
 msgid "Languages:"
 msgstr "Sprachen:"
 
-#: lib/pan_web/live/home.ex:102
+#: lib/pan_web/live/home.ex:104
 #, elixir-autogen, elixir-format
 msgid "Latest Episode"
 msgstr "Neueste Episode"
@@ -1742,7 +1742,7 @@ msgstr "Neueste Episoden in %{category}"
 msgid "Latest Episodes in %{category} (Category)"
 msgstr "Neueste Episoden in %{category} (Kategorie)"
 
-#: lib/pan_web/live/home.ex:82
+#: lib/pan_web/live/home.ex:84
 #, elixir-autogen, elixir-format
 msgid "Latest Podcast"
 msgstr "Neuester Podcast"
@@ -1753,7 +1753,7 @@ msgstr "Neuester Podcast"
 msgid "Latest Podcasts"
 msgstr "Neueste Podcasts"
 
-#: lib/pan_web/live/home.ex:123
+#: lib/pan_web/live/home.ex:125
 #, elixir-autogen, elixir-format
 msgid "Latest Recommendation"
 msgstr "Neueste Empfehlung"
@@ -1783,8 +1783,8 @@ msgstr "Link"
 msgid "Listing records for Personas"
 msgstr "Personas"
 
-#: lib/pan_web/live/episode/recommendation_list.ex:91
-#: lib/pan_web/live/podcast/recommendation_list.ex:105
+#: lib/pan_web/live/episode/recommendation_list.ex:93
+#: lib/pan_web/live/podcast/recommendation_list.ex:107
 #, elixir-autogen, elixir-format
 msgid "Load more"
 msgstr "Mehr laden"
@@ -1824,7 +1824,7 @@ msgstr "Neues Pad"
 msgid "No content defined!"
 msgstr "Kein Inhalt festgelegt!"
 
-#: lib/pan_web/live/home.ex:112
+#: lib/pan_web/live/home.ex:114
 #, elixir-autogen, elixir-format
 msgid "No episodes yet."
 msgstr "Noch keine Episoden."
@@ -1834,12 +1834,12 @@ msgstr "Noch keine Episoden."
 msgid "No pads yet."
 msgstr "Noch keine Pads."
 
-#: lib/pan_web/live/home.ex:91
+#: lib/pan_web/live/home.ex:93
 #, elixir-autogen, elixir-format
 msgid "No podcasts yet."
 msgstr "Noch keine Podcasts."
 
-#: lib/pan_web/live/home.ex:133
+#: lib/pan_web/live/home.ex:135
 #, elixir-autogen, elixir-format
 msgid "No recommendations yet."
 msgstr "Noch keine Empfehlungen."
@@ -1971,7 +1971,7 @@ msgstr "Vorschau"
 msgid "Print"
 msgstr "Drucken"
 
-#: lib/pan_web/live/home.ex:37
+#: lib/pan_web/live/home.ex:39
 #, elixir-autogen, elixir-format
 msgid "Privacy Page"
 msgstr "Datenschutzseite"
@@ -2000,8 +2000,8 @@ msgstr "„Nur lesen“ friert das Pad für alle ein, auch für Moderator:innen.
 msgid "Recommend"
 msgstr "Empfehlen"
 
-#: lib/pan_web/live/episode/recommendation_list.ex:54
-#: lib/pan_web/live/podcast/recommendation_list.ex:71
+#: lib/pan_web/live/episode/recommendation_list.ex:56
+#: lib/pan_web/live/podcast/recommendation_list.ex:73
 #, elixir-autogen, elixir-format
 msgid "Recommendation"
 msgstr "Empfehlung"
@@ -2164,12 +2164,12 @@ msgstr "Dieser Podcast darf hier leider nicht veröffentlicht werden."
 msgid "Title of the new pad"
 msgstr "Titel des neuen Pads"
 
-#: lib/pan_web/live/home.ex:53
+#: lib/pan_web/live/home.ex:55
 #, elixir-autogen, elixir-format
 msgid "Top 10 most liked Podcasts"
 msgstr "Top 10 der beliebtesten Podcasts"
 
-#: lib/pan_web/live/home.ex:66
+#: lib/pan_web/live/home.ex:68
 #, elixir-autogen, elixir-format
 msgid "Top 10 subscribed Podcasts"
 msgstr "Top 10 der meistabonnierten Podcasts"
@@ -2252,8 +2252,8 @@ msgstr "Abo beenden"
 msgid "Updating from feed"
 msgstr "Aktualisierung aus dem Feed"
 
-#: lib/pan_web/live/episode/recommendation_list.ex:53
-#: lib/pan_web/live/podcast/recommendation_list.ex:70
+#: lib/pan_web/live/episode/recommendation_list.ex:55
+#: lib/pan_web/live/podcast/recommendation_list.ex:72
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "Benutzer:in"
@@ -2441,7 +2441,7 @@ msgstr "letzte Episode veröffentlicht"
 msgid "last modified"
 msgstr "zuletzt geändert"
 
-#: lib/pan_web/live/home.ex:51
+#: lib/pan_web/live/home.ex:53
 #, elixir-autogen, elixir-format
 msgid "left column"
 msgstr "linke Spalte"
@@ -2451,9 +2451,9 @@ msgstr "linke Spalte"
 msgid "loading ..."
 msgstr "wird geladen ..."
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:47
-#: lib/pan_web/live/episode/recommendation_list.ex:75
-#: lib/pan_web/live/podcast/recommendation_list.ex:89
+#: lib/pan_web/live/chapter/recommendation_list.ex:49
+#: lib/pan_web/live/episode/recommendation_list.ex:77
+#: lib/pan_web/live/podcast/recommendation_list.ex:91
 #, elixir-autogen, elixir-format
 msgid "mail"
 msgstr "E-Mail"
@@ -2510,16 +2510,16 @@ msgstr "in allen verfügbaren Sprachen suchen"
 msgid "searching in all languages available"
 msgstr "Suche in allen verfügbaren Sprachen"
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:46
-#: lib/pan_web/live/episode/recommendation_list.ex:74
-#: lib/pan_web/live/podcast/recommendation_list.ex:88
+#: lib/pan_web/live/chapter/recommendation_list.ex:48
+#: lib/pan_web/live/episode/recommendation_list.ex:76
+#: lib/pan_web/live/podcast/recommendation_list.ex:90
 #, elixir-autogen, elixir-format
 msgid "send an email"
 msgstr "E-Mail senden"
 
-#: lib/pan_web/live/home.ex:97
-#: lib/pan_web/live/home.ex:118
-#: lib/pan_web/live/home.ex:139
+#: lib/pan_web/live/home.ex:99
+#: lib/pan_web/live/home.ex:120
+#: lib/pan_web/live/home.ex:141
 #, elixir-autogen, elixir-format
 msgid "show more..."
 msgstr "mehr anzeigen ..."
@@ -2554,16 +2554,16 @@ msgstr "den Podcast"
 msgid "to like, follow, recommend and subscribe!"
 msgstr "– und schon können Sie liken, folgen, empfehlen und abonnieren!"
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:42
-#: lib/pan_web/live/episode/recommendation_list.ex:70
-#: lib/pan_web/live/podcast/recommendation_list.ex:84
+#: lib/pan_web/live/chapter/recommendation_list.ex:44
+#: lib/pan_web/live/episode/recommendation_list.ex:72
+#: lib/pan_web/live/podcast/recommendation_list.ex:86
 #, elixir-autogen, elixir-format
 msgid "tweet"
 msgstr "tweeten"
 
-#: lib/pan_web/live/chapter/recommendation_list.ex:41
-#: lib/pan_web/live/episode/recommendation_list.ex:69
-#: lib/pan_web/live/podcast/recommendation_list.ex:83
+#: lib/pan_web/live/chapter/recommendation_list.ex:43
+#: lib/pan_web/live/episode/recommendation_list.ex:71
+#: lib/pan_web/live/podcast/recommendation_list.ex:85
 #, elixir-autogen, elixir-format
 msgid "tweet it"
 msgstr "tweeten"
@@ -3841,11 +3841,11 @@ msgstr "von %{name}"
 msgid "by a former user"
 msgstr "von einer ehemaligen Benutzer:in"
 
-#: lib/pan_web/live/home.ex:54
-#: lib/pan_web/live/home.ex:67
-#: lib/pan_web/live/home.ex:83
-#: lib/pan_web/live/home.ex:103
-#: lib/pan_web/live/home.ex:124
+#: lib/pan_web/live/home.ex:56
+#: lib/pan_web/live/home.ex:69
+#: lib/pan_web/live/home.ex:85
+#: lib/pan_web/live/home.ex:105
+#: lib/pan_web/live/home.ex:126
 #, elixir-autogen, elixir-format
 msgid "more ..."
 msgstr "mehr ..."

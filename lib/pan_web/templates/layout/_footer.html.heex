@@ -30,7 +30,12 @@
 >
   <li class="uppercase text-base-content/70">{section}</li>
   <li :for={{href, icon, label} <- links}>
-    <a href={href} class="inline-flex items-center gap-1 hover:underline">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="inline-flex items-center gap-1 hover:underline"
+    >
       {icon(icon, class: "size-4 shrink-0")} {label}
     </a>
   </li>

@@ -33,6 +33,8 @@ defmodule PanWeb.Live.Home do
           )}
           <.link
             href={PanWeb.Blog.url("/privacy/")}
+            target="_blank"
+            rel="noopener noreferrer"
             class="underline hover:text-primary"
           >{dgettext("frontend", "Privacy Page")}</.link>
           {dgettext("frontend", "for details.")}

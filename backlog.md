@@ -20,14 +20,13 @@ Claude's per-machine memory) so they survive across computers. Last synced
 
 ### Feature requests
 
-- **#703 Links to external URLs open in a new tab.** About 25 templates
-  render external links by hand (podcast/episode headers, community and
-  persona pages, podcast widget, feeds page, orphans, ActivityPub toots,
-  check_feed spec links, blog links in navbar/footer); further external
-  links come inside rendered HTML (episode descriptions, shownotes, pads).
-  Open decisions: a global click handler in `app.js` (covers rendered HTML
-  too) or `target="_blank" rel="noopener noreferrer"` per template; whether
-  the blog/docs site counts as external.
+- **#703 Links to external URLs open in a new tab.** Decided: per template
+  with `target="_blank" rel="noopener noreferrer"`. Done: all links to the
+  blog domain (`PanWeb.Blog.url/1`: navbar, footer, forgot password, home,
+  the three "Complain" links). Still open: the other external links in
+  templates (podcast/episode headers, podcast widget, feeds page, orphans,
+  ActivityPub toots); links inside rendered HTML (episode descriptions,
+  shownotes, pads) are not covered by this approach.
 
 ### Later dependency updates (waiting for an upstream fix)
 
