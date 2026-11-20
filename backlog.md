@@ -26,11 +26,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   code readability issues, 51 software design suggestions (2026-11-20);
   plain `mix credo` is clean on the files touched by #705. To be tackled
   separately.
-- **#709 Markdown links with an uppercase scheme lose their href.**
-  `[a](HTTPS://example.org)` or an autolink `HTTP://...` renders as a bare
-  `<a>` (dead text): the scrubber's scheme check
-  (`allow_tag_with_uri_attributes`) is case-sensitive. Found 2026-11-20
-  during #706.
 
 ### Later dependency updates (waiting for an upstream fix)
 
