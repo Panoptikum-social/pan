@@ -16,6 +16,7 @@ Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:40,3F9997A
 Config.CSWH: Cross-Site Websocket Hijacking,lib/pan_web/endpoint.ex:41,5D82996
 Config.TLSVerify: TLS Certificate Verification Disabled,daten/DATA/phoenix/pan/lib/pan/parser/category.ex:96,2501EDB
 Config.TLSVerify: TLS Certificate Verification Disabled,daten/DATA/phoenix/pan/lib/pan/updater/feed.ex:33,703A72C
+Crypto.WeakHash: Weak or Inappropriate Hash,lib/pan/parser/helpers.ex:619,8C2511
 Crypto.WeakHash: Weak or Inappropriate Hash,lib/pan/parser/helpers.ex:621,61916A3
 Crypto.WeakHash: Weak or Inappropriate Hash,lib/pan_web/api/helpers.ex:46,78F48DD
 DOS.ModuleConcat: Atom Creation in Dynamic Module Names,lib/pan_web/admin/query_builder.ex:60,531FE94

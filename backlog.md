@@ -31,11 +31,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   `<a>` (dead text): the scrubber's scheme check
   (`allow_tag_with_uri_attributes`) is case-sensitive. Found 2026-11-20
   during #706.
-- **#710 Sobelow: `Crypto.WeakHash` in `Pan.Parser.Helpers.md5hash/1`**
-  (lib/pan/parser/helpers.ex:619) is reported again: the code is unchanged
-  since 2021, but the file changed after the 2026-11-17 review (039c5690,
-  timex 4.0), so its `.sobelow-skips` fingerprint no longer matches.
-  Re-review and re-mark.
 
 ### Later dependency updates (waiting for an upstream fix)
 
