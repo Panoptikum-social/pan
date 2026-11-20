@@ -8,3 +8,5 @@ Terms (2026-11-05): never "beanspruchen" for claim (also means "to strain"): per
 **Community stays English (2026-11-06):** plural "Communities", not the Duden form "Communitys" (user's choice, 0fd1bd63). "Community" is a Panoptikum concept name, not translated (no "Gemeinschaft"/"Gruppe").
 
 **German category titles agreed 2026-11-06** (data, set by the user in /admin/translations on prod, not in .po files): Unsorted (id 1438) = "Sonstiges" (user's pick over "Unsortiert"; "Unkategorisiert" too long), K-12 (id 22) = "Schule", Higher Education (id 25) = "Hochschule" (pair). Translate category titles short and menu-friendly; prefer the natural German term over a literal or country-specific one (no Matura/Abitur).
+
+**Feed data isn't ours (2026-11-20):** titles from feeds may use other gender forms (e.g. podcast 20568 "Podcastpat_innen"). Before reporting a style violation on a page, check that the text comes from priv/gettext or a template, not from feed data.
