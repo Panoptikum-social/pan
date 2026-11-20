@@ -11,7 +11,7 @@
             {toot.name}
           </b>
           <span class="text-base-content/70">
-            <.link href={toot.actor_url} class="underline hover:text-primary">{toot.preferred_username}</.link>
+            <.external_link href={toot.actor_url}>{toot.preferred_username}</.external_link>
             - {if toot.boosted, do: dgettext("frontend", "boosted")}
             {toot.published}
           </span>
@@ -22,7 +22,7 @@
               {toot.attributed_to_name}
             </b>
             <span>
-              <.link href={toot.attributed_to_url} class="underline hover:text-primary">{toot.attributed_to_preferred_username}</.link>
+              <.external_link href={toot.attributed_to_url}>{toot.attributed_to_preferred_username}</.external_link>
               -
             </span>
           <% end %>

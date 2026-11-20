@@ -117,14 +117,7 @@ defmodule PanWeb.Live.Persona.Show do
             <tr :if={@persona.uri}>
               <td class="px-4 text-right font-semibold">{dgettext("frontend", "Uri")}</td>
               <td>
-                <.link
-                  :if={safe_uri?(@persona.uri)}
-                  href={safe_href(@persona.uri)}
-                  rel="me"
-                  target="_blank"
-                  class="underline hover:text-primary"
-                >{@persona.uri}</.link>
-                <span :if={!safe_uri?(@persona.uri)}>{@persona.uri}</span>
+                <.external_link href={@persona.uri} rel="me">{@persona.uri}</.external_link>
               </td>
             </tr>
             <tr>

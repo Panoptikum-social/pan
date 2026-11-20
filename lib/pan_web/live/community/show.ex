@@ -84,16 +84,9 @@ defmodule PanWeb.Live.Community.Show do
         <p :if={@community.description}>{@community.description}</p>
 
         <p :if={@community.website} class="mt-2">
-          <.link
-            :if={safe_uri?(@community.website)}
-            href={safe_href(@community.website)}
-            rel="me"
-            target="_blank"
-            class="underline hover:text-primary"
-          >
+          <.external_link href={@community.website} rel="me">
             {@community.website}
-          </.link>
-          <span :if={!safe_uri?(@community.website)}>{@community.website}</span>
+          </.external_link>
         </p>
 
         <p :if={@community.fediverse_address} class="mt-2 text-base-content/70">

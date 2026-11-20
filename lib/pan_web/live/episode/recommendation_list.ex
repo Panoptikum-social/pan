@@ -67,6 +67,8 @@ defmodule PanWeb.Live.Episode.RecommendationList do
                   <div :if={@current_user_id == recommendation.user_id} class="mt-1 flex gap-1">
                     <a
                       href={"https://twitter.com/intent/tweet?text=#{social(@episode, recommendation)}&url=#{social_url(@episode)}"}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       class="btn btn-outline btn-info btn-xs"
                       alt={dgettext("frontend", "tweet it")}
                     >{dgettext("frontend", "tweet")}</a>

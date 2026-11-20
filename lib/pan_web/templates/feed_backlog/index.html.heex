@@ -47,11 +47,7 @@
           <td>{feed_backlog.id}</td>
           <td class="leading-6">
             <%= if URI.parse(feed_backlog.url).scheme && safe_uri?(feed_backlog.url) do %>
-              <.link
-                href={safe_href(feed_backlog.url)}
-                target="_blank"
-                class="underline hover:text-primary"
-              >{feed_backlog.url}</.link>
+              <.external_link href={feed_backlog.url}>{feed_backlog.url}</.external_link>
               <br />
             <% else %>
               Error: {feed_backlog.url}

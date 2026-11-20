@@ -515,13 +515,7 @@ defmodule PanWeb.Live.Podcast.CheckFeed do
             </Pill.render>
             {finding.description}
             <span class="text-sm text-base-content/70">
-              ({finding.rule_id}, <a
-                href={finding.spec_url}
-                target="_blank"
-                class="underline hover:text-primary"
-              >
-                {dgettext("frontend", "spec")}
-              </a>)
+              ({finding.rule_id}, <.external_link href={finding.spec_url}>{dgettext("frontend", "spec")}</.external_link>)
             </span>
           </p>
           <ul class="list-disc ml-6">

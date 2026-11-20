@@ -58,7 +58,7 @@ defmodule PanWeb.Live.Episode.Header do
           <%= if @episode.payment_link_url do %>
             <dt class="justify-self-end font-medium">{dgettext("frontend", "Support")}</dt>
             <dd class="col-span-3">
-              <a href={@episode.payment_link_url}>{@episode.payment_link_title}</a>
+              <.external_link href={@episode.payment_link_url}>{@episode.payment_link_title}</.external_link>
             </dd>
           <% end %>
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Duration")}</dt>
@@ -70,17 +70,15 @@ defmodule PanWeb.Live.Episode.Header do
           <%= if @episode.link do %>
             <dt class="justify-self-end font-medium">{dgettext("frontend", "Link")}</dt>
             <dd class="col-span-3">
-              <a class="underline hover:text-primary" href={@episode.link}>{@episode.link}</a>
+              <.external_link href={@episode.link}>{@episode.link}</.external_link>
             </dd>
           <% end %>
           <%= if @episode.deep_link do %>
             <dt class="justify-self-end font-medium">{dgettext("frontend", "Deep link")}</dt>
             <dd class="col-span-3">
-              <a
-                href={@episode.deep_link}
-                id="metadata"
-                class="underline hover:text-primary"
-              >{@episode.deep_link}</a>
+              <.external_link href={@episode.deep_link} id="metadata">
+                {@episode.deep_link}
+              </.external_link>
             </dd>
           <% end %>
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Contributors")}</dt>
@@ -132,10 +130,9 @@ defmodule PanWeb.Live.Episode.Header do
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Enclosures")}</dt>
           <%= for enclosure <- @episode.enclosures do %>
             <dd class="col-start-2 col-span-2">
-              <a
-                class="underline hover:text-primary wrap-break-word"
-                href={enclosure.url |> String.trim()}
-              >{enclosure.url}</a>
+              <.external_link href={enclosure.url} class="wrap-break-word">
+                {enclosure.url}
+              </.external_link>
               <%= case Integer.parse(enclosure.length || "") do %>
                 <% {bytes, ""} when bytes > 0 -> %>
                   ({Float.round(bytes / 1_048_576, 1)} MB)

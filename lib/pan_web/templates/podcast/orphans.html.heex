@@ -32,9 +32,9 @@
           <td>{podcast.title}</td>
           <td>
             <%= if podcast.website do %>
-              <a href={podcast.website}>
+              <.external_link href={podcast.website}>
                 {truncate_string(podcast.website, 50)}
-              </a>
+              </.external_link>
             <% end %>
           </td>
           <td>{podcast.updated_at}</td>
@@ -84,9 +84,9 @@
           <td>{podcast.title}</td>
           <td>
             <%= if podcast.website do %>
-              <a href={podcast.website}>
+              <.external_link href={podcast.website}>
                 {truncate_string(podcast.website, 50)}
-              </a>
+              </.external_link>
             <% end %>
           </td>
           <td>{podcast.updated_at}</td>

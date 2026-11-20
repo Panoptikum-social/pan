@@ -80,10 +80,7 @@ defmodule PanWeb.Live.Podcast.Header do
             {dgettext("frontend", "Website")}
           </dt>
           <dd :if={@podcast.website}>
-            <a
-              href={@podcast.website}
-              class="underline hover:text-primary"
-            >{@podcast.website}</a>
+            <.external_link href={@podcast.website}>{@podcast.website}</.external_link>
           </dd>
           <dt :if={separate_description?(@podcast)} class="justify-self-end font-medium">
             {dgettext("frontend", "Description")}
@@ -93,12 +90,9 @@ defmodule PanWeb.Live.Podcast.Header do
             {dgettext("frontend", "Support")}
           </dt>
           <dd :if={@podcast.payment_link_url}>
-            <a
-              href={@podcast.payment_link_url |> String.trim()}
-              class="underline hover:text-primary"
-            >
+            <.external_link href={@podcast.payment_link_url}>
               {@podcast.payment_link_title || "Support"}
-            </a>
+            </.external_link>
           </dd>
           <dt class="justify-self-end font-medium">{dgettext("frontend", "Language")}</dt>
           <dd>

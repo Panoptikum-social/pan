@@ -18,15 +18,29 @@ Claude's per-machine memory) so they survive across computers. Last synced
   strays (sub before parent, so the mapping gets the name feeds use).
   Last check 2026-11-18 (next: any id above 2857).
 
+- **#707 Persona warning page links the fediverse address.**
+  `persona_frontend/warning.html.heex` renders `<a href={@persona.fediverse_address}>`,
+  but the values are handles (`@name@host`), so the link is a broken
+  relative URL (found 2026-11-20 during #705).
+- **#708 `mix credo --strict` findings.** 2 refactoring opportunities, 153
+  code readability issues, 51 software design suggestions (2026-11-20);
+  plain `mix credo` is clean on the files touched by #705. To be tackled
+  separately.
+
 ### Feature requests
 
-- **#703 Links to external URLs open in a new tab.** Decided: per template
-  with `target="_blank" rel="noopener noreferrer"`. Done: all links to the
-  blog domain (`PanWeb.Blog.url/1`: navbar, footer, forgot password, home,
-  the three "Complain" links). Still open: the other external links in
-  templates (podcast/episode headers, podcast widget, feeds page, orphans,
-  ActivityPub toots); links inside rendered HTML (episode descriptions,
-  shownotes, pads) are not covered by this approach.
+- **#703 Links to external URLs open in a new tab** with
+  `target="_blank" rel="noopener noreferrer"`, server side, no JavaScript.
+  Done: all links to the blog domain (`PanWeb.Blog.url/1`: navbar, footer,
+  forgot password, home, the three "Complain" links) and all other external
+  links in templates (#705: `<.external_link>` in core_components, the
+  "tweet" buttons by hand). Open:
+  - **#706 Markdown: add `target`/`rel` in `PanWeb.ViewHelpers.markdown/2`**
+    (pads incl. live preview, persona long descriptions, curations) with a
+    Floki pass after sanitizing, on every `<a>` whose href starts with
+    `http`. Not in the scrubber: its `rel` allowlist drops the combined
+    value, and a custom `scrub({"a", ...})` clause would replace the
+    generated href check.
 
 ### Later dependency updates (waiting for an upstream fix)
 

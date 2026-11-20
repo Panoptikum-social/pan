@@ -14,8 +14,9 @@
         <ul class="list-disc ml-4">
           <%= for feed <- @podcast.feeds do %>
             <li>
-              <.link href={feed.self_link_url} class="underline hover:text-primary">{feed.self_link_title ||
-                feed.self_link_url}</.link>
+              <.external_link href={feed.self_link_url}>
+                {feed.self_link_title || feed.self_link_url}
+              </.external_link>
               <%= if feed.alternate_feeds != [] do %>
                 <h2 class="text-2xl my-4">
                   {dgettext("frontend", "Alternate feeds")}
@@ -23,10 +24,9 @@
                 <ul class="list-disc">
                   <%= for alternate_feed <- feed.alternate_feeds do %>
                     <li>
-                      <.link
-                        href={String.downcase(alternate_feed.url)}
-                        class="underline hover:text-primary"
-                      >{alternate_feed.title}</.link>
+                      <.external_link href={alternate_feed.url}>
+                        {alternate_feed.title}
+                      </.external_link>
                     </li>
                   <% end %>
                 </ul>

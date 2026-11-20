@@ -39,6 +39,8 @@ defmodule PanWeb.Live.Chapter.RecommendationList do
             <nobr>
               <a
                 href={"https://twitter.com/intent/tweet?text=#{social(@chapter, recommendation)}&url=#{social_url(@episode)}"}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="btn btn-outline btn-info btn-xs"
                 alt={dgettext("frontend", "tweet it")}
               >{dgettext("frontend", "tweet")}</a>

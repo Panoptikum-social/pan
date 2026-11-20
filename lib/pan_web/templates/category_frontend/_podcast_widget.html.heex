@@ -37,14 +37,9 @@
             </label>
           </div>
           <div class="col-span-2">
-            <%= if safe_uri?(@podcast.website) do %>
-              <.link
-                href={safe_href(@podcast.website)}
-                class="underline truncate hover:text-primary"
-              >{@podcast.website}</.link>
-            <% else %>
-              <span class="truncate">{@podcast.website}</span>
-            <% end %>
+            <.external_link href={@podcast.website} class="truncate">
+              {@podcast.website}
+            </.external_link>
           </div>
         <% end %>
 
@@ -90,14 +85,9 @@
           <div class="text-right">
             {dgettext("frontend", "Support")}
           </div>
-          <%= if safe_uri?(@podcast.payment_link_url) do %>
-            <.link
-              href={safe_href(@podcast.payment_link_url)}
-              class="col-span-2 underline hover:text-primary"
-            >{@podcast.payment_link_title}</.link>
-          <% else %>
-            <span class="col-span-2">{@podcast.payment_link_title}</span>
-          <% end %>
+          <.external_link href={@podcast.payment_link_url} class="col-span-2">
+            {@podcast.payment_link_title}
+          </.external_link>
         <% end %>
       </div>
     </div>

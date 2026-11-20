@@ -76,7 +76,7 @@ defmodule PanWeb.Live.Podcast.Index do
               </label>
             </div>
             <div :if={podcast.website} class="col-span-2 wrap-break-word">
-              <a href={podcast.website}>{podcast.website}</a>
+              <.external_link href={podcast.website}>{podcast.website}</.external_link>
             </div>
 
             <div>

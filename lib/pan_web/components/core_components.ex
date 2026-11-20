@@ -532,6 +532,44 @@ defmodule PanWeb.CoreComponents do
   def safe_uri?(uri), do: safe_href(uri) != nil
 
   @doc """
+  A link to another site (#703): `href` goes through `safe_href/1`, http(s)
+  links open in a new tab, `rel` always has "noopener noreferrer" (pass extra
+  values such as "me" via `rel`). An unsafe `href` renders the content as
+  plain text. `class` is applied in both cases, the link styling only to the
+  link.
+
+      <.external_link href={@podcast.website}>{@podcast.website}</.external_link>
+  """
+  attr :href, :string, required: true
+  attr :rel, :string, default: nil, doc: "extra rel values, e.g. \"me\""
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  def external_link(assigns) do
+    href = safe_href(assigns.href)
+
+    assigns =
+      assign(assigns,
+        href: href,
+        target: if(href && String.starts_with?(href, ["http://", "https://"]), do: "_blank"),
+        rel: Enum.join(["noopener", "noreferrer" | List.wrap(assigns.rel)], " ")
+      )
+
+    ~H"""
+    <a
+      :if={@href}
+      href={@href}
+      target={@target}
+      rel={@rel}
+      class={["underline hover:text-primary", @class]}
+      {@rest}
+    >{render_slot(@inner_block)}</a>
+    <span :if={!@href} class={@class} {@rest}>{render_slot(@inner_block)}</span>
+    """
+  end
+
+  @doc """
   A boolean as "yes"/"no" in the current language; anything else (nil) renders nothing.
   """
   def yes_no(true), do: dgettext("frontend", "yes")
