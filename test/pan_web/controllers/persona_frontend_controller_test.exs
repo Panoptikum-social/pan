@@ -60,4 +60,32 @@ defmodule PanWeb.PersonaFrontendControllerTest do
     assert Phoenix.Flash.get(conn.assigns.flash, :error) =~ "not allowed"
     assert Repo.get!(Persona, stranger.id).redirect_id == nil
   end
+
+  describe "warning page" do
+    test "renders the description as markdown, the fediverse address as text (#707)", %{
+      conn: conn
+    } do
+      persona =
+        Repo.insert!(%Persona{
+          pid: "w-#{System.unique_integer([:positive])}",
+          name: "W",
+          uri: "https://example.org",
+          long_description: "Some **bold** text",
+          fediverse_address: "@someone@example.social"
+        })
+
+      html = conn |> get("/pan/personas/#{persona.id}/warning") |> html_response(200)
+
+      assert html =~ "<strong>bold</strong>"
+      refute html =~ "**bold**"
+      assert html =~ "@someone@example.social"
+      refute html =~ ~s|href="@someone@example.social"|
+      assert html =~ ~s|href="https://example.org" target="_blank"|
+    end
+
+    test "an unknown or non-integer id is a 404 (#714)", %{conn: conn} do
+      assert_error_sent(404, fn -> get(conn, "/pan/personas/0/warning") end)
+      assert_error_sent(404, fn -> get(conn, "/pan/personas/abc/warning") end)
+    end
+  end
 end

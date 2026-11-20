@@ -158,7 +158,7 @@ defmodule PanWeb.PersonaFrontendController do
   end
 
   def warning(conn, %{"id" => id}, _user) do
-    persona = Repo.get(Persona, id)
+    persona = Repo.get!(Persona, PanWeb.PathId.to_integer!(id, Persona))
 
     render(conn, "warning.html", persona: persona)
   end

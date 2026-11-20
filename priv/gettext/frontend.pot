@@ -156,7 +156,7 @@ msgid "My Podcasts"
 msgstr ""
 
 #: lib/pan_web/frontend_views/user_frontend_view.ex:15
-#: lib/pan_web/live/persona/show.ex:187
+#: lib/pan_web/live/persona/show.ex:193
 #: lib/pan_web/templates/layout/_user_dropdown.html.heex:9
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:13
 #: lib/pan_web/templates/user_frontend/my_profile.html.heex:9
@@ -310,9 +310,9 @@ msgstr ""
 msgid "Are you a human? ;-)"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:273
+#: lib/pan_web/live/persona/show.ex:279
 #: lib/pan_web/templates/opml_frontend/index.html.heex:47
-#: lib/pan_web/templates/persona_frontend/warning.html.heex:124
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:122
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:19
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:47
 #: lib/pan_web/templates/recommendation_frontend/my_recommendations.html.heex:80
@@ -456,7 +456,7 @@ msgid "Danger Zone"
 msgstr ""
 
 #: lib/pan_web/live/episode/recommendation_list.ex:57
-#: lib/pan_web/live/persona/show.ex:340
+#: lib/pan_web/live/persona/show.ex:346
 #: lib/pan_web/live/podcast/episode_list.ex:19
 #: lib/pan_web/live/podcast/recommendation_list.ex:74
 #: lib/pan_web/templates/user_frontend/my_data.html.heex:151
@@ -1369,7 +1369,7 @@ msgstr ""
 msgid "for details."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:141
+#: lib/pan_web/live/persona/show.ex:147
 #: lib/pan_web/live/podcast/header.ex:67
 #: lib/pan_web/live/podcast/index.ex:66
 #: lib/pan_web/templates/category_frontend/_podcast_widget.html.heex:26
@@ -1383,7 +1383,7 @@ msgstr ""
 msgid "via email to login to your existing account and reset your password."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:297
+#: lib/pan_web/live/persona/show.ex:303
 #, elixir-autogen, elixir-format
 msgid "%{address} in the Fediverse"
 msgstr ""
@@ -1524,8 +1524,8 @@ msgstr ""
 msgid "Check feed"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:276
-#: lib/pan_web/templates/persona_frontend/warning.html.heex:126
+#: lib/pan_web/live/persona/show.ex:282
+#: lib/pan_web/templates/persona_frontend/warning.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "Claim"
 msgstr ""
@@ -1540,15 +1540,15 @@ msgstr ""
 msgid "Claim this podcast"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:210
-#: lib/pan_web/live/persona/show.ex:236
+#: lib/pan_web/live/persona/show.ex:216
+#: lib/pan_web/live/persona/show.ex:242
 #, elixir-autogen, elixir-format
 msgid "Claiming"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:169
-#: lib/pan_web/live/persona/show.ex:179
-#: lib/pan_web/live/persona/show.ex:194
+#: lib/pan_web/live/persona/show.ex:175
+#: lib/pan_web/live/persona/show.ex:185
+#: lib/pan_web/live/persona/show.ex:200
 #, elixir-autogen, elixir-format
 msgid "Claiming not available"
 msgstr ""
@@ -1632,12 +1632,12 @@ msgstr ""
 msgid "Enclosures"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:307
+#: lib/pan_web/live/persona/show.ex:313
 #, elixir-autogen, elixir-format
 msgid "Engagements, %{name} has entered"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:342
+#: lib/pan_web/live/persona/show.ex:348
 #, elixir-autogen, elixir-format
 msgid "Episode"
 msgstr ""
@@ -1683,7 +1683,7 @@ msgstr ""
 msgid "Fortuna opted for the episode"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:333
+#: lib/pan_web/live/persona/show.ex:339
 #, elixir-autogen, elixir-format
 msgid "Gigs, %{name} has been engaged in"
 msgstr ""
@@ -1694,7 +1694,7 @@ msgid "I agree"
 msgstr ""
 
 #: lib/pan_web/live/persona/index.ex:29
-#: lib/pan_web/live/persona/show.ex:124
+#: lib/pan_web/live/persona/show.ex:130
 #, elixir-autogen, elixir-format
 msgid "ID"
 msgstr ""
@@ -1924,13 +1924,13 @@ msgstr ""
 msgid "Player Page for %{episode} (Episode)"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:215
+#: lib/pan_web/live/persona/show.ex:221
 #, elixir-autogen, elixir-format
 msgid "Please take the time to read the text on the following screen carefully."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:314
-#: lib/pan_web/live/persona/show.ex:341
+#: lib/pan_web/live/persona/show.ex:320
+#: lib/pan_web/live/persona/show.ex:347
 #, elixir-autogen, elixir-format
 msgid "Podcast"
 msgstr ""
@@ -2031,8 +2031,8 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:315
-#: lib/pan_web/live/persona/show.ex:343
+#: lib/pan_web/live/persona/show.ex:321
+#: lib/pan_web/live/persona/show.ex:349
 #, elixir-autogen, elixir-format
 msgid "Role"
 msgstr ""
@@ -2063,7 +2063,7 @@ msgstr ""
 msgid "Sorry for that, we have been informed about it and will fix asap."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:225
+#: lib/pan_web/live/persona/show.ex:231
 #, elixir-autogen, elixir-format
 msgid "Start claiming process"
 msgstr ""
@@ -2307,27 +2307,27 @@ msgstr ""
 msgid "You can mask your search terms with an asterisk at the end or the beginning of the search term, as long as there are at least 3 characters left."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:173
+#: lib/pan_web/live/persona/show.ex:179
 #, elixir-autogen, elixir-format
 msgid "You can only claim personas, if you are logged in."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:260
+#: lib/pan_web/live/persona/show.ex:266
 #, elixir-autogen, elixir-format
 msgid "You can send an email to the owner of this persona and ask for permission to add you as a manifestation of this persona."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:183
+#: lib/pan_web/live/persona/show.ex:189
 #, elixir-autogen, elixir-format
 msgid "You didn't say you are a podcaster in"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:198
+#: lib/pan_web/live/persona/show.ex:204
 #, elixir-autogen, elixir-format
 msgid "You didn't verify your email address by clicking on the verification link in the email sent to you after login."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:248
+#: lib/pan_web/live/persona/show.ex:254
 #, elixir-autogen, elixir-format
 msgid "You have claimed this persona already."
 msgstr ""
@@ -2357,7 +2357,7 @@ msgstr ""
 msgid "Your browser does not support the video tag."
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:264
+#: lib/pan_web/live/persona/show.ex:270
 #, elixir-autogen, elixir-format
 msgid "Your name, username and email address will be sent alongside in the email to give the owner a chance to get in contact with you."
 msgstr ""
@@ -2573,7 +2573,7 @@ msgstr ""
 msgid "with"
 msgstr ""
 
-#: lib/pan_web/live/persona/show.ex:188
+#: lib/pan_web/live/persona/show.ex:194
 #, elixir-autogen, elixir-format
 msgid "yet."
 msgstr ""
@@ -2738,6 +2738,7 @@ msgid "Errors"
 msgstr ""
 
 #: lib/pan_web/live/persona/edit.ex:109
+#: lib/pan_web/live/persona/show.ex:125
 #: lib/pan_web/templates/persona_frontend/warning.html.heex:109
 #, elixir-autogen, elixir-format
 msgid "Fediverse Address"

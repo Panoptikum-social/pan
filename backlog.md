@@ -18,10 +18,6 @@ Claude's per-machine memory) so they survive across computers. Last synced
   strays (sub before parent, so the mapping gets the name feeds use).
   Last check 2026-11-18 (next: any id above 2857).
 
-- **#707 Persona warning page links the fediverse address.**
-  `persona_frontend/warning.html.heex` renders `<a href={@persona.fediverse_address}>`,
-  but the values are handles (`@name@host`), so the link is a broken
-  relative URL (found 2026-11-20 during #705).
 - **#708 `mix credo --strict` findings.** 2 refactoring opportunities, 153
   code readability issues, 51 software design suggestions (2026-11-20);
   plain `mix credo` is clean on the files touched by #705. To be tackled

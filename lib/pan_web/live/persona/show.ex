@@ -120,6 +120,12 @@ defmodule PanWeb.Live.Persona.Show do
                 <.external_link href={@persona.uri} rel="me">{@persona.uri}</.external_link>
               </td>
             </tr>
+            <tr :if={@persona.fediverse_address}>
+              <td class="px-4 text-right font-semibold">
+                {dgettext("frontend", "Fediverse Address")}
+              </td>
+              <td>{@persona.fediverse_address}</td>
+            </tr>
             <tr>
               <td class="px-4 text-right font-semibold">{dgettext("frontend", "ID")}</td>
               <td>{@persona.id}</td>

@@ -1,6 +1,6 @@
 <div class="max-w-7xl m-auto">
   <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-    <div class="md:w-1/2">
+    <div class="md:w-1/2 min-w-0">
       <h1 class="text-3xl mb-4">
         {dgettext("frontend", "On claiming this persona")}
       </h1>
@@ -53,14 +53,14 @@
       <p>{dgettext("frontend", "So please act responsibly.")}</p>
     </div>
 
-    <div>
+    <div class="md:w-1/2 min-w-0">
       <h2 class="text-2xl mb-4">
         {dgettext("frontend", "Persona data")}
       </h2>
 
       <p>{dgettext("frontend", "You are about to claim the following persona:")}</p>
 
-      <dl class="grid grid-cols-3 gap-x-4 gap-y-2 mt-4">
+      <dl class="grid grid-cols-3 gap-x-4 gap-y-2 mt-4 [&>dd]:min-w-0 [&>dd]:wrap-break-word">
         <dt class="text-right">
           {dgettext("frontend", "PanoptikumID")}
         </dt>
@@ -79,7 +79,7 @@
           {dgettext("frontend", "Uri")}
         </dt>
         <dd class="col-span-2">
-          {@persona.uri}
+          <.external_link href={@persona.uri}>{@persona.uri}</.external_link>
         </dd>
 
         <dt class="text-right">
@@ -92,8 +92,8 @@
         <dt class="text-right">
           {dgettext("frontend", "Description")}
         </dt>
-        <dd class="col-span-2">
-          {@persona.long_description}
+        <dd class="col-span-2 prose prose-sm max-w-none">
+          {markdown(@persona.long_description)}
         </dd>
 
         <dt class="text-right">
@@ -109,9 +109,7 @@
           {dgettext("frontend", "Fediverse Address")}
         </dt>
         <dd class="col-span-2">
-          <a href={@persona.fediverse_address}>
-            {@persona.fediverse_address}
-          </a>
+          {@persona.fediverse_address}
         </dd>
       </dl>
     </div>
